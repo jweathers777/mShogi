@@ -1,0 +1,6 @@
+*.dblite
+config.py
+debug
+release
+!debug/SConscript
+!release/SConscript

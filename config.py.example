@@ -1,0 +1,3 @@
+# Configuration file containing user definable options.
+BOOST = r'/usr/include/boost'
+BUILDTYPE = 'release' # release, debug, or both

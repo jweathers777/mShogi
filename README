@@ -1,0 +1,37 @@
+mShogi is a cross platform multi-variant shogi program I wrote in C++ using 
+Boost and wxWidgets sporatically over a period from 2003 to 2005. It uses the
+Python based scons build system. The program comes in both a console version
+and in a GUI version. Both versions depend upon a shared engine library.
+
+I've taken one of the later versions and tweaked it to compile with more recent
+versions of wxWidgets and scons. I've tested it on recent versions of Ubuntu
+Linux and on Windows 7.
+
+At the time of development, I had no access to a Mac. I was able to get the GUI
+version to compile on Mac OS X Snow Leopard, but the resulting GUI was not
+functional. wxWidgets does not compile out of the box with Lion. The console
+program runs fine on Mac OS X.
+
+Requirements:
+   gcc
+   boost
+   wxWidgets
+
+TODO:
+   * Update representations of game structures so that object creation
+     is minimized during the search loops to improve search speed
+   * Implement Chess as a variant to properly judge performance against
+     something that is known
+   * Possibly dynamic_bitset bitboards with lower level static structures
+     to increase performance
+   * Better debugging information
+   * Add tests 
+   * Update GUI to work properly on Mac OS X or consider implementing
+     GUI in a different library. Possibly use another language.
+   * Finish implementing the mostly vestigial menu items
+   * Lots more...
+
+Building:
+   Create a config.py file per example 
+   Run: scons
+   

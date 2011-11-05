@@ -1,0 +1,7 @@
+aaaaa    ICON   "mShogi.ico"
+
+#include "wx/msw/wx.rc"
+
+mShogiIcon ICON "mShogi.ico"
+OpenHandCursor CURSOR "openhand.cur"
+ClosedHandCursor CURSOR "closedhand.cur"

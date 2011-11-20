@@ -1,28 +1,32 @@
 mShogi is a cross platform multi-variant shogi program I wrote in C++ using 
 Boost and wxWidgets sporatically over a period from 2003 to 2005. It uses the
-Python based scons build system. The program comes in both a console version
-and in a GUI version. Both versions depend upon a shared engine library.
+premake lua based build tool for generating Makefiles for each target environment.
+
+
+The program comes in both a console version and in a GUI version. Both versions 
+depend upon a shared engine library.
 
 I've taken one of the later versions and tweaked it to compile with more recent
-versions of wxWidgets and scons. I've tested it on recent versions of Ubuntu
+versions of wxWidgets. I've tested it on recent versions of Ubuntu
 Linux and on Windows 7.
 
 At the time of development, I had no access to a Mac. I was able to get the GUI
 version to compile on Mac OS X Snow Leopard, but the resulting GUI was not
-functional. wxWidgets does not compile out of the box with Lion. The console
+functional. wxWidgets does not currently compile out of the box with Lion. The console
 program runs fine on Mac OS X.
 
 Requirements:
+   premake - http://industriousone.com/premake
    gcc
-   boost
-   wxWidgets
+   boost - http://www.boost.org/
+   wxWidgets - http://www.wxwidgets.org/
 
 TODO:
    * Update representations of game structures so that object creation
      is minimized during the search loops to improve search speed
    * Implement Chess as a variant to properly judge performance against
      something that is known
-   * Possibly dynamic_bitset bitboards with lower level static structures
+   * Possibly replace dynamic_bitset bitboards with lower level static structures
      to increase performance
    * Better debugging information
    * Add tests 

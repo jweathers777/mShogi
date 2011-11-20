@@ -1,6 +1,7 @@
-*.dblite
-config.py
-debug
-release
-!debug/SConscript
-!release/SConscript
+mShogiConsole
+mShogiGui
+Makefile
+*.make
+*.a
+*.exe
+obj

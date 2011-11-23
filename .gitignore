@@ -3,5 +3,7 @@ mShogiGui
 Makefile
 *.make
 *.a
+*.log
+*.stdout
 *.exe
 obj

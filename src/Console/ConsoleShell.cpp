@@ -177,6 +177,7 @@ void ConsoleShell::CreateMaps()
    mInputHandlers.insert(make_pair("depth", &ConsoleShell::Depth));
    mInputHandlers.insert(make_pair("display", &ConsoleShell::Display));
    mInputHandlers.insert(make_pair("exit", &ConsoleShell::Exit));
+   mInputHandlers.insert(make_pair("games", &ConsoleShell::Games));
    mInputHandlers.insert(make_pair("help", &ConsoleShell::Help));
    mInputHandlers.insert(make_pair("history", &ConsoleShell::History));
    mInputHandlers.insert(make_pair("input", &ConsoleShell::Input));
@@ -207,6 +208,9 @@ void ConsoleShell::CreateMaps()
       );
    mHelpStrings.insert(
       make_pair("exit", "exit......................restores STDIN to the previous input stream.")
+      );
+   mHelpStrings.insert(
+      make_pair("games", "games.....................list the available game types.")
       );
    mHelpStrings.insert(
       make_pair("help", "help [command]............displays help.")
@@ -377,6 +381,29 @@ void ConsoleShell::Exit(const vector<string>& arguments)
          delete streamptr;
       }
    }
+}
+
+//-------------------------------------------------------------------------
+//       Class:  ConsoleShell
+//      Method:  Games
+// Description:  List the game types available to the engine
+//-------------------------------------------------------------------------
+void ConsoleShell::Games(const vector<string>& arguments)
+{
+   if (arguments[0] == "help") {
+      cout << "List the game types available to the engine." << endl;
+   }
+   else if (arguments.size() == 1) {
+      vector<string> gamelist;
+      mpEngine->GetGameList(gamelist);
+      for (unsigned int i = 0; i < gamelist.size(); i++) {
+         cout << gamelist[i] << endl;
+      }
+   }
+   else {
+      cout << "Invalid number of arguments." << endl;
+   }
+
 }
 
 //-------------------------------------------------------------------------

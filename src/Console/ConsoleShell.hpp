@@ -54,6 +54,7 @@ private:
    void Depth(const std::vector<std::string>& arguments);
    void Display(const std::vector<std::string>& arguments);
    void Exit(const std::vector<std::string>& arguments);
+   void Games(const std::vector<std::string>& arguments);
    void Help(const std::vector<std::string>& arguments);
    void History(const std::vector<std::string>& arguments);
    void Input(const std::vector<std::string>& arguments);

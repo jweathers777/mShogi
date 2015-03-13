@@ -1,5 +1,6 @@
 mShogiConsole
 mShogiGui
+mShogiGui.app
 Makefile
 *.make
 *.a

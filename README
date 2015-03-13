@@ -2,40 +2,34 @@ mShogi is a cross platform multi-variant shogi program I wrote in C++ using
 Boost and wxWidgets sporatically over a period from 2003 to 2005. It uses the
 premake lua based build tool for generating Makefiles for each target environment.
 
-
 The program comes in both a console version and in a GUI version. Both versions 
 depend upon a shared engine library.
 
 I've taken one of the later versions and tweaked it to compile with more recent
-versions of wxWidgets. I've tested it on recent versions of Ubuntu
-Linux and on Windows 7.
-
-At the time of development, I had no access to a Mac. I was able to get the GUI
-version to compile on Mac OS X Snow Leopard, but the resulting GUI was not
-functional. wxWidgets does not currently compile out of the box with Lion. The console
-program runs fine on Mac OS X.
+versions of wxWidgets. I've tested it on recent versions of Ubuntu Linux, Windows 8,
+and Max OS X Mavericks.
 
 Requirements:
    premake - http://industriousone.com/premake
-   gcc
+   C++ 
    boost - http://www.boost.org/
    wxWidgets - http://www.wxwidgets.org/
 
 TODO:
+   * Restore functionality that allows changing between game engines
    * Update representations of game structures so that object creation
      is minimized during the search loops to improve search speed
+   * Add capability for opening books
    * Implement Chess as a variant to properly judge performance against
      something that is known
    * Possibly replace dynamic_bitset bitboards with lower level static structures
      to increase performance
    * Better debugging information
    * Add tests 
-   * Update GUI to work properly on Mac OS X or consider implementing
-     GUI in a different library. Possibly use another language.
    * Finish implementing the mostly vestigial menu items
    * Lots more...
 
 Building:
-   Create a config.py file per example 
-   Run: scons
+   premake4 [target compiler tool chain]
+   Use resulting compilation files (run make for GNU Make, build with Visual Studio, etc.)
    

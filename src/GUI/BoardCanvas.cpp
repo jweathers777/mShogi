@@ -19,6 +19,7 @@
 #include "wx/image.h"
 #include "wx/colour.h"
 #include "wx/log.h"
+#include "wx/stdpaths.h"
 
 // Under Windows, change this to 1
 // to use wxGenericDragImage
@@ -147,7 +148,7 @@ void BoardCanvas::UpdateCanvas(bool init)
    wxString gameName(mpEngine->GetGame().c_str(), wxConvLibc);
 
    // Obtain the full path to the current game's installation files
-   wxFileName applicationExePath(wxGetApp().GetExecutablePath());
+   wxFileName applicationExePath(wxStandardPaths::Get().GetExecutablePath());
    wxFileName gameFilesPath(applicationExePath.GetPath(), gameName);
    
    // Construct sources for board image, pieces image, and setup data

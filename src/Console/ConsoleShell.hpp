@@ -90,9 +90,9 @@ private:
       // ===================================================================
       // Operators
       // ===================================================================
-      bool operator()(const InputHandlerMap::value_type& value)
+      bool operator()(const InputHandlerMap::value_type& inputValue)
       {
-         std::string::size_type index = value.first.find(mString);
+         std::string::size_type index = inputValue.first.find(mString);
 
          return (index == 0);
       }

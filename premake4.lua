@@ -1,6 +1,18 @@
 solution 'mShogi'
    configurations { 'Debug', 'Release' }
 
+   configuration 'Debug'
+      defines {'DEBUG'}
+      flags {'Symbols'}
+      buildoptions { "`wx-config --cxxflags`", "-ansi", "-pedantic", "-Wno-c++11-long-long", "-Wno-variadic-macros" } 
+      linkoptions { "`wx-config --libs`" }
+
+   configuration 'Release'
+      defines {'NDEBUG'}
+      flags {'Optimize'}
+      buildoptions { "`wx-config --cxxflags`", "-ansi", "-pedantic", "-Wno-c++11-long-long", "-Wno-variadic-macros" } 
+      linkoptions { "`wx-config --libs`" }
+
    project 'mShogiEngine'
       kind 'StaticLib'
       language 'C++'
@@ -8,13 +20,6 @@ solution 'mShogi'
       excludes { 'src/Engine/PieceTypes/DaiDaiShogi/**', 'src/Engine/PieceTypes/ToriShogi/**' }
       includedirs { 'src/Engine', 'src/Engine/**' }
 
-      configuration 'Debug'
-         defines {'DEBUG'}
-         flags {'Symbols'}
-
-      configuration 'Release'
-         defines {'NDEBUG'}
-         flags {'Optimize'}
 
    project 'mShogiConsole'
       kind 'ConsoleApp'
@@ -23,10 +28,10 @@ solution 'mShogi'
       includedirs { 'src/Console', 'src/Engine', 'src/Engine/**' }
       links { 'mShogiEngine' }
 
-      configuration 'Debug'
-         defines {'DEBUG'}
-         flags {'Symbols'}
+   project 'mShogiGui'
+      kind 'WindowedApp'
+      language 'C++'
+      files { 'src/GUI/**.hpp', 'src/GUI/**.cpp' }
+      includedirs { 'src/GUI', 'src/Engine', 'src/Engine/**' }
+      links { 'mShogiEngine' }
 
-      configuration 'Release'
-         defines {'NDEBUG'}
-         flags {'Optimize'}

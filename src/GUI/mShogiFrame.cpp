@@ -52,7 +52,7 @@ using std::string;
 // resources
 // ----------------------------------------------------------------------------
 // the application icon
-#if defined(__WXGTK__) || defined(__WXMOTIF__)
+#if defined(__WXGTK__) || defined(__WXMOTIF__) || defined(__WXMAC__)
    #include "mShogiIcon.xpm"
 #endif
 
@@ -196,7 +196,7 @@ void mShogiFrame::OnLoad( wxCommandEvent &event )
 {
    wxFileDialog dialog( this, _T("File Open"), _T(""), _T(""),
                         _T("PGN files (*.pgn)|*.pgn"), 
-                        wxOPEN|wxCHANGE_DIR);
+                        wxFD_OPEN|wxFD_CHANGE_DIR);
    
    if (dialog.ShowModal() == wxID_OK) {
       string message;
@@ -225,7 +225,7 @@ void mShogiFrame::OnSave( wxCommandEvent &event )
 {
    wxFileDialog dialog( this, _T("File Save"), _T(""), _T(""),
                         _T("PGN files (*.pgn)|*.pgn"), 
-                        wxSAVE|wxCHANGE_DIR|wxOVERWRITE_PROMPT);
+                        wxFD_SAVE|wxFD_CHANGE_DIR|wxFD_OVERWRITE_PROMPT);
    
    if (dialog.ShowModal() == wxID_OK) {
       mpEngine->SaveGame(string(dialog.GetPath().mb_str()));

@@ -25,7 +25,6 @@ public:
    // Operations
    // ======================================================================
    virtual bool OnInit();
-   wxString GetExecutablePath();
 
    // ======================================================================
    // Static Operations

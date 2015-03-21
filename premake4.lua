@@ -28,10 +28,13 @@ solution 'mShogi'
       includedirs { 'src/Console', 'src/Engine', 'src/Engine/**' }
       links { 'mShogiEngine' }
 
-   project 'mShogiGui'
+   project 'mShogi'
       kind 'WindowedApp'
       language 'C++'
       files { 'src/GUI/**.hpp', 'src/GUI/**.cpp' }
       includedirs { 'src/GUI', 'src/Engine', 'src/Engine/**' }
       links { 'mShogiEngine' }
+      postbuildcommands {
+         "./postbuild"
+      }
 

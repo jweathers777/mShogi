@@ -1,0 +1,6 @@
+#!/bin/sh
+
+mkdir -p mShogi.app/Contents/Resources
+cp -R src/Resources/shared/* mShogi.app/Contents/Resources/
+cp -R src/Resources/mac/* mShogi.app/Contents/Resources/
+mv mShogi.app/Contents/Resources/Info.plist mShogi.app/Contents/

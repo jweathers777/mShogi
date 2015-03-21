@@ -15,6 +15,10 @@ Requirements:
    boost - http://www.boost.org/
    wxWidgets - http://www.wxwidgets.org/
 
+Building:
+   premake4 [target compiler tool chain]
+   Use resulting compilation files (run make for GNU Make, build with Visual Studio, etc.)
+   
 TODO:
    * Restore functionality that allows changing between game engines
    * Update representations of game structures so that object creation
@@ -29,7 +33,3 @@ TODO:
    * Finish implementing the mostly vestigial menu items
    * Lots more...
 
-Building:
-   premake4 [target compiler tool chain]
-   Use resulting compilation files (run make for GNU Make, build with Visual Studio, etc.)
-   

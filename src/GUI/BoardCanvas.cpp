@@ -148,8 +148,8 @@ void BoardCanvas::UpdateCanvas(bool init)
    wxString gameName(mpEngine->GetGame().c_str(), wxConvLibc);
 
    // Obtain the full path to the current game's installation files
-   wxFileName applicationExePath(wxStandardPaths::Get().GetExecutablePath());
-   wxFileName gameFilesPath(applicationExePath.GetPath(), gameName);
+   wxFileName resourcesPath(wxStandardPaths::Get().GetResourcesDir());
+   wxFileName gameFilesPath(resourcesPath.GetFullPath(), gameName);
    
    // Construct sources for board image, pieces image, and setup data
    wxFileName boardSrc(gameFilesPath.GetFullPath(),   wxT("board.bmp"));

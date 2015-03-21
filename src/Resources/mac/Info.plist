@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleExecutable</key>
+	<string>mShogi</string>
+	<key>CFBundleGetInfoString</key>
+	<string>0.5, Copyright 2004-2015 John Weathers</string>
+	<key>CFBundleIconFile</key>
+	<string>mShogi.icns</string>
+	<key>CFBundleName</key>
+	<string>mShogi</string>
+</dict>
+</plist>

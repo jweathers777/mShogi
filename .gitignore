@@ -1,6 +1,6 @@
 mShogiConsole
-mShogiGui
-mShogiGui.app
+mShogi
+mShogi.app
 Makefile
 *.make
 *.a

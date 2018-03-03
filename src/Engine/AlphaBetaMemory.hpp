@@ -30,7 +30,7 @@ public:
    // ======================================================================
 	AlphaBetaMemory();
 	virtual ~AlphaBetaMemory();
-   
+
    // ======================================================================
    // Accessors
    // ======================================================================
@@ -45,21 +45,22 @@ public:
    std::string GetPVString(const std::vector<Move>& line);
    std::string GetStatistics();
    void Reset() { return; }
-   
+
 protected:
    void PrepareSearch(bool clearPV=true);
    void SortRootChildren(bool& winningMove,
                          std::vector<Move>& movelist);
-   
-   virtual int DoSearch(int depth, int alpha, int beta, 
+
+   virtual int DoSearch(int depth, int alpha, int beta,
                         std::vector<Move>& pline);
    virtual int DoQuiescenceSearch(int depth, int alpha, int beta,
-                                  std::vector<Move>& pline);
-   
+                                  std::vector<Move>& pline, int lastDest=-1);
+
    // ======================================================================
    // Constants
    // ======================================================================
-   enum { 
+   enum {
+      STATIC_EXCHANGE_PLIES = 6,
       REP_TABLE_SIZE = 2048,
       // TRAN_TABLE_SIZE = 4096
       // TRAN_TABLE_SIZE = 8192
@@ -68,7 +69,7 @@ protected:
       // TRAN_TABLE_SIZE = 65536
       TRAN_TABLE_SIZE = 131072
    };
-      
+
    // ======================================================================
    // Data
    // ======================================================================
@@ -81,17 +82,17 @@ protected:
 
    // Hash table for detecting repetitions
    RepetitionTable* mpRepTable;
-   
+
    // Hash tables for detecting transpositions
    TranspositionTable* mpTranTable[2];
 
    int mTranTableSize; // Size of the transposition tables
-   
+
    int  mSide;  // Current side in the search
 
    int  mNextCheck; // Number of nodes left to search before checking
                     // whether we should abort the search
-   bool mAbort;     // Flag that indicates whether this search 
+   bool mAbort;     // Flag that indicates whether this search
                     // should abort
 
    std::vector<Move> mPrincipleVariation; // Principle Variation line
@@ -103,7 +104,7 @@ protected:
    // Statistics Data
    // ======================================================================
    double mSeconds;       // Time of the most recent search in seconds
-      
+
    int mNodes;            // Total nodes searched
    int mCutOffs;          // Total cut-offs produced
    int mQuiescentNodes;   // Total quiescent nodes searched

@@ -28,7 +28,7 @@ public:
    // ======================================================================
 	AlphaBetaSearch();
 	virtual ~AlphaBetaSearch();
-   
+
    // ======================================================================
    // Accessors
    // ======================================================================
@@ -43,22 +43,25 @@ public:
    std::string GetPVString(const std::vector<Move>& line);
    std::string GetStatistics();
    void Reset() { return; }
-   
+
 protected:
    void PrepareSearch(bool clearPV=true);
    void SortRootChildren(bool& winningMove,
                          std::vector<Move>& movelist);
-   
-   virtual int DoSearch(int depth, int alpha, int beta, 
+
+   virtual int DoSearch(int depth, int alpha, int beta,
                         std::vector<Move>& pline);
    int DoQuiescenceSearch(int depth, int alpha, int beta,
-                          std::vector<Move>& pline);
-   
+                          std::vector<Move>& pline, int lastDest=-1);
+
    // ======================================================================
    // Constants
    // ======================================================================
-   enum { REP_TABLE_SIZE = 2048 };
-      
+   enum {
+      STATIC_EXCHANGE_PLIES = 6,
+      REP_TABLE_SIZE = 2048
+   };
+
    // ======================================================================
    // Data
    // ======================================================================
@@ -70,12 +73,12 @@ protected:
    Engine*        mpEngine;         // Pointer to the game engine
 
    RepetitionTable* mpRepTable;     // Hash table for detecting repetitions
-   
+
    int            mSide;            // Current side in the search
 
    int  mNextCheck; // Number of nodes left to search before checking
                     // whether we should abort the search
-   bool mAbort;     // Flag that indicates whether this search 
+   bool mAbort;     // Flag that indicates whether this search
                     // should abort
 
    std::vector<Move> mPrincipleVariation; // Principle Variation line
@@ -85,7 +88,7 @@ protected:
    // Statistics Data
    // ======================================================================
    double mSeconds;       // Time of the most recent search in seconds
-      
+
    int mNodes;            // Total nodes searched
    int mCutOffs;          // Total cut-offs produced
    int mQuiescentNodes;   // Total quiescent nodes searched

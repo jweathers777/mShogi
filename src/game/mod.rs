@@ -6,4 +6,6 @@ pub mod player;
 pub mod variant;
 
 #[cfg(test)]
-mod move_notation_tests;  // Ensure tests are included
+mod move_notation_tests;
+mod move_generator_tests;
+mod variant_tests;

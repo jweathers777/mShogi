@@ -1,237 +1,237 @@
-[variants.ChuShogi]
 name = "Chu Shogi"
+style = "Shogi"
 board_size = [12, 12]
-player_names = ["Sente", "Gote"]
+player_names = ["Black", "White"]
 
-[variants.ChuShogi.pieces.Pawn]
+[piece_types.Pawn]
 symbol = "P"
 moves = ["forward_one"]
 promotion = ["Tokin"]
 
-[variants.ChuShogi.pieces.GoBetween]
+[piece_types.GoBetween]
 symbol = "GB"
 moves = ["forward_one", "backward_one"]
 promotion = ["DrunkElephant"]
 
-[variants.ChuShogi.pieces.SideMover]
+[piece_types.SideMover]
 symbol = "SM"
 moves = ["horizontal", "forward_one", "backward_one"]
 promotion = ["FreeBoar"]
 
-[variants.ChuShogi.pieces.VerticalMover]
+[piece_types.VerticalMover]
 symbol = "VM"
 moves = ["vertical", "left_one", "right_one"]
 promotion = ["FlyingOx"]
 
-[variants.ChuShogi.pieces.Bishop]
+[piece_types.Bishop]
 symbol = "B"
 moves = ["diagonal"]
 promotion = ["DragonHorse"]
 
-[variants.ChuShogi.pieces.Rook]
+[piece_types.Rook]
 symbol = "R"
 moves = ["orthogonal"]
 promotion = ["DragonKing"]
 
-[variants.ChuShogi.pieces.DragonHorse]
+[piece_types.DragonHorse]
 symbol = "DH"
 moves = ["diagonal", "adjacent"]
 promotion = ["HornedFalcon"]
 
-[variants.ChuShogi.pieces.DragonKing]
+[piece_types.DragonKing]
 symbol = "DK"
 moves = ["straight", "adjacent"]
 promotion = ["SoaringEagle"]
 
-[variants.ChuShogi.pieces.Lance]
+[piece_types.Lance]
 symbol = "L"
 moves = ["forward_unlimited"]
 promotion = ["WhiteHorse"]
 
-[variants.ChuShogi.pieces.ReverseChariot]
+[piece_types.ReverseChariot]
 symbol = "RC"
 moves = ["vertical"]
 promotion = ["Whale"]
 
-[variants.ChuShogi.pieces.BlindTiger]
+[piece_types.BlindTiger]
 symbol = "BT"
 moves = ["diagonal_one", "backward_one", "horizontal_one"]
 promotion = ["FlyingStag"]
 
-[variants.ChuShogi.pieces.FerociousLeopard]
+[piece_types.FerociousLeopard]
 symbol = "FL"
 moves = ["diagonal_one", "vertical_one"]
 promotion = ["Bishop"]
 
-[variants.ChuShogi.pieces.Copper]
+[piece_types.Copper]
 symbol = "C"
 moves = ["vertical_one", "diagonal_forward_one"]
 promotion = ["SideMover"]
 
-[variants.ChuShogi.pieces.Silver]
+[piece_types.Silver]
 symbol = "S"
 moves = ["diagonal_one", "forward_one"]
 promotion = ["VerticalMover"]
 
-[variants.ChuShogi.pieces.Gold]
+[piece_types.Gold]
 symbol = "G"
 moves = ["straight_one", "diagonal_forward_one"]
 promotion = ["Rook"]
 
-[variants.ChuShogi.pieces.DrunkElephant]
+[piece_types.DrunkElephant]
 symbol = "DE"
 moves = ["diagonal_one", "forward_one", "horizontal_one"]
 promotion = ["CrownPrince"]
 
-[variants.ChuShogi.pieces.Kirin]
+[piece_types.Kirin]
 symbol = "Ki"
 moves = ["diagonal_one", "orthogonal_jump_one"]
 promotion = ["Lion"]
 
-[variants.ChuShogi.pieces.Phoenix]
+[piece_types.Phoenix]
 symbol = "Ph"
 moves = ["orthogonal_one", "diagonal_jump_one"]
 promotion = ["Lion"]
 
-[variants.ChuShogi.pieces.FreeKing]
+[piece_types.FreeKing]
 symbol = "FK"
 moves = ["diagonal", "orthogonal"]
 
-[variants.ChuShogi.pieces.Lion]
+[piece_types.Lion]
 symbol = "Ln"
 moves = ["step_twice_with_jumping"]
 
-[variants.ChuShogi.pieces.CrownPrince]
+[piece_types.CrownPrince]
 symbol = "CP"
 moves = ["adjacent"]
 
-[variants.ChuShogi.pieces.King]
+[piece_types.King]
 symbol = "K"
 moves = ["adjacent"]
 
-[variants.ChuShogi.pieces.Tokin]
+[piece_types.Tokin]
 symbol = "T"
 moves = ["straight_one", "diagonal_forward_one"]
 
-[variants.ChuShogi.pieces.FlyingStag]
+[piece_types.FlyingStag]
 symbol = "FS"
 moves = ["vertical", "diagonal_one", "horizontal_one"]
 
-[variants.ChuShogi.pieces.FlyingOx]
+[piece_types.FlyingOx]
 symbol = "FS"
 moves = ["vertical", "diagonal"]
 
-[variants.ChuShogi.pieces.FlyingBoar]
+[piece_types.FlyingBoar]
 symbol = "FB"
 moves = ["horizontal", "diagonal"]
 
-[variants.ChuShogi.pieces.Whale]
+[piece_types.Whale]
 symbol = "Wh"
 moves = ["vertical", "diagonal_backward"]
 
-[variants.ChuShogi.pieces.WhiteHorse]
+[piece_types.WhiteHorse]
 symbol = "WH"
 moves = ["vertical", "diagonal_forward"]
 
-[variants.ChuShogi.pieces.HornedFalcon]
+[piece_types.HornedFalcon]
 symbol = "HF"
 moves = ["step_or_jump_forward", "igui_forward", "jitto_forward"]
 
-[variants.ChuShogi.pieces.SoaringEagle]
+[piece_types.SoaringEagle]
 symbol = "SE"
 moves = ["step_or_jump_diagonal_forward", "igui_diagonal_forward", "jitto_diagonal_forward"]
 
 
-[variants.ChuShogi.starting_position]
-"0,0" = "Lance"
-"0,1" = "FerociousLeopard"
-"0,2" = "Copper"
-"0,3" = "Silver"
-"0,4" = "Gold"
-"0,5" = "King"
-"0,6" = "DrunkElephant"
-"0,7" = "Gold"
-"0,8" = "Silver"
-"0,9" = "Copper"
-"0,10" = "FerociousLeopard"
-"0,11" = "Lance"
-"1,0" = "ReverseChariot"
-"1,2" = "Bishop"
-"1,4" = "BlindTiger"
-"1,5" = "Kirin"
-"1,6" = "Phoenix"
-"1,7" = "BlindTiger"
-"1,9" = "Bishop"
-"1,11" = "ReverseChariot"
-"2,0" = "SideMover"
-"2,1" = "VerticalMover"
-"2,2" = "Rook"
-"2,3" = "DragonHorse"
-"2,4" = "DragonKing"
-"2,5" = "Lion"
-"2,6" = "FreeKing"
-"2,7" = "DragonKing"
-"2,8" = "DragonHorse"
-"2,9" = "Rook"
-"2,10" = "VerticalMover"
-"2,11" = "SideMover"
-"3,0" = "Pawn"
-"3,1" = "Pawn"
-"3,2" = "Pawn"
-"3,3" = "Pawn"
-"3,4" = "Pawn"
-"3,5" = "Pawn"
-"3,6" = "Pawn"
-"3,7" = "Pawn"
-"3,8" = "Pawn"
-"3,9" = "Pawn"
-"3,10" = "Pawn"
-"3,11" = "Pawn"
-"4,3" = "GoBetween"
-"4,8" = "GoBetween"
-"7,3" = "GoBetween"
-"7,8" = "GoBetween"
-"8,0" = "Pawn"
-"8,1" = "Pawn"
-"8,2" = "Pawn"
-"8,3" = "Pawn"
-"8,4" = "Pawn"
-"8,5" = "Pawn"
-"8,6" = "Pawn"
-"8,7" = "Pawn"
-"8,8" = "Pawn"
-"8,9" = "Pawn"
-"8,10" = "Pawn"
-"8,11" = "Pawn"
-"9,0" = "SideMover"
-"9,1" = "VerticalMover"
-"9,2" = "Rook"
-"9,3" = "DragonHorse"
-"9,4" = "DragonKing"
-"9,5" = "FreeKing"
-"9,6" = "Lion"
-"9,7" = "DragonKing"
-"9,8" = "DragonHorse"
-"9,9" = "Rook"
-"9,10" = "VerticalMover"
-"9,11" = "SideMover"
-"10,0" = "ReverseChariot"
-"10,2" = "Bishop"
-"10,4" = "BlindTiger"
-"10,5" = "Phoenix"
-"10,6" = "Kirin"
-"10,7" = "BlindTiger"
-"10,9" = "Bishop"
-"10,11" = "ReverseChariot"
-"11,0" = "Lance"
-"11,1" = "FerociousLeopard"
-"11,2" = "Copper"
-"11,3" = "Silver"
-"11,4" = "Gold"
-"11,5" = "DrunkElephant"
-"11,6" = "King"
-"11,7" = "Gold"
-"11,8" = "Silver"
-"11,9" = "Copper"
-"11,10" = "FerociousLeopard"
-"11,11" = "Lance"
+[starting_position]
+"0,0" = "bL"
+"0,1" = "bFL"
+"0,2" = "bC"
+"0,3" = "bS"
+"0,4" = "bG"
+"0,5" = "bK"
+"0,6" = "bDE"
+"0,7" = "bG"
+"0,8" = "bS"
+"0,9" = "bC"
+"0,10" = "bFL"
+"0,11" = "bL"
+"1,0" = "bRC"
+"1,2" = "bB"
+"1,4" = "bBT"
+"1,5" = "bKi"
+"1,6" = "bPh"
+"1,7" = "bBT"
+"1,9" = "bB"
+"1,11" = "bRC"
+"2,0" = "bSM"
+"2,1" = "bVM"
+"2,2" = "bR"
+"2,3" = "bDH"
+"2,4" = "bDK"
+"2,5" = "bLn"
+"2,6" = "bFK"
+"2,7" = "bDK"
+"2,8" = "bDH"
+"2,9" = "bR"
+"2,10" = "bVM"
+"2,11" = "bSM"
+"3,0" = "bP"
+"3,1" = "bP"
+"3,2" = "bP"
+"3,3" = "bP"
+"3,4" = "bP"
+"3,5" = "bP"
+"3,6" = "bP"
+"3,7" = "bP"
+"3,8" = "bP"
+"3,9" = "bP"
+"3,10" = "bP"
+"3,11" = "bP"
+"4,3" = "bGB"
+"4,8" = "bGB"
+"7,3" = "wGB"
+"7,8" = "wGB"
+"8,0" = "wP"
+"8,1" = "wP"
+"8,2" = "wP"
+"8,3" = "wP"
+"8,4" = "wP"
+"8,5" = "wP"
+"8,6" = "wP"
+"8,7" = "wP"
+"8,8" = "wP"
+"8,9" = "wP"
+"8,10" = "wP"
+"8,11" = "wP"
+"9,0" = "wSM"
+"9,1" = "wVM"
+"9,2" = "wR"
+"9,3" = "wDH"
+"9,4" = "wDK"
+"9,5" = "wFK"
+"9,6" = "wLn"
+"9,7" = "wDK"
+"9,8" = "wDH"
+"9,9" = "wR"
+"9,10" = "wVM"
+"9,11" = "wSM"
+"10,0" = "wRC"
+"10,2" = "wB"
+"10,4" = "wBT"
+"10,5" = "wPh"
+"10,6" = "wKi"
+"10,7" = "wBT"
+"10,9" = "wB"
+"10,11" = "wRC"
+"11,0" = "wL"
+"11,1" = "wFL"
+"11,2" = "wC"
+"11,3" = "wS"
+"11,4" = "wG"
+"11,5" = "wDE"
+"11,6" = "wK"
+"11,7" = "wG"
+"11,8" = "wS"
+"11,9" = "wC"
+"11,10" = "wFL"
+"11,11" = "wL"

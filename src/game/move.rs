@@ -17,10 +17,10 @@ pub struct Move {
 }
 
 impl Move {
-    pub fn to_notation(&self, variant: &str) -> String {
-        match variant {
+    pub fn to_notation(&self, style: &str) -> String {
+        match style {
             "Chess" => self.to_chess_notation(),
-            "Shogi" | "ChuShogi" => self.to_shogi_notation(),
+            "Shogi" => self.to_shogi_notation(),
             _ => panic!("Unsupported variant"),
         }
     }

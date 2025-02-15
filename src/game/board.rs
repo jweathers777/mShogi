@@ -1,10 +1,12 @@
-use crate::game::variant::Variant;
-use crate::game::piece::Piece;
+use std::collections::HashMap;
+use crate::game::{r#move::Move, piece::Piece, player::Player, variant::Variant};
 
 pub struct Board {
     pub width: usize,
     pub height: usize,
-    pub squares: Vec<Option<Piece>>, // Now storing actual Pieces instead of strings
+    pub pieces: HashMap<(usize, usize), Piece>,
+    pub move_history: Vec<Move>,
+    pub captured_pieces: HashMap<Player, Vec<Piece>>,
 }
 
 impl Board {
@@ -12,64 +14,93 @@ impl Board {
         let mut board = Self {
             width: variant.board_size.0,
             height: variant.board_size.1,
-            squares: vec![None; variant.board_size.0 * variant.board_size.1],
+            pieces: HashMap::new(),
+            move_history: vec![],
+            captured_pieces: HashMap::from(
+                [(Player::White, vec![]), (Player::Black, vec![])]
+            ),
         };
 
-        for (position, piece_name) in &variant.starting_position {
-            let coords: Vec<usize> = position
-                .split(',')
-                .map(|x| x.parse::<usize>().unwrap())
-                .collect();
-            if coords.len() == 2 {
-                // Convert piece name to actual Piece
-                if let Some(piece) = variant.pieces.get(piece_name) {
-                    board.set(coords[0], coords[1], Some(piece.clone()));
-                } else {
-                    panic!("Unknown piece: {}", piece_name);
-                }
-            }
+        for (position, piece) in &variant.pieces {
+            let mut piece = piece.clone();
+            piece.position = *position;
+            board.pieces.insert(*position, piece);
         }
 
         board
     }
 
-	 pub fn get(&self, row: usize, col: usize) -> Option<&Piece> {
-		  if row < self.height && col < self.width {
-				self.squares[row * self.width + col].as_ref()
-		  } else {
-				None
-		  }
+	 pub fn get(&self, position: (usize, usize)) -> Option<&Piece> {
+        self.pieces.get(&position)
     }
 
-    pub fn set(&mut self, row: usize, col: usize, piece: Option<Piece>) {
-        if row < self.height && col < self.width {
-            self.squares[row * self.width + col] = piece;
+    pub fn set(&mut self, position: (usize, usize), piece: Option<Piece>) {
+        match piece {
+            Some(mut p) => {
+                p.position = position;
+                self.pieces.insert(position, p);
+            }
+            None => {
+                self.pieces.remove(&position);
+            }
+        }
+    }
+
+	 pub fn make_move(&mut self, mv: &Move) {
+        // Capture pieces
+        for &(cap_row, cap_col, ref _cap_piece) in &mv.captured_pieces {
+            if let Some(captured_piece) = self.pieces.remove(&(cap_row, cap_col)) {
+                self.captured_pieces
+                    .entry(captured_piece.owner)
+                    .or_insert_with(Vec::new)
+                    .push(captured_piece);
+            }
+        }
+
+        // Move the piece
+        if let Some(mut piece) = self.pieces.remove(&mv.from) {
+            piece.move_count += 1;
+            piece.position = mv.to;
+            self.pieces.insert(mv.to, piece);
+        }
+
+        self.move_history.push(mv.clone());
+    }
+
+    pub fn print_captured_pieces(&self) {
+        println!("Captured Pieces:");
+        for (player, pieces) in &self.captured_pieces {
+            print!("{}: ", player.prefix());
+            for piece in pieces {
+                print!("{} ", piece.piece_type.symbol);
+            }
+            println!();
         }
     }
 
     pub fn print_board(&self) {
-        let max_symbol_length = self.squares.iter()
-            .filter_map(|piece| piece.as_ref().map(|p| p.symbol.len()))
+        let max_symbol_length = self.pieces.values()
+            .map(|p| p.piece_type.symbol.len())
             .max()
             .unwrap_or(1); // Default to 1 for empty squares
 
-        let (rows, cols) = (self.height, self.width);
-
         // Print column labels
         print!("   ");
-        for col in 0..cols {
-            print!("{:width$} ", (b'a' + col as u8) as char, width = max_symbol_length);
+        for col in 0..self.width {
+            print!(" {:width$} ", (b'a' + col as u8) as char, width = max_symbol_length);
         }
         println!();
 
-        for row in 0..rows {
+        for row in (0..self.height).rev() {
             // Print row labels
-            print!("{:2} ", rows - row);
+            print!("{:2} ", row + 1);
 
-            for col in 0..cols {
-                match &self.squares[row * cols + col] {
-                    Some(piece) => print!("{:width$} ", piece.symbol, width = max_symbol_length),
-                    None => print!("{:width$} ", ".", width = max_symbol_length),
+            for col in 0..self.width {
+                if let Some(piece) = self.pieces.get(&(row, col)) {
+                    print!("{}{:width$} ", piece.owner.prefix(),
+                        piece.piece_type.symbol, width = max_symbol_length);
+                } else {
+                    print!(" {:width$} ", ".", width = max_symbol_length);
                 }
             }
             println!();

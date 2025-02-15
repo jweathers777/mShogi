@@ -36,6 +36,29 @@ mod tests {
     }
 
     #[test]
+    fn test_chess_castling_notation() {
+        let castling_kingside = Move {
+            from: (0, 4),
+            to: (0, 6),
+            piece: "K".to_string(),
+            captured_pieces: vec![],
+            promotion: None,
+            special_move: Some(SpecialMove::CastlingKingside),
+        };
+        assert_eq!(castling_kingside.to_notation("Chess"), "O-O");
+
+        let castling_queenside = Move {
+            from: (0, 4),
+            to: (0, 2),
+            piece: "K".to_string(),
+            captured_pieces: vec![],
+            promotion: None,
+            special_move: Some(SpecialMove::CastlingQueenside),
+        };
+        assert_eq!(castling_queenside.to_notation("Chess"), "O-O-O");
+    }
+
+    #[test]
     fn test_shogi_move_notation() {
         let mv = Move {
             from: (6, 4),
@@ -68,7 +91,7 @@ mod tests {
             promotion: None,
             special_move: Some(SpecialMove::LionSecondMove),
         };
-        assert_eq!(mv_lion.to_notation("ChuShogi"), "Ln-6f");
+        assert_eq!(mv_lion.to_notation("Shogi"), "Ln-6f");
 
         let mv_lion_igui = Move {
             from: (7, 5),
@@ -78,7 +101,7 @@ mod tests {
             promotion: None,
             special_move: None,
         };
-        assert_eq!(mv_lion_igui.to_notation("ChuShogi"), "Lnx!7g");
+        assert_eq!(mv_lion_igui.to_notation("Shogi"), "Lnx!7g");
 
         let mv_lion_double = Move {
             from: (3, 6),
@@ -91,6 +114,6 @@ mod tests {
             promotion: None,
             special_move: None,
         };
-        assert_eq!(mv_lion_double.to_notation("ChuShogi"), "Lnx3ix4h");
+        assert_eq!(mv_lion_double.to_notation("Shogi"), "Lnx3ix4h");
     }
 }

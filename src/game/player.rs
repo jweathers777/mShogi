@@ -1,18 +1,29 @@
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Hash, Clone, Copy, PartialEq, Eq)]
 pub enum Player {
-    White,  // Chess
-    Black,  // Chess
-    Sente,  // Shogi Variants
-    Gote,   // Shogi Variants
+    White,
+    Black,
 }
 
 impl Player {
+    pub fn from_char(c: char) -> Option<Self> {
+        match c {
+            'w' => Some(Player::White),
+            'b' => Some(Player::Black),
+            _ => None,
+        }
+    }
+
+    pub fn prefix(&self) -> &'static str {
+        match self {
+            Player::White => "w",
+            Player::Black => "b",
+        }
+    }
+
     pub fn opponent(&self) -> Player {
         match self {
             Player::White => Player::Black,
             Player::Black => Player::White,
-            Player::Sente => Player::Gote,
-            Player::Gote => Player::Sente,
         }
     }
 }

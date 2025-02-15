@@ -1,0 +1,63 @@
+[variants.Chess]
+name = "Chess"
+board_size = [8, 8]
+player_names = ["White", "Black"]
+
+[variants.Chess.pieces.Pawn]
+symbol = "P"
+moves = ["forward_one", "forward_two_on_first_move", "en_passant"]
+promotion = ["Queen", "Rook", "Bishop", "Knight"]
+
+[variants.Chess.pieces.Knight]
+symbol = "N"
+moves = ["L_jump"]
+
+[variants.Chess.pieces.Bishop]
+symbol = "B"
+moves = ["diagonal"]
+
+[variants.Chess.pieces.Rook]
+symbol = "R"
+moves = ["orthogonal"]
+
+[variants.Chess.pieces.Queen]
+symbol = "Q"
+moves = ["diagonal", "orthogonal"]
+
+[variants.Chess.pieces.King]
+symbol = "K"
+moves = ["adjacent"]
+
+[variants.Chess.starting_position]
+"0,0" = "Rook"
+"0,1" = "Knight"
+"0,2" = "Bishop"
+"0,3" = "Queen"
+"0,4" = "King"
+"0,5" = "Bishop"
+"0,6" = "Knight"
+"0,7" = "Rook"
+"1,0" = "Pawn"
+"1,1" = "Pawn"
+"1,2" = "Pawn"
+"1,3" = "Pawn"
+"1,4" = "Pawn"
+"1,5" = "Pawn"
+"1,6" = "Pawn"
+"1,7" = "Pawn"
+"6,0" = "Pawn"
+"6,1" = "Pawn"
+"6,2" = "Pawn"
+"6,3" = "Pawn"
+"6,4" = "Pawn"
+"6,5" = "Pawn"
+"6,6" = "Pawn"
+"6,7" = "Pawn"
+"7,0" = "Rook"
+"7,1" = "Knight"
+"7,2" = "Bishop"
+"7,3" = "Queen"
+"7,4" = "King"
+"7,5" = "Bishop"
+"7,6" = "Knight"
+"7,7" = "Rook"

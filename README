@@ -1,35 +1,4 @@
 mShogi is a cross platform multi-variant shogi program I wrote in C++ using 
-Boost and wxWidgets sporatically over a period from 2003 to 2005. It uses the
-premake lua based build tool for generating Makefiles for each target environment.
+Boost and wxWidgets sporatically over a period from 2003 to 2005.
 
-The program comes in both a console version and in a GUI version. Both versions 
-depend upon a shared engine library.
-
-I've taken one of the later versions and tweaked it to compile with more recent
-versions of wxWidgets. I've tested it on recent versions of Ubuntu Linux, Windows 8,
-and Max OS X Mavericks.
-
-Requirements:
-   premake - http://industriousone.com/premake
-   C++ 
-   boost - http://www.boost.org/
-   wxWidgets - http://www.wxwidgets.org/
-
-Building:
-   premake4 [target compiler tool chain]
-   Use resulting compilation files (run make for GNU Make, build with Visual Studio, etc.)
-   
-TODO:
-   * Restore functionality that allows changing between game engines
-   * Update representations of game structures so that object creation
-     is minimized during the search loops to improve search speed
-   * Add capability for opening books
-   * Implement Chess as a variant to properly judge performance against
-     something that is known
-   * Possibly replace dynamic_bitset bitboards with lower level static structures
-     to increase performance
-   * Better debugging information
-   * Add tests 
-   * Finish implementing the mostly vestigial menu items
-   * Lots more...
-
+This branch is a work in progress where I am rewriting mShogi from scratch in Rust.

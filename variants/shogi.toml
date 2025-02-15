@@ -1,0 +1,109 @@
+[variants.Shogi]
+name = "Shogi"
+board_size = [9, 9]
+player_names = ["Sente", "Gote"]
+
+[variants.Shogi.pieces.Pawn]
+symbol = "P"
+moves = ["forward_one"]
+promotion = ["PromotedPawn"]
+
+[variants.Shogi.pieces.Lance]
+symbol = "L"
+moves = ["forward_unlimited"]
+promotion = ["PromotedLance"]
+
+[variants.Shogi.pieces.Knight]
+symbol = "N"
+moves = ["L_jump_forward"]
+promotion = ["PromotedKnight"]
+force_promotion = ["back_two_ranks"]
+
+[variants.Shogi.pieces.Silver]
+symbol = "S"
+moves = ["diagonal_one", "forward_one"]
+promotion = ["PromotedSilver"]
+
+[variants.Shogi.pieces.Gold]
+symbol = "G"
+moves = ["orthogonal_one", "diagonal_forward_one"]
+
+[variants.Shogi.pieces.Bishop]
+symbol = "B"
+moves = ["diagonal"]
+promotion = ["Horse"]
+
+[variants.Shogi.pieces.Rook]
+symbol = "R"
+moves = ["orthogonal"]
+promotion = ["Dragon"]
+
+[variants.Shogi.pieces.PromotedPawn]
+symbol = "+P"
+name = "Tokin"
+moves = ["orthogonal_one", "diagonal_forward_one"]
+
+[variants.Shogi.pieces.PromotedLance]
+symbol = "+L"
+name = "Tokin"
+moves = ["orthogonal_one", "diagonal_forward_one"]
+
+[variants.Shogi.pieces.PromotedKnight]
+symbol = "+N"
+name = "Tokin"
+moves = ["orthogonal_one", "diagonal_forward_one"]
+
+[variants.Shogi.pieces.PromotedSilver]
+symbol = "+S"
+name = "Tokin"
+moves = ["orthogonal_one", "diagonal_forward_one"]
+
+[variants.Shogi.pieces.Horse]
+symbol = "+B"
+moves = ["diagonal", "orthogonal_one"]
+
+[variants.Shogi.pieces.Dragon]
+symbol = "+R"
+moves = ["orthogonal", "diagonal_one"]
+
+[variants.Shogi.pieces.King]
+symbol = "K"
+moves = ["adjacent"]
+
+[variants.Shogi.starting_position]
+"0,0" = "Lance"
+"0,1" = "Knight"
+"0,2" = "Silver"
+"0,3" = "Gold"
+"0,4" = "King"
+"0,5" = "Gold"
+"0,6" = "Silver"
+"0,7" = "Knight"
+"0,8" = "Lance"
+"2,0" = "Pawn"
+"2,1" = "Pawn"
+"2,2" = "Pawn"
+"2,3" = "Pawn"
+"2,4" = "Pawn"
+"2,5" = "Pawn"
+"2,6" = "Pawn"
+"2,7" = "Pawn"
+"2,8" = "Pawn"
+"8,0" = "Lance"
+"8,1" = "Knight"
+"8,2" = "Silver"
+"8,3" = "Gold"
+"8,4" = "King"
+"8,5" = "Gold"
+"8,6" = "Silver"
+"8,7" = "Knight"
+"8,8" = "Lance"
+"6,0" = "Pawn"
+"6,1" = "Pawn"
+"6,2" = "Pawn"
+"6,3" = "Pawn"
+"6,4" = "Pawn"
+"6,5" = "Pawn"
+"6,6" = "Pawn"
+"6,7" = "Pawn"
+"6,8" = "Pawn"

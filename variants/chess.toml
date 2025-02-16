@@ -7,7 +7,7 @@ player_names = ["White", "Black"]
 symbol = "P"
 moves = [
   "forward_one_no_capture",
-  "forward_two_on_first_move_no_capture",
+  "first_forward_two_no_capture",
   "en_passant", 
   "diagonal_capture"
 ]

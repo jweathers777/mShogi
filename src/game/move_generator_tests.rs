@@ -21,6 +21,7 @@ mod tests {
             let pawn = board.get(pawn_position).unwrap();
             let moves = generate_moves_for_piece(&board, &pawn);
 
+            assert!(moves.len() == 2);
             // e3
             assert!(moves.iter().any(|m| m.to == (pawn_row+1, pawn_col)));
             // e4

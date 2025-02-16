@@ -5,7 +5,14 @@ use crate::game::player::Player;
 
 pub fn generate_moves_for_player(board: &Board, player: &Player) -> Vec<Move> {
     let mut moves = Vec::new();
-    for piece in board.pieces.values().filter(|p| p.owner == *player) {
+
+    let mut player_pieces: Vec<&Piece> = board.pieces.values()
+        .filter(|p| p.owner == *player)
+        .collect();
+
+    player_pieces.sort_by_key(|p| p.position);
+
+    for piece in player_pieces {
         moves.extend(generate_moves_for_piece(board, piece));
     }
     moves

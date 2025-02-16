@@ -19,6 +19,7 @@ pub fn generate_moves_for_piece(board: &Board, piece: &Piece) -> Vec<Move> {
             MovePattern::FirstForwardTwoNoCapture => first_forward_two_no_capture(board, piece, &mut moves),
             MovePattern::DiagonalCapture => diagonal_capture(board, piece, &mut moves),
             MovePattern::EnPassant => en_passant(board, piece, &mut moves),
+            MovePattern::ElJump => el_jump(board, piece, &mut moves),
             _ => {} // Extend this for other move patterns
         }
     }
@@ -115,15 +116,61 @@ pub fn en_passant(board: &Board, piece: &Piece, moves: &mut Vec<Move>) {
                 Player::White => row.wrapping_add(1),
                 Player::Black => row.wrapping_sub(1),
             };
+            let (target_row, target_col) = last_move.to;
 
-            moves.push(Move {
-                from: (row, col),
-                to: (new_row, last_move.to.1),
-                piece: piece.piece_type.symbol.clone(),
-                captured_pieces: vec![(last_move.to.0, last_move.to.1, last_move.piece.clone())],
-                promotion: None,
-                special_move: Some(SpecialMove::EnPassant),
-            });
+            if let Some(target_piece) = board.get(last_move.to) {
+                // Capture enemy piece
+                if target_piece.owner != piece.owner {
+                    moves.push(Move {
+                        from: (row, col),
+                        to: (new_row, target_col),
+                        piece: piece.piece_type.symbol.clone(),
+                        captured_pieces: vec![(target_row, target_col, last_move.piece.clone())],
+                        promotion: None,
+                        special_move: Some(SpecialMove::EnPassant),
+                    });
+                }
+            }
+        }
+    }
+}
+
+pub fn el_jump(board: &Board, piece: &Piece,  moves: &mut Vec<Move>) {
+    let (row, col) = piece.position;
+    let l_moves = [
+        (2, 1), (2, -1), (-2, 1), (-2, -1), // Vertical L-jumps
+        (1, 2), (1, -2), (-1, 2), (-1, -2)  // Horizontal L-jumps
+    ];
+
+    for (dr, dc) in l_moves.iter() {
+        let new_row = row.wrapping_add(*dr as usize);
+        let new_col = col.wrapping_add(*dc as usize);
+
+        // Ensure the move is within bounds
+        if new_row < board.height && new_col < board.width {
+            if let Some(target_piece) = board.get((new_row, new_col)) {
+                // Capture enemy piece
+                if target_piece.owner != piece.owner {
+                    moves.push(Move {
+                        from: (row, col),
+                        to: (new_row, new_col),
+                        piece: piece.piece_type.symbol.clone(),
+                        captured_pieces: vec![(new_row, new_col, target_piece.piece_type.symbol.clone())],
+                        promotion: None,
+                        special_move: None,
+                    });
+                }
+            } else {
+                // Normal move (empty square)
+                moves.push(Move {
+                    from: (row, col),
+                    to: (new_row, new_col),
+                    piece: piece.piece_type.symbol.clone(),
+                    captured_pieces: vec![],
+                    promotion: None,
+                    special_move: None,
+                });
+            }
         }
     }
 }

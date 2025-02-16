@@ -44,5 +44,15 @@ fn main() {
     };
     board.make_move(&rook_move);
 
+    let king_move = Move {
+        from: (0,4),
+        to: (4,6),
+        piece: String::from("K"),
+        captured_pieces: vec![],
+        promotion: None,
+        special_move: None,
+    };
+    board.make_move(&king_move);
+
     show_moves_for_board(&board, &variant);
 }

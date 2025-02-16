@@ -29,6 +29,7 @@ pub fn generate_moves_for_piece(board: &Board, piece: &Piece) -> Vec<Move> {
             MovePattern::ElJump => el_jump(board, piece, &mut moves),
             MovePattern::Diagonal => diagonal(board, piece, &mut moves),
             MovePattern::Orthogonal => orthogonal(board, piece, &mut moves),
+            MovePattern::Adjacent => adjacent(board, piece, &mut moves),
             _ => {} // Extend this for other move patterns
         }
     }
@@ -258,4 +259,59 @@ pub fn orthogonal(board: &Board, piece: &Piece,  moves: &mut Vec<Move>) {
         (-1, 0), (1, 0),   // Left, Right
     ];
     sliding(board, piece, &directions, moves);
+}
+
+fn step(
+    board: &Board,
+    piece: &Piece,
+    directions: &[(isize, isize)],
+    moves: &mut Vec<Move>)
+{
+    let (row, col) = piece.position;
+
+    for (dr, dc) in directions.iter() {
+        let mut new_row = row as isize;
+        let mut new_col = col as isize;
+
+        new_row += *dr;
+        new_col += *dc;
+
+        if board.is_within_bounds(new_row, new_col) {
+            let new_pos = (new_row as usize, new_col as usize);
+            if let Some(target_piece) = board.get(new_pos) {
+                let (new_row, new_col) = new_pos;
+                if target_piece.owner != piece.owner {
+                    // Capture move
+                    moves.push(Move {
+                        from: (row, col),
+                        to: new_pos,
+                        piece: piece.piece_type.symbol.clone(),
+                        captured_pieces: vec![(new_row, new_col, target_piece.piece_type.symbol.clone())],
+                        promotion: None,
+                        special_move: None,
+                    });
+                }
+            } else {
+                // Regular move
+                moves.push(Move {
+                    from: (row, col),
+                    to: new_pos,
+                    piece: piece.piece_type.symbol.clone(),
+                    captured_pieces: vec![],
+                    promotion: None,
+                    special_move: None,
+                });
+            }
+        }
+    }
+}
+
+pub fn adjacent(board: &Board, piece: &Piece,  moves: &mut Vec<Move>) {
+    let directions = [
+        (-1, -1), (-1, 1),  // Up-left, Up-right
+        (1, -1), (1, 1),    // Down-left, Down-right
+        (0, -1), (0, 1),  // Up, Down
+        (-1, 0), (1, 0),   // Left, Right
+    ];
+    step(board, piece, &directions, moves);
 }

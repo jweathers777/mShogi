@@ -26,10 +26,11 @@ pub fn generate_moves_for_piece(board: &Board, piece: &Piece) -> Vec<Move> {
             MovePattern::FirstForwardTwoNoCapture => first_forward_two_no_capture(board, piece, &mut moves),
             MovePattern::DiagonalCapture => diagonal_capture(board, piece, &mut moves),
             MovePattern::EnPassant => en_passant(board, piece, &mut moves),
-            MovePattern::ElJump => el_jump(board, piece, &mut moves),
             MovePattern::Diagonal => diagonal(board, piece, &mut moves),
             MovePattern::Orthogonal => orthogonal(board, piece, &mut moves),
+            MovePattern::OrthogonalOneDiagonalOneJump => orthogonal_one_diagonal_one_jump(board, piece, &mut moves),
             MovePattern::Adjacent => adjacent(board, piece, &mut moves),
+            MovePattern::AnyDirection => any_direction(board, piece, &mut moves),
             _ => {} // Extend this for other move patterns
         }
     }
@@ -43,16 +44,8 @@ pub fn forward_one_no_capture(board: &Board, piece: &Piece, moves: &mut Vec<Move
     let new_row = row as isize + delta_row;
     if board.is_within_row_bounds(new_row) {
         let new_row = new_row as usize;
-        if board.get((new_row, col)).is_none()
-        {
-            moves.push(Move {
-                from: (row, col),
-                to: (new_row, col),
-                piece: piece.piece_type.symbol.clone(),
-                captured_pieces: vec![],
-                promotion: None,
-                special_move: None,
-            });
+        if board.get((new_row, col)).is_none() {
+            moves.push(create_move(&piece, (row,col), (new_row, col), vec![], None, None));
         }
     }
 }
@@ -70,14 +63,7 @@ pub fn first_forward_two_no_capture(board: &Board, piece: &Piece, moves: &mut Ve
             && board.get((new_row, col)).is_none()
             && piece.move_count == 0
         {
-            moves.push(Move {
-                from: (row, col),
-                to: (new_row, col),
-                piece: piece.piece_type.symbol.clone(),
-                captured_pieces: vec![],
-                promotion: None,
-                special_move: None,
-            });
+            moves.push(create_move(&piece, (row,col), (new_row, col), vec![], None, None));
         }
     }
 }
@@ -94,14 +80,14 @@ pub fn diagonal_capture(board: &Board, piece: &Piece, moves: &mut Vec<Move>) {
 
             if let Some(target_piece) = board.get((new_row, new_col)) {
                 if target_piece.owner != piece.owner {
-                    moves.push(Move {
-                        from: (row, col),
-                        to: (new_row, new_col),
-                        piece: piece.piece_type.symbol.clone(),
-                        captured_pieces: vec![(new_row, new_col, target_piece.piece_type.symbol.clone())],
-                        promotion: None,
-                        special_move: None,
-                    });
+                    moves.push(create_move(
+                        &piece,
+                        (row, col),
+                        (new_row, new_col),
+                        vec![&target_piece],
+                        None,
+                        None,
+                    ));
                 }
             }
         }
@@ -125,14 +111,14 @@ pub fn en_passant(board: &Board, piece: &Piece, moves: &mut Vec<Move>) {
                 if let Some(target_piece) = board.get(last_move.to) {
                     // Capture enemy piece
                     if target_piece.owner != piece.owner {
-                        moves.push(Move {
-                            from: (row, col),
-                            to: (new_row, target_col),
-                            piece: piece.piece_type.symbol.clone(),
-                            captured_pieces: vec![(target_row, target_col, last_move.piece.clone())],
-                            promotion: None,
-                            special_move: Some(SpecialMove::EnPassant),
-                        });
+                        moves.push(create_move(
+                            &piece,
+                            (row, col),
+                            (new_row, target_col),
+                            vec![&target_piece],
+                            None,
+                            Some(SpecialMove::EnPassant),
+                        ));
                     }
                 }
             }
@@ -140,64 +126,43 @@ pub fn en_passant(board: &Board, piece: &Piece, moves: &mut Vec<Move>) {
     }
 }
 
-pub fn el_jump(board: &Board, piece: &Piece,  moves: &mut Vec<Move>) {
-    let (row, col) = piece.position;
-    let l_moves = [
-        (2, 1), (2, -1), (-2, 1), (-2, -1), // Vertical L-jumps
-        (1, 2), (1, -2), (-1, 2), (-1, -2)  // Horizontal L-jumps
-    ];
-
-    for (dr, dc) in l_moves.iter() {
-        let new_row = row as isize + *dr;
-        let new_col = col as isize + *dc;
-
-        // Ensure the move is within bounds
-        if board.is_within_bounds(new_row, new_col) {
-            let new_row = (new_row as usize);
-            let new_col = (new_col as usize);
-
-            if let Some(target_piece) = board.get((new_row, new_col)) {
-                // Capture enemy piece
-                if target_piece.owner != piece.owner {
-                    moves.push(Move {
-                        from: (row, col),
-                        to: (new_row, new_col),
-                        piece: piece.piece_type.symbol.clone(),
-                        captured_pieces: vec![(new_row, new_col, target_piece.piece_type.symbol.clone())],
-                        promotion: None,
-                        special_move: None,
-                    });
-                }
-            } else {
-                // Normal move (empty square)
-                moves.push(Move {
-                    from: (row, col),
-                    to: (new_row, new_col),
-                    piece: piece.piece_type.symbol.clone(),
-                    captured_pieces: vec![],
-                    promotion: None,
-                    special_move: None,
-                });
-            }
-        }
+fn create_move(
+    piece: &Piece,
+    from: (usize, usize),
+    to: (usize, usize),
+    captured_pieces: Vec<&Piece>,
+    promotion: Option<String>,
+    special_move: Option<SpecialMove>,
+) -> Move {
+    Move {
+        from,
+        to,
+        piece: piece.piece_type.symbol.clone(),
+        captured_pieces: captured_pieces.into_iter()
+            .map(|p| (p.position.0, p.position.1, p.piece_type.symbol.clone()))
+            .collect(),
+        promotion,
+        special_move,
     }
 }
 
-fn sliding(
+fn directional_moves(
     board: &Board,
     piece: &Piece,
     directions: &[(isize, isize)],
-    moves: &mut Vec<Move>)
+    moves: &mut Vec<Move>,
+    sliding: bool,
+)
 {
     let (row, col) = piece.position;
 
-    for (dr, dc) in directions.iter() {
+    for &(dr, dc) in directions {
         let mut new_row = row as isize;
         let mut new_col = col as isize;
 
         loop {
-            new_row += *dr;
-            new_col += *dc;
+            new_row += dr;
+            new_col += dc;
 
             if !board.is_within_bounds(new_row, new_col) {
                 break;
@@ -205,101 +170,68 @@ fn sliding(
 
             let new_pos = (new_row as usize, new_col as usize);
             if let Some(target_piece) = board.get(new_pos) {
-                let (new_row, new_col) = new_pos;
                 if target_piece.owner != piece.owner {
-                    // Capture move
-                    moves.push(Move {
-                        from: (row, col),
-                        to: new_pos,
-                        piece: piece.piece_type.symbol.clone(),
-                        captured_pieces: vec![(new_row, new_col, target_piece.piece_type.symbol.clone())],
-                        promotion: None,
-                        special_move: None,
-                    });
+                    moves.push(create_move(
+                        piece,
+                        (row, col),
+                        new_pos,
+                        vec![&target_piece],
+                        None,
+                        None,
+                    ));
                 }
                 break; // Stop sliding if we hit a piece
             } else {
-                // Regular move
-                moves.push(Move {
-                    from: (row, col),
-                    to: new_pos,
-                    piece: piece.piece_type.symbol.clone(),
-                    captured_pieces: vec![],
-                    promotion: None,
-                    special_move: None,
-                });
+                moves.push(create_move(
+                    piece,
+                    (row, col),
+                    new_pos,
+                    vec![],
+                    None,
+                    None,
+                ));
+            }
+
+            if !sliding {
+                break; // Stop if this is a step move
             }
         }
     }
 }
 
 pub fn diagonal(board: &Board, piece: &Piece,  moves: &mut Vec<Move>) {
-    let directions = [
-        (-1, -1), (-1, 1),  // Up-left, Up-right
-        (1, -1), (1, 1)     // Down-left, Down-right
-    ];
-    sliding(board, piece, &directions, moves);
+    let directions = [(-1, -1), (-1, 1), (1, -1), (1, 1)];
+    directional_moves(board, piece, &directions, moves, true);
 }
 
 pub fn orthogonal(board: &Board, piece: &Piece,  moves: &mut Vec<Move>) {
-    let directions = [
-        (0, -1), (0, 1),  // Up, Down
-        (-1, 0), (1, 0),   // Left, Right
-    ];
-    sliding(board, piece, &directions, moves);
+    let directions = [(0, -1), (0, 1), (-1, 0), (1, 0)];
+    directional_moves(board, piece, &directions, moves, true);
 }
 
-fn step(
-    board: &Board,
-    piece: &Piece,
-    directions: &[(isize, isize)],
-    moves: &mut Vec<Move>)
+pub fn orthogonal_one_diagonal_one_jump(
+    board: &Board, piece: &Piece,  moves: &mut Vec<Move>
+)
 {
-    let (row, col) = piece.position;
+    let directions = [
+        (2, 1), (2, -1), (-2, 1), (-2, -1),
+        (1, 2), (1, -2), (-1, 2), (-1, -2),
+    ];
+    directional_moves(board, piece, &directions, moves, false);
+}
 
-    for (dr, dc) in directions.iter() {
-        let mut new_row = row as isize;
-        let mut new_col = col as isize;
-
-        new_row += *dr;
-        new_col += *dc;
-
-        if board.is_within_bounds(new_row, new_col) {
-            let new_pos = (new_row as usize, new_col as usize);
-            if let Some(target_piece) = board.get(new_pos) {
-                let (new_row, new_col) = new_pos;
-                if target_piece.owner != piece.owner {
-                    // Capture move
-                    moves.push(Move {
-                        from: (row, col),
-                        to: new_pos,
-                        piece: piece.piece_type.symbol.clone(),
-                        captured_pieces: vec![(new_row, new_col, target_piece.piece_type.symbol.clone())],
-                        promotion: None,
-                        special_move: None,
-                    });
-                }
-            } else {
-                // Regular move
-                moves.push(Move {
-                    from: (row, col),
-                    to: new_pos,
-                    piece: piece.piece_type.symbol.clone(),
-                    captured_pieces: vec![],
-                    promotion: None,
-                    special_move: None,
-                });
-            }
-        }
-    }
+pub fn any_direction(board: &Board, piece: &Piece,  moves: &mut Vec<Move>) {
+    let directions = [
+        (-1, -1), (-1, 1), (1, -1), (1, 1),
+        (0, -1), (0, 1), (-1, 0), (1, 0),
+    ];
+    directional_moves(board, piece, &directions, moves, true);
 }
 
 pub fn adjacent(board: &Board, piece: &Piece,  moves: &mut Vec<Move>) {
     let directions = [
-        (-1, -1), (-1, 1),  // Up-left, Up-right
-        (1, -1), (1, 1),    // Down-left, Down-right
-        (0, -1), (0, 1),  // Up, Down
-        (-1, 0), (1, 0),   // Left, Right
+        (-1, -1), (-1, 1), (1, -1), (1, 1),
+        (0, -1), (0, 1), (-1, 0), (1, 0),
     ];
-    step(board, piece, &directions, moves);
+    directional_moves(board, piece, &directions, moves, false);
 }

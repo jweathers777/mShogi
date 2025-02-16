@@ -15,7 +15,7 @@ promotion = ["PromotedLance"]
 
 [piece_types.Knight]
 symbol = "N"
-moves = ["L_jump_forward"]
+moves = ["forward_one_diagonal_one_jump"]
 promotion = ["PromotedKnight"]
 force_promotion = ["back_two_ranks"]
 

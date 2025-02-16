@@ -15,7 +15,7 @@ promotion = ["Queen", "Rook", "Bishop", "Knight"]
 
 [piece_types.Knight]
 symbol = "N"
-moves = ["L_jump"]
+moves = ["orthogonal_one_diagonal_one_jump"]
 
 [piece_types.Bishop]
 symbol = "B"
@@ -27,7 +27,7 @@ moves = ["orthogonal"]
 
 [piece_types.Queen]
 symbol = "Q"
-moves = ["diagonal", "orthogonal"]
+moves = ["any_direction"]
 
 [piece_types.King]
 symbol = "K"

@@ -1,6 +1,7 @@
 pub mod board;
 pub mod r#move;
 pub mod move_generator;
+pub mod notator;
 pub mod piece;
 pub mod player;
 pub mod variant;

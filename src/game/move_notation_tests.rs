@@ -1,9 +1,12 @@
 #[cfg(test)]
 mod tests {
     use crate::game::r#move::{Move, SpecialMove};
+    use crate::game::variant::Variant;
 
     #[test]
     fn test_chess_move_notation() {
+        let variant = Variant::load_from_file(&format!("variants/chess.toml"));
+
         let mv = Move {
             from: (6, 2),
             to: (4, 2),
@@ -12,7 +15,7 @@ mod tests {
             promotion: None,
             special_move: None,
         };
-        assert_eq!(mv.to_notation("Chess"), "c5");
+        assert_eq!(variant.move_to_notation(&mv), "c5");
 
         let mv_capture = Move {
             from: (6, 2),
@@ -22,7 +25,7 @@ mod tests {
             promotion: None,
             special_move: None,
         };
-        assert_eq!(mv_capture.to_notation("Chess"), "cxd5");
+        assert_eq!(variant.move_to_notation(&mv_capture), "cxd5");
 
         let mv_promo = Move {
             from: (6, 3),
@@ -32,11 +35,13 @@ mod tests {
             promotion: Some("Q".to_string()),
             special_move: None,
         };
-        assert_eq!(mv_promo.to_notation("Chess"), "d8=Q");
+        assert_eq!(variant.move_to_notation(&mv_promo), "d8=Q");
     }
 
     #[test]
     fn test_chess_castling_notation() {
+        let variant = Variant::load_from_file(&format!("variants/chess.toml"));
+
         let castling_kingside = Move {
             from: (0, 4),
             to: (0, 6),
@@ -45,7 +50,7 @@ mod tests {
             promotion: None,
             special_move: Some(SpecialMove::CastlingKingside),
         };
-        assert_eq!(castling_kingside.to_notation("Chess"), "O-O");
+        assert_eq!(variant.move_to_notation(&castling_kingside), "O-O");
 
         let castling_queenside = Move {
             from: (0, 4),
@@ -55,11 +60,13 @@ mod tests {
             promotion: None,
             special_move: Some(SpecialMove::CastlingQueenside),
         };
-        assert_eq!(castling_queenside.to_notation("Chess"), "O-O-O");
+        assert_eq!(variant.move_to_notation(&castling_queenside), "O-O-O");
     }
 
     #[test]
     fn test_shogi_move_notation() {
+        let variant = Variant::load_from_file(&format!("variants/shogi.toml"));
+
         let mv = Move {
             from: (6, 4),
             to: (5, 4),
@@ -68,7 +75,7 @@ mod tests {
             promotion: None,
             special_move: None,
         };
-        assert_eq!(mv.to_notation("Shogi"), "P-6e");
+        assert_eq!(variant.move_to_notation(&mv), "P-6e");
 
         let mv_capture = Move {
             from: (6, 4),
@@ -78,11 +85,13 @@ mod tests {
             promotion: None,
             special_move: None,
         };
-        assert_eq!(mv_capture.to_notation("Shogi"), "Px6e");
+        assert_eq!(variant.move_to_notation(&mv_capture), "Px6e");
     }
 
     #[test]
     fn test_chu_shogi_lion_moves() {
+        let variant = Variant::load_from_file(&format!("variants/chu_shogi.toml"));
+
         let mv_lion = Move {
             from: (7, 5),
             to: (5, 5),
@@ -91,7 +100,7 @@ mod tests {
             promotion: None,
             special_move: Some(SpecialMove::LionSecondMove),
         };
-        assert_eq!(mv_lion.to_notation("Shogi"), "Ln-6f");
+        assert_eq!(variant.move_to_notation(&mv_lion), "Ln-6f");
 
         let mv_lion_igui = Move {
             from: (7, 5),
@@ -101,7 +110,7 @@ mod tests {
             promotion: None,
             special_move: None,
         };
-        assert_eq!(mv_lion_igui.to_notation("Shogi"), "Lnx!7g");
+        assert_eq!(variant.move_to_notation(&mv_lion_igui), "Lnx!7g");
 
         let mv_lion_double = Move {
             from: (3, 6),
@@ -114,6 +123,6 @@ mod tests {
             promotion: None,
             special_move: None,
         };
-        assert_eq!(mv_lion_double.to_notation("Shogi"), "Lnx3ix4h");
+        assert_eq!(variant.move_to_notation(&mv_lion_double), "Lnx3ix4h");
     }
 }

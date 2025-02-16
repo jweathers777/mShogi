@@ -7,20 +7,20 @@ use game::{
     r#move::Move,
     move_generator::generate_moves_for_player,
     player::Player,
-    variant::{load_variant, Variant},
+    variant::Variant,
 };
 
 fn show_moves_for_board(board: &Board, variant: &Variant) {
     board.print_board();
 
     for mv in generate_moves_for_player(&board, &Player::White) {
-        println!("{}", mv.to_notation(&variant.style));
+        println!("{}", variant.move_to_notation(&mv));
     }
 }
 
 
 fn main() {
-    let variant = load_variant("variants/chess.toml");
+    let variant = Variant::load_from_file("variants/chess.toml");
 
     let mut board = Board::new(&variant);
 

@@ -194,12 +194,13 @@ pub fn el_jump(board: &Board, piece: &Piece,  moves: &mut Vec<Move>) {
     }
 }
 
-pub fn diagonal(board: &Board, piece: &Piece,  moves: &mut Vec<Move>) {
+fn sliding(
+    board: &Board,
+    piece: &Piece,
+    directions: &[(isize, isize)],
+    moves: &mut Vec<Move>)
+{
     let (row, col) = piece.position;
-    let directions = [
-        (-1, -1), (-1, 1),  // Up-left, Up-right
-        (1, -1), (1, 1)     // Down-left, Down-right
-    ];
 
     for (dr, dc) in directions.iter() {
         let mut new_row = row as isize;
@@ -243,51 +244,18 @@ pub fn diagonal(board: &Board, piece: &Piece,  moves: &mut Vec<Move>) {
     }
 }
 
+pub fn diagonal(board: &Board, piece: &Piece,  moves: &mut Vec<Move>) {
+    let directions = [
+        (-1, -1), (-1, 1),  // Up-left, Up-right
+        (1, -1), (1, 1)     // Down-left, Down-right
+    ];
+    sliding(board, piece, &directions, moves);
+}
+
 pub fn orthogonal(board: &Board, piece: &Piece,  moves: &mut Vec<Move>) {
-    let (row, col) = piece.position;
     let directions = [
         (0, -1), (0, 1),  // Up, Down
         (-1, 0), (1, 0),   // Left, Right
     ];
-
-    for (dr, dc) in directions.iter() {
-        let mut new_row = row as isize;
-        let mut new_col = col as isize;
-
-        loop {
-            new_row += *dr;
-            new_col += *dc;
-
-            if !board.is_within_bounds(new_row, new_col) {
-                break;
-            }
-
-            let new_pos = (new_row as usize, new_col as usize);
-            if let Some(target_piece) = board.get(new_pos) {
-                let (new_row, new_col) = new_pos;
-                if target_piece.owner != piece.owner {
-                    // Capture move
-                    moves.push(Move {
-                        from: (row, col),
-                        to: new_pos,
-                        piece: piece.piece_type.symbol.clone(),
-                        captured_pieces: vec![(new_row, new_col, target_piece.piece_type.symbol.clone())],
-                        promotion: None,
-                        special_move: None,
-                    });
-                }
-                break; // Stop sliding if we hit a piece
-            } else {
-                // Regular move
-                moves.push(Move {
-                    from: (row, col),
-                    to: new_pos,
-                    piece: piece.piece_type.symbol.clone(),
-                    captured_pieces: vec![],
-                    promotion: None,
-                    special_move: None,
-                });
-            }
-        }
-    }
+    sliding(board, piece, &directions, moves);
 }

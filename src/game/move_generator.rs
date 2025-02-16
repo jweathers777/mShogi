@@ -39,10 +39,7 @@ pub fn generate_moves_for_piece(board: &Board, piece: &Piece) -> Vec<Move> {
 
 pub fn forward_one_no_capture(board: &Board, piece: &Piece, moves: &mut Vec<Move>) {
     let (row, col) = piece.position;
-    let delta_row = match piece.owner {
-        Player::White => 1,
-        Player::Black => -1
-    };
+    let delta_row = piece.owner.forward();
     let new_row = row as isize + delta_row;
     if board.is_within_row_bounds(new_row) {
         let new_row = new_row as usize;
@@ -62,10 +59,7 @@ pub fn forward_one_no_capture(board: &Board, piece: &Piece, moves: &mut Vec<Move
 
 pub fn first_forward_two_no_capture(board: &Board, piece: &Piece, moves: &mut Vec<Move>) {
     let (row, col) = piece.position;
-    let delta_row = match piece.owner {
-        Player::White => 1,
-        Player::Black => -1
-    };
+    let delta_row = piece.owner.forward();
     let mid_row = row as isize + delta_row;
     let new_row = mid_row + delta_row;
 
@@ -90,10 +84,7 @@ pub fn first_forward_two_no_capture(board: &Board, piece: &Piece, moves: &mut Ve
 
 pub fn diagonal_capture(board: &Board, piece: &Piece, moves: &mut Vec<Move>) {
     let (row, col) = piece.position;
-    let directions = match piece.owner {
-        Player::White => vec![(1, -1), (1, 1)],
-        Player::Black => vec![(-1, -1), (-1, 1)],
-    };
+    let directions = piece.owner.forward_diagonals();
     for (dr, dc) in directions {
         let new_row = row as isize + dr;
         let new_col = col as isize + dc;
@@ -125,10 +116,7 @@ pub fn en_passant(board: &Board, piece: &Piece, moves: &mut Vec<Move>) {
             && (last_move.to.1 as isize - col as isize).abs() == 1
             && last_move.to.0 == row
         {
-            let delta_row = match piece.owner {
-                Player::White => 1,
-                Player::Black => -1
-            };
+            let delta_row = piece.owner.forward();
             let new_row = row as isize + delta_row;
             if board.is_within_row_bounds(new_row) {
                 let new_row = new_row as usize;

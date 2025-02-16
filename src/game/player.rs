@@ -26,4 +26,17 @@ impl Player {
             Player::Black => Player::White,
         }
     }
+
+    pub fn forward(&self) -> isize {
+        match self {
+            Player::White => 1,
+            Player::Black => -1
+        }
+    }
+    pub fn forward_diagonals(&self) -> Vec<(isize,isize)> {
+        match self {
+            Player::White => vec![(1, -1), (1, 1)],
+            Player::Black => vec![(-1, -1), (-1, 1)],
+        }
+    }
 }

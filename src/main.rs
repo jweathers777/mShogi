@@ -23,7 +23,6 @@ fn main() {
     let variant = load_variant("variants/chess.toml");
 
     let mut board = Board::new(&variant);
-    show_moves_for_board(&board, &variant);
 
     let bishop_move = Move {
         from: (0,2),
@@ -34,6 +33,16 @@ fn main() {
         special_move: None,
     };
     board.make_move(&bishop_move);
+
+    let rook_move = Move {
+        from: (0,0),
+        to: (3,1),
+        piece: String::from("R"),
+        captured_pieces: vec![],
+        promotion: None,
+        special_move: None,
+    };
+    board.make_move(&rook_move);
 
     show_moves_for_board(&board, &variant);
 }

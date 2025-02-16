@@ -30,6 +30,18 @@ impl Board {
         board
     }
 
+    pub fn is_within_bounds(&self, row: isize, col: isize) -> bool {
+        row >= 0 && col >= 0 && row < self.height as isize && col < self.width as isize
+    }
+
+    pub fn is_within_row_bounds(&self, row: isize) -> bool {
+        row >= 0 && row < self.height as isize
+    }
+
+    pub fn is_within_col_bounds(&self, col: isize) -> bool {
+        col >= 0 && col < self.width as isize
+    }
+
 	 pub fn get(&self, position: (usize, usize)) -> Option<&Piece> {
         self.pieces.get(&position)
     }

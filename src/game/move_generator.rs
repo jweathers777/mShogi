@@ -33,20 +33,20 @@ pub fn forward_one_no_capture(board: &Board, piece: &Piece, moves: &mut Vec<Move
         Player::White => 1,
         Player::Black => -1
     };
-    let new_row = (row as isize + delta_row) as usize;
-
-    if new_row > 0
-        && new_row < board.height
-        && board.get((new_row, col)).is_none()
-    {
-        moves.push(Move {
-            from: (row, col),
-            to: (new_row, col),
-            piece: piece.piece_type.symbol.clone(),
-            captured_pieces: vec![],
-            promotion: None,
-            special_move: None,
-        });
+    let new_row = row as isize + delta_row;
+    if board.is_within_row_bounds(new_row) {
+        let new_row = new_row as usize;
+        if board.get((new_row, col)).is_none()
+        {
+            moves.push(Move {
+                from: (row, col),
+                to: (new_row, col),
+                piece: piece.piece_type.symbol.clone(),
+                captured_pieces: vec![],
+                promotion: None,
+                special_move: None,
+            });
+        }
     }
 }
 
@@ -56,25 +56,25 @@ pub fn first_forward_two_no_capture(board: &Board, piece: &Piece, moves: &mut Ve
         Player::White => 1,
         Player::Black => -1
     };
-    let mid_row = (row as isize + delta_row) as usize;
-    let new_row = (mid_row as isize + delta_row) as usize;
+    let mid_row = row as isize + delta_row;
+    let new_row = mid_row + delta_row;
 
-    if new_row > 0
-        && new_row < board.height
-        && mid_row > 0
-        && mid_row < board.height
-        && board.get((mid_row, col)).is_none()
-        && board.get((new_row, col)).is_none()
-        && piece.move_count == 0
-    {
-        moves.push(Move {
-            from: (row, col),
-            to: (new_row, col),
-            piece: piece.piece_type.symbol.clone(),
-            captured_pieces: vec![],
-            promotion: None,
-            special_move: None,
-        });
+    if board.is_within_row_bounds(mid_row) && board.is_within_row_bounds(new_row) {
+        let mid_row = mid_row as usize;
+        let new_row = new_row as usize;
+        if board.get((mid_row, col)).is_none()
+            && board.get((new_row, col)).is_none()
+            && piece.move_count == 0
+        {
+            moves.push(Move {
+                from: (row, col),
+                to: (new_row, col),
+                piece: piece.piece_type.symbol.clone(),
+                captured_pieces: vec![],
+                promotion: None,
+                special_move: None,
+            });
+        }
     }
 }
 
@@ -85,9 +85,12 @@ pub fn diagonal_capture(board: &Board, piece: &Piece, moves: &mut Vec<Move>) {
         Player::Black => vec![(-1, -1), (-1, 1)],
     };
     for (dr, dc) in directions {
-        let new_row = (row as isize + dr) as usize;
-        let new_col = (col as isize + dc) as usize;
-        if new_row < board.height && new_col < board.width {
+        let new_row = row as isize + dr;
+        let new_col = col as isize + dc;
+        if board.is_within_bounds(new_row, new_col) {
+            let new_row = new_row as usize;
+            let new_col = new_col as usize;
+
             if let Some(target_piece) = board.get((new_row, new_col)) {
                 if target_piece.owner != piece.owner {
                     moves.push(Move {
@@ -112,23 +115,27 @@ pub fn en_passant(board: &Board, piece: &Piece, moves: &mut Vec<Move>) {
             && (last_move.to.1 as isize - col as isize).abs() == 1
             && last_move.to.0 == row
         {
-            let new_row = match piece.owner {
-                Player::White => row.wrapping_add(1),
-                Player::Black => row.wrapping_sub(1),
+            let delta_row = match piece.owner {
+                Player::White => 1,
+                Player::Black => -1
             };
-            let (target_row, target_col) = last_move.to;
+            let new_row = row as isize + delta_row;
+            if board.is_within_row_bounds(new_row) {
+                let new_row = new_row as usize;
+                let (target_row, target_col) = last_move.to;
 
-            if let Some(target_piece) = board.get(last_move.to) {
-                // Capture enemy piece
-                if target_piece.owner != piece.owner {
-                    moves.push(Move {
-                        from: (row, col),
-                        to: (new_row, target_col),
-                        piece: piece.piece_type.symbol.clone(),
-                        captured_pieces: vec![(target_row, target_col, last_move.piece.clone())],
-                        promotion: None,
-                        special_move: Some(SpecialMove::EnPassant),
-                    });
+                if let Some(target_piece) = board.get(last_move.to) {
+                    // Capture enemy piece
+                    if target_piece.owner != piece.owner {
+                        moves.push(Move {
+                            from: (row, col),
+                            to: (new_row, target_col),
+                            piece: piece.piece_type.symbol.clone(),
+                            captured_pieces: vec![(target_row, target_col, last_move.piece.clone())],
+                            promotion: None,
+                            special_move: Some(SpecialMove::EnPassant),
+                        });
+                    }
                 }
             }
         }
@@ -143,11 +150,14 @@ pub fn el_jump(board: &Board, piece: &Piece,  moves: &mut Vec<Move>) {
     ];
 
     for (dr, dc) in l_moves.iter() {
-        let new_row = row.wrapping_add(*dr as usize);
-        let new_col = col.wrapping_add(*dc as usize);
+        let new_row = row as isize + *dr;
+        let new_col = col as isize + *dc;
 
         // Ensure the move is within bounds
-        if new_row < board.height && new_col < board.width {
+        if board.is_within_bounds(new_row, new_col) {
+            let new_row = (new_row as usize);
+            let new_col = (new_col as usize);
+
             if let Some(target_piece) = board.get((new_row, new_col)) {
                 // Capture enemy piece
                 if target_piece.owner != piece.owner {

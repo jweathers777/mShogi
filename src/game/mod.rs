@@ -7,6 +7,7 @@ pub mod player;
 pub mod variant;
 
 #[cfg(test)]
+mod board_tests;
 mod move_notation_tests;
 mod move_generator_tests;
 mod variant_tests;

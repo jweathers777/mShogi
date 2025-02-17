@@ -7,6 +7,7 @@ pub struct Board {
     pub pieces: HashMap<(usize, usize), Piece>,
     pub move_history: Vec<Move>,
     pub captured_pieces: HashMap<Player, Vec<Piece>>,
+    pub variant: Variant,
 }
 
 impl Board {
@@ -19,6 +20,7 @@ impl Board {
             captured_pieces: HashMap::from(
                 [(Player::White, vec![]), (Player::Black, vec![])]
             ),
+            variant: variant.clone(),
         };
 
         for (position, piece) in &variant.pieces {
@@ -60,7 +62,7 @@ impl Board {
 
 	 pub fn make_move(&mut self, mv: &Move) {
         // Capture pieces
-        for &(cap_row, cap_col, ref _cap_piece) in &mv.captured_pieces {
+        for &(cap_row, cap_col, ref cap_piece) in &mv.captured_pieces {
             if let Some(captured_piece) = self.pieces.remove(&(cap_row, cap_col)) {
                 self.captured_pieces
                     .entry(captured_piece.owner)
@@ -77,6 +79,27 @@ impl Board {
         }
 
         self.move_history.push(mv.clone());
+    }
+
+    pub fn unmake_last_move(&mut self) {
+        if let Some(mv) = self.move_history.pop() {
+            // Move the piece back
+            if let Some(mut piece) = self.pieces.remove(&mv.to) {
+                piece.move_count -= 1;
+                piece.position = mv.from;
+                let opponent = piece.owner.opponent();
+                self.pieces.insert(mv.from, piece);
+
+                // Restore captured pieces
+                for &(cap_row, cap_col, ref cap_symbol) in mv.captured_pieces.iter().rev() {
+                    if let Some(captured) = self.captured_pieces
+                        .get_mut(&opponent).and_then(|caps| caps.pop())
+                    {
+                        self.pieces.insert((cap_row, cap_col), captured);
+                    }
+                }
+            }
+        }
     }
 
     pub fn print_captured_pieces(&self) {

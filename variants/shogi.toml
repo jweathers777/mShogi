@@ -17,7 +17,6 @@ promotion = ["PromotedLance"]
 symbol = "N"
 moves = ["forward_one_diagonal_one_jump"]
 promotion = ["PromotedKnight"]
-force_promotion = ["back_two_ranks"]
 
 [piece_types.Silver]
 symbol = "S"
@@ -111,3 +110,17 @@ moves = ["adjacent"]
 "8,6" = "wS"
 "8,7" = "wN"
 "8,8" = "wL"
+
+[rules.special_rules]
+allow_drops = true
+force_promotion_once_immobile = true
+
+[rules.invalid_move_conditions]
+fourfold_perpetual_check = true
+
+[rules.end_conditions]
+checkmate_is_win = true
+fourfold_repetition_is_draw = true
+illegal_move_is_loss = true
+win_or_draw_on_impasse = true
+win_on_time = true

@@ -31,7 +31,7 @@ moves = ["any_direction"]
 
 [piece_types.King]
 symbol = "K"
-moves = ["adjacent"]
+moves = ["adjacent", "castle_kingside", "castle_queenside"]
 
 [starting_position]
 "0,0" = "wR"
@@ -66,3 +66,16 @@ moves = ["adjacent"]
 "7,5" = "bB"
 "7,6" = "bN"
 "7,7" = "bR"
+
+[rules.invalid_move_conditions]
+move_puts_own_king_into_check = true
+
+[rules.end_conditions]
+allow_draw_offer = true
+allow_resignation = true
+checkmate_is_win = true
+end_by_time = true
+fifty_moves_draw = true
+insufficient_material_is_draw = true
+stalemate_is_draw = true
+threefold_repetition_is_draw = true

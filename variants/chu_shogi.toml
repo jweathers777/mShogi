@@ -235,3 +235,15 @@ moves = ["step_or_jump_diagonal_forward", "igui_diagonal_forward", "jitto_diagon
 "11,9" = "wC"
 "11,10" = "wFL"
 "11,11" = "wL"
+
+[rules.special_rules]
+allow_pawn_promotion_on_last_rank = true
+fourfold_repetition_is_forbidden = true
+
+[rules.end_conditions]
+capture_king_and_prince_is_win = true
+draw_or_loss_on_bare_kings = true
+illegal_move_is_loss = true
+stalemate_is_loss = true
+win_on_time = true
+

@@ -1,11 +1,11 @@
 ---
 id: MSH-1
 title: Bootstrap the rewrite repository and durable agent workflow
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-22T13:26:00Z'
-updated_date: '2026-10-22T22:48:00Z'
+updated_date: '2026-10-22T22:49:00Z'
 labels:
   - workflow
   - bootstrap
@@ -49,15 +49,15 @@ Rust product code, engine implementation, GUI scaffolding, default-branch change
 - [x] #2 The design, README, shared AGENTS instructions, and one-line CLAUDE import are present and coherent in the target rewrite.
 - [x] #3 Backlog.md reads the complete seed queue and milestones, doctor reports no unresolved structural issue, and dependency readiness is verified.
 - [x] #4 No implementation task or criterion is marked complete solely because its record was imported; any seed-ID collision was reconciled with dependencies intact.
-- [ ] #5 The baseline is committed, normal push outcome is honestly recorded, and the next eligible tasks and any genuine access blocker are reported.
+- [x] #5 The baseline is committed, normal push outcome is honestly recorded, and the next eligible tasks and any genuine access blocker are reported.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -93,4 +93,18 @@ Environment-only failure: an unqualified node --version from Python resolved to 
 Independent review: separate bounded read-only reviewer /root/bootstrap_review compared the imported candidate with the archive and main_v2, inspected policy/design/task/README and existing refs/worktree. No actionable preservation, import or scope findings. Reviewer independently confirmed 26 exact imports, all 21 preserved base files, unchanged MSH-2..14 and milestones, coherent shared policy and readiness. Review limits: product behavior, future commits and push not assessed; author verified doctor and will verify integration. Review follow-up notes requesting current README/doctor outcomes are resolved here. Documentation/mechanical scope received proportionate review; no product milestone review is implied. Finalization guidance read.
 
 Next dependency-ready tasks after MSH-1 reaches Done: MSH-2 (M1 chess rules profile and independent fixture corpus) and MSH-3 (minimal Rust workspace and repeatable checks). Neither is started. Preserve/reconcile the existing prototype when executing MSH-3 rather than assuming an empty repository.
+
+Integration evidence: baseline commit d876a6190f5296f8a20b3e4ea529ec84d4211eef (Bootstrap rewrite design and native Backlog workflow (MSH-1)) is integrated on codex/rewrite, descendant of the preserved fd280df WIP and legacy 941cd4d. git diff --cached --check passed before commit; baseline includes 28 newly imported files and no changes to the 21 pre-existing files. git push -u origin codex/rewrite succeeded (new branch), with upstream origin/codex/rewrite established. git ls-remote --heads origin refs/heads/codex/rewrite refs/heads/master refs/heads/main_v2 confirmed rewrite = d876a6190f5296f8a20b3e4ea529ec84d4211eef, master = 941cd4dc37e6e6210d4f993c96a553753e228b19 and main_v2 = 90458437d8872d6264b5536ae6ab15142c11e357. No remote/default-branch changes, force-push, or remaining access blocker. This ticket completion/evidence is a separate follow-up commit on the same branch, identified by the commit containing this summary rather than an invented self-referential future hash.
+
+Final closure check: backlog task list --status Ready --ready --json actually returns exactly MSH-2 and MSH-3 after MSH-1 is Done. doctor passes again; milestone list shows M0 1/1 done and M1 0/13 done. Completion evidence commit will be pushed normally to the established origin/codex/rewrite upstream; baseline push success above is already verified.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Completed MSH-1 only. Imported the reviewed design and native Backlog seed, shared AGENTS.md/CLAUDE.md policy, and handoff documents into codex/rewrite without overwriting the existing main_v2 Rust experiment. README.md now records the actual integration branch and prototype status. Preserved master, main_v2 (including local WIP), source, notices and history; chose an existing-rewrite descendant rather than an orphan tree.
+
+Verified with pinned Backlog.md 1.55.1: 14 native task reads, 7 milestones, board, doctor, dependency integrity/readiness, archive parity, documentation links, exact shared policy import, and byte-identical existing files. Independent bounded review found no actionable issues. Baseline d876a6190f5296f8a20b3e4ea529ec84d4211eef was committed, normally pushed to origin/codex/rewrite, and confirmed with ls-remote. The commit containing this completion record carries the final MSH-1 evidence on the same integration branch.
+
+Only MSH-1 acceptance/completion items are checked. No product builds, conformance or platform coverage is claimed. MSH-2 and MSH-3 are next eligible, unstarted; MSH-3 must reconcile the preserved prototype with the new workspace/check contract. No genuine access blocker remains.
+<!-- SECTION:FINAL_SUMMARY:END -->

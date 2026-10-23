@@ -1,11 +1,11 @@
 ---
 id: MSH-6
 title: Implement chess attack detection with independent examples
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-22T13:26:00Z'
-updated_date: '2026-10-23T17:07:00Z'
+updated_date: '2026-10-23T17:08:00Z'
 labels:
   - rules
   - attacks
@@ -45,19 +45,19 @@ Search evaluation, generalized royal-piece logic for all variants, and using the
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Attack queries cover all chess piece categories and both colors under documented semantics.
-- [ ] #2 Sliding blockers and board boundaries are correct in curated independent cases.
-- [ ] #3 Attack semantics do not accidentally exclude an attack merely because moving the attacking piece would expose its own king.
-- [ ] #4 Tests include king adjacency and occupancy-sensitive examples needed by subsequent special-move legality.
-- [ ] #5 The implementation remains independent of search and GUI state.
+- [x] #1 Attack queries cover all chess piece categories and both colors under documented semantics.
+- [x] #2 Sliding blockers and board boundaries are correct in curated independent cases.
+- [x] #3 Attack semantics do not accidentally exclude an attack merely because moving the attacking piece would expose its own king.
+- [x] #4 Tests include king adjacency and occupancy-sensitive examples needed by subsequent special-move legality.
+- [x] #5 The implementation remains independent of search and GUI state.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -89,4 +89,18 @@ Local verification PASS, macOS 27.0 arm64, rustc/cargo 1.89.0:
 Native Linux/Windows CI pending integration.
 
 Independent review: fresh delegated reviewer (Claude subagent, no repository edits) inspected AGENTS, task, design/profile and the complete bounded diff. No blocking findings; attack.rs correctness, unchanged FEN-validation behavior and independence confirmed. Should-fix: (1) pinned attackers were only black although docs said both colors; (2) one EP sentence overclaimed that the victim square is never reported attacked. Nits: no last-rank pawn case; missing EP diagonal-opening, pawn-covered castling square and White b1 cases; one rationale/tag mislabelled e2 as pinned. Resolution: added 6 hand-curated oracle-confirmed cases (white pinned knight covering a king flight square, both colors' last-rank pawn checks, EP diagonal before/after, White castling pawn/rook cover), corrected EP wording, rationale and tag, and updated counts to 29 positions / 155 exact attacker sets / 3,712 map answers. Not added: an EP-answerable pawn check, because that is legal-move behavior for MSH-8/MSH-9. Re-review: every finding resolved; the remaining f5 flight-square wording nit was then fixed. Reviewer bounded differential probe, run twice (original and final code), in scratch outside the repo: 1000 positions (500 random reachable playouts up to 160 plies plus 500 random valid placements, seed 7), full ordered attackers and is_square_attacked for every square and color against pinned chess 1.11.2: 128,000 queries, 0 mismatches. Bounded evidence, not a committed MSH-12 harness. Final local reruns PASS: oracle checker 29/155/3712; cargo test --workspace --locked (5 CLI + 4 attacks + 8 FEN + 6 ordinary + 2 doctests); fmt/clippy clean; mutation check still fails on all five injected faults.
+
+Integration and native verification (2026-10-23): implementation 9c6cf6dc48218b7ea1d7d8c9a4240aaaf1e0e6fb committed on claude/next-task and fast-forward pushed to origin codex/rewrite (fa6bd3e..9c6cf6d); remote head confirmed equal. No force push, PR, default-branch or settings change. The Codex worktree's local codex/rewrite ref was left untouched (still fa6bd3e, clean) and will need a normal fast-forward from origin before its next use. Original master checkout unchanged apart from this session's untracked .claude/worktrees directory.
+
+Actual native CI PASS for exact head 9c6cf6dc48218b7ea1d7d8c9a4240aaaf1e0e6fb: https://github.com/jweathers777/mShogi/actions/runs/39992460675. Jobs Rust (ubuntu-24.04) 120547395577, Rust (macos-15) 120547395821, Rust (windows-2022) 120547395859 all succeeded; logs show rustc 1.89.0 on x86_64-unknown-linux-gnu, aarch64-apple-darwin and x86_64-pc-windows-msvc. Each passed 4 attacks + 8 FEN + 6 ordinary + 2 doctests; CLI 5 on Linux/macOS and 4 applicable on Windows; console smoke reports the attack-query coverage line. This is native task verification, not complete chess certification. The completion commit changes only this ticket (backlog-only pushes are skipped by the workflow). Next eligible: MSH-7 (now unblocked) and MSH-13. No subsequent task started.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Added public geometric chess attack queries, Position::attackers (a1..h8 iterator) and Position::is_square_attacked, for every piece kind and both colors. Pinned pieces and kings still attack, sliders include the first blocker with no x-ray or edge wrap, own-occupied targets count as defended, and EP/castling add no attacks. FEN king-safety validation and action path checks now share this single implementation (A-01). Semantics are documented in the profile, rustdoc, coverage ledger and fixture README. There are no caches or new dependencies, and the code is independent of search/GUI.
+
+Verification: a new separate fixture family mshogi.chess.attacks.v1 with 29 hand-curated positions, 155 exact attacker sets and complete per-color maps (3,712 answers), confirmed by pinned python-chess 1.11.2 with a verify-only checker. The Rust suite also covers the original corpus attack queries, pinned attackers and occupancy changes through apply_ordinary. A mutation check catches all five injected faults. Independent review found no blocking issues; its findings were resolved, and its 1000-position / 128,000-query differential probe had 0 mismatches. Workspace fmt/clippy/test/build/smoke passed locally and in native Linux/macOS/Windows CI run 39992460675 for implementation 9c6cf6d on codex/rewrite.
+
+Limitations: attack queries are not legal-move generation. King-step, castling and EP legality must evaluate post-action occupancy in MSH-7 to MSH-9. Next dependency-ready tasks: MSH-7 and MSH-13.
+<!-- SECTION:FINAL_SUMMARY:END -->

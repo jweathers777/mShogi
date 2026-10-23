@@ -1,11 +1,11 @@
 ---
 id: MSH-11
 title: Expose the rules and diagnostics through a headless console
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-22T13:27:00Z'
-updated_date: '2026-10-23T19:33:00Z'
+updated_date: '2026-10-23T19:35:00Z'
 labels:
   - console
   - diagnostics
@@ -47,19 +47,19 @@ Claimed UCI/USI compatibility, search, clocks, GUI, and a speculative universal 
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Documented console commands expose every promised M1 diagnostic through the real binary.
-- [ ] #2 A position can be loaded, moved, undone, and inspected with state matching the library contract.
-- [ ] #3 Malformed inputs and illegal actions produce clear errors while preserving relevant session state.
-- [ ] #4 The console runs without UI, database, or Python dependencies.
-- [ ] #5 README examples and a bounded process-level smoke check reproduce the implemented behavior.
+- [x] #1 Documented console commands expose every promised M1 diagnostic through the real binary.
+- [x] #2 A position can be loaded, moved, undone, and inspected with state matching the library contract.
+- [x] #3 Malformed inputs and illegal actions produce clear errors while preserving relevant session state.
+- [x] #4 The console runs without UI, database, or Python dependencies.
+- [x] #5 README examples and a bounded process-level smoke check reproduce the implemented behavior.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -123,4 +123,29 @@ Findings and resolution:
 - N7: moving into check reported only the FEN structural reason. ActionError::IllegalPosition now displays as 'action rejected: own king would be in check (<structural reason>)', with the variant doc updated. This is a small library message change for AC3 clarity, justified by the MSH-8 review's finding that from a validated position this error only means the moving king would be attacked. A test asserts the exact console message.
 - Not changed (cosmetic or harmless, recorded): N3 raw input echoed in errors; N4 Unicode whitespace accepted as a separator; N5 a leading + accepted in counts and depths; N6 no limit on line length or perft depth (Ctrl-C), which suits a diagnostic console; N8 the CI smoke checks exit status only, while the process tests check exact output.
 Reruns PASS: cargo test --workspace --locked (console 12/12 and all suites); fmt; clippy; whitespace diff check.
+
+Integration and native verification (2026-10-23): implementation 8670c73aa380862ee66ac46bb9f8f11148242fd6 committed on claude/next-task and fast-forward pushed to origin codex/rewrite (143dfac..8670c73). No force push, PR, default-branch or settings change.
+
+Actual native CI PASS for exact head 8670c73: https://github.com/jweathers777/mShogi/actions/runs/40012369679. All three jobs succeeded on rustc 1.89.0:
+- Rust (ubuntu-24.04), job 120615711186: console tests 12 passed.
+- Rust (macos-15), job 120615711131: console tests 12 passed.
+- Rust (windows-2022), job 120615710876: console tests 11 passed; the Unix-only byte-argument test is not compiled there.
+On every platform readme_console_example_reproduces passed, which resolves review B1 natively, including the Windows checkout. All core suites passed (perft with 1 deep test ignored as designed). The new console smoke step piped a shell session through the real binary under bash pipefail and printed perft 3 8902 and the divide total 20 on each runner.
+
+Next eligible: MSH-12 (sequence/differential verification) and MSH-13 (compound-action boundary review); MSH-14 milestone closure still waits for them. No subsequent task started.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Added 'mshogi shell', a human-oriented line command session over mshogi-core. It is a diagnostic console, not UCI or a machine protocol (A-05). It reads stdin interactively or from a pipe and starts at the standard position.
+- Commands: position startpos/fen; fen; show (board plus every field, status and history); legal (divide order); move (atomic sequence); undo [n]; status (the limited M1 classifier); perft; divide; help; quit.
+- Notation: lowercase coordinates with a promotion suffix and king-move castling.
+- Output: results on stdout; failures as 'error: line N: <reason>' on stderr, and nothing in the session changes.
+- Exit status: 0/1/2.
+All rules come from the library (A-01), and there are no new dependencies and no UI, database or Python. Moving into check now reads 'own king would be in check (...)' via the library's IllegalPosition display, for clearer errors.
+
+Verification: 12 process tests against the real binary cover the full load/show/legal/move/undo/status/perft/divide workflow with exact output and independent counts, 13 failure modes with exact stderr and preserved state, quit/EOF/CRLF/invalid UTF-8, help completeness, legal versus divide order, the clear check error, and the README example reproduced byte for byte. CI now pipes a shell session on every platform. Independent review found the session correct and atomic. Its likely-blocking Windows CRLF issue in the README test was fixed, verified locally, and confirmed on native Windows CI; its nits were resolved or recorded. Native Linux/macOS/Windows CI run 40012369679 passed for 8670c73 on codex/rewrite.
+
+Limitations, recorded as nits: raw input is echoed in errors; Unicode whitespace and a leading + are accepted; line length and perft depth are unbounded. No interactive prompt or machine mode.
+<!-- SECTION:FINAL_SUMMARY:END -->

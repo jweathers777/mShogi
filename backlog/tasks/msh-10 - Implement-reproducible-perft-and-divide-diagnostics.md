@@ -1,11 +1,11 @@
 ---
 id: MSH-10
 title: Implement reproducible perft and divide diagnostics
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-22T13:27:00Z'
-updated_date: '2026-10-23T19:13:00Z'
+updated_date: '2026-10-23T19:14:00Z'
 labels:
   - diagnostics
   - perft
@@ -46,20 +46,20 @@ Search strength measurement, comparing arbitrary variants through a chess-only r
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Perft totals match the independently established corpus at documented depths.
-- [ ] #2 Divide output identifies complete root actions in deterministic order and supports locating the first disagreement.
-- [ ] #3 Running diagnostics preserves the complete starting state.
-- [ ] #4 Depth/input semantics and failure output are documented and tested.
-- [ ] #5 A repeatable performance baseline is recorded with build and hardware context without turning it into a strength claim.
-- [ ] #6 Perft and divide never silently skip a legal branch or treat counter overflow as a terminal leaf: traversal either proceeds independently of counters irrelevant to move generation, or reports an explicit error when it cannot continue (owner requirement, 2026-10-23, from MSH-9).
+- [x] #1 Perft totals match the independently established corpus at documented depths.
+- [x] #2 Divide output identifies complete root actions in deterministic order and supports locating the first disagreement.
+- [x] #3 Running diagnostics preserves the complete starting state.
+- [x] #4 Depth/input semantics and failure output are documented and tested.
+- [x] #5 A repeatable performance baseline is recorded with build and hardware context without turning it into a strength claim.
+- [x] #6 Perft and divide never silently skip a legal branch or treat counter overflow as a terminal leaf: traversal either proceeds independently of counters irrelevant to move generation, or reports an explicit error when it cannot continue (owner requirement, 2026-10-23, from MSH-9).
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -133,4 +133,37 @@ Result: 0 failures. The reviewer estimates 10-15 s for the default debug suite o
 Nits:
 (1) the checker now validates the depth type and the deep flag type; rerun PASS 14 divides, 5,004,333 leaves.
 (2) the first-disagreement locator is test-only while the library provides the deterministic order and the documented descent procedure; satisfies AC #2 as worded. A console locator naturally belongs to MSH-11, so no new task.
+
+Integration and native verification (2026-10-23): implementation 8a080f8f74fee14700c780764cb32f3b41275a0a committed on claude/next-task and fast-forward pushed to origin codex/rewrite (6a0b1eb..8a080f8). No force push, PR, default-branch or settings change.
+
+Actual native CI PASS for exact head 8a080f8: https://github.com/jweathers777/mShogi/actions/runs/40009700442. All three jobs succeeded on rustc 1.89.0:
+- Rust (ubuntu-24.04), job 120606597347, x86_64-unknown-linux-gnu
+- Rust (macos-15), job 120606597659, aarch64-apple-darwin
+- Rust (windows-2022), job 120606597617, x86_64-pc-windows-msvc
+Each job passed every suite (perft: 5 passed, 1 deep test ignored as designed) plus 6 doctests. CLI tests: 5 on Linux/macOS, 4 applicable on Windows. Console smoke reports perft-in-library coverage. The default debug perft suite took 6.27 s on Linux, 9.14 s on Windows and 5.36 s on macOS.
+
+The deep depth-4 divides and the Stockfish depth-5 baseline are local release evidence only (macOS arm64, recorded above); they are not CI-verified on Linux/Windows.
+
+Next eligible: MSH-11 (headless console, now unblocked), MSH-12 (sequence/differential verification, now unblocked) and MSH-13. No subsequent task started.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Added Position::perft(depth) and Position::divide(depth), with DivideEntry and PerftError. They are correctness diagnostics, not search or strength measurements.
+- depth 0 = 1 even at mate/stalemate; positions with no legal action give 0 at positive depth; no draw/material shortcuts;
+- divide needs depth >= 1, lists every complete root action in a documented deterministic order (source, destination, promotion) and sums to perft, so descending into the first differing entry localizes a disagreement;
+- traversal uses apply/undo on a private copy and leaves the caller's position unchanged.
+Owner AC #6: counters are normalized at the root, so traversal is independent of them and overflow is impossible within any u32 depth. Any traversal failure is an explicit error, never a skipped branch or leaf, and count overflow is checked.
+
+Verification:
+- the corpus's 38 perft expectations match;
+- new fixture family mshogi.chess.divide.v1: 14 ordered divides from pinned python-chess 1.11.2, including a counter-limit case; three depth-4 divides are run with --ignored in release;
+- a first-disagreement locator, tested on seeded mismatches;
+- depth/error semantics and state preservation;
+- mutation check, including a combined silent-skip mutation;
+- an opt-in release baseline reproduces three Stockfish sf_17.1 depth-5 totals (up to 193,690,690 nodes) at about 3.2M nodes/s on an Apple M1 Pro, recorded as diagnostic speed only.
+Independent review found no blocking or should-fix issues; its 1,865-variant differential probe had 0 failures and its checker nit was resolved. Native Linux/macOS/Windows CI run 40009700442 passed for 8a080f8 on codex/rewrite.
+
+Limitations: console perft/divide commands and an interactive disagreement locator belong to MSH-11. Deep and upstream checks are local evidence only.
+<!-- SECTION:FINAL_SUMMARY:END -->

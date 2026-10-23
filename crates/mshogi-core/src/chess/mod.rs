@@ -2,11 +2,14 @@
 //!
 //! FEN validates a local analysis position, not historical reachability. This
 //! module contains no match history, clocks, outcome, repetition or cache key.
-//! Public construction and replacement preserve the profile's invariants.
+//! Public construction, replacement and checked ordinary transitions preserve
+//! the profile's local invariants. Actions/undo remain intentionally chess-specific.
 
 use std::fmt;
 
+mod action;
 mod fen;
+pub use action::{Action, ActionError, Promotion, Undo, UndoError};
 pub use fen::{FenError, FenErrorCategory};
 
 /// One of the two colors in orthodox chess.

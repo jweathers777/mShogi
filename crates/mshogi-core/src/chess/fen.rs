@@ -129,7 +129,7 @@ impl Position {
         Ok(())
     }
 
-    fn validate_structure(&self) -> Result<(), FenError> {
+    pub(super) fn validate_structure(&self) -> Result<(), FenError> {
         use FenErrorCategory::Structure;
         let fail = |reason| FenError::new(Structure, reason);
         let mut kings = [None; 2];
@@ -225,18 +225,16 @@ impl Position {
                 PieceKind::Pawn => df.abs() == 1 && dr == if by == Color::White { 1 } else { -1 },
                 PieceKind::Knight => matches!((df.abs(), dr.abs()), (1, 2) | (2, 1)),
                 PieceKind::King => df.abs().max(dr.abs()) == 1,
-                PieceKind::Bishop => diagonal && self.validation_ray_clear(from, target),
-                PieceKind::Rook => orthogonal && self.validation_ray_clear(from, target),
-                PieceKind::Queen => {
-                    (diagonal || orthogonal) && self.validation_ray_clear(from, target)
-                }
+                PieceKind::Bishop => diagonal && self.ray_is_clear(from, target),
+                PieceKind::Rook => orthogonal && self.ray_is_clear(from, target),
+                PieceKind::Queen => (diagonal || orthogonal) && self.ray_is_clear(from, target),
             }
         })
     }
 
     // Called only for aligned, distinct, bounded squares. Every intervening
     // coordinate lies on the segment between them and is therefore in 0..8.
-    fn validation_ray_clear(&self, from: Square, target: Square) -> bool {
+    pub(super) fn ray_is_clear(&self, from: Square, target: Square) -> bool {
         let step_file = (target.file() as i8 - from.file() as i8).signum();
         let step_rank = (target.rank() as i8 - from.rank() as i8).signum();
         let mut file = from.file() as i8 + step_file;

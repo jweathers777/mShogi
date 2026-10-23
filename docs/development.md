@@ -1,6 +1,6 @@
 # Rust development baseline
 
-MSH-3 establishes two active packages: `mshogi-core` (reusable library) and `mshogi-console` (binary name `mshogi`). MSH-4 adds explicit chess position state and validated FEN parsing/serialization in the library. The console provides help, version and partial-coverage metadata; it does not yet expose FEN commands. Legal actions, search, GUI and match protocols remain later work.
+MSH-3 establishes two active packages: `mshogi-core` (reusable library) and `mshogi-console` (binary name `mshogi`). MSH-4 adds explicit chess position state and validated FEN parsing/serialization; MSH-5 adds checked ordinary moves/captures, promotions and exact undo. The console provides help, version and partial-coverage metadata; it does not yet expose FEN commands. Special-move execution, public attack queries, move generation, search, GUI and match protocols remain later work.
 
 ## Clean checkout
 
@@ -35,7 +35,7 @@ cargo build --workspace --locked
 
 Use `cargo fmt --all` to apply formatting. The active crates inherit a forbid-unsafe-code lint and documentation warnings; Clippy treats all warnings as failures. Do not suppress all warnings to make this baseline green. The core crate may use Rust standard data structures, but rules/search must not depend on console or file I/O, UI or Python. Printing and argument/process handling belong to the console or future adapters.
 
-The five subprocess tests on Unix (four on Windows, where the Unix byte-argument test is inapplicable) exercise documented CLI behavior from the system temporary directory with stdin closed. They verify help/default invocation, version, honest profile status, and usage failures (exit 2, empty stdout, diagnostic stderr). A Unix-only case rejects a non-Unicode argument without a panic. The core FEN integration suite now consumes all MSH-2 FEN contracts and canonical starting states, and tests error precedence, failed replacement, state identity, local king safety and bounded malformed inputs. To isolate it, run `cargo test -p mshogi-core --test fen_corpus --locked`. This does not exercise the corpus move/perft/classification expectations; those await the corresponding behavior tasks.
+The five subprocess tests on Unix (four on Windows, where the Unix byte-argument test is inapplicable) exercise documented CLI behavior from the system temporary directory with stdin closed. They verify help/default invocation, version, honest profile status, and usage failures (exit 2, empty stdout, diagnostic stderr). A Unix-only case rejects a non-Unicode argument without a panic. The core FEN integration suite now consumes all MSH-2 FEN contracts and canonical starting states, and tests error precedence, failed replacement, state identity, local king safety and bounded malformed inputs. To isolate it, run `cargo test -p mshogi-core --test fen_corpus --locked`. This does not exercise the corpus move/perft/classification expectations; those await the corresponding behavior tasks. MSH-5 adds `cargo test -p mshogi-core --test ordinary_actions --locked`: exact independently expected before/after sequences, complete LIFO restoration, atomic invalid-action/overflow rejection, explicit unsupported special moves and checked undo mismatch tests. Both suites run in the workspace CI without Python.
 
 ## Workspace and dependency policy
 

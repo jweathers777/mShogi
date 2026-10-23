@@ -63,3 +63,23 @@ On Windows use the equivalent virtualenv `Scripts/python.exe`. A platform-specif
 The checker reads committed expectations and never rewrites them. It verifies the oracle version and module hash before comparing complete answers. Perft is bounded to depth 3; the six reference cases total 271,312 depth-three leaves. Invalid fixture metadata or mismatched expectations exits nonzero with the case ID. `--corpus PATH` supports reviewing candidate data without changing the committed file.
 
 Licensing boundary: [python-chess is GPL-3.0-or-later](https://github.com/niklasf/python-chess/blob/v1.11.2/README.rst#license), and [its license](https://github.com/niklasf/python-chess/blob/v1.11.2/LICENSE.txt) was inspected before use. It is an optional, separately installed research/checking tool; no upstream code or package is vendored, linked into Rust, added to product dependencies, or shipped by this change. The small perft positions and numerical answers are attributed factual test data, not copied test program code. Existing BSD notice and deferred release-licensing decision remain unchanged. Reassess licensing before any future distribution or code reuse.
+
+## Ordinary before/after fixture family
+
+MSH-5 adds [ordinary-transitions.json](ordinary-transitions.json), a separate family named `mshogi.chess.ordinary-transitions.v1` with `schema_version: 1`. This does not change or add operations to the original corpus format. Each case has a stable ID, the exact rules-profile ID, `before_fen`, nonempty ordered `steps` of `{ action, after_fen }`, coverage tags and source/locator/method/rationale provenance. Action text uses the same coordinate/promotion test adapter; it is not a new production wire protocol. Both FENs and the complete action, not caller-supplied effects, make a step reproducible.
+
+There are 49 cases and 74 ordinary steps. Hand-reviewed cases exercise initial doubles and raw targets, expiry, ordinary quiet/capturing piece geometry, check evasions, all four quiet/capturing promotions of both colors, king and home-rook rights loss (including promoting captures), return-without-right-restoration, and representable counter boundaries. Expected after-FENs were independently enumerated with pinned `chess==1.11.2` after first checking each curated action's legality and excluding castling/EP. Source version/module hash and FIDE/profile rationale are recorded; no mShogi output established an expected answer.
+
+Run the product transitions and complete reversal/atomic rejection tests:
+
+```sh
+cargo test -p mshogi-core --test ordinary_actions --locked
+```
+
+Optional oracle recheck, in the separately installed environment described above:
+
+```sh
+/tmp/mshogi-chess-oracle/bin/python tools/check_chess_transitions.py
+```
+
+The oracle checker verifies every expected after-state and never rewrites it; Rust tests additionally compare the full saved tuple at every reverse step. Neither implies special-move execution or full match adjudication. Invalid-action, unsupported-special, overflow and bad-undo tests are explicit Rust cases under the documented API/profile policy; they do not substitute agreement with a permissive external parser for the project boundary.

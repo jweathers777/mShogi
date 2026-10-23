@@ -23,7 +23,7 @@ fn help_and_default_invocation_are_headless() {
         assert!(output.stderr.is_empty());
         let stdout = String::from_utf8(output.stdout).unwrap();
         assert!(stdout.contains("Usage: mshogi"));
-        assert!(stdout.contains("Game operations are not implemented yet."));
+        assert!(stdout.contains("Game commands are not available in this console yet."));
     }
 }
 
@@ -47,7 +47,7 @@ fn profile_identifies_partial_coverage_without_claiming_game_support() {
     assert!(output.stderr.is_empty());
     assert_eq!(
         String::from_utf8(output.stdout).unwrap(),
-        "Target rules profile: mshogi.chess.position.v1\nCoverage: position/FEN only; game operations unavailable\n"
+        "Target rules profile: mshogi.chess.position.v1\nCoverage: position/FEN and ordinary actions/undo; special moves unavailable\n"
     );
 }
 

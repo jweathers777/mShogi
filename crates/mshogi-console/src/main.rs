@@ -12,7 +12,7 @@ Usage: mshogi [--help | --version | profile]
   --version, -V  Show the application version
   profile        Show the target chess position profile
 
-Game operations are not implemented yet.";
+Game commands are not available in this console yet.";
 
 fn main() -> ExitCode {
     let mut args = env::args_os().skip(1);
@@ -26,7 +26,7 @@ fn main() -> ExitCode {
         Some(Some("--version" | "-V")) => println!("mshogi {}", env!("CARGO_PKG_VERSION")),
         Some(Some("profile")) => {
             println!("Target rules profile: {CHESS_POSITION_PROFILE_ID}");
-            println!("Coverage: position/FEN only; game operations unavailable");
+            println!("Coverage: position/FEN and ordinary actions/undo; special moves unavailable");
         }
         _ => return invalid_arguments(),
     }

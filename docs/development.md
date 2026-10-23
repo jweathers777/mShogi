@@ -1,0 +1,58 @@
+# Rust development baseline
+
+MSH-3 establishes two active packages: `mshogi-core` (reusable library) and `mshogi-console` (binary name `mshogi`). The current library exports only the MSH-2 target-profile identity; the console provides help, version and profile metadata. No chess operation, search, GUI or match protocol is implemented by this scaffold.
+
+## Clean checkout
+
+Prerequisites are Git, [rustup](https://rustup.rs/), and the host native linker/build tools. On macOS use the Xcode command-line tools; on Windows use the MSVC C++ build tools/Windows SDK with the rustup MSVC host; on Linux install a system C compiler/linker (for example the distribution's build-essential package). GitHub-hosted runners provide these prerequisites. This is a native Rust application; no Node, GUI framework, database or Python environment is needed for its Rust checks.
+
+```sh
+git clone --branch codex/rewrite git@github.com:jweathers777/mShogi.git
+cd mShogi
+rustup show
+rustc --version
+cargo --version
+cargo build --workspace --locked
+cargo run --locked --bin mshogi -- --help
+cargo run --locked --bin mshogi -- --version
+cargo run --locked --bin mshogi -- profile
+```
+
+`rust-toolchain.toml` selects **stable release 1.89.0**, minimal profile, rustfmt and Clippy. Rustup can install that exact toolchain/components on first use; initial installation requires network access. This deliberately reproduces the inspected host's stable baseline, not the newest moving `stable` release. It does not change the user's global default. `rust-version = "1.89"` and edition 2024 are shared package metadata. Toolchain updates should change the pin and recorded minimum together, rerun formatting/lint/tests and native CI, and record the actual evidence.
+
+Rustup environment/directory overrides or `cargo +...` can take precedence over the repository pin. Check `rustup show` and `rustc --version` when reproducing evidence. The host installation and compiler version are not proof of successful tests on another platform.
+
+## Repeatable checks
+
+Run from the root; every command targets only the active workspace:
+
+```sh
+cargo fmt --all -- --check
+cargo clippy --workspace --all-targets --locked -- -D warnings
+cargo test --workspace --locked
+cargo build --workspace --locked
+```
+
+Use `cargo fmt --all` to apply formatting. The active crates inherit a forbid-unsafe-code lint and documentation warnings; Clippy treats all warnings as failures. Do not suppress all warnings to make this baseline green. The core crate may use Rust standard data structures, but rules/search must not depend on console or file I/O, UI or Python. Printing and argument/process handling belong to the console or future adapters.
+
+The five subprocess tests on Unix (four on Windows, where the Unix byte-argument test is inapplicable) exercise documented CLI behavior from the system temporary directory with stdin closed. They verify help/default invocation, version, honest profile status, and usage failures (exit 2, empty stdout, diagnostic stderr). A Unix-only case rejects a non-Unicode argument without a panic. No library behavior tests are invented for a metadata constant. Meaningful rules tests begin with the corresponding behavior tasks and independent MSH-2 fixtures.
+
+## Workspace and dependency policy
+
+The root is a virtual Cargo workspace with resolver 3. Its committed `Cargo.lock` covers exactly the two active packages. The console depends only on the local core; neither package has a third-party Rust dependency. Keep the lockfile committed for reproducible application builds. CI/build/test/lint use `--locked` so unexpected lock changes fail. New dependencies must address the selected task, preserve the library boundary, and receive a license/provenance review; record the reason and update/check the lockfile deliberately. Do not add a frontend, training framework or unused future subsystem here. Packages are `publish = false`; existing notices remain intact and release-licensing decisions remain deferred in the design.
+
+`cargo tree --workspace --locked` shows the current dependency boundary. `cargo metadata --locked --offline --format-version 1 --no-deps` reports the active package/target inventory without scanning or building the preserved prototype. With the pinned toolchain installed, the dependency-free workspace can also build/test with Cargo's `--offline` flag.
+
+The original prototype manifest, lockfile, source, variants and README are preserved byte-for-byte under [legacy/rust-prototype](../legacy/rust-prototype/PRESERVATION.md). `workspace.exclude` intentionally keeps it out of formatting/lint/build/test. The original `main_v2` WIP and C++ `master` remain available in Git. This separation preserves work while avoiding adoption of incomplete rules or console-bound board methods as the new library API. Its compiler failure is recorded, not repaired incidentally; port useful ideas in later bounded tasks with independent tests.
+
+The [Python fixture checker](../tests/fixtures/chess/README.md) is optional research infrastructure outside the Rust dependency graph. The archived prototype's serde/toml dependencies likewise are not active product dependencies.
+
+## CI and evidence
+
+[The workflow](../.github/workflows/rust.yml) runs native `ubuntu-24.04`, `macos-15` and `windows-2022` jobs with the pinned toolchain. It checks formatting, Clippy, tests, build and all three documented console smoke commands. `fail-fast: false` preserves each platform's outcome. Checkout uses the reviewed official action v7.0.1 pinned to commit `3d3c42e5aac5ba805825da76410c181273ba90b1`, read-only repository permissions and no persisted credentials; hosted runners meet its Node 24 runtime requirement.
+
+Pushes to `codex/**` and pull requests targeting `codex/rewrite` trigger the workflow. Ticket-only changes under `backlog/**` are skipped; the last tested code revision remains the relevant evidence. No default branch, repository policy or protection setting is changed to run it.
+
+The MSH-3 task records host/clean-checkout commands, independent review and the actual workflow URL, revision, runner information and outcome per platform. A configured matrix is not a passed run. This task's native results establish scaffold build/test/smoke behavior only; complete M1 rules and packaged desktop evidence remain obligations of later tasks, especially MSH-14 and M3.
+
+References: [Cargo workspaces](https://doc.rust-lang.org/cargo/reference/workspaces.html), [rustup toolchain selection](https://rust-lang.github.io/rustup/overrides.html#the-toolchain-file), [Rust 1.89.0 stable release](https://blog.rust-lang.org/2025/08/07/Rust-1.89.0/).

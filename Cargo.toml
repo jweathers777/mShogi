@@ -1,10 +1,14 @@
-[package]
-name = "mshogi"
+[workspace]
+members = ["crates/mshogi-core", "crates/mshogi-console"]
+exclude = ["legacy/rust-prototype"]
+resolver = "3"
+
+[workspace.package]
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
+rust-version = "1.89"
+publish = false
 
-[dependencies]
-serde = { version = "1.0", features = ["derive"] }
-toml = "0.7"
-
-[dev-dependencies]
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"

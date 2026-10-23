@@ -1,6 +1,6 @@
 # Chess coverage ledger
 
-Contract: [`mshogi.chess.position.v1`](chess-position-v1.md). Updated by MSH-2 on 2026-10-23. **Specified** means required of future work, not implemented or verified by the current prototype. No M1 product behavior is certified by MSH-2.
+Contract: [`mshogi.chess.position.v1`](chess-position-v1.md). Established by MSH-2 on 2026-10-23; MSH-3 adds the workspace verification reference. **Specified** means required of future work, not implemented or verified by the current prototype. No M1 product behavior is certified by MSH-2.
 
 | Obligation | M1 commitment / present state | Owner / follow-up |
 | --- | --- | --- |
@@ -12,7 +12,7 @@ Contract: [`mshogi.chess.position.v1`](chess-position-v1.md). Updated by MSH-2 o
 | Perft/divide and inspection console | Specified; six reference positions with depth 0..3 expectations plus terminal cases | MSH-10, MSH-11 |
 | State properties, fuzzing/sequence/differential checks | Curated oracle comparison only; product sequence verification not run | MSH-12; focused tests begin in earlier implementation tasks |
 | Broader complete-action semantics | Chess adapter does not establish compound-action support | MSH-13, then MSH-14 review |
-| All three desktop operating systems | No product build/test/smoke evidence in MSH-2 | MSH-3 CI; MSH-14 requires actual platform evidence |
+| All three desktop operating systems | Workspace scaffold build/test/smoke evidence is recorded in MSH-3; it does not certify chess rules or packaged desktop behavior | MSH-3 CI; MSH-14 requires actual rules/platform evidence |
 | Dead position (FIDE 5.2.2) | Deferred beyond M1: impossibility of mate by **any** legal sequence is the obligation, not just a material heuristic | M2 match-semantics refinement before claiming complete chess |
 | Resignation and its possible-mate exception (5.1.2) | Deferred; match command, not board action | M2 match-semantics refinement |
 | Agreed draws (5.2.3, 9.1) | Deferred; event restrictions and offer/accept state are outside position classification | M2 match-semantics refinement |

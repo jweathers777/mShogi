@@ -1,0 +1,47 @@
+name: Rust workspace
+
+on:
+  push:
+    branches: ["codex/**"]
+    paths-ignore: ["backlog/**"]
+  pull_request:
+    branches: ["codex/rewrite"]
+    paths-ignore: ["backlog/**"]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Rust (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-15, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install and identify the pinned toolchain
+        run: |
+          rustup show
+          rustc --version --verbose
+          cargo --version
+      - name: Format
+        run: cargo fmt --all -- --check
+      - name: Lint
+        run: cargo clippy --workspace --all-targets --locked -- -D warnings
+      - name: Test
+        run: cargo test --workspace --locked
+      - name: Build
+        run: cargo build --workspace --locked
+      - name: Console smoke
+        run: |
+          cargo run --locked --bin mshogi -- --help
+          cargo run --locked --bin mshogi -- --version
+          cargo run --locked --bin mshogi -- profile

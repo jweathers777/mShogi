@@ -1,11 +1,11 @@
 ---
 id: MSH-9
 title: Complete legal move generation and position-level terminal classification
-status: In Review
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-22T13:27:00Z'
-updated_date: '2026-10-23T18:25:00Z'
+updated_date: '2026-10-23T18:26:00Z'
 labels:
   - rules
   - legality
@@ -46,19 +46,19 @@ Calling limited material checks complete dead-position adjudication, full draw c
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 The public legal-action API returns exactly the expected legal set on the selected independent corpus.
-- [ ] #2 Pins, discovered attacks, single/double check, king safety, and special-action edge cases are covered.
-- [ ] #3 Check, checkmate, and stalemate are unambiguous and match independent fixtures.
-- [ ] #4 The coverage ledger clearly identifies remaining draw/history/match obligations instead of reporting complete chess.
-- [ ] #5 Applying a public legal action and rejecting an illegal one obey the transition and restoration contracts.
+- [x] #1 The public legal-action API returns exactly the expected legal set on the selected independent corpus.
+- [x] #2 Pins, discovered attacks, single/double check, king safety, and special-action edge cases are covered.
+- [x] #3 Check, checkmate, and stalemate are unambiguous and match independent fixtures.
+- [x] #4 The coverage ledger clearly identifies remaining draw/history/match obligations instead of reporting complete chess.
+- [x] #5 Applying a public legal action and rejecting an illegal one obey the transition and restoration contracts.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -137,4 +137,36 @@ Existing MSH-5 counter_overflow_cannot_publish_any_piece_right_or_ep_effect stil
 MSH-10: added AC #6 that perft/divide must never silently skip legal branches or treat counter overflow as a terminal leaf, and must traverse independently of counters irrelevant to move generation or report an explicit error. Implementation is left to MSH-10.
 
 Reruns PASS (macOS arm64, rustc 1.89.0): cargo test -p mshogi-core --test legal_actions --locked (9/9); fmt; clippy -D warnings; cargo test --workspace --locked (5 CLI + 4 attacks + 8 FEN + 9 legal + 6 ordinary + 5 candidates + 6 special + 5 doctests); rustdoc -D warnings; whitespace diff check. Earlier reviewer evidence (33,569-position probe including counter-limit variants, 0 mismatches) still applies; the changes since are tests and documentation only.
+
+Integration and native verification (2026-10-23): implementation 1628b01 and approval follow-up 05a76583b212580bbe40f58069b36965883f8a72 committed on claude/next-task and fast-forward pushed to origin codex/rewrite (b64093d..05a7658) after the owner's approval. No force push, PR, default-branch or settings change.
+
+Actual native CI PASS for exact head 05a7658: https://github.com/jweathers777/mShogi/actions/runs/40003189442. All three jobs succeeded on rustc 1.89.0:
+- Rust (ubuntu-24.04), job 120584330349, x86_64-unknown-linux-gnu
+- Rust (macos-15), job 120584330263, aarch64-apple-darwin
+- Rust (windows-2022), job 120584330043, x86_64-pc-windows-msvc
+Each job passed 4 attacks, 8 FEN, 9 legal, 6 ordinary, 5 candidate and 6 special tests plus 5 doctests. CLI tests: 5 on Linux/macOS, 4 applicable on Windows. Console smoke reports legal actions and check/mate/stalemate with no perft or game adjudication.
+
+Next eligible: MSH-10 (perft/divide, with the owner's AC #6) and MSH-13. No subsequent task started.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Added Position::legal_actions(), in_check() and classify() -> Classification {Quiet, Check, Checkmate, Stalemate}.
+- legal_actions() is candidates() filtered by the checked apply on a private copy with normalized counters. It covers every legal ordinary move, capture, promotion choice, castling and en passant, after king safety.
+- classify() follows the profile's (in_check, has_legal_action) rule and is documented as the limited M1 position-level classifier, not game adjudication. The coverage ledger keeps dead position, repetition, 50/75-move, agreed draws, claims, resignation and clocks open.
+
+Owner-approved decision (John, 2026-10-23): legality is independent of the u32 counter domain. CounterOverflow is a representation failure, not illegality, and leaves the whole position unchanged. Positions that differ only in counters have identical legal sets and classifications; the profile wording was updated accordingly.
+
+Verification:
+- Exact legal sets and classifications for all 35 corpus positions (all four classes).
+- New fixture family mshogi.chess.classification.v1: 8 hand-curated diagrams confirmed by pinned python-chess 1.11.2, with a verify-only checker.
+- Legal sets for the 21 special-action positions.
+- Per position: every legal action applies and undoes exactly, and every other bounded action is rejected atomically.
+- Counter-variant invariance over 276 variants with 1,659 predicted atomic overflows; a focused overflow matrix across both counters, both sides and pawn, capture, quiet, castling and EP actions; no false mate or stalemate from overflow.
+- Mutation check catches all injected faults.
+- Independent review found no correctness defects. Its 33,569-position differential probe, including counter-limit variants, had 0 mismatches; its findings were resolved and the owner approved the contract point.
+- Native Linux/macOS/Windows CI run 40003189442 passed for 05a7658 on codex/rewrite.
+
+Follow-up: MSH-10 has a new AC #6 requiring perft/divide never to skip legal branches or treat counter overflow as a terminal leaf.
+<!-- SECTION:FINAL_SUMMARY:END -->

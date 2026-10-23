@@ -98,3 +98,16 @@ cargo test -p mshogi-core --test attacks --locked
 ```
 
 The second, optional command uses the separately installed environment described above; it verifies the committed answers and never rewrites them.
+
+## Ordinary candidate fixture family
+
+MSH-7 adds [ordinary-candidates.json](ordinary-candidates.json), a separate family named `mshogi.chess.ordinary-candidates.v1` with `schema_version: 1`. Each case has a stable ID, the exact rules-profile ID, a canonical `fen`, coverage `tags`, the sorted unique `candidates` (pseudo-legal ordinary actions in the coordinate test adapter, castling and en passant excluded), the sorted `legal_ordinary` subset, the `hand_expectations` written before oracle enumeration (candidate count, required and excluded actions, legal-ordinary count) and source/method/rationale provenance. Compare entire sets; order is irrelevant.
+
+There are 17 positions, 274 exact candidates and 241 legal ordinary actions. Diagrams cover both initial sides, blocked single and double pawn advances of both colors, edge pawn captures, quiet/capturing/blocked promotions of both colors with all four choices, corner knights, bishop and queen, slider blockers and captures, pinned pieces and sides in check of both colors, and positions where en passant or castling is legal but excluded.
+
+For each case the diagram, candidate count, required and excluded actions and legal-ordinary count were first written by hand from the rationale. The pinned `chess==1.11.2` `generate_pseudo_legal_moves` and `legal_moves`, minus `is_castling`/`is_en_passant`, then enumerated the exact sets and had to agree with every hand expectation. The stored hand expectations are rechecked by the Rust suite and the oracle checker. Two hand legal-ordinary counts were miscounted at first. In `pawn-edge-captures` only e1f2 is unsafe (the b3 pawn attacks a2/c2, not d2), and in `corner-bishop-and-queen` every king step is safe. Both were rechecked by hand against the board and corrected; no mShogi output was consulted. Agreement with one oracle remains bounded evidence.
+
+```sh
+cargo test -p mshogi-core --test ordinary_candidates --locked
+/tmp/mshogi-chess-oracle/bin/python tools/check_chess_ordinary_candidates.py
+```

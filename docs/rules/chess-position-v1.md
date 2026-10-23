@@ -84,3 +84,18 @@ Semantics, per FIDE Articles 3.2 to 3.8 and this profile:
 Legality tasks evaluate attacks on the position **after** all effects of a candidate action. In particular a king stepping along a checking line, castling transit and an en passant capture that clears two squares from a rank each need the post-action occupancy; querying the pre-action board answers a different question. No incremental attack table, bitboard or cache is maintained.
 
 The separate fixture family [attacks.json](../../tests/fixtures/chess/attacks.json), format `mshogi.chess.attacks.v1`, has 29 curated diagrams with 155 exact attacker sets and complete attacked-square maps of both colors. These verify attack queries only. They do not establish legal move generation, castling/en passant execution, check classification or the larger games.
+
+## Rust ordinary candidate API
+
+MSH-7 adds `Position::ordinary_candidates()`, returning a `Vec<Action>` for the side to move. These are **pseudo-legal ordinary candidates, not legal moves**. MSH-9 owns the public legal-action list and classification; MSH-8 owns castling and en passant generation.
+
+The set contains every ordinary piece move or capture, pawn single advance, pawn double advance from the home rank through an empty square, and diagonal pawn capture of an opponent piece. Every last-rank pawn destination appears as four distinct actions, one for each of queen, rook, bishop and knight; a last-rank action without a choice never appears. Movement shape, own-piece blocking, slider rays up to the first occupied square, board edges and destination occupancy are already correct. Castling, en passant, own-piece captures and king captures are never included, and there are no duplicates. Order is deterministic but unspecified and is not a search ordering.
+
+Candidates are **not** filtered for the moving side's king safety or counter bounds. A pinned piece's moves, king steps onto attacked squares and moves that ignore a check are all candidates. The contract with the checked boundary is exact:
+
+- every candidate is either accepted by `apply_ordinary` or rejected only as `IllegalPosition` (the moving king would be unsafe) or `CounterOverflow`;
+- `apply_ordinary` accepts no action outside the candidate set.
+
+Final filtering must therefore still establish own-king safety after all effects and counter bounds, and add the special actions, before any set is called legal.
+
+The separate fixture family [ordinary-candidates.json](../../tests/fixtures/chess/ordinary-candidates.json), format `mshogi.chess.ordinary-candidates.v1`, has 17 curated positions with exact candidate sets (274 actions) and exact legal ordinary subsets (241 actions). Tests also check every bounded action shape against this contract on those positions and on the 35 corpus positions. They do not establish castling, en passant, the full legal-move list, perft or classification.

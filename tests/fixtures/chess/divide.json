@@ -1,0 +1,1571 @@
+{
+  "format": "mshogi.chess.divide.v1",
+  "schema_version": 1,
+  "rules_profile": "mshogi.chess.position.v1",
+  "sources": {
+    "profile-v1": {
+      "url": "../../../docs/rules/chess-position-v1.md",
+      "version": "mshogi.chess.position.v1",
+      "retrieved": "2026-10-23",
+      "note": "Perft/divide semantics, ordering and counter-independent traversal."
+    },
+    "python-chess-1.11.2": {
+      "url": "https://github.com/niklasf/python-chess/tree/v1.11.2",
+      "version": "PyPI chess==1.11.2; chess.__version__ == 1.11.2",
+      "retrieved": "2026-10-23",
+      "sha256": "1fde6a8e932508d14b31f6a584497b49c2969fc3c7cdc675347f819f0d667a5b"
+    },
+    "cpw-perft-results": {
+      "url": "https://www.chessprogramming.org/Perft_Results",
+      "version": "Published totals for the start position and positions 2-6",
+      "retrieved": "not retrieved; values recorded by hand and confirmed equal to the oracle totals",
+      "note": "Secondary cross-check only; the oracle enumeration is the expected source."
+    }
+  },
+  "cases": [
+    {
+      "id": "initial-d3",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "depth": 3,
+      "deep": false,
+      "divide": [
+        {
+          "action": "b1a3",
+          "nodes": 400
+        },
+        {
+          "action": "b1c3",
+          "nodes": 440
+        },
+        {
+          "action": "g1f3",
+          "nodes": 440
+        },
+        {
+          "action": "g1h3",
+          "nodes": 400
+        },
+        {
+          "action": "a2a3",
+          "nodes": 380
+        },
+        {
+          "action": "a2a4",
+          "nodes": 420
+        },
+        {
+          "action": "b2b3",
+          "nodes": 420
+        },
+        {
+          "action": "b2b4",
+          "nodes": 421
+        },
+        {
+          "action": "c2c3",
+          "nodes": 420
+        },
+        {
+          "action": "c2c4",
+          "nodes": 441
+        },
+        {
+          "action": "d2d3",
+          "nodes": 539
+        },
+        {
+          "action": "d2d4",
+          "nodes": 560
+        },
+        {
+          "action": "e2e3",
+          "nodes": 599
+        },
+        {
+          "action": "e2e4",
+          "nodes": 600
+        },
+        {
+          "action": "f2f3",
+          "nodes": 380
+        },
+        {
+          "action": "f2f4",
+          "nodes": 401
+        },
+        {
+          "action": "g2g3",
+          "nodes": 420
+        },
+        {
+          "action": "g2g4",
+          "nodes": 421
+        },
+        {
+          "action": "h2h3",
+          "nodes": 380
+        },
+        {
+          "action": "h2h4",
+          "nodes": 420
+        }
+      ],
+      "total": 8902,
+      "provenance": {
+        "sources": [
+          "profile-v1",
+          "python-chess-1.11.2",
+          "cpw-perft-results"
+        ],
+        "method": "Per-root counts enumerated with chess==1.11.2 legal_moves/push/pop (no mShogi output); entries ordered by source a1..h8, destination, promotion none/q/r/b/n. Total also equals the hand-recorded published Chess Programming Wiki value.",
+        "rationale": "Standard start; ordinary moves and double advances."
+      }
+    },
+    {
+      "id": "kiwipete-d3",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1",
+      "depth": 3,
+      "deep": false,
+      "divide": [
+        {
+          "action": "a1b1",
+          "nodes": 1969
+        },
+        {
+          "action": "a1c1",
+          "nodes": 1968
+        },
+        {
+          "action": "a1d1",
+          "nodes": 1885
+        },
+        {
+          "action": "e1c1",
+          "nodes": 1887
+        },
+        {
+          "action": "e1d1",
+          "nodes": 1894
+        },
+        {
+          "action": "e1f1",
+          "nodes": 1855
+        },
+        {
+          "action": "e1g1",
+          "nodes": 2059
+        },
+        {
+          "action": "h1f1",
+          "nodes": 1929
+        },
+        {
+          "action": "h1g1",
+          "nodes": 2013
+        },
+        {
+          "action": "a2a3",
+          "nodes": 2186
+        },
+        {
+          "action": "a2a4",
+          "nodes": 2149
+        },
+        {
+          "action": "b2b3",
+          "nodes": 1964
+        },
+        {
+          "action": "d2c1",
+          "nodes": 1963
+        },
+        {
+          "action": "d2e3",
+          "nodes": 2136
+        },
+        {
+          "action": "d2f4",
+          "nodes": 2000
+        },
+        {
+          "action": "d2g5",
+          "nodes": 2134
+        },
+        {
+          "action": "d2h6",
+          "nodes": 2019
+        },
+        {
+          "action": "e2d1",
+          "nodes": 1733
+        },
+        {
+          "action": "e2f1",
+          "nodes": 2060
+        },
+        {
+          "action": "e2d3",
+          "nodes": 2050
+        },
+        {
+          "action": "e2c4",
+          "nodes": 2082
+        },
+        {
+          "action": "e2b5",
+          "nodes": 2057
+        },
+        {
+          "action": "e2a6",
+          "nodes": 1907
+        },
+        {
+          "action": "g2g3",
+          "nodes": 1882
+        },
+        {
+          "action": "g2h3",
+          "nodes": 1970
+        },
+        {
+          "action": "g2g4",
+          "nodes": 1843
+        },
+        {
+          "action": "c3b1",
+          "nodes": 2038
+        },
+        {
+          "action": "c3d1",
+          "nodes": 2040
+        },
+        {
+          "action": "c3a4",
+          "nodes": 2203
+        },
+        {
+          "action": "c3b5",
+          "nodes": 2138
+        },
+        {
+          "action": "f3d3",
+          "nodes": 2005
+        },
+        {
+          "action": "f3e3",
+          "nodes": 2174
+        },
+        {
+          "action": "f3g3",
+          "nodes": 2214
+        },
+        {
+          "action": "f3h3",
+          "nodes": 2360
+        },
+        {
+          "action": "f3f4",
+          "nodes": 2132
+        },
+        {
+          "action": "f3g4",
+          "nodes": 2169
+        },
+        {
+          "action": "f3f5",
+          "nodes": 2396
+        },
+        {
+          "action": "f3h5",
+          "nodes": 2267
+        },
+        {
+          "action": "f3f6",
+          "nodes": 2111
+        },
+        {
+          "action": "d5d6",
+          "nodes": 1991
+        },
+        {
+          "action": "d5e6",
+          "nodes": 2241
+        },
+        {
+          "action": "e5d3",
+          "nodes": 1803
+        },
+        {
+          "action": "e5c4",
+          "nodes": 1880
+        },
+        {
+          "action": "e5g4",
+          "nodes": 1878
+        },
+        {
+          "action": "e5c6",
+          "nodes": 2027
+        },
+        {
+          "action": "e5g6",
+          "nodes": 1997
+        },
+        {
+          "action": "e5d7",
+          "nodes": 2124
+        },
+        {
+          "action": "e5f7",
+          "nodes": 2080
+        }
+      ],
+      "total": 97862,
+      "provenance": {
+        "sources": [
+          "profile-v1",
+          "python-chess-1.11.2",
+          "cpw-perft-results"
+        ],
+        "method": "Per-root counts enumerated with chess==1.11.2 legal_moves/push/pop (no mShogi output); entries ordered by source a1..h8, destination, promotion none/q/r/b/n. Total also equals the hand-recorded published Chess Programming Wiki value.",
+        "rationale": "Kiwipete: castling, en passant, promotions, pins."
+      }
+    },
+    {
+      "id": "rook-pawn-endgame-d3",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1",
+      "depth": 3,
+      "deep": false,
+      "divide": [
+        {
+          "action": "e2e3",
+          "nodes": 205
+        },
+        {
+          "action": "e2e4",
+          "nodes": 177
+        },
+        {
+          "action": "g2g3",
+          "nodes": 54
+        },
+        {
+          "action": "g2g4",
+          "nodes": 226
+        },
+        {
+          "action": "b4b1",
+          "nodes": 265
+        },
+        {
+          "action": "b4b2",
+          "nodes": 205
+        },
+        {
+          "action": "b4b3",
+          "nodes": 248
+        },
+        {
+          "action": "b4a4",
+          "nodes": 202
+        },
+        {
+          "action": "b4c4",
+          "nodes": 254
+        },
+        {
+          "action": "b4d4",
+          "nodes": 243
+        },
+        {
+          "action": "b4e4",
+          "nodes": 228
+        },
+        {
+          "action": "b4f4",
+          "nodes": 41
+        },
+        {
+          "action": "a5a4",
+          "nodes": 224
+        },
+        {
+          "action": "a5a6",
+          "nodes": 240
+        }
+      ],
+      "total": 2812,
+      "provenance": {
+        "sources": [
+          "profile-v1",
+          "python-chess-1.11.2",
+          "cpw-perft-results"
+        ],
+        "method": "Per-root counts enumerated with chess==1.11.2 legal_moves/push/pop (no mShogi output); entries ordered by source a1..h8, destination, promotion none/q/r/b/n. Total also equals the hand-recorded published Chess Programming Wiki value.",
+        "rationale": "Perft position 3: en passant discovered-check traps."
+      }
+    },
+    {
+      "id": "promotion-castling-d3",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 1",
+      "depth": 3,
+      "deep": false,
+      "divide": [
+        {
+          "action": "f1f2",
+          "nodes": 1623
+        },
+        {
+          "action": "g1h1",
+          "nodes": 1753
+        },
+        {
+          "action": "d2d4",
+          "nodes": 1643
+        },
+        {
+          "action": "f3d4",
+          "nodes": 1687
+        },
+        {
+          "action": "b4c5",
+          "nodes": 1352
+        },
+        {
+          "action": "c4c5",
+          "nodes": 1409
+        }
+      ],
+      "total": 9467,
+      "provenance": {
+        "sources": [
+          "profile-v1",
+          "python-chess-1.11.2",
+          "cpw-perft-results"
+        ],
+        "method": "Per-root counts enumerated with chess==1.11.2 legal_moves/push/pop (no mShogi output); entries ordered by source a1..h8, destination, promotion none/q/r/b/n. Total also equals the hand-recorded published Chess Programming Wiki value.",
+        "rationale": "Perft position 4: promotions, checks and black castling."
+      }
+    },
+    {
+      "id": "tactical-d3",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8",
+      "depth": 3,
+      "deep": false,
+      "divide": [
+        {
+          "action": "b1d2",
+          "nodes": 1174
+        },
+        {
+          "action": "b1a3",
+          "nodes": 1303
+        },
+        {
+          "action": "b1c3",
+          "nodes": 1467
+        },
+        {
+          "action": "c1d2",
+          "nodes": 1368
+        },
+        {
+          "action": "c1e3",
+          "nodes": 1587
+        },
+        {
+          "action": "c1f4",
+          "nodes": 1552
+        },
+        {
+          "action": "c1g5",
+          "nodes": 1422
+        },
+        {
+          "action": "c1h6",
+          "nodes": 1312
+        },
+        {
+          "action": "d1d2",
+          "nodes": 1436
+        },
+        {
+          "action": "d1d3",
+          "nodes": 1685
+        },
+        {
+          "action": "d1d4",
+          "nodes": 1751
+        },
+        {
+          "action": "d1d5",
+          "nodes": 1688
+        },
+        {
+          "action": "d1d6",
+          "nodes": 1500
+        },
+        {
+          "action": "e1f1",
+          "nodes": 1445
+        },
+        {
+          "action": "e1g1",
+          "nodes": 1376
+        },
+        {
+          "action": "e1d2",
+          "nodes": 978
+        },
+        {
+          "action": "e1f2",
+          "nodes": 1269
+        },
+        {
+          "action": "h1f1",
+          "nodes": 1364
+        },
+        {
+          "action": "h1g1",
+          "nodes": 1311
+        },
+        {
+          "action": "a2a3",
+          "nodes": 1373
+        },
+        {
+          "action": "a2a4",
+          "nodes": 1433
+        },
+        {
+          "action": "b2b3",
+          "nodes": 1368
+        },
+        {
+          "action": "b2b4",
+          "nodes": 1398
+        },
+        {
+          "action": "c2c3",
+          "nodes": 1440
+        },
+        {
+          "action": "e2g1",
+          "nodes": 1431
+        },
+        {
+          "action": "e2c3",
+          "nodes": 1595
+        },
+        {
+          "action": "e2g3",
+          "nodes": 1523
+        },
+        {
+          "action": "e2d4",
+          "nodes": 1554
+        },
+        {
+          "action": "e2f4",
+          "nodes": 1555
+        },
+        {
+          "action": "g2g3",
+          "nodes": 1308
+        },
+        {
+          "action": "g2g4",
+          "nodes": 1337
+        },
+        {
+          "action": "h2h3",
+          "nodes": 1371
+        },
+        {
+          "action": "h2h4",
+          "nodes": 1402
+        },
+        {
+          "action": "c4b3",
+          "nodes": 1275
+        },
+        {
+          "action": "c4d3",
+          "nodes": 1269
+        },
+        {
+          "action": "c4b5",
+          "nodes": 1332
+        },
+        {
+          "action": "c4d5",
+          "nodes": 1375
+        },
+        {
+          "action": "c4a6",
+          "nodes": 1256
+        },
+        {
+          "action": "c4e6",
+          "nodes": 1438
+        },
+        {
+          "action": "c4f7",
+          "nodes": 1328
+        },
+        {
+          "action": "d7c8q",
+          "nodes": 1459
+        },
+        {
+          "action": "d7c8r",
+          "nodes": 1296
+        },
+        {
+          "action": "d7c8b",
+          "nodes": 1668
+        },
+        {
+          "action": "d7c8n",
+          "nodes": 1607
+        }
+      ],
+      "total": 62379,
+      "provenance": {
+        "sources": [
+          "profile-v1",
+          "python-chess-1.11.2",
+          "cpw-perft-results"
+        ],
+        "method": "Per-root counts enumerated with chess==1.11.2 legal_moves/push/pop (no mShogi output); entries ordered by source a1..h8, destination, promotion none/q/r/b/n. Total also equals the hand-recorded published Chess Programming Wiki value.",
+        "rationale": "Perft position 5: promotion with capture, castling rights."
+      }
+    },
+    {
+      "id": "middlegame-d3",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r4rk1/1pp1qppp/p1np1n2/2b1p1B1/2B1P1b1/P1NP1N2/1PP1QPPP/R4RK1 w - - 0 10",
+      "depth": 3,
+      "deep": false,
+      "divide": [
+        {
+          "action": "a1b1",
+          "nodes": 1943
+        },
+        {
+          "action": "a1c1",
+          "nodes": 1899
+        },
+        {
+          "action": "a1d1",
+          "nodes": 1853
+        },
+        {
+          "action": "a1e1",
+          "nodes": 1764
+        },
+        {
+          "action": "a1a2",
+          "nodes": 1854
+        },
+        {
+          "action": "f1b1",
+          "nodes": 1944
+        },
+        {
+          "action": "f1c1",
+          "nodes": 1990
+        },
+        {
+          "action": "f1d1",
+          "nodes": 2034
+        },
+        {
+          "action": "f1e1",
+          "nodes": 2035
+        },
+        {
+          "action": "g1h1",
+          "nodes": 2211
+        },
+        {
+          "action": "b2b3",
+          "nodes": 1943
+        },
+        {
+          "action": "b2b4",
+          "nodes": 2027
+        },
+        {
+          "action": "e2d1",
+          "nodes": 1897
+        },
+        {
+          "action": "e2e1",
+          "nodes": 1944
+        },
+        {
+          "action": "e2d2",
+          "nodes": 2079
+        },
+        {
+          "action": "e2e3",
+          "nodes": 2121
+        },
+        {
+          "action": "g2g3",
+          "nodes": 2075
+        },
+        {
+          "action": "h2h3",
+          "nodes": 2163
+        },
+        {
+          "action": "h2h4",
+          "nodes": 2034
+        },
+        {
+          "action": "a3a4",
+          "nodes": 2076
+        },
+        {
+          "action": "c3b1",
+          "nodes": 1719
+        },
+        {
+          "action": "c3d1",
+          "nodes": 1674
+        },
+        {
+          "action": "c3a2",
+          "nodes": 1897
+        },
+        {
+          "action": "c3a4",
+          "nodes": 1944
+        },
+        {
+          "action": "c3b5",
+          "nodes": 1986
+        },
+        {
+          "action": "c3d5",
+          "nodes": 2030
+        },
+        {
+          "action": "d3d4",
+          "nodes": 2202
+        },
+        {
+          "action": "f3e1",
+          "nodes": 1769
+        },
+        {
+          "action": "f3d2",
+          "nodes": 2002
+        },
+        {
+          "action": "f3d4",
+          "nodes": 2293
+        },
+        {
+          "action": "f3h4",
+          "nodes": 2045
+        },
+        {
+          "action": "f3e5",
+          "nodes": 2403
+        },
+        {
+          "action": "c4a2",
+          "nodes": 1944
+        },
+        {
+          "action": "c4b3",
+          "nodes": 1947
+        },
+        {
+          "action": "c4b5",
+          "nodes": 1915
+        },
+        {
+          "action": "c4d5",
+          "nodes": 1951
+        },
+        {
+          "action": "c4a6",
+          "nodes": 1943
+        },
+        {
+          "action": "c4e6",
+          "nodes": 2093
+        },
+        {
+          "action": "c4f7",
+          "nodes": 165
+        },
+        {
+          "action": "g5c1",
+          "nodes": 1841
+        },
+        {
+          "action": "g5d2",
+          "nodes": 2026
+        },
+        {
+          "action": "g5e3",
+          "nodes": 2114
+        },
+        {
+          "action": "g5f4",
+          "nodes": 2205
+        },
+        {
+          "action": "g5h4",
+          "nodes": 1898
+        },
+        {
+          "action": "g5f6",
+          "nodes": 1933
+        },
+        {
+          "action": "g5h6",
+          "nodes": 2065
+        }
+      ],
+      "total": 89890,
+      "provenance": {
+        "sources": [
+          "profile-v1",
+          "python-chess-1.11.2",
+          "cpw-perft-results"
+        ],
+        "method": "Per-root counts enumerated with chess==1.11.2 legal_moves/push/pop (no mShogi output); entries ordered by source a1..h8, destination, promotion none/q/r/b/n. Total also equals the hand-recorded published Chess Programming Wiki value.",
+        "rationale": "Perft position 6: symmetric middlegame."
+      }
+    },
+    {
+      "id": "both-castles-black-d3",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/8/8/8/R3K2R b KQkq - 0 1",
+      "depth": 3,
+      "deep": false,
+      "divide": [
+        {
+          "action": "a8a1",
+          "nodes": 87
+        },
+        {
+          "action": "a8a2",
+          "nodes": 418
+        },
+        {
+          "action": "a8a3",
+          "nodes": 533
+        },
+        {
+          "action": "a8a4",
+          "nodes": 560
+        },
+        {
+          "action": "a8a5",
+          "nodes": 586
+        },
+        {
+          "action": "a8a6",
+          "nodes": 611
+        },
+        {
+          "action": "a8a7",
+          "nodes": 632
+        },
+        {
+          "action": "a8b8",
+          "nodes": 583
+        },
+        {
+          "action": "a8c8",
+          "nodes": 560
+        },
+        {
+          "action": "a8d8",
+          "nodes": 489
+        },
+        {
+          "action": "e8d7",
+          "nodes": 705
+        },
+        {
+          "action": "e8e7",
+          "nodes": 752
+        },
+        {
+          "action": "e8f7",
+          "nodes": 705
+        },
+        {
+          "action": "e8c8",
+          "nodes": 464
+        },
+        {
+          "action": "e8d8",
+          "nodes": 492
+        },
+        {
+          "action": "e8f8",
+          "nodes": 492
+        },
+        {
+          "action": "e8g8",
+          "nodes": 470
+        },
+        {
+          "action": "h8h1",
+          "nodes": 90
+        },
+        {
+          "action": "h8h2",
+          "nodes": 434
+        },
+        {
+          "action": "h8h3",
+          "nodes": 553
+        },
+        {
+          "action": "h8h4",
+          "nodes": 581
+        },
+        {
+          "action": "h8h5",
+          "nodes": 608
+        },
+        {
+          "action": "h8h6",
+          "nodes": 634
+        },
+        {
+          "action": "h8h7",
+          "nodes": 656
+        },
+        {
+          "action": "h8f8",
+          "nodes": 489
+        },
+        {
+          "action": "h8g8",
+          "nodes": 560
+        }
+      ],
+      "total": 13744,
+      "provenance": {
+        "sources": [
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Per-root counts enumerated with chess==1.11.2 legal_moves/push/pop (no mShogi output); entries ordered by source a1..h8, destination, promotion none/q/r/b/n.",
+        "rationale": "Black to move with all castling rights; exercises rights loss down the tree."
+      }
+    },
+    {
+      "id": "ep-discovered-d3",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "7k/8/8/r4pPK/8/8/8/8 w - f6 0 2",
+      "depth": 3,
+      "deep": false,
+      "divide": [
+        {
+          "action": "g5g6",
+          "nodes": 52
+        },
+        {
+          "action": "h5h4",
+          "nodes": 57
+        },
+        {
+          "action": "h5g6",
+          "nodes": 55
+        },
+        {
+          "action": "h5h6",
+          "nodes": 38
+        }
+      ],
+      "total": 202,
+      "provenance": {
+        "sources": [
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Per-root counts enumerated with chess==1.11.2 legal_moves/push/pop (no mShogi output); entries ordered by source a1..h8, destination, promotion none/q/r/b/n.",
+        "rationale": "Illegal en passant at the root; later double pushes create new targets."
+      }
+    },
+    {
+      "id": "promotions-d2",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "1n2k2r/P6P/8/8/8/8/8/4K3 w k - 0 1",
+      "depth": 2,
+      "deep": false,
+      "divide": [
+        {
+          "action": "e1d1",
+          "nodes": 11
+        },
+        {
+          "action": "e1f1",
+          "nodes": 11
+        },
+        {
+          "action": "e1d2",
+          "nodes": 11
+        },
+        {
+          "action": "e1e2",
+          "nodes": 11
+        },
+        {
+          "action": "e1f2",
+          "nodes": 11
+        },
+        {
+          "action": "a7a8q",
+          "nodes": 8
+        },
+        {
+          "action": "a7a8r",
+          "nodes": 8
+        },
+        {
+          "action": "a7a8b",
+          "nodes": 11
+        },
+        {
+          "action": "a7a8n",
+          "nodes": 11
+        },
+        {
+          "action": "a7b8q",
+          "nodes": 3
+        },
+        {
+          "action": "a7b8r",
+          "nodes": 3
+        },
+        {
+          "action": "a7b8b",
+          "nodes": 8
+        },
+        {
+          "action": "a7b8n",
+          "nodes": 7
+        }
+      ],
+      "total": 114,
+      "provenance": {
+        "sources": [
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Per-root counts enumerated with chess==1.11.2 legal_moves/push/pop (no mShogi output); entries ordered by source a1..h8, destination, promotion none/q/r/b/n.",
+        "rationale": "Every promotion choice is a separate root entry."
+      }
+    },
+    {
+      "id": "checkmate-d1",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "7k/6Q1/5K2/8/8/8/8/8 b - - 0 1",
+      "depth": 1,
+      "deep": false,
+      "divide": [],
+      "total": 0,
+      "provenance": {
+        "sources": [
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Per-root counts enumerated with chess==1.11.2 legal_moves/push/pop (no mShogi output); entries ordered by source a1..h8, destination, promotion none/q/r/b/n.",
+        "rationale": "No legal root action: the divide is empty and the total is 0."
+      }
+    },
+    {
+      "id": "counter-limit-d3",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 4294967295 4294967295",
+      "depth": 3,
+      "deep": false,
+      "divide": [
+        {
+          "action": "a1b1",
+          "nodes": 583
+        },
+        {
+          "action": "a1c1",
+          "nodes": 560
+        },
+        {
+          "action": "a1d1",
+          "nodes": 489
+        },
+        {
+          "action": "a1a2",
+          "nodes": 632
+        },
+        {
+          "action": "a1a3",
+          "nodes": 611
+        },
+        {
+          "action": "a1a4",
+          "nodes": 586
+        },
+        {
+          "action": "a1a5",
+          "nodes": 560
+        },
+        {
+          "action": "a1a6",
+          "nodes": 533
+        },
+        {
+          "action": "a1a7",
+          "nodes": 418
+        },
+        {
+          "action": "a1a8",
+          "nodes": 87
+        },
+        {
+          "action": "e1c1",
+          "nodes": 464
+        },
+        {
+          "action": "e1d1",
+          "nodes": 492
+        },
+        {
+          "action": "e1f1",
+          "nodes": 492
+        },
+        {
+          "action": "e1g1",
+          "nodes": 470
+        },
+        {
+          "action": "e1d2",
+          "nodes": 705
+        },
+        {
+          "action": "e1e2",
+          "nodes": 752
+        },
+        {
+          "action": "e1f2",
+          "nodes": 705
+        },
+        {
+          "action": "h1f1",
+          "nodes": 489
+        },
+        {
+          "action": "h1g1",
+          "nodes": 560
+        },
+        {
+          "action": "h1h2",
+          "nodes": 656
+        },
+        {
+          "action": "h1h3",
+          "nodes": 634
+        },
+        {
+          "action": "h1h4",
+          "nodes": 608
+        },
+        {
+          "action": "h1h5",
+          "nodes": 581
+        },
+        {
+          "action": "h1h6",
+          "nodes": 553
+        },
+        {
+          "action": "h1h7",
+          "nodes": 434
+        },
+        {
+          "action": "h1h8",
+          "nodes": 90
+        }
+      ],
+      "total": 13744,
+      "provenance": {
+        "sources": [
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Per-root counts enumerated with chess==1.11.2 legal_moves/push/pop (no mShogi output); entries ordered by source a1..h8, destination, promotion none/q/r/b/n.",
+        "rationale": "Owner requirement: counters at the u32 limit do not limit traversal; same tree as ordinary counters."
+      }
+    },
+    {
+      "id": "initial-d4",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "depth": 4,
+      "deep": true,
+      "divide": [
+        {
+          "action": "b1a3",
+          "nodes": 8885
+        },
+        {
+          "action": "b1c3",
+          "nodes": 9755
+        },
+        {
+          "action": "g1f3",
+          "nodes": 9748
+        },
+        {
+          "action": "g1h3",
+          "nodes": 8881
+        },
+        {
+          "action": "a2a3",
+          "nodes": 8457
+        },
+        {
+          "action": "a2a4",
+          "nodes": 9329
+        },
+        {
+          "action": "b2b3",
+          "nodes": 9345
+        },
+        {
+          "action": "b2b4",
+          "nodes": 9332
+        },
+        {
+          "action": "c2c3",
+          "nodes": 9272
+        },
+        {
+          "action": "c2c4",
+          "nodes": 9744
+        },
+        {
+          "action": "d2d3",
+          "nodes": 11959
+        },
+        {
+          "action": "d2d4",
+          "nodes": 12435
+        },
+        {
+          "action": "e2e3",
+          "nodes": 13134
+        },
+        {
+          "action": "e2e4",
+          "nodes": 13160
+        },
+        {
+          "action": "f2f3",
+          "nodes": 8457
+        },
+        {
+          "action": "f2f4",
+          "nodes": 8929
+        },
+        {
+          "action": "g2g3",
+          "nodes": 9345
+        },
+        {
+          "action": "g2g4",
+          "nodes": 9328
+        },
+        {
+          "action": "h2h3",
+          "nodes": 8457
+        },
+        {
+          "action": "h2h4",
+          "nodes": 9329
+        }
+      ],
+      "total": 197281,
+      "provenance": {
+        "sources": [
+          "profile-v1",
+          "python-chess-1.11.2",
+          "cpw-perft-results"
+        ],
+        "method": "Per-root counts enumerated with chess==1.11.2 legal_moves/push/pop (no mShogi output); entries ordered by source a1..h8, destination, promotion none/q/r/b/n. Total also equals the hand-recorded published Chess Programming Wiki value.",
+        "rationale": "Deeper standard-start check."
+      }
+    },
+    {
+      "id": "kiwipete-d4",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1",
+      "depth": 4,
+      "deep": true,
+      "divide": [
+        {
+          "action": "a1b1",
+          "nodes": 83348
+        },
+        {
+          "action": "a1c1",
+          "nodes": 83263
+        },
+        {
+          "action": "a1d1",
+          "nodes": 79695
+        },
+        {
+          "action": "e1c1",
+          "nodes": 79803
+        },
+        {
+          "action": "e1d1",
+          "nodes": 79989
+        },
+        {
+          "action": "e1f1",
+          "nodes": 77887
+        },
+        {
+          "action": "e1g1",
+          "nodes": 86975
+        },
+        {
+          "action": "h1f1",
+          "nodes": 81563
+        },
+        {
+          "action": "h1g1",
+          "nodes": 84876
+        },
+        {
+          "action": "a2a3",
+          "nodes": 94405
+        },
+        {
+          "action": "a2a4",
+          "nodes": 90978
+        },
+        {
+          "action": "b2b3",
+          "nodes": 81066
+        },
+        {
+          "action": "d2c1",
+          "nodes": 83037
+        },
+        {
+          "action": "d2e3",
+          "nodes": 90274
+        },
+        {
+          "action": "d2f4",
+          "nodes": 84869
+        },
+        {
+          "action": "d2g5",
+          "nodes": 87951
+        },
+        {
+          "action": "d2h6",
+          "nodes": 82323
+        },
+        {
+          "action": "e2d1",
+          "nodes": 74963
+        },
+        {
+          "action": "e2f1",
+          "nodes": 88728
+        },
+        {
+          "action": "e2d3",
+          "nodes": 85119
+        },
+        {
+          "action": "e2c4",
+          "nodes": 84835
+        },
+        {
+          "action": "e2b5",
+          "nodes": 79739
+        },
+        {
+          "action": "e2a6",
+          "nodes": 69334
+        },
+        {
+          "action": "g2g3",
+          "nodes": 77468
+        },
+        {
+          "action": "g2h3",
+          "nodes": 82759
+        },
+        {
+          "action": "g2g4",
+          "nodes": 75677
+        },
+        {
+          "action": "c3b1",
+          "nodes": 84773
+        },
+        {
+          "action": "c3d1",
+          "nodes": 84782
+        },
+        {
+          "action": "c3a4",
+          "nodes": 91447
+        },
+        {
+          "action": "c3b5",
+          "nodes": 81498
+        },
+        {
+          "action": "f3d3",
+          "nodes": 83727
+        },
+        {
+          "action": "f3e3",
+          "nodes": 92505
+        },
+        {
+          "action": "f3g3",
+          "nodes": 94461
+        },
+        {
+          "action": "f3h3",
+          "nodes": 98524
+        },
+        {
+          "action": "f3f4",
+          "nodes": 90488
+        },
+        {
+          "action": "f3g4",
+          "nodes": 92037
+        },
+        {
+          "action": "f3f5",
+          "nodes": 104992
+        },
+        {
+          "action": "f3h5",
+          "nodes": 95034
+        },
+        {
+          "action": "f3f6",
+          "nodes": 77838
+        },
+        {
+          "action": "d5d6",
+          "nodes": 79551
+        },
+        {
+          "action": "d5e6",
+          "nodes": 97464
+        },
+        {
+          "action": "e5d3",
+          "nodes": 77431
+        },
+        {
+          "action": "e5c4",
+          "nodes": 77752
+        },
+        {
+          "action": "e5g4",
+          "nodes": 79912
+        },
+        {
+          "action": "e5c6",
+          "nodes": 83885
+        },
+        {
+          "action": "e5g6",
+          "nodes": 83866
+        },
+        {
+          "action": "e5d7",
+          "nodes": 93913
+        },
+        {
+          "action": "e5f7",
+          "nodes": 88799
+        }
+      ],
+      "total": 4085603,
+      "provenance": {
+        "sources": [
+          "profile-v1",
+          "python-chess-1.11.2",
+          "cpw-perft-results"
+        ],
+        "method": "Per-root counts enumerated with chess==1.11.2 legal_moves/push/pop (no mShogi output); entries ordered by source a1..h8, destination, promotion none/q/r/b/n. Total also equals the hand-recorded published Chess Programming Wiki value.",
+        "rationale": "Deeper Kiwipete check."
+      }
+    },
+    {
+      "id": "promotion-castling-d4",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 1",
+      "depth": 4,
+      "deep": true,
+      "divide": [
+        {
+          "action": "f1f2",
+          "nodes": 73972
+        },
+        {
+          "action": "g1h1",
+          "nodes": 81638
+        },
+        {
+          "action": "d2d4",
+          "nodes": 72051
+        },
+        {
+          "action": "f3d4",
+          "nodes": 75736
+        },
+        {
+          "action": "b4c5",
+          "nodes": 58167
+        },
+        {
+          "action": "c4c5",
+          "nodes": 60769
+        }
+      ],
+      "total": 422333,
+      "provenance": {
+        "sources": [
+          "profile-v1",
+          "python-chess-1.11.2",
+          "cpw-perft-results"
+        ],
+        "method": "Per-root counts enumerated with chess==1.11.2 legal_moves/push/pop (no mShogi output); entries ordered by source a1..h8, destination, promotion none/q/r/b/n. Total also equals the hand-recorded published Chess Programming Wiki value.",
+        "rationale": "Deeper perft position 4 check."
+      }
+    }
+  ]
+}

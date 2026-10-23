@@ -160,4 +160,35 @@ Evidence:
 - exact legal sets for the 21 special-action positions;
 - for every one of those positions, every listed action applies and undoes exactly (except a `CounterOverflow` rejection at the u32 limit), and every other bounded action is rejected without mutation.
 
-Perft/divide (MSH-10) and console exposure (MSH-11) are separate work. MSH-10 must define perft from a position at the counter limit, where depth-2 counts cannot be reached by applying listed actions; normalizing counters as `legal_actions` does is the consistent choice.
+Perft/divide (MSH-10, below) traverse independently of the counters; console exposure is MSH-11.
+
+## Rust perft and divide API
+
+MSH-10 adds `Position::perft(depth) -> Result<u64, PerftError>` and `Position::divide(depth) -> Result<Vec<DivideEntry>, PerftError>`. These are correctness diagnostics, not search, evaluation or strength measurements.
+
+**Depth semantics.**
+
+- `perft(0)` is 1, even at checkmate or stalemate.
+- At any positive depth, a position with no legal action contributes 0.
+- Every legal action, including each promotion choice, castling and en passant, is a separate branch.
+- Nothing stops early at a draw counter, a repetition or an insufficient-material shortcut.
+- `divide(depth)` needs `depth >= 1` and returns `PerftError::ZeroDivideDepth` otherwise. Each entry is a complete legal root action with `perft(depth - 1)` of its result, and the entries sum to `perft(depth)`.
+- Depth is a `u32`. Cost grows exponentially, so callers choose bounded depths.
+
+**Order.** Divide entries are sorted by source square (a1 to h8, file fastest), then destination square, then promotion (none, queen, rook, bishop, knight). Two divides in this order can be compared entry by entry. Descending into the first root action whose count differs, with `divide(depth - 1)` on the position after it, localizes a disagreement to one branch.
+
+**State and inputs.** Both methods take `&self` and traverse a private copy with `apply`/`undo`, so the caller's complete position is unchanged. Malformed positions cannot reach them: the FEN boundary rejects them first.
+
+**Counters (owner requirement from MSH-9).** Traversal never skips a legal branch and never treats counter overflow as a terminal leaf.
+
+- The private copy's counters are normalized at the root (halfmove 0, fullmove 1). Counters never affect move generation.
+- Along any line of at most `u32::MAX` plies, the halfmove clock stays at or below the depth, and the fullmove number at or below 1 + depth/2. No `CounterOverflow` can therefore occur.
+- So a starting position at the u32 limit gives exactly the same perft and divide as one with ordinary counters.
+- An unexpected `apply` or `undo` failure during traversal is reported as `PerftError::Traversal` or `PerftError::Restore`, never skipped.
+- A total beyond `u64` is reported as `PerftError::CountOverflow`.
+
+**Evidence.**
+
+- The corpus's 38 perft expectations (depths 0 to 3, 11 positions) match exactly.
+- The separate fixture family [divide.json](../../tests/fixtures/chess/divide.json), format `mshogi.chess.divide.v1`, holds 14 complete ordered divides from the pinned oracle. Eleven run in every test pass; three depth-4 divides (initial, Kiwipete, position 4) are ignored by default and run in release with `--ignored`. Nine nonzero totals also equal hand-recorded published values.
+- An opt-in release baseline additionally reproduces three Stockfish sf_17.1 depth-5 totals.

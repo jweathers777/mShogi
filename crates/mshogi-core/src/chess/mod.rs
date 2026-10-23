@@ -15,9 +15,11 @@ mod attack;
 mod fen;
 mod generate;
 mod legal;
+mod perft;
 pub use action::{Action, ActionError, Promotion, Undo, UndoError};
 pub use fen::{FenError, FenErrorCategory};
 pub use legal::Classification;
+pub use perft::{DivideEntry, PerftError};
 
 /// One of the two colors in orthodox chess.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

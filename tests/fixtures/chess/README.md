@@ -1,6 +1,6 @@
 # M1 chess reference corpus
 
-Contract: [`mshogi.chess.position.v1`](../../../docs/rules/chess-position-v1.md). Data format `schema_version: 1`; file [corpus.json](corpus.json). Added by MSH-2, 2026-10-23. This is input and independently expected output for product tests. MSH-4 consumes the FEN contracts and starting states; MSH-6 the attack queries; MSH-9 the exact legal move sets and classifications. Perft expectations await MSH-10.
+Contract: [`mshogi.chess.position.v1`](../../../docs/rules/chess-position-v1.md). Data format `schema_version: 1`; file [corpus.json](corpus.json). Added by MSH-2, 2026-10-23. This is input and independently expected output for product tests. MSH-4 consumes the FEN contracts and starting states; MSH-6 the attack queries; MSH-9 the exact legal move sets and classifications. MSH-10 the perft totals.
 
 ## Format
 
@@ -41,7 +41,7 @@ The product parser suite consumes the unchanged corpus directly:
 cargo test -p mshogi-core --test fen_corpus --locked
 ```
 
-It tests all 33 parser contracts (6 accepted, 27 rejected) and canonical parsing of the other 35 starting positions. This parser suite alone does not verify those positions' legal moves, attacks, classification, perft or apply/undo behavior; the later suites below do, except perft.
+It tests all 33 parser contracts (6 accepted, 27 rejected) and canonical parsing of the other 35 starting positions. This parser suite alone does not verify those positions' legal moves, attacks, classification, perft or apply/undo behavior; the later suites below do.
 
 
 Run from the repository root. Structural verification uses Python 3's standard library only:
@@ -153,3 +153,34 @@ Every hand expectation matched pinned `chess==1.11.2` `legal_moves`/`is_check`/`
 cargo test -p mshogi-core --test legal_actions --locked
 /tmp/mshogi-chess-oracle/bin/python tools/check_chess_classification.py
 ```
+
+## Divide fixture family
+
+MSH-10 adds [divide.json](divide.json), a separate family named `mshogi.chess.divide.v1` with `schema_version: 1`. The corpus's own perft totals are consumed unchanged.
+
+Each case has:
+
+- a stable ID, the exact rules-profile ID and a canonical `fen`;
+- a `depth` of at least 1 and a `deep` flag (true means the Rust test is `#[ignore]`d by default);
+- the complete `divide`: an ordered list of `{ action, nodes }`;
+- the `total`, and provenance.
+
+Entries are in the profile's divide order: source a1 to h8, then destination, then promotion none/q/r/b/n.
+
+There are 14 divides:
+
+- depth 3 for the six reference positions, a Black castling position and a position where en passant is illegal at the root;
+- depth 2 for every promotion choice;
+- depth 1 at checkmate (empty divide, total 0);
+- depth 3 with both counters at the u32 limit, which the owner requires to equal the ordinary-counter tree;
+- depth 4 for the initial position, Kiwipete and position 4.
+
+Every count was enumerated with pinned `chess==1.11.2` `legal_moves`/`push`/`pop`; no mShogi output was used. Nine nonzero totals also equal hand-recorded published Chess Programming Wiki values (listed as an unretrieved secondary cross-check). Perft counts cannot be practically hand-derived, so the oracle enumeration is the expected source, as for the corpus.
+
+```sh
+cargo test -p mshogi-core --test perft --locked
+cargo test --release --locked -p mshogi-core --test perft -- --ignored
+/tmp/mshogi-chess-oracle/bin/python tools/check_chess_divide.py
+```
+
+The checker recounts every root entry, the order and the totals, and never rewrites the file.

@@ -1,0 +1,279 @@
+{
+  "format": "mshogi.chess.classification.v1",
+  "schema_version": 1,
+  "rules_profile": "mshogi.chess.position.v1",
+  "sources": {
+    "fide-2023": {
+      "url": "https://handbook.fide.com/chapter/E012023",
+      "version": "Effective 2023-01-01, approved 2022-08-07/08",
+      "retrieved": "2026-10-23",
+      "sha256": "c5b1692a0614d4bd93fe9238287b9ab7d1f47320934d5df3be113523906c476f"
+    },
+    "profile-v1": {
+      "url": "../../../docs/rules/chess-position-v1.md",
+      "version": "mshogi.chess.position.v1",
+      "retrieved": "2026-10-23",
+      "note": "Position-level (in_check, has_legal_action) classification; legality independent of the u32 counter domain."
+    },
+    "python-chess-1.11.2": {
+      "url": "https://github.com/niklasf/python-chess/tree/v1.11.2",
+      "version": "PyPI chess==1.11.2; chess.__version__ == 1.11.2",
+      "retrieved": "2026-10-23",
+      "sha256": "1fde6a8e932508d14b31f6a584497b49c2969fc3c7cdc675347f819f0d667a5b"
+    }
+  },
+  "cases": [
+    {
+      "id": "black-single-check-king-only",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "4k3/8/8/8/8/8/8/4RK2 b - - 0 1",
+      "tags": [
+        "check",
+        "black",
+        "rook"
+      ],
+      "hand_expectations": {
+        "classification": "check",
+        "legal_count": 4,
+        "required": [
+          "e8d7",
+          "e8d8",
+          "e8f7",
+          "e8f8"
+        ]
+      },
+      "classification": "check",
+      "legal": [
+        "e8d7",
+        "e8d8",
+        "e8f7",
+        "e8f8"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, classification, legal count and required actions hand-curated from the rationale first; chess==1.11.2 legal_moves/is_check/is_checkmate/is_stalemate then confirmed them and enumerated the exact legal set. No mShogi output used.",
+        "rationale": "The e1 rook checks e8 along the open file. e7 stays on the file; d8, d7, f8 and f7 are the four escapes."
+      }
+    },
+    {
+      "id": "black-double-check",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "4k3/8/5N2/8/8/8/8/4R1K1 b - - 0 1",
+      "tags": [
+        "double-check",
+        "black",
+        "knight",
+        "rook"
+      ],
+      "hand_expectations": {
+        "classification": "check",
+        "legal_count": 3,
+        "required": [
+          "e8d8",
+          "e8f7",
+          "e8f8"
+        ]
+      },
+      "classification": "check",
+      "legal": [
+        "e8d8",
+        "e8f7",
+        "e8f8"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, classification, legal count and required actions hand-curated from the rationale first; chess==1.11.2 legal_moves/is_check/is_checkmate/is_stalemate then confirmed them and enumerated the exact legal set. No mShogi output used.",
+        "rationale": "Knight f6 and rook e1 both check e8. Only king moves can answer double check: e7 (rook file) and d7 (knight) are attacked, leaving d8, f8 and f7."
+      }
+    },
+    {
+      "id": "black-smothered-mate",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "6rk/5Npp/8/8/8/8/8/6K1 b - - 0 1",
+      "tags": [
+        "checkmate",
+        "black",
+        "knight",
+        "smothered"
+      ],
+      "hand_expectations": {
+        "classification": "checkmate",
+        "legal_count": 0,
+        "required": []
+      },
+      "classification": "checkmate",
+      "legal": [],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, classification, legal count and required actions hand-curated from the rationale first; chess==1.11.2 legal_moves/is_check/is_checkmate/is_stalemate then confirmed them and enumerated the exact legal set. No mShogi output used.",
+        "rationale": "The f7 knight checks h8; g8, g7 and h7 hold Black's own pieces and nothing can capture f7."
+      }
+    },
+    {
+      "id": "black-mate-by-protected-queen",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "k7/1Q6/2K5/8/8/8/8/8 b - - 0 1",
+      "tags": [
+        "checkmate",
+        "black",
+        "queen",
+        "king-safety"
+      ],
+      "hand_expectations": {
+        "classification": "checkmate",
+        "legal_count": 0,
+        "required": []
+      },
+      "classification": "checkmate",
+      "legal": [],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, classification, legal count and required actions hand-curated from the rationale first; chess==1.11.2 legal_moves/is_check/is_checkmate/is_stalemate then confirmed them and enumerated the exact legal set. No mShogi output used.",
+        "rationale": "The b7 queen checks a8 and is protected by the c6 king, so Kxb7 is illegal; a7, b8 are covered by the queen."
+      }
+    },
+    {
+      "id": "white-back-rank-mate",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "7k/8/8/8/8/8/5PPP/r5K1 w - - 0 1",
+      "tags": [
+        "checkmate",
+        "white",
+        "rook",
+        "back-rank"
+      ],
+      "hand_expectations": {
+        "classification": "checkmate",
+        "legal_count": 0,
+        "required": []
+      },
+      "classification": "checkmate",
+      "legal": [],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, classification, legal count and required actions hand-curated from the rationale first; chess==1.11.2 legal_moves/is_check/is_checkmate/is_stalemate then confirmed them and enumerated the exact legal set. No mShogi output used.",
+        "rationale": "The a1 rook checks g1 along the back rank; f2, g2, h2 hold White's own pawns, f1/h1 stay on the rank, and nothing interposes or captures."
+      }
+    },
+    {
+      "id": "black-stalemate-pinned-knight",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "k7/1nK5/1P6/3B4/8/8/8/8 b - - 0 1",
+      "tags": [
+        "stalemate",
+        "black",
+        "pin"
+      ],
+      "hand_expectations": {
+        "classification": "stalemate",
+        "legal_count": 0,
+        "required": []
+      },
+      "classification": "stalemate",
+      "legal": [],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, classification, legal count and required actions hand-curated from the rationale first; chess==1.11.2 legal_moves/is_check/is_checkmate/is_stalemate then confirmed them and enumerated the exact legal set. No mShogi output used.",
+        "rationale": "Black is not in check. The b7 knight is pinned to a8 by the d5 bishop, a7 is attacked by the b6 pawn and b8 by the c7 king, so Black has no legal action even though the knight has pseudo-legal moves."
+      }
+    },
+    {
+      "id": "black-en-passant-check-evasion",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "8/8/8/4k3/3Pp3/8/8/4K3 b - d3 0 1",
+      "tags": [
+        "check",
+        "black",
+        "en-passant",
+        "check-evasion"
+      ],
+      "hand_expectations": {
+        "classification": "check",
+        "legal_count": 8,
+        "required": [
+          "e4d3",
+          "e5d4",
+          "e5f4"
+        ]
+      },
+      "classification": "check",
+      "legal": [
+        "e4d3",
+        "e5d4",
+        "e5d5",
+        "e5d6",
+        "e5e6",
+        "e5f4",
+        "e5f5",
+        "e5f6"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, classification, legal count and required actions hand-curated from the rationale first; chess==1.11.2 legal_moves/is_check/is_checkmate/is_stalemate then confirmed them and enumerated the exact legal set. No mShogi output used.",
+        "rationale": "The d4 pawn, just double-pushed, checks e5. e4xd3 e.p. removes the checker; the king also has d5, d6, e6, f6, f5, f4 and Kxd4. e4-e3 does not answer the check."
+      }
+    },
+    {
+      "id": "bare-kings-at-counter-limit",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "7k/8/8/8/8/8/8/K7 w - - 4294967295 1",
+      "tags": [
+        "counter-limit",
+        "white",
+        "deferred-dead-position"
+      ],
+      "hand_expectations": {
+        "classification": "quiet",
+        "legal_count": 3,
+        "required": [
+          "a1a2",
+          "a1b1",
+          "a1b2"
+        ]
+      },
+      "classification": "quiet",
+      "legal": [
+        "a1a2",
+        "a1b1",
+        "a1b2"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, classification, legal count and required actions hand-curated from the rationale first; chess==1.11.2 legal_moves/is_check/is_checkmate/is_stalemate then confirmed them and enumerated the exact legal set. No mShogi output used.",
+        "rationale": "Profile decision: legality ignores the u32 counter domain. The three king moves are legal and the position is quiet, even though apply rejects each with CounterOverflow at the limit. This is not a dead-position or 75-move adjudication."
+      }
+    }
+  ]
+}

@@ -87,7 +87,7 @@ The separate fixture family [attacks.json](../../tests/fixtures/chess/attacks.js
 
 ## Rust ordinary candidate API
 
-MSH-7 adds `Position::ordinary_candidates()`, returning a `Vec<Action>` for the side to move. These are **pseudo-legal ordinary candidates, not legal moves**. MSH-9 owns the public legal-action list and classification; MSH-8 adds the castling and en passant candidates (below).
+MSH-7 adds `Position::ordinary_candidates()`, returning a `Vec<Action>` for the side to move. These are **pseudo-legal ordinary candidates, not legal moves**. MSH-9 adds the public legal-action list and classification; MSH-8 adds the castling and en passant candidates (below).
 
 The set contains every ordinary piece move or capture, pawn single advance, pawn double advance from the home rank through an empty square, and diagonal pawn capture of an opponent piece. Every last-rank pawn destination appears as four distinct actions, one for each of queen, rook, bishop and knight; a last-rank action without a choice never appears. Movement shape, own-piece blocking, slider rays up to the first occupied square, board edges and destination occupancy are already correct. Castling, en passant, own-piece captures and king captures are never included, and there are no duplicates. Order is deterministic but unspecified and is not a search ordering.
 
@@ -96,7 +96,7 @@ Candidates are **not** filtered for the moving side's king safety or counter bou
 - every candidate is either accepted by `apply_ordinary` or rejected only as `IllegalPosition` (the moving king would be unsafe) or `CounterOverflow`;
 - `apply_ordinary` accepts no action outside the candidate set.
 
-Final filtering must therefore still establish own-king safety after all effects and counter bounds, and add the special actions, before any set is called legal. The `ordinary_candidates` contract with `apply_ordinary` is unchanged by MSH-8.
+Final filtering must therefore still establish own-king safety after all effects, and add the special actions, before any set is called legal. Counter bounds do not affect legality (see the legal action API below); they only make `apply` fail atomically at the u32 limit. The `ordinary_candidates` contract with `apply_ordinary` is unchanged by MSH-8.
 
 The separate fixture family [ordinary-candidates.json](../../tests/fixtures/chess/ordinary-candidates.json), format `mshogi.chess.ordinary-candidates.v1`, has 17 curated positions with exact candidate sets (274 actions) and exact legal ordinary subsets (241 actions). Tests also check every bounded action shape against this contract on those positions and on the 35 corpus positions. They do not establish castling, en passant, the full legal-move list, perft or classification.
 
@@ -126,10 +126,36 @@ The rook moves to the square the king crossed. Both of the color's rights are lo
 - `apply` accepts no action outside `candidates()`;
 - `apply` rejects a candidate only as `CastlingKingAttacked`, `IllegalPosition` or `CounterOverflow`.
 
-These are still **not** a public legal-move list or a classification; MSH-9 owns those. Tests show that filtering `candidates()` through `apply` reproduces the complete independent legal set of all 35 corpus positions.
+These are still **not** a legal-move list or a classification; see the legal action API below. Tests show that filtering `candidates()` through `apply` reproduces the complete independent legal set of all 35 corpus positions.
 
 The separate fixture family [special-actions.json](../../tests/fixtures/chess/special-actions.json), format `mshogi.chess.special-actions.v1`, holds:
 
 - 21 positions with hand-curated special candidates, legal specials and the complete independent legal set;
 - 6 sequences (25 exact after-states) mixing castling, en passant and ordinary actions;
 - 18 rejections with expected error categories.
+
+## Rust legal action and classification API
+
+MSH-9 adds `Position::legal_actions()`, `Position::in_check()` and `Position::classify()`.
+
+`legal_actions()` returns every legal action of the side to move: ordinary moves and captures, every promotion choice, castling and en passant. Each must leave the moving king safe after all effects. It is exactly `candidates()` filtered by the checked `apply`, evaluated on a private copy whose counters are normalized.
+
+**Decision: legality does not depend on the u32 counter domain.** Counters never affect a chess rule's legality. The profile's counter domain is a representation limit that makes an overflowing operation fail atomically; it is not a rule that removes legal actions. Consequences:
+
+- at the limit, `apply` can reject a listed action as `CounterOverflow`, atomically;
+- `apply` accepts every other listed action, and nothing outside the list;
+- classification at the limit is unaffected, so bare kings at halfmove 4294967295 remain `quiet` rather than becoming a false stalemate.
+
+Order is deterministic but unspecified. It is not a search ordering.
+
+`in_check()` is whether the side to move's king is attacked. `classify()` returns `Classification::{Quiet, Check, Checkmate, Stalemate}` from `(in_check, has_legal_action)`, as specified above.
+
+This is position-level classification only. `Quiet` and `Check` do not mean a game may continue, and there is no dead-position, repetition, 50/75-move, agreed-draw, claim, resignation or clock logic; the coverage ledger keeps those obligations open.
+
+Evidence:
+
+- exact legal sets and classifications for all 35 corpus positions and for the separate fixture family [classification.json](../../tests/fixtures/chess/classification.json), format `mshogi.chess.classification.v1` (8 diagrams);
+- exact legal sets for the 21 special-action positions;
+- for every one of those positions, every listed action applies and undoes exactly (except a `CounterOverflow` rejection at the u32 limit), and every other bounded action is rejected without mutation.
+
+Perft/divide (MSH-10) and console exposure (MSH-11) are separate work. MSH-10 must define perft from a position at the counter limit, where depth-2 counts cannot be reached by applying listed actions; normalizing counters as `legal_actions` does is the consistent choice.

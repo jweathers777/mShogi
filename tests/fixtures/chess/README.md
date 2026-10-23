@@ -1,6 +1,6 @@
 # M1 chess reference corpus
 
-Contract: [`mshogi.chess.position.v1`](../../../docs/rules/chess-position-v1.md). Data format `schema_version: 1`; file [corpus.json](corpus.json). Added by MSH-2, 2026-10-23. This is input and independently expected output for product tests. MSH-4 now consumes the FEN contracts and starting states; move/perft/classification expectations await their later behavior tasks.
+Contract: [`mshogi.chess.position.v1`](../../../docs/rules/chess-position-v1.md). Data format `schema_version: 1`; file [corpus.json](corpus.json). Added by MSH-2, 2026-10-23. This is input and independently expected output for product tests. MSH-4 consumes the FEN contracts and starting states; MSH-6 the attack queries; MSH-9 the exact legal move sets and classifications. Perft expectations await MSH-10.
 
 ## Format
 
@@ -41,7 +41,7 @@ The product parser suite consumes the unchanged corpus directly:
 cargo test -p mshogi-core --test fen_corpus --locked
 ```
 
-It tests all 33 parser contracts (6 accepted, 27 rejected) and canonical parsing of the other 35 starting positions. This does not verify those positions' legal moves, attacks, classification, perft or apply/undo behavior.
+It tests all 33 parser contracts (6 accepted, 27 rejected) and canonical parsing of the other 35 starting positions. This parser suite alone does not verify those positions' legal moves, attacks, classification, perft or apply/undo behavior; the later suites below do, except perft.
 
 
 Run from the repository root. Structural verification uses Python 3's standard library only:
@@ -137,4 +137,19 @@ All special candidate sets, legal specials and rejection errors were written by 
 ```sh
 cargo test -p mshogi-core --test special_actions --locked
 /tmp/mshogi-chess-oracle/bin/python tools/check_chess_special_actions.py
+```
+
+## Classification fixture family
+
+MSH-9 adds [classification.json](classification.json), a separate family named `mshogi.chess.classification.v1` with `schema_version: 1`. It fills gaps in the corpus's classification coverage, which has five White checks, no Black check and one mate/stalemate per color.
+
+Each case has a stable ID, the exact rules-profile ID, a canonical `fen`, tags, the `hand_expectations` written before oracle enumeration (classification, legal count and required legal actions), the exact `classification`, the complete sorted `legal` set, and provenance.
+
+The 8 positions are: a Black single check, a Black double check, a smothered mate, a mate by a protected queen, a White back-rank mate, a stalemate with a pinned knight, a Black en passant check evasion, and bare kings at the u32 counter limit. The last records the profile decision that legality ignores the counter domain.
+
+Every hand expectation matched pinned `chess==1.11.2` `legal_moves`/`is_check`/`is_checkmate`/`is_stalemate` on the first run.
+
+```sh
+cargo test -p mshogi-core --test legal_actions --locked
+/tmp/mshogi-chess-oracle/bin/python tools/check_chess_classification.py
 ```

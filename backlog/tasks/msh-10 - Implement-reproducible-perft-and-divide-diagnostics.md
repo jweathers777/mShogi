@@ -4,6 +4,7 @@ title: Implement reproducible perft and divide diagnostics
 status: Ready
 assignee: []
 created_date: '2026-10-22T13:27:00Z'
+updated_date: '2026-10-23T18:05:00Z'
 labels:
   - diagnostics
   - perft
@@ -58,3 +59,9 @@ Search strength measurement, comparing arbitrary variants through a chess-only r
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Input from MSH-9 review (2026-10-23): legal_actions() treats legality as independent of the u32 counter domain (pending owner approval in MSH-9). Perft from a position at the counter limit therefore cannot be computed by applying listed actions at depth 2 or more. MSH-10 must define this explicitly; normalizing counters on a private copy, as legal_actions does, is the consistent choice.
+<!-- SECTION:NOTES:END -->

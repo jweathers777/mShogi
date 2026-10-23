@@ -27,7 +27,7 @@ fn main() -> ExitCode {
         Some(Some("profile")) => {
             println!("Target rules profile: {CHESS_POSITION_PROFILE_ID}");
             println!(
-                "Coverage: position/FEN, actions incl. castling/en passant with undo, attack queries and pseudo-legal candidates; no legal-move list"
+                "Coverage: position/FEN, all chess actions with undo, attacks, legal actions and check/mate/stalemate; no perft or game adjudication"
             );
         }
         _ => return invalid_arguments(),

@@ -5,8 +5,8 @@
 //! Public construction, replacement and checked transitions preserve
 //! the profile's local invariants. Actions/undo remain intentionally chess-specific.
 //! `apply` executes every chess action; `apply_ordinary` is its ordinary-only subset.
-//! Attack queries are geometric and candidates are pseudo-legal; neither
-//! is legal-move membership.
+//! Attack queries are geometric and candidates are pseudo-legal; neither is
+//! legal-move membership. `legal_actions` and `classify` provide that.
 
 use std::fmt;
 
@@ -14,8 +14,10 @@ mod action;
 mod attack;
 mod fen;
 mod generate;
+mod legal;
 pub use action::{Action, ActionError, Promotion, Undo, UndoError};
 pub use fen::{FenError, FenErrorCategory};
+pub use legal::Classification;
 
 /// One of the two colors in orthodox chess.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

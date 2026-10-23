@@ -80,7 +80,8 @@ fn error_name(error: ActionError) -> &'static str {
 }
 
 /// Check the documented candidate-versus-`apply` contract on every bounded
-/// action and return the accepted (legal) actions, sorted.
+/// action and return the actions `apply` accepts, sorted. These equal the
+/// legal actions except at the u32 counter limit.
 fn assert_contract(id: &str, position: &Position) -> Vec<String> {
     let candidates = position.candidates();
     let unique: BTreeSet<String> = candidates.iter().copied().map(text).collect();

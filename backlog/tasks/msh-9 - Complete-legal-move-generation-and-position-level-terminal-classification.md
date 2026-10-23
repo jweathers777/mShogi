@@ -1,9 +1,11 @@
 ---
 id: MSH-9
 title: Complete legal move generation and position-level terminal classification
-status: Ready
-assignee: []
+status: In Review
+assignee:
+  - '@claude'
 created_date: '2026-10-22T13:27:00Z'
+updated_date: '2026-10-23T18:05:00Z'
 labels:
   - rules
   - legality
@@ -58,3 +60,60 @@ Calling limited material checks complete dead-position adjudication, full draw c
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Claim MSH-9 on claude/next-task at b64093d (equal to origin/codex/rewrite), worktree .claude/worktrees/next-task. Review the MSH-8 apply/candidate contract, the profile classification rule and the corpus.
+2. Add public Position::legal_actions(): candidates() filtered by the checked apply on a temporary clone. Decision: legal = rule-legal under the profile, independent of the u32 counter domain (counters are normalized on the private clone), so classification at the counter limit stays correct. Apply may still reject a legal action atomically with CounterOverflow at the limit; this is documented.
+3. Add Position::in_check() and Position::classify() -> Classification {Quiet, Check, Checkmate, Stalemate} per the profile (in_check, has_legal_action). Explicitly position-level, not match adjudication; there is no dead-position, repetition, 50/75-move, claim or clock logic.
+4. Add a separate fixture family mshogi.chess.classification.v1 for gaps in the corpus: Black single and double check, smothered and protected-queen mates, a White back-rank mate, stalemate with a pinned piece, Black en passant check evasion, and bare kings at the counter limit. Hand classification and legal count first, then pinned chess==1.11.2 legal_moves/is_check/is_checkmate/is_stalemate; verify-only checker.
+5. Rust tests: exact legal sets and classification for all 35 corpus positions and the new fixtures; legal sets for the special-actions and candidate fixtures; every legal action applies and undoes exactly; illegal requests are rejected atomically; empty legal set in check vs not in check; counter-limit behavior.
+6. Coverage ledger: mark the legal list and classification as implemented and keep draw/history/match obligations visible. Workspace checks, independent review, integration, native CI, close.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Startup (2026-10-23): owner @claude, branch claude/next-task in worktree .claude/worktrees/next-task at b64093d, equal to origin/codex/rewrite; no other task In Progress. The user explicitly selected MSH-9 (MSH-8 is Done). Pinned backlog.md 1.55.1, Rust 1.89.0.
+
+Implementation candidate on parent b64093d. New crates/mshogi-core/src/chess/legal.rs adds:
+- public Position::legal_actions(): candidates() filtered by the checked apply on a private clone with normalized counters;
+- Position::in_check();
+- Position::classify() -> Classification {Quiet, Check, Checkmate, Stalemate}, implementing Display.
+Docs state this is position-level only, with no dead-position, repetition, 50/75-move, claim, resignation or clock logic.
+
+Recorded decision (flagged for John's review, not a rule change): legality is independent of the profile's u32 counter domain. Without this, a position at halfmove 4294967295 whose only legal actions are quiet would be misclassified as stalemate. Effect: at the limit, apply can reject a listed action atomically with CounterOverflow, which is the profile's existing atomic-failure contract; apply accepts every other listed action and nothing unlisted.
+
+Fixtures: separate family tests/fixtures/chess/classification.json (mshogi.chess.classification.v1), 8 diagrams filling corpus gaps: Black single/double check, smothered mate, protected-queen mate, White back-rank mate, pinned-knight stalemate, Black en passant check evasion, counter-limit bare kings. Stored hand classification, legal count and required actions all matched pinned chess==1.11.2 on the first run. Verify-only checker tools/check_chess_classification.py.
+
+Local verification PASS, macOS arm64, rustc/cargo 1.89.0:
+- cargo test -p mshogi-core --test legal_actions --locked (6/6):
+  - exact legal sets and classifications for all 35 corpus positions, with all four classes present;
+  - the 8 classification fixtures;
+  - the 21 special-action legal sets, and the candidate family's legal-ordinary sets plus exactly the described specials;
+  - per position, every listed action applies and undoes exactly, and every other bounded action is rejected atomically;
+  - empty legal set in check vs out of check while candidates remain;
+  - counter-limit behavior;
+  - determinism and no mutation (Kiwipete 48).
+- oracle venv python -I tools/check_chess_classification.py: PASS 8.
+- Mutation check (temporary, reverted): remove counter normalization, in_check wrong color, swap checkmate/stalemate, check as quiet, ordinary-only candidates, specials unchecked. All 6 fail the suite.
+- cargo fmt check; clippy -D warnings; cargo test --workspace --locked (5 CLI + 4 attacks + 8 FEN + 6 legal + 6 ordinary + 5 candidates + 6 special + 5 doctests); rustdoc -D warnings; build; profile smoke; cargo tree core-only; whitespace diff check.
+Docs updated: profile, coverage ledger (draw/history/match rows stay deferred), development guide, README, fixture README, console line.
+Native CI pending integration.
+
+Independent review: a fresh delegated reviewer (Claude subagent, no repository edits) found legal.rs correct and the counter normalization sound. Counters are read only by next_counters (overflow only) and by the post-state EP halfmove check, which a double push always satisfies. Fixtures are independent and the assertions strong; ledger, console and README do not overclaim.
+
+Reviewer bounded differential probe in scratch outside the repo against pinned chess 1.11.2, seeds 9/2026/77: 33,569 positions (playouts from castling/EP-rich starts, random sparse placements, a terminal-biased set; variants at halfmove and/or fullmove 4294967295). Compared legal sets, classify/in_check against is_check/is_checkmate/is_stalemate, every after-FEN against push, exact undo, and CounterOverflow exactly where expected. About 579k action after-states; 0 mismatches.
+
+Findings and resolution:
+- should-fix: profile line 99 (MSH-7 text) said final filtering must establish counter bounds before a set is called legal, contradicting the new counter-domain decision. Amended to match the decision.
+- should-fix: perft at the counter limit is unspecified. Recorded in the profile and as an MSH-10 note.
+- nit: the checker now also calls is_checkmate/is_stalemate, as the provenance claims.
+- nit: the evidence wording in the profile and development guide now excepts CounterOverflow at the limit.
+- nit: the stale assert_contract comment in special_actions.rs is corrected.
+- nit: legal.rs now states the normalization soundness assumption.
+Reruns PASS: oracle checker 8; fmt; clippy; cargo test --workspace --locked (all suites, 5 doctests); whitespace diff check.
+
+BLOCKER for Done: the reviewer and author agree that the counter-domain decision reinterprets an accepted contract statement (the meaning of legal versus counter bounds). Per AGENTS.md it needs John's explicit approval. Both recommend approval: the alternative misclassifies bare kings at halfmove 4294967295 as stalemate, and the decision matches the profile's atomic-overflow text, the corpus fen-maximum-counters rationale and the MSH-8 reject-castle-overflow fixture (oracle_legal true). Implementation and evidence are committed locally on claude/next-task and not yet integrated into codex/rewrite. Next action: on approval, push, record native CI and close. On rejection, the alternative (legal list excludes overflow; classification defined separately) needs a profile change proposal.
+<!-- SECTION:NOTES:END -->

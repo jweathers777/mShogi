@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@claude'
 created_date: '2026-10-22T13:27:00Z'
-updated_date: '2026-10-23T18:05:00Z'
+updated_date: '2026-10-23T18:25:00Z'
 labels:
   - rules
   - legality
@@ -116,4 +116,25 @@ Findings and resolution:
 Reruns PASS: oracle checker 8; fmt; clippy; cargo test --workspace --locked (all suites, 5 doctests); whitespace diff check.
 
 BLOCKER for Done: the reviewer and author agree that the counter-domain decision reinterprets an accepted contract statement (the meaning of legal versus counter bounds). Per AGENTS.md it needs John's explicit approval. Both recommend approval: the alternative misclassifies bare kings at halfmove 4294967295 as stalemate, and the decision matches the profile's atomic-overflow text, the corpus fen-maximum-counters rationale and the MSH-8 reject-castle-overflow fixture (oracle_legal true). Implementation and evidence are committed locally on claude/next-task and not yet integrated into codex/rewrite. Next action: on approval, push, record native CI and close. On rejection, the alternative (legal list excludes overflow; classification defined separately) needs a profile change proposal.
+
+Owner decision (John, 2026-10-23, in session): approved the contract change separating chess move legality from counter representability, including the profile wording change at the former line 99. The approval was conditioned on verifying five points before closing; the task stayed In Review while they were completed. Mapping to evidence:
+
+(1) Legality and classification are independent of counter overflow. New test legal_sets_and_classification_are_identical_across_counter_values covers every position of the corpus (35), classification (8), special-actions (21) and ordinary-candidates (17) families. Each is rerun with counter variants (0, max), plus (17, 1), (max, 1) and (max, max) when no raw EP target exists, since EP requires halfmove 0. That is 276 variants; legal sets, classify and in_check are identical to the base in every one.
+
+(2) API docs: the ActionError::CounterOverflow rustdoc and the Position::apply rustdoc now state that an otherwise legal action can fail because its resulting state cannot be represented, and that this is a representation failure, not illegality. legal_actions rustdoc and the profile say the same.
+
+(3) Atomic overflow. The same variant test independently predicts overflow per listed action: a non-reset (not a pawn move, not a capture) at halfmove max, or a Black move at fullmove max. It checks 1,659 CounterOverflow rejections, each leaving Position and FEN unchanged; every non-predicted action applies and undoes exactly. The new focused matrix counter_overflow_is_atomic_for_each_counter_side_and_action_kind covers:
+- halfmove max, White: quiet and castling fail; a pawn double push and a rook capture reset and apply;
+- halfmove max, Black: quiet and castling fail; a pawn move applies;
+- fullmove max: White quiet and castling apply; Black pawn move, capture and castling fail;
+- Black EP at fullmove max fails; White EP at fullmove max applies.
+Existing MSH-5 counter_overflow_cannot_publish_any_piece_right_or_ep_effect still covers apply_ordinary. There is no derived state (no caches), so full Position equality plus FEN identity cover board, side, rights, raw target and counters.
+
+(4) Simulation still handles all effects and king safety. The variant test exercises castling and EP positions at the limits, and the new overflow_never_turns_a_live_position_into_mate_or_stalemate covers Black in check at fullmove max (4 king replies listed, all overflow, classify Check, not Checkmate) and bare kings at halfmove max (Quiet, not Stalemate). Removing the normalization now fails 5 of 9 tests (previously 2).
+
+(5) Docs: the Classification and classify rustdoc, the profile and the ledger now call quiet a result of the limited M1 position-level classifier, not complete game adjudication. Bare kings are explicitly quiet although FIDE 5.2.2 would end the game. Dead-position and other draw rules stay in the deferred ledger rows.
+
+MSH-10: added AC #6 that perft/divide must never silently skip legal branches or treat counter overflow as a terminal leaf, and must traverse independently of counters irrelevant to move generation or report an explicit error. Implementation is left to MSH-10.
+
+Reruns PASS (macOS arm64, rustc 1.89.0): cargo test -p mshogi-core --test legal_actions --locked (9/9); fmt; clippy -D warnings; cargo test --workspace --locked (5 CLI + 4 attacks + 8 FEN + 9 legal + 6 ordinary + 5 candidates + 6 special + 5 doctests); rustdoc -D warnings; whitespace diff check. Earlier reviewer evidence (33,569-position probe including counter-limit variants, 0 mismatches) still applies; the changes since are tests and documentation only.
 <!-- SECTION:NOTES:END -->

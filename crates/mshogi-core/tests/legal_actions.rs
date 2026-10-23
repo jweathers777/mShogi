@@ -239,3 +239,207 @@ fn queries_do_not_mutate_and_are_deterministic() {
     assert!(!position.in_check());
     assert_eq!(position, before);
 }
+
+const MAX: u32 = u32::MAX;
+
+// Replace the two FEN counter fields; everything else is unchanged.
+fn with_counters(fen: &str, halfmove: u32, fullmove: u32) -> String {
+    let fields: Vec<&str> = fen.split(' ').collect();
+    format!("{} {halfmove} {fullmove}", fields[..4].join(" "))
+}
+
+fn every_fixture_fen() -> Vec<String> {
+    let mut fens = Vec::new();
+    let corpus: Value =
+        serde_json::from_str(include_str!("../../../tests/fixtures/chess/corpus.json")).unwrap();
+    for case in corpus["cases"].as_array().unwrap() {
+        if case["operation"] == "position" {
+            fens.push(case["input"]["fen"].as_str().unwrap().to_owned());
+        }
+    }
+    for (file, list, key) in [
+        (
+            include_str!("../../../tests/fixtures/chess/classification.json"),
+            "cases",
+            "fen",
+        ),
+        (
+            include_str!("../../../tests/fixtures/chess/special-actions.json"),
+            "positions",
+            "fen",
+        ),
+        (
+            include_str!("../../../tests/fixtures/chess/ordinary-candidates.json"),
+            "cases",
+            "fen",
+        ),
+    ] {
+        let data: Value = serde_json::from_str(file).unwrap();
+        for case in data[list].as_array().unwrap() {
+            fens.push(case[key].as_str().unwrap().to_owned());
+        }
+    }
+    fens
+}
+
+#[test]
+fn legal_sets_and_classification_are_identical_across_counter_values() {
+    let (mut variants, mut overflowed) = (0, 0);
+    for fen in every_fixture_fen() {
+        let base = Position::from_fen(&fen).unwrap();
+        let mut expected: Vec<String> = base.legal_actions().into_iter().map(text).collect();
+        expected.sort();
+        // A raw EP target requires halfmove zero, so only fullmove varies there.
+        let mut counters = vec![(0, MAX)];
+        if base.en_passant_target().is_none() {
+            counters.extend([(17, 1), (MAX, 1), (MAX, MAX)]);
+        }
+        for (halfmove, fullmove) in counters {
+            let variant_fen = with_counters(&fen, halfmove, fullmove);
+            let variant = Position::from_fen(&variant_fen).unwrap();
+            let legal = variant.legal_actions();
+            let mut texts: Vec<String> = legal.iter().copied().map(text).collect();
+            texts.sort();
+            assert_eq!(texts, expected, "{variant_fen}: legal set");
+            assert_eq!(variant.classify(), base.classify(), "{variant_fen}");
+            assert_eq!(variant.in_check(), base.in_check(), "{variant_fen}");
+            for action in legal {
+                // Independently predict whether the resulting counters fit.
+                let mover = variant.piece_at(action.from).unwrap();
+                let resets = mover.kind == mshogi_core::chess::PieceKind::Pawn
+                    || variant.piece_at(action.to).is_some();
+                let overflows = (!resets && halfmove == MAX)
+                    || (variant.side_to_move() == mshogi_core::chess::Color::Black
+                        && fullmove == MAX);
+                let mut trial = variant.clone();
+                match trial.apply(action) {
+                    Ok(record) => {
+                        assert!(!overflows, "{variant_fen}: {} applied", text(action));
+                        trial.undo(&record).unwrap();
+                        assert_eq!(trial, variant);
+                    }
+                    Err(error) => {
+                        assert!(overflows, "{variant_fen}: {} {error:?}", text(action));
+                        assert_eq!(error, ActionError::CounterOverflow);
+                        assert_eq!(trial, variant, "{variant_fen}: overflow mutated");
+                        assert_eq!(trial.to_fen(), variant_fen);
+                        overflowed += 1;
+                    }
+                }
+            }
+            variants += 1;
+        }
+    }
+    assert_eq!((variants, overflowed), (276, 1659));
+}
+
+#[test]
+fn counter_overflow_is_atomic_for_each_counter_side_and_action_kind() {
+    // (FEN, action, applies): every rejection must be CounterOverflow and leave
+    // board, side, rights, raw target and counters unchanged (there is no
+    // derived state). Pawn moves and captures reset the halfmove clock.
+    for (fen, action_text, applies) in [
+        // Halfmove limit, White: quiet and castling fail; pawn and capture reset.
+        (
+            "r3k2r/8/8/8/8/8/P7/R3K2R w KQkq - 4294967295 7",
+            "e1f1",
+            false,
+        ),
+        (
+            "r3k2r/8/8/8/8/8/P7/R3K2R w KQkq - 4294967295 7",
+            "e1g1",
+            false,
+        ),
+        (
+            "r3k2r/8/8/8/8/8/P7/R3K2R w KQkq - 4294967295 7",
+            "a2a4",
+            true,
+        ),
+        (
+            "r3k2r/8/8/8/8/8/P7/R3K2R w KQkq - 4294967295 7",
+            "h1h8",
+            true,
+        ),
+        // Halfmove limit, Black: quiet and castling fail; pawn resets.
+        (
+            "r3k2r/p7/8/8/8/8/8/R3K2R b KQkq - 4294967295 7",
+            "e8d8",
+            false,
+        ),
+        (
+            "r3k2r/p7/8/8/8/8/8/R3K2R b KQkq - 4294967295 7",
+            "e8c8",
+            false,
+        ),
+        (
+            "r3k2r/p7/8/8/8/8/8/R3K2R b KQkq - 4294967295 7",
+            "a7a5",
+            true,
+        ),
+        // Fullmove limit: White never increments it; every Black action does.
+        (
+            "r3k2r/p7/8/8/8/8/8/R3K2R w KQkq - 3 4294967295",
+            "e1f1",
+            true,
+        ),
+        (
+            "r3k2r/p7/8/8/8/8/8/R3K2R w KQkq - 3 4294967295",
+            "e1c1",
+            true,
+        ),
+        (
+            "r3k2r/p7/8/8/8/8/8/R3K2R b KQkq - 3 4294967295",
+            "a7a5",
+            false,
+        ),
+        (
+            "r3k2r/p7/8/8/8/8/8/R3K2R b KQkq - 3 4294967295",
+            "h8h1",
+            false,
+        ),
+        (
+            "r3k2r/p7/8/8/8/8/8/R3K2R b KQkq - 3 4294967295",
+            "e8g8",
+            false,
+        ),
+        // En passant keeps halfmove zero by FEN rule; Black's fails at fullmove.
+        ("7k/8/8/8/3Pp3/8/8/K7 b - d3 0 4294967295", "e4d3", false),
+        ("7k/8/8/3pP3/8/8/8/K7 w - d6 0 4294967295", "e5d6", true),
+    ] {
+        let mut position = Position::from_fen(fen).unwrap();
+        let before = position.clone();
+        let action = position
+            .legal_actions()
+            .into_iter()
+            .find(|candidate| text(*candidate) == action_text)
+            .unwrap_or_else(|| panic!("{fen}: {action_text} must be legal"));
+        let result = position.apply(action);
+        if applies {
+            assert!(result.is_ok(), "{fen}: {action_text}");
+        } else {
+            assert_eq!(result.unwrap_err(), ActionError::CounterOverflow, "{fen}");
+            assert_eq!(position, before, "{fen}: {action_text}");
+            assert_eq!(position.to_fen(), fen, "{fen}: {action_text}");
+        }
+    }
+}
+
+#[test]
+fn overflow_never_turns_a_live_position_into_mate_or_stalemate() {
+    // Every Black reply would overflow the fullmove number, and every reply
+    // to the check is a king move; the position is still `check`, not mate.
+    let position = Position::from_fen("4k3/8/8/8/8/8/8/4RK2 b - - 0 4294967295").unwrap();
+    let legal = position.legal_actions();
+    assert_eq!(legal.len(), 4);
+    assert_eq!(position.classify(), Classification::Check);
+    for action in legal {
+        assert_eq!(
+            position.clone().apply(action).unwrap_err(),
+            ActionError::CounterOverflow
+        );
+    }
+    // Only quiet king moves exist at the halfmove limit: `quiet`, not stalemate.
+    let position = Position::from_fen("7k/8/8/8/8/8/8/K7 b - - 4294967295 9").unwrap();
+    assert_eq!(position.legal_actions().len(), 3);
+    assert_eq!(position.classify(), Classification::Quiet);
+}

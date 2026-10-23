@@ -4,7 +4,7 @@ title: Implement reproducible perft and divide diagnostics
 status: Ready
 assignee: []
 created_date: '2026-10-22T13:27:00Z'
-updated_date: '2026-10-23T18:05:00Z'
+updated_date: '2026-10-23T18:25:00Z'
 labels:
   - diagnostics
   - perft
@@ -50,6 +50,7 @@ Search strength measurement, comparing arbitrary variants through a chess-only r
 - [ ] #3 Running diagnostics preserves the complete starting state.
 - [ ] #4 Depth/input semantics and failure output are documented and tested.
 - [ ] #5 A repeatable performance baseline is recorded with build and hardware context without turning it into a strength claim.
+- [ ] #6 Perft and divide never silently skip a legal branch or treat counter overflow as a terminal leaf: traversal either proceeds independently of counters irrelevant to move generation, or reports an explicit error when it cannot continue (owner requirement, 2026-10-23, from MSH-9).
 <!-- AC:END -->
 
 ## Definition of Done

@@ -8,7 +8,8 @@ use std::fmt;
 use super::{Action, PieceKind, Position, Square};
 
 /// Position-level classification of the side to move, per the profile's
-/// `(in_check, has_legal_action)` rule.
+/// `(in_check, has_legal_action)` rule. This is the limited M1 classifier,
+/// not complete game adjudication.
 ///
 /// `Quiet` and `Check` make no claim that a game may continue: dead positions,
 /// repetition, the 50/75-move rules, agreed draws, claims, resignation and
@@ -83,8 +84,10 @@ impl Position {
 
     /// Classify the side to move as quiet, check, checkmate or stalemate.
     ///
-    /// Position-level only: this is not a game result, a draw claim or a
-    /// dead-position finding. For example bare kings are `Quiet`.
+    /// The limited M1 position-level classifier: this is not a game result, a
+    /// draw claim or a dead-position finding. For example bare kings are `Quiet`
+    /// although complete chess rules would end that game. Counter values never
+    /// change the result.
     pub fn classify(&self) -> Classification {
         match (self.in_check(), !self.legal_actions().is_empty()) {
             (false, true) => Classification::Quiet,

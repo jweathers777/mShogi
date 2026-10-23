@@ -142,15 +142,17 @@ MSH-9 adds `Position::legal_actions()`, `Position::in_check()` and `Position::cl
 
 **Decision: legality does not depend on the u32 counter domain.** Counters never affect a chess rule's legality. The profile's counter domain is a representation limit that makes an overflowing operation fail atomically; it is not a rule that removes legal actions. Consequences:
 
-- at the limit, `apply` can reject a listed action as `CounterOverflow`, atomically;
+- at the limit, `apply` can reject a listed action as `CounterOverflow`. That is a representation failure (the resulting state cannot be represented), not a finding of illegality, and it leaves the whole position unchanged;
 - `apply` accepts every other listed action, and nothing outside the list;
-- classification at the limit is unaffected, so bare kings at halfmove 4294967295 remain `quiet` rather than becoming a false stalemate.
+- positions that differ only in counters have identical legal sets and classifications, so bare kings at halfmove 4294967295 remain `quiet` rather than becoming a false stalemate, and a check whose every reply would overflow stays `check`, not checkmate.
+
+Approved by John on 2026-10-23 (MSH-9), including the corresponding wording of the candidate contract above.
 
 Order is deterministic but unspecified. It is not a search ordering.
 
 `in_check()` is whether the side to move's king is attacked. `classify()` returns `Classification::{Quiet, Check, Checkmate, Stalemate}` from `(in_check, has_legal_action)`, as specified above.
 
-This is position-level classification only. `Quiet` and `Check` do not mean a game may continue, and there is no dead-position, repetition, 50/75-move, agreed-draw, claim, resignation or clock logic; the coverage ledger keeps those obligations open.
+This is the limited M1 position-level classifier, not complete game adjudication. A `quiet` result means only "not in check, with a legal action"; for example bare kings are `quiet` although FIDE 5.2.2 would end that game as a dead position. `Quiet` and `Check` do not mean a game may continue, and there is no dead-position, repetition, 50/75-move, agreed-draw, claim, resignation or clock logic; the coverage ledger keeps those obligations open.
 
 Evidence:
 

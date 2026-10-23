@@ -78,6 +78,12 @@ pub enum ActionError {
     /// An attacked destination is reported as [`ActionError::IllegalPosition`].
     CastlingKingAttacked,
     /// A counter increment would exceed the profile's u32 domain.
+    ///
+    /// This is a representation failure, not a finding that the action is
+    /// illegal: a legal action (see [`Position::legal_actions`]) can be refused
+    /// this way because its resulting state cannot be represented. The whole
+    /// position, including board, side, rights, raw target and counters, is
+    /// left unchanged.
     CounterOverflow,
     /// The resulting local position is invalid, including an unsafe moving king.
     IllegalPosition(FenError),
@@ -168,6 +174,10 @@ impl Position {
     /// king safety is judged after **all** effects, including rook movement and
     /// removal of the en passant victim. No move generator or match-adjudication
     /// policy is invoked. Returns an exact local-state restoration record.
+    ///
+    /// An otherwise legal action fails with [`ActionError::CounterOverflow`]
+    /// when a required counter increment cannot be represented in u32; that is
+    /// a representation failure, not illegality, and changes nothing.
     ///
     /// ```
     /// use mshogi_core::chess::{Action, Position, Square};

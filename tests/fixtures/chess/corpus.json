@@ -1,0 +1,2328 @@
+{
+  "schema_version": 1,
+  "rules_profile": "mshogi.chess.position.v1",
+  "sources": {
+    "fide-2023": {
+      "url": "https://handbook.fide.com/chapter/E012023",
+      "version": "Effective 2023-01-01, approved 2022-08-07/08",
+      "retrieved": "2026-10-23",
+      "sha256": "c5b1692a0614d4bd93fe9238287b9ab7d1f47320934d5df3be113523906c476f"
+    },
+    "pgn-1994": {
+      "url": "https://www.saremba.de/chessgml/standards/pgn/pgn-complete.htm",
+      "version": "Edwards PGN specification (1994), Saremba HTML transcription (2000), section 16.1",
+      "retrieved": "2026-10-23",
+      "sha256": "2c2445a8c2118a5603610364f8055b31db388e2f4cbc6bb70815bf38ee45de3f"
+    },
+    "stockfish-17.1": {
+      "url": "https://github.com/official-stockfish/Stockfish/blob/sf_17.1/tests/perft.sh",
+      "version": "sf_17.1, standard positions only",
+      "retrieved": "2026-10-23",
+      "sha256": "1f2a7b2df97f3f2242c431a4ef5dd2bb8401c03631842cfbbfeff9b7c1e5c82a"
+    },
+    "python-chess-1.11.2": {
+      "url": "https://github.com/niklasf/python-chess/tree/v1.11.2",
+      "version": "PyPI chess==1.11.2; chess.__version__ == 1.11.2",
+      "retrieved": "2026-10-23",
+      "sha256": "1fde6a8e932508d14b31f6a584497b49c2969fc3c7cdc675347f819f0d667a5b"
+    },
+    "profile-v1": {
+      "url": "../../../docs/rules/chess-position-v1.md",
+      "version": "mshogi.chess.position.v1",
+      "retrieved": "2026-10-23",
+      "note": "Project input-boundary policy, not a FIDE reachability oracle."
+    }
+  },
+  "cases": [
+    {
+      "id": "initial",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "ordinary",
+        "pawn",
+        "knight",
+        "blocked-sliders"
+      ],
+      "input": {
+        "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "a2a3",
+          "a2a4",
+          "b1a3",
+          "b1c3",
+          "b2b3",
+          "b2b4",
+          "c2c3",
+          "c2c4",
+          "d2d3",
+          "d2d4",
+          "e2e3",
+          "e2e4",
+          "f2f3",
+          "f2f4",
+          "g1f3",
+          "g1h3",
+          "g2g3",
+          "g2g4",
+          "h2h3",
+          "h2h4"
+        ],
+        "classification": "quiet",
+        "perft": {
+          "0": 1,
+          "1": 20,
+          "2": 400,
+          "3": 8902
+        }
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2",
+          "stockfish-17.1"
+        ],
+        "locator": "FIDE 2.3; 3.2-3.7",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "Initial position: 16 pawn advances and four knight moves."
+      }
+    },
+    {
+      "id": "kiwipete",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "ordinary",
+        "castling",
+        "capture",
+        "sliders"
+      ],
+      "input": {
+        "fen": "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "a1b1",
+          "a1c1",
+          "a1d1",
+          "a2a3",
+          "a2a4",
+          "b2b3",
+          "c3a4",
+          "c3b1",
+          "c3b5",
+          "c3d1",
+          "d2c1",
+          "d2e3",
+          "d2f4",
+          "d2g5",
+          "d2h6",
+          "d5d6",
+          "d5e6",
+          "e1c1",
+          "e1d1",
+          "e1f1",
+          "e1g1",
+          "e2a6",
+          "e2b5",
+          "e2c4",
+          "e2d1",
+          "e2d3",
+          "e2f1",
+          "e5c4",
+          "e5c6",
+          "e5d3",
+          "e5d7",
+          "e5f7",
+          "e5g4",
+          "e5g6",
+          "f3d3",
+          "f3e3",
+          "f3f4",
+          "f3f5",
+          "f3f6",
+          "f3g3",
+          "f3g4",
+          "f3h3",
+          "f3h5",
+          "g2g3",
+          "g2g4",
+          "g2h3",
+          "h1f1",
+          "h1g1"
+        ],
+        "classification": "quiet",
+        "perft": {
+          "0": 1,
+          "1": 48,
+          "2": 2039,
+          "3": 97862
+        }
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2",
+          "stockfish-17.1"
+        ],
+        "locator": "Stockfish perft.sh standard position 2; FIDE 3",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "Published reference position; appended explicit counters 0 1 to the upstream four-field position."
+      }
+    },
+    {
+      "id": "rook-pawn-endgame",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "ordinary",
+        "en-passant",
+        "king-safety"
+      ],
+      "input": {
+        "fen": "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "a5a4",
+          "a5a6",
+          "b4a4",
+          "b4b1",
+          "b4b2",
+          "b4b3",
+          "b4c4",
+          "b4d4",
+          "b4e4",
+          "b4f4",
+          "e2e3",
+          "e2e4",
+          "g2g3",
+          "g2g4"
+        ],
+        "classification": "quiet",
+        "perft": {
+          "0": 1,
+          "1": 14,
+          "2": 191,
+          "3": 2812
+        }
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2",
+          "stockfish-17.1"
+        ],
+        "locator": "Stockfish perft.sh standard position 3; FIDE 3",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "Published reference position; explicit counters 0 1 appended. En passant arises in its tree."
+      }
+    },
+    {
+      "id": "promotion-castling-reference",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "promotion",
+        "check-evasion",
+        "castling"
+      ],
+      "input": {
+        "fen": "r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "b4c5",
+          "c4c5",
+          "d2d4",
+          "f1f2",
+          "f3d4",
+          "g1h1"
+        ],
+        "classification": "check",
+        "perft": {
+          "0": 1,
+          "1": 6,
+          "2": 264,
+          "3": 9467
+        }
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2",
+          "stockfish-17.1"
+        ],
+        "locator": "Stockfish perft.sh standard position 4; FIDE 3",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "Published promotion/check-evasion reference position, unchanged."
+      }
+    },
+    {
+      "id": "tactical-reference",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "promotion",
+        "capture",
+        "king-safety"
+      ],
+      "input": {
+        "fen": "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "a2a3",
+          "a2a4",
+          "b1a3",
+          "b1c3",
+          "b1d2",
+          "b2b3",
+          "b2b4",
+          "c1d2",
+          "c1e3",
+          "c1f4",
+          "c1g5",
+          "c1h6",
+          "c2c3",
+          "c4a6",
+          "c4b3",
+          "c4b5",
+          "c4d3",
+          "c4d5",
+          "c4e6",
+          "c4f7",
+          "d1d2",
+          "d1d3",
+          "d1d4",
+          "d1d5",
+          "d1d6",
+          "d7c8b",
+          "d7c8n",
+          "d7c8q",
+          "d7c8r",
+          "e1d2",
+          "e1f1",
+          "e1f2",
+          "e1g1",
+          "e2c3",
+          "e2d4",
+          "e2f4",
+          "e2g1",
+          "e2g3",
+          "g2g3",
+          "g2g4",
+          "h1f1",
+          "h1g1",
+          "h2h3",
+          "h2h4"
+        ],
+        "classification": "quiet",
+        "perft": {
+          "0": 1,
+          "1": 44,
+          "2": 1486,
+          "3": 62379
+        }
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2",
+          "stockfish-17.1"
+        ],
+        "locator": "Stockfish perft.sh standard position 5; FIDE 3",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "Published tactical reference position, unchanged."
+      }
+    },
+    {
+      "id": "middlegame-reference",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "ordinary",
+        "bishop",
+        "rook",
+        "queen",
+        "knight"
+      ],
+      "input": {
+        "fen": "r4rk1/1pp1qppp/p1np1n2/2b1p1B1/2B1P1b1/P1NP1N2/1PP1QPPP/R4RK1 w - - 0 10"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "a1a2",
+          "a1b1",
+          "a1c1",
+          "a1d1",
+          "a1e1",
+          "a3a4",
+          "b2b3",
+          "b2b4",
+          "c3a2",
+          "c3a4",
+          "c3b1",
+          "c3b5",
+          "c3d1",
+          "c3d5",
+          "c4a2",
+          "c4a6",
+          "c4b3",
+          "c4b5",
+          "c4d5",
+          "c4e6",
+          "c4f7",
+          "d3d4",
+          "e2d1",
+          "e2d2",
+          "e2e1",
+          "e2e3",
+          "f1b1",
+          "f1c1",
+          "f1d1",
+          "f1e1",
+          "f3d2",
+          "f3d4",
+          "f3e1",
+          "f3e5",
+          "f3h4",
+          "g1h1",
+          "g2g3",
+          "g5c1",
+          "g5d2",
+          "g5e3",
+          "g5f4",
+          "g5f6",
+          "g5h4",
+          "g5h6",
+          "h2h3",
+          "h2h4"
+        ],
+        "classification": "quiet",
+        "perft": {
+          "0": 1,
+          "1": 46,
+          "2": 2079,
+          "3": 89890
+        }
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2",
+          "stockfish-17.1"
+        ],
+        "locator": "Stockfish perft.sh standard position 6; FIDE 3",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "Published middlegame reference position, unchanged."
+      }
+    },
+    {
+      "id": "bare-kings",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "king",
+        "deferred-dead-position"
+      ],
+      "input": {
+        "fen": "7k/8/8/8/8/8/8/K7 w - - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "a1a2",
+          "a1b1",
+          "a1b2"
+        ],
+        "classification": "quiet",
+        "perft": {
+          "0": 1,
+          "1": 3
+        }
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.8.1; 5.2.2; profile outcome boundary",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "Three king moves; quiet means no check, not that a full match would continue."
+      }
+    },
+    {
+      "id": "king-adjacency",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "king",
+        "king-safety"
+      ],
+      "input": {
+        "fen": "8/8/8/8/8/2k5/8/K7 w - - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "a1a2",
+          "a1b1"
+        ],
+        "classification": "quiet"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.8.1; 3.9.2",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "a1b2 is forbidden by the black king on c3."
+      }
+    },
+    {
+      "id": "pawn-initial-advance",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "pawn",
+        "double-push"
+      ],
+      "input": {
+        "fen": "7k/8/8/8/8/8/P7/K7 w - - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "a1b1",
+          "a1b2",
+          "a2a3",
+          "a2a4"
+        ],
+        "classification": "quiet"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.7.1-3.7.2",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "a2a3 and a2a4 legal; the a-file pawn blocks its own king."
+      }
+    },
+    {
+      "id": "pawn-blocked",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "pawn",
+        "blocker",
+        "king-safety"
+      ],
+      "input": {
+        "fen": "7k/8/8/8/8/p7/P7/K7 w - - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "a1b1"
+        ],
+        "classification": "quiet"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.7.1-3.7.3; 3.9.2",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "Pawn a3 blocks both pawn advances and attacks b2, so only a1b1 is legal."
+      }
+    },
+    {
+      "id": "bishop-blockers",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "bishop",
+        "capture",
+        "blocker"
+      ],
+      "input": {
+        "fen": "k7/8/8/8/3B4/8/1p3P2/7K w - - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "d4a7",
+          "d4b2",
+          "d4b6",
+          "d4c3",
+          "d4c5",
+          "d4e3",
+          "d4e5",
+          "d4f6",
+          "d4g7",
+          "d4h8",
+          "f2f3",
+          "f2f4",
+          "h1g1",
+          "h1g2",
+          "h1h2"
+        ],
+        "classification": "quiet"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.2; 3.5",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "Bishop may capture b2 but cannot move beyond it; own f2 pawn blocks its other diagonal."
+      }
+    },
+    {
+      "id": "absolute-rook-pin",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "pin",
+        "rook",
+        "king-safety"
+      ],
+      "input": {
+        "fen": "4r2k/8/8/8/8/8/4R3/4K3 w - - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "e1d1",
+          "e1d2",
+          "e1f1",
+          "e1f2",
+          "e2e3",
+          "e2e4",
+          "e2e5",
+          "e2e6",
+          "e2e7",
+          "e2e8"
+        ],
+        "classification": "quiet"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.3; 3.9.2",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "Pinned rook may move along e-file, including capturing e8, but cannot leave the file."
+      }
+    },
+    {
+      "id": "single-check-interpose",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "check",
+        "interpose"
+      ],
+      "input": {
+        "fen": "4r2k/8/8/8/8/8/3B4/4K3 w - - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "d2e3",
+          "e1d1",
+          "e1f1",
+          "e1f2"
+        ],
+        "classification": "check"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.9",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "d2e3 interposes; king must otherwise evade the rook check."
+      }
+    },
+    {
+      "id": "double-check",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "double-check",
+        "king-safety"
+      ],
+      "input": {
+        "fen": "4r2k/8/8/8/1b6/8/8/R3K3 w - - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "e1d1",
+          "e1f1",
+          "e1f2"
+        ],
+        "classification": "check"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.9.2",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "Rook and bishop check e1; moving the a1 rook cannot resolve both checks."
+      }
+    },
+    {
+      "id": "pinned-knight-attacks",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "pinned-attacker",
+        "attack",
+        "king-safety"
+      ],
+      "input": {
+        "fen": "4k3/4n3/8/2K5/8/8/8/4R3 w - - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "c5b4",
+          "c5b5",
+          "c5b6",
+          "c5c4",
+          "c5d4",
+          "c5d6",
+          "e1a1",
+          "e1b1",
+          "e1c1",
+          "e1d1",
+          "e1e2",
+          "e1e3",
+          "e1e4",
+          "e1e5",
+          "e1e6",
+          "e1e7",
+          "e1f1",
+          "e1g1",
+          "e1h1"
+        ],
+        "classification": "quiet",
+        "attacks": [
+          {
+            "by": "black",
+            "square": "d5",
+            "attacked": true
+          },
+          {
+            "by": "black",
+            "square": "c6",
+            "attacked": true
+          },
+          {
+            "by": "black",
+            "square": "d4",
+            "attacked": false
+          }
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.1.3; 3.9.1",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "Knight e7 is pinned to its king by rook e1, yet d5 and c6 remain attacked."
+      }
+    },
+    {
+      "id": "king-capture-xray",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "king-capture",
+        "xray",
+        "king-safety"
+      ],
+      "input": {
+        "fen": "4r2k/8/8/8/8/8/4n3/4K3 w - - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "e1d1",
+          "e1d2",
+          "e1f1",
+          "e1f2"
+        ],
+        "classification": "quiet"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.9.2",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "King cannot capture e2: removing that blocker opens the rook attack from e8."
+      }
+    },
+    {
+      "id": "white-both-castles",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "castling",
+        "white"
+      ],
+      "input": {
+        "fen": "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "a1a2",
+          "a1a3",
+          "a1a4",
+          "a1a5",
+          "a1a6",
+          "a1a7",
+          "a1a8",
+          "a1b1",
+          "a1c1",
+          "a1d1",
+          "e1c1",
+          "e1d1",
+          "e1d2",
+          "e1e2",
+          "e1f1",
+          "e1f2",
+          "e1g1",
+          "h1f1",
+          "h1g1",
+          "h1h2",
+          "h1h3",
+          "h1h4",
+          "h1h5",
+          "h1h6",
+          "h1h7",
+          "h1h8"
+        ],
+        "classification": "quiet"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.8.2",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "Both white castlings are available; castling is one complete action."
+      }
+    },
+    {
+      "id": "black-both-castles",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "castling",
+        "black"
+      ],
+      "input": {
+        "fen": "r3k2r/8/8/8/8/8/8/R3K2R b KQkq - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "a8a1",
+          "a8a2",
+          "a8a3",
+          "a8a4",
+          "a8a5",
+          "a8a6",
+          "a8a7",
+          "a8b8",
+          "a8c8",
+          "a8d8",
+          "e8c8",
+          "e8d7",
+          "e8d8",
+          "e8e7",
+          "e8f7",
+          "e8f8",
+          "e8g8",
+          "h8f8",
+          "h8g8",
+          "h8h1",
+          "h8h2",
+          "h8h3",
+          "h8h4",
+          "h8h5",
+          "h8h6",
+          "h8h7"
+        ],
+        "classification": "quiet"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.8.2",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "Both black castlings are available."
+      }
+    },
+    {
+      "id": "castling-without-rights",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "castling",
+        "rights"
+      ],
+      "input": {
+        "fen": "r3k2r/8/8/8/8/8/8/R3K2R w - - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "a1a2",
+          "a1a3",
+          "a1a4",
+          "a1a5",
+          "a1a6",
+          "a1a7",
+          "a1a8",
+          "a1b1",
+          "a1c1",
+          "a1d1",
+          "e1d1",
+          "e1d2",
+          "e1e2",
+          "e1f1",
+          "e1f2",
+          "h1f1",
+          "h1g1",
+          "h1h2",
+          "h1h3",
+          "h1h4",
+          "h1h5",
+          "h1h6",
+          "h1h7",
+          "h1h8"
+        ],
+        "classification": "quiet"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.8.2.1",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "Home squares do not restore rights; both white castlings are absent."
+      }
+    },
+    {
+      "id": "castling-through-attack",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "castling",
+        "transit-attacked"
+      ],
+      "input": {
+        "fen": "r3k2r/8/8/8/2b5/8/8/R3K2R w KQkq - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "a1a2",
+          "a1a3",
+          "a1a4",
+          "a1a5",
+          "a1a6",
+          "a1a7",
+          "a1a8",
+          "a1b1",
+          "a1c1",
+          "a1d1",
+          "e1c1",
+          "e1d1",
+          "e1d2",
+          "e1f2",
+          "h1f1",
+          "h1g1",
+          "h1h2",
+          "h1h3",
+          "h1h4",
+          "h1h5",
+          "h1h6",
+          "h1h7",
+          "h1h8"
+        ],
+        "classification": "quiet"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.8.2.2(3)",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "c4 bishop attacks f1, forbidding e1g1 but not e1c1."
+      }
+    },
+    {
+      "id": "castling-into-attack",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "castling",
+        "destination-attacked"
+      ],
+      "input": {
+        "fen": "r3k1rr/8/8/8/8/8/8/R3K2R w KQkq - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "a1a2",
+          "a1a3",
+          "a1a4",
+          "a1a5",
+          "a1a6",
+          "a1a7",
+          "a1a8",
+          "a1b1",
+          "a1c1",
+          "a1d1",
+          "e1c1",
+          "e1d1",
+          "e1d2",
+          "e1e2",
+          "e1f1",
+          "e1f2",
+          "h1f1",
+          "h1g1",
+          "h1h2",
+          "h1h3",
+          "h1h4",
+          "h1h5",
+          "h1h6",
+          "h1h7",
+          "h1h8"
+        ],
+        "classification": "quiet"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.8.2.2(3)",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "g8 rook attacks g1, forbidding e1g1."
+      }
+    },
+    {
+      "id": "castling-out-of-check",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "castling",
+        "check"
+      ],
+      "input": {
+        "fen": "r3k2r/8/8/8/8/8/4r3/R3K2R w KQkq - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "e1d1",
+          "e1e2",
+          "e1f1"
+        ],
+        "classification": "check"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.8.2.2(3)",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "e2 rook checks e1; neither castle can evade check."
+      }
+    },
+    {
+      "id": "castling-queenside-blocker",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "castling",
+        "blocker"
+      ],
+      "input": {
+        "fen": "r3k2r/8/8/8/8/8/8/RN2K2R w KQkq - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "a1a2",
+          "a1a3",
+          "a1a4",
+          "a1a5",
+          "a1a6",
+          "a1a7",
+          "a1a8",
+          "b1a3",
+          "b1c3",
+          "b1d2",
+          "e1d1",
+          "e1d2",
+          "e1e2",
+          "e1f1",
+          "e1f2",
+          "e1g1",
+          "h1f1",
+          "h1g1",
+          "h1h2",
+          "h1h3",
+          "h1h4",
+          "h1h5",
+          "h1h6",
+          "h1h7",
+          "h1h8"
+        ],
+        "classification": "quiet"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.8.2.2(4)",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "b1 knight prevents queenside castling, even though the king does not cross b1."
+      }
+    },
+    {
+      "id": "castling-attacked-rook",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "castling",
+        "attacked-rook"
+      ],
+      "input": {
+        "fen": "r3k2r/8/8/8/8/8/7r/R3K2R w KQkq - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "a1a2",
+          "a1a3",
+          "a1a4",
+          "a1a5",
+          "a1a6",
+          "a1a7",
+          "a1a8",
+          "a1b1",
+          "a1c1",
+          "a1d1",
+          "e1c1",
+          "e1d1",
+          "e1f1",
+          "e1g1",
+          "h1f1",
+          "h1g1",
+          "h1h2"
+        ],
+        "classification": "quiet"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.8.2.2",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "Rook h1 is attacked but e1/f1/g1 are safe; kingside castling remains legal."
+      }
+    },
+    {
+      "id": "white-en-passant",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "en-passant",
+        "white"
+      ],
+      "input": {
+        "fen": "7k/8/8/3pP3/8/8/8/K7 w - d6 0 2"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "a1a2",
+          "a1b1",
+          "a1b2",
+          "e5d6",
+          "e5e6"
+        ],
+        "classification": "quiet"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.7.3.1-3.7.3.2",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "e5d6 captures the pawn on d5, not on its destination square."
+      }
+    },
+    {
+      "id": "black-en-passant",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "en-passant",
+        "black"
+      ],
+      "input": {
+        "fen": "7k/8/8/8/3Pp3/8/8/K7 b - d3 0 2"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "e4d3",
+          "e4e3",
+          "h8g7",
+          "h8g8",
+          "h8h7"
+        ],
+        "classification": "quiet"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.7.3.1-3.7.3.2",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "e4d3 captures the pawn on d4."
+      }
+    },
+    {
+      "id": "en-passant-expired",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "en-passant",
+        "expiry"
+      ],
+      "input": {
+        "fen": "7k/8/8/3pP3/8/8/8/K7 w - - 1 2"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "a1a2",
+          "a1b1",
+          "a1b2",
+          "e5e6"
+        ],
+        "classification": "quiet"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.7.3.2",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "Same pawn placement without target gives no e5d6 action."
+      }
+    },
+    {
+      "id": "en-passant-discovered-rook",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "en-passant",
+        "discovered-check",
+        "king-safety"
+      ],
+      "input": {
+        "fen": "7k/8/8/r4pPK/8/8/8/8 w - f6 0 2"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "g5g6",
+          "h5g6",
+          "h5h4",
+          "h5h6"
+        ],
+        "classification": "quiet"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.7.3; 3.9.2",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "g5f6 removes both rank blockers and exposes king h5 to rook a5; illegal."
+      }
+    },
+    {
+      "id": "en-passant-check-evasion",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "en-passant",
+        "check-evasion"
+      ],
+      "input": {
+        "fen": "7k/8/8/3pP3/4K3/8/8/8 w - d6 0 2"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "e4d3",
+          "e4d4",
+          "e4d5",
+          "e4e3",
+          "e4f3",
+          "e4f4",
+          "e4f5",
+          "e5d6"
+        ],
+        "classification": "check"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.7.3; 3.9.2",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "d5 pawn checks e4; e5d6 legally removes that checker."
+      }
+    },
+    {
+      "id": "white-promotions",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "promotion",
+        "underpromotion",
+        "capture",
+        "white"
+      ],
+      "input": {
+        "fen": "1r5k/P7/8/8/8/8/8/7K w - - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "a7a8b",
+          "a7a8n",
+          "a7a8q",
+          "a7a8r",
+          "a7b8b",
+          "a7b8n",
+          "a7b8q",
+          "a7b8r",
+          "h1g1",
+          "h1g2",
+          "h1h2"
+        ],
+        "classification": "quiet"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.7.3.3-3.7.3.5",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "Four quiet a7a8 choices and four capturing a7b8 choices, with immediate promotion."
+      }
+    },
+    {
+      "id": "black-promotions",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "promotion",
+        "underpromotion",
+        "capture",
+        "black"
+      ],
+      "input": {
+        "fen": "7k/8/8/8/8/8/p7/1R5K b - - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [
+          "a2a1b",
+          "a2a1n",
+          "a2a1q",
+          "a2a1r",
+          "a2b1b",
+          "a2b1n",
+          "a2b1q",
+          "a2b1r",
+          "h8g7",
+          "h8g8",
+          "h8h7"
+        ],
+        "classification": "quiet"
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 3.7.3.3-3.7.3.5",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "Four quiet a2a1 choices and four capturing a2b1 choices."
+      }
+    },
+    {
+      "id": "black-checkmate",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "checkmate",
+        "black"
+      ],
+      "input": {
+        "fen": "7k/6Q1/5K2/8/8/8/8/8 b - - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [],
+        "classification": "checkmate",
+        "perft": {
+          "0": 1,
+          "1": 0,
+          "2": 0
+        }
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 5.1.1",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "King h8 in check with no legal escape; capturing g7 fails because king f6 protects it."
+      }
+    },
+    {
+      "id": "white-checkmate",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "checkmate",
+        "white",
+        "deferred-75-move"
+      ],
+      "input": {
+        "fen": "8/8/8/8/8/5k2/6q1/7K w - - 150 80"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [],
+        "classification": "checkmate",
+        "perft": {
+          "0": 1,
+          "1": 0,
+          "2": 0
+        }
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 5.1.1; 9.6.2",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "Color-reversed mate with high halfmove counter; M1 classifies mate and does not implement 75-move adjudication."
+      }
+    },
+    {
+      "id": "black-stalemate",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "stalemate",
+        "black"
+      ],
+      "input": {
+        "fen": "7k/5Q2/6K1/8/8/8/8/8 b - - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [],
+        "classification": "stalemate",
+        "perft": {
+          "0": 1,
+          "1": 0,
+          "2": 0
+        }
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 5.2.1",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "King h8 is not in check but has no legal move."
+      }
+    },
+    {
+      "id": "white-stalemate",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "stalemate",
+        "white"
+      ],
+      "input": {
+        "fen": "8/8/8/8/8/6k1/5q2/7K w - - 0 1"
+      },
+      "operation": "position",
+      "expected": {
+        "legal_moves": [],
+        "classification": "stalemate",
+        "perft": {
+          "0": 1,
+          "1": 0,
+          "2": 0
+        }
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "python-chess-1.11.2"
+        ],
+        "locator": "FIDE 5.2.1",
+        "method": "Position/rule rationale curated first; exact complete move set, classification, attack answers and shallow perft independently enumerated with pinned python-chess, never mShogi.",
+        "rationale": "Color-reversed stalemate."
+      }
+    },
+    {
+      "id": "fen-initial",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen"
+      ],
+      "input": {
+        "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": true,
+        "canonical_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Canonical starting position in PGN section 16.1.4."
+      }
+    },
+    {
+      "id": "fen-uncapturable-ep",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "en-passant"
+      ],
+      "input": {
+        "fen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": true,
+        "canonical_fen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "PGN 16.1.4 after e4: preserve e3 even though no black pawn can capture."
+      }
+    },
+    {
+      "id": "fen-whitespace-counters",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen"
+      ],
+      "input": {
+        "fen": " \t7k/8/8/8/8/8/8/K7\t w  - - 0005 00039\r\n"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": true,
+        "canonical_fen": "7k/8/8/8/8/8/8/K7 w - - 5 39"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Project accepts ASCII boundary whitespace and normalizes decimal counters."
+      }
+    },
+    {
+      "id": "fen-ep-with-pinned-capturer",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen"
+      ],
+      "input": {
+        "fen": "7k/8/8/r4pPK/8/8/8/8 w - f6 0 2"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": true,
+        "canonical_fen": "7k/8/8/r4pPK/8/8/8/8 w - f6 0 2"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Preserve raw EP target even when every en passant capture would expose own king."
+      }
+    },
+    {
+      "id": "fen-analysis-not-reachability",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen"
+      ],
+      "input": {
+        "fen": "4k3/8/8/8/8/QQQ5/PPPPPPPP/4K3 w - - 0 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": true,
+        "canonical_fen": "4k3/8/8/8/8/QQQ5/PPPPPPPP/4K3 w - - 0 1"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Three queens plus eight pawns is unreachable, but passes the specified local analysis checks; no retrograde proof."
+      }
+    },
+    {
+      "id": "fen-maximum-counters",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen"
+      ],
+      "input": {
+        "fen": "7k/8/8/8/8/8/8/K7 w - - 4294967295 4294967295"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": true,
+        "canonical_fen": "7k/8/8/8/8/8/8/K7 w - - 4294967295 4294967295"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Boundary u32 counters accepted for inspection; later transitions must fail rather than overflow."
+      }
+    },
+    {
+      "id": "fen-missing-counter",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "7k/8/8/8/8/8/8/K7 w - - 0"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "syntax"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Exactly six fields; no implicit counters."
+      }
+    },
+    {
+      "id": "fen-extra-field",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 extra"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "syntax"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "No EPD operations or trailing tokens."
+      }
+    },
+    {
+      "id": "fen-nonascii-space",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR\u00a0w KQkq - 0 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "syntax"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Only ASCII whitespace accepted."
+      }
+    },
+    {
+      "id": "fen-rank-width",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "7k/8/8/8/8/8/8/K6 w - - 0 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "syntax"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Every rank spans eight squares."
+      }
+    },
+    {
+      "id": "fen-rank-count",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "7k/8/8/8/8/8/K7 w - - 0 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "syntax"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Exactly eight ranks."
+      }
+    },
+    {
+      "id": "fen-unknown-piece",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "7k/8/8/8/8/8/8/X6K w - - 0 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "syntax"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Only orthodox piece symbols."
+      }
+    },
+    {
+      "id": "fen-adjacent-runs",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "7k/44/8/8/8/8/8/K7 w - - 0 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "syntax"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Empty runs must use a single digit per maximal run."
+      }
+    },
+    {
+      "id": "fen-bad-side",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "7k/8/8/8/8/8/8/K7 W - - 0 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "syntax"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Side is lowercase w or b."
+      }
+    },
+    {
+      "id": "fen-duplicate-right",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KKQkq - 0 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "syntax"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Castling letters unique and canonical KQkq order."
+      }
+    },
+    {
+      "id": "fen-noncanonical-rights",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w qkQK - 0 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "syntax"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "This strict profile rejects out-of-order rights."
+      }
+    },
+    {
+      "id": "fen-chess960-rights",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w AHah - 0 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "syntax"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Chess960/Shredder-FEN not supported."
+      }
+    },
+    {
+      "id": "fen-negative-clock",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "7k/8/8/8/8/8/8/K7 w - - -1 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "syntax"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Unsigned decimal counters only."
+      }
+    },
+    {
+      "id": "fen-zero-fullmove",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "7k/8/8/8/8/8/8/K7 w - - 0 0"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "range"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Fullmove is at least one; never silently normalized."
+      }
+    },
+    {
+      "id": "fen-counter-overflow",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "7k/8/8/8/8/8/8/K7 w - - 4294967296 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "range"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Halfmove outside u32 domain."
+      }
+    },
+    {
+      "id": "fen-missing-king",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "7k/8/8/8/8/8/8/8 w - - 0 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "structure"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Exactly one king of each color."
+      }
+    },
+    {
+      "id": "fen-extra-king",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "7k/8/8/8/8/8/8/K5K1 w - - 0 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "structure"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Two white kings forbidden."
+      }
+    },
+    {
+      "id": "fen-adjacent-kings",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "8/8/8/8/8/8/1k6/K7 w - - 0 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "structure"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Kings must not be adjacent."
+      }
+    },
+    {
+      "id": "fen-backrank-pawn",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "7k/8/8/8/8/8/8/K1P5 w - - 0 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "structure"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Unpromoted pawn on rank one forbidden."
+      }
+    },
+    {
+      "id": "fen-nine-pawns",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "7k/8/8/8/P7/8/PPPPPPPP/K7 w - - 0 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "structure"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "At most eight pawns per color."
+      }
+    },
+    {
+      "id": "fen-seventeen-pieces",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "7k/8/8/8/8/QQQQQQQQ/QQQQQQQQ/K7 w - - 0 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "structure"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "At most sixteen pieces per color."
+      }
+    },
+    {
+      "id": "fen-stale-castling-right",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "7k/8/8/8/8/8/8/4K3 w K - 0 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "structure"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "K requires white king e1 and white rook h1; never silently discard rights."
+      }
+    },
+    {
+      "id": "fen-wrong-ep-rank",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "7k/8/8/3pP3/8/8/8/K7 w - d3 0 2"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "structure"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "White-to-move requires EP rank six."
+      }
+    },
+    {
+      "id": "fen-missing-ep-pawn",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "7k/8/8/4P3/8/8/8/K7 w - d6 0 2"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "structure"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "EP requires opposing pawn on double-push destination."
+      }
+    },
+    {
+      "id": "fen-occupied-ep-target",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "7k/8/3N4/3pP3/8/8/8/K7 w - d6 0 2"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "structure"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "EP target must be empty."
+      }
+    },
+    {
+      "id": "fen-occupied-ep-origin",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "7k/3n4/8/3pP3/8/8/8/K7 w - d6 0 2"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "structure"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "The double-push origin d7 must be empty."
+      }
+    },
+    {
+      "id": "fen-nonzero-ep-clock",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "7k/8/8/3pP3/8/8/8/K7 w - d6 1 2"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "structure"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "A last-move pawn advance resets the halfmove clock."
+      }
+    },
+    {
+      "id": "fen-nonmoving-king-check",
+      "rules_profile": "mshogi.chess.position.v1",
+      "tags": [
+        "fen",
+        "rejection"
+      ],
+      "input": {
+        "fen": "7k/7R/8/8/8/8/8/K7 w - - 0 1"
+      },
+      "operation": "parse_fen",
+      "expected": {
+        "accepted": false,
+        "error": "structure"
+      },
+      "provenance": {
+        "sources": [
+          "pgn-1994",
+          "profile-v1"
+        ],
+        "locator": "PGN 16.1.3; profile FEN boundary",
+        "method": "Curated against the published six-field FEN definition and explicit project boundary policy; rejection contracts require the future MSH-4 parser.",
+        "rationale": "Side that just moved may not have left its own king in check."
+      }
+    }
+  ]
+}

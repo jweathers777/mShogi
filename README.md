@@ -7,6 +7,7 @@ The product goal is a reusable library with complete implementations of chess, s
 ## Start here
 
 - Product and architectural contract: [docs/design.md](docs/design.md).
+- M1 chess position profile: [docs/rules/chess-position-v1.md](docs/rules/chess-position-v1.md), [coverage ledger](docs/rules/chess-coverage.md), and [independent fixture corpus](tests/fixtures/chess/README.md).
 - Working instructions for every implementation session: [AGENTS.md](AGENTS.md).
 - Importing this package into the real repository: [START-HERE.md](START-HERE.md).
 - Current work and evidence: the native task records under `backlog/`.

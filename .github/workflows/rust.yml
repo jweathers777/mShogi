@@ -45,3 +45,4 @@ jobs:
           cargo run --locked --bin mshogi -- --help
           cargo run --locked --bin mshogi -- --version
           cargo run --locked --bin mshogi -- profile
+          printf 'position startpos\nmove e2e4 e7e5\nshow\nundo 2\nstatus\nperft 3\ndivide 1\n' | cargo run --locked --bin mshogi -- shell

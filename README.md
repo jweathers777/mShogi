@@ -1,6 +1,6 @@
 # mShogi rewrite
 
-This repository baseline describes the rewrite of John Weathers's mShogi. It contains a minimal Rust library/headless-console workspace, the design and Backlog.md queue, and the earlier Rust prototype preserved under `legacy/rust-prototype/`. The core implements explicit chess state/FEN, geometric attack queries, pseudo-legal candidate generation, and checked moves, captures, promotions, castling and en passant with exact undo. It also exposes the legal-action list and position-level check/checkmate/stalemate classification. Perft and divide diagnostics are available in the library. The inspection console commands and full game/match adjudication remain later work. The retained prototype has not been certified against the new design.
+This repository baseline describes the rewrite of John Weathers's mShogi. It contains a minimal Rust library/headless-console workspace, the design and Backlog.md queue, and the earlier Rust prototype preserved under `legacy/rust-prototype/`. The core implements explicit chess state/FEN, geometric attack queries, pseudo-legal candidate generation, and checked moves, captures, promotions, castling and en passant with exact undo. It also exposes the legal-action list and position-level check/checkmate/stalemate classification. Perft and divide diagnostics are available in the library and, with every other M1 diagnostic, through the headless `mshogi shell` console. Full game/match adjudication remains later work. The retained prototype has not been certified against the new design.
 
 The product goal is a reusable library with complete implementations of chess, shogi, tori shogi, chu shogi, tenjiku shogi, and xiangqi; capable mShogi engines; a standalone and interoperable console application; and a polished desktop application for Windows, macOS, and Linux.
 
@@ -36,13 +36,76 @@ cargo build --workspace --locked
 cargo run --locked --bin mshogi -- --help
 cargo run --locked --bin mshogi -- --version
 cargo run --locked --bin mshogi -- profile
+printf 'position startpos\nperft 3\n' | cargo run --locked --bin mshogi -- shell
 
 cargo fmt --all -- --check
 cargo clippy --workspace --all-targets --locked -- -D warnings
 cargo test --workspace --locked
 ```
 
-The current console reports its version, target profile and partial coverage; game inspection, moves, perft, and engine protocols arrive in later tasks. The core library exposes [position/FEN and ordinary transition APIs](docs/rules/chess-position-v1.md#rust-position-api). Tests exercise real headless subprocess startup, output streams and usage errors. The production core library has no external dependencies or console I/O; a pinned test-only JSON reader consumes the independent corpus. Native Windows/macOS/Linux checks are configured in [the Rust workflow](.github/workflows/rust.yml); MSH-3 records actual per-platform outcomes and revisions separately from configuration.
+The console reports its version, rules profile and coverage, and `mshogi shell` runs the chess diagnostics described below; engine protocols arrive in later tasks. The core library exposes [position, action, legal-move, classification and perft APIs](docs/rules/chess-position-v1.md#rust-position-api). Tests exercise real headless subprocess startup, output streams and usage errors. The production core library has no external dependencies or console I/O; a pinned test-only JSON reader consumes the independent corpus. Native Windows/macOS/Linux checks are configured in [the Rust workflow](.github/workflows/rust.yml); MSH-3 records actual per-platform outcomes and revisions separately from configuration.
+
+## Headless chess console
+
+`mshogi shell` reads chess commands from standard input, one per line, interactively or from a pipe or file. It starts at the standard position. It is a diagnostic console for people and simple scripts, not a UCI engine or a machine protocol. Every rule comes from the core library.
+
+| Command | Effect and output |
+| --- | --- |
+| `position startpos` / `position fen <FEN>` | Load a position and clear the undo history; prints `fen <canonical FEN>` |
+| `fen` | Print `fen <canonical FEN>` |
+| `show` | Board diagram (White upper case, rank 8 first), then `fen`, `side`, `castling`, `en-passant`, `halfmove`, `fullmove`, `status` and `history` lines |
+| `legal` | `legal <count> <actions...>` in divide order |
+| `move <action>...` | Apply the actions in order, all or none; prints the new `fen` |
+| `undo [n]` | Undo the last `n` applied actions (default 1); prints the new `fen` |
+| `status` | `status quiet`, `check`, `checkmate` or `stalemate`, from the limited M1 position classifier, not game adjudication |
+| `perft <depth>` | `perft <depth> <nodes>` |
+| `divide <depth>` | One `<action> <nodes>` line per legal root action in divide order, then `total <nodes>` |
+| `help` / `quit` | Show the commands / end the session (end of input also ends it) |
+
+- **Actions** use lowercase coordinates: `e2e4`, a promotion suffix `q`/`r`/`b`/`n` (`e7e8n`), castling as the king's move (`e1g1`), en passant as the capturing pawn's move.
+- **Input:** blank lines and lines starting with `#` are ignored.
+- **Errors:** results go to standard output. A failed command writes `error: line <n>: <reason>` to standard error and changes nothing in the session: malformed FEN, unknown commands or arguments, an illegal or unrepresentable action anywhere in a `move` sequence, undo beyond the history, invalid UTF-8.
+- **Exit status:** 0 when every command succeeded, 1 when any failed, 2 for invalid program arguments.
+
+Example (`mshogi shell < session.txt`), checked by the console's process tests:
+
+<!-- console-example:input -->
+```text
+# Lines starting with # are comments.
+position startpos
+move e2e4 e7e5 g1f3 b8c6
+move e1g1
+status
+undo 4
+perft 3
+position fen 7k/8/8/8/8/8/8/K7 w - - 0 1
+legal
+divide 2
+```
+
+Standard output:
+
+<!-- console-example:stdout -->
+```text
+fen rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+fen r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3
+status quiet
+fen rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+perft 3 8902
+fen 7k/8/8/8/8/8/8/K7 w - - 0 1
+legal 3 a1b1 a1a2 a1b2
+a1b1 3
+a1a2 3
+a1b2 3
+total 9
+```
+
+Standard error (exit status 1, because line 4 failed and changed nothing):
+
+<!-- console-example:stderr -->
+```text
+error: line 4: e1g1 (action 1 of 1): action rejected: castling right, rook or empty path is missing; no actions applied
+```
 
 ## Backlog commands
 

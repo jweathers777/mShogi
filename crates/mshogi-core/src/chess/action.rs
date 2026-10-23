@@ -85,7 +85,9 @@ pub enum ActionError {
     /// position, including board, side, rights, raw target and counters, is
     /// left unchanged.
     CounterOverflow,
-    /// The resulting local position is invalid, including an unsafe moving king.
+    /// The resulting local position is invalid. From a validated position this
+    /// means the moving side's king would be attacked (in check) after all
+    /// effects; the structural reason is kept as the source.
     IllegalPosition(FenError),
 }
 
@@ -105,7 +107,9 @@ impl fmt::Display for ActionError {
             Self::CastlingUnavailable => "castling right, rook or empty path is missing",
             Self::CastlingKingAttacked => "castling king is in check or crosses an attacked square",
             Self::CounterOverflow => "position counter would overflow",
-            Self::IllegalPosition(error) => return write!(f, "action rejected: {error}"),
+            Self::IllegalPosition(error) => {
+                return write!(f, "action rejected: own king would be in check ({error})");
+            }
         };
         write!(f, "action rejected: {reason}")
     }

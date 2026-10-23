@@ -41,13 +41,13 @@ fn version_is_available_without_resources() {
 }
 
 #[test]
-fn profile_identifies_the_documented_target_without_claiming_support() {
+fn profile_identifies_partial_coverage_without_claiming_game_support() {
     let output = run(&["profile"]);
     assert!(output.status.success());
     assert!(output.stderr.is_empty());
     assert_eq!(
         String::from_utf8(output.stdout).unwrap(),
-        "Target rules profile: mshogi.chess.position.v1\nImplementation: not yet available\n"
+        "Target rules profile: mshogi.chess.position.v1\nCoverage: position/FEN only; game operations unavailable\n"
     );
 }
 

@@ -1,10 +1,10 @@
 # Chess coverage ledger
 
-Contract: [`mshogi.chess.position.v1`](chess-position-v1.md). Established by MSH-2 on 2026-10-23; MSH-3 adds the workspace verification reference. **Specified** means required of future work, not implemented or verified by the current prototype. No M1 product behavior is certified by MSH-2.
+Contract: [`mshogi.chess.position.v1`](chess-position-v1.md). Established by MSH-2 on 2026-10-23; MSH-3 adds the workspace verification reference; MSH-4 implements the position/FEN boundary. **Specified** means required of future work, not implemented or verified by the current prototype. No M1 product behavior is certified by MSH-2.
 
 | Obligation | M1 commitment / present state | Owner / follow-up |
 | --- | --- | --- |
-| Position fields, strict FEN and local analysis validation | Specified; acceptance/rejection data curated | MSH-4 |
+| Position fields, strict FEN and local analysis validation | Implemented in the core; all 68 independent inputs tested for acceptance/rejection/canonical state, plus targeted boundary tests; no history/reachability proof | MSH-4; behavior beyond parsing remains below |
 | Ordinary moves, captures, promotions, rights/counters and exact undo | Specified; independent move sets curated; no mShogi conformance run | MSH-5, MSH-7 |
 | Occupancy-aware attacks, pinned attackers, king safety | Specified; pin, x-ray, interposition and double-check cases curated | MSH-6, MSH-9 |
 | Orthodox castling and en passant | Specified; both colors and rejection/king-safety cases curated | MSH-8 |
@@ -32,4 +32,4 @@ There is no unresolved orthodox movement-rule ambiguity blocking this profile. M
 
 Before M2 work, refine the history/claim API, intended-move claim handling, automatic-result ordering, the extent of dead-position recognition, and software match/event policy. Those questions are deliberately unresolved outside M1; a heuristic insufficient-material detector cannot close the dead-position obligation. All-six-game public save schemas and cache identity remain deferred design questions. No new task IDs or speculative M2 implementation plans are created here; these are roadmap refinement inputs.
 
-Known oracle differences: python-chess accepts some inputs this profile rejects (e.g. omitted FEN fields or fullmove zero), its default FEN may suppress an uncapturable target, and its validity status can reject impossible-check diagrams beyond the specified local boundary. Neither its parser nor `outcome()` defines this profile. The corpus checker independently evaluates position expectations only, and reports parser rejection cases as future contracts rather than passing product parser tests.
+Known oracle differences: python-chess accepts some inputs this profile rejects (e.g. omitted FEN fields or fullmove zero), its default FEN may suppress an uncapturable target, and its validity status can reject impossible-check diagrams beyond the specified local boundary. Neither its parser nor `outcome()` defines this profile. The optional Python checker evaluates oracle position/accepted-FEN expectations and deliberately skips rejection-policy execution. The Rust MSH-4 integration suite now executes those rejected-input contracts against the product parser; passing it does not establish move generation or full chess conformance.

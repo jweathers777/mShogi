@@ -1,6 +1,6 @@
 # M1 chess reference corpus
 
-Contract: [`mshogi.chess.position.v1`](../../../docs/rules/chess-position-v1.md). Data format `schema_version: 1`; file [corpus.json](corpus.json). Added by MSH-2, 2026-10-23. This is input and independently expected output for future product tests, not evidence that mShogi passes them.
+Contract: [`mshogi.chess.position.v1`](../../../docs/rules/chess-position-v1.md). Data format `schema_version: 1`; file [corpus.json](corpus.json). Added by MSH-2, 2026-10-23. This is input and independently expected output for product tests. MSH-4 now consumes the FEN contracts and starting states; move/perft/classification expectations await their later behavior tasks.
 
 ## Format
 
@@ -18,7 +18,7 @@ The root has `schema_version`, `rules_profile`, `sources` and `cases`. Sources h
 
 For `position`, compare the **entire** sorted unique `legal_moves` array, including explicit underpromotion suffixes. Order in an implementation is irrelevant; normalize before comparison. An empty array is intentional. `classification` is one of `quiet`, `check`, `checkmate`, `stalemate`. Optional `perft` maps decimal depths to exact nonnegative node counts; this bounded seed uses depths 0 through 3. Optional `attacks` asks whether color `by` attacks `square`; occupancy, pinned attackers and pawn direction follow the profile. These queries are geometric, not legal-move membership.
 
-For `parse_fen`, `accepted: true` has an exact `canonical_fen`; `accepted: false` has error category `syntax`, `range` or `structure`. Parser cases are independent **contract examples** under the documented project validation policy. They do not claim another library has the same input policy. Implementers must test rejection without caller-state mutation in MSH-4. No executable mShogi parser is added here.
+For `parse_fen`, `accepted: true` has an exact `canonical_fen`; `accepted: false` has error category `syntax`, `range` or `structure`. Parser cases are independent **contract examples** under the documented project validation policy. They do not claim another library has the same input policy. MSH-4 executes rejection without caller-state mutation in the core Rust integration tests. The Python oracle checker intentionally does not act as this profile's product parser.
 
 New operations or incompatible meanings require a format version change. Do not silently drop unknown operations, compare only a move subset, replace exact counts with ranges, or auto-update answers from the implementation being tested. Position fixtures may later also serve as transition/undo starting states; passing move generation alone does not establish undo correctness.
 
@@ -34,6 +34,15 @@ The corpus contains 35 position cases and 33 FEN contracts (6 accepted, 27 rejec
 Oracle discrepancies are resolved explicitly: use `board.fen(en_passant="fen")` to retain raw EP; do not use the oracle's permissive FEN parser, validity bitmask or `outcome()` as mShogi policy. The checker skips rejected parser inputs rather than falsely claiming they pass product tests. No outstanding expectation disagreement was found in the initial enumeration; later discrepancies must preserve the case, source, rule reasoning and competing outputs for review.
 
 ## Reproduce
+
+The product parser suite consumes the unchanged corpus directly:
+
+```sh
+cargo test -p mshogi-core --test fen_corpus --locked
+```
+
+It tests all 33 parser contracts (6 accepted, 27 rejected) and canonical parsing of the other 35 starting positions. This does not verify those positions' legal moves, attacks, classification, perft or apply/undo behavior.
+
 
 Run from the repository root. Structural verification uses Python 3's standard library only:
 

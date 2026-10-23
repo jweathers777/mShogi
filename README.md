@@ -1,6 +1,6 @@
 # mShogi rewrite
 
-This repository baseline describes the rewrite of John Weathers's mShogi. It contains a minimal Rust library/headless-console workspace, the design and Backlog.md queue, and the earlier Rust prototype preserved under `legacy/rust-prototype/`. Game rules are not implemented in the active workspace yet; the retained prototype has not been certified against the new design.
+This repository baseline describes the rewrite of John Weathers's mShogi. It contains a minimal Rust library/headless-console workspace, the design and Backlog.md queue, and the earlier Rust prototype preserved under `legacy/rust-prototype/`. The core implements explicit chess position state and the agreed FEN boundary; legal actions and other game operations remain later work. The retained prototype has not been certified against the new design.
 
 The product goal is a reusable library with complete implementations of chess, shogi, tori shogi, chu shogi, tenjiku shogi, and xiangqi; capable mShogi engines; a standalone and interoperable console application; and a polished desktop application for Windows, macOS, and Linux.
 
@@ -42,7 +42,7 @@ cargo clippy --workspace --all-targets --locked -- -D warnings
 cargo test --workspace --locked
 ```
 
-The current console reports its version and target profile; game inspection, moves, perft, and engine protocols arrive in later tasks. Tests exercise real headless subprocess startup, output streams and usage errors. The core library has no external dependencies or console I/O. Native Windows/macOS/Linux checks are configured in [the Rust workflow](.github/workflows/rust.yml); MSH-3 records actual per-platform outcomes and revisions separately from configuration.
+The current console reports its version, target profile and partial coverage; game inspection, moves, perft, and engine protocols arrive in later tasks. The core library exposes [validated position/FEN APIs](docs/rules/chess-position-v1.md#rust-position-api). Tests exercise real headless subprocess startup, output streams and usage errors. The production core library has no external dependencies or console I/O; a pinned test-only JSON reader consumes the independent corpus. Native Windows/macOS/Linux checks are configured in [the Rust workflow](.github/workflows/rust.yml); MSH-3 records actual per-platform outcomes and revisions separately from configuration.
 
 ## Backlog commands
 

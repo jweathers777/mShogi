@@ -1,10 +1,12 @@
-//! Reusable mShogi rules library boundary.
+//! Reusable mShogi rules library, independent of I/O and presentation.
 //!
-//! MSH-3 establishes the build boundary and shared target-profile identity only.
-//! Position parsing and rule operations begin in MSH-4 and later tasks. No game
-//! implementation or conformance is claimed by this crate yet.
+//! The chess module implements explicit position state and the profile's FEN
+//! analysis boundary. Actions, public attack queries, move generation and full
+//! adjudication remain subsequent work; parsing is not a conformance certificate.
 
 /// Target chess position contract specified in `docs/rules/chess-position-v1.md`.
 ///
-/// This identifies the intended contract, not an implemented capability.
+/// The current implementation covers state and FEN only, not the whole contract.
 pub const CHESS_POSITION_PROFILE_ID: &str = "mshogi.chess.position.v1";
+
+pub mod chess;

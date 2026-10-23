@@ -109,7 +109,7 @@ def verify_oracle(data):
                 actual = board.is_attacked_by(chess.WHITE if attack["by"] == "white" else chess.BLACK, chess.parse_square(attack["square"]))
                 require(actual == attack["attacked"], f"{cid}: attack mismatch at {attack['square']}")
         checked += 1
-    print(f"PASS oracle chess {chess.__version__}: {checked} position/accepted-FEN cases; {rejected} rejection contracts await MSH-4 (not product tests).")
+    print(f"PASS oracle chess {chess.__version__}: {checked} position/accepted-FEN cases; {rejected} parser rejection contracts are skipped by this oracle (use the Rust FEN tests).")
 
 
 def main():

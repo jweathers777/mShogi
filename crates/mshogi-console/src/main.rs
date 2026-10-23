@@ -26,7 +26,7 @@ fn main() -> ExitCode {
         Some(Some("--version" | "-V")) => println!("mshogi {}", env!("CARGO_PKG_VERSION")),
         Some(Some("profile")) => {
             println!("Target rules profile: {CHESS_POSITION_PROFILE_ID}");
-            println!("Implementation: not yet available");
+            println!("Coverage: position/FEN only; game operations unavailable");
         }
         _ => return invalid_arguments(),
     }

@@ -1,11 +1,11 @@
 ---
 id: MSH-7
 title: Generate ordinary candidate moves and promotion choices
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-22T13:26:00Z'
-updated_date: '2026-10-23T17:21:00Z'
+updated_date: '2026-10-23T17:22:00Z'
 labels:
   - rules
   - move-generation
@@ -46,19 +46,19 @@ Castling, en passant, final legal-move claims, search ordering, and micro-optimi
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Candidate generation covers the intended ordinary movement and promotion categories for both colors.
-- [ ] #2 Blocked and edge cases match independent expected sets and do not produce duplicates.
-- [ ] #3 All promotion choices remain distinct actions throughout generation and transition.
-- [ ] #4 The candidate-versus-legal contract is explicit and callers cannot mistake this intermediate API for complete legality.
-- [ ] #5 Relevant transition and attack tests remain passing.
+- [x] #1 Candidate generation covers the intended ordinary movement and promotion categories for both colors.
+- [x] #2 Blocked and edge cases match independent expected sets and do not produce duplicates.
+- [x] #3 All promotion choices remain distinct actions throughout generation and transition.
+- [x] #4 The candidate-versus-legal contract is explicit and callers cannot mistake this intermediate API for complete legality.
+- [x] #5 Relevant transition and attack tests remain passing.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -102,4 +102,33 @@ Totals are now 17 positions / 274 candidates / 241 legal ordinary actions, and d
 Reviewer handoff for later tasks: MSH-8 must replace the shape-based unsupported rejections with rights/path/transit checks and EP discovered-attack handling; MSH-9 should replace the corpus test's castling/EP shape filter with exact full-legal-set comparison.
 
 Final local reruns PASS: oracle checker 17/274/241; cargo test --workspace --locked (5 CLI + 4 attacks + 8 FEN + 6 ordinary + 5 candidates + 3 doctests); fmt and clippy clean; whitespace diff check clean.
+
+Integration and native verification (2026-10-23): implementation 5afe2b56db8ded0b4f1533370ff7dce0dc5c849d committed on claude/next-task and fast-forward pushed to origin codex/rewrite (999f52f..5afe2b5). No force push, PR, default-branch or settings change. The Codex worktree's local codex/rewrite ref was not touched.
+
+Actual native CI PASS for exact head 5afe2b5: https://github.com/jweathers777/mShogi/actions/runs/39994336350. All three jobs succeeded on rustc 1.89.0:
+- Rust (ubuntu-24.04), job 120553830496, x86_64-unknown-linux-gnu
+- Rust (macos-15), job 120553830181, aarch64-apple-darwin
+- Rust (windows-2022), job 120553829652, x86_64-pc-windows-msvc
+Each job passed 4 attacks, 8 FEN, 6 ordinary-action and 5 candidate tests plus 3 doctests. CLI tests: 5 on Linux/macOS, 4 applicable on Windows. Console smoke reports the pseudo-legal candidate coverage line with no legal-move list.
+
+Next eligible: MSH-8 (castling/en passant) and MSH-13. No subsequent task started.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Added Position::ordinary_candidates(), the pseudo-legal ordinary candidate set for the side to move:
+- ordinary piece moves and captures;
+- pawn single advances, double advances from the home rank, and diagonal captures;
+- four distinct promotion actions per last-rank destination.
+Castling, en passant, own captures, king captures and duplicates are excluded. Candidates are not filtered for own-king safety or counters. The exact contract is documented in rustdoc and the profile: every candidate is either accepted by apply_ordinary or rejected only as IllegalPosition/CounterOverflow, and apply_ordinary accepts nothing outside the set. Naming, docs and console text state that this is not a legal-move list; MSH-9 owns that and MSH-8 owns special moves.
+
+Verification:
+- New fixture family mshogi.chess.ordinary-candidates.v1: 17 curated positions, 274 exact candidates and 241 legal ordinary actions. Stored hand expectations were written first; pinned python-chess 1.11.2 confirmed them, and a verify-only checker rechecks them.
+- Rust suite: exhaustive comparison of every bounded action with apply_ordinary on the fixtures and the 35 corpus positions; distinct promotion transitions and undo; a counter-bound case; determinism.
+- Mutation check catches every reachable injected fault.
+- Independent review found no blocking or should-fix issues. Its 2,800-position differential probe (93,536 candidates) had 0 mismatches, and its nits were resolved.
+- Native Linux/macOS/Windows CI run 39994336350 passed for implementation 5afe2b5 on codex/rewrite.
+
+Follow-ups: MSH-8 must replace the shape-based castling/EP rejections with real checks and add their candidates. MSH-9 should replace the corpus test's castling/EP shape filter with an exact full legal-set comparison.
+<!-- SECTION:FINAL_SUMMARY:END -->

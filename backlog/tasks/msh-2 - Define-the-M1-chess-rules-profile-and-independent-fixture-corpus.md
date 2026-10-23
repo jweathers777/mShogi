@@ -1,11 +1,11 @@
 ---
 id: MSH-2
 title: Define the M1 chess rules profile and independent fixture corpus
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-22T13:26:00Z'
-updated_date: '2026-10-23T11:23:00Z'
+updated_date: '2026-10-23T11:24:00Z'
 labels:
   - rules
   - reference
@@ -58,10 +58,10 @@ Writing the optimized move generator, treating legacy mShogi output as a rule or
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -92,4 +92,18 @@ Independent review complete: separate read-only reviewer /root/msh2_review found
 AC mapping: #1 named profile scope/outcome boundary + coverage ledger; #2 explicit syntax/range/local structure/analysis policy and canonical semantic tuple + 33 FEN contracts; #3 68 records with profile, starting FEN, operation, exact expectation, source/version/locator/method/rationale; #4 35 full legal move/classification cases, both special-move colors, pins/checks/x-ray and six independently maintained perft positions, independently checked; #5 ledger explicitly retains dead position, all claim/automatic draw obligations, resignation/time exceptions, history/event/API questions and later implementation owners. All data/contract criteria satisfied; no product implementation completion is inferred.
 
 Next Ready+dependency-ready task will remain MSH-3 only. MSH-4 still requires MSH-3 in addition to MSH-2. No new tasks or unrelated work started. Normal integration and push verification follow; final task completion will record the actual implementation commit and remote outcome.
+
+Integration evidence: commit 63297c4fbce783b32b9e6b576f9f56580784b95e (Define M1 chess profile and independent fixture corpus (MSH-2)) is integrated on codex/rewrite and normally pushed to origin/codex/rewrite. Committed-revision reruns of python3 tools/check_chess_corpus.py and the pinned-venv --oracle command both passed with the same 68/41/27 accounting. git diff --cached --check passed before commit. git push origin codex/rewrite succeeded, fast-forward 5a0d63b..63297c4; git ls-remote confirmed rewrite at the full implementation hash above. Remote master remained 941cd4dc37e6e6210d4f993c96a553753e228b19, main_v2 remained 90458437d8872d6264b5536ae6ab15142c11e357; local WIP main_v2 retained. Backlog doctor passes. No access blocker or review finding remains. This completion record is a follow-up commit on the same integration branch, identified by the commit containing it rather than a fabricated future self-hash.
+
+Final handoff check: backlog task list --status Ready --ready --json returns exactly MSH-3. Task list confirms only MSH-1 and MSH-2 are Done; other seed tasks retain their statuses/criteria. MSH-3 is not started.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Completed MSH-2 only. Defined mshogi.chess.position.v1, its explicit FEN analysis/serialization policy and M1 outcome boundary; added a coverage ledger retaining deferred full-adjudication obligations and questions. Curated 68 source-backed fixtures: 35 complete move/classification positions and 33 FEN contracts. Added a standard-library structural checker with optional pinned external-oracle verification, and linked the deliverables from README.
+
+All five acceptance criteria have evidence. On macOS: structural verification passes; independent chess==1.11.2 agrees with all 41 position/accepted-FEN cases (38 perft expectations and 3 attack queries included). Twenty-seven rejected parser inputs await MSH-4, explicitly not claimed as passing product tests. Independent reviewer reproduced checks, verified provenance, manually inspected key rule cases and found no actionable findings; negative mutation probes demonstrated failure diagnostics. Existing Rust/Cargo/variant code and legacy history were preserved. Product builds, parser execution, undo, deep perft, full rules compliance and other platforms were not tested or claimed.
+
+Implementation commit 63297c4fbce783b32b9e6b576f9f56580784b95e was verified, normally pushed and confirmed on origin/codex/rewrite. This commit's completion evidence is carried in the subsequent ticket-only commit containing this summary. Next eligible task: MSH-3, unstarted; MSH-4 still waits on it. No blocker remains.
+<!-- SECTION:FINAL_SUMMARY:END -->

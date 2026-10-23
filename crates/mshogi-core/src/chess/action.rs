@@ -1,4 +1,5 @@
-//! Checked ordinary chess transitions and exact local-state restoration.
+//! Checked chess transitions, including castling and en passant, and exact
+//! local-state restoration.
 
 use std::{error::Error, fmt};
 
@@ -31,19 +32,21 @@ impl Promotion {
 /// One complete chess player choice, not a client-supplied list of effects.
 ///
 /// This is intentionally chess-specific, not a universal multi-route/variant
-/// action type. Partial UI selection is not an applied action. The current
-/// checked entry point supports ordinary moves/captures and promotions only.
+/// action type. Partial UI selection is not an applied action. Castling names
+/// the king's two-file move (e.g. e1 to g1); en passant names the capturing
+/// pawn's diagonal move onto the raw target. The board determines the rook
+/// move and the off-destination victim.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Action {
     /// Starting square; the board determines the moving piece.
     pub from: Square,
-    /// Destination; the board determines any ordinary capture.
+    /// Destination; the board determines any capture.
     pub to: Square,
     /// Required on a last-rank pawn action, forbidden otherwise.
     pub promotion: Option<Promotion>,
 }
 
-/// A rejected ordinary action; rejection leaves every position field unchanged.
+/// A rejected action; rejection leaves every position field unchanged.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum ActionError {
     /// No piece occupies the source square.
@@ -62,10 +65,18 @@ pub enum ActionError {
     MissingPromotion,
     /// A promotion choice was supplied for another piece or destination rank.
     UnexpectedPromotion,
-    /// Standard castling execution is deferred to MSH-8; no legality is implied.
-    UnsupportedCastling,
-    /// En passant execution is deferred to MSH-8; no legality is implied.
-    UnsupportedEnPassant,
+    /// A castling-shaped king action given to the ordinary-only boundary; use
+    /// [`Position::apply`]. No legality is implied.
+    CastlingNotOrdinary,
+    /// An en passant capture given to the ordinary-only boundary; use
+    /// [`Position::apply`]. No legality is implied.
+    EnPassantNotOrdinary,
+    /// The castling right is absent, its home rook is missing, or a square
+    /// between the king and that rook is occupied.
+    CastlingUnavailable,
+    /// The castling king is in check or would cross an attacked square.
+    /// An attacked destination is reported as [`ActionError::IllegalPosition`].
+    CastlingKingAttacked,
     /// A counter increment would exceed the profile's u32 domain.
     CounterOverflow,
     /// The resulting local position is invalid, including an unsafe moving king.
@@ -83,8 +94,10 @@ impl fmt::Display for ActionError {
             Self::IllegalGeometry => "invalid movement or blocked path",
             Self::MissingPromotion => "last-rank pawn action needs a promotion choice",
             Self::UnexpectedPromotion => "promotion is not allowed for this action",
-            Self::UnsupportedCastling => "castling execution is not implemented",
-            Self::UnsupportedEnPassant => "en passant execution is not implemented",
+            Self::CastlingNotOrdinary => "castling is not an ordinary action",
+            Self::EnPassantNotOrdinary => "en passant is not an ordinary action",
+            Self::CastlingUnavailable => "castling right, rook or empty path is missing",
+            Self::CastlingKingAttacked => "castling king is in check or crosses an attacked square",
             Self::CounterOverflow => "position counter would overflow",
             Self::IllegalPosition(error) => return write!(f, "action rejected: {error}"),
         };
@@ -101,7 +114,7 @@ impl Error for ActionError {
     }
 }
 
-/// Opaque in-memory restoration record for one successful ordinary action.
+/// Opaque in-memory restoration record for one successful action.
 ///
 /// Full before/after snapshots deliberately favor clarity over compression.
 /// There are no derived caches yet. This is not a serialized game record or a
@@ -129,26 +142,59 @@ impl fmt::Display for UndoError {
 
 impl Error for UndoError {}
 
-// Only resolution constructs this private, trusted input. Captures/placed piece
-// and counter/EP effects are derived from the current board and checked action.
-struct ResolvedOrdinary {
+// Only resolution constructs this private, trusted input. Captures, the placed
+// piece, any castling rook move and counter/EP effects are derived from the
+// current board and the checked action.
+struct Resolved {
     action: Action,
     moving: Piece,
-    captured: Option<Piece>,
     placed: Piece,
+    // Square and piece removed; differs from `action.to` only for en passant.
+    captured: Option<(Square, Piece)>,
+    // Castling rook origin and destination.
+    rook: Option<(Square, Square)>,
     en_passant_target: Option<Square>,
     halfmove_clock: u32,
     fullmove_number: u32,
 }
 
 impl Position {
+    /// Check and apply one complete action atomically: an ordinary move or
+    /// capture, a promotion, castling or en passant.
+    ///
+    /// Validates ownership, movement/path, promotion, castling right/path and
+    /// king origin/transit safety, en passant availability, counters, and the
+    /// resulting king safety/local invariants before publishing any change. Own
+    /// king safety is judged after **all** effects, including rook movement and
+    /// removal of the en passant victim. No move generator or match-adjudication
+    /// policy is invoked. Returns an exact local-state restoration record.
+    ///
+    /// ```
+    /// use mshogi_core::chess::{Action, Position, Square};
+    /// let mut position = Position::from_fen("r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1")?;
+    /// let before = position.clone();
+    /// let record = position.apply(Action {
+    ///     from: Square::new(4, 0).unwrap(), // e1
+    ///     to: Square::new(6, 0).unwrap(),   // g1
+    ///     promotion: None,
+    /// })?;
+    /// assert_eq!(position.to_fen(), "r3k2r/8/8/8/8/8/8/R4RK1 b kq - 1 1");
+    /// position.undo(&record)?;
+    /// assert_eq!(position, before);
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
+    pub fn apply(&mut self, action: Action) -> Result<Undo, ActionError> {
+        let resolved = self.resolve(action, true)?;
+        self.publish(resolved)
+    }
+
     /// Check and apply one ordinary move/capture or explicit promotion atomically.
     ///
-    /// Validates ownership, movement/path, promotion, counters and the resulting
-    /// king safety/local invariants before publishing any change. Castling and
-    /// en passant execution return explicit unsupported errors. No move generator
-    /// or match-adjudication policy is invoked (e.g. bare-kings diagnostics remain
-    /// usable). Returns an exact local-state restoration record on success.
+    /// The ordinary-only subset of [`Position::apply`]: castling-shaped king
+    /// actions and en passant captures are rejected as
+    /// [`ActionError::CastlingNotOrdinary`] and
+    /// [`ActionError::EnPassantNotOrdinary`] without judging their legality.
+    /// Everything else, including king safety, is checked exactly as by `apply`.
     ///
     /// ```
     /// use mshogi_core::chess::{Action, Position, Square};
@@ -167,18 +213,8 @@ impl Position {
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     pub fn apply_ordinary(&mut self, action: Action) -> Result<Undo, ActionError> {
-        let resolved = self.resolve_ordinary(action)?;
-        let mut candidate = self.clone();
-        candidate.apply_resolved(resolved);
-        candidate
-            .validate_structure()
-            .map_err(ActionError::IllegalPosition)?;
-        let undo = Undo {
-            before: self.clone(),
-            after: candidate.clone(),
-        };
-        *self = candidate;
-        Ok(undo)
+        let resolved = self.resolve(action, false)?;
+        self.publish(resolved)
     }
 
     /// Restore an exact prior position only when its complete post-state matches.
@@ -194,7 +230,21 @@ impl Position {
         Ok(())
     }
 
-    fn resolve_ordinary(&self, action: Action) -> Result<ResolvedOrdinary, ActionError> {
+    fn publish(&mut self, resolved: Resolved) -> Result<Undo, ActionError> {
+        let mut candidate = self.clone();
+        candidate.apply_resolved(resolved);
+        candidate
+            .validate_structure()
+            .map_err(ActionError::IllegalPosition)?;
+        let undo = Undo {
+            before: self.clone(),
+            after: candidate.clone(),
+        };
+        *self = candidate;
+        Ok(undo)
+    }
+
+    fn resolve(&self, action: Action, special: bool) -> Result<Resolved, ActionError> {
         use ActionError::*;
         let moving = self.piece_at(action.from).ok_or(EmptySource)?;
         if moving.color != self.side_to_move {
@@ -203,7 +253,6 @@ impl Position {
         if action.from == action.to {
             return Err(SameSquare);
         }
-        let captured = self.piece_at(action.to);
         let df = action.to.file() as i8 - action.from.file() as i8;
         let dr = action.to.rank() as i8 - action.from.rank() as i8;
         let home_rank = if moving.color == Color::White { 0 } else { 7 };
@@ -213,12 +262,16 @@ impl Position {
             && dr == 0
             && df.abs() == 2
         {
-            return Err(UnsupportedCastling);
+            if !special {
+                return Err(CastlingNotOrdinary);
+            }
+            return self.resolve_castling(action, moving, df > 0);
         }
-        if captured.is_some_and(|piece| piece.color == moving.color) {
+        let mut captured = self.piece_at(action.to).map(|piece| (action.to, piece));
+        if captured.is_some_and(|(_, piece)| piece.color == moving.color) {
             return Err(FriendlyDestination);
         }
-        if captured.is_some_and(|piece| piece.kind == PieceKind::King) {
+        if captured.is_some_and(|(_, piece)| piece.kind == PieceKind::King) {
             return Err(KingCapture);
         }
 
@@ -231,7 +284,16 @@ impl Position {
                 let start_rank = if moving.color == Color::White { 1 } else { 6 };
                 if df.abs() == 1 && dr == forward {
                     if captured.is_none() && self.en_passant_target == Some(action.to) {
-                        return Err(UnsupportedEnPassant);
+                        if !special {
+                            return Err(EnPassantNotOrdinary);
+                        }
+                        // FEN and transition invariants place the opposing
+                        // double-pushed pawn beside the mover; check anyway.
+                        let victim_square = Square(action.from.rank() * 8 + action.to.file());
+                        let victim = self.piece_at(victim_square).filter(|piece| {
+                            piece.color != moving.color && piece.kind == PieceKind::Pawn
+                        });
+                        captured = victim.map(|piece| (victim_square, piece));
                     }
                     captured.is_some()
                 } else if df == 0 && captured.is_none() {
@@ -270,36 +332,115 @@ impl Position {
             }
             moving.kind
         };
-        let halfmove_clock = if moving.kind == PieceKind::Pawn || captured.is_some() {
-            0
-        } else {
-            self.halfmove_clock.checked_add(1).ok_or(CounterOverflow)?
-        };
-        let fullmove_number = if moving.color == Color::Black {
-            self.fullmove_number.checked_add(1).ok_or(CounterOverflow)?
-        } else {
-            self.fullmove_number
-        };
-        Ok(ResolvedOrdinary {
+        let resets = moving.kind == PieceKind::Pawn || captured.is_some();
+        let (halfmove_clock, fullmove_number) = self.next_counters(resets)?;
+        Ok(Resolved {
             action,
             moving,
-            captured,
             placed: Piece {
                 color: moving.color,
                 kind: placed_kind,
             },
+            captured,
+            rook: None,
             en_passant_target,
             halfmove_clock,
             fullmove_number,
         })
     }
 
-    // Trusted private primitive: resolve_ordinary has established board effects,
+    // The king moves two files toward its home rook, which jumps to the square
+    // the king crossed (FIDE 3.8.a.ii, orthodox starting squares only).
+    fn resolve_castling(
+        &self,
+        action: Action,
+        moving: Piece,
+        kingside: bool,
+    ) -> Result<Resolved, ActionError> {
+        use ActionError::*;
+        let rights = self.castling_rights;
+        let has_right = if kingside {
+            rights.kingside(moving.color)
+        } else {
+            rights.queenside(moving.color)
+        };
+        let rank = action.from.rank();
+        let at = |file: u8| Square(rank * 8 + file);
+        let (rook_from, rook_to, between): (Square, Square, &[u8]) = if kingside {
+            (at(7), at(5), &[5, 6])
+        } else {
+            (at(0), at(3), &[1, 2, 3])
+        };
+        let home_rook = Piece {
+            color: moving.color,
+            kind: PieceKind::Rook,
+        };
+        if !has_right
+            || self.piece_at(rook_from) != Some(home_rook)
+            || between
+                .iter()
+                .any(|&file| self.piece_at(at(file)).is_some())
+        {
+            return Err(CastlingUnavailable);
+        }
+        if action.promotion.is_some() {
+            return Err(UnexpectedPromotion);
+        }
+        // Origin and transit are judged here; the destination is judged on the
+        // resulting board by the same structural king-safety check as every action.
+        // The square the king crosses is exactly the rook's destination.
+        let opponent = moving.color.opponent();
+        if self.is_square_attacked(action.from, opponent)
+            || self.is_square_attacked(rook_to, opponent)
+        {
+            return Err(CastlingKingAttacked);
+        }
+        let (halfmove_clock, fullmove_number) = self.next_counters(false)?;
+        Ok(Resolved {
+            action,
+            moving,
+            placed: moving,
+            captured: None,
+            rook: Some((rook_from, rook_to)),
+            en_passant_target: None,
+            halfmove_clock,
+            fullmove_number,
+        })
+    }
+
+    fn next_counters(&self, resets_halfmove: bool) -> Result<(u32, u32), ActionError> {
+        let halfmove_clock = if resets_halfmove {
+            0
+        } else {
+            self.halfmove_clock
+                .checked_add(1)
+                .ok_or(ActionError::CounterOverflow)?
+        };
+        let fullmove_number = if self.side_to_move == Color::Black {
+            self.fullmove_number
+                .checked_add(1)
+                .ok_or(ActionError::CounterOverflow)?
+        } else {
+            self.fullmove_number
+        };
+        Ok((halfmove_clock, fullmove_number))
+    }
+
+    // Trusted private primitive: resolution has established board effects,
     // geometry and counter bounds. Runs only on a candidate; the checked public
-    // caller validates its resulting local invariants before publishing it.
-    fn apply_resolved(&mut self, resolved: ResolvedOrdinary) {
+    // callers validate its resulting local invariants before publishing it.
+    fn apply_resolved(&mut self, resolved: Resolved) {
         self.board[resolved.action.from.index()] = None;
+        if let Some((square, piece)) = resolved.captured {
+            self.board[square.index()] = None;
+            if piece.kind == PieceKind::Rook {
+                self.remove_home_rook_right(piece.color, square);
+            }
+        }
         self.board[resolved.action.to.index()] = Some(resolved.placed);
+        if let Some((rook_from, rook_to)) = resolved.rook {
+            self.board[rook_to.index()] = self.board[rook_from.index()].take();
+        }
         if resolved.moving.kind == PieceKind::King {
             let color = resolved.moving.color.index();
             self.castling_rights.kingside[color] = false;
@@ -307,13 +448,6 @@ impl Position {
         }
         if resolved.moving.kind == PieceKind::Rook {
             self.remove_home_rook_right(resolved.moving.color, resolved.action.from);
-        }
-        if let Some(Piece {
-            color,
-            kind: PieceKind::Rook,
-        }) = resolved.captured
-        {
-            self.remove_home_rook_right(color, resolved.action.to);
         }
         self.en_passant_target = resolved.en_passant_target;
         self.halfmove_clock = resolved.halfmove_clock;

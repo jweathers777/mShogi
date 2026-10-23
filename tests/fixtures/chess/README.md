@@ -82,7 +82,7 @@ Optional oracle recheck, in the separately installed environment described above
 /tmp/mshogi-chess-oracle/bin/python tools/check_chess_transitions.py
 ```
 
-The oracle checker verifies every expected after-state and never rewrites it; Rust tests additionally compare the full saved tuple at every reverse step. Neither implies special-move execution or full match adjudication. Invalid-action, unsupported-special, overflow and bad-undo tests are explicit Rust cases under the documented API/profile policy; they do not substitute agreement with a permissive external parser for the project boundary.
+The oracle checker verifies every expected after-state and never rewrites it; Rust tests additionally compare the full saved tuple at every reverse step. Neither implies special-move execution or full match adjudication. Invalid-action, non-ordinary special, overflow and bad-undo tests are explicit Rust cases under the documented API/profile policy; they do not substitute agreement with a permissive external parser for the project boundary.
 
 ## Attack fixture family
 
@@ -110,4 +110,31 @@ For each case the diagram, candidate count, required and excluded actions and le
 ```sh
 cargo test -p mshogi-core --test ordinary_candidates --locked
 /tmp/mshogi-chess-oracle/bin/python tools/check_chess_ordinary_candidates.py
+```
+
+## Special action fixture family
+
+MSH-8 adds [special-actions.json](special-actions.json), a separate family named `mshogi.chess.special-actions.v1` with `schema_version: 1`. Its root has three arrays, and IDs are unique across all three:
+
+- `positions`: a canonical `fen`, the hand-curated `special_candidates` and `legal_special` sets, and the complete oracle `legal` set;
+- `sequences`: `before_fen` and ordered `steps` of `{ action, after_fen }`, each containing at least one castling or en passant action;
+- `rejections`: a `fen`, an `action`, the expected profile `error` category, and `oracle_legal`, which is true only when the action is FIDE-legal but rejected by the profile's u32 counter domain.
+
+Every case carries tags and source/method/rationale provenance. Actions use the coordinate test adapter, with castling named by the king's move.
+
+There are 21 positions, 6 sequences with 25 exact steps, and 18 rejections. They cover:
+
+- both castlings of both colors;
+- missing rights, own and opponent blockers;
+- check, an attacked transit or destination, an attacked rook and an attacked b1;
+- en passant for both colors, two capturers, expiry and an uncapturable raw target;
+- rank discoveries of both colors, a diagonal discovery, a pinned capturer and en passant as a check evasion;
+- a rook moved away and back, which does not restore the right;
+- castling at the counter limit.
+
+All special candidate sets, legal specials and rejection errors were written by hand from the FIDE/profile rationale first. The pinned `chess==1.11.2` `legal_moves` with `is_castling`/`is_en_passant` then had to agree, before the complete legal sets and after-FENs were enumerated. Every hand expectation matched on the first run. Special candidates and error categories are profile contracts that the oracle cannot supply; they are checked by hand and by the Rust contract test.
+
+```sh
+cargo test -p mshogi-core --test special_actions --locked
+/tmp/mshogi-chess-oracle/bin/python tools/check_chess_special_actions.py
 ```

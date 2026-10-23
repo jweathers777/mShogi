@@ -1,0 +1,1426 @@
+{
+  "format": "mshogi.chess.special-actions.v1",
+  "schema_version": 1,
+  "rules_profile": "mshogi.chess.position.v1",
+  "sources": {
+    "fide-2023": {
+      "url": "https://handbook.fide.com/chapter/E012023",
+      "version": "Effective 2023-01-01, approved 2022-08-07/08",
+      "retrieved": "2026-10-23",
+      "sha256": "c5b1692a0614d4bd93fe9238287b9ab7d1f47320934d5df3be113523906c476f"
+    },
+    "profile-v1": {
+      "url": "../../../docs/rules/chess-position-v1.md",
+      "version": "mshogi.chess.position.v1",
+      "retrieved": "2026-10-23",
+      "note": "Castling/en passant execution, candidate contract and error categories."
+    },
+    "python-chess-1.11.2": {
+      "url": "https://github.com/niklasf/python-chess/tree/v1.11.2",
+      "version": "PyPI chess==1.11.2; chess.__version__ == 1.11.2",
+      "retrieved": "2026-10-23",
+      "sha256": "1fde6a8e932508d14b31f6a584497b49c2969fc3c7cdc675347f819f0d667a5b"
+    }
+  },
+  "positions": [
+    {
+      "id": "white-both-castles",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1",
+      "tags": [
+        "castling",
+        "white"
+      ],
+      "special_candidates": [
+        "e1c1",
+        "e1g1"
+      ],
+      "legal_special": [
+        "e1c1",
+        "e1g1"
+      ],
+      "legal": [
+        "a1a2",
+        "a1a3",
+        "a1a4",
+        "a1a5",
+        "a1a6",
+        "a1a7",
+        "a1a8",
+        "a1b1",
+        "a1c1",
+        "a1d1",
+        "e1c1",
+        "e1d1",
+        "e1d2",
+        "e1e2",
+        "e1f1",
+        "e1f2",
+        "e1g1",
+        "h1f1",
+        "h1g1",
+        "h1h2",
+        "h1h3",
+        "h1h4",
+        "h1h5",
+        "h1h6",
+        "h1h7",
+        "h1h8"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, special candidates and legal specials hand-curated from the rationale first; chess==1.11.2 legal_moves (is_castling/is_en_passant) confirmed the legal specials and enumerated the complete legal set. Special candidates are a profile contract checked by hand. No mShogi output used.",
+        "rationale": "FIDE 3.8.a.ii: rights, home pieces, empty paths and unattacked e1/d1/c1 and e1/f1/g1 allow both castlings."
+      }
+    },
+    {
+      "id": "black-both-castles",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/8/8/8/R3K2R b KQkq - 0 1",
+      "tags": [
+        "castling",
+        "black"
+      ],
+      "special_candidates": [
+        "e8c8",
+        "e8g8"
+      ],
+      "legal_special": [
+        "e8c8",
+        "e8g8"
+      ],
+      "legal": [
+        "a8a1",
+        "a8a2",
+        "a8a3",
+        "a8a4",
+        "a8a5",
+        "a8a6",
+        "a8a7",
+        "a8b8",
+        "a8c8",
+        "a8d8",
+        "e8c8",
+        "e8d7",
+        "e8d8",
+        "e8e7",
+        "e8f7",
+        "e8f8",
+        "e8g8",
+        "h8f8",
+        "h8g8",
+        "h8h1",
+        "h8h2",
+        "h8h3",
+        "h8h4",
+        "h8h5",
+        "h8h6",
+        "h8h7"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, special candidates and legal specials hand-curated from the rationale first; chess==1.11.2 legal_moves (is_castling/is_en_passant) confirmed the legal specials and enumerated the complete legal set. Special candidates are a profile contract checked by hand. No mShogi output used.",
+        "rationale": "Black mirror of both castlings."
+      }
+    },
+    {
+      "id": "castling-without-rights",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/8/8/8/R3K2R w - - 0 1",
+      "tags": [
+        "castling",
+        "rights"
+      ],
+      "special_candidates": [],
+      "legal_special": [],
+      "legal": [
+        "a1a2",
+        "a1a3",
+        "a1a4",
+        "a1a5",
+        "a1a6",
+        "a1a7",
+        "a1a8",
+        "a1b1",
+        "a1c1",
+        "a1d1",
+        "e1d1",
+        "e1d2",
+        "e1e2",
+        "e1f1",
+        "e1f2",
+        "h1f1",
+        "h1g1",
+        "h1h2",
+        "h1h3",
+        "h1h4",
+        "h1h5",
+        "h1h6",
+        "h1h7",
+        "h1h8"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, special candidates and legal specials hand-curated from the rationale first; chess==1.11.2 legal_moves (is_castling/is_en_passant) confirmed the legal specials and enumerated the complete legal set. Special candidates are a profile contract checked by hand. No mShogi output used.",
+        "rationale": "Rights are historical; home pieces without rights give no castling candidate."
+      }
+    },
+    {
+      "id": "castling-through-attack",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/2b5/8/8/R3K2R w KQkq - 0 1",
+      "tags": [
+        "castling",
+        "transit-attacked",
+        "white"
+      ],
+      "special_candidates": [
+        "e1c1",
+        "e1g1"
+      ],
+      "legal_special": [
+        "e1c1"
+      ],
+      "legal": [
+        "a1a2",
+        "a1a3",
+        "a1a4",
+        "a1a5",
+        "a1a6",
+        "a1a7",
+        "a1a8",
+        "a1b1",
+        "a1c1",
+        "a1d1",
+        "e1c1",
+        "e1d1",
+        "e1d2",
+        "e1f2",
+        "h1f1",
+        "h1g1",
+        "h1h2",
+        "h1h3",
+        "h1h4",
+        "h1h5",
+        "h1h6",
+        "h1h7",
+        "h1h8"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, special candidates and legal specials hand-curated from the rationale first; chess==1.11.2 legal_moves (is_castling/is_en_passant) confirmed the legal specials and enumerated the complete legal set. Special candidates are a profile contract checked by hand. No mShogi output used.",
+        "rationale": "The c4 bishop attacks f1, the kingside transit square; queenside squares e1/d1/c1 are safe."
+      }
+    },
+    {
+      "id": "castling-into-attack",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k1rr/8/8/8/8/8/8/R3K2R w KQkq - 0 1",
+      "tags": [
+        "castling",
+        "destination-attacked",
+        "white"
+      ],
+      "special_candidates": [
+        "e1c1",
+        "e1g1"
+      ],
+      "legal_special": [
+        "e1c1"
+      ],
+      "legal": [
+        "a1a2",
+        "a1a3",
+        "a1a4",
+        "a1a5",
+        "a1a6",
+        "a1a7",
+        "a1a8",
+        "a1b1",
+        "a1c1",
+        "a1d1",
+        "e1c1",
+        "e1d1",
+        "e1d2",
+        "e1e2",
+        "e1f1",
+        "e1f2",
+        "h1f1",
+        "h1g1",
+        "h1h2",
+        "h1h3",
+        "h1h4",
+        "h1h5",
+        "h1h6",
+        "h1h7",
+        "h1h8"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, special candidates and legal specials hand-curated from the rationale first; chess==1.11.2 legal_moves (is_castling/is_en_passant) confirmed the legal specials and enumerated the complete legal set. Special candidates are a profile contract checked by hand. No mShogi output used.",
+        "rationale": "The g8 rook attacks the kingside destination g1; the h1 rook is also attacked, which alone is irrelevant."
+      }
+    },
+    {
+      "id": "castling-out-of-check",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/8/8/4r3/R3K2R w KQkq - 0 1",
+      "tags": [
+        "castling",
+        "check",
+        "white"
+      ],
+      "special_candidates": [
+        "e1c1",
+        "e1g1"
+      ],
+      "legal_special": [],
+      "legal": [
+        "e1d1",
+        "e1e2",
+        "e1f1"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, special candidates and legal specials hand-curated from the rationale first; chess==1.11.2 legal_moves (is_castling/is_en_passant) confirmed the legal specials and enumerated the complete legal set. Special candidates are a profile contract checked by hand. No mShogi output used.",
+        "rationale": "FIDE 3.8.a.ii.1: no castling while in check from the e2 rook."
+      }
+    },
+    {
+      "id": "castling-queenside-blocker",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/8/8/8/RN2K2R w KQkq - 0 1",
+      "tags": [
+        "castling",
+        "blocker",
+        "white"
+      ],
+      "special_candidates": [
+        "e1g1"
+      ],
+      "legal_special": [
+        "e1g1"
+      ],
+      "legal": [
+        "a1a2",
+        "a1a3",
+        "a1a4",
+        "a1a5",
+        "a1a6",
+        "a1a7",
+        "a1a8",
+        "b1a3",
+        "b1c3",
+        "b1d2",
+        "e1d1",
+        "e1d2",
+        "e1e2",
+        "e1f1",
+        "e1f2",
+        "e1g1",
+        "h1f1",
+        "h1g1",
+        "h1h2",
+        "h1h3",
+        "h1h4",
+        "h1h5",
+        "h1h6",
+        "h1h7",
+        "h1h8"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, special candidates and legal specials hand-curated from the rationale first; chess==1.11.2 legal_moves (is_castling/is_en_passant) confirmed the legal specials and enumerated the complete legal set. Special candidates are a profile contract checked by hand. No mShogi output used.",
+        "rationale": "The own knight on b1 blocks queenside castling even though the king never crosses b1."
+      }
+    },
+    {
+      "id": "castling-kingside-opponent-blocker",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/8/8/8/R3K1nR w KQkq - 0 1",
+      "tags": [
+        "castling",
+        "blocker",
+        "white"
+      ],
+      "special_candidates": [
+        "e1c1"
+      ],
+      "legal_special": [
+        "e1c1"
+      ],
+      "legal": [
+        "a1a2",
+        "a1a3",
+        "a1a4",
+        "a1a5",
+        "a1a6",
+        "a1a7",
+        "a1a8",
+        "a1b1",
+        "a1c1",
+        "a1d1",
+        "e1c1",
+        "e1d1",
+        "e1d2",
+        "e1f1",
+        "e1f2",
+        "h1g1",
+        "h1h2",
+        "h1h3",
+        "h1h4",
+        "h1h5",
+        "h1h6",
+        "h1h7",
+        "h1h8"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, special candidates and legal specials hand-curated from the rationale first; chess==1.11.2 legal_moves (is_castling/is_en_passant) confirmed the legal specials and enumerated the complete legal set. Special candidates are a profile contract checked by hand. No mShogi output used.",
+        "rationale": "An opponent knight on g1 blocks kingside castling; it attacks e2/f3/h3, not the queenside path."
+      }
+    },
+    {
+      "id": "castling-attacked-rook",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/8/8/7r/R3K2R w KQkq - 0 1",
+      "tags": [
+        "castling",
+        "attacked-rook",
+        "white"
+      ],
+      "special_candidates": [
+        "e1c1",
+        "e1g1"
+      ],
+      "legal_special": [
+        "e1c1",
+        "e1g1"
+      ],
+      "legal": [
+        "a1a2",
+        "a1a3",
+        "a1a4",
+        "a1a5",
+        "a1a6",
+        "a1a7",
+        "a1a8",
+        "a1b1",
+        "a1c1",
+        "a1d1",
+        "e1c1",
+        "e1d1",
+        "e1f1",
+        "e1g1",
+        "h1f1",
+        "h1g1",
+        "h1h2"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, special candidates and legal specials hand-curated from the rationale first; chess==1.11.2 legal_moves (is_castling/is_en_passant) confirmed the legal specials and enumerated the complete legal set. Special candidates are a profile contract checked by hand. No mShogi output used.",
+        "rationale": "The h2 rook attacks the h1 rook but no king square; both castlings stay legal."
+      }
+    },
+    {
+      "id": "castling-b1-attacked",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/8/n7/8/R3K2R w KQkq - 0 1",
+      "tags": [
+        "castling",
+        "attacked-rook-path",
+        "white"
+      ],
+      "special_candidates": [
+        "e1c1",
+        "e1g1"
+      ],
+      "legal_special": [
+        "e1c1",
+        "e1g1"
+      ],
+      "legal": [
+        "a1a2",
+        "a1a3",
+        "a1b1",
+        "a1c1",
+        "a1d1",
+        "e1c1",
+        "e1d1",
+        "e1d2",
+        "e1e2",
+        "e1f1",
+        "e1f2",
+        "e1g1",
+        "h1f1",
+        "h1g1",
+        "h1h2",
+        "h1h3",
+        "h1h4",
+        "h1h5",
+        "h1h6",
+        "h1h7",
+        "h1h8"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, special candidates and legal specials hand-curated from the rationale first; chess==1.11.2 legal_moves (is_castling/is_en_passant) confirmed the legal specials and enumerated the complete legal set. Special candidates are a profile contract checked by hand. No mShogi output used.",
+        "rationale": "The a3 knight attacks b1, which the rook crosses but the king does not; queenside castling stays legal."
+      }
+    },
+    {
+      "id": "black-castling-transit-attacked",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/6B1/8/8/8/R3K2R b KQkq - 0 1",
+      "tags": [
+        "castling",
+        "transit-attacked",
+        "black"
+      ],
+      "special_candidates": [
+        "e8c8",
+        "e8g8"
+      ],
+      "legal_special": [
+        "e8g8"
+      ],
+      "legal": [
+        "a8a1",
+        "a8a2",
+        "a8a3",
+        "a8a4",
+        "a8a5",
+        "a8a6",
+        "a8a7",
+        "a8b8",
+        "a8c8",
+        "a8d8",
+        "e8d7",
+        "e8f7",
+        "e8f8",
+        "e8g8",
+        "h8f8",
+        "h8g8",
+        "h8h1",
+        "h8h2",
+        "h8h3",
+        "h8h4",
+        "h8h5",
+        "h8h6",
+        "h8h7"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, special candidates and legal specials hand-curated from the rationale first; chess==1.11.2 legal_moves (is_castling/is_en_passant) confirmed the legal specials and enumerated the complete legal set. Special candidates are a profile contract checked by hand. No mShogi output used.",
+        "rationale": "The g5 bishop attacks d8, Black's queenside transit square; kingside stays legal."
+      }
+    },
+    {
+      "id": "white-en-passant",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "7k/8/8/3pP3/8/8/8/K7 w - d6 0 2",
+      "tags": [
+        "en-passant",
+        "white"
+      ],
+      "special_candidates": [
+        "e5d6"
+      ],
+      "legal_special": [
+        "e5d6"
+      ],
+      "legal": [
+        "a1a2",
+        "a1b1",
+        "a1b2",
+        "e5d6",
+        "e5e6"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, special candidates and legal specials hand-curated from the rationale first; chess==1.11.2 legal_moves (is_castling/is_en_passant) confirmed the legal specials and enumerated the complete legal set. Special candidates are a profile contract checked by hand. No mShogi output used.",
+        "rationale": "FIDE 3.7.d: e5xd6 e.p. immediately after d7-d5."
+      }
+    },
+    {
+      "id": "black-en-passant",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "7k/8/8/8/3Pp3/8/8/K7 b - d3 0 2",
+      "tags": [
+        "en-passant",
+        "black"
+      ],
+      "special_candidates": [
+        "e4d3"
+      ],
+      "legal_special": [
+        "e4d3"
+      ],
+      "legal": [
+        "e4d3",
+        "e4e3",
+        "h8g7",
+        "h8g8",
+        "h8h7"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, special candidates and legal specials hand-curated from the rationale first; chess==1.11.2 legal_moves (is_castling/is_en_passant) confirmed the legal specials and enumerated the complete legal set. Special candidates are a profile contract checked by hand. No mShogi output used.",
+        "rationale": "Black mirror: e4xd3 e.p."
+      }
+    },
+    {
+      "id": "en-passant-two-capturers",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "7k/8/8/2PpP3/8/8/8/K7 w - d6 0 2",
+      "tags": [
+        "en-passant",
+        "white"
+      ],
+      "special_candidates": [
+        "c5d6",
+        "e5d6"
+      ],
+      "legal_special": [
+        "c5d6",
+        "e5d6"
+      ],
+      "legal": [
+        "a1a2",
+        "a1b1",
+        "a1b2",
+        "c5c6",
+        "c5d6",
+        "e5d6",
+        "e5e6"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, special candidates and legal specials hand-curated from the rationale first; chess==1.11.2 legal_moves (is_castling/is_en_passant) confirmed the legal specials and enumerated the complete legal set. Special candidates are a profile contract checked by hand. No mShogi output used.",
+        "rationale": "Both adjacent pawns may capture en passant; each is a distinct action."
+      }
+    },
+    {
+      "id": "en-passant-expired",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "7k/8/8/3pP3/8/8/8/K7 w - - 1 2",
+      "tags": [
+        "en-passant",
+        "expiry"
+      ],
+      "special_candidates": [],
+      "legal_special": [],
+      "legal": [
+        "a1a2",
+        "a1b1",
+        "a1b2",
+        "e5e6"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, special candidates and legal specials hand-curated from the rationale first; chess==1.11.2 legal_moves (is_castling/is_en_passant) confirmed the legal specials and enumerated the complete legal set. Special candidates are a profile contract checked by hand. No mShogi output used.",
+        "rationale": "Without a raw target the opportunity has expired."
+      }
+    },
+    {
+      "id": "en-passant-uncapturable-target",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
+      "tags": [
+        "en-passant",
+        "black"
+      ],
+      "special_candidates": [],
+      "legal_special": [],
+      "legal": [
+        "a7a5",
+        "a7a6",
+        "b7b5",
+        "b7b6",
+        "b8a6",
+        "b8c6",
+        "c7c5",
+        "c7c6",
+        "d7d5",
+        "d7d6",
+        "e7e5",
+        "e7e6",
+        "f7f5",
+        "f7f6",
+        "g7g5",
+        "g7g6",
+        "g8f6",
+        "g8h6",
+        "h7h5",
+        "h7h6"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, special candidates and legal specials hand-curated from the rationale first; chess==1.11.2 legal_moves (is_castling/is_en_passant) confirmed the legal specials and enumerated the complete legal set. Special candidates are a profile contract checked by hand. No mShogi output used.",
+        "rationale": "The raw e3 target has no adjacent black pawn, so there is no candidate."
+      }
+    },
+    {
+      "id": "en-passant-discovered-rank",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "7k/8/8/r4pPK/8/8/8/8 w - f6 0 2",
+      "tags": [
+        "en-passant",
+        "discovered-check",
+        "king-safety"
+      ],
+      "special_candidates": [
+        "g5f6"
+      ],
+      "legal_special": [],
+      "legal": [
+        "g5g6",
+        "h5g6",
+        "h5h4",
+        "h5h6"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, special candidates and legal specials hand-curated from the rationale first; chess==1.11.2 legal_moves (is_castling/is_en_passant) confirmed the legal specials and enumerated the complete legal set. Special candidates are a profile contract checked by hand. No mShogi output used.",
+        "rationale": "g5xf6 e.p. removes both f5 and g5 from the fifth rank, exposing h5 to the a5 rook."
+      }
+    },
+    {
+      "id": "black-en-passant-discovered-rank",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "8/8/8/8/k2Pp2R/8/8/7K b - d3 0 1",
+      "tags": [
+        "en-passant",
+        "discovered-check",
+        "king-safety",
+        "black"
+      ],
+      "special_candidates": [
+        "e4d3"
+      ],
+      "legal_special": [],
+      "legal": [
+        "a4a3",
+        "a4a5",
+        "a4b3",
+        "a4b4",
+        "a4b5",
+        "e4e3"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, special candidates and legal specials hand-curated from the rationale first; chess==1.11.2 legal_moves (is_castling/is_en_passant) confirmed the legal specials and enumerated the complete legal set. Special candidates are a profile contract checked by hand. No mShogi output used.",
+        "rationale": "Black mirror: e4xd3 e.p. clears d4 and e4, exposing a4 to the h4 rook."
+      }
+    },
+    {
+      "id": "en-passant-opens-diagonal",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "b6k/8/8/3pP3/8/5K2/8/8 w - d6 0 1",
+      "tags": [
+        "en-passant",
+        "discovered-check",
+        "king-safety"
+      ],
+      "special_candidates": [
+        "e5d6"
+      ],
+      "legal_special": [],
+      "legal": [
+        "e5e6",
+        "f3e2",
+        "f3e3",
+        "f3f2",
+        "f3f4",
+        "f3g2",
+        "f3g3",
+        "f3g4"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, special candidates and legal specials hand-curated from the rationale first; chess==1.11.2 legal_moves (is_castling/is_en_passant) confirmed the legal specials and enumerated the complete legal set. Special candidates are a profile contract checked by hand. No mShogi output used.",
+        "rationale": "Removing only the victim d5 opens the a8-f3 diagonal to the white king."
+      }
+    },
+    {
+      "id": "en-passant-pinned-capturer",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "7b/8/8/3pP3/8/8/1K6/7k w - d6 0 2",
+      "tags": [
+        "en-passant",
+        "pin",
+        "king-safety"
+      ],
+      "special_candidates": [
+        "e5d6"
+      ],
+      "legal_special": [],
+      "legal": [
+        "b2a1",
+        "b2a2",
+        "b2a3",
+        "b2b1",
+        "b2b3",
+        "b2c1",
+        "b2c2",
+        "b2c3"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, special candidates and legal specials hand-curated from the rationale first; chess==1.11.2 legal_moves (is_castling/is_en_passant) confirmed the legal specials and enumerated the complete legal set. Special candidates are a profile contract checked by hand. No mShogi output used.",
+        "rationale": "The e5 pawn is pinned on the h8-b2 diagonal; capturing to d6 leaves it."
+      }
+    },
+    {
+      "id": "en-passant-check-evasion",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "7k/8/8/3pP3/4K3/8/8/8 w - d6 0 2",
+      "tags": [
+        "en-passant",
+        "check-evasion"
+      ],
+      "special_candidates": [
+        "e5d6"
+      ],
+      "legal_special": [
+        "e5d6"
+      ],
+      "legal": [
+        "e4d3",
+        "e4d4",
+        "e4d5",
+        "e4e3",
+        "e4f3",
+        "e4f4",
+        "e4f5",
+        "e5d6"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, special candidates and legal specials hand-curated from the rationale first; chess==1.11.2 legal_moves (is_castling/is_en_passant) confirmed the legal specials and enumerated the complete legal set. Special candidates are a profile contract checked by hand. No mShogi output used.",
+        "rationale": "The d5 pawn checks e4; e5xd6 e.p. removes the checker."
+      }
+    }
+  ],
+  "sequences": [
+    {
+      "id": "castle-kingside-then-queenside",
+      "rules_profile": "mshogi.chess.position.v1",
+      "before_fen": "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1",
+      "steps": [
+        {
+          "action": "e1g1",
+          "after_fen": "r3k2r/8/8/8/8/8/8/R4RK1 b kq - 1 1"
+        },
+        {
+          "action": "e8c8",
+          "after_fen": "2kr3r/8/8/8/8/8/8/R4RK1 w - - 2 2"
+        }
+      ],
+      "tags": [
+        "castling",
+        "white",
+        "black",
+        "counters"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Sequence hand-curated; legality checked and exact after-FENs enumerated with chess==1.11.2 push and fen(en_passant=\"fen\"). No mShogi output used.",
+        "rationale": "White O-O moves h1 to f1; Black O-O-O moves a8 to d8. Each loses both of its color's rights; counters increment."
+      }
+    },
+    {
+      "id": "castle-queenside-then-kingside",
+      "rules_profile": "mshogi.chess.position.v1",
+      "before_fen": "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1",
+      "steps": [
+        {
+          "action": "e1c1",
+          "after_fen": "r3k2r/8/8/8/8/8/8/2KR3R b kq - 1 1"
+        },
+        {
+          "action": "e8g8",
+          "after_fen": "r4rk1/8/8/8/8/8/8/2KR3R w - - 2 2"
+        }
+      ],
+      "tags": [
+        "castling",
+        "white",
+        "black"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Sequence hand-curated; legality checked and exact after-FENs enumerated with chess==1.11.2 push and fen(en_passant=\"fen\"). No mShogi output used.",
+        "rationale": "The reverse pairing of both castlings."
+      }
+    },
+    {
+      "id": "rook-return-does-not-restore-rights",
+      "rules_profile": "mshogi.chess.position.v1",
+      "before_fen": "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1",
+      "steps": [
+        {
+          "action": "h1h2",
+          "after_fen": "r3k2r/8/8/8/8/8/7R/R3K3 b Qkq - 1 1"
+        },
+        {
+          "action": "h8h7",
+          "after_fen": "r3k3/7r/8/8/8/8/7R/R3K3 w Qq - 2 2"
+        },
+        {
+          "action": "h2h1",
+          "after_fen": "r3k3/7r/8/8/8/8/8/R3K2R b Qq - 3 2"
+        },
+        {
+          "action": "h7h8",
+          "after_fen": "r3k2r/8/8/8/8/8/8/R3K2R w Qq - 4 3"
+        },
+        {
+          "action": "e1c1",
+          "after_fen": "r3k2r/8/8/8/8/8/8/2KR3R b q - 5 3"
+        },
+        {
+          "action": "a8b8",
+          "after_fen": "1r2k2r/8/8/8/8/8/8/2KR3R w - - 6 4"
+        }
+      ],
+      "tags": [
+        "castling",
+        "rights"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Sequence hand-curated; legality checked and exact after-FENs enumerated with chess==1.11.2 push and fen(en_passant=\"fen\"). No mShogi output used.",
+        "rationale": "Moving a home rook away and back loses that right permanently; the other side's castling still works."
+      }
+    },
+    {
+      "id": "white-en-passant-from-game",
+      "rules_profile": "mshogi.chess.position.v1",
+      "before_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "steps": [
+        {
+          "action": "e2e4",
+          "after_fen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"
+        },
+        {
+          "action": "a7a6",
+          "after_fen": "rnbqkbnr/1ppppppp/p7/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2"
+        },
+        {
+          "action": "e4e5",
+          "after_fen": "rnbqkbnr/1ppppppp/p7/4P3/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2"
+        },
+        {
+          "action": "d7d5",
+          "after_fen": "rnbqkbnr/1pp1pppp/p7/3pP3/8/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 3"
+        },
+        {
+          "action": "e5d6",
+          "after_fen": "rnbqkbnr/1pp1pppp/p2P4/8/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 3"
+        }
+      ],
+      "tags": [
+        "en-passant",
+        "white",
+        "counters"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Sequence hand-curated; legality checked and exact after-FENs enumerated with chess==1.11.2 push and fen(en_passant=\"fen\"). No mShogi output used.",
+        "rationale": "A game reaching e5xd6 e.p.: the victim d5 is removed, the halfmove clock resets and the target clears."
+      }
+    },
+    {
+      "id": "black-en-passant-from-game",
+      "rules_profile": "mshogi.chess.position.v1",
+      "before_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "steps": [
+        {
+          "action": "a2a3",
+          "after_fen": "rnbqkbnr/pppppppp/8/8/8/P7/1PPPPPPP/RNBQKBNR b KQkq - 0 1"
+        },
+        {
+          "action": "e7e5",
+          "after_fen": "rnbqkbnr/pppp1ppp/8/4p3/8/P7/1PPPPPPP/RNBQKBNR w KQkq e6 0 2"
+        },
+        {
+          "action": "a3a4",
+          "after_fen": "rnbqkbnr/pppp1ppp/8/4p3/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 2"
+        },
+        {
+          "action": "e5e4",
+          "after_fen": "rnbqkbnr/pppp1ppp/8/8/P3p3/8/1PPPPPPP/RNBQKBNR w KQkq - 0 3"
+        },
+        {
+          "action": "d2d4",
+          "after_fen": "rnbqkbnr/pppp1ppp/8/8/P2Pp3/8/1PP1PPPP/RNBQKBNR b KQkq d3 0 3"
+        },
+        {
+          "action": "e4d3",
+          "after_fen": "rnbqkbnr/pppp1ppp/8/8/P7/3p4/1PP1PPPP/RNBQKBNR w KQkq - 0 4"
+        }
+      ],
+      "tags": [
+        "en-passant",
+        "black",
+        "counters"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Sequence hand-curated; legality checked and exact after-FENs enumerated with chess==1.11.2 push and fen(en_passant=\"fen\"). No mShogi output used.",
+        "rationale": "A game reaching e4xd3 e.p.; the fullmove number increments after Black's capture."
+      }
+    },
+    {
+      "id": "en-passant-then-castle",
+      "rules_profile": "mshogi.chess.position.v1",
+      "before_fen": "r3k2r/pppp1ppp/8/8/4p3/8/PPPPPPPP/R3K2R w KQkq - 0 1",
+      "steps": [
+        {
+          "action": "d2d4",
+          "after_fen": "r3k2r/pppp1ppp/8/8/3Pp3/8/PPP1PPPP/R3K2R b KQkq d3 0 1"
+        },
+        {
+          "action": "e4d3",
+          "after_fen": "r3k2r/pppp1ppp/8/8/8/3p4/PPP1PPPP/R3K2R w KQkq - 0 2"
+        },
+        {
+          "action": "e1g1",
+          "after_fen": "r3k2r/pppp1ppp/8/8/8/3p4/PPP1PPPP/R4RK1 b kq - 1 2"
+        },
+        {
+          "action": "e8c8",
+          "after_fen": "2kr3r/pppp1ppp/8/8/8/3p4/PPP1PPPP/R4RK1 w - - 2 3"
+        }
+      ],
+      "tags": [
+        "en-passant",
+        "castling",
+        "black",
+        "white"
+      ],
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Sequence hand-curated; legality checked and exact after-FENs enumerated with chess==1.11.2 push and fen(en_passant=\"fen\"). No mShogi output used.",
+        "rationale": "Mixed special actions in one sequence; every reverse step must restore the exact prior state."
+      }
+    }
+  ],
+  "rejections": [
+    {
+      "id": "reject-castle-without-right-kingside",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/8/8/8/R3K2R w - - 0 1",
+      "action": "e1g1",
+      "error": "CastlingUnavailable",
+      "oracle_legal": false,
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Action and expected profile error category hand-curated; chess==1.11.2 confirmed the action is not legal, except where oracle_legal records a profile counter-domain rejection.",
+        "rationale": "No kingside right."
+      }
+    },
+    {
+      "id": "reject-castle-without-right-queenside",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/8/8/8/R3K2R w - - 0 1",
+      "action": "e1c1",
+      "error": "CastlingUnavailable",
+      "oracle_legal": false,
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Action and expected profile error category hand-curated; chess==1.11.2 confirmed the action is not legal, except where oracle_legal records a profile counter-domain rejection.",
+        "rationale": "No queenside right."
+      }
+    },
+    {
+      "id": "reject-castle-through-attack",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/2b5/8/8/R3K2R w KQkq - 0 1",
+      "action": "e1g1",
+      "error": "CastlingKingAttacked",
+      "oracle_legal": false,
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Action and expected profile error category hand-curated; chess==1.11.2 confirmed the action is not legal, except where oracle_legal records a profile counter-domain rejection.",
+        "rationale": "f1 transit attacked by the c4 bishop."
+      }
+    },
+    {
+      "id": "reject-castle-into-attack",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k1rr/8/8/8/8/8/8/R3K2R w KQkq - 0 1",
+      "action": "e1g1",
+      "error": "IllegalPosition",
+      "oracle_legal": false,
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Action and expected profile error category hand-curated; chess==1.11.2 confirmed the action is not legal, except where oracle_legal records a profile counter-domain rejection.",
+        "rationale": "Destination g1 attacked; judged on the resulting board."
+      }
+    },
+    {
+      "id": "reject-castle-out-of-check-kingside",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/8/8/4r3/R3K2R w KQkq - 0 1",
+      "action": "e1g1",
+      "error": "CastlingKingAttacked",
+      "oracle_legal": false,
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Action and expected profile error category hand-curated; chess==1.11.2 confirmed the action is not legal, except where oracle_legal records a profile counter-domain rejection.",
+        "rationale": "King in check on e1."
+      }
+    },
+    {
+      "id": "reject-castle-out-of-check-queenside",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/8/8/4r3/R3K2R w KQkq - 0 1",
+      "action": "e1c1",
+      "error": "CastlingKingAttacked",
+      "oracle_legal": false,
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Action and expected profile error category hand-curated; chess==1.11.2 confirmed the action is not legal, except where oracle_legal records a profile counter-domain rejection.",
+        "rationale": "King in check on e1."
+      }
+    },
+    {
+      "id": "reject-castle-own-blocker",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/8/8/8/RN2K2R w KQkq - 0 1",
+      "action": "e1c1",
+      "error": "CastlingUnavailable",
+      "oracle_legal": false,
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Action and expected profile error category hand-curated; chess==1.11.2 confirmed the action is not legal, except where oracle_legal records a profile counter-domain rejection.",
+        "rationale": "b1 occupied by the own knight."
+      }
+    },
+    {
+      "id": "reject-castle-opponent-blocker",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/8/8/8/R3K1nR w KQkq - 0 1",
+      "action": "e1g1",
+      "error": "CastlingUnavailable",
+      "oracle_legal": false,
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Action and expected profile error category hand-curated; chess==1.11.2 confirmed the action is not legal, except where oracle_legal records a profile counter-domain rejection.",
+        "rationale": "g1 occupied by an opponent knight; castling never captures."
+      }
+    },
+    {
+      "id": "reject-black-castle-through-attack",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/6B1/8/8/8/R3K2R b KQkq - 0 1",
+      "action": "e8c8",
+      "error": "CastlingKingAttacked",
+      "oracle_legal": false,
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Action and expected profile error category hand-curated; chess==1.11.2 confirmed the action is not legal, except where oracle_legal records a profile counter-domain rejection.",
+        "rationale": "d8 transit attacked by the g5 bishop."
+      }
+    },
+    {
+      "id": "reject-castle-with-promotion-choice",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1",
+      "action": "e1g1q",
+      "error": "UnexpectedPromotion",
+      "oracle_legal": false,
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Action and expected profile error category hand-curated; chess==1.11.2 confirmed the action is not legal, except where oracle_legal records a profile counter-domain rejection.",
+        "rationale": "Castling takes no promotion choice."
+      }
+    },
+    {
+      "id": "reject-castle-overflow",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 4294967295 1",
+      "action": "e1g1",
+      "error": "CounterOverflow",
+      "oracle_legal": true,
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Action and expected profile error category hand-curated; chess==1.11.2 confirmed the action is not legal, except where oracle_legal records a profile counter-domain rejection.",
+        "rationale": "Profile policy: castling increments the halfmove clock beyond u32. Legal under FIDE; rejected atomically here."
+      }
+    },
+    {
+      "id": "reject-king-three-files",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1",
+      "action": "e1b1",
+      "error": "IllegalGeometry",
+      "oracle_legal": false,
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Action and expected profile error category hand-curated; chess==1.11.2 confirmed the action is not legal, except where oracle_legal records a profile counter-domain rejection.",
+        "rationale": "Only the two-file king move is castling."
+      }
+    },
+    {
+      "id": "reject-en-passant-expired",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "7k/8/8/3pP3/8/8/8/K7 w - - 1 2",
+      "action": "e5d6",
+      "error": "IllegalGeometry",
+      "oracle_legal": false,
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Action and expected profile error category hand-curated; chess==1.11.2 confirmed the action is not legal, except where oracle_legal records a profile counter-domain rejection.",
+        "rationale": "No raw target: a diagonal pawn move to an empty square."
+      }
+    },
+    {
+      "id": "reject-en-passant-with-promotion-choice",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "7k/8/8/3pP3/8/8/8/K7 w - d6 0 2",
+      "action": "e5d6q",
+      "error": "UnexpectedPromotion",
+      "oracle_legal": false,
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Action and expected profile error category hand-curated; chess==1.11.2 confirmed the action is not legal, except where oracle_legal records a profile counter-domain rejection.",
+        "rationale": "En passant never reaches the last rank."
+      }
+    },
+    {
+      "id": "reject-en-passant-discovered-rank",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "7k/8/8/r4pPK/8/8/8/8 w - f6 0 2",
+      "action": "g5f6",
+      "error": "IllegalPosition",
+      "oracle_legal": false,
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Action and expected profile error category hand-curated; chess==1.11.2 confirmed the action is not legal, except where oracle_legal records a profile counter-domain rejection.",
+        "rationale": "Exposes h5 to the a5 rook after both pawns leave the rank."
+      }
+    },
+    {
+      "id": "reject-black-en-passant-discovered-rank",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "8/8/8/8/k2Pp2R/8/8/7K b - d3 0 1",
+      "action": "e4d3",
+      "error": "IllegalPosition",
+      "oracle_legal": false,
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Action and expected profile error category hand-curated; chess==1.11.2 confirmed the action is not legal, except where oracle_legal records a profile counter-domain rejection.",
+        "rationale": "Exposes a4 to the h4 rook."
+      }
+    },
+    {
+      "id": "reject-en-passant-opens-diagonal",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "b6k/8/8/3pP3/8/5K2/8/8 w - d6 0 1",
+      "action": "e5d6",
+      "error": "IllegalPosition",
+      "oracle_legal": false,
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Action and expected profile error category hand-curated; chess==1.11.2 confirmed the action is not legal, except where oracle_legal records a profile counter-domain rejection.",
+        "rationale": "Victim removal opens the a8-f3 diagonal."
+      }
+    },
+    {
+      "id": "reject-en-passant-pinned-capturer",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "7b/8/8/3pP3/8/8/1K6/7k w - d6 0 2",
+      "action": "e5d6",
+      "error": "IllegalPosition",
+      "oracle_legal": false,
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Action and expected profile error category hand-curated; chess==1.11.2 confirmed the action is not legal, except where oracle_legal records a profile counter-domain rejection.",
+        "rationale": "The capturer leaves the h8-b2 pin line."
+      }
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-//! Pseudo-legal ordinary chess candidates; not a legal-move list.
+//! Pseudo-legal chess candidates; not a legal-move list.
 
 use super::{Action, Color, PieceKind, Position, Promotion, Square};
 
@@ -59,6 +59,90 @@ impl Position {
     /// ```
     pub fn ordinary_candidates(&self) -> Vec<Action> {
         let mut candidates = Vec::new();
+        self.push_ordinary_candidates(&mut candidates);
+        candidates
+    }
+
+    /// Pseudo-legal castling and en passant candidates. **Not legal moves.**
+    ///
+    /// Castling appears when the side holds the right, its home rook is in
+    /// place and every square between king and rook is empty. Whether the king
+    /// is in check, crosses an attacked square or lands on one is **not**
+    /// checked. En passant appears for each own pawn diagonally behind the raw
+    /// target, whether or not the capture would expose its own king.
+    ///
+    /// Every special candidate is either accepted by [`Position::apply`] or
+    /// rejected by it only with
+    /// [`ActionError::CastlingKingAttacked`](super::ActionError::CastlingKingAttacked),
+    /// [`ActionError::IllegalPosition`](super::ActionError::IllegalPosition) or
+    /// [`ActionError::CounterOverflow`](super::ActionError::CounterOverflow).
+    pub fn special_candidates(&self) -> Vec<Action> {
+        let mut candidates = Vec::new();
+        self.push_castling_candidates(&mut candidates);
+        self.push_en_passant_candidates(&mut candidates);
+        candidates
+    }
+
+    /// Every pseudo-legal candidate: [`Position::ordinary_candidates`] followed
+    /// by [`Position::special_candidates`]. **Not legal moves.**
+    ///
+    /// [`Position::apply`] accepts no action outside this set and rejects a
+    /// candidate only with `CastlingKingAttacked`, `IllegalPosition` or
+    /// `CounterOverflow`. Filtering by `apply` therefore yields exactly the
+    /// profile-legal actions (the u32 counter domain can exclude a FIDE-legal
+    /// action at the limit), but this method itself makes no legality claim.
+    pub fn candidates(&self) -> Vec<Action> {
+        let mut candidates = self.ordinary_candidates();
+        candidates.extend(self.special_candidates());
+        candidates
+    }
+
+    fn push_castling_candidates(&self, out: &mut Vec<Action>) {
+        let color = self.side_to_move;
+        let rank = if color == Color::White { 0 } else { 7 };
+        let at = |file: u8| Square(rank * 8 + file);
+        let home_rook = Some(super::Piece {
+            color,
+            kind: PieceKind::Rook,
+        });
+        for (has_right, rook_file, king_to, between) in [
+            (self.castling_rights.kingside(color), 7, 6, &[5u8, 6][..]),
+            (self.castling_rights.queenside(color), 0, 2, &[1, 2, 3][..]),
+        ] {
+            if has_right
+                && self.piece_at(at(rook_file)) == home_rook
+                && between
+                    .iter()
+                    .all(|&file| self.piece_at(at(file)).is_none())
+            {
+                out.push(plain(at(4), at(king_to)));
+            }
+        }
+    }
+
+    fn push_en_passant_candidates(&self, out: &mut Vec<Action>) {
+        let Some(target) = self.en_passant_target else {
+            return;
+        };
+        let back = if self.side_to_move == Color::White {
+            -1
+        } else {
+            1
+        };
+        let own_pawn = Some(super::Piece {
+            color: self.side_to_move,
+            kind: PieceKind::Pawn,
+        });
+        for df in [-1, 1] {
+            if let Some(from) = offset(target, df, back)
+                && self.piece_at(from) == own_pawn
+            {
+                out.push(plain(from, target));
+            }
+        }
+    }
+
+    fn push_ordinary_candidates(&self, candidates: &mut Vec<Action>) {
         for index in 0..64u8 {
             let from = Square(index);
             let Some(piece) = self.piece_at(from) else {
@@ -68,18 +152,17 @@ impl Position {
                 continue;
             }
             match piece.kind {
-                PieceKind::Pawn => self.pawn_candidates(from, &mut candidates),
-                PieceKind::Knight => self.step_candidates(from, &KNIGHT_OFFSETS, &mut candidates),
-                PieceKind::King => self.step_candidates(from, &KING_OFFSETS, &mut candidates),
-                PieceKind::Bishop => self.ray_candidates(from, &DIAGONALS, &mut candidates),
-                PieceKind::Rook => self.ray_candidates(from, &ORTHOGONALS, &mut candidates),
+                PieceKind::Pawn => self.pawn_candidates(from, candidates),
+                PieceKind::Knight => self.step_candidates(from, &KNIGHT_OFFSETS, candidates),
+                PieceKind::King => self.step_candidates(from, &KING_OFFSETS, candidates),
+                PieceKind::Bishop => self.ray_candidates(from, &DIAGONALS, candidates),
+                PieceKind::Rook => self.ray_candidates(from, &ORTHOGONALS, candidates),
                 PieceKind::Queen => {
-                    self.ray_candidates(from, &DIAGONALS, &mut candidates);
-                    self.ray_candidates(from, &ORTHOGONALS, &mut candidates);
+                    self.ray_candidates(from, &DIAGONALS, candidates);
+                    self.ray_candidates(from, &ORTHOGONALS, candidates);
                 }
             }
         }
-        candidates
     }
 
     // An empty square or an opponent non-king piece may be the destination. In a

@@ -2,9 +2,10 @@
 //!
 //! FEN validates a local analysis position, not historical reachability. This
 //! module contains no match history, clocks, outcome, repetition or cache key.
-//! Public construction, replacement and checked ordinary transitions preserve
+//! Public construction, replacement and checked transitions preserve
 //! the profile's local invariants. Actions/undo remain intentionally chess-specific.
-//! Attack queries are geometric and ordinary candidates are pseudo-legal; neither
+//! `apply` executes every chess action; `apply_ordinary` is its ordinary-only subset.
+//! Attack queries are geometric and candidates are pseudo-legal; neither
 //! is legal-move membership.
 
 use std::fmt;

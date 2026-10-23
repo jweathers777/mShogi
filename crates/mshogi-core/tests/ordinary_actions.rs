@@ -147,24 +147,24 @@ fn rejected_ordinary_preconditions_are_atomic() {
 }
 
 #[test]
-fn castling_and_en_passant_are_explicitly_unsupported_without_effects() {
+fn the_ordinary_only_boundary_refuses_special_actions_without_effects() {
     use ActionError::*;
     for text in ["e1g1", "e1c1"] {
-        assert_rejected(CASTLES, text, UnsupportedCastling);
+        assert_rejected(CASTLES, text, CastlingNotOrdinary);
     }
     let black_castles = CASTLES.replace(" w ", " b ");
     for text in ["e8g8", "e8c8"] {
-        assert_rejected(&black_castles, text, UnsupportedCastling);
+        assert_rejected(&black_castles, text, CastlingNotOrdinary);
     }
     assert_rejected(
         "7k/8/8/3pP3/8/8/8/K7 w - d6 0 2",
         "e5d6",
-        UnsupportedEnPassant,
+        EnPassantNotOrdinary,
     );
     assert_rejected(
         "7k/8/8/8/3Pp3/8/8/K7 b - d3 0 2",
         "e4d3",
-        UnsupportedEnPassant,
+        EnPassantNotOrdinary,
     );
     // Without the right, a diagonal-to-empty pawn action is simply invalid.
     assert_rejected("7k/8/8/3pP3/8/8/8/K7 w - - 1 2", "e5d6", IllegalGeometry);

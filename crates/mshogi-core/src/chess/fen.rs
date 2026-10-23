@@ -201,52 +201,10 @@ impl Position {
             Color::White => black_king,
             Color::Black => white_king,
         };
-        if self.validation_square_attacked(nonmoving_king, self.side_to_move) {
+        if self.is_square_attacked(nonmoving_king, self.side_to_move) {
             return Err(fail("nonmoving king is attacked"));
         }
         Ok(())
-    }
-
-    // Minimal geometric query needed by FEN structure validation. It is not a
-    // public attack/move API or a claim that MSH-6 is complete. Pinned pieces
-    // still attack, and sliders cannot cross an occupied intervening square.
-    fn validation_square_attacked(&self, target: Square, by: Color) -> bool {
-        self.board.iter().enumerate().any(|(index, occupant)| {
-            let Some(piece) = occupant else { return false };
-            if piece.color != by {
-                return false;
-            }
-            let from = Square(index as u8);
-            let df = target.file() as i8 - from.file() as i8;
-            let dr = target.rank() as i8 - from.rank() as i8;
-            let diagonal = df != 0 && df.abs() == dr.abs();
-            let orthogonal = (df == 0) != (dr == 0);
-            match piece.kind {
-                PieceKind::Pawn => df.abs() == 1 && dr == if by == Color::White { 1 } else { -1 },
-                PieceKind::Knight => matches!((df.abs(), dr.abs()), (1, 2) | (2, 1)),
-                PieceKind::King => df.abs().max(dr.abs()) == 1,
-                PieceKind::Bishop => diagonal && self.ray_is_clear(from, target),
-                PieceKind::Rook => orthogonal && self.ray_is_clear(from, target),
-                PieceKind::Queen => (diagonal || orthogonal) && self.ray_is_clear(from, target),
-            }
-        })
-    }
-
-    // Called only for aligned, distinct, bounded squares. Every intervening
-    // coordinate lies on the segment between them and is therefore in 0..8.
-    pub(super) fn ray_is_clear(&self, from: Square, target: Square) -> bool {
-        let step_file = (target.file() as i8 - from.file() as i8).signum();
-        let step_rank = (target.rank() as i8 - from.rank() as i8).signum();
-        let mut file = from.file() as i8 + step_file;
-        let mut rank = from.rank() as i8 + step_rank;
-        while (file, rank) != (target.file() as i8, target.rank() as i8) {
-            if self.board[rank as usize * 8 + file as usize].is_some() {
-                return false;
-            }
-            file += step_file;
-            rank += step_rank;
-        }
-        true
     }
 }
 

@@ -4,10 +4,12 @@
 //! module contains no match history, clocks, outcome, repetition or cache key.
 //! Public construction, replacement and checked ordinary transitions preserve
 //! the profile's local invariants. Actions/undo remain intentionally chess-specific.
+//! Attack queries are geometric and are not legal-move membership.
 
 use std::fmt;
 
 mod action;
+mod attack;
 mod fen;
 pub use action::{Action, ActionError, Promotion, Undo, UndoError};
 pub use fen::{FenError, FenErrorCategory};

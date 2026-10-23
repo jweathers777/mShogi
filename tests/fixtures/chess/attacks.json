@@ -1,0 +1,2564 @@
+{
+  "format": "mshogi.chess.attacks.v1",
+  "schema_version": 1,
+  "rules_profile": "mshogi.chess.position.v1",
+  "sources": {
+    "fide-2023": {
+      "url": "https://handbook.fide.com/chapter/E012023",
+      "version": "Effective 2023-01-01, approved 2022-08-07/08",
+      "retrieved": "2026-10-23",
+      "sha256": "c5b1692a0614d4bd93fe9238287b9ab7d1f47320934d5df3be113523906c476f"
+    },
+    "profile-v1": {
+      "url": "../../../docs/rules/chess-position-v1.md",
+      "version": "mshogi.chess.position.v1",
+      "retrieved": "2026-10-23",
+      "note": "Geometric attack semantics; pinned pieces and kings still attack."
+    },
+    "python-chess-1.11.2": {
+      "url": "https://github.com/niklasf/python-chess/tree/v1.11.2",
+      "version": "PyPI chess==1.11.2; chess.__version__ == 1.11.2",
+      "retrieved": "2026-10-23",
+      "sha256": "1fde6a8e932508d14b31f6a584497b49c2969fc3c7cdc675347f819f0d667a5b"
+    }
+  },
+  "cases": [
+    {
+      "id": "white-pawn-diagonals-and-edges",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "4k3/8/8/8/8/8/P3P2P/4K3 w - - 0 1",
+      "tags": [
+        "pawn",
+        "white",
+        "edge"
+      ],
+      "queries": [
+        {
+          "by": "white",
+          "square": "b3",
+          "attackers": [
+            "a2"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "h3",
+          "attackers": []
+        },
+        {
+          "by": "white",
+          "square": "e3",
+          "attackers": []
+        },
+        {
+          "by": "white",
+          "square": "d3",
+          "attackers": [
+            "e2"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "f3",
+          "attackers": [
+            "e2"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "g3",
+          "attackers": [
+            "h2"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "a3",
+          "attackers": []
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "d1",
+          "f1",
+          "d2",
+          "e2",
+          "f2",
+          "b3",
+          "d3",
+          "f3",
+          "g3"
+        ],
+        "black": [
+          "d7",
+          "e7",
+          "f7",
+          "d8",
+          "f8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "FIDE 3.7.d: a white pawn attacks only the two squares diagonally forward. a2/h2 have one attack each and do not wrap to the opposite file; squares straight ahead are not attacked."
+      }
+    },
+    {
+      "id": "black-pawn-diagonals-and-edges",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "4k3/p3p2p/8/8/8/8/8/4K3 b - - 0 1",
+      "tags": [
+        "pawn",
+        "black",
+        "edge"
+      ],
+      "queries": [
+        {
+          "by": "black",
+          "square": "b6",
+          "attackers": [
+            "a7"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "h6",
+          "attackers": []
+        },
+        {
+          "by": "black",
+          "square": "e6",
+          "attackers": []
+        },
+        {
+          "by": "black",
+          "square": "d6",
+          "attackers": [
+            "e7"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "g6",
+          "attackers": [
+            "h7"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "b8",
+          "attackers": []
+        },
+        {
+          "by": "black",
+          "square": "a6",
+          "attackers": []
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "d1",
+          "f1",
+          "d2",
+          "e2",
+          "f2"
+        ],
+        "black": [
+          "b6",
+          "d6",
+          "f6",
+          "g6",
+          "d7",
+          "e7",
+          "f7",
+          "d8",
+          "f8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "FIDE 3.7.d with Black's forward direction toward rank one. Black pawns never attack backward or straight ahead; edge pawns do not wrap."
+      }
+    },
+    {
+      "id": "pawn-attacks-independent-of-occupancy",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "4k3/8/8/3p1N2/4P3/8/8/4K3 w - - 0 1",
+      "tags": [
+        "pawn",
+        "white",
+        "black",
+        "occupancy",
+        "defended"
+      ],
+      "queries": [
+        {
+          "by": "white",
+          "square": "d5",
+          "attackers": [
+            "e4"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "f5",
+          "attackers": [
+            "e4"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "e5",
+          "attackers": []
+        },
+        {
+          "by": "black",
+          "square": "e4",
+          "attackers": [
+            "d5"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "c4",
+          "attackers": [
+            "d5"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "d4",
+          "attackers": []
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "d1",
+          "f1",
+          "d2",
+          "e2",
+          "f2",
+          "e3",
+          "g3",
+          "d4",
+          "h4",
+          "d5",
+          "f5",
+          "d6",
+          "h6",
+          "e7",
+          "g7"
+        ],
+        "black": [
+          "c4",
+          "e4",
+          "d7",
+          "e7",
+          "f7",
+          "d8",
+          "f8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "A pawn attacks its diagonal squares whether they are empty, hold an opponent piece or hold its own piece (defence). The blocked square straight ahead is not attacked."
+      }
+    },
+    {
+      "id": "knights-center-corner-both-colors",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "N6n/8/8/8/3N4/8/8/K6k w - - 0 1",
+      "tags": [
+        "knight",
+        "white",
+        "black",
+        "edge",
+        "corner"
+      ],
+      "queries": [
+        {
+          "by": "white",
+          "square": "e6",
+          "attackers": [
+            "d4"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "b3",
+          "attackers": [
+            "d4"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "d5",
+          "attackers": []
+        },
+        {
+          "by": "white",
+          "square": "c7",
+          "attackers": [
+            "a8"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "b6",
+          "attackers": [
+            "a8"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "g6",
+          "attackers": [
+            "h8"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "f7",
+          "attackers": [
+            "h8"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "g7",
+          "attackers": []
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "b1",
+          "a2",
+          "b2",
+          "c2",
+          "e2",
+          "b3",
+          "f3",
+          "b5",
+          "f5",
+          "b6",
+          "c6",
+          "e6",
+          "c7"
+        ],
+        "black": [
+          "g1",
+          "g2",
+          "h2",
+          "g6",
+          "f7"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "FIDE 3.6: knights attack the nearest squares not on their rank, file or diagonal. Corner knights a8/h8 have two targets; adjacent squares are not knight attacks."
+      }
+    },
+    {
+      "id": "knight-jumps-surrounding-pieces",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "4k3/8/8/2ppp3/2pNp3/2ppp3/8/4K3 w - - 0 1",
+      "tags": [
+        "knight",
+        "white",
+        "blocker"
+      ],
+      "queries": [
+        {
+          "by": "white",
+          "square": "e6",
+          "attackers": [
+            "d4"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "b5",
+          "attackers": [
+            "d4"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "f3",
+          "attackers": [
+            "d4"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "c2",
+          "attackers": [
+            "d4"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "d5",
+          "attackers": []
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "d1",
+          "f1",
+          "c2",
+          "d2",
+          "e2",
+          "f2",
+          "b3",
+          "f3",
+          "b5",
+          "f5",
+          "c6",
+          "e6"
+        ],
+        "black": [
+          "b2",
+          "c2",
+          "d2",
+          "e2",
+          "f2",
+          "b3",
+          "d3",
+          "f3",
+          "b4",
+          "c4",
+          "d4",
+          "e4",
+          "f4",
+          "d7",
+          "e7",
+          "f7",
+          "d8",
+          "f8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "FIDE 3.6: the knight is not obstructed by the eight occupied squares around it."
+      }
+    },
+    {
+      "id": "kings-with-shared-adjacency",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "8/8/8/3k4/8/3K4/8/8 w - - 0 1",
+      "tags": [
+        "king",
+        "white",
+        "black",
+        "adjacency"
+      ],
+      "queries": [
+        {
+          "by": "white",
+          "square": "d4",
+          "attackers": [
+            "d3"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "d4",
+          "attackers": [
+            "d5"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "c4",
+          "attackers": [
+            "d3"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "e4",
+          "attackers": [
+            "d5"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "d3",
+          "attackers": []
+        },
+        {
+          "by": "white",
+          "square": "d5",
+          "attackers": []
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "c2",
+          "d2",
+          "e2",
+          "c3",
+          "e3",
+          "c4",
+          "d4",
+          "e4"
+        ],
+        "black": [
+          "c4",
+          "d4",
+          "e4",
+          "c5",
+          "e5",
+          "c6",
+          "d6",
+          "e6"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "FIDE 3.8.a: each king attacks all adjacent squares. Squares between kings one rank apart are attacked by both; a king is not attacked by the distant opposing king."
+      }
+    },
+    {
+      "id": "kings-in-corners",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "k7/8/8/8/8/8/8/7K w - - 0 1",
+      "tags": [
+        "king",
+        "white",
+        "black",
+        "corner",
+        "edge"
+      ],
+      "queries": [
+        {
+          "by": "white",
+          "square": "g1",
+          "attackers": [
+            "h1"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "g2",
+          "attackers": [
+            "h1"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "a2",
+          "attackers": []
+        },
+        {
+          "by": "white",
+          "square": "a1",
+          "attackers": []
+        },
+        {
+          "by": "black",
+          "square": "b7",
+          "attackers": [
+            "a8"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "h7",
+          "attackers": []
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "g1",
+          "g2",
+          "h2"
+        ],
+        "black": [
+          "a7",
+          "b7",
+          "b8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "Corner kings attack exactly three squares and never wrap across board edges."
+      }
+    },
+    {
+      "id": "rook-first-blocker",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "4k3/8/8/8/1p1R2P1/8/8/4K3 w - - 0 1",
+      "tags": [
+        "rook",
+        "white",
+        "blocker",
+        "defended",
+        "edge"
+      ],
+      "queries": [
+        {
+          "by": "white",
+          "square": "b4",
+          "attackers": [
+            "d4"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "a4",
+          "attackers": []
+        },
+        {
+          "by": "white",
+          "square": "g4",
+          "attackers": [
+            "d4"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "h4",
+          "attackers": []
+        },
+        {
+          "by": "white",
+          "square": "d8",
+          "attackers": [
+            "d4"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "d1",
+          "attackers": [
+            "e1",
+            "d4"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "c4",
+          "attackers": [
+            "d4"
+          ]
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "d1",
+          "f1",
+          "d2",
+          "e2",
+          "f2",
+          "d3",
+          "b4",
+          "c4",
+          "e4",
+          "f4",
+          "g4",
+          "d5",
+          "f5",
+          "h5",
+          "d6",
+          "d7",
+          "d8"
+        ],
+        "black": [
+          "a3",
+          "c3",
+          "d7",
+          "e7",
+          "f7",
+          "d8",
+          "f8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "FIDE 3.3/3.5: a rook attacks along its rank and file up to and including the first occupied square, opponent or own; it does not attack beyond it."
+      }
+    },
+    {
+      "id": "bishop-first-blocker",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "4k3/8/5b2/8/3P4/8/1N6/4K3 b - - 0 1",
+      "tags": [
+        "bishop",
+        "black",
+        "blocker",
+        "edge"
+      ],
+      "queries": [
+        {
+          "by": "black",
+          "square": "d4",
+          "attackers": [
+            "f6"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "c3",
+          "attackers": []
+        },
+        {
+          "by": "black",
+          "square": "h8",
+          "attackers": [
+            "f6"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "h4",
+          "attackers": [
+            "f6"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "d8",
+          "attackers": [
+            "f6",
+            "e8"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "e5",
+          "attackers": [
+            "f6"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "e5",
+          "attackers": [
+            "d4"
+          ]
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "d1",
+          "f1",
+          "d2",
+          "e2",
+          "f2",
+          "d3",
+          "a4",
+          "c4",
+          "c5",
+          "e5"
+        ],
+        "black": [
+          "d4",
+          "h4",
+          "e5",
+          "g5",
+          "d7",
+          "e7",
+          "f7",
+          "g7",
+          "d8",
+          "f8",
+          "h8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "FIDE 3.2/3.5: a bishop attacks diagonally to and including the first occupied square. d4 is attacked; c3 behind it is not."
+      }
+    },
+    {
+      "id": "queens-on-shared-file",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "3qk3/8/8/8/8/8/8/3QK3 w - - 0 1",
+      "tags": [
+        "queen",
+        "white",
+        "black",
+        "edge"
+      ],
+      "queries": [
+        {
+          "by": "white",
+          "square": "d8",
+          "attackers": [
+            "d1"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "d1",
+          "attackers": [
+            "d8"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "e2",
+          "attackers": [
+            "d1",
+            "e1"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "e7",
+          "attackers": [
+            "d8",
+            "e8"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "h5",
+          "attackers": [
+            "d1"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "a4",
+          "attackers": [
+            "d1"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "h4",
+          "attackers": [
+            "d8"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "a5",
+          "attackers": [
+            "d8"
+          ]
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "a1",
+          "b1",
+          "c1",
+          "d1",
+          "e1",
+          "f1",
+          "c2",
+          "d2",
+          "e2",
+          "f2",
+          "b3",
+          "d3",
+          "f3",
+          "a4",
+          "d4",
+          "g4",
+          "d5",
+          "h5",
+          "d6",
+          "d7",
+          "d8"
+        ],
+        "black": [
+          "d1",
+          "d2",
+          "d3",
+          "d4",
+          "h4",
+          "a5",
+          "d5",
+          "g5",
+          "b6",
+          "d6",
+          "f6",
+          "c7",
+          "d7",
+          "e7",
+          "f7",
+          "a8",
+          "b8",
+          "c8",
+          "d8",
+          "e8",
+          "f8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "FIDE 3.4: queens attack along ranks, files and diagonals. Facing queens attack each other along the open file."
+      }
+    },
+    {
+      "id": "battery-without-xray",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "4k3/8/3p4/8/8/3Q4/8/3RK3 w - - 0 1",
+      "tags": [
+        "rook",
+        "queen",
+        "white",
+        "blocker",
+        "defended"
+      ],
+      "queries": [
+        {
+          "by": "white",
+          "square": "d5",
+          "attackers": [
+            "d3"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "d6",
+          "attackers": [
+            "d3"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "d7",
+          "attackers": []
+        },
+        {
+          "by": "white",
+          "square": "d2",
+          "attackers": [
+            "d1",
+            "e1",
+            "d3"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "d3",
+          "attackers": [
+            "d1"
+          ]
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "a1",
+          "b1",
+          "c1",
+          "d1",
+          "e1",
+          "f1",
+          "c2",
+          "d2",
+          "e2",
+          "f2",
+          "a3",
+          "b3",
+          "c3",
+          "d3",
+          "e3",
+          "f3",
+          "g3",
+          "h3",
+          "c4",
+          "d4",
+          "e4",
+          "b5",
+          "d5",
+          "f5",
+          "a6",
+          "d6",
+          "g6",
+          "h7"
+        ],
+        "black": [
+          "c5",
+          "e5",
+          "d7",
+          "e7",
+          "f7",
+          "d8",
+          "f8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "The rook on d1 is blocked by its own queen on d3: there is no x-ray attack through a friendly piece. The queen defends nothing beyond the black pawn."
+      }
+    },
+    {
+      "id": "pinned-pieces-still-attack",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "4k3/3b4/8/1B6/8/8/4N3/r3K3 w - - 0 1",
+      "tags": [
+        "pin",
+        "pinned-attacker",
+        "knight",
+        "bishop",
+        "black"
+      ],
+      "queries": [
+        {
+          "by": "black",
+          "square": "f5",
+          "attackers": [
+            "d7"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "b5",
+          "attackers": [
+            "d7"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "e8",
+          "attackers": [
+            "d7"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "c3",
+          "attackers": [
+            "e2"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "e1",
+          "attackers": [
+            "a1"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "f1",
+          "attackers": []
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "c1",
+          "d1",
+          "f1",
+          "g1",
+          "d2",
+          "e2",
+          "f2",
+          "c3",
+          "d3",
+          "g3",
+          "a4",
+          "c4",
+          "d4",
+          "f4",
+          "a6",
+          "c6",
+          "d7"
+        ],
+        "black": [
+          "b1",
+          "c1",
+          "d1",
+          "e1",
+          "a2",
+          "a3",
+          "h3",
+          "a4",
+          "g4",
+          "a5",
+          "b5",
+          "f5",
+          "a6",
+          "c6",
+          "e6",
+          "a7",
+          "d7",
+          "e7",
+          "f7",
+          "a8",
+          "c8",
+          "d8",
+          "e8",
+          "f8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "Profile: attacks are geometric. The black bishop d7 is pinned to e8 by the bishop b5 yet still attacks off-line f5, the pinning bishop and its own king square (defence). The white knight e2 is not pinned (the a1 rook checks along rank one); it is an ordinary-attack control."
+      }
+    },
+    {
+      "id": "pinned-rook-constrains-king",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "6k1/5r2/8/8/2B5/8/1K6/8 w - - 0 1",
+      "tags": [
+        "pin",
+        "pinned-attacker",
+        "rook",
+        "black",
+        "king-safety"
+      ],
+      "queries": [
+        {
+          "by": "black",
+          "square": "f2",
+          "attackers": [
+            "f7"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "a7",
+          "attackers": [
+            "f7"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "f1",
+          "attackers": [
+            "f7"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "f7",
+          "attackers": [
+            "c4"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "g8",
+          "attackers": []
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "a1",
+          "b1",
+          "c1",
+          "f1",
+          "a2",
+          "c2",
+          "e2",
+          "a3",
+          "b3",
+          "c3",
+          "d3",
+          "b5",
+          "d5",
+          "a6",
+          "e6",
+          "f7"
+        ],
+        "black": [
+          "f1",
+          "f2",
+          "f3",
+          "f4",
+          "f5",
+          "f6",
+          "a7",
+          "b7",
+          "c7",
+          "d7",
+          "e7",
+          "f7",
+          "g7",
+          "h7",
+          "f8",
+          "h8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "The black rook f7 is pinned to g8 by the bishop on c4, but still attacks its file and rank, so it constrains the white king (profile: pinned pieces still constrain the opposing king)."
+      }
+    },
+    {
+      "id": "king-blocks-own-check-ray",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "4k3/8/8/8/8/8/8/r3K3 w - - 0 1",
+      "tags": [
+        "king",
+        "rook",
+        "black",
+        "occupancy",
+        "king-safety"
+      ],
+      "queries": [
+        {
+          "by": "black",
+          "square": "e1",
+          "attackers": [
+            "a1"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "d1",
+          "attackers": [
+            "a1"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "f1",
+          "attackers": []
+        },
+        {
+          "by": "black",
+          "square": "f2",
+          "attackers": []
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "d1",
+          "f1",
+          "d2",
+          "e2",
+          "f2"
+        ],
+        "black": [
+          "b1",
+          "c1",
+          "d1",
+          "e1",
+          "a2",
+          "a3",
+          "a4",
+          "a5",
+          "a6",
+          "a7",
+          "d7",
+          "e7",
+          "f7",
+          "a8",
+          "d8",
+          "f8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "The king itself blocks the checking rook's ray, so f1 is not attacked while the king stands on e1. Compare king-after-step-along-check-ray: legality of a king step must be judged after the occupancy change."
+      }
+    },
+    {
+      "id": "king-after-step-along-check-ray",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "4k3/8/8/8/8/8/8/r4K2 w - - 0 1",
+      "tags": [
+        "king",
+        "rook",
+        "black",
+        "occupancy",
+        "king-safety"
+      ],
+      "queries": [
+        {
+          "by": "black",
+          "square": "f1",
+          "attackers": [
+            "a1"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "e1",
+          "attackers": [
+            "a1"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "g1",
+          "attackers": []
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "e1",
+          "g1",
+          "e2",
+          "f2",
+          "g2"
+        ],
+        "black": [
+          "b1",
+          "c1",
+          "d1",
+          "e1",
+          "f1",
+          "a2",
+          "a3",
+          "a4",
+          "a5",
+          "a6",
+          "a7",
+          "d7",
+          "e7",
+          "f7",
+          "a8",
+          "d8",
+          "f8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "Same diagram with the white king moved to f1 (side unchanged): f1 is now attacked by the rook through the vacated e1."
+      }
+    },
+    {
+      "id": "white-castling-transit",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/8/8/8/8/6b1/R3K2R w KQkq - 0 1",
+      "tags": [
+        "castling",
+        "white",
+        "bishop",
+        "rook"
+      ],
+      "queries": [
+        {
+          "by": "black",
+          "square": "f1",
+          "attackers": [
+            "g2"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "g1",
+          "attackers": []
+        },
+        {
+          "by": "black",
+          "square": "h1",
+          "attackers": [
+            "g2",
+            "h8"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "e1",
+          "attackers": []
+        },
+        {
+          "by": "black",
+          "square": "d1",
+          "attackers": []
+        },
+        {
+          "by": "black",
+          "square": "c1",
+          "attackers": []
+        },
+        {
+          "by": "black",
+          "square": "b1",
+          "attackers": []
+        },
+        {
+          "by": "black",
+          "square": "a1",
+          "attackers": [
+            "a8"
+          ]
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "b1",
+          "c1",
+          "d1",
+          "e1",
+          "f1",
+          "g1",
+          "a2",
+          "d2",
+          "e2",
+          "f2",
+          "h2",
+          "a3",
+          "h3",
+          "a4",
+          "h4",
+          "a5",
+          "h5",
+          "a6",
+          "h6",
+          "a7",
+          "h7",
+          "a8",
+          "h8"
+        ],
+        "black": [
+          "a1",
+          "f1",
+          "h1",
+          "a2",
+          "h2",
+          "a3",
+          "f3",
+          "h3",
+          "a4",
+          "e4",
+          "h4",
+          "a5",
+          "d5",
+          "h5",
+          "a6",
+          "c6",
+          "h6",
+          "a7",
+          "b7",
+          "d7",
+          "e7",
+          "f7",
+          "h7",
+          "a8",
+          "b8",
+          "c8",
+          "d8",
+          "e8",
+          "f8",
+          "g8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "FIDE 3.8.a.ii inputs: f1 (kingside transit) and h1 (rook) are attacked by the bishop g2; the rook's attack alone does not forbid castling. Queenside b1/c1/d1 and the king square e1 are not attacked. Black rooks attack a1/h1 along open files."
+      }
+    },
+    {
+      "id": "black-castling-transit",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "r3k2r/8/N7/8/8/8/8/R3K2R b KQkq - 0 1",
+      "tags": [
+        "castling",
+        "black",
+        "knight",
+        "rook"
+      ],
+      "queries": [
+        {
+          "by": "white",
+          "square": "b8",
+          "attackers": [
+            "a6"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "c8",
+          "attackers": []
+        },
+        {
+          "by": "white",
+          "square": "d8",
+          "attackers": []
+        },
+        {
+          "by": "white",
+          "square": "e8",
+          "attackers": []
+        },
+        {
+          "by": "white",
+          "square": "f8",
+          "attackers": []
+        },
+        {
+          "by": "white",
+          "square": "g8",
+          "attackers": []
+        },
+        {
+          "by": "white",
+          "square": "h8",
+          "attackers": [
+            "h1"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "a8",
+          "attackers": []
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "b1",
+          "c1",
+          "d1",
+          "e1",
+          "f1",
+          "g1",
+          "a2",
+          "d2",
+          "e2",
+          "f2",
+          "h2",
+          "a3",
+          "h3",
+          "a4",
+          "b4",
+          "h4",
+          "a5",
+          "c5",
+          "h5",
+          "a6",
+          "h6",
+          "c7",
+          "h7",
+          "b8",
+          "h8"
+        ],
+        "black": [
+          "h1",
+          "h2",
+          "h3",
+          "h4",
+          "h5",
+          "a6",
+          "h6",
+          "a7",
+          "d7",
+          "e7",
+          "f7",
+          "h7",
+          "b8",
+          "c8",
+          "d8",
+          "e8",
+          "f8",
+          "g8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "Knight a6 attacks only b8 among Black's queenside path squares; b8 need not be safe for queenside castling, unlike c8/d8. Kingside and e8 are unattacked except by White's rooks on open files."
+      }
+    },
+    {
+      "id": "white-ep-before-capture",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "8/8/8/K2pP2r/8/8/8/7k w - d6 0 1",
+      "tags": [
+        "en-passant",
+        "white",
+        "rook",
+        "occupancy"
+      ],
+      "queries": [
+        {
+          "by": "black",
+          "square": "a5",
+          "attackers": []
+        },
+        {
+          "by": "white",
+          "square": "d6",
+          "attackers": [
+            "e5"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "d5",
+          "attackers": []
+        },
+        {
+          "by": "black",
+          "square": "e4",
+          "attackers": [
+            "d5"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "e5",
+          "attackers": [
+            "h5"
+          ]
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "a4",
+          "b4",
+          "b5",
+          "a6",
+          "b6",
+          "d6",
+          "f6"
+        ],
+        "black": [
+          "g1",
+          "h1",
+          "g2",
+          "h2",
+          "h3",
+          "c4",
+          "e4",
+          "h4",
+          "e5",
+          "f5",
+          "g5",
+          "h6",
+          "h7",
+          "h8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "Before exd6 e.p., e5 and d5 both block the rook's rank toward the king, so a5 is not attacked. The capturing pawn attacks the raw target d6; attack semantics do not add an e.p. attack on the victim square d5."
+      }
+    },
+    {
+      "id": "white-ep-after-capture-occupancy",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "8/8/3P4/K6r/8/8/8/7k w - - 0 1",
+      "tags": [
+        "en-passant",
+        "white",
+        "rook",
+        "occupancy",
+        "king-safety"
+      ],
+      "queries": [
+        {
+          "by": "black",
+          "square": "a5",
+          "attackers": [
+            "h5"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "d5",
+          "attackers": [
+            "h5"
+          ]
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "a4",
+          "b4",
+          "b5",
+          "a6",
+          "b6",
+          "c7",
+          "e7"
+        ],
+        "black": [
+          "g1",
+          "h1",
+          "g2",
+          "h2",
+          "h3",
+          "h4",
+          "a5",
+          "b5",
+          "c5",
+          "d5",
+          "e5",
+          "f5",
+          "g5",
+          "h6",
+          "h7",
+          "h8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "Occupancy after exd6 e.p. with the side unchanged: removing both e5 and d5 opens the rank, so a5 is attacked; the capture would expose the king."
+      }
+    },
+    {
+      "id": "black-ep-before-capture",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "7K/8/8/8/1R2Pp1k/8/8/8 b - e3 0 1",
+      "tags": [
+        "en-passant",
+        "black",
+        "rook",
+        "occupancy"
+      ],
+      "queries": [
+        {
+          "by": "white",
+          "square": "h4",
+          "attackers": []
+        },
+        {
+          "by": "black",
+          "square": "e3",
+          "attackers": [
+            "f4"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "g3",
+          "attackers": [
+            "f4",
+            "h4"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "e4",
+          "attackers": []
+        },
+        {
+          "by": "white",
+          "square": "f4",
+          "attackers": []
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "b1",
+          "b2",
+          "b3",
+          "a4",
+          "c4",
+          "d4",
+          "e4",
+          "b5",
+          "d5",
+          "f5",
+          "b6",
+          "b7",
+          "g7",
+          "h7",
+          "b8",
+          "g8"
+        ],
+        "black": [
+          "e3",
+          "g3",
+          "h3",
+          "g4",
+          "g5",
+          "h5"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "Black mirror: before fxe3 e.p., e4 and f4 block the rook's rank toward h4. The black pawn attacks the target e3 and g3, not the victim square e4."
+      }
+    },
+    {
+      "id": "black-ep-after-capture-occupancy",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "7K/8/8/8/1R5k/4p3/8/8 b - - 0 1",
+      "tags": [
+        "en-passant",
+        "black",
+        "rook",
+        "occupancy",
+        "king-safety"
+      ],
+      "queries": [
+        {
+          "by": "white",
+          "square": "h4",
+          "attackers": [
+            "b4"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "e4",
+          "attackers": [
+            "b4"
+          ]
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "b1",
+          "b2",
+          "b3",
+          "a4",
+          "c4",
+          "d4",
+          "e4",
+          "f4",
+          "g4",
+          "h4",
+          "b5",
+          "b6",
+          "b7",
+          "g7",
+          "h7",
+          "b8",
+          "g8"
+        ],
+        "black": [
+          "d2",
+          "f2",
+          "g3",
+          "h3",
+          "g4",
+          "g5",
+          "h5"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "Occupancy after fxe3 e.p.: the opened rank lets the rook attack h4."
+      }
+    },
+    {
+      "id": "double-check-attackers",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "3k4/8/8/8/1b6/8/8/4K2r w - - 0 1",
+      "tags": [
+        "double-check",
+        "rook",
+        "bishop",
+        "black"
+      ],
+      "queries": [
+        {
+          "by": "black",
+          "square": "e1",
+          "attackers": [
+            "h1",
+            "b4"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "d2",
+          "attackers": [
+            "b4"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "d2",
+          "attackers": [
+            "e1"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "f2",
+          "attackers": []
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "d1",
+          "f1",
+          "d2",
+          "e2",
+          "f2"
+        ],
+        "black": [
+          "e1",
+          "f1",
+          "g1",
+          "d2",
+          "h2",
+          "a3",
+          "c3",
+          "h3",
+          "h4",
+          "a5",
+          "c5",
+          "h5",
+          "d6",
+          "h6",
+          "c7",
+          "d7",
+          "e7",
+          "h7",
+          "c8",
+          "e8",
+          "f8",
+          "h8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "Rook h1 and bishop b4 both attack e1; the attacker set has two members, which subsequent check evasion needs to distinguish."
+      }
+    },
+    {
+      "id": "edge-pieces-do-not-wrap",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "R6k/8/8/8/N7/7B/8/K7 b - - 0 1",
+      "tags": [
+        "edge",
+        "rook",
+        "knight",
+        "bishop",
+        "white"
+      ],
+      "queries": [
+        {
+          "by": "white",
+          "square": "h8",
+          "attackers": [
+            "a8"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "h5",
+          "attackers": []
+        },
+        {
+          "by": "white",
+          "square": "h2",
+          "attackers": []
+        },
+        {
+          "by": "white",
+          "square": "b2",
+          "attackers": [
+            "a1",
+            "a4"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "g2",
+          "attackers": [
+            "h3"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "a3",
+          "attackers": []
+        },
+        {
+          "by": "white",
+          "square": "c8",
+          "attackers": [
+            "h3",
+            "a8"
+          ]
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "b1",
+          "f1",
+          "a2",
+          "b2",
+          "g2",
+          "c3",
+          "a4",
+          "g4",
+          "a5",
+          "c5",
+          "f5",
+          "a6",
+          "b6",
+          "e6",
+          "a7",
+          "d7",
+          "b8",
+          "c8",
+          "d8",
+          "e8",
+          "f8",
+          "g8",
+          "h8"
+        ],
+        "black": [
+          "g7",
+          "h7",
+          "g8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "Edge rook/knight/bishop attacks stop at board edges and never wrap to the opposite file. The rook checks h8 along the empty eighth rank."
+      }
+    },
+    {
+      "id": "white-pinned-knight-covers-king-flight",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "8/4r3/3k4/8/8/4N3/8/4K3 b - - 0 1",
+      "tags": [
+        "pin",
+        "pinned-attacker",
+        "knight",
+        "white",
+        "king-safety"
+      ],
+      "queries": [
+        {
+          "by": "white",
+          "square": "d5",
+          "attackers": [
+            "e3"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "f5",
+          "attackers": [
+            "e3"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "c4",
+          "attackers": [
+            "e3"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "e3",
+          "attackers": [
+            "e7"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "e2",
+          "attackers": []
+        },
+        {
+          "by": "black",
+          "square": "e4",
+          "attackers": [
+            "e7"
+          ]
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "d1",
+          "f1",
+          "c2",
+          "d2",
+          "e2",
+          "f2",
+          "g2",
+          "c4",
+          "g4",
+          "d5",
+          "f5"
+        ],
+        "black": [
+          "e3",
+          "e4",
+          "c5",
+          "d5",
+          "e5",
+          "c6",
+          "e6",
+          "a7",
+          "b7",
+          "c7",
+          "d7",
+          "e7",
+          "f7",
+          "g7",
+          "h7",
+          "e8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "The white knight e3 is pinned to e1 by the rook e7 yet still attacks d5 (a flight square of the d6 king) and f5 (profile: pinned pieces still constrain the opposing king). The pinned knight blocks the rook's file below e3."
+      }
+    },
+    {
+      "id": "white-last-rank-pawn-checks",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "3k4/4P3/8/8/8/8/8/4K3 b - - 0 1",
+      "tags": [
+        "pawn",
+        "white",
+        "promotion-rank",
+        "king-safety"
+      ],
+      "queries": [
+        {
+          "by": "white",
+          "square": "d8",
+          "attackers": [
+            "e7"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "f8",
+          "attackers": [
+            "e7"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "e8",
+          "attackers": []
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "d1",
+          "f1",
+          "d2",
+          "e2",
+          "f2",
+          "d8",
+          "f8"
+        ],
+        "black": [
+          "c7",
+          "d7",
+          "e7",
+          "c8",
+          "e8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "A white pawn on rank seven attacks the two back-rank diagonals, here checking d8; the promotion square e8 straight ahead is not attacked."
+      }
+    },
+    {
+      "id": "black-last-rank-pawn-checks",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "4k3/8/8/8/8/8/3p4/4K3 w - - 0 1",
+      "tags": [
+        "pawn",
+        "black",
+        "promotion-rank",
+        "king-safety"
+      ],
+      "queries": [
+        {
+          "by": "black",
+          "square": "e1",
+          "attackers": [
+            "d2"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "c1",
+          "attackers": [
+            "d2"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "d1",
+          "attackers": []
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "d1",
+          "f1",
+          "d2",
+          "e2",
+          "f2"
+        ],
+        "black": [
+          "c1",
+          "e1",
+          "d7",
+          "e7",
+          "f7",
+          "d8",
+          "f8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "Black mirror: a pawn on rank two attacks c1/e1, checking e1; d1 straight ahead is not attacked."
+      }
+    },
+    {
+      "id": "white-ep-diagonal-before-capture",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "b6k/8/8/3pP3/8/5K2/8/8 w - d6 0 1",
+      "tags": [
+        "en-passant",
+        "white",
+        "bishop",
+        "occupancy"
+      ],
+      "queries": [
+        {
+          "by": "black",
+          "square": "f3",
+          "attackers": []
+        },
+        {
+          "by": "black",
+          "square": "d5",
+          "attackers": [
+            "a8"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "e4",
+          "attackers": [
+            "d5"
+          ]
+        },
+        {
+          "by": "white",
+          "square": "d6",
+          "attackers": [
+            "e5"
+          ]
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "e2",
+          "f2",
+          "g2",
+          "e3",
+          "g3",
+          "e4",
+          "f4",
+          "g4",
+          "d6",
+          "f6"
+        ],
+        "black": [
+          "c4",
+          "e4",
+          "d5",
+          "c6",
+          "b7",
+          "g7",
+          "h7",
+          "g8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "Before exd6 e.p., the victim d5 blocks the a8 bishop's diagonal toward the white king f3."
+      }
+    },
+    {
+      "id": "white-ep-diagonal-after-capture-occupancy",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "b6k/8/3P4/8/8/5K2/8/8 w - - 0 1",
+      "tags": [
+        "en-passant",
+        "white",
+        "bishop",
+        "occupancy",
+        "king-safety"
+      ],
+      "queries": [
+        {
+          "by": "black",
+          "square": "f3",
+          "attackers": [
+            "a8"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "d5",
+          "attackers": [
+            "a8"
+          ]
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "e2",
+          "f2",
+          "g2",
+          "e3",
+          "g3",
+          "e4",
+          "f4",
+          "g4",
+          "c7",
+          "e7"
+        ],
+        "black": [
+          "f3",
+          "e4",
+          "d5",
+          "c6",
+          "b7",
+          "g7",
+          "h7",
+          "g8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "Occupancy after exd6 e.p. with the side unchanged: removing the victim alone opens the diagonal, so f3 is attacked."
+      }
+    },
+    {
+      "id": "white-castling-pawn-and-rook-cover",
+      "rules_profile": "mshogi.chess.position.v1",
+      "fen": "1r2k3/8/8/8/8/8/4p3/R3K2R w KQ - 0 1",
+      "tags": [
+        "castling",
+        "white",
+        "pawn",
+        "rook"
+      ],
+      "queries": [
+        {
+          "by": "black",
+          "square": "f1",
+          "attackers": [
+            "e2"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "d1",
+          "attackers": [
+            "e2"
+          ]
+        },
+        {
+          "by": "black",
+          "square": "e1",
+          "attackers": []
+        },
+        {
+          "by": "black",
+          "square": "g1",
+          "attackers": []
+        },
+        {
+          "by": "black",
+          "square": "c1",
+          "attackers": []
+        },
+        {
+          "by": "black",
+          "square": "b1",
+          "attackers": [
+            "b8"
+          ]
+        }
+      ],
+      "attacked_squares": {
+        "white": [
+          "b1",
+          "c1",
+          "d1",
+          "e1",
+          "f1",
+          "g1",
+          "a2",
+          "d2",
+          "e2",
+          "f2",
+          "h2",
+          "a3",
+          "h3",
+          "a4",
+          "h4",
+          "a5",
+          "h5",
+          "a6",
+          "h6",
+          "a7",
+          "h7",
+          "a8",
+          "h8"
+        ],
+        "black": [
+          "b1",
+          "d1",
+          "f1",
+          "b2",
+          "b3",
+          "b4",
+          "b5",
+          "b6",
+          "b7",
+          "d7",
+          "e7",
+          "f7",
+          "a8",
+          "c8",
+          "d8",
+          "e8",
+          "f8"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "fide-2023",
+          "profile-v1",
+          "python-chess-1.11.2"
+        ],
+        "method": "Diagram, queries and attacker sets hand-curated from the rationale first; exact attacker sets then confirmed and complete attacked-square maps enumerated with chess==1.11.2 Board.attackers/is_attacked_by. No mShogi output used.",
+        "rationale": "Castling-path inputs for White: the e2 pawn covers d1 and f1 (not e1 straight behind it); the b8 rook covers b1, which queenside castling need not keep safe."
+      }
+    }
+  ]
+}

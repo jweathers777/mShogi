@@ -47,7 +47,7 @@ fn profile_identifies_partial_coverage_without_claiming_game_support() {
     assert!(output.stderr.is_empty());
     assert_eq!(
         String::from_utf8(output.stdout).unwrap(),
-        "Target rules profile: mshogi.chess.position.v1\nCoverage: position/FEN and ordinary actions/undo; special moves unavailable\n"
+        "Target rules profile: mshogi.chess.position.v1\nCoverage: position/FEN, ordinary actions/undo and attack queries; special moves unavailable\n"
     );
 }
 

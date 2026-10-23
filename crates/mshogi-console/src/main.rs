@@ -26,7 +26,9 @@ fn main() -> ExitCode {
         Some(Some("--version" | "-V")) => println!("mshogi {}", env!("CARGO_PKG_VERSION")),
         Some(Some("profile")) => {
             println!("Target rules profile: {CHESS_POSITION_PROFILE_ID}");
-            println!("Coverage: position/FEN and ordinary actions/undo; special moves unavailable");
+            println!(
+                "Coverage: position/FEN, ordinary actions/undo and attack queries; special moves unavailable"
+            );
         }
         _ => return invalid_arguments(),
     }

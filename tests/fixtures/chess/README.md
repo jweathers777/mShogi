@@ -83,3 +83,18 @@ Optional oracle recheck, in the separately installed environment described above
 ```
 
 The oracle checker verifies every expected after-state and never rewrites it; Rust tests additionally compare the full saved tuple at every reverse step. Neither implies special-move execution or full match adjudication. Invalid-action, unsupported-special, overflow and bad-undo tests are explicit Rust cases under the documented API/profile policy; they do not substitute agreement with a permissive external parser for the project boundary.
+
+## Attack fixture family
+
+MSH-6 adds [attacks.json](attacks.json), a separate family named `mshogi.chess.attacks.v1` with `schema_version: 1`. The original corpus and its three attack queries are unchanged. Each case has a stable ID, the exact rules-profile ID, a canonical `fen`, coverage `tags`, curated `queries` of `{ by, square, attackers }`, `attacked_squares` mapping `white` and `black` to every attacked square, and source/method/rationale provenance. Square lists use a1-to-h8 order (file fastest), matching the Rust `attackers` order; an empty list is intentional.
+
+There are 29 positions, 155 exact attacker sets and 3,712 implied per-square map answers. Diagrams isolate pawn direction/edges, occupancy independence and last-rank pawns checking the back rank, knights in the centre, corners and surrounded, adjacent and corner kings, first-blocker sliders with no x-ray (including a friendly battery), facing queens, pinned attackers of both colors (black bishop, rook, and a white knight covering the black king's flight squares), a king blocking its own check ray, castling-path coverage for both colors by bishop, knight, pawn and rook, en passant before/after occupancy opening a rank for both colors and a diagonal for White, double check and edge pieces. Some positions deliberately show the occupancy after a candidate action with the side to move unchanged, because legality is judged on that post-action board.
+
+Each diagram, query and attacker set was first written by hand from the recorded FIDE/profile rationale. The pinned `chess==1.11.2` `Board.attackers` then confirmed every set, and `Board.is_attacked_by` enumerated the complete maps. No mShogi output established an answer. Agreement with one oracle remains bounded evidence.
+
+```sh
+cargo test -p mshogi-core --test attacks --locked
+/tmp/mshogi-chess-oracle/bin/python tools/check_chess_attacks.py
+```
+
+The second, optional command uses the separately installed environment described above; it verifies the committed answers and never rewrites them.

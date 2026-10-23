@@ -1,12 +1,12 @@
 # Chess coverage ledger
 
-Contract: [`mshogi.chess.position.v1`](chess-position-v1.md). Established by MSH-2 on 2026-10-23; MSH-3 adds the workspace verification reference; MSH-4 implements the position/FEN boundary; MSH-5 adds ordinary transitions and undo. **Specified** means required of future work, not implemented or verified by the current prototype. No M1 product behavior is certified by MSH-2.
+Contract: [`mshogi.chess.position.v1`](chess-position-v1.md). Established by MSH-2 on 2026-10-23; MSH-3 adds the workspace verification reference; MSH-4 implements the position/FEN boundary; MSH-5 adds ordinary transitions and undo; MSH-6 adds geometric attack queries. **Specified** means required of future work, not implemented or verified by the current prototype. No M1 product behavior is certified by MSH-2.
 
 | Obligation | M1 commitment / present state | Owner / follow-up |
 | --- | --- | --- |
 | Position fields, strict FEN and local analysis validation | Implemented in the core; all 68 independent inputs tested for acceptance/rejection/canonical state, plus targeted boundary tests; no history/reachability proof | MSH-4; behavior beyond parsing remains below |
 | Ordinary moves, captures, promotions, rights/counters and exact undo | Checked ordinary execution and full-state undo implemented; 49 independent sequences / 74 exact after-states plus rejection/overflow tests. No special execution or move generation | MSH-5; generation remains MSH-7 |
-| Occupancy-aware attacks, pinned attackers, king safety | Specified; pin, x-ray, interposition and double-check cases curated | MSH-6, MSH-9 |
+| Occupancy-aware attacks, pinned attackers, king safety | Public geometric attack queries implemented for every piece kind and both colors; 29 independent diagrams / 155 exact attacker sets plus complete per-color maps, the original corpus attack queries and occupancy-change tests. Legal-move king safety uses them but full generation/classification is not implemented | MSH-6; MSH-9 legal filtering and classification |
 | Orthodox castling and en passant | Specified; both colors and rejection/king-safety cases curated | MSH-8 |
 | Check, checkmate, stalemate | Specified position classification; data covers both colors | MSH-9 |
 | Perft/divide and inspection console | Specified; six reference positions with depth 0..3 expectations plus terminal cases | MSH-10, MSH-11 |

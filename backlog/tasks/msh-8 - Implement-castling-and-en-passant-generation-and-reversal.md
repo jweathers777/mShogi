@@ -1,11 +1,11 @@
 ---
 id: MSH-8
 title: Implement castling and en passant generation and reversal
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-22T13:27:00Z'
-updated_date: '2026-10-23T17:36:00Z'
+updated_date: '2026-10-23T17:37:00Z'
 labels:
   - rules
   - special-moves
@@ -46,19 +46,19 @@ Chess960, universal multi-leg variant support, and weakening the adopted chess v
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Castling handles the relevant pieces, rights, occupancy, and king-safety conditions under the adopted orthodox profile.
-- [ ] #2 En passant removes the correct off-destination victim and handles its availability and occupancy effects.
-- [ ] #3 Illegal special actions are rejected at the checked boundary without changing caller state.
-- [ ] #4 Every special-action mutation and derived field is restored exactly by undo.
-- [ ] #5 Independent legality and restoration cases are recorded as deterministic regressions.
+- [x] #1 Castling handles the relevant pieces, rights, occupancy, and king-safety conditions under the adopted orthodox profile.
+- [x] #2 En passant removes the correct off-destination victim and handles its availability and occupancy effects.
+- [x] #3 Illegal special actions are rejected at the checked boundary without changing caller state.
+- [x] #4 Every special-action mutation and derived field is restored exactly by undo.
+- [x] #5 Independent legality and restoration cases are recorded as deterministic regressions.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -115,4 +115,37 @@ Should-fix findings (documentation only), all resolved:
 (3) the profile named the removed private resolve_ordinary.
 Nits resolved: candidates() rustdoc now says profile-legal because of the u32 counter domain; the mod.rs wording now says checked transitions.
 Final reruns PASS: fmt, clippy, cargo test --workspace --locked (5 CLI + 4 attacks + 8 FEN + 6 ordinary + 5 candidates + 6 special + 4 doctests), rustdoc -D warnings, whitespace diff check. No re-review round for these documentation-only corrections (proportionate review per AGENTS).
+
+Integration and native verification (2026-10-23): implementation 6dd705365e05a967d636cc8db0a023ceac0965a3 committed on claude/next-task and fast-forward pushed to origin codex/rewrite (54060d3..6dd7053). No force push, PR, default-branch or settings change.
+
+Actual native CI PASS for exact head 6dd7053: https://github.com/jweathers777/mShogi/actions/runs/39996442602. All three jobs succeeded on rustc 1.89.0:
+- Rust (ubuntu-24.04), job 120561076696, x86_64-unknown-linux-gnu
+- Rust (macos-15), job 120561076584, aarch64-apple-darwin
+- Rust (windows-2022), job 120561076753, x86_64-pc-windows-msvc
+Each job passed 4 attacks, 8 FEN, 6 ordinary-action, 5 candidate and 6 special-action tests plus 4 doctests. CLI tests: 5 on Linux/macOS, 4 applicable on Windows. Console smoke reports the castling/en passant coverage line with no legal-move list.
+
+Next eligible: MSH-9 (now unblocked) and MSH-13. No subsequent task started.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Implemented castling and en passant.
+
+What changed:
+- Position::apply is now the checked boundary for every chess action; apply_ordinary remains its ordinary-only subset.
+- Castling requires the right, the home rook, an empty path, and an unattacked king origin and transit square; the destination is judged on the resulting board. The rook relocates, both rights are lost, and the counters update.
+- En passant removes the off-destination victim, resets the halfmove clock and clears the target. Rank and diagonal discoveries and pinned capturers are rejected after all effects.
+- All rejections are atomic, and the full-snapshot undo restores every special effect.
+- New errors: CastlingUnavailable and CastlingKingAttacked. The deferred Unsupported* errors are renamed CastlingNotOrdinary/EnPassantNotOrdinary.
+- New special_candidates() and candidates(), with an exact documented contract with apply. They are still not the public legal list or classification, which belong to MSH-9.
+
+Verification:
+- New fixture family mshogi.chess.special-actions.v1: 21 positions, 6 sequences / 25 exact steps, 18 expected rejections. Hand-curated first, then confirmed by pinned python-chess 1.11.2; a verify-only checker rechecks it.
+- Rust suite: the exhaustive bounded-action contract; reverse undo; and candidates filtered by apply reproduce the complete legal sets of all 35 corpus positions.
+- Mutation check: all 9 special-logic faults are caught.
+- Independent review found no correctness defects. Its 5,496-position / 141,435-legal-move differential probe had 0 failures, and its documentation findings were resolved.
+- Native Linux/macOS/Windows CI run 39996442602 passed for implementation 6dd7053 on codex/rewrite.
+
+Follow-up: MSH-9 should expose the public legal list and classification, and replace the MSH-7 corpus test's shape-based castling/EP filter with exact full-set comparison.
+<!-- SECTION:FINAL_SUMMARY:END -->

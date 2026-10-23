@@ -1,11 +1,11 @@
 ---
 id: MSH-5
 title: Implement reversible ordinary actions and promotions
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-22T13:26:00Z'
-updated_date: '2026-10-23T15:00:00Z'
+updated_date: '2026-10-23T15:02:00Z'
 labels:
   - rules
   - state
@@ -13,6 +13,8 @@ labels:
 milestone: m-1
 dependencies:
   - MSH-4
+references:
+  - https://github.com/jweathers777/mShogi/actions/runs/39974586573
 documentation:
   - docs/design.md
   - AGENTS.md
@@ -61,7 +63,7 @@ Castling and en passant execution, a universal variant event engine, and accepti
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -102,4 +104,22 @@ Native Linux/Windows/CI verification is pending push; no other-platform success 
 Independent review: fresh delegated reviewer msh5_review inspected AGENTS/task, complete bounded source/tests/docs diff and fixture rationale; final result no actionable findings, no repository edits. Independently reran six focused Rust tests in a separate target and oracle checker. A temporary external differential probe at /private/tmp/mshogi-msh5-review passed 354,685 action cases across 349 positions against pinned chess 1.11.2: 300 deterministic reachable positions (seed 5315, resets after 70 plies/game over) plus 49 fixture starts, every occupied current-side source/destination, all legal promotions and extra randomized promotion choices. Compared acceptance/rejection, full raw-EP after-FEN, exact undo and atomic failure, excluding special execution and counter overflow (committed tests cover overflow). This is bounded review evidence, not a committed MSH-12 harness, full rules certification, performance result or other-OS execution. Reviewer confirmed explicit value-equality/context undo semantics are consistent.
 
 Remaining integration: normal push on codex/rewrite, inspect native workflow for the exact implementation head, then append actual revision/run evidence and close. Follow-ups remain MSH-6 public attacks, MSH-7 generation, MSH-8 special execution, MSH-12 broad generated verification and MSH-13 compound-action boundary review.
+
+Integration and native verification (2026-10-23): implementation fdf3c45c2722a244536d868e61354762b1b177e9 committed on codex/rewrite and normal push to origin succeeded (5b45e77..fdf3c45). Remote head independently confirmed equal; no force push, PR/default-branch change, settings change or unrelated integration. Original master checkout clean; master 941cd4dc37e6e6210d4f993c96a553753e228b19, local main_v2 WIP fd280dff02fa7ef73809e20b28bdec83fa9c955f and remote main_v2 90458437d8872d6264b5536ae6ab15142c11e357 remain unchanged.
+
+Actual native CI PASS for exact head fdf3c45c2722a244536d868e61354762b1b177e9:
+https://github.com/jweathers777/mShogi/actions/runs/39974586573
+All jobs and steps succeeded: Rust (ubuntu-24.04) 120485745745, Rust (macos-15) 120485745576, Rust (windows-2022) 120485745227. Logs inspected using gh api run/jobs and gh run view --log. All identify rustc/cargo 1.89.0; hosts x86_64-unknown-linux-gnu, aarch64-apple-darwin and x86_64-pc-windows-msvc respectively. Each ran cargo fmt --all -- --check; cargo clippy --workspace --all-targets --locked -- -D warnings; cargo test --workspace --locked; cargo build --workspace --locked; help/version/profile console smoke. Each passed 8 FEN tests + 6 ordinary-action tests + 1 public API doctest; CLI passed 5 on Linux/macOS and 4 applicable on Windows (Unix byte-argument case correctly not compiled there). Console output reports ordinary actions/undo and unavailable special moves. This is actual native task verification, not complete chess or packaged-GUI certification.
+
+All 5 acceptance criteria and 4 applicable completion items are now supported by committed tests, independent oracle/reviewer evidence, updated docs and actual native integration evidence. The completion commit containing this record changes only this ticket; implementation fdf3c45 is the tested code revision, and backlog-only pushes are intentionally ignored by the unchanged workflow. Next eligible work after this closure: MSH-6 public chess attack queries (ordinal 6000) and MSH-13 concrete action-boundary/compound fixture review (ordinal 13000). MSH-7 still waits for MSH-6. No subsequent task started.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Implemented checked chess-specific ordinary actions, captures and all four promotion choices, including king safety, board-derived effects, rights/raw-EP/counter updates and atomic failures. Opaque snapshot undo restores every saved field after matching the full post-state; callers retain LIFO/game-context responsibility. No caches, history proof or universal variant action type added.
+
+Verification: 49 independent sequences/74 exact after-states plus six focused regression tests; independent reviewer found no actionable issues and passed a bounded 354,685-action differential probe. Workspace formatting/lint/test/build/smoke and native Linux/macOS/Windows CI all passed for implementation fdf3c45c2722a244536d868e61354762b1b177e9 (run 39974586573). Integrated and normally pushed to codex/rewrite; this ticket's completion commit preserves the same tested product code.
+
+Castling/EP execution, public attacks, generated moves and full adjudication remain scoped follow-ups. Next dependency-ready tasks are MSH-6 and MSH-13; MSH-7 awaits MSH-6. Legacy refs and the original checkout remain intact.
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -12,6 +12,7 @@
 use std::fmt;
 
 mod action;
+mod adjudication;
 mod attack;
 mod fen;
 mod game;
@@ -21,6 +22,7 @@ mod notation;
 mod perft;
 mod record;
 pub use action::{Action, ActionError, Promotion, Undo, UndoError};
+pub use adjudication::*;
 pub use fen::{FenError, FenErrorCategory, FenErrorReason};
 pub use game::{ClaimPolicy, Game, HistoryOrigin, RepetitionIdentity, STANDARD_START_FEN};
 pub use legal::Classification;

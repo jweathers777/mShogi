@@ -23,12 +23,12 @@ State values:
 | Headless kernel on Windows, macOS and Linux | Implemented | Native CI build, test and console smoke on `ubuntu-24.04`, `macos-15` and `windows-2022` for every behavior task; the integrated-revision run is recorded in MSH-14 | MSH-3 to MSH-14 |
 | Packaged desktop application on three systems | Deferred | Not started | M3 |
 | Rules-owned game history and record (profile ID, initial state, complete actions, repetition identity, history-restoring undo) | Implemented | [Game/history record contract](chess-history-record-v1.md): exact known occurrences, imported-history provenance, policy, owned undo; ordered command/clock observations replay with action context. Console uses Game and atomically reloads move-only records. Observation replay does not adjudicate commands/clocks | MSH-16; MSH-17/18 semantics, MSH-23/25 full match replay |
-| Dead position (FIDE 5.2.2) | Deferred | Approved sound subset specified in [match v1](chess-match-v1.md); failed recognition is unknown, never proof of mating possibility | MSH-17 (M2 subset), MSH-26 (M4 full recognition) |
+| Dead position (FIDE 5.2.2), approved M2 subset | Implemented (subset) | [Adjudication](chess-adjudication.md): sound kings/minor/same-color-bishops proofs; all other cases Unknown | MSH-17 subset; MSH-26 M4 full recognition remains Deferred |
 | Resignation and its possible-mate exception (5.1.2) | Deferred | Match command, not a board action | M2 |
 | Agreed draws (5.2.3, 9.1) | Deferred | Event restrictions and offer/accept state are outside position classification | M2 |
-| Claimable threefold repetition (9.2) | Deferred | Current- and intended-move claims; rule-equivalent positions need history, rights and legal EP distinctions | M2 |
-| Claimable fifty-move draw (9.3) | Deferred | Current- and intended-move claims; not an automatic terminal test at halfmove 100 | M2 |
-| Automatic fivefold / 75-move draw (9.6) | Deferred | History and halfmove handling, including last-move checkmate precedence | M2 |
+| Claimable threefold repetition (9.2) | Implemented | Current/intended optional claims, separate outcomes, policy selection and live replay; independent profile fixtures | MSH-17 |
+| Claimable fifty-move draw (9.3) | Implemented | Optional current/intended claims; halfmove 100 alone does not conclude a game | MSH-17 |
+| Automatic fivefold / 75-move draw (9.6) | Implemented | Rules-owned live boundary, known history and checkmate precedence; profile/undo/replay tests | MSH-17 |
 | Time loss with possible-mate exception (6.9), clock policies | Deferred | A counter or FEN cannot settle these results | M2 (match runner) |
 | Transparent static evaluation | Implemented | [Material baseline](../evaluation.md), independent score/perspective/symmetry tests; no outcomes or strength claim | MSH-19 |
 | Search and competitive strength | Deferred | Static evaluation is not search; perft is not search evidence | MSH-20 M2 baseline, M5 strength |

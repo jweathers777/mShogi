@@ -108,7 +108,10 @@ impl fmt::Display for ActionError {
             Self::CastlingKingAttacked => "castling king is in check or crosses an attacked square",
             Self::CounterOverflow => "position counter would overflow",
             Self::IllegalPosition(error) => {
-                return write!(f, "action rejected: own king would be in check ({error})");
+                return write!(
+                    f,
+                    "action rejected: resulting position is invalid ({error})"
+                );
             }
         };
         write!(f, "action rejected: {reason}")

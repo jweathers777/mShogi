@@ -240,7 +240,7 @@ fn local_king_safety_uses_geometric_attacks_including_pinned_pieces() {
         let error = Position::from_fen(input).unwrap_err();
         assert_eq!(error.category(), FenErrorCategory::Structure, "{input}");
         assert!(
-            error.to_string().contains("nonmoving king"),
+            error.reason() == mshogi_core::chess::FenErrorReason::NonmovingKingAttacked,
             "{input}: {error}"
         );
     }
@@ -276,5 +276,25 @@ fn bounded_malformed_inputs_never_panic_or_partially_replace() {
                 Ok(()) => assert_eq!(Position::from_fen(&caller.to_fen()).unwrap(), caller),
             }
         }
+    }
+}
+
+#[test]
+fn structural_reasons_are_machine_readable() {
+    use mshogi_core::chess::FenErrorReason::*;
+    for (fen, reason) in [
+        ("7k/8/8/8/8/8/8/KP6 w - - 0 1", PawnBackRank),
+        ("8/8/8/8/8/8/8/K7 w - - 0 1", KingCount),
+        ("8/8/8/8/8/8/k7/K7 w - - 0 1", AdjacentKings),
+        ("7k/8/8/8/8/8/8/K7 w K - 0 1", CastlingKing),
+        ("7k/8/8/8/8/8/8/4K3 w K - 0 1", CastlingRook),
+        ("7k/8/8/8/8/8/8/K7 w - e3 0 1", EnPassantTarget),
+        ("7k/8/8/8/8/8/8/K7 w - e6 0 1", EnPassantState),
+        ("7k/7R/8/8/8/8/8/K7 w - - 0 1", NonmovingKingAttacked),
+        ("7k/8/8/8/P7/8/PPPPPPPP/K7 w - - 0 1", PieceCount),
+    ] {
+        let error = Position::from_fen(fen).unwrap_err();
+        assert_eq!(error.category(), FenErrorCategory::Structure);
+        assert_eq!(error.reason(), reason, "{fen}");
     }
 }

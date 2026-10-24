@@ -64,8 +64,8 @@ The console reports its version, rules profile and coverage, and `mshogi shell` 
 | `help` / `quit` | Show the commands / end the session (end of input also ends it) |
 
 - **Actions** use lowercase coordinates: `e2e4`, a promotion suffix `q`/`r`/`b`/`n` (`e7e8n`), castling as the king's move (`e1g1`), en passant as the capturing pawn's move.
-- **Input:** blank lines and lines starting with `#` are ignored.
-- **Errors:** results go to standard output. A failed command writes `error: line <n>: <reason>` to standard error and changes nothing in the session: malformed FEN, unknown commands or arguments, an illegal or unrepresentable action anywhere in a `move` sequence, undo beyond the history, invalid UTF-8.
+- **Input:** ASCII only, with space, tab, CR, vertical tab and form feed as separators; LF ends a command. Blank lines and lines starting with `#` after trimming are ignored. Lines are limited to 4096 bytes before LF (including CR); an oversized line is discarded in bounded memory, and processing resumes at the next line. Numeric arguments use one or more ASCII digits, with leading zeros allowed and no sign. Undo counts must be positive and fit `usize`; shell perft/divide depth is capped at 4 (divide still needs at least 1). Deeper diagnostics use the uncapped library API or release example.
+- **Errors:** results go to standard output. A failed command writes `error: line <n>: <reason>` to standard error and changes nothing in the session: malformed FEN, unknown commands or arguments, an illegal or unrepresentable action anywhere in a `move` sequence, undo beyond the history, invalid UTF-8 or non-ASCII input. Echoed tokens escape control characters. Parse and legality failures in move sequences both identify the action index and preserve the whole session.
 - **Exit status:** 0 when every command succeeded, 1 when any failed, 2 for invalid program arguments.
 
 Example (`mshogi shell < session.txt`), checked by the console's process tests:

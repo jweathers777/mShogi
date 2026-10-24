@@ -141,12 +141,11 @@ fn check_position(position: &Position) -> Result<(), String> {
         match position.clone().apply(candidate) {
             Ok(_) | Err(ActionError::CastlingKingAttacked) => {}
             Err(ActionError::IllegalPosition(reason)) => {
-                // FenError exposes only a category and message, so the reason
-                // text is matched; a structured reason would replace this.
-                let reason = reason.to_string();
-                if !reason.contains("nonmoving king is attacked")
-                    && !reason.contains("kings are adjacent")
-                {
+                use mshogi_core::chess::FenErrorReason;
+                if !matches!(
+                    reason.reason(),
+                    FenErrorReason::NonmovingKingAttacked | FenErrorReason::AdjacentKings
+                ) {
                     return Err(format!("candidate {} rejected: {reason}", text(candidate)));
                 }
             }

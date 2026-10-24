@@ -8,6 +8,23 @@ use std::fmt::Write as _;
 
 use mshogi_core::chess::{Action, Color, PieceKind, Position, Promotion, Square, Undo};
 
+/// Maximum bytes before LF, including a possible CR. Enforced while reading.
+pub const MAX_LINE_BYTES: usize = 4096;
+/// Interactive diagnostics are deliberately bounded; the library remains uncapped.
+pub const MAX_DIAGNOSTIC_DEPTH: u32 = 4;
+
+fn separator(c: char) -> bool {
+    matches!(c, ' ' | '\t' | '\r' | '\x0b' | '\x0c')
+}
+
+fn escaped(text: &str) -> String {
+    text.escape_default().to_string()
+}
+
+fn decimal(text: &str) -> bool {
+    !text.is_empty() && text.bytes().all(|b| b.is_ascii_digit())
+}
+
 pub const STARTPOS: &str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 pub const SHELL_HELP: &str =
@@ -50,14 +67,22 @@ impl Session {
 
     /// Run one input line. On error nothing in the session changes.
     pub fn execute(&mut self, line: &str, out: &mut String) -> Result<Next, String> {
-        let line = line.trim();
+        if line.len() > MAX_LINE_BYTES {
+            return Err(format!("line exceeds {MAX_LINE_BYTES} bytes"));
+        }
+        if !line.is_ascii() {
+            return Err("input must be ASCII".into());
+        }
+        let line = line.trim_matches(separator);
         if line.is_empty() || line.starts_with('#') {
             return Ok(Next::Continue);
         }
         let (command, rest) = line
-            .split_once(char::is_whitespace)
-            .map_or((line, ""), |(command, rest)| (command, rest.trim()));
-        let args: Vec<&str> = rest.split_whitespace().collect();
+            .split_once(separator)
+            .map_or((line, ""), |(command, rest)| {
+                (command, rest.trim_matches(separator))
+            });
+        let args: Vec<&str> = rest.split(separator).filter(|s| !s.is_empty()).collect();
         match command {
             "position" => self.load(rest, out)?,
             "fen" => {
@@ -110,15 +135,17 @@ impl Session {
                 no_args(command, &args)?;
                 return Ok(Next::Quit);
             }
-            other => return Err(format!("unknown command '{other}'; type 'help'")),
+            other => return Err(format!("unknown command '{}'; type 'help'", escaped(other))),
         }
         Ok(Next::Continue)
     }
 
     fn load(&mut self, rest: &str, out: &mut String) -> Result<(), String> {
-        let position = match rest.split_once(char::is_whitespace) {
+        let position = match rest.split_once(separator) {
             _ if rest == "startpos" => Position::from_fen(STARTPOS).unwrap(),
-            Some(("fen", fen)) => Position::from_fen(fen.trim()).map_err(|e| e.to_string())?,
+            Some(("fen", fen)) => {
+                Position::from_fen(fen.trim_matches(separator)).map_err(|e| e.to_string())?
+            }
             _ => return Err("usage: position startpos | position fen <FEN>".into()),
         };
         self.position = position;
@@ -135,14 +162,18 @@ impl Session {
         let mut position = self.position.clone();
         let mut records = Vec::with_capacity(args.len());
         for (index, text) in args.iter().enumerate() {
-            let action = parse_action(text)?;
-            let record = position.apply(action).map_err(|error| {
+            let failure = |error: String| {
                 format!(
-                    "{text} (action {} of {}): {error}; no actions applied",
+                    "{} (action {} of {}): {error}; no actions applied",
+                    escaped(text),
                     index + 1,
                     args.len()
                 )
-            })?;
+            };
+            let action = parse_action(text).map_err(failure)?;
+            let record = position
+                .apply(action)
+                .map_err(|error| failure(error.to_string()))?;
             records.push(record);
         }
         self.position = position;
@@ -152,14 +183,20 @@ impl Session {
     }
 
     fn undo(&mut self, args: &[&str], out: &mut String) -> Result<(), String> {
-        let count =
-            match args {
-                [] => 1,
-                [n] => n.parse::<usize>().ok().filter(|&n| n > 0).ok_or_else(|| {
-                    format!("invalid undo count '{n}'; expected a positive integer")
+        let count = match args {
+            [] => 1,
+            [n] => decimal(n)
+                .then(|| n.parse::<usize>().ok())
+                .flatten()
+                .filter(|&n| n > 0)
+                .ok_or_else(|| {
+                    format!(
+                        "invalid undo count '{}'; expected a positive ASCII decimal integer",
+                        escaped(n)
+                    )
                 })?,
-                _ => return Err("usage: undo [n]".into()),
-            };
+            _ => return Err("usage: undo [n]".into()),
+        };
         if count > self.history.len() {
             return Err(format!(
                 "cannot undo {count}: only {} action(s) since the last load",
@@ -221,9 +258,16 @@ fn no_args(command: &str, args: &[&str]) -> Result<(), String> {
 
 fn depth(command: &str, args: &[&str]) -> Result<u32, String> {
     match args {
-        [depth] => depth.parse::<u32>().map_err(|_| {
-            format!("invalid depth '{depth}'; expected an integer from 0 to 4294967295")
-        }),
+        [depth] => decimal(depth)
+            .then(|| depth.parse::<u32>().ok())
+            .flatten()
+            .filter(|&n| n <= MAX_DIAGNOSTIC_DEPTH)
+            .ok_or_else(|| {
+                format!(
+                    "invalid depth '{}'; expected ASCII decimal from 0 to {MAX_DIAGNOSTIC_DEPTH}",
+                    escaped(depth)
+                )
+            }),
         _ => Err(format!("usage: {command} <depth>")),
     }
 }
@@ -238,7 +282,12 @@ fn parse_square(text: &[u8]) -> Option<Square> {
 /// Parse lowercase coordinate notation; legality is decided by the library.
 pub fn parse_action(text: &str) -> Result<Action, String> {
     let bytes = text.as_bytes();
-    let invalid = || format!("invalid action '{text}'; expected e.g. e2e4 or e7e8q");
+    let invalid = || {
+        format!(
+            "invalid action '{}'; expected e.g. e2e4 or e7e8q",
+            escaped(text)
+        )
+    };
     if !matches!(bytes.len(), 4 | 5) {
         return Err(invalid());
     }

@@ -17,7 +17,7 @@ mod generate;
 mod legal;
 mod perft;
 pub use action::{Action, ActionError, Promotion, Undo, UndoError};
-pub use fen::{FenError, FenErrorCategory};
+pub use fen::{FenError, FenErrorCategory, FenErrorReason};
 pub use legal::Classification;
 pub use perft::{DivideEntry, PerftError};
 

@@ -192,3 +192,8 @@ MSH-10 adds `Position::perft(depth) -> Result<u64, PerftError>` and `Position::d
 - The corpus's 38 perft expectations (depths 0 to 3, 11 positions) match exactly.
 - The separate fixture family [divide.json](../../tests/fixtures/chess/divide.json), format `mshogi.chess.divide.v1`, holds 14 complete ordered divides from the pinned oracle. Eleven run in every test pass; three depth-4 divides (initial, Kiwipete, position 4) are ignored by default and run in release with `--ignored`. Nine nonzero totals also equal hand-recorded published values.
 - An opt-in release baseline additionally reproduces three Stockfish sf_17.1 depth-5 totals.
+
+
+## Structured rejection identities (MSH-24)
+
+`FenError::category()` retains syntax/range/structure precedence and `FenError::reason()` returns `FenErrorReason`, including every structural reason. Callers match enum values rather than diagnostic text. `ActionError::IllegalPosition` retains that source and describes a rejected resulting position without assuming every structural error is king safety. Display remains a human diagnostic, not a stable parsing protocol. The shell ASCII grammar, 4096-byte streaming line limit and depth-4 cap are adapter limits documented in README; they do not restrict the FEN or perft library APIs.

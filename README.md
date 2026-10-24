@@ -9,7 +9,8 @@ The product goal is a reusable library with complete implementations of chess, s
 - Product and architectural contract: [docs/design.md](docs/design.md).
 - M1 chess position profile: [docs/rules/chess-position-v1.md](docs/rules/chess-position-v1.md), [coverage ledger](docs/rules/chess-coverage.md), and [independent fixture corpus](tests/fixtures/chess/README.md).
 - Working instructions for every implementation session: [AGENTS.md](AGENTS.md).
-- Importing this package into the real repository: [START-HERE.md](START-HERE.md).
+- M1 closure evidence: [docs/review/m1-closure.md](docs/review/m1-closure.md).
+- Historical bootstrap record (M0, completed): [START-HERE.md](START-HERE.md).
 - Build/check commands and dependency policy: [docs/development.md](docs/development.md).
 - Current work and evidence: the native task records under `backlog/`.
 
@@ -43,7 +44,7 @@ cargo clippy --workspace --all-targets --locked -- -D warnings
 cargo test --workspace --locked
 ```
 
-The console reports its version, rules profile and coverage, and `mshogi shell` runs the chess diagnostics described below; engine protocols arrive in later tasks. The core library exposes [position, action, legal-move, classification and perft APIs](docs/rules/chess-position-v1.md#rust-position-api). Tests exercise real headless subprocess startup, output streams and usage errors. The production core library has no external dependencies or console I/O; a pinned test-only JSON reader consumes the independent corpus. Native Windows/macOS/Linux checks are configured in [the Rust workflow](.github/workflows/rust.yml); MSH-3 records actual per-platform outcomes and revisions separately from configuration.
+The console reports its version, rules profile and coverage, and `mshogi shell` runs the chess diagnostics described below; engine protocols arrive in later tasks. The core library exposes [position, action, legal-move, classification and perft APIs](docs/rules/chess-position-v1.md#rust-position-api). Tests exercise real headless subprocess startup, output streams and usage errors. The production core library has no external dependencies or console I/O; a pinned test-only JSON reader consumes the independent corpus. Native Windows/macOS/Linux checks are configured in [the Rust workflow](.github/workflows/rust.yml). Actual per-platform outcomes and revisions are recorded in each task and summarized in the [M1 closure review](docs/review/m1-closure.md), separately from configuration.
 
 ## Headless chess console
 

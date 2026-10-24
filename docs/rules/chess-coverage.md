@@ -33,7 +33,8 @@ State values:
 | Transparent static evaluation | Implemented | [Material baseline](../evaluation.md), independent score/perspective/symmetry tests; no outcomes or strength claim | MSH-19 |
 | Full-width search baseline | Implemented | [Search](../search.md): independently solved trees/chess, full game history and claim policy, private state, deterministic work limits; measured release baseline | MSH-20 |
 | Competitive strength | Deferred | No playing-strength claim from the baseline search | M5 |
-| External engine protocols (UCI and others) | Deferred | The console is a human diagnostic session, not a machine protocol | MSH-22 UCI, MSH-23 independent UCI match |
+| UCI chess engine protocol | Implemented (subset) | [UCI adapter](../uci.md): separate machine mode, private history-sensitive search, depth/node/basic clock limits, cancellation and protocol-only stdout, verified through real child processes | MSH-22; MSH-23 independent UCI match |
+| Other engine protocols | Deferred | USI, CECP/XBoard and UCCI remain available when their game/opponent requires them | Future variant/opponent tasks |
 | Learned evaluation and neural infrastructure | Deferred | Not started | M5 |
 | Other five promised games | Deferred | Requirements remain; none implemented or certified by this corpus | M4 |
 | History, claims and automatic-result policy | Implemented | Known history and live outcomes/claims follow [match v1](chess-match-v1.md); imported origin and optional claims remain explicit | MSH-16, MSH-17 |

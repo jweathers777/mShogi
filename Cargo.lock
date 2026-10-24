@@ -19,6 +19,7 @@ name = "mshogi-console"
 version = "0.1.0"
 dependencies = [
  "mshogi-core",
+ "mshogi-search",
 ]
 
 [[package]]

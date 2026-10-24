@@ -9,23 +9,26 @@ use std::{
 use mshogi_core::CHESS_POSITION_PROFILE_ID;
 
 mod session;
+mod uci;
 
 use session::{MAX_LINE_BYTES, Next, Session};
 
 const HELP: &str = "mShogi headless console
 
-Usage: mshogi [--help | --version | profile | shell]
+Usage: mshogi [--help | --version | profile | shell | uci]
 
   --help, -h     Show this help
   --version, -V  Show the application version
   profile        Show the chess rules profile and its coverage
   shell          Read chess commands from standard input, one per line
+  uci            Run the bounded UCI chess engine adapter
 
 The shell starts at the standard chess position. Results go to standard
 output and errors to standard error as 'error: line N: ...'; a failed
 command changes nothing. Exit status: 0 if every command succeeded, 1 if
 any command failed, 2 for invalid program arguments. Type 'help' in the
-shell for its commands. It is a diagnostic console, not a UCI engine.";
+shell for its commands. The shell is a diagnostic console, not a UCI engine. Use 'mshogi uci'
+for the engine adapter.";
 
 fn main() -> ExitCode {
     let mut args = env::args_os().skip(1);
@@ -44,6 +47,7 @@ fn main() -> ExitCode {
             );
         }
         Some(Some("shell")) => return shell(),
+        Some(Some("uci")) => return uci::run(),
         _ => return invalid_arguments(),
     }
     ExitCode::SUCCESS

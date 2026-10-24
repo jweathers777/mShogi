@@ -11,6 +11,7 @@ path = "src/main.rs"
 
 [dependencies]
 mshogi-core = { path = "../mshogi-core" }
+mshogi-search = { path = "../mshogi-search" }
 
 [lints]
 workspace = true

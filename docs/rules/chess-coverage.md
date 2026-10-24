@@ -6,7 +6,7 @@ State values:
 
 - **Implemented**: implemented and verified by the cited evidence.
 - **Deferred**: a requirement that remains, with a named owner.
-- **Unresolved**: a design question that needs an owner decision before implementation.
+- **Unresolved**: a material behavior/scope question that needs an owner decision before implementation; routine API choices remain implementation work.
 - **Outside scope**: not a software rules obligation of this profile.
 
 | Obligation | State | Present state and evidence | Owner / follow-up |
@@ -23,7 +23,7 @@ State values:
 | Headless kernel on Windows, macOS and Linux | Implemented | Native CI build, test and console smoke on `ubuntu-24.04`, `macos-15` and `windows-2022` for every behavior task; the integrated-revision run is recorded in MSH-14 | MSH-3 to MSH-14 |
 | Packaged desktop application on three systems | Deferred | Not started | M3 |
 | Rules-owned game history and record (profile ID, initial state, complete actions, repetition identity, history-restoring undo) | Deferred | Position is local only; the console's undo stack is adapter state | M2 |
-| Dead position (FIDE 5.2.2) | Deferred | The obligation is impossibility of mate by **any** legal sequence; a material heuristic cannot close it | M2 (its extent needs an owner decision; see below) |
+| Dead position (FIDE 5.2.2) | Deferred | Approved sound subset specified in [match v1](chess-match-v1.md); failed recognition is unknown, never proof of mating possibility | MSH-17 (M2 subset), MSH-26 (M4 full recognition) |
 | Resignation and its possible-mate exception (5.1.2) | Deferred | Match command, not a board action | M2 |
 | Agreed draws (5.2.3, 9.1) | Deferred | Event restrictions and offer/accept state are outside position classification | M2 |
 | Claimable threefold repetition (9.2) | Deferred | Current- and intended-move claims; rule-equivalent positions need history, rights and legal EP distinctions | M2 |
@@ -31,17 +31,18 @@ State values:
 | Automatic fivefold / 75-move draw (9.6) | Deferred | History and halfmove handling, including last-move checkmate precedence | M2 |
 | Time loss with possible-mate exception (6.9), clock policies | Deferred | A counter or FEN cannot settle these results | M2 (match runner) |
 | Search, evaluation and competitive strength | Deferred | Not started; perft and diagnostics are not search evidence | M2 baseline, M5 strength |
-| External engine protocols (UCI and others) | Deferred | The console is a human diagnostic session, not a machine protocol | M2 (first adapter) |
+| External engine protocols (UCI and others) | Deferred | The console is a human diagnostic session, not a machine protocol | MSH-22 UCI, MSH-23 independent UCI match |
 | Learned evaluation and neural infrastructure | Deferred | Not started | M5 |
 | Other five promised games | Deferred | Requirements remain; none implemented or certified by this corpus | M4 |
-| History/claim API shape, intended-move claim handling, automatic-result ordering | Unresolved | Design questions recorded in M1 | Owner decision in M2 |
-| Extent of dead-position recognition | Unresolved | Full FIDE 5.2.2 versus a documented, explicitly incomplete subset | Owner decision in M2 |
-| Software match/event policy; all-six-game save schema; search-cache identity | Unresolved | Deliberately not frozen in M1 | Owner decisions in M2 to M4 |
+| History, claims and automatic-result policy | Deferred | Owner directions 2026-10-24 specified in [match v1](chess-match-v1.md); claims remain optional and distinct from results | MSH-16, MSH-17 |
+| Full dead recognition and side-specific possible mate | Deferred | M2 subset approved 2026-10-24; timeout/resignation without a proof or mating witness is unresolved and unscored | MSH-18 (M2 bounded handling), MSH-26 (M4 completion) |
+| Software match/event policy | Deferred | Untimed/increment clocks, auto-claim policy, command/clock replay and failure separation specified in [match v1](chess-match-v1.md) | MSH-18, MSH-23 |
+| All-six-game save schema and search-cache representation | Deferred | Not required to settle in M2; ordinary representation choices belong to implementers within A-03/A-06 | Actual consumers in M2–M4; no prerequisite universal design |
 | Physical touch-move, arbiter penalties, illegal-move forfeits, scoresheets and event procedures | Outside scope | Over-the-board procedures; software must not claim tournament compliance | Refine the concrete software match scope before release |
 
 Primary rule reference: [FIDE Laws effective 2023-01-01](https://handbook.fide.com/chapter/E012023), Articles 3, 5, 6.9 and 9. The accepted M1 exclusions come from [the design](../design.md); this ledger keeps them as visible obligations rather than relabelling them implemented.
 
-**Milestone ownership.** Following the design's M2 outcome ("complete the needed chess match semantics"), M2 owns every Deferred FIDE match-semantics row above. Any item that M2 explicitly postpones needs an owner decision recorded in its task and this ledger. It then moves to the M4 chess-completeness work, so nothing is left unowned.
+**Milestone ownership.** Following the design's M2 outcome ("complete the needed chess match semantics"), M2 owns every Deferred FIDE match-semantics row above. Any item that M2 explicitly postpones needs an owner decision recorded in its task and this ledger. The approved 2026-10-24 exception is full dead-position/possible-mate detection in MSH-26 (M4); M2 implements the sound subset and explicit unknown handling. MSH-25 verifies integrated M2 closure without repeating the M1 audit.
 
 ## Questions and decisions
 

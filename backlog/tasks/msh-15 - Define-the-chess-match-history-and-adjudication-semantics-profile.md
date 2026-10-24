@@ -1,9 +1,11 @@
 ---
 id: MSH-15
 title: Define the chess match, history and adjudication semantics profile
-status: Ready
-assignee: []
+status: In Review
+assignee:
+  - '@codex'
 created_date: '2026-10-24T19:56:00Z'
+updated_date: '2026-10-24T20:54:00Z'
 labels:
   - rules
   - match
@@ -11,10 +13,13 @@ labels:
 milestone: m-2
 dependencies:
   - MSH-14
+references:
+  - tests/fixtures/chess/match-profile.json
 documentation:
   - docs/rules/chess-coverage.md
   - docs/design.md
   - docs/review/m1-action-boundary.md
+  - docs/rules/chess-match-v1.md
 priority: high
 ordinal: 15000
 ---
@@ -22,21 +27,43 @@ ordinal: 15000
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-M1 deliberately stopped at a position-level classifier. The coverage ledger records Deferred FIDE match-semantics obligations (dead position, resignation, agreed draws, threefold and fifty-move claims including intended-move claims, automatic fivefold/75-move results with checkmate precedence, time loss with the possible-mate exception) and Unresolved design questions: the history/claim API shape, automatic-result ordering, the extent of dead-position recognition, software match/event policy and cache identity. The design assigns completing the needed chess match semantics to M2, and the ledger makes M2 own every Deferred FIDE match-semantics row unless the owner explicitly moves one to M4. Implementation tasks cannot start until these semantics and decisions are written down, so this task produces the versioned profile they consume.
+M1 deliberately left history and match adjudication deferred. Define the versioned M2 software profile from John’s approved 2026-10-24 directions and primary FIDE references, with supporting fixtures and honest M4 completeness ownership. Only additional material behavior or scope conflicts return to the owner; internal APIs, representations, universal save schemas and speculative cache design do not block this work.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 A versioned chess match/history profile specifies the history-dependent state, repetition identity (distinct from saved-state Eq and cache identity), claims (current and intended move), automatic results and their precedence, dead-position scope, match commands, and time-loss rules, each with FIDE references and recorded interpretations
-- [ ] #2 Every Unresolved ledger row has a concrete proposal presented to John and a recorded owner decision before it is marked resolved; any obligation postponed beyond M2 is recorded with an owner decision and a named later owner
-- [ ] #3 Independent expected fixtures (sourced or hand-derived with rationale) are defined for each specified claim and automatic result, ready for the implementation tasks
-- [ ] #4 The coverage ledger and design references are updated to the decided profile without relabelling anything implemented
+- [x] #1 A versioned chess match/history profile specifies history, repetition identity, current/intended claims, automatic precedence, a sound bounded dead-position recognizer, match commands, timeout/resignation uncertainty, and untimed/increment clock ordering with primary references.
+- [x] #2 Material M2 behavior and scope decisions are recorded from John; ordinary internal APIs and representations belong to the implementer. Neither an all-six-game save schema nor future transposition-table design blocks M2. Deferred completeness has named M4 ownership.
+- [x] #3 Independent expected fixtures with provenance or hand-derived rationale cover each specified claim, automatic result, limited recognition, match policy and clock event ordering for later implementation.
+- [x] #4 Coverage ledger and design link the decided profile without describing specifications as implemented.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Research FIDE 2023 articles 5, 6 and 9 and document the approved software profile with explicit unknown outcomes.
+2. Define independent declarative fixtures for history, claims, precedence, recognition, commands and clocks; validate fixture positions/actions with existing rules.
+3. Update design/ledger and link named M4 follow-up. Obtain bounded independent review, resolve findings, integrate and record CI.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner direction 2026-10-24: preserve optional core claims; unattended runner may exercise valid claims under explicit recorded policy respected by search. Imported FEN starts known repetition history and preserves counters with missing earlier history recorded. Sound incomplete dead-position recognition is approved with named M4 completion; unknown timeout/resignation mate feasibility is unresolved and unscored. Support untimed and basic increment clocks; record match commands/policy/clock events. Evaluation adjudication is disabled; engine failures are separate from chess outcomes; physical tournament procedures are outside scope.
+
+Owner: Codex; clean existing checkout .claude/worktrees/next-task, branch codex/m2-baseline from origin/codex/rewrite c4ed581. No active task owner was present. Backlog.md 1.55.1 cached standalone CLI used because global 1.55.0 mismatches baseline and system Node has a missing dylib.
+
+Independent review by review_profile resolved projected fourth-occurrence wording, added explicit-only versus auto-claim policy fixtures and intended-fifty-before-mate coverage, corrected history-activation/threshold details, and validated clock paths and mating witnesses. Final reviewed profile has no unresolved material finding. Preparation validates inputs/paths only, not future adjudication.
+
+Profile docs/rules/chess-match-v1.md and 35 hand-derived position/history/command cases plus 6 injected-clock cases in match-profile.json. cargo test -p mshogi-core --test match_profile_preparation --locked passed; verifies fixture positions, action/clock paths, mating witnesses and identical-FEN history pair, not future adjudication. Primary FIDE 2023 articles 5/6/9 consulted. Review_profile independent review resolved wording and fixture policy/threshold findings; no material profile/planning issue remains. Backlog.md 1.55.1 doctor reports no duplicate IDs, self-dependencies or cycles. New work: MSH-25 M2 integration closure, MSH-26 M4 full dead/possible-mate completeness.
+
+Local verification 2026-10-24: macOS 27.0.1 (26A434), arm64; rustc 1.89.0 (29483883e), cargo 1.89.0. cargo fmt --all -- --check, cargo clippy --workspace --all-targets --locked -- -D warnings, cargo test --workspace --locked, cargo build --workspace --locked passed on the working batch based on c4ed581. Existing opt-in deep perft/sequence tests remain ignored; no rerun of the M1 deep oracle suite is claimed. Native three-platform CI will be recorded against the integrated source revision before completion.
+<!-- SECTION:NOTES:END -->

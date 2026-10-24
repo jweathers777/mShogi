@@ -4,6 +4,7 @@ title: Build a reproducible chess self-play and match runner
 status: Ready
 assignee: []
 created_date: '2026-10-24T19:57:00Z'
+updated_date: '2026-10-24T20:45:00Z'
 labels:
   - match
   - reproducibility
@@ -11,7 +12,7 @@ milestone: m-2
 dependencies:
   - MSH-17
   - MSH-18
-  - MSH-21
+  - MSH-22
 documentation:
   - docs/design.md
 priority: medium
@@ -26,9 +27,10 @@ Design section 6 requires match experiments to preserve executable and model ide
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 The runner plays complete games through the rules-owned game, adjudication and clock model, and records engine identity, parameters, limits, openings, colors, results, failures and canonical game records
-- [ ] #2 A recorded run can be reproduced deterministically from its record under the same build
-- [ ] #3 Results are reported per game and opening set without presenting them as a strength claim
+- [ ] #1 The runner plays complete self-play and external UCI games through the rules-owned game, adjudication and clocks, recording executable/model identity, parameters, work/time limits, openings, colors, policy, commands, clock/match events, results, failures and canonical replay records.
+- [ ] #2 Recorded games and match events replay deterministically. Rerun determinism is claimed only under documented deterministic engine settings and work limits. Timed runs preserve configuration and observations without promising identical reruns.
+- [ ] #3 Results are reported per game and opening set without a strength claim; at least one recorded match against an independent UCI engine documents executable identity, commands, compatibility and outcome.
+- [ ] #4 Process failures, invalid moves, missing responses and protocol/watchdog timeouts have explicit recorded failure categories, diagnostic evidence and unscored status distinct from chess outcomes and chess-clock expiry; regression process tests exercise each.
 <!-- AC:END -->
 
 ## Definition of Done

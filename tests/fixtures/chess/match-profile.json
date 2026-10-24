@@ -1,0 +1,682 @@
+{
+  "schema_version": 1,
+  "profile": "mshogi.chess.match.v1",
+  "source": "FIDE 2023 articles 5, 6.9, 9; John 2026-10-24 software policy",
+  "cases": [
+    {
+      "id": "threefold-current",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "moves": [
+        "g1f3",
+        "g8f6",
+        "f3g1",
+        "f6g8",
+        "g1f3",
+        "g8f6",
+        "f3g1",
+        "f6g8"
+      ],
+      "expected": {
+        "occurrences": 3,
+        "claims": [
+          "threefold"
+        ],
+        "automatic": null
+      },
+      "rationale": "9.2: initial state plus two exact knight returns; counters do not affect identity."
+    },
+    {
+      "id": "threefold-intended",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "moves": [
+        "g1f3",
+        "g8f6",
+        "f3g1",
+        "f6g8",
+        "g1f3",
+        "g8f6",
+        "f3g1"
+      ],
+      "expected": {
+        "claims": [],
+        "intended_claim": "threefold",
+        "automatic": null,
+        "claim_plays_move": false
+      },
+      "rationale": "9.2.1: Black claims before the third return; no played intended action.",
+      "intended": "f6g8"
+    },
+    {
+      "id": "fivefold-automatic",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "moves": [
+        "g1f3",
+        "g8f6",
+        "f3g1",
+        "f6g8",
+        "g1f3",
+        "g8f6",
+        "f3g1",
+        "f6g8",
+        "g1f3",
+        "g8f6",
+        "f3g1",
+        "f6g8",
+        "g1f3",
+        "g8f6",
+        "f3g1",
+        "f6g8"
+      ],
+      "expected": {
+        "occurrences": 5,
+        "automatic": "fivefold"
+      },
+      "rationale": "9.6.1: initial occurrence plus four returns, without exercising optional earlier claims."
+    },
+    {
+      "id": "imported-same-current",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 8 5",
+      "moves": [],
+      "expected": {
+        "occurrences": 1,
+        "claims": [],
+        "automatic": null,
+        "prior_history_unknown": true
+      },
+      "rationale": "Same complete FEN as threefold-current but imported history starts at one; must not infer two previous cycles."
+    },
+    {
+      "id": "halfmove-98",
+      "fen": "7k/8/8/8/8/8/8/KR6 w - - 98 1",
+      "moves": [],
+      "expected": {
+        "fifty_current": false,
+        "fifty_intended": false,
+        "automatic": null
+      },
+      "rationale": "9.3/9.6: quiet rook action increments one halfmove; no dead-position proof from this material.",
+      "intended": "b1b2"
+    },
+    {
+      "id": "halfmove-99",
+      "fen": "7k/8/8/8/8/8/8/KR6 w - - 99 1",
+      "moves": [],
+      "expected": {
+        "fifty_current": false,
+        "fifty_intended": true,
+        "automatic": null
+      },
+      "rationale": "9.3/9.6: quiet rook action increments one halfmove; no dead-position proof from this material.",
+      "intended": "b1b2"
+    },
+    {
+      "id": "halfmove-100",
+      "fen": "7k/8/8/8/8/8/8/KR6 w - - 100 1",
+      "moves": [],
+      "expected": {
+        "fifty_current": true,
+        "fifty_intended": true,
+        "automatic": null
+      },
+      "rationale": "9.3/9.6: quiet rook action increments one halfmove; no dead-position proof from this material.",
+      "intended": "b1b2"
+    },
+    {
+      "id": "halfmove-149",
+      "fen": "7k/8/8/8/8/8/8/KR6 w - - 149 1",
+      "moves": [],
+      "expected": {
+        "fifty_current": true,
+        "fifty_intended": true,
+        "automatic": null
+      },
+      "rationale": "9.3/9.6: quiet rook action increments one halfmove; no dead-position proof from this material.",
+      "intended": "b1b2"
+    },
+    {
+      "id": "halfmove-150",
+      "fen": "7k/8/8/8/8/8/8/KR6 w - - 150 1",
+      "moves": [],
+      "expected": {
+        "fifty_current": false,
+        "fifty_intended": false,
+        "automatic": "seventy_five"
+      },
+      "rationale": "9.3/9.6: quiet rook action increments one halfmove; no dead-position proof from this material.",
+      "intended": null
+    },
+    {
+      "id": "pawn-resets-fifty",
+      "fen": "7k/8/8/8/8/8/P7/KR6 w - - 99 1",
+      "moves": [],
+      "expected": {
+        "intended_claim": null,
+        "after_halfmove": 0
+      },
+      "rationale": "9.3: pawn action resets the counter.",
+      "intended": "a2a3"
+    },
+    {
+      "id": "capture-resets-fifty",
+      "fen": "7k/8/8/8/8/8/1n6/KR6 w - - 99 1",
+      "moves": [],
+      "expected": {
+        "intended_claim": null,
+        "after_halfmove": 0
+      },
+      "rationale": "9.3: rook capture resets the counter.",
+      "intended": "b1b2"
+    },
+    {
+      "id": "mate-over-seventy-five",
+      "fen": "7k/8/5KQ1/8/8/8/8/8 w - - 149 1",
+      "moves": [
+        "g6g7"
+      ],
+      "expected": {
+        "automatic": "checkmate",
+        "classification": "checkmate",
+        "after_halfmove": 150
+      },
+      "rationale": "9.6.2: Qg7 mates; Black king h8 has no escape and queen g7 is protected by king f6."
+    },
+    {
+      "id": "stalemate-over-counter",
+      "fen": "7k/5Q2/6K1/8/8/8/8/8 b - - 150 1",
+      "moves": [],
+      "expected": {
+        "automatic": "stalemate",
+        "classification": "stalemate"
+      },
+      "rationale": "5.2.1: h8 is not checked, g8/g7/h7 unavailable; primary reason precedes 75-move draw."
+    },
+    {
+      "id": "dead-bare-kings",
+      "fen": "7k/8/8/8/8/8/8/K7 w - - 0 1",
+      "moves": [],
+      "expected": {
+        "recognition": "proven_dead"
+      },
+      "rationale": "5.2.2 / approved bounded sufficient subset; unknown makes no positive mating claim."
+    },
+    {
+      "id": "dead-single-bishop",
+      "fen": "7k/8/8/8/8/8/8/KB6 w - - 0 1",
+      "moves": [],
+      "expected": {
+        "recognition": "proven_dead"
+      },
+      "rationale": "5.2.2 / approved bounded sufficient subset; unknown makes no positive mating claim."
+    },
+    {
+      "id": "dead-single-knight",
+      "fen": "7k/8/8/8/8/8/8/KN6 w - - 0 1",
+      "moves": [],
+      "expected": {
+        "recognition": "proven_dead"
+      },
+      "rationale": "5.2.2 / approved bounded sufficient subset; unknown makes no positive mating claim."
+    },
+    {
+      "id": "dead-same-color-bishops",
+      "fen": "5b1k/8/8/8/8/8/8/K1B5 w - - 0 1",
+      "moves": [],
+      "expected": {
+        "recognition": "proven_dead"
+      },
+      "rationale": "5.2.2 / approved bounded sufficient subset; unknown makes no positive mating claim."
+    },
+    {
+      "id": "dead-opposite-color-bishops",
+      "fen": "2b4k/8/8/8/8/8/8/K1B5 w - - 0 1",
+      "moves": [],
+      "expected": {
+        "recognition": "unknown"
+      },
+      "rationale": "5.2.2 / approved bounded sufficient subset; unknown makes no positive mating claim."
+    },
+    {
+      "id": "dead-two-knights",
+      "fen": "7k/8/8/8/8/8/8/KNN5 w - - 0 1",
+      "moves": [],
+      "expected": {
+        "recognition": "unknown"
+      },
+      "rationale": "5.2.2 / approved bounded sufficient subset; unknown makes no positive mating claim."
+    },
+    {
+      "id": "ep-pinned-identity",
+      "fen": "7k/8/8/r4pPK/8/8/8/8 w - f6 0 1",
+      "moves": [],
+      "expected": {
+        "same_repetition_as": "7k/8/8/r4pPK/8/8/8/8 w - - 0 1"
+      },
+      "rationale": "9.2.3: g5xf6 EP would expose h5 king to a5 rook, so raw target is irrelevant."
+    },
+    {
+      "id": "ep-legal-identity",
+      "fen": "7k/8/8/5pP1/8/8/8/K7 w - f6 0 1",
+      "moves": [],
+      "expected": {
+        "different_repetition_from": "7k/8/8/5pP1/8/8/8/K7 w - - 0 1"
+      },
+      "rationale": "9.2.3: g5xf6 EP is legal; its absence changes identity."
+    },
+    {
+      "id": "castling-blocked-identity",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "moves": [],
+      "expected": {
+        "different_repetition_from": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Qkq - 0 1"
+      },
+      "rationale": "9.2.3: blocked castling rights still differ even when current legal action lists match."
+    },
+    {
+      "id": "resign-unresolved",
+      "fen": "7k/8/8/8/8/8/8/KR6 w - - 0 1",
+      "moves": [],
+      "expected": {
+        "command": {
+          "actor": "black",
+          "kind": "resign"
+        },
+        "feasibility": "unknown_without_witness",
+        "termination": "unresolved_mating_feasibility",
+        "score": null
+      },
+      "rationale": "Material advantage alone is not a verified mating witness; do not invent a result."
+    },
+    {
+      "id": "resign-bare-opponent",
+      "fen": "7k/8/8/8/8/8/8/KR6 w - - 0 1",
+      "moves": [],
+      "expected": {
+        "command": {
+          "actor": "white",
+          "kind": "resign"
+        },
+        "feasibility": "impossible_black_bare_king",
+        "termination": "draw"
+      },
+      "rationale": "5.1.2: Black has only a king and cannot deliver legal checkmate."
+    },
+    {
+      "id": "resign-witness",
+      "fen": "7k/8/5KQ1/8/8/8/8/8 w - - 0 1",
+      "moves": [],
+      "expected": {
+        "command": {
+          "actor": "black",
+          "kind": "resign"
+        },
+        "witness": [
+          "g6g7"
+        ],
+        "termination": "white_win"
+      },
+      "rationale": "5.1.2: verified cooperative continuation Qg7 is a positive mating certificate, unlike a material assumption.",
+      "intended": "g6g7"
+    },
+    {
+      "id": "offer-accept",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "moves": [
+        "e2e4",
+        "e7e5"
+      ],
+      "expected": {
+        "commands": [
+          {
+            "actor": "white",
+            "kind": "offer"
+          },
+          {
+            "actor": "black",
+            "kind": "accept"
+          }
+        ],
+        "termination": "agreed_draw"
+      },
+      "rationale": "5.2.3/9.1: both sides have made a recorded action; opponent accepts pending offer."
+    },
+    {
+      "id": "offer-too-early",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "moves": [],
+      "expected": {
+        "commands": [
+          {
+            "actor": "white",
+            "kind": "offer"
+          },
+          {
+            "actor": "black",
+            "kind": "accept"
+          }
+        ],
+        "termination": null,
+        "accept_error": "both_players_must_have_moved"
+      },
+      "rationale": "5.2.3: no agreement before both recorded first actions; offer may remain pending."
+    },
+    {
+      "id": "threefold-intended-fourth",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "moves": [
+        "g1f3",
+        "g8f6",
+        "f3g1",
+        "f6g8",
+        "g1f3",
+        "g8f6",
+        "f3g1",
+        "f6g8",
+        "g1f3",
+        "g8f6",
+        "f3g1"
+      ],
+      "expected": {
+        "claims": [
+          "threefold"
+        ],
+        "intended_claim": "threefold",
+        "automatic": null,
+        "claim_plays_move": false,
+        "projected_occurrences": 4
+      },
+      "rationale": "9.2.1: an intended fourth occurrence qualifies too; threshold is at least three.",
+      "intended": "f6g8"
+    },
+    {
+      "id": "threefold-current-auto_claim",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "moves": [
+        "g1f3",
+        "g8f6",
+        "f3g1",
+        "f6g8",
+        "g1f3",
+        "g8f6",
+        "f3g1",
+        "f6g8"
+      ],
+      "expected": {
+        "occurrences": 3,
+        "claims": [
+          "threefold"
+        ],
+        "automatic": null,
+        "concluded": "draw",
+        "claim_optional": false,
+        "claim_plays_move": false
+      },
+      "rationale": "9.2: initial state plus two exact knight returns; counters do not affect identity. Approved runner policy: optional opportunities versus exercised valid claim. Apply policy only after reconstructing the supplied history; it was not active during replay.",
+      "policy": "auto_claim",
+      "policy_application": "after_history_reconstruction"
+    },
+    {
+      "id": "threefold-current-explicit_only",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "moves": [
+        "g1f3",
+        "g8f6",
+        "f3g1",
+        "f6g8",
+        "g1f3",
+        "g8f6",
+        "f3g1",
+        "f6g8"
+      ],
+      "expected": {
+        "occurrences": 3,
+        "claims": [
+          "threefold"
+        ],
+        "automatic": null,
+        "concluded": null,
+        "claim_optional": true,
+        "claim_plays_move": false
+      },
+      "rationale": "9.2: initial state plus two exact knight returns; counters do not affect identity. Approved runner policy: optional opportunities versus exercised valid claim. Apply policy only after reconstructing the supplied history; it was not active during replay.",
+      "policy": "explicit_only",
+      "policy_application": "after_history_reconstruction"
+    },
+    {
+      "id": "threefold-intended-auto_claim",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "moves": [
+        "g1f3",
+        "g8f6",
+        "f3g1",
+        "f6g8",
+        "g1f3",
+        "g8f6",
+        "f3g1"
+      ],
+      "expected": {
+        "claims": [],
+        "intended_claim": "threefold",
+        "automatic": null,
+        "claim_plays_move": false,
+        "concluded": "draw",
+        "claim_optional": false
+      },
+      "rationale": "9.2.1: Black claims before the third return; no played intended action. Approved runner policy: optional opportunities versus exercised valid claim. Apply policy only after reconstructing the supplied history; it was not active during replay.",
+      "intended": "f6g8",
+      "policy": "auto_claim",
+      "policy_application": "after_history_reconstruction"
+    },
+    {
+      "id": "threefold-intended-explicit_only",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "moves": [
+        "g1f3",
+        "g8f6",
+        "f3g1",
+        "f6g8",
+        "g1f3",
+        "g8f6",
+        "f3g1"
+      ],
+      "expected": {
+        "claims": [],
+        "intended_claim": "threefold",
+        "automatic": null,
+        "claim_plays_move": false,
+        "concluded": null,
+        "claim_optional": true
+      },
+      "rationale": "9.2.1: Black claims before the third return; no played intended action. Approved runner policy: optional opportunities versus exercised valid claim. Apply policy only after reconstructing the supplied history; it was not active during replay.",
+      "intended": "f6g8",
+      "policy": "explicit_only",
+      "policy_application": "after_history_reconstruction"
+    },
+    {
+      "id": "intended-fifty-before-mate",
+      "fen": "7k/8/5KQ1/8/8/8/8/8 w - - 99 1",
+      "moves": [],
+      "expected": {
+        "intended_claim": "fifty",
+        "concluded": "draw",
+        "claim_plays_move": false,
+        "projected_classification": "checkmate"
+      },
+      "rationale": "9.3.1: claim is exercised before the intended Qg7 is committed; the existing actual-move fixture instead mates at halfmove 150. Apply policy only after reconstructing the supplied history; it was not active during replay.",
+      "intended": "g6g7",
+      "policy": "auto_claim",
+      "policy_application": "after_history_reconstruction"
+    },
+    {
+      "id": "flag-bare-opponent",
+      "fen": "7k/8/8/8/8/8/8/KR6 w - - 0 1",
+      "moves": [],
+      "expected": {
+        "command": {
+          "actor": "white",
+          "kind": "flag"
+        },
+        "feasibility": "impossible_black_bare_king",
+        "termination": "draw"
+      },
+      "rationale": "6.9: active White expires, but Black has only a king and cannot checkmate; result is draw."
+    },
+    {
+      "id": "flag-with-mating-witness",
+      "fen": "8/8/8/8/8/5kq1/R7/7K w - - 0 1",
+      "moves": [],
+      "expected": {
+        "command": {
+          "actor": "white",
+          "kind": "flag"
+        },
+        "witness": [
+          "a2a4",
+          "g3g2"
+        ],
+        "termination": "black_win"
+      },
+      "rationale": "6.9: active White expires; cooperative legal Ra4 Qg2# proves Black can mate, irrespective of forced-mate strength."
+    }
+  ],
+  "clocks": [
+    {
+      "id": "increment-before-deadline",
+      "initial": 100,
+      "increment": 10,
+      "events": [
+        {
+          "at": 0,
+          "kind": "start"
+        },
+        {
+          "at": 99,
+          "kind": "move",
+          "action": "e2e4"
+        }
+      ],
+      "expected": {
+        "white": 11,
+        "black": 100,
+        "active": "black",
+        "termination": null
+      },
+      "rationale": "Approved software clock ordering; units are injected integer ticks, independent of wall time."
+    },
+    {
+      "id": "move-at-deadline",
+      "initial": 100,
+      "increment": 10,
+      "events": [
+        {
+          "at": 0,
+          "kind": "start"
+        },
+        {
+          "at": 100,
+          "kind": "move",
+          "action": "e2e4"
+        }
+      ],
+      "expected": {
+        "white": 0,
+        "black": 100,
+        "action_committed": false,
+        "trigger": "flag",
+        "score": null,
+        "termination": "unresolved_mating_feasibility"
+      },
+      "rationale": "Approved software clock ordering; units are injected integer ticks, independent of wall time."
+    },
+    {
+      "id": "rejected-command-no-increment",
+      "initial": 100,
+      "increment": 10,
+      "events": [
+        {
+          "at": 0,
+          "kind": "start"
+        },
+        {
+          "at": 20,
+          "kind": "invalid_claim"
+        },
+        {
+          "at": 30,
+          "kind": "move",
+          "action": "e2e4"
+        }
+      ],
+      "expected": {
+        "white": 80,
+        "black": 100,
+        "active": "black"
+      },
+      "rationale": "Approved software clock ordering; units are injected integer ticks, independent of wall time."
+    },
+    {
+      "id": "terminal-before-deadline",
+      "fen": "7k/8/5KQ1/8/8/8/8/8 w - - 149 1",
+      "initial": 100,
+      "increment": 10,
+      "events": [
+        {
+          "at": 0,
+          "kind": "start"
+        },
+        {
+          "at": 99,
+          "kind": "move",
+          "action": "g6g7"
+        }
+      ],
+      "expected": {
+        "white": 1,
+        "black": 100,
+        "active": null,
+        "termination": "white_checkmate_win"
+      },
+      "rationale": "Approved software clock ordering; units are injected integer ticks, independent of wall time."
+    },
+    {
+      "id": "untimed-no-flag",
+      "initial": null,
+      "increment": 0,
+      "events": [
+        {
+          "at": 0,
+          "kind": "start"
+        },
+        {
+          "at": 1000000,
+          "kind": "move",
+          "action": "e2e4"
+        }
+      ],
+      "expected": {
+        "termination": null
+      },
+      "rationale": "Approved software clock ordering; units are injected integer ticks, independent of wall time."
+    },
+    {
+      "id": "decreasing-time",
+      "initial": 100,
+      "increment": 0,
+      "events": [
+        {
+          "at": 10,
+          "kind": "start"
+        },
+        {
+          "at": 9,
+          "kind": "move",
+          "action": "e2e4"
+        }
+      ],
+      "expected": {
+        "error": "nonmonotonic_time",
+        "action_committed": false
+      },
+      "rationale": "Approved software clock ordering; units are injected integer ticks, independent of wall time."
+    }
+  ]
+}

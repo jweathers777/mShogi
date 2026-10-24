@@ -1,5 +1,7 @@
 # Handoff package validation
 
+> **Historical record.** This validated the M0 handoff package on 2026-10-22, before any rewrite product code existed. For current evidence see the [M1 closure review](docs/review/m1-closure.md).
+
 Validated on 2026-10-22. This report covers the design and Backlog.md handoff artifact. The real project repository has not been changed, and no rewrite product code has been implemented or tested by this package.
 
 ## Tool baseline

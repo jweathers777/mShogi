@@ -1,5 +1,7 @@
 # Initial coding-agent handoff
 
+> **Historical record.** This describes the M0 bootstrap package as delivered on 2026-10-22. M0 and M1 are complete; see the [M1 closure review](docs/review/m1-closure.md) and `backlog/` for current status.
+
 This package is a repository-ready design and Backlog.md seed. It was prepared outside the actual GitHub repository. Its tasks are unimplemented and its acceptance boxes are unchecked.
 
 ## First request to Codex or Claude Code

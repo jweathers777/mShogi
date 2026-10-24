@@ -4,6 +4,7 @@ title: Implement a rules-owned chess game history and record
 status: Ready
 assignee: []
 created_date: '2026-10-24T19:57:00Z'
+updated_date: '2026-10-24T20:54:00Z'
 labels:
   - rules
   - history
@@ -14,6 +15,7 @@ dependencies:
 documentation:
   - docs/review/m1-action-boundary.md
   - docs/design.md
+  - docs/rules/chess-match-v1.md
 priority: high
 ordinal: 16000
 ---
@@ -30,6 +32,7 @@ Chess Position is deliberately local: it holds no history, and its Eq is saved-s
 - [ ] #2 Applying and undoing through the game restores position, history and repetition tables exactly; sequence-property checks in the style of MSH-12 cover it
 - [ ] #3 A canonical game record (profile ID, initial state, ordered complete actions, no effects, no private undo layout) round-trips and is replayable deterministically
 - [ ] #4 Console and future adapters use the rules-owned history rather than keeping their own rule-relevant state
+- [ ] #5 Records preserve known-history origin (imported FEN never infers earlier repetitions), supplied counters and profile/policy identity; match commands and clock observations can be replayed without reconstructing private undo state.
 <!-- AC:END -->
 
 ## Definition of Done

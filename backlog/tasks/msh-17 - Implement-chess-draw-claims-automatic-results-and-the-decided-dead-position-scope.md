@@ -6,14 +6,18 @@ title: >-
 status: Ready
 assignee: []
 created_date: '2026-10-24T19:57:00Z'
+updated_date: '2026-10-24T20:54:00Z'
 labels:
   - rules
   - adjudication
 milestone: m-2
 dependencies:
   - MSH-16
+references:
+  - tests/fixtures/chess/match-profile.json
 documentation:
   - docs/rules/chess-coverage.md
+  - docs/rules/chess-match-v1.md
 priority: high
 ordinal: 17000
 ---
@@ -30,6 +34,7 @@ The M1 classifier deliberately reports quiet for positions that FIDE ends or all
 - [ ] #2 Automatic fivefold and 75-move results apply with the specified precedence, including checkmate on the last move
 - [ ] #3 Dead-position recognition implements exactly the owner-decided scope, and any incompleteness is stated in the ledger and API docs
 - [ ] #4 Game results are distinct from the position classifier, and the coverage ledger rows move to Implemented only with evidence
+- [ ] #5 Available claim opportunities remain separate from concluded outcomes; fixtures cover current/intended claims, imported-history boundaries and the conservative recognition unknown state without treating unknown as mating possibility.
 <!-- AC:END -->
 
 ## Definition of Done

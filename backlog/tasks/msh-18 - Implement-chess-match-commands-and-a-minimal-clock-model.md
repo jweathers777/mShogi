@@ -4,15 +4,20 @@ title: Implement chess match commands and a minimal clock model
 status: Ready
 assignee: []
 created_date: '2026-10-24T19:57:00Z'
+updated_date: '2026-10-24T20:54:00Z'
 labels:
   - match
   - clocks
 milestone: m-2
 dependencies:
   - MSH-16
+  - MSH-17
+references:
+  - tests/fixtures/chess/match-profile.json
 documentation:
   - docs/rules/chess-coverage.md
   - docs/design.md
+  - docs/rules/chess-match-v1.md
 priority: medium
 ordinal: 18000
 ---
@@ -28,6 +33,7 @@ Resignation, agreed draws and time loss are match commands or match state, not b
 - [ ] #1 Resignation and agreed-draw commands are distinct from board actions and follow the decided profile, including the possible-mate exceptions
 - [ ] #2 A clock model supports the time controls the match runner needs, deterministically under test, and time loss applies the possible-mate exception per the profile
 - [ ] #3 Match commands and clocks never mutate the rules position directly and are covered by tests with independent expectations
+- [ ] #4 Untimed and basic increment clocks obey documented deterministic event ordering and boundary tests. Timeout/resignation without established mating feasibility ends explicitly unresolved and unscored; agreed draws require both players to have moved.
 <!-- AC:END -->
 
 ## Definition of Done

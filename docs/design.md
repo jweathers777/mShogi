@@ -137,7 +137,7 @@ Do not invent a nodes-per-second target before measuring the first correct imple
 
 | Milestone | Intended outcome |
 | --- | --- |
-| M2. Search and match baseline | Complete the needed chess match semantics; add a transparent evaluator, independently checked full-width search, cancellation, reproducible self-play, and the first protocol adapter. |
+| M2. Search and match baseline | Complete the needed chess match semantics; add a transparent evaluator, independently checked full-width search, cancellation, replayable self-play and independent-engine matches, and UCI as the first protocol adapter. The bounded match policy is specified by MSH-15; MSH-25 closes the actual integrated M2 path. |
 | M3. Desktop vertical slice | Play and inspect a game through the actual native engine; test cancellation/stale results, save/reload, an 8x8 and 16x16 presentation, compound-action selection, and packaged installation on all three systems. |
 | M4. Variant expansion and conformance | Complete the remaining games with sourced rules profiles and coverage evidence; validate materially different state/move semantics before deep common-engine optimization. |
 | M5. Strength and learned evaluation | Establish per-game opponent pools and strength targets; tune search and evaluation; demonstrate a reproducible improvement from an initial learned evaluator. |
@@ -145,7 +145,7 @@ Do not invent a nodes-per-second target before measuring the first correct imple
 
 The milestone names establish direction, not an obligation to serialize every independent activity. An early bounded desktop or variant-contract experiment can resolve a concrete risk. Do not turn that allowance into an unbounded second implementation effort.
 
-Only M0 and M1 have detailed implementation tickets in this starter. Refine later milestones against the actual code and evidence when they approach. All six games and strong engines remain the product target.
+M2 is refined in MSH-15–25 against the actual M1 implementation. The [match/history profile](rules/chess-match-v1.md) records the approved 2026-10-24 policy; full dead-position and side-specific possible-mate completeness remains MSH-26 in M4. Refine later milestones against actual code and evidence when they approach. All six games and strong engines remain the product target.
 
 ## 6. Verification contract
 
@@ -192,6 +192,7 @@ When code reveals a design problem, report the specific conflict and a proposed 
 | D-07 | Deferred | Exact disputed historical rules, versioned conventions, and full conformance criteria for each game. Resolve before implementing affected behavior or claiming conformance. |
 | D-08 | Deferred | Specific public API/ABI, board and action encodings, generic trait hierarchy, and complete wire/save schemas. Implement only the needed stable semantic contracts. |
 | D-09 | Deferred | Per-game release-strength targets, evaluator architecture, training hardware, and compute budget. Establish baselines and pilot measurements first. |
+| D-11 | Accepted | John 2026-10-24: optional core claims with recorded unattended auto-claim policy, FEN-limited known history, sound incomplete M2 dead recognition with MSH-26 M4 completion, explicit unscored mating uncertainty, untimed/increment clocks and ordered replayable match events. Evaluation adjudication stays disabled. UCI plus an independent-engine match and focused MSH-25 integration closure are required in M2. See [match v1](rules/chess-match-v1.md). |
 | D-10 | Deferred | Release licensing, redistribution choices, minimum OS policy, and signing/update arrangements. Preserve existing notices; resolve applicable choices before copying restricted dependencies or distributing releases. |
 
 Accepted records reflect actual owner direction. Working defaults are implementation proposals consistent with it, not fabricated owner decisions. Deferred questions only block work that depends on their resolution. A routine choice within accepted requirements does not need a new approval ceremony.

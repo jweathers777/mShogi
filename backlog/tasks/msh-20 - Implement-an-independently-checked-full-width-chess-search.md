@@ -4,10 +4,12 @@ title: Implement an independently checked full-width chess search
 status: Ready
 assignee: []
 created_date: '2026-10-24T19:57:00Z'
+updated_date: '2026-10-24T20:44:00Z'
 labels:
   - search
 milestone: m-2
 dependencies:
+  - MSH-17
   - MSH-19
 documentation:
   - docs/design.md
@@ -27,6 +29,7 @@ Design section 6 requires search correctness to be established on small independ
 - [ ] #2 Search runs on private working state and leaves the caller's position and history unchanged
 - [ ] #3 Any pruning or transposition reuse is added only with targeted regressions and does not reuse history-dependent results solely by board key
 - [ ] #4 A measured search performance baseline is recorded with hardware, build and parameters, with no invented target
+- [ ] #5 Search consumes the rules-owned game context and adjudication, including relevant history and the selected claim policy. Tests use the same current position with differing relevant histories and distinguish available optional claims from automatic outcomes; the caller game and history remain unchanged.
 <!-- AC:END -->
 
 ## Definition of Done

@@ -1,11 +1,11 @@
 ---
 id: MSH-22
 title: Add the first UCI chess engine adapter with a machine output contract
-status: In Review
+status: Done
 assignee:
   - '@search-builder'
 created_date: '2026-10-24T19:57:00Z'
-updated_date: '2026-10-24T23:40:00Z'
+updated_date: '2026-10-24T23:42:00Z'
 labels:
   - protocol
   - console
@@ -38,7 +38,7 @@ P-03/A-06 and the M2 outcome require UCI as the first engine protocol, chosen by
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -57,4 +57,12 @@ Ownership: search_builder implements isolated console UCI files in codex/m2-rema
 Independent review_hardening found P2: a descendant SearchError could be hidden behind a legal fallback and fabricated zero-node info, so an unattended match would appear successful. Exact maximal-fullmove KR-v-K depth2 reproducer established this. Resolution makes genuine search errors fatal with explicit stderr and nonzero exit, distinct from normal stop/zero-work fallback; review also requires immediate propagation during infinite search rather than holding errors until stop. Focused process regressions cover both paths. Final re-review and native CI remain required.
 
 Final UCI subset implements silent distinct mode; April2006 handshake/readiness, atomically replayed start/FEN histories, private exact-context search, depth/node/movetime/basic increment clock limits, stop/quit, infinite holding and stale suppression. Bounded32-command input queue/4096-byte streaming lines and bounded finalinfo; stdout protocol only. Custom ClaimPolicy explicit/auto aligns future search with runner policy; root claims stay controller responsibility. Both P2 error paths resolved: finite/infinite SearchError exits immediately nonzero, no fabricatedinfo/bestmove. Independent re-review_hardening confirms no unresolved material findings and reran11 UCI process tests. macOS27 arm64 Rust1.89 focused console tests2unit+19human+11UCI=32 passed; Clippy alltargets warningsdenied, formatting and diffchecks passed. Cargo.lock adds only existing local search dependency. README/development/coverage/doc contracts updated. Native integration evidence follows.
+
+Integrated normally into origin/codex/rewrite at source e35ce585883313294f9d8d43b9ab7e58f9bbbb26. Native CI https://github.com/jweathers777/mShogi/actions/runs/40143724587 passed Rust (macos-15) (job 121020591502), Rust (ubuntu-24.04) (job 121020591655), Rust (windows-2022) (job 121020591725); formatting, Clippy, locked workspace tests/build and console smoke all passed. Closure bookkeeping reuses this exact source evidence. Existing deep/oracle evidence is retained for unchanged rules.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Added distinct bounded UCI mode with exact known history/private search, deterministic work and basic clock limits, stop/quit and stale-result suppression. Independent review fixed finite/infinite failure masking; 32 focused console tests and native three-platform CI passed. ClaimPolicy aligns future search; root claims stay controller-owned. External interoperability follows in MSH-23.
+<!-- SECTION:FINAL_SUMMARY:END -->

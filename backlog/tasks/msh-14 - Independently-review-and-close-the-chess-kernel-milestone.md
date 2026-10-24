@@ -1,11 +1,11 @@
 ---
 id: MSH-14
 title: Independently review and close the chess-kernel milestone
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-22T13:27:00Z'
-updated_date: '2026-10-24T19:57:00Z'
+updated_date: '2026-10-24T19:59:00Z'
 labels:
   - review
   - milestone
@@ -48,19 +48,19 @@ Adding new product scope during review, rerunning expensive checks without a con
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Every M1 exit criterion has an evidence reference and the integrated revision is identified.
-- [ ] #2 Actual Windows, macOS, and Linux build/test/console smoke results are recorded; unavailable evidence is not marked passed.
-- [ ] #3 Independent review has no unresolved material correctness finding within M1 scope.
-- [ ] #4 The coverage ledger and public documentation clearly distinguish the completed kernel from deferred chess adjudication, search, GUI, and other variants.
-- [ ] #5 A fresh session can reproduce the documented workflow, and concrete next-milestone tasks are prepared without silently reducing the full product scope.
+- [x] #1 Every M1 exit criterion has an evidence reference and the integrated revision is identified.
+- [x] #2 Actual Windows, macOS, and Linux build/test/console smoke results are recorded; unavailable evidence is not marked passed.
+- [x] #3 Independent review has no unresolved material correctness finding within M1 scope.
+- [x] #4 The coverage ledger and public documentation clearly distinguish the completed kernel from deferred chess adjudication, search, GUI, and other variants.
+- [x] #5 A fresh session can reproduce the documented workflow, and concrete next-milestone tasks are prepared without silently reducing the full product scope.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -127,4 +127,34 @@ Next-milestone preparation (AC #5): created M2 tasks with the pinned backlog.md 
 - MSH-23 reproducible self-play and match runner;
 - MSH-24 M1 hardening carry-overs.
 M3 (packaged desktop), M4 (five other games, chess completeness postponements) and M5 (strength, learned evaluation) stay as milestone-level obligations to refine when they approach, per design section 5. Full six-game scope is unchanged.
+
+Integration and native verification of the integrated closure revision (2026-10-24): commit 2dd60ff40c08b6da33fd64f2bca1479ee0844db8 fast-forward pushed to origin codex/rewrite (35a4d28..2dd60ff). No force push, PR, default-branch or settings change. Its product code is identical to 4f4025c; it changes docs, ledger and backlog records only.
+
+Actual native CI PASS for exact head 2dd60ff: https://github.com/jweathers777/mShogi/actions/runs/40127652346. All three jobs succeeded on rustc 1.89.0:
+- Rust (windows-2022), job 120972416603, x86_64-pc-windows-msvc: CLI 11 plus every core suite, console smoke including the shell session (perft 3 8902);
+- Rust (macos-15), job 120972416772, aarch64-apple-darwin: CLI 12 plus every suite;
+- Rust (ubuntu-24.04), job 120972416807, x86_64-unknown-linux-gnu: CLI 12 plus every suite.
+This is the integrated-revision evidence required by AC #1/#2 and M1 exit criterion 7.
+
+All 9 M1 exit criteria have evidence in docs/review/m1-closure.md. The milestone review is resolved and fresh-clone reproduction is recorded (macOS). The ledger separates implemented, deferred, unresolved and out-of-scope items. M2 tasks MSH-15 to MSH-24 are prepared.
+
+Next eligible work: MSH-15 (needs owner decisions; it brings concrete proposals to John), and independently MSH-19 and MSH-24, which depend only on MSH-14.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Closed M1 (chess rules kernel and verification console).
+- docs/review/m1-closure.md maps all 9 exit criteria to evidence: the fixture families with per-family independence, legal sets and perft, full-snapshot undo, fixed-seed sequences and replayable regressions, the headless console, the action-boundary review, native three-platform CI, the per-task and milestone independent reviews, and the coverage ledger. It identifies the reviewed revision (35a4d28, product code identical to 4f4025c) and the integrated closure revision 2dd60ff with native run 40127652346.
+- A fresh clone of codex/rewrite reproduced the full documented workflow on macOS, including the oracle checkers, the differential and the deep runs.
+- The independent milestone review found no material correctness issue. Its seven documentation and evidence-accuracy items were resolved:
+  - the identified revision;
+  - accurate platform and smoke history;
+  - per-family fixture independence;
+  - a split platform row;
+  - a ledger with an explicit State column and rows for protocols, search, history and learned evaluation;
+  - stale statements fixed and M0 files labelled historical;
+  - explicit M2 ownership of FIDE match semantics.
+- Prepared M2 tasks MSH-15 to MSH-24: the semantics profile with owner decisions, history layer, adjudication, match commands and clocks, evaluator, checked search, search isolation, protocol adapter, match runner, and M1 hardening.
+M1 is a position-level kernel: no complete adjudication, search, GUI or other game is claimed. The six-game product scope is unchanged.
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -1,6 +1,6 @@
 # Chess game history and record v1
 
-MSH-16 implements the history/record portion of [`mshogi.chess.match.v1`](chess-match-v1.md) over the unchanged [`mshogi.chess.position.v1`](chess-position-v1.md). `Game` is a rules-library type. Its current coverage is action history and repetition identity/counts. Claims, automatic outcomes, match-command effects and clock adjudication remain MSH-17/18. Consumers must not describe `Game` as complete adjudication yet.
+MSH-16 implements the history/record portion of [`mshogi.chess.match.v1`](chess-match-v1.md) over the unchanged [`mshogi.chess.position.v1`](chess-position-v1.md). `Game` is a rules-library type. Its current coverage is action history and repetition identity/counts. MSH-17 now adds a separate [live adjudicated boundary](chess-adjudication.md); this document retains the diagnostic history/observation contract. Match-command effects and clock adjudication remain MSH-18. Consumers must not describe `Game` as complete adjudication yet.
 
 ## Game boundary
 

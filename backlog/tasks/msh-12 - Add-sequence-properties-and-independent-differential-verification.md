@@ -1,11 +1,11 @@
 ---
 id: MSH-12
 title: Add sequence properties and independent differential verification
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-22T13:27:00Z'
-updated_date: '2026-10-24T19:37:00Z'
+updated_date: '2026-10-24T19:38:00Z'
 labels:
   - verification
   - properties
@@ -48,19 +48,19 @@ Deferring all tests to this ticket, treating agreement between two implementatio
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Fixed-seed legal sequences verify apply/undo restoration of every relevant state field.
-- [ ] #2 Serialization and any incremental-versus-recomputed state checks run over meaningful generated positions.
-- [ ] #3 A bounded independent differential comparison covers the documented position corpus and reports actionable disagreements.
-- [ ] #4 Failures can be saved and replayed deterministically without requiring the original random run.
-- [ ] #5 Fast and deeper verification commands have explicit purposes and limits, with no unsupported platform or completeness claim.
+- [x] #1 Fixed-seed legal sequences verify apply/undo restoration of every relevant state field.
+- [x] #2 Serialization and any incremental-versus-recomputed state checks run over meaningful generated positions.
+- [x] #3 A bounded independent differential comparison covers the documented position corpus and reports actionable disagreements.
+- [x] #4 Failures can be saved and replayed deterministically without requiring the original random run.
+- [x] #5 Fast and deeper verification commands have explicit purposes and limits, with no unsupported platform or completeness claim.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -146,4 +146,42 @@ Final local evidence (macOS arm64, rustc 1.89.0):
 - the committed regression cases still replay;
 - fmt, clippy and cargo test --workspace --locked all pass; whitespace diff check clean.
 Removed a stray tools/__pycache__ created by this session.
+
+Integration and native verification (2026-10-24): implementation 0a2a7790d8f577b7c0bd9982b18a9a90f85ea42a committed on claude/next-task and fast-forward pushed to origin codex/rewrite (48a73f9..0a2a779). No force push, PR, default-branch or settings change.
+
+Actual native CI PASS for exact head 0a2a779: https://github.com/jweathers777/mShogi/actions/runs/40126126848. All three jobs succeeded on rustc 1.89.0:
+- Rust (ubuntu-24.04), job 120967811251: sequences suite 3 passed, 1 ignored, 2.37 s;
+- Rust (macos-15), job 120967811086: 2.45 s;
+- Rust (windows-2022), job 120967811243: 3.43 s.
+Every other suite also passed. The pinned fast trajectory count of 6,720 plies held on all three platforms, which confirms native portability of the seeded runs.
+
+The deep run and the differential runs are local macOS evidence only and not CI.
+
+Next: MSH-13, then MSH-14.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Added sequence-level verification.
+
+(1) The fast fixed-seed suite crates/mshogi-core/tests/sequences.rs plays SplitMix64-seeded, sort-stable legal playouts from 92 distinct fixture start positions. Every ply checks:
+- exact reverse undo;
+- FEN round trip (transition-reached state equals reparsed state; there are no derived caches yet);
+- independently restated board, counter, raw-target and castling-right effects;
+- the candidate rejection contract (no silently lost legal action);
+- perft(1) and classification consistency.
+It runs 6,720 plies in CI, and an ignored deep run covers 316,880 plies. Failures print a minimal replay record.
+
+(2) The mshogi.chess.sequence-regressions.v1 family is replayed deterministically without the random run. It contains four oracle-backed cases.
+
+(3) Optional tools/differential_chess.py drives the real mshogi shell binary against pinned python-chess 1.11.2 (a separate GPL subprocess, nothing linked). It compares perft, the legal sets, classification and after-FENs. It locates failing plies even for crashes, localizes perft disagreements through divide, and saves (deduplicated) or fills regression cases.
+
+Evidence:
+- 0 disagreements over 15,008 and 245,564 plies;
+- injected faults detected, with saved cases that replay-fail only on the faulty builds;
+- library mutations caught.
+Independent review found no blocking issues; its two should-fix items on failure capture and perft localization were fixed and verified by fault injection, and its nits were resolved. Native CI run 40126126848 passed on Linux/macOS/Windows for 0a2a779 on codex/rewrite.
+
+Limits: agreement is bounded evidence, not proof of complete rules; the deep and differential runs are on request; generation omissions surface in the property suite only via the pinned trajectory canary.
+<!-- SECTION:FINAL_SUMMARY:END -->

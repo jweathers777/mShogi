@@ -1,5 +1,6 @@
 //! Orthodox draw/automatic adjudication over known history; bounded dead proofs.
 use super::*;
+use serde::{Deserialize, Serialize};
 use std::{error::Error, fmt};
 
 /// Sound recognition result. Unknown never proves mating possibility.
@@ -52,7 +53,8 @@ impl Position {
 }
 
 /// Exact draw reason; opportunities are never represented as results.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
 pub enum DrawReason {
     /// Side to move has no legal action and is not in check.
     Stalemate,
@@ -68,7 +70,8 @@ pub enum DrawReason {
 
 /// Concluded chess result. None at the API boundary means ongoing, even if a
 /// claim is available. Match commands/clock outcomes are added separately.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case", deny_unknown_fields)]
 pub enum ChessOutcome {
     /// Checkmate wins for the opponent of the side to move.
     Checkmate {

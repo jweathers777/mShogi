@@ -1,11 +1,11 @@
 ---
 id: MSH-13
 title: Review real action boundaries with a bounded compound-action fixture
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-22T13:27:00Z'
-updated_date: '2026-10-24T19:44:00Z'
+updated_date: '2026-10-24T19:46:00Z'
 labels:
   - architecture
   - variants
@@ -46,19 +46,19 @@ Implementing Chu or Tenjiku, inventing their rules, building a general rules DSL
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 The review names the actual position/action/transition/undo boundaries from MSH-4 and MSH-5, states which are intentionally chess-specific, and maps every synthetic case to those boundaries or a concrete future adapter.
-- [ ] #2 A square beyond the chess range and two complete actions with equal endpoints but distinct routes remain distinguishable in the reviewed mapping; applicable shared production interfaces are exercised directly.
-- [ ] #3 Executable synthetic checks demonstrate multiple rule-derived effects, complete reversal, and atomic rejection; the evidence explicitly distinguishes fixture-only behavior from production guarantees.
-- [ ] #4 The mapping distinguishes partial UI selection from a committed complete action, preserves action identity for future serialization, and does not make client-provided effects authoritative.
-- [ ] #5 Required changes and limits are recorded; any actual conflict with A-02/A-03 is resolved or tracked by a follow-up that blocks MSH-14, and no additional real game is claimed as implemented or validated.
+- [x] #1 The review names the actual position/action/transition/undo boundaries from MSH-4 and MSH-5, states which are intentionally chess-specific, and maps every synthetic case to those boundaries or a concrete future adapter.
+- [x] #2 A square beyond the chess range and two complete actions with equal endpoints but distinct routes remain distinguishable in the reviewed mapping; applicable shared production interfaces are exercised directly.
+- [x] #3 Executable synthetic checks demonstrate multiple rule-derived effects, complete reversal, and atomic rejection; the evidence explicitly distinguishes fixture-only behavior from production guarantees.
+- [x] #4 The mapping distinguishes partial UI selection from a committed complete action, preserves action identity for future serialization, and does not make client-provided effects authoritative.
+- [x] #5 Required changes and limits are recorded; any actual conflict with A-02/A-03 is resolved or tracked by a follow-up that blocks MSH-14, and no additional real game is claimed as implemented or validated.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -118,4 +118,30 @@ Nits, resolved:
 (10) The console has no game/profile selector (additive later).
 Not done: (11) the stale task file name is left to the Backlog CLI.
 Reruns PASS: action_boundary 10/10, fmt, clippy, whitespace diff check.
+
+Integration and native verification (2026-10-24): implementation 4f4025ca211eb7edd7b6d00b23a9dcddfb21198e committed on claude/next-task and fast-forward pushed to origin codex/rewrite (c55db47..4f4025c). No force push, PR, default-branch or settings change.
+
+Actual native CI PASS for exact head 4f4025c: https://github.com/jweathers777/mShogi/actions/runs/40126682337. All three jobs succeeded on rustc 1.89.0:
+- Rust (ubuntu-24.04), job 120969524763
+- Rust (macos-15), job 120969524745
+- Rust (windows-2022), job 120969524568
+Each job passed action_boundary 10/10 plus every other suite, and the console smoke printed perft 3 8902.
+
+Next: MSH-14.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Reviewed the real action boundaries against A-02/A-03, recorded in docs/review/m1-action-boundary.md.
+
+Inventory: the actual chess Square, Piece, Position, Action, Promotion, apply/apply_ordinary (private resolve/apply_resolved/validate, publish), ActionError and UndoError, Undo/undo, the candidate and legal sets, the diagnostics, and the console/fixture text adapters plus console adapter history. All are intentionally chess-specific, with no shared multi-game trait, per AGENTS.md.
+
+crates/mshogi-core/tests/action_boundary.rs:
+- Production checks, directly: Square bounds; chess action identity (a rules argument plus a corpus sanity check); the real multi-effect actions (castling, en passant, capturing promotion on a home rook) with exact oracle-confirmed after-FENs and undo; atomic rejection, including rejection after effects for EP exposure.
+- An explicitly synthetic, test-only 16x16 fixture with invented strider rules: a square beyond 8x8; equal-endpoint actions with distinct routes, encodings and effects; exact ordered multiple effects with complete reversal; atomic route rejection; non-committal partial selection by type design; and an effect-free identity serialization.
+
+Each case is mapped to production or a concrete future adapter: per-game square/position/action types, route-bearing actions, game-tagged canonical records without effects, and a rules-owned history layer.
+
+Assessment: no A-02/A-03 conflict, so there is no blocking follow-up. Limits and required future changes are recorded, and no other game is implemented or validated. Independent review agreed with no blocking findings; its six should-fix accuracy items and nits were resolved. Native CI run 40126682337 passed on all three OSes for 4f4025c on codex/rewrite.
+<!-- SECTION:FINAL_SUMMARY:END -->

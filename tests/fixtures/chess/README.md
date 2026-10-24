@@ -184,3 +184,24 @@ cargo test --release --locked -p mshogi-core --test perft -- --ignored
 ```
 
 The checker recounts every root entry, the order and the totals, and never rewrites the file.
+
+## Sequence regression family
+
+MSH-12 adds [sequence-regressions.json](sequence-regressions.json), a family named `mshogi.chess.sequence-regressions.v1` with `schema_version: 1`.
+
+Each case has an `id`, the rules profile, a `start_fen` and an ordered `actions` list. It may also have `expected`, holding `after_fens`, `final_legal` and `final_classification` from pinned `chess==1.11.2`, and `provenance`.
+
+The Rust `sequences` suite replays each case without any random run. It checks every per-ply invariant, exact reverse undo and, when present, the oracle expectations.
+
+**Adding cases.** A failing Rust sequence prints a `{start_fen, actions}` record to add here. `tools/differential_chess.py --fill FILE` adds the oracle expectations, and `--save FILE` records differential disagreements with expectations directly.
+
+**The four committed cases** were produced to prove this path works:
+
+- The differential tool was run against a deliberately injected fault that dropped Black's en passant candidates. It reported 13 disagreements.
+- The four shortest sequences that end at a Black en passant decision were saved here with oracle expectations and renamed.
+- Replaying them fails on the faulty build and passes on the correct one.
+
+```sh
+cargo test -p mshogi-core --test sequences --locked
+/tmp/mshogi-chess-oracle/bin/python tools/differential_chess.py --mshogi target/release/mshogi
+```

@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/mshogi-core", "crates/mshogi-console"]
+members = ["crates/mshogi-core", "crates/mshogi-console", "crates/mshogi-search"]
 exclude = ["legacy/rust-prototype"]
 resolver = "3"
 

@@ -30,7 +30,8 @@ State values:
 | Claimable fifty-move draw (9.3) | Deferred | Current- and intended-move claims; not an automatic terminal test at halfmove 100 | M2 |
 | Automatic fivefold / 75-move draw (9.6) | Deferred | History and halfmove handling, including last-move checkmate precedence | M2 |
 | Time loss with possible-mate exception (6.9), clock policies | Deferred | A counter or FEN cannot settle these results | M2 (match runner) |
-| Search, evaluation and competitive strength | Deferred | Not started; perft and diagnostics are not search evidence | M2 baseline, M5 strength |
+| Transparent static evaluation | Implemented | [Material baseline](../evaluation.md), independent score/perspective/symmetry tests; no outcomes or strength claim | MSH-19 |
+| Search and competitive strength | Deferred | Static evaluation is not search; perft is not search evidence | MSH-20 M2 baseline, M5 strength |
 | External engine protocols (UCI and others) | Deferred | The console is a human diagnostic session, not a machine protocol | MSH-22 UCI, MSH-23 independent UCI match |
 | Learned evaluation and neural infrastructure | Deferred | Not started | M5 |
 | Other five promised games | Deferred | Requirements remain; none implemented or certified by this corpus | M4 |

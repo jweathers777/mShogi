@@ -50,6 +50,33 @@ fn request_and_result_keep_exact_context_without_mutating_caller() {
     wait_ack(&coordinator, &context);
 }
 #[test]
+fn recorded_adjudication_mode_is_part_of_request_identity() {
+    use mshogi_core::chess::{AdjudicationMode, ReachabilityLimits, STANDARD_START_FEN};
+    let coordinator = SearchCoordinator::new().unwrap();
+    let game = AdjudicatedGame::from_fen_with_mode(
+        STANDARD_START_FEN,
+        ClaimPolicy::ExplicitOnly,
+        AdjudicationMode::Full {
+            limits: ReachabilityLimits {
+                max_positions: Some(0),
+                max_transitions: None,
+            },
+        },
+    )
+    .unwrap();
+    let before = game.clone();
+    let context = coordinator.submit(&game, 1, limits(1)).unwrap();
+    assert_eq!(context.base().adjudication_mode(), game.adjudication_mode());
+    let result = complete(&coordinator);
+    assert_eq!(coordinator.accept_result(&result, &game, 1), Ok(()));
+    let legacy = AdjudicatedGame::from_fen(STANDARD_START_FEN, ClaimPolicy::ExplicitOnly).unwrap();
+    assert_eq!(
+        coordinator.accept_result(&result, &legacy, 1),
+        Err(StaleResult::ContextChanged)
+    );
+    assert_eq!(game, before);
+}
+#[test]
 fn delayed_result_after_position_change_is_rejected_even_without_version_bump() {
     let coordinator = SearchCoordinator::new().unwrap();
     let mut game = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);

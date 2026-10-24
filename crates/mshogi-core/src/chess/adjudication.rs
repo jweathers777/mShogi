@@ -1,4 +1,4 @@
-//! Orthodox draw/automatic adjudication over known history; bounded dead proofs.
+//! Orthodox draw/automatic adjudication over known history; configured dead proofs.
 use super::*;
 use serde::{Deserialize, Serialize};
 use std::{error::Error, fmt};
@@ -8,7 +8,7 @@ use std::{error::Error, fmt};
 pub enum DeadRecognition {
     /// Neither side can mate, proven by the documented sufficient subset.
     ProvenDead,
-    /// Outside the bounded recognizer; full detection remains MSH-26.
+    /// Outside this bounded recognizer; full reachability is a separate opt-in API.
     Unknown,
 }
 
@@ -58,7 +58,7 @@ impl Position {
 pub enum DrawReason {
     /// Side to move has no legal action and is not in check.
     Stalemate,
-    /// Sound proof in the bounded recognizer.
+    /// Sound material proof or full reachable-graph exhaustion.
     DeadPosition,
     /// Five known occurrences of the current repetition identity.
     Fivefold,
@@ -262,6 +262,8 @@ pub enum AdjudicationUndo {
 pub struct AdjudicatedGame {
     history: Game,
     claimed: Option<ClaimRequest>,
+    mode: AdjudicationMode,
+    dead_analysis: Option<MateReachability>,
 }
 impl AdjudicatedGame {
     /// Known standard start.
@@ -269,6 +271,8 @@ impl AdjudicatedGame {
         Self {
             history: Game::new(policy),
             claimed: None,
+            mode: AdjudicationMode::M2,
+            dead_analysis: None,
         }
     }
     /// Imported start, with unknown earlier repetition history.
@@ -276,6 +280,8 @@ impl AdjudicatedGame {
         Ok(Self {
             history: Game::from_fen(fen, policy)?,
             claimed: None,
+            mode: AdjudicationMode::M2,
+            dead_analysis: None,
         })
     }
     /// Validate a historical action path as live play without exercising policy.
@@ -287,11 +293,64 @@ impl AdjudicatedGame {
                 history.claim_policy(),
             ),
             claimed: None,
+            mode: AdjudicationMode::M2,
+            dead_analysis: None,
         };
         for a in history.actions() {
             game.apply(a)?;
         }
         Ok(game)
+    }
+    /// Construct an imported live game with explicitly selected completeness.
+    /// Full mode may be expensive; use limits for operational calls.
+    pub fn from_fen_with_mode(
+        fen: &str,
+        policy: ClaimPolicy,
+        mode: AdjudicationMode,
+    ) -> Result<Self, FenError> {
+        let mut game = Self::from_fen(fen, policy)?;
+        game.mode = mode;
+        game.refresh_dead_analysis();
+        Ok(game)
+    }
+    /// Validate all historical moves under the recorded completeness mode.
+    pub fn from_history_with_mode(
+        history: Game,
+        mode: AdjudicationMode,
+    ) -> Result<Self, PlayError> {
+        let mut game = Self {
+            history: Game::from_initial(
+                history.initial_position().clone(),
+                history.history_origin(),
+                history.claim_policy(),
+            ),
+            claimed: None,
+            mode,
+            dead_analysis: None,
+        };
+        game.refresh_dead_analysis();
+        for action in history.actions() {
+            game.apply(action)?;
+        }
+        Ok(game)
+    }
+    /// Recorded semantics/work configuration; legacy constructors select M2.
+    pub const fn adjudication_mode(&self) -> AdjudicationMode {
+        self.mode
+    }
+    /// Cached current full-dead analysis. It is not rerun by outcome/claim reads.
+    pub fn dead_analysis(&self) -> Option<&MateReachability> {
+        self.dead_analysis.as_ref()
+    }
+    fn refresh_dead_analysis(&mut self) {
+        self.dead_analysis = match self.mode {
+            AdjudicationMode::M2 => None,
+            AdjudicationMode::Full { limits } => Some(self.position().mate_reachability(
+                MateTarget::Either,
+                limits,
+                || false,
+            )),
+        };
     }
     /// Immutable full game context for search and adapters.
     pub const fn history(&self) -> &Game {
@@ -303,13 +362,26 @@ impl AdjudicatedGame {
     }
     /// Actual concluded result, independent of optional opportunities.
     pub fn outcome(&self) -> Option<ChessOutcome> {
+        // Checkmate/stalemate retain precedence. Full death precedes history draws.
+        if self.claimed.is_none()
+            && matches!(
+                self.dead_analysis,
+                Some(MateReachability::Impossible { .. })
+            )
+            && !matches!(
+                self.position().classify(),
+                Classification::Checkmate | Classification::Stalemate
+            )
+        {
+            return Some(ChessOutcome::Draw(DrawReason::DeadPosition));
+        }
         self.claimed
             .map(|c| ChessOutcome::Draw(DrawReason::Claimed(c.reason)))
             .or_else(|| self.history.automatic_outcome())
     }
     /// Available optional claims; empty after any conclusion.
     pub fn available_claims(&self) -> Vec<ClaimRequest> {
-        if self.claimed.is_some() {
+        if self.outcome().is_some() {
             Vec::new()
         } else {
             self.history.available_claims()
@@ -328,7 +400,9 @@ impl AdjudicatedGame {
         if self.outcome().is_some() {
             return Err(PlayError::GameOver);
         }
-        self.history.apply(action).map_err(PlayError::Action)
+        self.history.apply(action).map_err(PlayError::Action)?;
+        self.refresh_dead_analysis();
+        Ok(())
     }
     /// Exercise a valid claim atomically. Intended actions are not committed.
     pub fn claim(&mut self, request: ClaimRequest) -> Result<(), ClaimError> {
@@ -344,12 +418,15 @@ impl AdjudicatedGame {
         if let Some(c) = self.claimed.take() {
             Some(AdjudicationUndo::Claim(c))
         } else {
-            self.history.undo().map(AdjudicationUndo::Move)
+            let action = self.history.undo()?;
+            self.refresh_dead_analysis();
+            Some(AdjudicationUndo::Move(action))
         }
     }
     /// Canonical actions plus the exercised claim, if any.
     pub fn record(&self) -> GameRecord {
         let mut r = self.history.record();
+        r.set_adjudication_mode(self.mode);
         if let Some(c) = self.claimed {
             r.push_event(RecordEvent {
                 ply: self.history.ply_count() as u64,
@@ -374,7 +451,10 @@ impl AdjudicatedGame {
                 record.claim_policy(),
             ),
             claimed: None,
+            mode: record.adjudication_mode(),
+            dead_analysis: None,
         };
+        game.refresh_dead_analysis();
         for (i, event) in record.events().iter().enumerate() {
             if event.ply != game.history.ply_count() as u64 {
                 return Err(LiveReplayError::Context(i + 1));

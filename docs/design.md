@@ -145,7 +145,7 @@ Do not invent a nodes-per-second target before measuring the first correct imple
 
 The milestone names establish direction, not an obligation to serialize every independent activity. An early bounded desktop or variant-contract experiment can resolve a concrete risk. Do not turn that allowance into an unbounded second implementation effort.
 
-M2 is refined in MSH-15–25 against the actual M1 implementation. The [match/history profile](rules/chess-match-v1.md) records the approved 2026-10-24 policy; full dead-position and side-specific possible-mate completeness remains MSH-26 in M4. Refine later milestones against actual code and evidence when they approach. All six games and strong engines remain the product target.
+M2 is refined in MSH-15–25 against the actual M1 implementation. The [match/history profile](rules/chess-match-v1.md) records the approved 2026-10-24 policy; MSH-26 supplies an opt-in exact dead-position/side-specific reachability algorithm, with explicit resource uncertainty and unchanged M2 defaults. Refine later milestones against actual code and evidence when they approach. All six games and strong engines remain the product target.
 
 ## 6. Verification contract
 

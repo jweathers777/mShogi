@@ -245,6 +245,11 @@ impl Session {
         };
         let record = GameRecord::from_json(json.trim_matches(separator))
             .map_err(|e| escaped(&e.to_string()))?;
+        if record.adjudication_mode() != mshogi_core::chess::AdjudicationMode::M2 {
+            return Err(
+                "record uses full adjudication; diagnostic shell cannot restore that mode".into(),
+            );
+        }
         let replay = record
             .replay_history()
             .map_err(|e| escaped(&e.to_string()))?;

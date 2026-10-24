@@ -208,6 +208,10 @@ pub struct MatchReply {
     pub conclusion: Option<MatchConclusion>,
     /// Rejection does not imply a chess outcome.
     pub rejection: Option<MatchRejection>,
+    /// Generated full-solver proof/witness or unfinished work, when requested.
+    /// Legacy M2 replies omit this field and preserve their original encoding.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub feasibility_evidence: Option<MateReachability>,
 }
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -249,6 +253,7 @@ pub struct ChessMatch {
     started: bool,
     offer: Option<Color>,
     conclusion: Option<MatchConclusion>,
+    feasibility_evidence: Option<MateReachability>,
 }
 impl ChessMatch {
     /// Create a match. Handshake/setup time is not charged until Start.
@@ -265,7 +270,11 @@ impl ChessMatch {
             }
         };
         let record = MatchRecord {
-            schema_version: 1,
+            schema_version: if game.adjudication_mode() == AdjudicationMode::M2 {
+                1
+            } else {
+                2
+            },
             rules_profile: crate::CHESS_MATCH_PROFILE_ID.into(),
             initial_record_json: game.record().to_json(),
             time_control: control,
@@ -282,6 +291,7 @@ impl ChessMatch {
             started: false,
             offer: None,
             conclusion,
+            feasibility_evidence: None,
         })
     }
     /// Immutable live game context for adapters/search.
@@ -320,29 +330,50 @@ impl ChessMatch {
         self.offer = None;
     }
     fn feasibility_result(
-        &self,
+        &mut self,
         actor: Color,
         trigger: TerminationTrigger,
         witness: Option<&[Action]>,
     ) -> Result<MatchConclusion, MatchRejection> {
-        Ok(
-            match mating_feasibility(self.game.position(), actor.opponent(), witness)
-                .map_err(|e| Self::reject(MatchRejectCode::InvalidWitness, e))?
-            {
-                MatingFeasibility::Possible => MatchConclusion::Win {
-                    winner: actor.opponent(),
-                    trigger,
-                },
-                MatingFeasibility::Impossible => MatchConclusion::Draw {
-                    trigger: Some(trigger),
-                },
-                MatingFeasibility::Unknown => MatchConclusion::Unresolved { actor, trigger },
+        // Existing sound proofs remain usable even when full work has zero
+        // budget. A full operational cap cannot erase an established result.
+        let baseline = mating_feasibility(self.game.position(), actor.opponent(), witness)
+            .map_err(|e| Self::reject(MatchRejectCode::InvalidWitness, e))?;
+        let feasibility = if witness.is_none() && baseline == MatingFeasibility::Unknown {
+            if let AdjudicationMode::Full { limits } = self.game.adjudication_mode() {
+                let analysis = self.game.position().mate_reachability(
+                    MateTarget::Side(actor.opponent()),
+                    limits,
+                    || false,
+                );
+                let result = match analysis {
+                    MateReachability::Possible { .. } => MatingFeasibility::Possible,
+                    MateReachability::Impossible { .. } => MatingFeasibility::Impossible,
+                    MateReachability::Unknown { .. } => MatingFeasibility::Unknown,
+                };
+                self.feasibility_evidence = Some(analysis);
+                result
+            } else {
+                baseline
+            }
+        } else {
+            baseline
+        };
+        Ok(match feasibility {
+            MatingFeasibility::Possible => MatchConclusion::Win {
+                winner: actor.opponent(),
+                trigger,
             },
-        )
+            MatingFeasibility::Impossible => MatchConclusion::Draw {
+                trigger: Some(trigger),
+            },
+            MatingFeasibility::Unknown => MatchConclusion::Unresolved { actor, trigger },
+        })
     }
     /// Serialize one observed request. Flag fall at/before arrival is processed
     /// before the requested move/command. Terminal moves receive no increment.
     pub fn submit(&mut self, request: MatchRequest) -> MatchReply {
+        self.feasibility_evidence = None;
         let rejection = self.process(&request).err();
         let reply = MatchReply {
             version: self.version() + 1,
@@ -350,6 +381,7 @@ impl ChessMatch {
             active: self.active,
             conclusion: self.conclusion,
             rejection,
+            feasibility_evidence: self.feasibility_evidence.clone(),
         };
         self.record.events.push(MatchEvent {
             request,
@@ -522,7 +554,7 @@ impl MatchRecord {
     /// Decode the strict envelope; replay verifies every observation.
     pub fn from_json(text: &str) -> Result<Self, MatchRecordError> {
         let r: Self = serde_json::from_str(text).map_err(|e| MatchRecordError(e.to_string()))?;
-        if r.schema_version != 1 || r.rules_profile != crate::CHESS_MATCH_PROFILE_ID {
+        if !matches!(r.schema_version, 1 | 2) || r.rules_profile != crate::CHESS_MATCH_PROFILE_ID {
             return Err(MatchRecordError("unsupported match record identity".into()));
         }
         Ok(r)
@@ -530,11 +562,28 @@ impl MatchRecord {
     /// Recompute actions, commands, clocks, rejection reasons and conclusions
     /// from ordered recorded inputs; reject any inconsistent observation.
     pub fn replay(&self) -> Result<ChessMatch, MatchRecordError> {
-        if self.schema_version != 1 || self.rules_profile != crate::CHESS_MATCH_PROFILE_ID {
+        if !matches!(self.schema_version, 1 | 2)
+            || self.rules_profile != crate::CHESS_MATCH_PROFILE_ID
+        {
             return Err(MatchRecordError("unsupported match record identity".into()));
         }
         let initial = GameRecord::from_json(&self.initial_record_json)
             .map_err(|e| MatchRecordError(e.to_string()))?;
+        if (self.schema_version == 1) != (initial.adjudication_mode() == AdjudicationMode::M2) {
+            return Err(MatchRecordError(
+                "match/history completeness schema mismatch".into(),
+            ));
+        }
+        if self.schema_version == 1
+            && self
+                .events
+                .iter()
+                .any(|e| e.reply.feasibility_evidence.is_some())
+        {
+            return Err(MatchRecordError(
+                "legacy match cannot contain full-solver evidence".into(),
+            ));
+        }
         let game = AdjudicatedGame::replay_record(&initial)
             .map_err(|e| MatchRecordError(e.to_string()))?;
         let mut m = ChessMatch::new(game, self.time_control)?;

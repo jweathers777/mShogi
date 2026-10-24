@@ -1,8 +1,8 @@
 //! Versioned chess history records. Observation replay does not adjudicate matches.
 
 use super::{
-    Action, ActionError, ActionParseError, ClaimPolicy, Color, FenError, Game, HistoryOrigin,
-    Position, STANDARD_START_FEN,
+    Action, ActionError, ActionParseError, AdjudicationMode, ClaimPolicy, Color, FenError, Game,
+    HistoryOrigin, Position, STANDARD_START_FEN,
 };
 use crate::CHESS_MATCH_PROFILE_ID;
 use serde::{Deserialize, Serialize};
@@ -10,6 +10,8 @@ use std::{error::Error, fmt};
 
 /// Version of the chess history record encoding, distinct from rules identity.
 pub const CHESS_RECORD_SCHEMA_VERSION: u32 = 1;
+/// Opt-in completeness configuration encoding; schema 1 remains unchanged.
+pub const CHESS_FULL_RECORD_SCHEMA_VERSION: u32 = 2;
 
 /// Draw claim named in a recorded request, not proof that it was valid.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -92,6 +94,7 @@ pub struct GameRecord {
     origin: HistoryOrigin,
     policy: ClaimPolicy,
     events: Vec<RecordEvent>,
+    adjudication_mode: AdjudicationMode,
 }
 
 /// An observation with verified action context and its one-based event sequence.
@@ -175,6 +178,7 @@ impl Game {
             initial: self.initial_position().clone(),
             origin: self.history_origin(),
             policy: self.claim_policy(),
+            adjudication_mode: AdjudicationMode::M2,
             events: self
                 .actions()
                 .enumerate()
@@ -188,6 +192,13 @@ impl Game {
 }
 
 impl GameRecord {
+    /// Live adjudication mode; diagnostic history replay does not execute it.
+    pub const fn adjudication_mode(&self) -> AdjudicationMode {
+        self.adjudication_mode
+    }
+    pub(super) fn set_adjudication_mode(&mut self, mode: AdjudicationMode) {
+        self.adjudication_mode = mode;
+    }
     /// Initial position with all six saved fields.
     pub const fn initial_position(&self) -> &Position {
         &self.initial
@@ -251,7 +262,16 @@ impl GameRecord {
             })
             .collect();
         serde_json::to_string(&WireRecord {
-            schema_version: CHESS_RECORD_SCHEMA_VERSION,
+            schema_version: if self.adjudication_mode == AdjudicationMode::M2 {
+                CHESS_RECORD_SCHEMA_VERSION
+            } else {
+                CHESS_FULL_RECORD_SCHEMA_VERSION
+            },
+            adjudication_mode: if self.adjudication_mode == AdjudicationMode::M2 {
+                None
+            } else {
+                Some(self.adjudication_mode)
+            },
             rules_profile: CHESS_MATCH_PROFILE_ID.into(),
             initial_fen: self.initial.to_fen(),
             history_origin: self.origin,
@@ -265,7 +285,14 @@ impl GameRecord {
     /// treat syntactically valid played actions as legal: call `replay_history`.
     pub fn from_json(text: &str) -> Result<Self, RecordError> {
         let wire: WireRecord = serde_json::from_str(text).map_err(RecordError::Json)?;
-        if wire.schema_version != CHESS_RECORD_SCHEMA_VERSION {
+        if !matches!(
+            (wire.schema_version, wire.adjudication_mode),
+            (CHESS_RECORD_SCHEMA_VERSION, None)
+                | (
+                    CHESS_FULL_RECORD_SCHEMA_VERSION,
+                    Some(AdjudicationMode::Full { .. })
+                )
+        ) {
             return Err(RecordError::Schema(wire.schema_version));
         }
         if wire.rules_profile != CHESS_MATCH_PROFILE_ID {
@@ -324,6 +351,7 @@ impl GameRecord {
             initial,
             origin: wire.history_origin,
             policy: wire.claim_policy,
+            adjudication_mode: wire.adjudication_mode.unwrap_or_default(),
             events,
         })
     }
@@ -369,6 +397,8 @@ fn color(c: Color) -> &'static str {
 #[serde(deny_unknown_fields)]
 struct WireRecord {
     schema_version: u32,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    adjudication_mode: Option<AdjudicationMode>,
     rules_profile: String,
     initial_fen: String,
     history_origin: HistoryOrigin,

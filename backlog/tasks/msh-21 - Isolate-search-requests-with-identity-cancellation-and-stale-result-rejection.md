@@ -1,11 +1,11 @@
 ---
 id: MSH-21
 title: Isolate search requests with identity, cancellation and stale-result rejection
-status: In Review
+status: Done
 assignee:
   - '@search-builder'
 created_date: '2026-10-24T19:57:00Z'
-updated_date: '2026-10-24T23:30:00Z'
+updated_date: '2026-10-24T23:31:00Z'
 labels:
   - search
   - concurrency
@@ -36,7 +36,7 @@ A-05 requires that every search request and result identify the request and its 
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -51,4 +51,12 @@ A-05 requires that every search request and result identify the request and its 
 Delegated isolated search-crate coordinator implementation to search_builder after MSH-20 completion. Parent Codex owns integration and MSH-18 core match work. No core/console or Backlog changes by delegate.
 
 Implemented bounded native worker coordination with process-unique identity, exact game-record context and version, private snapshots, replacement cancellation, explicit completion envelopes and stale-result rejection. One pending and one completion slot; no progress stream. Cancellation signals without joining and acknowledges at a documented node/unwind boundary subject to OS scheduling. Focused cargo test -p mshogi-search --locked passed 27 tests including active-worker races and 8 coordinator integration tests; formatting and Clippy passed. Independent review by review_hardening over 523ba28 found no material issues and independently reran the 27 tests. Consumer serialization requirement and work-bound limitations documented in docs/search-coordination.md.
+
+Integrated normally into origin/codex/rewrite at source e438f7c8bdcab56827a743da66729ebc7de44bd4. Native CI https://github.com/jweathers777/mShogi/actions/runs/40143002342 passed Rust (windows-2022) (job 121018470180), Rust (macos-15) (job 121018470322), Rust (ubuntu-24.04) (job 121018470381); formatting, Clippy, locked workspace tests/build and console smoke all passed. Closure bookkeeping reuses this exact source evidence. Existing deep/oracle evidence is retained for unchanged rules.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Added bounded native search coordination with exact history/version identity, private snapshots, cooperative cancellation and stale-result rejection. Focused race/history tests and independent review passed; integrated into codex/rewrite with native three-platform CI. Protocol scheduling remains MSH-22.
+<!-- SECTION:FINAL_SUMMARY:END -->

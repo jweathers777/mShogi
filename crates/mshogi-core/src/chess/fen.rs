@@ -25,11 +25,95 @@ impl fmt::Display for FenErrorCategory {
     }
 }
 
+/// Specific rejection identity, independent of diagnostic wording.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum FenErrorReason {
+    /// input must be ASCII.
+    NonAscii,
+    /// expected exactly six fields.
+    FieldCount,
+    /// side must be w or b.
+    Side,
+    /// counters must contain ASCII digits only.
+    CounterSyntax,
+    /// halfmove clock exceeds u32.
+    HalfmoveRange,
+    /// fullmove number exceeds u32.
+    FullmoveRange,
+    /// fullmove number must be positive.
+    FullmoveZero,
+    /// pawn on a back rank.
+    PawnBackRank,
+    /// expected exactly one king of each color.
+    KingCount,
+    /// kings are adjacent.
+    AdjacentKings,
+    /// more than eight pawns or sixteen pieces for a color.
+    PieceCount,
+    /// castling right without its home king.
+    CastlingKing,
+    /// castling right without its home rook.
+    CastlingRook,
+    /// en passant target must be empty on the correct rank.
+    EnPassantTarget,
+    /// en passant pawn, origin or halfmove clock is inconsistent.
+    EnPassantState,
+    /// nonmoving king is attacked.
+    NonmovingKingAttacked,
+    /// expected eight board ranks.
+    BoardRanks,
+    /// adjacent empty-run digits.
+    AdjacentRuns,
+    /// board rank exceeds eight squares.
+    RankOverflow,
+    /// unknown board symbol.
+    BoardSymbol,
+    /// board rank must contain eight squares.
+    RankWidth,
+    /// unsupported castling symbol.
+    CastlingSymbol,
+    /// castling rights must be unique in KQkq order.
+    CastlingOrder,
+    /// target must be - or a square a1..h8.
+    TargetSyntax,
+}
+
+impl fmt::Display for FenErrorReason {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(match self {
+            Self::NonAscii => "input must be ASCII",
+            Self::FieldCount => "expected exactly six fields",
+            Self::Side => "side must be w or b",
+            Self::CounterSyntax => "counters must contain ASCII digits only",
+            Self::HalfmoveRange => "halfmove clock exceeds u32",
+            Self::FullmoveRange => "fullmove number exceeds u32",
+            Self::FullmoveZero => "fullmove number must be positive",
+            Self::PawnBackRank => "pawn on a back rank",
+            Self::KingCount => "expected exactly one king of each color",
+            Self::AdjacentKings => "kings are adjacent",
+            Self::PieceCount => "more than eight pawns or sixteen pieces for a color",
+            Self::CastlingKing => "castling right without its home king",
+            Self::CastlingRook => "castling right without its home rook",
+            Self::EnPassantTarget => "en passant target must be empty on the correct rank",
+            Self::EnPassantState => "en passant pawn, origin or halfmove clock is inconsistent",
+            Self::NonmovingKingAttacked => "nonmoving king is attacked",
+            Self::BoardRanks => "expected eight board ranks",
+            Self::AdjacentRuns => "adjacent empty-run digits",
+            Self::RankOverflow => "board rank exceeds eight squares",
+            Self::BoardSymbol => "unknown board symbol",
+            Self::RankWidth => "board rank must contain eight squares",
+            Self::CastlingSymbol => "unsupported castling symbol",
+            Self::CastlingOrder => "castling rights must be unique in KQkq order",
+            Self::TargetSyntax => "target must be - or a square a1..h8",
+        })
+    }
+}
+
 /// Deterministic category plus a field/reason diagnostic; never a partial position.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct FenError {
     category: FenErrorCategory,
-    reason: &'static str,
+    reason: FenErrorReason,
 }
 
 impl FenError {
@@ -38,7 +122,12 @@ impl FenError {
         self.category
     }
 
-    fn new(category: FenErrorCategory, reason: &'static str) -> Self {
+    /// Stable machine-readable reason; Display wording is for people.
+    pub const fn reason(self) -> FenErrorReason {
+        self.reason
+    }
+
+    fn new(category: FenErrorCategory, reason: FenErrorReason) -> Self {
         Self { category, reason }
     }
 }
@@ -59,7 +148,7 @@ impl Position {
     pub fn from_fen(input: &str) -> Result<Self, FenError> {
         use FenErrorCategory::{Range, Syntax};
         if !input.is_ascii() {
-            return Err(FenError::new(Syntax, "input must be ASCII"));
+            return Err(FenError::new(Syntax, FenErrorReason::NonAscii));
         }
         // Rust's split_ascii_whitespace excludes vertical tab; this profile
         // explicitly accepts it, along with the other five ASCII whitespace bytes.
@@ -70,36 +159,33 @@ impl Position {
         for field in &mut parts {
             *field = fields
                 .next()
-                .ok_or(FenError::new(Syntax, "expected exactly six fields"))?;
+                .ok_or(FenError::new(Syntax, FenErrorReason::FieldCount))?;
         }
         if fields.next().is_some() {
-            return Err(FenError::new(Syntax, "expected exactly six fields"));
+            return Err(FenError::new(Syntax, FenErrorReason::FieldCount));
         }
 
         let board = parse_board(parts[0])?;
         let side_to_move = match parts[1] {
             "w" => Color::White,
             "b" => Color::Black,
-            _ => return Err(FenError::new(Syntax, "side must be w or b")),
+            _ => return Err(FenError::new(Syntax, FenErrorReason::Side)),
         };
         let castling_rights = parse_rights(parts[2])?;
         let en_passant_target = parse_target(parts[3])?;
         for counter in [parts[4], parts[5]] {
             if !counter.bytes().all(|byte| byte.is_ascii_digit()) {
-                return Err(FenError::new(
-                    Syntax,
-                    "counters must contain ASCII digits only",
-                ));
+                return Err(FenError::new(Syntax, FenErrorReason::CounterSyntax));
             }
         }
         let halfmove_clock = parts[4]
             .parse::<u32>()
-            .map_err(|_| FenError::new(Range, "halfmove clock exceeds u32"))?;
+            .map_err(|_| FenError::new(Range, FenErrorReason::HalfmoveRange))?;
         let fullmove_number = parts[5]
             .parse::<u32>()
-            .map_err(|_| FenError::new(Range, "fullmove number exceeds u32"))?;
+            .map_err(|_| FenError::new(Range, FenErrorReason::FullmoveRange))?;
         if fullmove_number == 0 {
-            return Err(FenError::new(Range, "fullmove number must be positive"));
+            return Err(FenError::new(Range, FenErrorReason::FullmoveZero));
         }
 
         let candidate = Self {
@@ -143,36 +229,36 @@ impl Position {
                 if piece.kind == PieceKind::Pawn {
                     pawns[color] += 1;
                     if matches!(square.rank(), 0 | 7) {
-                        return Err(fail("pawn on a back rank"));
+                        return Err(fail(FenErrorReason::PawnBackRank));
                     }
                 }
                 if piece.kind == PieceKind::King && kings[color].replace(square).is_some() {
-                    return Err(fail("expected exactly one king of each color"));
+                    return Err(fail(FenErrorReason::KingCount));
                 }
             }
         }
         let [Some(white_king), Some(black_king)] = kings else {
-            return Err(fail("expected exactly one king of each color"));
+            return Err(fail(FenErrorReason::KingCount));
         };
         if white_king.file().abs_diff(black_king.file()) <= 1
             && white_king.rank().abs_diff(black_king.rank()) <= 1
         {
-            return Err(fail("kings are adjacent"));
+            return Err(fail(FenErrorReason::AdjacentKings));
         }
         if pawns.iter().any(|&count| count > 8) || pieces.iter().any(|&count| count > 16) {
-            return Err(fail("more than eight pawns or sixteen pieces for a color"));
+            return Err(fail(FenErrorReason::PieceCount));
         }
         for (color, rank) in [(Color::White, 0usize), (Color::Black, 7)] {
             let rights = self.castling_rights;
             let has_piece = |file, kind| self.board[rank * 8 + file] == Some(Piece { color, kind });
             if (rights.kingside(color) || rights.queenside(color)) && !has_piece(4, PieceKind::King)
             {
-                return Err(fail("castling right without its home king"));
+                return Err(fail(FenErrorReason::CastlingKing));
             }
             if (rights.kingside(color) && !has_piece(7, PieceKind::Rook))
                 || (rights.queenside(color) && !has_piece(0, PieceKind::Rook))
             {
-                return Err(fail("castling right without its home rook"));
+                return Err(fail(FenErrorReason::CastlingRook));
             }
         }
         if let Some(target) = self.en_passant_target {
@@ -181,7 +267,7 @@ impl Position {
                 Color::Black => (2, 3, 1),
             };
             if target.rank() != target_rank || self.piece_at(target).is_some() {
-                return Err(fail("en passant target must be empty on the correct rank"));
+                return Err(fail(FenErrorReason::EnPassantTarget));
             }
             let file = target.file() as usize;
             let pawn = Some(Piece {
@@ -192,9 +278,7 @@ impl Position {
                 || self.board[origin_rank * 8 + file].is_some()
                 || self.halfmove_clock != 0
             {
-                return Err(fail(
-                    "en passant pawn, origin or halfmove clock is inconsistent",
-                ));
+                return Err(fail(FenErrorReason::EnPassantState));
             }
         }
         let nonmoving_king = match self.side_to_move {
@@ -202,7 +286,7 @@ impl Position {
             Color::Black => white_king,
         };
         if self.is_square_attacked(nonmoving_king, self.side_to_move) {
-            return Err(fail("nonmoving king is attacked"));
+            return Err(fail(FenErrorReason::NonmovingKingAttacked));
         }
         Ok(())
     }
@@ -264,19 +348,19 @@ fn parse_board(field: &str) -> Result<[Option<Piece>; 64], FenError> {
     let mut board = [None; 64];
     let mut ranks = field.split('/');
     for rank in (0..8).rev() {
-        let row = ranks.next().ok_or(fail("expected eight board ranks"))?;
+        let row = ranks.next().ok_or(fail(FenErrorReason::BoardRanks))?;
         let mut file = 0usize;
         let mut previous_digit = false;
         for byte in row.bytes() {
             if matches!(byte, b'1'..=b'8') {
                 if previous_digit {
-                    return Err(fail("adjacent empty-run digits"));
+                    return Err(fail(FenErrorReason::AdjacentRuns));
                 }
                 file += (byte - b'0') as usize;
                 previous_digit = true;
             } else {
                 if file >= 8 {
-                    return Err(fail("board rank exceeds eight squares"));
+                    return Err(fail(FenErrorReason::RankOverflow));
                 }
                 let kind = match byte.to_ascii_lowercase() {
                     b'p' => PieceKind::Pawn,
@@ -285,7 +369,7 @@ fn parse_board(field: &str) -> Result<[Option<Piece>; 64], FenError> {
                     b'r' => PieceKind::Rook,
                     b'q' => PieceKind::Queen,
                     b'k' => PieceKind::King,
-                    _ => return Err(fail("unknown board symbol")),
+                    _ => return Err(fail(FenErrorReason::BoardSymbol)),
                 };
                 board[rank * 8 + file] = Some(Piece {
                     color: if byte.is_ascii_uppercase() {
@@ -299,15 +383,15 @@ fn parse_board(field: &str) -> Result<[Option<Piece>; 64], FenError> {
                 previous_digit = false;
             }
             if file > 8 {
-                return Err(fail("board rank exceeds eight squares"));
+                return Err(fail(FenErrorReason::RankOverflow));
             }
         }
         if file != 8 {
-            return Err(fail("board rank must contain eight squares"));
+            return Err(fail(FenErrorReason::RankWidth));
         }
     }
     if ranks.next().is_some() {
-        return Err(fail("expected eight board ranks"));
+        return Err(fail(FenErrorReason::BoardRanks));
     }
     Ok(board)
 }
@@ -327,14 +411,14 @@ fn parse_rights(field: &str) -> Result<CastlingRights, FenError> {
             _ => {
                 return Err(FenError::new(
                     FenErrorCategory::Syntax,
-                    "unsupported castling symbol",
+                    FenErrorReason::CastlingSymbol,
                 ));
             }
         };
         if previous.is_some_and(|last| last >= order) {
             return Err(FenError::new(
                 FenErrorCategory::Syntax,
-                "castling rights must be unique in KQkq order",
+                FenErrorReason::CastlingOrder,
             ));
         }
         previous = Some(order);
@@ -357,7 +441,7 @@ fn parse_target(field: &str) -> Result<Option<Square>, FenError> {
         &[file @ b'a'..=b'h', rank @ b'1'..=b'8'] => Ok(Square::new(file - b'a', rank - b'1')),
         _ => Err(FenError::new(
             FenErrorCategory::Syntax,
-            "target must be - or a square a1..h8",
+            FenErrorReason::TargetSyntax,
         )),
     }
 }

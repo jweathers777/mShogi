@@ -245,16 +245,16 @@ fen rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
     );
     assert_eq!(
         lines[5],
-        "error: line 7: invalid action 'e9e4'; expected e.g. e2e4 or e7e8q"
+        "error: line 7: e9e4 (action 1 of 1): invalid action 'e9e4'; expected e.g. e2e4 or e7e8q; no actions applied"
     );
     assert_eq!(
         lines[6],
-        "error: line 8: invalid action 'e7e8x'; expected e.g. e2e4 or e7e8q"
+        "error: line 8: e7e8x (action 1 of 1): invalid action 'e7e8x'; expected e.g. e2e4 or e7e8q; no actions applied"
     );
     assert_eq!(lines[7], "error: line 9: usage: move <action>...");
     assert_eq!(
         lines[8],
-        "error: line 10: invalid depth '-1'; expected an integer from 0 to 4294967295"
+        "error: line 10: invalid depth '-1'; expected ASCII decimal from 0 to 4"
     );
     assert_eq!(lines[9], "error: line 11: usage: perft <depth>");
     assert_eq!(
@@ -361,6 +361,52 @@ fn legal_order_matches_library_divide_order_and_errors_are_clear() {
     assert!(legal.contains(&"a7b8n") && legal.contains(&"a7a8q"));
     assert_eq!(
         text(output.stderr),
-        "error: line 5: h8g8 (action 1 of 1): action rejected: own king would be in check (FEN structure: nonmoving king is attacked); no actions applied\n"
+        "error: line 5: h8g8 (action 1 of 1): action rejected: resulting position is invalid (FEN structure: nonmoving king is attacked); no actions applied\n"
     );
+}
+
+#[test]
+fn ascii_grammar_numeric_bounds_and_escaped_diagnostics() {
+    let output = shell(b"perft +1\nundo +1\nperft 5\nperft 4294967296\nperft 1\xc2\xa0\nunknown\x1b[31m\nmove e2e4 bad g1f3\nfen\n\tperft\x0b01\x0c\r\n");
+    assert_eq!(output.status.code(), Some(1));
+    assert_eq!(
+        text(output.stdout),
+        "fen rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\nperft 1 20\n"
+    );
+    let errors = text(output.stderr);
+    let lines: Vec<_> = errors.lines().collect();
+    assert_eq!(lines.len(), 7, "{errors}");
+    assert!(lines[0].contains("invalid depth '+1'"));
+    assert!(lines[1].contains("invalid undo count '+1'"));
+    assert!(lines[2].contains("from 0 to 4"));
+    assert!(lines[3].contains("invalid depth '4294967296'"));
+    assert_eq!(lines[4], "error: line 5: input must be ASCII");
+    assert!(lines[5].contains("unknown\\u{1b}[31m"), "{}", lines[5]);
+    assert!(!errors.contains('\x1b'));
+    assert!(lines[6].contains("bad (action 2 of 3): invalid action"));
+}
+
+#[test]
+fn streaming_line_bound_recovers_and_accepts_exact_limit() {
+    let mut input = vec![b'#'; 4096];
+    input.push(b'\n');
+    input.extend(vec![b'x'; 1024 * 1024]);
+    input.extend_from_slice(b"\nperft 1\n");
+    input.extend(vec![b'x'; 4097]); // Oversized last line with no LF.
+    let output = shell(&input);
+    assert_eq!(output.status.code(), Some(1));
+    assert_eq!(text(output.stdout), "perft 1 20\n");
+    assert_eq!(
+        text(output.stderr),
+        "error: line 2: line exceeds 4096 bytes\nerror: line 4: line exceeds 4096 bytes\n"
+    );
+}
+
+#[test]
+fn diagnostic_depth_limit_is_inclusive() {
+    // A terminal diagram makes the highest accepted depth inexpensive.
+    let output = shell(b"position fen 7k/5Q2/6K1/8/8/8/8/8 b - - 0 1\nperft 4\ndivide 4\n");
+    assert_eq!(output.status.code(), Some(0));
+    assert!(output.stderr.is_empty());
+    assert!(text(output.stdout).ends_with("perft 4 0\ntotal 0\n"));
 }

@@ -10,7 +10,7 @@ use mshogi_core::CHESS_POSITION_PROFILE_ID;
 
 mod session;
 
-use session::{Next, Session};
+use session::{MAX_LINE_BYTES, Next, Session};
 
 const HELP: &str = "mShogi headless console
 
@@ -55,10 +55,24 @@ fn shell() -> ExitCode {
     let mut stderr = io::stderr().lock();
     let mut session = Session::new();
     let mut failed = false;
-    for (index, line) in stdin.lock().split(b'\n').enumerate() {
+    let mut input = stdin.lock();
+    for index in 0usize.. {
+        let line = bounded_line(&mut input);
+        if matches!(line, Ok(None)) {
+            break;
+        }
         let number = index + 1;
         let line = match line {
-            Ok(bytes) => bytes,
+            Ok(Some(Ok(bytes))) => bytes,
+            Ok(Some(Err(()))) => {
+                let _ = writeln!(
+                    stderr,
+                    "error: line {number}: line exceeds {MAX_LINE_BYTES} bytes"
+                );
+                failed = true;
+                continue;
+            }
+            Ok(None) => unreachable!(),
             Err(error) => {
                 let _ = writeln!(stderr, "error: line {number}: cannot read input: {error}");
                 return ExitCode::FAILURE;
@@ -98,4 +112,32 @@ fn shell() -> ExitCode {
 fn invalid_arguments() -> ExitCode {
     eprintln!("error: unsupported arguments; run 'mshogi --help'");
     ExitCode::from(2)
+}
+
+/// Consume an oversized line without allocating its remainder, then recover at LF.
+fn bounded_line(input: &mut impl BufRead) -> io::Result<Option<Result<Vec<u8>, ()>>> {
+    let mut line = Vec::new();
+    let mut oversized = false;
+    let mut seen = false;
+    loop {
+        let chunk = input.fill_buf()?;
+        if chunk.is_empty() {
+            return Ok(seen.then_some(if oversized { Err(()) } else { Ok(line) }));
+        }
+        seen = true;
+        let end = chunk.iter().position(|&b| b == b'\n');
+        let take = end.unwrap_or(chunk.len());
+        if !oversized {
+            if line.len() + take > MAX_LINE_BYTES {
+                oversized = true;
+                line.clear();
+            } else {
+                line.extend_from_slice(&chunk[..take]);
+            }
+        }
+        input.consume(take + usize::from(end.is_some()));
+        if end.is_some() {
+            return Ok(Some(if oversized { Err(()) } else { Ok(line) }));
+        }
+    }
 }

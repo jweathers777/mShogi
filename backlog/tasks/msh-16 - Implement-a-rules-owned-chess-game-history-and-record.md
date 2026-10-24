@@ -1,10 +1,11 @@
 ---
 id: MSH-16
 title: Implement a rules-owned chess game history and record
-status: Ready
-assignee: []
+status: In Review
+assignee:
+  - '@codex'
 created_date: '2026-10-24T19:57:00Z'
-updated_date: '2026-10-24T20:54:00Z'
+updated_date: '2026-10-24T21:30:00Z'
 labels:
   - rules
   - history
@@ -16,6 +17,7 @@ documentation:
   - docs/review/m1-action-boundary.md
   - docs/design.md
   - docs/rules/chess-match-v1.md
+  - docs/rules/chess-history-record-v1.md
 priority: high
 ordinal: 16000
 ---
@@ -28,17 +30,35 @@ Chess Position is deliberately local: it holds no history, and its Eq is saved-s
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 A rules-library game type owns the current position plus the history the match profile requires, including repetition identity distinct from saved-state equality and from any cache key
-- [ ] #2 Applying and undoing through the game restores position, history and repetition tables exactly; sequence-property checks in the style of MSH-12 cover it
-- [ ] #3 A canonical game record (profile ID, initial state, ordered complete actions, no effects, no private undo layout) round-trips and is replayable deterministically
-- [ ] #4 Console and future adapters use the rules-owned history rather than keeping their own rule-relevant state
-- [ ] #5 Records preserve known-history origin (imported FEN never infers earlier repetitions), supplied counters and profile/policy identity; match commands and clock observations can be replayed without reconstructing private undo state.
+- [x] #1 A rules-library game type owns the current position plus the history the match profile requires, including repetition identity distinct from saved-state equality and from any cache key
+- [x] #2 Applying and undoing through the game restores position, history and repetition tables exactly; sequence-property checks in the style of MSH-12 cover it
+- [x] #3 A canonical game record (profile ID, initial state, ordered complete actions, no effects, no private undo layout) round-trips and is replayable deterministically
+- [x] #4 Console and future adapters use the rules-owned history rather than keeping their own rule-relevant state
+- [x] #5 Records preserve known-history origin (imported FEN never infers earlier repetitions), supplied counters and profile/policy identity; match commands and clock observations can be replayed without reconstructing private undo state.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Add a rules-owned chess Game with exact repetition identities/counts, explicit standard/imported history origins and claim policy; implement atomic apply and owned LIFO undo with complete history restoration. 2. Add a versioned chess-only canonical record of initial state, origin, policy, complete actions and typed command/clock observations. Rebuild history and replay observations at their action context without private undo serialization; semantic command/clock adjudication remains MSH-17/18. 3. Migrate the diagnostic console onto Game and expose history diagnostics plus record round-trip use. 4. Verify hand-derived identity/history fixtures, fixed-seed apply/undo and record/rejection properties, real-process adapter integration; obtain independent review, resolve findings, integrate and record native CI.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner Codex; branch codex/msh-16-history, existing next-task checkout from clean origin/codex/rewrite 504992b. Backlog.md 1.55.1 matches baseline; no active worker was present. MSH-15 is Done. MSH-16 implements the history/record foundation; it does not silently claim MSH-17/18 outcome or clock adjudication. Command/clock observation replay retains their context and values; later tasks validate and apply their semantics.
+
+Implementation ready for independent review: Game owns exact repetition identity/count map, history origin/policy and LIFO snapshots; console uses Game with history and atomic move-only record export/load. Canonical strict JSON supports ordered moves and typed command/clock observations with checked ply context and separate total event sequence; intended actions remain command data. History replay preserves observations without validating their later MSH-17/18 semantics. Focused core history/record tests pass (5 + 5), covering 933 seeded plies, independent MSH-15 identities/counts and M1 special transition after-states; console process tests pass (18). Decoder regression caught Serde unit-command extra-field acceptance; empty-struct wire variants now reject extras. Pinned production Serde/JSON dependencies use already-locked versions; local manifests/license texts reviewed as MIT OR Apache-2.0; transitive versions unchanged.
+
+Independent review_history_boundary reviewed the full implementation diff against 504992b after its earlier scope review. No material findings. Reviewer independently reran core history/record tests (10 passed) and probed real console rejection of duplicate event kind, action and nullable intended fields. All five acceptance criteria are supported at the documented history/observation boundary. Observations carry independent total sequence plus action context; intended claims are never inserted as played actions. Semantic command/clock validation stays explicitly MSH-17/18. Full match replay remains MSH-23/25.
+
+Verification on macOS 27.0.1 (26A434), arm64, rustc 1.89.0 (29483883e), cargo 1.89.0: cargo fmt --all -- --check; cargo clippy --workspace --all-targets --locked -- -D warnings; cargo test -p mshogi-core --test game_history --test game_record --locked; cargo test -p mshogi-console --test cli --locked; cargo test --workspace --locked; cargo build --workspace --locked; git diff --check; Backlog.md 1.55.1 doctor all passed. Focused coverage is 10 core tests (933 fixed-seed plies plus independent profile/special fixtures) and 18 console tests including fresh-process record reload/undo and atomic rejection. Existing two opt-in deep test functions remain ignored; no new deep/oracle rerun is claimed. Source review covered the working diff based on integrated 504992b. Actual source revision and native CI outcomes will be appended after normal integration.
+<!-- SECTION:NOTES:END -->

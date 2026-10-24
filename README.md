@@ -1,6 +1,6 @@
 # mShogi rewrite
 
-This repository baseline describes the rewrite of John Weathers's mShogi. It contains a minimal Rust library/headless-console workspace, the design and Backlog.md queue, and the earlier Rust prototype preserved under `legacy/rust-prototype/`. The core implements explicit chess state/FEN, geometric attack queries, pseudo-legal candidate generation, and checked moves, captures, promotions, castling and en passant with exact undo. It also exposes the legal-action list and position-level check/checkmate/stalemate classification. Perft and divide diagnostics are available in the library and, with every other M1 diagnostic, through the headless `mshogi shell` console. A separate native search crate provides the [transparent material evaluator](docs/evaluation.md); full search and game/match adjudication remain later work. The retained prototype has not been certified against the new design.
+This repository baseline describes the rewrite of John Weathers's mShogi. It contains a minimal Rust library/headless-console workspace, the design and Backlog.md queue, and the earlier Rust prototype preserved under `legacy/rust-prototype/`. The core implements explicit chess state/FEN, geometric attack queries, pseudo-legal candidate generation, and checked moves, captures, promotions, castling and en passant with exact undo. It also exposes the legal-action list and position-level check/checkmate/stalemate classification. Perft and divide diagnostics are available in the library and, with every other M1 diagnostic, through the headless `mshogi shell` console. The core also owns [game history and canonical records](docs/rules/chess-history-record-v1.md). A separate native search crate provides the [transparent material evaluator](docs/evaluation.md); full search and game/match adjudication remain later work. The retained prototype has not been certified against the new design.
 
 The product goal is a reusable library with complete implementations of chess, shogi, tori shogi, chu shogi, tenjiku shogi, and xiangqi; capable mShogi engines; a standalone and interoperable console application; and a polished desktop application for Windows, macOS, and Linux.
 
@@ -44,7 +44,7 @@ cargo clippy --workspace --all-targets --locked -- -D warnings
 cargo test --workspace --locked
 ```
 
-The console reports its version, rules profile and coverage, and `mshogi shell` runs the chess diagnostics described below; engine protocols arrive in later tasks. The core library exposes [position, action, legal-move, classification and perft APIs](docs/rules/chess-position-v1.md#rust-position-api). Tests exercise real headless subprocess startup, output streams and usage errors. The production core library has no external dependencies or console I/O; a pinned test-only JSON reader consumes the independent corpus. Native Windows/macOS/Linux checks are configured in [the Rust workflow](.github/workflows/rust.yml). Actual per-platform outcomes and revisions are recorded in each task and summarized in the [M1 closure review](docs/review/m1-closure.md), separately from configuration.
+The console reports its version, rules profile and coverage, and `mshogi shell` runs the chess diagnostics described below; engine protocols arrive in later tasks. The core library exposes [position, action, legal-move, classification and perft APIs](docs/rules/chess-position-v1.md#rust-position-api). Tests exercise real headless subprocess startup, output streams and usage errors. The production core uses pinned Serde/JSON for canonical history records and has no console I/O; tests also use that JSON reader for the independent corpus. Native Windows/macOS/Linux checks are configured in [the Rust workflow](.github/workflows/rust.yml). Actual per-platform outcomes and revisions are recorded in each task and summarized in the [M1 closure review](docs/review/m1-closure.md), separately from configuration.
 
 ## Headless chess console
 
@@ -57,6 +57,9 @@ The console reports its version, rules profile and coverage, and `mshogi shell` 
 | `show` | Board diagram (White upper case, rank 8 first), then `fen`, `side`, `castling`, `en-passant`, `halfmove`, `fullmove`, `status` and `history` lines |
 | `legal` | `legal <count> <actions...>` in divide order |
 | `move <action>...` | Apply the actions in order, all or none; prints the new `fen` |
+| `history` | Action count, known-history origin, stored claim policy and current repetition count |
+| `record` | `record <JSON>`: canonical chess action/history record |
+| `record load <JSON>` | Atomically restore a move-only record, including undo/history; observation-bearing match records are explicitly refused |
 | `undo [n]` | Undo the last `n` applied actions (default 1); prints the new `fen` |
 | `status` | `status quiet`, `check`, `checkmate` or `stalemate`, from the limited M1 position classifier, not game adjudication |
 | `perft <depth>` | `perft <depth> <nodes>` |

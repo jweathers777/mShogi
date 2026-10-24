@@ -1,7 +1,8 @@
 //! Explicit chess position state for `mshogi.chess.position.v1`.
 //!
 //! FEN validates a local analysis position, not historical reachability. This
-//! module contains no match history, clocks, outcome, repetition or cache key.
+//! Position contains no history. Game owns action/repetition history; match
+//! adjudication and clocks remain subsequent work. No search cache key is defined.
 //! Public construction, replacement and checked transitions preserve
 //! the profile's local invariants. Actions/undo remain intentionally chess-specific.
 //! `apply` executes every chess action; `apply_ordinary` is its ordinary-only subset.
@@ -13,16 +14,22 @@ use std::fmt;
 mod action;
 mod attack;
 mod fen;
+mod game;
 mod generate;
 mod legal;
+mod notation;
 mod perft;
+mod record;
 pub use action::{Action, ActionError, Promotion, Undo, UndoError};
 pub use fen::{FenError, FenErrorCategory, FenErrorReason};
+pub use game::{ClaimPolicy, Game, HistoryOrigin, RepetitionIdentity, STANDARD_START_FEN};
 pub use legal::Classification;
+pub use notation::ActionParseError;
 pub use perft::{DivideEntry, PerftError};
+pub use record::*;
 
 /// One of the two colors in orthodox chess.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
 pub enum Color {
     /// White moves toward increasing ranks.
     White,
@@ -48,7 +55,7 @@ impl Color {
 }
 
 /// An orthodox piece's current kind; promotion history is not encoded in FEN.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
 pub enum PieceKind {
     /// Pawn.
     Pawn,
@@ -65,7 +72,7 @@ pub enum PieceKind {
 }
 
 /// Kind and color of one piece occupying a square.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
 pub struct Piece {
     /// The piece's color.
     pub color: Color,
@@ -109,7 +116,7 @@ impl fmt::Display for Square {
 }
 
 /// Historical castling permissions; these do not assert immediate legality.
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Hash)]
 pub struct CastlingRights {
     kingside: [bool; 2],
     queenside: [bool; 2],

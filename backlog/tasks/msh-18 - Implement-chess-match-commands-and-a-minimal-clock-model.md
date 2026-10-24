@@ -1,11 +1,11 @@
 ---
 id: MSH-18
 title: Implement chess match commands and a minimal clock model
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-24T19:57:00Z'
-updated_date: '2026-10-24T23:23:00Z'
+updated_date: '2026-10-24T23:26:00Z'
 labels:
   - match
   - clocks
@@ -43,7 +43,7 @@ Resignation, agreed draws and time loss are match commands or match state, not b
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -60,4 +60,12 @@ Owner Codex, same clean integration source after MSH-17; scoped implementation i
 ChessMatch implements versioned commands, persistent offer state, injected untimed/increment clocks, explicit unresolved/unscored mating uncertainty, sound bare-king/dead proofs and verified cooperative mate certificates. MatchRecord replays full requests and verifies computed responses without private undo. Eight focused tests pass, executing independent MSH-15 clock and resignation/flag fixtures plus rejection/overflow/offers/claim/replay corruption tests. Hypothetical witness paths follow Article 3 legal move reachability, with counters normalized privately; current live outcomes retain precedence. This interpretation was checked against primary FIDE 3.10.1 and 5.1.2/6.9, not invented as a scope change.
 
 Independent review_hardening found two P2 record-boundary gaps: nested ChessOutcome unknown fields and direct Deserialize schema bypass. Both are fixed with strict nested decoding and replay identity validation; reviewer independently confirmed 10 matchplay tests pass with no material findings. A self-review regression also ensures bad mating evidence cannot cancel an immediate resignation. Full workspace tests/build, formatting, Clippy -D warnings and diff checks pass on macOS arm64/Rust1.89. Tests inject integer time and directly consume profile fixtures; no sleep/timing inference. Console metadata now accurately labels diagnostic status as position-only rather than denying the new library adjudication.
+
+Integrated normally into origin/codex/rewrite at source e81c105a4aa0193ae6e55ae7957ccd053049233e. Native CI https://github.com/jweathers777/mShogi/actions/runs/40142534115 passed Rust (macos-15) (job 121017084539), Rust (ubuntu-24.04) (job 121017084734), Rust (windows-2022) (job 121017084790); formatting, Clippy, locked workspace tests/build and console smoke all passed. Closure bookkeeping reuses this exact source evidence. Existing deep/oracle evidence is retained for unchanged rules.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Completed rules-owned versioned match commands, draw offers/agreements, untimed and injected increment clocks, conservative resignation/flag adjudication and strict semantic match replay. Independent profile fixtures and 10 focused tests cover exact deadline/increment ordering, claims without played intentions, proofs/witnesses/uncertainty, rejection charging, overflow and record corruption. Two independent review P2 codec/version findings were fixed and reverified; no material findings remain. Workspace checks and native three-platform CI passed at source e81c105. Unknown mating feasibility remains unscored; full detection remains MSH-26. Engine/process failure handling is MSH-23.
+<!-- SECTION:FINAL_SUMMARY:END -->

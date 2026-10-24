@@ -312,6 +312,9 @@ fn help_lists_every_shell_command() {
         "legal",
         "move <action>...",
         "undo [n]",
+        "history",
+        "record",
+        "record load <JSON>",
         "status",
         "perft <depth>",
         "divide <depth>",
@@ -409,4 +412,87 @@ fn diagnostic_depth_limit_is_inclusive() {
     assert_eq!(output.status.code(), Some(0));
     assert!(output.stderr.is_empty());
     assert!(text(output.stdout).ends_with("perft 4 0\ntotal 0\n"));
+}
+
+#[test]
+fn history_is_rules_owned_and_import_resets_known_repetitions() {
+    let output = shell(b"history\nmove g1f3 g8f6 f3g1 f6g8\nhistory\nundo 4\nhistory\nposition fen rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 8 5\nhistory\n");
+    assert!(output.status.success());
+    assert!(output.stderr.is_empty());
+    let stdout = text(output.stdout);
+    let histories: Vec<_> = stdout
+        .lines()
+        .filter(|s| s.starts_with("history "))
+        .collect();
+    assert_eq!(
+        histories,
+        vec![
+            "history 0 origin standard_start policy explicit_only repetitions 1",
+            "history 4 origin standard_start policy explicit_only repetitions 2",
+            "history 0 origin standard_start policy explicit_only repetitions 1",
+            "history 0 origin imported_fen policy explicit_only repetitions 1",
+        ]
+    );
+}
+
+#[test]
+fn exported_record_restores_position_history_policy_and_undo_in_a_fresh_process() {
+    use mshogi_core::chess::{ClaimPolicy, Game};
+    let first = shell(b"move g1f3 g8f6 f3g1 f6g8\nrecord\n");
+    assert!(first.status.success());
+    let stdout = text(first.stdout);
+    let json = stdout
+        .lines()
+        .find_map(|s| s.strip_prefix("record "))
+        .unwrap();
+    let second =
+        shell(format!("move e2e4\nrecord load {json}\nhistory\nundo 4\nhistory\n").as_bytes());
+    assert!(second.status.success(), "{}", text(second.stderr));
+    let out = text(second.stdout);
+    assert!(out.contains("history 4 origin standard_start policy explicit_only repetitions 2"));
+    assert!(out.ends_with("history 0 origin standard_start policy explicit_only repetitions 1\n"));
+    // Import metadata and policy survive too; the diagnostic shell stores policy
+    // without acting as the unattended runner that executes claims.
+    let imported = Game::from_fen("7k/8/8/8/8/8/8/KR6 w - - 100 77", ClaimPolicy::AutoClaim)
+        .unwrap()
+        .record()
+        .to_json();
+    let output = shell(format!("record load {imported}\nhistory\n").as_bytes());
+    assert!(output.status.success());
+    assert_eq!(
+        text(output.stdout),
+        "fen 7k/8/8/8/8/8/8/KR6 w - - 100 77\nhistory 0 origin imported_fen policy auto_claim repetitions 1\n"
+    );
+}
+
+#[test]
+fn invalid_or_observation_bearing_records_never_replace_the_diagnostic_game() {
+    use mshogi_core::chess::*;
+    let mut record = Game::new(ClaimPolicy::ExplicitOnly).record();
+    record.push_event(RecordEvent {
+        ply: 0,
+        kind: RecordEventKind::Observation(MatchObservation::Command {
+            actor: Color::White,
+            command: RecordedCommand::OfferDraw,
+        }),
+    });
+    let observation = record.to_json();
+    let mut invalid = Game::new(ClaimPolicy::ExplicitOnly).record();
+    invalid.push_event(RecordEvent {
+        ply: 0,
+        kind: RecordEventKind::Move("e2e4".parse().unwrap()),
+    });
+    invalid.push_event(RecordEvent {
+        ply: 1,
+        kind: RecordEventKind::Move("e7e4".parse().unwrap()),
+    });
+    let output=shell(format!("move g1f3 g8f6 f3g1 f6g8\nrecord load {{}}\nrecord load {}\nrecord load {observation}\nhistory\nundo 4\nhistory\n",invalid.to_json()).as_bytes());
+    assert_eq!(output.status.code(), Some(1));
+    let err = text(output.stderr);
+    assert_eq!(err.lines().count(), 3);
+    assert!(err.contains("record event 2"));
+    assert!(err.contains("cannot restore match state"));
+    let out = text(output.stdout);
+    assert!(out.contains("history 4 origin standard_start policy explicit_only repetitions 2"));
+    assert!(out.ends_with("history 0 origin standard_start policy explicit_only repetitions 1\n"));
 }

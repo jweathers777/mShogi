@@ -6,7 +6,9 @@
 
 use std::fmt::Write as _;
 
-use mshogi_core::chess::{Action, Color, PieceKind, Position, Promotion, Square, Undo};
+use mshogi_core::chess::{
+    Action, ClaimPolicy, Color, Game, GameRecord, HistoryOrigin, PieceKind, Promotion, Square,
+};
 
 /// Maximum bytes before LF, including a possible CR. Enforced while reading.
 pub const MAX_LINE_BYTES: usize = 4096;
@@ -25,8 +27,6 @@ fn decimal(text: &str) -> bool {
     !text.is_empty() && text.bytes().all(|b| b.is_ascii_digit())
 }
 
-pub const STARTPOS: &str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-
 pub const SHELL_HELP: &str =
     "Commands (one per line; blank lines and lines starting with # are ignored):
   position startpos        Load the standard starting position
@@ -36,6 +36,9 @@ pub const SHELL_HELP: &str =
   legal                    List legal actions in divide order
   move <action>...         Apply actions in order; all or none
   undo [n]                 Undo the last n applied actions (default 1)
+  history                  Show origin, policy and current repetition count
+  record                   Print the canonical chess history record
+  record load <JSON>       Restore a move-only record atomically
   status                   Print quiet, check, checkmate or stalemate
   perft <depth>            Count legal action sequences of that depth
   divide <depth>           Per-root-action perft counts and total
@@ -50,18 +53,15 @@ pub enum Next {
     Quit,
 }
 
-/// Session state: the current position and the undo records applied since
-/// the last load, newest last.
+/// Adapter state delegates every rule-relevant history field to the library.
 pub struct Session {
-    position: Position,
-    history: Vec<Undo>,
+    game: Game,
 }
 
 impl Session {
     pub fn new() -> Self {
         Self {
-            position: Position::from_fen(STARTPOS).expect("standard position is valid"),
-            history: Vec::new(),
+            game: Game::new(ClaimPolicy::ExplicitOnly),
         }
     }
 
@@ -87,7 +87,7 @@ impl Session {
             "position" => self.load(rest, out)?,
             "fen" => {
                 no_args(command, &args)?;
-                writeln!(out, "fen {}", self.position).unwrap();
+                writeln!(out, "fen {}", self.game.position()).unwrap();
             }
             "show" => {
                 no_args(command, &args)?;
@@ -95,7 +95,7 @@ impl Session {
             }
             "legal" => {
                 no_args(command, &args)?;
-                let mut legal = self.position.legal_actions();
+                let mut legal = self.game.position().legal_actions();
                 legal.sort_by_key(|action| order_key(*action));
                 let texts: Vec<String> = legal.into_iter().map(action_text).collect();
                 if texts.is_empty() {
@@ -106,18 +106,45 @@ impl Session {
             }
             "move" => self.apply(&args, out)?,
             "undo" => self.undo(&args, out)?,
+            "history" => {
+                no_args(command, &args)?;
+                writeln!(
+                    out,
+                    "history {} origin {} policy {} repetitions {}",
+                    self.game.ply_count(),
+                    match self.game.history_origin() {
+                        HistoryOrigin::StandardStart => "standard_start",
+                        HistoryOrigin::ImportedFen => "imported_fen",
+                    },
+                    match self.game.claim_policy() {
+                        ClaimPolicy::ExplicitOnly => "explicit_only",
+                        ClaimPolicy::AutoClaim => "auto_claim",
+                    },
+                    self.game.current_occurrences()
+                )
+                .unwrap();
+            }
+            "record" => self.record(rest, out)?,
             "status" => {
                 no_args(command, &args)?;
-                writeln!(out, "status {}", self.position.classify()).unwrap();
+                writeln!(out, "status {}", self.game.position().classify()).unwrap();
             }
             "perft" => {
                 let depth = depth(command, &args)?;
-                let nodes = self.position.perft(depth).map_err(|e| e.to_string())?;
+                let nodes = self
+                    .game
+                    .position()
+                    .perft(depth)
+                    .map_err(|e| e.to_string())?;
                 writeln!(out, "perft {depth} {nodes}").unwrap();
             }
             "divide" => {
                 let depth = depth(command, &args)?;
-                let entries = self.position.divide(depth).map_err(|e| e.to_string())?;
+                let entries = self
+                    .game
+                    .position()
+                    .divide(depth)
+                    .map_err(|e| e.to_string())?;
                 let mut total: u64 = 0;
                 for entry in entries {
                     writeln!(out, "{} {}", action_text(entry.action), entry.nodes).unwrap();
@@ -141,16 +168,16 @@ impl Session {
     }
 
     fn load(&mut self, rest: &str, out: &mut String) -> Result<(), String> {
-        let position = match rest.split_once(separator) {
-            _ if rest == "startpos" => Position::from_fen(STARTPOS).unwrap(),
+        let game = match rest.split_once(separator) {
+            _ if rest == "startpos" => Game::new(ClaimPolicy::ExplicitOnly),
             Some(("fen", fen)) => {
-                Position::from_fen(fen.trim_matches(separator)).map_err(|e| e.to_string())?
+                Game::from_fen(fen.trim_matches(separator), ClaimPolicy::ExplicitOnly)
+                    .map_err(|e| e.to_string())?
             }
             _ => return Err("usage: position startpos | position fen <FEN>".into()),
         };
-        self.position = position;
-        self.history.clear();
-        writeln!(out, "fen {}", self.position).unwrap();
+        self.game = game;
+        writeln!(out, "fen {}", self.game.position()).unwrap();
         Ok(())
     }
 
@@ -159,8 +186,7 @@ impl Session {
             return Err("usage: move <action>...".into());
         }
         // Apply to a copy so that a failure anywhere leaves the session intact.
-        let mut position = self.position.clone();
-        let mut records = Vec::with_capacity(args.len());
+        let mut game = self.game.clone();
         for (index, text) in args.iter().enumerate() {
             let failure = |error: String| {
                 format!(
@@ -171,14 +197,11 @@ impl Session {
                 )
             };
             let action = parse_action(text).map_err(failure)?;
-            let record = position
-                .apply(action)
+            game.apply(action)
                 .map_err(|error| failure(error.to_string()))?;
-            records.push(record);
         }
-        self.position = position;
-        self.history.extend(records);
-        writeln!(out, "fen {}", self.position).unwrap();
+        self.game = game;
+        writeln!(out, "fen {}", self.game.position()).unwrap();
         Ok(())
     }
 
@@ -197,24 +220,47 @@ impl Session {
                 })?,
             _ => return Err("usage: undo [n]".into()),
         };
-        if count > self.history.len() {
+        if count > self.game.ply_count() {
             return Err(format!(
                 "cannot undo {count}: only {} action(s) since the last load",
-                self.history.len()
+                self.game.ply_count()
             ));
         }
-        let mut position = self.position.clone();
-        for record in self.history.iter().rev().take(count) {
-            position.undo(record).map_err(|e| e.to_string())?;
+        for _ in 0..count {
+            self.game
+                .undo()
+                .expect("count checked against owned history");
         }
-        self.position = position;
-        self.history.truncate(self.history.len() - count);
-        writeln!(out, "fen {}", self.position).unwrap();
+        writeln!(out, "fen {}", self.game.position()).unwrap();
+        Ok(())
+    }
+
+    fn record(&mut self, rest: &str, out: &mut String) -> Result<(), String> {
+        if rest.is_empty() {
+            writeln!(out, "record {}", self.game.record().to_json()).unwrap();
+            return Ok(());
+        }
+        let Some(("load", json)) = rest.split_once(separator) else {
+            return Err("usage: record | record load <JSON>".into());
+        };
+        let record = GameRecord::from_json(json.trim_matches(separator))
+            .map_err(|e| escaped(&e.to_string()))?;
+        let replay = record
+            .replay_history()
+            .map_err(|e| escaped(&e.to_string()))?;
+        if !replay.observations.is_empty() {
+            return Err(
+                "record includes match observations; diagnostic shell cannot restore match state"
+                    .into(),
+            );
+        }
+        self.game = replay.game;
+        writeln!(out, "fen {}", self.game.position()).unwrap();
         Ok(())
     }
 
     fn show(&self, out: &mut String) {
-        let p = &self.position;
+        let p = self.game.position();
         for rank in (0..8).rev() {
             let mut row = String::new();
             for file in 0..8 {
@@ -244,7 +290,7 @@ impl Session {
         writeln!(out, "halfmove {}", p.halfmove_clock()).unwrap();
         writeln!(out, "fullmove {}", p.fullmove_number()).unwrap();
         writeln!(out, "status {}", p.classify()).unwrap();
-        writeln!(out, "history {}", self.history.len()).unwrap();
+        writeln!(out, "history {}", self.game.ply_count()).unwrap();
     }
 }
 
@@ -272,51 +318,18 @@ fn depth(command: &str, args: &[&str]) -> Result<u32, String> {
     }
 }
 
-fn parse_square(text: &[u8]) -> Option<Square> {
-    match text {
-        [file @ b'a'..=b'h', rank @ b'1'..=b'8'] => Square::new(file - b'a', rank - b'1'),
-        _ => None,
-    }
-}
-
-/// Parse lowercase coordinate notation; legality is decided by the library.
+/// Parse syntax through the shared core adapter; keep human shell diagnostics.
 pub fn parse_action(text: &str) -> Result<Action, String> {
-    let bytes = text.as_bytes();
-    let invalid = || {
+    text.parse().map_err(|_| {
         format!(
             "invalid action '{}'; expected e.g. e2e4 or e7e8q",
             escaped(text)
         )
-    };
-    if !matches!(bytes.len(), 4 | 5) {
-        return Err(invalid());
-    }
-    let from = parse_square(&bytes[0..2]).ok_or_else(invalid)?;
-    let to = parse_square(&bytes[2..4]).ok_or_else(invalid)?;
-    let promotion = match bytes.get(4) {
-        None => None,
-        Some(b'q') => Some(Promotion::Queen),
-        Some(b'r') => Some(Promotion::Rook),
-        Some(b'b') => Some(Promotion::Bishop),
-        Some(b'n') => Some(Promotion::Knight),
-        Some(_) => return Err(invalid()),
-    };
-    Ok(Action {
-        from,
-        to,
-        promotion,
     })
 }
 
 pub fn action_text(action: Action) -> String {
-    let suffix = match action.promotion {
-        None => "",
-        Some(Promotion::Queen) => "q",
-        Some(Promotion::Rook) => "r",
-        Some(Promotion::Bishop) => "b",
-        Some(Promotion::Knight) => "n",
-    };
-    format!("{}{}{suffix}", action.from, action.to)
+    action.to_string()
 }
 
 // The library's documented divide order: source, destination, promotion.

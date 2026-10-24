@@ -24,18 +24,19 @@ State values:
 | Packaged desktop application on three systems | Deferred | Not started | M3 |
 | Rules-owned game history and record (profile ID, initial state, complete actions, repetition identity, history-restoring undo) | Implemented | [Game/history record contract](chess-history-record-v1.md): exact known occurrences, imported-history provenance, policy, owned undo; ordered command/clock observations replay with action context. Console uses Game and atomically reloads move-only records. Observation replay does not adjudicate commands/clocks | MSH-16; MSH-17/18 semantics, MSH-23/25 full match replay |
 | Dead position (FIDE 5.2.2), approved M2 subset | Implemented (subset) | [Adjudication](chess-adjudication.md): sound kings/minor/same-color-bishops proofs; all other cases Unknown | MSH-17 subset; MSH-26 M4 full recognition remains Deferred |
-| Resignation and its possible-mate exception (5.1.2) | Deferred | Match command, not a board action | M2 |
-| Agreed draws (5.2.3, 9.1) | Deferred | Event restrictions and offer/accept state are outside position classification | M2 |
+| Resignation and its possible-mate exception (5.1.2) | Implemented (bounded) | [Match API](chess-match-api.md): sound impossibility/verified witness, otherwise unresolved and unscored | MSH-18; MSH-26 full feasibility |
+| Agreed draws (5.2.3, 9.1) | Implemented | Rules-owned offer/accept/decline with both recorded first moves; deterministic replay tests | MSH-18 |
 | Claimable threefold repetition (9.2) | Implemented | Current/intended optional claims, separate outcomes, policy selection and live replay; independent profile fixtures | MSH-17 |
 | Claimable fifty-move draw (9.3) | Implemented | Optional current/intended claims; halfmove 100 alone does not conclude a game | MSH-17 |
 | Automatic fivefold / 75-move draw (9.6) | Implemented | Rules-owned live boundary, known history and checkmate precedence; profile/undo/replay tests | MSH-17 |
-| Time loss with possible-mate exception (6.9), clock policies | Deferred | A counter or FEN cannot settle these results | M2 (match runner) |
+| Time loss with possible-mate exception (6.9), clock policies | Implemented (bounded) | Injected untimed/increment clocks, deadline/increment ordering, sound proof/witness or unscored uncertainty, semantic match replay | MSH-18; MSH-23 runner, MSH-26 full feasibility |
 | Transparent static evaluation | Implemented | [Material baseline](../evaluation.md), independent score/perspective/symmetry tests; no outcomes or strength claim | MSH-19 |
-| Search and competitive strength | Deferred | Static evaluation is not search; perft is not search evidence | MSH-20 M2 baseline, M5 strength |
+| Full-width search baseline | Implemented | [Search](../search.md): independently solved trees/chess, full game history and claim policy, private state, deterministic work limits; measured release baseline | MSH-20 |
+| Competitive strength | Deferred | No playing-strength claim from the baseline search | M5 |
 | External engine protocols (UCI and others) | Deferred | The console is a human diagnostic session, not a machine protocol | MSH-22 UCI, MSH-23 independent UCI match |
 | Learned evaluation and neural infrastructure | Deferred | Not started | M5 |
 | Other five promised games | Deferred | Requirements remain; none implemented or certified by this corpus | M4 |
-| History, claims and automatic-result policy | Deferred | Owner directions 2026-10-24 specified in [match v1](chess-match-v1.md); claims remain optional and distinct from results | MSH-16, MSH-17 |
+| History, claims and automatic-result policy | Implemented | Known history and live outcomes/claims follow [match v1](chess-match-v1.md); imported origin and optional claims remain explicit | MSH-16, MSH-17 |
 | Full dead recognition and side-specific possible mate | Deferred | M2 subset approved 2026-10-24; timeout/resignation without a proof or mating witness is unresolved and unscored | MSH-18 (M2 bounded handling), MSH-26 (M4 completion) |
 | Software match/event policy | Deferred | Untimed/increment clocks, auto-claim policy, command/clock replay and failure separation specified in [match v1](chess-match-v1.md) | MSH-18, MSH-23 |
 | All-six-game save schema and search-cache representation | Deferred | Not required to settle in M2; ordinary representation choices belong to implementers within A-03/A-06 | Actual consumers in M2–M4; no prerequisite universal design |

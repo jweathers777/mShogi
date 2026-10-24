@@ -1,6 +1,6 @@
 # Chess game history and record v1
 
-MSH-16 implements the history/record portion of [`mshogi.chess.match.v1`](chess-match-v1.md) over the unchanged [`mshogi.chess.position.v1`](chess-position-v1.md). `Game` is a rules-library type. Its current coverage is action history and repetition identity/counts. MSH-17 now adds a separate [live adjudicated boundary](chess-adjudication.md); this document retains the diagnostic history/observation contract. Match-command effects and clock adjudication remain MSH-18. Consumers must not describe `Game` as complete adjudication yet.
+MSH-16 implements the history/record portion of [`mshogi.chess.match.v1`](chess-match-v1.md) over the unchanged [`mshogi.chess.position.v1`](chess-position-v1.md). `Game` is a rules-library type. Its current coverage is action history and repetition identity/counts. MSH-17 now adds a separate [live adjudicated boundary](chess-adjudication.md); this document retains the diagnostic history/observation contract. MSH-18 now supplies match-command/clock semantics in its separate [match envelope](chess-match-api.md). Consumers must not describe `Game` as complete adjudication yet.
 
 ## Game boundary
 
@@ -29,7 +29,7 @@ Payloads are tagged with `kind`: `move` carries a complete coordinate `action`; 
 
 `GameRecord::push_event` supports assembling untrusted data. `replay_history()` verifies every event's declared ply and applies every played action through the rules library. It returns the rebuilt `Game` and `ContextualObservation` entries with one-based **event sequence**, action ply, full position at that context and the original observation. Multiple observations can share a ply; event sequence keeps their total order. A bad action/context returns an error with event index and no partial game. JSON order and full typed state, rather than hash iteration, determine record output and replay.
 
-This is **history and observation replay**, not full match replay. An observed request may be invalid; an observed clock may be inconsistent. MSH-16 preserves both honestly and does not silently apply, approve or discard them. MSH-17/18 must validate their rule/clock semantics and establish outcomes. Engine configuration, proofs, match conclusions/failures and further runner metadata belong to a versioned match envelope when those consumers arrive. They can embed this history without serializing private undo. The future full replay obligation remains MSH-23/MSH-25.
+This is **history and observation replay**, not full match replay. An observed request may be invalid; an observed clock may be inconsistent. MSH-16 preserves both honestly and does not silently apply, approve or discard them. The separate live/match APIs (MSH-17/18) validate their rule/clock semantics and establish outcomes. Engine configuration, proofs, match conclusions/failures and further runner metadata belong to a versioned match envelope when those consumers arrive. They can embed this history without serializing private undo. The future full replay obligation remains MSH-23/MSH-25.
 
 ## Real adapter and verification
 

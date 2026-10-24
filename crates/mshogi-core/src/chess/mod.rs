@@ -9,6 +9,7 @@
 //! Attack queries are geometric and candidates are pseudo-legal; neither is
 //! legal-move membership. `legal_actions` and `classify` provide that.
 
+use serde::{Deserialize, Serialize};
 use std::fmt;
 
 mod action;
@@ -18,6 +19,7 @@ mod fen;
 mod game;
 mod generate;
 mod legal;
+mod matchplay;
 mod notation;
 mod perft;
 mod record;
@@ -26,12 +28,14 @@ pub use adjudication::*;
 pub use fen::{FenError, FenErrorCategory, FenErrorReason};
 pub use game::{ClaimPolicy, Game, HistoryOrigin, RepetitionIdentity, STANDARD_START_FEN};
 pub use legal::Classification;
+pub use matchplay::*;
 pub use notation::ActionParseError;
 pub use perft::{DivideEntry, PerftError};
 pub use record::*;
 
 /// One of the two colors in orthodox chess.
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
 pub enum Color {
     /// White moves toward increasing ranks.
     White,

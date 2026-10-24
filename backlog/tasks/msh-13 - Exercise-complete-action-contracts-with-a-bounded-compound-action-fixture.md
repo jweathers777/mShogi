@@ -1,10 +1,11 @@
 ---
 id: MSH-13
 title: Review real action boundaries with a bounded compound-action fixture
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-10-22T13:27:00Z'
-updated_date: '2026-10-22T13:35:00Z'
+updated_date: '2026-10-24T19:44:00Z'
 labels:
   - architecture
   - variants
@@ -59,3 +60,62 @@ Implementing Chu or Tenjiku, inventing their rules, building a general rules DSL
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Claim MSH-13 on claude/next-task at c55db47 (equal to origin/codex/rewrite), worktree .claude/worktrees/next-task. Owner-requested queue: MSH-13 then MSH-14. Inventory the real production boundaries from MSH-4..MSH-11 (Square, Piece, Position, Action, Promotion, apply/apply_ordinary, resolve/apply_resolved, ActionError, Undo/undo, candidates/legal_actions, the console text adapter).
+2. Executable production checks (tests/action_boundary.rs):
+   - Square cannot represent a beyond-chess index (the documented chess-specific limit);
+   - (from, to, promotion) is a unique action identity in chess, asserted over every corpus legal set, so chess needs no route field;
+   - the real multi-effect actions castling (king + rook + both rights + counters), en passant (off-destination victim) and capturing promotion (capture + replacement + captured home-rook right) resolve their effects from the board, not the client, and are atomic on rejection with exact undo;
+   - console coordinate text round-trips every legal action identity.
+3. Explicitly synthetic, test-only fixture in the same file: a 16x16 board (indices up to 255) with a compound two-step action carrying an ordered route. Two complete actions with equal endpoints but distinct routes (a capture-and-return versus a step-out-and-return) produce different rule-derived effects. It follows the production checked pattern: resolve from the board, apply to a candidate copy, validate, publish, snapshot undo. It covers atomic rejection of an invalid second step, complete reversal, partial selection being non-committal, and a serialization of action identity (route) that carries no effects and ignores none.
+   Hand-inspected expected outcomes. No real Chu/Tenjiku rules are claimed or invented.
+4. Review document docs/review/m1-action-boundary.md:
+   - the boundary inventory, with what is intentionally chess-specific;
+   - a mapping table from each synthetic case to the production boundary or a concrete future adapter (per-game Square/Position/Action types, route-bearing actions, a game-tagged action record), with the changes each requires;
+   - exercised versus not exercised; fixture versus production evidence;
+   - the A-02/A-03 conformance assessment.
+   If a real conflict is found, create a blocking follow-up and make MSH-14 depend on it.
+5. Independent review, integration, native CI, close.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Startup (2026-10-24): owner @claude, branch claude/next-task in worktree .claude/worktrees/next-task at c55db47, equal to origin/codex/rewrite; no other task In Progress. The user selected MSH-12 and then asked to carry on until no work remains, so this is the owner-requested queue MSH-13 then MSH-14, with separate records. Pinned backlog.md 1.55.1, Rust 1.89.0.
+
+Implementation candidate on parent c55db47:
+- New docs/review/m1-action-boundary.md:
+  - an inventory of the real production boundaries (Square, Piece, Position, Action, Promotion, apply/apply_ordinary over private resolve/apply_resolved/validate, ActionError, Undo/undo, candidate/legal sets, diagnostics, the console/fixture text adapters), all intentionally chess-specific with no shared multi-game trait;
+  - a mapping table from each synthetic case to its production status and a concrete future adapter change;
+  - exercised versus synthetic-only versus not exercised;
+  - the A-02/A-03 assessment (no conflict, so no blocking follow-up);
+  - recorded limits.
+- New crates/mshogi-core/tests/action_boundary.rs:
+  - Part 1, production: Square rejects beyond-8x8 indices; (from, to, promotion) is unique over every legal set of the 35 corpus positions, so chess needs no route field; castling, en passant and capturing promotion on a home rook derive every effect from the board, with exact hand-inspected after-FENs and exact undo; castling through attack, a missing promotion choice and EP exposure reject atomically. The hand-written production expectations were independently confirmed with pinned python-chess 1.11.2 (all 5 checks true).
+  - Part 2, explicitly synthetic and test-only (invented strider rules on a 16x16 board, explicitly not Chu/Tenjiku): an index-255 square; equal-endpoint capture-and-return versus step-out-and-return as distinct actions with distinct encodings and effects; a double capture with ordered effects and complete reversal; repeated undo rejected; atomic rejection of a bad later step, an own-piece step, an empty route and an over-long route; partial selection not committing; a route identity encoding that round-trips, carries no effects and rejects effect annotations.
+- The coverage ledger row and development guide were updated.
+Local: cargo test -p mshogi-core --test action_boundary --locked 10/10; fmt; clippy; cargo test --workspace --locked all suites; whitespace diff check. Native CI pending.
+
+Independent review: a fresh delegated reviewer (Claude subagent, no repository edits) verified the inventory against the code, ran the action_boundary suite (10/10), checked every expected FEN and rejection by hand, and confirmed the serialization and equal-endpoint cases.
+- It agrees there is no A-02/A-03 conflict: all public chess types are under mshogi_core::chess, no crate-wide type assumes 8x8, Action has no effect field, rejection uses a candidate copy plus validation before publishing, Undo's layout is private, and the regression fixtures carry rules_profile and complete actions without effects.
+- Nothing blocking; no follow-up blocks MSH-14; no real Chu/Tenjiku rule is claimed.
+
+Should-fix, resolved:
+(1) ActionError is 14 variants, not 12; UndoError was added to the inventory.
+(2) The double-capture test now asserts the full ordered effect vector (capture, step, capture, step).
+(3) The chess route-uniqueness claim now rests on a stated rules argument; the corpus test is labeled a sanity check, not a proof.
+(4) Limit 2 reworded: each real profile defines its own step and effect semantics from its references; the strider convention prescribes nothing.
+(5) The Not-exercised list now includes effects on squares neither visited nor the destination.
+(6) Added required change 6, a rules-owned history layer with undo that also restores history, repetition tables and caches. The console history Vec<Undo> is now named as adapter state, and the equality-based undo limitation is stated.
+
+Nits, resolved:
+(7) Partial selection is described as guaranteed by type design.
+(8) The synthetic rejections happen before effects, while rejection after effects is shown by the production EP case.
+(9) Undo is public and opaque with a private layout.
+(10) The console has no game/profile selector (additive later).
+Not done: (11) the stale task file name is left to the Backlog CLI.
+Reruns PASS: action_boundary 10/10, fmt, clippy, whitespace diff check.
+<!-- SECTION:NOTES:END -->

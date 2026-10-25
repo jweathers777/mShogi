@@ -23,3 +23,21 @@ it("has no capacity alarm when native admission is available", () => {
   render(<CapacityNotice capacity={{ id: 1, status: "available", message: null }} />);
   expect(screen.queryByLabelText("Document capacity")).toBeNull();
 });
+
+it("reveals a new native resource pause once and preserves focus through subsequent polls", () => {
+  const view = (id: number, status: "available" | "paused") => (
+    <><button>Save</button><CapacityNotice capacity={{ id, status, message: null }} /></>
+  );
+  const { rerender } = render(view(1, "available"));
+  const save = screen.getByRole("button", { name: "Save" });
+  save.focus();
+  rerender(view(2, "paused"));
+  const notice = screen.getByRole("alert");
+  expect(document.activeElement).toBe(notice);
+  expect(notice.tabIndex).toBe(-1);
+  save.focus();
+  rerender(view(2, "paused"));
+  expect(document.activeElement).toBe(save);
+  rerender(view(3, "paused"));
+  expect(document.activeElement).toBe(notice);
+});

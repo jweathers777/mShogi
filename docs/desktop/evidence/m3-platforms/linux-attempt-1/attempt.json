@@ -1,0 +1,22 @@
+{
+  "source_revision": "9b7a2a6b29c30b8d417d75cb4393dd6ba43f6ad0",
+  "run_url": "https://github.com/jweathers777/mShogi/actions/runs/40228382037",
+  "status": "failed",
+  "establishes": [
+    "Actual normal Debian package was installed and its host/engine matched the package report.",
+    "Native process/window attachment and frontend loading succeeded."
+  ],
+  "does_not_establish": [
+    "No chess move was played by this failed attempt.",
+    "Native desktop rendering and GUI journeys did not pass."
+  ],
+  "failure": "First WebKit SVG group element-click returned element not interactable. Native desktop capture was blank despite the rendered webview capture; driver log reports missing DRI3 acceleration.",
+  "proposed_correction": "Real W3C viewport pointer actions with DOM-read geometry/descendant hit checks; keyboard routes on large board; recorded Xvfb compositing override. Requires rerun.",
+  "files": {
+    "gui-report.json": "d96afac50fdb96a22a46922499b6b234524ee4d84a6c69cb1e813ad33ea40285",
+    "normal-failure.webview.png": "1bf25d065a3ba8a1c4e43c4e4d9e6718ae2526afca2f3a793394202ce9a94886",
+    "normal-failure.dom.json": "782d6e1557eea7f05cbd1d4221c967a72ccfa766fd0231fd393ab23b97537784",
+    "normal-driver.log": "f0ad18656b3c1a3990aea2c04a02af3c6a84ff3aea520726f2a919a1d7e8c262",
+    "normal-failure.desktop.png": "307c0992f3fed6f2ad6356e7e7e1825962f5602fe179bf2a84572b27bdfb5ddd"
+  }
+}

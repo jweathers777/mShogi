@@ -1,0 +1,29 @@
+{
+  "source_revision": "41866a3c5c30efd88d72584140510c8d1806e902",
+  "run_url": "https://github.com/jweathers777/mShogi/actions/runs/40229968153",
+  "status": "failed",
+  "establishes": [
+    "Actual normal NSIS-installed application played e2e4 and bundled engine a7a5.",
+    "Actual active analysis cancellation and bounded read-only replacement passed with corrected numeric input."
+  ],
+  "does_not_establish": [
+    "Requested save path, Open/history/Resume and native lifecycle journeys did not finish.",
+    "No verification fixture phase ran; this is not a complete Windows pass."
+  ],
+  "failure": "Timed out: native save created file; last observation: False",
+  "findings": [
+    "Native Save accepted the default game.mshogi filename, not the requested path.",
+    "The exact-PID Save modal has owner=0; the screenshot helper focused its main window and occluded the picker.",
+    "A genuine bundled-engine ConsoleWindowClass stole foreground focus during active analysis; this requires a product Windows process-launch fix."
+  ],
+  "retained_evidence": "Selected original files; full report retains checksums of the original CI artifact. No screenshots modified.",
+  "files": {
+    "gui-report.json": "4618cbed07e1b46efa706d88f800dc838fbff53c50ad8a136e90af15a76bfcb7",
+    "normal-play.desktop.png": "d85a0a35a0c62342a4811816a82e1bf7d98aa2868b899e504a82f76ee927406c",
+    "normal-active-analysis.desktop.png": "fbc52fecd675d6e01b6a29e8baa4aa4fd866de8269eb623ba586da728f434a40",
+    "normal-failure.desktop.png": "9831a108911028d162abcf432783309622584794bcbc7bc39eb6f1f5a929f77b",
+    "normal-failure.dom.json": "21c606e82f224b319dcd59b979171e6a4d50df916fbcc90118fe110056e17757",
+    "normal-driver.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "normal/native-001-save-picker.png": "0c6b6ed3006dd622c40adb9b59738f4a45c48156a2858d59f3b32ff7bd52bb9f"
+  }
+}

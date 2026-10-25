@@ -323,10 +323,12 @@ class Native:
                         owner = win32gui.GetWindow(owner, 4)  # GW_OWNER
                     return 0
 
-                # Focus a live owned modal directly; raising its disabled parent can
-                # leave a file picker behind another application's console window.
-                modals = [(owned_depth(window), window) for window in windows
-                          if window["class"] == "#32770"]
+                # The actual Tauri file picker can have GW_OWNER=0. Its exact
+                # PID/executable, native class and application-defined title still
+                # bind it to this host; do not raise the main window above it.
+                picker_titles = {"Save mShogi game", "Open mShogi game", "Confirm Save As"}
+                modals = [(max(owned_depth(window), int(window["title"] in picker_titles)), window)
+                          for window in windows if window["class"] == "#32770"]
                 modals = [(depth, window) for depth, window in modals if depth]
                 active = [window for _, window in modals
                           if before and window["hwnd"] == before["hwnd"]]
@@ -361,9 +363,28 @@ class Native:
         # Always retain the complete, unaltered desktop, including on focus failure.
         Path(path).parent.mkdir(parents=True, exist_ok=True)
         ImageGrab.grab(all_screens=True).save(path)
+        after = describe(win32gui.GetForegroundWindow())
+        if target is not None and (after is None or after["hwnd"] != target["hwnd"]
+                                   or after["pid"] != self.pid or after["image"] is None
+                                   or _canonical(after["image"]) != self.host):
+            focus_error = focus_error or "Foreground changed away from the bound target during capture"
+        engine_consoles = []
+
+        def collect_console(hwnd, _):
+            if self.engine is None or not win32gui.IsWindowVisible(hwnd):
+                return
+            if win32gui.GetClassName(hwnd) != "ConsoleWindowClass":
+                return
+            window = describe(hwnd)
+            if window and window["image"] and _canonical(window["image"]) == self.engine:
+                engine_consoles.append(window)
+
+        win32gui.EnumWindows(collect_console, None)
+        if engine_consoles:
+            focus_error = focus_error or "The bound bundled engine opened a visible native console"
         self._event("native_screenshot", path=str(path), action=action, target=target,
-                    foreground_before=before,
-                    foreground_after=describe(win32gui.GetForegroundWindow()), focus_error=focus_error)
+                    foreground_before=before, foreground_after=after,
+                    engine_consoles=engine_consoles, focus_error=focus_error)
         if focus_error is not None:
             raise RuntimeError(f"Native screenshot foreground validation failed: {focus_error}")
 
@@ -454,8 +475,34 @@ class Native:
             else:
                 absolute = Path(path).resolve()
                 control = self._filename(dialog)
-                control_info = {"name": control.element_info.name, "automation_id": control.element_info.automation_id}
-                control.set_edit_text(str(absolute))
+                control_info = {"name": control.element_info.name,
+                                "automation_id": control.element_info.automation_id,
+                                "value_before": control.get_value()}
+                # Real keyboard replacement commits through the common dialog's
+                # own input path. ValuePattern alone left its default filename in
+                # the observed Windows run, despite the native Save button closing.
+                control.set_focus()
+                if win32gui.GetForegroundWindow() != observed["hwnd"]:
+                    raise RuntimeError("Native filename input did not retain its bound picker foreground")
+                control.type_keys("^a{BACKSPACE}", set_foreground=False)
+                escaped = "".join("{" + char + "}" if char in "+^%~{}()" else char
+                                  for char in str(absolute))
+                control.type_keys(escaped, with_spaces=True, set_foreground=False, pause=0.01)
+                control_info["value_entered"] = control.get_value()
+                if control_info["value_entered"] != str(absolute):
+                    self._event("native_filename_rejected", dialog=observed,
+                                expected=str(absolute), filename_control=control_info)
+                    raise RuntimeError("Native filename readback differs from the requested absolute path")
+                control.type_keys("{TAB}", set_foreground=False)
+                control_info["value_after_blur"] = control.get_value()
+                if control_info["value_after_blur"] != str(absolute):
+                    self._event("native_filename_rejected", dialog=observed,
+                                expected=str(absolute), filename_control=control_info)
+                    raise RuntimeError("Native filename changed before accepting the picker")
+                entered_screenshot = screenshot.with_name(screenshot.stem + "-entered.png")
+                self.screenshot(entered_screenshot)
+                self._event("native_filename_entered", dialog=observed, expected=str(absolute),
+                            filename_control=control_info, screenshot=str(entered_screenshot))
                 self._button(dialog, "Save" if save else "Open", "1").invoke()
                 control = control_info
             while time.monotonic() < deadline:

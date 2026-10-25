@@ -1,4 +1,0 @@
-mShogi is a cross platform multi-variant shogi program I wrote in C++ using 
-Boost and wxWidgets sporatically over a period from 2003 to 2005.
-
-This branch is a work in progress where I am rewriting mShogi from scratch in Rust.

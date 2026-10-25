@@ -244,12 +244,22 @@ impl Process {
             )
             .into());
         }
-        let mut child = Command::new(path)
+        let mut command = Command::new(path);
+        command
             .arg("internal-search")
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
-            .stderr(Stdio::piped())
-            .spawn()?;
+            .stderr(Stdio::piped());
+        #[cfg(windows)]
+        {
+            use std::os::windows::process::CommandExt;
+            // The supervised protocol child uses pipes, not an interactive
+            // console. A Windows GUI host must not let each search create a
+            // console window and take foreground focus from the application.
+            const CREATE_NO_WINDOW: u32 = 0x0800_0000;
+            command.creation_flags(CREATE_NO_WINDOW);
+        }
+        let mut child = command.spawn()?;
         let mut input = child.stdin.take().expect("piped stdin");
         let output = child.stdout.take().expect("piped stdout");
         let mut error = child.stderr.take().expect("piped stderr");

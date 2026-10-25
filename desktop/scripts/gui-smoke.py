@@ -327,7 +327,7 @@ class Journey:
         archive = self.save(path)
         assert len(archive["observations"]) >= 2
         self.file("open", path)
-        wait(lambda: "Play remains paused until Resume" in w.text(".document-card"), "reopen stopped")
+        wait(lambda: "Opened the complete document with work stopped" in w.text(".document-card"), "reopen completed")
         self.plies(2)
         assert w.has(".play-paused")
         w.button("Play details")
@@ -347,9 +347,11 @@ class Journey:
         w.button("Return to live game")
         self.plies(2)
         assert not w.has(".historical-notice") and w.has(".play-paused")
+        assert "Viewing an exact read-only history prefix" not in w.text(".document-card")
         w.button("Resume play")
         wait(lambda: not w.has(".play-paused"), "explicit Resume")
         self.plies(2)
+        assert "Play remains paused" not in w.text(".document-card")
         # Save to the existing path uses no picker; the earlier observation is
         # canonical historical information, never resumable pending work.
         w.button("Save")

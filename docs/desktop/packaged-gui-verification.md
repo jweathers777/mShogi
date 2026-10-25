@@ -139,3 +139,17 @@ Windows native verification must reject a visible console belonging to the
 exact bundled engine and validate foreground focus at capture time. The picker
 adapter also needs exact-PID ownerless-modal handling and observed real filename
 input. These findings require a corrected packaged application rerun.
+
+The current-source macOS normal package was rebuilt and exercised separately;
+its [report](evidence/m3-platforms/macos-current/gui-report.json) records the
+exact package hashes, real play/cancellation, complete Save, clean Quit, fresh
+Open, history, Return to live/Resume and guarded native window close. It reuses
+the unchanged earlier macOS QA journeys explicitly. Fresh process inspection is
+separate from app-bound automation observations, which can reactivate an app.
+
+That interaction exposed stale present-tense file-operation messages after
+Return to live and Resume. Completed Open/reconstruction messages now describe
+the past operation; the authoritative live/history banner and paused controls
+describe current state. The correction changes no session or admission
+semantics. Focused native and frontend history/document checks passed; the
+final corrected package journeys remain required.

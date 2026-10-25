@@ -236,7 +236,7 @@
   "io": {
     "id": 3,
     "phase": "complete",
-    "message": "Viewing an exact read-only history prefix."
+    "message": "Reconstructed an exact read-only history prefix."
   },
   "view": {
     "historical": true,

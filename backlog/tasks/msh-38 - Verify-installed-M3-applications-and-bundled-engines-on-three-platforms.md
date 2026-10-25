@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-10-25T12:48:00Z'
-updated_date: '2026-10-25T20:32:00Z'
+updated_date: '2026-10-25T20:41:00Z'
 labels: []
 milestone: m-3
 dependencies:
@@ -54,4 +54,6 @@ First actual GUI run 40228382037 at 9b7a2a6 failed and remains recorded as faile
 Corrected run 40229968153 at41866a3: all-platform Rust CI40229968189 passed and macOS normal package passed. Linux actual desktop now renders and real e2e4/a7a5, active analysis cancellation and bounded replacement pass. Native Save created complete normal-complete.mshogi.mshogi because GTK retained the default extension; exact requested-path assertion failed. Failed partial report/screenshots/archive preserved in linux-attempt-2. Independently reviewed external adapter correction selects the whole location field with native Ctrl+A, captures entered path and requires the exact file. No product source or acceptance weakening; full Linux rerun remains required. Windows corrected GUI execution remains pending.
 
 Windows second actual attempt40229968153 also passed real play, active analysis cancellation and bounded replacement, then native Save selected default game.mshogi rather than the requested path. Failed report/images preserved in windows-attempt-2. The helper incorrectly raised the main window above the exact-PID ownerless native Save modal; correction binds that modal by PID/executable/native class/exact title and uses native keyboard filename replacement with pre/post-blur value observations. The actual native trace additionally exposed a genuine bundled-engine ConsoleWindowClass stealing foreground focus. MSH-38 resolves that platform defect with Windows-gated CREATE_NO_WINDOW on supervised internal-search child launch, preserving piped protocol and standalone CLI/UCI. External native captures now reject bound-engine consoles and post-capture focus drift. Local format, engine Clippy, ten engine checks and nine actual-process desktop play/analysis/persistence tests passed on macOS; Windows behavior still requires corrected packaged GUI/native CI. Independent review underway; no ticket completion claimed.
+
+Fresh local macOS normal package rebuilt from f8a132b: host0bb29929, engine45d264 unchanged. CUA real play/cancellation, complete Save, clean Quit with separate process absence, fresh process Open/history/Return live/Resume and native close Cancel plus freshPID32024 Discard exit passed; durable exact package/archive/screenshots/process-observations in macos-current. Explicitly exclude ambiguous app-bound AX reactivation as exit proof. The journey found completed I/O messages falsely saying current historical viewing/paused play after Return/Resume. Corrected only completion wording to past-operation evidence; current state remains native banner/controls. Updated generated snapshots and external assertions; 40 native session tests, tsc,13 focused History/Document tests and format/diff checks passed. Independent review and final package GUI checks still required.
 <!-- SECTION:NOTES:END -->

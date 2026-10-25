@@ -1,0 +1,27 @@
+{
+  "source_revision": "f0c8dd654cb151621ea95582bdce1b1b374faaa9",
+  "run_url": "https://github.com/jweathers777/mShogi/actions/runs/40231293207",
+  "status": "failed",
+  "establishes": [
+    "Real installed normal bundled-engine play, active analysis cancellation and bounded replacement passed.",
+    "Exact requested native Save succeeded:5822bytes/2observations/5controls/2gameevents.",
+    "Actual ownerless native Save/Open pickers were correctly captured foreground. Nine native screenshot observations recorded no visible console belonging to the exact bundled engine."
+  ],
+  "does_not_establish": [
+    "Open/history/Resume/native lifecycle and verification fixture phases did not finish; this is not a full Windows pass."
+  ],
+  "failure": "Expected one native Open button, found 3",
+  "finding": "Actual Open dialog has two DropDown controls also named Open, plus the correct uniquely identified native acceptance button with automation_id1. Name-only disambiguation rejected all3.",
+  "proposed_correction": "Prefer the unique intersection of the requested native button title and automation ID before unique-name fallback; keep ambiguous matches explicit failures. Requires real rerun.",
+  "retained_evidence": "Selected original files; report preserves hashes of original CI artifact. No screenshots modified.",
+  "files": {
+    "gui-report.json": "064f902c1a229d07a82fefc922ed7ed30860120ae7da8de04d38beb99c6a589e",
+    "normal-active-analysis.desktop.png": "c553b7648205423359d1a9f93906fd135696c5b60a857aa3886c834e9e72c48d",
+    "normal-failure.dom.json": "5636ca8da0d58992b35fec73e65cc3e08e60b6805fb59e80a005edd945f01040",
+    "normal-driver.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "normal-complete.mshogi": "092a49840b88fefa912457ca45419ade1c2e351e6f7852cf4cd2530eb8d05023",
+    "normal/native-001-save-picker-entered.png": "d35e67c6bfef3552d91ec444c9ba085f3b03867e460780c251788f0a891ddc44",
+    "normal/native-002-open-picker.png": "b2520a574adbed8ae4ecfc32bfc228992a970bad4279b50b545413cb49b686bf",
+    "normal/native-003-open-picker-failure.json": "badc59bc2d486a4fce4614de155941e20fc0dc91fc1f1faba7da7993b48dae09"
+  }
+}

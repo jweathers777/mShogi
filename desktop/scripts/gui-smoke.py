@@ -249,6 +249,17 @@ class Journey:
             self.log = None
         if self.native is not None:
             self.native.cleanup()
+            residual = {}
+            def isolated():
+                residual.update(host_alive=self.native.alive(),
+                                matching_processes=self.native.processes())
+                return not residual["host_alive"] and not residual["matching_processes"]
+            try:
+                wait(isolated, "phase cleanup leaves no bound host or engine", 5)
+            finally:
+                if self.phase_report is not None:
+                    self.phase_report["cleanup_isolation"] = {
+                        **residual, "scope": "Failure containment only; never native Quit evidence."}
             self.native_events.extend(getattr(self.native, "events", []))
             self.native = None
 
@@ -327,7 +338,7 @@ class Journey:
         archive = self.save(path)
         assert len(archive["observations"]) >= 2
         self.file("open", path)
-        wait(lambda: "Play remains paused until Resume" in w.text(".document-card"), "reopen stopped")
+        wait(lambda: "Opened the complete document with work stopped" in w.text(".document-card"), "reopen completed")
         self.plies(2)
         assert w.has(".play-paused")
         w.button("Play details")
@@ -347,9 +358,11 @@ class Journey:
         w.button("Return to live game")
         self.plies(2)
         assert not w.has(".historical-notice") and w.has(".play-paused")
+        assert "Viewing an exact read-only history prefix" not in w.text(".document-card")
         w.button("Resume play")
         wait(lambda: not w.has(".play-paused"), "explicit Resume")
         self.plies(2)
+        assert "Play remains paused" not in w.text(".document-card")
         # Save to the existing path uses no picker; the earlier observation is
         # canonical historical information, never resumable pending work.
         w.button("Save")
@@ -505,31 +518,54 @@ def main():
         phases = ([None] if args.phase == "normal" else
                   ["standard", "promotion", "claim", "capacity", "synthetic"] if args.phase == "verification" else
                   [None, "standard", "promotion", "claim", "capacity", "synthetic"])
+        failures = []
+        report["phase_failures"] = failures
         for fixture in phases:
+            journey.phase_report = None
             try:
                 journey.normal() if fixture is None else journey.fixture(fixture)
             except Exception as phase_error:
+                failure = {"phase": "normal" if fixture is None else f"verification-{fixture}",
+                           "error": str(phase_error), "traceback": traceback.format_exc()}
+                failures.append(failure)
                 if journey.phase_report is not None:
-                    journey.phase_report.update(status="failed", error=str(phase_error))
+                    journey.phase_report.update(status="failed", error=str(phase_error),
+                                                traceback=failure["traceback"])
+                else:
+                    report["phases"].append({**failure, "status": "failed"})
                 try:
                     journey.capture("failure")
                 except Exception as capture_error:
-                    report["failure_capture_error"] = str(capture_error)
-                raise
+                    failure["capture_error"] = str(capture_error)
             finally:
+                # Each phase owns fresh native processes, a driver and display
+                # adapter. Finish failure cleanup before attempting the next;
+                # cleanup is never graceful-shutdown evidence. A cleanup error
+                # still aborts the run because isolation was not established.
                 journey.cleanup()
+        if failures:
+            raise AssertionError("Required GUI phases failed: " +
+                                 "; ".join(f"{item['phase']}: {item['error']}" for item in failures))
         report["status"] = "passed"
     except Exception as error:
         report.update(status="failed", error=str(error), traceback=traceback.format_exc())
         raise
     finally:
+        cleanup_failure = None
         if journey is not None:
-            journey.cleanup()
+            try:
+                journey.cleanup()
+            except Exception as error:
+                cleanup_failure = error
+                report.update(status="failed", cleanup_error=str(error),
+                              cleanup_traceback=traceback.format_exc())
             report["native_events"] = journey.native_events
         report["finished_at_utc"] = stamp()
         report["files"] = {str(path.relative_to(args.output)): digest(path)
             for path in sorted(args.output.rglob("*")) if path.is_file() and path.name != "gui-report.json"}
         (args.output / "gui-report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+        if cleanup_failure is not None:
+            raise RuntimeError("GUI failure cleanup did not complete; see retained report") from cleanup_failure
 
 
 if __name__ == "__main__":

@@ -1,0 +1,38 @@
+{
+  "method": "Separate exec process observations; no GUI/app-bound observation used to infer termination.",
+  "command": "pgrep -fl 'bundle/macos/mShogi.app/Contents/MacOS|internal-search'",
+  "observations": [
+    {
+      "context": "After clean native Cmd-Q of saved document",
+      "permissions": "sandbox initial attempt",
+      "exit_code": 3,
+      "stdout": "",
+      "stderr": "sysmon request failed with error: sysmond service not found\npgrep: Cannot get process list",
+      "result": "Unavailable; not exit proof."
+    },
+    {
+      "context": "Same clean Quit check retried with ordinary escalation",
+      "permissions": "require_escalated",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "result": "No matching host or internal-search."
+    },
+    {
+      "context": "Before final fresh-process native window-close test",
+      "permissions": "require_escalated",
+      "exit_code": 0,
+      "stdout": "32024 /Users/johnweathers/Development/Personal/mShogi/.claude/worktrees/next-task/desktop/src-tauri/target/release/bundle/macos/mShogi.app/Contents/MacOS/mshogi-desktop\n",
+      "stderr": ""
+    },
+    {
+      "context": "After native window Close guard then Discard, before any app-bound observation/teardown",
+      "permissions": "require_escalated",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "result": "Previously observed PID32024 host and any internal-search absent."
+    }
+  ],
+  "qualification": "Transcribed from retained task tool results; this is not a separately captured PTY log. Ambiguous AX reactivation described in gui-report.json is excluded."
+}

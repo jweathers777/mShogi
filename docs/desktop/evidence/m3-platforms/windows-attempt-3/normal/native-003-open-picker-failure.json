@@ -1,0 +1,623 @@
+{
+  "reason": "open-picker-failure",
+  "windows": [
+    {
+      "hwnd": 262776,
+      "pid": 6024,
+      "title": "Open mShogi game",
+      "class": "#32770",
+      "owner": 0,
+      "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+      "rectangle": [
+        0,
+        0,
+        625,
+        480
+      ],
+      "controls": [
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "Command Module",
+          "type": "ToolBar",
+          "automation_id": "FolderBandModuleInner"
+        },
+        {
+          "name": "&Help",
+          "type": "Button",
+          "automation_id": "HelpButton"
+        },
+        {
+          "name": "Preview pane",
+          "type": "CheckBox",
+          "automation_id": "PreviewButton"
+        },
+        {
+          "name": "Views",
+          "type": "SplitButton",
+          "automation_id": "ViewControl"
+        },
+        {
+          "name": "View Slider",
+          "type": "Button",
+          "automation_id": "SplitMenuButton"
+        },
+        {
+          "name": "Organize",
+          "type": "Button",
+          "automation_id": "{7DDC1264-7E4D-4F74-BBC0-D191987C8D0F}"
+        },
+        {
+          "name": "New folder",
+          "type": "Button",
+          "automation_id": "{E44616AD-6DF1-4B94-85A4-E465AE8A19DB}"
+        },
+        {
+          "name": "Control Host",
+          "type": "Pane",
+          "automation_id": "ProperTreeHost"
+        },
+        {
+          "name": "Navigation Pane",
+          "type": "Tree",
+          "automation_id": "100"
+        },
+        {
+          "name": "Quick access",
+          "type": "TreeItem",
+          "automation_id": ""
+        },
+        {
+          "name": "Desktop (pinned)",
+          "type": "TreeItem",
+          "automation_id": ""
+        },
+        {
+          "name": "Downloads (pinned)",
+          "type": "TreeItem",
+          "automation_id": ""
+        },
+        {
+          "name": "Documents (pinned)",
+          "type": "TreeItem",
+          "automation_id": ""
+        },
+        {
+          "name": "Pictures (pinned)",
+          "type": "TreeItem",
+          "automation_id": ""
+        },
+        {
+          "name": "Desktop",
+          "type": "TreeItem",
+          "automation_id": ""
+        },
+        {
+          "name": "This PC",
+          "type": "TreeItem",
+          "automation_id": ""
+        },
+        {
+          "name": "Network",
+          "type": "TreeItem",
+          "automation_id": ""
+        },
+        {
+          "name": "Linux",
+          "type": "TreeItem",
+          "automation_id": ""
+        },
+        {
+          "name": "Shell Folder View",
+          "type": "Pane",
+          "automation_id": "listview"
+        },
+        {
+          "name": "Items View",
+          "type": "List",
+          "automation_id": ""
+        },
+        {
+          "name": "Horizontal",
+          "type": "ScrollBar",
+          "automation_id": "HorizontalScrollBar"
+        },
+        {
+          "name": "Column left",
+          "type": "Button",
+          "automation_id": "UpButton"
+        },
+        {
+          "name": "Position",
+          "type": "Thumb",
+          "automation_id": "ScrollbarThumb"
+        },
+        {
+          "name": "Page right",
+          "type": "Button",
+          "automation_id": "DownPageButton"
+        },
+        {
+          "name": "Column right",
+          "type": "Button",
+          "automation_id": "DownButton"
+        },
+        {
+          "name": "Header",
+          "type": "Header",
+          "automation_id": ""
+        },
+        {
+          "name": "Name",
+          "type": "SplitButton",
+          "automation_id": "System.ItemNameDisplay"
+        },
+        {
+          "name": "Filter dropdown",
+          "type": "Button",
+          "automation_id": "DropDown"
+        },
+        {
+          "name": "Date modified",
+          "type": "SplitButton",
+          "automation_id": "System.DateModified"
+        },
+        {
+          "name": "Filter dropdown",
+          "type": "Button",
+          "automation_id": "DropDown"
+        },
+        {
+          "name": "Type",
+          "type": "SplitButton",
+          "automation_id": "System.ItemTypeText"
+        },
+        {
+          "name": "Filter dropdown",
+          "type": "Button",
+          "automation_id": "DropDown"
+        },
+        {
+          "name": "Size",
+          "type": "SplitButton",
+          "automation_id": "System.Size"
+        },
+        {
+          "name": "Filter dropdown",
+          "type": "Button",
+          "automation_id": "DropDown"
+        },
+        {
+          "name": "normal",
+          "type": "ListItem",
+          "automation_id": "0"
+        },
+        {
+          "name": "",
+          "type": "Image",
+          "automation_id": ""
+        },
+        {
+          "name": "Name",
+          "type": "Edit",
+          "automation_id": "System.ItemNameDisplay"
+        },
+        {
+          "name": "Date modified",
+          "type": "Edit",
+          "automation_id": "System.DateModified"
+        },
+        {
+          "name": "Type",
+          "type": "Edit",
+          "automation_id": "System.ItemTypeText"
+        },
+        {
+          "name": "Size",
+          "type": "Edit",
+          "automation_id": "System.Size"
+        },
+        {
+          "name": "normal-complete.mshogi",
+          "type": "ListItem",
+          "automation_id": "1"
+        },
+        {
+          "name": "",
+          "type": "Image",
+          "automation_id": ""
+        },
+        {
+          "name": "Name",
+          "type": "Edit",
+          "automation_id": "System.ItemNameDisplay"
+        },
+        {
+          "name": "Date modified",
+          "type": "Edit",
+          "automation_id": "System.DateModified"
+        },
+        {
+          "name": "Type",
+          "type": "Edit",
+          "automation_id": "System.ItemTypeText"
+        },
+        {
+          "name": "Size",
+          "type": "Edit",
+          "automation_id": "System.Size"
+        },
+        {
+          "name": "Application Controls",
+          "type": "Tree",
+          "automation_id": "AppControlsModuleInner"
+        },
+        {
+          "name": "File name:",
+          "type": "Text",
+          "automation_id": "1090"
+        },
+        {
+          "name": "File name:",
+          "type": "ComboBox",
+          "automation_id": "1148"
+        },
+        {
+          "name": "File name:",
+          "type": "Edit",
+          "automation_id": "1148"
+        },
+        {
+          "name": "Open",
+          "type": "Button",
+          "automation_id": "DropDown"
+        },
+        {
+          "name": "Files of type:",
+          "type": "ComboBox",
+          "automation_id": "1136"
+        },
+        {
+          "name": "Files of type:",
+          "type": "Text",
+          "automation_id": ""
+        },
+        {
+          "name": "Open",
+          "type": "Button",
+          "automation_id": "DropDown"
+        },
+        {
+          "name": "Open",
+          "type": "Button",
+          "automation_id": "1"
+        },
+        {
+          "name": "Cancel",
+          "type": "Button",
+          "automation_id": "2"
+        },
+        {
+          "name": "",
+          "type": "Thumb",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": "40965"
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "Navigation buttons",
+          "type": "ToolBar",
+          "automation_id": ""
+        },
+        {
+          "name": "Back (Alt + Left Arrow)",
+          "type": "Button",
+          "automation_id": ""
+        },
+        {
+          "name": "Forward (Alt + Right Arrow)",
+          "type": "Button",
+          "automation_id": ""
+        },
+        {
+          "name": "Recent locations",
+          "type": "Button",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "Up band",
+          "type": "ToolBar",
+          "automation_id": ""
+        },
+        {
+          "name": "Up to \"mShogi\" (Alt + Up Arrow)",
+          "type": "Button",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": "41477"
+        },
+        {
+          "name": "",
+          "type": "ProgressBar",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "Address: D:\\a\\mShogi\\mShogi\\gui-evidence",
+          "type": "ToolBar",
+          "automation_id": "1001"
+        },
+        {
+          "name": "All locations",
+          "type": "SplitButton",
+          "automation_id": ""
+        },
+        {
+          "name": "\u200emShogi",
+          "type": "SplitButton",
+          "automation_id": ""
+        },
+        {
+          "name": "\u200egui-evidence",
+          "type": "SplitButton",
+          "automation_id": ""
+        },
+        {
+          "name": "Address band toolbar",
+          "type": "ToolBar",
+          "automation_id": ""
+        },
+        {
+          "name": "Previous Locations",
+          "type": "Button",
+          "automation_id": ""
+        },
+        {
+          "name": "Refresh \"gui-evidence\" (F5)",
+          "type": "Button",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "Search Box",
+          "type": "Edit",
+          "automation_id": "SearchEditBox"
+        },
+        {
+          "name": "Search",
+          "type": "Button",
+          "automation_id": "SearchBoxSearchButton"
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "TitleBar",
+          "automation_id": ""
+        },
+        {
+          "name": "Close",
+          "type": "Button",
+          "automation_id": ""
+        }
+      ]
+    },
+    {
+      "hwnd": 589896,
+      "pid": 6024,
+      "title": "mShogi",
+      "class": "Tauri Window",
+      "owner": 0,
+      "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+      "rectangle": [
+        0,
+        0,
+        1044,
+        788
+      ],
+      "controls": [
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "mShogi",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "mShogi - Web content",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "Pane",
+          "automation_id": ""
+        },
+        {
+          "name": "",
+          "type": "TitleBar",
+          "automation_id": ""
+        },
+        {
+          "name": "System",
+          "type": "MenuBar",
+          "automation_id": "MenuBar"
+        },
+        {
+          "name": "System",
+          "type": "MenuItem",
+          "automation_id": ""
+        },
+        {
+          "name": "Minimize",
+          "type": "Button",
+          "automation_id": ""
+        },
+        {
+          "name": "Maximize",
+          "type": "Button",
+          "automation_id": ""
+        },
+        {
+          "name": "Close",
+          "type": "Button",
+          "automation_id": ""
+        },
+        {
+          "name": "Application",
+          "type": "MenuBar",
+          "automation_id": "MenuBar"
+        },
+        {
+          "name": "mShogi",
+          "type": "MenuItem",
+          "automation_id": ""
+        },
+        {
+          "name": "Edit",
+          "type": "MenuItem",
+          "automation_id": ""
+        },
+        {
+          "name": "Window",
+          "type": "MenuItem",
+          "automation_id": ""
+        }
+      ]
+    },
+    {
+      "hwnd": 327864,
+      "pid": 6024,
+      "title": "",
+      "class": "Tao Thread Event Target",
+      "owner": 0,
+      "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+      "rectangle": [
+        0,
+        0,
+        16,
+        16
+      ],
+      "controls": []
+    }
+  ],
+  "errors": []
+}

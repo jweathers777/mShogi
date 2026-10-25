@@ -236,7 +236,7 @@
   "io": {
     "id": 2,
     "phase": "complete",
-    "message": "Opened the complete document. Play remains paused until Resume."
+    "message": "Opened the complete document with work stopped."
   },
   "view": {
     "historical": false,

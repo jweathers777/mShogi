@@ -1,0 +1,63 @@
+{
+  "text": "\u265c\nmShogi\nCHESS \u00b7 DESKTOP PREVIEW\n Untimed\nM2 rules profile\nLIVE GAME\n\nWhite to move\nYou play White against mShogi\n\u2195\nFlip board\n\u265c\n8\n\u265e\n\u265d\n\u265b\n\u265a\n\u265d\n\u265e\n\u265c\n7\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n6\n\u265f\n5\n4\n\u265f\n3\n\u265f\n2\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265c\n1\na\n\u265e\nb\n\u265d\nc\n\u265b\nd\n\u265a\ne\n\u265d\nf\n\u265e\ng\n\u265c\nh\nSelect a piece, then a destination. Arrow keys move focus \u00b7 Enter or Space selects \u00b7 Escape cancels.\nPlay paused \u00b7 resume explicitly to continue\nLive position \u00b7 2 plies\nnormal-complete.mshogi\nSaved\nSave\nSave as\u2026\nOpen\u2026\nSaved a complete desktop document.\nFile details\nPLAY\n\nYour color for a new game\n\nNew game\nSave the native game document to preserve context, events and observations.\nResign game\u2026\nPlay paused\nBoard moves and draw claims are paused. Returning to live and resuming retires analysis and continues play.\nResume play\nPlay details\nAnalyze position\nRead-only analysis\nComplete\nStarting analysis pauses play. Results suggest or inspect; they never play a move, claim a draw or change the live game.\nSelected: Live game \u00b7 live position\nBounded move search\n\nSearch depth\nNode budget\nStart move analysis\nAdvanced: Full mating reachability\nFinal native observations only. Every request has work budgets and a 15-second process watchdog; these are not hard realtime guarantees.\nMove analysis completed for Live position after 2 plies, White to move. Suggested move: a2 \u2192 a3; not played.\nLive position after 2 plies\n\nWhite to move \u00b7 Bounded move search\nRecorded limit: depth 1, 1000 nodes.\nSuggested move: a2 \u2192 a3 \u00b7 not played\n0.00 pawns from White perspective\n\nCompleted depth\n1\nVisited nodes\n31\nSuggested continuation \u00b7 not played\na2 \u2192 a3\nAnalysis technical details\nGame history\nNative event timeline\nInspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.\n\nInitial known position\n0 plies\n\nMatch started\n0 plies\n\ne2e4\n1 plies\n\na7a5\n2 plies\nPlayed move identifiers\nRecorded search observations (2)\nOne native rules engine. Complete actions. Optional claims.\nSession details\n",
+  "focus": {
+    "label": null,
+    "text": "\u265cmShogiCHESS \u00b7 DESKTOP PREVIEW UntimedM2 rules profileLIVE GAMEWhite to moveYou play White against mShogi\u2195 Flip board\u265c8\u265e\u265d\u265b\u265a\u265d\u265e\u265c7\u265f\u265f\u265f\u265f\u265f\u265f\u265f6\u265f54\u265f3\u265f2\u265f\u265f\u265f\u265f\u265f\u265f\u265c1a\u265eb\u265dc\u265bd\u265ae\u265df\u265eg\u265chSelect a piece, then a destination. Arrow keys move focus \u00b7 Enter or Space selects \u00b7 Escape cancels.Play paused \u00b7 resume explicitly to continueLive position \u00b7 2 pliesnormal-complete.mshogiSavedSaveSave as\u2026Open\u2026Saved a complete desktop document.File details/home/runner/work/mShogi/mShogi/gui-evidence/normal-complete.mshogiDocument revision 8. Modes, limits, match events and observations are saved by the native host.Quit applicationPLAYYour color for a new gameWhiteBlackNew gameSave the native game document to preserve context, events and observations.Resign game\u2026Play pausedBoard moves and draw claims are paused. Returning to live and resuming retires analysis and continues play.Resume playPlay detailsAnalyze positionRead-only analysiscompleteStarting analysis pauses play. Results suggest or inspect; they never play a move, claim a draw or change the live game.Selected: Live game \u00b7 live positionBounded move searchSearch depthNode budgetStart move analysisAdvanced: Full mating reachabilityCooperative legal play, not forced-win search. Both sides may cooperate to reach mate. Future draw claims and repetition/move-count endings are outside this geometric query; the live game keeps M2 adjudication.Mating sideEither sideWhiteBlackPosition budgetTransition budgetRun Full reachabilityFinal native observations only. Every request has work budgets and a 15-second process watchdog; these are not hard realtime guarantees.Move analysis completed for Live position after 2 plies, White to move. Suggested move: a2 \u2192 a3; not played.Live position after 2 pliesWhite to move \u00b7 Bounded move searchRecorded limit: depth 1, 1000 nodes.Suggested move: a2 \u2192 a3 \u00b7 not played0.00 pawns from White perspectiveCompleted depth1Visited nodes31Suggested continuation \u00b7 not playeda2 \u2192 a3Analysis technical details{\n  \"target\": {\n    \"selection_id\": 1,\n    \"ply\": 2,\n    \"session_version\": 7,\n    \"label\": \"Live position after 2 plies\",\n    \"turn\": \"white\"\n  },\n  \"operation\": {\n    \"kind\": \"moves\",\n    \"depth\": 1,\n    \"nodes\": 1000\n  },\n  \"context\": {\n    \"protocol\": 2,\n    \"purpose\": {\n      \"kind\": \"move_analysis\",\n      \"target\": {\n        \"selection_id\": 1,\n        \"ply\": 2,\n        \"session_version\": 7,\n        \"label\": \"Live position after 2 plies\",\n        \"turn\": \"white\"\n      }\n    },\n    \"request_id\": 4,\n    \"session_version\": 7,\n    \"process_generation\": 4,\n    \"game\": {\n      \"schema_version\": 1,\n      \"rules_profile\": \"mshogi.chess.match.v1\",\n      \"initial_fen\": \"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\",\n      \"history_origin\": \"standard_start\",\n      \"claim_policy\": \"explicit_only\",\n      \"events\": [\n        {\n          \"ply\": 0,\n          \"event\": {\n            \"kind\": \"move\",\n            \"action\": \"e2e4\"\n          }\n        },\n        {\n          \"ply\": 1,\n          \"event\": {\n            \"kind\": \"move\",\n            \"action\": \"a7a5\"\n          }\n        }\n      ]\n    },\n    \"limits\": {\n      \"depth\": 1,\n      \"nodes\": 1000\n    }\n  },\n  \"result\": {\n    \"kind\": \"move\",\n    \"action\": \"a2a3\",\n    \"telemetry\": {\n      \"score\": 0,\n      \"completed_depth\": 1,\n      \"nodes\": 31,\n      \"principal_variation\": [\n        {\n          \"kind\": \"move\",\n          \"action\": \"a2a3\"\n        }\n      ],\n      \"status\": \"complete\"\n    }\n  }\n}Game historyNative event timelineInspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.Initial known position0 pliesMatch started0 pliese2e41 pliesa7a52 pliesPlayed move identifierse2e4a7a5Recorded search observations (2)Exact request context and work limits are preserved. Reopening does not resume saved searches or apply their results.Engine turn after 1 pliesRecorded observation \u00b7 not a pending request or a current-position resultBounded search \u00b7 depth 2 / 20000 nodesEngine-turn action: a7 \u2192 a50.00 pawns from Black perspectiveCompleted depth 2 \u00b7 642 visited nodes. Recorded continuation: a7 \u2192 a5 \u00b7 a2 \u2192 a3Recorded context, modes and limits{\n  \"context\": {\n    \"protocol\": 2,\n    \"purpose\": {\n      \"kind\": \"engine_turn\"\n    },\n    \"request_id\": 1,\n    \"session_version\": 2,\n    \"process_generation\": 1,\n    \"game\": {\n      \"schema_version\": 1,\n      \"rules_profile\": \"mshogi.chess.match.v1\",\n      \"initial_fen\": \"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\",\n      \"history_origin\": \"standard_start\",\n      \"claim_policy\": \"explicit_only\",\n      \"events\": [\n        {\n          \"ply\": 0,\n          \"event\": {\n            \"kind\": \"move\",\n            \"action\": \"e2e4\"\n          }\n        }\n      ]\n    },\n    \"limits\": {\n      \"depth\": 2,\n      \"nodes\": 20000\n    }\n  },\n  \"result\": {\n    \"kind\": \"move\",\n    \"action\": \"a7a5\",\n    \"telemetry\": {\n      \"score\": 0,\n      \"completed_depth\": 2,\n      \"nodes\": 642,\n      \"principal_variation\": [\n        {\n          \"kind\": \"move\",\n          \"action\": \"a7a5\"\n        },\n        {\n          \"kind\": \"move\",\n          \"action\": \"a2a3\"\n        }\n      ],\n      \"status\": \"complete\"\n    }\n  }\n}Live position after 2 pliesRecorded observation \u00b7 not a pending request or a current-position resultBounded search \u00b7 depth 1 / 1000 nodesRead-only suggestion: a2 \u2192 a30.00 pawns from White perspectiveCompleted depth 1 \u00b7 31 visited nodes. No action was applied by this analysis.Recorded continuation: a2 \u2192 a3Recorded context, modes and limits{\n  \"context\": {\n    \"protocol\": 2,\n    \"purpose\": {\n      \"kind\": \"move_analysis\",\n      \"target\": {\n        \"selection_id\": 1,\n        \"ply\": 2,\n        \"session_version\": 7,\n        \"label\": \"Live position after 2 plies\",\n        \"turn\": \"white\"\n      }\n    },\n    \"request_id\": 4,\n    \"session_version\": 7,\n    \"process_generation\": 4,\n    \"game\": {\n      \"schema_version\": 1,\n      \"rules_profile\": \"mshogi.chess.match.v1\",\n      \"initial_fen\": \"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\",\n      \"history_origin\": \"standard_start\",\n      \"claim_policy\": \"explicit_only\",\n      \"events\": [\n        {\n          \"ply\": 0,\n          \"event\": {\n            \"kind\": \"move\",\n            \"action\": \"e2e4\"\n          }\n        },\n        {\n          \"ply\": 1,\n          \"event\": {\n            \"kind\": \"move\",\n            \"action\": \"a7a5\"\n          }\n        }\n      ]\n    },\n    \"limits\": {\n      \"depth\": 1,\n      \"nodes\": 1000\n    }\n  },\n  \"result\": {\n    \"kind\": \"move\",\n    \"action\": \"a2a3\",\n    \"telemetry\": {\n      \"score\": 0,\n      \"completed_depth\": 1,\n      \"nodes\": 31,\n      \"principal_variation\": [\n        {\n          \"kind\": \"move\",\n          \"action\": \"a2a3\"\n        }\n      ],\n      \"status\": \"complete\"\n    }\n  }\n}One native rules engine. Complete actions. Optional claims.Session detailsSession version 7 \u00b7 snapshot revision 18\n",
+    "tag": "BODY"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 795,
+    "width": 1180
+  },
+  "inputs": [
+    {
+      "min": null,
+      "disabled": false,
+      "type": "select-one",
+      "value": "white",
+      "max": null,
+      "tag": "SELECT"
+    },
+    {
+      "min": "1",
+      "disabled": false,
+      "type": "number",
+      "value": "1",
+      "max": "8",
+      "tag": "INPUT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "1000",
+      "max": "5000000",
+      "tag": "INPUT"
+    },
+    {
+      "min": null,
+      "disabled": false,
+      "type": "select-one",
+      "value": "either",
+      "max": null,
+      "tag": "SELECT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "1000",
+      "max": "100000",
+      "tag": "INPUT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "10000",
+      "max": "1000000",
+      "tag": "INPUT"
+    }
+  ]
+}

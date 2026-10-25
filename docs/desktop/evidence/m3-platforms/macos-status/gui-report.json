@@ -1,0 +1,25 @@
+{
+  "source_revision": "b5b17d01b333016725977a8ec4d791e10c39b782",
+  "recorded_at_utc": "2026-10-25T20:45:06.800097+00:00",
+  "status": "passed",
+  "method": "Current normal .app rebuilt; actual native CUA input/AX/screenshots. No verification instrumentation.",
+  "scope": "Focused regression for completed file-operation messages. Earlier full macOS journeys are separately retained and reused.",
+  "observations": [
+    "Actual Open of /private/tmp/msh38-current-macos.mshogi reestablished two plies/one historical observation, with play stopped. File status: Opened the complete document with work stopped.",
+    "Select e2e4 native history event: one-ply read-only board; file completion says Reconstructed an exact read-only history prefix.",
+    "Return to live restores a7a5 two-ply board and preserves pause; separate Resume restores Your turn with no historical notice or paused banner. File operation remains truthful past-tense evidence, not a current-history claim.",
+    "Native Cmd-Q reaches Save/Discard/Cancel; Discard clicked, then separate require_escalated pgrep found no host/internal-search before any app-bound observation or teardown. Exit1, empty stdout/stderr."
+  ],
+  "process_observation": {
+    "command": "pgrep -fl 'bundle/macos/mShogi.app/Contents/MacOS|internal-search'",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "",
+    "after": "Native Quit guard / Discard, before app-bound observation/teardown"
+  },
+  "files": {
+    "package-smoke.json": "8b140d5b375ab201c51fcb2ddb1c48cba0247a9a6e79eff9ef3cfdff1ce04a6f",
+    "returned-live-resumed.png": "1a5e234d15399d486275bdf89fb50da9d74706ace06feeedb3ba1378f66afbc5",
+    "returned-live-resumed.ax.txt": "27783959d03fc12a32dcbd625b2ea100362ad157963b68f39c2eecb5c95c66a0"
+  }
+}

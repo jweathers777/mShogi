@@ -48,6 +48,31 @@ it("recovers to an enabled inspector control while a cancelled command is settli
   session(cancelled); rerender(<App />);
   expect(document.activeElement).toBe(inspector);
 });
+it("restores an initiating button blurred by WebKit while it was disabled", () => {
+  session(thinking());
+  const { rerender } = render(<App />);
+  fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
+  const replace = screen.getByRole("button", { name: "Replace with move analysis" });
+  replace.focus();
+  session(thinking(), true); rerender(<App />);
+  expect(replace.hasAttribute("disabled")).toBe(true);
+  // jsdom does not blur disabled buttons like WebKit; model that transition.
+  document.body.tabIndex = -1; document.body.focus(); document.body.removeAttribute("tabindex");
+  expect(document.activeElement).toBe(document.body);
+  session(thinking()); rerender(<App />);
+  expect(document.activeElement).toBe(replace);
+});
+it("does not restore a previously disabled initiator over a newly focused input", () => {
+  session(thinking());
+  const { rerender } = render(<App />);
+  fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
+  const replace = screen.getByRole("button", { name: "Replace with move analysis" });
+  replace.focus();
+  session(thinking(), true); rerender(<App />); replace.blur();
+  const input = screen.getByLabelText("Node budget"); input.focus();
+  session(thinking()); rerender(<App />);
+  expect(document.activeElement).toBe(input);
+});
 it("does not steal focus from a work-budget input when analysis finishes", () => {
   session(thinking());
   const { rerender } = render(<App />);

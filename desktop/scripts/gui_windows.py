@@ -292,8 +292,80 @@ class Native:
 
     def screenshot(self, path: Path) -> None:
         from PIL import ImageGrab
+        import win32gui
+        import win32process
+
+        def describe(hwnd):
+            if not hwnd or not win32gui.IsWindow(hwnd):
+                return None
+            _, pid = win32process.GetWindowThreadProcessId(hwnd)
+            return {"hwnd": hwnd, "pid": pid, "image": _image(pid),
+                    "title": win32gui.GetWindowText(hwnd),
+                    "class": win32gui.GetClassName(hwnd)}
+
+        before = describe(win32gui.GetForegroundWindow())
+        target = None
+        action = "capture_diagnostic_without_live_bound_window"
+        focus_error = None
+        try:
+            if self.pid is not None and self.hwnd is not None and self.alive():
+                windows = self._windows_owned()
+                main = next((window for window in windows if window["hwnd"] == self.hwnd), None)
+                if main is None:
+                    raise RuntimeError("Bound host main HWND is no longer visible")
+
+                def owned_depth(window):
+                    owner, seen = window["owner"], {window["hwnd"]}
+                    while owner and owner not in seen:
+                        if owner == self.hwnd:
+                            return len(seen)
+                        seen.add(owner)
+                        owner = win32gui.GetWindow(owner, 4)  # GW_OWNER
+                    return 0
+
+                # Focus a live owned modal directly; raising its disabled parent can
+                # leave a file picker behind another application's console window.
+                modals = [(owned_depth(window), window) for window in windows
+                          if window["class"] == "#32770"]
+                modals = [(depth, window) for depth, window in modals if depth]
+                active = [window for _, window in modals
+                          if before and window["hwnd"] == before["hwnd"]]
+                if active:
+                    target = active[0]
+                elif modals:
+                    deepest = max(depth for depth, _ in modals)
+                    choices = [window for depth, window in modals if depth == deepest]
+                    if len(choices) != 1:
+                        raise RuntimeError("Ambiguous owned native modal windows during capture")
+                    target = choices[0]
+                else:
+                    target = main
+                current = describe(target["hwnd"])
+                if (current is None or current["pid"] != self.pid or current["image"] is None
+                        or _canonical(current["image"]) != self.host):
+                    raise RuntimeError("Screenshot target no longer belongs to the bound executable/PID")
+                from pywinauto import Application
+                Application(backend="win32").connect(handle=target["hwnd"], timeout=2).window(
+                    handle=target["hwnd"]).set_focus()
+                action = "focus_owned_modal" if target["hwnd"] != self.hwnd else "focus_bound_host"
+                deadline = time.monotonic() + 2
+                while win32gui.GetForegroundWindow() != target["hwnd"] and time.monotonic() < deadline:
+                    time.sleep(0.05)
+                foreground = describe(win32gui.GetForegroundWindow())
+                if (foreground is None or foreground["hwnd"] != target["hwnd"]
+                        or foreground["pid"] != self.pid or foreground["image"] is None
+                        or _canonical(foreground["image"]) != self.host):
+                    raise RuntimeError("Bound screenshot target did not become the foreground window")
+        except Exception as error:
+            focus_error = repr(error)
+        # Always retain the complete, unaltered desktop, including on focus failure.
         Path(path).parent.mkdir(parents=True, exist_ok=True)
         ImageGrab.grab(all_screens=True).save(path)
+        self._event("native_screenshot", path=str(path), action=action, target=target,
+                    foreground_before=before,
+                    foreground_after=describe(win32gui.GetForegroundWindow()), focus_error=focus_error)
+        if focus_error is not None:
+            raise RuntimeError(f"Native screenshot foreground validation failed: {focus_error}")
 
     def _diagnostics(self, reason: str) -> None:
         self._serial += 1

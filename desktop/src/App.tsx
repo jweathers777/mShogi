@@ -102,6 +102,7 @@ export function App() {
   const [inspector, setInspector] = useState<"play" | "analysis">("play");
   const resignButton = useRef<HTMLButtonElement>(null);
   const lastFocused = useRef<Element | null>(null);
+  const suspendedFocus = useRef<Element | null>(null);
   const returnLiveFocus = useRef(false);
   const [resigning, setResigning] = useState<{
     version: number;
@@ -110,11 +111,23 @@ export function App() {
   useLayoutEffect(() => {
     const previous = lastFocused.current;
     if (snapshot === null || guard.pending !== null || resigning !== null ||
-      previous === null || previous.isConnected) return;
-    // Recover only focus lost by removing a control. Never pull focus away
-    // from a budget input, another control, or a newly opened dialog.
+      previous === null) return;
+    // WebKit also blurs a still-connected button when a command disables it.
+    // Remember that transition, then recover only after it becomes enabled.
+    if (previous.isConnected && previous.matches(":disabled")) {
+      suspendedFocus.current = previous;
+      return;
+    }
+    if (previous.isConnected && suspendedFocus.current !== previous) return;
+    // Recover focus lost through removal or a recorded disabled transition.
+    // Never pull focus from another control or a newly opened dialog.
     if (document.activeElement !== document.body &&
       document.activeElement !== document.documentElement) return;
+    if (previous.isConnected) {
+      if (previous instanceof HTMLElement || previous instanceof SVGElement) previous.focus();
+      if (document.activeElement === previous) suspendedFocus.current = null;
+      return;
+    }
     const kind = previous.closest("[data-focus-after]")?.getAttribute("data-focus-after") ?? "board";
     const selectors: Record<string, string[]> = {
       analysis: ['[data-analysis-start="moves"]:not(:disabled)', '.inspector-switch button[aria-pressed="true"]:not(:disabled)'],
@@ -174,7 +187,10 @@ export function App() {
   const historical = snapshot.view.historical;
   return (
     <main className="application" onFocusCapture={(event) => {
-      if (event.target instanceof Element) lastFocused.current = event.target;
+      if (event.target instanceof Element) {
+        lastFocused.current = event.target;
+        suspendedFocus.current = null;
+      }
     }}>
       <header className="app-header">
         <div className="brand">

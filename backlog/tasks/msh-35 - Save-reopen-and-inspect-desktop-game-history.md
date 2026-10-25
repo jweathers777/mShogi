@@ -1,11 +1,11 @@
 ---
 id: MSH-35
 title: Save reopen and inspect desktop game history
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-25T12:48:00Z'
-updated_date: '2026-10-25T17:19:00Z'
+updated_date: '2026-10-25T17:20:00Z'
 labels: []
 milestone: m-3
 dependencies:
@@ -31,10 +31,10 @@ Games must survive application restarts and permit read-only inspection without 
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -59,4 +59,12 @@ Final independent code review is clean after all findings were fixed. Reviewer i
 Actual packaged GUI evidence is complete and independently reviewed: docs/desktop/second-batch-evidence.md MSH-35 section; seven persistence screenshots; persistence-local-macos.json; actual persistence-game.mshogi (four moves, eleven controls, five observations; SHA256 8e119aa0a8768474c944fcb157e65da643d9d99e065d3803b1e61240bced3038). Normal c942a6f journeys verified real Permission-denied save preserving prior SHA/dirty state, failed Save-and-Quit remaining open, Cmd-Q Cancel/SVG focus, successful save-close-relaunch-open paused, historical prefix analysis/cancel/selection replacement, explicit Return/Resume with real g1f3/a5a4 replies, corrupt Open retaining four plies, and window-close Cancel/Discard. Final 0f916a3 normal package was rebuilt/rechecked: four-ply Open, all saved observations historical, prefix depth1/21-node analysis, Return-live focus, Save As and same-file Open with five observations, fresh session46/snapshot47 and work stopped. Separate macOS verification app clicked actual predefined terminate: item: native Cocoa callback reached Save/Discard/Cancel, Cancel preserved state, repeat/Discard closed. This verifies the Cocoa entry used by Dock; literal Dock click was unavailable and is not claimed. Normal packages exclude both initializer and Cocoa probe. Independent reviewer inspected all seven screenshots, exact source/binary provenance and archive/hash; no actionable evidence findings. MSH-36–39 and M3 remain open.
 
 Source c942a6fd088a2976f410164c24939bbdc2cd6539 passed all-three Rust CI https://github.com/jweathers777/mShogi/actions/runs/40213478474 and all-three desktop package/engine CI https://github.com/jweathers777/mShogi/actions/runs/40213478495. Final source 0f916a3536c28145b9311ca3fb50db1b471f75bd passed Rust Linux/macOS/Windows CI https://github.com/jweathers777/mShogi/actions/runs/40215027944 (jobs121234200327/121234200461/121234200513). Final package CI https://github.com/jweathers777/mShogi/actions/runs/40215027947 currently has macOS121234200450 and Linux121234200535 successful; Windows121234200335 still building. Ticket remains In Review until final required CI and normal rewrite integration/push complete. Final normal host SHA256 49dca855d7b5cc98a901d663283c128066a15ed20e73cd7905414be8693214bb; engine45d264831e806ea81b426b4fbbb94f2ecbcba384d23696a5c87537acca555ba5.
+
+Final required package CI passed on all three systems at exact source 0f916a3536c28145b9311ca3fb50db1b471f75bd: https://github.com/jweathers777/mShogi/actions/runs/40215027947 — Windows job121234200335, macOS121234200450, Linux121234200535. Each passed frontend/native checks, verification-feature compilation, normal package build, inventory/instrumentation exclusions and actual bundled UCI/engine-turn/move-analysis/bounded Full queries. Native CI40215027944 also passed all three systems. Code/evidence were normally fast-forward integrated into codex/rewrite through 7d333a3; completion metadata follows in its own commit and normal push. No unresolved review findings or failed required checks remain. Actual installed GUI evidence remains local macOS only; Windows/Linux installed interactions and integrated accessibility remain MSH-37/38. No M1/M2 audit repeated, M2 and MSH-27–34 remain Done, M3 remains open, MSH-36–39 remain open. Next dependency-ready M3 ticket is MSH-36; this authorized batch stops here.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Implemented complete canonical desktop documents, atomic failure-safe saves and guarded native file dialogs/quit. Reopen validates complete MatchRecord/GameRecord, policy, commands/events, modes/limits, settings and exact-context observations off-path; establishes fresh identities and stopped work. Historical event inspection and analysis use exact prefixes, with explicit Return to live/Resume and no branching. Native/controller, real-file/process, frontend and actual packaged macOS journeys passed; independent code/evidence review clean; final-source Rust and package/engine CI passed Windows, macOS and Linux. Source c942a6f plus isolated Cocoa probe/exclusion 0f916a3; source/evidence integrated into codex/rewrite through 7d333a3. Evidence: docs/desktop/second-batch-evidence.md, persistence-local-macos.json, seven screenshots and replayable persistence-game.mshogi. Untimed M2 restoration only; Full/timed/witnessed-match restoration explicitly rejected; archive resource caps documented. Cocoa terminate entry tested in separate verification package; no literal Dock-click claim. MSH-36–39 and M3 closure remain open; MSH-36 next eligible.
+<!-- SECTION:FINAL_SUMMARY:END -->

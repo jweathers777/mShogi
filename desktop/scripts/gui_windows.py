@@ -417,10 +417,15 @@ class Native:
                    if button.is_visible() and button.is_enabled()]
         named = [button for button in buttons if button.window_text().replace("&", "").strip().casefold() == title.casefold()]
         identified = [button for button in buttons if button.element_info.automation_id == auto_id]
-        choices = named or identified
-        if len(choices) != 1:
-            raise RuntimeError(f"Expected one native {title} button, found {len(choices)}")
-        return choices[0]
+        matched = [button for button in named if button.element_info.automation_id == auto_id]
+        # The real Open picker exposes multiple Open dropdown buttons alongside
+        # its ID 1 action. Prefer both native identifiers within this bound dialog.
+        for choices in (matched, identified, named):
+            if len(choices) == 1:
+                return choices[0]
+            if choices:
+                raise RuntimeError(f"Expected one native {title} button, found {len(choices)}")
+        raise RuntimeError(f"Expected one native {title} button, found 0")
 
     @staticmethod
     def _filename(dialog):

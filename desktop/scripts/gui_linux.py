@@ -269,6 +269,7 @@ class Native:
             selected = None if path is None else str(Path(path).resolve())
             entered = None
             filesystem = None
+            acceptance_fallback = None
             if selected is None:
                 self._key("Escape")
             else:
@@ -281,18 +282,22 @@ class Native:
                 entered = self.output / f"{stem}-entered-path.png"
                 self.screenshot(entered)
                 self._key("Return")
-                if kind != "open":
-                    # Some GTK save dialogs first transfer the location into
-                    # the filename field. Activate their native Save mnemonic
-                    # if Return did not already accept the dialog.
-                    deadline = time.monotonic() + 1.0
-                    while time.monotonic() < deadline:
-                        if picker["id"] not in {item["id"] for item in self._windows()}:
-                            break
-                        time.sleep(0.1)
-                    else:
-                        self._activate(picker["id"])
-                        self._key("alt+s")
+                # GTK can first resolve the location or its completion rather
+                # than accept it. If Return leaves the picker open, activate
+                # its actual Open/Save mnemonic and preserve that native state.
+                deadline = time.monotonic() + 1.0
+                while time.monotonic() < deadline:
+                    if picker["id"] not in {item["id"] for item in self._windows()}:
+                        break
+                    time.sleep(0.1)
+                else:
+                    self._activate(picker["id"])
+                    before_accept = self.output / f"{stem}-before-accept-fallback.png"
+                    self.screenshot(before_accept)
+                    mnemonic = "alt+o" if kind == "open" else "alt+s"
+                    acceptance_fallback = {"key": mnemonic,
+                                           "before_screenshot": str(before_accept)}
+                    self._key(mnemonic)
             self._wait(lambda: picker["id"] not in {item["id"] for item in self._windows()},
                        f"Native {kind} picker did not close after {'Cancel' if selected is None else 'path selection'}")
             if not self.alive():
@@ -316,6 +321,7 @@ class Native:
                                before_screenshot=str(before), after_screenshot=str(after),
                                entered_path_screenshot=None if entered is None else str(entered),
                                filesystem_observation=filesystem,
+                               acceptance_fallback=acceptance_fallback,
                                picker_closed=True, method="Focused GTK picker through XTEST keyboard input")
         except Exception:
             self._diagnostics(f"{stem}-failed")

@@ -1232,7 +1232,7 @@ impl DesktopController {
                     self.session.viewed = None;
                     self.session.play_paused = true;
                     self.session.engine = EngineState { status: EnginePhase::Paused, message: Some("Document reopened with work stopped. Saved observations are historical. Resume play explicitly.".into()), ..EngineState::default() };
-                    Ok("Opened the complete document. Play remains paused until Resume.".into())
+                    Ok("Opened the complete document with work stopped.".into())
                 }
             }
             Ok(Completed::Viewed { view, token }) => {
@@ -1243,7 +1243,7 @@ impl DesktopController {
                     )
                 } else {
                     self.session.viewed = Some(*view);
-                    Ok("Viewing an exact read-only history prefix.".into())
+                    Ok("Reconstructed an exact read-only history prefix.".into())
                 }
             }
             Err(error) => Err(error),

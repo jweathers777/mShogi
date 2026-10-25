@@ -153,3 +153,34 @@ the past operation; the authoritative live/history banner and paused controls
 describe current state. The correction changes no session or admission
 semantics. Focused native and frontend history/document checks passed; the
 final corrected package journeys remain required.
+
+The third Linux attempt at `f0c8dd654cb151621ea95582bdce1b1b374faaa9`
+([run 40231293207](https://github.com/jweathers777/mShogi/actions/runs/40231293207))
+saved the exact requested complete archive successfully. The native GTK Open
+picker then retained the correctly entered absolute path after Return, with its
+Open button enabled. The [failed partial evidence](evidence/m3-platforms/linux-attempt-3/attempt.json)
+is preserved. The adapter now uses the actual Open mnemonic after a bounded
+wait when Return only resolves the location, parallel to its existing Save
+mnemonic. It records the pre-accept native screen and key; controller restoration,
+history and lifecycle checks still have to pass.
+
+The completed-message correction was also checked in a new normal macOS build;
+its [focused actual GUI report](evidence/m3-platforms/macos-status/gui-report.json)
+records Open, historical inspection, Return to live, Resume and native guarded
+Quit with separate process absence. This supplements the earlier broader macOS
+journeys rather than relabeling their source or package identities.
+
+The third Windows attempt in the same run also saved the exact requested
+complete archive. Its nine native captures recorded no visible bundled-engine
+console, and the ownerless native pickers remained readable in the foreground.
+Open then found three UIA controls named Open: two dropdowns and the uniquely
+identified acceptance button. The [failed partial evidence](evidence/m3-platforms/windows-attempt-3/attempt.json)
+remains failed. The corrected adapter prioritizes the unique native title/ID
+intersection; replaying the actual captured UIA tree selected button ID `1`.
+Actual Open/history/lifecycle and fixture journeys still require a rerun.
+
+Each isolated phase now retains its own failure and traceback and attempts the
+next phase only after successful cleanup. Any failed required phase keeps the
+whole run failed and nonzero. Cleanup failure aborts further phases and still
+writes a failed report. Three isolated verifier-control-flow checks establish
+these reporting rules; they are not application GUI evidence.

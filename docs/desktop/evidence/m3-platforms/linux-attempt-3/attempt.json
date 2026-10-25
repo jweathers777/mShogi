@@ -1,0 +1,26 @@
+{
+  "source_revision": "f0c8dd654cb151621ea95582bdce1b1b374faaa9",
+  "run_url": "https://github.com/jweathers777/mShogi/actions/runs/40231293207",
+  "status": "failed",
+  "establishes": [
+    "Actual installed normal package rendered and played e2e4/a7a5; active analysis cancellation and replacement passed.",
+    "Exact requested native Save path succeeded with complete archive: 5822 bytes,2observations,5controls,2gameevents."
+  ],
+  "does_not_establish": [
+    "Open/history/Resume/native Quit and all verification phases did not finish; this is not a full Linux pass."
+  ],
+  "failure": "Native open picker did not close after path selection",
+  "finding": "Actual GTK Open picker retained the correct entered full path with enabled Open button after the first Return; native acceptance did not occur.",
+  "proposed_correction": "After a bounded wait, refocus the exact picker and use its native Alt+O mnemonic, recording the pre-accept screenshot and key; all actual controller checks remain required.",
+  "retained_evidence": "Selected original files; full report preserves original artifact file hashes. No screenshots modified.",
+  "files": {
+    "gui-report.json": "3a46c9791ced1631125bc7fd9ed79820f5f530e2de7e31cf0d02a96dcc238155",
+    "normal-play.desktop.png": "4de6dd1c854c10483e033a1e53eeb1a7e52626d6af6082bc4376c3be56a02162",
+    "normal-failure.dom.json": "b23f1ac71ae399204a29493e54defc17da90787aaba64a315be9a7bc2eb6f1f0",
+    "normal-driver.log": "a32409ddff0c185483d75f0a000a16834f3818cf12066c130ceda3b8cdceb5dc",
+    "normal-complete.mshogi": "922b127b32330befdd6671b316056fe51eb8b94932c052d6ff3eefb6b4804b6e",
+    "normal/picker-01-save-entered-path.png": "7e46cefdf08a36df111eff5c0ac2570ab6178b6f2c5aa845e6e704548f1447c1",
+    "normal/picker-02-open-failed-desktop.png": "f08cd832c39ce9f2913042f80ebf4cd98a2d9f2751ce5f1f1008a23b118ba6d0",
+    "normal/picker-02-open-entered-path.png": "ca26d3efc23dc8eaee1aa8f983d99db506df18337b9a019e1689365b678dcd2e"
+  }
+}

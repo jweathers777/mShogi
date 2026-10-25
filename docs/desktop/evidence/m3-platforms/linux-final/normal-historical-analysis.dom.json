@@ -1,0 +1,63 @@
+{
+  "text": "\u265c\nmShogi\nCHESS \u00b7 DESKTOP PREVIEW\n Untimed\nM2 rules profile\nHISTORICAL \u00b7 READ ONLY\n\nRead-only history event 2 of 3\nYou play White against mShogi\n\u2195\nFlip board\n\u265c\n8\n\u265e\n\u265d\n\u265b\n\u265a\n\u265d\n\u265e\n\u265c\n\u265f\n7\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n6\n5\n4\n\u265f\n3\n\u265f\n2\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265c\n1\na\n\u265e\nb\n\u265d\nc\n\u265b\nd\n\u265a\ne\n\u265d\nf\n\u265e\ng\n\u265c\nh\nSelect a piece, then a destination. Arrow keys move focus \u00b7 Enter or Space selects \u00b7 Escape cancels.\nRead-only history \u00b7 return to live to play\nSelected position \u00b7 1 plies\nnormal-complete.mshogi\nUnsaved\nSave\nSave as\u2026\nOpen\u2026\nReconstructed an exact read-only history prefix.\nFile details\nViewing history \u00b7 read only\nRead-only history event 2 of 3 \u00b7 Black to move. The live game remains after 2 plies. Analysis uses this selected native history prefix.\nReturn to live game\nPLAY\n\nYour color for a new game\n\nNew game\nSave the native game document to preserve context, events and observations.\nPlay paused\nBoard moves and draw claims are paused. Returning to live and resuming retires analysis and continues play.\nResume play\nPlay details\nAnalyze position\nRead-only analysis\nComplete\nStarting analysis pauses play. Results suggest or inspect; they never play a move, claim a draw or change the live game.\nSelected: Read-only history event 2 of 3 \u00b7 historical prefix\nBounded move search\n\nSearch depth\nNode budget\nStart move analysis\nAdvanced: Full mating reachability\nFinal native observations only. Every request has work budgets and a 15-second process watchdog; these are not hard realtime guarantees.\nMove analysis completed for Historical position after 1 plies, Black to move. Suggested move: a7 \u2192 a5; not played.\nHistorical position after 1 plies\n\nBlack to move \u00b7 Bounded move search\nRecorded limit: depth 1, 1000 nodes.\nSuggested move: a7 \u2192 a5 \u00b7 not played\n0.00 pawns from Black perspective\n\nCompleted depth\n1\nVisited nodes\n21\nSuggested continuation \u00b7 not played\na7 \u2192 a5\nAnalysis technical details\nGame history\nNative event timeline\nInspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.\n\nInitial known position\n0 plies\n\nMatch started\n0 plies\n\ne2e4\n1 plies\n\na7a5\n2 plies\nPlayed move identifiers\nRecorded search observations (3)\nOne native rules engine. Complete actions. Optional claims.\nSession details\n",
+  "focus": {
+    "label": null,
+    "text": "Start move analysis",
+    "tag": "BUTTON"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 795,
+    "width": 1180
+  },
+  "inputs": [
+    {
+      "min": null,
+      "disabled": false,
+      "type": "select-one",
+      "value": "white",
+      "max": null,
+      "tag": "SELECT"
+    },
+    {
+      "min": "1",
+      "disabled": false,
+      "type": "number",
+      "value": "1",
+      "max": "8",
+      "tag": "INPUT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "1000",
+      "max": "5000000",
+      "tag": "INPUT"
+    },
+    {
+      "min": null,
+      "disabled": false,
+      "type": "select-one",
+      "value": "either",
+      "max": null,
+      "tag": "SELECT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "1000",
+      "max": "100000",
+      "tag": "INPUT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "10000",
+      "max": "1000000",
+      "tag": "INPUT"
+    }
+  ]
+}

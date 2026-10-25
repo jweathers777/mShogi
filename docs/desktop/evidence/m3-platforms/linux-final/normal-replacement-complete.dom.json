@@ -1,0 +1,63 @@
+{
+  "text": "\u265c\nmShogi\nCHESS \u00b7 DESKTOP PREVIEW\n Untimed\nM2 rules profile\nLIVE GAME\n\nWhite to move\nYou play White against mShogi\n\u2195\nFlip board\n\u265c\n8\n\u265e\n\u265d\n\u265b\n\u265a\n\u265d\n\u265e\n\u265c\n7\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n6\n\u265f\n5\n4\n\u265f\n3\n\u265f\n2\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265c\n1\na\n\u265e\nb\n\u265d\nc\n\u265b\nd\n\u265a\ne\n\u265d\nf\n\u265e\ng\n\u265c\nh\nSelect a piece, then a destination. Arrow keys move focus \u00b7 Enter or Space selects \u00b7 Escape cancels.\nPlay paused \u00b7 resume explicitly to continue\nLive position \u00b7 2 plies\nUntitled game\nUnsaved\nSave\nSave as\u2026\nOpen\u2026\nFile details\nPLAY\n\nYour color for a new game\n\nNew game\nSave the native game document to preserve context, events and observations.\nResign game\u2026\nPlay paused\nBoard moves and draw claims are paused. Returning to live and resuming retires analysis and continues play.\nResume play\nPlay details\nAnalyze position\nRead-only analysis\nComplete\nStarting analysis pauses play. Results suggest or inspect; they never play a move, claim a draw or change the live game.\nSelected: Live game \u00b7 live position\nBounded move search\n\nSearch depth\nNode budget\nStart move analysis\nAdvanced: Full mating reachability\nFinal native observations only. Every request has work budgets and a 15-second process watchdog; these are not hard realtime guarantees.\nMove analysis completed for Live position after 2 plies, White to move. Suggested move: a2 \u2192 a3; not played.\nLive position after 2 plies\n\nWhite to move \u00b7 Bounded move search\nRecorded limit: depth 1, 1000 nodes.\nSuggested move: a2 \u2192 a3 \u00b7 not played\n0.00 pawns from White perspective\n\nCompleted depth\n1\nVisited nodes\n31\nSuggested continuation \u00b7 not played\na2 \u2192 a3\nAnalysis technical details\nGame history\nNative event timeline\nInspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.\n\nInitial known position\n0 plies\n\nMatch started\n0 plies\n\ne2e4\n1 plies\n\na7a5\n2 plies\nPlayed move identifiers\nRecorded search observations (2)\nOne native rules engine. Complete actions. Optional claims.\nSession details\n",
+  "focus": {
+    "label": null,
+    "text": "Start move analysis",
+    "tag": "BUTTON"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 795,
+    "width": 1180
+  },
+  "inputs": [
+    {
+      "min": null,
+      "disabled": false,
+      "type": "select-one",
+      "value": "white",
+      "max": null,
+      "tag": "SELECT"
+    },
+    {
+      "min": "1",
+      "disabled": false,
+      "type": "number",
+      "value": "1",
+      "max": "8",
+      "tag": "INPUT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "1000",
+      "max": "5000000",
+      "tag": "INPUT"
+    },
+    {
+      "min": null,
+      "disabled": false,
+      "type": "select-one",
+      "value": "either",
+      "max": null,
+      "tag": "SELECT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "1000",
+      "max": "100000",
+      "tag": "INPUT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "10000",
+      "max": "1000000",
+      "tag": "INPUT"
+    }
+  ]
+}

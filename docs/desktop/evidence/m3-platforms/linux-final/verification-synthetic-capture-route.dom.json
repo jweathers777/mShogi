@@ -1,0 +1,14 @@
+{
+  "text": "SYNTHETIC DEVELOPMENT FIXTURE\n\nInvented strider \u00b7 16 by 16\nVerification build\nThis invented fixture tests the shared board and staged selection. It is not a real shogi variant. Rust supplies complete choices and accepts one complete action; partial selection never changes its board or record.\n\nComplete action accepted\n\u2195 Flip board\n1\n\u25cf\n2\n3\n4\n5\n6\n7\n8\n\u25cf\n9\nS\n10\n\u25cf\n11\n12\n13\n14\n15\n\u25cf\n16\np\no\nn\nm\nl\nk\nj\ni\nh\ng\nf\ne\nd\nc\nb\na\nSelect a piece, then a destination. Arrow keys move focus \u00b7 Enter or Space selects \u00b7 Escape cancels.\nThe large board scrolls to keep squares readable. Arrow keys bring the focused square into view.\nInvented rules\nThe strider S takes one or two adjacent steps. Each enemy stone on its chosen route is captured. It can return to its origin. Stones do not move.\nChoose i9, then j10, then i9 to capture and return. The alternative i9 \u2192 h9 \u2192 i9 ends on the same square and leaves the stone intact.\nIf a step can finish now or continue, choose Complete action here to stop at that step. Escape abandons the selection.\nNative acceptance\nVersion 2 \u00b7 Accepted actions 1\nThe native fixture accepted a complete action. Reset to compare another route.\nReset synthetic fixture\nReset starts another temporary demonstration and advances the native version.\nSeparate synthetic record\nTemporary verification data; not a chess document.\n{\n  \"schema_version\": 1,\n  \"rules_profile\": \"mshogi.synthetic.strider16.v1\",\n  \"initial_fixture\": \"strider16-capture-and-return-v1\",\n  \"actions\": [\n    \"136>153>136\"\n  ]\n}",
+  "focus": {
+    "label": null,
+    "text": "Separate synthetic record",
+    "tag": "SUMMARY"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 795,
+    "width": 1180
+  },
+  "inputs": []
+}

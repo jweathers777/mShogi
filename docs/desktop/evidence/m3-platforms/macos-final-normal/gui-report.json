@@ -1,0 +1,29 @@
+{
+  "source_revision": "01865e9996f586bb91c0f0ed3c39fa4d88ecf462",
+  "integration_revision": "2f0e4cee3e1cc05df99ff51178eb4be810fbcb44",
+  "recorded_at_utc": "2026-10-25T21:12:58.174682+00:00",
+  "status": "passed",
+  "method": "Current normal packaged .app, actual CUA native pointer/AX/keyboard; no verification feature.",
+  "environment": {
+    "sw_vers": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0.1\nBuildVersion:\t\t26A434\n",
+    "architecture": "arm64"
+  },
+  "observations": [
+    "Normal package rebuilt from01865e9 product source4e1e9d4, package inventory/instrumentation-exclusion and actual bundled UCI/structured/move-analysis/boundedFull smoke passed.",
+    "Choose human Black in native side popup, New game. Actual engine White opening a2a3, depth2/442nodes. Human remainedBlack with orientationindependentlyWhitebottom.",
+    "Flip toBlackbottom and select nativelegal e7\u2192e5. Actualengine reply a3a4, depth2/610nodes,0.00pawnsfromWhiteperspective; history3plies,2realobservations, ongoingnooutcome.",
+    "Cmd-Q reaches unsavedSave/Discard/Cancel; Discard clicked. Separate require_escalated pgrep found no normalhost/internal-search (exit1,empty stdout/stderr) before app-bound observation/teardown."
+  ],
+  "process_observation": {
+    "command": "pgrep -fl 'bundle/macos/mShogi.app/Contents/MacOS|internal-search'",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": ""
+  },
+  "scope": "Final normal-package gameplay/identity/guardedQuit supplement. Full earlier macOS normal/QA journeys and latest capacity-focus regression are separately sourced and retained.",
+  "files": {
+    "package-smoke.json": "d8d0a322a66ad5a7085d8be4fc931ad8aeb1245730f67e7158e6f78dca642063",
+    "human-black.png": "d73a4a3418f9fd46ebb5cc10f7acfaf7d3102c51cbb1e2fa24fbabeecaae4d7f",
+    "human-black.ax.txt": "e0879add8ca9c8b19c297d39773ff3ddaeb3808ecca55d3d7f790bb4970a4468"
+  }
+}

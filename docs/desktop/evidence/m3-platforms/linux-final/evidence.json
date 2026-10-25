@@ -1,0 +1,379 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "source_revision": "2f0e4cee3e1cc05df99ff51178eb4be810fbcb44",
+  "workflow_run_id": 40234257669,
+  "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/40234257669",
+  "job_url": "https://github.com/jweathers777/mShogi/actions/runs/40234257669/job/121292320204",
+  "artifact": {
+    "id": 12614342805,
+    "name": "desktop-ubuntu-24.04",
+    "url": "https://github.com/jweathers777/mShogi/actions/runs/40234257669/artifacts/12614342805",
+    "zip_sha256": "7a3a1c5dcbc60ee37b95c39acb830ed6be8792dd801ef6465ea6f554f7a7bf53"
+  },
+  "started_at_utc": "2026-10-25T21:17:22.054873+00:00",
+  "finished_at_utc": "2026-10-25T21:17:49.960431+00:00",
+  "environment": {
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "runner_image": "20261023.334.3",
+    "runner_os": "Linux",
+    "renderer_environment": {
+      "GDK_BACKEND": "x11",
+      "WEBKIT_DISABLE_COMPOSITING_MODE": "1",
+      "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+      "LIBGL_ALWAYS_SOFTWARE": null
+    }
+  },
+  "native_environment": {
+    "os_release": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+    "display": ":99",
+    "gdk_backend": "x11",
+    "lang": "C.UTF-8",
+    "desktop_geometry": {
+      "command": [
+        "xdotool",
+        "getdisplaygeometry"
+      ],
+      "exit_code": 0,
+      "stdout": "1440 1100",
+      "stderr": ""
+    },
+    "tools": {
+      "xdotool": {
+        "path": "/usr/bin/xdotool",
+        "sha256": "a21dba4297e197ef27035071f6a36061cc8604ac360df19792db99ad3fd9a5f5",
+        "version": {
+          "command": [
+            "xdotool",
+            "--version"
+          ],
+          "exit_code": 0,
+          "stdout": "xdotool version 3.20160805.1",
+          "stderr": ""
+        }
+      },
+      "scrot": {
+        "path": "/usr/bin/scrot",
+        "sha256": "a59a8566eaabb34d333a0362b4039dd8fe2c73846e2710821856527551d95785",
+        "version": {
+          "command": [
+            "scrot",
+            "--version"
+          ],
+          "exit_code": 0,
+          "stdout": "scrot version 1.10",
+          "stderr": ""
+        }
+      },
+      "openbox": {
+        "path": "/usr/bin/openbox",
+        "sha256": "941e69bf5479d77805bdeae7a6dee17142ff429b8db9e7d0c1b579e9c70a0b52",
+        "version": {
+          "command": [
+            "openbox",
+            "--version"
+          ],
+          "exit_code": 0,
+          "stdout": "Openbox 3.6.1\nCopyright (c) 2004   Mikael Magnusson\nCopyright (c) 2002   Dana Jansens\n\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it\nunder certain conditions. See the file COPYING for details.",
+          "stderr": ""
+        }
+      },
+      "WebKitWebDriver": {
+        "path": "/usr/bin/WebKitWebDriver",
+        "sha256": "488118541ba1dbeaca658073af84322900485b9435bc4fbb43eb1faf21db8b70"
+      }
+    },
+    "packages": {
+      "command": [
+        "dpkg-query",
+        "-W",
+        "-f=${binary:Package}=${Version}\n",
+        "webkit2gtk-driver",
+        "libwebkit2gtk-4.1-0",
+        "libgtk-3-0*",
+        "xdotool",
+        "xvfb",
+        "openbox",
+        "scrot"
+      ],
+      "exit_code": 0,
+      "stdout": "libgtk-3-0=\nlibgtk-3-0t64:amd64=3.24.41-4ubuntu1.3\nlibwebkit2gtk-4.1-0:amd64=2.52.6-0ubuntu0.24.04.1\nopenbox=3.6.1-12build5\nscrot=1.10-1build2\nwebkit2gtk-driver=2.52.6-0ubuntu0.24.04.1\nxdotool=1:3.20160805.1-5build1\nxvfb=2:21.1.12-1ubuntu1.9",
+      "stderr": ""
+    },
+    "native_observation": "X11 window title, geometry and owner PID; optional xprop properties. No accessibility-tree claim."
+  },
+  "driver_identity": {
+    "path": "/home/runner/.cargo/bin/tauri-driver",
+    "version": ""
+  },
+  "webview_capabilities": {
+    "browserName": "wry",
+    "browserVersion": "0.57.1",
+    "platformName": "linux",
+    "acceptInsecureCerts": false,
+    "strictFileInteractability": false,
+    "setWindowRect": true,
+    "unhandledPromptBehavior": "dismiss and notify",
+    "pageLoadStrategy": "normal",
+    "proxy": {},
+    "timeouts": {
+      "script": 30000,
+      "pageLoad": 300000,
+      "implicit": 0
+    }
+  },
+  "method": "Actual installed/packaged application; external W3C pointer/keyboard input and PID-bound X11 native file-dialog/close/Quit input. JavaScript observes DOM only. Raw desktop screenshots are retained without edits.",
+  "package_identity": {
+    "normal": {
+      "package_id": "m-shogi",
+      "version": "0.1.0",
+      "architecture": "amd64",
+      "installation": "apt-installed /usr/bin/mshogi-desktop with sibling /usr/bin/mshogi",
+      "deb_sha256": "bd6999a73052adaf458c7443ad9da38cd976e1a4f9bc66a3e22aff40214cffe6",
+      "host_sha256": "f68157bb18ffba2610882f913d30019ec284989d884ba8576728e8362a247e07",
+      "engine_sha256": "129a6af24ffaf5833d763caf7589c1c651b9628719f70defd8a8bd9f0ec11799",
+      "manifest": "packages/normal/manifest.json",
+      "package_smoke": "packages/normal/package-smoke.json"
+    },
+    "verification": {
+      "label": "mShogi Verification",
+      "installation": "Separately extracted verification package; normal package actually installed with apt.",
+      "deb_sha256": "8cf5a51de4ea55dc05f9838b35fd00a20129b80c4008e3e49daeb8dbed8d3e47",
+      "manifest": "packages/verification/manifest.json"
+    }
+  },
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "passed",
+      "fixture": null,
+      "package": "normal installed Debian package",
+      "host_sha256": "f68157bb18ffba2610882f913d30019ec284989d884ba8576728e8362a247e07",
+      "engine_sha256": "129a6af24ffaf5833d763caf7589c1c651b9628719f70defd8a8bd9f0ec11799",
+      "native_binding": "normal/linux-bound.json",
+      "started_at_utc": "2026-10-25T21:17:22.068980+00:00",
+      "finished_at_utc": "2026-10-25T21:17:35.497122+00:00",
+      "shutdown_before_teardown": {
+        "at_utc": "2026-10-25T21:17:35.497088+00:00",
+        "host_alive": false,
+        "immediate_matching_processes": [],
+        "final_matching_processes": []
+      }
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "fixture": "standard",
+      "package": "separately extracted verification Debian package",
+      "host_sha256": "2d9c8f122d641159d329450780fade124de483ef5c7ccbf94f05cc11bb2df597",
+      "engine_sha256": "129a6af24ffaf5833d763caf7589c1c651b9628719f70defd8a8bd9f0ec11799",
+      "native_binding": "verification-standard/linux-bound.json",
+      "started_at_utc": "2026-10-25T21:17:35.520794+00:00",
+      "finished_at_utc": "2026-10-25T21:17:38.753222+00:00",
+      "shutdown_before_teardown": {
+        "at_utc": "2026-10-25T21:17:38.753187+00:00",
+        "host_alive": false,
+        "immediate_matching_processes": [],
+        "final_matching_processes": []
+      }
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "fixture": "promotion",
+      "package": "separately extracted verification Debian package",
+      "host_sha256": "2d9c8f122d641159d329450780fade124de483ef5c7ccbf94f05cc11bb2df597",
+      "engine_sha256": "129a6af24ffaf5833d763caf7589c1c651b9628719f70defd8a8bd9f0ec11799",
+      "native_binding": "verification-promotion/linux-bound.json",
+      "started_at_utc": "2026-10-25T21:17:38.778618+00:00",
+      "finished_at_utc": "2026-10-25T21:17:40.616915+00:00",
+      "shutdown_before_teardown": {
+        "at_utc": "2026-10-25T21:17:40.616879+00:00",
+        "host_alive": false,
+        "immediate_matching_processes": [],
+        "final_matching_processes": []
+      }
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed",
+      "fixture": "claim",
+      "package": "separately extracted verification Debian package",
+      "host_sha256": "2d9c8f122d641159d329450780fade124de483ef5c7ccbf94f05cc11bb2df597",
+      "engine_sha256": "129a6af24ffaf5833d763caf7589c1c651b9628719f70defd8a8bd9f0ec11799",
+      "native_binding": "verification-claim/linux-bound.json",
+      "started_at_utc": "2026-10-25T21:17:40.638127+00:00",
+      "finished_at_utc": "2026-10-25T21:17:42.095817+00:00",
+      "shutdown_before_teardown": {
+        "at_utc": "2026-10-25T21:17:42.095784+00:00",
+        "host_alive": false,
+        "immediate_matching_processes": [],
+        "final_matching_processes": []
+      }
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "fixture": "capacity",
+      "package": "separately extracted verification Debian package",
+      "host_sha256": "2d9c8f122d641159d329450780fade124de483ef5c7ccbf94f05cc11bb2df597",
+      "engine_sha256": "129a6af24ffaf5833d763caf7589c1c651b9628719f70defd8a8bd9f0ec11799",
+      "native_binding": "verification-capacity/linux-bound.json",
+      "started_at_utc": "2026-10-25T21:17:42.117272+00:00",
+      "finished_at_utc": "2026-10-25T21:17:47.421739+00:00",
+      "shutdown_before_teardown": {
+        "at_utc": "2026-10-25T21:17:47.421700+00:00",
+        "host_alive": false,
+        "immediate_matching_processes": [],
+        "final_matching_processes": []
+      }
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed",
+      "fixture": "synthetic",
+      "package": "separately extracted verification Debian package",
+      "host_sha256": "2d9c8f122d641159d329450780fade124de483ef5c7ccbf94f05cc11bb2df597",
+      "engine_sha256": "129a6af24ffaf5833d763caf7589c1c651b9628719f70defd8a8bd9f0ec11799",
+      "native_binding": "verification-synthetic/linux-bound.json",
+      "started_at_utc": "2026-10-25T21:17:47.443857+00:00",
+      "finished_at_utc": "2026-10-25T21:17:49.951242+00:00",
+      "shutdown_before_teardown": {
+        "at_utc": "2026-10-25T21:17:49.951203+00:00",
+        "host_alive": false,
+        "immediate_matching_processes": [],
+        "final_matching_processes": []
+      }
+    }
+  ],
+  "archives": {
+    "normal-complete.mshogi": {
+      "profile": "mshogi.desktop.archive.v1",
+      "observations": 3,
+      "controls": 7,
+      "game_events": 2,
+      "sha256": "84c32e21faa06774f1f006bbcdc6ba685d87b6691754274699d2be63114d94e9",
+      "latest_observation": "Read-only historical Black-to-move analysis after e2e4 only; live game retains two moves."
+    },
+    "capacity-complete.mshogi": {
+      "profile": "mshogi.desktop.archive.v1",
+      "observations": 256,
+      "controls": 256,
+      "game_events": 0,
+      "sha256": "5893a1a4a62e7ba3323f0e19d02b8d1476f02b6a004cb887edb42810fc9619d9"
+    }
+  },
+  "establishes": [
+    "Normal installed GUI play e2e4 and actual bundled-engine reply, demonstrably active cancellation, replacement read-only analysis, exact native Save/Open, reopening with work stopped, historical-prefix analysis, Return live/explicit Resume, native window-close guard cancellation and native Quit.",
+    "Separately labeled verification GUI demonstrates genuine missing-sidecar failure and Retry, promotion cancellation/complete Knight promotion, intended-move draw claim without playing its intention, capacity rejection after 256 retained observations with visible focused resource alert and complete native Save.",
+    "Synthetic verification GUI cancels partial selection and accepts distinct complete capture-return 136>153>136 versus alternate 136>135>136, preserving different effects through the same shared 16 by 16 board.",
+    "Every phase observes host absence and no matching bundled-engine process before driver teardown; no failure signals are used as graceful Quit proof."
+  ],
+  "limits": [
+    "One Ubuntu 24.04.5 GitHub-hosted X11/Xvfb environment, with WEBKIT_DISABLE_COMPOSITING_MODE=1 recorded; does not establish hardware-accelerated rendering, Wayland, other Linux distributions, or performance guarantees.",
+    "Normal packaged GUI and explicitly feature-enabled verification fixtures remain separate. Recovery/promotion/claim/capacity/synthetic scenarios use the labeled verification build; the invented synthetic profile is not a real shogi variant and has no chess-document Save claim.",
+    "Package-smoke contains separate actual CLI engine queries; these do not substitute for the retained GUI observations. No native accessibility-tree or screen-reader validation is claimed.",
+    "Original gui-report retains all 75 artifact file hashes and original runner paths. This directory contains selected original files only; relative paths below map retained files to their artifact locations. Final archive bytes include the subsequent historical-observation save, so their hash differs from the earlier first-save event in the original report."
+  ],
+  "retained_artifact_paths": {
+    "gui-report.json": "gui-evidence/gui-report.json",
+    "normal-complete.mshogi": "gui-evidence/normal-complete.mshogi",
+    "capacity-complete.mshogi": "gui-evidence/capacity-complete.mshogi",
+    "normal-play.desktop.png": "gui-evidence/normal-play.desktop.png",
+    "normal-play.dom.json": "gui-evidence/normal-play.dom.json",
+    "normal-active-analysis.desktop.png": "gui-evidence/normal-active-analysis.desktop.png",
+    "normal-active-analysis.dom.json": "gui-evidence/normal-active-analysis.dom.json",
+    "normal-replacement-complete.desktop.png": "gui-evidence/normal-replacement-complete.desktop.png",
+    "normal-replacement-complete.dom.json": "gui-evidence/normal-replacement-complete.dom.json",
+    "normal-historical-analysis.desktop.png": "gui-evidence/normal-historical-analysis.desktop.png",
+    "normal-historical-analysis.dom.json": "gui-evidence/normal-historical-analysis.dom.json",
+    "normal-native-close-guard.desktop.png": "gui-evidence/normal-native-close-guard.desktop.png",
+    "normal-native-close-guard.dom.json": "gui-evidence/normal-native-close-guard.dom.json",
+    "verification-standard-engine-failure.desktop.png": "gui-evidence/verification-standard-engine-failure.desktop.png",
+    "verification-standard-engine-failure.dom.json": "gui-evidence/verification-standard-engine-failure.dom.json",
+    "verification-standard-result.desktop.png": "gui-evidence/verification-standard-result.desktop.png",
+    "verification-standard-result.dom.json": "gui-evidence/verification-standard-result.dom.json",
+    "verification-promotion-promotion.desktop.png": "gui-evidence/verification-promotion-promotion.desktop.png",
+    "verification-promotion-promotion.dom.json": "gui-evidence/verification-promotion-promotion.dom.json",
+    "verification-promotion-result.desktop.png": "gui-evidence/verification-promotion-result.desktop.png",
+    "verification-promotion-result.dom.json": "gui-evidence/verification-promotion-result.dom.json",
+    "verification-claim-result.desktop.png": "gui-evidence/verification-claim-result.desktop.png",
+    "verification-claim-result.dom.json": "gui-evidence/verification-claim-result.dom.json",
+    "verification-capacity-capacity-pause.desktop.png": "gui-evidence/verification-capacity-capacity-pause.desktop.png",
+    "verification-capacity-capacity-pause.dom.json": "gui-evidence/verification-capacity-capacity-pause.dom.json",
+    "verification-synthetic-capture-route.desktop.png": "gui-evidence/verification-synthetic-capture-route.desktop.png",
+    "verification-synthetic-capture-route.dom.json": "gui-evidence/verification-synthetic-capture-route.dom.json",
+    "verification-synthetic-alternate-route.desktop.png": "gui-evidence/verification-synthetic-alternate-route.desktop.png",
+    "verification-synthetic-alternate-route.dom.json": "gui-evidence/verification-synthetic-alternate-route.dom.json",
+    "normal/linux-bound.json": "gui-evidence/normal/linux-bound.json",
+    "verification-standard/linux-bound.json": "gui-evidence/verification-standard/linux-bound.json",
+    "verification-promotion/linux-bound.json": "gui-evidence/verification-promotion/linux-bound.json",
+    "verification-claim/linux-bound.json": "gui-evidence/verification-claim/linux-bound.json",
+    "verification-capacity/linux-bound.json": "gui-evidence/verification-capacity/linux-bound.json",
+    "verification-synthetic/linux-bound.json": "gui-evidence/verification-synthetic/linux-bound.json",
+    "normal/picker-01-save-after.png": "gui-evidence/normal/picker-01-save-after.png",
+    "normal/picker-01-save-entered-path.png": "gui-evidence/normal/picker-01-save-entered-path.png",
+    "normal/picker-01-save-native.png": "gui-evidence/normal/picker-01-save-native.png",
+    "normal/picker-02-open-after.png": "gui-evidence/normal/picker-02-open-after.png",
+    "normal/picker-02-open-before-accept-fallback.png": "gui-evidence/normal/picker-02-open-before-accept-fallback.png",
+    "normal/picker-02-open-entered-path.png": "gui-evidence/normal/picker-02-open-entered-path.png",
+    "normal/picker-02-open-native.png": "gui-evidence/normal/picker-02-open-native.png",
+    "verification-capacity/picker-01-save-after.png": "gui-evidence/verification-capacity/picker-01-save-after.png",
+    "verification-capacity/picker-01-save-entered-path.png": "gui-evidence/verification-capacity/picker-01-save-entered-path.png",
+    "verification-capacity/picker-01-save-native.png": "gui-evidence/verification-capacity/picker-01-save-native.png",
+    "packages/normal/manifest.json": "gui-packages/normal/manifest.json",
+    "packages/normal/package-smoke.json": "gui-packages/normal/package-smoke.json",
+    "packages/verification/manifest.json": "gui-packages/verification/manifest.json"
+  },
+  "files": {
+    "capacity-complete.mshogi": "5893a1a4a62e7ba3323f0e19d02b8d1476f02b6a004cb887edb42810fc9619d9",
+    "gui-report.json": "7deef42c9cb4bee7c04f56bd63161921381dc02e6178a52ad538d387e166e0e3",
+    "normal/linux-bound.json": "234690c6137c2e356a69d6d8d97b2cc7883f6b19760a3074aafeec8b23c69f43",
+    "normal/picker-01-save-after.png": "b7a133a9f80a433cab43f296bbff6be631689b10eee0b0e0c6d9715e13a6507e",
+    "normal/picker-01-save-entered-path.png": "69df9a0531ad264b484c97bae62a42e97472c046550dd083d06b3c9e901080c4",
+    "normal/picker-01-save-native.png": "7d3f8c3debf9b7d3a9edbbfee15881a3ab28a2f469b93434019983ac620139a9",
+    "normal/picker-02-open-after.png": "25ccbea9787dbccede0ac686820ca48305b310ea7606eff1686846ce3cd96c94",
+    "normal/picker-02-open-before-accept-fallback.png": "afd5d383466165c5ab93d5dea1827a098b1b8c4d157acc667d1e4e770719f11f",
+    "normal/picker-02-open-entered-path.png": "9900b394b529a15f1846ec6f873d30bee7c507ff631ea636496aab916a9be5d7",
+    "normal/picker-02-open-native.png": "4935ff42e4da6b1ba14c739dd4dce049c19fb4577272377c3d907bba9835d396",
+    "normal-active-analysis.desktop.png": "251a8dd648e6ca6ed4a68db1f47213e3b47468f57cb62f807bb126df90943ffe",
+    "normal-active-analysis.dom.json": "985a876343d6fbdf86289ec9f881e8d0d5dc5e91068629ef720d7d5b19fb77eb",
+    "normal-complete.mshogi": "84c32e21faa06774f1f006bbcdc6ba685d87b6691754274699d2be63114d94e9",
+    "normal-historical-analysis.desktop.png": "9dfc00df3ea1be340f98d837340cf98a851b568bf5d1ead9aab259bcfbc37657",
+    "normal-historical-analysis.dom.json": "dc601668f7f21c3de0dafa93e66d8d77b8d3389f6ef86c5c1887314eb3c76394",
+    "normal-native-close-guard.desktop.png": "40fda12f0c12751ab46c55b0c91a2731c05ff2484ed3e26cb8246bcd8b699b5d",
+    "normal-native-close-guard.dom.json": "1dade0f368d2ccb6f42cffd904ff9248da7b941ed3871d1635d67bf9a867f45d",
+    "normal-play.desktop.png": "4de6dd1c854c10483e033a1e53eeb1a7e52626d6af6082bc4376c3be56a02162",
+    "normal-play.dom.json": "9df3de21f0b4844f22620fa6a4590d9238b2fbeecdf5b3405f430407802756b5",
+    "normal-replacement-complete.desktop.png": "674d82c58f5ce66dae6411ad28e3ddbfe0548bfc4bf10d280343b8ee74db2ab3",
+    "normal-replacement-complete.dom.json": "31943930ab8be91d300c3da385fc3e4a668304e3b2a4d1c873e53fb8a9f00c84",
+    "packages/normal/manifest.json": "98d76dfd35ab83f262ad9f5a903922b911dfda74d7eb07897d7ac6756a68038d",
+    "packages/normal/package-smoke.json": "39ad0aeaaac2d31042f3ee34682e9a575055b07998103d12829dfad545903ad3",
+    "packages/verification/manifest.json": "cd91171f21dfd54330d4bcc1a2c4b1f8fae0b9773c9eae9b78bd473fd70797af",
+    "verification-capacity/linux-bound.json": "00e2d08ebbdbd0068b415cd2565d89a73f2d286441eb9b27e2de5baf2205512c",
+    "verification-capacity/picker-01-save-after.png": "d5e6bd2a00a3a732a17b30b00258741594e9033560715673b149c32d4856ed4e",
+    "verification-capacity/picker-01-save-entered-path.png": "bde6dee80c2a0d77d3980a846b905a6d0eb779b0444a4209217245eaec126b4a",
+    "verification-capacity/picker-01-save-native.png": "8a4b214e93977a5287d71f93ceedc563378c2b05fa1dbe81c8eb98ec7578404a",
+    "verification-capacity-capacity-pause.desktop.png": "cfe418da89623ce76721e7e76300b637af6d024165dcf6336d31452151d35507",
+    "verification-capacity-capacity-pause.dom.json": "c04f69551243964e693f19e015e0fd7924d451bc046edb766dee431da7602c5c",
+    "verification-claim/linux-bound.json": "0e2f26d374c1770301e6f744aa47a885b22bfbdc54cac385b6a5bbfd6dbb7bdb",
+    "verification-claim-result.desktop.png": "9c1bce66bdcf0abc3bf64776315d9ae08a7a3a18d0fe0358859695dea22678ae",
+    "verification-claim-result.dom.json": "aa26467db142518070114c32e275bef98928a16d954c1a5d5049dcb17631eeb4",
+    "verification-promotion/linux-bound.json": "e9985b63dc0ad2e5e850e8fc13f0ec5f1d55e08ae75f2cdcc27bad02bf86b60c",
+    "verification-promotion-promotion.desktop.png": "d249de88e67d8f2e3a43cf7c5066980b6ecc80b11cac4d97e0a548d8473bb663",
+    "verification-promotion-promotion.dom.json": "b6ef8ffad285cf8abfe001f404eb8e5c702927217fae3ac4d939f0e13f23d228",
+    "verification-promotion-result.desktop.png": "dc5bb23981cb9ab7bea58aca142cc480724bf72263fdf26c1648e76874f2c79d",
+    "verification-promotion-result.dom.json": "7b20b31a20bfc4050e3dc8e0384d47245b12fc15cecfc22cb3ffbd7d57254fdc",
+    "verification-standard/linux-bound.json": "c557dc5ee4233f94c50980081255cdc7a260c21ad32c1233e47413f44f04cb8f",
+    "verification-standard-engine-failure.desktop.png": "61f6b9434f228e18fe5ce692bda2b18fcbf0b3209edf6519d5fdcfea26845546",
+    "verification-standard-engine-failure.dom.json": "d3b2d1978ea1e9057e38dc165baa4b47d10d6867c517237095a980331b5d2370",
+    "verification-standard-result.desktop.png": "a699b532c2eefc390ad5700585fa18c7960255af3ab99a4f96c215916ce69adb",
+    "verification-standard-result.dom.json": "78d6ab67bd6a24d91cfbb6090ec95089b5adf86d953b1c8a39edb8842bbaac10",
+    "verification-synthetic/linux-bound.json": "20f1cac34bcc84446b6583d721bcacea3da71741f94b9e7c9a4bf4d0fae86ff4",
+    "verification-synthetic-alternate-route.desktop.png": "e8b44295523ad10f35f2fe99378806d74117abfa173c04ac7e6dba0ba4ef2afc",
+    "verification-synthetic-alternate-route.dom.json": "cb24a0b10990869c003069abf41bbbfda0d08794ba5fd42d03ec8f88130b449c",
+    "verification-synthetic-capture-route.desktop.png": "48bd4698c14666499ce5cc99f1415c6b8c4115f6f32fb80ebde0d80f3118b034",
+    "verification-synthetic-capture-route.dom.json": "fb74600ca77e0afcaf2e911ced1f21428315ab321c96b019714016fee830c069"
+  }
+}

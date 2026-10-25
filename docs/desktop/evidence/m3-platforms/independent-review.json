@@ -1,0 +1,39 @@
+{
+  "reviewer": "capacity_review",
+  "reviewed_at_utc": "2026-10-25T21:30:57.585821+00:00",
+  "task": "MSH-38",
+  "source_revision": "2f0e4cee3e1cc05df99ff51178eb4be810fbcb44",
+  "verdict": "Passed independent review. The recorded evidence supports all three MSH-38 acceptance criteria with no remaining material harness, product or evidence finding. MSH-39 remains a separate milestone closure review.",
+  "scope": "Independent read-only source and artifact assessment, including actual remote Windows/Linux GUI evidence and separately sourced macOS CUA reports. This reviewer did not operate a new local Windows/Linux desktop or concurrent macOS CUA session.",
+  "acceptance_evidence": {
+    "AC1": "Actual apt-installed normal Linux host/engine identities match package smoke. Windows normal and QA NSIS installations have exact source, installer, executable and runtime identities. Final macOS normal/QA bundle hashes were recomputed from actual current bundles. macOS source reuse is explicit; product paths are unchanged from 4e1e9d4 through 01865e9 and integrated 2f0e4cee.",
+    "AC2": "Linux and Windows each pass all six independently launched normal/recovery/promotion/claim/capacity/synthetic phases. Every phase records native Quit, the specific guard action and host/engine absence before teardown, with no failure-cleanup event substituted. Exact normal archives preserve three observations and a one-event historical prefix; capacity archives preserve all 256 observations. Separate macOS play/analysis/recovery/Save/Open/history/Resume/outcome/synthetic reports and focused status/capacity corrections retain their own provenance.",
+    "AC3": "Normal package instrumentation checks, locked workflow and pinned external drivers, reproducible native launch/install instructions, raw screenshots/DOM/native events, full original reports and selected immutable originals support the claims. Prior failed attempts remain failed. Windows-final retains 49 original files, excluding installers and redundant images/logs."
+  },
+  "independent_checks": [
+    "All 65 original Windows GUI-file hashes recomputed; all 49 retained originals match original artifact bytes. Normal host/engine match package smoke, and normal/QA source and installer manifests match.",
+    "All 48 retained Linux file hashes match. Its observed normal executable paths are actual /usr/bin installations with package-matching hashes; all six pre-teardown shutdown proofs are ordered after native Quit and guard dispatch.",
+    "All recorded files in macos-current, macos-status, macos-capacity-focus and macos-final-normal match hashes. Current actual normal and QA host/engine binaries match their final corresponding reports.",
+    "Representative raw Windows and Linux historical, outcome, recovery, capacity, synthetic and native-menu images inspected. Capacity explanations are fully visible; final Windows 21 native capture events have no exact-engine console or foreground error.",
+    "01865e9 terminal verifier changes reviewed: transport closure is recognized only after native Quit, specific guard and resolved final click dispatch; actual process absence is still mandatory. Startup retry is confined to bounded driver readiness. Phase failure remains nonzero; cleanup residuals abort further phases and durable reports survive cleanup errors.",
+    "GitHub API independently confirms desktop run 40234257669 and Rust run 40234257686 completed successfully on Linux, Windows and macOS, both at exact reviewed integrated source."
+  ],
+  "evidence": {
+    "windows": "windows-final/evidence.json",
+    "linux": "linux-final/evidence.json",
+    "macos_normal": "macos-final-normal/gui-report.json",
+    "macos_capacity": "macos-capacity-focus/gui-report.json",
+    "macos_status": "macos-status/gui-report.json",
+    "macos_broader": "macos-current/gui-report.json",
+    "desktop_ci": "https://github.com/jweathers777/mShogi/actions/runs/40234257669",
+    "rust_ci": "https://github.com/jweathers777/mShogi/actions/runs/40234257686"
+  },
+  "limits": [
+    "Results establish the recorded Windows Server 2022 interactive desktop, Linux X11/Xvfb with recorded compositing override and macOS 27.0.1 arm64 environments; they do not establish every OS/compositor configuration.",
+    "Screen-reader audio, formal accessibility certification, actual Dock clicking and release signing are not claimed.",
+    "Windows final Quit uses actual native mouse-menu selection. Earlier Ctrl+Q automation failure has no established cause; keyboard Quit success is not claimed.",
+    "Earlier macOS journeys are reused only for unaffected behavior with original source/package identities. This review does not replace MSH-39."
+  ],
+  "remaining_material_findings": [],
+  "remaining_required_gui_checks": []
+}

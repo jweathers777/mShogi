@@ -1,0 +1,364 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "source_revision": "2f0e4cee3e1cc05df99ff51178eb4be810fbcb44",
+  "reviewer": "capacity_review",
+  "reviewed_at_utc": "2026-10-25T21:27:55.845905+00:00",
+  "workflow_run_id": 40234257669,
+  "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/40234257669",
+  "job_url": "https://github.com/jweathers777/mShogi/actions/runs/40234257669/job/121292320406",
+  "artifact": {
+    "id": 12614413398,
+    "name": "desktop-windows-2022",
+    "url": "https://github.com/jweathers777/mShogi/actions/runs/40234257669/artifacts/12614413398",
+    "github_api_digest": "sha256:702329433eea6a5378794dc995d2f72668a9c9572bc8c7d3cec71cf64a952b38"
+  },
+  "environment": {
+    "platform": "Windows-2022Server-10.0.20348-SP0",
+    "python": "3.12.10",
+    "runner_image": "20261022.344.1",
+    "runner_os": "Windows",
+    "renderer_environment": {
+      "GDK_BACKEND": null,
+      "WEBKIT_DISABLE_COMPOSITING_MODE": null,
+      "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+      "LIBGL_ALWAYS_SOFTWARE": null
+    }
+  },
+  "runtime_driver": {
+    "runtime_version": "131.0.2903.86",
+    "driver_version": "131.0.2903.86",
+    "driver_sha256": "c34a6b22814a18599f2a67bef922ba879ae44158f216d4d2df797d293f545665",
+    "signature_status": "Valid"
+  },
+  "method": "Actual NSIS-installed normal and verification applications; W3C pointer/keyboard, native UIA file pickers, and real mouse input on the observed native Quit menu. No direct application IPC or injected DOM events.",
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "passed",
+      "host_sha256": "70d1b393f10e03996ad3269af16f064ffc9bbe5437147deb3a105fed3986550e",
+      "engine_sha256": "661380c65a0196c23ec47bc161f79d5ef8c33721c60f90df3b3037e2bf593d42",
+      "native_quit": {
+        "event": "native_menu_quit",
+        "utc": "2026-10-25T21:23:40.093626+00:00",
+        "elapsed_ms": 19531,
+        "pid": 5452,
+        "hwnd": 983532,
+        "method": "pywinauto.MenuItem.click_input",
+        "target": {
+          "application_text": "mShogi",
+          "quit_text": "Quit mShogi\tCtrl+Q",
+          "quit_item_id": 1000,
+          "rectangle": [
+            11,
+            82,
+            208,
+            104
+          ]
+        }
+      },
+      "shutdown_before_teardown": {
+        "at_utc": "2026-10-25T21:23:40.287880+00:00",
+        "operation": "Observe native shutdown before driver teardown",
+        "observation": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "host_sha256": "581b3755ae8f08ccc5ac005b4f4d0896e96181fada14f8f6bf323f5eed84dad6",
+      "engine_sha256": "661380c65a0196c23ec47bc161f79d5ef8c33721c60f90df3b3037e2bf593d42",
+      "native_quit": {
+        "event": "native_menu_quit",
+        "utc": "2026-10-25T21:23:46.218059+00:00",
+        "elapsed_ms": 5765,
+        "pid": 4392,
+        "hwnd": 131638,
+        "method": "pywinauto.MenuItem.click_input",
+        "target": {
+          "application_text": "mShogi",
+          "quit_text": "Quit mShogi\tCtrl+Q",
+          "quit_item_id": 1000,
+          "rectangle": [
+            11,
+            82,
+            208,
+            104
+          ]
+        }
+      },
+      "shutdown_before_teardown": {
+        "at_utc": "2026-10-25T21:23:46.425013+00:00",
+        "operation": "Observe native shutdown before driver teardown",
+        "observation": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "host_sha256": "581b3755ae8f08ccc5ac005b4f4d0896e96181fada14f8f6bf323f5eed84dad6",
+      "engine_sha256": "661380c65a0196c23ec47bc161f79d5ef8c33721c60f90df3b3037e2bf593d42",
+      "native_quit": {
+        "event": "native_menu_quit",
+        "utc": "2026-10-25T21:23:50.580125+00:00",
+        "elapsed_ms": 4078,
+        "pid": 3716,
+        "hwnd": 328088,
+        "method": "pywinauto.MenuItem.click_input",
+        "target": {
+          "application_text": "mShogi",
+          "quit_text": "Quit mShogi\tCtrl+Q",
+          "quit_item_id": 1000,
+          "rectangle": [
+            11,
+            82,
+            208,
+            104
+          ]
+        }
+      },
+      "shutdown_before_teardown": {
+        "at_utc": "2026-10-25T21:23:50.806838+00:00",
+        "operation": "Observe native shutdown before driver teardown",
+        "observation": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed",
+      "host_sha256": "581b3755ae8f08ccc5ac005b4f4d0896e96181fada14f8f6bf323f5eed84dad6",
+      "engine_sha256": "661380c65a0196c23ec47bc161f79d5ef8c33721c60f90df3b3037e2bf593d42",
+      "native_quit": {
+        "event": "native_menu_quit",
+        "utc": "2026-10-25T21:23:54.642439+00:00",
+        "elapsed_ms": 3750,
+        "pid": 1416,
+        "hwnd": 328090,
+        "method": "pywinauto.MenuItem.click_input",
+        "target": {
+          "application_text": "mShogi",
+          "quit_text": "Quit mShogi\tCtrl+Q",
+          "quit_item_id": 1000,
+          "rectangle": [
+            11,
+            82,
+            208,
+            104
+          ]
+        }
+      },
+      "shutdown_before_teardown": {
+        "at_utc": "2026-10-25T21:23:54.864881+00:00",
+        "operation": "Observe native shutdown before driver teardown",
+        "observation": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "host_sha256": "581b3755ae8f08ccc5ac005b4f4d0896e96181fada14f8f6bf323f5eed84dad6",
+      "engine_sha256": "661380c65a0196c23ec47bc161f79d5ef8c33721c60f90df3b3037e2bf593d42",
+      "native_quit": {
+        "event": "native_menu_quit",
+        "utc": "2026-10-25T21:24:01.597002+00:00",
+        "elapsed_ms": 6656,
+        "pid": 2620,
+        "hwnd": 393618,
+        "method": "pywinauto.MenuItem.click_input",
+        "target": {
+          "application_text": "mShogi",
+          "quit_text": "Quit mShogi\tCtrl+Q",
+          "quit_item_id": 1000,
+          "rectangle": [
+            11,
+            82,
+            208,
+            104
+          ]
+        }
+      },
+      "shutdown_before_teardown": {
+        "at_utc": "2026-10-25T21:24:01.829229+00:00",
+        "operation": "Observe native shutdown before driver teardown",
+        "observation": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed",
+      "host_sha256": "581b3755ae8f08ccc5ac005b4f4d0896e96181fada14f8f6bf323f5eed84dad6",
+      "engine_sha256": "661380c65a0196c23ec47bc161f79d5ef8c33721c60f90df3b3037e2bf593d42",
+      "native_quit": {
+        "event": "native_menu_quit",
+        "utc": "2026-10-25T21:24:06.453683+00:00",
+        "elapsed_ms": 4531,
+        "pid": 2292,
+        "hwnd": 590224,
+        "method": "pywinauto.MenuItem.click_input",
+        "target": {
+          "application_text": "mShogi",
+          "quit_text": "Quit mShogi\tCtrl+Q",
+          "quit_item_id": 1000,
+          "rectangle": [
+            11,
+            82,
+            208,
+            104
+          ]
+        }
+      },
+      "shutdown_before_teardown": {
+        "at_utc": "2026-10-25T21:24:06.635348+00:00",
+        "operation": "Observe native shutdown before driver teardown",
+        "observation": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    }
+  ],
+  "independent_checks": [
+    "All 65 original GUI-evidence file hashes independently recomputed, normalizing original Windows path separators when reading on macOS.",
+    "Normal observed host/engine hashes match actual package-smoke identities; both package manifests match source and installer hashes.",
+    "Six actual native menu targets, each Quit mShogi / ID 1000, lead to the specific application guard; six recorded host/engine absence observations precede driver teardown.",
+    "All 21 native screenshot events report no exact-engine console and no foreground error. Raw menu, historical, capacity, recovery, promotion, claim and synthetic images independently inspected.",
+    "Exact saved records retain three normal observations and the one-event historical analysis prefix, plus all 256 capacity observations."
+  ],
+  "archives": {
+    "normal-complete.mshogi": {
+      "bytes": 7706,
+      "sha256": "239a8e03d0fe60bf03908493e526c1de54b8479dec7a75890ffd4ecc530a242b",
+      "observations": 3,
+      "controls": 7,
+      "game_events": 2,
+      "historical_request": {
+        "purpose": {
+          "kind": "move_analysis",
+          "target": {
+            "selection_id": 21,
+            "ply": 1,
+            "session_version": 22,
+            "label": "Historical position after 1 plies",
+            "turn": "black"
+          }
+        },
+        "prefix_game_events": 1
+      }
+    },
+    "capacity-complete.mshogi": {
+      "bytes": 385619,
+      "sha256": "6a06b4079c302654d9dd907ff62dbdf25ad3731ce14b14a74f3122e37ae93c6d",
+      "observations": 256,
+      "controls": 256,
+      "game_events": 0
+    }
+  },
+  "retention": "Selected original report, raw desktop/menu/picker images, DOM captures, canonical archives and package/runtime identities copied byte-for-byte. Redundant webview images, empty driver logs and binary installers were not copied; original full report preserves their hashes. This evidence.json is an authored independent assessment.",
+  "limits": [
+    "Final Windows Quit evidence uses actual native mouse-menu input. Earlier automated Ctrl+Q failure has no established cause; keyboard Quit success is not claimed.",
+    "This verifies the recorded Windows Server 2022 interactive CI desktop and WebView2 runtime, without screen-reader audio or formal accessibility conformance claims.",
+    "Prior failed attempts remain failed and retain their separate source/package identities."
+  ],
+  "files": {
+    "capacity-complete.mshogi": "6a06b4079c302654d9dd907ff62dbdf25ad3731ce14b14a74f3122e37ae93c6d",
+    "gui-report.json": "a3254527f378d834723de5cdff9b5f3402fee1358fa34f151f44152d6f21164e",
+    "normal/native-001-save-picker-entered.png": "7a39f39170184aa5dd2d50363c2f7549bb2596a7168c90bae731df7dd11c0c13",
+    "normal/native-001-save-picker.png": "d06dd5a546e45cd1cf86541d9009ee0e2267e36c17af31542079cf3321632120",
+    "normal/native-002-open-picker-entered.png": "4ff719fc5722ff70d95220fcf9f9f0229be50ac980fc7f380591ab3b378ed3a7",
+    "normal/native-002-open-picker.png": "95767d40adde426e73a7a18b568d075375da8496dade1db343c19e9dfd73f95d",
+    "normal/native-003-quit-menu.png": "22ba15d259177589fbb0b350b9635334c26d01a515b6229056592de089059043",
+    "normal-active-analysis.desktop.png": "b33d834b2b013403dd8c93152be4c52c2ab3f5dec5bfab8d437018fc10c3c7d0",
+    "normal-active-analysis.dom.json": "0d757d6779e2ebad6c03b37b552bff2cd8ccdcb24dd5510cc539a2aa736da31b",
+    "normal-complete.mshogi": "239a8e03d0fe60bf03908493e526c1de54b8479dec7a75890ffd4ecc530a242b",
+    "normal-historical-analysis.desktop.png": "8fd005eb60fceb3a41cf10029f386f9b252ef6684c53243b9591e3ed01fd0054",
+    "normal-historical-analysis.dom.json": "b36af359f7659b235bf50dabf60d630828bf63c595c63fa82e17bb297e986493",
+    "normal-native-close-guard.desktop.png": "73fed388096be57db3cd2f4bedf37842a089f8552ef509e984971916061e639d",
+    "normal-native-close-guard.dom.json": "cff17b999a89073c45145407d71910f5d8024462f6a0d6a82ecd310be957c2de",
+    "normal-play.desktop.png": "6a3517f1ad4035cbe5300bc442a4ca1f9f3a48e437d20a5762bd4d5274cde107",
+    "normal-play.dom.json": "488bf4967a78267b9e9696e0c181c98434428ec8b8b783f3d7d1b472278d2531",
+    "normal-replacement-complete.desktop.png": "56c2a3bfc80fb12dfbef7756fce80d01d20d7d636b872a01c13b09f7c1813802",
+    "normal-replacement-complete.dom.json": "db39e49b900e5688e081a81d87899a825f43f1c270201e7448d3a9f162b88989",
+    "packages/normal/manifest.json": "a6047d10e785f81a50f865d3c15c70f6e377f6cc8c9c4e970f271a6627b2df61",
+    "packages/normal/package-smoke.json": "50d81321a955368340d127edce9798b37816b507ca6497cdd38e06aadda6e15a",
+    "packages/verification/manifest.json": "5a826cfab95440c162adc04d697a2eca7d35cf0c30b9f69e46e069511919c167",
+    "verification-capacity/native-001-save-picker-entered.png": "bdfd1e0c854944b53efd98bbad0250c4c28142812fae14c72ddf4fffeebb0374",
+    "verification-capacity/native-001-save-picker.png": "5298fae17d0c635925c24f83142d924a891d4b05e0837ff3f8a71cccdc4b517b",
+    "verification-capacity/native-002-quit-menu.png": "f0b956f6e63ef5dd218e6a7f2b53ed43f1b6b9de55d8756f00b105e8b188fb7a",
+    "verification-capacity-capacity-pause.desktop.png": "d7d8b50911c1c2a2d23f8b96f9678538bd22fba3b8df44ca75c36f09021e87b7",
+    "verification-capacity-capacity-pause.dom.json": "8966439c86851549f9e09433a3b1e26237f0d0203d17a794db7685daeae96195",
+    "verification-capacity-result.desktop.png": "10d3633643494b6c7e75934b771e6e5bcf6de6f8249ef45548efc445efb94090",
+    "verification-capacity-result.dom.json": "9cb068e995082f83093228fa7c07d4ba29fed25b6cf0d94c6ad8f49487f7d2d9",
+    "verification-claim/native-001-quit-menu.png": "15c65750a168040185a9bb33382d687abf58668d05840baa78a41f54823a54af",
+    "verification-claim-result.desktop.png": "a2f1fff5a10a49e79c4bb9c20336f0a8af10345bb41d2c79de40cd70f7f61bfb",
+    "verification-claim-result.dom.json": "81ec94d891e0f5c21848e8b853b87ae456c51e8e9f672cfa8b3a43755fb5329e",
+    "verification-promotion/native-001-quit-menu.png": "9705f65302ea8d14884a806f97ffe7a540f5d2d25ab80921914fdbb0e6ad5a91",
+    "verification-promotion-promotion.desktop.png": "3e3d3093b90142fbea035d439f9d3d2f8c4f320ba5a7b468ea68f13c0ffbba7c",
+    "verification-promotion-promotion.dom.json": "ac387fcbad9c84fa25d5b57e8d6eb1ee07f7a9840f20f81ee7fe91e5d24e6b99",
+    "verification-promotion-result.desktop.png": "a91931148aa75420bc86be7d0c4de61d873549b091ca8da5d2372dca21a3eaae",
+    "verification-promotion-result.dom.json": "36291a767f12ded50c1782e958bfdf1ffbd87113440caed5408d81780049bc5c",
+    "verification-standard/native-001-quit-menu.png": "534121145e580e2f6467c520d8f68468385406098980f695c5e88ba91e55d51f",
+    "verification-standard-engine-failure.desktop.png": "37724c706f2218f615da0e8d0f851f756434d653eb6f274d3a9b648f6ddf004d",
+    "verification-standard-engine-failure.dom.json": "eb62af95527424c48fb1f56bf0ff520e152ac76783736592e1b39eefffe9184b",
+    "verification-standard-result.desktop.png": "350cbdee17d74045fc7e1313613ca8bbf8d1bbc3facd37bb0936cdd5178d6fbf",
+    "verification-standard-result.dom.json": "a9d26aac6a35bcb88ac33f692417b8643fa9370806ef1a7cf1577108d2ee97d3",
+    "verification-synthetic/native-001-quit-menu.png": "2765ee087eff67d894743cd596c65f85cca5ecec5793143daec48bb0febfb31e",
+    "verification-synthetic-alternate-route.desktop.png": "a77b82fe7f88536fd63bf439189c4e0ced2a635ba2a0030877e3bf389ddbae02",
+    "verification-synthetic-alternate-route.dom.json": "ab5863c38952429557fed4c1776c6ee959eb23c77900f3d56094282ca087dd8a",
+    "verification-synthetic-capture-route.desktop.png": "0a47bb6a35c1b2e14110d61a35201a71a23d3f7590aa417477f1ad375f28301e",
+    "verification-synthetic-capture-route.dom.json": "3ae6d46c60067ae3fb159aba13f7a531ab059a206e67f4d7ea98a0cc882aadf2",
+    "verification-synthetic-result.desktop.png": "a77b82fe7f88536fd63bf439189c4e0ced2a635ba2a0030877e3bf389ddbae02",
+    "verification-synthetic-result.dom.json": "ab5863c38952429557fed4c1776c6ee959eb23c77900f3d56094282ca087dd8a",
+    "webview-driver.json": "5c2f0344f6811d9bc92c28de84094faddce13b70d69e5656a6d1d287b0ffd2e7"
+  }
+}

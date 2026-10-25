@@ -1,0 +1,157 @@
+{
+  "package_root": "desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+  "engine": "Contents/MacOS/mshogi",
+  "sha256": "45d264831e806ea81b426b4fbbb94f2ecbcba384d23696a5c87537acca555ba5",
+  "host_sha256": "00c92dad60a3a5e5c6d2b99a86e4fa7a0b678a0858d42ce78f8809fe8de41611",
+  "version": "mshogi 0.1.0",
+  "uci_observations": [
+    "id name mShogi 0.1.0",
+    "id author John Weathers",
+    "option name ClaimPolicy type combo default explicit var explicit var auto",
+    "uciok",
+    "readyok",
+    "info depth 1 nodes 21 time 4 score cp 0 pv a2a3",
+    "bestmove a2a3"
+  ],
+  "internal_response": {
+    "context": {
+      "protocol": 2,
+      "purpose": {
+        "kind": "engine_turn"
+      },
+      "request_id": 1,
+      "session_version": 1,
+      "process_generation": 1,
+      "game": {
+        "schema_version": 1,
+        "rules_profile": "mshogi.chess.match.v1",
+        "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "history_origin": "standard_start",
+        "claim_policy": "explicit_only",
+        "events": []
+      },
+      "limits": {
+        "depth": 1,
+        "nodes": 1000
+      }
+    },
+    "result": {
+      "kind": "move",
+      "action": "a2a3",
+      "telemetry": {
+        "score": 0,
+        "completed_depth": 1,
+        "nodes": 21,
+        "principal_variation": [
+          {
+            "kind": "move",
+            "action": "a2a3"
+          }
+        ],
+        "status": "complete"
+      }
+    }
+  },
+  "analysis_response": {
+    "context": {
+      "protocol": 2,
+      "purpose": {
+        "kind": "move_analysis",
+        "target": {
+          "selection_id": 1,
+          "ply": 0,
+          "session_version": 1,
+          "label": "Package verification: standard start",
+          "turn": "white"
+        }
+      },
+      "request_id": 2,
+      "session_version": 1,
+      "process_generation": 2,
+      "game": {
+        "schema_version": 1,
+        "rules_profile": "mshogi.chess.match.v1",
+        "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "history_origin": "standard_start",
+        "claim_policy": "explicit_only",
+        "events": []
+      },
+      "limits": {
+        "depth": 1,
+        "nodes": 1000
+      }
+    },
+    "result": {
+      "kind": "move",
+      "action": "a2a3",
+      "telemetry": {
+        "score": 0,
+        "completed_depth": 1,
+        "nodes": 21,
+        "principal_variation": [
+          {
+            "kind": "move",
+            "action": "a2a3"
+          }
+        ],
+        "status": "complete"
+      }
+    }
+  },
+  "full_response": {
+    "context": {
+      "protocol": 2,
+      "purpose": {
+        "kind": "full_reachability",
+        "target": {
+          "selection_id": 1,
+          "ply": 0,
+          "session_version": 1,
+          "label": "Package verification: standard start",
+          "turn": "white"
+        },
+        "mate": "either",
+        "limits": {
+          "max_positions": 1,
+          "max_transitions": 1
+        }
+      },
+      "request_id": 3,
+      "session_version": 1,
+      "process_generation": 3,
+      "game": {
+        "schema_version": 1,
+        "rules_profile": "mshogi.chess.match.v1",
+        "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "history_origin": "standard_start",
+        "claim_policy": "explicit_only",
+        "events": []
+      },
+      "limits": {
+        "depth": 1,
+        "nodes": 0
+      }
+    },
+    "result": {
+      "kind": "reachability",
+      "result": {
+        "unknown": {
+          "reason": "position_limit",
+          "work": {
+            "positions": 1,
+            "expanded": 1,
+            "transitions": 1,
+            "static_leaves": 0
+          }
+        }
+      }
+    }
+  },
+  "files": [
+    "Contents/Info.plist",
+    "Contents/MacOS/mshogi",
+    "Contents/MacOS/mshogi-desktop",
+    "Contents/Resources/icon.icns"
+  ],
+  "scope": "Package inventory and actual UCI, engine-turn, move-analysis and bounded Full reachability queries. Host acceptance and installed UI interaction are separate evidence."
+}

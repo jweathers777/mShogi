@@ -1,11 +1,11 @@
 ---
 id: MSH-36
 title: Exercise a labeled synthetic large-board and compound-action fixture
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-25T12:48:00Z'
-updated_date: '2026-10-25T18:48:00Z'
+updated_date: '2026-10-25T19:00:00Z'
 labels: []
 milestone: m-3
 dependencies:
@@ -23,17 +23,17 @@ The desktop presentation must encounter large geometry and staged selection befo
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 A clearly labeled synthetic development fixture displays a readable 16-by-16 board and multi-stage route selection without claiming another real game.
-- [ ] #2 Partial selection and cancellation never commit an action; completed native fixture choices remain distinct from chess sessions and records.
-- [ ] #3 Pointer, keyboard, orientation and route ambiguity interactions are verified in the running app; normal distributables exclude test instrumentation.
+- [x] #1 A clearly labeled synthetic development fixture displays a readable 16-by-16 board and multi-stage route selection without claiming another real game.
+- [x] #2 Partial selection and cancellation never commit an action; completed native fixture choices remain distinct from chess sessions and records.
+- [x] #3 Pointer, keyboard, orientation and route ambiguity interactions are verified in the running app; normal distributables exclude test instrumentation.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -53,3 +53,9 @@ Actual packaged macOS4e997f0472e09c98f98d211236e2706c453f4f08 verified shared16x
 
 InitialpackageCI40222121775 macOSpassed;Linux/Windows timedout5s in new256squarefrontend tests. Optimizedtestqueriesonly: existingSVGrole/ARIAcoordinate selector, cheapstartupheading andHTMLcompletionbuttonqueries; allbehavior/assertions+256buttoninventory preserved, no timeoutincrease/productchange. Full64suitepasses5.40s, independent8testsfocused3.48s. Boundedreviewclean;replacementpackageCIrequired.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Shared SVG board/selector nowhandles native16x16geometry and orderedcompletechoices without a frontend rulesengine. Featureonly inventedstridercontroller/profile/record derivesdifferentcaptureeffects forsameorigin/endroutes; partialprefix/cancellationnevercommit, explicitshortcompletion andResetnativeversionsverified. Normalhost/frontend omitinstrumentation. ActualpackagedmacOSpointer/keyboard/orientation/nativeacceptance/record/quit evidence +exacthashes docs/desktop/completion-batch-evidence.md;64frontend,10core,4native,4host focusedchecks andindependentreviewpass. CI testclock/admission assumptions andslow256squarequeriesfixedwithoutproductchanges/timeoutincreases. Integratedcodex/rewrite415f080ea3d0f3ad361120b07bcfaab3fd001678; Rust40223036914 andpackages40223036915 all3systems pass. SourceGUI4e997f0 remainsapplicable. NextMSH-37minimumsize/fulljourneys; M3open/M2closed/futureroadmappreserved.
+<!-- SECTION:FINAL_SUMMARY:END -->

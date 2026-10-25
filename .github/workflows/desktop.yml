@@ -1,0 +1,86 @@
+name: Desktop packages
+
+on:
+  push:
+    branches: ["codex/**"]
+    paths-ignore: ["backlog/**"]
+  pull_request:
+    branches: ["codex/rewrite"]
+    paths-ignore: ["backlog/**"]
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: Desktop (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            bundle: deb
+          - os: macos-15
+            bundle: app
+          - os: windows-2022
+            bundle: nsis
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 40
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version-file: desktop/.node-version
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+      - name: Linux native build dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+      - name: Install desktop toolchain
+        run: rustup toolchain install 1.90.0 --profile minimal --component rustfmt,clippy
+      - name: Locked frontend and native checks
+        working-directory: desktop
+        run: |
+          npm ci
+          npm run check
+          npm run engine:prepare
+          cd src-tauri
+          cargo fmt --all -- --check
+          cargo clippy --locked --all-targets -- -D warnings
+          cargo test --locked
+      - name: Build normal native package
+        working-directory: desktop
+        run: npm run desktop:build -- --bundles ${{ matrix.bundle }}
+      - name: Inspect macOS application package and run bundled engine
+        if: runner.os == 'macOS'
+        run: python3 desktop/scripts/package-smoke.py desktop/src-tauri/target/release/bundle/macos/mShogi.app --report package-smoke.json
+      - name: Inspect extracted Debian package and run bundled engine
+        if: runner.os == 'Linux'
+        run: |
+          mkdir -p package-extracted
+          dpkg-deb -x desktop/src-tauri/target/release/bundle/deb/*.deb package-extracted
+          python3 desktop/scripts/package-smoke.py package-extracted --report package-smoke.json
+      - name: Install Windows package and run bundled engine
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $installer = (Get-ChildItem desktop/src-tauri/target/release/bundle/nsis/*-setup.exe).FullName
+          $destination = Join-Path $env:RUNNER_TEMP 'mshogi-package-smoke'
+          $process = Start-Process -FilePath $installer -ArgumentList @('/S', "/D=$destination") -Wait -PassThru
+          if ($process.ExitCode -ne 0) { throw "Installer exited $($process.ExitCode)" }
+          python desktop/scripts/package-smoke.py $destination --report package-smoke.json
+      - name: Upload native package and observations
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: desktop-${{ matrix.os }}
+          path: |
+            desktop/src-tauri/target/release/bundle/
+            package-smoke.json
+          retention-days: 14

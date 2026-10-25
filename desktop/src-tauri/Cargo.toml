@@ -1,0 +1,19 @@
+[package]
+name = "mshogi-desktop"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.90"
+publish = false
+
+[workspace]
+resolver = "3"
+
+[build-dependencies]
+tauri-build = { version = "=2.7.4", features = [] }
+
+[dependencies]
+tauri = { version = "=2.12.5", features = [] }
+serde = { version = "=1.0.229", features = ["derive"] }
+
+[lints.rust]
+unsafe_code = "forbid"

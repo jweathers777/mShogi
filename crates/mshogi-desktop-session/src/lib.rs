@@ -823,6 +823,10 @@ impl DesktopController {
         controller.session = match fixture {
             "standard" => DesktopSession::new(),
             "capacity" => DesktopSession::verification_capacity()?,
+            "promotion" => {
+                let game = AdjudicatedGame::from_fen("7k/P7/8/8/8/8/8/7K w - - 0 1", ClaimPolicy::ExplicitOnly).map_err(|error| error.to_string())?;
+                DesktopSession::from_record(&game.record(), Color::White)?
+            }
             "claim" | "current-claim" => {
                 let fen = if fixture == "claim" { "7k/8/8/8/8/8/R7/K7 w - - 99 1" } else { "7k/8/8/8/8/8/R7/K7 w - - 100 1" };
                 let game = AdjudicatedGame::from_fen(fen, ClaimPolicy::ExplicitOnly).map_err(|error| error.to_string())?;
@@ -838,7 +842,7 @@ impl DesktopController {
                 session.play_limits.nodes = 0;
                 session
             }
-            _ => return Err("Unknown desktop verification fixture. Use standard, claim, current-claim, concluded, incomplete or capacity.".into()),
+            _ => return Err("Unknown desktop verification fixture. Use standard, promotion, claim, current-claim, concluded, incomplete or capacity.".into()),
         };
         Ok(controller)
     }
@@ -1527,6 +1531,77 @@ mod tests {
             PLAY_LIMITS
         );
         assert!(DesktopController::verification(path, "unknown").is_err());
+    }
+    #[cfg(feature = "desktop-verification")]
+    #[test]
+    fn verification_promotion_has_four_native_choices_and_roundtrips_complete_archive() {
+        fn wait_document(controller: &mut DesktopController, id: u64) -> Snapshot {
+            let deadline = Instant::now() + std::time::Duration::from_secs(5);
+            loop {
+                let snapshot = controller.snapshot();
+                if snapshot.io.id == id
+                    && matches!(snapshot.io.phase, IoPhase::Complete | IoPhase::Failed)
+                {
+                    assert_eq!(snapshot.io.phase, IoPhase::Complete, "{:?}", snapshot.io);
+                    return snapshot;
+                }
+                assert!(Instant::now() < deadline);
+                std::thread::sleep(std::time::Duration::from_millis(1));
+            }
+        }
+        let engine = PathBuf::from("/unused/verification-engine");
+        let mut source = DesktopController::verification(engine.clone(), "promotion").unwrap();
+        let snapshot = source.snapshot();
+        assert_eq!(snapshot.human, Color::White);
+        assert_eq!(snapshot.fen, "7k/P7/8/8/8/8/8/7K w - - 0 1");
+        assert!(snapshot.conclusion.is_none());
+        let choices: std::collections::BTreeSet<_> = snapshot
+            .legal_choices
+            .iter()
+            .filter(|choice| choice.from == "a7" && choice.to == "a8")
+            .map(|choice| {
+                (
+                    choice.action.to_string(),
+                    choice.promotion.as_deref().unwrap(),
+                )
+            })
+            .collect();
+        assert_eq!(
+            choices,
+            [
+                ("a7a8b".into(), "bishop"),
+                ("a7a8n".into(), "knight"),
+                ("a7a8q".into(), "queen"),
+                ("a7a8r".into(), "rook"),
+            ]
+            .into_iter()
+            .collect()
+        );
+        let match_record = source.session.game.record().to_json();
+        let game_record = source.session.game.game().record();
+        let unique = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
+        let path = std::env::temp_dir().join(format!(
+            "mshogi-promotion-{}-{unique}.mshogi",
+            std::process::id()
+        ));
+        let id = source.queue_save(path.clone()).unwrap();
+        assert!(!wait_document(&mut source, id).document.dirty);
+        let mut restored = DesktopController::new(engine).unwrap();
+        let id = restored
+            .queue_open(path.clone(), restored.open_token())
+            .unwrap();
+        let reopened = wait_document(&mut restored, id);
+        assert_eq!(reopened.fen, snapshot.fen);
+        assert_eq!(reopened.human, Color::White);
+        assert!(reopened.play_paused);
+        assert!(reopened.version > snapshot.version);
+        assert_eq!(restored.session.game.record().to_json(), match_record);
+        assert_eq!(restored.session.game.game().record(), game_record);
+        assert!(reopened.observations.is_empty());
+        std::fs::remove_file(path).unwrap();
     }
     #[test]
     fn full_mode_restoration_is_explicitly_rejected_before_solver_execution() {

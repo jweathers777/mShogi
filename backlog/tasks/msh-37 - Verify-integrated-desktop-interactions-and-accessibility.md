@@ -1,10 +1,11 @@
 ---
 id: MSH-37
 title: Verify integrated desktop interactions and accessibility
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-10-25T12:48:00Z'
-updated_date: '2026-10-25T17:48:00Z'
+updated_date: '2026-10-25T19:00:00Z'
 labels: []
 milestone: m-3
 dependencies:
@@ -39,8 +40,16 @@ Individual board tests do not establish the complete application interaction and
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Exercise complete packaged macOS journeys with the actual bundled engine: play/promotion/claims, genuine engine failure/retry, analysis cancellation/replacement, canonical Save/Open/history/ReturnLive/Resume, unsaved replacement/quit and capacitypause. Use separately labeled verification fixtures for difficult states and exact native window-size controls; keep instrumentation out of normal artifacts. Independently assess keyboard focus, status semantics, contrast/readability and access at1180x820 and760x650 including synthetic nestedscrolling; fix material findings with focusedtests. Reuse unchanged semantic evidence, then record exactsource/packages/screenshots, independentreview, normalintegration/push andapplicableCI beforeDone.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 Final M3 batch owner clarification: integrated journeys must include MSH-61 archive capacity admission, recovery/retry, explicit Return to live and Resume, unsaved-change handling, status announcements/focus recovery and access to controls at supported sizes; preserve existing AC. MSH-61 is required before integration verification.
+
+Owner @codex codex/m3-desktop .claude/worktrees/next-task; startsafterMSH-61/MSH-36Done, all otherdependenciesDone. Actualthree-platformGUI remainsMSH-38, not inferred fromthislocalmacOS interactiontask orpackageCI. M3staysopen; nofutureM4–M6 implementation.
 <!-- SECTION:NOTES:END -->

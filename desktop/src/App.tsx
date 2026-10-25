@@ -5,7 +5,7 @@ import { Board } from "./Board";
 import { AnalysisPanel } from "./Analysis";
 import { DocumentToolbar, UnsavedDialog, useDocumentGuard } from "./Document";
 import { HistoryPanel, SavedObservations } from "./History";
-import { scoreDescription } from "./analysisPresentation";
+import { readableAction, scoreDescription } from "./analysisPresentation";
 import type { Color, Snapshot } from "./native";
 import { claimName, colorName, gameStatus } from "./presentation";
 import { useNativeSession } from "./useNativeSession";
@@ -36,11 +36,11 @@ function EngineObservations({ snapshot }: { snapshot: Snapshot }) {
   const telemetry = last.telemetry;
   const choice =
     last.kind === "move"
-      ? `Played ${last.action}`
+      ? `Move returned: ${readableAction(last.action)}`
       : last.kind === "claim"
-        ? claimName(last.claim)
+        ? `Claim returned: ${claimName(last.claim)}`
         : last.kind === "finished"
-          ? "Position already concluded"
+          ? "Engine reported a concluded position"
           : "No completed search iteration";
   return (
     <>
@@ -101,11 +101,35 @@ export function App() {
   const [claimIndex, setClaimIndex] = useState(0);
   const [inspector, setInspector] = useState<"play" | "analysis">("play");
   const resignButton = useRef<HTMLButtonElement>(null);
+  const lastFocused = useRef<Element | null>(null);
   const returnLiveFocus = useRef(false);
   const [resigning, setResigning] = useState<{
     version: number;
     human: Color;
   } | null>(null);
+  useLayoutEffect(() => {
+    const previous = lastFocused.current;
+    if (snapshot === null || guard.pending !== null || resigning !== null ||
+      previous === null || previous.isConnected) return;
+    // Recover only focus lost by removing a control. Never pull focus away
+    // from a budget input, another control, or a newly opened dialog.
+    if (document.activeElement !== document.body &&
+      document.activeElement !== document.documentElement) return;
+    const kind = previous.closest("[data-focus-after]")?.getAttribute("data-focus-after") ?? "board";
+    const selectors: Record<string, string[]> = {
+      analysis: ['[data-analysis-start="moves"]:not(:disabled)', '.inspector-switch button[aria-pressed="true"]:not(:disabled)'],
+      engine: ['.engine-actions button:not(:disabled)', '.square[tabindex="0"]'],
+      board: ['.square[tabindex="0"]'],
+      outcome: ['[data-game-status]'],
+    };
+    for (const selector of [...(selectors[kind] ?? selectors.board!), '[data-game-status]']) {
+      const target = document.querySelector<HTMLElement | SVGGElement>(selector);
+      if (target !== null) {
+        target.focus();
+        if (document.activeElement === target) { lastFocused.current = target; break; }
+      }
+    }
+  });
   useEffect(() => {
     if (guard.pending !== null) setResigning(null);
   }, [guard.pending]);
@@ -149,7 +173,9 @@ export function App() {
   const orientation = snapshot.document.settings.orientation;
   const historical = snapshot.view.historical;
   return (
-    <main className="application">
+    <main className="application" onFocusCapture={(event) => {
+      if (event.target instanceof Element) lastFocused.current = event.target;
+    }}>
       <header className="app-header">
         <div className="brand">
           <span className="brand-mark" aria-hidden="true">
@@ -177,7 +203,7 @@ export function App() {
               <p className="eyebrow">
                 {historical ? "HISTORICAL · READ ONLY" : "LIVE GAME"}
               </p>
-              <h2 role="status" aria-live="polite">
+              <h2 role="status" aria-live="polite" tabIndex={-1} data-game-status>
                 {historical ? snapshot.view.label : gameStatus(snapshot)}
               </h2>
               <p className="player-line">
@@ -298,6 +324,7 @@ export function App() {
               <button
                 className="quiet resign-button"
                 ref={resignButton}
+                data-focus-after="outcome"
                 disabled={!connected || busy || guard.pending !== null || capacityPaused}
                 onClick={() =>
                   setResigning({
@@ -325,6 +352,7 @@ export function App() {
               {snapshot.analysis.status === "thinking" && (
                 <button
                   className="quiet"
+                  data-focus-after="analysis"
                   disabled={busy || !connected}
                   onClick={() => {
                     void command({
@@ -338,6 +366,7 @@ export function App() {
               )}
               <button
                 className="secondary"
+                data-focus-after={snapshot.conclusion === null ? "board" : "outcome"}
                 disabled={
                   busy || !connected || historical || guard.pending !== null
                 }
@@ -381,7 +410,8 @@ export function App() {
             <section className="card engine-card">
               <div className="card-title">
                 <h2>Native engine</h2>
-                <span className={`engine-phase ${snapshot.engine.status}`}>
+                <span className={`engine-phase ${snapshot.engine.status}`}
+                  role="status" aria-label="Engine turn status">
                   {snapshot.engine.status === "thinking"
                     ? "Searching"
                     : snapshot.engine.status === "paused"
@@ -398,6 +428,7 @@ export function App() {
                 {snapshot.engine.status === "thinking" && (
                   <button
                     className="secondary"
+                    data-focus-after="engine"
                     disabled={busy || !connected}
                     onClick={() => {
                       void command({
@@ -415,6 +446,7 @@ export function App() {
                   snapshot.conclusion === null && (
                     <button
                       className="secondary"
+                      data-focus-after="engine"
                       disabled={busy || !connected}
                       onClick={() => {
                         void command({
@@ -432,8 +464,8 @@ export function App() {
           {snapshot.claims.length > 0 &&
             snapshot.conclusion === null &&
             !historical && (
-              <section className="card claims">
-                <h2>Draw claim available</h2>
+              <section className="card claims" data-focus-after="outcome">
+                <h2 role="status">Draw claim available</h2>
                 <p className="caption">
                   An opportunity to claim, while the game remains ongoing. An
                   intended move is not played by claiming.
@@ -471,6 +503,7 @@ export function App() {
                     </p>
                     <button
                       className="secondary"
+                      data-focus-after="outcome"
                       disabled={!canPlay}
                       onClick={() => {
                         void command({

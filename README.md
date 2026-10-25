@@ -10,6 +10,7 @@ The product goal is a reusable library with complete implementations of chess, s
 - M1 chess position profile: [docs/rules/chess-position-v1.md](docs/rules/chess-position-v1.md), [coverage ledger](docs/rules/chess-coverage.md), and [independent fixture corpus](tests/fixtures/chess/README.md).
 - Working instructions for every implementation session: [AGENTS.md](AGENTS.md).
 - M1 closure evidence: [docs/review/m1-closure.md](docs/review/m1-closure.md).
+- M2 integration evidence and limits: [docs/review/m2-closure.md](docs/review/m2-closure.md).
 - Historical bootstrap record (M0, completed): [START-HERE.md](START-HERE.md).
 - Build/check commands and dependency policy: [docs/development.md](docs/development.md).
 - Current work and evidence: the native task records under `backlog/`.

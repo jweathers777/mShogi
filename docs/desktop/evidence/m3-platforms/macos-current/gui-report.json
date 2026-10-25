@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "source_revision": "f8a132b018ae3759443161e42009a688974457cd",
+  "integration_revision": "f0c8dd654cb151621ea95582bdce1b1b374faaa9",
+  "recorded_at_utc": "2026-10-25T20:38:55.697089+00:00",
+  "method": "Actual normal packaged .app, CUA native pointer/keyboard/AX. Screenshots unaltered. Native process inspection separately confirmed exit. No injected IPC or instrumentation.",
+  "package_path": "/Users/johnweathers/Development/Personal/mShogi/.claude/worktrees/next-task/desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+  "package_report": "package-smoke.json",
+  "environment": {
+    "sw_vers": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0.1\nBuildVersion:\t\t26A434\n",
+    "architecture": "arm64"
+  },
+  "journeys": [
+    {
+      "order": 1,
+      "operation": "Human e2e4 and actual bundled reply",
+      "result": "a7a5; 2 plies; depth2/642nodes; 0.00 pawns from Black perspective."
+    },
+    {
+      "order": 2,
+      "operation": "Actual bounded analysis then Cancel",
+      "result": "Observed Analyzing with depth8/node5000000, then Cancelled/no conclusion; 2 plies preserved; play paused."
+    },
+    {
+      "order": 3,
+      "operation": "Native Save and clean Cmd-Q",
+      "result": "Saved exact /private/tmp/msh38-current-macos.mshogi, 3806 bytes, canonical archive profile, 2 game events,1 observation,3 controls. App quit; escalated pgrep found no host/internal-search (exit1). Filename entered through native AX complete-field replacement after observed native key input appended; final filename readback verified before Save."
+    },
+    {
+      "order": 4,
+      "operation": "Fresh process and native Open",
+      "result": "Reopened complete two-ply game with one historical observation; no current engine result and play paused until Resume."
+    },
+    {
+      "order": 5,
+      "operation": "History / Return live / Resume",
+      "result": "Selected e2e4 history event shows one-ply read-only board with a7 pawn and live game remaining at2; Return live shows two-ply a7a5 board still paused; separate Resume re-enables human play, preserving2plies."
+    },
+    {
+      "order": 6,
+      "operation": "Native window close and Cancel",
+      "result": "Save/Discard/Cancel guard; Cancel retained complete game and restored board focus."
+    },
+    {
+      "order": 7,
+      "operation": "Native Quit / Discard observation qualification",
+      "result": "Guard and Discard executed; a subsequent app-bound AX observation reactivated a fresh process. This ambiguous observation is not used as exit proof; fresh native-window-close proof follows."
+    },
+    {
+      "order": 8,
+      "operation": "Independent native window-close exit proof",
+      "result": "Fresh process PID32024, Flip marks preference unsaved; native window close reaches guard; Discard clicked; no app-bound observation after final action. Separate escalated pgrep found no host/internal-search (exit1), before any driver/app teardown."
+    }
+  ],
+  "archive_checks": {
+    "profile": "mshogi.desktop.archive.v1",
+    "bytes": 3806,
+    "game_events": 2,
+    "observations": 1,
+    "controls": 3
+  },
+  "reused_evidence": {
+    "index": "../../../completion-batch-evidence.md",
+    "product_source": "6eed0072fbb8a0307fae70753472e63bea951d62",
+    "scope": "Unchanged full macOS recovery/retry, promotion/claims, replacement/historical analysis, capacity256, synthetic routes, supported sizes/accessibility, Cocoa terminate regression. Current product delta only Windows-gated internal-search creation flag and equivalent non-Windows Command builder refactor; independently reviewed. Current normal package rebuild and journeys above supplement that evidence."
+  },
+  "limitations": [
+    "This is macOS27.0.1 arm64 local evidence, not a macOS15 GUI assertion.",
+    "Literal Dock click and screen-reader audio remain untested; earlier evidence explicitly labels Cocoa termination probe."
+  ],
+  "files": {
+    "package-smoke.json": "a44145af8c864b34e2f09bdd17c3bea9c69cf119ecd199fb4b53a1217a20a1aa",
+    "normal-play.png": "314ab1fb795f07a1e1970b0f6bd84351cb502765e7867bcafebf9193b2715577",
+    "normal-cancelled.png": "ca45e68fcf41c6dc611b11ac238fe4e53aef35bf1e20e15028d3b94c8b6c6d4e",
+    "normal-native-close-guard.png": "f0094556c3046b4444af14e9e8c85a8b809729490bdd5c2a01e581bc3e467011",
+    "saved-complete.mshogi": "6c7c3d9ef04d95ae721ab4807642ecc744c3eddfffd24646d6915546ced64b62",
+    "process-observations.json": "cfd61b8ae299778a32de47f1d2824d22877fd7d9d6785ed54d906b1045cdb214",
+    "normal-reopened-history.png": "8df52436a243a477fc1cd4904c1c870f8aea028f304a1b08afc3b4c11b8e37f5"
+  }
+}

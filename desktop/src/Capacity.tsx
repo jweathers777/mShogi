@@ -1,10 +1,20 @@
+import { useLayoutEffect, useRef } from "react";
 import type { Snapshot } from "./native";
 
 export function CapacityNotice({ capacity }: Pick<Snapshot, "capacity">) {
+  const notice = useRef<HTMLElement>(null);
+  useLayoutEffect(() => {
+    // A rejected operation can disable the focused analysis control while this
+    // notice is above the scrolled inspector. Reveal each new native pause once;
+    // ordinary snapshot polls must preserve the user's subsequent focus.
+    if (capacity.status === "paused") notice.current?.focus();
+  }, [capacity.id, capacity.status]);
   if (capacity.status === "available") return null;
   return (
     <section
       className="notice capacity-notice"
+      ref={notice}
+      tabIndex={-1}
       role={capacity.status === "paused" ? "alert" : "status"}
       aria-label="Document capacity"
     >

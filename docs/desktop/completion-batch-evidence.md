@@ -176,3 +176,104 @@ review also inspected all four screenshots and recomputed both host and both
 bundled-engine hashes against the JSON, with no material evidence findings.
 Nested scrolling/control access at minimum size is carried into MSH-37's
 integrated interaction assessment. M3 remains open.
+
+## MSH-37: integrated interaction and accessibility
+
+Initial interaction product source `3e15a7e`; integrated source
+`6136d9041fec7eabbc16f5fe1a270faddc68efbd`. The normal and separately named
+verification application identities are recorded in
+[interactions-package-identities-macos.json](evidence/m3-completion/interactions-package-identities-macos.json).
+The [normal package report](evidence/m3-completion/interactions-normal-package-macos.json)
+checks instrumentation exclusion and actual bundled UCI/internal engine queries;
+it is supporting evidence, separately from application interaction below.
+
+The interaction changes recover keyboard focus only when its actual control is
+removed, without stealing focus from budget fields or dialogs. Analysis has a
+polite status summary bound to the native request and position; unchanged polls
+remain quiet. Engine-returned evidence uses neutral wording even if native
+acceptance rejects the response. Coordinate contrast and size were corrected:
+`#10251c` against the dark square `#789285` has 4.79:1 contrast (light square
+11.39:1), and coordinate labels use 24 SVG units. This is a focused accessibility
+assessment, not a claim of universal screen-reader or formal conformance testing.
+
+Initial focused checks: strict TypeScript and **75 frontend tests** passed. The seven
+focus regressions include a settling command whose analysis Start control is
+still disabled; recovery uses an enabled inspector control. Independent review
+resolved focus loss, missing analysis announcements and misleading rejected
+engine-result wording. Native verification adds only a real promotion fixture
+and measured logical window-size presets; both are excluded from normal builds.
+Actual GUI results, native checks and CI follow before finalization.
+
+
+Actual independent packaged review at `3e15a7e` verified keyboard play with a real
+engine reply, genuine missing-sidecar failure followed by restored-binary Retry,
+read-only analysis cancellation/replacement, and native dirty Quit Cancel/Discard.
+The [independent report](evidence/m3-completion/interactions-review-normal-macos.json)
+identifies its exact scope and screenshots. It found a WebKit-specific blur when
+a command disables a connected initiating button; `a523d40` records that
+transition and restores focus only if the user has not moved elsewhere. Strict
+TypeScript and **77 frontend tests** pass, including nine focus regressions;
+independent nine-test rerun passed. Actual rebuilt Start and replacement both
+retained keyboard focus, and the real suggestion did not change the two-ply game.
+
+The [root interaction report](evidence/m3-completion/interactions-root-macos.json)
+records native Save/close/reopen, historical-prefix analysis, explicit Return to
+live and Resume, unsaved New-game cancellation, saved native window close,
+minimum-size promotion/underpromotion, optional intended-move claim and capacity.
+A saved historical observation has exactly one game event, excluding the future
+engine reply. Observation 256 was accepted; 257 was rejected and the complete
+256-observation archive still saved successfully. No truncation or retry-save
+advice was used.
+
+Measured minimum-size checks found two layout defects: a sticky paused notice
+covered backward keyboard focus, and flex shrinking collapsed the inspector tabs
+inside the finite-height sidebar. `ceeaffe` removes the overlay; `6eed007` keeps
+sidebar children at their natural height so overflow supplies access. Both
+bounded CSS changes were independently reviewed. Before/after actual GUI
+checks and final package identities are recorded below before finalization.
+
+
+Final product source: `6eed007`, integrated as
+`fec83413c06ccb46127566bfcd256627fb677041`. Final actual normal play and native
+Quit/window-close checks passed; the normal inspector tabs are visible, real
+engine reply `a7a5` is recorded at depth 2 / 642 nodes after `e2e4`, and cancelling
+Quit preserves the two-ply game with e4 focus. The final
+[normal package report](evidence/m3-completion/interactions-normal-final-package-macos.json)
+and [package identities](evidence/m3-completion/interactions-package-identities-macos.json)
+match the actual binaries. Earlier reports retain their earlier revision scope.
+
+![Final normal application and real engine reply](evidence/m3-completion/interactions-final-normal-play-macos.png)
+![Visible keyboard focus at measured minimum size](evidence/m3-completion/interactions-visible-focus-after-macos.png)
+![Synthetic prefix with zero native actions at minimum size](evidence/m3-completion/interactions-synthetic-prefix-minimum-macos.png)
+
+The synthetic minimum-size journey used black orientation and keyboard arrows
+which scrolled i9 into view. A prefix remained version 1 / zero accepted actions;
+Escape from **Complete action here** restored i9. Complete capture-and-return
+recorded `136>153>136`, removed j10 and advanced version 2 / one accepted action.
+Keyboard Reset retained focus and advanced version 3 / zero actions. The alternate
+`136>135>136` preserved j10 and advanced version 4 / one action. Reset and the
+separate native record were keyboard reachable. Native fixture Close remained
+explicit. This reuses MSH-36's unchanged pointer, route and native rules evidence.
+
+The final QA build also exercised the native Cocoa `terminate:` regression:
+Cancel preserved its complete capacity fixture and recovered inspector focus.
+This is explicitly a Cocoa entry test, not an actual Dock click. The narrow Tao
+patch and its provenance remain unchanged. Earlier MSH-34/35 outcome/recovery,
+corrupt/interrupted IO, Full analysis and unsaved semantic evidence are reused
+where implementation is unchanged; M1/M2 audits are not repeated.
+
+Final local native checks passed: **46 desktop-session feature tests**, **5 host
+feature tests**, and strict Clippy for both. Independent evidence review
+recomputed host/engine/archive/screenshot hashes and found no remaining material
+interaction or source issue. Screen-reader audio was not tested. Three-platform
+GUI interaction remains MSH-38; local macOS interaction is not a substitute.
+
+At final integrated source `fec83413c06ccb46127566bfcd256627fb677041`,
+[Rust workspace CI](https://github.com/jweathers777/mShogi/actions/runs/40226454182)
+and [desktop package CI](https://github.com/jweathers777/mShogi/actions/runs/40226454197)
+passed Windows, macOS and Linux. Package CI includes normal host/frontend
+instrumentation exclusion and actual bundled-engine queries, not GUI coverage on
+those remote systems. The
+[independent interaction closure assessment](evidence/m3-completion/interactions-independent-closure-review.json)
+supports AC1–3 with no remaining material findings. MSH-37 can close; MSH-38 and
+MSH-39, and therefore M3, remain open.

@@ -1,0 +1,86 @@
+{
+  "source_revision": "3e15a7ec0725b857cf391f56e5a703c5e64cf784",
+  "package": "desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+  "host_sha256": "308d312d737c72fd88e6189c4568ab077f146c113a09742e51197724cb6339cb",
+  "engine_sha256": "45d264831e806ea81b426b4fbbb94f2ecbcba384d23696a5c87537acca555ba5",
+  "reviewer": "capacity_review",
+  "method": "Independent actual packaged native macOS via CUA; no browser mock or frontend injection",
+  "interactions": [
+    {
+      "operation": "Keyboard e2, Up, Up, Enter",
+      "observed": "Played e2e4; the actual bundled engine replied a7a5. Two plies, Black-perspective score 0.00, depth 2, 642 nodes. Keyboard focus stayed on e4.",
+      "at": "2026-10-25T19:15:52.152Z"
+    },
+    {
+      "operation": "Temporarily rename the sidecar; keyboard d2d4",
+      "observed": "A genuine engine startup failure left three plies and Black to move, with no engine move or chess result added. Retry was available. The original sidecar was restored and its SHA-256 rechecked.",
+      "at": "2026-10-25T19:16:23.613Z"
+    },
+    {
+      "operation": "Restore the engine, then Retry engine turn",
+      "observed": "The actual reply a5a4 left four plies and White to move; depth 2, 841 nodes. An AX click did not establish a keyboard-focus precondition, so this step makes no keyboard Retry focus claim.",
+      "at": "2026-10-25T19:16:55.082Z"
+    },
+    {
+      "operation": "Depth 8 / 5,000,000-node analysis; five Shift-Tabs from Node budget; Enter on Cancel",
+      "observed": "AX explicitly identified Cancel analysis as focused before Enter. Cancellation left play paused and four plies unchanged, announced Cancelled, and recovered focus to Start move analysis.",
+      "at": "2026-10-25T19:20:10.386Z"
+    },
+    {
+      "operation": "Replace a running long analysis with depth 1 / 1,000 nodes",
+      "observed": "The actual completed result suggested a2a3 without playing it: depth 1, 38 nodes, and four plies unchanged. The named analysis status reported completion. Keyboard Start/Replace sometimes lost focus to HTML content after busy admission.",
+      "at": "2026-10-25T19:20:43.832Z"
+    },
+    {
+      "operation": "Cmd-Q, then Escape",
+      "observed": "The native unsaved guard initially focused Cancel. Escape preserved four plies, seven observations and the completed analysis; focus returned to d4 on the board.",
+      "at": "2026-10-25T19:21:00.824Z"
+    },
+    {
+      "operation": "Cmd-Q, then Discard & continue",
+      "observed": "The isolated review document was explicitly discarded. A subsequent CUA app inventory confirmed that the normal application had exited.",
+      "at": "2026-10-25T19:21:20.412Z"
+    }
+  ],
+  "finding": {
+    "id": "MSH37-keyboard-busy-focus",
+    "observed": "Keyboard-focused Start/Replace sometimes reports HTML content focused after native busy admission on this pre-fix package; connected disabled initiating button not recovered. Repeated at least twice; some starts retained button focus.",
+    "status": "Fixed by a523d40. The correction was independently source-reviewed and nine focus tests passed; rebuilt root GUI verification is recorded separately in interactions-root-macos.json."
+  },
+  "not_run": [
+    "Save/Open/history/Return to live/Resume in this independent subset",
+    "Minimum 760 by 650 logical content window",
+    "Promotion, claims, synthetic fixture or capacity in this independent subset",
+    "Screen-reader audio speech"
+  ],
+  "restoration": "Bundled engine restored before handoff and SHA256 matches original; normal review app exited by native dirty guard Discard.",
+  "environment": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "exit_verified": "Final CUA app inventory contained no org.mshogi.desktop after native Discard close.",
+  "screenshots": [
+    {
+      "file": "interactions-review-analysis-cancel-focus.png",
+      "sha256": "e53c80a2aed1c77ccc0704f0e6976f0a00542156f1594786df7d3ed3194f8bfe"
+    },
+    {
+      "file": "interactions-review-analysis-complete.png",
+      "sha256": "e3906299d4cf37b2356d9c3f7eaa691c9359f172cffffde21f2d5dfe5fb285a2"
+    },
+    {
+      "file": "interactions-review-busy-focus-gap.png",
+      "sha256": "634834d377698025c46092c5af9e2bc3805ae4dc2113b66babd26dab052125ea"
+    },
+    {
+      "file": "interactions-review-engine-failure.png",
+      "sha256": "fbff0292ae817ad8dffd6623ba0dcaf09b72cde998adb6d1e1811743a8db1ffe"
+    },
+    {
+      "file": "interactions-review-normal-play.png",
+      "sha256": "e1c9d13114f7c90184988f2dce65ac867071cdae0432bca686c683ca105f3a14"
+    },
+    {
+      "file": "interactions-review-unsaved-close.png",
+      "sha256": "5a94552f399800eefb49c8250dbf33889731938a6b425012dff99048fe2382c6"
+    }
+  ],
+  "review_limits": "AX semantics and visible focus checked; no screen-reader speech or formal accessibility conformance claim. Screenshots and observations precede the connected-disabled-focus correction and require targeted rebuilt verification."
+}

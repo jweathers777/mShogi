@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "id": "search-failure",
+  "engines": [
+    {
+      "path": "/tmp/msh-m2-engine",
+      "args": [
+        "uci"
+      ],
+      "options": [],
+      "model_path": null,
+      "model_identity": "mshogi.chess.material.v1; untrained P100 N320 B330 R500 Q900 K0",
+      "deterministic": true
+    },
+    {
+      "path": "/tmp/msh-m2-engine",
+      "args": [
+        "uci"
+      ],
+      "options": [],
+      "model_path": null,
+      "model_identity": "mshogi.chess.material.v1; untrained P100 N320 B330 R500 Q900 K0",
+      "deterministic": true
+    }
+  ],
+  "openings": [
+    {
+      "id": "descendant-counter-overflow",
+      "fen": "7k/8/8/8/8/8/8/KR6 w - - 0 4294967295",
+      "moves": []
+    }
+  ],
+  "paired": false,
+  "claim_policy": "auto_claim",
+  "time_control": "untimed",
+  "work": {
+    "depth": 2,
+    "nodes": 10000,
+    "movetime_ms": null
+  },
+  "max_plies": 512
+}

@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "id": "timed-selfplay",
+  "engines": [
+    {
+      "path": "/tmp/msh-m2-engine",
+      "args": [
+        "uci"
+      ],
+      "options": [],
+      "model_path": null,
+      "model_identity": "mshogi.chess.material.v1; untrained P100 N320 B330 R500 Q900 K0",
+      "deterministic": true
+    },
+    {
+      "path": "/tmp/msh-m2-engine",
+      "args": [
+        "uci"
+      ],
+      "options": [],
+      "model_path": null,
+      "model_identity": "mshogi.chess.material.v1; untrained P100 N320 B330 R500 Q900 K0",
+      "deterministic": true
+    }
+  ],
+  "openings": [
+    {
+      "id": "forced-two-ply-mate",
+      "fen": "7k/8/6K1/5Q2/8/8/8/8 b - - 0 1",
+      "moves": []
+    }
+  ],
+  "paired": true,
+  "claim_policy": "auto_claim",
+  "time_control": {
+    "increment": {
+      "initial_ns": [
+        1000000000,
+        1000000000
+      ],
+      "increment_ns": 100000000
+    }
+  },
+  "work": {
+    "depth": 2,
+    "nodes": 10000,
+    "movetime_ms": null
+  },
+  "max_plies": 512
+}

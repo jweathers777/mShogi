@@ -1,0 +1,44 @@
+{
+  "source_revision": "4e1e9d4f9876e027a493e625f3228ee6e0b43b8a",
+  "recorded_at_utc": "2026-10-25T21:08:38.686282+00:00",
+  "status": "passed",
+  "build": "Separately labeled desktop-verification .app, MSHOGI_DESKTOP_FIXTURE=capacity; current product source4e1e9d4. Uncommitted external GUI verifier changes are not part of this application or CUA journey.",
+  "package": {
+    "path": "/Users/johnweathers/Development/Personal/mShogi/.claude/worktrees/next-task/desktop/src-tauri/target/release/bundle/macos/mShogi Verification.app",
+    "host_sha256": "76c1d56a30020a08c18917efd5547dbfd3f899cac23883c5612389bbc3420a34",
+    "engine_sha256": "45d264831e806ea81b426b4fbbb94f2ecbcba384d23696a5c87537acca555ba5"
+  },
+  "environment": {
+    "os": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0.1\nBuildVersion:\t\t26A434\n",
+    "architecture": "arm64",
+    "measured_content_size_logical": "1180x820; native verification title"
+  },
+  "method": "Actual native CUA application interaction; native screenshots/AX unaltered.",
+  "observations": [
+    "Started255 genuine zero-node analysis observations. Opened Analyze and scrolled actual inspector; Start controls visible with capacity notice location above viewport.",
+    "Start accepted observation256 with incomplete/no concluded game. Further Start rejected before257, preserving256.",
+    "New resource pause automatically focused Document capacity and scrolled full native explanation into view; screenshot shows complete notice, save path, no chess/illegal-move inference and no save-reset promise. AX confirms focused Document capacity and256 accepted observations.",
+    "Save stayed usable; native filename set/read exact and written /private/tmp/msh38-capacity-focus.mshogi. Native picker retained filename focus rather than alert refocusing during polls.",
+    "Saved complete256 observations. Native Cmd-Q from saved paused state, then separate require_escalated pgrep found no verification host/internal-search (exit1, empty stdout/stderr) before app-bound observation or teardown."
+  ],
+  "archive": {
+    "profile": "mshogi.desktop.archive.v1",
+    "bytes": 385620,
+    "sha256": "56d1e54d36b771a34d0823e3d024b04b3395f4152eec3ee261ca6ac387bda55a",
+    "observations": 256,
+    "controls": 256,
+    "played_game_events": 0
+  },
+  "process_observation": {
+    "command": "pgrep -fl 'bundle/macos/mShogi Verification.app/Contents/MacOS|internal-search'",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": ""
+  },
+  "scope": "Focused actual visibility/save regression; other macOS interactions retain separate normal/QA source and package reports.",
+  "files": {
+    "saved-complete-256.mshogi": "56d1e54d36b771a34d0823e3d024b04b3395f4152eec3ee261ca6ac387bda55a",
+    "visible-pause.png": "6c5383531bf663f121483e8367c67868ff177a3ad4b5ecad7ec9649b760f1df9",
+    "visible-pause.ax.txt": "f98493ad99b771d9620075f6036f6b71f7acb45ecdcfbfb79945ba21f97c8da1"
+  }
+}

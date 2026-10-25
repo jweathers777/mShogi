@@ -1,0 +1,68 @@
+{
+  "source_revision": "e313ef011d7b62c6ee32748b605b013b8771c935",
+  "run_url": "https://github.com/jweathers777/mShogi/actions/runs/40232694201",
+  "status": "failed",
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "failed",
+      "error": "Timed out: native quit reaches application guard; last observation: False"
+    },
+    {
+      "phase": "verification-standard",
+      "status": "failed",
+      "error": "Timed out: native quit reaches application guard; last observation: False"
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "failed",
+      "error": "Timed out: native quit reaches application guard; last observation: False"
+    },
+    {
+      "phase": "verification-claim",
+      "status": "failed",
+      "error": "Timed out: native quit reaches application guard; last observation: False"
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "failed",
+      "error": "Timed out: native quit reaches application guard; last observation: False"
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "failed",
+      "error": "Timed out: native quit reaches application guard; last observation: False"
+    }
+  ],
+  "establishes": [
+    "All6actual normal/verification journeys reached their expected game/analysis/document/route results before finalQuit.",
+    "Normal exactSave/Open/historyprefixanalysis/Returnlive/Resume/nativeWM_CLOSEguardCancel completed.",
+    "Capacity archive preserves256observations; synthetic actualnative distinct same-endpoint routes passed in both orientations.",
+    "All27nativecaptureobservations record no exact-engine console or foreground error."
+  ],
+  "does_not_establish": [
+    "Ctrl+Q automation failed to trigger the final native Quit guard in every phase; no native shutdown-before-teardown proof exists.",
+    "Failure cleanup host/engine absence is not graceful exit evidence; all6phases/overall remain failed.",
+    "Prior Ctrl+Q cause is unestablished, not a confirmed product or VK_PACKET defect."
+  ],
+  "next_correction": "Use observed native mouse menu mShogi\u2192Quit mShogi with exact HWND/PID/exe/menu labels/enabled geometry; still require guard and host/engine exit before teardown.",
+  "retained_evidence": "Selected original files and package/runtime identities; full report preserves all original artifact file hashes. No screenshots modified.",
+  "files": {
+    "webview-driver.json": "0434555fe78f9c46de70baf3919e4026bb512edd5123499b816e6783c99bc25a",
+    "gui-report.json": "8de07154709fb39c38d3a7b0639faee6f957a8ceda23e8f5726d7e555764cf85",
+    "verification-standard-engine-failure.desktop.png": "856b8ded2def83506fca440cd6800e4cf17a732333cd642f896ebaa659ee3f57",
+    "verification-synthetic-alternate-route.desktop.png": "9e155bb49aa90336893bfe3909b9607e84c4b54110a75048c428f750ba6351a8",
+    "verification-synthetic-alternate-route.dom.json": "ab5863c38952429557fed4c1776c6ee959eb23c77900f3d56094282ca087dd8a",
+    "verification-capacity-capacity-pause.dom.json": "72faf10db8fd1b1b31f0db30181551f7a3d328a56183e245b91ea72cdff452bf",
+    "verification-capacity-capacity-pause.desktop.png": "09015a9cab1a8cd1f00d561ad6c0216aba5734ae6bc51f667d538e6cf583975f",
+    "normal-native-close-guard.desktop.png": "901d032bf65e6cc12502699dcc3e66f9bd810cb01719ebdb18aff85f74a47a44",
+    "normal-complete.mshogi": "7aa9bdb315b065f09ca5099cbb2f73188b6c801654dfeb35024f29b5bc9c5f2a",
+    "capacity-complete.mshogi": "0a8938e67c2be6b27b918b5ef64e57b55fbfaa26589e528e3be7a14784e858c5",
+    "verification-synthetic-capture-route.desktop.png": "2a0fd1677925028a880bd2f2dcfb2f8390057cc850b1af715c4fd367a399e75f",
+    "verification-promotion-result.desktop.png": "a4bd57f9d7057a621987be27194eefebebe89e89ca05d939c98221ab88bdbd29",
+    "normal-historical-analysis.desktop.png": "4c1830415c271e7cd7ee5796645797c7705b525ca5119136430627e46d538f38",
+    "packages/verification/manifest.json": "1475f0f684943032e8cde8879b3794a0b969e4de7680a03dbe1e17db15722d71",
+    "packages/normal/package-smoke.json": "06b4049a8449e5e5c935c8ae49c7eeddc34af900681af0f4d31ef84572c10ad3",
+    "packages/normal/manifest.json": "0ad185d9772bd317979e21c36651024aa17a21a34347ab3815ebe8c4b407c2f2"
+  }
+}

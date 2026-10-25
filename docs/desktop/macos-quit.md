@@ -43,9 +43,11 @@ adds no unsafe block and does not weaken the host's `unsafe_code = "forbid"`.
 Review the callback delta against the original package rather than treating the
 unchanged upstream source as new application code.
 
-The callback compiles on macOS with Rust 1.90. Actual packaged Dock Quit,
-Cmd-Q and window-close Save/Discard/Cancel evidence is required separately;
-compilation alone does not establish the native UI behavior. Linux/Windows
+The callback compiles on macOS with Rust 1.90. Actual packaged native Cocoa
+termination, Cmd-Q and window-close Save/Discard/Cancel evidence is required
+separately; compilation alone does not establish the native UI behavior. A
+direct Dock click and the native Cocoa entry probe below are distinct evidence
+labels, even though both invoke the same termination entry. Linux/Windows
 compilation is also checked independently because the package remains shared.
 
 The separate macOS `desktop-verification` build includes a predefined menu item

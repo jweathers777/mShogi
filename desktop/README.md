@@ -123,6 +123,11 @@ Fixture names are `standard`, `claim` (intended fifty-move claim), `current-clai
 Retry restores ordinary play limits. Close before launching a different fixture.
 This build is QA infrastructure, not a normal distributable. The external package
 verifier checks that a normal host contains no fixture initializer marker.
+On macOS its application menu also has **Native Cocoa Quit (verification)**.
+Clicking that predefined native item exercises Cocoa's `terminate:` entry,
+including the same interception used for Dock Quit. It is absent from normal
+packages. Evidence records this as a native Cocoa termination test rather than
+claiming an actual Dock click.
 
 
 ## Read-only bounded analysis

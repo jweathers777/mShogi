@@ -16,7 +16,12 @@ const fixture = nativeJson as Fixture;
 const geometry: BoardGeometry = { ...fixture.geometry, initialFocus: fixture.geometry.initial_focus };
 afterEach(cleanup);
 function square(name: string) {
-  return screen.getByRole("button", { name: new RegExp(`^${name},`) });
+  // Coordinates already have native presentation labels. Avoid repeatedly
+  // computing 256 SVG accessible names in jsdom; accessibility is asserted
+  // separately below and in the actual packaged application.
+  const element = document.querySelector<SVGGElement>(`svg [role="button"][aria-label^="${name},"]`);
+  if (element === null) throw new Error(`Missing native square ${name}`);
+  return element;
 }
 function board() {
   const onPlay = vi.fn();
@@ -48,7 +53,7 @@ it("preserves distinct native routes sharing origin and endpoint without committ
   fireEvent.click(square("j10"));
   expect(onPlay).not.toHaveBeenCalled();
   expect(screen.getByText(/Selected route: i9 → j10/)).toBeTruthy();
-  expect(screen.getByRole("button", { name: "Complete action here" })).toBeTruthy();
+  expect(screen.getByText("Complete action here", { selector: "button" })).toBeTruthy();
   fireEvent.click(square("i9"));
   expect(onPlay).toHaveBeenLastCalledWith("136>153>136");
   rerender(<Board {...props} version={props.version + 1} />);
@@ -64,7 +69,7 @@ it("requires explicit completion of a terminal prefix and submits the supplied s
   fireEvent.click(square("i9"));
   fireEvent.click(square("j10"));
   expect(onPlay).not.toHaveBeenCalled();
-  fireEvent.click(screen.getByRole("button", { name: "Complete action here" }));
+  fireEvent.click(screen.getByText("Complete action here", { selector: "button" }));
   expect(onPlay).toHaveBeenCalledExactlyOnceWith("136>153");
 });
 it("cancels stages by Escape or Cancel and restores source focus without an action", () => {
@@ -76,19 +81,19 @@ it("cancels stages by Escape or Cancel and restores source focus without an acti
   fireEvent.click(square("j10"));
   fireEvent.keyDown(square("j10"), { key: "Escape" });
   expect(document.activeElement).toBe(square("i9"));
-  expect(screen.queryByRole("button", { name: "Complete action here" })).toBeNull();
+  expect(screen.queryByText("Complete action here", { selector: "button" })).toBeNull();
   fireEvent.click(square("i9"));
   fireEvent.click(square("j10"));
-  const finish = screen.getByRole("button", { name: "Complete action here" });
+  const finish = screen.getByText("Complete action here", { selector: "button" });
   finish.focus();
   fireEvent.keyDown(finish, { key: "Escape" });
   expect(document.activeElement).toBe(square("i9"));
-  expect(screen.queryByRole("button", { name: "Complete action here" })).toBeNull();
+  expect(screen.queryByText("Complete action here", { selector: "button" })).toBeNull();
   fireEvent.keyDown(square("i9"), { key: "Enter" });
   fireEvent.keyDown(square("i9"), { key: "ArrowUp" });
   fireEvent.keyDown(square("i10"), { key: "ArrowRight" });
   fireEvent.keyDown(square("j10"), { key: " " });
-  fireEvent.click(screen.getByRole("button", { name: "Cancel selection" }));
+  fireEvent.click(screen.getByText("Cancel selection", { selector: "button" }));
   expect(document.activeElement).toBe(square("i9"));
   expect(onPlay).not.toHaveBeenCalled();
 });
@@ -96,10 +101,10 @@ it("retires partial routes on native version, profile, disabled state and orient
   const { props, rerender, onPlay } = board();
   fireEvent.click(square("i9")); fireEvent.click(square("j10"));
   rerender(<Board {...props} version={props.version + 1} />);
-  expect(screen.queryByRole("button", { name: "Complete action here" })).toBeNull();
+  expect(screen.queryByText("Complete action here", { selector: "button" })).toBeNull();
   fireEvent.click(square("i9")); fireEvent.click(square("j10"));
   rerender(<Board {...props} profile="a-different-presentation-context" />);
-  expect(screen.queryByRole("button", { name: "Complete action here" })).toBeNull();
+  expect(screen.queryByText("Complete action here", { selector: "button" })).toBeNull();
   fireEvent.click(square("i9")); fireEvent.click(square("j10"));
   rerender(<Board {...props} disabled />);
   fireEvent.click(square("i9"));
@@ -107,6 +112,6 @@ it("retires partial routes on native version, profile, disabled state and orient
   rerender(<Board {...props} />);
   fireEvent.click(square("i9")); fireEvent.click(square("j10"));
   rerender(<Board {...props} orientation="black" />);
-  expect(screen.queryByRole("button", { name: "Complete action here" })).toBeNull();
+  expect(screen.queryByText("Complete action here", { selector: "button" })).toBeNull();
   expect(onPlay).not.toHaveBeenCalled();
 });

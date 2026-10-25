@@ -34,10 +34,17 @@ beforeEach(() => {
   });
 });
 afterEach(cleanup);
-function square(name: string) { return screen.getByRole("button", { name: new RegExp(`^${name},`) }); }
+function square(name: string) {
+  // The native square label is its accessible name. Avoid recomputing names
+  // and visibility for all 256 SVG buttons for every interaction.
+  const element = document.querySelector<SVGGElement>(`svg [role="button"][aria-label^="${name},"]`);
+  if (element === null) throw new Error(`Missing native square button: ${name}`);
+  return element;
+}
 async function open() {
   render(<SyntheticApp />);
-  await screen.findByRole("button", { name: /^i9,/ });
+  await screen.findByRole("heading", { name: "Choose a complete route" });
+  square("i9");
 }
 it("keeps staged selection local, then submits the exact complete native route", async () => {
   await open();

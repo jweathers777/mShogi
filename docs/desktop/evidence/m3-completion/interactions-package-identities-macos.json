@@ -1,0 +1,43 @@
+{
+  "environment": {
+    "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "macos": "27.0.1"
+  },
+  "scope": "Package identities and inventory; actual GUI observations are recorded separately.",
+  "initial_source_revision": "3e15a7e",
+  "initial_integrated_revision": "6136d9041fec7eabbc16f5fe1a270faddc68efbd",
+  "initial_packages": {
+    "mShogi.app": {
+      "host_sha256": "308d312d737c72fd88e6189c4568ab077f146c113a09742e51197724cb6339cb",
+      "engine_sha256": "45d264831e806ea81b426b4fbbb94f2ecbcba384d23696a5c87537acca555ba5"
+    },
+    "mShogi Verification.app": {
+      "host_sha256": "9a25a6f2f6722dbcbc107906d84a0a79b2d8c551580202d441b4228c8af8ee61",
+      "engine_sha256": "45d264831e806ea81b426b4fbbb94f2ecbcba384d23696a5c87537acca555ba5"
+    }
+  },
+  "source_revision": "6eed0072fbb8a0307fae70753472e63bea951d62",
+  "integrated_revision": "fec83413c06ccb46127566bfcd256627fb677041",
+  "packages": {
+    "mShogi.app": {
+      "host_sha256": "29ec5b5c7fcd561e1069f21bdd3c2c0d4a0be88d28f29357a078f61e86561fe5",
+      "engine_sha256": "45d264831e806ea81b426b4fbbb94f2ecbcba384d23696a5c87537acca555ba5"
+    },
+    "mShogi Verification.app": {
+      "host_sha256": "89c024ee8b9adeee37aed5eb65fd8a8b27418c2e19f703aa593e26a81eb49bf1",
+      "engine_sha256": "45d264831e806ea81b426b4fbbb94f2ecbcba384d23696a5c87537acca555ba5"
+    }
+  },
+  "focus_fix_source_revision": "a523d40",
+  "focus_fix_integrated_revision": "0f3014fc8a97e67a9431f379472bf066d86f466c",
+  "focus_fix_packages": {
+    "mShogi.app": {
+      "host_sha256": "dbad624793e8a6c9b3940870338214abc275870d471696a2dae6945f54c69480",
+      "engine_sha256": "45d264831e806ea81b426b4fbbb94f2ecbcba384d23696a5c87537acca555ba5"
+    },
+    "mShogi Verification.app": {
+      "host_sha256": "260e984f03915b39e7fd5b47e5dfd9e788ff9c1ddb3045e81b66fe34a2c5988a",
+      "engine_sha256": "45d264831e806ea81b426b4fbbb94f2ecbcba384d23696a5c87537acca555ba5"
+    }
+  }
+}

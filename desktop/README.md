@@ -28,6 +28,9 @@ Choose White or Black and press **New game** for an untimed standard chess game.
 Click a piece and a highlighted destination. Promotion opens explicit native
 choices. On the focused board, arrows move focus, Enter/Space selects, and
 Escape clears selection. **Flip board** changes only orientation.
+The window defaults to 1180 × 820 logical content pixels and supports a minimum
+of 760 × 650. The inspector scrolls; Tab/Shift-Tab reveal focused controls.
+The board uses one keyboard stop with arrow navigation between squares.
 
 mShogi replies through the actual bundled engine at depth 2 with a 20,000-node
 cap. The engine panel shows only final native observations, labeled with their
@@ -49,9 +52,11 @@ are read-only; **Return to live** explicitly leaves history inspection.
 Full live-adjudication restoration is explicitly unsupported; the advanced
 read-only Full operation below is a separate controlled execution path. The
 synthetic large-board fixture is available in the isolated verification build.
-Integrated accessibility and three-platform GUI verification remain M3 work.
-M3 remains open; see the
-[batch evidence](../docs/desktop/second-batch-evidence.md).
+The integrated macOS interaction assessment covers keyboard/focus, status
+semantics, contrast and layouts at both supported sizes; screen-reader audio and
+formal accessibility conformance have not been tested. Three-platform packaged
+GUI verification remains MSH-38 work. M3 remains open; see the
+[completion-batch evidence](../docs/desktop/completion-batch-evidence.md).
 
 Build a normal distributable with the platform's supported bundle format:
 

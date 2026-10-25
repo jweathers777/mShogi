@@ -1,0 +1,52 @@
+{
+  "reviewer": "capacity_review",
+  "reviewed_at_utc": "2026-10-25T19:41:05.049450+00:00",
+  "product_source_revision": "6eed0072fbb8a0307fae70753472e63bea951d62",
+  "integrated_revision": "fec83413c06ccb46127566bfcd256627fb677041",
+  "verdict": "No remaining material source or interaction finding. Combined evidence supports MSH-37 acceptance criteria within the stated macOS scope; finalization gates are resolved.",
+  "acceptance_evidence": {
+    "AC1": "Independent packaged play, genuine failure/retry, analysis cancellation/replacement and native unsaved close; root packaged promotion, intended-move claim, Save/Open, historical analysis, Return to live/Resume, capacity and minimum-size synthetic interaction. Separate reports preserve direct-observation scopes.",
+    "AC2": "Source review, native AX and visible keyboard focus checks, exact-size screenshots, measured contrast and focused regressions address labels, announcements, recovery, orientation and readable scrolling. Final 760 by 650 screenshot shows the Analyze control at natural height with visible focus, without a paused-card overlay.",
+    "AC3": "Independent source and actual GUI review found and resolved missing/lost focus, missing completion announcements, misleading returned-result wording, contrast, sticky overlay and flex-collapse defects. Normal and verification identities remain separate; normal package instrumentation checks are supporting evidence."
+  },
+  "independent_verification": {
+    "final_bundle_hashes": "Both host hashes and both engine hashes recomputed from actual bundles and matched interactions-package-identities-macos.json.",
+    "root_screenshot_checksums": "All 12 recorded screenshot checksums dynamically enumerated from interactions-root-macos.json matched the current image files, including final normal play. Final layout and integrated revisions also match this closure review.",
+    "canonical_archives": "Journey SHA-256 matched: 7,230 bytes, three observations, five controls, two played game events; historical analysis contains exactly one game event. Capacity archive SHA-256 matched and retained 256 observations.",
+    "focused_tests": "Independent nine-focus-test rerun passed after the connected-disabled-control correction. Earlier independent analysis, native fixture and host checks are recorded in the associated reports.",
+    "direct_gui_scope": "interactions-review-normal-macos.json records the independent direct GUI subset on pre-correction source 3e15a7e. Final root GUI corrections were assessed through source, tests, screenshots and the root interaction report, without concurrent CUA actions.",
+    "final_normal_package_report": "Refreshed interactions-normal-final-package-macos.json independently matches actual normal host SHA-256 29ec5b5c7fcd561e1069f21bdd3c2c0d4a0be88d28f29357a078f61e86561fe5 and bundled engine SHA-256 45d264831e806ea81b426b4fbbb94f2ecbcba384d23696a5c87537acca555ba5. Prior focus-package report is preserved as interactions-normal-focus-package-macos.json. The new final normal play screenshot visibly supports two played plies, e4 focus, full-height inspector controls, actual depth 2 and 642 engine nodes; quit and native-close observations remain attributed to the root interaction report."
+  },
+  "limits": [
+    "Screen-reader audio speech and formal accessibility conformance were not tested or claimed.",
+    "This local macOS interaction assessment does not replace MSH-38 Windows/Linux/macOS installed GUI verification.",
+    "Minimum-size synthetic screenshots primarily show control access, focus and acceptance counts; exact route identities and capture differences also rely on native observations, tests and earlier MSH-36 screenshots."
+  ],
+  "pending_at_review_time": [],
+  "resolved_finalization_gates": [
+    "The stale normal-package report has been replaced with the final actual normal host identity; the earlier report remains preserved under its focus-package name.",
+    "Final package CI 40226454197 completed successfully on macOS, Linux and Windows for integrated revision fec83413c06ccb46127566bfcd256627fb677041, as API-confirmed by root. Rust CI 40226454182 also passed on all three platforms. External CI status was supplied by root and was not independently queried in this review."
+  ],
+  "final_ci": {
+    "revision": "fec83413c06ccb46127566bfcd256627fb677041",
+    "status_source": "Root API confirmation; not independently queried by this reviewer.",
+    "package": {
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/40226454197",
+      "conclusion": "success",
+      "platforms": [
+        "macOS",
+        "Linux",
+        "Windows"
+      ]
+    },
+    "rust": {
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/40226454182",
+      "conclusion": "success",
+      "platforms": [
+        "macOS",
+        "Linux",
+        "Windows"
+      ]
+    }
+  }
+}

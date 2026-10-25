@@ -1,0 +1,92 @@
+{
+  "source_revision": "a523d4045627b67a751d1b307d83fec6045e2cf1",
+  "integrated_revision": "0f3014fc8a97e67a9431f379472bf066d86f466c",
+  "method": "Actual packaged macOS CUA interaction; separately labeled native fixtures; no frontend injection.",
+  "environment": "macOS 27.0.1 arm64, Retina scale 2",
+  "observations": [
+    {
+      "journey": "normal keyboard Start/replacement regression",
+      "result": "Keyboard e2e4 received the real a7a5 engine reply: 2 plies. Tab from Node budget explicitly focused Start. Enter started depth 8 / 5,000,000 nodes and retained Replace focus. Replacing it with depth 1 / 1,000 nodes returned a2a3 as a suggestion, not played: depth 1 / 31 nodes, still 2 plies, Start still focused."
+    },
+    {
+      "journey": "Save/close/reopen",
+      "result": "Native Save to /private/tmp/msh37-journey.mshogi reported Saved. Cmd-Q clean exit was confirmed by empty application inventory. A fresh launch and native Open restored 2 plies and 2 observations, with engine stopped, Play Paused, and explicit Resume."
+    },
+    {
+      "journey": "historical analysis / Return live / Resume",
+      "result": "Selected the e2e4 event at 1 ply while the live game remained at 2 plies. History was labeled read only, Black to move. Depth 1 / 1,000 nodes returned a7a5 as an unplayed suggestion after 21 nodes. Return to live cleared the earlier result and focused the board. Separate Resume restored human play at 2 plies. The saved archive has 3 observations; the historical observation has exactly 1 game event, excluding future a7a5."
+    },
+    {
+      "journey": "unsaved replacement / nativeclose",
+      "result": "New game while dirty opened Save your changes with Cancel focused. Escape preserved the 2-ply game. Save succeeded; the actual native window-close button then exited, confirmed by empty application inventory."
+    },
+    {
+      "journey": "promotion atminimum",
+      "result": "The promotion verification title measured 760.0 x 650.0 logical content. All four choices were readable. Selecting a7-a8 opened promotion with Queen focused; Escape retained 0 plies. Reopened with the keyboard, pressed Tab three times and selected Knight: complete a7a8n accepted at 1 ply, White knight on a8, native proven-dead-position draw. Native Quit and explicit Discard closed the temporary document."
+    },
+    {
+      "journey": "intended-moveclaim",
+      "result": "The claim fixture showed an ongoing White turn at 0 plies and an optional fifty-move claim intending a1b1, explicitly unplayed. Escape from the claim selection then Tab focused Claim. Enter concluded the claimed fifty-move draw at 0 plies and focused the actual conclusion. Native Quit and explicit Discard closed it."
+    },
+    {
+      "journey": "capacity atminimum",
+      "result": "The capacity fixture measured 760 x 650 and began with 255 genuine observations. Zero-work analysis accepted observation 256 as incomplete. Repeating was rejected before acceptance: Application limit explained that all 256 observations were retained, no chess result was implied, further analysis was disabled, and Save / Save as remained available. Native Save to /private/tmp/msh37-capacity.mshogi succeeded; the parsed complete archive contains 256 observations."
+    },
+    {
+      "journey": "Final Cocoa termination regression",
+      "source": "6eed007",
+      "result": "Native Cocoa Quit (verification), the terminate: menu entry, opened the unsaved guard with Cancel focused. Escape preserved 255 observations and 0 plies and restored Analyze position focus. Later Cmd-Q and Discard closed it. This is a Cocoa entry regression, not an actual Dock click."
+    },
+    {
+      "journey": "Final synthetic minimum keyboard integration",
+      "source": "6eed007",
+      "result": "Measured 760 x 650 logical content. Tab, Enter flipped to Black orientation; Tab focused i9 and scrolled the readable board into view. Keyboard i9-j10 then Tab exposed Complete action here alongside version 1 / accepted actions 0. Escape returned to i9 and cancelled. Complete 136>153>136 advanced version 2 / accepted 1 and removed j10. Tab reached Reset and the separate record. Keyboard Reset advanced version 3 / accepted 0 and retained Reset focus. Shift-Tab to the board and alternate 136>135>136 advanced version 4 / accepted 1 while retaining j10. The record profile was mshogi.synthetic.strider16.v1. Native Cmd-Q opened the fixture guard; explicit Close fixture exited."
+    },
+    {
+      "journey": "Final normal package play/quit/windowclose",
+      "source": "6eed007",
+      "result": "The normal instrumentation-free host 29ec5b5c launched and keyboard e2e4 received real a7a5: 2 plies, depth 2 / 642 nodes, 0.00 from Black perspective, e4 focus retained, inspector tabs visibly full height. Cmd-Q opened the dirty guard with Cancel focused; Escape preserved 2 plies and e4 focus. The actual native window-close button opened the guard again; explicit Discard exited, confirmed by empty application inventory."
+    }
+  ],
+  "finding": {
+    "id": "MSH37-covered-or-collapsed-keyboard-control",
+    "pre_fix": "At 760 x 650, the sticky paused card covered backward keyboard focus. Removing stickiness revealed inspector tabs still collapsed by flex shrinking. Before images are preserved.",
+    "correction_revisions": [
+      "ceeaffe",
+      "6eed007"
+    ],
+    "status": "Resolved in the actual final package at 760 x 650: clicking Node budget then Shift-Tab twice focuses Analyze position in a visible full-height tab row. The paused card flows above it; sidebar scrolling keeps controls accessible."
+  },
+  "limits": [
+    "Screen-reader audio was not tested. Native roles/live regions, keyboard focus, and measured contrast were reviewed.",
+    "Three-platform GUI evidence remains the separate MSH-38 task."
+  ],
+  "canonical_test_archives": {
+    "journey": {
+      "sha256": "ff2b48542931956950f70bc2ecd29f049e53a605ddf37b140c8096850dfcaf31",
+      "bytes": 7230,
+      "observations": 3,
+      "controls": 5
+    },
+    "capacity": {
+      "sha256": "e46931f30e3f0c3f74a9f140d7948428167119a969a44d4abba3dd838ac82801",
+      "observations": 256
+    }
+  },
+  "final_layout_source_revision": "6eed0072fbb8a0307fae70753472e63bea951d62",
+  "final_integrated_revision": "fec83413c06ccb46127566bfcd256627fb677041",
+  "screenshots": {
+    "interactions-capacity-saved-minimum-macos.png": "f00eb2112040d474bfee9209391756733b215af4387bf64839f17e87b548c896",
+    "interactions-claim-macos.png": "d843ee9150bfb2a97e989cb7b4551227a4420a30ba9bfb42302d8ecbb542d7f5",
+    "interactions-collapsed-inspector-before-macos.png": "b37f5d119c59c3ea012c5ff1bde9501a409665885aa40eaca28ca391cccfacae",
+    "interactions-covered-focus-before-macos.png": "c67123fd2765e77aee7d955aa9c1bbadb8ad8dbaf58d5f38eeca5f6bf7e0d07d",
+    "interactions-final-normal-play-macos.png": "ad236768e9bf3016369a317c14be8cf987d5ac17290d87fd3e2d874b76fcf4ef",
+    "interactions-focus-fixed-macos.png": "ddaec885100ce15742520b979ddb2e60d678384a941e18382774397e2eefb56a",
+    "interactions-history-prefix-macos.png": "aa1663ce792a2abc1c2ca96d33774536a0217e12ea33f991beec0357628996ef",
+    "interactions-promotion-minimum-macos.png": "2957ec66c3e87ffd1d089f72d8364f42d8a508b7950c2457add9b755fe3b425d",
+    "interactions-synthetic-alternate-minimum-macos.png": "3f62aa832ecb379c80f949c3d6b46f2fe0863cd877435326716472ef16f467ca",
+    "interactions-synthetic-prefix-minimum-macos.png": "0e7104fd82bbd4adfe7db6131cbd6ae05251b2df99d4d7ea2ad2438992154394",
+    "interactions-synthetic-record-minimum-macos.png": "d81cb8bcfea8eeef154dff2cb007efe8e685f2af4ffa90cbb25154efa6ceb616",
+    "interactions-visible-focus-after-macos.png": "7f42ce85531716b3c2cd204958cd98a5ab9c51f74503a445da3a8db19f3a3984"
+  }
+}

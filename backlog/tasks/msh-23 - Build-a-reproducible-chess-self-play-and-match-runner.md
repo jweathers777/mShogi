@@ -1,11 +1,11 @@
 ---
 id: MSH-23
 title: Build a reproducible chess self-play and match runner
-status: In Review
+status: Done
 assignee:
   - '@runner-builder'
 created_date: '2026-10-24T19:57:00Z'
-updated_date: '2026-10-25T00:08:00Z'
+updated_date: '2026-10-25T00:10:00Z'
 labels:
   - match
   - reproducibility
@@ -39,7 +39,7 @@ Design section 6 requires match experiments to preserve executable and model ide
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -56,4 +56,12 @@ Dependency-ready after MSH-22 source e35ce58 passed CI40143724587 on Linux/macOS
 Initial real release experiments completed and replayed on macOS: paired Stockfish19 forced/standard games, self-play forced/standard games, timed pair, known-history claim and genuine descendant search failure (unexpected exit1, unscored). These are alpha evidence pending final review/fix rerun. Independent process/rules reviewers identified configuration-to-identity/work binding, receipt timestamps before diagnostic status waits, earliest watchdog/clock ordering after delayed wake, projected clock balance at go dispatch, regular-file hashing and visible metadata truncation. Builder is resolving these within runner scope; no chess rule or owner-policy changes.
 
 Final runner implements strict effective config/report checksums and semantic identity/command bindings, fresh paired UCI processes, SHA256 executable/model identities, bounded writes/output/metadata/transcripts/cleanup, core AutoClaim and increment clocks. ProcessStartFailure, UnexpectedExit, InvalidMove, MissingResponse and ResponseTimeout remain unscored and distinct from clock/unresolved chess results and ply caps. Deadline precedence uses earliest fixed boundary (clock ties); response/EOF/clock detection timestamps survive bookkeeping/status waits. Actual macOS release evidence: 13 first-run games plus8 deterministic-setting reruns=21games in8 reports, all replayed. Standard SF19 games ended in mate after48/87plies; self-play standard games ended in intended threefold claims after13plies; forced/timed pairs completed; known-history claim precededgo; real search failure exited1/unscored; outstanding ownUCI depth128/movetime10s search under50ms clock ended with explicitly unscored uncertainty and successfulquit. Eight work-limited reruns had identical commands/conclusions/identities; no identical timed promise. Exactcommands/configs/hashes/provenance in tests/fixtures/matches/README.md and docs/match-runner.md. Final18runner checks passed (4deterministicunits,8portableprocess+2Unixboundary,4recorded-evidence), Clippy/fmt/diff passed; broader workspace tests/build/Clippy also passed before last clock-only fix, unchanged evidence retained. Independent review_hardening cleared process/timing fixes and review search_builder cleared rules/replay plus regenerated21game evidence. No unresolved material findings. SHA2 exactpin/license/provenance audit recorded in development docs; no copied crypto implementation. Native CI remains beforeclosure.
+
+Integrated normally into origin/codex/rewrite at source 47243cdc9497cde81236cba93f6c042ab9ef20cf. Native CI https://github.com/jweathers777/mShogi/actions/runs/40145526937 passed Rust (macos-15) (job 121025907952), Rust (windows-2022) (job 121025908161), Rust (ubuntu-24.04) (job 121025908283); formatting, Clippy, locked workspace tests/build and console smoke all passed. Closure bookkeeping reuses this exact source evidence. Existing deep/oracle evidence is retained for unchanged rules.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Added bounded native UCI experiments through authoritative game/history/claims/clocks, strict semantic report replay, SHA256 identities and explicit unscored failure categories. Component reviews resolved timing, configuration and bounds issues. Actual21-game corpus includes complete self-play/Stockfish19 matches, conditional deterministic reruns, timed observations, claim/error and outstanding-search clock termination. Focused checks and Linux/macOS/Windows native CI passed; external Stockfish execution is macOS evidence only. Integrated into codex/rewrite; MSH-25 closes the milestone.
+<!-- SECTION:FINAL_SUMMARY:END -->

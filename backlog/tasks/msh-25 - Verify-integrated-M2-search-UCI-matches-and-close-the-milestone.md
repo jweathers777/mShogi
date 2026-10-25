@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-24T20:48:00Z'
-updated_date: '2026-10-25T00:13:00Z'
+updated_date: '2026-10-25T00:20:00Z'
 labels: []
 milestone: m-2
 dependencies:
@@ -35,7 +35,7 @@ M2 component checks must be connected by evidence from the actual game/search/ca
 - [x] #1 Actual rules-owned game, history-sensitive search/adjudication, cancellation/stale-result rejection, UCI process and runner integration are exercised together with a recorded independent-engine match.
 - [x] #2 Canonical games plus match commands, claim policy and clock/failure events replay deterministically; documented work-limited reruns and timed-run observations meet their separate promises.
 - [x] #3 Independent review resolves material integration findings and maps required M2 deliverables to evidence and honest limitations, including the named M4 chess-completeness obligation.
-- [x] #4 The integrated revision has appropriate native Linux/macOS/Windows build/test/process evidence; platform omissions remain explicit and block unsupported closure claims.
+- [ ] #4 The integrated revision has appropriate native Linux/macOS/Windows build/test/process evidence; platform omissions remain explicit and block unsupported closure claims.
 <!-- AC:END -->
 
 ## Definition of Done
@@ -58,4 +58,8 @@ Map completed required M2 deliverables to actual integration evidence, preservin
 All M2 dependencies completed, including MSH-23 source47243cd nativeCI40145526937 passed Linux/macOS/Windows. Fresh independent m2_closure_review inspected required15..24 records and actual implementations/evidence; no material integration findings. Independently passed93focused checks (search28includingdoctest,runner18,UCI11,corehistory/adjudication/match/completeness36), without repeatingM1deep/perft/oracle work. ActualStockfishexecutionmacOSonly; nativeLinux/Windowsexerciseportableprocesses/offlinereplay. Parent prepares durableclosurematrix and records final sourceCI; no outstandingproductdecisions.
 
 Focused closure matrix published in docs/review/m2-closure.md, with README entrypoint and ledger ownership. Fresh independent m2_closure_review found no material integration gaps, passed93focused checks, then approved documentaccuracy/evidenceboundaries without repeatingtests. One wordingprecision correction applied: claim precedesengine move requestgo, notsetuphandshake. RequiredM2tasks15..24Done, MSH26exactopt-incompleteness alsoDone; defaultsubset/resourceUnknown/no-strength/physical-procedure and platform limits retained. Exactsource47243cd nativeCI40145526937 passedUbuntu24.04job121025908283,macOS15job121025907952,Windows2022job121025908161; parentverifiedheadSha andalljobs. ActualSFexecutionmacOSonly, othernativejobsrealportableprocesses+offline21-game replay. ExistingM1deep/oracle evidence reused. Closurechanges aredocumentation/ledgeronly; local links anddiffcheck passed. Finalnormalintegration/sourceCI followsbeforeDOD4andDone.
+
+Closure sourcea71e513 CI40145892269 passedmacOS/Windows butFAILED Linux in process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored: clean_eof expectedMissingResponse, observedengine1UnexpectedExit idlehandshake/code0. Bothfixtureshadidenticalexitmode, so eitherobservationwaslegitimate; notaproductclassificationfailure. Test-onlyresolution isolatesfaulttoawaitedengine (startup0,responseinitialBlack1), keepsotherhealthy andassertsexactengine+category; separate ready-then-idle-exitfixturecase assertscleanUnexpectedExit. Independentreview_hardening approvedstrongerchecks andfocusedtestpassed; actual21gamecorpus/productcodeunchanged. AC4temporarilyuncheckedpendingupdatedsourceCI; failedrunevidencepreservedinclosure doc. No blindCIrerunorweakenedoutcomeassertions.
+
+Afterfixtureisolation, 20consecutivefocused subprocess-failure repetitions passed onDarwinarm64, followedbyall18runnerchecks, runnerClippywarningsdenied, workspaceformatting anddiffchecks. Independentprocessreviewconfirmed exactcategory+engineassertions strengthened andno productionbehaviorchanged. UpdatedsourcewillreceivefreshnormalnativeCI beforeAC4/DOD4closure.
 <!-- SECTION:NOTES:END -->

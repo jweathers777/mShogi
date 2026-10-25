@@ -36,7 +36,11 @@ fn main() {
                 return;
             }
         } else if line == "isready" {
-            println!("readyok")
+            println!("readyok");
+            if mode == "idle_exit" {
+                let _ = io::stdout().flush();
+                return;
+            }
         } else if line.starts_with("position ") {
             position = line;
         } else if line.starts_with("go") {

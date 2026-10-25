@@ -152,19 +152,25 @@ fn explicit_auto_claim_uses_known_history_before_any_go() {
 }
 #[test]
 fn process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored() {
-    for (mode, expected) in [
-        ("exit", FailureKind::UnexpectedExit),
-        ("clean_eof", FailureKind::MissingResponse),
-        ("search_exit", FailureKind::UnexpectedExit),
-        ("search_eof", FailureKind::MissingResponse),
-        ("invalid", FailureKind::InvalidMove),
+    for (mode, expected, faulty_engine) in [
+        ("exit", FailureKind::UnexpectedExit, 0),
+        ("clean_eof", FailureKind::MissingResponse, 0),
+        ("search_exit", FailureKind::UnexpectedExit, 1),
+        ("search_eof", FailureKind::MissingResponse, 1),
+        ("invalid", FailureKind::InvalidMove, 1),
     ] {
-        let r = run(&config(mode));
+        // Fault only the awaited engine. Two independently exiting children
+        // race between required-response EOF and the other child's idle exit,
+        // both of which are valid but deliberately different classifications.
+        let mut c = config("mate");
+        c.engines[faulty_engine].args = vec![mode.into()];
+        let r = run(&c);
         let g = &r.games[0];
         assert_eq!(g.stop, GameStop::Failure, "{mode}");
         assert_eq!(g.conclusion, None);
         let f = g.failure.as_ref().unwrap();
         assert_eq!(f.kind, expected, "{mode}: {f:?}");
+        assert_eq!(f.engine, faulty_engine);
         if mode.contains("exit") {
             assert!(
                 f.exit
@@ -176,6 +182,18 @@ fn process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored() {
         assert_eq!(r.summaries[0].failures, 1);
         assert_eq!(r.replay().unwrap()[0].game().history().ply_count(), 0);
     }
+    // An already-ready engine exits cleanly while the controller awaits the
+    // other engine's handshake. This is an idle exit, not its requested EOF.
+    let mut idle = config("silent");
+    idle.engines[0].args = vec!["idle_exit".into()];
+    let r = run(&idle);
+    let f = r.games[0].failure.as_ref().unwrap();
+    assert_eq!(f.kind, FailureKind::UnexpectedExit);
+    assert_eq!(f.engine, 0);
+    assert_eq!(f.phase, "handshake");
+    assert!(f.exit.as_ref().unwrap().success);
+    assert_eq!(r.games[0].conclusion, None);
+    assert_eq!(r.summaries[0].unscored, 1);
     let mut c = config("mate");
     c.engines[0].path.push_str("-does-not-exist");
     let r = run(&c);

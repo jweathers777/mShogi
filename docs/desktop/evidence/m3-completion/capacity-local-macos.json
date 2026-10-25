@@ -1,0 +1,30 @@
+{
+  "source_base": "7c7df45a728a759e898339b1fb402a8bfe522b3a",
+  "source_scope": "MSH-61 final source changes, implementation commit recorded in completion-batch-evidence.md",
+  "environment": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "normal_package": "desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+  "host_sha256": "803d551ae21da0d6dbd8169445c60b201e3d2cf4285493ae0da11801ce1f4e85",
+  "engine_sha256": "45d264831e806ea81b426b4fbbb94f2ecbcba384d23696a5c87537acca555ba5",
+  "normal_package_instrumentation_exclusion": "package-smoke.py passed; no MSHOGI_DESKTOP_FIXTURE or Native Cocoa Quit marker",
+  "interaction": [
+    "native Open of complete 256-observation archive succeeds; work stopped",
+    "Start move analysis refused with Application capacity before execution",
+    "256 historical observations and zero plies retained",
+    "Save completed successfully after refusal",
+    "native Cmd-Q on saved document"
+  ],
+  "saved_archive": {
+    "sha256": "d697feb11c7fe2d1fcce09b0cc820e337c1e395f398a7b6e2b1596d8cba4a2ee",
+    "bytes": 385504,
+    "observations": 256,
+    "controls": 256
+  },
+  "focused_checks": {
+    "native_all_feature_tests": 41,
+    "console_real_process_tests": 9,
+    "frontend_tests": 56,
+    "native_clippy": "passed",
+    "frontend_strict_build": "passed"
+  },
+  "scope": "Actual local macOS normal-package interaction, separate from native tests and Windows/Linux evidence"
+}

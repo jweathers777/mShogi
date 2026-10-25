@@ -169,18 +169,21 @@ struct Opened {
     archive: Archive,
     game: ChessMatch,
 }
+#[derive(Clone)]
 pub(super) struct Viewed {
     game: AdjudicatedGame,
     conclusion: Option<MatchConclusion>,
     index: usize,
 }
 enum Work {
+    Admit(Box<DesktopSession>),
     Save {
         archive: Box<Archive>,
         record: MatchRecord,
         game_record: Box<GameRecord>,
         path: PathBuf,
         revision: u64,
+        document_identity: u64,
     },
     Open {
         path: PathBuf,
@@ -193,9 +196,11 @@ enum Work {
     },
 }
 enum Completed {
+    Admitted(Box<DesktopSession>),
     Saved {
         path: PathBuf,
         revision: u64,
+        document_identity: u64,
     },
     Opened {
         opened: Box<Opened>,
@@ -267,6 +272,28 @@ impl FileWorker {
             })?;
         Ok(Self { shared })
     }
+    pub(super) fn submit_admission(&self, id: u64, candidate: DesktopSession) {
+        self.submit(id, Work::Admit(Box::new(candidate)));
+    }
+    pub(super) fn poll_admission(&self) -> Option<(u64, Result<DesktopSession, String>)> {
+        self.poll().map(|(id, result)| {
+            (
+                id,
+                result.map(|completed| match completed {
+                    Completed::Admitted(candidate) => *candidate,
+                    _ => unreachable!("dedicated admission worker"),
+                }),
+            )
+        })
+    }
+    pub(super) fn cancel(&self) {
+        let mut state = self.shared.state.lock().expect("document worker metadata");
+        if let Some(current) = &state.current {
+            current.store(true, Ordering::Release);
+        }
+        state.pending = None;
+        state.result = None;
+    }
     fn submit(&self, id: u64, work: Work) {
         let stop = Arc::new(AtomicBool::new(false));
         let mut state = self.shared.state.lock().expect("document worker metadata");
@@ -320,12 +347,17 @@ fn check(stopped: &mut impl FnMut() -> bool) -> Result<(), String> {
 }
 fn execute(work: Work, mut stopped: impl FnMut() -> bool) -> Result<Completed, String> {
     match work {
+        Work::Admit(candidate) => {
+            candidate.check_archive_capacity(&mut stopped)?;
+            Ok(Completed::Admitted(candidate))
+        }
         Work::Save {
             mut archive,
             record,
             game_record,
             path,
             revision,
+            document_identity,
         } => {
             archive.match_record_json = record.to_json();
             archive.game_record_json = game_record.to_json();
@@ -338,7 +370,11 @@ fn execute(work: Work, mut stopped: impl FnMut() -> bool) -> Result<Completed, S
                 );
             }
             atomic_write(&path, &bytes, &mut stopped)?;
-            Ok(Completed::Saved { path, revision })
+            Ok(Completed::Saved {
+                path,
+                revision,
+                document_identity,
+            })
         }
         Work::Open { path, token } => {
             if !fs::metadata(&path)
@@ -367,6 +403,18 @@ fn execute(work: Work, mut stopped: impl FnMut() -> bool) -> Result<Completed, S
             let archive: Archive = serde_json::from_slice(&bytes)
                 .map_err(|e| format!("Invalid desktop archive: {e}"))?;
             let record = preflight(&archive)?;
+            let mut resave = archive.clone();
+            resave.version = MAX_SAFE_ID - 17;
+            resave.revision = MAX_SAFE_ID - 17;
+            resave.next_request = MAX_SAFE_ID - 17;
+            resave.document_revision = MAX_SAFE_ID - 17;
+            if serde_json::to_vec_pretty(&resave)
+                .map_err(|e| e.to_string())?
+                .len()
+                > MAX_ARCHIVE_BYTES
+            {
+                return Err("Application capacity: reopened runtime identities would exceed the complete 16 MiB archive budget. The current document was preserved.".into());
+            }
             check(&mut stopped)?;
             let game = record
                 .replay_with_stop(&mut stopped)
@@ -772,7 +820,83 @@ fn view_prefix(
     })
 }
 
+fn counts_fit(
+    events: usize,
+    game_events: usize,
+    observations: usize,
+    controls: usize,
+    reserve_controls: usize,
+) -> bool {
+    events <= MAX_ARCHIVE_EVENTS
+        && game_events <= MAX_ARCHIVE_EVENTS
+        && observations <= MAX_ARCHIVE_OBSERVATIONS
+        && controls.saturating_add(reserve_controls) <= MAX_ARCHIVE_CONTROLS
+}
+fn bytes_fit(bytes: usize, reserve: usize) -> bool {
+    bytes.saturating_add(reserve) <= MAX_ARCHIVE_BYTES
+}
 impl DesktopSession {
+    pub(super) fn check_archive_capacity(
+        &self,
+        stopped: &mut impl FnMut() -> bool,
+    ) -> Result<(), String> {
+        let reserve_stop = self.pending.is_some()
+            || self.analysis_pending.is_some()
+            || (!self.play_paused
+                && self.game.conclusion().is_none()
+                && self.game.game().position().side_to_move() != self.human);
+        let reserve_controls = usize::from(reserve_stop);
+        if !counts_fit(
+            self.initial_record.events().len() + self.game.record().event_count(),
+            self.game.game().record().events().len(),
+            self.observations.len(),
+            self.controls.len(),
+            reserve_controls,
+        ) {
+            return Err("Application capacity: this operation would exceed 4096 events, 256 observations or 8192 controls (including a stop/close reservation). No document history or observations were accepted or discarded. Save the complete current document, then start a new game/document to continue.".into());
+        }
+        check(stopped)?;
+        let mut archive = self.archive_snapshot();
+        archive.match_record_json = self.game.record().to_json();
+        archive.game_record_json = self.game.game().record().to_json();
+        preflight(&archive)?;
+        // Budget each archive watermark at its maximum supported decimal width.
+        // Reopening and runtime-only selection/work/I/O cannot grow this encoding.
+        archive.version = MAX_SAFE_ID - 17;
+        archive.revision = MAX_SAFE_ID - 17;
+        archive.next_request = MAX_SAFE_ID - 17;
+        archive.document_revision = MAX_SAFE_ID - 17;
+        let bytes = serde_json::to_vec_pretty(&archive).map_err(|e| e.to_string())?;
+        let reserve_bytes = if reserve_stop { 1024 } else { 0 };
+        if !bytes_fit(bytes.len(), reserve_bytes) {
+            return Err("Application capacity: this operation would exceed the 16 MiB complete archive budget, including runtime identity and stop/close reservations. No new history or observations were accepted. Save the complete current document, then start a new game/document to continue.".into());
+        }
+        check(stopped)?;
+        // Validate new raw evidence before accepting it; malformed or oversized
+        // engine failure/PV/witness payloads must not make the document unsaveable.
+        let final_record = self.game.game().record();
+        for observation in self.observations.iter().skip(self.validated_observations) {
+            validate_observation(observation, &final_record, stopped)?;
+        }
+        Ok(())
+    }
+    fn archive_snapshot(&self) -> Archive {
+        Archive {
+            schema_version: 1,
+            profile: "mshogi.desktop.archive.v1".into(),
+            match_record_json: String::new(),
+            game_record_json: String::new(),
+            human: self.human,
+            settings: self.settings.clone(),
+            play_limits: self.play_limits,
+            observations: self.observations.clone(),
+            controls: self.controls.clone(),
+            version: self.version,
+            revision: self.archive_revision,
+            next_request: self.next_request.max(self.selection_id),
+            document_revision: self.document_revision,
+        }
+    }
     pub(super) fn document_state(&self) -> DocumentState {
         DocumentState {
             revision: self.document_revision,
@@ -952,7 +1076,7 @@ impl DesktopController {
             observations: self.session.observations.clone(),
             controls: self.session.controls.clone(),
             version: self.session.version,
-            revision: self.session.revision,
+            revision: self.session.archive_revision,
             next_request: self.session.next_request.max(self.session.selection_id),
             document_revision: self.session.document_revision,
         };
@@ -964,6 +1088,7 @@ impl DesktopController {
                 game_record: Box::new(self.session.game.game().record()),
                 path,
                 revision: self.session.document_revision,
+                document_identity: self.session.document_identity,
             },
         );
         Ok(id)
@@ -989,6 +1114,7 @@ impl DesktopController {
             return Err("Unsupported history event boundary/resource limit.".into());
         }
         self.session.ensure_capacity()?;
+        self.retire_admission();
         self.bridge.cancel();
         self.session.pending = None;
         self.session.retire_analysis();
@@ -1017,10 +1143,17 @@ impl DesktopController {
             return;
         }
         let result = match result {
-            Ok(Completed::Saved { path, revision }) => {
-                if self.session.document_revision == revision {
+            Ok(Completed::Admitted(_)) => unreachable!("dedicated file worker"),
+            Ok(Completed::Saved {
+                path,
+                revision,
+                document_identity,
+            }) => {
+                if self.session.document_identity == document_identity {
                     self.session.document_path = Some(path);
-                    self.session.saved_revision = revision;
+                    if self.session.document_revision == revision {
+                        self.session.saved_revision = revision;
+                    }
                 }
                 Ok("Saved a complete desktop document.".into())
             }
@@ -1046,6 +1179,18 @@ impl DesktopController {
                     .max()
                     .unwrap_or(0)
                         + 1;
+                    if next >= MAX_SAFE_ID - 64
+                        || self.session.document_revision.max(saved.document_revision)
+                            >= MAX_SAFE_ID - 65
+                    {
+                        self.io_state.phase = IoPhase::Failed;
+                        self.io_state.message = Some("Application capacity: reopened identities leave no safe save/runtime headroom. Current document preserved.".into());
+                        self.session.revision += 1;
+                        return;
+                    }
+                    self.retire_admission();
+                    self.session.capacity.status = CapacityPhase::Available;
+                    self.session.capacity.message = None;
                     self.bridge.cancel();
                     self.clock_floor = opened.game.record().timestamp_floor().max(
                         saved
@@ -1071,12 +1216,15 @@ impl DesktopController {
                         observation.historical = true;
                     }
                     self.session.controls = saved.controls;
+                    self.session.validated_observations = self.session.observations.len();
                     self.session.document_revision =
                         self.session.document_revision.max(saved.document_revision) + 1;
                     self.session.saved_revision = self.session.document_revision;
                     self.session.document_path = Some(path);
+                    self.session.document_identity = next;
                     self.session.version = next;
                     self.session.revision = next;
+                    self.session.archive_revision = next;
                     self.session.next_request = next;
                     self.session.selection_id = next;
                     self.session.pending = None;
@@ -1111,6 +1259,7 @@ impl DesktopController {
     /// Stabilize a close decision by retiring work without inventing results.
     /// Repeated preflight is idempotent; an untouched initial game stays clean.
     pub fn pause_for_close(&mut self) -> Snapshot {
+        self.retire_admission();
         if self.session.pending.is_some() || self.session.analysis_pending.is_some() {
             self.bridge.cancel();
             self.session.pending = None;
@@ -1190,7 +1339,7 @@ mod tests {
             observations: session.observations.clone(),
             controls: session.controls.clone(),
             version: session.version,
-            revision: session.revision,
+            revision: session.archive_revision,
             next_request: session.next_request.max(session.selection_id),
             document_revision: session.document_revision,
         }
@@ -1290,28 +1439,39 @@ mod tests {
         let mut controller = controller();
         let save = controller.queue_save(path.clone()).unwrap();
         controller
-            .command(DesktopCommand::Preferences {
-                orientation: Color::Black,
-                analysis_defaults: AnalysisOperation::Moves {
-                    depth: 2,
-                    nodes: 20_000,
+            .session
+            .command(
+                DesktopCommand::Preferences {
+                    orientation: Color::Black,
+                    analysis_defaults: AnalysisOperation::Moves {
+                        depth: 2,
+                        nodes: 20_000,
+                    },
                 },
-            })
+                1,
+            )
             .unwrap();
         let snapshot = wait(&mut controller, save);
         assert_eq!(snapshot.io.phase, IoPhase::Complete);
         assert!(snapshot.document.dirty);
-        assert!(snapshot.document.path.is_none());
+        assert_eq!(
+            snapshot.document.path,
+            Some(path.to_string_lossy().into_owned())
+        );
         let token = controller.open_token();
         let open = controller.queue_open(path, token).unwrap();
         controller
-            .command(DesktopCommand::Preferences {
-                orientation: Color::White,
-                analysis_defaults: AnalysisOperation::Moves {
-                    depth: 3,
-                    nodes: 10_000,
+            .session
+            .command(
+                DesktopCommand::Preferences {
+                    orientation: Color::White,
+                    analysis_defaults: AnalysisOperation::Moves {
+                        depth: 3,
+                        nodes: 10_000,
+                    },
                 },
-            })
+                2,
+            )
             .unwrap();
         let before = controller.session.game.record().to_json();
         let version = controller.session.version;
@@ -1559,5 +1719,601 @@ mod tests {
         assert!(controller.session.analysis_pending.is_none());
         assert_eq!(controller.session.game.record().to_json(), before);
         assert!(controller.session.viewed.is_none());
+    }
+    fn analysis_observations(count: usize) -> DesktopSession {
+        let mut session = DesktopSession::new();
+        for i in 0..count {
+            session
+                .command(
+                    DesktopCommand::Analyze {
+                        version: session.version,
+                        operation: AnalysisOperation::Moves { depth: 1, nodes: 0 },
+                    },
+                    i as u64,
+                )
+                .unwrap();
+            let context = session.analysis_request().unwrap();
+            assert!(session.accept_analysis(EngineResponse {
+                context,
+                result: EngineResult::Incomplete {
+                    telemetry: mshogi_engine::Telemetry {
+                        score: None,
+                        completed_depth: 0,
+                        nodes: 0,
+                        principal_variation: vec![],
+                        status: mshogi_engine::StopReason::NodeLimit
+                    },
+                }
+            }));
+        }
+        session
+    }
+    #[test]
+    fn archive_capacity_exact_count_and_byte_boundaries_include_stop_reservations() {
+        assert!(counts_fit(4096, 4096, 256, 8192, 0));
+        assert!(!counts_fit(4097, 0, 0, 0, 0));
+        assert!(!counts_fit(0, 4097, 0, 0, 0));
+        assert!(!counts_fit(0, 0, 257, 0, 0));
+        assert!(!counts_fit(0, 0, 0, 8193, 0));
+        assert!(counts_fit(0, 0, 0, 8191, 1));
+        assert!(!counts_fit(0, 0, 0, 8192, 1));
+        assert!(bytes_fit(16 * 1024 * 1024, 0));
+        assert!(!bytes_fit(16 * 1024 * 1024 + 1, 0));
+        assert!(bytes_fit(16 * 1024 * 1024 - 1024, 1024));
+        assert!(!bytes_fit(16 * 1024 * 1024 - 1023, 1024));
+    }
+    #[test]
+    fn observation_256_is_accepted_257_rejected_and_save_open_preserves_every_observation() {
+        let mut source = controller();
+        source.session = analysis_observations(256);
+        let match_before = source.session.game.record().to_json();
+        let document_before = source.session.document_revision;
+        let version = source.session.version;
+        let error = source
+            .command(DesktopCommand::Analyze {
+                version,
+                operation: AnalysisOperation::Moves { depth: 1, nodes: 0 },
+            })
+            .unwrap_err();
+        assert!(error.starts_with("Application capacity:"));
+        assert_eq!(source.session.capacity.status, CapacityPhase::Paused);
+        assert_eq!(source.session.game.record().to_json(), match_before);
+        assert_eq!(source.session.document_revision, document_before);
+        assert_eq!(source.session.observations.len(), 256);
+        let directory = directory();
+        let path = directory.join("complete.mshogi");
+        let id = source.queue_save(path.clone()).unwrap();
+        assert_eq!(wait(&mut source, id).io.phase, IoPhase::Complete);
+        let mut reopened = controller();
+        let id = reopened.queue_open(path, reopened.open_token()).unwrap();
+        let snapshot = wait(&mut reopened, id);
+        assert_eq!(snapshot.io.phase, IoPhase::Complete);
+        assert_eq!(snapshot.observations.len(), 256);
+        assert!(snapshot.observations.iter().all(|entry| entry.historical));
+        assert!(
+            reopened
+                .command(DesktopCommand::Analyze {
+                    version: snapshot.version,
+                    operation: AnalysisOperation::Moves { depth: 1, nodes: 0 }
+                })
+                .unwrap_err()
+                .starts_with("Application capacity:")
+        );
+        assert_eq!(reopened.session.observations.len(), 256);
+        let second = directory.join("reopened.mshogi");
+        let id = reopened.queue_save(second).unwrap();
+        assert_eq!(wait(&mut reopened, id).io.phase, IoPhase::Complete);
+        assert_eq!(reopened.pause_for_close().observations.len(), 256);
+        fs::remove_dir_all(directory).unwrap();
+    }
+    #[test]
+    fn control_boundary_rejects_unchanged_and_reserved_close_is_saveable() {
+        let mut source = controller();
+        source.session.human = Color::Black;
+        for i in 0..8191 {
+            source.session.journal(
+                DesktopCommand::Preferences {
+                    orientation: Color::White,
+                    analysis_defaults: AnalysisOperation::Moves { depth: 1, nodes: 0 },
+                },
+                i,
+            );
+        }
+        assert!(source.session.check_archive_capacity(&mut || false).is_ok());
+        let request = source.session.engine_request().unwrap();
+        let closed = source.pause_for_close();
+        assert!(closed.play_paused);
+        assert_eq!(source.session.controls.len(), 8192);
+        assert!(source.session.pending.is_none());
+        assert!(!source.session.accept(
+            EngineResponse {
+                context: request,
+                result: EngineResult::Failure {
+                    failure: mshogi_engine::EngineFailure {
+                        kind: mshogi_engine::FailureKind::Timeout,
+                        message: "obsolete".into()
+                    }
+                }
+            },
+            8192
+        ));
+        let before = archive(&source.session);
+        let error = source
+            .session
+            .command(
+                DesktopCommand::Preferences {
+                    orientation: Color::Black,
+                    analysis_defaults: AnalysisOperation::Moves { depth: 1, nodes: 0 },
+                },
+                8193,
+            )
+            .unwrap_err();
+        assert!(error.starts_with("Application capacity:"));
+        assert_eq!(source.session.controls.len(), 8192);
+        assert_eq!(source.session.settings.orientation, Color::White);
+        assert_eq!(source.session.document_revision, before.document_revision);
+        assert!(source.session.check_archive_capacity(&mut || false).is_ok());
+        let directory = directory();
+        let id = source.queue_save(directory.join("closed.mshogi")).unwrap();
+        assert_eq!(wait(&mut source, id).io.phase, IoPhase::Complete);
+        fs::remove_dir_all(directory).unwrap();
+    }
+    #[test]
+    fn oversized_raw_engine_failure_is_rejected_before_observation_or_game_commit() {
+        let mut session = DesktopSession::new();
+        session.human = Color::Black;
+        let context = session.engine_request().unwrap();
+        let before = session.game.record().to_json();
+        let revision = session.document_revision;
+        assert!(!session.accept(
+            EngineResponse {
+                context,
+                result: EngineResult::Failure {
+                    failure: mshogi_engine::EngineFailure {
+                        kind: mshogi_engine::FailureKind::Timeout,
+                        message: "x".repeat(MAX_ARCHIVE_BYTES)
+                    }
+                }
+            },
+            1
+        ));
+        assert_eq!(session.capacity.status, CapacityPhase::Paused);
+        assert_eq!(session.game.record().to_json(), before);
+        assert_eq!(session.document_revision, revision);
+        assert!(session.observations.is_empty());
+        assert!(session.check_archive_capacity(&mut || false).is_ok());
+    }
+    #[test]
+    fn command_receipts_survive_following_work_and_close_supersedes_pending_admission() {
+        let mut source = controller();
+        let (_, receipt) = source
+            .command_with_receipt(DesktopCommand::Play {
+                version: 1,
+                action: "e2e4".parse().unwrap(),
+            })
+            .unwrap();
+        let deadline = Instant::now() + std::time::Duration::from_secs(5);
+        while receipt.completion().is_none() {
+            source.snapshot();
+            assert!(Instant::now() < deadline);
+            thread::sleep(std::time::Duration::from_millis(1));
+        }
+        assert_eq!(receipt.completion(), Some(Ok(())));
+        assert_eq!(source.session.snapshot().history, ["e2e4"]);
+        source.pause_for_close();
+        assert_eq!(receipt.completion(), Some(Ok(())));
+        let version = source.session.version;
+        let (_, pending) = source
+            .command_with_receipt(DesktopCommand::Analyze {
+                version,
+                operation: AnalysisOperation::Moves { depth: 1, nodes: 0 },
+            })
+            .unwrap();
+        source.pause_for_close();
+        assert!(pending.completion().unwrap().is_err());
+        source.snapshot();
+        assert!(source.session.analysis_pending.is_none());
+        assert!(source.session.check_archive_capacity(&mut || false).is_ok());
+    }
+
+    #[test]
+    fn save_during_admission_keeps_new_contents_dirty_and_successful_open_retires_candidate() {
+        let directory = directory();
+        let path = directory.join("initial.mshogi");
+        let mut source = controller();
+        let mut candidate = source.session.clone();
+        candidate
+            .command_unchecked(
+                DesktopCommand::Preferences {
+                    orientation: Color::Black,
+                    analysis_defaults: AnalysisOperation::Moves { depth: 1, nodes: 0 },
+                },
+                1,
+            )
+            .unwrap();
+        source.queue_admission(candidate).unwrap();
+        let receipt = source.admission_receipt.clone().unwrap();
+        // Save captures the accepted original, while the independent admission
+        // worker checks a newer immutable candidate.
+        let id = source.queue_save(path.clone()).unwrap();
+        let snapshot = wait(&mut source, id);
+        assert_eq!(snapshot.io.phase, IoPhase::Complete);
+        let deadline = Instant::now() + std::time::Duration::from_secs(5);
+        while receipt.completion().is_none() {
+            source.snapshot();
+            assert!(Instant::now() < deadline);
+            thread::sleep(std::time::Duration::from_millis(1));
+        }
+        assert_eq!(receipt.completion(), Some(Ok(())));
+        assert!(source.session.document_state().dirty);
+        assert_eq!(source.session.document_path.as_ref(), Some(&path));
+        let file: Archive = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+        assert_eq!(file.settings.orientation, Color::White);
+        assert_eq!(source.session.settings.orientation, Color::Black);
+        let mut opened = controller();
+        let id = opened.queue_open(path, opened.open_token()).unwrap();
+        let mut candidate = opened.session.clone();
+        candidate
+            .command_unchecked(
+                DesktopCommand::Preferences {
+                    orientation: Color::Black,
+                    analysis_defaults: AnalysisOperation::Moves {
+                        depth: 2,
+                        nodes: 10,
+                    },
+                },
+                1,
+            )
+            .unwrap();
+        opened.queue_admission(candidate).unwrap();
+        let obsolete = opened.admission_receipt.clone().unwrap();
+        // Consume a completed Open before polling admission, deterministically
+        // exercising the race where replacement wins.
+        let deadline = Instant::now() + std::time::Duration::from_secs(5);
+        while opened.files.shared.state.lock().unwrap().result.is_none() {
+            assert!(Instant::now() < deadline);
+            thread::sleep(std::time::Duration::from_millis(1));
+        }
+        opened.poll_files();
+        assert_eq!(opened.io_state.id, id);
+        assert_eq!(opened.io_state.phase, IoPhase::Complete);
+        assert!(obsolete.completion().unwrap().is_err());
+        opened.poll_admission();
+        assert_eq!(opened.session.settings.orientation, Color::White);
+        assert_eq!(
+            opened.session.settings.analysis_defaults,
+            file.settings.analysis_defaults
+        );
+        assert_ne!(opened.session.capacity.status, CapacityPhase::Paused);
+        assert!(opened.session.check_archive_capacity(&mut || false).is_ok());
+        fs::remove_dir_all(directory).unwrap();
+    }
+    #[test]
+    fn final_engine_observation_256_commits_once_then_further_engine_work_resource_pauses() {
+        let mut session = analysis_observations(255);
+        session.retire_analysis();
+        session.human = Color::Black;
+        session.play_paused = false;
+        session.engine = EngineState::default();
+        let context = session.engine_request().unwrap();
+        let action = "e2e4".parse().unwrap();
+        let response = EngineResponse {
+            context,
+            result: EngineResult::Move {
+                action,
+                telemetry: mshogi_engine::Telemetry {
+                    score: Some(0),
+                    completed_depth: 1,
+                    nodes: 21,
+                    principal_variation: vec![mshogi_engine::EngineChoice::Move { action }],
+                    status: mshogi_engine::StopReason::Complete,
+                },
+            },
+        };
+        assert!(session.accept(response.clone(), 256));
+        assert!(!session.accept(response, 256));
+        assert_eq!(session.observations.len(), 256);
+        assert_eq!(session.snapshot().history, ["e2e4"]);
+        session
+            .command(
+                DesktopCommand::Play {
+                    version: session.version,
+                    action: "e7e5".parse().unwrap(),
+                },
+                257,
+            )
+            .unwrap();
+        let before = session.game.record().to_json();
+        assert!(session.engine_request().is_none());
+        assert_eq!(session.capacity.status, CapacityPhase::Paused);
+        assert_eq!(session.game.record().to_json(), before);
+        assert_eq!(session.observations.len(), 256);
+        assert!(session.game.conclusion().is_none());
+        assert!(session.check_archive_capacity(&mut || false).is_ok());
+    }
+    #[test]
+    fn cancellation_retires_an_uncommitted_engine_result_candidate() {
+        let mut source = controller();
+        source.session.human = Color::Black;
+        let context = source.session.engine_request().unwrap();
+        let action = "e2e4".parse().unwrap();
+        let mut candidate = source.session.clone();
+        assert!(candidate.accept_unchecked(
+            EngineResponse {
+                context,
+                result: EngineResult::Move {
+                    action,
+                    telemetry: mshogi_engine::Telemetry {
+                        score: Some(0),
+                        completed_depth: 1,
+                        nodes: 21,
+                        principal_variation: vec![mshogi_engine::EngineChoice::Move { action }],
+                        status: mshogi_engine::StopReason::Complete
+                    }
+                }
+            },
+            1
+        ));
+        source.queue_admission(candidate).unwrap();
+        let result_receipt = source.admission_receipt.clone().unwrap();
+        let (_, cancel_receipt) = source
+            .command_with_receipt(DesktopCommand::Cancel {
+                version: source.session.version,
+            })
+            .unwrap();
+        let deadline = Instant::now() + std::time::Duration::from_secs(5);
+        while cancel_receipt.completion().is_none() {
+            source.snapshot();
+            assert!(Instant::now() < deadline);
+            thread::sleep(std::time::Duration::from_millis(1));
+        }
+        assert!(result_receipt.completion().unwrap().is_err());
+        assert_eq!(cancel_receipt.completion(), Some(Ok(())));
+        assert!(source.session.snapshot().history.is_empty());
+        assert!(source.session.observations.is_empty());
+        assert_eq!(source.session.engine.status, EnginePhase::Cancelled);
+        assert!(source.session.check_archive_capacity(&mut || false).is_ok());
+    }
+    #[test]
+    fn concurrent_save_as_bookkeeping_survives_later_candidate_commit() {
+        let directory = directory();
+        let path = directory.join("new-path.mshogi");
+        let mut source = controller();
+        let mut candidate = source.session.clone();
+        candidate
+            .command_unchecked(
+                DesktopCommand::Preferences {
+                    orientation: Color::Black,
+                    analysis_defaults: AnalysisOperation::Moves { depth: 1, nodes: 0 },
+                },
+                1,
+            )
+            .unwrap();
+        source.queue_admission(candidate).unwrap();
+        let receipt = source.admission_receipt.clone().unwrap();
+        let id = source.queue_save(path.clone()).unwrap();
+        let deadline = Instant::now() + std::time::Duration::from_secs(5);
+        while source.files.shared.state.lock().unwrap().result.is_none() {
+            assert!(Instant::now() < deadline);
+            thread::sleep(std::time::Duration::from_millis(1));
+        }
+        source.poll_files();
+        assert_eq!(source.io_state.id, id);
+        assert_eq!(source.io_state.phase, IoPhase::Complete);
+        assert_eq!(source.session.document_path.as_ref(), Some(&path));
+        assert!(!source.session.document_state().dirty);
+        while receipt.completion().is_none() {
+            source.poll_admission();
+            assert!(Instant::now() < deadline);
+            thread::sleep(std::time::Duration::from_millis(1));
+        }
+        assert_eq!(receipt.completion(), Some(Ok(())));
+        assert_eq!(source.session.document_path.as_ref(), Some(&path));
+        assert_eq!(source.session.saved_revision, 0);
+        assert!(source.session.document_state().dirty);
+        assert_eq!(source.session.settings.orientation, Color::Black);
+        fs::remove_dir_all(directory).unwrap();
+    }
+
+    #[test]
+    fn event_4096_commits_but_engine_event_4097_rejects_before_move_or_observation() {
+        let mut source = controller();
+        for index in 1..4095 {
+            let reply = source.session.game.submit(MatchRequest {
+                at_ns: index,
+                version: source.session.game.version(),
+                actor: Color::White,
+                command: MatchCommand::Observe { witness: None },
+            });
+            assert!(reply.rejection.is_none());
+        }
+        assert_eq!(source.session.game.record().event_count(), 4095);
+        source
+            .session
+            .command(
+                DesktopCommand::Play {
+                    version: 1,
+                    action: "e2e4".parse().unwrap(),
+                },
+                4095,
+            )
+            .unwrap();
+        assert_eq!(source.session.game.record().event_count(), 4096);
+        let context = source.session.engine_request().unwrap();
+        let action = "e7e5".parse().unwrap();
+        let before = source.session.game.record().to_json();
+        let revision = source.session.document_revision;
+        assert!(!source.session.accept(
+            EngineResponse {
+                context,
+                result: EngineResult::Move {
+                    action,
+                    telemetry: mshogi_engine::Telemetry {
+                        score: Some(0),
+                        completed_depth: 1,
+                        nodes: 21,
+                        principal_variation: vec![mshogi_engine::EngineChoice::Move { action }],
+                        status: mshogi_engine::StopReason::Complete
+                    }
+                }
+            },
+            4096
+        ));
+        assert_eq!(source.session.game.record().to_json(), before);
+        assert_eq!(source.session.document_revision, revision);
+        assert_eq!(source.session.capacity.status, CapacityPhase::Paused);
+        assert!(source.session.observations.is_empty());
+        let directory = directory();
+        let path = directory.join("event-boundary.mshogi");
+        let id = source.queue_save(path.clone()).unwrap();
+        assert_eq!(wait(&mut source, id).io.phase, IoPhase::Complete);
+        let mut reopened = controller();
+        let id = reopened.queue_open(path, reopened.open_token()).unwrap();
+        assert_eq!(wait(&mut reopened, id).io.phase, IoPhase::Complete);
+        assert_eq!(reopened.session.game.record().event_count(), 4096);
+        assert_eq!(reopened.session.game.record().to_json(), before);
+        fs::remove_dir_all(directory).unwrap();
+    }
+    #[test]
+    fn io_and_rejection_revisions_cannot_consume_the_persisted_save_watermark() {
+        let mut source = controller();
+        source.session.revision = MAX_SAFE_ID - 80;
+        source.session.archive_revision = 1;
+        source.session.version = 1;
+        let directory = directory();
+        let path = directory.join("watermark.mshogi");
+        // Runtime-only Save progress crosses both the ordinary mutation guard
+        // and the archive preflight watermark. Persisted revision stays stable.
+        for _ in 0..24 {
+            source
+                .session
+                .capacity_pause("Application capacity: test refusal".into());
+            let id = source.queue_save(path.clone()).unwrap();
+            assert_eq!(wait(&mut source, id).io.phase, IoPhase::Complete);
+        }
+        assert!(source.session.revision >= MAX_SAFE_ID - 16);
+        let saved: Archive = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+        assert_eq!(saved.revision, 1);
+        assert!(preflight(&saved).is_ok());
+        let mut reopened = controller();
+        let id = reopened
+            .queue_open(path.clone(), reopened.open_token())
+            .unwrap();
+        assert_eq!(wait(&mut reopened, id).io.phase, IoPhase::Complete);
+        let mut unsupported = saved;
+        unsupported.version = MAX_SAFE_ID - 34;
+        unsupported.revision = MAX_SAFE_ID - 34;
+        unsupported.next_request = MAX_SAFE_ID - 34;
+        unsupported.document_revision = MAX_SAFE_ID - 34;
+        fs::write(&path, serde_json::to_vec_pretty(&unsupported).unwrap()).unwrap();
+        let token = reopened.open_token();
+        let before = reopened.session.game.record().to_json();
+        let id = reopened.queue_open(path, token).unwrap();
+        assert_eq!(wait(&mut reopened, id).io.phase, IoPhase::Failed);
+        assert_eq!(reopened.open_token(), token);
+        assert_eq!(reopened.session.game.record().to_json(), before);
+        fs::remove_dir_all(directory).unwrap();
+    }
+    #[test]
+    fn real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable() {
+        let game =
+            AdjudicatedGame::from_fen("7k/8/5KQ1/8/8/8/8/8 w - - 0 1", ClaimPolicy::ExplicitOnly)
+                .unwrap();
+        let mut source = controller();
+        source.session = DesktopSession::from_record(&game.record(), Color::White).unwrap();
+        // A legal cooperative cycle, then Qg7 mate. Every result is below the
+        // engine's 2 MiB wire cap and obeys its recorded Full work bounds.
+        let cycle: Vec<Action> = ["g6g5", "h8h7", "g5g6", "h7h8"]
+            .into_iter()
+            .map(|text| text.parse().unwrap())
+            .collect();
+        let mut witness = cycle.repeat(10_000);
+        witness.push("g6g7".parse().unwrap());
+        assert_eq!(
+            mating_feasibility(game.position(), Color::White, Some(&witness)).unwrap(),
+            MatingFeasibility::Possible
+        );
+        let work = ReachabilityWork {
+            positions: witness.len() as u64 + 1,
+            transitions: witness.len() as u64,
+            expanded: witness.len() as u64,
+            ..ReachabilityWork::default()
+        };
+        let mut accepted = 0;
+        loop {
+            source
+                .session
+                .command(
+                    DesktopCommand::Analyze {
+                        version: source.session.version,
+                        operation: AnalysisOperation::FullReachability {
+                            target: mshogi_engine::ReachabilityTarget::White,
+                            max_positions: 100_000,
+                            max_transitions: 1_000_000,
+                        },
+                    },
+                    accepted as u64,
+                )
+                .unwrap();
+            let context = source.session.analysis_request().unwrap();
+            let response = EngineResponse {
+                context,
+                result: EngineResult::Reachability {
+                    result: MateReachability::Possible {
+                        witness: witness.clone(),
+                        work,
+                    },
+                },
+            };
+            assert!(
+                serde_json::to_vec(&response).unwrap().len() < mshogi_engine::MAX_RESPONSE_BYTES
+            );
+            let before = source.session.game.record().to_json();
+            let revision = source.session.document_revision;
+            if !source.session.accept_analysis(response) {
+                assert_eq!(source.session.capacity.status, CapacityPhase::Paused);
+                assert!(
+                    source
+                        .session
+                        .capacity
+                        .message
+                        .as_deref()
+                        .unwrap()
+                        .contains("16 MiB")
+                );
+                assert_eq!(source.session.game.record().to_json(), before);
+                assert_eq!(source.session.document_revision, revision);
+                assert_eq!(source.session.observations.len(), accepted);
+                break;
+            }
+            accepted += 1;
+            assert!(
+                accepted < 256,
+                "the byte limit must precede the observation count for this fixture"
+            );
+        }
+        assert!(accepted > 1);
+        let bytes = serde_json::to_vec_pretty(&archive(&source.session)).unwrap();
+        assert!(bytes.len() <= MAX_ARCHIVE_BYTES);
+        // An independently encoded next observation crosses the actual encoded
+        // archive cap; this is not merely a count or helper boundary assertion.
+        let mut too_large = archive(&source.session);
+        let mut next = too_large.observations.last().unwrap().clone();
+        next.sequence += 1;
+        too_large.observations.push(next);
+        assert!(serde_json::to_vec_pretty(&too_large).unwrap().len() > MAX_ARCHIVE_BYTES);
+        let directory = directory();
+        let path = directory.join("byte-boundary.mshogi");
+        let id = source.queue_save(path.clone()).unwrap();
+        assert_eq!(wait(&mut source, id).io.phase, IoPhase::Complete);
+        let mut reopened = controller();
+        let id = reopened.queue_open(path, reopened.open_token()).unwrap();
+        assert_eq!(wait(&mut reopened, id).io.phase, IoPhase::Complete);
+        assert_eq!(reopened.session.observations.len(), accepted);
+        assert_eq!(
+            reopened.session.game.record().to_json(),
+            source.session.game.record().to_json()
+        );
+        fs::remove_dir_all(directory).unwrap();
     }
 }

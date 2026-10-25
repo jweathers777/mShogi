@@ -4,6 +4,7 @@ title: Independently review and close the M3 desktop vertical slice
 status: Ready
 assignee: []
 created_date: '2026-10-25T12:48:00Z'
+updated_date: '2026-10-25T17:48:00Z'
 labels: []
 milestone: m-3
 dependencies:
@@ -19,6 +20,7 @@ dependencies:
   - MSH-36
   - MSH-37
   - MSH-38
+  - MSH-61
 documentation:
   - docs/desktop/m3-design.md
 ordinal: 39000
@@ -44,3 +46,9 @@ M3 needs a focused integration verdict against its complete deliverables while r
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner authorizes closure without another procedural approval only when all eleven M3 areas, persistence-capacity follow-up MSH-61, actual three-platform packaged GUI evidence, independent review and final-source/native CI are satisfied. Reuse unchanged M1/M2 and prior M3 evidence; preserve roadmap correction and leave M4–M6 future To Do. Required unavailable checks remain explicit blockers; do not weaken criteria.
+<!-- SECTION:NOTES:END -->

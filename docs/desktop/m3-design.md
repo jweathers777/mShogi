@@ -16,7 +16,7 @@ This is a chess-first slice of the six-game product in [the design](../design.md
 | 5. Board, promotion, orientation, click and keyboard | MSH-31 | Yes |
 | 6. Human versus engine; bounded analysis | MSH-32; MSH-33 | Play only |
 | 7. Outcomes, recovery and cancellation | MSH-32 minimum safe play; MSH-34 broader recovery | Minimum only |
-| 8. Save, reopen and inspect history | MSH-35 | No |
+| 8. Save, reopen and inspect history | MSH-35; MSH-61 capacity follow-up | No |
 | 9. Synthetic 16 by 16 and compound route fixture | MSH-36 | No |
 | 10. Integrated interaction/accessibility verification | MSH-37 | No |
 | 11. Packaged verification on three systems; closure | MSH-38; MSH-39 | No |
@@ -228,3 +228,49 @@ states may use a separately labeled verification build or copied sidecar; test
 instrumentation must not enter normal distributables. Record exact revisions,
 platform-specific evidence and independent review per ticket, reusing unchanged
 M1/M2 and first-batch evidence. MSH-36–39 and M3 closure are not in this batch.
+
+## Final M3 completion batch (owner direction, 2026-10-25)
+
+The completed MSH-27–35 and roadmap correction MSH-40 retain their history and
+evidence. Complete MSH-61 first, then MSH-36, MSH-37, MSH-38 and MSH-39. The
+eleven work areas above remain required; MSH-61 strengthens area 8 and is a
+dependency of interaction verification and milestone closure. M4–M6 remain
+future To Do work and implementation stops at the M3 boundary.
+
+MSH-61 must preserve a complete save path for ordinary accepted work. The native
+host may reject or pause an operation before it commits changes exceeding byte,
+event, observation or control capacity. It must retain canonical history and
+accepted observations, explain the application resource limit separately from
+illegal moves, process failures and chess outcomes, and preserve successful Save
+and Save As. Saving/reopening is not a capacity reset. No silent truncation,
+constant-only increase or recommendation to retry an unchanged structural save
+failure is acceptable. Exact boundary tests and actual desktop interaction are
+required, including observation 256 to 257.
+
+MSH-36 uses the actual shared board and selection components for a clearly
+labeled synthetic 16-by-16 fixture, with distinct routes sharing endpoints,
+multi-stage pointer/keyboard selection, cancellation, orientation and native
+acceptance of complete actions. Partial choices cannot commit; fixture identity
+and records remain distinct from chess. Instrumentation stays out of normal
+packages.
+
+MSH-37 verifies complete journeys through play, promotion, claims, recovery,
+analysis cancellation/replacement, save/reopen, historical inspection, Return to
+live, Resume and unsaved-change handling, including capacity and the synthetic
+fixture. Focus, announcements, readable layouts and control access are checked
+at supported window sizes; material interaction/accessibility findings are fixed.
+
+MSH-38 requires actual packaged/installed GUI interaction on Windows, macOS and
+Linux. Package construction and engine protocol smoke checks support this but
+do not substitute for it. Each platform exercises play, analysis/cancellation,
+recovery, Save/Open, history, synthetic selection and native quit/close. Record
+exact source/package/environment and interaction provenance. Separately labeled
+verification builds may establish difficult states; normal packages must exclude
+their instrumentation. Preserve the native macOS termination regression and the
+provenance of the narrow Tao patch.
+
+MSH-39 independently reviews all eleven areas, required tickets, final source,
+normal integration/native CI and three-platform GUI evidence. Unchanged M1/M2
+and earlier M3 evidence may be reused. Closure is authorized only once all
+criteria are supported; unavailable required checks leave their tickets and M3
+open with concrete blockers. No additional procedural approval is required.

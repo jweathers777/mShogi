@@ -159,6 +159,25 @@ impl DesktopSession {
     }
     /// Accept read-only observations. This never applies a board move or claim.
     pub fn accept_analysis(&mut self, response: EngineResponse) -> bool {
+        if self.analysis_pending.as_ref() == Some(&response.context)
+            && let Err(error) = self.ensure_capacity()
+        {
+            self.capacity_pause(error);
+            return false;
+        }
+        let mut candidate = self.clone();
+        if !candidate.accept_analysis_unchecked(response) {
+            return false;
+        }
+        if let Err(error) = candidate.check_archive_capacity(&mut || false) {
+            self.capacity_pause(error);
+            return false;
+        }
+        candidate.validated_observations = candidate.observations.len();
+        *self = candidate;
+        true
+    }
+    pub(super) fn accept_analysis_unchecked(&mut self, response: EngineResponse) -> bool {
         if self.analysis_pending.as_ref() != Some(&response.context)
             || !self.play_paused
             || response.context.session_version != self.version
@@ -167,7 +186,7 @@ impl DesktopSession {
         {
             return false;
         }
-        if self.revision >= MAX_SAFE_ID {
+        if self.ensure_capacity().is_err() {
             return false;
         }
         self.remember(response.clone());
@@ -193,6 +212,7 @@ impl DesktopSession {
         self.analysis.message = message;
         self.analysis.result = Some(response.result);
         self.revision += 1;
+        self.archive_revision = self.revision.min(MAX_SAFE_ID - 65);
         true
     }
     pub(super) fn retire_analysis(&mut self) {
@@ -258,7 +278,7 @@ mod tests {
                         nodes: 1000,
                     },
                 },
-                1,
+                session.version,
             )
             .unwrap();
         session.analysis_request().unwrap()

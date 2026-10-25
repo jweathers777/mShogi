@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { OutcomeCard, RecoveryNotice, ResignConfirmation } from "./Recovery";
+import { CapacityNotice } from "./Capacity";
 import { Board } from "./Board";
 import { AnalysisPanel } from "./Analysis";
 import { DocumentToolbar, UnsavedDialog, useDocumentGuard } from "./Document";
@@ -131,12 +132,14 @@ export function App() {
     );
   const humanTurn =
     snapshot.human === snapshot.turn && snapshot.conclusion === null;
+  const capacityPaused = snapshot.capacity.status === "paused";
   const canPlay =
     connected &&
     !busy &&
     humanTurn &&
     resigning === null &&
     !snapshot.play_paused &&
+    !capacityPaused &&
     !snapshot.view.historical &&
     guard.pending === null;
   const paused = ["cancelled", "failed", "incomplete"].includes(
@@ -236,6 +239,7 @@ export function App() {
             actions={session}
             onOpen={guard.requestOpen}
           />
+          <CapacityNotice capacity={snapshot.capacity} />
           {historical && (
             <section className="notice historical-notice">
               <strong>Viewing history · read only</strong>
@@ -294,7 +298,7 @@ export function App() {
               <button
                 className="quiet resign-button"
                 ref={resignButton}
-                disabled={!connected || busy || guard.pending !== null}
+                disabled={!connected || busy || guard.pending !== null || capacityPaused}
                 onClick={() =>
                   setResigning({
                     version: snapshot.version,
@@ -309,8 +313,8 @@ export function App() {
           {snapshot.conclusion !== null && !historical && (
             <OutcomeCard conclusion={snapshot.conclusion} />
           )}
-          <RecoveryNotice snapshot={snapshot} error={error} />
-          {snapshot.play_paused && (
+          <RecoveryNotice snapshot={snapshot} error={error.startsWith("Application capacity:") ? "" : error} />
+          {snapshot.play_paused && !capacityPaused && (
             <section className="notice play-paused" role="status">
               <strong>Play paused</strong>
               <p>
@@ -369,7 +373,7 @@ export function App() {
             <AnalysisPanel
               key={session.documentEpoch}
               snapshot={snapshot}
-              busy={busy || guard.pending !== null}
+              busy={busy || guard.pending !== null || capacityPaused}
               connected={connected}
               command={command}
             />

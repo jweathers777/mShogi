@@ -165,6 +165,14 @@ board orientation, analysis defaults and accepted engine observations with their
 exact request contexts. It is not an interchange FEN or PGN. See the
 [archive contract](../docs/desktop/archive-v1.md) for format and resource limits.
 
+The native controller checks complete archive capacity before accepting changes.
+The limits are 256 observations, 4,096 game/match events, 8,192 desktop controls
+and 16 MiB, with reserved shutdown and identity headroom. If the next operation
+cannot fit, **Application limit reached** pauses work while keeping the complete
+accepted document saveable. Use Save or Save As, then explicitly start another
+document to continue. Saving and reopening preserve counts; they do not reset
+the limit. A resource pause is separate from chess outcomes and engine failures.
+
 Save writes an exclusive same-directory temporary file and replaces the target
 only after a complete flushed write. A failed or cancelled save keeps the prior
 file and leaves unsaved changes unsaved. Open validates on a bounded native

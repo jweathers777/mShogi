@@ -56,6 +56,11 @@
       }
     }
   },
+  "capacity": {
+    "id": 0,
+    "status": "available",
+    "message": null
+  },
   "io": {
     "id": 0,
     "phase": "idle",

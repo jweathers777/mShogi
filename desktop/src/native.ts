@@ -162,6 +162,11 @@ export interface HistoricalView {
   timeline: { index: number; label: string; ply: number }[];
 }
 export interface Snapshot {
+  capacity: {
+    id: number;
+    status: "available" | "checking" | "paused";
+    message: string | null;
+  };
   revision: number;
   version: number;
   document: DocumentState;

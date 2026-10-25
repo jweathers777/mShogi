@@ -72,7 +72,7 @@ fn complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix(
     let mut controller = controller();
     let initial = controller.snapshot();
     controller
-        .command(DesktopCommand::Play {
+        .settled(DesktopCommand::Play {
             version: initial.version,
             action: "e2e4".parse().unwrap(),
         })
@@ -81,7 +81,7 @@ fn complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix(
         s.history.len() == 2 && s.engine.status == EnginePhase::Idle
     });
     controller
-        .command(DesktopCommand::Analyze {
+        .settled(DesktopCommand::Analyze {
             version: played.version,
             operation: AnalysisOperation::Moves {
                 depth: 1,
@@ -94,7 +94,7 @@ fn complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix(
     });
     assert_eq!(analyzed.observations.len(), 2);
     controller
-        .command(DesktopCommand::Preferences {
+        .settled(DesktopCommand::Preferences {
             orientation: Color::Black,
             analysis_defaults: AnalysisOperation::Moves {
                 depth: 3,
@@ -115,7 +115,7 @@ fn complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix(
     assert!(archive["controls"].as_array().unwrap().len() >= 3);
     assert_eq!(archive["observations"].as_array().unwrap().len(), 2);
     controller
-        .command(DesktopCommand::NewGame {
+        .settled(DesktopCommand::NewGame {
             version: before.version,
             document_revision: before.document.revision,
             human: Color::Black,
@@ -148,7 +148,7 @@ fn complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix(
     // Event zero is the known initial position, with neither played move nor
     // future repetition information. Analysis must remain read-only there.
     controller
-        .command(DesktopCommand::Inspect {
+        .settled(DesktopCommand::Inspect {
             version: again.version,
             event_index: 0,
         })
@@ -159,7 +159,7 @@ fn complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix(
     assert_eq!(viewed.view.fen, initial.fen);
     assert_eq!(viewed.history, before.history);
     controller
-        .command(DesktopCommand::Analyze {
+        .settled(DesktopCommand::Analyze {
             version: viewed.version,
             operation: AnalysisOperation::Moves {
                 depth: 1,
@@ -184,7 +184,7 @@ fn complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix(
     );
     assert_eq!(historical.history, before.history);
     let live = controller
-        .command(DesktopCommand::ReturnLive {
+        .settled(DesktopCommand::ReturnLive {
             version: historical.version,
         })
         .unwrap();
@@ -203,7 +203,7 @@ fn failed_save_and_corrupt_open_preserve_the_valid_file_and_live_document() {
     let initial = saved(&mut controller, path.clone());
     let bytes = fs::read(&path).unwrap();
     let changed = controller
-        .command(DesktopCommand::Preferences {
+        .settled(DesktopCommand::Preferences {
             orientation: Color::Black,
             analysis_defaults: AnalysisOperation::Moves {
                 depth: 2,
@@ -214,7 +214,7 @@ fn failed_save_and_corrupt_open_preserve_the_valid_file_and_live_document() {
     assert!(changed.document.dirty);
     assert!(
         controller
-            .command(DesktopCommand::NewGame {
+            .settled(DesktopCommand::NewGame {
                 version: changed.version,
                 document_revision: initial.document.revision,
                 human: Color::Black,
@@ -254,7 +254,7 @@ fn reopening_retains_unscored_resignation_but_an_earlier_same_ply_view_does_not(
     let mut controller = controller();
     let initial = controller.snapshot();
     let resigned = controller
-        .command(DesktopCommand::Resign {
+        .settled(DesktopCommand::Resign {
             version: initial.version,
         })
         .unwrap();
@@ -273,7 +273,7 @@ fn reopening_retains_unscored_resignation_but_an_earlier_same_ply_view_does_not(
     assert_eq!(reopened.conclusion, before.conclusion);
     let previous_event = reopened.view.event_count - 1;
     controller
-        .command(DesktopCommand::Inspect {
+        .settled(DesktopCommand::Inspect {
             version: reopened.version,
             event_index: previous_event,
         })
@@ -289,4 +289,27 @@ fn reopening_retains_unscored_resignation_but_an_earlier_same_ply_view_does_not(
         "live conclusion remains authoritative"
     );
     shutdown(&mut controller);
+}
+
+// Match the host command promise: completion means native admission settled.
+trait SettledCommand {
+    fn settled(&mut self, command: DesktopCommand) -> Result<Snapshot, String>;
+}
+impl SettledCommand for DesktopController {
+    fn settled(&mut self, command: DesktopCommand) -> Result<Snapshot, String> {
+        let (mut snapshot, receipt) = self.command_with_receipt(command)?;
+        let deadline = Instant::now() + Duration::from_secs(20);
+        loop {
+            if let Some(result) = receipt.completion() {
+                result?;
+                return Ok(snapshot);
+            }
+            assert!(
+                Instant::now() < deadline,
+                "native capacity admission deadline"
+            );
+            thread::sleep(Duration::from_millis(1));
+            snapshot = self.snapshot();
+        }
+    }
 }

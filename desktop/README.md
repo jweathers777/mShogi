@@ -120,7 +120,8 @@ open --env MSHOGI_DESKTOP_FIXTURE=claim "src-tauri/target/release/bundle/macos/m
 
 The separate application name, identifier and window title label test state.
 Fixture names are `standard`, `claim` (intended fifty-move claim), `current-claim`,
-`concluded`, `incomplete` and `capacity`. `incomplete` uses an actual zero-node
+`concluded`, `incomplete`, `promotion` and `capacity`. `promotion` uses a real
+chess position with four native a7–a8 promotion choices. `incomplete` uses an actual zero-node
 engine request; Retry uses ordinary play limits. `capacity` starts with 255
 genuine native zero-node analysis observations so the next accepted analysis
 reaches 256 and subsequent work demonstrates the application limit. These
@@ -141,6 +142,9 @@ inherited. Verification builds use `dist-verification`; normal assets remain in
 checks confirm synthetic IPC, fixture and native quit-probe markers are absent.
 This build is QA infrastructure, not a normal distributable. The external package
 verifier checks that a normal host contains no fixture initializer marker.
+The verification application menu has **Verification window size** presets for
+760 × 650 and 1180 × 820 logical content pixels. Its title reports the measured
+native content size after resizing, separately from screenshot pixels.
 On macOS its application menu also has **Native Cocoa Quit (verification)**.
 Clicking that predefined native item exercises Cocoa's `terminate:` entry,
 including the same interception used for Dock Quit. It is absent from normal

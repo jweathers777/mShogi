@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import {
   cleanup,
+  act,
   fireEvent,
   render,
   screen,
@@ -8,6 +9,7 @@ import {
 } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { App } from "./App";
+import { AnalysisPanel } from "./Analysis";
 import { mockSession } from "./__tests__/session";
 import { useNativeSession } from "./useNativeSession";
 import type { Snapshot } from "./native";
@@ -92,7 +94,7 @@ it("keeps advanced cooperative reachability a distinct bounded operation", () =>
 });
 it("displays real final native observations without applying suggested moves or resuming play", () => {
   inspect(moves);
-  expect(screen.getByText(/Suggested move:/)).toBeTruthy();
+  expect(within(screen.getByLabelText("Analysis result")).getByText(/Suggested move:/)).toBeTruthy();
   expect(screen.getByLabelText("Analysis result").textContent).toContain(
     "not played",
   );
@@ -146,7 +148,7 @@ it("withholds stale target results and never presents a rejected wrong-purpose r
   const stale: Snapshot = { ...moves, version: moves.version + 1 };
   const { rerender } = inspect(stale);
   expect(
-    screen.getByText(/belongs to an earlier position or request/),
+    within(screen.getByLabelText("Analysis result")).getByText(/belongs to an earlier position or request/),
   ).toBeTruthy();
   expect(screen.queryByText(/Suggested move:/)).toBeNull();
   const rejected: Snapshot = {
@@ -220,4 +222,70 @@ it("finishes analysis of a concluded game without offering to reopen it", () => 
   expect(
     within(screen.getByLabelText("Game outcome")).getByText(/Checkmate/),
   ).toBeTruthy();
+});
+
+it("announces completed suggestions once with their native position and keeps unchanged polls quiet", async () => {
+  const { rerender } = render(<AnalysisPanel snapshot={moves} busy={false} connected command={command} />);
+  const status = screen.getByRole("status", { name: "Analysis status" });
+  expect(status.getAttribute("aria-live")).toBe("polite");
+  expect(status.getAttribute("aria-atomic")).toBe("true");
+  expect(status.textContent).toContain(`Move analysis completed for ${moves.analysis.target!.label}`);
+  expect(status.textContent).toContain("Suggested move:");
+  expect(status.textContent).toContain("not played");
+  expect(status.textContent).not.toMatch(/nodes|depth|progress|continuation/i);
+  const changed = vi.fn();
+  const observer = new MutationObserver(changed);
+  observer.observe(status, { childList: true, characterData: true, subtree: true });
+  await act(async () => rerender(<AnalysisPanel snapshot={structuredClone(moves)} busy={false} connected command={command} />));
+  expect(changed).not.toHaveBeenCalled();
+  observer.disconnect();
+  expect(command).not.toHaveBeenCalled();
+  expect(screen.queryByRole("progressbar")).toBeNull();
+});
+
+it("announces native starts and replacements without inventing running telemetry", () => {
+  const working: Snapshot = { ...moves, analysis: { ...moves.analysis, status: "thinking", result: null } };
+  const { rerender } = render(<AnalysisPanel snapshot={working} busy={false} connected command={command} />);
+  const status = screen.getByRole("status", { name: "Analysis status" });
+  expect(status.textContent).toContain("Move analysis started for");
+  expect(status.textContent).toContain("Waiting for a final native result");
+  expect(screen.queryByText("Completed depth")).toBeNull();
+  const replacement: Snapshot = { ...working, analysis: { ...working.analysis,
+    context: { ...working.analysis.context!, request_id: working.analysis.context!.request_id + 1,
+      process_generation: working.analysis.context!.process_generation + 1 } } };
+  rerender(<AnalysisPanel snapshot={replacement} busy={false} connected command={command} />);
+  expect(status.textContent).toContain("Move analysis replacement started for");
+  expect(status.textContent).toContain(replacement.analysis.target!.label);
+  expect(status.textContent).not.toMatch(/nodes|depth|progress|%/i);
+  expect(command).not.toHaveBeenCalled();
+});
+
+it("announces Full unknown as a cooperative incomplete query and retires stale selection results", () => {
+  const unknown = unknownJson as Snapshot;
+  const { rerender } = render(<AnalysisPanel snapshot={unknown} busy={false} connected command={command} />);
+  const status = screen.getByRole("status", { name: "Analysis status" });
+  expect(status.textContent).toContain(`Full cooperative mating query incomplete for ${unknown.analysis.target!.label}`);
+  expect(status.textContent).toContain("Unknown · exploration incomplete");
+  expect(status.textContent).toContain("No mating conclusion was established");
+  expect(status.textContent).toContain("not forced-win search or a live-game outcome");
+  expect(screen.queryByText(/pawns from|Suggested move:/)).toBeNull();
+  const stale = { ...unknown, view: { ...unknown.view, selection_id: unknown.view.selection_id + 1, label: "Different selected position" } };
+  rerender(<AnalysisPanel snapshot={stale} busy={false} connected command={command} />);
+  expect(status.textContent).toContain("recorded target");
+  expect(status.textContent).toContain("does not describe the current position");
+  expect(status.textContent).not.toContain("Different selected position");
+  expect(status.textContent).not.toContain("query incomplete for");
+  expect(within(screen.getByLabelText("Analysis result")).queryByText("Unknown · exploration incomplete")).toBeNull();
+  expect(command).not.toHaveBeenCalled();
+});
+
+it("withholds a completed score and suggestion when the response request targets another selection", () => {
+  const mismatch = structuredClone(moves);
+  const purpose = mismatch.analysis.context!.purpose;
+  if (purpose.kind === "engine_turn") throw new Error("Expected an analysis fixture");
+  purpose.target.selection_id += 1;
+  render(<AnalysisPanel snapshot={mismatch} busy={false} connected command={command} />);
+  expect(screen.getByRole("status", { name: "Analysis status" }).textContent).toContain("does not describe the current position");
+  expect(screen.queryByText(/pawns from|Suggested move:/)).toBeNull();
+  expect(command).not.toHaveBeenCalled();
 });

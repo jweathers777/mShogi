@@ -1,2 +1,5 @@
 **/target/
 *.zip
+
+# External GUI verification Python bytecode.
+**/__pycache__/

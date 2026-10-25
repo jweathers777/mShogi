@@ -1,11 +1,11 @@
 ---
 id: MSH-61
 title: Keep accepted desktop work within lossless archive capacity
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-25T17:48:00Z'
-updated_date: '2026-10-25T18:20:00Z'
+updated_date: '2026-10-25T18:28:00Z'
 labels: []
 milestone: m-3
 dependencies:
@@ -24,17 +24,17 @@ Repeated accepted analysis and engine observations can currently make both Save 
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 A native-owned admission or lossless storage policy prevents ordinary accepted commands, game changes and observations from exceeding supported byte, event, observation and control persistence limits; complete current history and accepted observations remain saveable without raising a constant alone or silent truncation.
-- [ ] #2 Capacity rejection or pause is a distinct application resource state, not an illegal move, engine failure or chess outcome; clear actionable UI preserves Save/Save As and never recommends retrying a structurally impossible save.
-- [ ] #3 Focused boundary tests include observation 256-to-257, byte/event/control boundaries, engine and analysis acceptance, save/reopen without resetting count, cancellation/recovery/quit and unchanged-session rejection; actual packaged interaction and independent review support the result.
+- [x] #1 A native-owned admission or lossless storage policy prevents ordinary accepted commands, game changes and observations from exceeding supported byte, event, observation and control persistence limits; complete current history and accepted observations remain saveable without raising a constant alone or silent truncation.
+- [x] #2 Capacity rejection or pause is a distinct application resource state, not an illegal move, engine failure or chess outcome; clear actionable UI preserves Save/Save As and never recommends retrying a structurally impossible save.
+- [x] #3 Focused boundary tests include observation 256-to-257, byte/event/control boundaries, engine and analysis acceptance, save/reopen without resetting count, cancellation/recovery/quit and unchanged-session rejection; actual packaged interaction and independent review support the result.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -54,3 +54,9 @@ Final focused evidence: 41 all-feature native tests, 9 real-process console inte
 
 Exact normal macOS source3b427d49fb481c9391992d40f047941ae7f445c2 rebuilt and GUI Open256/refuse/Save/clean Cmd-Q repeated; hashes updated. Host2tests/format passed. Initial Rust CI40220415681 macOS+Windows pass, Linux exposed newtest timing assumption (command API may already commit fast candidate before returning). Test now deterministically closes a validated but uncommitted admission; no product behavior change. Independent exacttest+50repetitions passed. Replacement nativeCI required beforeDone.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Native transactional capacity admission preserves the complete save path across byte/event/observation/control boundaries, including256→257, without truncation or raising caps. Clear resource pause preserves Save/SaveAs. Independent review resolved SaveAs metadata and persisted-identity races;41native,9process,56frontend,2host tests and strictchecks pass. Integrated/pushed codex/rewrite implementation3b427d49fb481c9391992d40f047941ae7f445c2 plus test-only correctionec7e6e7151f01d095430c874b70958f24c93fbd3. RustCI40220802720 and unchanged-product packageCI40220415685 pass all3platforms. Exact normalmacOSGUI and QA observationboundary evidence: docs/desktop/completion-batch-evidence.md. Runtime identity lifetime remains explicitly guarded. M3open; next MSH-36; M2closed/future roadmap preserved.
+<!-- SECTION:FINAL_SUMMARY:END -->

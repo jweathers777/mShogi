@@ -91,3 +91,12 @@ now waits for completed validation without polling admission, then verifies
 close supersedes that still-uncommitted candidate. This changes test setup only.
 Independent review ran the corrected exact test plus **50/50 repetitions**.
 The product GUI evidence remains applicable; replacement CI is recorded below.
+
+Integrated implementation: `3b427d49fb481c9391992d40f047941ae7f445c2`;
+test-only correction: `ec7e6e7151f01d095430c874b70958f24c93fbd3`, both on
+`codex/rewrite`. [Replacement Rust workspace CI](https://github.com/jweathers777/mShogi/actions/runs/40220802720)
+passed Linux, macOS and Windows. [Normal desktop package CI](https://github.com/jweathers777/mShogi/actions/runs/40220415685)
+passed all three systems at the exact product source; the later revision changes
+only a test and evidence. These package checks establish build/inventory and
+actual bundled-engine protocols, separately from local macOS GUI interaction.
+They do not substitute for MSH-38's three-platform GUI requirement.

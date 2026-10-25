@@ -119,8 +119,11 @@ open --env MSHOGI_DESKTOP_FIXTURE=claim "src-tauri/target/release/bundle/macos/m
 
 The separate application name, identifier and window title label test state.
 Fixture names are `standard`, `claim` (intended fifty-move claim), `current-claim`,
-`concluded` and `incomplete`. The last uses an actual zero-node engine request;
-Retry restores ordinary play limits. Close before launching a different fixture.
+`concluded`, `incomplete` and `capacity`. `incomplete` uses an actual zero-node
+engine request; Retry uses ordinary play limits. `capacity` starts with 255
+genuine native zero-node analysis observations so the next accepted analysis
+reaches 256 and subsequent work demonstrates the application limit. These
+observations remain in saved documents. Close before launching another fixture.
 This build is QA infrastructure, not a normal distributable. The external package
 verifier checks that a normal host contains no fixture initializer marker.
 On macOS its application menu also has **Native Cocoa Quit (verification)**.

@@ -253,12 +253,12 @@ p {
 }
 .coordinate {
   fill: #30453b;
-  font-size: 14px;
+  font-size: 24px;
   font-weight: 700;
   pointer-events: none;
 }
 .dark .coordinate {
-  fill: #e9eddb;
+  fill: #10251c;
 }
 .move-marker {
   fill: #355e4e80;
@@ -277,7 +277,11 @@ p {
   pointer-events: none;
 }
 .square:focus-visible .focus-ring {
-  stroke: #8d3a00;
+  stroke: #10251c;
+}
+[data-game-status]:focus-visible {
+  outline: 3px solid #b9d78d;
+  outline-offset: 4px;
 }
 .board-help {
   color: #9bb0b2;

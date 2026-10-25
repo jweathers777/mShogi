@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import type { DesktopCommand, ReachabilityTarget, Snapshot } from "./native";
 import {
   choiceDescription,
@@ -18,6 +18,35 @@ function budget(value: string, max: number, allowZero: boolean): number | null {
     ? parsed
     : null;
 }
+function analysisSummary(snapshot: Snapshot, current: boolean, accepted: boolean): string {
+  const { analysis } = snapshot;
+  if (analysis.status === "idle" || analysis.status === "failed") return "";
+  if (analysis.status === "cancelled")
+    return "Analysis cancelled. No conclusion was established; play remains paused until you explicitly resume.";
+  if (analysis.target === null) return "Waiting for an identified native analysis target.";
+  const position = `${analysis.target.label}, ${colorName(analysis.target.turn)} to move`;
+  if (!current)
+    return `Analysis for recorded target ${position} belongs to an earlier position or request. It does not describe the current position.`;
+  const full = analysis.operation?.kind === "full_reachability";
+  const operation = full ? "Full cooperative mating query" : "Move analysis";
+  if (analysis.status === "thinking")
+    return `${operation} started for ${position}. ${full ? "This is not forced-win search or a live-game outcome. " : "Read-only suggestions will not be played. "}Waiting for a final native result.`;
+  if (!accepted)
+    return `No accepted analysis observation for ${position}. No live-game command was issued.`;
+  if (full && analysis.result?.kind === "reachability" && analysis.operation?.kind === "full_reachability") {
+    const description = reachabilityDescription(analysis.result.result, analysis.operation.target);
+    return `${operation} ${analysis.status === "incomplete" ? "incomplete" : "completed"} for ${position}. ${description.title}. ${"unknown" in analysis.result.result ? "No mating conclusion was established. " : ""}This is not forced-win search or a live-game outcome.`;
+  }
+  if (analysis.status === "incomplete")
+    return `Analysis incomplete. A work limit or stop ended the request for ${position}; it does not conclude the live game. Suggestions were not played.`;
+  if (analysis.result?.kind === "move")
+    return `Move analysis completed for ${position}. Suggested move: ${readableAction(analysis.result.action)}; not played.`;
+  if (analysis.result?.kind === "claim")
+    return `Move analysis completed for ${position}. Suggested ${choiceDescription({ kind: "claim", claim: analysis.result.claim })}; not exercised.`;
+  if (analysis.result?.kind === "finished")
+    return `Move analysis completed for ${position}. The analyzed position is concluded; no live-game command was issued.`;
+  return `Analysis completed for ${position}. No live-game command was issued.`;
+}
 export function AnalysisPanel({
   snapshot,
   busy,
@@ -35,6 +64,8 @@ export function AnalysisPanel({
   const [transitions, setTransitions] = useState("10000");
   const [mate, setMate] = useState<ReachabilityTarget>("either");
   const [validation, setValidation] = useState("");
+  const [notice, setNotice] = useState<{ key: string | null; summary: string; text: string }>({ key: null, summary: "", text: "" });
+  const previousRequest = useRef<{ key: string | null; working: boolean } | null>(null);
   const defaults = snapshot.document.settings.analysis_defaults;
   const settingsKey = JSON.stringify(defaults);
   useEffect(() => {
@@ -91,7 +122,18 @@ export function AnalysisPanel({
       },
     });
   }
-  const provenanceCurrent =
+  const purpose = analysis.context?.purpose;
+  const requestTarget = purpose !== undefined && purpose.kind !== "engine_turn" ? purpose.target : null;
+  const requestMatchesTarget = analysis.target !== null && requestTarget !== null &&
+    analysis.context?.session_version === analysis.target.session_version &&
+    requestTarget.session_version === analysis.target.session_version &&
+    requestTarget.selection_id === analysis.target.selection_id &&
+    requestTarget.ply === analysis.target.ply &&
+    requestTarget.turn === analysis.target.turn &&
+    requestTarget.label === analysis.target.label &&
+    (analysis.operation?.kind === "moves" ? purpose?.kind === "move_analysis"
+      : analysis.operation?.kind === "full_reachability" && purpose?.kind === "full_reachability");
+  const provenanceCurrent = requestMatchesTarget &&
     analysis.target !== null &&
     analysis.target.session_version === snapshot.version &&
     analysis.target.selection_id === snapshot.view.selection_id;
@@ -104,8 +146,22 @@ export function AnalysisPanel({
           analysis.result.kind !== "failure";
   const showResult =
     (analysis.status === "complete" || analysis.status === "incomplete") &&
-    resultMatchesOperation;
+    resultMatchesOperation && requestMatchesTarget;
   const targetLabel = analysis.target?.label ?? snapshot.view.label;
+  const summary = analysisSummary(snapshot, provenanceCurrent, showResult);
+  const requestKey = analysis.context === null ? null
+    : `${analysis.context.session_version}:${analysis.context.request_id}:${analysis.context.process_generation}`;
+  // Retire old text immediately when its native request or provenance changes.
+  const announcement = notice.key === requestKey && notice.summary === summary ? notice.text : "";
+  useEffect(() => {
+    const replaced = working && previousRequest.current?.working === true &&
+      previousRequest.current.key !== null && previousRequest.current.key !== requestKey;
+    const next = replaced ? summary.replace(" started for ", " replacement started for ") : summary;
+    previousRequest.current = { key: requestKey, working };
+    setNotice((current) => current.key === requestKey && current.summary === summary && current.text === next
+      ? current : { key: requestKey, summary, text: next });
+    // Summary excludes changing counters/PVs. Identical native polls stay quiet.
+  }, [summary, requestKey, working]);
   return (
     <section className="card analysis-card" aria-label="Read-only analysis">
       <div className="card-title">
@@ -150,7 +206,7 @@ export function AnalysisPanel({
             />
           </label>
         </div>
-        <button className="secondary" disabled={disabled} type="submit">
+        <button className="secondary" disabled={disabled} type="submit" data-analysis-start="moves">
           {working ? "Replace with move analysis" : "Start move analysis"}
         </button>
       </form>
@@ -202,7 +258,7 @@ export function AnalysisPanel({
               />
             </label>
           </div>
-          <button type="submit" className="secondary" disabled={disabled}>
+          <button type="submit" className="secondary" disabled={disabled} data-analysis-start="full">
             Run Full reachability
           </button>
         </form>
@@ -216,18 +272,8 @@ export function AnalysisPanel({
           {validation}
         </p>
       )}
-      {analysis.status === "cancelled" && (
-        <p className="analysis-notice" role="status">
-          Analysis cancelled. No conclusion was established; play remains paused
-          until you explicitly resume.
-        </p>
-      )}
-      {analysis.status === "incomplete" && (
-        <p className="analysis-notice" role="status">
-          Analysis incomplete. A work limit or stop ended this request; it does
-          not conclude the live game.
-        </p>
-      )}
+      <p className={announcement ? "analysis-notice" : "sr-only"} role="status"
+        aria-label="Analysis status" aria-live="polite" aria-atomic="true">{announcement}</p>
       {analysis.status === "failed" && (
         <p className="analysis-notice" role="alert">
           Analysis process failed. No analysis conclusion or chess outcome was

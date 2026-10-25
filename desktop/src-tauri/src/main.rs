@@ -55,6 +55,55 @@ impl VerificationState {
         }
     }
 }
+#[cfg(feature = "desktop-verification")]
+const VERIFICATION_SIZE_MINIMUM: &str = "mshogi-verification-window-size-minimum";
+#[cfg(feature = "desktop-verification")]
+const VERIFICATION_SIZE_DEFAULT: &str = "mshogi-verification-window-size-default";
+#[cfg(feature = "desktop-verification")]
+fn verification_window_size(menu_id: &str) -> Option<tauri::LogicalSize<f64>> {
+    match menu_id {
+        VERIFICATION_SIZE_MINIMUM => Some(tauri::LogicalSize::new(760.0, 650.0)),
+        VERIFICATION_SIZE_DEFAULT => Some(tauri::LogicalSize::new(1180.0, 820.0)),
+        _ => None,
+    }
+}
+#[cfg(feature = "desktop-verification")]
+fn verification_window_title(fixture: &str, size: tauri::LogicalSize<f64>) -> String {
+    format!(
+        "mShogi Verification — {fixture} (test state) — content {:.1} × {:.1} logical",
+        size.width, size.height
+    )
+}
+#[cfg(feature = "desktop-verification")]
+fn update_verification_window_title(app: &AppHandle) -> tauri::Result<()> {
+    if let (Some(verification), Some(window)) = (
+        app.try_state::<VerificationState>(),
+        app.get_webview_window("main"),
+    ) {
+        // Report actual content dimensions, including OS constraints and DPI.
+        let size = window
+            .inner_size()?
+            .to_logical::<f64>(window.scale_factor()?);
+        window.set_title(&verification_window_title(&verification.fixture, size))?;
+    }
+    Ok(())
+}
+#[cfg(feature = "desktop-verification")]
+fn resize_verification_window(
+    app: &AppHandle,
+    size: tauri::LogicalSize<f64>,
+) -> Result<(), String> {
+    let window = app
+        .get_webview_window("main")
+        .ok_or_else(|| "Verification window unavailable".to_string())?;
+    window
+        .set_fullscreen(false)
+        .map_err(|error| error.to_string())?;
+    window.unmaximize().map_err(|error| error.to_string())?;
+    window.set_size(size).map_err(|error| error.to_string())?;
+    // A subsequent native Resized event updates this after deferred OS changes.
+    update_verification_window_title(app).map_err(|error| error.to_string())
+}
 fn ensure_chess_mode(_app: &AppHandle) -> Result<(), String> {
     #[cfg(feature = "desktop-verification")]
     _app.state::<VerificationState>().require_chess()?;
@@ -496,6 +545,28 @@ fn desktop_menu(app: &AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
             &PredefinedMenuItem::close_window(app, None)?,
         ],
     )?;
+    #[cfg(feature = "desktop-verification")]
+    let verification = Submenu::with_items(
+        app,
+        "Verification window size",
+        true,
+        &[
+            &MenuItem::with_id(
+                app,
+                VERIFICATION_SIZE_MINIMUM,
+                "760 × 650 logical content (minimum)",
+                true,
+                None::<&str>,
+            )?,
+            &MenuItem::with_id(
+                app,
+                VERIFICATION_SIZE_DEFAULT,
+                "1180 × 820 logical content (default)",
+                true,
+                None::<&str>,
+            )?,
+        ],
+    )?;
     Menu::with_items(
         app,
         &[
@@ -504,6 +575,8 @@ fn desktop_menu(app: &AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
             #[cfg(target_os = "macos")]
             &view,
             &window,
+            #[cfg(feature = "desktop-verification")]
+            &verification,
         ],
     )
 }
@@ -552,6 +625,13 @@ fn main() {
         .plugin(tauri_plugin_dialog::init())
         .menu(desktop_menu)
         .on_menu_event(|app, event| {
+            #[cfg(feature = "desktop-verification")]
+            if let Some(size) = verification_window_size(event.id().as_ref()) {
+                if let Err(error) = resize_verification_window(app, size) {
+                    eprintln!("Verification window size failed: {error}");
+                }
+                return;
+            }
             if event.id().as_ref() == "mshogi-quit"
                 && let Err(error) = request_close(app)
             {
@@ -559,6 +639,14 @@ fn main() {
             }
         })
         .on_window_event(|window, event| {
+            #[cfg(feature = "desktop-verification")]
+            if matches!(
+                event,
+                WindowEvent::Resized(_) | WindowEvent::ScaleFactorChanged { .. }
+            ) && let Err(error) = update_verification_window_title(window.app_handle())
+            {
+                eprintln!("Verification window size observation failed: {error}");
+            }
             if let WindowEvent::CloseRequested { api, .. } = event {
                 // Keep the webview alive until Save/Discard/Cancel resolves.
                 api.prevent_close();
@@ -574,13 +662,8 @@ fn main() {
                     std::env::var("MSHOGI_DESKTOP_FIXTURE").unwrap_or_else(|_| "standard".into()),
                 );
                 app.manage(Mutex::new(initial_controller(&verification.fixture)?));
-                if let Some(window) = app.get_webview_window("main") {
-                    window.set_title(&format!(
-                        "mShogi Verification — {} (test state)",
-                        verification.fixture
-                    ))?;
-                }
                 app.manage(verification);
+                update_verification_window_title(app.handle())?;
             }
             #[cfg(not(feature = "desktop-verification"))]
             app.manage(Mutex::new(initial_controller()?));
@@ -663,6 +746,31 @@ mod tests {
     fn controller() -> Mutex<DesktopController> {
         // No search is submitted in these host-gate tests, so no child starts.
         Mutex::new(DesktopController::new(PathBuf::from("unused-test-engine")).unwrap())
+    }
+
+    #[cfg(feature = "desktop-verification")]
+    #[test]
+    fn verification_size_title_reports_measured_content_and_preserves_fixture_identity() {
+        let physical = tauri::PhysicalSize::new(1520_u32, 1300_u32);
+        let measured = physical.to_logical::<f64>(2.0);
+        assert_eq!(
+            verification_window_size(VERIFICATION_SIZE_MINIMUM),
+            Some(measured)
+        );
+        assert_eq!(
+            verification_window_size(VERIFICATION_SIZE_DEFAULT),
+            Some(tauri::LogicalSize::new(1180.0, 820.0))
+        );
+        assert_eq!(verification_window_size("mshogi-quit"), None);
+        assert_eq!(
+            verification_window_title("synthetic", measured),
+            "mShogi Verification — synthetic (test state) — content 760.0 × 650.0 logical"
+        );
+        let constrained = tauri::LogicalSize::new(1000.0, 700.0);
+        assert!(
+            verification_window_title("claim", constrained)
+                .ends_with("content 1000.0 × 700.0 logical")
+        );
     }
 
     #[cfg(feature = "desktop-verification")]

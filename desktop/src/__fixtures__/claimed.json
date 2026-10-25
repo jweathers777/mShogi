@@ -42,6 +42,15 @@
     "searched_version": null,
     "message": null
   },
+  "analysis": {
+    "status": "idle",
+    "target": null,
+    "operation": null,
+    "context": null,
+    "result": null,
+    "message": null
+  },
+  "play_paused": false,
   "rules_mode": "m2",
   "limits": {
     "depth": 2,

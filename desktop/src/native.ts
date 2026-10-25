@@ -55,12 +55,76 @@ export type FailureKind =
   | "timeout"
   | "context_mismatch"
   | "cleanup";
+
+export type ReachabilityTarget = "either" | Color;
+export interface ReachabilityWork {
+  positions: number;
+  expanded: number;
+  transitions: number;
+  static_leaves: number;
+}
+export type MateReachability =
+  | { possible: { witness: string[]; work: ReachabilityWork } }
+  | { impossible: { work: ReachabilityWork } }
+  | {
+      unknown: {
+        reason:
+          | "cancelled"
+          | "position_limit"
+          | "transition_limit"
+          | "resource_limit";
+        work: ReachabilityWork;
+      };
+    };
+export type AnalysisOperation =
+  | { kind: "moves"; depth: number; nodes: number }
+  | {
+      kind: "full_reachability";
+      target: ReachabilityTarget;
+      max_positions: number;
+      max_transitions: number;
+    };
+export interface AnalysisTarget {
+  selection_id: number;
+  ply: number;
+  session_version: number;
+  label: string;
+  turn: Color;
+}
+export interface EngineContext {
+  protocol: number;
+  request_id: number;
+  session_version: number;
+  process_generation: number;
+  game: unknown;
+  limits: { depth: number; nodes: number };
+  purpose:
+    | { kind: "engine_turn" }
+    | { kind: "move_analysis"; target: AnalysisTarget }
+    | {
+        kind: "full_reachability";
+        target: AnalysisTarget;
+        mate: ReachabilityTarget;
+        limits: { max_positions: number; max_transitions: number };
+      };
+}
+export interface AnalysisState {
+  status:
+    "idle" | "thinking" | "complete" | "incomplete" | "cancelled" | "failed";
+  target: AnalysisTarget | null;
+  operation: AnalysisOperation | null;
+  context: EngineContext | null;
+  result: EngineResult | null;
+  message: string | null;
+}
+
 export type EngineResult =
   | { kind: "move"; action: string; telemetry: Telemetry }
   | { kind: "claim"; claim: Claim; telemetry: Telemetry }
   | { kind: "finished"; outcome: ChessOutcome; telemetry: Telemetry }
   | { kind: "incomplete"; telemetry: Telemetry }
-  | { kind: "failure"; failure: { kind: FailureKind; message: string } };
+  | { kind: "failure"; failure: { kind: FailureKind; message: string } }
+  | { kind: "reachability"; result: MateReachability };
 export interface Snapshot {
   revision: number;
   version: number;
@@ -74,12 +138,15 @@ export interface Snapshot {
   conclusion: MatchConclusion | null;
   in_check: boolean;
   engine: {
-    status: "idle" | "thinking" | "cancelled" | "failed" | "incomplete";
+    status:
+      "idle" | "thinking" | "cancelled" | "failed" | "incomplete" | "paused";
     last: EngineResult | null;
     last_turn: Color | null;
     searched_version: number | null;
     message: string | null;
   };
+  play_paused: boolean;
+  analysis: AnalysisState;
   rules_mode: "m2";
   limits: { depth: number; nodes: number };
 }
@@ -87,7 +154,11 @@ export type DesktopCommand =
   | { kind: "new_game"; version: number; human: Color }
   | { kind: "play"; version: number; action: string }
   | { kind: "claim"; version: number; claim: Claim }
-  | { kind: "cancel" | "retry" | "resign"; version: number };
+  | {
+      kind: "cancel" | "retry" | "resign" | "cancel_analysis" | "resume";
+      version: number;
+    }
+  | { kind: "analyze"; version: number; operation: AnalysisOperation };
 
 export function newestSnapshot(
   current: Snapshot | null,

@@ -1,9 +1,6 @@
 use crate::*;
 use mshogi_core::chess::{AdjudicatedGame, AdjudicationMode};
-use mshogi_search::{
-    coordination::SearchCoordinator,
-    search::{MAX_DEPTH, SearchLimits},
-};
+use mshogi_search::{coordination::SearchCoordinator, search::SearchLimits};
 use std::{
     io::{self, BufRead, Read, Write},
     thread,
@@ -46,7 +43,7 @@ fn execute(context: &EngineRequest) -> EngineResult {
     if context.protocol != PROTOCOL_VERSION
         || context.request_id == 0
         || context.process_generation == 0
-        || !(1..=MAX_DEPTH).contains(&context.limits.depth)
+        || !context.valid_limits()
     {
         return EngineResult::failure(
             FailureKind::InvalidRequest,
@@ -56,13 +53,35 @@ fn execute(context: &EngineRequest) -> EngineResult {
     if context.game.adjudication_mode() != AdjudicationMode::M2 {
         return EngineResult::failure(
             FailureKind::UnsupportedMode,
-            "internal desktop play supports M2 adjudication only; Full mode was not replayed or downgraded",
+            "Live record reconstruction supports M2 only; Full records were not replayed or downgraded. Advanced Full reachability is a separate analysis operation.",
         );
     }
     let game = match AdjudicatedGame::replay_record(&context.game) {
         Ok(game) => game,
         Err(error) => return EngineResult::failure(FailureKind::InvalidRequest, error),
     };
+    if let RequestPurpose::MoveAnalysis { target } | RequestPurpose::FullReachability { target, .. } =
+        &context.purpose
+        && (target.ply != game.history().ply_count() as u64
+            || target.turn != game.position().side_to_move())
+    {
+        return EngineResult::failure(
+            FailureKind::InvalidRequest,
+            "analysis target provenance disagrees with its exact history",
+        );
+    }
+    if let RequestPurpose::FullReachability { mate, limits, .. } = context.purpose {
+        return EngineResult::Reachability {
+            result: game.position().mate_reachability(
+                mate.into(),
+                mshogi_core::chess::ReachabilityLimits {
+                    max_positions: Some(limits.max_positions),
+                    max_transitions: Some(limits.max_transitions),
+                },
+                || false,
+            ),
+        };
+    }
     let coordinator = match SearchCoordinator::new() {
         Ok(coordinator) => coordinator,
         Err(error) => return EngineResult::failure(FailureKind::Search, error),

@@ -4,6 +4,8 @@
 //! The authoritative host must check the entire echoed context immediately before
 //! accepting a choice. Cancellation invalidates publication, even after completion.
 
+mod analysis;
+pub use analysis::*;
 mod bridge;
 mod server;
 pub use bridge::{BridgeOptions, EngineBridge, SubmitError};
@@ -13,7 +15,7 @@ use serde::{Deserialize, Serialize};
 pub use server::serve_once;
 
 /// Current internal protocol version.
-pub const PROTOCOL_VERSION: u32 = 1;
+pub const PROTOCOL_VERSION: u32 = 2;
 /// Maximum encoded request line, excluding its newline.
 pub const MAX_REQUEST_BYTES: usize = 1024 * 1024;
 /// Maximum encoded response line, excluding its newline.
@@ -34,8 +36,10 @@ pub struct WorkLimits {
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct EngineRequest {
-    /// Protocol version, currently one.
+    /// Protocol version, currently two.
     pub protocol: u32,
+    /// Explicit execution purpose; never defaulted from a missing field.
+    pub purpose: RequestPurpose,
     /// Host-issued unique, increasing request identity.
     pub request_id: u64,
     /// Host session revision, independent of ply count.
@@ -171,6 +175,11 @@ pub struct EngineFailure {
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum EngineResult {
+    /// Actual bounded cooperative proof observations, never a live chess result.
+    Reachability {
+        /// Exact native result including real work and incomplete-stop reason.
+        result: mshogi_core::chess::MateReachability,
+    },
     /// Apply this complete board action through the authoritative host.
     Move {
         /// Native action.

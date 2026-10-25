@@ -1,0 +1,99 @@
+{
+  "revision": 3,
+  "version": 2,
+  "human": "white",
+  "turn": "white",
+  "fen": "7k/8/8/8/8/8/8/K7 w - - 0 1",
+  "pieces": [
+    {
+      "square": "a1",
+      "color": "white",
+      "kind": "king",
+      "label": "a1, White king"
+    },
+    {
+      "square": "h8",
+      "color": "black",
+      "kind": "king",
+      "label": "h8, Black king"
+    }
+  ],
+  "legal_choices": [],
+  "claims": [],
+  "history": [],
+  "conclusion": {
+    "chess": {
+      "draw": "dead_position"
+    }
+  },
+  "in_check": false,
+  "engine": {
+    "status": "paused",
+    "last": null,
+    "last_turn": null,
+    "searched_version": null,
+    "message": "Play paused for analysis. Resume play explicitly to continue."
+  },
+  "analysis": {
+    "status": "complete",
+    "target": {
+      "selection_id": 1,
+      "ply": 0,
+      "session_version": 2,
+      "label": "Live position after 0 plies",
+      "turn": "white"
+    },
+    "operation": {
+      "kind": "full_reachability",
+      "target": "either",
+      "max_positions": 10,
+      "max_transitions": 10
+    },
+    "context": {
+      "protocol": 2,
+      "purpose": {
+        "kind": "full_reachability",
+        "target": {
+          "selection_id": 1,
+          "ply": 0,
+          "session_version": 2,
+          "label": "Live position after 0 plies",
+          "turn": "white"
+        },
+        "mate": "either",
+        "limits": {
+          "max_positions": 10,
+          "max_transitions": 10
+        }
+      },
+      "request_id": 1,
+      "session_version": 2,
+      "process_generation": 1,
+      "game": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"7k/8/8/8/8/8/8/K7 w - - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]},
+      "limits": {
+        "depth": 1,
+        "nodes": 0
+      }
+    },
+    "result": {
+      "kind": "reachability",
+      "result": {
+        "impossible": {
+          "work": {
+            "positions": 1,
+            "expanded": 1,
+            "transitions": 0,
+            "static_leaves": 1
+          }
+        }
+      }
+    },
+    "message": null
+  },
+  "play_paused": true,
+  "rules_mode": "m2",
+  "limits": {
+    "depth": 2,
+    "nodes": 20000
+  }
+}

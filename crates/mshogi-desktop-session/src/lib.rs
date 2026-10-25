@@ -1,4 +1,6 @@
 //! Authoritative untimed desktop sessions. Framework-free commands and snapshots.
+mod analysis;
+pub use analysis::*;
 use mshogi_core::chess::*;
 use mshogi_engine::{
     EngineBridge, EngineClaim, EngineRequest, EngineResponse, EngineResult, WorkLimits,
@@ -38,6 +40,23 @@ pub enum DesktopCommand {
         /// Native claim choice.
         claim: EngineClaim,
     },
+    /// Start or replace explicitly bounded, read-only analysis.
+    Analyze {
+        /// Current authoritative session version.
+        version: u64,
+        /// Purpose-specific deterministic work budgets.
+        operation: AnalysisOperation,
+    },
+    /// Cancel analysis while keeping play paused.
+    CancelAnalysis {
+        /// Current session version.
+        version: u64,
+    },
+    /// Retire analysis and explicitly resume ordinary play.
+    Resume {
+        /// Current session version.
+        version: u64,
+    },
     /// Explicit human resignation, including while the engine is thinking.
     /// M2 proof limits can leave the concluded match unresolved and unscored.
     Resign {
@@ -62,6 +81,9 @@ impl DesktopCommand {
             | Self::Play { version, .. }
             | Self::Claim { version, .. }
             | Self::Resign { version }
+            | Self::Analyze { version, .. }
+            | Self::CancelAnalysis { version }
+            | Self::Resume { version }
             | Self::Cancel { version }
             | Self::Retry { version } => *version,
         }
@@ -99,6 +121,8 @@ pub enum EnginePhase {
     Idle,
     /// A bounded request is outstanding.
     Thinking,
+    /// Analysis owns execution; explicit Resume is required.
+    Paused,
     /// User cancelled; explicit retry is needed.
     Cancelled,
     /// A process/search/protocol failure paused the engine turn.
@@ -158,6 +182,10 @@ pub struct Snapshot {
     pub in_check: bool,
     /// Process status and final search observations.
     pub engine: EngineState,
+    /// Read-only analysis provenance and actual observations.
+    pub analysis: AnalysisState,
+    /// Analysis pauses play until explicit Resume; ended games stay ended.
+    pub play_paused: bool,
     /// Explicit supported interactive adjudication identity.
     pub rules_mode: &'static str,
     /// Deterministic interactive work limits.
@@ -174,6 +202,10 @@ pub struct DesktopSession {
     play_limits: WorkLimits,
     pending: Option<EngineRequest>,
     engine: EngineState,
+    analysis: AnalysisState,
+    analysis_pending: Option<EngineRequest>,
+    analysis_submitted: bool,
+    play_paused: bool,
 }
 impl Default for DesktopSession {
     fn default() -> Self {
@@ -192,6 +224,10 @@ impl DesktopSession {
             play_limits: PLAY_LIMITS,
             pending: None,
             engine: EngineState::default(),
+            analysis: AnalysisState::default(),
+            analysis_pending: None,
+            analysis_submitted: false,
+            play_paused: false,
         }
     }
     /// Restore supported live chess history without silently changing its mode.
@@ -242,6 +278,8 @@ impl DesktopSession {
         self.ensure_capacity()?;
         match command {
             DesktopCommand::NewGame { human, .. } => {
+                self.retire_analysis();
+                self.play_paused = false;
                 self.game = new_match();
                 self.human = human;
                 self.play_limits = PLAY_LIMITS;
@@ -275,11 +313,16 @@ impl DesktopSession {
                 self.engine.message = None;
                 self.changed();
             }
+            DesktopCommand::Analyze { operation, .. } => self.start_analysis(operation)?,
+            DesktopCommand::CancelAnalysis { .. } => self.cancel_analysis()?,
+            DesktopCommand::Resume { .. } => self.resume()?,
             DesktopCommand::Resign { .. } => {
                 if self.game.conclusion().is_some() {
                     return Err("This game has concluded. Start a new game to play again.".into());
                 }
                 self.apply_match(self.human, MatchCommand::Resign { witness: None }, at_ns)?;
+                self.retire_analysis();
+                self.play_paused = false;
                 self.pending = None;
                 self.engine.status = EnginePhase::Idle;
                 self.engine.message = None;
@@ -299,7 +342,8 @@ impl DesktopSession {
                 self.changed();
             }
             DesktopCommand::Retry { .. } => {
-                if self.game.conclusion().is_some()
+                if self.play_paused
+                    || self.game.conclusion().is_some()
                     || self.game.game().position().side_to_move() == self.human
                     || self.pending.is_some()
                     || !matches!(
@@ -319,6 +363,12 @@ impl DesktopSession {
         Ok(())
     }
     fn human_turn(&self) -> Result<(), String> {
+        if self.play_paused {
+            return Err(
+                "Play is paused for analysis. Resume play explicitly before moving or claiming."
+                    .into(),
+            );
+        }
         if self.game.conclusion().is_some() {
             return Err("This game has concluded. Start a new game to play again.".into());
         }
@@ -350,7 +400,8 @@ impl DesktopSession {
     }
     /// Create one immutable exact engine envelope if the live engine turn is ready.
     pub fn engine_request(&mut self) -> Option<EngineRequest> {
-        if self.pending.is_some()
+        if self.play_paused
+            || self.pending.is_some()
             || self.engine.status != EnginePhase::Idle
             || self.game.conclusion().is_some()
             || self.game.game().position().side_to_move() == self.human
@@ -363,7 +414,8 @@ impl DesktopSession {
         }
         self.next_request += 1;
         let request = EngineRequest {
-            protocol: 1,
+            protocol: mshogi_engine::PROTOCOL_VERSION,
+            purpose: mshogi_engine::RequestPurpose::EngineTurn,
             request_id: self.next_request,
             session_version: self.version,
             process_generation: self.next_request,
@@ -377,7 +429,9 @@ impl DesktopSession {
     }
     /// Accept and apply only the exact outstanding live context. Stale responses do nothing.
     pub fn accept(&mut self, response: EngineResponse, at_ns: u64) -> bool {
-        if self.pending.as_ref() != Some(&response.context)
+        if self.play_paused
+            || response.context.purpose != mshogi_engine::RequestPurpose::EngineTurn
+            || self.pending.as_ref() != Some(&response.context)
             || response.context.session_version != self.version
             || response.context.game != self.game.game().record()
             || self.game.conclusion().is_some()
@@ -418,6 +472,9 @@ impl DesktopSession {
                 } else {
                     Ok(())
                 }
+            }
+            EngineResult::Reachability { .. } => {
+                Err("Engine turn returned analysis-only reachability observations.".into())
             }
             EngineResult::Incomplete { .. } => {
                 self.engine.status = EnginePhase::Incomplete;
@@ -509,6 +566,8 @@ impl DesktopSession {
             conclusion: self.game.conclusion(),
             in_check: position.in_check(),
             engine: self.engine.clone(),
+            analysis: self.analysis.clone(),
+            play_paused: self.play_paused,
             rules_mode: "m2",
             limits: self.play_limits,
         }
@@ -587,7 +646,27 @@ impl DesktopController {
     pub fn snapshot(&mut self) -> Snapshot {
         if let Some(response) = self.bridge.poll() {
             let at_ns = self.at_ns();
-            self.session.accept(response, at_ns);
+            if matches!(
+                response.context.purpose,
+                mshogi_engine::RequestPurpose::EngineTurn
+            ) {
+                self.session.accept(response, at_ns);
+            } else {
+                self.session.accept_analysis(response);
+            }
+        }
+        if let Some(request) = self.session.analysis_request()
+            && let Err(error) = self.bridge.submit(request.clone())
+        {
+            self.session.accept_analysis(EngineResponse {
+                context: request,
+                result: EngineResult::Failure {
+                    failure: mshogi_engine::EngineFailure {
+                        kind: mshogi_engine::FailureKind::Start,
+                        message: format!("Cannot start analysis work: {error:?}"),
+                    },
+                },
+            });
         }
         if let Some(request) = self.session.engine_request()
             && let Err(error) = self.bridge.submit(request)

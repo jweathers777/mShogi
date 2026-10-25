@@ -1,5 +1,8 @@
 # Bundled engine interface v1
 
+Historical first-batch contract. MSH-33 introduces the required-purpose
+[version 2 interface](internal-engine-v2.md); UCI remains compatible.
+
 `mshogi internal-search` accepts one UTF-8 JSON object followed by LF on stdin,
 writes one JSON response followed by LF on stdout, and exits. Diagnostics use
 stderr. `mshogi uci` remains the independent compatibility adapter. The internal

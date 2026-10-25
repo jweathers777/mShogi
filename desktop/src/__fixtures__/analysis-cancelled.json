@@ -1,0 +1,378 @@
+{
+  "revision": 3,
+  "version": 3,
+  "human": "white",
+  "turn": "white",
+  "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+  "pieces": [
+    {
+      "square": "a1",
+      "color": "white",
+      "kind": "rook",
+      "label": "a1, White rook"
+    },
+    {
+      "square": "b1",
+      "color": "white",
+      "kind": "knight",
+      "label": "b1, White knight"
+    },
+    {
+      "square": "c1",
+      "color": "white",
+      "kind": "bishop",
+      "label": "c1, White bishop"
+    },
+    {
+      "square": "d1",
+      "color": "white",
+      "kind": "queen",
+      "label": "d1, White queen"
+    },
+    {
+      "square": "e1",
+      "color": "white",
+      "kind": "king",
+      "label": "e1, White king"
+    },
+    {
+      "square": "f1",
+      "color": "white",
+      "kind": "bishop",
+      "label": "f1, White bishop"
+    },
+    {
+      "square": "g1",
+      "color": "white",
+      "kind": "knight",
+      "label": "g1, White knight"
+    },
+    {
+      "square": "h1",
+      "color": "white",
+      "kind": "rook",
+      "label": "h1, White rook"
+    },
+    {
+      "square": "a2",
+      "color": "white",
+      "kind": "pawn",
+      "label": "a2, White pawn"
+    },
+    {
+      "square": "b2",
+      "color": "white",
+      "kind": "pawn",
+      "label": "b2, White pawn"
+    },
+    {
+      "square": "c2",
+      "color": "white",
+      "kind": "pawn",
+      "label": "c2, White pawn"
+    },
+    {
+      "square": "d2",
+      "color": "white",
+      "kind": "pawn",
+      "label": "d2, White pawn"
+    },
+    {
+      "square": "e2",
+      "color": "white",
+      "kind": "pawn",
+      "label": "e2, White pawn"
+    },
+    {
+      "square": "f2",
+      "color": "white",
+      "kind": "pawn",
+      "label": "f2, White pawn"
+    },
+    {
+      "square": "g2",
+      "color": "white",
+      "kind": "pawn",
+      "label": "g2, White pawn"
+    },
+    {
+      "square": "h2",
+      "color": "white",
+      "kind": "pawn",
+      "label": "h2, White pawn"
+    },
+    {
+      "square": "a7",
+      "color": "black",
+      "kind": "pawn",
+      "label": "a7, Black pawn"
+    },
+    {
+      "square": "b7",
+      "color": "black",
+      "kind": "pawn",
+      "label": "b7, Black pawn"
+    },
+    {
+      "square": "c7",
+      "color": "black",
+      "kind": "pawn",
+      "label": "c7, Black pawn"
+    },
+    {
+      "square": "d7",
+      "color": "black",
+      "kind": "pawn",
+      "label": "d7, Black pawn"
+    },
+    {
+      "square": "e7",
+      "color": "black",
+      "kind": "pawn",
+      "label": "e7, Black pawn"
+    },
+    {
+      "square": "f7",
+      "color": "black",
+      "kind": "pawn",
+      "label": "f7, Black pawn"
+    },
+    {
+      "square": "g7",
+      "color": "black",
+      "kind": "pawn",
+      "label": "g7, Black pawn"
+    },
+    {
+      "square": "h7",
+      "color": "black",
+      "kind": "pawn",
+      "label": "h7, Black pawn"
+    },
+    {
+      "square": "a8",
+      "color": "black",
+      "kind": "rook",
+      "label": "a8, Black rook"
+    },
+    {
+      "square": "b8",
+      "color": "black",
+      "kind": "knight",
+      "label": "b8, Black knight"
+    },
+    {
+      "square": "c8",
+      "color": "black",
+      "kind": "bishop",
+      "label": "c8, Black bishop"
+    },
+    {
+      "square": "d8",
+      "color": "black",
+      "kind": "queen",
+      "label": "d8, Black queen"
+    },
+    {
+      "square": "e8",
+      "color": "black",
+      "kind": "king",
+      "label": "e8, Black king"
+    },
+    {
+      "square": "f8",
+      "color": "black",
+      "kind": "bishop",
+      "label": "f8, Black bishop"
+    },
+    {
+      "square": "g8",
+      "color": "black",
+      "kind": "knight",
+      "label": "g8, Black knight"
+    },
+    {
+      "square": "h8",
+      "color": "black",
+      "kind": "rook",
+      "label": "h8, Black rook"
+    }
+  ],
+  "legal_choices": [
+    {
+      "action": "b1c3",
+      "from": "b1",
+      "to": "c3",
+      "promotion": null
+    },
+    {
+      "action": "b1a3",
+      "from": "b1",
+      "to": "a3",
+      "promotion": null
+    },
+    {
+      "action": "g1h3",
+      "from": "g1",
+      "to": "h3",
+      "promotion": null
+    },
+    {
+      "action": "g1f3",
+      "from": "g1",
+      "to": "f3",
+      "promotion": null
+    },
+    {
+      "action": "a2a3",
+      "from": "a2",
+      "to": "a3",
+      "promotion": null
+    },
+    {
+      "action": "a2a4",
+      "from": "a2",
+      "to": "a4",
+      "promotion": null
+    },
+    {
+      "action": "b2b3",
+      "from": "b2",
+      "to": "b3",
+      "promotion": null
+    },
+    {
+      "action": "b2b4",
+      "from": "b2",
+      "to": "b4",
+      "promotion": null
+    },
+    {
+      "action": "c2c3",
+      "from": "c2",
+      "to": "c3",
+      "promotion": null
+    },
+    {
+      "action": "c2c4",
+      "from": "c2",
+      "to": "c4",
+      "promotion": null
+    },
+    {
+      "action": "d2d3",
+      "from": "d2",
+      "to": "d3",
+      "promotion": null
+    },
+    {
+      "action": "d2d4",
+      "from": "d2",
+      "to": "d4",
+      "promotion": null
+    },
+    {
+      "action": "e2e3",
+      "from": "e2",
+      "to": "e3",
+      "promotion": null
+    },
+    {
+      "action": "e2e4",
+      "from": "e2",
+      "to": "e4",
+      "promotion": null
+    },
+    {
+      "action": "f2f3",
+      "from": "f2",
+      "to": "f3",
+      "promotion": null
+    },
+    {
+      "action": "f2f4",
+      "from": "f2",
+      "to": "f4",
+      "promotion": null
+    },
+    {
+      "action": "g2g3",
+      "from": "g2",
+      "to": "g3",
+      "promotion": null
+    },
+    {
+      "action": "g2g4",
+      "from": "g2",
+      "to": "g4",
+      "promotion": null
+    },
+    {
+      "action": "h2h3",
+      "from": "h2",
+      "to": "h3",
+      "promotion": null
+    },
+    {
+      "action": "h2h4",
+      "from": "h2",
+      "to": "h4",
+      "promotion": null
+    }
+  ],
+  "claims": [],
+  "history": [],
+  "conclusion": null,
+  "in_check": false,
+  "engine": {
+    "status": "paused",
+    "last": null,
+    "last_turn": null,
+    "searched_version": null,
+    "message": "Play paused for analysis. Resume play explicitly to continue."
+  },
+  "analysis": {
+    "status": "cancelled",
+    "target": {
+      "selection_id": 1,
+      "ply": 0,
+      "session_version": 2,
+      "label": "Live position after 0 plies",
+      "turn": "white"
+    },
+    "operation": {
+      "kind": "moves",
+      "depth": 8,
+      "nodes": 5000000
+    },
+    "context": {
+      "protocol": 2,
+      "purpose": {
+        "kind": "move_analysis",
+        "target": {
+          "selection_id": 1,
+          "ply": 0,
+          "session_version": 2,
+          "label": "Live position after 0 plies",
+          "turn": "white"
+        }
+      },
+      "request_id": 1,
+      "session_version": 2,
+      "process_generation": 1,
+      "game": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1","history_origin":"standard_start","claim_policy":"explicit_only","events":[]},
+      "limits": {
+        "depth": 8,
+        "nodes": 5000000
+      }
+    },
+    "result": null,
+    "message": "Analysis cancelled before final observations were received. Play remains paused."
+  },
+  "play_paused": true,
+  "rules_mode": "m2",
+  "limits": {
+    "depth": 2,
+    "nodes": 20000
+  }
+}

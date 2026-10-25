@@ -652,3 +652,156 @@ button.danger:hover:enabled {
   font-weight: 600;
   margin-bottom: 5px;
 }
+
+.inspector-switch {
+  display: flex;
+  border: 1px solid #415960;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.inspector-switch button {
+  border-radius: 0;
+  flex: 1;
+  color: #aec3c3;
+  background: #182b31;
+  font-size: 12px;
+  padding: 10px 8px;
+}
+.inspector-switch button[aria-pressed="true"] {
+  background: #385349;
+  color: #e5efd8;
+}
+.analysis-card h3 {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 13px 0 10px;
+}
+.analysis-card h4 {
+  font-size: 13px;
+  color: #d8e9bd;
+  margin: 12px 0 8px;
+}
+.analysis-form {
+  margin: 15px 0;
+}
+.analysis-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.analysis-form label {
+  display: block;
+  color: #bed0c9;
+  font-size: 11px;
+}
+.analysis-form input,
+.analysis-form select {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  margin: 6px 0 10px;
+  border: 1px solid #455f62;
+  border-radius: 5px;
+  padding: 8px 7px;
+  font: inherit;
+  background: #13252b;
+  color: #e5ecdf;
+}
+.analysis-form input:focus-visible {
+  outline: 3px solid #b9d78d;
+  outline-offset: 2px;
+}
+.analysis-form button,
+.cancel-analysis,
+.play-paused button {
+  width: 100%;
+  margin-top: 8px;
+  font-size: 12px;
+}
+.advanced-analysis,
+.technical-analysis {
+  margin-top: 15px;
+  border-top: 1px solid #385158;
+  padding-top: 12px;
+  font-size: 11px;
+  color: #bed2c7;
+}
+.advanced-analysis summary,
+.technical-analysis summary {
+  cursor: pointer;
+}
+.advanced-analysis > p {
+  margin-top: 10px;
+}
+.analysis-score {
+  font-size: 16px;
+  color: #e0eccb;
+  margin: 13px 0 8px;
+  line-height: 1.45;
+}
+.analysis-notice,
+.reachability-result > p {
+  color: #cfdbc6;
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: 12px;
+}
+.analysis-result {
+  margin-top: 15px;
+  border-top: 1px solid #3d565a;
+}
+.analysis-suggestion {
+  margin-top: 12px;
+  color: #cbe2b4;
+  font-size: 12px;
+}
+.technical-analysis pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 220px;
+  overflow: auto;
+  font-size: 10px;
+  color: #adbfba;
+}
+.validation-error {
+  font-size: 12px;
+  color: #ffd0b6;
+  margin-top: 12px;
+}
+.play-paused {
+  border-color: #5b7968;
+  background: #253d35;
+}
+
+.sidebar {
+  max-height: calc(100dvh - 145px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 4px;
+  scrollbar-gutter: stable;
+}
+.sidebar .play-paused {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+@media (max-width: 720px) {
+  .sidebar {
+    max-height: none;
+    overflow: visible;
+  }
+  .sidebar .play-paused {
+    position: static;
+  }
+}
+
+.footer-details {
+  text-align: right;
+}
+.footer-details summary {
+  cursor: pointer;
+}
+.footer-details > span {
+  display: block;
+  margin-top: 5px;
+}

@@ -1,0 +1,50 @@
+{
+  "source_revision": "4e997f0472e09c98f98d211236e2706c453f4f08",
+  "environment": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "normal_package": "desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+  "normal_host_sha256": "fc60c48566ddd3b515fde6309f03fe2baf392a68567eff0cb342f65a5f53f41d",
+  "engine_sha256": "45d264831e806ea81b426b4fbbb94f2ecbcba384d23696a5c87537acca555ba5",
+  "verification_package": "desktop/src-tauri/target/release/bundle/macos/mShogi Verification.app",
+  "verification_host_sha256": "042fb89f643d6ded3baa668d9734cbb076b4cc22b4d4f983db2787a65fb935ba",
+  "fixture": "synthetic",
+  "native_profile": "mshogi.synthetic.strider16.v1",
+  "interactions": [
+    {
+      "operation": "Initial native snapshot",
+      "observed": "256 labeled squares; readable16-by16 scroll region;white orientation;6pieces,61completechoices;version1/0accepted"
+    },
+    {
+      "operation": "Flip,Tab,arrows,Enter,Space",
+      "observed": "black orientation;focused i9scrolls into view;visualdirection navigation selects j10"
+    },
+    {
+      "operation": "i9\u2192j10 prefix,Tab toComplete,Escape",
+      "observed": "No action submitted;version1/0accepted;focusreturns i9"
+    },
+    {
+      "operation": "keyboard i9\u2192j10\u2192i9",
+      "observed": "version2/1accepted;nativej10stonecaptured,i9strider;record136>153>136"
+    },
+    {
+      "operation": "Reset then pointer i9\u2192h9\u2192i9",
+      "observed": "version3/0then4/1;nativej10stonepreserved,i9strider;record136>135>136"
+    },
+    {
+      "operation": "Reset,explicitshortCompleteactionhere",
+      "observed": "repeatedResetversionsadvance;v8/1accepted;nativei9empty,j10strider;record136>153"
+    },
+    {
+      "operation": "nativeCmdQ,Escape,CmdQ,Closefixture",
+      "observed": "Close/Cancelmodal;Cancelpreservesv8record;Closefixtureexitsapplication"
+    }
+  ],
+  "normal_instrumentation_exclusion": "normal frontend modules/markers assertion and package-smoke host marker/inventory checks passed;verificationdistseparate",
+  "focused_checks": {
+    "root_frontend_tests": 64,
+    "independent_focused_frontend_tests": 14,
+    "core_action_boundary_tests": 10,
+    "native_synthetic_tests": 4,
+    "host_verification_tests": 4
+  },
+  "scope": "Actual local packaged macOS GUI; separate from automated native/frontend tests and future Windows/Linux GUI verification"
+}

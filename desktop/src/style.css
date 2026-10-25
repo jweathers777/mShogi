@@ -809,18 +809,10 @@ button.danger:hover:enabled {
   padding-right: 4px;
   scrollbar-gutter: stable;
 }
-.sidebar .play-paused {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-}
 @media (max-width: 720px) {
   .sidebar {
     max-height: none;
     overflow: visible;
-  }
-  .sidebar .play-paused {
-    position: static;
   }
 }
 

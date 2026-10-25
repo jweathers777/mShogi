@@ -24,8 +24,11 @@ engines = [path for path in files if path.name in ('mshogi', 'mshogi.exe')]
 assert len(engines) == 1, f'expected one packaged engine, got {engines}'
 hosts = [path for path in files if path.name in ('mshogi-desktop', 'mshogi-desktop.exe')]
 assert len(hosts) == 1, f'expected one packaged desktop host, got {hosts}'
-assert b'MSHOGI_DESKTOP_FIXTURE' not in hosts[0].read_bytes(), 'verification initializer entered a normal host'
-assert b'Native Cocoa Quit (verification)' not in hosts[0].read_bytes(), 'verification termination probe entered a normal host'
+host_bytes = hosts[0].read_bytes()
+for marker in (b'MSHOGI_DESKTOP_FIXTURE', b'Native Cocoa Quit (verification)',
+               b'synthetic_snapshot', b'synthetic_command', b'desktop_verification_mode',
+               b'mshogi.synthetic.strider16.v1'):
+    assert marker not in host_bytes, f'verification marker entered a normal host: {marker!r}'
 engine = engines[0].resolve()
 version = subprocess.run([str(engine), '--version'], check=True, capture_output=True, text=True, timeout=10)
 child = subprocess.Popen([str(engine), 'uci'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)

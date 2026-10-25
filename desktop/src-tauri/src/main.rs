@@ -1,6 +1,8 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use mshogi_desktop_session::{DesktopCommand, DesktopController, IoPhase, OpenToken, Snapshot};
+#[cfg(feature = "desktop-verification")]
+use mshogi_desktop_session::{SyntheticCommand, SyntheticController, SyntheticSnapshot};
 use std::{
     io,
     path::PathBuf,
@@ -27,6 +29,90 @@ struct ShutdownState {
     ready: AtomicBool,
     observation_finished: AtomicBool,
     deadline: Mutex<Option<Instant>>,
+}
+#[cfg(feature = "desktop-verification")]
+struct VerificationState {
+    fixture: String,
+    synthetic: Mutex<Option<SyntheticController>>,
+}
+#[cfg(feature = "desktop-verification")]
+impl VerificationState {
+    fn new(fixture: String) -> Self {
+        let synthetic = (fixture == "synthetic").then(SyntheticController::new);
+        Self {
+            fixture,
+            synthetic: Mutex::new(synthetic),
+        }
+    }
+    fn is_synthetic(&self) -> bool {
+        self.fixture == "synthetic"
+    }
+    fn require_chess(&self) -> Result<(), String> {
+        if self.is_synthetic() {
+            Err("Synthetic fixture actions and records are separate from chess documents.".into())
+        } else {
+            Ok(())
+        }
+    }
+}
+fn ensure_chess_mode(_app: &AppHandle) -> Result<(), String> {
+    #[cfg(feature = "desktop-verification")]
+    _app.state::<VerificationState>().require_chess()?;
+    Ok(())
+}
+#[cfg(feature = "desktop-verification")]
+fn with_synthetic<T>(
+    controller: &Mutex<DesktopController>,
+    shutdown: &ShutdownState,
+    verification: &VerificationState,
+    operation: impl FnOnce(&mut SyntheticController) -> T,
+) -> Result<T, String> {
+    // Use the same outer lock as close approval; never acquire these in reverse.
+    with_controller(controller, shutdown, |_| {
+        if shutdown.close_requested.load(Ordering::Acquire) {
+            return Err("Finish or cancel the close request before changing the fixture.".into());
+        }
+        let mut synthetic = verification
+            .synthetic
+            .lock()
+            .map_err(|_| "Synthetic session lock unavailable".to_string())?;
+        let synthetic = synthetic
+            .as_mut()
+            .ok_or_else(|| "The synthetic fixture is not active.".to_string())?;
+        Ok(operation(synthetic))
+    })?
+}
+#[cfg(feature = "desktop-verification")]
+#[tauri::command]
+fn desktop_verification_mode(verification: State<'_, VerificationState>) -> &'static str {
+    if verification.is_synthetic() {
+        "synthetic"
+    } else {
+        "chess"
+    }
+}
+#[cfg(feature = "desktop-verification")]
+#[tauri::command]
+fn synthetic_snapshot(
+    controller: State<'_, Mutex<DesktopController>>,
+    shutdown: State<'_, Arc<ShutdownState>>,
+    verification: State<'_, VerificationState>,
+) -> Result<SyntheticSnapshot, String> {
+    with_synthetic(&controller, &shutdown, &verification, |synthetic| {
+        synthetic.snapshot()
+    })
+}
+#[cfg(feature = "desktop-verification")]
+#[tauri::command]
+fn synthetic_command(
+    controller: State<'_, Mutex<DesktopController>>,
+    shutdown: State<'_, Arc<ShutdownState>>,
+    verification: State<'_, VerificationState>,
+    command: SyntheticCommand,
+) -> Result<SyntheticSnapshot, String> {
+    with_synthetic(&controller, &shutdown, &verification, |synthetic| {
+        synthetic.command(command)
+    })?
 }
 fn engine_path() -> io::Result<PathBuf> {
     let executable = std::env::current_exe()?;
@@ -71,6 +157,7 @@ impl Drop for CommandOperationGuard {
 }
 #[tauri::command]
 async fn desktop_command(app: AppHandle, command: DesktopCommand) -> Result<Snapshot, String> {
+    ensure_chess_mode(&app)?;
     let shutdown = app.state::<Arc<ShutdownState>>().inner().clone();
     let (initial, receipt, reservation) = with_controller(
         &app.state::<Mutex<DesktopController>>(),
@@ -121,6 +208,7 @@ impl Drop for FileOperationGuard {
     }
 }
 fn reserve_file_operation(app: &AppHandle) -> Result<FileOperationGuard, String> {
+    ensure_chess_mode(app)?;
     let shutdown = app.state::<Arc<ShutdownState>>().inner().clone();
     with_controller(&app.state::<Mutex<DesktopController>>(), &shutdown, |_| {
         shutdown
@@ -330,16 +418,18 @@ fn approve_close(
     shutdown.close_approved.store(true, Ordering::Release);
     Ok(())
 }
+#[cfg(feature = "desktop-verification")]
+fn initial_controller(fixture: &str) -> Result<DesktopController, Box<dyn std::error::Error>> {
+    let chess_fixture = if fixture == "synthetic" {
+        "standard"
+    } else {
+        fixture
+    };
+    DesktopController::verification(engine_path()?, chess_fixture).map_err(Into::into)
+}
+#[cfg(not(feature = "desktop-verification"))]
 fn initial_controller() -> Result<DesktopController, Box<dyn std::error::Error>> {
-    #[cfg(feature = "desktop-verification")]
-    {
-        let fixture = std::env::var("MSHOGI_DESKTOP_FIXTURE").unwrap_or_else(|_| "standard".into());
-        DesktopController::verification(engine_path()?, &fixture).map_err(Into::into)
-    }
-    #[cfg(not(feature = "desktop-verification"))]
-    {
-        Ok(DesktopController::new(engine_path()?)?)
-    }
+    Ok(DesktopController::new(engine_path()?)?)
 }
 fn desktop_menu(app: &AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
     // Cocoa's predefined Quit calls NSApplication::terminate directly. A custom
@@ -478,13 +568,22 @@ fn main() {
             }
         })
         .setup(|app| {
-            app.manage(Mutex::new(initial_controller()?));
             #[cfg(feature = "desktop-verification")]
-            if let Some(window) = app.get_webview_window("main") {
-                let fixture =
-                    std::env::var("MSHOGI_DESKTOP_FIXTURE").unwrap_or_else(|_| "standard".into());
-                window.set_title(&format!("mShogi Verification — {fixture} (test state)"))?;
+            {
+                let verification = VerificationState::new(
+                    std::env::var("MSHOGI_DESKTOP_FIXTURE").unwrap_or_else(|_| "standard".into()),
+                );
+                app.manage(Mutex::new(initial_controller(&verification.fixture)?));
+                if let Some(window) = app.get_webview_window("main") {
+                    window.set_title(&format!(
+                        "mShogi Verification — {} (test state)",
+                        verification.fixture
+                    ))?;
+                }
+                app.manage(verification);
             }
+            #[cfg(not(feature = "desktop-verification"))]
+            app.manage(Mutex::new(initial_controller()?));
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
@@ -496,6 +595,12 @@ fn main() {
             desktop_request_close,
             desktop_cancel_close,
             desktop_finish_close,
+            #[cfg(feature = "desktop-verification")]
+            desktop_verification_mode,
+            #[cfg(feature = "desktop-verification")]
+            synthetic_snapshot,
+            #[cfg(feature = "desktop-verification")]
+            synthetic_command,
         ])
         .build(tauri::generate_context!())
         .expect("mShogi desktop host failed");
@@ -558,6 +663,65 @@ mod tests {
     fn controller() -> Mutex<DesktopController> {
         // No search is submitted in these host-gate tests, so no child starts.
         Mutex::new(DesktopController::new(PathBuf::from("unused-test-engine")).unwrap())
+    }
+
+    #[cfg(feature = "desktop-verification")]
+    #[test]
+    fn synthetic_mutations_share_close_gates_and_keep_chess_separate() {
+        let controller = controller();
+        let shutdown = ShutdownState::default();
+        let verification = VerificationState::new("synthetic".into());
+        assert!(verification.require_chess().is_err());
+        let initial = with_synthetic(&controller, &shutdown, &verification, |synthetic| {
+            synthetic.snapshot()
+        })
+        .unwrap();
+        shutdown.close_requested.store(true, Ordering::Release);
+        assert!(
+            with_synthetic(&controller, &shutdown, &verification, |_| panic!(
+                "pending close entered fixture"
+            ))
+            .is_err()
+        );
+        shutdown.close_requested.store(false, Ordering::Release);
+        let reset = with_synthetic(&controller, &shutdown, &verification, |synthetic| {
+            synthetic.command(SyntheticCommand::Reset {
+                version: initial.version,
+            })
+        })
+        .unwrap()
+        .unwrap();
+        assert!(reset.version > initial.version);
+        let chess = with_controller(&controller, &shutdown, DesktopController::snapshot).unwrap();
+        assert!(chess.history.is_empty());
+        assert!(!chess.document.dirty);
+        shutdown.close_requested.store(true, Ordering::Release);
+        with_controller(&controller, &shutdown, |controller| {
+            approve_close(controller, &shutdown, chess.document.revision)
+        })
+        .unwrap()
+        .unwrap();
+        assert!(
+            with_synthetic(&controller, &shutdown, &verification, |_| panic!(
+                "approved close entered fixture"
+            ))
+            .is_err()
+        );
+    }
+
+    #[cfg(feature = "desktop-verification")]
+    #[test]
+    fn chess_verification_mode_has_no_active_synthetic_session() {
+        let controller = controller();
+        let shutdown = ShutdownState::default();
+        let verification = VerificationState::new("standard".into());
+        assert!(verification.require_chess().is_ok());
+        assert!(
+            with_synthetic(&controller, &shutdown, &verification, |_| panic!(
+                "inactive fixture entered"
+            ))
+            .is_err()
+        );
     }
 
     #[test]

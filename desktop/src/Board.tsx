@@ -1,257 +1,216 @@
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
 import type { BoardPiece, Color, LegalChoice } from "./native";
 
+export interface BoardGeometry {
+  files: string[];
+  ranks: string[];
+  label: string;
+  initialFocus: string;
+}
+export interface BoardChoice {
+  action: string;
+  from: string;
+  steps: string[];
+  completion: { label: string; glyph: string | null } | null;
+}
+interface SelectionChoice extends BoardChoice { promotion: boolean }
 interface Props {
   pieces: BoardPiece[];
-  choices: LegalChoice[];
+  choices: LegalChoice[] | BoardChoice[];
   orientation: Color;
   version: number;
   disabled: boolean;
   onPlay: (action: string) => void;
+  geometry?: BoardGeometry;
+  glyphs?: Record<string, string>;
+  profile?: string;
 }
-const glyphs: Record<string, string> = {
-  king: "♚",
-  queen: "♛",
-  rook: "♜",
-  bishop: "♝",
-  knight: "♞",
-  pawn: "♟",
+const chessGlyphs: Record<string, string> = {
+  king: "♚", queen: "♛", rook: "♜", bishop: "♝", knight: "♞", pawn: "♟",
 };
-export function displayedSquares(orientation: Color): string[] {
-  const files = orientation === "white" ? "abcdefgh" : "hgfedcba";
-  const ranks = orientation === "white" ? "87654321" : "12345678";
-  return [...ranks].flatMap((rank) =>
-    [...files].map((file) => `${file}${rank}`),
-  );
+const chessGeometry: BoardGeometry = {
+  files: [..."abcdefgh"], ranks: [..."12345678"], label: "Chess board", initialFocus: "e2",
+};
+export function displayedSquares(orientation: Color, geometry = chessGeometry): string[] {
+  const files = orientation === "white" ? geometry.files : [...geometry.files].reverse();
+  const ranks = orientation === "white" ? [...geometry.ranks].reverse() : geometry.ranks;
+  return ranks.flatMap((rank) => files.map((file) => `${file}${rank}`));
 }
-export function Board({
-  pieces,
-  choices,
-  orientation,
-  version,
-  disabled,
-  onPlay,
-}: Props) {
-  const squares = displayedSquares(orientation);
+export function Board({ pieces, choices: supplied, orientation, version, disabled,
+  onPlay, geometry = chessGeometry, glyphs = {}, profile = "chess" }: Props) {
+  const squares = displayedSquares(orientation, geometry);
+  const columns = geometry.files.length;
+  const rows = geometry.ranks.length;
+  const large = columns > 8 || rows > 8;
+  const geometryKey = `${geometry.label}|${geometry.files.join(",")}|${geometry.ranks.join(",")}`;
+  const choices: SelectionChoice[] = supplied.map((choice) => "steps" in choice
+    ? { ...choice, promotion: false }
+    : { action: choice.action, from: choice.from, steps: [choice.to],
+        completion: choice.promotion === null ? null
+          : { label: choice.promotion, glyph: chessGlyphs[choice.promotion] ?? null },
+        promotion: choice.promotion !== null });
   const [selected, setSelected] = useState<string | null>(null);
-  const [focused, setFocused] = useState("e2");
-  const [promotions, setPromotions] = useState<LegalChoice[]>([]);
+  const [prefix, setPrefix] = useState<string[]>([]);
+  const [focused, setFocused] = useState(geometry.initialFocus);
+  const [dialogChoices, setDialogChoices] = useState<SelectionChoice[]>([]);
   const [announcement, setAnnouncement] = useState("");
   const refs = useRef(new Map<string, SVGGElement>());
   const dialog = useRef<HTMLDivElement>(null);
-  const returnFocus = useRef("e2");
+  const returnFocus = useRef(geometry.initialFocus);
   useLayoutEffect(() => {
-    setSelected(null);
-    setPromotions([]);
-    setAnnouncement("");
-  }, [version, disabled]);
+    setSelected(null); setPrefix([]); setDialogChoices([]); setAnnouncement("");
+    setFocused((current) => squares.includes(current) ? current : geometry.initialFocus);
+  // Native versions/profile and presentation geometry retire partial choices.
+  }, [version, disabled, profile, geometryKey, orientation]);
   useEffect(() => {
-    if (promotions.length > 0)
+    if (dialogChoices.length > 0)
       dialog.current?.querySelector<HTMLButtonElement>("button")?.focus();
-  }, [promotions]);
-  const destinations = choices.filter((choice) => choice.from === selected);
+  }, [dialogChoices]);
+  const matchesPrefix = (choice: SelectionChoice, route = prefix) =>
+    route.every((step, index) => choice.steps[index] === step);
+  const candidates = choices.filter((choice) => choice.from === selected && matchesPrefix(choice));
+  const terminals = prefix.length > 0
+    ? candidates.filter((choice) => choice.steps.length === prefix.length) : [];
+  const hasContinuation = candidates.some((choice) => choice.steps.length > prefix.length);
+  const promotionDialog = dialogChoices.length > 0 && dialogChoices.every((choice) => choice.promotion);
   function focusSquare(square: string) {
     setFocused(square);
-    refs.current.get(square)?.focus();
+    const element = refs.current.get(square);
+    element?.focus();
+    if (large) element?.scrollIntoView?.({ block: "nearest", inline: "nearest" });
   }
-  function closePromotion() {
-    setPromotions([]);
-    focusSquare(returnFocus.current);
+  function clearSelection(message = "Selection cleared.") {
+    setSelected(null); setPrefix([]); setAnnouncement(message);
+  }
+  function closeDialog() {
+    setDialogChoices([]); clearSelection(); focusSquare(returnFocus.current);
+  }
+  function commit(choice: SelectionChoice) {
+    if (disabled || !choices.some((current) => current.action === choice.action)) return;
+    setDialogChoices([]); clearSelection("Complete native action submitted.");
+    focusSquare(returnFocus.current); onPlay(choice.action);
+  }
+  function complete(matches: SelectionChoice[], square: string) {
+    returnFocus.current = square;
+    if (matches.length === 1 && matches[0]!.completion === null) commit(matches[0]!);
+    else setDialogChoices(matches);
   }
   function select(square: string) {
-    if (disabled || promotions.length > 0) return;
+    if (disabled || dialogChoices.length > 0) return;
     focusSquare(square);
-    const matches = destinations.filter((choice) => choice.to === square);
-    if (matches.length === 1) {
-      const choice = matches[0]!;
-      // A promotion remains explicit even if a profile supplies only one option.
-      if (choice.promotion !== null) {
-        returnFocus.current = square;
-        setPromotions(matches);
-      } else {
-        setSelected(null);
-        onPlay(choice.action);
-      }
+    // Continuation takes precedence over toggling the origin: routes can return.
+    const next = candidates.filter((choice) => choice.steps[prefix.length] === square);
+    if (next.length > 0) {
+      const route = [...prefix, square];
+      setPrefix(route);
+      const terminal = next.filter((choice) => choice.steps.length === route.length);
+      const longer = next.some((choice) => choice.steps.length > route.length);
+      if (longer) {
+        setAnnouncement(`${selected} → ${route.join(" → ")} selected. Continue to a highlighted square${terminal.length > 0 ? ", or choose Complete action here" : ""}. No action has been submitted.`);
+      } else if (terminal.length > 0) complete(terminal, square);
       return;
     }
-    if (matches.length > 1) {
-      returnFocus.current = square;
-      setPromotions(matches);
-      return;
-    }
-    if (square === selected) {
-      setSelected(null);
-      setAnnouncement("Selection cleared.");
-      return;
-    }
+    if (square === selected) { clearSelection(); return; }
     if (choices.some((choice) => choice.from === square)) {
-      setSelected(square);
+      setSelected(square); setPrefix([]);
       setAnnouncement(`${square} selected. Choose a highlighted destination.`);
-    } else {
-      setAnnouncement(
-        selected === null
-          ? "Choose a piece with a native legal action."
-          : "That destination is unavailable. Choose a highlighted square, or Escape to cancel.",
-      );
-    }
+    } else setAnnouncement(selected === null
+      ? "Choose a piece with a native legal action."
+      : "That destination is unavailable. Choose a highlighted square, or Escape to cancel.");
   }
   function key(event: KeyboardEvent<SVGGElement>, square: string) {
     const offsets: Record<string, number> = {
-      ArrowLeft: -1,
-      ArrowRight: 1,
-      ArrowUp: -8,
-      ArrowDown: 8,
+      ArrowLeft: -1, ArrowRight: 1, ArrowUp: -columns, ArrowDown: columns,
     };
     const offset = offsets[event.key];
     if (offset !== undefined) {
       event.preventDefault();
-      const index = squares.indexOf(square);
-      const next = index + offset;
-      if (
-        next >= 0 &&
-        next < 64 &&
-        (Math.abs(offset) === 8 ||
-          Math.floor(next / 8) === Math.floor(index / 8))
-      )
-        focusSquare(squares[next]!);
+      const index = squares.indexOf(square), next = index + offset;
+      if (next >= 0 && next < squares.length && (Math.abs(offset) === columns
+        || Math.floor(next / columns) === Math.floor(index / columns))) focusSquare(squares[next]!);
     } else if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      select(square);
+      event.preventDefault(); select(square);
     } else if (event.key === "Escape") {
-      event.preventDefault();
-      setSelected(null);
-      setAnnouncement("Selection cleared.");
+      event.preventDefault(); const origin = selected; clearSelection();
+      if (origin !== null) focusSquare(origin);
     }
   }
-  function promotionKey(event: KeyboardEvent<HTMLDivElement>) {
-    if (event.key === "Escape") {
-      event.preventDefault();
-      closePromotion();
-    }
+  function dialogKey(event: KeyboardEvent<HTMLDivElement>) {
+    if (event.key === "Escape") { event.preventDefault(); closeDialog(); }
     if (event.key === "Tab") {
-      const buttons = [
-        ...(dialog.current?.querySelectorAll<HTMLButtonElement>("button") ??
-          []),
-      ];
-      const index = buttons.indexOf(
-        document.activeElement as HTMLButtonElement,
-      );
+      const buttons = [...(dialog.current?.querySelectorAll<HTMLButtonElement>("button") ?? [])];
+      const index = buttons.indexOf(document.activeElement as HTMLButtonElement);
       event.preventDefault();
-      buttons[
-        (index + (event.shiftKey ? -1 : 1) + buttons.length) % buttons.length
-      ]?.focus();
+      buttons[(index + (event.shiftKey ? -1 : 1) + buttons.length) % buttons.length]?.focus();
     }
   }
+  const displayFiles = orientation === "white" ? geometry.files : [...geometry.files].reverse();
+  const displayRanks = orientation === "white" ? [...geometry.ranks].reverse() : geometry.ranks;
+  const width = 40 + columns * 100, height = 40 + rows * 100;
   return (
-    <div className="board-wrap">
-      <svg
-        className="chess-board"
-        viewBox="0 0 840 840"
-        role="group"
-        aria-label={`Chess board, ${orientation} at bottom`}
-      >
-        <rect width="840" height="840" rx="8" className="board-border" />
-        {squares.map((square, index) => {
-          const piece = pieces.find((piece) => piece.square === square);
-          const row = Math.floor(index / 8);
-          const column = index % 8;
-          const target = destinations.some((choice) => choice.to === square);
-          const available = choices.some((choice) => choice.from === square);
-          const label = `${piece?.label ?? `${square}, empty`}${selected === square ? ", selected" : ""}${target ? ", legal destination" : ""}`;
-          return (
-            <g
-              key={square}
-              ref={(element) => {
-                if (element) refs.current.set(square, element);
-                else refs.current.delete(square);
-              }}
-              transform={`translate(${20 + column * 100}, ${20 + row * 100})`}
-              role="button"
-              tabIndex={focused === square ? 0 : -1}
-              aria-label={label}
-              aria-pressed={selected === square}
-              aria-disabled={disabled || promotions.length > 0}
-              className={`square ${(row + column) % 2 === 0 ? "light" : "dark"} ${selected === square ? "selected" : ""} ${target ? "target" : ""} ${available && !disabled ? "available" : ""}`}
-              onFocus={() => setFocused(square)}
-              onClick={() => select(square)}
-              onKeyDown={(event) => key(event, square)}
-            >
-              <rect width="100" height="100" className="square-fill" />
-              {target && (
-                <circle
-                  cx="50"
-                  cy="50"
-                  r={piece ? "40" : "12"}
-                  className={piece ? "capture-marker" : "move-marker"}
-                />
-              )}
-              {piece && (
-                <text
-                  x="50"
-                  y="74"
-                  textAnchor="middle"
-                  className={`piece ${piece.color}`}
-                  aria-hidden="true"
-                >
-                  {glyphs[piece.kind] ?? "?"}
-                </text>
-              )}
-              {column === 0 && (
-                <text x="7" y="17" className="coordinate" aria-hidden="true">
-                  {square[1]}
-                </text>
-              )}
-              {row === 7 && (
-                <text x="88" y="93" className="coordinate" aria-hidden="true">
-                  {square[0]}
-                </text>
-              )}
-              <rect x="3" y="3" width="94" height="94" className="focus-ring" />
-            </g>
-          );
-        })}
-      </svg>
-      <p className="board-help">
-        Select a piece, then a destination. Arrow keys move focus · Enter or
-        Space selects · Escape cancels.
-      </p>
-      <span className="sr-only" role="status">
-        {announcement}
-      </span>
-      {promotions.length > 0 && (
+    <div className={`board-wrap${large ? " large-board-wrap" : ""}`}>
+      <div className="board-scroll">
+        <svg className="chess-board" viewBox={`0 0 ${width} ${height}`} role="group"
+          aria-label={`${geometry.label}, ${orientation} at bottom`}>
+          <rect width={width} height={height} rx="8" className="board-border" />
+          {squares.map((square, index) => {
+            const piece = pieces.find((piece) => piece.square === square);
+            const row = Math.floor(index / columns), column = index % columns;
+            const target = candidates.some((choice) => choice.steps[prefix.length] === square);
+            const available = choices.some((choice) => choice.from === square);
+            const label = `${piece?.label ?? `${square}, empty`}${selected === square ? ", selected" : ""}${prefix.includes(square) ? ", selected route step" : ""}${target ? ", legal destination" : ""}`;
+            return (
+              <g key={square} ref={(element) => {
+                if (element) refs.current.set(square, element); else refs.current.delete(square);
+              }} transform={`translate(${20 + column * 100}, ${20 + row * 100})`}
+                role="button" tabIndex={focused === square ? 0 : -1} aria-label={label}
+                aria-pressed={selected === square} aria-disabled={disabled || dialogChoices.length > 0}
+                className={`square ${(row + column) % 2 === 0 ? "light" : "dark"} ${selected === square ? "selected" : ""} ${target ? "target" : ""} ${available && !disabled ? "available" : ""}`}
+                onFocus={() => setFocused(square)} onClick={() => select(square)}
+                onKeyDown={(event) => key(event, square)}>
+                <rect width="100" height="100" className="square-fill" />
+                {target && <circle cx="50" cy="50" r={piece ? "40" : "12"}
+                  className={piece ? "capture-marker" : "move-marker"} />}
+                {piece && <text x="50" y="74" textAnchor="middle" className={`piece ${piece.color}`} aria-hidden="true">
+                  {glyphs[piece.kind] ?? chessGlyphs[piece.kind] ?? "?"}
+                </text>}
+                {column === 0 && <text x="7" y="20" className="coordinate" aria-hidden="true">{displayRanks[row]}</text>}
+                {row === rows - 1 && <text x="82" y="93" className="coordinate" aria-hidden="true">{displayFiles[column]}</text>}
+                <rect x="3" y="3" width="94" height="94" className="focus-ring" />
+              </g>
+            );
+          })}
+        </svg>
+      </div>
+      <p className="board-help">Select a piece, then a destination. Arrow keys move focus · Enter or Space selects · Escape cancels.</p>
+      {large && <p className="board-help">The large board scrolls to keep squares readable. Arrow keys bring the focused square into view.</p>}
+      {selected !== null && prefix.length > 0 && hasContinuation && (
+        <div className="route-selection" role="group" aria-label="Partial route selection"
+          onKeyDown={(event) => {
+            if (event.key === "Escape") {
+              event.preventDefault(); const origin = selected; clearSelection(); focusSquare(origin);
+            }
+          }}>
+          <p>Selected route: {selected} → {prefix.join(" → ")}. No action submitted.</p>
+          {terminals.length > 0 && <button disabled={disabled} onClick={() => complete(terminals, prefix[prefix.length - 1]!)}>Complete action here</button>}
+          <button className="quiet" onClick={() => { const origin = selected; clearSelection(); focusSquare(origin); }}>Cancel selection</button>
+        </div>
+      )}
+      <span className="sr-only" role="status">{announcement}</span>
+      {dialogChoices.length > 0 && (
         <div className="modal-backdrop">
-          <div
-            className="promotion-dialog"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="promotion-title"
-            ref={dialog}
-            onKeyDown={promotionKey}
-          >
+          <div className="promotion-dialog" role="dialog" aria-modal="true"
+            aria-labelledby="complete-choice-title" ref={dialog} onKeyDown={dialogKey}>
             <p className="eyebrow">COMPLETE YOUR MOVE</p>
-            <h2 id="promotion-title">Choose promotion</h2>
-            <p>The move is applied after you choose a piece.</p>
+            <h2 id="complete-choice-title">{promotionDialog ? "Choose promotion" : "Choose complete action"}</h2>
+            <p>The action is applied only after you choose.</p>
             <div className="promotion-choices">
-              {promotions.map((choice) => (
-                <button
-                  key={choice.action}
-                  onClick={() => {
-                    setPromotions([]);
-                    setSelected(null);
-                    focusSquare(returnFocus.current);
-                    onPlay(choice.action);
-                  }}
-                >
-                  <span aria-hidden="true">
-                    {glyphs[choice.promotion ?? ""]}
-                  </span>
-                  {choice.promotion}
-                </button>
-              ))}
+              {dialogChoices.map((choice) => <button key={choice.action} onClick={() => commit(choice)}>
+                {choice.completion?.glyph && <span aria-hidden="true">{choice.completion.glyph}</span>}
+                {choice.completion?.label ?? choice.action}
+              </button>)}
             </div>
-            <button className="quiet" onClick={closePromotion}>
-              Cancel promotion
-            </button>
+            <button className="quiet" onClick={closeDialog}>{promotionDialog ? "Cancel promotion" : "Cancel selection"}</button>
           </div>
         </div>
       )}

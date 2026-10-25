@@ -24,10 +24,11 @@ This is a chess-first slice of the six-game product in [the design](../design.md
 The first batch is MSH-27–32. Foundation builds native packages on all three
 systems and exercises the bundled engine there. That does not close the later
 installed-application interaction, accessibility, persistence or M3 review work.
-The first batch is complete (MSH-27–32 remain Done). The next authorized batch
-is MSH-34, then MSH-33, then MSH-35 after both dependencies complete. MSH-36–39
-remain open for subsequent work. Every Done ticket must satisfy its entire
-acceptance checklist; M3 remains open.
+The first batch is complete (MSH-27–32 remain Done). The second batch completed
+MSH-34, MSH-33 and MSH-35 in that order. The final batch first completed the
+focused archive-capacity follow-up MSH-61, then proceeds through MSH-36–39.
+Every Done ticket must satisfy its entire acceptance checklist; M3 remains open
+until the final integration and three-platform application criteria pass.
 
 ## Authoritative session
 
@@ -132,6 +133,26 @@ plain-language status. Controls remain usable when search runs.
 MSH-36 is visibly labeled a synthetic development fixture, not another game.
 Its 16 by 16 board and multi-stage route choices exercise presentation and
 selection; partial route selection never commits a game action.
+
+The fixture uses the same SVG board and prefix-selection component as chess.
+Native geometry and complete ordered choices supply all legal destinations.
+A prefix which can finish or continue requires explicit completion; returning
+to the origin can be a later route step. Escape cancels from squares or partial
+route controls. Promotion remains an explicit native completion choice.
+
+The invented strider rules share the M1 action-boundary test source. Its
+`mshogi.synthetic.strider16.v1` record is a separate ephemeral verification
+record, never a chess archive, FEN or engine request. Native acceptance checks
+the exact complete choice and monotonic version; Reset advances that version.
+One complete action ends the demonstration so routes can be compared by Reset.
+The two `i9 → j10 → i9` and `i9 → h9 → i9` routes retain different identities
+and capture effects. Large geometry scrolls to preserve readable square sizes.
+
+Only an explicitly labeled verification build exposes this native controller
+and frontend entry. Normal builds force verification off, check their emitted
+module/marker inventory, and use a different frontend output directory from
+verification builds. Synthetic mode rejects chess mutations and file operations
+and shares the existing serialized native close/shutdown protection.
 
 Native tests cover stale command/result identities, exact history differences,
 new-game ABA/version protection, generation mismatch, cancellation races,

@@ -203,6 +203,12 @@ fn main() {
     std::fs::remove_file(temporary).unwrap();
     #[cfg(feature = "desktop-verification")]
     {
+        let synthetic = mshogi_desktop_session::SyntheticController::new();
+        std::fs::write(
+            directory.join("synthetic.json"),
+            serde_json::to_string_pretty(&synthetic.snapshot()).unwrap() + "\n",
+        )
+        .unwrap();
         let mut capacity = DesktopController::verification(
             std::path::PathBuf::from("/unused/fixture-engine"),
             "capacity",

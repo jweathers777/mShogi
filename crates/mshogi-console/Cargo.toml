@@ -10,8 +10,18 @@ name = "mshogi"
 path = "src/main.rs"
 
 [dependencies]
+serde_json = "=1.0.145"
+mshogi-engine = { path = "../mshogi-engine" }
 mshogi-core = { path = "../mshogi-core" }
 mshogi-search = { path = "../mshogi-search" }
 
 [lints]
 workspace = true
+
+# Separate verification helper; desktop packaging selects only the mshogi binary.
+[[bin]]
+name = "mshogi-internal-fixture"
+path = "tests/support/internal_fixture.rs"
+test = false
+doc = false
+

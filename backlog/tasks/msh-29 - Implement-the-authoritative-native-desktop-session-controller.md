@@ -1,9 +1,11 @@
 ---
 id: MSH-29
 title: Implement the authoritative native desktop session controller
-status: Ready
-assignee: []
+status: In Review
+assignee:
+  - '@codex'
 created_date: '2026-10-25T12:48:00Z'
+updated_date: '2026-10-25T13:03:00Z'
 labels: []
 milestone: m-3
 dependencies:
@@ -33,3 +35,17 @@ Concurrent webview commands and delayed engine results must not corrupt or reint
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Implement a tested framework-independent serialized ChessMatch controller with versioned native snapshots and human commands; bind engine envelopes to exact context and generation; add safe engine-turn lifecycle and adversarial context/cancel tests.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner codex; branch codex/m3-desktop; checkout .claude/worktrees/next-task. MSH-27 contract independently reviewed and integrated.
+
+Implemented framework-free authoritative ChessMatch session and serialized DesktopController. 11 focused native tests pass: atomic commands, actual choices and claims, cancellation, duplicate/generation/ABA checks, identical FEN with different histories, incomplete and invalid results, native promotion/mate, and Full-mode restoration refusal. Independent review /root/m3_contract_review inspected boundaries and reran all11 tests; no actionable findings. Workspace clippy --all-targets --locked -D warnings and full cargo test --workspace --locked passed locally. Native CI/integration pending.
+<!-- SECTION:NOTES:END -->

@@ -1,0 +1,12 @@
+.synthetic-introduction { max-width: 90ch; margin: 18px 0; color: #bfd0c9; line-height: 1.6; }
+.synthetic-badge { color: #f0dca8; border: 1px solid #887744; padding: 7px 12px; border-radius: 5px; }
+.synthetic-workspace { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: start; }
+.synthetic-board { min-width: 0; }
+.synthetic-inspector { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; padding-bottom: 24px; }
+.synthetic-inspector p { margin-top: 10px; line-height: 1.6; }
+.synthetic-inspector pre { overflow-wrap: anywhere; white-space: pre-wrap; font-size: 11px; }
+@media (max-width: 1050px) {
+  .synthetic-workspace { grid-template-columns: minmax(0, 1fr); }
+  .synthetic-inspector { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 720px) { .synthetic-inspector { grid-template-columns: minmax(0, 1fr); } }

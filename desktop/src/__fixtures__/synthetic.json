@@ -1,0 +1,633 @@
+{
+  "profile": "mshogi.synthetic.strider16.v1",
+  "version": 1,
+  "geometry": {
+    "files": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g",
+      "h",
+      "i",
+      "j",
+      "k",
+      "l",
+      "m",
+      "n",
+      "o",
+      "p"
+    ],
+    "ranks": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16"
+    ],
+    "label": "Synthetic development strider board, 16 by 16; invented rules",
+    "initial_focus": "i9"
+  },
+  "pieces": [
+    {
+      "square": "a1",
+      "color": "white",
+      "kind": "stone",
+      "label": "a1, synthetic White stone"
+    },
+    {
+      "square": "h8",
+      "color": "white",
+      "kind": "stone",
+      "label": "h8, synthetic White stone"
+    },
+    {
+      "square": "i9",
+      "color": "white",
+      "kind": "strider",
+      "label": "i9, synthetic White strider"
+    },
+    {
+      "square": "j10",
+      "color": "black",
+      "kind": "stone",
+      "label": "j10, synthetic Black stone"
+    },
+    {
+      "square": "k10",
+      "color": "black",
+      "kind": "stone",
+      "label": "k10, synthetic Black stone"
+    },
+    {
+      "square": "p16",
+      "color": "black",
+      "kind": "stone",
+      "label": "p16, synthetic Black stone"
+    }
+  ],
+  "choices": [
+    {
+      "action": "136>120",
+      "from": "i9",
+      "steps": [
+        "i8"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>120>103",
+      "from": "i9",
+      "steps": [
+        "i8",
+        "h7"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>120>104",
+      "from": "i9",
+      "steps": [
+        "i8",
+        "i7"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>120>105",
+      "from": "i9",
+      "steps": [
+        "i8",
+        "j7"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>120>121",
+      "from": "i9",
+      "steps": [
+        "i8",
+        "j8"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>120>135",
+      "from": "i9",
+      "steps": [
+        "i8",
+        "h9"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>120>136",
+      "from": "i9",
+      "steps": [
+        "i8",
+        "i9"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>120>137",
+      "from": "i9",
+      "steps": [
+        "i8",
+        "j9"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>121",
+      "from": "i9",
+      "steps": [
+        "j8"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>121>104",
+      "from": "i9",
+      "steps": [
+        "j8",
+        "i7"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>121>105",
+      "from": "i9",
+      "steps": [
+        "j8",
+        "j7"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>121>106",
+      "from": "i9",
+      "steps": [
+        "j8",
+        "k7"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>121>120",
+      "from": "i9",
+      "steps": [
+        "j8",
+        "i8"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>121>122",
+      "from": "i9",
+      "steps": [
+        "j8",
+        "k8"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>121>136",
+      "from": "i9",
+      "steps": [
+        "j8",
+        "i9"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>121>137",
+      "from": "i9",
+      "steps": [
+        "j8",
+        "j9"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>121>138",
+      "from": "i9",
+      "steps": [
+        "j8",
+        "k9"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>135",
+      "from": "i9",
+      "steps": [
+        "h9"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>135>118",
+      "from": "i9",
+      "steps": [
+        "h9",
+        "g8"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>135>120",
+      "from": "i9",
+      "steps": [
+        "h9",
+        "i8"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>135>134",
+      "from": "i9",
+      "steps": [
+        "h9",
+        "g9"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>135>136",
+      "from": "i9",
+      "steps": [
+        "h9",
+        "i9"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>135>150",
+      "from": "i9",
+      "steps": [
+        "h9",
+        "g10"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>135>151",
+      "from": "i9",
+      "steps": [
+        "h9",
+        "h10"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>135>152",
+      "from": "i9",
+      "steps": [
+        "h9",
+        "i10"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>137",
+      "from": "i9",
+      "steps": [
+        "j9"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>137>120",
+      "from": "i9",
+      "steps": [
+        "j9",
+        "i8"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>137>121",
+      "from": "i9",
+      "steps": [
+        "j9",
+        "j8"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>137>122",
+      "from": "i9",
+      "steps": [
+        "j9",
+        "k8"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>137>136",
+      "from": "i9",
+      "steps": [
+        "j9",
+        "i9"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>137>138",
+      "from": "i9",
+      "steps": [
+        "j9",
+        "k9"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>137>152",
+      "from": "i9",
+      "steps": [
+        "j9",
+        "i10"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>137>153",
+      "from": "i9",
+      "steps": [
+        "j9",
+        "j10"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>137>154",
+      "from": "i9",
+      "steps": [
+        "j9",
+        "k10"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>151",
+      "from": "i9",
+      "steps": [
+        "h10"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>151>134",
+      "from": "i9",
+      "steps": [
+        "h10",
+        "g9"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>151>135",
+      "from": "i9",
+      "steps": [
+        "h10",
+        "h9"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>151>136",
+      "from": "i9",
+      "steps": [
+        "h10",
+        "i9"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>151>150",
+      "from": "i9",
+      "steps": [
+        "h10",
+        "g10"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>151>152",
+      "from": "i9",
+      "steps": [
+        "h10",
+        "i10"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>151>166",
+      "from": "i9",
+      "steps": [
+        "h10",
+        "g11"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>151>167",
+      "from": "i9",
+      "steps": [
+        "h10",
+        "h11"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>151>168",
+      "from": "i9",
+      "steps": [
+        "h10",
+        "i11"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>152",
+      "from": "i9",
+      "steps": [
+        "i10"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>152>135",
+      "from": "i9",
+      "steps": [
+        "i10",
+        "h9"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>152>136",
+      "from": "i9",
+      "steps": [
+        "i10",
+        "i9"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>152>137",
+      "from": "i9",
+      "steps": [
+        "i10",
+        "j9"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>152>151",
+      "from": "i9",
+      "steps": [
+        "i10",
+        "h10"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>152>153",
+      "from": "i9",
+      "steps": [
+        "i10",
+        "j10"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>152>167",
+      "from": "i9",
+      "steps": [
+        "i10",
+        "h11"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>152>168",
+      "from": "i9",
+      "steps": [
+        "i10",
+        "i11"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>152>169",
+      "from": "i9",
+      "steps": [
+        "i10",
+        "j11"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>153",
+      "from": "i9",
+      "steps": [
+        "j10"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>153>136",
+      "from": "i9",
+      "steps": [
+        "j10",
+        "i9"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>153>137",
+      "from": "i9",
+      "steps": [
+        "j10",
+        "j9"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>153>138",
+      "from": "i9",
+      "steps": [
+        "j10",
+        "k9"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>153>152",
+      "from": "i9",
+      "steps": [
+        "j10",
+        "i10"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>153>154",
+      "from": "i9",
+      "steps": [
+        "j10",
+        "k10"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>153>168",
+      "from": "i9",
+      "steps": [
+        "j10",
+        "i11"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>153>169",
+      "from": "i9",
+      "steps": [
+        "j10",
+        "j11"
+      ],
+      "completion": null
+    },
+    {
+      "action": "136>153>170",
+      "from": "i9",
+      "steps": [
+        "j10",
+        "k11"
+      ],
+      "completion": null
+    }
+  ],
+  "record": {
+    "schema_version": 1,
+    "rules_profile": "mshogi.synthetic.strider16.v1",
+    "initial_fixture": "strider16-capture-and-return-v1",
+    "actions": []
+  },
+  "complete": false
+}

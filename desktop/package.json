@@ -8,7 +8,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "node scripts/build-frontend.mjs",
+    "build:verification": "node scripts/build-frontend.mjs --verification",
     "check": "tsc --noEmit",
     "test": "vitest run",
     "tauri": "tauri",

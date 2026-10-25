@@ -1,6 +1,10 @@
 {
   "productName": "mShogi Verification",
   "identifier": "org.mshogi.desktop.verification",
+  "build": {
+    "beforeBuildCommand": "node scripts/build-frontend.mjs --verification",
+    "frontendDist": "../dist-verification"
+  },
   "app": {
     "windows": [{
       "title": "mShogi Verification — test state",

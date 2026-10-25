@@ -48,8 +48,9 @@ are read-only; **Return to live** explicitly leaves history inspection.
 
 Full live-adjudication restoration is explicitly unsupported; the advanced
 read-only Full operation below is a separate controlled execution path. The
-synthetic large-board fixture and remaining interaction/platform integration
-work are later M3 tickets. M3 remains open; see the
+synthetic large-board fixture is available in the isolated verification build.
+Integrated accessibility and three-platform GUI verification remain M3 work.
+M3 remains open; see the
 [batch evidence](../docs/desktop/second-batch-evidence.md).
 
 Build a normal distributable with the platform's supported bundle format:
@@ -124,6 +125,20 @@ engine request; Retry uses ordinary play limits. `capacity` starts with 255
 genuine native zero-node analysis observations so the next accepted analysis
 reaches 256 and subsequent work demonstrates the application limit. These
 observations remain in saved documents. Close before launching another fixture.
+Use `MSHOGI_DESKTOP_FIXTURE=synthetic` in that same separate build for the
+invented 16-by-16 strider fixture. It uses the shared board and selector, with
+native complete choices and a separate temporary record. Select `i9 → j10 → i9`
+to capture and return, or Reset and select `i9 → h9 → i9` to return without that
+capture. A valid short prefix requires **Complete action here**; selecting it
+alone submits nothing. Escape cancels from the board or route controls. Flip
+changes orientation; arrow keys scroll focused squares into view. One complete
+action ends the demonstration; Reset advances the native version and clears its
+temporary record. This is development infrastructure, not another real game.
+
+Normal frontend builds force verification off even if its environment flag was
+inherited. Verification builds use `dist-verification`; normal assets remain in
+`dist`. The normal build checks emitted modules and markers, and package smoke
+checks confirm synthetic IPC, fixture and native quit-probe markers are absent.
 This build is QA infrastructure, not a normal distributable. The external package
 verifier checks that a normal host contains no fixture initializer marker.
 On macOS its application menu also has **Native Cocoa Quit (verification)**.

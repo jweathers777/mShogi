@@ -1,0 +1,11 @@
+import { StrictMode } from "react";
+import type { Root } from "react-dom/client";
+import { invoke } from "@tauri-apps/api/core";
+import { App } from "../App";
+import { SyntheticApp } from "./SyntheticApp";
+
+export async function mountVerification(root: Root) {
+  const mode = await invoke<string>("desktop_verification_mode");
+  if (mode !== "chess" && mode !== "synthetic") throw new Error("Unknown verification session mode");
+  root.render(<StrictMode>{mode === "synthetic" ? <SyntheticApp /> : <App />}</StrictMode>);
+}

@@ -178,6 +178,31 @@ p {
   max-width: min(660px, calc(100dvh - 300px));
   margin-inline: auto;
 }
+.board-wrap.large-board-wrap {
+  max-width: 100%;
+  width: 100%;
+}
+.large-board-wrap .board-scroll {
+  max-height: 65dvh;
+  overflow: auto;
+  border: 1px solid #789285;
+  border-radius: 8px;
+}
+.large-board-wrap .chess-board {
+  min-width: 1120px;
+}
+.large-board-wrap .coordinate {
+  font-size: 24px;
+}
+.route-selection {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid #c0c57c;
+  border-radius: 8px;
+}
+.route-selection button {
+  margin: 6px 8px 0 0;
+}
 .chess-board {
   width: 100%;
   display: block;

@@ -1,4 +1,8 @@
 //! Authoritative untimed desktop sessions. Framework-free commands and snapshots.
+#[cfg(feature = "desktop-verification")]
+mod synthetic;
+#[cfg(feature = "desktop-verification")]
+pub use synthetic::*;
 mod capacity;
 pub use capacity::*;
 mod persistence;

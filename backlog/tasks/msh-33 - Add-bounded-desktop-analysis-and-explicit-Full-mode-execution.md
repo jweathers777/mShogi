@@ -4,10 +4,12 @@ title: Add bounded desktop analysis and explicit Full-mode execution
 status: Ready
 assignee: []
 created_date: '2026-10-25T12:48:00Z'
+updated_date: '2026-10-25T15:20:00Z'
 labels: []
 milestone: m-3
 dependencies:
   - MSH-32
+  - MSH-34
 documentation:
   - docs/desktop/m3-design.md
 ordinal: 33000
@@ -33,3 +35,11 @@ Analysis is a separate interaction from committing an engine turn and must not r
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner clarification 2026-10-25: implement after MSH-34 in this batch. Ordinary bounded analysis is read-only with explicit request purpose and separate acceptance; it must never call the handler that applies an engine move/claim. Bind exact target record/history/selection, request/session/process identity, modes and limits. Document one supervised execution resource: analysis pauses/retires turn work, replacement retires old analysis, cancellation leaves play paused, explicit Resume retires analysis and starts a fresh turn. Full cooperative mating reachability is a distinct advanced supervised operation; expensive reconstruction/replay/adjudication stays off host interaction path. Cancellation/resource exhaustion yields unknown/incomplete, no chess result. Preserve modes/limits and reject unsupported restoration combinations. Show understandable pawn/mate-distance scores with perspective/analyzed position; raw identifiers/encoding in details; final actual telemetry sufficient. Existing AC preserved. See M3 design second-batch clarifications.
+
+Dependency list now explicitly includes MSH-34 as well as MSH-32 to enforce the owner-requested batch order; MSH-35 retains both MSH-33 and MSH-34. No acceptance criteria were changed.
+<!-- SECTION:NOTES:END -->

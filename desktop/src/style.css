@@ -560,13 +560,95 @@ p {
 
 /* Keep every rank and the keyboard instructions visible in shorter native windows. */
 @media (max-height: 740px) {
-  .app-header { height: 72px; }
-  .workspace { padding-top: 16px; }
-  .board-heading { margin-bottom: 10px; }
-  .board-heading .eyebrow { margin-bottom: 4px; }
-  .board-heading h2 { font-size: 22px; }
-  .player-line { margin-top: 3px; font-size: 12px; }
-  .board-wrap { max-width: min(660px, calc(100dvh - 235px)); }
-  .game-footnote { margin-top: 8px; }
-  .app-footer { margin-top: 14px; padding-top: 8px; }
+  .app-header {
+    height: 72px;
+  }
+  .workspace {
+    padding-top: 16px;
+  }
+  .board-heading {
+    margin-bottom: 10px;
+  }
+  .board-heading .eyebrow {
+    margin-bottom: 4px;
+  }
+  .board-heading h2 {
+    font-size: 22px;
+  }
+  .player-line {
+    margin-top: 3px;
+    font-size: 12px;
+  }
+  .board-wrap {
+    max-width: min(660px, calc(100dvh - 235px));
+  }
+  .game-footnote {
+    margin-top: 8px;
+  }
+  .app-footer {
+    margin-top: 14px;
+    padding-top: 8px;
+  }
+}
+
+.resign-button {
+  width: 100%;
+  margin-top: 12px;
+  font-size: 12px;
+}
+.resign-dialog .dialog-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+.resign-dialog .dialog-actions button {
+  flex: 1;
+}
+button.danger {
+  background: #b8523f;
+  color: #fff4ed;
+  border-color: #d47760;
+}
+button.danger:hover:enabled {
+  background: #c7614d;
+}
+.resign-dialog p.resign-stale {
+  color: #ffd2b8;
+  margin-top: 14px;
+}
+.outcome-card {
+  border-color: #6c8c62;
+  background: #253e31;
+}
+.outcome-card.unresolved {
+  border-color: #9b8551;
+  background: #3c3828;
+}
+.outcome-card > p:not(.eyebrow) {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #d8e3cc;
+}
+.outcome-card.unresolved > p:not(.eyebrow) {
+  color: #f0e1bc;
+}
+.notice details,
+.failure-detail {
+  font-size: 11px;
+  overflow-wrap: anywhere;
+  margin-top: 10px;
+}
+.notice summary,
+.failure-detail summary {
+  cursor: pointer;
+  color: #c4d2c7;
+}
+.notice details p {
+  font-family: ui-monospace, monospace;
+}
+.claim-scope {
+  color: #d6e9b7;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 5px;
 }

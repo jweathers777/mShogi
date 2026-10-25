@@ -38,6 +38,12 @@ pub enum DesktopCommand {
         /// Native claim choice.
         claim: EngineClaim,
     },
+    /// Explicit human resignation, including while the engine is thinking.
+    /// M2 proof limits can leave the concluded match unresolved and unscored.
+    Resign {
+        /// Expected current session version.
+        version: u64,
+    },
     /// Stop work without a fallback move or chess result.
     Cancel {
         /// Expected current session version.
@@ -55,6 +61,7 @@ impl DesktopCommand {
             Self::NewGame { version, .. }
             | Self::Play { version, .. }
             | Self::Claim { version, .. }
+            | Self::Resign { version }
             | Self::Cancel { version }
             | Self::Retry { version } => *version,
         }
@@ -164,6 +171,7 @@ pub struct DesktopSession {
     version: u64,
     revision: u64,
     next_request: u64,
+    play_limits: WorkLimits,
     pending: Option<EngineRequest>,
     engine: EngineState,
 }
@@ -181,6 +189,7 @@ impl DesktopSession {
             version: 1,
             revision: 1,
             next_request: 0,
+            play_limits: PLAY_LIMITS,
             pending: None,
             engine: EngineState::default(),
         }
@@ -235,6 +244,7 @@ impl DesktopSession {
             DesktopCommand::NewGame { human, .. } => {
                 self.game = new_match();
                 self.human = human;
+                self.play_limits = PLAY_LIMITS;
                 self.pending = None;
                 self.engine = EngineState::default();
                 self.changed();
@@ -265,7 +275,23 @@ impl DesktopSession {
                 self.engine.message = None;
                 self.changed();
             }
+            DesktopCommand::Resign { .. } => {
+                if self.game.conclusion().is_some() {
+                    return Err("This game has concluded. Start a new game to play again.".into());
+                }
+                self.apply_match(self.human, MatchCommand::Resign { witness: None }, at_ns)?;
+                self.pending = None;
+                self.engine.status = EnginePhase::Idle;
+                self.engine.message = None;
+                self.changed();
+            }
             DesktopCommand::Cancel { .. } => {
+                if self.game.conclusion().is_some()
+                    || self.pending.is_none()
+                    || self.engine.status != EnginePhase::Thinking
+                {
+                    return Err("There is no active engine search to cancel.".into());
+                }
                 self.pending = None;
                 self.engine.status = EnginePhase::Cancelled;
                 self.engine.message =
@@ -275,9 +301,15 @@ impl DesktopSession {
             DesktopCommand::Retry { .. } => {
                 if self.game.conclusion().is_some()
                     || self.game.game().position().side_to_move() == self.human
+                    || self.pending.is_some()
+                    || !matches!(
+                        self.engine.status,
+                        EnginePhase::Cancelled | EnginePhase::Failed | EnginePhase::Incomplete
+                    )
                 {
-                    return Err("There is no engine turn to retry.".into());
+                    return Err("There is no paused engine turn to retry.".into());
                 }
+                self.play_limits = PLAY_LIMITS;
                 self.pending = None;
                 self.engine.status = EnginePhase::Idle;
                 self.engine.message = None;
@@ -336,7 +368,7 @@ impl DesktopSession {
             session_version: self.version,
             process_generation: self.next_request,
             game: self.game.game().record(),
-            limits: PLAY_LIMITS,
+            limits: self.play_limits,
         };
         self.pending = Some(request.clone());
         self.engine.status = EnginePhase::Thinking;
@@ -478,7 +510,7 @@ impl DesktopSession {
             in_check: position.in_check(),
             engine: self.engine.clone(),
             rules_mode: "m2",
-            limits: PLAY_LIMITS,
+            limits: self.play_limits,
         }
     }
 }
@@ -512,6 +544,34 @@ impl DesktopController {
             bridge: EngineBridge::new(engine_path)?,
             origin: Instant::now(),
         })
+    }
+    /// Construct difficult native sessions for a separately labeled QA package.
+    /// This API and its fixture names do not exist in normal distributables.
+    /// Incomplete work is produced by the actual child with a zero-node budget;
+    /// explicit retry restores ordinary play limits and launches fresh work.
+    #[cfg(feature = "desktop-verification")]
+    pub fn verification(engine_path: PathBuf, fixture: &str) -> Result<Self, String> {
+        let mut controller = Self::new(engine_path).map_err(|error| error.to_string())?;
+        controller.session = match fixture {
+            "standard" => DesktopSession::new(),
+            "claim" | "current-claim" => {
+                let fen = if fixture == "claim" { "7k/8/8/8/8/8/R7/K7 w - - 99 1" } else { "7k/8/8/8/8/8/R7/K7 w - - 100 1" };
+                let game = AdjudicatedGame::from_fen(fen, ClaimPolicy::ExplicitOnly).map_err(|error| error.to_string())?;
+                DesktopSession::from_record(&game.record(), Color::White)?
+            }
+            "concluded" => {
+                let game = AdjudicatedGame::from_fen("7k/6Q1/5K2/8/8/8/8/8 b - - 0 1", ClaimPolicy::ExplicitOnly).map_err(|error| error.to_string())?;
+                DesktopSession::from_record(&game.record(), Color::Black)?
+            }
+            "incomplete" => {
+                let game = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
+                let mut session = DesktopSession::from_record(&game.record(), Color::Black)?;
+                session.play_limits.nodes = 0;
+                session
+            }
+            _ => return Err("Unknown desktop verification fixture. Use standard, claim, current-claim, concluded or incomplete.".into()),
+        };
+        Ok(controller)
     }
     fn at_ns(&self) -> u64 {
         u64::try_from(self.origin.elapsed().as_nanos()).unwrap_or(u64::MAX)
@@ -802,6 +862,279 @@ mod tests {
                 winner: Color::Black
             }))
         );
+    }
+    #[test]
+    fn resignation_is_unresolved_with_no_proof_on_either_players_turn() {
+        for engine_turn in [false, true] {
+            let mut session = DesktopSession::new();
+            let old = if engine_turn {
+                session
+                    .command(
+                        DesktopCommand::Play {
+                            version: session.version,
+                            action: "e2e4".parse().unwrap(),
+                        },
+                        1,
+                    )
+                    .unwrap();
+                session.engine_request()
+            } else {
+                None
+            };
+            let before_game = session.game.game().record().to_json();
+            let before_history = session.snapshot().history;
+            session
+                .command(
+                    DesktopCommand::Resign {
+                        version: session.version,
+                    },
+                    2,
+                )
+                .unwrap();
+            let conclusion = Some(MatchConclusion::Unresolved {
+                actor: Color::White,
+                trigger: TerminationTrigger::Resignation,
+            });
+            assert_eq!(session.snapshot().conclusion, conclusion);
+            assert_eq!(
+                session.snapshot().conclusion.unwrap().white_score_twice(),
+                None
+            );
+            assert_eq!(session.snapshot().history, before_history);
+            assert_eq!(session.game.game().record().to_json(), before_game);
+            assert_eq!(
+                session.game.record().replay().unwrap().conclusion(),
+                conclusion
+            );
+            assert!(session.snapshot().legal_choices.is_empty());
+            assert!(session.engine_request().is_none());
+            if let Some(old) = old {
+                assert!(!session.accept(response(old, "a7a6"), 3));
+            }
+            let record = session.game.record().to_json();
+            for command in [
+                DesktopCommand::Resign {
+                    version: session.version,
+                },
+                DesktopCommand::Cancel {
+                    version: session.version,
+                },
+                DesktopCommand::Retry {
+                    version: session.version,
+                },
+            ] {
+                assert!(session.command(command, 4).is_err());
+                assert_eq!(session.game.record().to_json(), record);
+            }
+        }
+    }
+    #[test]
+    fn resignation_is_a_draw_only_when_opponents_mate_is_proven_impossible() {
+        let game =
+            AdjudicatedGame::from_fen("7k/8/8/8/8/8/R7/K7 w - - 0 1", ClaimPolicy::ExplicitOnly)
+                .unwrap();
+        let mut session = DesktopSession::from_record(&game.record(), Color::White).unwrap();
+        assert!(session.snapshot().conclusion.is_none());
+        session
+            .command(
+                DesktopCommand::Resign {
+                    version: session.version,
+                },
+                1,
+            )
+            .unwrap();
+        assert_eq!(
+            session.snapshot().conclusion,
+            Some(MatchConclusion::Draw {
+                trigger: Some(TerminationTrigger::Resignation)
+            })
+        );
+        assert_eq!(
+            session.snapshot().conclusion.unwrap().white_score_twice(),
+            Some(1)
+        );
+        assert!(session.snapshot().history.is_empty());
+        assert_eq!(
+            session.game.record().replay().unwrap().conclusion(),
+            session.snapshot().conclusion
+        );
+    }
+    #[test]
+    fn recovery_preserves_exact_match_and_game_records_and_retires_old_results() {
+        for failure in [false, true] {
+            let mut game = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
+            for action in ["g1f3", "g8f6"] {
+                game.apply(action.parse().unwrap()).unwrap();
+            }
+            let mut session = DesktopSession::from_record(&game.record(), Color::Black).unwrap();
+            let old = session.engine_request().unwrap();
+            let before_game = session.game.game().record().to_json();
+            let before_match = session.game.record().to_json();
+            let result = if failure {
+                EngineResult::Failure {
+                    failure: mshogi_engine::EngineFailure {
+                        kind: mshogi_engine::FailureKind::Search,
+                        message: "test native search failure".into(),
+                    },
+                }
+            } else {
+                EngineResult::Incomplete {
+                    telemetry: Telemetry {
+                        score: None,
+                        completed_depth: 0,
+                        nodes: 0,
+                        principal_variation: vec![],
+                        status: StopReason::Stopped,
+                    },
+                }
+            };
+            assert!(session.accept(
+                EngineResponse {
+                    context: old.clone(),
+                    result
+                },
+                1
+            ));
+            assert_eq!(
+                session.engine.status,
+                if failure {
+                    EnginePhase::Failed
+                } else {
+                    EnginePhase::Incomplete
+                }
+            );
+            assert!(session.snapshot().conclusion.is_none());
+            assert_eq!(session.game.record().to_json(), before_match);
+            session
+                .command(
+                    DesktopCommand::Retry {
+                        version: session.version,
+                    },
+                    2,
+                )
+                .unwrap();
+            let fresh = session.engine_request().unwrap();
+            assert!(fresh.request_id > old.request_id);
+            assert!(fresh.process_generation > old.process_generation);
+            assert_eq!(fresh.game, old.game);
+            assert_eq!(session.game.game().record().to_json(), before_game);
+            assert_eq!(session.game.record().to_json(), before_match);
+            assert!(!session.accept(response(old, "e2e4"), 3));
+            session
+                .command(
+                    DesktopCommand::Cancel {
+                        version: session.version,
+                    },
+                    4,
+                )
+                .unwrap();
+            assert_eq!(session.game.record().to_json(), before_match);
+            assert!(!session.accept(response(fresh, "e2e4"), 5));
+            session
+                .command(
+                    DesktopCommand::Retry {
+                        version: session.version,
+                    },
+                    6,
+                )
+                .unwrap();
+            let resumed = session.engine_request().unwrap();
+            assert!(session.accept(response(resumed, "e2e4"), 7));
+            assert_eq!(session.snapshot().history, ["g1f3", "g8f6", "e2e4"]);
+        }
+    }
+    #[test]
+    fn cancellation_and_retry_reject_invalid_states_atomically() {
+        let mut session = DesktopSession::new();
+        let before = session.game.record().to_json();
+        let version = session.version;
+        assert!(
+            session
+                .command(DesktopCommand::Cancel { version }, 1)
+                .is_err()
+        );
+        assert!(
+            session
+                .command(DesktopCommand::Retry { version }, 1)
+                .is_err()
+        );
+        assert_eq!(session.version, version);
+        assert_eq!(session.game.record().to_json(), before);
+        session
+            .command(
+                DesktopCommand::Play {
+                    version,
+                    action: "e2e4".parse().unwrap(),
+                },
+                2,
+            )
+            .unwrap();
+        let request = session.engine_request().unwrap();
+        let version = session.version;
+        assert!(
+            session
+                .command(DesktopCommand::Retry { version }, 3)
+                .is_err()
+        );
+        assert_eq!(session.pending, Some(request));
+        assert_eq!(session.version, version);
+    }
+    #[cfg(feature = "desktop-verification")]
+    #[test]
+    fn verification_states_are_native_and_zero_work_retry_restores_play_limits() {
+        let path = PathBuf::from("/unused/verification-engine");
+        let claim = DesktopController::verification(path.clone(), "claim").unwrap();
+        assert!(
+            claim
+                .session
+                .snapshot()
+                .claims
+                .iter()
+                .any(|claim| claim.intended.is_some())
+        );
+        let current_claim = DesktopController::verification(path.clone(), "current-claim").unwrap();
+        assert!(
+            current_claim
+                .session
+                .snapshot()
+                .claims
+                .iter()
+                .any(|claim| claim.intended.is_none())
+        );
+        let concluded = DesktopController::verification(path.clone(), "concluded").unwrap();
+        assert_eq!(
+            concluded.session.snapshot().conclusion,
+            Some(MatchConclusion::Chess(ChessOutcome::Checkmate {
+                winner: Color::White
+            }))
+        );
+        let mut incomplete = DesktopController::verification(path.clone(), "incomplete").unwrap();
+        let request = incomplete.session.engine_request().unwrap();
+        assert_eq!(request.limits.nodes, 0);
+        assert_eq!(incomplete.session.snapshot().limits.nodes, 0);
+        incomplete
+            .session
+            .command(
+                DesktopCommand::Cancel {
+                    version: incomplete.session.version,
+                },
+                1,
+            )
+            .unwrap();
+        incomplete
+            .session
+            .command(
+                DesktopCommand::Retry {
+                    version: incomplete.session.version,
+                },
+                2,
+            )
+            .unwrap();
+        assert_eq!(
+            incomplete.session.engine_request().unwrap().limits,
+            PLAY_LIMITS
+        );
+        assert!(DesktopController::verification(path, "unknown").is_err());
     }
     #[test]
     fn full_mode_restoration_is_explicitly_rejected_before_solver_execution() {

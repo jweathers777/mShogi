@@ -87,7 +87,7 @@ export type DesktopCommand =
   | { kind: "new_game"; version: number; human: Color }
   | { kind: "play"; version: number; action: string }
   | { kind: "claim"; version: number; claim: Claim }
-  | { kind: "cancel" | "retry"; version: number };
+  | { kind: "cancel" | "retry" | "resign"; version: number };
 
 export function newestSnapshot(
   current: Snapshot | null,

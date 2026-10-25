@@ -5,6 +5,10 @@ edition.workspace = true
 rust-version.workspace = true
 publish.workspace = true
 
+[features]
+# Separate labeled desktop QA builds only; no initializer exists in normal builds.
+desktop-verification = []
+
 [lints]
 workspace = true
 

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-10-25T12:48:00Z'
-updated_date: '2026-10-25T19:56:00Z'
+updated_date: '2026-10-25T20:16:00Z'
 labels: []
 milestone: m-3
 dependencies:
@@ -48,4 +48,6 @@ Preserve exact normal package identities and reuse unchanged macOS CUA evidence 
 Owner @codex, codex/m3-desktop in .claude/worktrees/next-task; MSH-37 is Done and integrated/pushed with complete GUI/evidence review and all-platform native/package CI. Isolated delegation: platform_gui_research Linux native adapter, capacity_native Windows native adapter/runtime driver setup; root owns common harness/workflow/integration, capacity_review independent review. No product instrumentation or new rules work. M2 stays closed, M4-M6 remain future To Do.
 
 External GUI verifier implemented with W3C pointer/keyboard actions and read-only DOM observations, real native file pickers/close/Quit, exact executable/process identity and pre-teardown exit proof. Normal Linux GUI stays actually apt-installed; genuine missing-sidecar failure/retry runs in the separately labeled writable QA standard package, preserving installed /usr/bin permissions. QA promotion/claim/capacity/synthetic phases are distinct. Native evidence directories are per phase. Independent static review caught and resolved Linux sidecar permissions, Windows DLL lookup, post-Open inspector selection, promotion text selector and synthetic startup readiness. Workflow YAML parsing, Python compilation and diff checks pass; actual Windows/Linux GUI execution is not yet verified.
+
+First actual GUI run 40228382037 at 9b7a2a6 failed and remains recorded as failed. Linux really installed/launched and loaded the frontend, but WebKit SVG-group element-click rejected the first move; native desktop was blank with DRI3 warnings. Windows really installed/launched and played e2e4/a7a5, then verifier clear() appended a controlled number field and validation correctly refused analysis. Native Windows images also exposed an external WebView2 console overlay. Evidence retained in docs/desktop/evidence/m3-platforms/*-attempt-1. Independently reviewed corrections use real viewport W3C pointer actions with read-only geometry/hit checks, large-board keyboard routes, recorded Xvfb compositing override, real Select-all/Backspace/typing with observed-value assertion, external-driver console suppression, and exact native app/modal focus before raw desktop screenshots. No product source or criteria changed; all corrected GUI journeys require a new actual run.
 <!-- SECTION:NOTES:END -->

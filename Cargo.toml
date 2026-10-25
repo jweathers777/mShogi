@@ -1,6 +1,6 @@
 [workspace]
 members = ["crates/mshogi-core", "crates/mshogi-console", "crates/mshogi-search", "crates/mshogi-runner", "crates/mshogi-engine", "crates/mshogi-desktop-session"]
-exclude = ["legacy/rust-prototype", "desktop/src-tauri"]
+exclude = ["desktop/src-tauri"]
 resolver = "3"
 
 [workspace.package]

@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "id": "clock-cancellation",
+  "engines": [
+    {
+      "path": "/tmp/msh-m2-engine",
+      "args": [
+        "uci"
+      ],
+      "options": [],
+      "model_path": null,
+      "model_identity": "mshogi.chess.material.v1; untrained P100 N320 B330 R500 Q900 K0",
+      "deterministic": true
+    },
+    {
+      "path": "/tmp/msh-m2-engine",
+      "args": [
+        "uci"
+      ],
+      "options": [],
+      "model_path": null,
+      "model_identity": "mshogi.chess.material.v1; untrained P100 N320 B330 R500 Q900 K0",
+      "deterministic": true
+    }
+  ],
+  "openings": [
+    {
+      "id": "active-search-clock-expiry",
+      "fen": null,
+      "moves": []
+    }
+  ],
+  "paired": false,
+  "claim_policy": "auto_claim",
+  "time_control": {
+    "increment": {
+      "initial_ns": [
+        50000000,
+        50000000
+      ],
+      "increment_ns": 0
+    }
+  },
+  "work": {
+    "depth": 128,
+    "nodes": null,
+    "movetime_ms": 10000
+  },
+  "max_plies": 512
+}

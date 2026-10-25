@@ -1,6 +1,6 @@
 # mShogi rewrite
 
-This repository baseline describes the rewrite of John Weathers's mShogi. It contains a minimal Rust library/headless-console workspace, the design and Backlog.md queue, and the earlier Rust prototype preserved under `legacy/rust-prototype/`. The core implements explicit chess state/FEN, geometric attack queries, pseudo-legal candidate generation, and checked moves, captures, promotions, castling and en passant with exact undo. It also exposes the legal-action list and position-level check/checkmate/stalemate classification. Perft and divide diagnostics are available in the library and, with every other M1 diagnostic, through the headless `mshogi shell` console. The core also owns [game history and canonical records](docs/rules/chess-history-record-v1.md). A separate native search crate provides the [transparent material evaluator](docs/evaluation.md); [full-width search](docs/search.md) and [bounded live match adjudication/clocks](docs/rules/chess-match-api.md) are available in native libraries. The separate [UCI engine mode](docs/uci.md) connects the native search to external controllers. Full chess completeness remains M4 work. The retained prototype has not been certified against the new design.
+This repository baseline describes the rewrite of John Weathers's mShogi. It contains a minimal Rust library/headless-console workspace, the design and Backlog.md queue, and the earlier Rust prototype preserved under `legacy/rust-prototype/`. The core implements explicit chess state/FEN, geometric attack queries, pseudo-legal candidate generation, and checked moves, captures, promotions, castling and en passant with exact undo. It also exposes the legal-action list and position-level check/checkmate/stalemate classification. Perft and divide diagnostics are available in the library and, with every other M1 diagnostic, through the headless `mshogi shell` console. The core also owns [game history and canonical records](docs/rules/chess-history-record-v1.md). A separate native search crate provides the [transparent material evaluator](docs/evaluation.md); [full-width search](docs/search.md) and [bounded live match adjudication/clocks](docs/rules/chess-match-api.md) are available in native libraries. The separate [UCI engine mode](docs/uci.md) connects the native search to external controllers. An opt-in [exact mating-reachability procedure](docs/rules/chess-completeness.md) extends adjudication beyond the default M2 subset, with explicit resource uncertainty. The retained prototype has not been certified against the new design.
 
 The product goal is a reusable library with complete implementations of chess, shogi, tori shogi, chu shogi, tenjiku shogi, and xiangqi; capable mShogi engines; a standalone and interoperable console application; and a polished desktop application for Windows, macOS, and Linux.
 
@@ -18,9 +18,9 @@ Design and product decisions are developed with John in ChatGPT. Codex or Claude
 
 ## Current objective
 
-Establish a chess rules kernel and a headless verification console on the new build/workflow baseline. This first milestone establishes legal move generation, reversible state changes, useful diagnostics, and independent correctness evidence. It is not a claim of complete chess adjudication or competitive playing strength.
+The native chess baseline provides rules/history, live match adjudication and clocks, transparent evaluation, full-width search, cancellation and UCI. The [match runner](docs/match-runner.md) connects real UCI engines to that rules boundary and preserves replayable experiment evidence. Default M2 dead recognition remains a sound subset; exact opt-in analysis can exceed practical resource limits. No competitive playing-strength claim follows.
 
-Search, protocol interoperability, the desktop application, complete variant implementations, and learned evaluation follow in the roadmap in `docs/design.md`.
+The desktop application, remaining target games, and learned evaluation follow in the roadmap in `docs/design.md`.
 
 ## Repository and existing work
 
@@ -48,7 +48,11 @@ The console reports its version, rules profile and coverage, and `mshogi shell` 
 
 ## UCI engine mode
 
-`cargo run --release --locked --bin mshogi -- uci` starts the [bounded UCI adapter](docs/uci.md). It supports handshake/readiness, complete position history, depth/node search limits, basic clock/increment or movetime budgets, and responsive stop/quit. Protocol output uses stdout; diagnostics use stderr. The custom `ClaimPolicy` option defaults to explicit; unattended controllers can select auto so future search nodes follow their recorded claim policy. The controller handles actual draw claims because UCI has no claim command. See the adapter contract for supported controls, fallback behavior and limitations. Independent-engine match evidence remains MSH-23 work.
+`cargo run --release --locked --bin mshogi -- uci` starts the [bounded UCI adapter](docs/uci.md). It supports handshake/readiness, complete position history, depth/node search limits, basic clock/increment or movetime budgets, and responsive stop/quit. Protocol output uses stdout; diagnostics use stderr. The custom `ClaimPolicy` option defaults to explicit; unattended controllers can select auto so future search nodes follow their recorded claim policy. The controller handles actual draw claims because UCI has no claim command. See the adapter contract for supported controls, fallback behavior and limitations. The [native runner and recorded independent-engine experiments](docs/match-runner.md) exercise this path.
+
+## Native match experiments
+
+`cargo run --release --locked --bin mshogi-match -- run CONFIG.json REPORT.json` runs paired self-play or external UCI games through the core match API. `mshogi-match replay REPORT.json` validates their canonical games, commands, clocks and results without launching opponents. Configurations retain executable/model identities, options, deterministic work or clock limits and failure evidence. See [match-runner.md](docs/match-runner.md) for actual Stockfish interoperability, setup, bounds and the distinction between record replay and conditional deterministic reruns.
 
 ## Headless chess console
 

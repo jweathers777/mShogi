@@ -166,3 +166,13 @@ The 256-button accessibility inventory and every behavior assertion remain.
 No production change or timeout increase: full 64-test suite passed in 5.40s;
 independent 8-test focused rerun passed in 3.48s. Replacement package CI must
 pass before the ticket is finalized.
+
+MSH-36 integrated revision: `415f080ea3d0f3ad361120b07bcfaab3fd001678`.
+[Rust workspace CI](https://github.com/jweathers777/mShogi/actions/runs/40223036914)
+and [normal desktop package CI](https://github.com/jweathers777/mShogi/actions/runs/40223036915)
+passed Linux, macOS and Windows. Product source/package GUI evidence remains
+`4e997f0`; subsequent desktop changes are test/evidence corrections. Independent
+review also inspected all four screenshots and recomputed both host and both
+bundled-engine hashes against the JSON, with no material evidence findings.
+Nested scrolling/control access at minimum size is carried into MSH-37's
+integrated interaction assessment. M3 remains open.

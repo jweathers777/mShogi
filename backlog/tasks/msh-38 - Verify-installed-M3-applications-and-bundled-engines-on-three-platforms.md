@@ -1,11 +1,11 @@
 ---
 id: MSH-38
 title: Verify installed M3 applications and bundled engines on three platforms
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-25T12:48:00Z'
-updated_date: '2026-10-25T21:10:00Z'
+updated_date: '2026-10-25T21:31:00Z'
 labels: []
 milestone: m-3
 dependencies:
@@ -23,17 +23,17 @@ Package compilation is insufficient evidence that the installed application and 
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Actual packaged application installation/launch and bundled-engine play are verified on Windows, macOS and Linux with exact source, package and environment identities.
-- [ ] #2 Each platform exercises analysis/cancellation, outcomes/recovery, save/reopen/history and synthetic fixture interactions; failures are resolved or remain explicit blockers.
-- [ ] #3 Normal package contents exclude instrumentation; durable screenshots/logs/native CI and reproducible launch/install instructions support all three platform claims.
+- [x] #1 Actual packaged application installation/launch and bundled-engine play are verified on Windows, macOS and Linux with exact source, package and environment identities.
+- [x] #2 Each platform exercises analysis/cancellation, outcomes/recovery, save/reopen/history and synthetic fixture interactions; failures are resolved or remain explicit blockers.
+- [x] #3 Normal package contents exclude instrumentation; durable screenshots/logs/native CI and reproducible launch/install instructions support all three platform claims.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -64,4 +64,14 @@ Third Windows run atf0c8dd6 exact native Save passed5822bytes/2observations/5con
 Fourth Linux40232694201 ate313ef0 attemptedall6phases. Standard recovery/retry, promotion and capacity passed with native pre-teardown host/engine absence; exact Save/Open/historical analysis/Returnlive/Resume/nativecloseCancel passed in normal. Normal+claim finalguardPOST terminatedWebKit beforeHTTPresponse, so stoppedproofwasnotrun and those phases remainfailed. Synthetic startup/status RemoteDisconnected exposed driver-readiness race beforeapplaunch. Independently reviewed commoncorrection scopes knownterminaltransport errors ONLYafterobservednativeQuitguard/resolvedfinalbuttonPOST, stillrequiresnativehost+engineabsenceBEFOREteardown; startup-only boundedtransportretry recordsattempts and abortsondriverdeath. Screenshotorder now allows150msnativepresentationafterwebviewcapture, retainingrawdesktoponfailure. Actual capacity nativePNG exposed offscreenpauseexplanationabove disabledStart; independentlyreviewed productfix focusesnewnativecapacityid alert once (tabIndex-1), preservinguserfocus onidenticalpolls. FourCapacitytests and25focusedCapacity/Analysis/Historyfrontendchecks+tscpassed; actualpackagedvisibilityproofpending.
 
 FourthWindows e313ef0 all6journeys reached expected game/analysis/document/route results but everyphase failedwaitingQuitguard afterautomatedCtrlQ. All27nativecaptures no exact-engine consoles/focuserrors; normalWM_CLOSE+Cancelpassed; finalhistorical context1eventBlackply1; capacityarchive256obs/256controls. Failedall6verdicts andpackage/runtimeidentities preserved in windows-attempt-4; no cleanupabsence reclassifiedasQuitproof. Officialpinnedpywinauto source disprovesinitialVK_PACKEThypothesis; causeunestablished. Independentlyreviewed correction usesobserved exactnative mShogi→Quit mShogi mousemenu (click_input, notWM_COMMAND), boundHWND/PID/exe/labels/enabledgeometry, openmenuscreen/metadata; actualfifthrunmustproveguard+pre-teardownexit. New4e1e9d4capacityfocus realMacQA passedfromscrolledanalysis:256accepted/257rejected, newlyfocusedfullalertvisible, nativeSavecomplete256 (385620bytes,256controls), samepolls didnotstealnativefilenamefocus, cleanCmdQ followedseparatepgrepnoneexit1. Evidence macos-capacity-focus. Commontransport/startup/presentationfix independentlyreviewed;9terminalclassificationchecks andsyntax/diffpass. No current three-platform completion claimed.
+
+Final-source2f0e4cee3e1cc05df99ff51178eb4be810fbcb44 passed desktop CI40234257669 and Rust CI40234257686 on Ubuntu24.04, Windows2022 and macOS15. All six actual Linux and Windows GUI phases now pass; independent artifact review is validating exact package/runtime/window/process identities, native screenshots, canonical archives and pre-teardown shutdown, without relabeling prior failed runs. Current macOS CUA final-normal humanBlack play/guardedQuit and capacity-focus/save regressions supplement unchanged prior full journeys; exact reports retained separately. MSH-38 remains In Review pending complete evidence assessment and normal integration.
+
+Independent reviewer capacity_review PASS at2f0e4cee: all AC1-3 supported, no material finding or required GUI check outstanding. Reviewed final verifier transport/startup/capture/failure-classification/cleanup isolation without weakening native exit proof. Verified all65 original Windows artifact hashes,49 retained originals,48 retained Linux originals, all6 actual phase/guard/pre-teardown exit results on both systems, current macOS bundle/report hashes and all3 desktop/Rust CI success. Durable assessment: docs/desktop/evidence/m3-platforms/independent-review.json; final package identities/reports/screenshots/complete records in linux-final, windows-final, macos-final-normal plus qualified earlier Mac evidence. Root independently rechecked retained-file hashes, exact product-path equality4e1e9d4→01865e9→2f0e4cee, selected native images, local evidence links and diff checks. Preserve earlier failed attempts; native shortcut cause remains unestablished, no success claimed for Windows automated CtrlQ. Product source is normally integrated/pushed at2f0e4cee; evidence completion record follows normal integration.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Completed actual three-platform packaged application verification. Linux apt-installed normal and separate labeled QA packages and Windows NSIS-installed normal/QA applications passed all six GUI phases: real engine play, active analysis cancellation/replacement, recovery/retry, promotion/claim outcomes, complete Save/Open/history/Return live/Resume, capacity256/refuse257/losslessSave and synthetic routes. Native close Cancel and native Quit guard/exit are proven before teardown. macOS actual normal/QA journeys and final-source play/capacity/message regressions retain exact original package identities; unchanged earlier evidence reused explicitly. Normal packages exclude instrumentation; bounded external drivers remain separate. Fixed genuine Windows engine console focus theft, stale completed-operation messages and offscreen capacity alerts with focused tests and packaged regressions. Independent review passes; all3 native/desktop CI40234257669 and40234257686 pass exact integrated2f0e4cee. See packaged-gui-verification.md and m3-platforms/independent-review.json. MSH39 remains the required M3 integration/closure gate; environment/accessibility/release-distribution limitations are explicit.
+<!-- SECTION:FINAL_SUMMARY:END -->

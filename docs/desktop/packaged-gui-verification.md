@@ -95,7 +95,51 @@ launch/build instructions remain in [desktop/README.md](../../desktop/README.md)
 CI artifacts retain full reports and packages temporarily; selected reports,
 screenshots and exact CI references are committed with final task evidence.
 
-## Current result
+## Final MSH-38 result
+
+The required application journeys passed. The exact integrated source is
+`2f0e4cee3e1cc05df99ff51178eb4be810fbcb44`, built from desktop revision
+`01865e9996f586bb91c0f0ed3c39fa4d88ecf462`. Both
+[desktop CI 40234257669](https://github.com/jweathers777/mShogi/actions/runs/40234257669)
+and [Rust CI 40234257686](https://github.com/jweathers777/mShogi/actions/runs/40234257686)
+passed on all three systems. Native formatting, Clippy, tests and verification
+feature checks are distinct from package inventory/protocol checks and actual
+GUI interaction. The frontend run passed 78 tests in 13 files.
+
+| Actual application environment | Package and interaction evidence | Result |
+| --- | --- | --- |
+| Ubuntu 24.04.5 amd64, GTK 3.24.41, WebKitGTK 2.52.6; X11/Xvfb 1440 × 1100, Openbox, recorded software-compositing override | [Linux report, identities and retained-file hashes](evidence/m3-platforms/linux-final/evidence.json); apt-installed normal Debian package, separately extracted labeled verification package | All six phases passed; native Save/Open, window-close Cancel and Quit verified. Host and engine absent before teardown in every phase. |
+| Windows Server 2022 interactive Default desktop, installed WebView2 and matching signed driver recorded in report | [Windows report, identities and retained-file hashes](evidence/m3-platforms/windows-final/evidence.json); actual normal and separate verification NSIS installations | All six phases passed, including native pickers, window-close Cancel and actual mouse selection of native Quit. Host and engine absent before teardown in every phase. |
+| macOS 27.0.1 build 26A434, arm64, native WKWebView | [Final normal package](evidence/m3-platforms/macos-final-normal/gui-report.json), [capacity visibility/save regression](evidence/m3-platforms/macos-capacity-focus/gui-report.json), [completed-message regression](evidence/m3-platforms/macos-status/gui-report.json), [broader current normal journey](evidence/m3-platforms/macos-current/gui-report.json), and [unchanged earlier complete journeys](completion-batch-evidence.md) | Actual normal and labeled QA application interaction passed. Final normal package played human Black; clean guarded Quit was checked by separate process inspection. Earlier play, analysis, recovery, history, claims, promotion and synthetic evidence is reused with its original source/package identities. |
+
+Linux and Windows each completed normal play, active analysis cancellation and
+replacement, complete Save/Open, exact historical-prefix analysis, Return to
+live, explicit Resume and unsaved-change protection. Separate QA phases passed
+genuine engine failure/retry, promotion cancellation and Knight choice, optional
+intended-move claim, observation 256 accepted/257 rejected with a complete
+256-observation save, and both synthetic same-endpoint routes with prefix
+cancellation. New capacity pauses are visibly explained and focused. Native
+captures show no bundled-engine console stealing Windows focus.
+
+The final macOS normal host SHA-256 is
+`00c92dad60a3a5e5c6d2b99a86e4fa7a0b678a0858d42ce78f8809fe8de41611`;
+its engine SHA-256 is
+`45d264831e806ea81b426b4fbbb94f2ecbcba384d23696a5c87537acca555ba5`.
+The latest QA capacity package uses product revision `4e1e9d4`; product paths
+are unchanged between that revision, `01865e9` and integrated `2f0e4cee`.
+The other MSH-38 product changes were Windows-only supervised launch flags and
+past-tense completed I/O messages; each has focused tests and applicable native
+application evidence. Earlier evidence is reused only for unaffected behavior.
+
+These results establish the recorded environments, rather than every OS version,
+Linux compositor or assistive technology. macOS 15 CI constructs and checks the
+normal package; the actual macOS GUI evidence is from 27.0.1. Screen-reader audio,
+formal accessibility certification, actual Dock clicking, release signing and
+notarization are not claimed. The [Tao patch provenance and native termination
+regression](macos-quit.md) remain intact. MSH-39 independently determines the
+complete M3 milestone verdict.
+
+## Retained earlier attempts and corrections
 
 First external Windows/Linux run: source
 `9b7a2a6b29c30b8d417d75cb4393dd6ba43f6ad0`,
@@ -105,7 +149,7 @@ native window under Xvfb with DRI3 warnings. Its [failed evidence](evidence/m3-p
 is retained, separately from any corrected rerun. Real W3C pointer input and a
 recorded CI-only `WEBKIT_DISABLE_COMPOSITING_MODE=1` override address these
 observed issues; [WebKit documents the override](https://trac.webkit.org/wiki/EnvironmentVariables).
-Actual corrected GUI results remain pending. Static checks are not GUI passes. macOS actual interaction
+These are failed attempts, not GUI passes. Later results are recorded separately. Earlier macOS actual interaction
 is recorded in [the completion-batch evidence](completion-batch-evidence.md).
 
 
@@ -124,8 +168,7 @@ archive, but the verifier left GTK's default extension after the supplied name,
 producing `normal-complete.mshogi.mshogi`. The exact-path check correctly failed;
 the [partial attempt](evidence/m3-platforms/linux-attempt-2/attempt.json) remains
 failed. The adapter now selects the entire native path field, captures it before
-acceptance and requires the exact requested file. This correction still requires
-an actual rerun; it does not accept the doubled-extension file as the target.
+acceptance and requires the exact requested file. The next attempt reran this correction; the doubled-extension file was never accepted as the target.
 
 The second Windows attempt in that run also passed real play, active analysis
 cancellation and bounded replacement, then saved the picker's default
@@ -139,7 +182,7 @@ and Microsoft's [documented console-free launch flag](https://learn.microsoft.co
 Windows native verification must reject a visible console belonging to the
 exact bundled engine and validate foreground focus at capture time. The picker
 adapter also needs exact-PID ownerless-modal handling and observed real filename
-input. These findings require a corrected packaged application rerun.
+input. These findings led to the subsequent corrected packaged application runs.
 
 The current-source macOS normal package was rebuilt and exercised separately;
 its [report](evidence/m3-platforms/macos-current/gui-report.json) records the
@@ -153,7 +196,7 @@ Return to live and Resume. Completed Open/reconstruction messages now describe
 the past operation; the authoritative live/history banner and paused controls
 describe current state. The correction changes no session or admission
 semantics. Focused native and frontend history/document checks passed; the
-final corrected package journeys remain required.
+subsequent package journeys verify the correction.
 
 The third Linux attempt at `f0c8dd654cb151621ea95582bdce1b1b374faaa9`
 ([run 40231293207](https://github.com/jweathers777/mShogi/actions/runs/40231293207))
@@ -163,7 +206,7 @@ Open button enabled. The [failed partial evidence](evidence/m3-platforms/linux-a
 is preserved. The adapter now uses the actual Open mnemonic after a bounded
 wait when Return only resolves the location, parallel to its existing Save
 mnemonic. It records the pre-accept native screen and key; controller restoration,
-history and lifecycle checks still have to pass.
+history and lifecycle results are recorded in the later runs.
 
 The completed-message correction was also checked in a new normal macOS build;
 its [focused actual GUI report](evidence/m3-platforms/macos-status/gui-report.json)
@@ -178,7 +221,7 @@ Open then found three UIA controls named Open: two dropdowns and the uniquely
 identified acceptance button. The [failed partial evidence](evidence/m3-platforms/windows-attempt-3/attempt.json)
 remains failed. The corrected adapter prioritizes the unique native title/ID
 intersection; replaying the actual captured UIA tree selected button ID `1`.
-Actual Open/history/lifecycle and fixture journeys still require a rerun.
+Actual Open/history/lifecycle and fixture results are recorded in the later runs.
 
 Each isolated phase now retains its own failure and traceback and attempts the
 next phase only after successful cleanup. Any failed required phase keeps the
@@ -194,7 +237,7 @@ Linux standard recovery, promotion and capacity passed including native exit
 before teardown. Normal Save/Open/history/Resume/close Cancel passed, but final
 Quit's click closed the webview before its HTTP reply; claim had the same final
 transport race. Synthetic startup encountered a transient driver connection
-closure. The next verifier records narrowly recognized transport closure only
+closure. The corrected verifier records narrowly recognized transport closure only
 after dispatching the resolved final native guard action, then still requires
 native host and engine absence before teardown. Startup retries are separately
 bounded and abort if the driver exits.
@@ -202,7 +245,7 @@ bounded and abort if the driver exits.
 Windows reached the expected interaction results in all six phases, including
 the synthetic routes, but its Ctrl-Q automation failed to trigger the final
 Quit guard. The cause remains unestablished; a VK_PACKET explanation was
-disproved by the pinned pywinauto source. The next adapter clicks the observed
+disproved by the pinned pywinauto source. The corrected adapter clicks the observed
 native Quit menu item with real mouse input and retains its menu metadata and
 screen. Failure cleanup is never substituted for either platform's Quit proof.
 
@@ -210,7 +253,7 @@ The Linux capacity screenshot also exposed an offscreen explanation above the
 disabled work controls. New native capacity pauses now focus their alert once,
 revealing it without stealing later focus on unchanged polls. The current
 [macOS packaged regression](evidence/m3-platforms/macos-capacity-focus/gui-report.json)
-visibly verifies that behavior and a complete 256-observation Save. The next
+visibly verifies that behavior and a complete 256-observation Save. The corrected
 Windows/Linux journeys require a focused, visible alert. Native screenshots
 follow webview capture and a bounded 150 ms presentation settle; the full raw
 desktop is retained even when webview capture fails. Earlier stale-frame or

@@ -157,3 +157,12 @@ the same controller clock for subsequent operations. Two analogous roundtrip
 and restoration assertions now also wait for admission. Production timestamp
 validation is unchanged. Independent exact tests plus 75 focused repetitions
 passed; no product/package rebuild is needed for this test-only correction.
+
+The first Linux/Windows package checks also exposed five-second frontend test
+timeouts from repeated accessible-name scans over 256 SVG squares. Test-only
+coordinate queries now use the existing SVG button/ARIA labels directly;
+startup waits for the heading and completion queries target HTML buttons.
+The 256-button accessibility inventory and every behavior assertion remain.
+No production change or timeout increase: full 64-test suite passed in 5.40s;
+independent 8-test focused rerun passed in 3.48s. Replacement package CI must
+pass before the ticket is finalized.

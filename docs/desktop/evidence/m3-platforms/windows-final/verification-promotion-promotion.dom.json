@@ -1,0 +1,23 @@
+{
+  "text": "\u265c\nmShogi\n\nCHESS \u00b7 DESKTOP PREVIEW\n\n Untimed\nM2 rules profile\n\nLIVE GAME\n\nWhite to move\n\nYou play White against mShogi\n\n\u2195\nFlip board\n8\n\u265a\n\u265f\n7\n6\n5\n4\n3\n2\n1\na\nb\nc\nd\ne\nf\ng\n\u265a\nh\n\nSelect a piece, then a destination. Arrow keys move focus \u00b7 Enter or Space selects \u00b7 Escape cancels.\n\na7 selected. Choose a highlighted destination.\n\nCOMPLETE YOUR MOVE\n\nChoose promotion\n\nThe action is applied only after you choose.\n\n\u265b\nQueen\n\u265c\nRook\n\u265d\nBishop\n\u265e\nKnight\nCancel promotion\nYour turn\nLive position \u00b7 0 plies\nUntitled game\nUnmodified\nSave\nSave as\u2026\nOpen\u2026\nFile details\n\nPLAY\n\nYour color for a new game\nWhite\nBlack\nNew game\n\nSave the native game document to preserve context, events and observations.\n\nResign game\u2026\nPlay details\nAnalyze position\nNative engine\nIdle\n\nPlay limit: depth 2 \u00b7 20,000 nodes\n\nNo engine search has completed in this game.\n\nGame history\nNative event timeline\n\nInspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.\n\nInitial known position\n0 plies\nMatch started\n0 plies\nPlayed move identifiers\nOne native rules engine. Complete actions. Optional claims.\nSession details",
+  "focus": {
+    "label": null,
+    "tag": "BUTTON",
+    "text": "\u265bqueen"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 729,
+    "width": 1028
+  },
+  "inputs": [
+    {
+      "disabled": false,
+      "max": null,
+      "min": null,
+      "tag": "SELECT",
+      "type": "select-one",
+      "value": "white"
+    }
+  ]
+}

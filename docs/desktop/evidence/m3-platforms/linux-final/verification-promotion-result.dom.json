@@ -1,0 +1,23 @@
+{
+  "text": "\u265c\nmShogi\nCHESS \u00b7 DESKTOP PREVIEW\n Untimed\nM2 rules profile\nLIVE GAME\n\nDraw \u2014 proven dead position\nYou play White against mShogi\n\u2195\nFlip board\n\u265e\n8\n\u265a\n7\n6\n5\n4\n3\n2\n1\na\nb\nc\nd\ne\nf\ng\n\u265a\nh\nSelect a piece, then a destination. Arrow keys move focus \u00b7 Enter or Space selects \u00b7 Escape cancels.\nGame concluded\nLive position \u00b7 1 plies\nUntitled game\nUnsaved\nSave\nSave as\u2026\nOpen\u2026\nFile details\nPLAY\n\nYour color for a new game\n\nNew game\nSave the native game document to preserve context, events and observations.\nPLAY ENDED\n\nDraw \u2014 proven dead position\nPlay has ended. The board and played move history are preserved.\nStart a new game to play again. This result remains separate from engine process status.\nPlay details\nAnalyze position\nNative engine\nIdle\nPlay limit: depth 2 \u00b7 20000 nodes\nNo engine search has completed in this game.\nGame history\nNative event timeline\nInspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.\n\nInitial known position\n0 plies\n\nMatch started\n0 plies\n\na7a8n\n1 plies\nPlayed move identifiers\nOne native rules engine. Complete actions. Optional claims.\nSession details\n",
+  "focus": {
+    "label": "a8, White knight",
+    "text": "\u265e8",
+    "tag": "g"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 795,
+    "width": 1180
+  },
+  "inputs": [
+    {
+      "min": null,
+      "disabled": false,
+      "type": "select-one",
+      "value": "white",
+      "max": null,
+      "tag": "SELECT"
+    }
+  ]
+}

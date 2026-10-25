@@ -1,0 +1,23 @@
+{
+  "text": "\u265c\nmShogi\n\nCHESS \u00b7 DESKTOP PREVIEW\n\n Untimed\nM2 rules profile\n\nLIVE GAME\n\nWhite to move\n\nYou play White against mShogi\n\n\u2195\nFlip board\n\u265c\n8\n\u265e\n\u265d\n\u265b\n\u265a\n\u265d\n\u265e\n\u265c\n7\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n6\n\u265f\n5\n4\n\u265f\n3\n\u265f\n2\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265c\n1\na\n\u265e\nb\n\u265d\nc\n\u265b\nd\n\u265a\ne\n\u265d\nf\n\u265e\ng\n\u265c\nh\n\nSelect a piece, then a destination. Arrow keys move focus \u00b7 Enter or Space selects \u00b7 Escape cancels.\n\nYour turn\nLive position \u00b7 2 plies\nUntitled game\nUnsaved\nSave\nSave as\u2026\nOpen\u2026\nFile details\n\nPLAY\n\nYour color for a new game\nWhite\nBlack\nNew game\n\nSave the native game document to preserve context, events and observations.\n\nResign game\u2026\nPlay details\nAnalyze position\nNative engine\nIdle\n\nPlay limit: depth 2 \u00b7 20,000 nodes\n\nMove returned: a7 \u2192 a5\n\n0.00 pawns from Black perspective\n\nLast engine-turn position \u00b7 Black perspective\n\nDepth\n2\nNodes\n642\nSearch technical details\n\nContinuation a7a5 \u00b7 a2a3\n\nGame history\nNative event timeline\n\nInspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.\n\nInitial known position\n0 plies\nMatch started\n0 plies\ne2e4\n1 plies\na7a5\n2 plies\nPlayed move identifiers\nRecorded search observations (1)\nOne native rules engine. Complete actions. Optional claims.\nSession details",
+  "focus": {
+    "label": "e4, White pawn",
+    "tag": "g",
+    "text": "\u265f"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 729,
+    "width": 1028
+  },
+  "inputs": [
+    {
+      "disabled": false,
+      "max": null,
+      "min": null,
+      "tag": "SELECT",
+      "type": "select-one",
+      "value": "white"
+    }
+  ]
+}

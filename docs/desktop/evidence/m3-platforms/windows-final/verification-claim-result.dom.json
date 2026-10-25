@@ -1,0 +1,23 @@
+{
+  "text": "\u265c\nmShogi\n\nCHESS \u00b7 DESKTOP PREVIEW\n\n Untimed\nM2 rules profile\n\nLIVE GAME\n\nDraw \u2014 claimed fifty-move rule\n\nYou play White against mShogi\n\n\u2195\nFlip board\n8\n\u265a\n7\n6\n5\n4\n3\n\u265c\n2\n\u265a\n1\na\nb\nc\nd\ne\nf\ng\nh\n\nSelect a piece, then a destination. Arrow keys move focus \u00b7 Enter or Space selects \u00b7 Escape cancels.\n\nGame concluded\nLive position \u00b7 0 plies\nUntitled game\nUnsaved\nSave\nSave as\u2026\nOpen\u2026\nFile details\n\nPLAY\n\nYour color for a new game\nWhite\nBlack\nNew game\n\nSave the native game document to preserve context, events and observations.\n\nPLAY ENDED\n\nDraw \u2014 claimed fifty-move rule\n\nPlay has ended. The board and played move history are preserved.\n\nStart a new game to play again. This result remains separate from engine process status.\n\nPlay details\nAnalyze position\nNative engine\nIdle\n\nPlay limit: depth 2 \u00b7 20,000 nodes\n\nNo engine search has completed in this game.\n\nGame history\nNative event timeline\n\nInspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.\n\nInitial known position\n0 plies\nMatch started\n0 plies\nDraw claim with intended a1b1\n0 plies\nPlayed move identifiers\nOne native rules engine. Complete actions. Optional claims.\nSession details",
+  "focus": {
+    "label": null,
+    "tag": "H2",
+    "text": "Draw \u2014 claimed fifty-move rule"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 729,
+    "width": 1028
+  },
+  "inputs": [
+    {
+      "disabled": false,
+      "max": null,
+      "min": null,
+      "tag": "SELECT",
+      "type": "select-one",
+      "value": "white"
+    }
+  ]
+}

@@ -48,8 +48,20 @@ choices pause play without changing the game or inventing a result.
 These watchdogs depend on OS scheduling and are not hard realtime guarantees.
 Cleanup supervises the direct bundled child. Pipe helpers still blocked after
 the cleanup deadline can detach; arbitrary descendant process containment is
-not promised. The bundled engine creates no child processes. Closing the host
-signals supervisor shutdown without joining substantial work on the UI thread.
+not promised. Unreaped children, detached/panicked helpers and partial helper
+creation failures retain a typed Cleanup failure; a capped diagnostic with
+request/generation is emitted even when cancellation suppresses publication.
+Shutdown acknowledgement means the supervisor finished its cleanup attempt,
+not proof that every possible OS cleanup operation succeeded.
+
+The bundled engine creates no child processes. Normal Quit and window closure
+signal supervisor shutdown and observe acknowledgement off the interaction
+path before exit. On macOS a custom Quit menu avoids the predefined Cocoa
+termination shortcut that bypasses ExitRequested. A final Exit fallback also
+signals cleanup for native termination paths: it permits a bounded metadata
+wait during final teardown, while actual process I/O and cleanup remain on
+the supervisor. Failure to observe cleanup is diagnosed explicitly. Force-kill
+and machine failure cannot provide a graceful shutdown guarantee.
 
 Fixtures and independent expected results are in
 `crates/mshogi-engine/tests/protocol.rs` and

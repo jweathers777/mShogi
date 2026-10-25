@@ -537,6 +537,15 @@ impl DesktopController {
         }
         self.session.snapshot()
     }
+    /// Signal process cleanup before a GUI runtime exits without dropping state.
+    /// This does not join or wait on the interaction path.
+    pub fn begin_shutdown(&mut self) {
+        self.bridge.shutdown();
+    }
+    /// Observe off-path supervisor cleanup before allowing application exit.
+    pub fn shutdown_acknowledged(&self) -> bool {
+        self.bridge.shutdown_acknowledged()
+    }
 }
 
 #[cfg(test)]

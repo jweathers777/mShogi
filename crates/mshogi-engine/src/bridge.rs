@@ -69,7 +69,10 @@ struct Shared {
 /// per search is killed on cancellation/replacement/shutdown. Three bounded pipe
 /// helpers per child keep blocked pipes away from the controller. Cleanup only
 /// joins finished helpers; an OS pipe that fails to close is detached after the
-/// cleanup watchdog, and a failure to reap is explicit. This is not hard realtime.
+/// cleanup watchdog. Uncertain reaping/helper shutdown is a typed Cleanup failure
+/// and is logged off-path even when cancellation suppresses result publication.
+/// Shutdown acknowledgement observes worker exit, not proof of cleanup success.
+/// This is not hard realtime.
 pub struct EngineBridge {
     shared: Arc<Shared>,
 }
@@ -175,7 +178,8 @@ impl EngineBridge {
         self.shared.wake.notify_one();
         drop(retired);
     }
-    /// Observe worker shutdown after off-path process cleanup.
+    /// Observe worker exit after its cleanup attempt. Cleanup uncertainty is logged
+    /// even on cancellation/shutdown; this flag is not proof that cleanup succeeded.
     pub fn shutdown_acknowledged(&self) -> bool {
         self.shared.exited.load(Ordering::Acquire)
     }
@@ -223,14 +227,24 @@ struct Process {
     written: Receiver<io::Result<()>>,
     stdout: Receiver<io::Result<Vec<u8>>>,
 }
+enum SpawnError {
+    Start(io::Error),
+    Cleanup(String),
+}
+impl From<io::Error> for SpawnError {
+    fn from(error: io::Error) -> Self {
+        Self::Start(error)
+    }
+}
 impl Process {
-    fn spawn(path: &PathBuf, bytes: Vec<u8>) -> io::Result<Self> {
+    fn spawn(path: &PathBuf, bytes: Vec<u8>) -> Result<Self, SpawnError> {
         let path = std::fs::canonicalize(path)?;
         if !std::fs::metadata(&path)?.is_file() {
             return Err(io::Error::new(
                 io::ErrorKind::InvalidInput,
                 "engine is not a regular file",
-            ));
+            )
+            .into());
         }
         let mut child = Command::new(path)
             .arg("internal-search")
@@ -284,18 +298,24 @@ impl Process {
             written,
             stdout,
         };
+        let mut spawn_error = None;
         for pipe in [writer, reader, error_reader] {
             match pipe {
                 Ok(pipe) => process.pipes.push(pipe),
-                Err(error) => {
-                    let _ = process.cleanup(Duration::from_millis(250));
-                    return Err(error);
-                }
+                Err(error) => spawn_error = Some(error),
             }
+        }
+        if let Some(error) = spawn_error {
+            return match process.cleanup(Duration::from_millis(250)) {
+                Ok(()) => Err(SpawnError::Start(error)),
+                Err(detail) => Err(SpawnError::Cleanup(format!(
+                    "pipe worker creation: {error}; {detail}"
+                ))),
+            };
         }
         Ok(process)
     }
-    fn cleanup(&mut self, timeout: Duration) -> bool {
+    fn cleanup(&mut self, timeout: Duration) -> Result<(), String> {
         let deadline = Instant::now() + timeout;
         let _ = self.child.kill();
         let reaped = loop {
@@ -309,16 +329,44 @@ impl Process {
             }
             thread::sleep(Duration::from_millis(1));
         };
-        while self.pipes.iter().any(|pipe| !pipe.is_finished()) && Instant::now() < deadline {
-            thread::sleep(Duration::from_millis(1));
+        let mut problems = finish_pipes(&mut self.pipes, deadline);
+        if !reaped {
+            problems.push("child was not observed reaped within cleanup watchdog");
         }
-        for pipe in self.pipes.drain(..) {
-            if pipe.is_finished() {
-                let _ = pipe.join();
-            }
+        if problems.is_empty() {
+            Ok(())
+        } else {
+            Err(problems.join("; "))
         }
-        reaped
     }
+}
+fn finish_pipes(pipes: &mut Vec<JoinHandle<()>>, deadline: Instant) -> Vec<&'static str> {
+    while pipes.iter().any(|pipe| !pipe.is_finished()) && Instant::now() < deadline {
+        thread::sleep(Duration::from_millis(1));
+    }
+    let mut problems = Vec::new();
+    for pipe in pipes.drain(..) {
+        if pipe.is_finished() {
+            if pipe.join().is_err() {
+                problems.push("pipe helper panicked during cleanup");
+            }
+        } else {
+            problems.push("pipe helper did not finish within cleanup watchdog; detached");
+        }
+    }
+    problems
+}
+fn cleanup_failure(context: &EngineRequest, detail: String) -> EngineResult {
+    let result = EngineResult::failure(FailureKind::Cleanup, detail);
+    if let EngineResult::Failure { failure } = &result {
+        // This must precede cancellation/shutdown publication filtering. The
+        // diagnostic is capped by EngineResult::failure, independently of pipes.
+        eprintln!(
+            "Engine cleanup uncertainty (request {}, generation {}): {}",
+            context.request_id, context.process_generation, failure.message
+        );
+    }
+    result
 }
 impl Drop for Process {
     fn drop(&mut self) {
@@ -341,7 +389,8 @@ fn run(path: &PathBuf, options: BridgeOptions, pending: &Pending) -> EngineResul
     let deadline = Instant::now() + options.watchdog;
     let mut process = match Process::spawn(path, bytes) {
         Ok(process) => process,
-        Err(error) => return EngineResult::failure(FailureKind::Start, error),
+        Err(SpawnError::Start(error)) => return EngineResult::failure(FailureKind::Start, error),
+        Err(SpawnError::Cleanup(detail)) => return cleanup_failure(&pending.context, detail),
     };
     let mut output = None;
     let mut exit = None;
@@ -422,11 +471,8 @@ fn run(path: &PathBuf, options: BridgeOptions, pending: &Pending) -> EngineResul
         }
         thread::sleep(Duration::from_millis(2));
     };
-    if !process.cleanup(options.cleanup) {
-        return EngineResult::failure(
-            FailureKind::Cleanup,
-            format!("child was not observed reaped; prior result: {result:?}"),
-        );
+    if let Err(detail) = process.cleanup(options.cleanup) {
+        return cleanup_failure(&pending.context, detail);
     }
     result
 }
@@ -454,6 +500,34 @@ mod tests {
             assert!(Instant::now() < deadline);
             thread::sleep(Duration::from_millis(1));
         }
+    }
+    #[test]
+    fn blocked_pipe_cleanup_is_explicit_bounded_and_does_not_join_unfinished_work() {
+        let (release, blocked) = mpsc::sync_channel(1);
+        let (done, finished) = mpsc::sync_channel(1);
+        let mut pipes = vec![thread::spawn(move || {
+            blocked.recv().unwrap();
+            done.send(()).unwrap();
+        })];
+        // The helper cannot finish until this test explicitly releases it.
+        let problems = finish_pipes(&mut pipes, Instant::now());
+        assert_eq!(
+            problems,
+            ["pipe helper did not finish within cleanup watchdog; detached"]
+        );
+        assert!(pipes.is_empty());
+        let result = cleanup_failure(&request(31, 42), problems.join("; "));
+        assert!(matches!(
+            result,
+            EngineResult::Failure {
+                failure: EngineFailure {
+                    kind: FailureKind::Cleanup,
+                    ..
+                }
+            }
+        ));
+        release.send(()).unwrap();
+        finished.recv_timeout(Duration::from_secs(5)).unwrap();
     }
     #[test]
     fn cancel_and_replace_discard_even_an_already_published_completion() {

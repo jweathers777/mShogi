@@ -21,6 +21,8 @@ for path in files:
     assert not any(marker in lowered for marker in ['fixture', 'test-driver', 'test_driver', 'mshogi-match']), path
 engines = [path for path in files if path.name in ('mshogi', 'mshogi.exe')]
 assert len(engines) == 1, f'expected one packaged engine, got {engines}'
+hosts = [path for path in files if path.name in ('mshogi-desktop', 'mshogi-desktop.exe')]
+assert len(hosts) == 1, f'expected one packaged desktop host, got {hosts}'
 engine = engines[0].resolve()
 version = subprocess.run([str(engine), '--version'], check=True, capture_output=True, text=True, timeout=10)
 child = subprocess.Popen([str(engine), 'uci'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
@@ -52,14 +54,41 @@ finally:
     if child.poll() is None:
         child.kill()
         child.wait(timeout=5)
+# Exercise the same lossless interface used by the desktop, independently of
+# UCI's compatibility mapping. This verifier is external to normal packages.
+request = {
+    'protocol': 1, 'request_id': 1, 'session_version': 1,
+    'process_generation': 1,
+    'game': {
+        'schema_version': 1, 'rules_profile': 'mshogi.chess.match.v1',
+        'initial_fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+        'history_origin': 'standard_start', 'claim_policy': 'explicit_only',
+        'events': [],
+    },
+    'limits': {'depth': 1, 'nodes': 1000},
+}
+internal = subprocess.run([str(engine), 'internal-search'],
+    input=json.dumps(request) + '\n', check=True, capture_output=True,
+    text=True, timeout=15)
+response = json.loads(internal.stdout)
+assert response['context'] == request, 'internal response changed exact request context'
+result = response['result']
+assert result['kind'] == 'move', result
+assert result['action'] == 'a2a3', result
+assert result['telemetry']['completed_depth'] == 1, result
+assert result['telemetry']['nodes'] == 21, result
+assert result['telemetry']['score'] == 0, result
+assert result['telemetry']['status'] == 'complete', result
 report = {
     'package_root': str(args.package_root),
     'engine': str(engine.relative_to(args.package_root.resolve())),
     'sha256': hashlib.sha256(engine.read_bytes()).hexdigest(),
+    'host_sha256': hashlib.sha256(hosts[0].read_bytes()).hexdigest(),
     'version': version.stdout.strip(),
     'uci_observations': observations,
+    'internal_response': response,
     'files': [str(path.relative_to(args.package_root)) for path in files],
-    'scope': 'Package inventory and real bundled-engine UCI search. Installed UI interaction is MSH-38.',
+    'scope': 'Package inventory and real bundled-engine UCI and structured searches. Installed UI interaction is MSH-38.',
 }
 args.report.write_text(json.dumps(report, indent=2) + '\n')
 print(json.dumps(report, indent=2))

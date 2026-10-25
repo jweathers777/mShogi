@@ -1,0 +1,87 @@
+{
+  "revision": 1,
+  "version": 1,
+  "human": "white",
+  "turn": "white",
+  "fen": "7k/P7/8/8/8/8/8/7K w - - 0 1",
+  "pieces": [
+    {
+      "square": "h1",
+      "color": "white",
+      "kind": "king",
+      "label": "h1, White king"
+    },
+    {
+      "square": "a7",
+      "color": "white",
+      "kind": "pawn",
+      "label": "a7, White pawn"
+    },
+    {
+      "square": "h8",
+      "color": "black",
+      "kind": "king",
+      "label": "h8, Black king"
+    }
+  ],
+  "legal_choices": [
+    {
+      "action": "h1h2",
+      "from": "h1",
+      "to": "h2",
+      "promotion": null
+    },
+    {
+      "action": "h1g1",
+      "from": "h1",
+      "to": "g1",
+      "promotion": null
+    },
+    {
+      "action": "h1g2",
+      "from": "h1",
+      "to": "g2",
+      "promotion": null
+    },
+    {
+      "action": "a7a8q",
+      "from": "a7",
+      "to": "a8",
+      "promotion": "queen"
+    },
+    {
+      "action": "a7a8r",
+      "from": "a7",
+      "to": "a8",
+      "promotion": "rook"
+    },
+    {
+      "action": "a7a8b",
+      "from": "a7",
+      "to": "a8",
+      "promotion": "bishop"
+    },
+    {
+      "action": "a7a8n",
+      "from": "a7",
+      "to": "a8",
+      "promotion": "knight"
+    }
+  ],
+  "claims": [],
+  "history": [],
+  "conclusion": null,
+  "in_check": false,
+  "engine": {
+    "status": "idle",
+    "last": null,
+    "last_turn": null,
+    "searched_version": null,
+    "message": null
+  },
+  "rules_mode": "m2",
+  "limits": {
+    "depth": 2,
+    "nodes": 20000
+  }
+}

@@ -42,6 +42,120 @@
     "searched_version": null,
     "message": "Play paused for analysis. Resume play explicitly to continue."
   },
+  "document": {
+    "revision": 2,
+    "dirty": true,
+    "path": null,
+    "settings": {
+      "orientation": "white",
+      "analysis_defaults": {
+        "kind": "full_reachability",
+        "target": "either",
+        "max_positions": 10,
+        "max_transitions": 10
+      }
+    }
+  },
+  "io": {
+    "id": 0,
+    "phase": "idle",
+    "message": null
+  },
+  "view": {
+    "historical": false,
+    "event_index": 0,
+    "event_count": 0,
+    "label": "Live game",
+    "fen": "7k/6Q1/5K2/8/8/8/8/8 b - - 0 1",
+    "pieces": [
+      {
+        "square": "f6",
+        "color": "white",
+        "kind": "king",
+        "label": "f6, White king"
+      },
+      {
+        "square": "g7",
+        "color": "white",
+        "kind": "queen",
+        "label": "g7, White queen"
+      },
+      {
+        "square": "h8",
+        "color": "black",
+        "kind": "king",
+        "label": "h8, Black king"
+      }
+    ],
+    "turn": "black",
+    "conclusion": {
+      "chess": {
+        "checkmate": {
+          "winner": "white"
+        }
+      }
+    },
+    "ply": 0,
+    "selection_id": 1,
+    "timeline": [
+      {
+        "index": 0,
+        "label": "Initial known position",
+        "ply": 0
+      }
+    ]
+  },
+  "observations": [
+    {
+      "sequence": 1,
+      "label": "Live position after 0 plies",
+      "response": {
+        "context": {
+          "protocol": 2,
+          "purpose": {
+            "kind": "full_reachability",
+            "target": {
+              "selection_id": 1,
+              "ply": 0,
+              "session_version": 2,
+              "label": "Live position after 0 plies",
+              "turn": "black"
+            },
+            "mate": "either",
+            "limits": {
+              "max_positions": 10,
+              "max_transitions": 10
+            }
+          },
+          "request_id": 1,
+          "session_version": 2,
+          "process_generation": 1,
+          "game": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"7k/6Q1/5K2/8/8/8/8/8 b - - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]},
+          "limits": {
+            "depth": 1,
+            "nodes": 0
+          }
+        },
+        "result": {
+          "kind": "reachability",
+          "result": {
+            "possible": {
+              "witness": [],
+              "work": {
+                "positions": 1,
+                "expanded": 1,
+                "transitions": 0,
+                "static_leaves": 0
+              }
+            }
+          }
+        }
+      },
+      "historical": false,
+      "analyzed_turn": "black",
+      "application_error": null
+    }
+  ],
   "analysis": {
     "status": "complete",
     "target": {

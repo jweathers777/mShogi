@@ -184,6 +184,7 @@ fn actual_full_budget_exhaustion_and_cancelled_replacement_leave_match_unchanged
     let fresh = controller
         .command(DesktopCommand::NewGame {
             version: cancelled.version,
+            document_revision: cancelled.document.revision,
             human: Color::Black,
         })
         .unwrap();

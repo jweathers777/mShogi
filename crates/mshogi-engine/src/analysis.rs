@@ -78,7 +78,9 @@ pub enum RequestPurpose {
     },
 }
 impl EngineRequest {
-    pub(crate) fn valid_limits(&self) -> bool {
+    /// Check purpose-specific deterministic bounds and static target identity.
+    /// This does not replay history or validate final observations.
+    pub fn valid_limits(&self) -> bool {
         match &self.purpose {
             RequestPurpose::EngineTurn => {
                 (1..=mshogi_search::search::MAX_DEPTH).contains(&self.limits.depth)

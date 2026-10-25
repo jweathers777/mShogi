@@ -9,6 +9,7 @@ import {
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { App } from "./App";
+import { mockSession } from "./__tests__/session";
 import { useNativeSession } from "./useNativeSession";
 import type { Snapshot } from "./native";
 import standardJson from "./__fixtures__/standard.json";
@@ -24,13 +25,7 @@ beforeEach(() => {
 });
 afterEach(cleanup);
 function session(snapshot: Snapshot) {
-  vi.mocked(useNativeSession).mockReturnValue({
-    snapshot,
-    error: "",
-    connected: true,
-    busy: false,
-    command,
-  });
+  vi.mocked(useNativeSession).mockReturnValue(mockSession(snapshot, command));
 }
 function engineTurn(phase: Snapshot["engine"]["status"]): Snapshot {
   return {

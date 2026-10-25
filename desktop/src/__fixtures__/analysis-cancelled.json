@@ -331,6 +331,242 @@
     "searched_version": null,
     "message": "Play paused for analysis. Resume play explicitly to continue."
   },
+  "document": {
+    "revision": 2,
+    "dirty": true,
+    "path": null,
+    "settings": {
+      "orientation": "white",
+      "analysis_defaults": {
+        "kind": "moves",
+        "depth": 8,
+        "nodes": 5000000
+      }
+    }
+  },
+  "io": {
+    "id": 0,
+    "phase": "idle",
+    "message": null
+  },
+  "view": {
+    "historical": false,
+    "event_index": 1,
+    "event_count": 1,
+    "label": "Live game",
+    "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+    "pieces": [
+      {
+        "square": "a1",
+        "color": "white",
+        "kind": "rook",
+        "label": "a1, White rook"
+      },
+      {
+        "square": "b1",
+        "color": "white",
+        "kind": "knight",
+        "label": "b1, White knight"
+      },
+      {
+        "square": "c1",
+        "color": "white",
+        "kind": "bishop",
+        "label": "c1, White bishop"
+      },
+      {
+        "square": "d1",
+        "color": "white",
+        "kind": "queen",
+        "label": "d1, White queen"
+      },
+      {
+        "square": "e1",
+        "color": "white",
+        "kind": "king",
+        "label": "e1, White king"
+      },
+      {
+        "square": "f1",
+        "color": "white",
+        "kind": "bishop",
+        "label": "f1, White bishop"
+      },
+      {
+        "square": "g1",
+        "color": "white",
+        "kind": "knight",
+        "label": "g1, White knight"
+      },
+      {
+        "square": "h1",
+        "color": "white",
+        "kind": "rook",
+        "label": "h1, White rook"
+      },
+      {
+        "square": "a2",
+        "color": "white",
+        "kind": "pawn",
+        "label": "a2, White pawn"
+      },
+      {
+        "square": "b2",
+        "color": "white",
+        "kind": "pawn",
+        "label": "b2, White pawn"
+      },
+      {
+        "square": "c2",
+        "color": "white",
+        "kind": "pawn",
+        "label": "c2, White pawn"
+      },
+      {
+        "square": "d2",
+        "color": "white",
+        "kind": "pawn",
+        "label": "d2, White pawn"
+      },
+      {
+        "square": "e2",
+        "color": "white",
+        "kind": "pawn",
+        "label": "e2, White pawn"
+      },
+      {
+        "square": "f2",
+        "color": "white",
+        "kind": "pawn",
+        "label": "f2, White pawn"
+      },
+      {
+        "square": "g2",
+        "color": "white",
+        "kind": "pawn",
+        "label": "g2, White pawn"
+      },
+      {
+        "square": "h2",
+        "color": "white",
+        "kind": "pawn",
+        "label": "h2, White pawn"
+      },
+      {
+        "square": "a7",
+        "color": "black",
+        "kind": "pawn",
+        "label": "a7, Black pawn"
+      },
+      {
+        "square": "b7",
+        "color": "black",
+        "kind": "pawn",
+        "label": "b7, Black pawn"
+      },
+      {
+        "square": "c7",
+        "color": "black",
+        "kind": "pawn",
+        "label": "c7, Black pawn"
+      },
+      {
+        "square": "d7",
+        "color": "black",
+        "kind": "pawn",
+        "label": "d7, Black pawn"
+      },
+      {
+        "square": "e7",
+        "color": "black",
+        "kind": "pawn",
+        "label": "e7, Black pawn"
+      },
+      {
+        "square": "f7",
+        "color": "black",
+        "kind": "pawn",
+        "label": "f7, Black pawn"
+      },
+      {
+        "square": "g7",
+        "color": "black",
+        "kind": "pawn",
+        "label": "g7, Black pawn"
+      },
+      {
+        "square": "h7",
+        "color": "black",
+        "kind": "pawn",
+        "label": "h7, Black pawn"
+      },
+      {
+        "square": "a8",
+        "color": "black",
+        "kind": "rook",
+        "label": "a8, Black rook"
+      },
+      {
+        "square": "b8",
+        "color": "black",
+        "kind": "knight",
+        "label": "b8, Black knight"
+      },
+      {
+        "square": "c8",
+        "color": "black",
+        "kind": "bishop",
+        "label": "c8, Black bishop"
+      },
+      {
+        "square": "d8",
+        "color": "black",
+        "kind": "queen",
+        "label": "d8, Black queen"
+      },
+      {
+        "square": "e8",
+        "color": "black",
+        "kind": "king",
+        "label": "e8, Black king"
+      },
+      {
+        "square": "f8",
+        "color": "black",
+        "kind": "bishop",
+        "label": "f8, Black bishop"
+      },
+      {
+        "square": "g8",
+        "color": "black",
+        "kind": "knight",
+        "label": "g8, Black knight"
+      },
+      {
+        "square": "h8",
+        "color": "black",
+        "kind": "rook",
+        "label": "h8, Black rook"
+      }
+    ],
+    "turn": "white",
+    "conclusion": null,
+    "ply": 0,
+    "selection_id": 1,
+    "timeline": [
+      {
+        "index": 0,
+        "label": "Initial known position",
+        "ply": 0
+      },
+      {
+        "index": 1,
+        "label": "Match started",
+        "ply": 0
+      }
+    ]
+  },
+  "observations": [],
   "analysis": {
     "status": "cancelled",
     "target": {

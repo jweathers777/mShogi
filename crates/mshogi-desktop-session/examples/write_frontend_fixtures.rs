@@ -1,6 +1,8 @@
 //! Regenerate native-shaped frontend test fixtures; never bundled with the app.
 use mshogi_core::chess::*;
-use mshogi_desktop_session::{AnalysisOperation, DesktopCommand, DesktopSession};
+use mshogi_desktop_session::{
+    AnalysisOperation, DesktopCommand, DesktopController, DesktopSession, IoPhase,
+};
 use mshogi_engine::{EngineResponse, ReachabilityTarget};
 fn main() {
     let directory = std::path::PathBuf::from(
@@ -160,4 +162,57 @@ fn main() {
         serde_json::to_string_pretty(&cancelled.snapshot()).unwrap() + "\n",
     )
     .unwrap();
+    // Exercise the public file worker so restored/history fixtures are native,
+    // including the same-ply distinction before an unresolved resignation.
+    let temporary =
+        std::env::temp_dir().join(format!("mshogi-fixture-{}.mshogi", std::process::id()));
+    let mut controller =
+        DesktopController::new(std::path::PathBuf::from("/unused/fixture-engine")).unwrap();
+    controller
+        .command(DesktopCommand::Resign { version: 1 })
+        .unwrap();
+    let save = controller.queue_save(temporary.clone()).unwrap();
+    wait_document(&mut controller, save);
+    let token = controller.open_token();
+    let open = controller.queue_open(temporary.clone(), token).unwrap();
+    let mut reopened = wait_document(&mut controller, open);
+    reopened.document.path = Some("fixture.mshogi".into());
+    std::fs::write(
+        directory.join("reopened.json"),
+        serde_json::to_string_pretty(&reopened).unwrap() + "\n",
+    )
+    .unwrap();
+    let pending = controller
+        .command(DesktopCommand::Inspect {
+            version: reopened.version,
+            event_index: 1,
+        })
+        .unwrap();
+    let mut history = wait_document(&mut controller, pending.io.id);
+    history.document.path = Some("fixture.mshogi".into());
+    std::fs::write(
+        directory.join("history.json"),
+        serde_json::to_string_pretty(&history).unwrap() + "\n",
+    )
+    .unwrap();
+    std::fs::remove_file(temporary).unwrap();
+}
+
+fn wait_document(controller: &mut DesktopController, id: u64) -> mshogi_desktop_session::Snapshot {
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(20);
+    loop {
+        let snapshot = controller.snapshot();
+        if snapshot.io.id == id && matches!(snapshot.io.phase, IoPhase::Complete | IoPhase::Failed)
+        {
+            assert_eq!(
+                snapshot.io.phase,
+                IoPhase::Complete,
+                "{:?}",
+                snapshot.io.message
+            );
+            return snapshot;
+        }
+        assert!(std::time::Instant::now() < deadline);
+        std::thread::sleep(std::time::Duration::from_millis(1));
+    }
 }

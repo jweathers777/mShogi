@@ -108,8 +108,10 @@ does not promise identical reruns of time-dependent executions.
 MSH-35 separates the immutable inspected historical position from the live
 game. Viewing is read-only; returning live is explicit. Any later branch/change
 requires an explicit command with new identity/version and cancellation of old
-work. Closing the initial app loses the unsaved game; the UI says so until
-persistence is delivered. No implicit persistence or crash recovery is claimed.
+work. MSH-35 adds explicit canonical desktop documents and unsaved-change guards;
+reopening remains paused with fresh runtime identities. No implicit persistence
+or crash recovery is claimed. The [archive contract](archive-v1.md) records the
+supported restoration profile and resource bounds.
 
 Timed play is outside this batch. Before it is enabled, its ticket must define
 and test suspension/resumption semantics (including minimize, system sleep,

@@ -125,9 +125,49 @@ export type EngineResult =
   | { kind: "incomplete"; telemetry: Telemetry }
   | { kind: "failure"; failure: { kind: FailureKind; message: string } }
   | { kind: "reachability"; result: MateReachability };
+export interface EngineResponse {
+  context: EngineContext;
+  result: EngineResult;
+}
+export interface ArchivedObservation {
+  sequence: number;
+  label: string;
+  response: EngineResponse;
+  historical: boolean;
+  analyzed_turn: Color;
+  application_error: string | null;
+}
+export interface DocumentState {
+  revision: number;
+  dirty: boolean;
+  path: string | null;
+  settings: { orientation: Color; analysis_defaults: AnalysisOperation };
+}
+export interface DocumentIo {
+  id: number;
+  phase: "idle" | "saving" | "opening" | "viewing" | "complete" | "failed";
+  message: string | null;
+}
+export interface HistoricalView {
+  historical: boolean;
+  event_index: number;
+  event_count: number;
+  label: string;
+  fen: string;
+  pieces: BoardPiece[];
+  turn: Color;
+  conclusion: MatchConclusion | null;
+  ply: number;
+  selection_id: number;
+  timeline: { index: number; label: string; ply: number }[];
+}
 export interface Snapshot {
   revision: number;
   version: number;
+  document: DocumentState;
+  io: DocumentIo;
+  view: HistoricalView;
+  observations: ArchivedObservation[];
   human: Color;
   turn: Color;
   fen: string;
@@ -151,14 +191,26 @@ export interface Snapshot {
   limits: { depth: number; nodes: number };
 }
 export type DesktopCommand =
-  | { kind: "new_game"; version: number; human: Color }
+  | {
+      kind: "new_game";
+      version: number;
+      document_revision: number;
+      human: Color;
+    }
   | { kind: "play"; version: number; action: string }
   | { kind: "claim"; version: number; claim: Claim }
   | {
       kind: "cancel" | "retry" | "resign" | "cancel_analysis" | "resume";
       version: number;
     }
-  | { kind: "analyze"; version: number; operation: AnalysisOperation };
+  | { kind: "analyze"; version: number; operation: AnalysisOperation }
+  | {
+      kind: "preferences";
+      orientation: Color;
+      analysis_defaults: AnalysisOperation;
+    }
+  | { kind: "inspect"; version: number; event_index: number }
+  | { kind: "return_live"; version: number };
 
 export function newestSnapshot(
   current: Snapshot | null,

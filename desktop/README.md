@@ -40,12 +40,17 @@ the native M2 proof limits can leave the outcome **unresolved and unscored**.
 An engine failure, incomplete search or cancellation instead pauses the ongoing
 game without adding a move or result; explicit Retry preserves its history.
 
-Games are unsaved: New game or closing the app discards them. The move list is
-the live action history; historical viewing, persistence and the synthetic large-board fixture are later
-M3 tickets. Bounded analysis and outcome/recovery controls are available now. Full
-live-adjudication restoration is explicitly unsupported; the advanced read-only
-Full operation described below is a separate controlled execution path. M3 remains
-open; see [scope and evidence](../docs/desktop/first-batch-evidence.md).
+Use **Save**, **Save as…** and **Open…** for complete `.mshogi` documents.
+New game, Open and ordinary Quit protect unsaved changes with Save/Discard/Cancel.
+Reopened untimed games remain paused until **Resume play**. Saved observations
+are labeled historical and never restart pending engine work. Earlier positions
+are read-only; **Return to live** explicitly leaves history inspection.
+
+Full live-adjudication restoration is explicitly unsupported; the advanced
+read-only Full operation below is a separate controlled execution path. The
+synthetic large-board fixture and remaining interaction/platform integration
+work are later M3 tickets. M3 remains open; see the
+[batch evidence](../docs/desktop/second-batch-evidence.md).
 
 Build a normal distributable with the platform's supported bundle format:
 
@@ -87,8 +92,11 @@ host. The later MSH-38 ticket verifies installed application interactions on all
 three systems after the remaining M3 features exist; a package build and engine
 smoke do not establish that broader result.
 
-Normal Quit/Cmd-Q routes through a native shutdown gate: commands stop, obsolete
-engine work is cancelled, and an off-path observer waits for the supervisor's
+Normal Quit/Cmd-Q, window close and macOS Dock Quit first resolve unsaved changes.
+The narrowly patched native Quit route is documented in
+[macOS quit handling](../docs/desktop/macos-quit.md).
+After approval, a native shutdown gate stops commands and cancels obsolete
+engine work. An off-path observer waits for the supervisor's
 cleanup acknowledgement. macOS Cocoa termination can bypass an exit request;
 the final event-loop teardown therefore has a fallback that observes the same
 acknowledgement. Both routes share one observation deadline, two seconds from
@@ -143,3 +151,25 @@ resource exhaustion and process failure never invent a chess outcome.
 The [internal v2 contract](../docs/desktop/internal-engine-v2.md) documents
 purpose-specific acceptance and limits. The [batch evidence](../docs/desktop/second-batch-evidence.md)
 distinguishes controller, frontend and actual packaged GUI verification.
+
+## Saving and inspecting games
+
+A document preserves the canonical match and game records, policy and known
+history, claims and conclusions, commands/events, modes and limits, human color,
+board orientation, analysis defaults and accepted engine observations with their
+exact request contexts. It is not an interchange FEN or PGN. See the
+[archive contract](../docs/desktop/archive-v1.md) for format and resource limits.
+
+Save writes an exclusive same-directory temporary file and replaces the target
+only after a complete flushed write. A failed or cancelled save keeps the prior
+file and leaves unsaved changes unsaved. Open validates on a bounded native
+worker; corrupt, unsupported or resource-limited documents leave the current
+game intact. Full live modes and timed matches are rejected explicitly, without
+changing their mode or clocks. No automatic crash recovery is promised.
+
+The history inspector includes nonmove events such as a claim or resignation.
+Selecting an earlier event pauses play and displays a read-only board. Analysis
+uses only that event's known history prefix, with no future moves or claims.
+Selecting another event retires prior analysis. **Return to live** restores the
+live board; **Resume play** is a separate action. Branching and variation editing
+are outside this batch.

@@ -2,10 +2,14 @@
 import { act, cleanup, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { invoke } from "@tauri-apps/api/core";
+import { listen } from "@tauri-apps/api/event";
 import { useNativeSession } from "./useNativeSession";
 import type { DesktopCommand, Snapshot } from "./native";
 import standardJson from "./__fixtures__/standard.json";
 vi.mock("@tauri-apps/api/core", () => ({ invoke: vi.fn() }));
+vi.mock("@tauri-apps/api/event", () => ({
+  listen: vi.fn().mockResolvedValue(() => {}),
+}));
 const standard = standardJson as Snapshot;
 function deferred<T>() {
   let resolve!: (value: T) => void;
@@ -81,4 +85,105 @@ describe("native async session boundary", () => {
     expect(result.current.snapshot).toBe(newer);
     expect(result.current.error).toBe("The game changed.");
   });
+});
+
+it("returns current dirty state rather than an older successful-save response", async () => {
+  const saved = deferred<Snapshot>();
+  const polled = deferred<Snapshot>();
+  const clean = {
+    ...standard,
+    revision: 4,
+    document: { ...standard.document, dirty: false },
+  };
+  const newer = {
+    ...standard,
+    revision: 5,
+    document: { ...standard.document, revision: 8, dirty: true },
+  };
+  vi.mocked(invoke)
+    .mockResolvedValueOnce(standard)
+    .mockReturnValueOnce(saved.promise)
+    .mockReturnValueOnce(polled.promise);
+  const { result } = renderHook(useNativeSession);
+  await act(async () => {
+    await Promise.resolve();
+  });
+  let completion!: Promise<Snapshot | null>;
+  act(() => {
+    completion = result.current.save();
+  });
+  await act(async () => {
+    await vi.advanceTimersByTimeAsync(250);
+    polled.resolve(newer);
+    await Promise.resolve();
+  });
+  let observed: Snapshot | null = null;
+  await act(async () => {
+    saved.resolve(clean);
+    observed = await completion;
+  });
+  expect(observed).toBe(newer);
+  expect(result.current.snapshot).toBe(newer);
+});
+it("applies the native close snapshot before exposing the close request", async () => {
+  vi.mocked(invoke).mockResolvedValue(standard);
+  let close!: (event: { payload: Snapshot }) => void;
+  vi.mocked(listen).mockImplementationOnce(async (_name, handler) => {
+    close = handler as typeof close;
+    return () => {};
+  });
+  const { result } = renderHook(useNativeSession);
+  await act(async () => {
+    await Promise.resolve();
+  });
+  const paused = {
+    ...standard,
+    version: 7,
+    revision: 12,
+    play_paused: true,
+    document: { ...standard.document, dirty: true, revision: 9 },
+  };
+  act(() => {
+    close({ payload: paused });
+  });
+  expect(result.current.snapshot).toBe(paused);
+  expect(result.current.closeRequest).toBe(paused);
+});
+it("uses exact native Open preconditions and refreshes forms only after a completed Open, not picker cancellation", async () => {
+  const opened = {
+    ...standard,
+    revision: 8,
+    io: { id: 2, phase: "complete" as const, message: null },
+  };
+  vi.mocked(invoke)
+    .mockResolvedValueOnce(standard)
+    .mockResolvedValueOnce(standard)
+    .mockResolvedValueOnce(opened);
+  const { result } = renderHook(useNativeSession);
+  await act(async () => {
+    await Promise.resolve();
+  });
+  await act(async () => {
+    await result.current.open(standard.version, standard.document.revision);
+  });
+  expect(result.current.documentEpoch).toBe(0);
+  expect(vi.mocked(invoke)).toHaveBeenLastCalledWith("desktop_open", {
+    expectedVersion: standard.version,
+    expectedDocumentRevision: standard.document.revision,
+  });
+  await act(async () => {
+    await result.current.open(standard.version, standard.document.revision);
+  });
+  expect(result.current.documentEpoch).toBe(1);
+});
+it("does not enable game interaction when native close protection cannot register", async () => {
+  vi.mocked(listen).mockRejectedValueOnce("Listener unavailable");
+  const { result } = renderHook(useNativeSession);
+  await act(async () => {
+    await Promise.resolve();
+  });
+  expect(result.current.connected).toBe(false);
+  expect(result.current.snapshot).toBeNull();
+  expect(result.current.error).toContain("Native close protection");
+  expect(invoke).not.toHaveBeenCalled();
 });

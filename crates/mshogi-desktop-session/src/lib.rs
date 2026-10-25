@@ -1,4 +1,6 @@
 //! Authoritative untimed desktop sessions. Framework-free commands and snapshots.
+mod persistence;
+pub use persistence::*;
 mod analysis;
 pub use analysis::*;
 use mshogi_core::chess::*;
@@ -23,8 +25,29 @@ pub enum DesktopCommand {
     NewGame {
         /// Expected current session version.
         version: u64,
+        /// Exact document revision approved for replacement.
+        document_revision: u64,
         /// Player color in the new game.
         human: Color,
+    },
+    /// Set preferences without changing game identity or cancelling work.
+    Preferences {
+        /// View orientation.
+        orientation: Color,
+        /// Default analysis form choices.
+        analysis_defaults: AnalysisOperation,
+    },
+    /// Select an exact read-only history event boundary.
+    Inspect {
+        /// Current game version.
+        version: u64,
+        /// Native event boundary.
+        event_index: usize,
+    },
+    /// Explicitly return to the live position, with play still paused.
+    ReturnLive {
+        /// Current game version.
+        version: u64,
     },
     /// Commit one native complete action on the human's live turn.
     Play {
@@ -75,9 +98,12 @@ pub enum DesktopCommand {
     },
 }
 impl DesktopCommand {
-    fn version(&self) -> u64 {
+    fn version(&self) -> Option<u64> {
         match self {
-            Self::NewGame { version, .. }
+            Self::Preferences { .. } => None,
+            Self::Inspect { version, .. }
+            | Self::ReturnLive { version }
+            | Self::NewGame { version, .. }
             | Self::Play { version, .. }
             | Self::Claim { version, .. }
             | Self::Resign { version }
@@ -85,7 +111,7 @@ impl DesktopCommand {
             | Self::CancelAnalysis { version }
             | Self::Resume { version }
             | Self::Cancel { version }
-            | Self::Retry { version } => *version,
+            | Self::Retry { version } => Some(*version),
         }
     }
 }
@@ -182,6 +208,14 @@ pub struct Snapshot {
     pub in_check: bool,
     /// Process status and final search observations.
     pub engine: EngineState,
+    /// Complete desktop document state.
+    pub document: DocumentState,
+    /// Current bounded file/history operation.
+    pub io: IoState,
+    /// Read-only view, distinct from the live state above.
+    pub view: ViewState,
+    /// Accepted observations, historical after restoration.
+    pub observations: Vec<ArchivedObservation>,
     /// Read-only analysis provenance and actual observations.
     pub analysis: AnalysisState,
     /// Analysis pauses play until explicit Resume; ended games stay ended.
@@ -206,6 +240,15 @@ pub struct DesktopSession {
     analysis_pending: Option<EngineRequest>,
     analysis_submitted: bool,
     play_paused: bool,
+    document_revision: u64,
+    saved_revision: u64,
+    document_path: Option<PathBuf>,
+    settings: DesktopSettings,
+    observations: Vec<ArchivedObservation>,
+    controls: Vec<persistence::ControlEntry>,
+    initial_record: GameRecord,
+    viewed: Option<persistence::Viewed>,
+    selection_id: u64,
 }
 impl Default for DesktopSession {
     fn default() -> Self {
@@ -228,6 +271,15 @@ impl DesktopSession {
             analysis_pending: None,
             analysis_submitted: false,
             play_paused: false,
+            document_revision: 0,
+            saved_revision: 0,
+            document_path: None,
+            settings: DesktopSettings::default(),
+            observations: Vec::new(),
+            controls: Vec::new(),
+            initial_record: AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record(),
+            viewed: None,
+            selection_id: 1,
         }
     }
     /// Restore supported live chess history without silently changing its mode.
@@ -238,6 +290,7 @@ impl DesktopSession {
         }
         let live = AdjudicatedGame::replay_record(record).map_err(|e| e.to_string())?;
         let mut session = Self::new();
+        session.initial_record = record.clone();
         session.game = ChessMatch::new(live, TimeControl::Untimed).map_err(|e| e.to_string())?;
         if session.game.conclusion().is_some() {
             session.human = human;
@@ -259,11 +312,14 @@ impl DesktopSession {
         // Checked before every external mutation; exhaustion never wraps.
         self.version += 1;
         self.revision += 1;
+        self.document_revision += 1;
     }
     fn ensure_capacity(&self) -> Result<(), String> {
         if self.version >= MAX_SAFE_ID
             || self.revision >= MAX_SAFE_ID
             || self.next_request >= MAX_SAFE_ID
+            || self.document_revision >= MAX_SAFE_ID
+            || self.selection_id >= MAX_SAFE_ID
         {
             Err("Session identity space exhausted; restart the application.".into())
         } else {
@@ -272,12 +328,32 @@ impl DesktopSession {
     }
     /// Apply an atomic human command. Errors leave all session state unchanged.
     pub fn command(&mut self, command: DesktopCommand, at_ns: u64) -> Result<(), String> {
-        if command.version() != self.version {
+        if command
+            .version()
+            .is_some_and(|version| version != self.version)
+        {
             return Err("The game changed. Use the current position and try again.".into());
         }
         self.ensure_capacity()?;
+        let recorded = command.clone();
         match command {
-            DesktopCommand::NewGame { human, .. } => {
+            DesktopCommand::NewGame {
+                human,
+                document_revision,
+                ..
+            } => {
+                if document_revision != self.document_revision {
+                    return Err(
+                        "The document changed before New game. Confirm the current document again."
+                            .into(),
+                    );
+                }
+                self.initial_record = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record();
+                self.observations.clear();
+                self.controls.clear();
+                self.document_path = None;
+                self.viewed = None;
+                self.selection_id += 1;
                 self.retire_analysis();
                 self.play_paused = false;
                 self.game = new_match();
@@ -286,6 +362,31 @@ impl DesktopSession {
                 self.pending = None;
                 self.engine = EngineState::default();
                 self.changed();
+            }
+            DesktopCommand::Preferences {
+                orientation,
+                analysis_defaults,
+            } => {
+                analysis_defaults.validate()?;
+                self.settings = DesktopSettings {
+                    orientation,
+                    analysis_defaults,
+                };
+                self.document_revision += 1;
+                self.revision += 1;
+            }
+            DesktopCommand::Inspect { .. } => {
+                return Err("History selection requires the native controller worker.".into());
+            }
+            DesktopCommand::ReturnLive { .. } => {
+                self.retire_analysis();
+                self.pending = None;
+                self.viewed = None;
+                self.selection_id += 1;
+                self.play_paused = true;
+                self.engine.status = EnginePhase::Paused;
+                self.version += 1;
+                self.revision += 1;
             }
             DesktopCommand::Play { action, .. } => {
                 self.human_turn()?;
@@ -360,10 +461,13 @@ impl DesktopSession {
                 self.changed();
             }
         }
+        if !matches!(recorded, DesktopCommand::ReturnLive { .. }) {
+            self.journal(recorded, at_ns);
+        }
         Ok(())
     }
     fn human_turn(&self) -> Result<(), String> {
-        if self.play_paused {
+        if self.play_paused || self.viewed.is_some() {
             return Err(
                 "Play is paused for analysis. Resume play explicitly before moving or claiming."
                     .into(),
@@ -444,6 +548,7 @@ impl DesktopSession {
             self.fail(error);
             return false;
         }
+        self.remember(response.clone());
         self.pending = None;
         self.engine.last_turn = Some(self.game.game().position().side_to_move());
         self.engine.searched_version = Some(self.version);
@@ -496,7 +601,12 @@ impl DesktopSession {
                 self.engine.message = None;
                 self.changed();
             }
-            Err(error) => self.fail(format!("Invalid engine choice: {error}")),
+            Err(error) => {
+                if let Some(observation) = self.observations.last_mut() {
+                    observation.application_error = Some(error.clone());
+                }
+                self.fail(format!("Invalid engine choice: {error}"));
+            }
         }
         true
     }
@@ -547,6 +657,7 @@ impl DesktopSession {
             human: self.human,
             turn: position.side_to_move(),
             fen: position.to_fen(),
+            view: self.view_state(&pieces),
             pieces,
             legal_choices,
             claims: self
@@ -566,6 +677,9 @@ impl DesktopSession {
             conclusion: self.game.conclusion(),
             in_check: position.in_check(),
             engine: self.engine.clone(),
+            document: self.document_state(),
+            io: IoState::default(),
+            observations: self.observations.clone(),
             analysis: self.analysis.clone(),
             play_paused: self.play_paused,
             rules_mode: "m2",
@@ -594,6 +708,9 @@ pub struct DesktopController {
     session: DesktopSession,
     bridge: EngineBridge,
     origin: Instant,
+    clock_floor: u64,
+    files: persistence::FileWorker,
+    io_state: IoState,
 }
 impl DesktopController {
     /// Launch the supervisor worker, without starting a child or doing pipe I/O.
@@ -602,6 +719,9 @@ impl DesktopController {
             session: DesktopSession::new(),
             bridge: EngineBridge::new(engine_path)?,
             origin: Instant::now(),
+            clock_floor: 0,
+            files: persistence::FileWorker::new()?,
+            io_state: IoState::default(),
         })
     }
     /// Construct difficult native sessions for a separately labeled QA package.
@@ -633,17 +753,38 @@ impl DesktopController {
         Ok(controller)
     }
     fn at_ns(&self) -> u64 {
-        u64::try_from(self.origin.elapsed().as_nanos()).unwrap_or(u64::MAX)
+        self.clock_floor
+            .saturating_add(u64::try_from(self.origin.elapsed().as_nanos()).unwrap_or(u64::MAX))
     }
     /// Serialize an explicit command before polling completions; cancellation wins races.
     pub fn command(&mut self, command: DesktopCommand) -> Result<Snapshot, String> {
+        if matches!(
+            command,
+            DesktopCommand::Analyze { .. }
+                | DesktopCommand::Resume { .. }
+                | DesktopCommand::ReturnLive { .. }
+        ) && matches!(self.io_state.phase, IoPhase::Viewing | IoPhase::Opening)
+        {
+            return Err("Wait for the current document/history operation before changing its analysis target.".into());
+        }
+        if let DesktopCommand::Inspect {
+            version,
+            event_index,
+        } = command
+        {
+            return self.queue_view(version, event_index);
+        }
+        let preferences = matches!(command, DesktopCommand::Preferences { .. });
         let at_ns = self.at_ns();
         self.session.command(command, at_ns)?;
-        self.bridge.cancel();
+        if !preferences {
+            self.bridge.cancel();
+        }
         Ok(self.snapshot())
     }
     /// Poll the bounded completion slot, accept it atomically, and start eligible work.
     pub fn snapshot(&mut self) -> Snapshot {
+        self.poll_files();
         if let Some(response) = self.bridge.poll() {
             let at_ns = self.at_ns();
             if matches!(
@@ -674,16 +815,24 @@ impl DesktopController {
             self.session
                 .fail(format!("Cannot start engine work: {error:?}"));
         }
-        self.session.snapshot()
+        let mut snapshot = self.session.snapshot();
+        snapshot.io = self.io_state.clone();
+        snapshot
     }
     /// Signal process cleanup before a GUI runtime exits without dropping state.
     /// This does not join or wait on the interaction path.
     pub fn begin_shutdown(&mut self) {
         self.bridge.shutdown();
+        self.files.shutdown();
     }
     /// Observe off-path supervisor cleanup before allowing application exit.
     pub fn shutdown_acknowledged(&self) -> bool {
         self.bridge.shutdown_acknowledged()
+            && self
+                .files
+                .shared
+                .exited
+                .load(std::sync::atomic::Ordering::Acquire)
     }
 }
 
@@ -713,6 +862,7 @@ mod tests {
         let mut s = DesktopSession::new();
         s.command(
             DesktopCommand::NewGame {
+                document_revision: s.document_revision,
                 version: 1,
                 human: Color::Black,
             },
@@ -781,6 +931,7 @@ mod tests {
         assert!(!s.accept(response(wrong_generation, "e2e4"), 1));
         s.command(
             DesktopCommand::NewGame {
+                document_revision: s.document_revision,
                 version: s.version,
                 human: Color::Black,
             },

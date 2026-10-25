@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-25T12:48:00Z'
-updated_date: '2026-10-25T18:44:00Z'
+updated_date: '2026-10-25T18:48:00Z'
 labels: []
 milestone: m-3
 dependencies:
@@ -50,4 +50,6 @@ Owner @codex, codex/m3-desktop .claude/worktrees/next-task; starting after MSH-6
 Implemented sharedgeometry/orderedprefixselector plus exact native completechoices; sharedM1inventedhelper, separate featurecontroller/profile/ephemeralrecord, gatedhost and separate frontendoutput. Source review capacity_review clean after Escape-on-route-control focus gap fixed. Independent10core/4native/4host/14frontend focusedchecks pass; rootfullfrontend64pass. Normalbuild forcesflagoff/checks moduleinventory even inheritedflagtrue; verificationassets separate. ActualpackagedGUI still pending, so AC not yet checked.
 
 Actual packaged macOS4e997f0472e09c98f98d211236e2706c453f4f08 verified shared16x16 pointer/key/orientation, terminalprefixNoaction, EscapefromCompletewithfocusrestore, distinct136>153>136capture vs136>135>136noncapture, explicitshort136>153, monotonicReset and nativeClose/Cancelpreservingrecord. Screenshots/exactnormal+QAhashes docs/desktop/evidence/m3-completion/synthetic-local-macos.json; normalpackagehost/frontendexclusion+actualengineprotocol pass. InitialLinuxCI40222121767 found test-onlymixedclock/unsettledClaim assumptions; samecontrollerclock+receiptsettlingfix independentlyreviewed75repeatpasses, no productchange. AwaitreplacementnativeCI/integrationbeforeDone.
+
+InitialpackageCI40222121775 macOSpassed;Linux/Windows timedout5s in new256squarefrontend tests. Optimizedtestqueriesonly: existingSVGrole/ARIAcoordinate selector, cheapstartupheading andHTMLcompletionbuttonqueries; allbehavior/assertions+256buttoninventory preserved, no timeoutincrease/productchange. Full64suitepasses5.40s, independent8testsfocused3.48s. Boundedreviewclean;replacementpackageCIrequired.
 <!-- SECTION:NOTES:END -->

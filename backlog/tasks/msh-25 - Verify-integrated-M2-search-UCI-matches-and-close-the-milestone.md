@@ -1,11 +1,11 @@
 ---
 id: MSH-25
 title: Verify integrated M2 search, UCI matches and close the milestone
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-24T20:48:00Z'
-updated_date: '2026-10-25T00:20:00Z'
+updated_date: '2026-10-25T00:22:00Z'
 labels: []
 milestone: m-2
 dependencies:
@@ -35,7 +35,7 @@ M2 component checks must be connected by evidence from the actual game/search/ca
 - [x] #1 Actual rules-owned game, history-sensitive search/adjudication, cancellation/stale-result rejection, UCI process and runner integration are exercised together with a recorded independent-engine match.
 - [x] #2 Canonical games plus match commands, claim policy and clock/failure events replay deterministically; documented work-limited reruns and timed-run observations meet their separate promises.
 - [x] #3 Independent review resolves material integration findings and maps required M2 deliverables to evidence and honest limitations, including the named M4 chess-completeness obligation.
-- [ ] #4 The integrated revision has appropriate native Linux/macOS/Windows build/test/process evidence; platform omissions remain explicit and block unsupported closure claims.
+- [x] #4 The integrated revision has appropriate native Linux/macOS/Windows build/test/process evidence; platform omissions remain explicit and block unsupported closure claims.
 <!-- AC:END -->
 
 ## Definition of Done
@@ -43,7 +43,7 @@ M2 component checks must be connected by evidence from the actual game/search/ca
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -62,4 +62,14 @@ Focused closure matrix published in docs/review/m2-closure.md, with README entry
 Closure sourcea71e513 CI40145892269 passedmacOS/Windows butFAILED Linux in process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored: clean_eof expectedMissingResponse, observedengine1UnexpectedExit idlehandshake/code0. Bothfixtureshadidenticalexitmode, so eitherobservationwaslegitimate; notaproductclassificationfailure. Test-onlyresolution isolatesfaulttoawaitedengine (startup0,responseinitialBlack1), keepsotherhealthy andassertsexactengine+category; separate ready-then-idle-exitfixturecase assertscleanUnexpectedExit. Independentreview_hardening approvedstrongerchecks andfocusedtestpassed; actual21gamecorpus/productcodeunchanged. AC4temporarilyuncheckedpendingupdatedsourceCI; failedrunevidencepreservedinclosure doc. No blindCIrerunorweakenedoutcomeassertions.
 
 Afterfixtureisolation, 20consecutivefocused subprocess-failure repetitions passed onDarwinarm64, followedbyall18runnerchecks, runnerClippywarningsdenied, workspaceformatting anddiffchecks. Independentprocessreviewconfirmed exactcategory+engineassertions strengthened andno productionbehaviorchanged. UpdatedsourcewillreceivefreshnormalnativeCI beforeAC4/DOD4closure.
+
+Updatedsource82b66f9 passednativeCI40146299248 onWindows2022job121028256455,Ubuntu24.04job121028256592,macOS15job121028256761. ExactheadShaandalljobconclusionsverified. ThepreviousLinuxfixturefailureisresolved; finalruntime/applicationproductioncode remainsidenticaltoreviewed47243cd, provenbyemptydiffacrossallfourcrates/src. Test-onlycaseisolationandexplicitidleexitregressionwerereviewedindependently. Allacceptancecriteria nowcovered, closurebookkeepingreusesexactpassedsource.
+
+Integrated normally into origin/codex/rewrite at source 82b66f9e49d64fd005d6473d3c1bffefc2943c9f. Native CI https://github.com/jweathers777/mShogi/actions/runs/40146299248 passed Rust (windows-2022) (job 121028256455), Rust (ubuntu-24.04) (job 121028256592), Rust (macos-15) (job 121028256761); formatting, Clippy, locked workspace tests/build and console smoke all passed. Closure bookkeeping reuses this exact source evidence. Existing deep/oracle evidence is retained for unchanged rules.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Closed the integrated M2 baseline after fresh independent review and93 focused passing checks,21 actual replayable games including independent Stockfish19 and real outstanding-search clock termination, documented work-limited reruns and timed observations. RequiredM2tasks15–24 and dependency-ready MSH26 areDone. Preserved M1 deep/oracle evidence and honest recognition/resource/platform/strength limits. Fixed a Linux fixture-observation race with exact isolated-failure and idle-exit assertions;20 repetitions and final nativeLinux/macOS/Windows CIpassed. Integrated normally into codex/rewrite; no further Ready work remains.
+<!-- SECTION:FINAL_SUMMARY:END -->

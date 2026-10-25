@@ -1,0 +1,173 @@
+Window: "mShogi Verification — capacity (test state) — content 1180.0 × 820.0 logical", App: mShogi Verification.
+0 standard window mShogi Verification — capacity (test state) — content 1180.0 × 820.0 logical, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 container
+				4 heading mShogi, Value: 1
+					5 text mShogi
+				6 text CHESS · DESKTOP PREVIEW
+				7 text  Untimed M2 rules profile
+				8 container Live game
+					9 text LIVE GAME
+					10 text White to move
+					11 text You play White against mShogi
+					12 button Flip board; currently white at bottom
+					13 container Chess board, white at bottom
+						14 image
+						15 toggle button (disabled) Description: a8, Black rook, Value: off
+						16 toggle button (disabled) Description: b8, Black knight, Value: off
+						17 toggle button (disabled) Description: c8, Black bishop, Value: off
+						18 toggle button (disabled) Description: d8, Black queen, Value: off
+						19 toggle button (disabled) Description: e8, Black king, Value: off
+						20 toggle button (disabled) Description: f8, Black bishop, Value: off
+						21 toggle button (disabled) Description: g8, Black knight, Value: off
+						22 toggle button (disabled) Description: h8, Black rook, Value: off
+						23 toggle button (disabled) Description: a7, Black pawn, Value: off
+						24 toggle button (disabled) Description: b7, Black pawn, Value: off
+						25 toggle button (disabled) Description: c7, Black pawn, Value: off
+						26 toggle button (disabled) Description: d7, Black pawn, Value: off
+						27 toggle button (disabled) Description: e7, Black pawn, Value: off
+						28 toggle button (disabled) Description: f7, Black pawn, Value: off
+						29 toggle button (disabled) Description: g7, Black pawn, Value: off
+						30 toggle button (disabled) Description: h7, Black pawn, Value: off
+						31 toggle button (disabled) Description: a6, empty, Value: off
+						32 toggle button (disabled) Description: b6, empty, Value: off
+						33 toggle button (disabled) Description: c6, empty, Value: off
+						34 toggle button (disabled) Description: d6, empty, Value: off
+						35 toggle button (disabled) Description: e6, empty, Value: off
+						36 toggle button (disabled) Description: f6, empty, Value: off
+						37 toggle button (disabled) Description: g6, empty, Value: off
+						38 toggle button (disabled) Description: h6, empty, Value: off
+						39 toggle button (disabled) Description: a5, empty, Value: off
+						40 toggle button (disabled) Description: b5, empty, Value: off
+						41 toggle button (disabled) Description: c5, empty, Value: off
+						42 toggle button (disabled) Description: d5, empty, Value: off
+						43 toggle button (disabled) Description: e5, empty, Value: off
+						44 toggle button (disabled) Description: f5, empty, Value: off
+						45 toggle button (disabled) Description: g5, empty, Value: off
+						46 toggle button (disabled) Description: h5, empty, Value: off
+						47 toggle button (disabled) Description: a4, empty, Value: off
+						48 toggle button (disabled) Description: b4, empty, Value: off
+						49 toggle button (disabled) Description: c4, empty, Value: off
+						50 toggle button (disabled) Description: d4, empty, Value: off
+						51 toggle button (disabled) Description: e4, empty, Value: off
+						52 toggle button (disabled) Description: f4, empty, Value: off
+						53 toggle button (disabled) Description: g4, empty, Value: off
+						54 toggle button (disabled) Description: h4, empty, Value: off
+						55 toggle button (disabled) Description: a3, empty, Value: off
+						56 toggle button (disabled) Description: b3, empty, Value: off
+						57 toggle button (disabled) Description: c3, empty, Value: off
+						58 toggle button (disabled) Description: d3, empty, Value: off
+						59 toggle button (disabled) Description: e3, empty, Value: off
+						60 toggle button (disabled) Description: f3, empty, Value: off
+						61 toggle button (disabled) Description: g3, empty, Value: off
+						62 toggle button (disabled) Description: h3, empty, Value: off
+						63 toggle button (disabled) Description: a2, White pawn, Value: off
+						64 toggle button (disabled) Description: b2, White pawn, Value: off
+						65 toggle button (disabled) Description: c2, White pawn, Value: off
+						66 toggle button (disabled) Description: d2, White pawn, Value: off
+						67 toggle button (disabled) Description: e2, White pawn, Value: off
+						68 toggle button (disabled) Description: f2, White pawn, Value: off
+						69 toggle button (disabled) Description: g2, White pawn, Value: off
+						70 toggle button (disabled) Description: h2, White pawn, Value: off
+						71 toggle button (disabled) Description: a1, White rook, Value: off
+						72 toggle button (disabled) Description: b1, White knight, Value: off
+						73 toggle button (disabled) Description: c1, White bishop, Value: off
+						74 toggle button (disabled) Description: d1, White queen, Value: off
+						75 toggle button (disabled) Description: e1, White king, Value: off
+						76 toggle button (disabled) Description: f1, White bishop, Value: off
+						77 toggle button (disabled) Description: g1, White knight, Value: off
+						78 toggle button (disabled) Description: h1, White rook, Value: off
+					79 text Select a piece, then a destination. Arrow keys move focus · Enter or Space selects · Escape cancels.
+					80 text Play paused · resume explicitly to continue Live position · 0 plies
+				81 container Game controls and inspection
+					82 container Game file
+						83 heading Untitled game, Value: 2
+							84 text Untitled game
+						85 text Unsaved
+						86 button Save
+						87 button Save as…
+						88 button Open…
+						89 summary File details, Value: off
+							90 text File details
+					91 container Document capacity
+						92 text Application limit reached
+						93 text Application capacity: all 256 observation slots are retained. Save this complete document, then start a new game/document to continue analysis or engine play.
+						94 text This is an application resource limit. No chess result or illegal move is implied. Your complete accepted game and observations are preserved.
+						95 text Save or Save as to keep this document, then start a new game or open another document to continue. Saving and reopening retains all recorded history and observations; it does not reset their limits.
+					96 text PLAY
+					97 text Your color for a new game
+					98 pop up button (collapsed) Your color for a new game, Value: White, Secondary Actions: Expand
+					99 button New game
+					100 text Save the native game document to preserve context, events and observations.
+					101 button (disabled) Resign game…
+					102 container Inspector view
+						103 toggle button Play details, Value: off
+						104 toggle button Analyze position, Value: on
+					105 container Read-only analysis
+						106 heading Read-only analysis, Value: 2
+							107 text Read-only analysis
+						108 text Incomplete
+						109 text Starting analysis pauses play. Results suggest or inspect; they never play a move, claim a draw or change the live game.
+						110 text Selected: Live game · live position
+						111 container
+							112 heading Bounded move search, Value: 3
+								113 text Bounded move search
+							114 text Search depth
+							115 number field (settable) Search depth, Value: 1
+								116 stepper 0
+									117 unknown
+									118 unknown
+							119 text Node budget
+							120 number field (settable) Node budget, Value: 0
+								121 stepper 0
+									122 unknown
+									123 unknown
+							124 button (disabled) Start move analysis
+						125 summary Advanced: Full mating reachability, Value: off
+							126 text Advanced: Full mating reachability
+						127 text Final native observations only. Every request has work budgets and a 15-second process watchdog; these are not hard realtime guarantees.
+						128 container Analysis status
+							129 text Analysis incomplete. A work limit or stop ended the request for Live position after 0 plies, White to move; it does not conclude the live game. Suggestions were not played.
+						130 container Analysis result
+							131 heading Live position after 0 plies, Value: 3
+								132 text Live position after 0 plies
+							133 text White to move · Bounded move search
+							134 text Recorded limit: depth 1, 0 nodes.
+							135 text No completed evaluation
+							136 description list
+								137 text Completed depth
+								138 text 0
+								139 text Visited nodes
+								140 text 0
+						141 summary Analysis technical details, Value: off
+							142 text Analysis technical details
+					143 container Game history
+						144 heading Game history, Value: 2
+							145 text Game history
+						146 text Native event timeline
+						147 text Inspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.
+						148 container Recorded game events
+							149 button Initial known position 0 plies
+							150 button Match started 0 plies
+						151 summary Played move identifiers, Value: off
+							152 text Played move identifiers
+					153 container Recorded search observations
+						154 summary Recorded search observations (256), Value: off
+							155 text Recorded search observations (256)
+				156 text One native rules engine. Complete actions. Optional claims.
+				157 summary Session details, Value: off
+					158 text Session details
+		159 scroll bar (settable, float) 1
+	160 close button
+	161 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	162 minimize button
+	163 text mShogi Verification — capacity (test state) — content 1180.0 × 820.0 logical
+164 menu bar
+	165 mShogi Verification
+	166 Edit
+	167 View
+	168 Window
+	169 Verification window size
+
+The focused UI element is 91 container Document capacity

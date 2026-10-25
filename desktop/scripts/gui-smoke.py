@@ -9,6 +9,7 @@ import base64
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 import hashlib
+import http.client
 import importlib
 import json
 import os
@@ -29,6 +30,25 @@ def stamp():
 
 def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def terminal_transport_closed(error):
+    """Only meaningful after dispatching the known native-close guard action."""
+    if isinstance(error, (http.client.RemoteDisconnected, ConnectionResetError, BrokenPipeError)):
+        return True
+    if isinstance(error, urllib.error.URLError):
+        return isinstance(error.reason, (ConnectionResetError, ConnectionRefusedError, BrokenPipeError))
+    if isinstance(error, RuntimeError):
+        try:
+            response = json.loads(str(error))
+        except (ValueError, TypeError):
+            return False
+        value = response.get("value", response) if isinstance(response, dict) else {}
+        return (isinstance(value, dict) and
+                (value.get("error") in ("invalid session id", "no such window") or
+                 (value.get("error") == "unknown error" and
+                  value.get("message") == "Session terminated without a reply")))
+    return False
 
 
 def wait(predicate, label, seconds=25):
@@ -163,8 +183,14 @@ class Journey:
 
     def capture(self, label):
         prefix = self.args.output / f"{self.phase}-{label}"
-        self.native.screenshot(prefix.with_suffix(".desktop.png"))
-        self.web.screenshot(prefix.with_suffix(".webview.png"))
+        try:
+            self.web.screenshot(prefix.with_suffix(".webview.png"))
+        finally:
+            # DOM state can precede the X11 compositor's displayed frame. Give
+            # native presentation a bounded settle after webview capture. Also
+            # retain the raw desktop if a failed session cannot supply a view.
+            time.sleep(0.15)
+            self.native.screenshot(prefix.with_suffix(".desktop.png"))
         prefix.with_suffix(".dom.json").write_text(json.dumps({
             "text": self.web.text(), "focus": self.web.read(
                 "({tag:document.activeElement?.tagName,label:document.activeElement?.getAttribute('aria-label'),text:document.activeElement?.textContent})"),
@@ -200,9 +226,19 @@ class Journey:
         self.phase_report["driver_creation"] = {"windows_no_console": platform.system() == "Windows",
             "stdout_stderr": f"{self.phase}-driver.log"}
         endpoint = "http://127.0.0.1:4444"
+        startup = {"attempts": 0, "last_transport_error": None}
+        self.phase_report["driver_startup"] = startup
         def ready():
-            with urllib.request.urlopen(endpoint + "/status", timeout=2) as response:
-                return response.status == 200
+            startup["attempts"] += 1
+            if self.driver.poll() is not None:
+                raise ChildProcessError(f"Native driver exited during startup: {self.driver.returncode}")
+            try:
+                with urllib.request.urlopen(endpoint + "/status", timeout=2) as response:
+                    return response.status == 200
+            except (urllib.error.URLError, http.client.RemoteDisconnected,
+                    ConnectionResetError, TimeoutError) as error:
+                startup["last_transport_error"] = repr(error)
+                return False
         wait(ready, "external native driver startup")
         self.web = Webview(endpoint, host)
         self.phase_report["capabilities"] = self.web.capabilities
@@ -294,8 +330,18 @@ class Journey:
     def quit(self, synthetic=False):
         evidence = self.native.quit_app()
         self.record("Native Quit request", evidence)
-        wait(lambda: self.web.has("[role=dialog]"), "native quit reaches application guard")
-        self.web.button("Close fixture" if synthetic else "Discard & continue")
+        guard = '[aria-labelledby="synthetic-close-title"]' if synthetic else ".document-guard"
+        wait(lambda: self.web.has(guard), "native quit reaches its specific application guard")
+        label = "Close fixture" if synthetic else "Discard & continue"
+        element = self.web.find(f"//button[normalize-space(.)='{label}']", "xpath")
+        self.record("Dispatch final native-close guard action", {"label": label, "element": element})
+        try:
+            self.web.command("POST", f"/element/{element}/click", {})
+        except Exception as error:
+            if not terminal_transport_closed(error):
+                raise
+            self.record("Final guard click closed its WebDriver transport", {
+                "error": str(error), "qualification": "Not exit proof; native host/engine absence is still required before teardown."})
         self.stopped()
 
     def normal(self):
@@ -438,6 +484,13 @@ class Journey:
             wait(lambda: "observations (256)" in w.text(".saved-observations"), "accept observation 256")
             w.click('[data-analysis-start="moves"]')
             wait(lambda: "Application limit reached" in w.text(".capacity-notice"), "reject operation before observation 257")
+            wait(lambda: w.read("""(() => {
+                const notice = document.querySelector('.capacity-notice');
+                const sidebar = document.querySelector('.sidebar');
+                if (!notice || !sidebar || document.activeElement !== notice) return false;
+                const rect = notice.getBoundingClientRect(), box = sidebar.getBoundingClientRect();
+                return rect.top >= Math.max(0, box.top) && rect.bottom <= Math.min(innerHeight, box.bottom);
+            })()"""), "new capacity pause is focused and visible in the actual inspector")
             assert "observations (256)" in w.text(".saved-observations")
             assert not w.has(".outcome-card")
             self.capture("capacity-pause")
@@ -445,6 +498,7 @@ class Journey:
             # A preference change keeps this temporary saved document dirty for
             # the native lifecycle guard; it does not remove any observation.
             w.click(".flip-button")
+            wait(lambda: w.text(".document-dirty") == "Unsaved", "protected preference change completes before Quit")
         elif name == "synthetic":
             assert "not a real shogi variant" in w.text()
             assert not w.has(".document-card")

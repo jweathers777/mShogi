@@ -1,0 +1,3488 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-10-25T21:01:34.858504+00:00",
+  "status": "failed",
+  "source_revision": "e313ef011d7b62c6ee32748b605b013b8771c935",
+  "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/40232694201",
+  "environment": {
+    "platform": "Windows-2022Server-10.0.20348-SP0",
+    "python": "3.12.10",
+    "runner_image": "20261022.344.1",
+    "runner_os": "Windows",
+    "renderer_environment": {
+      "GDK_BACKEND": null,
+      "WEBKIT_DISABLE_COMPOSITING_MODE": null,
+      "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+      "LIBGL_ALWAYS_SOFTWARE": null
+    }
+  },
+  "method": "Actual installed/packaged GUI via W3C pointer/keyboard and native OS dialogs/close, external to distributables. Read-only DOM inspection; no direct IPC or injected input events.",
+  "driver_identity": {
+    "path": "C:\\Users\\runneradmin\\.cargo\\bin\\tauri-driver.EXE",
+    "version": ""
+  },
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "failed",
+      "fixture": null,
+      "host": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+      "host_sha256": "68ebe9a3635c15f7b982375e04efa8a00e11f6a988758dd7cb51671a9bd3075b",
+      "engine": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi.exe",
+      "engine_sha256": "2e2df51860fa717d690acac7024637b9880cfc77436dd49356767ce3c96d3425",
+      "events": [
+        {
+          "at_utc": "2026-10-25T21:01:50.188546+00:00",
+          "operation": "Launch actual packaged application",
+          "observation": {
+            "event": "attach",
+            "utc": "2026-10-25T21:01:49.432886+00:00",
+            "elapsed_ms": 14469,
+            "hwnd": 458908,
+            "pid": 1100,
+            "title": "mShogi",
+            "class": "Tauri Window",
+            "owner": 0,
+            "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+            "rectangle": [
+              0,
+              0,
+              1044,
+              788
+            ],
+            "host": "d:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+            "engine": "d:\\a\\_temp\\mshogi-package-smoke\\mshogi.exe",
+            "webview2_processes": [
+              {
+                "pid": 5724,
+                "parent_pid": 1100,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 7052,
+                "parent_pid": 5724,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 1980,
+                "parent_pid": 5724,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 7820,
+                "parent_pid": 5724,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 2456,
+                "parent_pid": 5724,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 4372,
+                "parent_pid": 5724,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              }
+            ]
+          }
+        },
+        {
+          "at_utc": "2026-10-25T21:01:51.818742+00:00",
+          "operation": "Play e2e4 against actual bundled engine",
+          "observation": "Move returned: a7 \u2192 a5"
+        },
+        {
+          "at_utc": "2026-10-25T21:01:52.696036+00:00",
+          "operation": "Cancel demonstrably active analysis",
+          "observation": "Analysis cancelled. No conclusion was established; play remains paused until you explicitly resume."
+        },
+        {
+          "at_utc": "2026-10-25T21:01:53.810254+00:00",
+          "operation": "Replace with bounded read-only suggestion",
+          "observation": "Live position after 2 plies\n\nWhite to move \u00b7 Bounded move search\n\nRecorded limit: depth 1, 1,000 nodes.\n\nSuggested move: a2 \u2192 a3 \u00b7 not played\n\n0.00 pawns from White perspective\n\nCompleted depth\n1\nVisited nodes\n31\n\nSuggested continuation \u00b7 not played\na2 \u2192 a3"
+        },
+        {
+          "at_utc": "2026-10-25T21:01:55.625124+00:00",
+          "operation": "Native save choose file",
+          "observation": {
+            "event": "native_file_picker",
+            "utc": "2026-10-25T21:01:55.625124+00:00",
+            "elapsed_ms": 20656,
+            "kind": "save",
+            "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-complete.mshogi",
+            "action": "accept",
+            "dialog": {
+              "hwnd": 66192,
+              "pid": 1100,
+              "title": "Save mShogi game",
+              "class": "#32770",
+              "owner": 0,
+              "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+              "rectangle": [
+                0,
+                0,
+                625,
+                480
+              ]
+            },
+            "filename_control": {
+              "name": "File name:",
+              "automation_id": "1001",
+              "value_before": "game",
+              "value_entered": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-complete.mshogi",
+              "value_after_blur": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-complete.mshogi"
+            },
+            "screenshot": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal\\native-001-save-picker.png"
+          }
+        },
+        {
+          "at_utc": "2026-10-25T21:01:55.745132+00:00",
+          "operation": "Inspect actual saved canonical archive",
+          "observation": {
+            "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-complete.mshogi",
+            "sha256": "4fff36aa21e55767829b6e4f677a8bc7d16592d5dbea8176b4436ef8f0ecc835",
+            "bytes": 5823,
+            "observations": 2,
+            "controls": 5,
+            "game_events": 2
+          }
+        },
+        {
+          "at_utc": "2026-10-25T21:01:57.036251+00:00",
+          "operation": "Native open choose file",
+          "observation": {
+            "event": "native_file_picker",
+            "utc": "2026-10-25T21:01:57.036251+00:00",
+            "elapsed_ms": 22078,
+            "kind": "open",
+            "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-complete.mshogi",
+            "action": "accept",
+            "dialog": {
+              "hwnd": 262796,
+              "pid": 1100,
+              "title": "Open mShogi game",
+              "class": "#32770",
+              "owner": 0,
+              "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+              "rectangle": [
+                0,
+                0,
+                625,
+                480
+              ]
+            },
+            "filename_control": {
+              "name": "File name:",
+              "automation_id": "1148",
+              "value_before": "",
+              "value_entered": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-complete.mshogi",
+              "value_after_blur": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-complete.mshogi"
+            },
+            "screenshot": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal\\native-002-open-picker.png"
+          }
+        },
+        {
+          "at_utc": "2026-10-25T21:01:57.144349+00:00",
+          "operation": "Reopen complete document without resuming work",
+          "observation": "normal-complete.mshogi\nSaved\nSave\nSave as\u2026\nOpen\u2026\n\nOpened the complete document with work stopped.\n\nFile details"
+        },
+        {
+          "at_utc": "2026-10-25T21:01:58.716367+00:00",
+          "operation": "History prefix provenance / Return live / Resume",
+          "observation": {
+            "historical_request": {
+              "protocol": 2,
+              "purpose": {
+                "kind": "move_analysis",
+                "target": {
+                  "selection_id": 21,
+                  "ply": 1,
+                  "session_version": 22,
+                  "label": "Historical position after 1 plies",
+                  "turn": "black"
+                }
+              },
+              "request_id": 21,
+              "session_version": 22,
+              "process_generation": 21,
+              "game": {
+                "schema_version": 1,
+                "rules_profile": "mshogi.chess.match.v1",
+                "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                "history_origin": "standard_start",
+                "claim_policy": "explicit_only",
+                "events": [
+                  {
+                    "ply": 0,
+                    "event": {
+                      "kind": "move",
+                      "action": "e2e4"
+                    }
+                  }
+                ]
+              },
+              "limits": {
+                "depth": 1,
+                "nodes": 1000
+              }
+            },
+            "live_game_events": 2
+          }
+        },
+        {
+          "at_utc": "2026-10-25T21:01:58.784351+00:00",
+          "operation": "Native window-close request",
+          "observation": {
+            "event": "native_wm_close",
+            "utc": "2026-10-25T21:01:58.784351+00:00",
+            "elapsed_ms": 23828,
+            "pid": 1100,
+            "hwnd": 458908
+          }
+        },
+        {
+          "at_utc": "2026-10-25T21:01:59.143753+00:00",
+          "operation": "Native Quit request",
+          "observation": {
+            "event": "native_ctrl_q",
+            "utc": "2026-10-25T21:01:59.143753+00:00",
+            "elapsed_ms": 24188,
+            "pid": 1100,
+            "hwnd": 458908
+          }
+        }
+      ],
+      "started_at_utc": "2026-10-25T21:01:34.936628+00:00",
+      "native_environment": {
+        "event": "environment",
+        "utc": "2026-10-25T21:01:34.967898+00:00",
+        "elapsed_ms": 0,
+        "os": "Windows-2022Server-10.0.20348-SP0",
+        "architecture": "AMD64",
+        "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+        "ui_language_id": 1033,
+        "session_id": 2,
+        "window_station_visible": true,
+        "input_desktop": "Default",
+        "input_desktop_accessible": true,
+        "tools": {
+          "pywinauto": "0.6.9",
+          "pywin32": "312",
+          "comtypes": "1.4.17",
+          "Pillow": "11.3.0"
+        },
+        "webview2_runtime_registry": [
+          {
+            "key": "HKLM\\SOFTWARE\\WOW6432Node\\Microsoft\\EdgeUpdate\\Clients\\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}",
+            "version": "131.0.2903.86"
+          }
+        ]
+      },
+      "driver_command": [
+        "tauri-driver",
+        "--port",
+        "4444",
+        "--native-port",
+        "4445",
+        "--native-driver",
+        "D:\\a\\_temp\\mshogi-webview-driver\\msedgedriver.exe"
+      ],
+      "driver_creation": {
+        "windows_no_console": true,
+        "stdout_stderr": "normal-driver.log"
+      },
+      "capabilities": {
+        "acceptInsecureCerts": false,
+        "browserName": "webview2",
+        "browserVersion": "131.0.2903.86",
+        "fedcm:accounts": true,
+        "ms:edgeOptions": {
+          "debuggerAddress": "localhost:63681"
+        },
+        "msedge": {
+          "msedgedriverVersion": "131.0.2903.86 (cf5bf303997cad93d7a0bede234d3c3dc01cc63d)",
+          "userDataDir": ""
+        },
+        "networkConnectionEnabled": false,
+        "pageLoadStrategy": "normal",
+        "platformName": "windows",
+        "proxy": {},
+        "setWindowRect": true,
+        "strictFileInteractability": false,
+        "timeouts": {
+          "implicit": 0,
+          "pageLoad": 300000,
+          "script": 30000
+        },
+        "unhandledPromptBehavior": "dismiss and notify",
+        "webauthn:extension:credBlob": true,
+        "webauthn:extension:largeBlob": true,
+        "webauthn:extension:minPinLength": true,
+        "webauthn:extension:prf": true,
+        "webauthn:virtualAuthenticators": true
+      },
+      "native_window": {
+        "event": "attach",
+        "utc": "2026-10-25T21:01:49.432886+00:00",
+        "elapsed_ms": 14469,
+        "hwnd": 458908,
+        "pid": 1100,
+        "title": "mShogi",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ],
+        "host": "d:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "engine": "d:\\a\\_temp\\mshogi-package-smoke\\mshogi.exe",
+        "webview2_processes": [
+          {
+            "pid": 5724,
+            "parent_pid": 1100,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 7052,
+            "parent_pid": 5724,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 1980,
+            "parent_pid": 5724,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 7820,
+            "parent_pid": 5724,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 2456,
+            "parent_pid": 5724,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 4372,
+            "parent_pid": 5724,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          }
+        ]
+      },
+      "error": "Timed out: native quit reaches application guard; last observation: False",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 526, in main\n    journey.normal() if fixture is None else journey.fixture(fixture)\n    ^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 386, in normal\n    self.quit()\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 297, in quit\n    wait(lambda: self.web.has(\"[role=dialog]\"), \"native quit reaches application guard\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 45, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: native quit reaches application guard; last observation: False\n",
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-standard",
+      "status": "failed",
+      "fixture": "standard",
+      "host": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "host_sha256": "e0d726bc3cff7d878c1c4201ebd468f2d31eb4a3d03799304d65782052a98167",
+      "engine": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+      "engine_sha256": "2e2df51860fa717d690acac7024637b9880cfc77436dd49356767ce3c96d3425",
+      "events": [
+        {
+          "at_utc": "2026-10-25T21:02:26.367817+00:00",
+          "operation": "Launch actual packaged application",
+          "observation": {
+            "event": "attach",
+            "utc": "2026-10-25T21:02:25.731359+00:00",
+            "elapsed_ms": 1313,
+            "hwnd": 131700,
+            "pid": 3108,
+            "title": "mShogi Verification \u2014 standard (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+            "class": "Tauri Window",
+            "owner": 0,
+            "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+            "rectangle": [
+              0,
+              0,
+              1044,
+              788
+            ],
+            "host": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+            "engine": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+            "webview2_processes": [
+              {
+                "pid": 6216,
+                "parent_pid": 3108,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 7368,
+                "parent_pid": 6216,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 5624,
+                "parent_pid": 6216,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 6348,
+                "parent_pid": 6216,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 6168,
+                "parent_pid": 6216,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 8152,
+                "parent_pid": 6216,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              }
+            ]
+          }
+        },
+        {
+          "at_utc": "2026-10-25T21:02:28.027799+00:00",
+          "operation": "Genuine missing-engine startup failure preserves three plies",
+          "observation": "Engine failure \u00b7 play paused\n\nThe engine could not complete this turn. The game is still ongoing. No engine move or chess result was added.\n\nRetry the engine turn to continue from this position, or start a new game.\n\nNative status details"
+        },
+        {
+          "at_utc": "2026-10-25T21:02:28.729184+00:00",
+          "operation": "Restore identical sidecar and Retry without losing history",
+          "observation": {
+            "engine_sha256": "2e2df51860fa717d690acac7024637b9880cfc77436dd49356767ce3c96d3425",
+            "result": "Move returned: a5 \u2192 a4"
+          }
+        },
+        {
+          "at_utc": "2026-10-25T21:02:29.047658+00:00",
+          "operation": "Native Quit request",
+          "observation": {
+            "event": "native_ctrl_q",
+            "utc": "2026-10-25T21:02:29.047658+00:00",
+            "elapsed_ms": 4625,
+            "pid": 3108,
+            "hwnd": 131700
+          }
+        }
+      ],
+      "started_at_utc": "2026-10-25T21:02:24.416763+00:00",
+      "native_environment": {
+        "event": "environment",
+        "utc": "2026-10-25T21:02:24.416763+00:00",
+        "elapsed_ms": 0,
+        "os": "Windows-2022Server-10.0.20348-SP0",
+        "architecture": "AMD64",
+        "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+        "ui_language_id": 1033,
+        "session_id": 2,
+        "window_station_visible": true,
+        "input_desktop": "Default",
+        "input_desktop_accessible": true,
+        "tools": {
+          "pywinauto": "0.6.9",
+          "pywin32": "312",
+          "comtypes": "1.4.17",
+          "Pillow": "11.3.0"
+        },
+        "webview2_runtime_registry": [
+          {
+            "key": "HKLM\\SOFTWARE\\WOW6432Node\\Microsoft\\EdgeUpdate\\Clients\\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}",
+            "version": "131.0.2903.86"
+          }
+        ]
+      },
+      "driver_command": [
+        "tauri-driver",
+        "--port",
+        "4444",
+        "--native-port",
+        "4445",
+        "--native-driver",
+        "D:\\a\\_temp\\mshogi-webview-driver\\msedgedriver.exe"
+      ],
+      "driver_creation": {
+        "windows_no_console": true,
+        "stdout_stderr": "verification-standard-driver.log"
+      },
+      "capabilities": {
+        "acceptInsecureCerts": false,
+        "browserName": "webview2",
+        "browserVersion": "131.0.2903.86",
+        "fedcm:accounts": true,
+        "ms:edgeOptions": {
+          "debuggerAddress": "localhost:64443"
+        },
+        "msedge": {
+          "msedgedriverVersion": "131.0.2903.86 (cf5bf303997cad93d7a0bede234d3c3dc01cc63d)",
+          "userDataDir": ""
+        },
+        "networkConnectionEnabled": false,
+        "pageLoadStrategy": "normal",
+        "platformName": "windows",
+        "proxy": {},
+        "setWindowRect": true,
+        "strictFileInteractability": false,
+        "timeouts": {
+          "implicit": 0,
+          "pageLoad": 300000,
+          "script": 30000
+        },
+        "unhandledPromptBehavior": "dismiss and notify",
+        "webauthn:extension:credBlob": true,
+        "webauthn:extension:largeBlob": true,
+        "webauthn:extension:minPinLength": true,
+        "webauthn:extension:prf": true,
+        "webauthn:virtualAuthenticators": true
+      },
+      "native_window": {
+        "event": "attach",
+        "utc": "2026-10-25T21:02:25.731359+00:00",
+        "elapsed_ms": 1313,
+        "hwnd": 131700,
+        "pid": 3108,
+        "title": "mShogi Verification \u2014 standard (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ],
+        "host": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "engine": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+        "webview2_processes": [
+          {
+            "pid": 6216,
+            "parent_pid": 3108,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 7368,
+            "parent_pid": 6216,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 5624,
+            "parent_pid": 6216,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 6348,
+            "parent_pid": 6216,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 6168,
+            "parent_pid": 6216,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 8152,
+            "parent_pid": 6216,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          }
+        ]
+      },
+      "error": "Timed out: native quit reaches application guard; last observation: False",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 526, in main\n    journey.normal() if fixture is None else journey.fixture(fixture)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 486, in fixture\n    self.quit(synthetic=name == \"synthetic\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 297, in quit\n    wait(lambda: self.web.has(\"[role=dialog]\"), \"native quit reaches application guard\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 45, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: native quit reaches application guard; last observation: False\n",
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "failed",
+      "fixture": "promotion",
+      "host": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "host_sha256": "e0d726bc3cff7d878c1c4201ebd468f2d31eb4a3d03799304d65782052a98167",
+      "engine": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+      "engine_sha256": "2e2df51860fa717d690acac7024637b9880cfc77436dd49356767ce3c96d3425",
+      "events": [
+        {
+          "at_utc": "2026-10-25T21:02:56.758260+00:00",
+          "operation": "Launch actual packaged application",
+          "observation": {
+            "event": "attach",
+            "utc": "2026-10-25T21:02:55.465184+00:00",
+            "elapsed_ms": 1156,
+            "hwnd": 262530,
+            "pid": 7436,
+            "title": "mShogi Verification \u2014 promotion (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+            "class": "Tauri Window",
+            "owner": 0,
+            "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+            "rectangle": [
+              0,
+              0,
+              1044,
+              788
+            ],
+            "host": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+            "engine": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+            "webview2_processes": [
+              {
+                "pid": 6100,
+                "parent_pid": 7436,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 2584,
+                "parent_pid": 6100,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 6768,
+                "parent_pid": 6100,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 7916,
+                "parent_pid": 6100,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 2472,
+                "parent_pid": 6100,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 5284,
+                "parent_pid": 6100,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              }
+            ]
+          }
+        },
+        {
+          "at_utc": "2026-10-25T21:02:57.284358+00:00",
+          "operation": "Cancel promotion then commit complete Knight promotion",
+          "observation": "PLAY ENDED\n\nDraw \u2014 proven dead position\n\nPlay has ended. The board and played move history are preserved.\n\nStart a new game to play again. This result remains separate from engine process status."
+        },
+        {
+          "at_utc": "2026-10-25T21:02:57.576680+00:00",
+          "operation": "Native Quit request",
+          "observation": {
+            "event": "native_ctrl_q",
+            "utc": "2026-10-25T21:02:57.576680+00:00",
+            "elapsed_ms": 3266,
+            "pid": 7436,
+            "hwnd": 262530
+          }
+        }
+      ],
+      "started_at_utc": "2026-10-25T21:02:54.307267+00:00",
+      "native_environment": {
+        "event": "environment",
+        "utc": "2026-10-25T21:02:54.307267+00:00",
+        "elapsed_ms": 0,
+        "os": "Windows-2022Server-10.0.20348-SP0",
+        "architecture": "AMD64",
+        "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+        "ui_language_id": 1033,
+        "session_id": 2,
+        "window_station_visible": true,
+        "input_desktop": "Default",
+        "input_desktop_accessible": true,
+        "tools": {
+          "pywinauto": "0.6.9",
+          "pywin32": "312",
+          "comtypes": "1.4.17",
+          "Pillow": "11.3.0"
+        },
+        "webview2_runtime_registry": [
+          {
+            "key": "HKLM\\SOFTWARE\\WOW6432Node\\Microsoft\\EdgeUpdate\\Clients\\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}",
+            "version": "131.0.2903.86"
+          }
+        ]
+      },
+      "driver_command": [
+        "tauri-driver",
+        "--port",
+        "4444",
+        "--native-port",
+        "4445",
+        "--native-driver",
+        "D:\\a\\_temp\\mshogi-webview-driver\\msedgedriver.exe"
+      ],
+      "driver_creation": {
+        "windows_no_console": true,
+        "stdout_stderr": "verification-promotion-driver.log"
+      },
+      "capabilities": {
+        "acceptInsecureCerts": false,
+        "browserName": "webview2",
+        "browserVersion": "131.0.2903.86",
+        "fedcm:accounts": true,
+        "ms:edgeOptions": {
+          "debuggerAddress": "localhost:64987"
+        },
+        "msedge": {
+          "msedgedriverVersion": "131.0.2903.86 (cf5bf303997cad93d7a0bede234d3c3dc01cc63d)",
+          "userDataDir": ""
+        },
+        "networkConnectionEnabled": false,
+        "pageLoadStrategy": "normal",
+        "platformName": "windows",
+        "proxy": {},
+        "setWindowRect": true,
+        "strictFileInteractability": false,
+        "timeouts": {
+          "implicit": 0,
+          "pageLoad": 300000,
+          "script": 30000
+        },
+        "unhandledPromptBehavior": "dismiss and notify",
+        "webauthn:extension:credBlob": true,
+        "webauthn:extension:largeBlob": true,
+        "webauthn:extension:minPinLength": true,
+        "webauthn:extension:prf": true,
+        "webauthn:virtualAuthenticators": true
+      },
+      "native_window": {
+        "event": "attach",
+        "utc": "2026-10-25T21:02:55.465184+00:00",
+        "elapsed_ms": 1156,
+        "hwnd": 262530,
+        "pid": 7436,
+        "title": "mShogi Verification \u2014 promotion (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ],
+        "host": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "engine": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+        "webview2_processes": [
+          {
+            "pid": 6100,
+            "parent_pid": 7436,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 2584,
+            "parent_pid": 6100,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 6768,
+            "parent_pid": 6100,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 7916,
+            "parent_pid": 6100,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 2472,
+            "parent_pid": 6100,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 5284,
+            "parent_pid": 6100,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          }
+        ]
+      },
+      "error": "Timed out: native quit reaches application guard; last observation: False",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 526, in main\n    journey.normal() if fixture is None else journey.fixture(fixture)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 486, in fixture\n    self.quit(synthetic=name == \"synthetic\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 297, in quit\n    wait(lambda: self.web.has(\"[role=dialog]\"), \"native quit reaches application guard\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 45, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: native quit reaches application guard; last observation: False\n",
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-claim",
+      "status": "failed",
+      "fixture": "claim",
+      "host": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "host_sha256": "e0d726bc3cff7d878c1c4201ebd468f2d31eb4a3d03799304d65782052a98167",
+      "engine": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+      "engine_sha256": "2e2df51860fa717d690acac7024637b9880cfc77436dd49356767ce3c96d3425",
+      "events": [
+        {
+          "at_utc": "2026-10-25T21:03:25.542329+00:00",
+          "operation": "Launch actual packaged application",
+          "observation": {
+            "event": "attach",
+            "utc": "2026-10-25T21:03:24.106807+00:00",
+            "elapsed_ms": 1235,
+            "hwnd": 393346,
+            "pid": 6352,
+            "title": "mShogi Verification \u2014 claim (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+            "class": "Tauri Window",
+            "owner": 0,
+            "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+            "rectangle": [
+              0,
+              0,
+              1044,
+              788
+            ],
+            "host": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+            "engine": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+            "webview2_processes": [
+              {
+                "pid": 7812,
+                "parent_pid": 6352,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 5332,
+                "parent_pid": 7812,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 3356,
+                "parent_pid": 7812,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 1340,
+                "parent_pid": 7812,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 6752,
+                "parent_pid": 7812,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 2968,
+                "parent_pid": 7812,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              }
+            ]
+          }
+        },
+        {
+          "at_utc": "2026-10-25T21:03:25.655592+00:00",
+          "operation": "Optional intended-move claim concludes without playing intention",
+          "observation": "PLAY ENDED\n\nDraw \u2014 claimed fifty-move rule\n\nPlay has ended. The board and played move history are preserved.\n\nStart a new game to play again. This result remains separate from engine process status."
+        },
+        {
+          "at_utc": "2026-10-25T21:03:26.137423+00:00",
+          "operation": "Native Quit request",
+          "observation": {
+            "event": "native_ctrl_q",
+            "utc": "2026-10-25T21:03:26.137423+00:00",
+            "elapsed_ms": 3266,
+            "pid": 6352,
+            "hwnd": 393346
+          }
+        }
+      ],
+      "started_at_utc": "2026-10-25T21:03:22.863662+00:00",
+      "native_environment": {
+        "event": "environment",
+        "utc": "2026-10-25T21:03:22.863662+00:00",
+        "elapsed_ms": 0,
+        "os": "Windows-2022Server-10.0.20348-SP0",
+        "architecture": "AMD64",
+        "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+        "ui_language_id": 1033,
+        "session_id": 2,
+        "window_station_visible": true,
+        "input_desktop": "Default",
+        "input_desktop_accessible": true,
+        "tools": {
+          "pywinauto": "0.6.9",
+          "pywin32": "312",
+          "comtypes": "1.4.17",
+          "Pillow": "11.3.0"
+        },
+        "webview2_runtime_registry": [
+          {
+            "key": "HKLM\\SOFTWARE\\WOW6432Node\\Microsoft\\EdgeUpdate\\Clients\\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}",
+            "version": "131.0.2903.86"
+          }
+        ]
+      },
+      "driver_command": [
+        "tauri-driver",
+        "--port",
+        "4444",
+        "--native-port",
+        "4445",
+        "--native-driver",
+        "D:\\a\\_temp\\mshogi-webview-driver\\msedgedriver.exe"
+      ],
+      "driver_creation": {
+        "windows_no_console": true,
+        "stdout_stderr": "verification-claim-driver.log"
+      },
+      "capabilities": {
+        "acceptInsecureCerts": false,
+        "browserName": "webview2",
+        "browserVersion": "131.0.2903.86",
+        "fedcm:accounts": true,
+        "ms:edgeOptions": {
+          "debuggerAddress": "localhost:65508"
+        },
+        "msedge": {
+          "msedgedriverVersion": "131.0.2903.86 (cf5bf303997cad93d7a0bede234d3c3dc01cc63d)",
+          "userDataDir": ""
+        },
+        "networkConnectionEnabled": false,
+        "pageLoadStrategy": "normal",
+        "platformName": "windows",
+        "proxy": {},
+        "setWindowRect": true,
+        "strictFileInteractability": false,
+        "timeouts": {
+          "implicit": 0,
+          "pageLoad": 300000,
+          "script": 30000
+        },
+        "unhandledPromptBehavior": "dismiss and notify",
+        "webauthn:extension:credBlob": true,
+        "webauthn:extension:largeBlob": true,
+        "webauthn:extension:minPinLength": true,
+        "webauthn:extension:prf": true,
+        "webauthn:virtualAuthenticators": true
+      },
+      "native_window": {
+        "event": "attach",
+        "utc": "2026-10-25T21:03:24.106807+00:00",
+        "elapsed_ms": 1235,
+        "hwnd": 393346,
+        "pid": 6352,
+        "title": "mShogi Verification \u2014 claim (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ],
+        "host": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "engine": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+        "webview2_processes": [
+          {
+            "pid": 7812,
+            "parent_pid": 6352,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 5332,
+            "parent_pid": 7812,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 3356,
+            "parent_pid": 7812,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 1340,
+            "parent_pid": 7812,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 6752,
+            "parent_pid": 7812,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 2968,
+            "parent_pid": 7812,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          }
+        ]
+      },
+      "error": "Timed out: native quit reaches application guard; last observation: False",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 526, in main\n    journey.normal() if fixture is None else journey.fixture(fixture)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 486, in fixture\n    self.quit(synthetic=name == \"synthetic\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 297, in quit\n    wait(lambda: self.web.has(\"[role=dialog]\"), \"native quit reaches application guard\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 45, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: native quit reaches application guard; last observation: False\n",
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "failed",
+      "fixture": "capacity",
+      "host": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "host_sha256": "e0d726bc3cff7d878c1c4201ebd468f2d31eb4a3d03799304d65782052a98167",
+      "engine": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+      "engine_sha256": "2e2df51860fa717d690acac7024637b9880cfc77436dd49356767ce3c96d3425",
+      "events": [
+        {
+          "at_utc": "2026-10-25T21:03:54.040302+00:00",
+          "operation": "Launch actual packaged application",
+          "observation": {
+            "event": "attach",
+            "utc": "2026-10-25T21:03:52.636860+00:00",
+            "elapsed_ms": 1219,
+            "hwnd": 459358,
+            "pid": 6408,
+            "title": "mShogi Verification \u2014 test state",
+            "class": "Tauri Window",
+            "owner": 0,
+            "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+            "rectangle": [
+              0,
+              0,
+              1044,
+              788
+            ],
+            "host": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+            "engine": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+            "webview2_processes": [
+              {
+                "pid": 1824,
+                "parent_pid": 6408,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 6896,
+                "parent_pid": 1824,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 1244,
+                "parent_pid": 1824,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 6488,
+                "parent_pid": 1824,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 1760,
+                "parent_pid": 1824,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 1996,
+                "parent_pid": 1824,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              }
+            ]
+          }
+        },
+        {
+          "at_utc": "2026-10-25T21:03:56.810496+00:00",
+          "operation": "Native save choose file",
+          "observation": {
+            "event": "native_file_picker",
+            "utc": "2026-10-25T21:03:56.810496+00:00",
+            "elapsed_ms": 5391,
+            "kind": "save",
+            "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\capacity-complete.mshogi",
+            "action": "accept",
+            "dialog": {
+              "hwnd": 131802,
+              "pid": 6408,
+              "title": "Save mShogi game",
+              "class": "#32770",
+              "owner": 0,
+              "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+              "rectangle": [
+                0,
+                0,
+                625,
+                480
+              ]
+            },
+            "filename_control": {
+              "name": "File name:",
+              "automation_id": "1001",
+              "value_before": "game",
+              "value_entered": "D:\\a\\mShogi\\mShogi\\gui-evidence\\capacity-complete.mshogi",
+              "value_after_blur": "D:\\a\\mShogi\\mShogi\\gui-evidence\\capacity-complete.mshogi"
+            },
+            "screenshot": "D:\\a\\mShogi\\mShogi\\gui-evidence\\verification-capacity\\native-001-save-picker.png"
+          }
+        },
+        {
+          "at_utc": "2026-10-25T21:03:56.819495+00:00",
+          "operation": "Inspect actual saved canonical archive",
+          "observation": {
+            "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\capacity-complete.mshogi",
+            "sha256": "0a8938e67c2be6b27b918b5ef64e57b55fbfaa26589e528e3be7a14784e858c5",
+            "bytes": 385619,
+            "observations": 256,
+            "controls": 256,
+            "game_events": 0
+          }
+        },
+        {
+          "at_utc": "2026-10-25T21:03:57.207232+00:00",
+          "operation": "Native Quit request",
+          "observation": {
+            "event": "native_ctrl_q",
+            "utc": "2026-10-25T21:03:57.207232+00:00",
+            "elapsed_ms": 5797,
+            "pid": 6408,
+            "hwnd": 459358
+          }
+        }
+      ],
+      "started_at_utc": "2026-10-25T21:03:51.416664+00:00",
+      "native_environment": {
+        "event": "environment",
+        "utc": "2026-10-25T21:03:51.416664+00:00",
+        "elapsed_ms": 0,
+        "os": "Windows-2022Server-10.0.20348-SP0",
+        "architecture": "AMD64",
+        "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+        "ui_language_id": 1033,
+        "session_id": 2,
+        "window_station_visible": true,
+        "input_desktop": "Default",
+        "input_desktop_accessible": true,
+        "tools": {
+          "pywinauto": "0.6.9",
+          "pywin32": "312",
+          "comtypes": "1.4.17",
+          "Pillow": "11.3.0"
+        },
+        "webview2_runtime_registry": [
+          {
+            "key": "HKLM\\SOFTWARE\\WOW6432Node\\Microsoft\\EdgeUpdate\\Clients\\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}",
+            "version": "131.0.2903.86"
+          }
+        ]
+      },
+      "driver_command": [
+        "tauri-driver",
+        "--port",
+        "4444",
+        "--native-port",
+        "4445",
+        "--native-driver",
+        "D:\\a\\_temp\\mshogi-webview-driver\\msedgedriver.exe"
+      ],
+      "driver_creation": {
+        "windows_no_console": true,
+        "stdout_stderr": "verification-capacity-driver.log"
+      },
+      "capabilities": {
+        "acceptInsecureCerts": false,
+        "browserName": "webview2",
+        "browserVersion": "131.0.2903.86",
+        "fedcm:accounts": true,
+        "ms:edgeOptions": {
+          "debuggerAddress": "localhost:49622"
+        },
+        "msedge": {
+          "msedgedriverVersion": "131.0.2903.86 (cf5bf303997cad93d7a0bede234d3c3dc01cc63d)",
+          "userDataDir": ""
+        },
+        "networkConnectionEnabled": false,
+        "pageLoadStrategy": "normal",
+        "platformName": "windows",
+        "proxy": {},
+        "setWindowRect": true,
+        "strictFileInteractability": false,
+        "timeouts": {
+          "implicit": 0,
+          "pageLoad": 300000,
+          "script": 30000
+        },
+        "unhandledPromptBehavior": "dismiss and notify",
+        "webauthn:extension:credBlob": true,
+        "webauthn:extension:largeBlob": true,
+        "webauthn:extension:minPinLength": true,
+        "webauthn:extension:prf": true,
+        "webauthn:virtualAuthenticators": true
+      },
+      "native_window": {
+        "event": "attach",
+        "utc": "2026-10-25T21:03:52.636860+00:00",
+        "elapsed_ms": 1219,
+        "hwnd": 459358,
+        "pid": 6408,
+        "title": "mShogi Verification \u2014 test state",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ],
+        "host": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "engine": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+        "webview2_processes": [
+          {
+            "pid": 1824,
+            "parent_pid": 6408,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 6896,
+            "parent_pid": 1824,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 1244,
+            "parent_pid": 1824,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 6488,
+            "parent_pid": 1824,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 1760,
+            "parent_pid": 1824,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 1996,
+            "parent_pid": 1824,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          }
+        ]
+      },
+      "error": "Timed out: native quit reaches application guard; last observation: False",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 526, in main\n    journey.normal() if fixture is None else journey.fixture(fixture)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 486, in fixture\n    self.quit(synthetic=name == \"synthetic\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 297, in quit\n    wait(lambda: self.web.has(\"[role=dialog]\"), \"native quit reaches application guard\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 45, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: native quit reaches application guard; last observation: False\n",
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "failed",
+      "fixture": "synthetic",
+      "host": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "host_sha256": "e0d726bc3cff7d878c1c4201ebd468f2d31eb4a3d03799304d65782052a98167",
+      "engine": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+      "engine_sha256": "2e2df51860fa717d690acac7024637b9880cfc77436dd49356767ce3c96d3425",
+      "events": [
+        {
+          "at_utc": "2026-10-25T21:04:25.022546+00:00",
+          "operation": "Launch actual packaged application",
+          "observation": {
+            "event": "attach",
+            "utc": "2026-10-25T21:04:23.668799+00:00",
+            "elapsed_ms": 1203,
+            "hwnd": 459368,
+            "pid": 7452,
+            "title": "mShogi Verification \u2014 synthetic (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+            "class": "Tauri Window",
+            "owner": 0,
+            "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+            "rectangle": [
+              0,
+              0,
+              1044,
+              788
+            ],
+            "host": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+            "engine": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+            "webview2_processes": [
+              {
+                "pid": 6204,
+                "parent_pid": 7452,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 5712,
+                "parent_pid": 6204,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 3068,
+                "parent_pid": 6204,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 3724,
+                "parent_pid": 6204,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 5368,
+                "parent_pid": 6204,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 6060,
+                "parent_pid": 6204,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              }
+            ]
+          }
+        },
+        {
+          "at_utc": "2026-10-25T21:04:26.011758+00:00",
+          "operation": "Distinct complete routes share endpoints but preserve different effects",
+          "observation": "Invented rules\n\nThe strider S takes one or two adjacent steps. Each enemy stone on its chosen route is captured. It can return to its origin. Stones do not move.\n\nChoose i9, then j10, then i9 to capture and return. The alternative i9 \u2192 h9 \u2192 i9 ends on the same square and leaves the stone intact.\n\nIf a step can finish now or continue, choose Complete action here to stop at that step. Escape abandons the selection.\n\nNative acceptance\n\nVersion 4 \u00b7 Accepted actions 1\n\nThe native fixture accepted a complete action. Reset to compare another route.\n\nReset synthetic fixture\n\nReset starts another temporary demonstration and advances the native version.\n\nSeparate synthetic record\n\nTemporary verification data; not a chess document.\n\n{\n  \"schema_version\": 1,\n  \"rules_profile\": \"mshogi.synthetic.strider16.v1\",\n  \"initial_fixture\": \"strider16-capture-and-return-v1\",\n  \"actions\": [\n    \"136>135>136\"\n  ]\n}"
+        },
+        {
+          "at_utc": "2026-10-25T21:04:26.314134+00:00",
+          "operation": "Native Quit request",
+          "observation": {
+            "event": "native_ctrl_q",
+            "utc": "2026-10-25T21:04:26.314134+00:00",
+            "elapsed_ms": 3860,
+            "pid": 7452,
+            "hwnd": 459368
+          }
+        }
+      ],
+      "started_at_utc": "2026-10-25T21:04:22.463440+00:00",
+      "native_environment": {
+        "event": "environment",
+        "utc": "2026-10-25T21:04:22.463440+00:00",
+        "elapsed_ms": 0,
+        "os": "Windows-2022Server-10.0.20348-SP0",
+        "architecture": "AMD64",
+        "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+        "ui_language_id": 1033,
+        "session_id": 2,
+        "window_station_visible": true,
+        "input_desktop": "Default",
+        "input_desktop_accessible": true,
+        "tools": {
+          "pywinauto": "0.6.9",
+          "pywin32": "312",
+          "comtypes": "1.4.17",
+          "Pillow": "11.3.0"
+        },
+        "webview2_runtime_registry": [
+          {
+            "key": "HKLM\\SOFTWARE\\WOW6432Node\\Microsoft\\EdgeUpdate\\Clients\\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}",
+            "version": "131.0.2903.86"
+          }
+        ]
+      },
+      "driver_command": [
+        "tauri-driver",
+        "--port",
+        "4444",
+        "--native-port",
+        "4445",
+        "--native-driver",
+        "D:\\a\\_temp\\mshogi-webview-driver\\msedgedriver.exe"
+      ],
+      "driver_creation": {
+        "windows_no_console": true,
+        "stdout_stderr": "verification-synthetic-driver.log"
+      },
+      "capabilities": {
+        "acceptInsecureCerts": false,
+        "browserName": "webview2",
+        "browserVersion": "131.0.2903.86",
+        "fedcm:accounts": true,
+        "ms:edgeOptions": {
+          "debuggerAddress": "localhost:50160"
+        },
+        "msedge": {
+          "msedgedriverVersion": "131.0.2903.86 (cf5bf303997cad93d7a0bede234d3c3dc01cc63d)",
+          "userDataDir": ""
+        },
+        "networkConnectionEnabled": false,
+        "pageLoadStrategy": "normal",
+        "platformName": "windows",
+        "proxy": {},
+        "setWindowRect": true,
+        "strictFileInteractability": false,
+        "timeouts": {
+          "implicit": 0,
+          "pageLoad": 300000,
+          "script": 30000
+        },
+        "unhandledPromptBehavior": "dismiss and notify",
+        "webauthn:extension:credBlob": true,
+        "webauthn:extension:largeBlob": true,
+        "webauthn:extension:minPinLength": true,
+        "webauthn:extension:prf": true,
+        "webauthn:virtualAuthenticators": true
+      },
+      "native_window": {
+        "event": "attach",
+        "utc": "2026-10-25T21:04:23.668799+00:00",
+        "elapsed_ms": 1203,
+        "hwnd": 459368,
+        "pid": 7452,
+        "title": "mShogi Verification \u2014 synthetic (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ],
+        "host": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "engine": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+        "webview2_processes": [
+          {
+            "pid": 6204,
+            "parent_pid": 7452,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 5712,
+            "parent_pid": 6204,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 3068,
+            "parent_pid": 6204,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 3724,
+            "parent_pid": 6204,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 5368,
+            "parent_pid": 6204,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 6060,
+            "parent_pid": 6204,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          }
+        ]
+      },
+      "error": "Timed out: native quit reaches application guard; last observation: False",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 526, in main\n    journey.normal() if fixture is None else journey.fixture(fixture)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 486, in fixture\n    self.quit(synthetic=name == \"synthetic\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 297, in quit\n    wait(lambda: self.web.has(\"[role=dialog]\"), \"native quit reaches application guard\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 45, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: native quit reaches application guard; last observation: False\n",
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    }
+  ],
+  "phase_failures": [
+    {
+      "phase": "normal",
+      "error": "Timed out: native quit reaches application guard; last observation: False",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 526, in main\n    journey.normal() if fixture is None else journey.fixture(fixture)\n    ^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 386, in normal\n    self.quit()\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 297, in quit\n    wait(lambda: self.web.has(\"[role=dialog]\"), \"native quit reaches application guard\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 45, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: native quit reaches application guard; last observation: False\n"
+    },
+    {
+      "phase": "verification-standard",
+      "error": "Timed out: native quit reaches application guard; last observation: False",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 526, in main\n    journey.normal() if fixture is None else journey.fixture(fixture)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 486, in fixture\n    self.quit(synthetic=name == \"synthetic\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 297, in quit\n    wait(lambda: self.web.has(\"[role=dialog]\"), \"native quit reaches application guard\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 45, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: native quit reaches application guard; last observation: False\n"
+    },
+    {
+      "phase": "verification-promotion",
+      "error": "Timed out: native quit reaches application guard; last observation: False",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 526, in main\n    journey.normal() if fixture is None else journey.fixture(fixture)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 486, in fixture\n    self.quit(synthetic=name == \"synthetic\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 297, in quit\n    wait(lambda: self.web.has(\"[role=dialog]\"), \"native quit reaches application guard\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 45, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: native quit reaches application guard; last observation: False\n"
+    },
+    {
+      "phase": "verification-claim",
+      "error": "Timed out: native quit reaches application guard; last observation: False",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 526, in main\n    journey.normal() if fixture is None else journey.fixture(fixture)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 486, in fixture\n    self.quit(synthetic=name == \"synthetic\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 297, in quit\n    wait(lambda: self.web.has(\"[role=dialog]\"), \"native quit reaches application guard\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 45, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: native quit reaches application guard; last observation: False\n"
+    },
+    {
+      "phase": "verification-capacity",
+      "error": "Timed out: native quit reaches application guard; last observation: False",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 526, in main\n    journey.normal() if fixture is None else journey.fixture(fixture)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 486, in fixture\n    self.quit(synthetic=name == \"synthetic\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 297, in quit\n    wait(lambda: self.web.has(\"[role=dialog]\"), \"native quit reaches application guard\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 45, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: native quit reaches application guard; last observation: False\n"
+    },
+    {
+      "phase": "verification-synthetic",
+      "error": "Timed out: native quit reaches application guard; last observation: False",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 526, in main\n    journey.normal() if fixture is None else journey.fixture(fixture)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 486, in fixture\n    self.quit(synthetic=name == \"synthetic\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 297, in quit\n    wait(lambda: self.web.has(\"[role=dialog]\"), \"native quit reaches application guard\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 45, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: native quit reaches application guard; last observation: False\n"
+    }
+  ],
+  "error": "Required GUI phases failed: normal: Timed out: native quit reaches application guard; last observation: False; verification-standard: Timed out: native quit reaches application guard; last observation: False; verification-promotion: Timed out: native quit reaches application guard; last observation: False; verification-claim: Timed out: native quit reaches application guard; last observation: False; verification-capacity: Timed out: native quit reaches application guard; last observation: False; verification-synthetic: Timed out: native quit reaches application guard; last observation: False",
+  "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 547, in main\n    raise AssertionError(\"Required GUI phases failed: \" +\nAssertionError: Required GUI phases failed: normal: Timed out: native quit reaches application guard; last observation: False; verification-standard: Timed out: native quit reaches application guard; last observation: False; verification-promotion: Timed out: native quit reaches application guard; last observation: False; verification-claim: Timed out: native quit reaches application guard; last observation: False; verification-capacity: Timed out: native quit reaches application guard; last observation: False; verification-synthetic: Timed out: native quit reaches application guard; last observation: False\n",
+  "native_events": [
+    {
+      "event": "environment",
+      "utc": "2026-10-25T21:01:34.967898+00:00",
+      "elapsed_ms": 0,
+      "os": "Windows-2022Server-10.0.20348-SP0",
+      "architecture": "AMD64",
+      "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+      "ui_language_id": 1033,
+      "session_id": 2,
+      "window_station_visible": true,
+      "input_desktop": "Default",
+      "input_desktop_accessible": true,
+      "tools": {
+        "pywinauto": "0.6.9",
+        "pywin32": "312",
+        "comtypes": "1.4.17",
+        "Pillow": "11.3.0"
+      },
+      "webview2_runtime_registry": [
+        {
+          "key": "HKLM\\SOFTWARE\\WOW6432Node\\Microsoft\\EdgeUpdate\\Clients\\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}",
+          "version": "131.0.2903.86"
+        }
+      ]
+    },
+    {
+      "event": "attach",
+      "utc": "2026-10-25T21:01:49.432886+00:00",
+      "elapsed_ms": 14469,
+      "hwnd": 458908,
+      "pid": 1100,
+      "title": "mShogi",
+      "class": "Tauri Window",
+      "owner": 0,
+      "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+      "rectangle": [
+        0,
+        0,
+        1044,
+        788
+      ],
+      "host": "d:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+      "engine": "d:\\a\\_temp\\mshogi-package-smoke\\mshogi.exe",
+      "webview2_processes": [
+        {
+          "pid": 5724,
+          "parent_pid": 1100,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 7052,
+          "parent_pid": 5724,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 1980,
+          "parent_pid": 5724,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 7820,
+          "parent_pid": 5724,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 2456,
+          "parent_pid": 5724,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 4372,
+          "parent_pid": 5724,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        }
+      ]
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:01:51.734223+00:00",
+      "elapsed_ms": 16766,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-play.desktop.png",
+      "action": "focus_bound_host",
+      "target": {
+        "hwnd": 458908,
+        "pid": 1100,
+        "title": "mShogi",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 197148,
+        "pid": 5724,
+        "image": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+        "title": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+        "class": "ConsoleWindowClass"
+      },
+      "foreground_after": {
+        "hwnd": 458908,
+        "pid": 1100,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "mShogi",
+        "class": "Tauri Window"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:01:52.472364+00:00",
+      "elapsed_ms": 17516,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-active-analysis.desktop.png",
+      "action": "focus_bound_host",
+      "target": {
+        "hwnd": 458908,
+        "pid": 1100,
+        "title": "mShogi",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 458908,
+        "pid": 1100,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "mShogi",
+        "class": "Tauri Window"
+      },
+      "foreground_after": {
+        "hwnd": 458908,
+        "pid": 1100,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "mShogi",
+        "class": "Tauri Window"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:01:53.699985+00:00",
+      "elapsed_ms": 18735,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-replacement-complete.desktop.png",
+      "action": "focus_bound_host",
+      "target": {
+        "hwnd": 458908,
+        "pid": 1100,
+        "title": "mShogi",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 458908,
+        "pid": 1100,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "mShogi",
+        "class": "Tauri Window"
+      },
+      "foreground_after": {
+        "hwnd": 458908,
+        "pid": 1100,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "mShogi",
+        "class": "Tauri Window"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:01:54.388463+00:00",
+      "elapsed_ms": 19422,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal\\native-001-save-picker.png",
+      "action": "focus_owned_modal",
+      "target": {
+        "hwnd": 66192,
+        "pid": 1100,
+        "title": "Save mShogi game",
+        "class": "#32770",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          625,
+          480
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 66192,
+        "pid": 1100,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "Save mShogi game",
+        "class": "#32770"
+      },
+      "foreground_after": {
+        "hwnd": 66192,
+        "pid": 1100,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "Save mShogi game",
+        "class": "#32770"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:01:55.382257+00:00",
+      "elapsed_ms": 20422,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal\\native-001-save-picker-entered.png",
+      "action": "focus_owned_modal",
+      "target": {
+        "hwnd": 66192,
+        "pid": 1100,
+        "title": "Save mShogi game",
+        "class": "#32770",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          625,
+          480
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 66192,
+        "pid": 1100,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "Save mShogi game",
+        "class": "#32770"
+      },
+      "foreground_after": {
+        "hwnd": 66192,
+        "pid": 1100,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "Save mShogi game",
+        "class": "#32770"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "native_filename_entered",
+      "utc": "2026-10-25T21:01:55.382257+00:00",
+      "elapsed_ms": 20422,
+      "dialog": {
+        "hwnd": 66192,
+        "pid": 1100,
+        "title": "Save mShogi game",
+        "class": "#32770",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          625,
+          480
+        ]
+      },
+      "expected": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-complete.mshogi",
+      "filename_control": {
+        "name": "File name:",
+        "automation_id": "1001",
+        "value_before": "game",
+        "value_entered": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-complete.mshogi",
+        "value_after_blur": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-complete.mshogi"
+      },
+      "screenshot": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal\\native-001-save-picker-entered.png"
+    },
+    {
+      "event": "native_file_picker",
+      "utc": "2026-10-25T21:01:55.625124+00:00",
+      "elapsed_ms": 20656,
+      "kind": "save",
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-complete.mshogi",
+      "action": "accept",
+      "dialog": {
+        "hwnd": 66192,
+        "pid": 1100,
+        "title": "Save mShogi game",
+        "class": "#32770",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          625,
+          480
+        ]
+      },
+      "filename_control": {
+        "name": "File name:",
+        "automation_id": "1001",
+        "value_before": "game",
+        "value_entered": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-complete.mshogi",
+        "value_after_blur": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-complete.mshogi"
+      },
+      "screenshot": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal\\native-001-save-picker.png"
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:01:56.043304+00:00",
+      "elapsed_ms": 21078,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal\\native-002-open-picker.png",
+      "action": "focus_owned_modal",
+      "target": {
+        "hwnd": 262796,
+        "pid": 1100,
+        "title": "Open mShogi game",
+        "class": "#32770",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          625,
+          480
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 262796,
+        "pid": 1100,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "Open mShogi game",
+        "class": "#32770"
+      },
+      "foreground_after": {
+        "hwnd": 262796,
+        "pid": 1100,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "Open mShogi game",
+        "class": "#32770"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:01:56.802957+00:00",
+      "elapsed_ms": 21844,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal\\native-002-open-picker-entered.png",
+      "action": "focus_owned_modal",
+      "target": {
+        "hwnd": 262796,
+        "pid": 1100,
+        "title": "Open mShogi game",
+        "class": "#32770",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          625,
+          480
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 262796,
+        "pid": 1100,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "Open mShogi game",
+        "class": "#32770"
+      },
+      "foreground_after": {
+        "hwnd": 262796,
+        "pid": 1100,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "Open mShogi game",
+        "class": "#32770"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "native_filename_entered",
+      "utc": "2026-10-25T21:01:56.802957+00:00",
+      "elapsed_ms": 21844,
+      "dialog": {
+        "hwnd": 262796,
+        "pid": 1100,
+        "title": "Open mShogi game",
+        "class": "#32770",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          625,
+          480
+        ]
+      },
+      "expected": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-complete.mshogi",
+      "filename_control": {
+        "name": "File name:",
+        "automation_id": "1148",
+        "value_before": "",
+        "value_entered": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-complete.mshogi",
+        "value_after_blur": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-complete.mshogi"
+      },
+      "screenshot": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal\\native-002-open-picker-entered.png"
+    },
+    {
+      "event": "native_file_picker",
+      "utc": "2026-10-25T21:01:57.036251+00:00",
+      "elapsed_ms": 22078,
+      "kind": "open",
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-complete.mshogi",
+      "action": "accept",
+      "dialog": {
+        "hwnd": 262796,
+        "pid": 1100,
+        "title": "Open mShogi game",
+        "class": "#32770",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          625,
+          480
+        ]
+      },
+      "filename_control": {
+        "name": "File name:",
+        "automation_id": "1148",
+        "value_before": "",
+        "value_entered": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-complete.mshogi",
+        "value_after_blur": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-complete.mshogi"
+      },
+      "screenshot": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal\\native-002-open-picker.png"
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:01:58.325749+00:00",
+      "elapsed_ms": 23360,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-historical-analysis.desktop.png",
+      "action": "focus_bound_host",
+      "target": {
+        "hwnd": 458908,
+        "pid": 1100,
+        "title": "mShogi",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 458908,
+        "pid": 1100,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "mShogi",
+        "class": "Tauri Window"
+      },
+      "foreground_after": {
+        "hwnd": 458908,
+        "pid": 1100,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "mShogi",
+        "class": "Tauri Window"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "native_wm_close",
+      "utc": "2026-10-25T21:01:58.784351+00:00",
+      "elapsed_ms": 23828,
+      "pid": 1100,
+      "hwnd": 458908
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:01:58.852912+00:00",
+      "elapsed_ms": 23891,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-native-close-guard.desktop.png",
+      "action": "focus_bound_host",
+      "target": {
+        "hwnd": 458908,
+        "pid": 1100,
+        "title": "mShogi",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 458908,
+        "pid": 1100,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "mShogi",
+        "class": "Tauri Window"
+      },
+      "foreground_after": {
+        "hwnd": 458908,
+        "pid": 1100,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "mShogi",
+        "class": "Tauri Window"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "native_ctrl_q",
+      "utc": "2026-10-25T21:01:59.143753+00:00",
+      "elapsed_ms": 24188,
+      "pid": 1100,
+      "hwnd": 458908
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:02:24.186111+00:00",
+      "elapsed_ms": 49219,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-failure.desktop.png",
+      "action": "focus_bound_host",
+      "target": {
+        "hwnd": 458908,
+        "pid": 1100,
+        "title": "mShogi",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 458908,
+        "pid": 1100,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "mShogi",
+        "class": "Tauri Window"
+      },
+      "foreground_after": {
+        "hwnd": 458908,
+        "pid": 1100,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "mShogi",
+        "class": "Tauri Window"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "environment",
+      "utc": "2026-10-25T21:02:24.416763+00:00",
+      "elapsed_ms": 0,
+      "os": "Windows-2022Server-10.0.20348-SP0",
+      "architecture": "AMD64",
+      "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+      "ui_language_id": 1033,
+      "session_id": 2,
+      "window_station_visible": true,
+      "input_desktop": "Default",
+      "input_desktop_accessible": true,
+      "tools": {
+        "pywinauto": "0.6.9",
+        "pywin32": "312",
+        "comtypes": "1.4.17",
+        "Pillow": "11.3.0"
+      },
+      "webview2_runtime_registry": [
+        {
+          "key": "HKLM\\SOFTWARE\\WOW6432Node\\Microsoft\\EdgeUpdate\\Clients\\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}",
+          "version": "131.0.2903.86"
+        }
+      ]
+    },
+    {
+      "event": "attach",
+      "utc": "2026-10-25T21:02:25.731359+00:00",
+      "elapsed_ms": 1313,
+      "hwnd": 131700,
+      "pid": 3108,
+      "title": "mShogi Verification \u2014 standard (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+      "class": "Tauri Window",
+      "owner": 0,
+      "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "rectangle": [
+        0,
+        0,
+        1044,
+        788
+      ],
+      "host": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "engine": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+      "webview2_processes": [
+        {
+          "pid": 6216,
+          "parent_pid": 3108,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 7368,
+          "parent_pid": 6216,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 5624,
+          "parent_pid": 6216,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 6348,
+          "parent_pid": 6216,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 6168,
+          "parent_pid": 6216,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 8152,
+          "parent_pid": 6216,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        }
+      ]
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:02:27.921595+00:00",
+      "elapsed_ms": 3500,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\verification-standard-engine-failure.desktop.png",
+      "action": "focus_bound_host",
+      "target": {
+        "hwnd": 131700,
+        "pid": 3108,
+        "title": "mShogi Verification \u2014 standard (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 197036,
+        "pid": 6216,
+        "image": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+        "title": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+        "class": "ConsoleWindowClass"
+      },
+      "foreground_after": {
+        "hwnd": 131700,
+        "pid": 3108,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 standard (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:02:28.760488+00:00",
+      "elapsed_ms": 4344,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\verification-standard-result.desktop.png",
+      "action": "focus_bound_host",
+      "target": {
+        "hwnd": 131700,
+        "pid": 3108,
+        "title": "mShogi Verification \u2014 standard (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 131700,
+        "pid": 3108,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 standard (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "foreground_after": {
+        "hwnd": 131700,
+        "pid": 3108,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 standard (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "native_ctrl_q",
+      "utc": "2026-10-25T21:02:29.047658+00:00",
+      "elapsed_ms": 4625,
+      "pid": 3108,
+      "hwnd": 131700
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:02:54.137607+00:00",
+      "elapsed_ms": 29719,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\verification-standard-failure.desktop.png",
+      "action": "focus_bound_host",
+      "target": {
+        "hwnd": 131700,
+        "pid": 3108,
+        "title": "mShogi Verification \u2014 standard (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 131700,
+        "pid": 3108,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 standard (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "foreground_after": {
+        "hwnd": 131700,
+        "pid": 3108,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 standard (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "environment",
+      "utc": "2026-10-25T21:02:54.307267+00:00",
+      "elapsed_ms": 0,
+      "os": "Windows-2022Server-10.0.20348-SP0",
+      "architecture": "AMD64",
+      "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+      "ui_language_id": 1033,
+      "session_id": 2,
+      "window_station_visible": true,
+      "input_desktop": "Default",
+      "input_desktop_accessible": true,
+      "tools": {
+        "pywinauto": "0.6.9",
+        "pywin32": "312",
+        "comtypes": "1.4.17",
+        "Pillow": "11.3.0"
+      },
+      "webview2_runtime_registry": [
+        {
+          "key": "HKLM\\SOFTWARE\\WOW6432Node\\Microsoft\\EdgeUpdate\\Clients\\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}",
+          "version": "131.0.2903.86"
+        }
+      ]
+    },
+    {
+      "event": "attach",
+      "utc": "2026-10-25T21:02:55.465184+00:00",
+      "elapsed_ms": 1156,
+      "hwnd": 262530,
+      "pid": 7436,
+      "title": "mShogi Verification \u2014 promotion (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+      "class": "Tauri Window",
+      "owner": 0,
+      "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "rectangle": [
+        0,
+        0,
+        1044,
+        788
+      ],
+      "host": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "engine": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+      "webview2_processes": [
+        {
+          "pid": 6100,
+          "parent_pid": 7436,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 2584,
+          "parent_pid": 6100,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 6768,
+          "parent_pid": 6100,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 7916,
+          "parent_pid": 6100,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 2472,
+          "parent_pid": 6100,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 5284,
+          "parent_pid": 6100,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        }
+      ]
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:02:57.028832+00:00",
+      "elapsed_ms": 2719,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\verification-promotion-promotion.desktop.png",
+      "action": "focus_bound_host",
+      "target": {
+        "hwnd": 262530,
+        "pid": 7436,
+        "title": "mShogi Verification \u2014 promotion (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 328220,
+        "pid": 6100,
+        "image": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+        "title": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+        "class": "ConsoleWindowClass"
+      },
+      "foreground_after": {
+        "hwnd": 262530,
+        "pid": 7436,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 promotion (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:02:57.323689+00:00",
+      "elapsed_ms": 3016,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\verification-promotion-result.desktop.png",
+      "action": "focus_bound_host",
+      "target": {
+        "hwnd": 262530,
+        "pid": 7436,
+        "title": "mShogi Verification \u2014 promotion (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 262530,
+        "pid": 7436,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 promotion (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "foreground_after": {
+        "hwnd": 262530,
+        "pid": 7436,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 promotion (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "native_ctrl_q",
+      "utc": "2026-10-25T21:02:57.576680+00:00",
+      "elapsed_ms": 3266,
+      "pid": 7436,
+      "hwnd": 262530
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:03:22.702845+00:00",
+      "elapsed_ms": 28391,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\verification-promotion-failure.desktop.png",
+      "action": "focus_bound_host",
+      "target": {
+        "hwnd": 262530,
+        "pid": 7436,
+        "title": "mShogi Verification \u2014 promotion (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 262530,
+        "pid": 7436,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 promotion (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "foreground_after": {
+        "hwnd": 262530,
+        "pid": 7436,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 promotion (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "environment",
+      "utc": "2026-10-25T21:03:22.863662+00:00",
+      "elapsed_ms": 0,
+      "os": "Windows-2022Server-10.0.20348-SP0",
+      "architecture": "AMD64",
+      "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+      "ui_language_id": 1033,
+      "session_id": 2,
+      "window_station_visible": true,
+      "input_desktop": "Default",
+      "input_desktop_accessible": true,
+      "tools": {
+        "pywinauto": "0.6.9",
+        "pywin32": "312",
+        "comtypes": "1.4.17",
+        "Pillow": "11.3.0"
+      },
+      "webview2_runtime_registry": [
+        {
+          "key": "HKLM\\SOFTWARE\\WOW6432Node\\Microsoft\\EdgeUpdate\\Clients\\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}",
+          "version": "131.0.2903.86"
+        }
+      ]
+    },
+    {
+      "event": "attach",
+      "utc": "2026-10-25T21:03:24.106807+00:00",
+      "elapsed_ms": 1235,
+      "hwnd": 393346,
+      "pid": 6352,
+      "title": "mShogi Verification \u2014 claim (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+      "class": "Tauri Window",
+      "owner": 0,
+      "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "rectangle": [
+        0,
+        0,
+        1044,
+        788
+      ],
+      "host": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "engine": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+      "webview2_processes": [
+        {
+          "pid": 7812,
+          "parent_pid": 6352,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 5332,
+          "parent_pid": 7812,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 3356,
+          "parent_pid": 7812,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 1340,
+          "parent_pid": 7812,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 6752,
+          "parent_pid": 7812,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 2968,
+          "parent_pid": 7812,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        }
+      ]
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:03:25.856812+00:00",
+      "elapsed_ms": 2985,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\verification-claim-result.desktop.png",
+      "action": "focus_bound_host",
+      "target": {
+        "hwnd": 393346,
+        "pid": 6352,
+        "title": "mShogi Verification \u2014 claim (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 983326,
+        "pid": 7812,
+        "image": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+        "title": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+        "class": "ConsoleWindowClass"
+      },
+      "foreground_after": {
+        "hwnd": 393346,
+        "pid": 6352,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 claim (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "native_ctrl_q",
+      "utc": "2026-10-25T21:03:26.137423+00:00",
+      "elapsed_ms": 3266,
+      "pid": 6352,
+      "hwnd": 393346
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:03:51.237250+00:00",
+      "elapsed_ms": 28375,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\verification-claim-failure.desktop.png",
+      "action": "focus_bound_host",
+      "target": {
+        "hwnd": 393346,
+        "pid": 6352,
+        "title": "mShogi Verification \u2014 claim (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 393346,
+        "pid": 6352,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 claim (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "foreground_after": {
+        "hwnd": 393346,
+        "pid": 6352,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 claim (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "environment",
+      "utc": "2026-10-25T21:03:51.416664+00:00",
+      "elapsed_ms": 0,
+      "os": "Windows-2022Server-10.0.20348-SP0",
+      "architecture": "AMD64",
+      "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+      "ui_language_id": 1033,
+      "session_id": 2,
+      "window_station_visible": true,
+      "input_desktop": "Default",
+      "input_desktop_accessible": true,
+      "tools": {
+        "pywinauto": "0.6.9",
+        "pywin32": "312",
+        "comtypes": "1.4.17",
+        "Pillow": "11.3.0"
+      },
+      "webview2_runtime_registry": [
+        {
+          "key": "HKLM\\SOFTWARE\\WOW6432Node\\Microsoft\\EdgeUpdate\\Clients\\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}",
+          "version": "131.0.2903.86"
+        }
+      ]
+    },
+    {
+      "event": "attach",
+      "utc": "2026-10-25T21:03:52.636860+00:00",
+      "elapsed_ms": 1219,
+      "hwnd": 459358,
+      "pid": 6408,
+      "title": "mShogi Verification \u2014 test state",
+      "class": "Tauri Window",
+      "owner": 0,
+      "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "rectangle": [
+        0,
+        0,
+        1044,
+        788
+      ],
+      "host": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "engine": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+      "webview2_processes": [
+        {
+          "pid": 1824,
+          "parent_pid": 6408,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 6896,
+          "parent_pid": 1824,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 1244,
+          "parent_pid": 1824,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 6488,
+          "parent_pid": 1824,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 1760,
+          "parent_pid": 1824,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 1996,
+          "parent_pid": 1824,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        }
+      ]
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:03:55.215767+00:00",
+      "elapsed_ms": 3797,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\verification-capacity-capacity-pause.desktop.png",
+      "action": "focus_bound_host",
+      "target": {
+        "hwnd": 459358,
+        "pid": 6408,
+        "title": "mShogi Verification \u2014 capacity (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 393852,
+        "pid": 1824,
+        "image": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+        "title": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+        "class": "ConsoleWindowClass"
+      },
+      "foreground_after": {
+        "hwnd": 459358,
+        "pid": 6408,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 capacity (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:03:55.699608+00:00",
+      "elapsed_ms": 4282,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\verification-capacity\\native-001-save-picker.png",
+      "action": "focus_owned_modal",
+      "target": {
+        "hwnd": 131802,
+        "pid": 6408,
+        "title": "Save mShogi game",
+        "class": "#32770",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          625,
+          480
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 131802,
+        "pid": 6408,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "Save mShogi game",
+        "class": "#32770"
+      },
+      "foreground_after": {
+        "hwnd": 131802,
+        "pid": 6408,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "Save mShogi game",
+        "class": "#32770"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:03:56.552295+00:00",
+      "elapsed_ms": 5141,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\verification-capacity\\native-001-save-picker-entered.png",
+      "action": "focus_owned_modal",
+      "target": {
+        "hwnd": 131802,
+        "pid": 6408,
+        "title": "Save mShogi game",
+        "class": "#32770",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          625,
+          480
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 131802,
+        "pid": 6408,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "Save mShogi game",
+        "class": "#32770"
+      },
+      "foreground_after": {
+        "hwnd": 131802,
+        "pid": 6408,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "Save mShogi game",
+        "class": "#32770"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "native_filename_entered",
+      "utc": "2026-10-25T21:03:56.552295+00:00",
+      "elapsed_ms": 5141,
+      "dialog": {
+        "hwnd": 131802,
+        "pid": 6408,
+        "title": "Save mShogi game",
+        "class": "#32770",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          625,
+          480
+        ]
+      },
+      "expected": "D:\\a\\mShogi\\mShogi\\gui-evidence\\capacity-complete.mshogi",
+      "filename_control": {
+        "name": "File name:",
+        "automation_id": "1001",
+        "value_before": "game",
+        "value_entered": "D:\\a\\mShogi\\mShogi\\gui-evidence\\capacity-complete.mshogi",
+        "value_after_blur": "D:\\a\\mShogi\\mShogi\\gui-evidence\\capacity-complete.mshogi"
+      },
+      "screenshot": "D:\\a\\mShogi\\mShogi\\gui-evidence\\verification-capacity\\native-001-save-picker-entered.png"
+    },
+    {
+      "event": "native_file_picker",
+      "utc": "2026-10-25T21:03:56.810496+00:00",
+      "elapsed_ms": 5391,
+      "kind": "save",
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\capacity-complete.mshogi",
+      "action": "accept",
+      "dialog": {
+        "hwnd": 131802,
+        "pid": 6408,
+        "title": "Save mShogi game",
+        "class": "#32770",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          625,
+          480
+        ]
+      },
+      "filename_control": {
+        "name": "File name:",
+        "automation_id": "1001",
+        "value_before": "game",
+        "value_entered": "D:\\a\\mShogi\\mShogi\\gui-evidence\\capacity-complete.mshogi",
+        "value_after_blur": "D:\\a\\mShogi\\mShogi\\gui-evidence\\capacity-complete.mshogi"
+      },
+      "screenshot": "D:\\a\\mShogi\\mShogi\\gui-evidence\\verification-capacity\\native-001-save-picker.png"
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:03:56.933229+00:00",
+      "elapsed_ms": 5516,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\verification-capacity-result.desktop.png",
+      "action": "focus_bound_host",
+      "target": {
+        "hwnd": 459358,
+        "pid": 6408,
+        "title": "mShogi Verification \u2014 capacity (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 459358,
+        "pid": 6408,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 capacity (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "foreground_after": {
+        "hwnd": 459358,
+        "pid": 6408,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 capacity (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "native_ctrl_q",
+      "utc": "2026-10-25T21:03:57.207232+00:00",
+      "elapsed_ms": 5797,
+      "pid": 6408,
+      "hwnd": 459358
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:04:22.286150+00:00",
+      "elapsed_ms": 30875,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\verification-capacity-failure.desktop.png",
+      "action": "focus_bound_host",
+      "target": {
+        "hwnd": 459358,
+        "pid": 6408,
+        "title": "mShogi Verification \u2014 capacity (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 459358,
+        "pid": 6408,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 capacity (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "foreground_after": {
+        "hwnd": 459358,
+        "pid": 6408,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 capacity (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "environment",
+      "utc": "2026-10-25T21:04:22.463440+00:00",
+      "elapsed_ms": 0,
+      "os": "Windows-2022Server-10.0.20348-SP0",
+      "architecture": "AMD64",
+      "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+      "ui_language_id": 1033,
+      "session_id": 2,
+      "window_station_visible": true,
+      "input_desktop": "Default",
+      "input_desktop_accessible": true,
+      "tools": {
+        "pywinauto": "0.6.9",
+        "pywin32": "312",
+        "comtypes": "1.4.17",
+        "Pillow": "11.3.0"
+      },
+      "webview2_runtime_registry": [
+        {
+          "key": "HKLM\\SOFTWARE\\WOW6432Node\\Microsoft\\EdgeUpdate\\Clients\\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}",
+          "version": "131.0.2903.86"
+        }
+      ]
+    },
+    {
+      "event": "attach",
+      "utc": "2026-10-25T21:04:23.668799+00:00",
+      "elapsed_ms": 1203,
+      "hwnd": 459368,
+      "pid": 7452,
+      "title": "mShogi Verification \u2014 synthetic (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+      "class": "Tauri Window",
+      "owner": 0,
+      "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "rectangle": [
+        0,
+        0,
+        1044,
+        788
+      ],
+      "host": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "engine": "d:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+      "webview2_processes": [
+        {
+          "pid": 6204,
+          "parent_pid": 7452,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 5712,
+          "parent_pid": 6204,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 3068,
+          "parent_pid": 6204,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 3724,
+          "parent_pid": 6204,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 5368,
+          "parent_pid": 6204,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 6060,
+          "parent_pid": 6204,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        }
+      ]
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:04:25.574850+00:00",
+      "elapsed_ms": 3110,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\verification-synthetic-capture-route.desktop.png",
+      "action": "focus_bound_host",
+      "target": {
+        "hwnd": 459368,
+        "pid": 7452,
+        "title": "mShogi Verification \u2014 synthetic (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 393844,
+        "pid": 6204,
+        "image": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+        "title": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+        "class": "ConsoleWindowClass"
+      },
+      "foreground_after": {
+        "hwnd": 459368,
+        "pid": 7452,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 synthetic (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:04:25.906214+00:00",
+      "elapsed_ms": 3453,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\verification-synthetic-alternate-route.desktop.png",
+      "action": "focus_bound_host",
+      "target": {
+        "hwnd": 459368,
+        "pid": 7452,
+        "title": "mShogi Verification \u2014 synthetic (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 459368,
+        "pid": 7452,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 synthetic (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "foreground_after": {
+        "hwnd": 459368,
+        "pid": 7452,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 synthetic (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:04:26.058674+00:00",
+      "elapsed_ms": 3594,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\verification-synthetic-result.desktop.png",
+      "action": "focus_bound_host",
+      "target": {
+        "hwnd": 459368,
+        "pid": 7452,
+        "title": "mShogi Verification \u2014 synthetic (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 459368,
+        "pid": 7452,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 synthetic (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "foreground_after": {
+        "hwnd": 459368,
+        "pid": 7452,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 synthetic (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    },
+    {
+      "event": "native_ctrl_q",
+      "utc": "2026-10-25T21:04:26.314134+00:00",
+      "elapsed_ms": 3860,
+      "pid": 7452,
+      "hwnd": 459368
+    },
+    {
+      "event": "native_screenshot",
+      "utc": "2026-10-25T21:04:51.387019+00:00",
+      "elapsed_ms": 28922,
+      "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\verification-synthetic-failure.desktop.png",
+      "action": "focus_bound_host",
+      "target": {
+        "hwnd": 459368,
+        "pid": 7452,
+        "title": "mShogi Verification \u2014 synthetic (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ]
+      },
+      "foreground_before": {
+        "hwnd": 459368,
+        "pid": 7452,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 synthetic (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "foreground_after": {
+        "hwnd": 459368,
+        "pid": 7452,
+        "image": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+        "title": "mShogi Verification \u2014 synthetic (test state) \u2014 content 1028.0 \u00d7 729.0 logical",
+        "class": "Tauri Window"
+      },
+      "engine_consoles": [],
+      "focus_error": null
+    }
+  ],
+  "finished_at_utc": "2026-10-25T21:04:51.570900+00:00",
+  "files": {
+    "capacity-complete.mshogi": "0a8938e67c2be6b27b918b5ef64e57b55fbfaa26589e528e3be7a14784e858c5",
+    "normal\\native-001-save-picker-entered.png": "9718a66227f6784daabe6f0c70114a4b3987101e7a8ad561d20d2d10a9311626",
+    "normal\\native-001-save-picker.png": "c1aaf63bb4052b419ca6f7cc4aa485d5936582fa8b9e458307ad99205f60820f",
+    "normal\\native-002-open-picker-entered.png": "25f1f33562d0f04b30743c995c9311e31802c83b53a49ed80fbb1df69c85c464",
+    "normal\\native-002-open-picker.png": "1f7d88892aa3e3aca96a7f18e74a09c06bf68abdf28545a7b81d046122ff2c2b",
+    "normal-active-analysis.desktop.png": "674394ab67e6bfb87e215300450e0a58f3cec7a70149b1569f55b3ccaef33b38",
+    "normal-active-analysis.dom.json": "0d757d6779e2ebad6c03b37b552bff2cd8ccdcb24dd5510cc539a2aa736da31b",
+    "normal-active-analysis.webview.png": "a644cd65feb69983b6b202a90c5d3af93a9b4e209775d311f3124045ead2378e",
+    "normal-complete.mshogi": "7aa9bdb315b065f09ca5099cbb2f73188b6c801654dfeb35024f29b5bc9c5f2a",
+    "normal-driver.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "normal-failure.desktop.png": "185b5cea89bed32a35372eabd8d337aece46c2b08b554f6022a71dd47fb0a752",
+    "normal-failure.dom.json": "60a1354c9c142ad063a433972c686e47ff85ad2d7fb5e7671f94d56f47223d4c",
+    "normal-failure.webview.png": "8f7621e368bfd9b2447668e701cb482221014815d34e29da83afc773822df645",
+    "normal-historical-analysis.desktop.png": "4c1830415c271e7cd7ee5796645797c7705b525ca5119136430627e46d538f38",
+    "normal-historical-analysis.dom.json": "b36af359f7659b235bf50dabf60d630828bf63c595c63fa82e17bb297e986493",
+    "normal-historical-analysis.webview.png": "c23aee95fb8015851fc25941d4cc126132a4a25c98de09e56a4973313cefed56",
+    "normal-native-close-guard.desktop.png": "901d032bf65e6cc12502699dcc3e66f9bd810cb01719ebdb18aff85f74a47a44",
+    "normal-native-close-guard.dom.json": "cff17b999a89073c45145407d71910f5d8024462f6a0d6a82ecd310be957c2de",
+    "normal-native-close-guard.webview.png": "1684b2d3641450a9109895c1983a69a90fa2096adafa8d32cc65e0c337fc963b",
+    "normal-play.desktop.png": "5c52f049d383554099f7b0c3d067bc7d98f444595487c0561f79bab277521802",
+    "normal-play.dom.json": "488bf4967a78267b9e9696e0c181c98434428ec8b8b783f3d7d1b472278d2531",
+    "normal-play.webview.png": "a26ba4a5d5802990a2b18f2fe431f56257374023bd16c6f6f771e6dc41a00e6f",
+    "normal-replacement-complete.desktop.png": "c11e79dcffe36dc35fd096212106a6b9b52ea4986d6b9553e7aabd97953c06b0",
+    "normal-replacement-complete.dom.json": "db39e49b900e5688e081a81d87899a825f43f1c270201e7448d3a9f162b88989",
+    "normal-replacement-complete.webview.png": "804802d8ec1fd9ef51dd71695cde5c1f1b9aaa252a8f1f57f10efc3cdada211c",
+    "verification-capacity\\native-001-save-picker-entered.png": "07f30332f055538a558d88497acb116dce4769bd3fd8adfae9a780521f807645",
+    "verification-capacity\\native-001-save-picker.png": "ec11882e9b2a7fab69496ec654b9325a3d1f1d3074dfa0e30b5f8682778a26a7",
+    "verification-capacity-capacity-pause.desktop.png": "09015a9cab1a8cd1f00d561ad6c0216aba5734ae6bc51f667d538e6cf583975f",
+    "verification-capacity-capacity-pause.dom.json": "72faf10db8fd1b1b31f0db30181551f7a3d328a56183e245b91ea72cdff452bf",
+    "verification-capacity-capacity-pause.webview.png": "8f80bc4411de5dc7ac4fa9e1927152397c9f95500c182cbc56e90659b02224b5",
+    "verification-capacity-driver.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "verification-capacity-failure.desktop.png": "20e4c5f8030a7120f7fed5ba88087c196e2f40c95ff0db1ac3c471c032f0c8d6",
+    "verification-capacity-failure.dom.json": "9cb068e995082f83093228fa7c07d4ba29fed25b6cf0d94c6ad8f49487f7d2d9",
+    "verification-capacity-failure.webview.png": "900fa89a29bfb9875fe11434248cab61b561a4acbe21b6fb3b591c2493de22b8",
+    "verification-capacity-result.desktop.png": "3a48285d1ad478eee1d12e07c4a280b128ea32e740b1feb68d159971757538a0",
+    "verification-capacity-result.dom.json": "9cb068e995082f83093228fa7c07d4ba29fed25b6cf0d94c6ad8f49487f7d2d9",
+    "verification-capacity-result.webview.png": "1c2551bc35204a7d5f8532e289138d6839114e071ffbb6855e390419bb0d975d",
+    "verification-claim-driver.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "verification-claim-failure.desktop.png": "bbe541e5379e71bf21e8092355c0e126de3286a9df5c4f639bf077e77653b741",
+    "verification-claim-failure.dom.json": "81ec94d891e0f5c21848e8b853b87ae456c51e8e9f672cfa8b3a43755fb5329e",
+    "verification-claim-failure.webview.png": "6ea3b6024aab9fa77e0e2dc7c9d2228fd30a77eb3a33cccaaa3f888f6176cacb",
+    "verification-claim-result.desktop.png": "bbe541e5379e71bf21e8092355c0e126de3286a9df5c4f639bf077e77653b741",
+    "verification-claim-result.dom.json": "81ec94d891e0f5c21848e8b853b87ae456c51e8e9f672cfa8b3a43755fb5329e",
+    "verification-claim-result.webview.png": "6ea3b6024aab9fa77e0e2dc7c9d2228fd30a77eb3a33cccaaa3f888f6176cacb",
+    "verification-promotion-driver.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "verification-promotion-failure.desktop.png": "3b3204c4ea6528b4d9e09f7b803535758fa341ea33590c42e9495ac8b8e9cac5",
+    "verification-promotion-failure.dom.json": "36291a767f12ded50c1782e958bfdf1ffbd87113440caed5408d81780049bc5c",
+    "verification-promotion-failure.webview.png": "77f5c463b1d823a21062077d7ac68325d3a966c2b5a01d41fce686cc8b698b09",
+    "verification-promotion-promotion.desktop.png": "2cf153cc59b04cf8443e8c8794a23584e49f09bfcbe86ba08093fa90499c3f50",
+    "verification-promotion-promotion.dom.json": "ac387fcbad9c84fa25d5b57e8d6eb1ee07f7a9840f20f81ee7fe91e5d24e6b99",
+    "verification-promotion-promotion.webview.png": "178eba893d27eea9abb170b071c23b04fd4f2643e468cd0486a7f7960910138c",
+    "verification-promotion-result.desktop.png": "a4bd57f9d7057a621987be27194eefebebe89e89ca05d939c98221ab88bdbd29",
+    "verification-promotion-result.dom.json": "36291a767f12ded50c1782e958bfdf1ffbd87113440caed5408d81780049bc5c",
+    "verification-promotion-result.webview.png": "77f5c463b1d823a21062077d7ac68325d3a966c2b5a01d41fce686cc8b698b09",
+    "verification-standard-driver.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "verification-standard-engine-failure.desktop.png": "856b8ded2def83506fca440cd6800e4cf17a732333cd642f896ebaa659ee3f57",
+    "verification-standard-engine-failure.dom.json": "eb62af95527424c48fb1f56bf0ff520e152ac76783736592e1b39eefffe9184b",
+    "verification-standard-engine-failure.webview.png": "8f16508eaa1376941de2efdc70ce1141ab33485160a7ef9f8b42a6084ef3c46d",
+    "verification-standard-failure.desktop.png": "9013c0de14c05d3e0beaec1f84d6d2c9c65f0b04b8aca989bb3fe9898dab9fab",
+    "verification-standard-failure.dom.json": "a9d26aac6a35bcb88ac33f692417b8643fa9370806ef1a7cf1577108d2ee97d3",
+    "verification-standard-failure.webview.png": "1a8f82cfc41b3408bedbb36895a62730e6c1af98e28836fbc87a7d0200f404d5",
+    "verification-standard-result.desktop.png": "9013c0de14c05d3e0beaec1f84d6d2c9c65f0b04b8aca989bb3fe9898dab9fab",
+    "verification-standard-result.dom.json": "a9d26aac6a35bcb88ac33f692417b8643fa9370806ef1a7cf1577108d2ee97d3",
+    "verification-standard-result.webview.png": "1a8f82cfc41b3408bedbb36895a62730e6c1af98e28836fbc87a7d0200f404d5",
+    "verification-synthetic-alternate-route.desktop.png": "9e155bb49aa90336893bfe3909b9607e84c4b54110a75048c428f750ba6351a8",
+    "verification-synthetic-alternate-route.dom.json": "ab5863c38952429557fed4c1776c6ee959eb23c77900f3d56094282ca087dd8a",
+    "verification-synthetic-alternate-route.webview.png": "e295936864d303da6534c12fec9a8a861fd61a25f8f5528a0c7249949b46f997",
+    "verification-synthetic-capture-route.desktop.png": "2a0fd1677925028a880bd2f2dcfb2f8390057cc850b1af715c4fd367a399e75f",
+    "verification-synthetic-capture-route.dom.json": "3ae6d46c60067ae3fb159aba13f7a531ab059a206e67f4d7ea98a0cc882aadf2",
+    "verification-synthetic-capture-route.webview.png": "98a75a0646a3793e9ea4ee3726ee643fc63c9dc5b70f97c77f7e031cc95f2552",
+    "verification-synthetic-driver.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "verification-synthetic-failure.desktop.png": "49ff677ece9cf704412a01744436a9b781da61c30bb3eeeaadd3a140f7159346",
+    "verification-synthetic-failure.dom.json": "ab5863c38952429557fed4c1776c6ee959eb23c77900f3d56094282ca087dd8a",
+    "verification-synthetic-failure.webview.png": "e295936864d303da6534c12fec9a8a861fd61a25f8f5528a0c7249949b46f997",
+    "verification-synthetic-result.desktop.png": "49ff677ece9cf704412a01744436a9b781da61c30bb3eeeaadd3a140f7159346",
+    "verification-synthetic-result.dom.json": "ab5863c38952429557fed4c1776c6ee959eb23c77900f3d56094282ca087dd8a",
+    "verification-synthetic-result.webview.png": "e295936864d303da6534c12fec9a8a861fd61a25f8f5528a0c7249949b46f997"
+  }
+}

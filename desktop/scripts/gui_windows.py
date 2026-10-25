@@ -548,11 +548,59 @@ class Native:
         try:
             com, initialized = _initialize_com()
             from pywinauto import Application
-            from pywinauto.keyboard import send_keys
-            window = Application(backend="win32").connect(handle=self.hwnd).window(handle=self.hwnd)
+            from PIL import ImageGrab
+            import win32gui
+            import win32process
+            if not win32gui.IsWindow(self.hwnd):
+                raise RuntimeError("The bound native Quit window no longer exists")
+            _, pid = win32process.GetWindowThreadProcessId(self.hwnd)
+            if pid != self.pid or _canonical(_image(pid) or "") != self.host:
+                raise RuntimeError("Native Quit HWND no longer belongs to the bound executable/PID")
+            window = Application(backend="win32").connect(handle=self.hwnd, timeout=2).window(
+                handle=self.hwnd).wrapper_object()
             window.set_focus()
-            send_keys("^q", pause=0.05)
-            return self._event("native_ctrl_q", pid=self.pid, hwnd=self.hwnd)
+            if win32gui.GetForegroundWindow() != self.hwnd:
+                raise RuntimeError("Native Quit target did not become foreground")
+
+            def label(item):
+                return item.text().split("\t", 1)[0].replace("&", "").strip()
+
+            menu = window.menu()
+            if menu is None:
+                raise RuntimeError("The bound application has no native menu")
+            applications = [item for item in menu.items() if label(item) == "mShogi"]
+            if len(applications) != 1:
+                raise RuntimeError(f"Expected one native mShogi menu, found {len(applications)}")
+            application = applications[0]
+            submenu = application.sub_menu()
+            quits = [] if submenu is None else [item for item in submenu.items()
+                                                if label(item) == "Quit mShogi"]
+            if len(quits) != 1 or not quits[0].is_enabled():
+                raise RuntimeError("Expected one enabled native Quit mShogi menu item")
+            quit_item = quits[0]
+            # Use actual mouse input on observed native menu items. menu_select()
+            # would send WM_COMMAND directly; Ctrl-Q did not reach the guard in
+            # the actual Windows run, and its cause has not been established.
+            application.click_input()
+            rectangle = quit_item.rectangle()
+            if rectangle.right <= rectangle.left or rectangle.bottom <= rectangle.top:
+                raise RuntimeError("Native Quit menu item did not become visible")
+            if win32gui.GetForegroundWindow() != self.hwnd:
+                raise RuntimeError("Native Quit menu lost its bound foreground window")
+            self._serial += 1
+            screenshot = self.output / f"native-{self._serial:03d}-quit-menu.png"
+            ImageGrab.grab(all_screens=True).save(screenshot)
+            target = {"application_text": application.text(), "quit_text": quit_item.text(),
+                      "quit_item_id": quit_item.item_id(),
+                      "rectangle": [rectangle.left, rectangle.top, rectangle.right, rectangle.bottom]}
+            self._event("native_menu_quit_target", pid=self.pid, hwnd=self.hwnd,
+                        method="pywinauto.MenuItem.click_input", target=target,
+                        foreground=win32gui.GetForegroundWindow(), screenshot=str(screenshot))
+            if win32gui.GetForegroundWindow() != self.hwnd or not self.alive():
+                raise RuntimeError("Native Quit target changed before the menu click")
+            quit_item.click_input()
+            return self._event("native_menu_quit", pid=self.pid, hwnd=self.hwnd,
+                               method="pywinauto.MenuItem.click_input", target=target)
         except Exception:
             self._diagnostics("native-quit-failure")
             raise

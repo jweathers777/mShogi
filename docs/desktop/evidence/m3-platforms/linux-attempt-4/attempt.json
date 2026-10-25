@@ -1,0 +1,73 @@
+{
+  "source_revision": "e313ef011d7b62c6ee32748b605b013b8771c935",
+  "run_url": "https://github.com/jweathers777/mShogi/actions/runs/40232694201",
+  "status": "failed",
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "failed",
+      "error": "{\"value\":{\"error\":\"unknown error\",\"message\":\"Session terminated without a reply\",\"stacktrace\":\"\"}}"
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-claim",
+      "status": "failed",
+      "error": "{\"value\":{\"error\":\"unknown error\",\"message\":\"Session terminated without a reply\",\"stacktrace\":\"\"}}"
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "failed",
+      "error": "Remote end closed connection without response"
+    }
+  ],
+  "establishes": [
+    "Normal realplay/cancel/replacement/exactSave/Open/historyprefixanalysis/Returnlive/Resume/nativecloseCancel completed; native final Quit proof did not run.",
+    "Verification standard recovery/retry, promotion and capacity passed INCLUDING pre-teardown host/engine absence.",
+    "Complete capacity archive preserves256observations."
+  ],
+  "does_not_establish": [
+    "Normal/claim final Quit transport loss occurred before stopped(); failure cleanup absence is not retroactive Quit evidence.",
+    "Synthetic app did not launch because startup/status transportclosed; no synthetic GUI claim.",
+    "Claim native screenshot shows preceding opportunity frame, though paired webview/DOM show the actual concluded draw.",
+    "Capacity pause native screenshot has the explanation above the scrolled inspector, a material visibility finding requiring focus correction."
+  ],
+  "next_corrections": [
+    "Narrow final native-close guard transport handling still requires host/engine exit before teardown.",
+    "Bounded startup/status transport retry; abort on driver death.",
+    "Bounded native presentation settle; preserve raw desktop.",
+    "Focus each new native resource-pause alert once; actual GUI must show it visibly."
+  ],
+  "retained_evidence": "Selected original files and package identities; full gui-report retains all68 original artifact file hashes. No screenshots modified.",
+  "files": {
+    "gui-report.json": "f4313769fbeef728986f003a7c9f1427b2d30efebe69cc045bfcda31c752dbe9",
+    "verification-claim-result.webview.png": "4320fba80272567bc624c9d91be3644b5f93e735bd4c266fe33a56c8ed64721c",
+    "verification-standard-engine-failure.desktop.png": "61f6b9434f228e18fe5ce692bda2b18fcbf0b3209edf6519d5fdcfea26845546",
+    "verification-capacity-capacity-pause.dom.json": "da86a95cfa956fd4570c092e732991d40e8a4e4bee02e507cecf56e6dae5806a",
+    "verification-capacity-capacity-pause.desktop.png": "1012089cfe27bf7912277c161dd58696a4fd8e0d053aef9401cbfaa9a1cf59df",
+    "verification-claim-result.desktop.png": "4ff24b65dec37b4209e69b4e39b143186f48881f727064392748c4bd7f39fd2f",
+    "normal-native-close-guard.desktop.png": "7af65bf8239b536add82985c0b47bffe3e501aa6f588a0f742b5841dddb97cea",
+    "normal-complete.mshogi": "945d2b11fccb71c2ec0b9be337a661b2eb737dbc2554710d639352ac17e9be80",
+    "capacity-complete.mshogi": "0483a6d8f18ee46ec86935203b2b65ca62a25ce2f79d1ef60b86475710c231a6",
+    "verification-claim-result.dom.json": "aa26467db142518070114c32e275bef98928a16d954c1a5d5049dcb17631eeb4",
+    "verification-synthetic-driver.log": "e3b7afa43df03f7f50a9338f2760adfbd3e2690901f8d799c8cbd39e00e90a0d",
+    "verification-promotion-result.desktop.png": "dc5bb23981cb9ab7bea58aca142cc480724bf72263fdf26c1648e76874f2c79d",
+    "normal-historical-analysis.desktop.png": "db61580cde69a7abf61e829145cc8b6b47438d62ce8bd746aab6a2b016db095a",
+    "packages/verification/manifest.json": "afbb49787db2fbe844ec8d6ce00cb0e78d64a9f9795c05cc8e0d20ef68f2b055",
+    "packages/normal/package-smoke.json": "c2e0252f2781669647b160f1555762c0a4e28505053370f0a9af6b884af5a93a",
+    "packages/normal/manifest.json": "9013dc0c95e84c59e9bdf50f9ae5ea4242ed24c31525df3edb408c9c20616c8b"
+  }
+}

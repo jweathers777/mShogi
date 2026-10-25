@@ -23,7 +23,8 @@ verification package supplies difficult native states. It is labeled as packaged
 verification evidence, with no claim that a second Linux package was installed.
 
 The Windows adapter uses the actual NSIS-installed executables, native UIA file
-dialog controls, a native WM_CLOSE request and Ctrl-Q. An interactive Default
+dialog controls, a native WM_CLOSE request and actual mouse selection of the
+native mShogi → Quit mShogi menu. An interactive Default
 desktop is checked before GUI work. The external driver is matched to the
 installed WebView2 Runtime, rather than the Edge browser, using Microsoft's
 [documented runtime detection](https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/distribution#detect-if-a-webview2-runtime-is-already-installed)
@@ -184,3 +185,33 @@ next phase only after successful cleanup. Any failed required phase keeps the
 whole run failed and nonzero. Cleanup failure aborts further phases and still
 writes a failed report. Three isolated verifier-control-flow checks establish
 these reporting rules; they are not application GUI evidence.
+
+The fourth run at `e313ef011d7b62c6ee32748b605b013b8771c935`
+([40232694201](https://github.com/jweathers777/mShogi/actions/runs/40232694201))
+retains [Linux](evidence/m3-platforms/linux-attempt-4/attempt.json) and
+[Windows](evidence/m3-platforms/windows-attempt-4/attempt.json) phase verdicts.
+Linux standard recovery, promotion and capacity passed including native exit
+before teardown. Normal Save/Open/history/Resume/close Cancel passed, but final
+Quit's click closed the webview before its HTTP reply; claim had the same final
+transport race. Synthetic startup encountered a transient driver connection
+closure. The next verifier records narrowly recognized transport closure only
+after dispatching the resolved final native guard action, then still requires
+native host and engine absence before teardown. Startup retries are separately
+bounded and abort if the driver exits.
+
+Windows reached the expected interaction results in all six phases, including
+the synthetic routes, but its Ctrl-Q automation failed to trigger the final
+Quit guard. The cause remains unestablished; a VK_PACKET explanation was
+disproved by the pinned pywinauto source. The next adapter clicks the observed
+native Quit menu item with real mouse input and retains its menu metadata and
+screen. Failure cleanup is never substituted for either platform's Quit proof.
+
+The Linux capacity screenshot also exposed an offscreen explanation above the
+disabled work controls. New native capacity pauses now focus their alert once,
+revealing it without stealing later focus on unchanged polls. The current
+[macOS packaged regression](evidence/m3-platforms/macos-capacity-focus/gui-report.json)
+visibly verifies that behavior and a complete 256-observation Save. The next
+Windows/Linux journeys require a focused, visible alert. Native screenshots
+follow webview capture and a bounded 150 ms presentation settle; the full raw
+desktop is retained even when webview capture fails. Earlier stale-frame or
+offscreen captures are explicitly qualified in their failed-attempt records.

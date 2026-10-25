@@ -1,0 +1,1624 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-10-25T20:56:23.080340+00:00",
+  "status": "failed",
+  "source_revision": "e313ef011d7b62c6ee32748b605b013b8771c935",
+  "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/40232694201",
+  "environment": {
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "runner_image": "20261023.334.3",
+    "runner_os": "Linux",
+    "renderer_environment": {
+      "GDK_BACKEND": "x11",
+      "WEBKIT_DISABLE_COMPOSITING_MODE": "1",
+      "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+      "LIBGL_ALWAYS_SOFTWARE": null
+    }
+  },
+  "method": "Actual installed/packaged GUI via W3C pointer/keyboard and native OS dialogs/close, external to distributables. Read-only DOM inspection; no direct IPC or injected input events.",
+  "driver_identity": {
+    "path": "/home/runner/.cargo/bin/tauri-driver",
+    "version": ""
+  },
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "failed",
+      "fixture": null,
+      "host": "/usr/bin/mshogi-desktop",
+      "host_sha256": "e9b69ec0f4b02e6fbc5f73aff490929a3c8d86fe88f83e9e2d3cde27bb212800",
+      "engine": "/usr/bin/mshogi",
+      "engine_sha256": "129a6af24ffaf5833d763caf7589c1c651b9628719f70defd8a8bd9f0ec11799",
+      "events": [
+        {
+          "at_utc": "2026-10-25T20:56:25.636139+00:00",
+          "operation": "Launch actual packaged application",
+          "observation": {
+            "process": {
+              "pid": 23224,
+              "parent_pid": 23222,
+              "start_ticks": "34502",
+              "state": "D",
+              "executable": "/usr/bin/mshogi-desktop",
+              "command": "/usr/bin/mshogi-desktop"
+            },
+            "window": {
+              "id": 2097155,
+              "pid": 23224,
+              "title": "mShogi",
+              "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+            },
+            "host": "/usr/bin/mshogi-desktop",
+            "engine": "/usr/bin/mshogi"
+          }
+        },
+        {
+          "at_utc": "2026-10-25T20:56:26.386193+00:00",
+          "operation": "Play e2e4 against actual bundled engine",
+          "observation": "Move returned: a7 \u2192 a5"
+        },
+        {
+          "at_utc": "2026-10-25T20:56:26.834878+00:00",
+          "operation": "Cancel demonstrably active analysis",
+          "observation": "Analysis cancelled. No conclusion was established; play remains paused until you explicitly resume."
+        },
+        {
+          "at_utc": "2026-10-25T20:56:27.617752+00:00",
+          "operation": "Replace with bounded read-only suggestion",
+          "observation": "Live position after 2 plies\n\nWhite to move \u00b7 Bounded move search\nRecorded limit: depth 1, 1000 nodes.\nSuggested move: a2 \u2192 a3 \u00b7 not played\n0.00 pawns from White perspective\n\nCompleted depth\n1\nVisited nodes\n31\nSuggested continuation \u00b7 not played\na2 \u2192 a3\n"
+        },
+        {
+          "at_utc": "2026-10-25T20:56:30.205167+00:00",
+          "operation": "Native save choose file",
+          "observation": {
+            "at": "2026-10-25T20:56:30.205027+00:00",
+            "kind": "native_picker",
+            "picker_kind": "save",
+            "window": {
+              "id": 2097310,
+              "pid": 23224,
+              "title": "Save mShogi game",
+              "geometry": "WINDOW=2097310\nX=173\nY=166\nWIDTH=1096\nHEIGHT=822\nSCREEN=0"
+            },
+            "selected_path": "/home/runner/work/mShogi/mShogi/gui-evidence/normal-complete.mshogi",
+            "cancelled": false,
+            "before_screenshot": "/home/runner/work/mShogi/mShogi/gui-evidence/normal/picker-01-save-native.png",
+            "after_screenshot": "/home/runner/work/mShogi/mShogi/gui-evidence/normal/picker-01-save-after.png",
+            "entered_path_screenshot": "/home/runner/work/mShogi/mShogi/gui-evidence/normal/picker-01-save-entered-path.png",
+            "filesystem_observation": {
+              "path": "/home/runner/work/mShogi/mShogi/gui-evidence/normal-complete.mshogi",
+              "is_file": true,
+              "bytes": 5822
+            },
+            "acceptance_fallback": null,
+            "picker_closed": true,
+            "method": "Focused GTK picker through XTEST keyboard input"
+          }
+        },
+        {
+          "at_utc": "2026-10-25T20:56:30.207068+00:00",
+          "operation": "Inspect actual saved canonical archive",
+          "observation": {
+            "path": "/home/runner/work/mShogi/mShogi/gui-evidence/normal-complete.mshogi",
+            "sha256": "28cba958b8938fdfff54f5716cbce2e5106c7536e88440e04728ac037254c457",
+            "bytes": 5822,
+            "observations": 2,
+            "controls": 5,
+            "game_events": 2
+          }
+        },
+        {
+          "at_utc": "2026-10-25T20:56:33.612740+00:00",
+          "operation": "Native open choose file",
+          "observation": {
+            "at": "2026-10-25T20:56:33.612607+00:00",
+            "kind": "native_picker",
+            "picker_kind": "open",
+            "window": {
+              "id": 2099231,
+              "pid": 23224,
+              "title": "Open mShogi game",
+              "geometry": "WINDOW=2099231\nX=173\nY=166\nWIDTH=1096\nHEIGHT=822\nSCREEN=0"
+            },
+            "selected_path": "/home/runner/work/mShogi/mShogi/gui-evidence/normal-complete.mshogi",
+            "cancelled": false,
+            "before_screenshot": "/home/runner/work/mShogi/mShogi/gui-evidence/normal/picker-02-open-native.png",
+            "after_screenshot": "/home/runner/work/mShogi/mShogi/gui-evidence/normal/picker-02-open-after.png",
+            "entered_path_screenshot": "/home/runner/work/mShogi/mShogi/gui-evidence/normal/picker-02-open-entered-path.png",
+            "filesystem_observation": {
+              "path": "/home/runner/work/mShogi/mShogi/gui-evidence/normal-complete.mshogi",
+              "is_file": true,
+              "bytes": 5822
+            },
+            "acceptance_fallback": {
+              "key": "alt+o",
+              "before_screenshot": "/home/runner/work/mShogi/mShogi/gui-evidence/normal/picker-02-open-before-accept-fallback.png"
+            },
+            "picker_closed": true,
+            "method": "Focused GTK picker through XTEST keyboard input"
+          }
+        },
+        {
+          "at_utc": "2026-10-25T20:56:33.634016+00:00",
+          "operation": "Reopen complete document without resuming work",
+          "observation": "normal-complete.mshogi\nSaved\nSave\nSave as\u2026\nOpen\u2026\nOpened the complete document with work stopped.\nFile details\n"
+        },
+        {
+          "at_utc": "2026-10-25T20:56:34.893535+00:00",
+          "operation": "History prefix provenance / Return live / Resume",
+          "observation": {
+            "historical_request": {
+              "protocol": 2,
+              "purpose": {
+                "kind": "move_analysis",
+                "target": {
+                  "selection_id": 21,
+                  "ply": 1,
+                  "session_version": 22,
+                  "label": "Historical position after 1 plies",
+                  "turn": "black"
+                }
+              },
+              "request_id": 21,
+              "session_version": 22,
+              "process_generation": 21,
+              "game": {
+                "schema_version": 1,
+                "rules_profile": "mshogi.chess.match.v1",
+                "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                "history_origin": "standard_start",
+                "claim_policy": "explicit_only",
+                "events": [
+                  {
+                    "ply": 0,
+                    "event": {
+                      "kind": "move",
+                      "action": "e2e4"
+                    }
+                  }
+                ]
+              },
+              "limits": {
+                "depth": 1,
+                "nodes": 1000
+              }
+            },
+            "live_game_events": 2
+          }
+        },
+        {
+          "at_utc": "2026-10-25T20:56:35.207961+00:00",
+          "operation": "Native window-close request",
+          "observation": {
+            "at": "2026-10-25T20:56:35.207925+00:00",
+            "kind": "native_close_requested",
+            "window": 2097155,
+            "method": "Focused Alt+F4 through the X11 window manager",
+            "proof_of_exit": false
+          }
+        },
+        {
+          "at_utc": "2026-10-25T20:56:35.615877+00:00",
+          "operation": "Native Quit request",
+          "observation": {
+            "at": "2026-10-25T20:56:35.615853+00:00",
+            "kind": "native_quit_requested",
+            "window": 2097155,
+            "method": "Focused Ctrl+Q native Quit menu accelerator",
+            "proof_of_exit": false
+          }
+        }
+      ],
+      "started_at_utc": "2026-10-25T20:56:23.090810+00:00",
+      "native_environment": {
+        "os_release": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+        "display": ":99",
+        "gdk_backend": "x11",
+        "lang": "C.UTF-8",
+        "desktop_geometry": {
+          "command": [
+            "xdotool",
+            "getdisplaygeometry"
+          ],
+          "exit_code": 0,
+          "stdout": "1440 1100",
+          "stderr": ""
+        },
+        "tools": {
+          "xdotool": {
+            "path": "/usr/bin/xdotool",
+            "sha256": "a21dba4297e197ef27035071f6a36061cc8604ac360df19792db99ad3fd9a5f5",
+            "version": {
+              "command": [
+                "xdotool",
+                "--version"
+              ],
+              "exit_code": 0,
+              "stdout": "xdotool version 3.20160805.1",
+              "stderr": ""
+            }
+          },
+          "scrot": {
+            "path": "/usr/bin/scrot",
+            "sha256": "a59a8566eaabb34d333a0362b4039dd8fe2c73846e2710821856527551d95785",
+            "version": {
+              "command": [
+                "scrot",
+                "--version"
+              ],
+              "exit_code": 0,
+              "stdout": "scrot version 1.10",
+              "stderr": ""
+            }
+          },
+          "openbox": {
+            "path": "/usr/bin/openbox",
+            "sha256": "941e69bf5479d77805bdeae7a6dee17142ff429b8db9e7d0c1b579e9c70a0b52",
+            "version": {
+              "command": [
+                "openbox",
+                "--version"
+              ],
+              "exit_code": 0,
+              "stdout": "Openbox 3.6.1\nCopyright (c) 2004   Mikael Magnusson\nCopyright (c) 2002   Dana Jansens\n\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it\nunder certain conditions. See the file COPYING for details.",
+              "stderr": ""
+            }
+          },
+          "WebKitWebDriver": {
+            "path": "/usr/bin/WebKitWebDriver",
+            "sha256": "488118541ba1dbeaca658073af84322900485b9435bc4fbb43eb1faf21db8b70"
+          }
+        },
+        "packages": {
+          "command": [
+            "dpkg-query",
+            "-W",
+            "-f=${binary:Package}=${Version}\n",
+            "webkit2gtk-driver",
+            "libwebkit2gtk-4.1-0",
+            "libgtk-3-0*",
+            "xdotool",
+            "xvfb",
+            "openbox",
+            "scrot"
+          ],
+          "exit_code": 0,
+          "stdout": "libgtk-3-0=\nlibgtk-3-0t64:amd64=3.24.41-4ubuntu1.3\nlibwebkit2gtk-4.1-0:amd64=2.52.6-0ubuntu0.24.04.1\nopenbox=3.6.1-12build5\nscrot=1.10-1build2\nwebkit2gtk-driver=2.52.6-0ubuntu0.24.04.1\nxdotool=1:3.20160805.1-5build1\nxvfb=2:21.1.12-1ubuntu1.9",
+          "stderr": ""
+        },
+        "native_observation": "X11 window title, geometry and owner PID; optional xprop properties. No accessibility-tree claim."
+      },
+      "driver_command": [
+        "tauri-driver",
+        "--port",
+        "4444",
+        "--native-port",
+        "4445"
+      ],
+      "driver_creation": {
+        "windows_no_console": false,
+        "stdout_stderr": "normal-driver.log"
+      },
+      "capabilities": {
+        "browserName": "wry",
+        "browserVersion": "0.57.1",
+        "platformName": "linux",
+        "acceptInsecureCerts": false,
+        "strictFileInteractability": false,
+        "setWindowRect": true,
+        "unhandledPromptBehavior": "dismiss and notify",
+        "pageLoadStrategy": "normal",
+        "proxy": {},
+        "timeouts": {
+          "script": 30000,
+          "pageLoad": 300000,
+          "implicit": 0
+        }
+      },
+      "native_window": {
+        "process": {
+          "pid": 23224,
+          "parent_pid": 23222,
+          "start_ticks": "34502",
+          "state": "D",
+          "executable": "/usr/bin/mshogi-desktop",
+          "command": "/usr/bin/mshogi-desktop"
+        },
+        "window": {
+          "id": 2097155,
+          "pid": 23224,
+          "title": "mShogi",
+          "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+        },
+        "host": "/usr/bin/mshogi-desktop",
+        "engine": "/usr/bin/mshogi"
+      },
+      "error": "{\"value\":{\"error\":\"unknown error\",\"message\":\"Session terminated without a reply\",\"stacktrace\":\"\"}}",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 63, in request\n    with urllib.request.urlopen(request, timeout=45) as response:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 215, in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 521, in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 630, in http_response\n    response = self.parent.error(\n               ^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 559, in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 500: Internal Server Error\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 526, in main\n    journey.normal() if fixture is None else journey.fixture(fixture)\n    ^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 386, in normal\n    self.quit()\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 298, in quit\n    self.web.button(\"Close fixture\" if synthetic else \"Discard & continue\")\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 108, in button\n    self.command(\"POST\", f\"/element/{element}/click\", {})\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 73, in command\n    return self.request(method, f\"/session/{self.session}{path}\", data)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 66, in request\n    raise RuntimeError(error.read().decode(errors=\"replace\")) from error\nRuntimeError: {\"value\":{\"error\":\"unknown error\",\"message\":\"Session terminated without a reply\",\"stacktrace\":\"\"}}\n",
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "fixture": "standard",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "2540851676c8ce7c1fd4e72153dc2157317017bc1e9c8bb8d004103c5f773624",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "129a6af24ffaf5833d763caf7589c1c651b9628719f70defd8a8bd9f0ec11799",
+      "events": [
+        {
+          "at_utc": "2026-10-25T20:56:36.448795+00:00",
+          "operation": "Launch actual packaged application",
+          "observation": {
+            "process": {
+              "pid": 26136,
+              "parent_pid": 26133,
+              "start_ticks": "35748",
+              "state": "S",
+              "executable": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+              "command": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop"
+            },
+            "window": {
+              "id": 2097155,
+              "pid": 26136,
+              "title": "mShogi Verification \u2014 standard (test state) \u2014 content 1180.0 \u00d7 820.0 logical",
+              "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+            },
+            "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+            "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi"
+          }
+        },
+        {
+          "at_utc": "2026-10-25T20:56:37.645236+00:00",
+          "operation": "Genuine missing-engine startup failure preserves three plies",
+          "observation": "Engine failure \u00b7 play paused\nThe engine could not complete this turn. The game is still ongoing. No engine move or chess result was added.\nRetry the engine turn to continue from this position, or start a new game.\nNative status details\n"
+        },
+        {
+          "at_utc": "2026-10-25T20:56:38.374530+00:00",
+          "operation": "Restore identical sidecar and Retry without losing history",
+          "observation": {
+            "engine_sha256": "129a6af24ffaf5833d763caf7589c1c651b9628719f70defd8a8bd9f0ec11799",
+            "result": "Move returned: a5 \u2192 a4"
+          }
+        },
+        {
+          "at_utc": "2026-10-25T20:56:38.653351+00:00",
+          "operation": "Native Quit request",
+          "observation": {
+            "at": "2026-10-25T20:56:38.653326+00:00",
+            "kind": "native_quit_requested",
+            "window": 2097155,
+            "method": "Focused Ctrl+Q native Quit menu accelerator",
+            "proof_of_exit": false
+          }
+        },
+        {
+          "at_utc": "2026-10-25T20:56:38.776656+00:00",
+          "operation": "Observe native shutdown before driver teardown",
+          "observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        }
+      ],
+      "started_at_utc": "2026-10-25T20:56:35.779555+00:00",
+      "native_environment": {
+        "os_release": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+        "display": ":99",
+        "gdk_backend": "x11",
+        "lang": "C.UTF-8",
+        "desktop_geometry": {
+          "command": [
+            "xdotool",
+            "getdisplaygeometry"
+          ],
+          "exit_code": 0,
+          "stdout": "1440 1100",
+          "stderr": ""
+        },
+        "tools": {
+          "xdotool": {
+            "path": "/usr/bin/xdotool",
+            "sha256": "a21dba4297e197ef27035071f6a36061cc8604ac360df19792db99ad3fd9a5f5",
+            "version": {
+              "command": [
+                "xdotool",
+                "--version"
+              ],
+              "exit_code": 0,
+              "stdout": "xdotool version 3.20160805.1",
+              "stderr": ""
+            }
+          },
+          "scrot": {
+            "path": "/usr/bin/scrot",
+            "sha256": "a59a8566eaabb34d333a0362b4039dd8fe2c73846e2710821856527551d95785",
+            "version": {
+              "command": [
+                "scrot",
+                "--version"
+              ],
+              "exit_code": 0,
+              "stdout": "scrot version 1.10",
+              "stderr": ""
+            }
+          },
+          "openbox": {
+            "path": "/usr/bin/openbox",
+            "sha256": "941e69bf5479d77805bdeae7a6dee17142ff429b8db9e7d0c1b579e9c70a0b52",
+            "version": {
+              "command": [
+                "openbox",
+                "--version"
+              ],
+              "exit_code": 0,
+              "stdout": "Openbox 3.6.1\nCopyright (c) 2004   Mikael Magnusson\nCopyright (c) 2002   Dana Jansens\n\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it\nunder certain conditions. See the file COPYING for details.",
+              "stderr": ""
+            }
+          },
+          "WebKitWebDriver": {
+            "path": "/usr/bin/WebKitWebDriver",
+            "sha256": "488118541ba1dbeaca658073af84322900485b9435bc4fbb43eb1faf21db8b70"
+          }
+        },
+        "packages": {
+          "command": [
+            "dpkg-query",
+            "-W",
+            "-f=${binary:Package}=${Version}\n",
+            "webkit2gtk-driver",
+            "libwebkit2gtk-4.1-0",
+            "libgtk-3-0*",
+            "xdotool",
+            "xvfb",
+            "openbox",
+            "scrot"
+          ],
+          "exit_code": 0,
+          "stdout": "libgtk-3-0=\nlibgtk-3-0t64:amd64=3.24.41-4ubuntu1.3\nlibwebkit2gtk-4.1-0:amd64=2.52.6-0ubuntu0.24.04.1\nopenbox=3.6.1-12build5\nscrot=1.10-1build2\nwebkit2gtk-driver=2.52.6-0ubuntu0.24.04.1\nxdotool=1:3.20160805.1-5build1\nxvfb=2:21.1.12-1ubuntu1.9",
+          "stderr": ""
+        },
+        "native_observation": "X11 window title, geometry and owner PID; optional xprop properties. No accessibility-tree claim."
+      },
+      "driver_command": [
+        "tauri-driver",
+        "--port",
+        "4444",
+        "--native-port",
+        "4445"
+      ],
+      "driver_creation": {
+        "windows_no_console": false,
+        "stdout_stderr": "verification-standard-driver.log"
+      },
+      "capabilities": {
+        "browserName": "wry",
+        "browserVersion": "0.57.1",
+        "platformName": "linux",
+        "acceptInsecureCerts": false,
+        "strictFileInteractability": false,
+        "setWindowRect": true,
+        "unhandledPromptBehavior": "dismiss and notify",
+        "pageLoadStrategy": "normal",
+        "proxy": {},
+        "timeouts": {
+          "script": 30000,
+          "pageLoad": 300000,
+          "implicit": 0
+        }
+      },
+      "native_window": {
+        "process": {
+          "pid": 26136,
+          "parent_pid": 26133,
+          "start_ticks": "35748",
+          "state": "S",
+          "executable": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+          "command": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop"
+        },
+        "window": {
+          "id": 2097155,
+          "pid": 26136,
+          "title": "mShogi Verification \u2014 standard (test state) \u2014 content 1180.0 \u00d7 820.0 logical",
+          "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+        },
+        "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+        "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi"
+      },
+      "finished_at_utc": "2026-10-25T20:56:38.776696+00:00",
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "fixture": "promotion",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "2540851676c8ce7c1fd4e72153dc2157317017bc1e9c8bb8d004103c5f773624",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "129a6af24ffaf5833d763caf7589c1c651b9628719f70defd8a8bd9f0ec11799",
+      "events": [
+        {
+          "at_utc": "2026-10-25T20:56:39.467198+00:00",
+          "operation": "Launch actual packaged application",
+          "observation": {
+            "process": {
+              "pid": 26410,
+              "parent_pid": 26408,
+              "start_ticks": "36049",
+              "state": "S",
+              "executable": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+              "command": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop"
+            },
+            "window": {
+              "id": 2097155,
+              "pid": 26410,
+              "title": "mShogi Verification \u2014 promotion (test state) \u2014 content 1180.0 \u00d7 820.0 logical",
+              "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+            },
+            "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+            "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi"
+          }
+        },
+        {
+          "at_utc": "2026-10-25T20:56:39.797666+00:00",
+          "operation": "Cancel promotion then commit complete Knight promotion",
+          "observation": "PLAY ENDED\n\nDraw \u2014 proven dead position\nPlay has ended. The board and played move history are preserved.\nStart a new game to play again. This result remains separate from engine process status.\n"
+        },
+        {
+          "at_utc": "2026-10-25T20:56:40.071891+00:00",
+          "operation": "Native Quit request",
+          "observation": {
+            "at": "2026-10-25T20:56:40.071869+00:00",
+            "kind": "native_quit_requested",
+            "window": 2097155,
+            "method": "Focused Ctrl+Q native Quit menu accelerator",
+            "proof_of_exit": false
+          }
+        },
+        {
+          "at_utc": "2026-10-25T20:56:40.192232+00:00",
+          "operation": "Observe native shutdown before driver teardown",
+          "observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        }
+      ],
+      "started_at_utc": "2026-10-25T20:56:38.795086+00:00",
+      "native_environment": {
+        "os_release": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+        "display": ":99",
+        "gdk_backend": "x11",
+        "lang": "C.UTF-8",
+        "desktop_geometry": {
+          "command": [
+            "xdotool",
+            "getdisplaygeometry"
+          ],
+          "exit_code": 0,
+          "stdout": "1440 1100",
+          "stderr": ""
+        },
+        "tools": {
+          "xdotool": {
+            "path": "/usr/bin/xdotool",
+            "sha256": "a21dba4297e197ef27035071f6a36061cc8604ac360df19792db99ad3fd9a5f5",
+            "version": {
+              "command": [
+                "xdotool",
+                "--version"
+              ],
+              "exit_code": 0,
+              "stdout": "xdotool version 3.20160805.1",
+              "stderr": ""
+            }
+          },
+          "scrot": {
+            "path": "/usr/bin/scrot",
+            "sha256": "a59a8566eaabb34d333a0362b4039dd8fe2c73846e2710821856527551d95785",
+            "version": {
+              "command": [
+                "scrot",
+                "--version"
+              ],
+              "exit_code": 0,
+              "stdout": "scrot version 1.10",
+              "stderr": ""
+            }
+          },
+          "openbox": {
+            "path": "/usr/bin/openbox",
+            "sha256": "941e69bf5479d77805bdeae7a6dee17142ff429b8db9e7d0c1b579e9c70a0b52",
+            "version": {
+              "command": [
+                "openbox",
+                "--version"
+              ],
+              "exit_code": 0,
+              "stdout": "Openbox 3.6.1\nCopyright (c) 2004   Mikael Magnusson\nCopyright (c) 2002   Dana Jansens\n\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it\nunder certain conditions. See the file COPYING for details.",
+              "stderr": ""
+            }
+          },
+          "WebKitWebDriver": {
+            "path": "/usr/bin/WebKitWebDriver",
+            "sha256": "488118541ba1dbeaca658073af84322900485b9435bc4fbb43eb1faf21db8b70"
+          }
+        },
+        "packages": {
+          "command": [
+            "dpkg-query",
+            "-W",
+            "-f=${binary:Package}=${Version}\n",
+            "webkit2gtk-driver",
+            "libwebkit2gtk-4.1-0",
+            "libgtk-3-0*",
+            "xdotool",
+            "xvfb",
+            "openbox",
+            "scrot"
+          ],
+          "exit_code": 0,
+          "stdout": "libgtk-3-0=\nlibgtk-3-0t64:amd64=3.24.41-4ubuntu1.3\nlibwebkit2gtk-4.1-0:amd64=2.52.6-0ubuntu0.24.04.1\nopenbox=3.6.1-12build5\nscrot=1.10-1build2\nwebkit2gtk-driver=2.52.6-0ubuntu0.24.04.1\nxdotool=1:3.20160805.1-5build1\nxvfb=2:21.1.12-1ubuntu1.9",
+          "stderr": ""
+        },
+        "native_observation": "X11 window title, geometry and owner PID; optional xprop properties. No accessibility-tree claim."
+      },
+      "driver_command": [
+        "tauri-driver",
+        "--port",
+        "4444",
+        "--native-port",
+        "4445"
+      ],
+      "driver_creation": {
+        "windows_no_console": false,
+        "stdout_stderr": "verification-promotion-driver.log"
+      },
+      "capabilities": {
+        "browserName": "wry",
+        "browserVersion": "0.57.1",
+        "platformName": "linux",
+        "acceptInsecureCerts": false,
+        "strictFileInteractability": false,
+        "setWindowRect": true,
+        "unhandledPromptBehavior": "dismiss and notify",
+        "pageLoadStrategy": "normal",
+        "proxy": {},
+        "timeouts": {
+          "script": 30000,
+          "pageLoad": 300000,
+          "implicit": 0
+        }
+      },
+      "native_window": {
+        "process": {
+          "pid": 26410,
+          "parent_pid": 26408,
+          "start_ticks": "36049",
+          "state": "S",
+          "executable": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+          "command": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop"
+        },
+        "window": {
+          "id": 2097155,
+          "pid": 26410,
+          "title": "mShogi Verification \u2014 promotion (test state) \u2014 content 1180.0 \u00d7 820.0 logical",
+          "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+        },
+        "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+        "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi"
+      },
+      "finished_at_utc": "2026-10-25T20:56:40.192272+00:00",
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-claim",
+      "status": "failed",
+      "fixture": "claim",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "2540851676c8ce7c1fd4e72153dc2157317017bc1e9c8bb8d004103c5f773624",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "129a6af24ffaf5833d763caf7589c1c651b9628719f70defd8a8bd9f0ec11799",
+      "events": [
+        {
+          "at_utc": "2026-10-25T20:56:40.854264+00:00",
+          "operation": "Launch actual packaged application",
+          "observation": {
+            "process": {
+              "pid": 26671,
+              "parent_pid": 26669,
+              "start_ticks": "36191",
+              "state": "S",
+              "executable": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+              "command": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop"
+            },
+            "window": {
+              "id": 2097155,
+              "pid": 26671,
+              "title": "mShogi Verification \u2014 claim (test state) \u2014 content 1180.0 \u00d7 820.0 logical",
+              "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+            },
+            "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+            "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi"
+          }
+        },
+        {
+          "at_utc": "2026-10-25T20:56:40.896549+00:00",
+          "operation": "Optional intended-move claim concludes without playing intention",
+          "observation": "PLAY ENDED\n\nDraw \u2014 claimed fifty-move rule\nPlay has ended. The board and played move history are preserved.\nStart a new game to play again. This result remains separate from engine process status.\n"
+        },
+        {
+          "at_utc": "2026-10-25T20:56:41.177038+00:00",
+          "operation": "Native Quit request",
+          "observation": {
+            "at": "2026-10-25T20:56:41.177017+00:00",
+            "kind": "native_quit_requested",
+            "window": 2097155,
+            "method": "Focused Ctrl+Q native Quit menu accelerator",
+            "proof_of_exit": false
+          }
+        }
+      ],
+      "started_at_utc": "2026-10-25T20:56:40.209771+00:00",
+      "native_environment": {
+        "os_release": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+        "display": ":99",
+        "gdk_backend": "x11",
+        "lang": "C.UTF-8",
+        "desktop_geometry": {
+          "command": [
+            "xdotool",
+            "getdisplaygeometry"
+          ],
+          "exit_code": 0,
+          "stdout": "1440 1100",
+          "stderr": ""
+        },
+        "tools": {
+          "xdotool": {
+            "path": "/usr/bin/xdotool",
+            "sha256": "a21dba4297e197ef27035071f6a36061cc8604ac360df19792db99ad3fd9a5f5",
+            "version": {
+              "command": [
+                "xdotool",
+                "--version"
+              ],
+              "exit_code": 0,
+              "stdout": "xdotool version 3.20160805.1",
+              "stderr": ""
+            }
+          },
+          "scrot": {
+            "path": "/usr/bin/scrot",
+            "sha256": "a59a8566eaabb34d333a0362b4039dd8fe2c73846e2710821856527551d95785",
+            "version": {
+              "command": [
+                "scrot",
+                "--version"
+              ],
+              "exit_code": 0,
+              "stdout": "scrot version 1.10",
+              "stderr": ""
+            }
+          },
+          "openbox": {
+            "path": "/usr/bin/openbox",
+            "sha256": "941e69bf5479d77805bdeae7a6dee17142ff429b8db9e7d0c1b579e9c70a0b52",
+            "version": {
+              "command": [
+                "openbox",
+                "--version"
+              ],
+              "exit_code": 0,
+              "stdout": "Openbox 3.6.1\nCopyright (c) 2004   Mikael Magnusson\nCopyright (c) 2002   Dana Jansens\n\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it\nunder certain conditions. See the file COPYING for details.",
+              "stderr": ""
+            }
+          },
+          "WebKitWebDriver": {
+            "path": "/usr/bin/WebKitWebDriver",
+            "sha256": "488118541ba1dbeaca658073af84322900485b9435bc4fbb43eb1faf21db8b70"
+          }
+        },
+        "packages": {
+          "command": [
+            "dpkg-query",
+            "-W",
+            "-f=${binary:Package}=${Version}\n",
+            "webkit2gtk-driver",
+            "libwebkit2gtk-4.1-0",
+            "libgtk-3-0*",
+            "xdotool",
+            "xvfb",
+            "openbox",
+            "scrot"
+          ],
+          "exit_code": 0,
+          "stdout": "libgtk-3-0=\nlibgtk-3-0t64:amd64=3.24.41-4ubuntu1.3\nlibwebkit2gtk-4.1-0:amd64=2.52.6-0ubuntu0.24.04.1\nopenbox=3.6.1-12build5\nscrot=1.10-1build2\nwebkit2gtk-driver=2.52.6-0ubuntu0.24.04.1\nxdotool=1:3.20160805.1-5build1\nxvfb=2:21.1.12-1ubuntu1.9",
+          "stderr": ""
+        },
+        "native_observation": "X11 window title, geometry and owner PID; optional xprop properties. No accessibility-tree claim."
+      },
+      "driver_command": [
+        "tauri-driver",
+        "--port",
+        "4444",
+        "--native-port",
+        "4445"
+      ],
+      "driver_creation": {
+        "windows_no_console": false,
+        "stdout_stderr": "verification-claim-driver.log"
+      },
+      "capabilities": {
+        "browserName": "wry",
+        "browserVersion": "0.57.1",
+        "platformName": "linux",
+        "acceptInsecureCerts": false,
+        "strictFileInteractability": false,
+        "setWindowRect": true,
+        "unhandledPromptBehavior": "dismiss and notify",
+        "pageLoadStrategy": "normal",
+        "proxy": {},
+        "timeouts": {
+          "script": 30000,
+          "pageLoad": 300000,
+          "implicit": 0
+        }
+      },
+      "native_window": {
+        "process": {
+          "pid": 26671,
+          "parent_pid": 26669,
+          "start_ticks": "36191",
+          "state": "S",
+          "executable": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+          "command": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop"
+        },
+        "window": {
+          "id": 2097155,
+          "pid": 26671,
+          "title": "mShogi Verification \u2014 claim (test state) \u2014 content 1180.0 \u00d7 820.0 logical",
+          "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+        },
+        "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+        "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi"
+      },
+      "error": "{\"value\":{\"error\":\"unknown error\",\"message\":\"Session terminated without a reply\",\"stacktrace\":\"\"}}",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 63, in request\n    with urllib.request.urlopen(request, timeout=45) as response:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 215, in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 521, in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 630, in http_response\n    response = self.parent.error(\n               ^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 559, in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 500: Internal Server Error\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 526, in main\n    journey.normal() if fixture is None else journey.fixture(fixture)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 486, in fixture\n    self.quit(synthetic=name == \"synthetic\")\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 298, in quit\n    self.web.button(\"Close fixture\" if synthetic else \"Discard & continue\")\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 108, in button\n    self.command(\"POST\", f\"/element/{element}/click\", {})\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 73, in command\n    return self.request(method, f\"/session/{self.session}{path}\", data)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 66, in request\n    raise RuntimeError(error.read().decode(errors=\"replace\")) from error\nRuntimeError: {\"value\":{\"error\":\"unknown error\",\"message\":\"Session terminated without a reply\",\"stacktrace\":\"\"}}\n",
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "fixture": "capacity",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "2540851676c8ce7c1fd4e72153dc2157317017bc1e9c8bb8d004103c5f773624",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "129a6af24ffaf5833d763caf7589c1c651b9628719f70defd8a8bd9f0ec11799",
+      "events": [
+        {
+          "at_utc": "2026-10-25T20:56:42.198822+00:00",
+          "operation": "Launch actual packaged application",
+          "observation": {
+            "process": {
+              "pid": 26938,
+              "parent_pid": 26936,
+              "start_ticks": "36296",
+              "state": "S",
+              "executable": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+              "command": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop"
+            },
+            "window": {
+              "id": 2097155,
+              "pid": 26938,
+              "title": "mShogi Verification \u2014 capacity (test state) \u2014 content 1180.0 \u00d7 820.0 logical",
+              "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+            },
+            "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+            "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi"
+          }
+        },
+        {
+          "at_utc": "2026-10-25T20:56:45.231239+00:00",
+          "operation": "Native save choose file",
+          "observation": {
+            "at": "2026-10-25T20:56:45.231137+00:00",
+            "kind": "native_picker",
+            "picker_kind": "save",
+            "window": {
+              "id": 2097253,
+              "pid": 26938,
+              "title": "Save mShogi game",
+              "geometry": "WINDOW=2097253\nX=173\nY=166\nWIDTH=1096\nHEIGHT=822\nSCREEN=0"
+            },
+            "selected_path": "/home/runner/work/mShogi/mShogi/gui-evidence/capacity-complete.mshogi",
+            "cancelled": false,
+            "before_screenshot": "/home/runner/work/mShogi/mShogi/gui-evidence/verification-capacity/picker-01-save-native.png",
+            "after_screenshot": "/home/runner/work/mShogi/mShogi/gui-evidence/verification-capacity/picker-01-save-after.png",
+            "entered_path_screenshot": "/home/runner/work/mShogi/mShogi/gui-evidence/verification-capacity/picker-01-save-entered-path.png",
+            "filesystem_observation": {
+              "path": "/home/runner/work/mShogi/mShogi/gui-evidence/capacity-complete.mshogi",
+              "is_file": true,
+              "bytes": 385618
+            },
+            "acceptance_fallback": null,
+            "picker_closed": true,
+            "method": "Focused GTK picker through XTEST keyboard input"
+          }
+        },
+        {
+          "at_utc": "2026-10-25T20:56:45.234839+00:00",
+          "operation": "Inspect actual saved canonical archive",
+          "observation": {
+            "path": "/home/runner/work/mShogi/mShogi/gui-evidence/capacity-complete.mshogi",
+            "sha256": "0483a6d8f18ee46ec86935203b2b65ca62a25ce2f79d1ef60b86475710c231a6",
+            "bytes": 385618,
+            "observations": 256,
+            "controls": 256,
+            "game_events": 0
+          }
+        },
+        {
+          "at_utc": "2026-10-25T20:56:45.553023+00:00",
+          "operation": "Native Quit request",
+          "observation": {
+            "at": "2026-10-25T20:56:45.552999+00:00",
+            "kind": "native_quit_requested",
+            "window": 2097155,
+            "method": "Focused Ctrl+Q native Quit menu accelerator",
+            "proof_of_exit": false
+          }
+        },
+        {
+          "at_utc": "2026-10-25T20:56:45.696221+00:00",
+          "operation": "Observe native shutdown before driver teardown",
+          "observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        }
+      ],
+      "started_at_utc": "2026-10-25T20:56:41.265083+00:00",
+      "native_environment": {
+        "os_release": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+        "display": ":99",
+        "gdk_backend": "x11",
+        "lang": "C.UTF-8",
+        "desktop_geometry": {
+          "command": [
+            "xdotool",
+            "getdisplaygeometry"
+          ],
+          "exit_code": 0,
+          "stdout": "1440 1100",
+          "stderr": ""
+        },
+        "tools": {
+          "xdotool": {
+            "path": "/usr/bin/xdotool",
+            "sha256": "a21dba4297e197ef27035071f6a36061cc8604ac360df19792db99ad3fd9a5f5",
+            "version": {
+              "command": [
+                "xdotool",
+                "--version"
+              ],
+              "exit_code": 0,
+              "stdout": "xdotool version 3.20160805.1",
+              "stderr": ""
+            }
+          },
+          "scrot": {
+            "path": "/usr/bin/scrot",
+            "sha256": "a59a8566eaabb34d333a0362b4039dd8fe2c73846e2710821856527551d95785",
+            "version": {
+              "command": [
+                "scrot",
+                "--version"
+              ],
+              "exit_code": 0,
+              "stdout": "scrot version 1.10",
+              "stderr": ""
+            }
+          },
+          "openbox": {
+            "path": "/usr/bin/openbox",
+            "sha256": "941e69bf5479d77805bdeae7a6dee17142ff429b8db9e7d0c1b579e9c70a0b52",
+            "version": {
+              "command": [
+                "openbox",
+                "--version"
+              ],
+              "exit_code": 0,
+              "stdout": "Openbox 3.6.1\nCopyright (c) 2004   Mikael Magnusson\nCopyright (c) 2002   Dana Jansens\n\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it\nunder certain conditions. See the file COPYING for details.",
+              "stderr": ""
+            }
+          },
+          "WebKitWebDriver": {
+            "path": "/usr/bin/WebKitWebDriver",
+            "sha256": "488118541ba1dbeaca658073af84322900485b9435bc4fbb43eb1faf21db8b70"
+          }
+        },
+        "packages": {
+          "command": [
+            "dpkg-query",
+            "-W",
+            "-f=${binary:Package}=${Version}\n",
+            "webkit2gtk-driver",
+            "libwebkit2gtk-4.1-0",
+            "libgtk-3-0*",
+            "xdotool",
+            "xvfb",
+            "openbox",
+            "scrot"
+          ],
+          "exit_code": 0,
+          "stdout": "libgtk-3-0=\nlibgtk-3-0t64:amd64=3.24.41-4ubuntu1.3\nlibwebkit2gtk-4.1-0:amd64=2.52.6-0ubuntu0.24.04.1\nopenbox=3.6.1-12build5\nscrot=1.10-1build2\nwebkit2gtk-driver=2.52.6-0ubuntu0.24.04.1\nxdotool=1:3.20160805.1-5build1\nxvfb=2:21.1.12-1ubuntu1.9",
+          "stderr": ""
+        },
+        "native_observation": "X11 window title, geometry and owner PID; optional xprop properties. No accessibility-tree claim."
+      },
+      "driver_command": [
+        "tauri-driver",
+        "--port",
+        "4444",
+        "--native-port",
+        "4445"
+      ],
+      "driver_creation": {
+        "windows_no_console": false,
+        "stdout_stderr": "verification-capacity-driver.log"
+      },
+      "capabilities": {
+        "browserName": "wry",
+        "browserVersion": "0.57.1",
+        "platformName": "linux",
+        "acceptInsecureCerts": false,
+        "strictFileInteractability": false,
+        "setWindowRect": true,
+        "unhandledPromptBehavior": "dismiss and notify",
+        "pageLoadStrategy": "normal",
+        "proxy": {},
+        "timeouts": {
+          "script": 30000,
+          "pageLoad": 300000,
+          "implicit": 0
+        }
+      },
+      "native_window": {
+        "process": {
+          "pid": 26938,
+          "parent_pid": 26936,
+          "start_ticks": "36296",
+          "state": "S",
+          "executable": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+          "command": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop"
+        },
+        "window": {
+          "id": 2097155,
+          "pid": 26938,
+          "title": "mShogi Verification \u2014 capacity (test state) \u2014 content 1180.0 \u00d7 820.0 logical",
+          "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+        },
+        "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+        "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi"
+      },
+      "finished_at_utc": "2026-10-25T20:56:45.696263+00:00",
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "failed",
+      "fixture": "synthetic",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "2540851676c8ce7c1fd4e72153dc2157317017bc1e9c8bb8d004103c5f773624",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "129a6af24ffaf5833d763caf7589c1c651b9628719f70defd8a8bd9f0ec11799",
+      "events": [],
+      "started_at_utc": "2026-10-25T20:56:45.715975+00:00",
+      "native_environment": {
+        "os_release": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+        "display": ":99",
+        "gdk_backend": "x11",
+        "lang": "C.UTF-8",
+        "desktop_geometry": {
+          "command": [
+            "xdotool",
+            "getdisplaygeometry"
+          ],
+          "exit_code": 0,
+          "stdout": "1440 1100",
+          "stderr": ""
+        },
+        "tools": {
+          "xdotool": {
+            "path": "/usr/bin/xdotool",
+            "sha256": "a21dba4297e197ef27035071f6a36061cc8604ac360df19792db99ad3fd9a5f5",
+            "version": {
+              "command": [
+                "xdotool",
+                "--version"
+              ],
+              "exit_code": 0,
+              "stdout": "xdotool version 3.20160805.1",
+              "stderr": ""
+            }
+          },
+          "scrot": {
+            "path": "/usr/bin/scrot",
+            "sha256": "a59a8566eaabb34d333a0362b4039dd8fe2c73846e2710821856527551d95785",
+            "version": {
+              "command": [
+                "scrot",
+                "--version"
+              ],
+              "exit_code": 0,
+              "stdout": "scrot version 1.10",
+              "stderr": ""
+            }
+          },
+          "openbox": {
+            "path": "/usr/bin/openbox",
+            "sha256": "941e69bf5479d77805bdeae7a6dee17142ff429b8db9e7d0c1b579e9c70a0b52",
+            "version": {
+              "command": [
+                "openbox",
+                "--version"
+              ],
+              "exit_code": 0,
+              "stdout": "Openbox 3.6.1\nCopyright (c) 2004   Mikael Magnusson\nCopyright (c) 2002   Dana Jansens\n\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it\nunder certain conditions. See the file COPYING for details.",
+              "stderr": ""
+            }
+          },
+          "WebKitWebDriver": {
+            "path": "/usr/bin/WebKitWebDriver",
+            "sha256": "488118541ba1dbeaca658073af84322900485b9435bc4fbb43eb1faf21db8b70"
+          }
+        },
+        "packages": {
+          "command": [
+            "dpkg-query",
+            "-W",
+            "-f=${binary:Package}=${Version}\n",
+            "webkit2gtk-driver",
+            "libwebkit2gtk-4.1-0",
+            "libgtk-3-0*",
+            "xdotool",
+            "xvfb",
+            "openbox",
+            "scrot"
+          ],
+          "exit_code": 0,
+          "stdout": "libgtk-3-0=\nlibgtk-3-0t64:amd64=3.24.41-4ubuntu1.3\nlibwebkit2gtk-4.1-0:amd64=2.52.6-0ubuntu0.24.04.1\nopenbox=3.6.1-12build5\nscrot=1.10-1build2\nwebkit2gtk-driver=2.52.6-0ubuntu0.24.04.1\nxdotool=1:3.20160805.1-5build1\nxvfb=2:21.1.12-1ubuntu1.9",
+          "stderr": ""
+        },
+        "native_observation": "X11 window title, geometry and owner PID; optional xprop properties. No accessibility-tree claim."
+      },
+      "driver_command": [
+        "tauri-driver",
+        "--port",
+        "4444",
+        "--native-port",
+        "4445"
+      ],
+      "driver_creation": {
+        "windows_no_console": false,
+        "stdout_stderr": "verification-synthetic-driver.log"
+      },
+      "error": "Remote end closed connection without response",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 526, in main\n    journey.normal() if fixture is None else journey.fixture(fixture)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 389, in fixture\n    self.start(name)\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 206, in start\n    wait(ready, \"external native driver startup\")\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 39, in wait\n    last = predicate()\n           ^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 204, in ready\n    with urllib.request.urlopen(endpoint + \"/status\", timeout=2) as response:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 215, in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 515, in open\n    response = self._open(req, data)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 532, in _open\n    result = self._call_chain(self.handle_open, protocol, protocol +\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 1373, in http_open\n    return self.do_open(http.client.HTTPConnection, req)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 1348, in do_open\n    r = h.getresponse()\n        ^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/http/client.py\", line 1457, in getresponse\n    response.begin()\n  File \"/usr/lib/python3.12/http/client.py\", line 336, in begin\n    version, status, reason = self._read_status()\n                              ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/http/client.py\", line 305, in _read_status\n    raise RemoteDisconnected(\"Remote end closed connection without\"\nhttp.client.RemoteDisconnected: Remote end closed connection without response\n",
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    }
+  ],
+  "phase_failures": [
+    {
+      "phase": "normal",
+      "error": "{\"value\":{\"error\":\"unknown error\",\"message\":\"Session terminated without a reply\",\"stacktrace\":\"\"}}",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 63, in request\n    with urllib.request.urlopen(request, timeout=45) as response:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 215, in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 521, in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 630, in http_response\n    response = self.parent.error(\n               ^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 559, in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 500: Internal Server Error\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 526, in main\n    journey.normal() if fixture is None else journey.fixture(fixture)\n    ^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 386, in normal\n    self.quit()\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 298, in quit\n    self.web.button(\"Close fixture\" if synthetic else \"Discard & continue\")\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 108, in button\n    self.command(\"POST\", f\"/element/{element}/click\", {})\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 73, in command\n    return self.request(method, f\"/session/{self.session}{path}\", data)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 66, in request\n    raise RuntimeError(error.read().decode(errors=\"replace\")) from error\nRuntimeError: {\"value\":{\"error\":\"unknown error\",\"message\":\"Session terminated without a reply\",\"stacktrace\":\"\"}}\n",
+      "capture_error": "{\"value\":{\"error\":\"invalid session id\",\"message\":\"session deleted because of page crash or hang.\",\"stacktrace\":\"\"}}"
+    },
+    {
+      "phase": "verification-claim",
+      "error": "{\"value\":{\"error\":\"unknown error\",\"message\":\"Session terminated without a reply\",\"stacktrace\":\"\"}}",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 63, in request\n    with urllib.request.urlopen(request, timeout=45) as response:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 215, in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 521, in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 630, in http_response\n    response = self.parent.error(\n               ^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 559, in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 500: Internal Server Error\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 526, in main\n    journey.normal() if fixture is None else journey.fixture(fixture)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 486, in fixture\n    self.quit(synthetic=name == \"synthetic\")\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 298, in quit\n    self.web.button(\"Close fixture\" if synthetic else \"Discard & continue\")\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 108, in button\n    self.command(\"POST\", f\"/element/{element}/click\", {})\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 73, in command\n    return self.request(method, f\"/session/{self.session}{path}\", data)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 66, in request\n    raise RuntimeError(error.read().decode(errors=\"replace\")) from error\nRuntimeError: {\"value\":{\"error\":\"unknown error\",\"message\":\"Session terminated without a reply\",\"stacktrace\":\"\"}}\n",
+      "capture_error": "{\"value\":{\"error\":\"invalid session id\",\"message\":\"session deleted because of page crash or hang.\",\"stacktrace\":\"\"}}"
+    },
+    {
+      "phase": "verification-synthetic",
+      "error": "Remote end closed connection without response",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 526, in main\n    journey.normal() if fixture is None else journey.fixture(fixture)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 389, in fixture\n    self.start(name)\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 206, in start\n    wait(ready, \"external native driver startup\")\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 39, in wait\n    last = predicate()\n           ^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 204, in ready\n    with urllib.request.urlopen(endpoint + \"/status\", timeout=2) as response:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 215, in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 515, in open\n    response = self._open(req, data)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 532, in _open\n    result = self._call_chain(self.handle_open, protocol, protocol +\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 1373, in http_open\n    return self.do_open(http.client.HTTPConnection, req)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 1348, in do_open\n    r = h.getresponse()\n        ^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/http/client.py\", line 1457, in getresponse\n    response.begin()\n  File \"/usr/lib/python3.12/http/client.py\", line 336, in begin\n    version, status, reason = self._read_status()\n                              ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/http/client.py\", line 305, in _read_status\n    raise RemoteDisconnected(\"Remote end closed connection without\"\nhttp.client.RemoteDisconnected: Remote end closed connection without response\n",
+      "capture_error": "'NoneType' object has no attribute 'screenshot'"
+    }
+  ],
+  "error": "Required GUI phases failed: normal: {\"value\":{\"error\":\"unknown error\",\"message\":\"Session terminated without a reply\",\"stacktrace\":\"\"}}; verification-claim: {\"value\":{\"error\":\"unknown error\",\"message\":\"Session terminated without a reply\",\"stacktrace\":\"\"}}; verification-synthetic: Remote end closed connection without response",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 547, in main\n    raise AssertionError(\"Required GUI phases failed: \" +\nAssertionError: Required GUI phases failed: normal: {\"value\":{\"error\":\"unknown error\",\"message\":\"Session terminated without a reply\",\"stacktrace\":\"\"}}; verification-claim: {\"value\":{\"error\":\"unknown error\",\"message\":\"Session terminated without a reply\",\"stacktrace\":\"\"}}; verification-synthetic: Remote end closed connection without response\n",
+  "native_events": [
+    {
+      "at": "2026-10-25T20:56:23.523270+00:00",
+      "kind": "desktop_started",
+      "process_id": 23206,
+      "tool": "openbox"
+    },
+    {
+      "at": "2026-10-25T20:56:25.515966+00:00",
+      "kind": "attached",
+      "process": {
+        "pid": 23224,
+        "parent_pid": 23222,
+        "start_ticks": "34502",
+        "state": "D",
+        "executable": "/usr/bin/mshogi-desktop",
+        "command": "/usr/bin/mshogi-desktop"
+      },
+      "window": {
+        "id": 2097155,
+        "pid": 23224,
+        "title": "mShogi",
+        "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+      },
+      "host": "/usr/bin/mshogi-desktop",
+      "engine": "/usr/bin/mshogi"
+    },
+    {
+      "at": "2026-10-25T20:56:30.205027+00:00",
+      "kind": "native_picker",
+      "picker_kind": "save",
+      "window": {
+        "id": 2097310,
+        "pid": 23224,
+        "title": "Save mShogi game",
+        "geometry": "WINDOW=2097310\nX=173\nY=166\nWIDTH=1096\nHEIGHT=822\nSCREEN=0"
+      },
+      "selected_path": "/home/runner/work/mShogi/mShogi/gui-evidence/normal-complete.mshogi",
+      "cancelled": false,
+      "before_screenshot": "/home/runner/work/mShogi/mShogi/gui-evidence/normal/picker-01-save-native.png",
+      "after_screenshot": "/home/runner/work/mShogi/mShogi/gui-evidence/normal/picker-01-save-after.png",
+      "entered_path_screenshot": "/home/runner/work/mShogi/mShogi/gui-evidence/normal/picker-01-save-entered-path.png",
+      "filesystem_observation": {
+        "path": "/home/runner/work/mShogi/mShogi/gui-evidence/normal-complete.mshogi",
+        "is_file": true,
+        "bytes": 5822
+      },
+      "acceptance_fallback": null,
+      "picker_closed": true,
+      "method": "Focused GTK picker through XTEST keyboard input"
+    },
+    {
+      "at": "2026-10-25T20:56:33.612607+00:00",
+      "kind": "native_picker",
+      "picker_kind": "open",
+      "window": {
+        "id": 2099231,
+        "pid": 23224,
+        "title": "Open mShogi game",
+        "geometry": "WINDOW=2099231\nX=173\nY=166\nWIDTH=1096\nHEIGHT=822\nSCREEN=0"
+      },
+      "selected_path": "/home/runner/work/mShogi/mShogi/gui-evidence/normal-complete.mshogi",
+      "cancelled": false,
+      "before_screenshot": "/home/runner/work/mShogi/mShogi/gui-evidence/normal/picker-02-open-native.png",
+      "after_screenshot": "/home/runner/work/mShogi/mShogi/gui-evidence/normal/picker-02-open-after.png",
+      "entered_path_screenshot": "/home/runner/work/mShogi/mShogi/gui-evidence/normal/picker-02-open-entered-path.png",
+      "filesystem_observation": {
+        "path": "/home/runner/work/mShogi/mShogi/gui-evidence/normal-complete.mshogi",
+        "is_file": true,
+        "bytes": 5822
+      },
+      "acceptance_fallback": {
+        "key": "alt+o",
+        "before_screenshot": "/home/runner/work/mShogi/mShogi/gui-evidence/normal/picker-02-open-before-accept-fallback.png"
+      },
+      "picker_closed": true,
+      "method": "Focused GTK picker through XTEST keyboard input"
+    },
+    {
+      "at": "2026-10-25T20:56:35.207925+00:00",
+      "kind": "native_close_requested",
+      "window": 2097155,
+      "method": "Focused Alt+F4 through the X11 window manager",
+      "proof_of_exit": false
+    },
+    {
+      "at": "2026-10-25T20:56:35.615853+00:00",
+      "kind": "native_quit_requested",
+      "window": 2097155,
+      "method": "Focused Ctrl+Q native Quit menu accelerator",
+      "proof_of_exit": false
+    },
+    {
+      "at": "2026-10-25T20:56:35.762147+00:00",
+      "kind": "desktop_cleanup",
+      "process_id": 23206,
+      "method": "Stop only the Openbox instance started by this adapter"
+    },
+    {
+      "at": "2026-10-25T20:56:35.898409+00:00",
+      "kind": "desktop_started",
+      "process_id": 26120,
+      "tool": "openbox"
+    },
+    {
+      "at": "2026-10-25T20:56:36.343874+00:00",
+      "kind": "attached",
+      "process": {
+        "pid": 26136,
+        "parent_pid": 26133,
+        "start_ticks": "35748",
+        "state": "S",
+        "executable": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+        "command": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop"
+      },
+      "window": {
+        "id": 2097155,
+        "pid": 26136,
+        "title": "mShogi Verification \u2014 standard (test state) \u2014 content 1180.0 \u00d7 820.0 logical",
+        "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+      },
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi"
+    },
+    {
+      "at": "2026-10-25T20:56:38.653326+00:00",
+      "kind": "native_quit_requested",
+      "window": 2097155,
+      "method": "Focused Ctrl+Q native Quit menu accelerator",
+      "proof_of_exit": false
+    },
+    {
+      "at": "2026-10-25T20:56:38.778812+00:00",
+      "kind": "desktop_cleanup",
+      "process_id": 26120,
+      "method": "Stop only the Openbox instance started by this adapter"
+    },
+    {
+      "at": "2026-10-25T20:56:38.913566+00:00",
+      "kind": "desktop_started",
+      "process_id": 26395,
+      "tool": "openbox"
+    },
+    {
+      "at": "2026-10-25T20:56:39.341322+00:00",
+      "kind": "attached",
+      "process": {
+        "pid": 26410,
+        "parent_pid": 26408,
+        "start_ticks": "36049",
+        "state": "S",
+        "executable": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+        "command": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop"
+      },
+      "window": {
+        "id": 2097155,
+        "pid": 26410,
+        "title": "mShogi Verification \u2014 promotion (test state) \u2014 content 1180.0 \u00d7 820.0 logical",
+        "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+      },
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi"
+    },
+    {
+      "at": "2026-10-25T20:56:40.071869+00:00",
+      "kind": "native_quit_requested",
+      "window": 2097155,
+      "method": "Focused Ctrl+Q native Quit menu accelerator",
+      "proof_of_exit": false
+    },
+    {
+      "at": "2026-10-25T20:56:40.194196+00:00",
+      "kind": "desktop_cleanup",
+      "process_id": 26395,
+      "method": "Stop only the Openbox instance started by this adapter"
+    },
+    {
+      "at": "2026-10-25T20:56:40.328403+00:00",
+      "kind": "desktop_started",
+      "process_id": 26656,
+      "tool": "openbox"
+    },
+    {
+      "at": "2026-10-25T20:56:40.769400+00:00",
+      "kind": "attached",
+      "process": {
+        "pid": 26671,
+        "parent_pid": 26669,
+        "start_ticks": "36191",
+        "state": "S",
+        "executable": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+        "command": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop"
+      },
+      "window": {
+        "id": 2097155,
+        "pid": 26671,
+        "title": "mShogi Verification \u2014 claim (test state) \u2014 content 1180.0 \u00d7 820.0 logical",
+        "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+      },
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi"
+    },
+    {
+      "at": "2026-10-25T20:56:41.177017+00:00",
+      "kind": "native_quit_requested",
+      "window": 2097155,
+      "method": "Focused Ctrl+Q native Quit menu accelerator",
+      "proof_of_exit": false
+    },
+    {
+      "at": "2026-10-25T20:56:41.248861+00:00",
+      "kind": "desktop_cleanup",
+      "process_id": 26656,
+      "method": "Stop only the Openbox instance started by this adapter"
+    },
+    {
+      "at": "2026-10-25T20:56:41.383756+00:00",
+      "kind": "desktop_started",
+      "process_id": 26923,
+      "tool": "openbox"
+    },
+    {
+      "at": "2026-10-25T20:56:42.061370+00:00",
+      "kind": "attached",
+      "process": {
+        "pid": 26938,
+        "parent_pid": 26936,
+        "start_ticks": "36296",
+        "state": "S",
+        "executable": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+        "command": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop"
+      },
+      "window": {
+        "id": 2097155,
+        "pid": 26938,
+        "title": "mShogi Verification \u2014 capacity (test state) \u2014 content 1180.0 \u00d7 820.0 logical",
+        "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+      },
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi"
+    },
+    {
+      "at": "2026-10-25T20:56:45.231137+00:00",
+      "kind": "native_picker",
+      "picker_kind": "save",
+      "window": {
+        "id": 2097253,
+        "pid": 26938,
+        "title": "Save mShogi game",
+        "geometry": "WINDOW=2097253\nX=173\nY=166\nWIDTH=1096\nHEIGHT=822\nSCREEN=0"
+      },
+      "selected_path": "/home/runner/work/mShogi/mShogi/gui-evidence/capacity-complete.mshogi",
+      "cancelled": false,
+      "before_screenshot": "/home/runner/work/mShogi/mShogi/gui-evidence/verification-capacity/picker-01-save-native.png",
+      "after_screenshot": "/home/runner/work/mShogi/mShogi/gui-evidence/verification-capacity/picker-01-save-after.png",
+      "entered_path_screenshot": "/home/runner/work/mShogi/mShogi/gui-evidence/verification-capacity/picker-01-save-entered-path.png",
+      "filesystem_observation": {
+        "path": "/home/runner/work/mShogi/mShogi/gui-evidence/capacity-complete.mshogi",
+        "is_file": true,
+        "bytes": 385618
+      },
+      "acceptance_fallback": null,
+      "picker_closed": true,
+      "method": "Focused GTK picker through XTEST keyboard input"
+    },
+    {
+      "at": "2026-10-25T20:56:45.552999+00:00",
+      "kind": "native_quit_requested",
+      "window": 2097155,
+      "method": "Focused Ctrl+Q native Quit menu accelerator",
+      "proof_of_exit": false
+    },
+    {
+      "at": "2026-10-25T20:56:45.700300+00:00",
+      "kind": "desktop_cleanup",
+      "process_id": 26923,
+      "method": "Stop only the Openbox instance started by this adapter"
+    },
+    {
+      "at": "2026-10-25T20:56:45.834442+00:00",
+      "kind": "desktop_started",
+      "process_id": 28338,
+      "tool": "openbox"
+    },
+    {
+      "at": "2026-10-25T20:56:45.904374+00:00",
+      "kind": "desktop_cleanup",
+      "process_id": 28338,
+      "method": "Stop only the Openbox instance started by this adapter"
+    }
+  ],
+  "finished_at_utc": "2026-10-25T20:56:45.907720+00:00",
+  "files": {
+    "capacity-complete.mshogi": "0483a6d8f18ee46ec86935203b2b65ca62a25ce2f79d1ef60b86475710c231a6",
+    "normal/linux-bound.json": "313292bb41ea9ff4341747ea11376fd1b0a7b567395e9f73d1cb8e5d41314cca",
+    "normal/openbox.log": "6f748c3cd02a858c087697c3afac639205c62b7b206558bd40d1bcbd98165a5c",
+    "normal/picker-01-save-after.png": "bd322db3e8ddd6a83e6df3ee52de648522082008a215866f6cf0445329232785",
+    "normal/picker-01-save-entered-path.png": "c8303f3fd64c2e6fd67b5eae952518c0899439d206115cbc645f5b9e89ba9112",
+    "normal/picker-01-save-native.png": "6e3255b9e3eb25cd4a45d279b2254e13973fe933b2063d646952feeb04e6d23e",
+    "normal/picker-02-open-after.png": "5ef2efd98f4b463dc59eae79ba95c9d1121d072f6a958b6c0828d79afb692bf4",
+    "normal/picker-02-open-before-accept-fallback.png": "035f6a4be93fe39a5c4515ea3fda50bdcc382df215bdd28a6e6861e440163086",
+    "normal/picker-02-open-entered-path.png": "e8c02093ccc1eef3088608f154b5613c8fd099361325b66189e6800aa8b8d0b3",
+    "normal/picker-02-open-native.png": "7d8a89c230fadc24f0c3a1721288333f84aecaa720f193798b20cdf77acde077",
+    "normal-active-analysis.desktop.png": "3f955fe0d007a2b3682f74cf3ab7c7f7942bbcf58f1115db413360a1832068d5",
+    "normal-active-analysis.dom.json": "985a876343d6fbdf86289ec9f881e8d0d5dc5e91068629ef720d7d5b19fb77eb",
+    "normal-active-analysis.webview.png": "312329f947b167c67056d5564d36e9268eb03f0e5ab06e0ea92ea68709249bd8",
+    "normal-complete.mshogi": "945d2b11fccb71c2ec0b9be337a661b2eb737dbc2554710d639352ac17e9be80",
+    "normal-driver.log": "5c523f133a8983640503c6f1f7c5555833dec48bc40791a3b172aab556fc757d",
+    "normal-failure.desktop.png": "ed663eef51dec93c474d43da15d8957b318c6a8aefc2cb70979987f19acd9672",
+    "normal-historical-analysis.desktop.png": "db61580cde69a7abf61e829145cc8b6b47438d62ce8bd746aab6a2b016db095a",
+    "normal-historical-analysis.dom.json": "dc601668f7f21c3de0dafa93e66d8d77b8d3389f6ef86c5c1887314eb3c76394",
+    "normal-historical-analysis.webview.png": "67f5120a3b537bd29078f0bd8161672736b74b7bfc51b87ef3b299054ede9086",
+    "normal-native-close-guard.desktop.png": "7af65bf8239b536add82985c0b47bffe3e501aa6f588a0f742b5841dddb97cea",
+    "normal-native-close-guard.dom.json": "1dade0f368d2ccb6f42cffd904ff9248da7b941ed3871d1635d67bf9a867f45d",
+    "normal-native-close-guard.webview.png": "532b08f33fb857f4cd9019694d9d203124790e4d2dd927171981d3cfcac4828d",
+    "normal-play.desktop.png": "4de6dd1c854c10483e033a1e53eeb1a7e52626d6af6082bc4376c3be56a02162",
+    "normal-play.dom.json": "9df3de21f0b4844f22620fa6a4590d9238b2fbeecdf5b3405f430407802756b5",
+    "normal-play.webview.png": "a536ec0f332f767cb50e69ee67bf07ba15529ef56abff60fd0dc0b8ff4347851",
+    "normal-replacement-complete.desktop.png": "b47a4c4f71192002ca600ea97b6651f18fa8b8f4d84a0e57c822122e0f7f6c99",
+    "normal-replacement-complete.dom.json": "31943930ab8be91d300c3da385fc3e4a668304e3b2a4d1c873e53fb8a9f00c84",
+    "normal-replacement-complete.webview.png": "ffeeb2a20c7ee9c8751ac7f80cc2d427b08526f87e9016ad3b19cdc02e005a43",
+    "verification-capacity/linux-bound.json": "39a40a0b0122e4f2bb897ccc9983444c1aae299e61fecda95e625f80df3f8a6d",
+    "verification-capacity/openbox.log": "6f748c3cd02a858c087697c3afac639205c62b7b206558bd40d1bcbd98165a5c",
+    "verification-capacity/picker-01-save-after.png": "5d6f1c0fa967068679bd66966ab1081d49bc8fd8d423edaf68bd07b1df03fde6",
+    "verification-capacity/picker-01-save-entered-path.png": "add6c9b837906af33830c815e8454e762df4a1dec4cb5c0ee3020a62133579e6",
+    "verification-capacity/picker-01-save-native.png": "67b28687d368875f651c73b65455ff2ced7b72fd4eeb9a1dcfa7634f7e8b2c2f",
+    "verification-capacity-capacity-pause.desktop.png": "1012089cfe27bf7912277c161dd58696a4fd8e0d053aef9401cbfaa9a1cf59df",
+    "verification-capacity-capacity-pause.dom.json": "da86a95cfa956fd4570c092e732991d40e8a4e4bee02e507cecf56e6dae5806a",
+    "verification-capacity-capacity-pause.webview.png": "f329ac065f62b6e8d7785922cc81545b89e276b7a7e8ef071820dce04cf230f4",
+    "verification-capacity-driver.log": "127be0078a3090eb7609eb90fcb112db2852e84eb0ce24997cf6ed3b979849e3",
+    "verification-capacity-result.desktop.png": "a878f4b31d01902b95e03484b85afd70af9f821e24cf86a297a7acc0fad49da3",
+    "verification-capacity-result.dom.json": "ffe9007c530fb5f49a13753e0cac3611adf5e7231bcd37814766cfdbe3353c4a",
+    "verification-capacity-result.webview.png": "cd9fe64c3e18af7cc354d024e71c609acf89593d2da23b0ae63c12ca4c27dc54",
+    "verification-claim/linux-bound.json": "f252497f120242d84add62916f378306e4c8707e89cc21def07808e6808031e3",
+    "verification-claim/openbox.log": "6f748c3cd02a858c087697c3afac639205c62b7b206558bd40d1bcbd98165a5c",
+    "verification-claim-driver.log": "c04aced5513f4fcfc8f47d6ce446f6fa6e891584d2d3714baa1273f19e274e9a",
+    "verification-claim-failure.desktop.png": "ed663eef51dec93c474d43da15d8957b318c6a8aefc2cb70979987f19acd9672",
+    "verification-claim-result.desktop.png": "4ff24b65dec37b4209e69b4e39b143186f48881f727064392748c4bd7f39fd2f",
+    "verification-claim-result.dom.json": "aa26467db142518070114c32e275bef98928a16d954c1a5d5049dcb17631eeb4",
+    "verification-claim-result.webview.png": "4320fba80272567bc624c9d91be3644b5f93e735bd4c266fe33a56c8ed64721c",
+    "verification-promotion/linux-bound.json": "a2de02d82116396663804a8ee4d983180b2335b08db206a4671734cf6727ff49",
+    "verification-promotion/openbox.log": "6f748c3cd02a858c087697c3afac639205c62b7b206558bd40d1bcbd98165a5c",
+    "verification-promotion-driver.log": "5e536cdc9add76c1d37d89a4a38a71804f9b270a149145ae0c42a545c3dabd94",
+    "verification-promotion-promotion.desktop.png": "d249de88e67d8f2e3a43cf7c5066980b6ecc80b11cac4d97e0a548d8473bb663",
+    "verification-promotion-promotion.dom.json": "b6ef8ffad285cf8abfe001f404eb8e5c702927217fae3ac4d939f0e13f23d228",
+    "verification-promotion-promotion.webview.png": "e4c5e58f6123ef3fe4403cc361f1c96ee97c4c98a21068a4c1f61a2d989f7bbf",
+    "verification-promotion-result.desktop.png": "dc5bb23981cb9ab7bea58aca142cc480724bf72263fdf26c1648e76874f2c79d",
+    "verification-promotion-result.dom.json": "7b20b31a20bfc4050e3dc8e0384d47245b12fc15cecfc22cb3ffbd7d57254fdc",
+    "verification-promotion-result.webview.png": "78182a057d7ce4d2ba3bc3ff66a91b0786b7d9d9d3b127d5678783e08e67edb0",
+    "verification-standard/linux-bound.json": "71fe51aa8867346dbd0261c657b45cb557092dbfc06d133fa9caaf4a73bb9458",
+    "verification-standard/openbox.log": "6f748c3cd02a858c087697c3afac639205c62b7b206558bd40d1bcbd98165a5c",
+    "verification-standard-driver.log": "f86d27cad9f07ee36041ce3a4c2c3b339200ca608d08ba0466a13685112297bf",
+    "verification-standard-engine-failure.desktop.png": "61f6b9434f228e18fe5ce692bda2b18fcbf0b3209edf6519d5fdcfea26845546",
+    "verification-standard-engine-failure.dom.json": "d3b2d1978ea1e9057e38dc165baa4b47d10d6867c517237095a980331b5d2370",
+    "verification-standard-engine-failure.webview.png": "fa7cd79cb0331a6d5534138070d46e1823ffd97cd7281a7e13c082b019455f66",
+    "verification-standard-result.desktop.png": "a699b532c2eefc390ad5700585fa18c7960255af3ab99a4f96c215916ce69adb",
+    "verification-standard-result.dom.json": "78d6ab67bd6a24d91cfbb6090ec95089b5adf86d953b1c8a39edb8842bbaac10",
+    "verification-standard-result.webview.png": "c3c31008ad498ed069dc39b3fcdce8ad6e8809fd40f0d22f0873c4ed6fb9b805",
+    "verification-synthetic/openbox.log": "6f748c3cd02a858c087697c3afac639205c62b7b206558bd40d1bcbd98165a5c",
+    "verification-synthetic-driver.log": "e3b7afa43df03f7f50a9338f2760adfbd3e2690901f8d799c8cbd39e00e90a0d",
+    "verification-synthetic-failure.desktop.png": "ed663eef51dec93c474d43da15d8957b318c6a8aefc2cb70979987f19acd9672"
+  }
+}

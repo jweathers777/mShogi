@@ -1,0 +1,67 @@
+{
+  "source": "d2883dfea338e0048d31e138b4c5ae49cc6cd4a8",
+  "run": "https://github.com/jweathers777/mShogi/actions/runs/40200520366",
+  "job": 121190526878,
+  "platform": "ubuntu-24.04",
+  "observations": {
+    "package_root": "package-extracted",
+    "engine": "usr/bin/mshogi",
+    "sha256": "ff32ad23769b4558d0d5ebd0b89c9641b34cc5f56ae87f3d216b476a4b51be96",
+    "host_sha256": "2020a1586ef9b17fe35ed856cd52067e3be981ea1cf115ff2c81778100240bab",
+    "version": "mshogi 0.1.0",
+    "uci_observations": [
+      "id name mShogi 0.1.0",
+      "id author John Weathers",
+      "option name ClaimPolicy type combo default explicit var explicit var auto",
+      "uciok",
+      "readyok",
+      "info depth 1 nodes 21 time 4 score cp 0 pv a2a3",
+      "bestmove a2a3"
+    ],
+    "internal_response": {
+      "context": {
+        "protocol": 1,
+        "request_id": 1,
+        "session_version": 1,
+        "process_generation": 1,
+        "game": {
+          "schema_version": 1,
+          "rules_profile": "mshogi.chess.match.v1",
+          "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+          "history_origin": "standard_start",
+          "claim_policy": "explicit_only",
+          "events": []
+        },
+        "limits": {
+          "depth": 1,
+          "nodes": 1000
+        }
+      },
+      "result": {
+        "kind": "move",
+        "action": "a2a3",
+        "telemetry": {
+          "score": 0,
+          "completed_depth": 1,
+          "nodes": 21,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "a2a3"
+            }
+          ],
+          "status": "complete"
+        }
+      }
+    },
+    "files": [
+      "usr/bin/mshogi",
+      "usr/bin/mshogi-desktop",
+      "usr/share/applications/mShogi.desktop",
+      "usr/share/icons/hicolor/128x128/apps/mshogi-desktop.png",
+      "usr/share/icons/hicolor/256x256@2/apps/mshogi-desktop.png",
+      "usr/share/icons/hicolor/32x32/apps/mshogi-desktop.png"
+    ],
+    "scope": "Package inventory and real bundled-engine UCI and structured searches. Installed UI interaction is MSH-38."
+  }
+}

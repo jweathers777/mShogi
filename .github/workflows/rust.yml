@@ -38,6 +38,10 @@ jobs:
         run: cargo clippy --workspace --all-targets --locked -- -D warnings
       - name: Test
         run: cargo test --workspace --locked
+      - name: Verify native desktop snapshot fixtures
+        run: |
+          cargo run --locked -p mshogi-desktop-session --example write_frontend_fixtures -- desktop/src/__fixtures__
+          git diff --exit-code -- desktop/src/__fixtures__
       - name: Build
         run: cargo build --workspace --locked
       - name: Console smoke

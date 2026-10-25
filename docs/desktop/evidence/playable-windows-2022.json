@@ -1,0 +1,64 @@
+{
+  "source": "d2883dfea338e0048d31e138b4c5ae49cc6cd4a8",
+  "run": "https://github.com/jweathers777/mShogi/actions/runs/40200520366",
+  "job": 121190526726,
+  "platform": "windows-2022",
+  "observations": {
+    "package_root": "D:\\a\\_temp\\mshogi-package-smoke",
+    "engine": "mshogi.exe",
+    "sha256": "30d762b57a3bfb649e395975416a3bd633df02ec2b8398ab32e9025fd59fea86",
+    "host_sha256": "331ebaccf883af43b264826bab5a752ed342b3a9c6c4da254004b138f7e53e19",
+    "version": "mshogi 0.1.0",
+    "uci_observations": [
+      "id name mShogi 0.1.0",
+      "id author John Weathers",
+      "option name ClaimPolicy type combo default explicit var explicit var auto",
+      "uciok",
+      "readyok",
+      "info depth 1 nodes 21 time 10 score cp 0 pv a2a3",
+      "bestmove a2a3"
+    ],
+    "internal_response": {
+      "context": {
+        "protocol": 1,
+        "request_id": 1,
+        "session_version": 1,
+        "process_generation": 1,
+        "game": {
+          "schema_version": 1,
+          "rules_profile": "mshogi.chess.match.v1",
+          "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+          "history_origin": "standard_start",
+          "claim_policy": "explicit_only",
+          "events": []
+        },
+        "limits": {
+          "depth": 1,
+          "nodes": 1000
+        }
+      },
+      "result": {
+        "kind": "move",
+        "action": "a2a3",
+        "telemetry": {
+          "score": 0,
+          "completed_depth": 1,
+          "nodes": 21,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "a2a3"
+            }
+          ],
+          "status": "complete"
+        }
+      }
+    },
+    "files": [
+      "mshogi-desktop.exe",
+      "mshogi.exe",
+      "uninstall.exe"
+    ],
+    "scope": "Package inventory and real bundled-engine UCI and structured searches. Installed UI interaction is MSH-38."
+  }
+}

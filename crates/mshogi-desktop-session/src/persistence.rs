@@ -1327,6 +1327,19 @@ mod tests {
             thread::sleep(std::time::Duration::from_millis(1));
         }
     }
+    fn settled(controller: &mut DesktopController, command: DesktopCommand) -> Snapshot {
+        let (mut snapshot, receipt) = controller.command_with_receipt(command).unwrap();
+        let deadline = Instant::now() + std::time::Duration::from_secs(5);
+        loop {
+            if let Some(result) = receipt.completion() {
+                result.unwrap();
+                return snapshot;
+            }
+            assert!(Instant::now() < deadline);
+            thread::sleep(std::time::Duration::from_millis(1));
+            snapshot = controller.snapshot();
+        }
+    }
     fn archive(session: &DesktopSession) -> Archive {
         Archive {
             schema_version: 1,
@@ -1364,21 +1377,21 @@ mod tests {
                     .into_iter()
                     .find(|claim| claim.intended.is_some())
                     .unwrap();
-                source
-                    .command(DesktopCommand::Claim {
-                        version: source.session.version,
+                let version = source.session.version;
+                settled(
+                    &mut source,
+                    DesktopCommand::Claim {
+                        version,
                         claim: choice,
-                    })
-                    .unwrap();
+                    },
+                );
             } else {
-                source
-                    .command(DesktopCommand::Resign {
-                        version: source.session.version,
-                    })
-                    .unwrap();
+                let version = source.session.version;
+                settled(&mut source, DesktopCommand::Resign { version });
             }
             let core_record = source.session.game.record().to_json();
             let conclusion = source.session.game.conclusion();
+            assert!(conclusion.is_some());
             let saved_version = source.session.version;
             let id = source.queue_save(path.clone()).unwrap();
             assert_eq!(wait(&mut source, id).io.phase, IoPhase::Complete);
@@ -1577,11 +1590,12 @@ mod tests {
         let id = restored.queue_open(path, token).unwrap();
         assert_eq!(wait(&mut restored, id).io.phase, IoPhase::Complete);
         assert!(restored.at_ns() >= 100_000_000_000);
-        restored
-            .command(DesktopCommand::Resume {
-                version: restored.session.version,
-            })
-            .unwrap();
+        let version = restored.session.version;
+        settled(&mut restored, DesktopCommand::Resume { version });
+        assert!(matches!(
+            restored.session.controls.last().unwrap().command,
+            Some(DesktopCommand::Resume { .. })
+        ));
         assert!(restored.session.controls.last().unwrap().at_ns >= 100_000_000_000);
         assert!(preflight(&archive(&restored.session)).is_ok());
         fs::remove_dir_all(directory).unwrap();
@@ -1674,10 +1688,13 @@ mod tests {
                 .unwrap();
         let mut controller = controller();
         controller.session = DesktopSession::from_record(&game.record(), Color::White).unwrap();
+        // Force a positive controller timestamp so mixing a hardcoded zero
+        // with this real clock would fail deterministically.
+        controller.clock_floor = 100_000_000_000;
         let claim = controller.session.snapshot().claims[0];
-        controller
-            .command(DesktopCommand::Claim { version: 1, claim })
-            .unwrap();
+        let concluded = settled(&mut controller, DesktopCommand::Claim { version: 1, claim });
+        assert!(concluded.conclusion.is_some());
+        assert_eq!(controller.session.game.record().event_count(), 2);
         let before = controller.session.game.record().to_json();
         let inspected = controller
             .command(DesktopCommand::Inspect {
@@ -1696,7 +1713,7 @@ mod tests {
                         nodes: 1000,
                     },
                 },
-                0,
+                controller.at_ns(),
             )
             .unwrap();
         let request = controller.session.analysis_request().unwrap();
@@ -1713,7 +1730,7 @@ mod tests {
                 DesktopCommand::ReturnLive {
                     version: controller.session.version,
                 },
-                0,
+                controller.at_ns(),
             )
             .unwrap();
         assert!(controller.session.analysis_pending.is_none());

@@ -1,11 +1,11 @@
 ---
 id: MSH-36
 title: Exercise a labeled synthetic large-board and compound-action fixture
-status: In Progress
+status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-25T12:48:00Z'
-updated_date: '2026-10-25T18:37:00Z'
+updated_date: '2026-10-25T18:44:00Z'
 labels: []
 milestone: m-3
 dependencies:
@@ -48,4 +48,6 @@ Generalize the existing board presentation and prefix selector using native-supp
 Owner @codex, codex/m3-desktop .claude/worktrees/next-task; starting after MSH-61 Done at integrateda52c2e8. Required actual shared Board/selection components, not a mock duplicate. Synthetic fixture is invented development infrastructure, never another real game or chess archive. Preserve all existing AC/mapping; no M4–M6 implementation.
 
 Implemented sharedgeometry/orderedprefixselector plus exact native completechoices; sharedM1inventedhelper, separate featurecontroller/profile/ephemeralrecord, gatedhost and separate frontendoutput. Source review capacity_review clean after Escape-on-route-control focus gap fixed. Independent10core/4native/4host/14frontend focusedchecks pass; rootfullfrontend64pass. Normalbuild forcesflagoff/checks moduleinventory even inheritedflagtrue; verificationassets separate. ActualpackagedGUI still pending, so AC not yet checked.
+
+Actual packaged macOS4e997f0472e09c98f98d211236e2706c453f4f08 verified shared16x16 pointer/key/orientation, terminalprefixNoaction, EscapefromCompletewithfocusrestore, distinct136>153>136capture vs136>135>136noncapture, explicitshort136>153, monotonicReset and nativeClose/Cancelpreservingrecord. Screenshots/exactnormal+QAhashes docs/desktop/evidence/m3-completion/synthetic-local-macos.json; normalpackagehost/frontendexclusion+actualengineprotocol pass. InitialLinuxCI40222121767 found test-onlymixedclock/unsettledClaim assumptions; samecontrollerclock+receiptsettlingfix independentlyreviewed75repeatpasses, no productchange. AwaitreplacementnativeCI/integrationbeforeDone.
 <!-- SECTION:NOTES:END -->

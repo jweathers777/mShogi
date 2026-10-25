@@ -100,3 +100,60 @@ passed all three systems at the exact product source; the later revision changes
 only a test and evidence. These package checks establish build/inventory and
 actual bundled-engine protocols, separately from local macOS GUI interaction.
 They do not substitute for MSH-38's three-platform GUI requirement.
+
+## MSH-36: shared board and synthetic routes
+
+Source `4e997f0472e09c98f98d211236e2706c453f4f08` uses the actual shared SVG
+board/selection component for both chess and an invented 16-by-16 strider
+fixture. The fixture's native rules source is shared with the unchanged M1
+action-boundary demonstrations. Its profile and ephemeral record are separate
+from chess. Rust supplies complete choices and accepts atomic actions; the
+frontend retains only an uncommitted prefix. A terminal prefix which also has
+continuations requires explicit completion. The large board scrolls at readable
+square sizes; keyboard focus brings off-screen squares into view.
+
+Actual macOS packaged interaction used the separately named verification app:
+
+- Initial white orientation displayed full two-digit rank labels, 256 accessible
+  squares and clear invented-fixture labeling. Flip and keyboard Tab/arrows
+  exposed the same board in black orientation.
+- `i9 → j10` remained uncommitted at native version 1, zero accepted actions.
+  Tab reached **Complete action here**; Escape cancelled and restored i9 focus.
+- Keyboard completed `i9 → j10 → i9`: native version 2, one accepted action,
+  j10 stone removed, strider returned to i9, record `136>153>136`.
+- Reset advanced the native version and restored zero accepted actions. Pointer
+  selection of `i9 → h9 → i9` kept the j10 stone and recorded `136>135>136`.
+  The two actions share origin/end but preserve different native effects.
+- Explicit completion of the one-step prefix recorded `136>153` and left the
+  strider on j10. Reset never reused an earlier runtime version.
+- Native Cmd-Q opened the fixture Close/Cancel guard. Escape preserved its
+  accepted record; a later Close exited through the guarded native lifecycle.
+
+Exact normal/verification package and engine hashes, environment and observations
+are in [synthetic-local-macos.json](evidence/m3-completion/synthetic-local-macos.json).
+The normal package passed the external inventory/host-marker and actual bundled
+engine verifier. Normal production frontend generation forces verification off,
+including when its environment flag is inherited; emitted modules/markers were
+checked. Explicit verification output is separate in `dist-verification`.
+
+![Readable labeled fixture](evidence/m3-completion/synthetic-initial-macos.png)
+![Uncommitted prefix and zero native acceptance](evidence/m3-completion/synthetic-prefix-macos.png)
+![Capture-and-return native record](evidence/m3-completion/synthetic-capture-record-macos.png)
+![Alternate same-endpoint native record](evidence/m3-completion/synthetic-alternate-record-macos.png)
+
+Root frontend suite: **64 passed**. Independent `capacity_review` ran 10 core
+action-boundary, 4 synthetic native, 4 verification-host and 14 focused frontend
+tests. Strict native Clippy, normal native checks, both frontend builds and
+fixture regeneration/exclusion checks passed. Review found one keyboard gap:
+Escape from a partial-route control did not cancel; it was fixed and tested.
+No remaining source findings. These checks and actual packaged GUI evidence
+remain distinct. CI status and any corrections are recorded before finalization.
+
+Initial MSH-36 Linux CI found a test clock/setup race in historical analysis:
+the test could use timestamp zero after a real accepted controller command, or
+inspect before its future claim had been accepted. The test-only correction
+waits for exact receipts, proves the future claim/conclusion exists, and uses
+the same controller clock for subsequent operations. Two analogous roundtrip
+and restoration assertions now also wait for admission. Production timestamp
+validation is unchanged. Independent exact tests plus 75 focused repetitions
+passed; no product/package rebuild is needed for this test-only correction.

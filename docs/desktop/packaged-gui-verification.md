@@ -114,3 +114,28 @@ left React's previous node-budget state, so typing appended to it and the
 frontend correctly rejected the invalid budget. The [failed attempt](evidence/m3-platforms/windows-attempt-1/attempt.json)
 is preserved. The correction uses real Ctrl-A/Backspace/typing and checks the
 observed field value; it does not set DOM values or bypass validation.
+
+The second Linux attempt at `41866a3c5c30efd88d72584140510c8d1806e902`
+([run 40229968153](https://github.com/jweathers777/mShogi/actions/runs/40229968153))
+confirmed a readable native desktop, real bundled-engine play, active analysis
+cancellation and bounded replacement. Its native Save wrote the complete
+archive, but the verifier left GTK's default extension after the supplied name,
+producing `normal-complete.mshogi.mshogi`. The exact-path check correctly failed;
+the [partial attempt](evidence/m3-platforms/linux-attempt-2/attempt.json) remains
+failed. The adapter now selects the entire native path field, captures it before
+acceptance and requires the exact requested file. This correction still requires
+an actual rerun; it does not accept the doubled-extension file as the target.
+
+The second Windows attempt in that run also passed real play, active analysis
+cancellation and bounded replacement, then saved the picker's default
+`game.mshogi` instead of the requested path. Its [failed evidence](evidence/m3-platforms/windows-attempt-2/attempt.json)
+also exposed a genuine product focus defect: a newly spawned bundled engine
+created a visible Windows console during analysis. The supervised internal
+engine launch now uses Windows `CREATE_NO_WINDOW` with its existing pipes;
+standalone console/UCI invocation is unchanged. This uses Rust's
+[Windows process flags](https://doc.rust-lang.org/std/os/windows/process/trait.CommandExt.html#tymethod.creation_flags)
+and Microsoft's [documented console-free launch flag](https://learn.microsoft.com/en-us/windows/win32/procthread/process-creation-flags).
+Windows native verification must reject a visible console belonging to the
+exact bundled engine and validate foreground focus at capture time. The picker
+adapter also needs exact-PID ownerless-modal handling and observed real filename
+input. These findings require a corrected packaged application rerun.

@@ -267,11 +267,19 @@ class Native:
             before = self.output / f"{stem}-native.png"
             self.screenshot(before)
             selected = None if path is None else str(Path(path).resolve())
+            entered = None
+            filesystem = None
             if selected is None:
                 self._key("Escape")
             else:
                 self._key("ctrl+l")
+                # GTK's Save name entry can keep the extension outside its
+                # initial basename selection. Replace the entire field so a
+                # supplied .mshogi path does not acquire a second extension.
+                self._key("ctrl+a")
                 self._run(["xdotool", "type", "--clearmodifiers", "--delay", "1", "--", selected])
+                entered = self.output / f"{stem}-entered-path.png"
+                self.screenshot(entered)
                 self._key("Return")
                 if kind != "open":
                     # Some GTK save dialogs first transfer the location into
@@ -289,11 +297,25 @@ class Native:
                        f"Native {kind} picker did not close after {'Cancel' if selected is None else 'path selection'}")
             if not self.alive():
                 raise RuntimeError("Application exited while operating its native picker")
+            if selected is not None:
+                selected_file = Path(selected)
+                # The host writes asynchronously after GTK accepts Save. The
+                # exact requested pathname must exist; an alternate filename
+                # or appended extension never counts as a successful choice.
+                if kind != "open":
+                    self._wait(selected_file.is_file,
+                               f"Native Save did not create the exact requested path: {selected}",
+                               timeout=5)
+                filesystem = {"path": selected, "is_file": selected_file.is_file()}
+                if filesystem["is_file"]:
+                    filesystem["bytes"] = selected_file.stat().st_size
             after = self.output / f"{stem}-after.png"
             self.screenshot(after)
             return self._event("native_picker", picker_kind=kind, window=picker,
                                selected_path=selected, cancelled=selected is None,
                                before_screenshot=str(before), after_screenshot=str(after),
+                               entered_path_screenshot=None if entered is None else str(entered),
+                               filesystem_observation=filesystem,
                                picker_closed=True, method="Focused GTK picker through XTEST keyboard input")
         except Exception:
             self._diagnostics(f"{stem}-failed")

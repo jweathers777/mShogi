@@ -1,0 +1,334 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-10-25T20:04:05.136950+00:00",
+  "status": "failed",
+  "source_revision": "9b7a2a6b29c30b8d417d75cb4393dd6ba43f6ad0",
+  "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/40228382037",
+  "environment": {
+    "platform": "Windows-2022Server-10.0.20348-SP0",
+    "python": "3.12.10",
+    "runner_image": "20261022.344.1",
+    "runner_os": "Windows"
+  },
+  "method": "Actual installed/packaged GUI via W3C pointer/keyboard and native OS dialogs/close, external to distributables. Read-only DOM inspection; no direct IPC or injected input events.",
+  "driver_identity": {
+    "path": "C:\\Users\\runneradmin\\.cargo\\bin\\tauri-driver.EXE",
+    "version": ""
+  },
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "failed",
+      "fixture": null,
+      "host": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+      "host_sha256": "b38b0a472e8ecddcd2e817c1bdffbf5a46341388f865b8d1f3c794519a4accb7",
+      "engine": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi.exe",
+      "engine_sha256": "c2440cc8532d299384592e8ebb2a4b21581bf889b60fe42b0015d31770b2ba06",
+      "events": [
+        {
+          "at_utc": "2026-10-25T20:04:12.443556+00:00",
+          "operation": "Launch actual packaged application",
+          "observation": {
+            "event": "attach",
+            "utc": "2026-10-25T20:04:11.923368+00:00",
+            "elapsed_ms": 6719,
+            "hwnd": 262168,
+            "pid": 5332,
+            "title": "mShogi",
+            "class": "Tauri Window",
+            "owner": 0,
+            "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+            "rectangle": [
+              0,
+              0,
+              1044,
+              788
+            ],
+            "host": "d:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+            "engine": "d:\\a\\_temp\\mshogi-package-smoke\\mshogi.exe",
+            "webview2_processes": [
+              {
+                "pid": 5732,
+                "parent_pid": 5332,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 6464,
+                "parent_pid": 5732,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 5212,
+                "parent_pid": 5732,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 1896,
+                "parent_pid": 5732,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 6536,
+                "parent_pid": 5732,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              },
+              {
+                "pid": 3616,
+                "parent_pid": 5732,
+                "name": "msedgewebview2.exe",
+                "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+                "version": "131.0.2903.86"
+              }
+            ]
+          }
+        },
+        {
+          "at_utc": "2026-10-25T20:04:13.431726+00:00",
+          "operation": "Play e2e4 against actual bundled engine",
+          "observation": "Move returned: a7 \u2192 a5"
+        }
+      ],
+      "started_at_utc": "2026-10-25T20:04:05.199455+00:00",
+      "native_environment": {
+        "event": "environment",
+        "utc": "2026-10-25T20:04:05.230699+00:00",
+        "elapsed_ms": 16,
+        "os": "Windows-2022Server-10.0.20348-SP0",
+        "architecture": "AMD64",
+        "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+        "ui_language_id": 1033,
+        "session_id": 2,
+        "window_station_visible": true,
+        "input_desktop": "Default",
+        "input_desktop_accessible": true,
+        "tools": {
+          "pywinauto": "0.6.9",
+          "pywin32": "312",
+          "comtypes": "1.4.17",
+          "Pillow": "11.3.0"
+        },
+        "webview2_runtime_registry": [
+          {
+            "key": "HKLM\\SOFTWARE\\WOW6432Node\\Microsoft\\EdgeUpdate\\Clients\\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}",
+            "version": "131.0.2903.86"
+          }
+        ]
+      },
+      "driver_command": [
+        "tauri-driver",
+        "--port",
+        "4444",
+        "--native-port",
+        "4445",
+        "--native-driver",
+        "D:\\a\\_temp\\mshogi-webview-driver\\msedgedriver.exe"
+      ],
+      "capabilities": {
+        "acceptInsecureCerts": false,
+        "browserName": "webview2",
+        "browserVersion": "131.0.2903.86",
+        "fedcm:accounts": true,
+        "ms:edgeOptions": {
+          "debuggerAddress": "localhost:59193"
+        },
+        "msedge": {
+          "msedgedriverVersion": "131.0.2903.86 (cf5bf303997cad93d7a0bede234d3c3dc01cc63d)",
+          "userDataDir": ""
+        },
+        "networkConnectionEnabled": false,
+        "pageLoadStrategy": "normal",
+        "platformName": "windows",
+        "proxy": {},
+        "setWindowRect": true,
+        "strictFileInteractability": false,
+        "timeouts": {
+          "implicit": 0,
+          "pageLoad": 300000,
+          "script": 30000
+        },
+        "unhandledPromptBehavior": "dismiss and notify",
+        "webauthn:extension:credBlob": true,
+        "webauthn:extension:largeBlob": true,
+        "webauthn:extension:minPinLength": true,
+        "webauthn:extension:prf": true,
+        "webauthn:virtualAuthenticators": true
+      },
+      "native_window": {
+        "event": "attach",
+        "utc": "2026-10-25T20:04:11.923368+00:00",
+        "elapsed_ms": 6719,
+        "hwnd": 262168,
+        "pid": 5332,
+        "title": "mShogi",
+        "class": "Tauri Window",
+        "owner": 0,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "rectangle": [
+          0,
+          0,
+          1044,
+          788
+        ],
+        "host": "d:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "engine": "d:\\a\\_temp\\mshogi-package-smoke\\mshogi.exe",
+        "webview2_processes": [
+          {
+            "pid": 5732,
+            "parent_pid": 5332,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 6464,
+            "parent_pid": 5732,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 5212,
+            "parent_pid": 5732,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 1896,
+            "parent_pid": 5732,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 6536,
+            "parent_pid": 5732,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          },
+          {
+            "pid": 3616,
+            "parent_pid": 5732,
+            "name": "msedgewebview2.exe",
+            "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+            "version": "131.0.2903.86"
+          }
+        ]
+      },
+      "error": "Timed out: real active analysis; last observation: False"
+    }
+  ],
+  "error": "Timed out: real active analysis; last observation: False",
+  "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 458, in main\n    journey.normal() if fixture is None else journey.fixture(fixture)\n    ^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 272, in normal\n    wait(lambda: w.text(\".analysis-card .engine-phase\") == \"Analyzing\", \"real active analysis\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 45, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: real active analysis; last observation: False\n",
+  "native_events": [
+    {
+      "event": "environment",
+      "utc": "2026-10-25T20:04:05.230699+00:00",
+      "elapsed_ms": 16,
+      "os": "Windows-2022Server-10.0.20348-SP0",
+      "architecture": "AMD64",
+      "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+      "ui_language_id": 1033,
+      "session_id": 2,
+      "window_station_visible": true,
+      "input_desktop": "Default",
+      "input_desktop_accessible": true,
+      "tools": {
+        "pywinauto": "0.6.9",
+        "pywin32": "312",
+        "comtypes": "1.4.17",
+        "Pillow": "11.3.0"
+      },
+      "webview2_runtime_registry": [
+        {
+          "key": "HKLM\\SOFTWARE\\WOW6432Node\\Microsoft\\EdgeUpdate\\Clients\\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}",
+          "version": "131.0.2903.86"
+        }
+      ]
+    },
+    {
+      "event": "attach",
+      "utc": "2026-10-25T20:04:11.923368+00:00",
+      "elapsed_ms": 6719,
+      "hwnd": 262168,
+      "pid": 5332,
+      "title": "mShogi",
+      "class": "Tauri Window",
+      "owner": 0,
+      "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+      "rectangle": [
+        0,
+        0,
+        1044,
+        788
+      ],
+      "host": "d:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+      "engine": "d:\\a\\_temp\\mshogi-package-smoke\\mshogi.exe",
+      "webview2_processes": [
+        {
+          "pid": 5732,
+          "parent_pid": 5332,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 6464,
+          "parent_pid": 5732,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 5212,
+          "parent_pid": 5732,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 1896,
+          "parent_pid": 5732,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 6536,
+          "parent_pid": 5732,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        },
+        {
+          "pid": 3616,
+          "parent_pid": 5732,
+          "name": "msedgewebview2.exe",
+          "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\131.0.2903.86\\msedgewebview2.exe",
+          "version": "131.0.2903.86"
+        }
+      ]
+    }
+  ],
+  "finished_at_utc": "2026-10-25T20:04:38.932156+00:00",
+  "files": {
+    "normal-driver.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "normal-failure.desktop.png": "d02ef5598b7bf6b60575c80fac06441a92b6d275a39141d424c1a447f591f374",
+    "normal-failure.dom.json": "87704cba6a87961ed32ad16efd28640f6d760c4e3faf81c68d5e976587e50a1a",
+    "normal-failure.webview.png": "ea12c08db259f8bab789fce85c8cd0e4bb80c113c5d996081d5c7a8ef1f36089",
+    "normal-play.desktop.png": "9b68e1cd983a4557cc98c37868f2d2321791e0889a551e3a8c1b58e4f24c5944",
+    "normal-play.dom.json": "41f618839e425f16ce9aa77a555e903c40aa5aaea68fec6aea592e934465c286",
+    "normal-play.webview.png": "745d4a2a14040b345c8c0b482570be2d895d2c010e865c7badc0a74771534c92"
+  }
+}

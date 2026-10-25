@@ -1,0 +1,13 @@
+{
+  "text": "\u265c\nmShogi\n\nCHESS \u00b7 DESKTOP PREVIEW\n\n Untimed\nM2 rules profile\n\nLIVE GAME\n\nWhite to move\n\nYou play White against mShogi\n\n\u2195\nFlip board\n\u265c\n8\n\u265e\n\u265d\n\u265b\n\u265a\n\u265d\n\u265e\n\u265c\n7\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n6\n\u265f\n5\n4\n\u265f\n3\n\u265f\n2\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265c\n1\na\n\u265e\nb\n\u265d\nc\n\u265b\nd\n\u265a\ne\n\u265d\nf\n\u265e\ng\n\u265c\nh\n\nSelect a piece, then a destination. Arrow keys move focus \u00b7 Enter or Space selects \u00b7 Escape cancels.\n\nYour turn\nLive position \u00b7 2 plies\nUntitled game\nUnsaved\nSave\nSave as\u2026\nOpen\u2026\nFile details\n\nPLAY\n\nYour color for a new game\nWhite\nBlack\nNew game\n\nSave the native game document to preserve context, events and observations.\n\nResign game\u2026\nPlay details\nAnalyze position\nRead-only analysis\nIdle\n\nStarting analysis pauses play. Results suggest or inspect; they never play a move, claim a draw or change the live game.\n\nSelected: Live game \u00b7 live position\n\nBounded move search\nSearch depth\nNode budget\nStart move analysis\nAdvanced: Full mating reachability\n\nFinal native observations only. Every request has work budgets and a 15-second process watchdog; these are not hard realtime guarantees.\n\nMove analysis requires a whole-number depth from 1 to 8 and a node budget from 0 to 5,000,000.\n\nGame history\nNative event timeline\n\nInspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.\n\nInitial known position\n0 plies\nMatch started\n0 plies\ne2e4\n1 plies\na7a5\n2 plies\nPlayed move identifiers\nRecorded search observations (1)\nOne native rules engine. Complete actions. Optional claims.\nSession details",
+  "focus": {
+    "label": null,
+    "tag": "BUTTON",
+    "text": "Start move analysis"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 729,
+    "width": 1028
+  }
+}

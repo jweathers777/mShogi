@@ -1,0 +1,24 @@
+{
+  "source_revision": "9b7a2a6b29c30b8d417d75cb4393dd6ba43f6ad0",
+  "run_url": "https://github.com/jweathers777/mShogi/actions/runs/40228382037",
+  "status": "failed",
+  "establishes": [
+    "Actual NSIS installation, interactive Default desktop and native host/window attachment.",
+    "Real e2e4 and bundled a7a5 reply in the installed normal application."
+  ],
+  "does_not_establish": [
+    "Analysis/cancellation, persistence/history, recovery, synthetic or native quit completion did not pass in this attempt.",
+    "The native screenshot is mostly occluded by an external WebView2 logging console; it does not establish readable native controls."
+  ],
+  "failure": "WebDriver clear did not replace a React-controlled node budget; actual field contained 1000005000000, so validation correctly rejected analysis. This was a harness input failure, not an engine speed or OS blocker.",
+  "proposed_correction": "Real Ctrl+A and Backspace followed by native WebDriver typing and a read-only value equality assertion. Requires rerun. Raise the exact bound native application/picker for desktop captures and suppress the external driver console.",
+  "files": {
+    "gui-report.json": "5c536d0b8762e7a5801e3d3b5236ed5e81ff0082a680eea20dc485e55107786c",
+    "normal-failure.webview.png": "ea12c08db259f8bab789fce85c8cd0e4bb80c113c5d996081d5c7a8ef1f36089",
+    "normal-play.webview.png": "745d4a2a14040b345c8c0b482570be2d895d2c010e865c7badc0a74771534c92",
+    "normal-failure.dom.json": "87704cba6a87961ed32ad16efd28640f6d760c4e3faf81c68d5e976587e50a1a",
+    "normal-driver.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "normal-play.desktop.png": "9b68e1cd983a4557cc98c37868f2d2321791e0889a551e3a8c1b58e4f24c5944",
+    "normal-failure.desktop.png": "d02ef5598b7bf6b60575c80fac06441a92b6d275a39141d424c1a447f591f374"
+  }
+}

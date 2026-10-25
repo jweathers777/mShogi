@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-10-25T20:02:08.273471+00:00",
+  "status": "failed",
+  "source_revision": "9b7a2a6b29c30b8d417d75cb4393dd6ba43f6ad0",
+  "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/40228382037",
+  "environment": {
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "runner_image": "20261023.334.3",
+    "runner_os": "Linux"
+  },
+  "method": "Actual installed/packaged GUI via W3C pointer/keyboard and native OS dialogs/close, external to distributables. Read-only DOM inspection; no direct IPC or injected input events.",
+  "driver_identity": {
+    "path": "/home/runner/.cargo/bin/tauri-driver",
+    "version": ""
+  },
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "failed",
+      "fixture": null,
+      "host": "/usr/bin/mshogi-desktop",
+      "host_sha256": "71aed3c5455dd3ca33379ad6b5bfdae06956135a4031029fb8bb1bffdada99ca",
+      "engine": "/usr/bin/mshogi",
+      "engine_sha256": "129a6af24ffaf5833d763caf7589c1c651b9628719f70defd8a8bd9f0ec11799",
+      "events": [
+        {
+          "at_utc": "2026-10-25T20:02:11.753469+00:00",
+          "operation": "Launch actual packaged application",
+          "observation": {
+            "process": {
+              "pid": 23248,
+              "parent_pid": 23246,
+              "start_ticks": "37203",
+              "state": "S",
+              "executable": "/usr/bin/mshogi-desktop",
+              "command": "/usr/bin/mshogi-desktop"
+            },
+            "window": {
+              "id": 2097155,
+              "pid": 23248,
+              "title": "mShogi",
+              "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+            },
+            "host": "/usr/bin/mshogi-desktop",
+            "engine": "/usr/bin/mshogi"
+          }
+        }
+      ],
+      "started_at_utc": "2026-10-25T20:02:08.284950+00:00",
+      "native_environment": {
+        "os_release": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+        "display": ":99",
+        "gdk_backend": "x11",
+        "lang": "C.UTF-8",
+        "desktop_geometry": {
+          "command": [
+            "xdotool",
+            "getdisplaygeometry"
+          ],
+          "exit_code": 0,
+          "stdout": "1440 1100",
+          "stderr": ""
+        },
+        "tools": {
+          "xdotool": {
+            "path": "/usr/bin/xdotool",
+            "sha256": "a21dba4297e197ef27035071f6a36061cc8604ac360df19792db99ad3fd9a5f5",
+            "version": {
+              "command": [
+                "xdotool",
+                "--version"
+              ],
+              "exit_code": 0,
+              "stdout": "xdotool version 3.20160805.1",
+              "stderr": ""
+            }
+          },
+          "scrot": {
+            "path": "/usr/bin/scrot",
+            "sha256": "a59a8566eaabb34d333a0362b4039dd8fe2c73846e2710821856527551d95785",
+            "version": {
+              "command": [
+                "scrot",
+                "--version"
+              ],
+              "exit_code": 0,
+              "stdout": "scrot version 1.10",
+              "stderr": ""
+            }
+          },
+          "openbox": {
+            "path": "/usr/bin/openbox",
+            "sha256": "941e69bf5479d77805bdeae7a6dee17142ff429b8db9e7d0c1b579e9c70a0b52",
+            "version": {
+              "command": [
+                "openbox",
+                "--version"
+              ],
+              "exit_code": 0,
+              "stdout": "Openbox 3.6.1\nCopyright (c) 2004   Mikael Magnusson\nCopyright (c) 2002   Dana Jansens\n\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it\nunder certain conditions. See the file COPYING for details.",
+              "stderr": ""
+            }
+          },
+          "WebKitWebDriver": {
+            "path": "/usr/bin/WebKitWebDriver",
+            "sha256": "488118541ba1dbeaca658073af84322900485b9435bc4fbb43eb1faf21db8b70"
+          }
+        },
+        "packages": {
+          "command": [
+            "dpkg-query",
+            "-W",
+            "-f=${binary:Package}=${Version}\n",
+            "webkit2gtk-driver",
+            "libwebkit2gtk-4.1-0",
+            "libgtk-3-0*",
+            "xdotool",
+            "xvfb",
+            "openbox",
+            "scrot"
+          ],
+          "exit_code": 0,
+          "stdout": "libgtk-3-0=\nlibgtk-3-0t64:amd64=3.24.41-4ubuntu1.3\nlibwebkit2gtk-4.1-0:amd64=2.52.6-0ubuntu0.24.04.1\nopenbox=3.6.1-12build5\nscrot=1.10-1build2\nwebkit2gtk-driver=2.52.6-0ubuntu0.24.04.1\nxdotool=1:3.20160805.1-5build1\nxvfb=2:21.1.12-1ubuntu1.9",
+          "stderr": ""
+        },
+        "native_observation": "X11 window title, geometry and owner PID; optional xprop properties. No accessibility-tree claim."
+      },
+      "driver_command": [
+        "tauri-driver",
+        "--port",
+        "4444",
+        "--native-port",
+        "4445"
+      ],
+      "capabilities": {
+        "browserName": "wry",
+        "browserVersion": "0.57.1",
+        "platformName": "linux",
+        "acceptInsecureCerts": false,
+        "strictFileInteractability": false,
+        "setWindowRect": true,
+        "unhandledPromptBehavior": "dismiss and notify",
+        "pageLoadStrategy": "normal",
+        "proxy": {},
+        "timeouts": {
+          "script": 30000,
+          "pageLoad": 300000,
+          "implicit": 0
+        }
+      },
+      "native_window": {
+        "process": {
+          "pid": 23248,
+          "parent_pid": 23246,
+          "start_ticks": "37203",
+          "state": "S",
+          "executable": "/usr/bin/mshogi-desktop",
+          "command": "/usr/bin/mshogi-desktop"
+        },
+        "window": {
+          "id": 2097155,
+          "pid": 23248,
+          "title": "mShogi",
+          "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+        },
+        "host": "/usr/bin/mshogi-desktop",
+        "engine": "/usr/bin/mshogi"
+      },
+      "error": "{\"value\":{\"error\":\"element not interactable\",\"message\":\"\",\"stacktrace\":\"\"}}"
+    }
+  ],
+  "error": "{\"value\":{\"error\":\"element not interactable\",\"message\":\"\",\"stacktrace\":\"\"}}",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 63, in request\n    with urllib.request.urlopen(request, timeout=45) as response:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 215, in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 521, in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 630, in http_response\n    response = self.parent.error(\n               ^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 559, in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 400: Bad Request\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 458, in main\n    journey.normal() if fixture is None else journey.fixture(fixture)\n    ^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 256, in normal\n    w.click(self.square(\"e2\")); w.click(self.square(\"e4\"))\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 80, in click\n    self.command(\"POST\", f\"/element/{self.find(selector)}/click\", {})\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 73, in command\n    return self.request(method, f\"/session/{self.session}{path}\", data)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 66, in request\n    raise RuntimeError(error.read().decode(errors=\"replace\")) from error\nRuntimeError: {\"value\":{\"error\":\"element not interactable\",\"message\":\"\",\"stacktrace\":\"\"}}\n",
+  "native_events": [
+    {
+      "at": "2026-10-25T20:02:08.622919+00:00",
+      "kind": "desktop_started",
+      "process_id": 23231,
+      "tool": "openbox"
+    },
+    {
+      "at": "2026-10-25T20:02:11.468566+00:00",
+      "kind": "attached",
+      "process": {
+        "pid": 23248,
+        "parent_pid": 23246,
+        "start_ticks": "37203",
+        "state": "S",
+        "executable": "/usr/bin/mshogi-desktop",
+        "command": "/usr/bin/mshogi-desktop"
+      },
+      "window": {
+        "id": 2097155,
+        "pid": 23248,
+        "title": "mShogi",
+        "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+      },
+      "host": "/usr/bin/mshogi-desktop",
+      "engine": "/usr/bin/mshogi"
+    },
+    {
+      "at": "2026-10-25T20:02:12.723486+00:00",
+      "kind": "desktop_cleanup",
+      "process_id": 23231,
+      "method": "Stop only the Openbox instance started by this adapter"
+    }
+  ],
+  "finished_at_utc": "2026-10-25T20:02:12.742379+00:00",
+  "files": {
+    "normal/linux-bound.json": "52dd3878c9a9c9f65fee5c0248f336ca63c6e924f3d986f248357b5e2c3b182c",
+    "normal/openbox.log": "6f748c3cd02a858c087697c3afac639205c62b7b206558bd40d1bcbd98165a5c",
+    "normal-driver.log": "f0ad18656b3c1a3990aea2c04a02af3c6a84ff3aea520726f2a919a1d7e8c262",
+    "normal-failure.desktop.png": "307c0992f3fed6f2ad6356e7e7e1825962f5602fe179bf2a84572b27bdfb5ddd",
+    "normal-failure.dom.json": "782d6e1557eea7f05cbd1d4221c967a72ccfa766fd0231fd393ab23b97537784",
+    "normal-failure.webview.png": "1bf25d065a3ba8a1c4e43c4e4d9e6718ae2526afca2f3a793394202ce9a94886"
+  }
+}

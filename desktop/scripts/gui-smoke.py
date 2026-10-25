@@ -77,6 +77,29 @@ class Webview:
         return value["element-6066-11e4-a52e-4f735466cecf"]
 
     def click(self, selector):
+        if selector.startswith(".square["):
+            # WebKit's element-click heuristic requires the SVG group itself
+            # in the hit-test tree, although only its painted children occur
+            # there. Observe its real geometry, then send actual pointer input.
+            target = self.read("""(() => {
+                const element = document.querySelector(SELECTOR);
+                if (!element || element.getAttribute('aria-disabled') === 'true') return null;
+                const rect = element.getBoundingClientRect();
+                const left = Math.max(0, rect.left), right = Math.min(innerWidth, rect.right);
+                const top = Math.max(0, rect.top), bottom = Math.min(innerHeight, rect.bottom);
+                const x = Math.floor((left + right) / 2), y = Math.floor((top + bottom) / 2);
+                const hit = document.elementFromPoint(x, y);
+                return {x, y, visible: right > left && bottom > top,
+                    hit: hit?.tagName, containsHit: hit !== null && element.contains(hit)};
+            })()""".replace("SELECTOR", json.dumps(selector)))
+            assert target and target["visible"] and target["containsHit"], (selector, target)
+            self.command("POST", "/actions", {"actions": [{"type": "pointer", "id": "mouse",
+                "parameters": {"pointerType": "mouse"}, "actions": [
+                    {"type": "pointerMove", "duration": 0, "origin": "viewport",
+                     "x": target["x"], "y": target["y"]},
+                    {"type": "pointerDown", "button": 0},
+                    {"type": "pointerUp", "button": 0}]}]})
+            return
         self.command("POST", f"/element/{self.find(selector)}/click", {})
 
     def button(self, label):
@@ -86,8 +109,19 @@ class Webview:
 
     def set(self, selector, value):
         element = self.find(selector)
-        self.command("POST", f"/element/{element}/clear", {})
+        self.command("POST", f"/element/{element}/click", {})
+        # Native Select-all/Backspace generates the real input events React's
+        # controlled number fields need; WebDriver clear alone can retain state.
+        self.command("POST", "/actions", {"actions": [{"type": "key", "id": "keyboard",
+            "actions": [{"type": "keyDown", "value": "\ue009"},
+                        {"type": "keyDown", "value": "a"},
+                        {"type": "keyUp", "value": "a"},
+                        {"type": "keyUp", "value": "\ue009"},
+                        {"type": "keyDown", "value": "\ue003"},
+                        {"type": "keyUp", "value": "\ue003"}]}]})
         self.command("POST", f"/element/{element}/value", {"text": str(value)})
+        observed = self.read(f"document.querySelector({json.dumps(selector)})?.value")
+        assert observed == str(value), (selector, value, observed)
 
     def key(self, key):
         self.command("POST", "/actions", {"actions": [{"type": "key", "id": "keyboard",
@@ -134,7 +168,8 @@ class Journey:
         prefix.with_suffix(".dom.json").write_text(json.dumps({
             "text": self.web.text(), "focus": self.web.read(
                 "({tag:document.activeElement?.tagName,label:document.activeElement?.getAttribute('aria-label'),text:document.activeElement?.textContent})"),
-            "dimensions": self.web.read("({width:innerWidth,height:innerHeight,dpr:devicePixelRatio})")
+            "dimensions": self.web.read("({width:innerWidth,height:innerHeight,dpr:devicePixelRatio})"),
+            "inputs": self.web.read("[...document.querySelectorAll('input,select')].map(e=>({tag:e.tagName,type:e.type,value:e.value,min:e.min,max:e.max,disabled:e.disabled}))")
         }, indent=2), encoding="utf-8")
 
     def start(self, fixture=None):
@@ -159,8 +194,11 @@ class Journey:
             command += ["--native-driver", self.args.native_driver]
         self.log = (self.args.output / f"{self.phase}-driver.log").open("w", encoding="utf-8")
         self.driver = subprocess.Popen(command, stdout=self.log, stderr=subprocess.STDOUT, env=env,
-            start_new_session=platform.system() != "Windows")
+            start_new_session=platform.system() != "Windows",
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         self.phase_report["driver_command"] = command
+        self.phase_report["driver_creation"] = {"windows_no_console": platform.system() == "Windows",
+            "stdout_stderr": f"{self.phase}-driver.log"}
         endpoint = "http://127.0.0.1:4444"
         def ready():
             with urllib.request.urlopen(endpoint + "/status", timeout=2) as response:
@@ -398,12 +436,19 @@ class Journey:
             assert "not a real shogi variant" in w.text()
             assert not w.has(".document-card")
             w.button("↕ Flip board")
-            w.click(self.square("i9")); w.click(self.square("j10"))
+            w.key("\ue004")  # Tab from Flip enters the board's single stop.
+            wait(lambda: str(w.read("document.activeElement?.getAttribute('aria-label')")).startswith("i9,"),
+                 "keyboard focus exposes native synthetic origin")
+            # Black orientation: left/down goes i9 -> j10. Native keyboard
+            # focus scrolls the shared large board into view without JS input.
+            for key in ("\ue007", "\ue012", "\ue015", "\ue007"):
+                w.key(key)
             assert "No action submitted" in w.text(".route-selection")
             assert "Accepted actions 0" in w.text(".synthetic-inspector")
             w.key("\ue004"); w.key("\ue00c")  # Tab to completion, Escape cancels.
             wait(lambda: not w.has(".route-selection"), "cancel staged selection")
-            w.click(self.square("i9")); w.click(self.square("j10")); w.click(self.square("i9"))
+            for key in ("\ue007", "\ue012", "\ue015", "\ue007", "\ue014", "\ue013", "\ue007"):
+                w.key(key)
             wait(lambda: "Accepted actions 1" in w.text(".synthetic-inspector"), "native complete route")
             assert "empty" in w.read(f"document.querySelector({json.dumps(self.square('j10'))}).getAttribute('aria-label')")
             w.click(".synthetic-inspector details summary")
@@ -411,7 +456,12 @@ class Journey:
             self.capture("capture-route")
             w.button("Reset synthetic fixture")
             wait(lambda: "Accepted actions 0" in w.text(".synthetic-inspector"), "native reset")
-            w.click(self.square("i9")); w.click(self.square("h9")); w.click(self.square("i9"))
+            w.button("↕ Flip board")  # White orientation for the alternate route.
+            w.key("\ue004")
+            wait(lambda: str(w.read("document.activeElement?.getAttribute('aria-label')")).startswith("i9,"),
+                 "keyboard focus exposes reset synthetic origin")
+            for key in ("\ue007", "\ue012", "\ue007", "\ue014", "\ue007"):
+                w.key(key)
             wait(lambda: "136>135>136" in w.text(".synthetic-inspector pre"), "alternate complete native route")
             assert "stone" in w.read(f"document.querySelector({json.dumps(self.square('j10'))}).getAttribute('aria-label')")
             assert "mshogi.synthetic.strider16.v1" in w.text(".synthetic-inspector pre")
@@ -441,7 +491,9 @@ def main():
             ["git", "rev-parse", "HEAD"], text=True).strip(),
         "workflow_url": f"https://github.com/{os.environ.get('GITHUB_REPOSITORY')}/actions/runs/{os.environ.get('GITHUB_RUN_ID')}",
         "environment": {"platform": platform.platform(), "python": platform.python_version(),
-            "runner_image": os.environ.get("ImageVersion"), "runner_os": os.environ.get("RUNNER_OS")},
+            "runner_image": os.environ.get("ImageVersion"), "runner_os": os.environ.get("RUNNER_OS"),
+            "renderer_environment": {name: os.environ.get(name) for name in
+                ("GDK_BACKEND", "WEBKIT_DISABLE_COMPOSITING_MODE", "WEBKIT_DISABLE_DMABUF_RENDERER", "LIBGL_ALWAYS_SOFTWARE")}},
         "method": "Actual installed/packaged GUI via W3C pointer/keyboard and native OS dialogs/close, external to distributables. Read-only DOM inspection; no direct IPC or injected input events.",
         "driver_identity": {"path": shutil.which(args.driver) or args.driver,
             "version": subprocess.run([args.driver, "--version"], capture_output=True,

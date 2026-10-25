@@ -54,9 +54,11 @@ read-only Full operation below is a separate controlled execution path. The
 synthetic large-board fixture is available in the isolated verification build.
 The integrated macOS interaction assessment covers keyboard/focus, status
 semantics, contrast and layouts at both supported sizes; screen-reader audio and
-formal accessibility conformance have not been tested. Three-platform packaged
-GUI verification remains MSH-38 work. M3 remains open; see the
-[completion-batch evidence](../docs/desktop/completion-batch-evidence.md).
+formal accessibility conformance have not been tested. Actual Windows, macOS
+and Linux packaged GUI journeys passed MSH-38; see the
+[platform evidence and exact environment limits](../docs/desktop/packaged-gui-verification.md).
+The [M3 integration review](../docs/review/m3-closure.md) records the milestone
+verdict and the next planning boundary.
 
 Build a normal distributable with the platform's supported bundle format:
 
@@ -78,7 +80,7 @@ Get-ChildItem src-tauri/target/release/bundle/nsis/*-setup.exe
 These are development packages, without a promised release signing or
 notarization arrangement. macOS local builds use the normal Tauri application
 bundle; production distribution signing and minimum OS release policy remain
-part of the later packaged verification work.
+MSH-58 work in M6.
 
 `npm run check` checks strict TypeScript; `npm test` runs focused interaction
 tests against native-generated snapshots. `npm run build` builds embedded web

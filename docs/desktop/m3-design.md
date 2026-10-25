@@ -2,7 +2,8 @@
 
 Status: accepted implementation contract, 2026-10-25. M2 remains closed; its
 [closure evidence](../review/m2-closure.md) and rules/search evidence are reused.
-M3 remains open until all deliverables and the final integration review pass.
+All eleven M3 work areas are delivered; the [integration review](../review/m3-closure.md)
+and MSH-39 record the final native CI and milestone closure gate.
 This is a chess-first slice of the six-game product in [the design](../design.md).
 
 ## Deliverables and batch boundary
@@ -26,9 +27,10 @@ systems and exercises the bundled engine there. That does not close the later
 installed-application interaction, accessibility, persistence or M3 review work.
 The first batch is complete (MSH-27–32 remain Done). The second batch completed
 MSH-34, MSH-33 and MSH-35 in that order. The final batch first completed the
-focused archive-capacity follow-up MSH-61, then proceeds through MSH-36–39.
-Every Done ticket must satisfy its entire acceptance checklist; M3 remains open
-until the final integration and three-platform application criteria pass.
+focused archive-capacity follow-up MSH-61, then completed MSH-36–38. MSH-39
+records the final independent integration verdict. Every Done ticket must
+satisfy its entire acceptance checklist; the milestone closure requires the
+final integration and actual three-platform application criteria to pass.
 
 ## Authoritative session
 

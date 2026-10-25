@@ -11,6 +11,7 @@ The product goal is a reusable library with complete implementations of chess, s
 - Working instructions for every implementation session: [AGENTS.md](AGENTS.md).
 - M1 closure evidence: [docs/review/m1-closure.md](docs/review/m1-closure.md).
 - M2 integration evidence and limits: [docs/review/m2-closure.md](docs/review/m2-closure.md).
+- Desktop launch/build instructions: [desktop/README.md](desktop/README.md); M3 integration evidence: [docs/review/m3-closure.md](docs/review/m3-closure.md).
 - Historical bootstrap record (M0, completed): [START-HERE.md](START-HERE.md).
 - Build/check commands and dependency policy: [docs/development.md](docs/development.md).
 - Current work and evidence: the native task records under `backlog/`.
@@ -21,7 +22,7 @@ Design and product decisions are developed with John in ChatGPT. Codex or Claude
 
 The native chess baseline provides rules/history, live match adjudication and clocks, transparent evaluation, full-width search, cancellation and UCI. The [match runner](docs/match-runner.md) connects real UCI engines to that rules boundary and preserves replayable experiment evidence. Default M2 dead recognition remains a sound subset; exact opt-in analysis can exceed practical resource limits. No competitive playing-strength claim follows.
 
-The desktop application, remaining target games, and learned evaluation follow in the roadmap in `docs/design.md`.
+The Tauri desktop application plays untimed chess against the bundled native engine, runs bounded read-only analysis, saves and reopens complete games, and inspects history. Its [three-platform packaged GUI evidence](docs/desktop/packaged-gui-verification.md) distinguishes actual application interaction from package construction. Remaining games, measured engine strength, learned evaluation and release distribution follow the preserved roadmap in `docs/design.md`.
 
 ## Repository and existing work
 

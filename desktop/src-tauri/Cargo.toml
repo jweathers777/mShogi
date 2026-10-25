@@ -17,7 +17,12 @@ tauri-build = { version = "=2.7.4", features = [] }
 
 [dependencies]
 tauri = { version = "=2.12.5", features = [] }
+tauri-plugin-dialog = "=2.8.3"
 mshogi-desktop-session = { path = "../../crates/mshogi-desktop-session" }
 
 [lints.rust]
 unsafe_code = "forbid"
+
+[patch.crates-io]
+# Keep native macOS Quit on the same preventable path as window close.
+tao = { path = "vendor/tao" }

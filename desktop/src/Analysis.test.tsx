@@ -8,6 +8,7 @@ import {
 } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { App } from "./App";
+import { mockSession } from "./__tests__/session";
 import { useNativeSession } from "./useNativeSession";
 import type { Snapshot } from "./native";
 import standardJson from "./__fixtures__/standard.json";
@@ -27,13 +28,7 @@ beforeEach(() => {
 });
 afterEach(cleanup);
 function session(snapshot: Snapshot) {
-  vi.mocked(useNativeSession).mockReturnValue({
-    snapshot,
-    error: "",
-    connected: true,
-    busy: false,
-    command,
-  });
+  vi.mocked(useNativeSession).mockReturnValue(mockSession(snapshot, command));
 }
 function inspect(snapshot: Snapshot) {
   session(snapshot);
@@ -133,7 +128,7 @@ it("cancels and replaces analysis through separate commands while keeping play p
   expect(command).toHaveBeenLastCalledWith({
     kind: "analyze",
     version: working.version,
-    operation: { kind: "moves", depth: 4, nodes: 100000 },
+    operation: working.document.settings.analysis_defaults,
   });
   expect(screen.getByRole("button", { name: "Resume play" })).toBeTruthy();
 });
@@ -182,17 +177,35 @@ it("identifies positive and negative native mate scores using the target's actua
 });
 it("distinguishes Full cooperative witnesses, impossibility proofs and work-limited unknown results", () => {
   const { rerender } = inspect(possibleJson as Snapshot);
-  expect(screen.getByText("A cooperative mating route exists")).toBeTruthy();
   expect(
-    screen.getByText(/not a forced win against best defense/),
+    within(screen.getByLabelText("Analysis result")).getByText(
+      "A cooperative mating route exists",
+    ),
+  ).toBeTruthy();
+  expect(
+    within(screen.getByLabelText("Analysis result")).getByText(
+      /not a forced win against best defense/,
+    ),
   ).toBeTruthy();
   session(impossibleJson as Snapshot);
   rerender(<App />);
-  expect(screen.getByText("Neither side can reach mate")).toBeTruthy();
+  expect(
+    within(screen.getByLabelText("Analysis result")).getByText(
+      "Neither side can reach mate",
+    ),
+  ).toBeTruthy();
   session(unknownJson as Snapshot);
   rerender(<App />);
-  expect(screen.getByText("Unknown · exploration incomplete")).toBeTruthy();
-  expect(screen.getByText(/No mating conclusion was established/)).toBeTruthy();
+  expect(
+    within(screen.getByLabelText("Analysis result")).getByText(
+      "Unknown · exploration incomplete",
+    ),
+  ).toBeTruthy();
+  expect(
+    within(screen.getByLabelText("Analysis result")).getByText(
+      /No mating conclusion was established/,
+    ),
+  ).toBeTruthy();
 });
 it("finishes analysis of a concluded game without offering to reopen it", () => {
   const ended = matedJson as Snapshot;

@@ -805,3 +805,88 @@ button.danger:hover:enabled {
   display: block;
   margin-top: 5px;
 }
+
+.document-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.document-card .card-title h2 {
+  overflow-wrap: anywhere;
+}
+.document-dirty {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.document-dirty.dirty {
+  color: #edc78c;
+}
+.document-details {
+  font-size: 0.78rem;
+  margin-top: 0.8rem;
+  overflow-wrap: anywhere;
+}
+.document-details p {
+  margin: 0.6rem 0;
+}
+.io-failure,
+.guard-message {
+  color: #f1baad;
+}
+.document-guard {
+  max-width: 480px;
+}
+.historical-notice {
+  border-color: #cca769;
+}
+.historical-notice p {
+  font-size: 0.83rem;
+  line-height: 1.5;
+}
+.event-timeline {
+  list-style: none;
+  padding: 0;
+  margin: 0.8rem 0;
+  max-height: 240px;
+  overflow: auto;
+}
+.event-timeline button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  text-align: left;
+  border-radius: 4px;
+  padding: 0.55rem;
+}
+.event-timeline button[aria-current="step"] {
+  background: #31453c;
+  color: #e4efd9;
+}
+.event-timeline small {
+  flex-shrink: 0;
+  color: var(--muted);
+}
+.played-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.6rem;
+  padding-left: 1.4rem;
+  font-size: 0.85rem;
+}
+.archived-observation {
+  border-top: 1px solid var(--border);
+  padding-top: 0.8rem;
+  margin-top: 0.8rem;
+}
+.archived-observation h3 {
+  font-size: 0.9rem;
+}
+.archived-observation p {
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+.analysis-selection {
+  font-size: 0.82rem;
+  color: #e3cd9d;
+}

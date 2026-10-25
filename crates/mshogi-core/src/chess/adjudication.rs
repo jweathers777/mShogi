@@ -444,6 +444,17 @@ impl AdjudicatedGame {
     /// Replay live actions and accepted claims. Other observations are explicitly
     /// unsupported here; match commands and clock validation belong to MSH-18.
     pub fn replay_record(record: &GameRecord) -> Result<Self, LiveReplayError> {
+        Self::replay_record_with_stop(record, || false)
+    }
+    /// Replay with cooperative interruption between events. Callers handling
+    /// untrusted input must preflight Full mode before any expensive solver work.
+    pub fn replay_record_with_stop(
+        record: &GameRecord,
+        mut stopped: impl FnMut() -> bool,
+    ) -> Result<Self, LiveReplayError> {
+        if stopped() {
+            return Err(LiveReplayError::Stopped);
+        }
         let mut game = Self {
             history: Game::from_initial(
                 record.initial_position().clone(),
@@ -456,6 +467,9 @@ impl AdjudicatedGame {
         };
         game.refresh_dead_analysis();
         for (i, event) in record.events().iter().enumerate() {
+            if stopped() {
+                return Err(LiveReplayError::Stopped);
+            }
             if event.ply != game.history.ply_count() as u64 {
                 return Err(LiveReplayError::Context(i + 1));
             }
@@ -481,6 +495,8 @@ impl AdjudicatedGame {
 /// Live replay failures never return a partial game.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum LiveReplayError {
+    /// Operational interruption, never an invalid chess outcome.
+    Stopped,
     /// Declared ply is inconsistent with actions.
     Context(usize),
     /// This layer cannot interpret the observed event.

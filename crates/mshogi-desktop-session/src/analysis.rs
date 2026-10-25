@@ -26,7 +26,7 @@ pub enum AnalysisOperation {
     },
 }
 impl AnalysisOperation {
-    fn validate(self) -> Result<(), String> {
+    pub(super) fn validate(self) -> Result<(), String> {
         let valid = match self {
             Self::Moves { depth, nodes } => {
                 (1..=MAX_ANALYSIS_DEPTH).contains(&depth) && nodes <= MAX_ANALYSIS_NODES
@@ -81,6 +81,7 @@ pub struct AnalysisState {
 impl DesktopSession {
     pub(super) fn start_analysis(&mut self, operation: AnalysisOperation) -> Result<(), String> {
         operation.validate()?;
+        self.settings.analysis_defaults = operation;
         self.pending = None;
         self.play_paused = true;
         self.engine.status = EnginePhase::Paused;
@@ -89,14 +90,19 @@ impl DesktopSession {
         self.changed();
         self.next_request += 1;
         let target = AnalysisTarget {
-            selection_id: self.next_request,
-            ply: self.game.game().history().ply_count() as u64,
+            selection_id: self.selection_id,
+            ply: self.selected_game().history().ply_count() as u64,
             session_version: self.version,
             label: format!(
-                "Live position after {} plies",
-                self.game.game().history().ply_count()
+                "{} after {} plies",
+                if self.viewed.is_some() {
+                    "Historical position"
+                } else {
+                    "Live position"
+                },
+                self.selected_game().history().ply_count()
             ),
-            turn: self.game.game().position().side_to_move(),
+            turn: self.selected_game().position().side_to_move(),
         };
         let (purpose, limits) = match operation {
             AnalysisOperation::Moves { depth, nodes } => (
@@ -127,7 +133,7 @@ impl DesktopSession {
             request_id: self.next_request,
             session_version: self.version,
             process_generation: self.next_request,
-            game: self.game.game().record(),
+            game: self.selected_game().record(),
             limits,
         };
         self.analysis = AnalysisState {
@@ -156,7 +162,7 @@ impl DesktopSession {
         if self.analysis_pending.as_ref() != Some(&response.context)
             || !self.play_paused
             || response.context.session_version != self.version
-            || response.context.game != self.game.game().record()
+            || response.context.game != self.selected_game().record()
             || matches!(response.context.purpose, RequestPurpose::EngineTurn)
         {
             return false;
@@ -164,6 +170,7 @@ impl DesktopSession {
         if self.revision >= MAX_SAFE_ID {
             return false;
         }
+        self.remember(response.clone());
         self.analysis_pending = None;
         let full = matches!(
             response.context.purpose,
@@ -176,6 +183,12 @@ impl DesktopSession {
             EngineResult::Move { telemetry, .. } | EngineResult::Claim { telemetry, .. } | EngineResult::Finished { telemetry, .. } if !full => (if telemetry.status == mshogi_engine::StopReason::Complete { AnalysisPhase::Complete } else { AnalysisPhase::Incomplete }, None),
             _ => (AnalysisPhase::Failed, Some("Analysis returned a result for the wrong operation. No game action was applied.".into())),
         };
+        if status == AnalysisPhase::Failed
+            && !matches!(response.result, EngineResult::Failure { .. })
+            && let Some(observation) = self.observations.last_mut()
+        {
+            observation.application_error = message.clone();
+        }
         self.analysis.status = status;
         self.analysis.message = message;
         self.analysis.result = Some(response.result);
@@ -202,7 +215,7 @@ impl DesktopSession {
         Ok(())
     }
     pub(super) fn resume(&mut self) -> Result<(), String> {
-        if !self.play_paused {
+        if !self.play_paused || self.viewed.is_some() {
             return Err("There is no paused play or analysis to finish.".into());
         }
         self.retire_analysis();
@@ -304,6 +317,7 @@ mod tests {
         session
             .command(
                 DesktopCommand::NewGame {
+                    document_revision: session.document_revision,
                     version: 1,
                     human: Color::Black,
                 },
@@ -389,6 +403,7 @@ mod tests {
         session
             .command(
                 DesktopCommand::NewGame {
+                    document_revision: session.document_revision,
                     version: before,
                     human: Color::White,
                 },

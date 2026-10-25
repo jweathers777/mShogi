@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import type { DesktopCommand, ReachabilityTarget, Snapshot } from "./native";
 import {
   choiceDescription,
@@ -27,7 +27,7 @@ export function AnalysisPanel({
   snapshot: Snapshot;
   busy: boolean;
   connected: boolean;
-  command: (command: DesktopCommand) => Promise<void>;
+  command: (command: DesktopCommand) => Promise<Snapshot | null>;
 }) {
   const [depth, setDepth] = useState("4");
   const [nodes, setNodes] = useState("100000");
@@ -35,6 +35,19 @@ export function AnalysisPanel({
   const [transitions, setTransitions] = useState("10000");
   const [mate, setMate] = useState<ReachabilityTarget>("either");
   const [validation, setValidation] = useState("");
+  const defaults = snapshot.document.settings.analysis_defaults;
+  const settingsKey = JSON.stringify(defaults);
+  useEffect(() => {
+    if (defaults.kind === "moves") {
+      setDepth(String(defaults.depth));
+      setNodes(String(defaults.nodes));
+    } else {
+      setMate(defaults.target);
+      setPositions(String(defaults.max_positions));
+      setTransitions(String(defaults.max_transitions));
+    }
+    setValidation("");
+  }, [settingsKey, snapshot.document.path]);
   const analysis = snapshot.analysis;
   const working = analysis.status === "thinking";
   const disabled = busy || !connected;
@@ -80,7 +93,8 @@ export function AnalysisPanel({
   }
   const provenanceCurrent =
     analysis.target !== null &&
-    analysis.target.session_version === snapshot.version;
+    analysis.target.session_version === snapshot.version &&
+    analysis.target.selection_id === snapshot.view.selection_id;
   const resultMatchesOperation =
     analysis.result === null || analysis.operation === null
       ? false
@@ -91,9 +105,7 @@ export function AnalysisPanel({
   const showResult =
     (analysis.status === "complete" || analysis.status === "incomplete") &&
     resultMatchesOperation;
-  const targetLabel =
-    analysis.target?.label ??
-    `Live position after ${snapshot.history.length} plies`;
+  const targetLabel = analysis.target?.label ?? snapshot.view.label;
   return (
     <section className="card analysis-card" aria-label="Read-only analysis">
       <div className="card-title">
@@ -105,6 +117,10 @@ export function AnalysisPanel({
       <p className="caption">
         Starting analysis pauses play. Results suggest or inspect; they never
         play a move, claim a draw or change the live game.
+      </p>
+      <p className="analysis-selection">
+        Selected: {snapshot.view.label}
+        {snapshot.view.historical ? " · historical prefix" : " · live position"}
       </p>
       <form className="analysis-form" onSubmit={moves} noValidate>
         <h3>Bounded move search</h3>

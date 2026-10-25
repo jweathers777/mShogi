@@ -192,6 +192,15 @@ impl Game {
 }
 
 impl GameRecord {
+    /// Exact event prefix, preserving initial state, policy and mode.
+    pub fn prefix(&self, count: usize) -> Option<Self> {
+        if count > self.events.len() {
+            return None;
+        }
+        let mut prefix = self.clone();
+        prefix.events.truncate(count);
+        Some(prefix)
+    }
     /// Live adjudication mode; diagnostic history replay does not execute it.
     pub const fn adjudication_mode(&self) -> AdjudicationMode {
         self.adjudication_mode

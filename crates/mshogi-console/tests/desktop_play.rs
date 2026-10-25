@@ -152,6 +152,7 @@ fn human_black_gets_an_automatic_native_opening_and_can_answer_it() {
     let thinking = controller
         .command(DesktopCommand::NewGame {
             version: initial.version,
+            document_revision: initial.document.revision,
             human: Color::Black,
         })
         .unwrap();
@@ -186,6 +187,7 @@ fn cancel_new_game_stale_commands_and_retry_protect_the_live_game() {
     let thinking = controller
         .command(DesktopCommand::NewGame {
             version: initial.version,
+            document_revision: initial.document.revision,
             human: Color::Black,
         })
         .unwrap();
@@ -218,6 +220,7 @@ fn cancel_new_game_stale_commands_and_retry_protect_the_live_game() {
     let superseded = controller
         .command(DesktopCommand::NewGame {
             version: after_retry.version,
+            document_revision: after_retry.document.revision,
             human: Color::Black,
         })
         .unwrap();
@@ -225,6 +228,7 @@ fn cancel_new_game_stale_commands_and_retry_protect_the_live_game() {
     let fresh = controller
         .command(DesktopCommand::NewGame {
             version: superseded.version,
+            document_revision: superseded.document.revision,
             human: Color::White,
         })
         .unwrap();
@@ -267,6 +271,7 @@ fn actual_missing_response_and_failed_process_pause_without_a_chess_score() {
     controller
         .command(DesktopCommand::NewGame {
             version: initial.version,
+            document_revision: initial.document.revision,
             human: Color::Black,
         })
         .unwrap();

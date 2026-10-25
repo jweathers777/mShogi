@@ -1,7 +1,9 @@
-import { useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { OutcomeCard, RecoveryNotice, ResignConfirmation } from "./Recovery";
 import { Board } from "./Board";
 import { AnalysisPanel } from "./Analysis";
+import { DocumentToolbar, UnsavedDialog, useDocumentGuard } from "./Document";
+import { HistoryPanel, SavedObservations } from "./History";
 import { scoreDescription } from "./analysisPresentation";
 import type { Color, Snapshot } from "./native";
 import { claimName, colorName, gameStatus } from "./presentation";
@@ -87,16 +89,36 @@ function EngineObservations({ snapshot }: { snapshot: Snapshot }) {
   );
 }
 export function App() {
-  const { snapshot, error, connected, busy, command } = useNativeSession();
-  const [orientation, setOrientation] = useState<Color>("white");
+  const session = useNativeSession();
+  const { snapshot, error, connected, command } = session;
+  const busy =
+    session.busy ||
+    (snapshot !== null &&
+      ["saving", "opening", "viewing"].includes(snapshot.io.phase));
+  const guard = useDocumentGuard(snapshot, session.closeRequest, session);
   const [newHuman, setNewHuman] = useState<Color>("white");
   const [claimIndex, setClaimIndex] = useState(0);
   const [inspector, setInspector] = useState<"play" | "analysis">("play");
   const resignButton = useRef<HTMLButtonElement>(null);
+  const returnLiveFocus = useRef(false);
   const [resigning, setResigning] = useState<{
     version: number;
     human: Color;
   } | null>(null);
+  useEffect(() => {
+    if (guard.pending !== null) setResigning(null);
+  }, [guard.pending]);
+  useLayoutEffect(() => {
+    if (
+      returnLiveFocus.current &&
+      snapshot !== null &&
+      !snapshot.view.historical
+    ) {
+      returnLiveFocus.current = false;
+      if (guard.pending === null)
+        document.querySelector<SVGGElement>('.square[tabindex="0"]')?.focus();
+    }
+  }, [snapshot?.view.historical, snapshot?.view.selection_id, guard.pending]);
   if (snapshot === null)
     return (
       <main className="loading">
@@ -114,18 +136,15 @@ export function App() {
     !busy &&
     humanTurn &&
     resigning === null &&
-    !snapshot.play_paused;
+    !snapshot.play_paused &&
+    !snapshot.view.historical &&
+    guard.pending === null;
   const paused = ["cancelled", "failed", "incomplete"].includes(
     snapshot.engine.status,
   );
   const claim = snapshot.claims[claimIndex] ?? snapshot.claims[0];
-  const moves = Array.from(
-    { length: Math.ceil(snapshot.history.length / 2) },
-    (_, index) => ({
-      white: snapshot.history[index * 2],
-      black: snapshot.history[index * 2 + 1],
-    }),
-  );
+  const orientation = snapshot.document.settings.orientation;
+  const historical = snapshot.view.historical;
   return (
     <main className="application">
       <header className="app-header">
@@ -146,12 +165,17 @@ export function App() {
         </div>
       </header>
       <div className="workspace">
-        <section className="board-panel" aria-label="Live game">
+        <section
+          className="board-panel"
+          aria-label={historical ? "Historical position" : "Live game"}
+        >
           <div className="board-heading">
             <div>
-              <p className="eyebrow">LIVE GAME</p>
+              <p className="eyebrow">
+                {historical ? "HISTORICAL · READ ONLY" : "LIVE GAME"}
+              </p>
               <h2 role="status" aria-live="polite">
-                {gameStatus(snapshot)}
+                {historical ? snapshot.view.label : gameStatus(snapshot)}
               </h2>
               <p className="player-line">
                 You play {colorName(snapshot.human)} <span>against</span> mShogi
@@ -159,16 +183,23 @@ export function App() {
             </div>
             <button
               className="quiet flip-button"
-              onClick={() =>
-                setOrientation(orientation === "white" ? "black" : "white")
-              }
+              disabled={!connected || busy || guard.pending !== null}
+              onClick={() => {
+                void command({
+                  kind: "preferences",
+                  orientation: orientation === "white" ? "black" : "white",
+                  analysis_defaults:
+                    snapshot.document.settings.analysis_defaults,
+                });
+              }}
               aria-label={`Flip board; currently ${orientation} at bottom`}
             >
               ↕ <span>Flip board</span>
             </button>
           </div>
           <Board
-            pieces={snapshot.pieces}
+            key={snapshot.view.selection_id}
+            pieces={snapshot.view.pieces}
             choices={snapshot.legal_choices}
             orientation={orientation}
             version={snapshot.version}
@@ -179,20 +210,59 @@ export function App() {
           />
           <div className="game-footnote">
             <span>
-              {snapshot.conclusion !== null
-                ? "Game concluded"
-                : snapshot.play_paused
-                  ? "Play paused · analysis cannot change the game"
-                  : humanTurn
-                    ? "Your turn"
-                    : snapshot.engine.status === "thinking"
-                      ? "mShogi is searching within fixed work limits"
-                      : "Engine turn paused"}
+              {historical
+                ? "Read-only history · return to live to play"
+                : snapshot.conclusion !== null
+                  ? "Game concluded"
+                  : snapshot.play_paused
+                    ? "Play paused · resume explicitly to continue"
+                    : humanTurn
+                      ? "Your turn"
+                      : snapshot.engine.status === "thinking"
+                        ? "mShogi is searching within fixed work limits"
+                        : "Engine turn paused"}
             </span>
-            <span>Live position · {snapshot.history.length} plies</span>
+            <span>
+              {historical ? "Selected position" : "Live position"} ·{" "}
+              {snapshot.view.ply} plies
+            </span>
           </div>
         </section>
         <aside className="sidebar" aria-label="Game controls and inspection">
+          <DocumentToolbar
+            snapshot={snapshot}
+            busy={busy || guard.pending !== null}
+            connected={connected}
+            actions={session}
+            onOpen={guard.requestOpen}
+          />
+          {historical && (
+            <section className="notice historical-notice">
+              <strong>Viewing history · read only</strong>
+              <p>
+                {snapshot.view.label} · {colorName(snapshot.view.turn)} to move.
+                The live game remains after {snapshot.history.length} plies.
+                Analysis uses this selected native history prefix.
+              </p>
+              {snapshot.view.conclusion !== null && (
+                <OutcomeCard conclusion={snapshot.view.conclusion} />
+              )}
+              <button
+                className="secondary"
+                disabled={busy || !connected || guard.pending !== null}
+                onClick={async () => {
+                  returnLiveFocus.current = true;
+                  const result = await command({
+                    kind: "return_live",
+                    version: snapshot.version,
+                  });
+                  if (result === null) returnLiveFocus.current = false;
+                }}
+              >
+                Return to live game
+              </button>
+            </section>
+          )}
           <section className="card new-game">
             <p className="eyebrow">PLAY</p>
             <label htmlFor="human-color">Your color for a new game</label>
@@ -207,27 +277,24 @@ export function App() {
               </select>
               <button
                 className="primary"
-                disabled={!connected || busy}
+                disabled={!connected || busy || guard.pending !== null}
                 onClick={() => {
                   setClaimIndex(0);
-                  void command({
-                    kind: "new_game",
-                    version: snapshot.version,
-                    human: newHuman,
-                  });
+                  guard.requestNewGame(newHuman);
                 }}
               >
                 New game
               </button>
             </div>
             <p className="caption">
-              Games are unsaved. New game or closing the app discards this game.
+              Save the native game document to preserve context, events and
+              observations.
             </p>
-            {snapshot.conclusion === null && (
+            {snapshot.conclusion === null && !historical && (
               <button
                 className="quiet resign-button"
                 ref={resignButton}
-                disabled={!connected || busy}
+                disabled={!connected || busy || guard.pending !== null}
                 onClick={() =>
                   setResigning({
                     version: snapshot.version,
@@ -239,16 +306,16 @@ export function App() {
               </button>
             )}
           </section>
-          {snapshot.conclusion !== null && (
+          {snapshot.conclusion !== null && !historical && (
             <OutcomeCard conclusion={snapshot.conclusion} />
           )}
           <RecoveryNotice snapshot={snapshot} error={error} />
           {snapshot.play_paused && (
             <section className="notice play-paused" role="status">
-              <strong>Play paused for analysis</strong>
+              <strong>Play paused</strong>
               <p>
                 {snapshot.conclusion === null
-                  ? "Board moves and draw claims are paused. Resuming retires analysis and continues play."
+                  ? "Board moves and draw claims are paused. Returning to live and resuming retires analysis and continues play."
                   : "The game remains concluded. Finishing analysis does not reopen it."}
               </p>
               {snapshot.analysis.status === "thinking" && (
@@ -267,7 +334,9 @@ export function App() {
               )}
               <button
                 className="secondary"
-                disabled={busy || !connected}
+                disabled={
+                  busy || !connected || historical || guard.pending !== null
+                }
                 onClick={() => {
                   void command({ kind: "resume", version: snapshot.version });
                 }}
@@ -298,8 +367,9 @@ export function App() {
           </div>
           {inspector === "analysis" ? (
             <AnalysisPanel
+              key={session.documentEpoch}
               snapshot={snapshot}
-              busy={busy}
+              busy={busy || guard.pending !== null}
               connected={connected}
               command={command}
             />
@@ -355,107 +425,81 @@ export function App() {
               </div>
             </section>
           )}
-          {snapshot.claims.length > 0 && snapshot.conclusion === null && (
-            <section className="card claims">
-              <h2>Draw claim available</h2>
-              <p className="caption">
-                An opportunity to claim, while the game remains ongoing. An
-                intended move is not played by claiming.
-              </p>
-              {humanTurn && claim !== undefined ? (
-                <>
-                  <label className="sr-only" htmlFor="draw-claim">
-                    Native draw claim
-                  </label>
-                  <select
-                    id="draw-claim"
-                    value={snapshot.claims[claimIndex] ? claimIndex : 0}
-                    onChange={(event) =>
-                      setClaimIndex(Number(event.target.value))
-                    }
-                  >
-                    {snapshot.claims.map((claim, index) => (
-                      <option
-                        key={`${claim.reason}-${claim.intended}`}
-                        value={index}
-                      >
-                        {claimName(claim)}
-                      </option>
-                    ))}
-                  </select>
-                  <p className="claim-scope">
-                    {claim.intended === null
-                      ? "Current-position claim"
-                      : `Intended-move claim · ${claim.intended}`}
-                  </p>
-                  <p className="caption">
-                    {claim.intended === null
-                      ? "The required threshold is already established in the current native history."
-                      : "This action is an unplayed intention. Claiming does not add this move to the board or move history."}
-                  </p>
-                  <button
-                    className="secondary"
-                    disabled={!canPlay}
-                    onClick={() => {
-                      void command({
-                        kind: "claim",
-                        version: snapshot.version,
-                        claim,
-                      });
-                    }}
-                  >
-                    Claim selected draw
-                  </button>
-                </>
-              ) : (
-                <p>mShogi may choose a valid native claim.</p>
-              )}
-            </section>
-          )}
-          <section className="card history-card">
-            <div className="card-title">
-              <h2>Move history</h2>
-              <span className="caption">Native actions</span>
-            </div>
-            <div
-              className="history-scroll"
-              tabIndex={0}
-              aria-label="Played move history"
-            >
-              {moves.length === 0 ? (
-                <p className="empty-history">
-                  {snapshot.conclusion === null
-                    ? "Moves appear here as the game is played."
-                    : "No board moves were played."}
+          {snapshot.claims.length > 0 &&
+            snapshot.conclusion === null &&
+            !historical && (
+              <section className="card claims">
+                <h2>Draw claim available</h2>
+                <p className="caption">
+                  An opportunity to claim, while the game remains ongoing. An
+                  intended move is not played by claiming.
                 </p>
-              ) : (
-                <table>
-                  <thead>
-                    <tr>
-                      <th scope="col">Move</th>
-                      <th scope="col">White</th>
-                      <th scope="col">Black</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {moves.map((move, index) => (
-                      <tr key={index}>
-                        <th scope="row">{index + 1}.</th>
-                        <td>{move.white}</td>
-                        <td>{move.black ?? "…"}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-            </div>
-            <p className="caption">
-              Viewing earlier positions and saving arrive in a later desktop
-              batch.
-            </p>
-          </section>
+                {humanTurn && claim !== undefined ? (
+                  <>
+                    <label className="sr-only" htmlFor="draw-claim">
+                      Native draw claim
+                    </label>
+                    <select
+                      id="draw-claim"
+                      value={snapshot.claims[claimIndex] ? claimIndex : 0}
+                      onChange={(event) =>
+                        setClaimIndex(Number(event.target.value))
+                      }
+                    >
+                      {snapshot.claims.map((claim, index) => (
+                        <option
+                          key={`${claim.reason}-${claim.intended}`}
+                          value={index}
+                        >
+                          {claimName(claim)}
+                        </option>
+                      ))}
+                    </select>
+                    <p className="claim-scope">
+                      {claim.intended === null
+                        ? "Current-position claim"
+                        : `Intended-move claim · ${claim.intended}`}
+                    </p>
+                    <p className="caption">
+                      {claim.intended === null
+                        ? "The required threshold is already established in the current native history."
+                        : "This action is an unplayed intention. Claiming does not add this move to the board or move history."}
+                    </p>
+                    <button
+                      className="secondary"
+                      disabled={!canPlay}
+                      onClick={() => {
+                        void command({
+                          kind: "claim",
+                          version: snapshot.version,
+                          claim,
+                        });
+                      }}
+                    >
+                      Claim selected draw
+                    </button>
+                  </>
+                ) : (
+                  <p>mShogi may choose a valid native claim.</p>
+                )}
+              </section>
+            )}
+          <HistoryPanel
+            snapshot={snapshot}
+            busy={busy || guard.pending !== null}
+            connected={connected}
+            command={command}
+          />
+          <SavedObservations observations={snapshot.observations} />
         </aside>
       </div>
+      {guard.pending !== null && (
+        <UnsavedDialog
+          guard={guard}
+          dirty={snapshot.document.dirty}
+          busy={busy}
+        />
+      )}
       {resigning !== null && (
         <ResignConfirmation
           human={resigning.human}

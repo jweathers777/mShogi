@@ -208,6 +208,68 @@
     "searched_version": null,
     "message": null
   },
+  "document": {
+    "revision": 0,
+    "dirty": false,
+    "path": null,
+    "settings": {
+      "orientation": "white",
+      "analysis_defaults": {
+        "kind": "moves",
+        "depth": 4,
+        "nodes": 100000
+      }
+    }
+  },
+  "io": {
+    "id": 0,
+    "phase": "idle",
+    "message": null
+  },
+  "view": {
+    "historical": false,
+    "event_index": 1,
+    "event_count": 1,
+    "label": "Live game",
+    "fen": "7k/8/8/8/8/8/R7/K7 w - - 100 1",
+    "pieces": [
+      {
+        "square": "a1",
+        "color": "white",
+        "kind": "king",
+        "label": "a1, White king"
+      },
+      {
+        "square": "a2",
+        "color": "white",
+        "kind": "rook",
+        "label": "a2, White rook"
+      },
+      {
+        "square": "h8",
+        "color": "black",
+        "kind": "king",
+        "label": "h8, Black king"
+      }
+    ],
+    "turn": "white",
+    "conclusion": null,
+    "ply": 0,
+    "selection_id": 1,
+    "timeline": [
+      {
+        "index": 0,
+        "label": "Initial known position",
+        "ply": 0
+      },
+      {
+        "index": 1,
+        "label": "Match started",
+        "ply": 0
+      }
+    ]
+  },
+  "observations": [],
   "analysis": {
     "status": "idle",
     "target": null,

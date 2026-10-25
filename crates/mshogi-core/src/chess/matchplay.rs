@@ -21,6 +21,20 @@ pub fn mating_feasibility(
     side: Color,
     witness: Option<&[Action]>,
 ) -> Result<MatingFeasibility, &'static str> {
+    mating_feasibility_with_stop(position, side, witness, || false)
+}
+/// Verify a supplied geometric mating witness with cooperative interruption per
+/// action. Counters are normalized exactly as in `mating_feasibility`; this never
+/// explores a reachability graph or changes a caller's position.
+pub fn mating_feasibility_with_stop(
+    position: &Position,
+    side: Color,
+    witness: Option<&[Action]>,
+    mut stopped: impl FnMut() -> bool,
+) -> Result<MatingFeasibility, &'static str> {
+    if stopped() {
+        return Err("mating witness verification interrupted");
+    }
     let bare = !(0..8).any(|r| {
         (0..8).any(|f| {
             position
@@ -36,6 +50,9 @@ pub fn mating_feasibility(
     };
     let mut p = position.clone();
     for &a in witness {
+        if stopped() {
+            return Err("mating witness verification interrupted");
+        }
         p.halfmove_clock = 0;
         p.fullmove_number = 1;
         p.apply(a).map_err(|_| "illegal mating witness")?;
@@ -559,9 +576,56 @@ impl MatchRecord {
         }
         Ok(r)
     }
+    /// Parse the initial canonical history without replaying or adjudicating it.
+    pub fn initial_record(&self) -> Result<GameRecord, MatchRecordError> {
+        GameRecord::from_json(&self.initial_record_json)
+            .map_err(|e| MatchRecordError(e.to_string()))
+    }
+    /// Recorded clock configuration, available before replay.
+    pub const fn time_control(&self) -> TimeControl {
+        self.time_control
+    }
+    /// Number of ordered match command events.
+    pub fn event_count(&self) -> usize {
+        self.events.len()
+    }
+    /// Inspect immutable requests and their recorded observations.
+    pub fn events(&self) -> impl Iterator<Item = (&MatchRequest, &MatchReply)> {
+        self.events
+            .iter()
+            .map(|event| (&event.request, &event.reply))
+    }
+    /// Exact match-event prefix; no later outcome is retained.
+    pub fn prefix(&self, count: usize) -> Option<Self> {
+        if count > self.events.len() {
+            return None;
+        }
+        let mut prefix = self.clone();
+        prefix.events.truncate(count);
+        Some(prefix)
+    }
+    /// Greatest recorded command timestamp; a restored controller must not go backwards.
+    pub fn timestamp_floor(&self) -> u64 {
+        self.events
+            .iter()
+            .map(|event| event.request.at_ns)
+            .max()
+            .unwrap_or(0)
+    }
     /// Recompute actions, commands, clocks, rejection reasons and conclusions
-    /// from ordered recorded inputs; reject any inconsistent observation.
+    /// from ordered inputs; reject inconsistent observations without interruption.
     pub fn replay(&self) -> Result<ChessMatch, MatchRecordError> {
+        self.replay_with_stop(|| false)
+    }
+    /// Recompute evidence with a cooperative stop between initial/match events.
+    /// The caller must preflight Full mode before using this for untrusted data.
+    pub fn replay_with_stop(
+        &self,
+        mut stopped: impl FnMut() -> bool,
+    ) -> Result<ChessMatch, MatchRecordError> {
+        if stopped() {
+            return Err(MatchRecordError("match replay interrupted".into()));
+        }
         if !matches!(self.schema_version, 1 | 2)
             || self.rules_profile != crate::CHESS_MATCH_PROFILE_ID
         {
@@ -584,10 +648,13 @@ impl MatchRecord {
                 "legacy match cannot contain full-solver evidence".into(),
             ));
         }
-        let game = AdjudicatedGame::replay_record(&initial)
+        let game = AdjudicatedGame::replay_record_with_stop(&initial, &mut stopped)
             .map_err(|e| MatchRecordError(e.to_string()))?;
         let mut m = ChessMatch::new(game, self.time_control)?;
         for (i, e) in self.events.iter().enumerate() {
+            if stopped() {
+                return Err(MatchRecordError("match replay interrupted".into()));
+            }
             if m.submit(e.request.clone()) != e.reply {
                 return Err(MatchRecordError(format!(
                     "match event {} observation mismatch",

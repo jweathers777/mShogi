@@ -89,8 +89,53 @@ The documented development command compiled/launched the native debug host,
 served the actual Vite/React assets on port 1420 and stopped with exit zero.
 CUA cannot bind this unbundled executable, so this is build/process/HTTP evidence,
 not a claim of development GUI play. Normal packaged GUI play is verified above.
-The final board source still requires native CI/integration evidence before
-MSH-31 closure; MSH-32 will separately verify the complete minimal-play slice.
+The final board source is `d2883dfea338e0048d31e138b4c5ae49cc6cd4a8`, integrated
+and pushed on `codex/rewrite`. Both
+[Rust CI 40200520368](https://github.com/jweathers777/mShogi/actions/runs/40200520368)
+and [desktop package CI 40200520366](https://github.com/jweathers777/mShogi/actions/runs/40200520366)
+passed on all three native systems. Each desktop job ran the 13 frontend tests,
+strict TypeScript, host formatting/Clippy/tests, built a normal package, checked
+the host and engine identities/contents, and ran actual packaged UCI and
+structured-interface searches (depth 1, 21 nodes, `a2a3`, complete context echo).
+
+| Native platform | Desktop job | Final retained observations |
+| --- | --- | --- |
+| Windows 2022 | 121190526726 | [Windows](evidence/playable-windows-2022.json) |
+| Ubuntu 24.04 | 121190526878 | [Linux](evidence/playable-ubuntu-24.04.json) |
+| macOS 15 | 121190526916 | [macOS](evidence/playable-macos-15.json) |
+
+A further real move through the final normal host is retained in
+[integrated application screenshot](evidence/playable-integrated-macos.png).
+The final local package identities and both protocol observations are in
+[local package report](evidence/playable-local-macos.json).
+
+## Minimal-play integration verification
+
+MSH-32 adds four public-controller integration tests using actual child
+processes. Both human colors play multiple turns against the native engine.
+The checks replay the displayed history and complete search continuation,
+validate real bounded telemetry and its searched version/perspective, and
+verify that a completion applies once. Cancellation followed by successful
+retry, replacement by a new game and rejection of an old command protect the
+live session. Actual missing-response and nonzero-exit children leave it paused,
+unscored and awaiting explicit retry.
+
+On local arm64 macOS, `cargo test --locked -p mshogi-console --test desktop_play`
+passed all four tests (3.17 seconds), and focused Clippy with warnings denied
+passed. Workspace formatting passed. Regenerating the frontend fixtures through
+`cargo run --locked -p mshogi-desktop-session --example write_frontend_fixtures -- desktop/src/__fixtures__`
+produced no diff. Native CI now enforces that same cross-language fixture check.
+The [MSH-32 completion record](<../../backlog/tasks/msh-32 - Deliver-minimal-untimed-human-versus-mShogi-desktop-play.md>)
+records its independent review, integrated source and native CI outcome.
+
+The final integration changes add tests, a development dependency, fixture
+verification and evidence only. Application, frontend and bundled-engine
+production sources are unchanged from `d2883df`; the three successful native
+package jobs above remain applicable. The final screenshot uses that same
+normal application. Automatic outcomes, promotion and current/intended claims
+have composed native-session and frontend interaction coverage; rare claims
+and promotions were not reached in the standard-opening packaged GUI journeys.
+No production-only state injection or test driver was added to obtain them.
 
 ## Remaining scope
 

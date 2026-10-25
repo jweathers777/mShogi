@@ -1,0 +1,13 @@
+{
+  "productName": "mShogi Verification",
+  "identifier": "org.mshogi.desktop.verification",
+  "app": {
+    "windows": [{
+      "title": "mShogi Verification — test state",
+      "width": 1180,
+      "height": 820,
+      "minWidth": 760,
+      "minHeight": 650
+    }]
+  }
+}

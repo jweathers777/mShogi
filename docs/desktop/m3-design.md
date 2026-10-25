@@ -24,8 +24,10 @@ This is a chess-first slice of the six-game product in [the design](../design.md
 The first batch is MSH-27–32. Foundation builds native packages on all three
 systems and exercises the bundled engine there. That does not close the later
 installed-application interaction, accessibility, persistence or M3 review work.
-Remaining tickets are actionable but are not authorized for implementation in
-this batch. Every Done ticket must satisfy its entire acceptance checklist.
+The first batch is complete (MSH-27–32 remain Done). The next authorized batch
+is MSH-34, then MSH-33, then MSH-35 after both dependencies complete. MSH-36–39
+remain open for subsequent work. Every Done ticket must satisfy its entire
+acceptance checklist; M3 remains open.
 
 ## Authoritative session
 
@@ -144,3 +146,83 @@ repeating the unchanged M1/M2 audits.
 
 Implementation references: [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/),
 [bundled sidecars](https://v2.tauri.app/develop/sidecar/).
+
+
+## Second batch clarifications (owner direction, 2026-10-25)
+
+The eleven-area mapping above is unchanged. Implement existing MSH-34, MSH-33
+and MSH-35 in that order, preserving all prior acceptance criteria and evidence.
+
+### Outcomes and recovery — MSH-34
+
+Continue untimed play. Distinguish available current/intended claims, concluded
+chess results, explicit resignation, unresolved unscored match conclusions,
+cancelled/incomplete work and engine failures. Resignation uses the native M2
+mating-feasibility contract; absence of a proof remains unresolved and unscored.
+Recovery/retry preserves authoritative match/game history and creates fresh work
+identity. No clocks or evaluation-based resignation/draw policy are added.
+
+### Analysis and execution ownership — MSH-33
+
+Ordinary move analysis is read-only, with an explicit request purpose and a
+separate acceptance path that cannot apply an engine move or claim. Every result
+binds to its exact target record/history, target selection, request identity,
+session version, process generation, mode and limits. Technical details retain
+native encodings/identities; the main view names the analyzed position, score
+perspective and understandable pawn/mate distance. Only actual final native
+observations are required; live progress is optional and needs bounded native
+reporting.
+
+Use one supervised execution resource with explicit ownership. Starting analysis
+pauses/cancels any engine-turn work and invalidates its acceptance; it does not
+resume play automatically. Starting/replacing analysis cancels the previous
+analysis. Cancel leaves play paused. Explicit Resume engine turn retires analysis
+and creates a fresh engine-turn request. A game change invalidates analysis and
+old turn work. Purpose-specific acceptance checks prevent either kind from
+acting as the other. Historical selection changes retire the old analysis.
+
+Ordinary minimax move analysis remains distinct from advanced Full cooperative
+mating reachability. The advanced operation is visibly labeled and executes in
+a supervised child with deterministic position/transition limits and a process
+watchdog/cancellation. Any potentially expensive reconstruction/replay/Full
+adjudication occurs there, never on the host interaction path. Unknown,
+cancellation or resource exhaustion is incomplete analysis, never a live chess
+result. Record exact modes/limits; reject unsupported combinations explicitly
+rather than downgrade. Full live-session restoration remains unsupported until
+a supported controlled restoration path exists.
+
+### Persistence and inspection — MSH-35
+
+Save a versioned complete desktop document containing canonical MatchRecord and
+GameRecord semantics, commands/events, policies, modes/limits, relevant desktop
+settings, and exact-context engine/analysis observations. FEN/actions or the
+existing GameRecord restoration helper alone are insufficient. Saved observations
+are historical, never resumable pending work. Reopen with fresh runtime identities
+and increasing frontend snapshot protection, engine work stopped until explicit
+Resume. Preserve modes/limits; reject unsupported/timed/Full live restoration
+explicitly before expensive replay.
+
+Write a same-directory temporary file, flush it and atomically replace only on
+success; failed/interrupted saves preserve the prior valid document and dirty
+state. Validate/replay opens off the interaction path under byte/event/time
+bounds, commit the candidate atomically only after full validation and exact
+current-session precondition checks. Corrupt/unsupported/resource-limited opens
+leave live state intact. Protect unsaved changes before New game, Open or Quit
+with Save/Discard/Cancel choices. Forced OS termination/crash cannot promise an
+interactive save prompt; ordinary native Quit and window-close are protected.
+
+Historical viewing is visibly read-only, separate from the live match, with
+explicit Return to live. Earlier-position analysis uses the exact known history
+prefix, excluding future actions, claims and repetition information. Selection
+identity prevents late results from describing a newly selected position.
+Branching/variation editing is outside this batch.
+
+### Evidence
+
+Verify native/controller and frontend behavior separately, then exercise the
+running packaged application through recovery/retry, analysis cancellation and
+replacement, save/close/reopen, history inspection and return to live. Difficult
+states may use a separately labeled verification build or copied sidecar; test
+instrumentation must not enter normal distributables. Record exact revisions,
+platform-specific evidence and independent review per ticket, reusing unchanged
+M1/M2 and first-batch evidence. MSH-36–39 and M3 closure are not in this batch.

@@ -31,8 +31,7 @@ function chessOutcome(outcome: ChessOutcome): string {
 }
 export function conclusionName(conclusion: MatchConclusion): string {
   if ("chess" in conclusion) return chessOutcome(conclusion.chess);
-  if ("unresolved" in conclusion)
-    return `Unresolved — unscored (${colorName(conclusion.unresolved.actor)} ${conclusion.unresolved.trigger === "flag_fall" ? "ran out of time" : "resigned"}; mating possibility not established)`;
+  if ("unresolved" in conclusion) return "Unresolved — unscored";
   if ("win" in conclusion)
     return `${colorName(conclusion.win.winner)} wins — ${conclusion.win.trigger === "flag_fall" ? "time expired" : "resignation"}`;
   return `Draw — ${conclusion.draw.trigger === null ? "agreement" : "opponent cannot mate"}`;

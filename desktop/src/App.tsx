@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { OutcomeCard, RecoveryNotice, ResignConfirmation } from "./Recovery";
 import { Board } from "./Board";
 import type { Color, Snapshot } from "./native";
 import { claimName, colorName, gameStatus } from "./presentation";
@@ -9,15 +10,16 @@ function EngineObservations({ snapshot }: { snapshot: Snapshot }) {
   const last = engine.last;
   if (last === null)
     return (
-      <p className="muted">
-        Final search observations appear after mShogi replies.
-      </p>
+      <p className="muted">No engine search has completed in this game.</p>
     );
   if (last.kind === "failure")
     return (
-      <p className="failure-detail">
-        {last.failure.kind.replaceAll("_", " ")}: {last.failure.message}
-      </p>
+      <details className="failure-detail">
+        <summary>Engine diagnostic details</summary>
+        <p>
+          {last.failure.kind.replaceAll("_", " ")}: {last.failure.message}
+        </p>
+      </details>
     );
   const telemetry = last.telemetry;
   const choice =
@@ -74,6 +76,11 @@ export function App() {
   const [orientation, setOrientation] = useState<Color>("white");
   const [newHuman, setNewHuman] = useState<Color>("white");
   const [claimIndex, setClaimIndex] = useState(0);
+  const resignButton = useRef<HTMLButtonElement>(null);
+  const [resigning, setResigning] = useState<{
+    version: number;
+    human: Color;
+  } | null>(null);
   if (snapshot === null)
     return (
       <main className="loading">
@@ -86,7 +93,7 @@ export function App() {
     );
   const humanTurn =
     snapshot.human === snapshot.turn && snapshot.conclusion === null;
-  const canPlay = connected && !busy && humanTurn;
+  const canPlay = connected && !busy && humanTurn && resigning === null;
   const paused = ["cancelled", "failed", "incomplete"].includes(
     snapshot.engine.status,
   );
@@ -153,7 +160,7 @@ export function App() {
             <span>
               {snapshot.conclusion !== null
                 ? "Game concluded"
-                : canPlay
+                : humanTurn
                   ? "Your turn"
                   : snapshot.engine.status === "thinking"
                     ? "mShogi is searching within fixed work limits"
@@ -193,28 +200,26 @@ export function App() {
             <p className="caption">
               Games are unsaved. New game or closing the app discards this game.
             </p>
+            {snapshot.conclusion === null && (
+              <button
+                className="quiet resign-button"
+                ref={resignButton}
+                disabled={!connected || busy}
+                onClick={() =>
+                  setResigning({
+                    version: snapshot.version,
+                    human: snapshot.human,
+                  })
+                }
+              >
+                Resign game…
+              </button>
+            )}
           </section>
-          {(error || snapshot.engine.message) && (
-            <section
-              className={`notice ${snapshot.engine.status === "failed" || error ? "error" : ""}`}
-              role={
-                snapshot.engine.status === "failed" || error
-                  ? "alert"
-                  : "status"
-              }
-            >
-              <strong>
-                {error
-                  ? "Command or connection problem"
-                  : snapshot.engine.status === "failed"
-                    ? "Engine failure · game unscored"
-                    : snapshot.engine.status === "incomplete"
-                      ? "Search incomplete"
-                      : "Engine work cancelled"}
-              </strong>
-              <p>{error || snapshot.engine.message}</p>
-            </section>
+          {snapshot.conclusion !== null && (
+            <OutcomeCard conclusion={snapshot.conclusion} />
           )}
+          <RecoveryNotice snapshot={snapshot} error={error} />
           <section className="card engine-card">
             <div className="card-title">
               <h2>Native engine</h2>
@@ -282,6 +287,16 @@ export function App() {
                       </option>
                     ))}
                   </select>
+                  <p className="claim-scope">
+                    {claim.intended === null
+                      ? "Current-position claim"
+                      : `Intended-move claim · ${claim.intended}`}
+                  </p>
+                  <p className="caption">
+                    {claim.intended === null
+                      ? "The required threshold is already established in the current native history."
+                      : "This action is an unplayed intention. Claiming does not add this move to the board or move history."}
+                  </p>
                   <button
                     className="secondary"
                     disabled={!canPlay}
@@ -313,7 +328,9 @@ export function App() {
             >
               {moves.length === 0 ? (
                 <p className="empty-history">
-                  Moves appear here as the game is played.
+                  {snapshot.conclusion === null
+                    ? "Moves appear here as the game is played."
+                    : "No board moves were played."}
                 </p>
               ) : (
                 <table>
@@ -343,6 +360,28 @@ export function App() {
           </section>
         </aside>
       </div>
+      {resigning !== null && (
+        <ResignConfirmation
+          human={resigning.human}
+          openedVersion={resigning.version}
+          currentVersion={snapshot.version}
+          returnFocus={() => {
+            if (resignButton.current && !resignButton.current.disabled)
+              resignButton.current.focus();
+            else
+              document
+                .querySelector<SVGGElement>('.square[tabindex="0"]')
+                ?.focus();
+          }}
+          busy={busy}
+          connected={connected}
+          onCancel={() => setResigning(null)}
+          onConfirm={(version) => {
+            setResigning(null);
+            void command({ kind: "resign", version });
+          }}
+        />
+      )}
       <footer className="app-footer">
         <span>One native rules engine. Complete actions. Optional claims.</span>
         <span>Session version {snapshot.version}</span>

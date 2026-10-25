@@ -1,0 +1,130 @@
+{
+  "package_root": "desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+  "engine": "Contents/MacOS/mshogi",
+  "sha256": "1461e608869d948b945e811075df7e5ebc07c49b3d8e8a91c72aa6117083a60e",
+  "host_sha256": "f5b149037f6f82d92e9fbf0dc9caeb8175dac2637a0aa22ba1de57bb6e1d07db",
+  "version": "mshogi 0.1.0",
+  "uci_observations": [
+    "id name mShogi 0.1.0",
+    "id author John Weathers",
+    "option name ClaimPolicy type combo default explicit var explicit var auto",
+    "uciok",
+    "readyok",
+    "info depth 1 nodes 21 time 6 score cp 0 pv a2a3",
+    "bestmove a2a3"
+  ],
+  "internal_response": {
+    "context": {
+      "protocol": 1,
+      "request_id": 1,
+      "session_version": 1,
+      "process_generation": 1,
+      "game": {
+        "schema_version": 1,
+        "rules_profile": "mshogi.chess.match.v1",
+        "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "history_origin": "standard_start",
+        "claim_policy": "explicit_only",
+        "events": []
+      },
+      "limits": {
+        "depth": 1,
+        "nodes": 1000
+      }
+    },
+    "result": {
+      "kind": "move",
+      "action": "a2a3",
+      "telemetry": {
+        "score": 0,
+        "completed_depth": 1,
+        "nodes": 21,
+        "principal_variation": [
+          {
+            "kind": "move",
+            "action": "a2a3"
+          }
+        ],
+        "status": "complete"
+      }
+    }
+  },
+  "files": [
+    "Contents/Info.plist",
+    "Contents/MacOS/mshogi",
+    "Contents/MacOS/mshogi-desktop",
+    "Contents/Resources/icon.icns"
+  ],
+  "scope": "Actual normal macOS packaged resignation plus labeled verification-package claims/recovery/cancellation. Other-platform UI journeys are not inferred. Exact integrated source/CI is recorded in MSH-34.",
+  "verification_host_sha256": "4beb748e4292629d96e319eb57249a703b02058e6169f03afeab7dbd2c2582ff",
+  "journeys": [
+    {
+      "package": "normal",
+      "journey": "e2e4 a7a5 then human White resignation",
+      "result": "unresolved and unscored",
+      "history": [
+        "e2e4",
+        "a7a5"
+      ],
+      "version": 4
+    },
+    {
+      "package": "separately labeled verification, claim fixture",
+      "journey": "intended fifty-move claim a1b1",
+      "result": "claimed draw; intention not played",
+      "history": [],
+      "version": 2
+    },
+    {
+      "package": "separately labeled verification, incomplete fixture",
+      "journey": "actual nodes0 search then explicit Retry with real engine",
+      "before": {
+        "depth": 0,
+        "nodes": 0,
+        "score": null,
+        "history": []
+      },
+      "after": {
+        "depth": 2,
+        "nodes": 442,
+        "score": 0,
+        "perspective": "white",
+        "history": [
+          "a2a3"
+        ]
+      }
+    },
+    {
+      "package": "separately labeled verification, standard fixture, substituted helper then restored engine",
+      "journey": "e2e4 then actual MissingResponse; explicit Retry",
+      "before": {
+        "state": "failed",
+        "conclusion": null,
+        "history": [
+          "e2e4"
+        ]
+      },
+      "after": {
+        "depth": 2,
+        "nodes": 642,
+        "history": [
+          "e2e4",
+          "a7a5"
+        ]
+      }
+    },
+    {
+      "package": "separately labeled verification, substituted external slow child",
+      "journey": "g1f3 then Cancel search",
+      "state": "cancelled",
+      "conclusion": null,
+      "history": [
+        "e2e4",
+        "a7a5",
+        "g1f3"
+      ],
+      "child_pid": 12003,
+      "child_absent_after_cancel": true
+    }
+  ]
+}

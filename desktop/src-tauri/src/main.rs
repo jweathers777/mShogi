@@ -68,6 +68,17 @@ fn desktop_command(
         controller.command(command)
     })?
 }
+fn initial_controller() -> Result<DesktopController, Box<dyn std::error::Error>> {
+    #[cfg(feature = "desktop-verification")]
+    {
+        let fixture = std::env::var("MSHOGI_DESKTOP_FIXTURE").unwrap_or_else(|_| "standard".into());
+        DesktopController::verification(engine_path()?, &fixture).map_err(Into::into)
+    }
+    #[cfg(not(feature = "desktop-verification"))]
+    {
+        Ok(DesktopController::new(engine_path()?)?)
+    }
+}
 fn desktop_menu(app: &AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
     // Cocoa's predefined Quit calls NSApplication::terminate directly. A custom
     // item routes ordinary Quit/Cmd-Q through the preventable Tauri exit request.
@@ -189,7 +200,13 @@ fn main() {
             }
         })
         .setup(|app| {
-            app.manage(Mutex::new(DesktopController::new(engine_path()?)?));
+            app.manage(Mutex::new(initial_controller()?));
+            #[cfg(feature = "desktop-verification")]
+            if let Some(window) = app.get_webview_window("main") {
+                let fixture =
+                    std::env::var("MSHOGI_DESKTOP_FIXTURE").unwrap_or_else(|_| "standard".into());
+                window.set_title(&format!("mShogi Verification — {fixture} (test state)"))?;
+            }
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![desktop_snapshot, desktop_command])

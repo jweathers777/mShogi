@@ -8,6 +8,10 @@ publish = false
 [workspace]
 resolver = "3"
 
+[features]
+# Explicitly separate verification builds; absent from normal distributables.
+desktop-verification = ["mshogi-desktop-session/desktop-verification"]
+
 [build-dependencies]
 tauri-build = { version = "=2.7.4", features = [] }
 

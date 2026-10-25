@@ -333,6 +333,10 @@ fn desktop_menu(app: &AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
             &PredefinedMenuItem::hide_others(app, None)?,
             #[cfg(target_os = "macos")]
             &PredefinedMenuItem::show_all(app, None)?,
+            // Cocoa's predefined item calls NSApplication::terminate:, like
+            // Dock Quit. Keep this native-route probe out of normal packages.
+            #[cfg(all(feature = "desktop-verification", target_os = "macos"))]
+            &PredefinedMenuItem::quit(app, Some("Native Cocoa Quit (verification)"))?,
             &quit,
         ],
     )?;

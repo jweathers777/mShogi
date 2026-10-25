@@ -48,6 +48,14 @@ Cmd-Q and window-close Save/Discard/Cancel evidence is required separately;
 compilation alone does not establish the native UI behavior. Linux/Windows
 compilation is also checked independently because the package remains shared.
 
+The separate macOS `desktop-verification` build includes a predefined menu item
+labeled `Native Cocoa Quit (verification)`. Unlike the application's custom
+Quit item, this predefined Cocoa item invokes `NSApplication::terminate:` and
+therefore exercises `applicationShouldTerminate:` through the same native
+termination entry point as Dock Quit. It is compiled out of normal packages.
+This probe permits precise native-route evidence when automation cannot bind
+the Dock; it does not establish that the Dock UI itself was clicked.
+
 References: [Tao 0.37.2 source](https://docs.rs/crate/tao/0.37.2/source/src/platform_impl/macos/app_delegate.rs),
 [Apple termination delegate](https://developer.apple.com/documentation/appkit/nsapplicationdelegate/applicationshouldterminate(_:)),
 [Tauri runtime source](https://docs.rs/crate/tauri-runtime-wry/2.12.3/source/src/lib.rs).

@@ -17,12 +17,18 @@ progress. A pending check is not a pass.
 
 The reviewed integration checkout was clean at
 `475e3b1a2d81db81175891f07da61db7806d6589` on `codex/rewrite`. The independent
-source reads and Rust tests used that checkout. The builder's `900932f` source
-and actual GUI-tested integration
-`2f0e4cee3e1cc05df99ff51178eb4be810fbcb44` have no differences from it in
+source reads and Rust tests used that checkout. Actual GUI-tested integration
+`2f0e4cee3e1cc05df99ff51178eb4be810fbcb44` has no differences from it in
 `crates`, `desktop`, `.github`, `Cargo.toml` or `Cargo.lock`; the later integration
-adds completion records and evidence. Frontend tests used the builder's already
-installed locked dependencies against those identical frontend sources.
+adds completion records and evidence. The builder's `900932f` has identical
+product sources, workspace members and lockfile, but its root `Cargo.toml`
+still excludes `legacy/rust-prototype`. Integration preserves another worker's
+prototype removal and removes that obsolete exclusion. Thus builder and
+integration manifests are not byte-identical. Frontend tests used the builder's
+already installed locked dependencies against identical frontend sources.
+macOS builder GUI reuse therefore establishes unchanged application behavior,
+not identical root-manifest bytes. Actual integrated Windows/Linux GUI execution
+and native CI cover the workspace after the unrelated prototype cleanup.
 
 The review read `AGENTS.md`, the accepted design, the complete
 [M3 contract](../desktop/m3-design.md), MSH-39 and all acceptance criteria for
@@ -85,9 +91,16 @@ manifest/source checkout remained exact integration `475e3b1`.
   Windows visible capacity pause, macOS normal human-Black play and macOS
   capacity focus/save state. These agree with native/DOM reports and preserve
   the visible environment and verification labels.
-* Inspected source diffs establishing unchanged product paths between GUI-tested
-  `2f0e4cee`, builder `900932f` and reviewed `475e3b1`, and unchanged product paths
-  from the focused capacity revision `4e1e9d4` to the final GUI source.
+* Inspected source diffs establishing unchanged product code between GUI-tested
+  `2f0e4cee`, builder `900932f` and reviewed `475e3b1`, and unchanged product code
+  from focused capacity revision `4e1e9d4` to the final GUI source. A subsequent
+  explicit manifest comparison corrected the initial overstatement of exact
+  builder/integration equality: both builder revisions retain the obsolete
+  `legacy/rust-prototype` workspace exclusion described above. Integrated
+  `2f0e4cee` through `475e3b1` and closure integration
+  `1e138926d4e35acdbd9912f6aff2fc7dc64aadf5` have identical product code and build
+  manifests. The latter diff contains only documentation and the MSH-39 record;
+  its README preserves the unrelated prototype deletion/history link.
 * Read the integrator's closure draft and the README, desktop README, design and
   desktop-contract status updates. Their capabilities, evidence reuse, current
   native-CI gate and future M4 scope boundary agree with this assessment; no

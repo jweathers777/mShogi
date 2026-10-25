@@ -35,6 +35,7 @@ State values:
 | Competitive strength | Deferred | No playing-strength claim from the baseline search | M5 |
 | UCI chess engine protocol | Implemented (subset) | [UCI adapter](../uci.md): separate machine mode, private history-sensitive search, depth/node/basic clock limits, cancellation and protocol-only stdout. Real child-process tests and recorded complete Stockfish19 matches | MSH-22/23 |
 | Self-play and independent-engine experiments | Implemented | [Runner](../match-runner.md): authoritative rules, paired openings, bounded UCI supervision, executable/model/config identities, explicit unscored failures and complete canonical match replay. Actual standard-start/forced-ending self-play and Stockfish19 games, conditional work-limited reruns and timed observations | MSH-23; MSH-25 integration closure |
+| Integrated M2 search/match baseline | Implemented (review) | [Focused M2 closure](../review/m2-closure.md): fresh independent integration review, 21 recorded games, actual outstanding-search clock termination, conditional reruns and native three-platform process/replay evidence. Reuses unchanged M1 evidence | MSH-25 |
 | Other engine protocols | Deferred | USI, CECP/XBoard and UCCI remain available when their game/opponent requires them | Future variant/opponent tasks |
 | Learned evaluation and neural infrastructure | Deferred | Not started | M5 |
 | Other five promised games | Deferred | Requirements remain; none implemented or certified by this corpus | M4 |

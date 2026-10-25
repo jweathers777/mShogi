@@ -1,10 +1,11 @@
 ---
 id: MSH-35
 title: Save reopen and inspect desktop game history
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-10-25T12:48:00Z'
-updated_date: '2026-10-25T15:17:00Z'
+updated_date: '2026-10-25T16:22:00Z'
 labels: []
 milestone: m-3
 dependencies:
@@ -36,8 +37,16 @@ Games must survive application restarts and permit read-only inspection without 
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Implement a strict versioned desktop archive with complete canonical MatchRecord/GameRecord, settings, command/control journal, exact-context observations and identity high-water marks. Add controlled core record accessors/replay cancellation without changing M2 rules. One bounded native worker performs atomic file save, strict/preflighted untimed-M2 open and exact historical event-prefix reconstruction off the interaction path; commit only current preconditions, leave failures intact and reopen paused with fresh runtime identities/timestamp floor. Add native file dialogs, unsaved-change replacement/quit guards and distinct historical UI/analysis provenance. Verify round-trips, failed/interrupted saves, corrupt/unsupported/resource-limited opens, claims/conclusions, stale work and real packaged save/close/reopen/history/return-live journeys; independently review, integrate/push and collect applicable CI.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 Owner clarification 2026-10-25: implement only after MSH-34 and MSH-33 complete. Versioned desktop persistence must include canonical MatchRecord and GameRecord semantics, claims/conclusions, commands/events, policies, modes/limits, relevant settings and exact-context observations; not merely FEN/actions or GameRecord helper restoration. Observations reopen as historical, never pending work; runtime identities are fresh, snapshots remain monotonic, untimed engine work stays stopped until explicit Resume. Atomic save failure/interruption preserves prior valid file and dirty state. Corrupt/unsupported/resource-limited open leaves current session intact; validate/replay off interaction path with limits, commit candidate atomically after current-session precondition. Protect unsaved changes on replace/open/ordinary quit. Historical view visibly read-only with explicit Return to live; analysis uses exact history prefix without future repetition/events and rejects late results after selection changes. No branching/variation editing required. Actual save/close/reopen/history/return-live journeys required; separate instrumentation only. Existing AC preserved. MSH-36–39 remain open. See M3 design second-batch clarifications.
+
+Owner @codex on codex/m3-desktop reusable checkout .claude/worktrees/next-task. MSH-33 and MSH-34 are Done with exact-source three-platform native/package evidence. Isolated native archive/history/worker builder and frontend builder plus host-only native-dialog/quit integration builder coordinate public DTOs under primary integration. Scope stays untimed M2 live restoration; advanced Full analysis contexts/limits are preserved as historical observations, unsupported live modes/timed sessions rejected before solver replay. No branching, timedplay, syntheticfixture or M3 closure in this task.
 <!-- SECTION:NOTES:END -->

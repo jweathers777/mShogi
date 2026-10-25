@@ -141,11 +141,78 @@ Do not invent a nodes-per-second target before measuring the first correct imple
 | M3. Desktop vertical slice | Play and inspect a game through the actual native engine; test cancellation/stale results, save/reload, an 8x8 and 16x16 presentation, compound-action selection, and packaged installation on all three systems. |
 | M4. Variant expansion and conformance | Complete the remaining games with sourced rules profiles and coverage evidence; validate materially different state/move semantics before deep common-engine optimization. |
 | M5. Strength and learned evaluation | Establish per-game opponent pools and strength targets; tune search and evaluation; demonstrate a reproducible improvement from an initial learned evaluator. |
-| M6. Further engine research and polish | Explore policy/value search and budgeted learning, improve analysis and accessibility, and close product-quality and distribution gaps. |
+| M6. Further engine research and polish | Deliver required analysis/accessibility, product-quality and distribution polish; keep policy/value search and budgeted learning as optional research. |
 
 The milestone names establish direction, not an obligation to serialize every independent activity. An early bounded desktop or variant-contract experiment can resolve a concrete risk. Do not turn that allowance into an unbounded second implementation effort.
 
 M2 is refined in MSH-15–25 against the actual M1 implementation. The [match/history profile](rules/chess-match-v1.md) records the approved 2026-10-24 policy; MSH-26 supplies an opt-in exact dead-position/side-specific reachability algorithm, with explicit resource uncertainty and unchanged M2 defaults. M2 is closed with its [integration evidence](review/m2-closure.md). M3 is refined in MSH-27–39 and the [desktop contract](desktop/m3-design.md), including all eleven desktop work areas and an initial bounded untimed play batch (MSH-27–32). M3 stays open until its remaining deliverables and packaged-platform integration review pass. All six games and strong engines remain the product target.
+
+### Remaining scope and closure policy (planning correction, 2026-10-25)
+
+Backlog.md's milestone percentage is **Done assigned tasks / currently assigned
+tasks**, not a verdict that the milestone's promised outcome is delivered. An
+incomplete breakdown can display 100% while substantial scope is absent. M4 did
+so when its only assigned task was the completed MSH-26. Preserve that task's
+Done status, M4 assignment and evidence; adding missing work corrects the board
+without reopening completed work. A zero-task milestone is unplanned work, not
+an absence of obligations. Counts are neither effort estimates nor a measure of
+how much implementation remains.
+
+The following scope-level tickets represent the accepted remaining roadmap.
+They are unassigned **To Do** work, to be refined against the then-current
+implementation and recorded design questions before execution. No estimates,
+research outcomes, rules interpretations or detailed implementation plans are
+approved by creating them. This correction leaves MSH-27–39 and the current M3
+implementation batch unchanged and does not authorize starting future games.
+
+| Milestone | Scope and owning tasks | Required closure gate |
+| --- | --- | --- |
+| M4 | MSH-26: completed chess completeness; MSH-41: shogi; MSH-42: tori shogi; MSH-43: chu shogi; MSH-44: tenjiku shogi; MSH-45: xiangqi; MSH-46: shared six-game integration | MSH-47 depends on MSH-26, MSH-39 and every MSH-41–46 deliverable. |
+| M5 | MSH-48: shared reproducible strength/learning experiment infrastructure; MSH-49: chess strength; MSH-50: shogi strength; MSH-51: tori shogi strength; MSH-52: chu shogi strength; MSH-53: tenjiku shogi strength; MSH-54: xiangqi strength; MSH-55: initial learned evaluator, training/export/native inference and demonstrated improvement | MSH-56 depends on M4 closure and every MSH-48–55 deliverable. |
+| M6 required product delivery | MSH-57: six-game analysis, accessibility and product polish; MSH-58: release policy and three-platform distribution | MSH-60 depends on M5 closure and MSH-57–58. |
+| M6 optional research | MSH-59: policy/value search and budgeted learning experiments | Explicitly excluded from required MSH-60 closure dependencies. Research may remain To Do when required product delivery closes. |
+
+Each M4 game scope owns its complete sourced/versioned profile, authoritative
+state/actions/history/adjudication, independent verification, game-specific
+library and console interfaces, functional native mShogi engine support,
+canonical saved records and actual desktop adaptation. Required rules questions
+(D-07) remain in the relevant game task; shortcuts cannot become the profile by
+accident. These tickets are complete game deliveries, not movement-only kernels.
+
+Shared boundary extensions, game/profile dispatch, complete-action transport,
+engine/session supervision, common record evolution/compatibility, reusable
+presentation and cross-game packaged acceptance are owned **once**, by MSH-46.
+Game-specific adapters and conformance examples stay with the corresponding game
+ticket. Work on shared mechanisms can coordinate with those tickets; MSH-46's
+dependencies gate its final integrated acceptance. MSH-47 verifies the combined
+result on Windows, macOS and Linux. A shared capability or synthetic fixture is
+not evidence that a real game has been delivered.
+
+M4 engine support means legal, history-aware functional search/play, safe
+requests/cancellation and product integration. Measured playing strength belongs
+to the six explicit M5 game tasks. Targets, opponent pools and fair comparison
+conditions remain game-specific D-09 questions; no numeric targets are invented
+here. MSH-55 requires an initial learned evaluator's reproducible improvement,
+not one predetermined architecture for all six games. Its initial game(s),
+features, model/export choices and compute budget remain empirical decisions.
+NNUE-style evaluation remains a candidate; optional policy/value/MCTS research
+is not a prerequisite for the promised engines or product delivery.
+
+Required M6 product gaps must be inventoried and closed against P-03–P-05;
+release licensing, redistribution, minimum OS, signing and update arrangements
+remain D-10 decisions in MSH-58. Optional experiments cannot substitute for these
+requirements. An M6 board percentage below 100% can coexist with required-scope
+closure if only explicitly optional research remains; record that distinction.
+
+A milestone closes only when its **complete promised scope**, required task
+criteria, applicable independent review and integrated verification have an
+explicit evidence-based verdict in its closure task. Refine dependencies when
+scope is split, keeping the closure gate connected to every required deliverable.
+Missing game implementations, unresolved required rules or required integration
+block M4 closure regardless of its percentage. The same rule applies to required
+M5/M6 outcomes. Do not erase gaps by renaming scope, archiving unfinished required
+work or moving it into optional research. MSH-40 records this planning correction
+and its verification, separately from future product delivery.
 
 ## 6. Verification contract
 

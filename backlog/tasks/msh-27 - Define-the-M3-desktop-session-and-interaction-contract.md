@@ -1,7 +1,7 @@
 ---
 id: MSH-27
 title: Define the M3 desktop session and interaction contract
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-25T12:48:00Z'
@@ -33,7 +33,7 @@ Desktop work needs one durable session, engine and interaction contract, with an
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -48,6 +48,8 @@ Reconcile existing milestones and task identities; record the researched native 
 Owner @codex, branch codex/m3-desktop, reusable checkout .claude/worktrees/next-task. Backlog CLI 1.55.1 matches repository baseline. No preexisting M3 tasks; MSH-27–39 added without altering M2.
 
 Independent documentation review by /root/m3_contract_review assessed AGENTS, design and all MSH-27–39 against the eleven areas and bounded batch; no actionable findings. Existing M2 milestone and task evidence are unchanged. Official Tauri prerequisites and sidecar documentation consulted.
+
+Integrated e8dafdf into codex/rewrite by fast-forward and normal push. Documentation-only contract closure; no native behavior changed, so existing M2 native evidence is reused.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

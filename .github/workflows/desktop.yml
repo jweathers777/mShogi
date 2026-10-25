@@ -25,7 +25,7 @@ jobs:
           - os: windows-2022
             bundle: nsis
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 40
+    timeout-minutes: 55
     defaults:
       run:
         shell: bash
@@ -42,7 +42,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev webkit2gtk-driver xvfb openbox xdotool scrot
       - name: Install desktop toolchain
         run: rustup toolchain install 1.90.0 --profile minimal --component rustfmt,clippy
       - name: Locked frontend and native checks
@@ -78,11 +78,94 @@ jobs:
           $process = Start-Process -FilePath $installer -ArgumentList @('/S', "/D=$destination") -Wait -PassThru
           if ($process.ExitCode -ne 0) { throw "Installer exited $($process.ExitCode)" }
           python desktop/scripts/package-smoke.py $destination --report package-smoke.json
+      - name: Preserve normal package identity before separate verification build
+        run: |
+          python - <<'PY'
+          import hashlib, json, os, shutil
+          from pathlib import Path
+          output = Path('gui-packages/normal')
+          output.mkdir(parents=True)
+          shutil.copytree('desktop/src-tauri/target/release/bundle', output / 'bundle')
+          shutil.copy('package-smoke.json', output / 'package-smoke.json')
+          files = {str(p.relative_to(output)): hashlib.sha256(p.read_bytes()).hexdigest()
+                   for p in output.rglob('*') if p.is_file()}
+          (output / 'manifest.json').write_text(json.dumps({'source_revision': os.environ['GITHUB_SHA'], 'files': files}, indent=2))
+          PY
+      - name: Install actual Linux application for GUI interaction
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install -y ./desktop/src-tauri/target/release/bundle/deb/*.deb
+          python3 - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          report = json.loads(Path('package-smoke.json').read_text())
+          assert hashlib.sha256(Path('/usr/bin/mshogi-desktop').read_bytes()).hexdigest() == report['host_sha256']
+          assert hashlib.sha256(Path('/usr/bin/mshogi').read_bytes()).hexdigest() == report['sha256']
+          PY
+      - name: Prepare external native GUI driver
+        if: runner.os != 'macOS'
+        run: cargo +1.90.0 install tauri-driver --version 2.0.6 --locked
+      - name: Pin external Windows GUI Python runtime
+        if: runner.os == 'Windows'
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Prepare matching Windows WebView2 driver and native UI tools
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          python -m venv "$env:RUNNER_TEMP/mshogi-gui-venv"
+          & "$env:RUNNER_TEMP/mshogi-gui-venv/Scripts/python.exe" -m pip install -r desktop/scripts/requirements-gui-windows.txt
+          ./desktop/scripts/prepare-webview-driver.ps1 -OutputDirectory "$env:RUNNER_TEMP/mshogi-webview-driver" -ReportPath webview-driver.json
+      - name: Build separately labeled packaged verification application
+        if: runner.os != 'macOS'
+        working-directory: desktop
+        run: npm run desktop:build -- --bundles ${{ matrix.bundle }} --features desktop-verification --config src-tauri/tauri.verification.conf.json
+      - name: Extract Linux verification package with separate identity
+        if: runner.os == 'Linux'
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, shutil, subprocess
+          from pathlib import Path
+          packages = [p for p in Path('desktop/src-tauri/target/release/bundle/deb').glob('*.deb') if 'verification' in p.name.lower()]
+          assert len(packages) == 1, packages
+          package = packages[0]
+          subprocess.run(['dpkg-deb', '-x', str(package), 'gui-extracted'], check=True)
+          Path('gui-packages/verification').mkdir(parents=True)
+          shutil.copy(package, 'gui-packages/verification')
+          Path('gui-packages/verification/manifest.json').write_text(json.dumps({
+              'source_revision': os.environ['GITHUB_SHA'], 'package': str(package),
+              'sha256': hashlib.sha256(package.read_bytes()).hexdigest(),
+              'installation': 'Separately extracted verification package; normal package actually installed with apt.'}, indent=2))
+          PY
+      - name: Interact with actual installed and packaged Linux applications
+        if: runner.os == 'Linux'
+        run: |
+          GDK_BACKEND=x11 dbus-run-session -- xvfb-run -a -s '-screen 0 1440x1100x24' python3 desktop/scripts/gui-smoke.py --normal-host /usr/bin/mshogi-desktop --normal-engine /usr/bin/mshogi --verification-host "$PWD/gui-extracted/usr/bin/mshogi-desktop" --verification-engine "$PWD/gui-extracted/usr/bin/mshogi" --output "$PWD/gui-evidence"
+      - name: Install separate Windows verification package and interact with actual applications
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $installers = @(Get-ChildItem desktop/src-tauri/target/release/bundle/nsis/*-setup.exe | Where-Object { $_.Name -match 'Verification' })
+          if ($installers.Count -ne 1) { throw "Expected one separate verification installer, got $($installers.Count)" }
+          $destination = Join-Path $env:RUNNER_TEMP 'mshogi-gui-verification'
+          $process = Start-Process -FilePath $installers[0].FullName -ArgumentList @('/S', "/D=$destination") -Wait -PassThru
+          if ($process.ExitCode -ne 0) { throw "Verification installer exited $($process.ExitCode)" }
+          New-Item -ItemType Directory -Force gui-packages/verification | Out-Null
+          Copy-Item $installers[0].FullName gui-packages/verification
+          @{ source_revision = $env:GITHUB_SHA; installer = $installers[0].FullName; sha256 = (Get-FileHash $installers[0].FullName -Algorithm SHA256).Hash.ToLowerInvariant(); installation = $destination } | ConvertTo-Json | Set-Content gui-packages/verification/manifest.json
+          $driver = Get-Content webview-driver.json -Raw | ConvertFrom-Json
+          $normal = Join-Path $env:RUNNER_TEMP 'mshogi-package-smoke'
+          & "$env:RUNNER_TEMP/mshogi-gui-venv/Scripts/python.exe" desktop/scripts/gui-smoke.py --normal-host "$normal/mshogi-desktop.exe" --normal-engine "$normal/mshogi.exe" --verification-host "$destination/mshogi-desktop.exe" --verification-engine "$destination/mshogi.exe" --native-driver $driver.driver_path --output "$env:GITHUB_WORKSPACE/gui-evidence"
       - name: Upload native package and observations
+        if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: desktop-${{ matrix.os }}
           path: |
             desktop/src-tauri/target/release/bundle/
             package-smoke.json
+            gui-packages/
+            gui-evidence/
+            webview-driver.json
           retention-days: 14

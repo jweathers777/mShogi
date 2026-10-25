@@ -1,9 +1,11 @@
 ---
 id: MSH-31
 title: Build the minimal accessible chess board and live game presentation
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-10-25T12:48:00Z'
+updated_date: '2026-10-25T13:15:00Z'
 labels: []
 milestone: m-3
 dependencies:
@@ -34,3 +36,15 @@ Players need a readable board and complete native action selection without dupli
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Connect the completed native controller through serialized Tauri commands; render native snapshots and complete choices in an SVG board; add source/destination selection, promotion dialog, orientation and roving keyboard focus; show live history/status and actual final engine observations; verify focused frontend interactions and actual native application behavior, then independently review and integrate.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner @codex with isolated builder /root/desktop_foundation; branch codex/m3-desktop, checkout .claude/worktrees/next-task. Foundation28 and native controller29 complete with all applicable CI; no test instrumentation will be added to normal app.
+<!-- SECTION:NOTES:END -->

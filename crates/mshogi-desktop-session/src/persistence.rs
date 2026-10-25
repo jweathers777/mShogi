@@ -1902,15 +1902,38 @@ mod tests {
         assert_eq!(source.session.snapshot().history, ["e2e4"]);
         source.pause_for_close();
         assert_eq!(receipt.completion(), Some(Ok(())));
-        let version = source.session.version;
-        let (_, pending) = source
-            .command_with_receipt(DesktopCommand::Analyze {
-                version,
-                operation: AnalysisOperation::Moves { depth: 1, nodes: 0 },
-            })
+        let mut candidate = source.session.clone();
+        candidate
+            .command_unchecked(
+                DesktopCommand::Analyze {
+                    version: source.session.version,
+                    operation: AnalysisOperation::Moves { depth: 1, nodes: 0 },
+                },
+                source.at_ns(),
+            )
             .unwrap();
+        // command_with_receipt() polls before returning and can commit a fast
+        // candidate. Queue directly so only validation runs before close.
+        source.queue_admission(candidate).unwrap();
+        let pending = source.admission_receipt.clone().unwrap();
+        let deadline = Instant::now() + std::time::Duration::from_secs(5);
+        while source
+            .admissions
+            .shared
+            .state
+            .lock()
+            .unwrap()
+            .result
+            .is_none()
+        {
+            assert!(Instant::now() < deadline);
+            thread::sleep(std::time::Duration::from_millis(1));
+        }
+        assert_eq!(pending.completion(), None);
+        let document_revision = source.session.document_revision;
         source.pause_for_close();
         assert!(pending.completion().unwrap().is_err());
+        assert_eq!(source.session.document_revision, document_revision);
         source.snapshot();
         assert!(source.session.analysis_pending.is_none());
         assert!(source.session.check_archive_capacity(&mut || false).is_ok());

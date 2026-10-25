@@ -81,3 +81,13 @@ commands from a near-limit input, then capacity refusal, then successful Save.
 No remaining material findings. This source review is separate from the actual
 packaged GUI observations above. Hard runtime identity lifetime remains an
 explicit guard; no archive caps were raised and no canonical evidence removed.
+
+The exact normal GUI source is `3b427d49fb481c9391992d40f047941ae7f445c2`.
+The host's two close/file serialization tests and both workspace formatting
+checks also passed. Initial native CI passed on macOS and Windows; Linux found
+a timing assumption in the new receipt/close test. The public command API polls
+before returning, so a tiny candidate may already have been accepted. The test
+now waits for completed validation without polling admission, then verifies
+close supersedes that still-uncommitted candidate. This changes test setup only.
+Independent review ran the corrected exact test plus **50/50 repetitions**.
+The product GUI evidence remains applicable; replacement CI is recorded below.

@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-25T17:48:00Z'
-updated_date: '2026-10-25T18:15:00Z'
+updated_date: '2026-10-25T18:20:00Z'
 labels: []
 milestone: m-3
 dependencies:
@@ -51,4 +51,6 @@ Owner @codex, codex/m3-desktop reusable checkout .claude/worktrees/next-task, st
 Implementation: complete immutable candidate admission on a separate bounded worker; host waits for stable caller-owned receipts, not whichever admission is current. Resource capacity is distinct in native snapshots/UI and leaves Save/Save As available. Packaged macOS first pass verified real observation255→256, refused257 before execution, complete Save As/Open retaining256, refusal after reopen, explicit NewGame and guarded Cmd-Q. Independent review found SaveAs bookkeeping race and near-limit persisted watermark consumption; regressions/fixes underway before final verification. See docs/desktop/completion-batch-evidence.md; firstpass is explicitly pre-final-identity-fix evidence.
 
 Final focused evidence: 41 all-feature native tests, 9 real-process console integration tests, strict native Clippy, repeated17snapshot generation byte-identical;56 frontend tests and strict Vite build passed. Independent capacity_review reran40 normal-feature native+9process tests; both SaveAs metadata and identity-watermark findings fixed, no remaining material findings. Final normal macOS package opened256-observation archive, refused new analysis as resource capacity, retained all256 and successfully Saved; package-smoke confirms QA exclusion and actual UCI/internal/full bounded engine. Exact package/archive hashes and screenshots docs/desktop/evidence/m3-completion/capacity-local-macos.json; summary docs/desktop/completion-batch-evidence.md. Await integration CI before Done.
+
+Exact normal macOS source3b427d49fb481c9391992d40f047941ae7f445c2 rebuilt and GUI Open256/refuse/Save/clean Cmd-Q repeated; hashes updated. Host2tests/format passed. Initial Rust CI40220415681 macOS+Windows pass, Linux exposed newtest timing assumption (command API may already commit fast candidate before returning). Test now deterministically closes a validated but uncommitted admission; no product behavior change. Independent exacttest+50repetitions passed. Replacement nativeCI required beforeDone.
 <!-- SECTION:NOTES:END -->

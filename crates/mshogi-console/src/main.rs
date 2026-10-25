@@ -15,13 +15,14 @@ use session::{MAX_LINE_BYTES, Next, Session};
 
 const HELP: &str = "mShogi headless console
 
-Usage: mshogi [--help | --version | profile | shell | uci]
+Usage: mshogi [--help | --version | profile | shell | uci | internal-search]
 
   --help, -h     Show this help
   --version, -V  Show the application version
   profile        Show the chess rules profile and its coverage
   shell          Read chess commands from standard input, one per line
   uci            Run the bounded UCI chess engine adapter
+  internal-search  One-shot structured native desktop search
 
 The shell starts at the standard chess position. Results go to standard
 output and errors to standard error as 'error: line N: ...'; a failed
@@ -48,6 +49,12 @@ fn main() -> ExitCode {
         }
         Some(Some("shell")) => return shell(),
         Some(Some("uci")) => return uci::run(),
+        Some(Some("internal-search")) => {
+            if let Err(error) = mshogi_engine::serve_once(io::stdin().lock(), io::stdout().lock()) {
+                eprintln!("internal search failed: {error}");
+                return ExitCode::FAILURE;
+            }
+        }
         _ => return invalid_arguments(),
     }
     ExitCode::SUCCESS

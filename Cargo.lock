@@ -79,13 +79,35 @@ name = "mshogi-console"
 version = "0.1.0"
 dependencies = [
  "mshogi-core",
+ "mshogi-engine",
  "mshogi-search",
+ "serde_json",
 ]
 
 [[package]]
 name = "mshogi-core"
 version = "0.1.0"
 dependencies = [
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "mshogi-desktop-session"
+version = "0.1.0"
+dependencies = [
+ "mshogi-core",
+ "mshogi-engine",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "mshogi-engine"
+version = "0.1.0"
+dependencies = [
+ "mshogi-core",
+ "mshogi-search",
  "serde",
  "serde_json",
 ]

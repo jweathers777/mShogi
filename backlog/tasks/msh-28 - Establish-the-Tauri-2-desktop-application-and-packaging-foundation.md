@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-25T12:48:00Z'
-updated_date: '2026-10-25T13:03:00Z'
+updated_date: '2026-10-25T13:05:00Z'
 labels: []
 milestone: m-3
 dependencies:
@@ -48,4 +48,6 @@ Create a separately locked Tauri desktop project with React/strict TypeScript/Vi
 Owner codex + /root/desktop_foundation; branch codex/m3-desktop; checkout .claude/worktrees/next-task. MSH-27 contract independently reviewed and integrated.
 
 Local macOS arm64: npm run build (strict TypeScript + Vite), desktop Cargo1.90 fmt/clippy --locked --all-targets -D warnings/test --locked, and actual .app package build passed. Packaged engine UCI depth1 completed21nodes/bestmovea2a3; SHA d987f826ef87f7d004a1a9604f4b63e0bd8ac171fdff3fe862bb62a4e93352c0. Package inventory contains only plist, host, engine and icon. Actual native screenshot docs/desktop/evidence/foundation-macos.png; external smoke report /tmp/msh-desktop-foundation-smoke.json. Windows/Linux package CI and independent review pending.
+
+Independent foundation review /root/m3_contract_review found no actionable issues across toolchains, manifests/locks, permissions, package preparation, CI and launch instructions. Native screenshot confirms rendered packaged window. Independent Python verifier syntax check passed.
 <!-- SECTION:NOTES:END -->

@@ -1,7 +1,572 @@
-:root { color: #e9eee9; background: #101b20; font-family: ui-sans-serif, system-ui, sans-serif; font-synthesis: none; }
-body { margin: 0; }
-.foundation { max-width: 900px; padding: 100px 8vw; }
-h1 { font-family: Georgia, serif; font-size: 80px; letter-spacing: -4px; margin: 20px 0; }
-p { font-size: 18px; line-height: 1.6; }
-.eyebrow { color: #b4d393; font-size: 12px; letter-spacing: .18em; }
-.muted { color: #9aadaf; }
+:root {
+  color: #e7ece5;
+  background: #111e23;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
+  color-scheme: dark;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+button,
+select {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  padding: 10px 14px;
+  font-weight: 600;
+  transition: background 0.12s;
+}
+button:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+button:focus-visible,
+select:focus-visible,
+.history-scroll:focus-visible {
+  outline: 3px solid #b9d78d;
+  outline-offset: 3px;
+}
+button.primary {
+  background: #c3dca5;
+  color: #182b22;
+}
+button.primary:hover:enabled {
+  background: #d3e8ba;
+}
+button.secondary {
+  background: #294047;
+  color: #e4eee8;
+  border-color: #425960;
+}
+button.quiet {
+  background: transparent;
+  border-color: #3e535a;
+  color: #d5e2de;
+}
+button.quiet:hover {
+  background: #23373d;
+}
+select {
+  color: #ecf1e9;
+  background: #17292f;
+  border: 1px solid #40565c;
+  border-radius: 7px;
+  padding: 10px 9px;
+  min-width: 0;
+}
+h1,
+h2,
+p {
+  margin: 0;
+}
+h2 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+p {
+  line-height: 1.5;
+}
+.application {
+  max-width: 1440px;
+  margin: auto;
+  padding: 0 32px;
+}
+.app-header {
+  height: 92px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #2d4147;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.brand-mark {
+  font-size: 45px;
+  color: #c3dca5;
+  line-height: 1;
+}
+.brand h1 {
+  font-family: Georgia, serif;
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+.brand p {
+  color: #9bb0b3;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  margin-top: 3px;
+}
+.session-badges {
+  display: flex;
+  gap: 10px;
+}
+.session-badges span {
+  font-size: 12px;
+  border: 1px solid #3a4e54;
+  border-radius: 20px;
+  padding: 7px 12px;
+  color: #b6c8c6;
+}
+.session-badges i {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c3dca5;
+  margin-right: 5px;
+}
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(400px, 1fr) 310px;
+  gap: 28px;
+  padding-top: 25px;
+  align-items: start;
+}
+.board-panel {
+  min-width: 0;
+}
+.board-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  gap: 14px;
+}
+.eyebrow {
+  color: #9fbcb0;
+  font-size: 10px;
+  letter-spacing: 0.17em;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+.board-heading h2 {
+  font-size: clamp(20px, 2.3vw, 29px);
+  letter-spacing: -0.03em;
+  font-weight: 500;
+}
+.player-line {
+  color: #b9cbc7;
+  font-size: 13px;
+  margin-top: 6px;
+}
+.player-line span {
+  color: #839da1;
+  margin: 0 5px;
+}
+.flip-button {
+  font-size: 18px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.flip-button span {
+  font-size: 12px;
+}
+.board-wrap {
+  max-width: min(660px, calc(100dvh - 300px));
+  margin-inline: auto;
+}
+.chess-board {
+  width: 100%;
+  display: block;
+  filter: drop-shadow(0 12px 20px #030e1240);
+}
+.board-border {
+  fill: #324348;
+}
+.square {
+  outline: none;
+  cursor: default;
+}
+.square.available,
+.square.target {
+  cursor: pointer;
+}
+.square.light .square-fill {
+  fill: #ddd9c9;
+}
+.square.dark .square-fill {
+  fill: #789285;
+}
+.square.selected .square-fill {
+  fill: #c0c57c;
+}
+.square.target.light .square-fill {
+  fill: #cbd5ab;
+}
+.square.target.dark .square-fill {
+  fill: #96ad79;
+}
+.square .piece {
+  font-family:
+    "Arial Unicode MS", "Apple Symbols", "Segoe UI Symbol", "DejaVu Sans", serif;
+  font-size: 79px;
+  pointer-events: none;
+  paint-order: stroke fill;
+}
+.piece.white {
+  fill: #fffdf1;
+  stroke: #283a35;
+  stroke-width: 2.1px;
+}
+.piece.black {
+  fill: #172d2a;
+  stroke: #e1e7d7;
+  stroke-width: 0.65px;
+}
+.coordinate {
+  fill: #30453b;
+  font-size: 14px;
+  font-weight: 700;
+  pointer-events: none;
+}
+.dark .coordinate {
+  fill: #e9eddb;
+}
+.move-marker {
+  fill: #355e4e80;
+  pointer-events: none;
+}
+.capture-marker {
+  fill: transparent;
+  stroke: #355e4e;
+  stroke-width: 7px;
+  pointer-events: none;
+}
+.focus-ring {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 5px;
+  pointer-events: none;
+}
+.square:focus-visible .focus-ring {
+  stroke: #8d3a00;
+}
+.board-help {
+  color: #9bb0b2;
+  font-size: 11px;
+  text-align: center;
+  padding-top: 13px;
+}
+.game-footnote {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 15px;
+  color: #b8cac0;
+  font-size: 12px;
+}
+.game-footnote span:last-child {
+  color: #87a0a2;
+}
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.card {
+  background: #1a2b31;
+  border: 1px solid #33474e;
+  border-radius: 10px;
+  padding: 17px;
+}
+.card h2 {
+  font-size: 15px;
+}
+.card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+.caption,
+.muted {
+  color: #a7bdbd;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.card > .caption {
+  margin-top: 8px;
+}
+.new-game label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 9px;
+  color: #d3dfd9;
+}
+.new-game-controls {
+  display: flex;
+  gap: 9px;
+}
+.new-game-controls select {
+  flex: 1;
+  font-size: 12px;
+}
+.new-game-controls button {
+  font-size: 12px;
+}
+.engine-phase {
+  font-size: 10px;
+  text-transform: capitalize;
+  border-radius: 12px;
+  background: #2d4248;
+  color: #b1c6c3;
+  padding: 3px 8px;
+}
+.engine-phase.thinking {
+  background: #3c5135;
+  color: #d1e9ad;
+}
+.engine-phase.failed {
+  background: #593c37;
+  color: #ffcebb;
+}
+.engine-choice {
+  margin: 12px 0 3px;
+  font-size: 13px;
+  color: #d2e5bd;
+  overflow-wrap: anywhere;
+}
+.telemetry {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 14px 0 7px;
+}
+.telemetry dt {
+  color: #9db5b6;
+  font-size: 10px;
+}
+.telemetry dd {
+  color: #e1e9da;
+  margin: 4px 0 0;
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+}
+.variation {
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+  margin-top: 10px;
+  color: #bbcfbe;
+}
+.variation span {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #91aaaa;
+}
+.engine-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.engine-actions:empty {
+  display: none;
+}
+.engine-actions button {
+  width: 100%;
+  font-size: 12px;
+}
+.notice {
+  padding: 14px;
+  border: 1px solid #6d6a3d;
+  background: #393e2a;
+  border-radius: 8px;
+  color: #e9e9bd;
+}
+.notice.error {
+  border-color: #916051;
+  background: #492f2d;
+  color: #ffe1d3;
+}
+.notice strong {
+  font-size: 12px;
+}
+.notice p,
+.failure-detail {
+  font-size: 11px;
+  margin-top: 5px;
+  overflow-wrap: anywhere;
+}
+.failure-detail {
+  color: #f4c5ae;
+}
+.claims select {
+  max-width: 100%;
+  font-size: 11px;
+  width: 100%;
+  margin: 10px 0;
+}
+.claims button {
+  width: 100%;
+  font-size: 12px;
+}
+.history-scroll {
+  max-height: 156px;
+  overflow-y: auto;
+  border-top: 1px solid #344a50;
+  margin-top: 12px;
+}
+.history-scroll table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.history-scroll th,
+.history-scroll td {
+  padding: 7px 9px;
+}
+.history-scroll thead {
+  color: #9eb4b6;
+  font-size: 10px;
+}
+.history-scroll tbody th {
+  color: #8fa8ab;
+  font-weight: 400;
+}
+.history-scroll tbody tr:nth-child(odd) {
+  background: #21363c;
+}
+.history-scroll td {
+  font-family: ui-monospace, monospace;
+  color: #d9e5d5;
+}
+.empty-history {
+  padding: 20px 0;
+  font-size: 12px;
+  color: #94acae;
+}
+.app-footer {
+  display: flex;
+  justify-content: space-between;
+  margin: 24px 0 19px;
+  padding-top: 13px;
+  border-top: 1px solid #2e444b;
+  font-size: 10px;
+  color: #849da0;
+  gap: 10px;
+}
+.loading {
+  max-width: 900px;
+  padding: 120px 10%;
+}
+.loading h1 {
+  font-family: Georgia, serif;
+  font-weight: 500;
+  margin-bottom: 20px;
+  font-size: 40px;
+}
+.sr-only {
+  position: absolute;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #061216c9;
+  z-index: 10;
+}
+.promotion-dialog {
+  max-width: 460px;
+  padding: 30px;
+  background: #20363c;
+  border: 1px solid #6b837b;
+  border-radius: 12px;
+  box-shadow: 0 25px 100px #0008;
+}
+.promotion-dialog h2 {
+  font-size: 25px;
+  margin-bottom: 8px;
+}
+.promotion-dialog p:not(.eyebrow) {
+  color: #bbcfca;
+  font-size: 13px;
+}
+.promotion-choices {
+  display: flex;
+  gap: 8px;
+  margin: 22px 0 18px;
+}
+.promotion-choices button {
+  flex: 1;
+  background: #d6dfc3;
+  color: #1e362b;
+  text-transform: capitalize;
+  font-size: 11px;
+  padding: 8px;
+}
+.promotion-choices span {
+  display: block;
+  font-size: 40px;
+  line-height: 1.2;
+}
+.promotion-dialog > button {
+  width: 100%;
+}
+@media (max-width: 960px) {
+  .application {
+    padding: 0 20px;
+  }
+  .workspace {
+    grid-template-columns: minmax(360px, 1fr) 270px;
+    gap: 18px;
+  }
+  .card {
+    padding: 13px;
+  }
+  .session-badges span:last-child {
+    display: none;
+  }
+  .flip-button span {
+    display: none;
+  }
+}
+@media (max-width: 720px) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .app-header {
+    height: 76px;
+  }
+  .game-footnote,
+  .app-footer {
+    font-size: 10px;
+  }
+}
+
+/* Keep every rank and the keyboard instructions visible in shorter native windows. */
+@media (max-height: 740px) {
+  .app-header { height: 72px; }
+  .workspace { padding-top: 16px; }
+  .board-heading { margin-bottom: 10px; }
+  .board-heading .eyebrow { margin-bottom: 4px; }
+  .board-heading h2 { font-size: 22px; }
+  .player-line { margin-top: 3px; font-size: 12px; }
+  .board-wrap { max-width: min(660px, calc(100dvh - 235px)); }
+  .game-footnote { margin-top: 8px; }
+  .app-footer { margin-top: 14px; padding-top: 8px; }
+}

@@ -50,6 +50,7 @@ jobs:
         run: |
           npm ci
           npm run check
+          npm test
           npm run engine:prepare
           cd src-tauri
           cargo fmt --all -- --check

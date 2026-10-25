@@ -42,9 +42,55 @@ checks below supersede its binary identity. Package inventory contained only
 the plist, host, engine and icon. The native screenshot is
 [foundation-macos.png](evidence/foundation-macos.png).
 
-Three-platform package CI and final playable-application evidence are pending.
-Package construction/engine smoke is distinct from the full installed-app
-interaction verification retained in MSH-38.
+[Foundation package CI 40196021909](https://github.com/jweathers777/mShogi/actions/runs/40196021909)
+passed on the same integrated source, with exact retained observations:
+
+| Native platform | Job | Package verification | Retained report |
+| --- | --- | --- | --- |
+| macOS 15 | 121176902044 | `.app` contents and actual bundled UCI search | [macOS](evidence/foundation-macos.json) |
+| Ubuntu 24.04 | 121176902086 | Built `.deb`, extracted contents and actual bundled UCI search | [Linux](evidence/foundation-linux.json) |
+| Windows 2022 | 121176902007 | Built and installed NSIS package, contents and actual bundled UCI search | [Windows](evidence/foundation-windows.json) |
+
+Each depth-one search visited 21 nodes and chose `a2a3`. Package construction
+and engine smoke are distinct from the full installed-app interaction
+verification retained in MSH-38.
+The documentation-only bookkeeping push `6f41f69` had redundant workflows
+cancelled; production source was unchanged from the successful runs above.
+
+## Playable board and local native integration
+
+The normal macOS application was exercised through native UI automation, using
+its actual bundled engine and no injected game state:
+
+| Journey | Observed moves and native results | Screenshot |
+| --- | --- | --- |
+| Human White, click then keyboard | `e2e4 a7a5 g1f3 a5a4`; engine depth 2, 642 then 631 nodes, score 0 from Black's searched perspective | [White game](evidence/playable-white-macos.png) |
+| Human Black, independent board flip | `a2a3 e7e5 a3a4`; engine depth 2, 442 then 610 nodes, score 0 from White's searched perspective | [Black game](evidence/playable-black-macos.png) |
+| Default and compact window | All eight ranks and keyboard guidance visible at 1180×820 and 1180×650 | [Start](evidence/playable-start-macos.png), [compact](evidence/playable-compact-macos.png) |
+
+The knight move `g1f3` used arrows and Enter entirely on the native application
+board. Flipping preserved human color, move history and session version. The
+history remains a read-only live action list; no earlier-position change is
+offered. Thirteen frontend tests pass against native-generated JSON, including
+all promotion choices, focus recovery, orientation, selection cancellation,
+claims/conclusions, actual telemetry and out-of-order/stale-render protection.
+Eleven native session tests and the new process-cleanup regression also pass.
+
+Independent review found and resolved promotion focus loss, command version
+binding and native shutdown issues. Actual controlled-child verification then
+exposed the macOS predefined Quit bypass; the failed check and corrected
+observations are preserved in [shutdown evidence](evidence/shutdown-macos.json)
+and [reproduction instructions](shutdown-verification.md). The separate copy
+used the byte-identical normal host with only its copied sidecar replaced.
+Corrected actual Quit and window-close child removal preceded both watchdog and
+natural completion. Normal packages contain no instrumentation.
+
+The documented development command compiled/launched the native debug host,
+served the actual Vite/React assets on port 1420 and stopped with exit zero.
+CUA cannot bind this unbundled executable, so this is build/process/HTTP evidence,
+not a claim of development GUI play. Normal packaged GUI play is verified above.
+The final board source still requires native CI/integration evidence before
+MSH-31 closure; MSH-32 will separately verify the complete minimal-play slice.
 
 ## Remaining scope
 

@@ -1,0 +1,30 @@
+{
+  "source": "074fe515b9c9b9ab65dfc9a256dcbf0d07eb3132",
+  "run": "https://github.com/jweathers777/mShogi/actions/runs/40196021909",
+  "job": 121176902086,
+  "platform": "linux",
+  "observations": {
+    "package_root": "package-extracted",
+    "engine": "usr/bin/mshogi",
+    "sha256": "f0d7e969e37e981467dad62db37f8945f17b363f958ac35613adad84846dc48b",
+    "version": "mshogi 0.1.0",
+    "uci_observations": [
+      "id name mShogi 0.1.0",
+      "id author John Weathers",
+      "option name ClaimPolicy type combo default explicit var explicit var auto",
+      "uciok",
+      "readyok",
+      "info depth 1 nodes 21 time 6 score cp 0 pv a2a3",
+      "bestmove a2a3"
+    ],
+    "files": [
+      "usr/bin/mshogi",
+      "usr/bin/mshogi-desktop",
+      "usr/share/applications/mShogi.desktop",
+      "usr/share/icons/hicolor/128x128/apps/mshogi-desktop.png",
+      "usr/share/icons/hicolor/256x256@2/apps/mshogi-desktop.png",
+      "usr/share/icons/hicolor/32x32/apps/mshogi-desktop.png"
+    ],
+    "scope": "Package inventory and real bundled-engine UCI search. Installed UI interaction is MSH-38."
+  }
+}

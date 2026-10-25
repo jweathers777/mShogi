@@ -1,0 +1,46 @@
+{
+  "scope": "Separate verification copy with controlled direct-child sidecar; normal distributable unchanged. Native host executable is byte-identical.",
+  "failed_before_fix": {
+    "host_sha256": "1c36169ba2d2b696da9811996aec5532a00077fd81a7ef8783c7ec885dae72e7",
+    "observation": {
+      "pid": 54438,
+      "started_at_ns": 1792935801118177186,
+      "last_alive_at_ns": 1792935831125013000,
+      "quit_requested_at_ns": 1792935805774000000,
+      "gone_at_ns": 1792935831131651000,
+      "lifetime_ms": 30013.473814,
+      "quit_to_gone_ms": 25357.651,
+      "conclusive": false
+    },
+    "cause": "macOS predefined Quit invokes NSApplication terminate directly and bypasses ExitRequested"
+  },
+  "host_sha256": "3b4600a85200796a8c2563d3ccd3fc504707b56bc9864868b938bb306ba1f554",
+  "verification_host_sha256": "3b4600a85200796a8c2563d3ccd3fc504707b56bc9864868b938bb306ba1f554",
+  "normal_engine_sha256": "1461e608869d948b945e811075df7e5ebc07c49b3d8e8a91c72aa6117083a60e",
+  "fixture_engine_sha256": "5a4401e113ae7ddf710a1af6b3272881857e5c4b34d4f9f5334d312199e7b4a8",
+  "fixture": "Reads one request, writes own PID, then sleeps30seconds. Quit must kill it before natural completion/watchdog.",
+  "status": "passed after fix: actual Cmd+Q and window close each removed live child before watchdog/natural timeout",
+  "quit_after_fix": {
+    "pid": 58109,
+    "started_at_ns": 1792936169454377210,
+    "last_alive_at_ns": 1792936173777147000,
+    "quit_requested_at_ns": 1792936173656000000,
+    "gone_at_ns": 1792936173783477000,
+    "lifetime_ms": 4329.09979,
+    "quit_to_gone_ms": 127.477,
+    "conclusive": true
+  },
+  "final_host_sha256": "5e2f9d39e266a054b71019c1073dca125d701a5b5e17e2845ae2187ca9fa224e",
+  "window_close_after_final_fix": {
+    "pid": 60534,
+    "started_at_ns": 1792936384388488886,
+    "last_alive_at_ns": 1792936388322340000,
+    "quit_requested_at_ns": 1792936388286000000,
+    "gone_at_ns": 1792936388328663000,
+    "lifetime_ms": 3940.174114,
+    "quit_to_gone_ms": 42.663,
+    "conclusive": true
+  },
+  "final_verification_host_sha256": "5e2f9d39e266a054b71019c1073dca125d701a5b5e17e2845ae2187ca9fa224e",
+  "normal_engine_unchanged": true
+}

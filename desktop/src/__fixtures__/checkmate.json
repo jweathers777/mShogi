@@ -1,0 +1,224 @@
+{
+  "revision": 1,
+  "version": 1,
+  "human": "white",
+  "turn": "white",
+  "fen": "rnb1kbnr/pppp1ppp/8/4p3/6Pq/5P2/PPPPP2P/RNBQKBNR w KQkq - 1 3",
+  "pieces": [
+    {
+      "square": "a1",
+      "color": "white",
+      "kind": "rook",
+      "label": "a1, White rook"
+    },
+    {
+      "square": "b1",
+      "color": "white",
+      "kind": "knight",
+      "label": "b1, White knight"
+    },
+    {
+      "square": "c1",
+      "color": "white",
+      "kind": "bishop",
+      "label": "c1, White bishop"
+    },
+    {
+      "square": "d1",
+      "color": "white",
+      "kind": "queen",
+      "label": "d1, White queen"
+    },
+    {
+      "square": "e1",
+      "color": "white",
+      "kind": "king",
+      "label": "e1, White king"
+    },
+    {
+      "square": "f1",
+      "color": "white",
+      "kind": "bishop",
+      "label": "f1, White bishop"
+    },
+    {
+      "square": "g1",
+      "color": "white",
+      "kind": "knight",
+      "label": "g1, White knight"
+    },
+    {
+      "square": "h1",
+      "color": "white",
+      "kind": "rook",
+      "label": "h1, White rook"
+    },
+    {
+      "square": "a2",
+      "color": "white",
+      "kind": "pawn",
+      "label": "a2, White pawn"
+    },
+    {
+      "square": "b2",
+      "color": "white",
+      "kind": "pawn",
+      "label": "b2, White pawn"
+    },
+    {
+      "square": "c2",
+      "color": "white",
+      "kind": "pawn",
+      "label": "c2, White pawn"
+    },
+    {
+      "square": "d2",
+      "color": "white",
+      "kind": "pawn",
+      "label": "d2, White pawn"
+    },
+    {
+      "square": "e2",
+      "color": "white",
+      "kind": "pawn",
+      "label": "e2, White pawn"
+    },
+    {
+      "square": "h2",
+      "color": "white",
+      "kind": "pawn",
+      "label": "h2, White pawn"
+    },
+    {
+      "square": "f3",
+      "color": "white",
+      "kind": "pawn",
+      "label": "f3, White pawn"
+    },
+    {
+      "square": "g4",
+      "color": "white",
+      "kind": "pawn",
+      "label": "g4, White pawn"
+    },
+    {
+      "square": "h4",
+      "color": "black",
+      "kind": "queen",
+      "label": "h4, Black queen"
+    },
+    {
+      "square": "e5",
+      "color": "black",
+      "kind": "pawn",
+      "label": "e5, Black pawn"
+    },
+    {
+      "square": "a7",
+      "color": "black",
+      "kind": "pawn",
+      "label": "a7, Black pawn"
+    },
+    {
+      "square": "b7",
+      "color": "black",
+      "kind": "pawn",
+      "label": "b7, Black pawn"
+    },
+    {
+      "square": "c7",
+      "color": "black",
+      "kind": "pawn",
+      "label": "c7, Black pawn"
+    },
+    {
+      "square": "d7",
+      "color": "black",
+      "kind": "pawn",
+      "label": "d7, Black pawn"
+    },
+    {
+      "square": "f7",
+      "color": "black",
+      "kind": "pawn",
+      "label": "f7, Black pawn"
+    },
+    {
+      "square": "g7",
+      "color": "black",
+      "kind": "pawn",
+      "label": "g7, Black pawn"
+    },
+    {
+      "square": "h7",
+      "color": "black",
+      "kind": "pawn",
+      "label": "h7, Black pawn"
+    },
+    {
+      "square": "a8",
+      "color": "black",
+      "kind": "rook",
+      "label": "a8, Black rook"
+    },
+    {
+      "square": "b8",
+      "color": "black",
+      "kind": "knight",
+      "label": "b8, Black knight"
+    },
+    {
+      "square": "c8",
+      "color": "black",
+      "kind": "bishop",
+      "label": "c8, Black bishop"
+    },
+    {
+      "square": "e8",
+      "color": "black",
+      "kind": "king",
+      "label": "e8, Black king"
+    },
+    {
+      "square": "f8",
+      "color": "black",
+      "kind": "bishop",
+      "label": "f8, Black bishop"
+    },
+    {
+      "square": "g8",
+      "color": "black",
+      "kind": "knight",
+      "label": "g8, Black knight"
+    },
+    {
+      "square": "h8",
+      "color": "black",
+      "kind": "rook",
+      "label": "h8, Black rook"
+    }
+  ],
+  "legal_choices": [],
+  "claims": [],
+  "history": [],
+  "conclusion": {
+    "chess": {
+      "checkmate": {
+        "winner": "black"
+      }
+    }
+  },
+  "in_check": true,
+  "engine": {
+    "status": "idle",
+    "last": null,
+    "last_turn": null,
+    "searched_version": null,
+    "message": null
+  },
+  "rules_mode": "m2",
+  "limits": {
+    "depth": 2,
+    "nodes": 20000
+  }
+}

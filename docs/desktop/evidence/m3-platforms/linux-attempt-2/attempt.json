@@ -1,0 +1,26 @@
+{
+  "source_revision": "41866a3c5c30efd88d72584140510c8d1806e902",
+  "run_url": "https://github.com/jweathers777/mShogi/actions/runs/40229968153",
+  "status": "failed",
+  "establishes": [
+    "Actual installed normal Debian application rendered on the native X11 desktop.",
+    "Real e2e4 and bundled engine a7a5, active analysis cancellation and bounded read-only replacement passed.",
+    "Native Save succeeded with complete canonical content but the verifier entered a filename with a doubled extension."
+  ],
+  "does_not_establish": [
+    "Expected save path, Open/history/Resume and native lifecycle journeys did not finish.",
+    "No verification fixture phase ran; this is not a complete Linux pass."
+  ],
+  "failure": "Timed out: native save created file; last observation: False",
+  "proposed_correction": "Select the entire native location field before typing; retain the entered picker image and assert the exact expected file. Requires rerun.",
+  "retained_evidence": "Selected original files; full report retains checksums of the original CI artifact. No screenshots modified.",
+  "files": {
+    "gui-report.json": "b59e76cc040e78700465e10f45f18a4040d593de4bf583c6230fa34691991e1d",
+    "normal-play.desktop.png": "4de6dd1c854c10483e033a1e53eeb1a7e52626d6af6082bc4376c3be56a02162",
+    "normal-failure.desktop.png": "1a3137f4fde91cf5b73d8e96227a9a3f53277fc28aff23a9c457bf5225ab699d",
+    "normal-failure.dom.json": "59e865b1ffb411eb4cf275f483cf7ac61f0d569ae6d10671e26378d1653666aa",
+    "normal-driver.log": "b723231b9cd58e37c3f129c03879fa8d9ea71cb414a28a8694c5c9a18b2b1c99",
+    "normal/picker-01-save-native.png": "c2c4f4ef46982b6519dde0f636fecde06072c03f78a21fd93fe59b292661b0b5",
+    "normal-complete.mshogi.mshogi": "f20fae4b38f6549810a29d8bdc7de0afbb63e01cf7115873c3c91b05566362d2"
+  }
+}

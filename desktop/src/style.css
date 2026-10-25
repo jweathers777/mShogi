@@ -305,6 +305,9 @@ p {
   flex-direction: column;
   gap: 14px;
 }
+.sidebar > * {
+  flex-shrink: 0;
+}
 .card {
   background: #1a2b31;
   border: 1px solid #33474e;

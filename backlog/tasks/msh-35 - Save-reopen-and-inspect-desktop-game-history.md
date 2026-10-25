@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-25T12:48:00Z'
-updated_date: '2026-10-25T16:48:00Z'
+updated_date: '2026-10-25T17:19:00Z'
 labels: []
 milestone: m-3
 dependencies:
@@ -24,16 +24,16 @@ Games must survive application restarts and permit read-only inspection without 
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Saved sessions preserve canonical game/match records, policy, commands/events, modes/limits and engine observations; reopening either restores supported semantics or clearly rejects unsupported restoration.
-- [ ] #2 Historical viewing is visibly read-only and distinct from live play; returning live is explicit, and any offered branch/change invalidates obsolete work with new session identity.
-- [ ] #3 Round-trip, corrupt/unsupported record, history/claim and stale-response tests plus actual desktop save/reopen/inspection evidence pass without silently downgrading modes.
+- [x] #1 Saved sessions preserve canonical game/match records, policy, commands/events, modes/limits and engine observations; reopening either restores supported semantics or clearly rejects unsupported restoration.
+- [x] #2 Historical viewing is visibly read-only and distinct from live play; returning live is explicit, and any offered branch/change invalidates obsolete work with new session identity.
+- [x] #3 Round-trip, corrupt/unsupported record, history/claim and stale-response tests plus actual desktop save/reopen/inspection evidence pass without silently downgrading modes.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
 - [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
@@ -55,4 +55,8 @@ Implementation refinement: native Save/SaveAs/Open dialogs use pinned Rust-only 
 Implementation is complete and under independent review. Primary local checks passed: full Rust workspace format, all-target Clippy with warnings denied, and workspace tests; 3 new actual-file/engine desktop persistence journeys; desktop host Rust 1.90 format/Clippy/tests plus isolated verification-feature check; 52 frontend tests across 9 files and strict TypeScript/Vite production build. Native builder reports 29 all-feature session tests and deterministic regeneration of 16 native fixtures. Independent host/vendor review is clean. Broader review identified selection watermark, bounded Full witness validation and two keyboard focus restoration gaps; fixes and regression tests are in the source and final review is pending. Normal local package build and UCI/engine-turn/move-analysis/Full smoke passed, but final-source package rebuild and actual save/close/reopen/history/Dock Quit GUI evidence remain required. macOS desktop automation currently reports the Mac locked; owner unlock requested. No GUI success is inferred from native/frontend tests. AC/Done remain unchecked pending runtime evidence, final independent assessment, integration and platform CI.
 
 Final independent code review is clean after all findings were fixed. Reviewer independently passed 29 all-feature session tests, 3 real-file/engine tests, 52 frontend tests, strict TypeScript and 2 host tests, plus exact upstream Tao comparison. Confirmed complete canonical replay, bounded proof witness verification, unsupported witnessed-match preflight, watermark/timestamp preservation, historical observations, fresh paused restoration and focus recovery. The desktop is accessible again; actual normal packaged GUI verification is underway. Initial actual Cmd-Q/Cancel preserved e2e4/a7a5 history and restored keyboard focus to the SVG e4 square. Source will be pushed on codex/m3-desktop for platform CI while the GUI completion gate remains open; no integration/Done claim yet.
+
+Actual packaged GUI evidence is complete and independently reviewed: docs/desktop/second-batch-evidence.md MSH-35 section; seven persistence screenshots; persistence-local-macos.json; actual persistence-game.mshogi (four moves, eleven controls, five observations; SHA256 8e119aa0a8768474c944fcb157e65da643d9d99e065d3803b1e61240bced3038). Normal c942a6f journeys verified real Permission-denied save preserving prior SHA/dirty state, failed Save-and-Quit remaining open, Cmd-Q Cancel/SVG focus, successful save-close-relaunch-open paused, historical prefix analysis/cancel/selection replacement, explicit Return/Resume with real g1f3/a5a4 replies, corrupt Open retaining four plies, and window-close Cancel/Discard. Final 0f916a3 normal package was rebuilt/rechecked: four-ply Open, all saved observations historical, prefix depth1/21-node analysis, Return-live focus, Save As and same-file Open with five observations, fresh session46/snapshot47 and work stopped. Separate macOS verification app clicked actual predefined terminate: item: native Cocoa callback reached Save/Discard/Cancel, Cancel preserved state, repeat/Discard closed. This verifies the Cocoa entry used by Dock; literal Dock click was unavailable and is not claimed. Normal packages exclude both initializer and Cocoa probe. Independent reviewer inspected all seven screenshots, exact source/binary provenance and archive/hash; no actionable evidence findings. MSH-36–39 and M3 remain open.
+
+Source c942a6fd088a2976f410164c24939bbdc2cd6539 passed all-three Rust CI https://github.com/jweathers777/mShogi/actions/runs/40213478474 and all-three desktop package/engine CI https://github.com/jweathers777/mShogi/actions/runs/40213478495. Final source 0f916a3536c28145b9311ca3fb50db1b471f75bd passed Rust Linux/macOS/Windows CI https://github.com/jweathers777/mShogi/actions/runs/40215027944 (jobs121234200327/121234200461/121234200513). Final package CI https://github.com/jweathers777/mShogi/actions/runs/40215027947 currently has macOS121234200450 and Linux121234200535 successful; Windows121234200335 still building. Ticket remains In Review until final required CI and normal rewrite integration/push complete. Final normal host SHA256 49dca855d7b5cc98a901d663283c128066a15ed20e73cd7905414be8693214bb; engine45d264831e806ea81b426b4fbbb94f2ecbcba384d23696a5c87537acca555ba5.
 <!-- SECTION:NOTES:END -->

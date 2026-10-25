@@ -1,0 +1,232 @@
+{
+  "platform": "local macOS aarch64",
+  "source_revisions": {
+    "main_persistence": "c942a6fd088a2976f410164c24939bbdc2cd6539",
+    "final_probe_and_normal_exclusion": "0f916a3536c28145b9311ca3fb50db1b471f75bd"
+  },
+  "normal_package": {
+    "package_root": "src-tauri/target/release/bundle/macos/mShogi.app",
+    "engine": "Contents/MacOS/mshogi",
+    "sha256": "45d264831e806ea81b426b4fbbb94f2ecbcba384d23696a5c87537acca555ba5",
+    "host_sha256": "49dca855d7b5cc98a901d663283c128066a15ed20e73cd7905414be8693214bb",
+    "version": "mshogi 0.1.0",
+    "uci_observations": [
+      "id name mShogi 0.1.0",
+      "id author John Weathers",
+      "option name ClaimPolicy type combo default explicit var explicit var auto",
+      "uciok",
+      "readyok",
+      "info depth 1 nodes 21 time 5 score cp 0 pv a2a3",
+      "bestmove a2a3"
+    ],
+    "internal_response": {
+      "context": {
+        "protocol": 2,
+        "purpose": {
+          "kind": "engine_turn"
+        },
+        "request_id": 1,
+        "session_version": 1,
+        "process_generation": 1,
+        "game": {
+          "schema_version": 1,
+          "rules_profile": "mshogi.chess.match.v1",
+          "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+          "history_origin": "standard_start",
+          "claim_policy": "explicit_only",
+          "events": []
+        },
+        "limits": {
+          "depth": 1,
+          "nodes": 1000
+        }
+      },
+      "result": {
+        "kind": "move",
+        "action": "a2a3",
+        "telemetry": {
+          "score": 0,
+          "completed_depth": 1,
+          "nodes": 21,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "a2a3"
+            }
+          ],
+          "status": "complete"
+        }
+      }
+    },
+    "analysis_response": {
+      "context": {
+        "protocol": 2,
+        "purpose": {
+          "kind": "move_analysis",
+          "target": {
+            "selection_id": 1,
+            "ply": 0,
+            "session_version": 1,
+            "label": "Package verification: standard start",
+            "turn": "white"
+          }
+        },
+        "request_id": 2,
+        "session_version": 1,
+        "process_generation": 2,
+        "game": {
+          "schema_version": 1,
+          "rules_profile": "mshogi.chess.match.v1",
+          "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+          "history_origin": "standard_start",
+          "claim_policy": "explicit_only",
+          "events": []
+        },
+        "limits": {
+          "depth": 1,
+          "nodes": 1000
+        }
+      },
+      "result": {
+        "kind": "move",
+        "action": "a2a3",
+        "telemetry": {
+          "score": 0,
+          "completed_depth": 1,
+          "nodes": 21,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "a2a3"
+            }
+          ],
+          "status": "complete"
+        }
+      }
+    },
+    "full_response": {
+      "context": {
+        "protocol": 2,
+        "purpose": {
+          "kind": "full_reachability",
+          "target": {
+            "selection_id": 1,
+            "ply": 0,
+            "session_version": 1,
+            "label": "Package verification: standard start",
+            "turn": "white"
+          },
+          "mate": "either",
+          "limits": {
+            "max_positions": 1,
+            "max_transitions": 1
+          }
+        },
+        "request_id": 3,
+        "session_version": 1,
+        "process_generation": 3,
+        "game": {
+          "schema_version": 1,
+          "rules_profile": "mshogi.chess.match.v1",
+          "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+          "history_origin": "standard_start",
+          "claim_policy": "explicit_only",
+          "events": []
+        },
+        "limits": {
+          "depth": 1,
+          "nodes": 0
+        }
+      },
+      "result": {
+        "kind": "reachability",
+        "result": {
+          "unknown": {
+            "reason": "position_limit",
+            "work": {
+              "positions": 1,
+              "expanded": 1,
+              "transitions": 1,
+              "static_leaves": 0
+            }
+          }
+        }
+      }
+    },
+    "files": [
+      "Contents/Info.plist",
+      "Contents/MacOS/mshogi",
+      "Contents/MacOS/mshogi-desktop",
+      "Contents/Resources/icon.icns"
+    ],
+    "scope": "Package inventory and actual UCI, engine-turn, move-analysis and bounded Full reachability queries. Host acceptance and installed UI interaction are separate evidence."
+  },
+  "initial_gui_normal_host_sha256": "3d293897764af8c019599756b7848d7164669af26f68683666e24d915ce3e73e",
+  "verification_host_sha256": "b641af32945505d3a7fdd2dd60193489ab93bb754976fb3af8f0c2b56429dd08",
+  "gui": {
+    "initial_source": "c942a6f",
+    "played_actions": [
+      "e2e4",
+      "a7a5",
+      "g1f3",
+      "a5a4"
+    ],
+    "cmd_q_cancel": "Preserved e2e4/a7a5 and restored focus to SVG e4 square.",
+    "failed_save": "Temporarily chmod 0555 on isolated save directory; native Permission denied. Prior valid save SHA256 unchanged and document remained dirty.",
+    "prior_valid_save_sha256": "27d0aa979f2cd27219642bdb9a1e2afd7f0b387b47dc7a8aae7ba0589109af57",
+    "failed_save_and_quit": "Save & continue retained the dialog and live game after failure; keyboard Tab remained in dialog.",
+    "save_close_relaunch_open": "Restored directory permissions, Save & continue closed app; relaunch started an empty game; native Open restored two plies, paused with historical observation.",
+    "history_analysis": [
+      {
+        "event_index": 0,
+        "ply": 0,
+        "side": "white",
+        "depth": 1,
+        "nodes": 21,
+        "suggestion": "a2a3",
+        "applied": false
+      },
+      {
+        "event_index": 2,
+        "ply": 1,
+        "side": "black",
+        "depth": 1,
+        "nodes": 21,
+        "suggestion": "a7a5",
+        "applied": false
+      }
+    ],
+    "cancel_replace": "Depth8/5000000 historical analysis cancelled; another active request retired by selecting event2. Only new Black one-ply result appeared.",
+    "return_live_resume": "Return to live restored two-ply position with play paused and SVG focus; explicit Resume allowed Nf3, then real a5a4 reply (depth2/631nodes).",
+    "corrupt_open": "Native Open of malformed archive reported parse error, retaining four-ply live game and clean valid save.",
+    "window_close": "Dirty orientation change: Cancel preserved four plies; subsequent explicit Discard closed.",
+    "final_source": "0f916a3",
+    "final_reopen": "Normal build opened four-ply document with four historical observations; session35/snapshot36 above saved version25/snapshot34.",
+    "final_prefix_recheck": "Selected initial event0 of5; restored form depth1/1000; actual a2a3, depth1/21nodes, White perspective, not played. Return live preserved four plies and restored board focus.",
+    "final_save_as": "Native Save As final.mshogi preserved four plies, all five observations and defaults.",
+    "final_same_file_reopen": "Reopened final.mshogi: all five observations historical, work stopped, session46/snapshot47. No restored request pending.",
+    "native_cocoa_probe": "Separately labeled verification application menu item ID terminate: invoked actual Cocoa termination; Save/Discard/Cancel dialog. Cancel preserved dirty orientation, repeat then explicit Discard closed.",
+    "direct_dock_click": "Not tested: CUA binding to the background Dock timed out; native Cocoa entry tested instead. No Dock-click claim."
+  },
+  "saved_archive": {
+    "file": "persistence-game.mshogi",
+    "sha256": "8e119aa0a8768474c944fcb157e65da643d9d99e065d3803b1e61240bced3038",
+    "observations": 5,
+    "controls": 11,
+    "watermarks": {
+      "version": 38,
+      "revision": 43,
+      "next_request": 37,
+      "document_revision": 20
+    },
+    "settings": {
+      "orientation": "white",
+      "analysis_defaults": {
+        "kind": "moves",
+        "depth": 1,
+        "nodes": 1000
+      }
+    }
+  },
+  "scope": "Native/controller tests, frontend tests, actual local packaged GUI and all-platform package CI are separate evidence. Installed cross-platform interactions/accessibility remain MSH-37/38; M3 open."
+}

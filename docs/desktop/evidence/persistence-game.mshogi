@@ -1,0 +1,398 @@
+{
+  "schema_version": 1,
+  "profile": "mshogi.desktop.archive.v1",
+  "match_record_json": "{\"schema_version\":1,\"rules_profile\":\"mshogi.chess.match.v1\",\"initial_record_json\":\"{\\\"schema_version\\\":1,\\\"rules_profile\\\":\\\"mshogi.chess.match.v1\\\",\\\"initial_fen\\\":\\\"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\\\",\\\"history_origin\\\":\\\"standard_start\\\",\\\"claim_policy\\\":\\\"explicit_only\\\",\\\"events\\\":[]}\",\"time_control\":\"untimed\",\"events\":[{\"request\":{\"at_ns\":0,\"version\":0,\"actor\":\"white\",\"command\":\"start\"},\"reply\":{\"version\":1,\"remaining_ns\":null,\"active\":\"white\",\"conclusion\":null,\"rejection\":null}},{\"request\":{\"at_ns\":11856480959,\"version\":1,\"actor\":\"white\",\"command\":{\"move\":\"e2e4\"}},\"reply\":{\"version\":2,\"remaining_ns\":null,\"active\":\"black\",\"conclusion\":null,\"rejection\":null}},{\"request\":{\"at_ns\":12029439292,\"version\":2,\"actor\":\"black\",\"command\":{\"move\":\"a7a5\"}},\"reply\":{\"version\":3,\"remaining_ns\":null,\"active\":\"white\",\"conclusion\":null,\"rejection\":null}},{\"request\":{\"at_ns\":175402186417,\"version\":3,\"actor\":\"white\",\"command\":{\"move\":\"g1f3\"}},\"reply\":{\"version\":4,\"remaining_ns\":null,\"active\":\"black\",\"conclusion\":null,\"rejection\":null}},{\"request\":{\"at_ns\":175705513251,\"version\":4,\"actor\":\"black\",\"command\":{\"move\":\"a5a4\"}},\"reply\":{\"version\":5,\"remaining_ns\":null,\"active\":\"white\",\"conclusion\":null,\"rejection\":null}}]}",
+  "game_record_json": "{\"schema_version\":1,\"rules_profile\":\"mshogi.chess.match.v1\",\"initial_fen\":\"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\",\"history_origin\":\"standard_start\",\"claim_policy\":\"explicit_only\",\"events\":[{\"ply\":0,\"event\":{\"kind\":\"move\",\"action\":\"e2e4\"}},{\"ply\":1,\"event\":{\"kind\":\"move\",\"action\":\"a7a5\"}},{\"ply\":2,\"event\":{\"kind\":\"move\",\"action\":\"g1f3\"}},{\"ply\":3,\"event\":{\"kind\":\"move\",\"action\":\"a5a4\"}}]}",
+  "human": "white",
+  "settings": {
+    "orientation": "white",
+    "analysis_defaults": {
+      "kind": "moves",
+      "depth": 1,
+      "nodes": 1000
+    }
+  },
+  "play_limits": {
+    "depth": 2,
+    "nodes": 20000
+  },
+  "observations": [
+    {
+      "sequence": 1,
+      "label": "Engine turn after 1 plies",
+      "response": {
+        "context": {
+          "protocol": 2,
+          "purpose": {
+            "kind": "engine_turn"
+          },
+          "request_id": 1,
+          "session_version": 2,
+          "process_generation": 1,
+          "game": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1","history_origin":"standard_start","claim_policy":"explicit_only","events":[{"ply":0,"event":{"kind":"move","action":"e2e4"}}]},
+          "limits": {
+            "depth": 2,
+            "nodes": 20000
+          }
+        },
+        "result": {
+          "kind": "move",
+          "action": "a7a5",
+          "telemetry": {
+            "score": 0,
+            "completed_depth": 2,
+            "nodes": 642,
+            "principal_variation": [
+              {
+                "kind": "move",
+                "action": "a7a5"
+              },
+              {
+                "kind": "move",
+                "action": "a2a3"
+              }
+            ],
+            "status": "complete"
+          }
+        }
+      },
+      "historical": true,
+      "analyzed_turn": "black",
+      "application_error": null
+    },
+    {
+      "sequence": 2,
+      "label": "Historical position after 0 plies",
+      "response": {
+        "context": {
+          "protocol": 2,
+          "purpose": {
+            "kind": "move_analysis",
+            "target": {
+              "selection_id": 15,
+              "ply": 0,
+              "session_version": 16,
+              "label": "Historical position after 0 plies",
+              "turn": "white"
+            }
+          },
+          "request_id": 15,
+          "session_version": 16,
+          "process_generation": 15,
+          "game": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1","history_origin":"standard_start","claim_policy":"explicit_only","events":[]},
+          "limits": {
+            "depth": 1,
+            "nodes": 1000
+          }
+        },
+        "result": {
+          "kind": "move",
+          "action": "a2a3",
+          "telemetry": {
+            "score": 0,
+            "completed_depth": 1,
+            "nodes": 21,
+            "principal_variation": [
+              {
+                "kind": "move",
+                "action": "a2a3"
+              }
+            ],
+            "status": "complete"
+          }
+        }
+      },
+      "historical": true,
+      "analyzed_turn": "white",
+      "application_error": null
+    },
+    {
+      "sequence": 3,
+      "label": "Historical position after 1 plies",
+      "response": {
+        "context": {
+          "protocol": 2,
+          "purpose": {
+            "kind": "move_analysis",
+            "target": {
+              "selection_id": 16,
+              "ply": 1,
+              "session_version": 21,
+              "label": "Historical position after 1 plies",
+              "turn": "black"
+            }
+          },
+          "request_id": 18,
+          "session_version": 21,
+          "process_generation": 18,
+          "game": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1","history_origin":"standard_start","claim_policy":"explicit_only","events":[{"ply":0,"event":{"kind":"move","action":"e2e4"}}]},
+          "limits": {
+            "depth": 1,
+            "nodes": 1000
+          }
+        },
+        "result": {
+          "kind": "move",
+          "action": "a7a5",
+          "telemetry": {
+            "score": 0,
+            "completed_depth": 1,
+            "nodes": 21,
+            "principal_variation": [
+              {
+                "kind": "move",
+                "action": "a7a5"
+              }
+            ],
+            "status": "complete"
+          }
+        }
+      },
+      "historical": true,
+      "analyzed_turn": "black",
+      "application_error": null
+    },
+    {
+      "sequence": 4,
+      "label": "Engine turn after 3 plies",
+      "response": {
+        "context": {
+          "protocol": 2,
+          "purpose": {
+            "kind": "engine_turn"
+          },
+          "request_id": 19,
+          "session_version": 24,
+          "process_generation": 19,
+          "game": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1","history_origin":"standard_start","claim_policy":"explicit_only","events":[{"ply":0,"event":{"kind":"move","action":"e2e4"}},{"ply":1,"event":{"kind":"move","action":"a7a5"}},{"ply":2,"event":{"kind":"move","action":"g1f3"}}]},
+          "limits": {
+            "depth": 2,
+            "nodes": 20000
+          }
+        },
+        "result": {
+          "kind": "move",
+          "action": "a5a4",
+          "telemetry": {
+            "score": 0,
+            "completed_depth": 2,
+            "nodes": 631,
+            "principal_variation": [
+              {
+                "kind": "move",
+                "action": "a5a4"
+              },
+              {
+                "kind": "move",
+                "action": "a2a3"
+              }
+            ],
+            "status": "complete"
+          }
+        }
+      },
+      "historical": true,
+      "analyzed_turn": "black",
+      "application_error": null
+    },
+    {
+      "sequence": 5,
+      "label": "Historical position after 0 plies",
+      "response": {
+        "context": {
+          "protocol": 2,
+          "purpose": {
+            "kind": "move_analysis",
+            "target": {
+              "selection_id": 36,
+              "ply": 0,
+              "session_version": 37,
+              "label": "Historical position after 0 plies",
+              "turn": "white"
+            }
+          },
+          "request_id": 36,
+          "session_version": 37,
+          "process_generation": 36,
+          "game": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1","history_origin":"standard_start","claim_policy":"explicit_only","events":[]},
+          "limits": {
+            "depth": 1,
+            "nodes": 1000
+          }
+        },
+        "result": {
+          "kind": "move",
+          "action": "a2a3",
+          "telemetry": {
+            "score": 0,
+            "completed_depth": 1,
+            "nodes": 21,
+            "principal_variation": [
+              {
+                "kind": "move",
+                "action": "a2a3"
+              }
+            ],
+            "status": "complete"
+          }
+        }
+      },
+      "historical": false,
+      "analyzed_turn": "white",
+      "application_error": null
+    }
+  ],
+  "controls": [
+    {
+      "sequence": 1,
+      "at_ns": 11856480959,
+      "version": 2,
+      "command": {
+        "kind": "play",
+        "version": 1,
+        "action": "e2e4"
+      },
+      "close_pause": false
+    },
+    {
+      "sequence": 2,
+      "at_ns": 40576411584,
+      "version": 3,
+      "command": {
+        "kind": "preferences",
+        "orientation": "black",
+        "analysis_defaults": {
+          "kind": "moves",
+          "depth": 4,
+          "nodes": 100000
+        }
+      },
+      "close_pause": false
+    },
+    {
+      "sequence": 3,
+      "at_ns": 66628895209,
+      "version": 3,
+      "command": {
+        "kind": "preferences",
+        "orientation": "white",
+        "analysis_defaults": {
+          "kind": "moves",
+          "depth": 4,
+          "nodes": 100000
+        }
+      },
+      "close_pause": false
+    },
+    {
+      "sequence": 4,
+      "at_ns": 115507605751,
+      "version": 16,
+      "command": {
+        "kind": "analyze",
+        "version": 15,
+        "operation": {
+          "kind": "moves",
+          "depth": 1,
+          "nodes": 1000
+        }
+      },
+      "close_pause": false
+    },
+    {
+      "sequence": 5,
+      "at_ns": 140876373626,
+      "version": 17,
+      "command": {
+        "kind": "analyze",
+        "version": 16,
+        "operation": {
+          "kind": "moves",
+          "depth": 8,
+          "nodes": 5000000
+        }
+      },
+      "close_pause": false
+    },
+    {
+      "sequence": 6,
+      "at_ns": 144977328751,
+      "version": 18,
+      "command": {
+        "kind": "cancel_analysis",
+        "version": 17
+      },
+      "close_pause": false
+    },
+    {
+      "sequence": 7,
+      "at_ns": 154298326667,
+      "version": 19,
+      "command": {
+        "kind": "analyze",
+        "version": 18,
+        "operation": {
+          "kind": "moves",
+          "depth": 8,
+          "nodes": 5000000
+        }
+      },
+      "close_pause": false
+    },
+    {
+      "sequence": 8,
+      "at_ns": 166951809417,
+      "version": 21,
+      "command": {
+        "kind": "analyze",
+        "version": 20,
+        "operation": {
+          "kind": "moves",
+          "depth": 1,
+          "nodes": 1000
+        }
+      },
+      "close_pause": false
+    },
+    {
+      "sequence": 9,
+      "at_ns": 175110462709,
+      "version": 23,
+      "command": {
+        "kind": "resume",
+        "version": 22
+      },
+      "close_pause": false
+    },
+    {
+      "sequence": 10,
+      "at_ns": 175402186417,
+      "version": 24,
+      "command": {
+        "kind": "play",
+        "version": 23,
+        "action": "g1f3"
+      },
+      "close_pause": false
+    },
+    {
+      "sequence": 11,
+      "at_ns": 211890889292,
+      "version": 37,
+      "command": {
+        "kind": "analyze",
+        "version": 36,
+        "operation": {
+          "kind": "moves",
+          "depth": 1,
+          "nodes": 1000
+        }
+      },
+      "close_pause": false
+    }
+  ],
+  "version": 38,
+  "revision": 43,
+  "next_request": 37,
+  "document_revision": 20
+}

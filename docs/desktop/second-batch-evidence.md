@@ -83,3 +83,73 @@ cooperative possible/impossible proof branches have composed native/frontend
 coverage, not a claim of reaching them in the standard-opening GUI journey.
 No instrumentation is present in the normal host. Platform CI and source are
 recorded in the [MSH-33 completion record](<../../backlog/tasks/msh-33 - Add-bounded-desktop-analysis-and-explicit-Full-mode-execution.md>).
+
+## MSH-35 — canonical documents and historical inspection
+
+The [archive contract](archive-v1.md) preserves complete canonical match/game
+semantics, accepted game/execution controls, settings and exact-context engine
+observations. One bounded native worker handles atomic file replacement,
+preflighted validation/replay and history-prefix reconstruction. Open commits a
+validated candidate only against the approved version and document revision;
+reopened work stays stopped under fresh runtime identities. Historical viewing
+and analysis never consume future events or alter the live match.
+
+Primary checks passed full Rust workspace format, all-target Clippy and tests;
+29 all-feature desktop-session tests; three actual-file/process persistence
+journeys; host Rust 1.90 format/Clippy/two tests and verification-feature compile;
+52 frontend tests across nine files, strict TypeScript and Vite build. Sixteen
+native-generated frontend fixtures include actual reopened/history snapshots.
+Independent review separately passed the session, file/process, frontend and
+host checks and compared all 119 vendored Tao files with the pinned upstream
+package. Only the documented application-delegate source differs.
+
+Review findings were fixed before completion: analysis selection watermarks,
+bounded legal verification of saved Full witnesses, exact canonical prefix
+metadata, restored command timestamp floors and keyboard focus recovery. Tests
+also cover claim/resignation round trips at the same ply, interrupted saves,
+stale saves/opens and unsupported/corrupt/resource-limited restoration. Full
+live modes, timed matches and externally supplied match-command mating witnesses
+are explicitly refused before uncontrolled replay. No rules change reopens M2.
+
+Actual local macOS packaged journeys:
+
+| Journey | Observed behavior | Evidence |
+| --- | --- | --- |
+| Play and save | Human `e2e4`, real `a7a5`; orientation and complete context saved | Retained archive/report below |
+| Real save failure | Read-only isolated save directory produced Permission denied; prior file SHA-256 unchanged, document dirty; Save & continue could not quit | [Failed save](evidence/persistence-save-failure-macos.png) |
+| Cmd-Q, save, close, relaunch and Open | Cancel retained game and SVG focus; successful Save & continue closed; fresh process opened document paused | [Paused reopen](evidence/persistence-reopened-paused-macos.png) |
+| Initial historical analysis | Read-only event 0, White perspective, actual depth 1/21 nodes, `a2a3` suggested and not played; live game retained | [History analysis](evidence/persistence-history-analysis-macos.png) |
+| Cancel and replace historical work | Depth 8/5,000,000 request cancelled; another retired by selecting event 2; only new Black one-ply result appeared, depth 1/21 nodes | Retained report |
+| Return live and Resume | Explicit Return restored two-ply board and focus with play paused; Resume allowed `g1f3`, real `a5a4` reply, depth 2/631 nodes | Retained archive/report |
+| Corrupt Open | Parse error; four-ply live game and valid save retained | [Corrupt Open](evidence/persistence-corrupt-open-macos.png) |
+| Window close | Cancel preserved dirty orientation/four plies; explicit Discard then closed | Retained report |
+| Final normal build | Open restored four plies and historical observations; initial-prefix analysis rechecked; Save As and same-file Open retained all five observations, fresh session 46/snapshot 47, paused | [Final saved game](evidence/persistence-final-saved-macos.png), [historical observations](evidence/persistence-final-observations-macos.png) |
+| Actual Cocoa termination entry | Separate verification app's native `terminate:` menu item reached Save/Discard/Cancel; Cancel preserved state, repeated request with explicit Discard closed | [Cocoa entry](evidence/persistence-cocoa-quit-verification-macos.png) |
+
+The Cocoa entry probe executes the same native selector/delegate used by Dock
+Quit; it does not mock the close handler. Direct Dock interaction was unavailable
+through the automation surface and is not claimed. The probe is macOS-only and
+feature-gated in the separately labeled verification application; the normal
+package verifier checks that neither its label nor the fixture initializer
+enters a normal host. See [native quit provenance](macos-quit.md).
+
+Implementation source is `c942a6fd088a2976f410164c24939bbdc2cd6539`; final
+verification-only probe/exclusion source is
+`0f916a3536c28145b9311ca3fb50db1b471f75bd`. The final normal package was rebuilt
+and rechecked after that delta, with Open/history/analysis/Save As/reopen exercised
+again. Its host SHA-256 is
+`49dca855d7b5cc98a901d663283c128066a15ed20e73cd7905414be8693214bb` and bundled
+engine SHA-256 is
+`45d264831e806ea81b426b4fbbb94f2ecbcba384d23696a5c87537acca555ba5`.
+The [retained report](evidence/persistence-local-macos.json) distinguishes both
+normal builds and the separate verification host. The actual
+[saved document](evidence/persistence-game.mshogi) retains four moves, eleven
+controls and five observations, with SHA-256
+`8e119aa0a8768474c944fcb157e65da643d9d99e065d3803b1e61240bced3038`.
+
+Platform CI and integration references belong to the
+[MSH-35 completion record](<../../backlog/tasks/msh-35 - Save-reopen-and-inspect-desktop-game-history.md>).
+Windows/Linux package and engine checks do not claim installed GUI interaction.
+M1/M2 and unchanged MSH-27–34 evidence are reused. MSH-36–39 stay open, including
+synthetic large-board selection, integrated accessibility, installed interactions
+on all three systems and M3 closure.

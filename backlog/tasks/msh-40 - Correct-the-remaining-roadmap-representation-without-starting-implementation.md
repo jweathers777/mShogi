@@ -1,11 +1,11 @@
 ---
 id: MSH-40
 title: Correct the remaining roadmap representation without starting implementation
-status: In Review
+status: Done
 assignee:
   - '@codex-roadmap'
 created_date: '2026-10-25T15:36:00Z'
-updated_date: '2026-10-25T15:42:00Z'
+updated_date: '2026-10-25T15:43:00Z'
 labels: []
 dependencies: []
 documentation:
@@ -21,17 +21,17 @@ The milestone board treats M4 as complete because only the completed MSH-26 is a
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Five scope-level To Do game tickets, shared M4 integration ownership and a complete dependent M4 closure gate represent the accepted product scope while MSH-26 and all existing evidence remain unchanged.
-- [ ] #2 Scope-level To Do M5 and M6 tickets preserve six-game strength obligations, required product delivery, optional research and unresolved design questions without speculative plans or estimates.
-- [ ] #3 Roadmap documentation distinguishes task-count completion from evidence-based milestone closure; CLI board, dependency and preservation checks verify the correction, which is committed and pushed through codex/rewrite.
+- [x] #1 Five scope-level To Do game tickets, shared M4 integration ownership and a complete dependent M4 closure gate represent the accepted product scope while MSH-26 and all existing evidence remain unchanged.
+- [x] #2 Scope-level To Do M5 and M6 tickets preserve six-game strength obligations, required product delivery, optional research and unresolved design questions without speculative plans or estimates.
+- [x] #3 Roadmap documentation distinguishes task-count completion from evidence-based milestone closure; CLI board, dependency and preservation checks verify the correction, which is committed and pushed through codex/rewrite.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -50,4 +50,16 @@ Created MSH-41–47 for five complete game scopes, single shared integration own
 Verification on macOS, 2026-10-25: CLI --version = 1.55.1; milestone list --show-completed --plain shows M4 active 1/8, M5 0/9, M6 0/4; task list by milestone --json verifies status and counts. Python byte comparisons against git show 47209e3:<path> passed for every previously tracked file other than docs/design.md, including MSH-26 and all M3 records/evidence. All 20 future scopes are unassigned To Do with unchecked acceptance and no implementation plan/notes/final summary. All dependency IDs resolve; exact M4/M5/M6 closure sets checked, optional research absent from required M6 dependencies. backlog doctor reports no duplicate IDs, self-dependencies or cycles; git diff --check passes. CLI board export contains every new scope and retained MSH-26. The first export using an absolute filename failed because this CLI resolves it below cwd; retry with an os.path.relpath temporary destination succeeded. This was an artifact-path error, not a failed backlog verification.
 
 Documentation/record-only change: no Rust, frontend or packaged-application tests run or newly claimed. Existing code/platform evidence is preserved. Bounded independent scope review requested from review_planning; integration and push still pending. Concurrent unrelated M3 work advanced codex/rewrite while this correction was in progress; integration will preserve it and verify this correction's delta separately.
+
+Bounded independent review by review_planning found no material findings: complete game scopes, explicit shared ownership without a delivery cycle, complete acyclic closure dependencies, six visible M5 strength obligations, unresolved empirical choices and required/optional M6 separation all satisfy the request. Review confirmed no speculative implementation decisions.
+
+Concurrent M3 commit 0776f7e was preserved by rebasing the unpublished planning commit. Repeated byte-preservation verification against that new integration base passed for every previously tracked file except docs/design.md, including all original tickets and evidence. The resulting delta is only the roadmap documentation and added MSH-40–60 records. Repeated doctor, status/count, dependency-set and git diff --check checks passed; M4 1/8, M5 0/9, M6 0/4 remain active.
+
+Integrated by fast-forward into codex/rewrite and successfully pushed to origin/codex/rewrite at 9b48e9a (Represent complete M4-M6 scope and evidence-based milestone closure), after preserving the clean integration worktree. Source: https://github.com/jweathers777/mShogi/commit/9b48e9a . Completion bookkeeping follows in a separate coherent commit; no future implementation has started. Existing M3 work and its authorization remain separate; there is no planning blocker.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Corrected the misleading M4-complete board by adding five complete game To Do scopes, one shared integration owner and an explicit closure gate while preserving MSH-26 Done and all original evidence. Added six-game measured-strength obligations, shared learning infrastructure/initial learned evaluation and closure for M5, plus required M6 product/distribution delivery separated from optional research. Updated docs/design.md with ownership mapping and the task-count-versus-closure policy; deferred rules/research/release questions remain open. Backlog.md 1.55.1 validation, byte-preservation checks, complete/acyclic dependency checks and independent planning review passed. M4 now shows 1/8 Done, M5 0/9, M6 0/4. Planning source 9b48e9a is integrated and pushed on codex/rewrite; no code behavior or M3 batch was changed by this correction. MSH-41–60 remain unassigned To Do, and no future implementation is authorized by these records.
+<!-- SECTION:FINAL_SUMMARY:END -->

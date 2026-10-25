@@ -44,14 +44,14 @@ fn actual_analysis_suggestions_never_commit_a_turn_and_resume_is_explicit() {
     let mut controller = controller();
     let initial = controller.snapshot();
     let turn = controller
-        .command(DesktopCommand::Play {
+        .settled(DesktopCommand::Play {
             version: initial.version,
             action: "e2e4".parse().unwrap(),
         })
         .unwrap();
     // Analyze is serialized before any poll can apply an engine-turn reply.
     let analyzing = controller
-        .command(DesktopCommand::Analyze {
+        .settled(DesktopCommand::Analyze {
             version: turn.version,
             operation: moves(2, 20_000),
         })
@@ -103,7 +103,7 @@ fn actual_analysis_suggestions_never_commit_a_turn_and_resume_is_explicit() {
         assert!(stable.play_paused);
     }
     let resumed = controller
-        .command(DesktopCommand::Resume {
+        .settled(DesktopCommand::Resume {
             version: result.version,
         })
         .unwrap();
@@ -122,7 +122,7 @@ fn actual_full_budget_exhaustion_and_cancelled_replacement_leave_match_unchanged
     let mut controller = controller();
     let initial = controller.snapshot();
     let started = controller
-        .command(DesktopCommand::Analyze {
+        .settled(DesktopCommand::Analyze {
             version: initial.version,
             operation: AnalysisOperation::FullReachability {
                 target: mshogi_engine::ReachabilityTarget::Either,
@@ -146,7 +146,7 @@ fn actual_full_budget_exhaustion_and_cancelled_replacement_leave_match_unchanged
     assert_eq!(full.rules_mode, "m2");
     let old_context = full.analysis.context.as_ref().unwrap();
     let replaced = controller
-        .command(DesktopCommand::Analyze {
+        .settled(DesktopCommand::Analyze {
             version: full.version,
             operation: moves(8, 5_000_000),
         })
@@ -164,7 +164,7 @@ fn actual_full_budget_exhaustion_and_cancelled_replacement_leave_match_unchanged
             > old_context.process_generation
     );
     let cancelled = controller
-        .command(DesktopCommand::CancelAnalysis {
+        .settled(DesktopCommand::CancelAnalysis {
             version: replaced.version,
         })
         .unwrap();
@@ -182,7 +182,7 @@ fn actual_full_budget_exhaustion_and_cancelled_replacement_leave_match_unchanged
         thread::sleep(Duration::from_millis(2));
     }
     let fresh = controller
-        .command(DesktopCommand::NewGame {
+        .settled(DesktopCommand::NewGame {
             version: cancelled.version,
             document_revision: cancelled.document.revision,
             human: Color::Black,
@@ -197,4 +197,27 @@ fn actual_full_budget_exhaustion_and_cancelled_replacement_leave_match_unchanged
     assert!(played.analysis.result.is_none());
     assert!(started.version < played.version);
     shutdown(&mut controller);
+}
+
+// Match the host command promise: completion means native admission settled.
+trait SettledCommand {
+    fn settled(&mut self, command: DesktopCommand) -> Result<Snapshot, String>;
+}
+impl SettledCommand for DesktopController {
+    fn settled(&mut self, command: DesktopCommand) -> Result<Snapshot, String> {
+        let (mut snapshot, receipt) = self.command_with_receipt(command)?;
+        let deadline = Instant::now() + Duration::from_secs(20);
+        loop {
+            if let Some(result) = receipt.completion() {
+                result?;
+                return Ok(snapshot);
+            }
+            assert!(
+                Instant::now() < deadline,
+                "native capacity admission deadline"
+            );
+            thread::sleep(Duration::from_millis(1));
+            snapshot = self.snapshot();
+        }
+    }
 }

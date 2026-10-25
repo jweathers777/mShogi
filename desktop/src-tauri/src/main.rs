@@ -19,6 +19,7 @@ use tauri_plugin_dialog::DialogExt;
 
 #[derive(Default)]
 struct ShutdownState {
+    command_operation: AtomicBool,
     close_requested: AtomicBool,
     close_approved: AtomicBool,
     file_operation: AtomicBool,
@@ -62,19 +63,53 @@ fn desktop_snapshot(
 ) -> Result<Snapshot, String> {
     with_controller(&controller, &shutdown, DesktopController::snapshot)
 }
+struct CommandOperationGuard(Arc<ShutdownState>);
+impl Drop for CommandOperationGuard {
+    fn drop(&mut self) {
+        self.0.command_operation.store(false, Ordering::Release);
+    }
+}
 #[tauri::command]
-fn desktop_command(
-    command: DesktopCommand,
-    controller: State<'_, Mutex<DesktopController>>,
-    shutdown: State<'_, Arc<ShutdownState>>,
-) -> Result<Snapshot, String> {
-    with_controller(&controller, &shutdown, |controller| {
-        if shutdown.close_requested.load(Ordering::Acquire) {
-            Err("Finish or cancel the close request before changing the game.".into())
-        } else {
-            controller.command(command)
+async fn desktop_command(app: AppHandle, command: DesktopCommand) -> Result<Snapshot, String> {
+    let shutdown = app.state::<Arc<ShutdownState>>().inner().clone();
+    let (initial, receipt, reservation) = with_controller(
+        &app.state::<Mutex<DesktopController>>(),
+        &shutdown,
+        |controller| {
+            if shutdown.close_requested.load(Ordering::Acquire) {
+                return Err(
+                    "Finish or cancel the close request before changing the game.".to_string(),
+                );
+            }
+            shutdown
+                .command_operation
+                .compare_exchange(false, true, Ordering::AcqRel, Ordering::Acquire)
+                .map_err(|_| "Wait for the current native command to complete.".to_string())?;
+            let reservation = CommandOperationGuard(shutdown.clone());
+            let (snapshot, receipt) = controller.command_with_receipt(command)?;
+            Ok((snapshot, receipt, reservation))
+        },
+    )??;
+    if let Some(completion) = receipt.completion() {
+        completion?;
+        return Ok(initial);
+    }
+    // One bounded host waiter. Serialization/validation belongs to the native
+    // admission worker; the controller lock is released between polls. A
+    // stable receipt survives later engine-result admissions and cancellation.
+    tauri::async_runtime::spawn_blocking(move || {
+        let _reservation = reservation;
+        loop {
+            let snapshot = current_snapshot(&app)?;
+            if let Some(completion) = receipt.completion() {
+                completion?;
+                return Ok(snapshot);
+            }
+            thread::sleep(Duration::from_millis(15));
         }
-    })?
+    })
+    .await
+    .map_err(|error| format!("Native command admission failed: {error}"))?
 }
 
 /// At most one native picker/waiter may exist. Acquisition and close approval

@@ -890,3 +890,10 @@ button.danger:hover:enabled {
   font-size: 0.82rem;
   color: #e3cd9d;
 }
+.capacity-notice {
+  border-color: #d4ad67;
+}
+.capacity-notice p {
+  font-size: 0.84rem;
+  line-height: 1.5;
+}

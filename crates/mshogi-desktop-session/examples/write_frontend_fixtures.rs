@@ -168,9 +168,14 @@ fn main() {
         std::env::temp_dir().join(format!("mshogi-fixture-{}.mshogi", std::process::id()));
     let mut controller =
         DesktopController::new(std::path::PathBuf::from("/unused/fixture-engine")).unwrap();
-    controller
-        .command(DesktopCommand::Resign { version: 1 })
+    let (_, receipt) = controller
+        .command_with_receipt(DesktopCommand::Resign { version: 1 })
         .unwrap();
+    while receipt.completion().is_none() {
+        controller.snapshot();
+        std::thread::sleep(std::time::Duration::from_millis(1));
+    }
+    receipt.completion().unwrap().unwrap();
     let save = controller.queue_save(temporary.clone()).unwrap();
     wait_document(&mut controller, save);
     let token = controller.open_token();
@@ -196,6 +201,19 @@ fn main() {
     )
     .unwrap();
     std::fs::remove_file(temporary).unwrap();
+    #[cfg(feature = "desktop-verification")]
+    {
+        let mut capacity = DesktopController::verification(
+            std::path::PathBuf::from("/unused/fixture-engine"),
+            "capacity",
+        )
+        .unwrap();
+        std::fs::write(
+            directory.join("capacity.json"),
+            serde_json::to_string_pretty(&capacity.snapshot()).unwrap() + "\n",
+        )
+        .unwrap();
+    }
 }
 
 fn wait_document(controller: &mut DesktopController, id: u64) -> mshogi_desktop_session::Snapshot {

@@ -111,7 +111,7 @@ export function useDocumentGuard(
         const saved = await actions.save();
         if (saved === null || saved.document.dirty) {
           setMessage(
-            "The current game was not fully saved. The action has not continued; retry saving or keep this game open.",
+            "The current game was not fully saved. The action has not continued. Keep this game open and review the file error.",
           );
           return;
         }

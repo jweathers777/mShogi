@@ -110,7 +110,7 @@ fn human_white_plays_two_turns_against_actual_bounded_native_replies() {
     assert_eq!(initial.engine.status, EnginePhase::Idle);
     assert_eq!(initial.legal_choices.len(), 20);
     let thinking = controller
-        .command(DesktopCommand::Play {
+        .settled(DesktopCommand::Play {
             version: initial.version,
             action: "e2e4".parse().unwrap(),
         })
@@ -125,7 +125,7 @@ fn human_white_plays_two_turns_against_actual_bounded_native_replies() {
     replay(&replied);
     let next = replied.legal_choices.first().unwrap().action;
     let thinking = controller
-        .command(DesktopCommand::Play {
+        .settled(DesktopCommand::Play {
             version: replied.version,
             action: next,
         })
@@ -150,7 +150,7 @@ fn human_black_gets_an_automatic_native_opening_and_can_answer_it() {
     let mut controller = controller(env!("CARGO_BIN_EXE_mshogi"));
     let initial = controller.snapshot();
     let thinking = controller
-        .command(DesktopCommand::NewGame {
+        .settled(DesktopCommand::NewGame {
             version: initial.version,
             document_revision: initial.document.revision,
             human: Color::Black,
@@ -167,7 +167,7 @@ fn human_black_gets_an_automatic_native_opening_and_can_answer_it() {
     replay(&replied);
     let next = replied.legal_choices.first().unwrap().action;
     let thinking = controller
-        .command(DesktopCommand::Play {
+        .settled(DesktopCommand::Play {
             version: replied.version,
             action: next,
         })
@@ -185,7 +185,7 @@ fn cancel_new_game_stale_commands_and_retry_protect_the_live_game() {
     let mut controller = controller(env!("CARGO_BIN_EXE_mshogi"));
     let initial = controller.snapshot();
     let thinking = controller
-        .command(DesktopCommand::NewGame {
+        .settled(DesktopCommand::NewGame {
             version: initial.version,
             document_revision: initial.document.revision,
             human: Color::Black,
@@ -195,7 +195,7 @@ fn cancel_new_game_stale_commands_and_retry_protect_the_live_game() {
     // is queued, running, or already finished, the serialized command must win.
     thread::sleep(Duration::from_millis(20));
     let cancelled = controller
-        .command(DesktopCommand::Cancel {
+        .settled(DesktopCommand::Cancel {
             version: thinking.version,
         })
         .unwrap();
@@ -208,7 +208,7 @@ fn cancel_new_game_stale_commands_and_retry_protect_the_live_game() {
         thread::sleep(Duration::from_millis(2));
     }
     let retried = controller
-        .command(DesktopCommand::Retry {
+        .settled(DesktopCommand::Retry {
             version: cancelled.version,
         })
         .unwrap();
@@ -218,7 +218,7 @@ fn cancel_new_game_stale_commands_and_retry_protect_the_live_game() {
     real_observations(&after_retry, Color::White, retried.version);
     replay(&after_retry);
     let superseded = controller
-        .command(DesktopCommand::NewGame {
+        .settled(DesktopCommand::NewGame {
             version: after_retry.version,
             document_revision: after_retry.document.revision,
             human: Color::Black,
@@ -226,7 +226,7 @@ fn cancel_new_game_stale_commands_and_retry_protect_the_live_game() {
         .unwrap();
     assert_eq!(superseded.engine.status, EnginePhase::Thinking);
     let fresh = controller
-        .command(DesktopCommand::NewGame {
+        .settled(DesktopCommand::NewGame {
             version: superseded.version,
             document_revision: superseded.document.revision,
             human: Color::White,
@@ -234,7 +234,7 @@ fn cancel_new_game_stale_commands_and_retry_protect_the_live_game() {
         .unwrap();
     assert!(
         controller
-            .command(DesktopCommand::Play {
+            .settled(DesktopCommand::Play {
                 version: superseded.version,
                 action: "e2e4".parse().unwrap(),
             })
@@ -250,7 +250,7 @@ fn cancel_new_game_stale_commands_and_retry_protect_the_live_game() {
         thread::sleep(Duration::from_millis(2));
     }
     let thinking = controller
-        .command(DesktopCommand::Play {
+        .settled(DesktopCommand::Play {
             version: fresh.version,
             action: "e2e4".parse().unwrap(),
         })
@@ -269,7 +269,7 @@ fn actual_missing_response_and_failed_process_pause_without_a_chess_score() {
     let mut controller = controller(env!("CARGO_BIN_EXE_mshogi-internal-fixture"));
     let initial = controller.snapshot();
     controller
-        .command(DesktopCommand::NewGame {
+        .settled(DesktopCommand::NewGame {
             version: initial.version,
             document_revision: initial.document.revision,
             human: Color::Black,
@@ -291,7 +291,7 @@ fn actual_missing_response_and_failed_process_pause_without_a_chess_score() {
     );
     assert_eq!(stable.engine.status, EnginePhase::Failed);
     let retry = controller
-        .command(DesktopCommand::Retry {
+        .settled(DesktopCommand::Retry {
             version: failed.version,
         })
         .unwrap();
@@ -313,4 +313,27 @@ fn actual_missing_response_and_failed_process_pause_without_a_chess_score() {
             .contains("Engine failure")
     );
     shutdown(&mut controller);
+}
+
+// Match the host command promise: completion means native admission settled.
+trait SettledCommand {
+    fn settled(&mut self, command: DesktopCommand) -> Result<Snapshot, String>;
+}
+impl SettledCommand for DesktopController {
+    fn settled(&mut self, command: DesktopCommand) -> Result<Snapshot, String> {
+        let (mut snapshot, receipt) = self.command_with_receipt(command)?;
+        let deadline = Instant::now() + Duration::from_secs(20);
+        loop {
+            if let Some(result) = receipt.completion() {
+                result?;
+                return Ok(snapshot);
+            }
+            assert!(
+                Instant::now() < deadline,
+                "native capacity admission deadline"
+            );
+            thread::sleep(Duration::from_millis(1));
+            snapshot = self.snapshot();
+        }
+    }
 }

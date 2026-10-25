@@ -15,6 +15,18 @@ beforeEach(() => {
   command.mockReset();
 });
 afterEach(cleanup);
+it("keeps Save and Save As available while capacity pauses play and analysis", () => {
+  session({ ...standard, capacity: { id: 257, status: "paused", message: "Application capacity: 256 observations are already preserved." }, play_paused: true });
+  render(<App />);
+  expect(screen.getByRole("alert").textContent).toContain("Application limit reached");
+  expect((screen.getByRole("button", { name: "Save" }) as HTMLButtonElement).disabled).toBe(false);
+  expect((screen.getByRole("button", { name: "Save as…" }) as HTMLButtonElement).disabled).toBe(false);
+  expect((screen.getByRole("button", { name: "New game" }) as HTMLButtonElement).disabled).toBe(false);
+  expect(screen.queryByRole("button", { name: "Resume play" })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Retry engine turn" })).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
+  expect((screen.getByRole("button", { name: "Start move analysis" }) as HTMLButtonElement).disabled).toBe(true);
+});
 function session(snapshot: Snapshot) {
   vi.mocked(useNativeSession).mockReturnValue(mockSession(snapshot, command));
 }

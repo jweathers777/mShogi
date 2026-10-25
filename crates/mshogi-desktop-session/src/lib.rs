@@ -1,4 +1,6 @@
 //! Authoritative untimed desktop sessions. Framework-free commands and snapshots.
+mod capacity;
+pub use capacity::*;
 mod persistence;
 pub use persistence::*;
 mod analysis;
@@ -210,6 +212,8 @@ pub struct Snapshot {
     pub engine: EngineState,
     /// Complete desktop document state.
     pub document: DocumentState,
+    /// Native archive admission, separate from chess and engine failures.
+    pub capacity: CapacityState,
     /// Current bounded file/history operation.
     pub io: IoState,
     /// Read-only view, distinct from the live state above.
@@ -227,11 +231,13 @@ pub struct Snapshot {
 }
 
 /// Pure serialized rules/session state; the controller supplies process results.
+#[derive(Clone)]
 pub struct DesktopSession {
     game: ChessMatch,
     human: Color,
     version: u64,
     revision: u64,
+    archive_revision: u64,
     next_request: u64,
     play_limits: WorkLimits,
     pending: Option<EngineRequest>,
@@ -241,6 +247,7 @@ pub struct DesktopSession {
     analysis_submitted: bool,
     play_paused: bool,
     document_revision: u64,
+    document_identity: u64,
     saved_revision: u64,
     document_path: Option<PathBuf>,
     settings: DesktopSettings,
@@ -249,6 +256,8 @@ pub struct DesktopSession {
     initial_record: GameRecord,
     viewed: Option<persistence::Viewed>,
     selection_id: u64,
+    capacity: CapacityState,
+    validated_observations: usize,
 }
 impl Default for DesktopSession {
     fn default() -> Self {
@@ -263,6 +272,7 @@ impl DesktopSession {
             human: Color::White,
             version: 1,
             revision: 1,
+            archive_revision: 1,
             next_request: 0,
             play_limits: PLAY_LIMITS,
             pending: None,
@@ -272,6 +282,7 @@ impl DesktopSession {
             analysis_submitted: false,
             play_paused: false,
             document_revision: 0,
+            document_identity: 1,
             saved_revision: 0,
             document_path: None,
             settings: DesktopSettings::default(),
@@ -280,11 +291,16 @@ impl DesktopSession {
             initial_record: AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record(),
             viewed: None,
             selection_id: 1,
+            capacity: CapacityState::default(),
+            validated_observations: 0,
         }
     }
     /// Restore supported live chess history without silently changing its mode.
     /// Persistence/UI file handling remains a later milestone deliverable.
     pub fn from_record(record: &GameRecord, human: Color) -> Result<Self, String> {
+        if record.events().len() >= MAX_ARCHIVE_EVENTS {
+            return Err("Application capacity: imported game history leaves no room for its live match start event.".into());
+        }
         if record.adjudication_mode() != AdjudicationMode::M2 {
             return Err("Full adjudication restoration is unsupported by this untimed play slice; its mode and limits were not changed.".into());
         }
@@ -313,21 +329,40 @@ impl DesktopSession {
         self.version += 1;
         self.revision += 1;
         self.document_revision += 1;
+        self.archive_revision = self.revision.min(MAX_SAFE_ID - 65);
     }
     fn ensure_capacity(&self) -> Result<(), String> {
-        if self.version >= MAX_SAFE_ID
-            || self.revision >= MAX_SAFE_ID
-            || self.next_request >= MAX_SAFE_ID
-            || self.document_revision >= MAX_SAFE_ID
-            || self.selection_id >= MAX_SAFE_ID
+        if self.version >= MAX_SAFE_ID - 64
+            || self.revision >= MAX_SAFE_ID - 64
+            || self.next_request >= MAX_SAFE_ID - 64
+            || self.document_revision >= MAX_SAFE_ID - 64
+            || self.selection_id >= MAX_SAFE_ID - 64
         {
-            Err("Session identity space exhausted; restart the application.".into())
+            Err("Application capacity: session identity space exhausted. Save the complete current document, then restart the application.".into())
         } else {
             Ok(())
         }
     }
-    /// Apply an atomic human command. Errors leave all session state unchanged.
+    /// Apply an atomic human command. Rejection preserves the accepted document;
+    /// resource refusals also pause execution and expose a capacity diagnostic.
     pub fn command(&mut self, command: DesktopCommand, at_ns: u64) -> Result<(), String> {
+        let mut candidate = self.clone();
+        if let Err(error) = candidate.command_unchecked(command, at_ns) {
+            if error.starts_with("Application capacity:") {
+                self.capacity_pause(error.clone());
+            }
+            return Err(error);
+        }
+        if let Err(error) = candidate.check_archive_capacity(&mut || false) {
+            self.capacity_pause(error.clone());
+            return Err(error);
+        }
+        candidate.validated_observations = candidate.observations.len();
+        candidate.capacity = CapacityState::default();
+        *self = candidate;
+        Ok(())
+    }
+    fn command_unchecked(&mut self, command: DesktopCommand, at_ns: u64) -> Result<(), String> {
         if command
             .version()
             .is_some_and(|version| version != self.version)
@@ -335,6 +370,14 @@ impl DesktopSession {
             return Err("The game changed. Use the current position and try again.".into());
         }
         self.ensure_capacity()?;
+        if matches!(
+            command,
+            DesktopCommand::Analyze { .. }
+                | DesktopCommand::Resume { .. }
+                | DesktopCommand::Retry { .. }
+        ) {
+            self.observation_slot()?;
+        }
         let recorded = command.clone();
         match command {
             DesktopCommand::NewGame {
@@ -350,6 +393,7 @@ impl DesktopSession {
                 }
                 self.initial_record = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record();
                 self.observations.clear();
+                self.validated_observations = 0;
                 self.controls.clear();
                 self.document_path = None;
                 self.viewed = None;
@@ -362,6 +406,7 @@ impl DesktopSession {
                 self.pending = None;
                 self.engine = EngineState::default();
                 self.changed();
+                self.document_identity = self.version;
             }
             DesktopCommand::Preferences {
                 orientation,
@@ -374,6 +419,7 @@ impl DesktopSession {
                 };
                 self.document_revision += 1;
                 self.revision += 1;
+                self.archive_revision = self.revision.min(MAX_SAFE_ID - 65);
             }
             DesktopCommand::Inspect { .. } => {
                 return Err("History selection requires the native controller worker.".into());
@@ -504,7 +550,8 @@ impl DesktopSession {
     }
     /// Create one immutable exact engine envelope if the live engine turn is ready.
     pub fn engine_request(&mut self) -> Option<EngineRequest> {
-        if self.play_paused
+        if self.capacity.status != CapacityPhase::Available
+            || self.play_paused
             || self.pending.is_some()
             || self.engine.status != EnginePhase::Idle
             || self.game.conclusion().is_some()
@@ -513,7 +560,11 @@ impl DesktopSession {
             return None;
         }
         if let Err(error) = self.ensure_capacity() {
-            self.fail(error);
+            self.capacity_pause(error);
+            return None;
+        }
+        if let Err(error) = self.observation_slot() {
+            self.capacity_pause(error);
             return None;
         }
         self.next_request += 1;
@@ -526,6 +577,12 @@ impl DesktopSession {
             game: self.game.game().record(),
             limits: self.play_limits,
         };
+        #[cfg(feature = "desktop-verification")]
+        if self.play_limits.nodes == 0 {
+            // The verification budget affects this one recorded execution only;
+            // the live document retains supported ordinary resume/save limits.
+            self.play_limits = PLAY_LIMITS;
+        }
         self.pending = Some(request.clone());
         self.engine.status = EnginePhase::Thinking;
         self.revision += 1;
@@ -533,6 +590,25 @@ impl DesktopSession {
     }
     /// Accept and apply only the exact outstanding live context. Stale responses do nothing.
     pub fn accept(&mut self, response: EngineResponse, at_ns: u64) -> bool {
+        if self.pending.as_ref() == Some(&response.context)
+            && let Err(error) = self.ensure_capacity()
+        {
+            self.capacity_pause(error);
+            return false;
+        }
+        let mut candidate = self.clone();
+        if !candidate.accept_unchecked(response, at_ns) {
+            return false;
+        }
+        if let Err(error) = candidate.check_archive_capacity(&mut || false) {
+            self.capacity_pause(error);
+            return false;
+        }
+        candidate.validated_observations = candidate.observations.len();
+        *self = candidate;
+        true
+    }
+    fn accept_unchecked(&mut self, response: EngineResponse, at_ns: u64) -> bool {
         if self.play_paused
             || response.context.purpose != mshogi_engine::RequestPurpose::EngineTurn
             || self.pending.as_ref() != Some(&response.context)
@@ -615,7 +691,7 @@ impl DesktopSession {
         self.pending = None;
         self.engine.status = EnginePhase::Failed;
         self.engine.message = Some(message);
-        if self.version < MAX_SAFE_ID && self.revision < MAX_SAFE_ID {
+        if self.ensure_capacity().is_ok() {
             self.changed();
         }
     }
@@ -678,6 +754,7 @@ impl DesktopSession {
             in_check: position.in_check(),
             engine: self.engine.clone(),
             document: self.document_state(),
+            capacity: self.capacity.clone(),
             io: IoState::default(),
             observations: self.observations.clone(),
             analysis: self.analysis.clone(),
@@ -711,6 +788,10 @@ pub struct DesktopController {
     clock_floor: u64,
     files: persistence::FileWorker,
     io_state: IoState,
+    admissions: persistence::FileWorker,
+    admission_token: Option<OpenToken>,
+    admission_receipt: Option<AdmissionReceipt>,
+    last_command_receipt: Option<AdmissionReceipt>,
 }
 impl DesktopController {
     /// Launch the supervisor worker, without starting a child or doing pipe I/O.
@@ -722,6 +803,10 @@ impl DesktopController {
             clock_floor: 0,
             files: persistence::FileWorker::new()?,
             io_state: IoState::default(),
+            admissions: persistence::FileWorker::new()?,
+            admission_token: None,
+            admission_receipt: None,
+            last_command_receipt: None,
         })
     }
     /// Construct difficult native sessions for a separately labeled QA package.
@@ -733,6 +818,7 @@ impl DesktopController {
         let mut controller = Self::new(engine_path).map_err(|error| error.to_string())?;
         controller.session = match fixture {
             "standard" => DesktopSession::new(),
+            "capacity" => DesktopSession::verification_capacity()?,
             "claim" | "current-claim" => {
                 let fen = if fixture == "claim" { "7k/8/8/8/8/8/R7/K7 w - - 99 1" } else { "7k/8/8/8/8/8/R7/K7 w - - 100 1" };
                 let game = AdjudicatedGame::from_fen(fen, ClaimPolicy::ExplicitOnly).map_err(|error| error.to_string())?;
@@ -748,7 +834,7 @@ impl DesktopController {
                 session.play_limits.nodes = 0;
                 session
             }
-            _ => return Err("Unknown desktop verification fixture. Use standard, claim, current-claim, concluded or incomplete.".into()),
+            _ => return Err("Unknown desktop verification fixture. Use standard, claim, current-claim, concluded, incomplete or capacity.".into()),
         };
         Ok(controller)
     }
@@ -756,7 +842,8 @@ impl DesktopController {
         self.clock_floor
             .saturating_add(u64::try_from(self.origin.elapsed().as_nanos()).unwrap_or(u64::MAX))
     }
-    /// Serialize an explicit command before polling completions; cancellation wins races.
+    /// Queue an explicit candidate before polling completions; cancellation wins races.
+    /// Use `command_with_receipt` when the caller needs its accepted/rejected outcome.
     pub fn command(&mut self, command: DesktopCommand) -> Result<Snapshot, String> {
         if matches!(
             command,
@@ -774,9 +861,46 @@ impl DesktopController {
         {
             return self.queue_view(version, event_index);
         }
+        if self.admission_token.is_some()
+            && !matches!(
+                command,
+                DesktopCommand::Cancel { .. }
+                    | DesktopCommand::CancelAnalysis { .. }
+                    | DesktopCommand::NewGame { .. }
+                    | DesktopCommand::ReturnLive { .. }
+            )
+        {
+            return Err("Wait for native document capacity admission to complete.".into());
+        }
+        if self.admission_token.is_some()
+            && matches!(command, DesktopCommand::CancelAnalysis { .. })
+            && self.session.analysis_pending.is_none()
+        {
+            if command.version() != Some(self.session.version) {
+                return Err("The game changed. Use the current position and try again.".into());
+            }
+            self.retire_admission();
+            self.bridge.cancel();
+            self.session.pending = None;
+            self.session.play_paused = true;
+            self.session.engine.status = EnginePhase::Paused;
+            self.session.analysis.status = AnalysisPhase::Cancelled;
+            self.session.analysis.message = Some("Pending analysis admission cancelled before any command or observation was accepted.".into());
+            return Ok(self.session.snapshot());
+        }
         let preferences = matches!(command, DesktopCommand::Preferences { .. });
         let at_ns = self.at_ns();
-        self.session.command(command, at_ns)?;
+        let mut candidate = self.session.clone();
+        if let Err(error) = candidate.command_unchecked(command, at_ns) {
+            if error.starts_with("Application capacity:") {
+                self.retire_admission();
+                self.bridge.cancel();
+                self.session.capacity_pause(error.clone());
+            }
+            return Err(error);
+        }
+        self.queue_admission(candidate)?;
+        self.last_command_receipt = self.admission_receipt.clone();
         if !preferences {
             self.bridge.cancel();
         }
@@ -784,22 +908,40 @@ impl DesktopController {
     }
     /// Poll the bounded completion slot, accept it atomically, and start eligible work.
     pub fn snapshot(&mut self) -> Snapshot {
+        self.poll_admission();
         self.poll_files();
-        if let Some(response) = self.bridge.poll() {
+        if self.admission_token.is_none()
+            && (self.session.pending.is_some() || self.session.analysis_pending.is_some())
+            && let Err(error) = self.session.ensure_capacity()
+        {
+            self.bridge.cancel();
+            self.session.capacity_pause(error);
+        }
+        if self.admission_token.is_none()
+            && let Some(response) = self.bridge.poll()
+        {
             let at_ns = self.at_ns();
             if matches!(
                 response.context.purpose,
                 mshogi_engine::RequestPurpose::EngineTurn
             ) {
-                self.session.accept(response, at_ns);
+                let mut candidate = self.session.clone();
+                if candidate.accept_unchecked(response, at_ns) {
+                    let _ = self.queue_admission(candidate);
+                }
             } else {
-                self.session.accept_analysis(response);
+                let mut candidate = self.session.clone();
+                if candidate.accept_analysis_unchecked(response) {
+                    let _ = self.queue_admission(candidate);
+                }
             }
         }
-        if let Some(request) = self.session.analysis_request()
+        if self.admission_token.is_none()
+            && let Some(request) = self.session.analysis_request()
             && let Err(error) = self.bridge.submit(request.clone())
         {
-            self.session.accept_analysis(EngineResponse {
+            let mut candidate = self.session.clone();
+            if candidate.accept_analysis_unchecked(EngineResponse {
                 context: request,
                 result: EngineResult::Failure {
                     failure: mshogi_engine::EngineFailure {
@@ -807,9 +949,12 @@ impl DesktopController {
                         message: format!("Cannot start analysis work: {error:?}"),
                     },
                 },
-            });
+            }) {
+                let _ = self.queue_admission(candidate);
+            }
         }
-        if let Some(request) = self.session.engine_request()
+        if self.admission_token.is_none()
+            && let Some(request) = self.session.engine_request()
             && let Err(error) = self.bridge.submit(request)
         {
             self.session
@@ -824,10 +969,15 @@ impl DesktopController {
     pub fn begin_shutdown(&mut self) {
         self.bridge.shutdown();
         self.files.shutdown();
+        self.admissions.shutdown();
     }
     /// Observe off-path supervisor cleanup before allowing application exit.
     pub fn shutdown_acknowledged(&self) -> bool {
-        self.bridge.shutdown_acknowledged()
+        self.admissions
+            .shared
+            .exited
+            .load(std::sync::atomic::Ordering::Acquire)
+            && self.bridge.shutdown_acknowledged()
             && self
                 .files
                 .shared
@@ -854,7 +1004,12 @@ mod tests {
             context,
             result: EngineResult::Move {
                 action: action.parse().unwrap(),
-                telemetry: telemetry(),
+                telemetry: Telemetry {
+                    principal_variation: vec![mshogi_engine::EngineChoice::Move {
+                        action: action.parse().unwrap(),
+                    }],
+                    ..telemetry()
+                },
             },
         }
     }
@@ -1059,7 +1214,10 @@ mod tests {
                 context,
                 result: EngineResult::Claim {
                     claim,
-                    telemetry: telemetry()
+                    telemetry: Telemetry {
+                        principal_variation: vec![mshogi_engine::EngineChoice::Claim { claim }],
+                        ..telemetry()
+                    }
                 }
             },
             1
@@ -1341,7 +1499,7 @@ mod tests {
         let mut incomplete = DesktopController::verification(path.clone(), "incomplete").unwrap();
         let request = incomplete.session.engine_request().unwrap();
         assert_eq!(request.limits.nodes, 0);
-        assert_eq!(incomplete.session.snapshot().limits.nodes, 0);
+        assert_eq!(incomplete.session.snapshot().limits, PLAY_LIMITS);
         incomplete
             .session
             .command(

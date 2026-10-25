@@ -1,6 +1,6 @@
 {
-  "revision": 7,
-  "version": 6,
+  "revision": 8,
+  "version": 7,
   "human": "white",
   "turn": "white",
   "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
@@ -228,6 +228,11 @@
       }
     }
   },
+  "capacity": {
+    "id": 2,
+    "status": "available",
+    "message": null
+  },
   "io": {
     "id": 2,
     "phase": "complete",
@@ -441,7 +446,7 @@
       }
     },
     "ply": 0,
-    "selection_id": 6,
+    "selection_id": 7,
     "timeline": [
       {
         "index": 0,

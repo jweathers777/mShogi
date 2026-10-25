@@ -4,6 +4,7 @@ title: Verify integrated desktop interactions and accessibility
 status: Ready
 assignee: []
 created_date: '2026-10-25T12:48:00Z'
+updated_date: '2026-10-25T17:48:00Z'
 labels: []
 milestone: m-3
 dependencies:
@@ -11,6 +12,7 @@ dependencies:
   - MSH-34
   - MSH-35
   - MSH-36
+  - MSH-61
 documentation:
   - docs/desktop/m3-design.md
 ordinal: 37000
@@ -36,3 +38,9 @@ Individual board tests do not establish the complete application interaction and
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Final M3 batch owner clarification: integrated journeys must include MSH-61 archive capacity admission, recovery/retry, explicit Return to live and Resume, unsaved-change handling, status announcements/focus recovery and access to controls at supported sizes; preserve existing AC. MSH-61 is required before integration verification.
+<!-- SECTION:NOTES:END -->

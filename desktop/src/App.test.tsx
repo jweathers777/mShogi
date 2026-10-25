@@ -27,9 +27,11 @@ it("keeps orientation independent of human color and dispatches rendered native 
   session(standard);
   render(<App />);
   fireEvent.click(screen.getByRole("button", { name: /Flip board/ }));
-  expect(screen.getByRole("group").getAttribute("aria-label")).toContain(
-    "black at bottom",
-  );
+  expect(
+    screen
+      .getByRole("group", { name: /Chess board/ })
+      .getAttribute("aria-label"),
+  ).toContain("black at bottom");
   expect(screen.getByText(/You play White/)).toBeTruthy();
   fireEvent.change(screen.getByLabelText("Your color for a new game"), {
     target: { value: "black" },
@@ -81,7 +83,7 @@ it("labels last real observations with their searched version and side, while pr
   expect(
     screen.getByText(/Last searched position · version 6 · Black perspective/),
   ).toBeTruthy();
-  expect(screen.getByText("37")).toBeTruthy();
+  expect(screen.getByText("+0.37 pawns from Black perspective")).toBeTruthy();
   expect(screen.getByRole("alert").textContent).toContain("No chess outcome");
   expect(screen.getByText("White to move")).toBeTruthy();
 });

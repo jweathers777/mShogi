@@ -103,9 +103,7 @@ impl EngineBridge {
     }
     /// Replace prior work atomically without launching or serializing on caller.
     pub fn submit(&self, context: EngineRequest) -> Result<(), SubmitError> {
-        if context.protocol != PROTOCOL_VERSION
-            || !(1..=mshogi_search::search::MAX_DEPTH).contains(&context.limits.depth)
-        {
+        if context.protocol != PROTOCOL_VERSION || !context.valid_limits() {
             return Err(SubmitError::InvalidRequest);
         }
         let context = Arc::new(context);
@@ -484,6 +482,7 @@ mod tests {
     fn request(id: u64, generation: u64) -> EngineRequest {
         EngineRequest {
             protocol: PROTOCOL_VERSION,
+            purpose: RequestPurpose::EngineTurn,
             request_id: id,
             session_version: 0,
             process_generation: generation,

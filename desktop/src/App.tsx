@@ -1,6 +1,8 @@
 import { useRef, useState } from "react";
 import { OutcomeCard, RecoveryNotice, ResignConfirmation } from "./Recovery";
 import { Board } from "./Board";
+import { AnalysisPanel } from "./Analysis";
+import { scoreDescription } from "./analysisPresentation";
 import type { Color, Snapshot } from "./native";
 import { claimName, colorName, gameStatus } from "./presentation";
 import { useNativeSession } from "./useNativeSession";
@@ -21,6 +23,13 @@ function EngineObservations({ snapshot }: { snapshot: Snapshot }) {
         </p>
       </details>
     );
+  if (last.kind === "reachability")
+    return (
+      <p className="failure-detail">
+        An advanced analysis result cannot be used as an engine-turn result. No
+        move is implied.
+      </p>
+    );
   const telemetry = last.telemetry;
   const choice =
     last.kind === "move"
@@ -33,9 +42,14 @@ function EngineObservations({ snapshot }: { snapshot: Snapshot }) {
   return (
     <>
       <p className="engine-choice">{choice}</p>
+      <p className="analysis-score">
+        {scoreDescription(telemetry.score, engine.last_turn)}
+      </p>
       <p className="caption">
-        Last searched position · version {engine.searched_version} ·{" "}
-        {engine.last_turn === null ? "unknown" : colorName(engine.last_turn)}{" "}
+        Last engine-turn position ·{" "}
+        {engine.last_turn === null
+          ? "unknown side"
+          : colorName(engine.last_turn)}{" "}
         perspective
       </p>
       <dl className="telemetry">
@@ -47,15 +61,16 @@ function EngineObservations({ snapshot }: { snapshot: Snapshot }) {
           <dt>Nodes</dt>
           <dd>{telemetry.nodes.toLocaleString()}</dd>
         </div>
-        <div>
-          <dt>Native score</dt>
-          <dd>{telemetry.score ?? "—"}</dd>
-        </div>
       </dl>
-      <p className="caption">
-        Score units: pawn = 100; mate uses native distance encoding.{" "}
-        {telemetry.status.replaceAll("_", " ")}.
-      </p>
+      <details className="technical-analysis">
+        <summary>Search technical details</summary>
+        <p>
+          Last searched position · version {engine.searched_version} ·{" "}
+          {engine.last_turn === null ? "unknown" : colorName(engine.last_turn)}{" "}
+          perspective
+        </p>
+        <pre>{JSON.stringify(telemetry, null, 2)}</pre>
+      </details>
       {telemetry.principal_variation.length > 0 && (
         <p className="variation">
           <span>Continuation</span>{" "}
@@ -76,6 +91,7 @@ export function App() {
   const [orientation, setOrientation] = useState<Color>("white");
   const [newHuman, setNewHuman] = useState<Color>("white");
   const [claimIndex, setClaimIndex] = useState(0);
+  const [inspector, setInspector] = useState<"play" | "analysis">("play");
   const resignButton = useRef<HTMLButtonElement>(null);
   const [resigning, setResigning] = useState<{
     version: number;
@@ -93,7 +109,12 @@ export function App() {
     );
   const humanTurn =
     snapshot.human === snapshot.turn && snapshot.conclusion === null;
-  const canPlay = connected && !busy && humanTurn && resigning === null;
+  const canPlay =
+    connected &&
+    !busy &&
+    humanTurn &&
+    resigning === null &&
+    !snapshot.play_paused;
   const paused = ["cancelled", "failed", "incomplete"].includes(
     snapshot.engine.status,
   );
@@ -160,11 +181,13 @@ export function App() {
             <span>
               {snapshot.conclusion !== null
                 ? "Game concluded"
-                : humanTurn
-                  ? "Your turn"
-                  : snapshot.engine.status === "thinking"
-                    ? "mShogi is searching within fixed work limits"
-                    : "Engine turn paused"}
+                : snapshot.play_paused
+                  ? "Play paused · analysis cannot change the game"
+                  : humanTurn
+                    ? "Your turn"
+                    : snapshot.engine.status === "thinking"
+                      ? "mShogi is searching within fixed work limits"
+                      : "Engine turn paused"}
             </span>
             <span>Live position · {snapshot.history.length} plies</span>
           </div>
@@ -220,45 +243,118 @@ export function App() {
             <OutcomeCard conclusion={snapshot.conclusion} />
           )}
           <RecoveryNotice snapshot={snapshot} error={error} />
-          <section className="card engine-card">
-            <div className="card-title">
-              <h2>Native engine</h2>
-              <span className={`engine-phase ${snapshot.engine.status}`}>
-                {snapshot.engine.status === "thinking"
-                  ? "Searching"
-                  : snapshot.engine.status}
-              </span>
-            </div>
-            <p className="caption">
-              Play limit: depth {snapshot.limits.depth} ·{" "}
-              {snapshot.limits.nodes.toLocaleString()} nodes
-            </p>
-            <EngineObservations snapshot={snapshot} />
-            <div className="engine-actions">
-              {snapshot.engine.status === "thinking" && (
+          {snapshot.play_paused && (
+            <section className="notice play-paused" role="status">
+              <strong>Play paused for analysis</strong>
+              <p>
+                {snapshot.conclusion === null
+                  ? "Board moves and draw claims are paused. Resuming retires analysis and continues play."
+                  : "The game remains concluded. Finishing analysis does not reopen it."}
+              </p>
+              {snapshot.analysis.status === "thinking" && (
                 <button
-                  className="secondary"
+                  className="quiet"
                   disabled={busy || !connected}
                   onClick={() => {
-                    void command({ kind: "cancel", version: snapshot.version });
+                    void command({
+                      kind: "cancel_analysis",
+                      version: snapshot.version,
+                    });
                   }}
                 >
-                  Cancel search
+                  Cancel analysis
                 </button>
               )}
-              {paused && !humanTurn && snapshot.conclusion === null && (
-                <button
-                  className="secondary"
-                  disabled={busy || !connected}
-                  onClick={() => {
-                    void command({ kind: "retry", version: snapshot.version });
-                  }}
-                >
-                  Retry engine turn
-                </button>
-              )}
-            </div>
-          </section>
+              <button
+                className="secondary"
+                disabled={busy || !connected}
+                onClick={() => {
+                  void command({ kind: "resume", version: snapshot.version });
+                }}
+              >
+                {snapshot.conclusion === null
+                  ? "Resume play"
+                  : "Finish analysis"}
+              </button>
+            </section>
+          )}
+          <div
+            className="inspector-switch"
+            role="group"
+            aria-label="Inspector view"
+          >
+            <button
+              aria-pressed={inspector === "play"}
+              onClick={() => setInspector("play")}
+            >
+              Play details
+            </button>
+            <button
+              aria-pressed={inspector === "analysis"}
+              onClick={() => setInspector("analysis")}
+            >
+              Analyze position
+            </button>
+          </div>
+          {inspector === "analysis" ? (
+            <AnalysisPanel
+              snapshot={snapshot}
+              busy={busy}
+              connected={connected}
+              command={command}
+            />
+          ) : (
+            <section className="card engine-card">
+              <div className="card-title">
+                <h2>Native engine</h2>
+                <span className={`engine-phase ${snapshot.engine.status}`}>
+                  {snapshot.engine.status === "thinking"
+                    ? "Searching"
+                    : snapshot.engine.status === "paused"
+                      ? "Play paused"
+                      : snapshot.engine.status}
+                </span>
+              </div>
+              <p className="caption">
+                Play limit: depth {snapshot.limits.depth} ·{" "}
+                {snapshot.limits.nodes.toLocaleString()} nodes
+              </p>
+              <EngineObservations snapshot={snapshot} />
+              <div className="engine-actions">
+                {snapshot.engine.status === "thinking" && (
+                  <button
+                    className="secondary"
+                    disabled={busy || !connected}
+                    onClick={() => {
+                      void command({
+                        kind: "cancel",
+                        version: snapshot.version,
+                      });
+                    }}
+                  >
+                    Cancel search
+                  </button>
+                )}
+                {paused &&
+                  !snapshot.play_paused &&
+                  !humanTurn &&
+                  snapshot.conclusion === null && (
+                    <button
+                      className="secondary"
+                      disabled={busy || !connected}
+                      onClick={() => {
+                        void command({
+                          kind: "retry",
+                          version: snapshot.version,
+                        });
+                      }}
+                    >
+                      Retry engine turn
+                    </button>
+                  )}
+              </div>
+            </section>
+          )}
           {snapshot.claims.length > 0 && snapshot.conclusion === null && (
             <section className="card claims">
               <h2>Draw claim available</h2>
@@ -384,7 +480,13 @@ export function App() {
       )}
       <footer className="app-footer">
         <span>One native rules engine. Complete actions. Optional claims.</span>
-        <span>Session version {snapshot.version}</span>
+        <details className="footer-details">
+          <summary>Session details</summary>
+          <span>
+            Session version {snapshot.version} · snapshot revision{" "}
+            {snapshot.revision}
+          </span>
+        </details>
       </footer>
     </main>
   );

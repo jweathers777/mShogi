@@ -1,0 +1,235 @@
+{
+  "package_root": "desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+  "engine": "Contents/MacOS/mshogi",
+  "sha256": "81ffb1eaea8d4be2e4902b1a1842f14c965fc40d192eaf0da82882b76e026c53",
+  "host_sha256": "a431ed66ace0d5d9904d30676b23c6a7530c732057c6f2ee193808dd89134286",
+  "version": "mshogi 0.1.0",
+  "uci_observations": [
+    "id name mShogi 0.1.0",
+    "id author John Weathers",
+    "option name ClaimPolicy type combo default explicit var explicit var auto",
+    "uciok",
+    "readyok",
+    "info depth 1 nodes 21 time 5 score cp 0 pv a2a3",
+    "bestmove a2a3"
+  ],
+  "internal_response": {
+    "context": {
+      "protocol": 2,
+      "purpose": {
+        "kind": "engine_turn"
+      },
+      "request_id": 1,
+      "session_version": 1,
+      "process_generation": 1,
+      "game": {
+        "schema_version": 1,
+        "rules_profile": "mshogi.chess.match.v1",
+        "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "history_origin": "standard_start",
+        "claim_policy": "explicit_only",
+        "events": []
+      },
+      "limits": {
+        "depth": 1,
+        "nodes": 1000
+      }
+    },
+    "result": {
+      "kind": "move",
+      "action": "a2a3",
+      "telemetry": {
+        "score": 0,
+        "completed_depth": 1,
+        "nodes": 21,
+        "principal_variation": [
+          {
+            "kind": "move",
+            "action": "a2a3"
+          }
+        ],
+        "status": "complete"
+      }
+    }
+  },
+  "analysis_response": {
+    "context": {
+      "protocol": 2,
+      "purpose": {
+        "kind": "move_analysis",
+        "target": {
+          "selection_id": 1,
+          "ply": 0,
+          "session_version": 1,
+          "label": "Package verification: standard start",
+          "turn": "white"
+        }
+      },
+      "request_id": 2,
+      "session_version": 1,
+      "process_generation": 2,
+      "game": {
+        "schema_version": 1,
+        "rules_profile": "mshogi.chess.match.v1",
+        "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "history_origin": "standard_start",
+        "claim_policy": "explicit_only",
+        "events": []
+      },
+      "limits": {
+        "depth": 1,
+        "nodes": 1000
+      }
+    },
+    "result": {
+      "kind": "move",
+      "action": "a2a3",
+      "telemetry": {
+        "score": 0,
+        "completed_depth": 1,
+        "nodes": 21,
+        "principal_variation": [
+          {
+            "kind": "move",
+            "action": "a2a3"
+          }
+        ],
+        "status": "complete"
+      }
+    }
+  },
+  "full_response": {
+    "context": {
+      "protocol": 2,
+      "purpose": {
+        "kind": "full_reachability",
+        "target": {
+          "selection_id": 1,
+          "ply": 0,
+          "session_version": 1,
+          "label": "Package verification: standard start",
+          "turn": "white"
+        },
+        "mate": "either",
+        "limits": {
+          "max_positions": 1,
+          "max_transitions": 1
+        }
+      },
+      "request_id": 3,
+      "session_version": 1,
+      "process_generation": 3,
+      "game": {
+        "schema_version": 1,
+        "rules_profile": "mshogi.chess.match.v1",
+        "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "history_origin": "standard_start",
+        "claim_policy": "explicit_only",
+        "events": []
+      },
+      "limits": {
+        "depth": 1,
+        "nodes": 0
+      }
+    },
+    "result": {
+      "kind": "reachability",
+      "result": {
+        "unknown": {
+          "reason": "position_limit",
+          "work": {
+            "positions": 1,
+            "expanded": 1,
+            "transitions": 1,
+            "static_leaves": 0
+          }
+        }
+      }
+    }
+  },
+  "files": [
+    "Contents/Info.plist",
+    "Contents/MacOS/mshogi",
+    "Contents/MacOS/mshogi-desktop",
+    "Contents/Resources/icon.icns"
+  ],
+  "scope": "Actual normal arm64 macOS packaged read-only move analysis, cancellation, replacement, advanced bounded Full unknown and explicit Resume/play. Positive/negative mate scores and Full proofs have native-generated frontend plus native tests; they were not reached in this standard-opening GUI journey. Exact source/CI retained in MSH-33.",
+  "gui_journeys": [
+    {
+      "operation": "moves",
+      "target": "standard start, White,0plies",
+      "limits": {
+        "depth": 2,
+        "nodes": 20000
+      },
+      "result": {
+        "suggested": "a2a3",
+        "depth": 2,
+        "nodes": 442,
+        "score": 0
+      },
+      "board_actions_added": 0
+    },
+    {
+      "operation": "cancel moves",
+      "limits": {
+        "depth": 8,
+        "nodes": 5000000
+      },
+      "result": "cancelled; no final observations",
+      "board_actions_added": 0,
+      "play_paused": true
+    },
+    {
+      "operation": "replace active moves",
+      "old_limits": {
+        "depth": 8,
+        "nodes": 5000000
+      },
+      "new_limits": {
+        "depth": 1,
+        "nodes": 1000
+      },
+      "result": {
+        "depth": 1,
+        "nodes": 21,
+        "suggested": "a2a3"
+      },
+      "board_actions_added": 0
+    },
+    {
+      "operation": "full_reachability",
+      "target": "either at standard start,0plies",
+      "limits": {
+        "max_positions": 1,
+        "max_transitions": 1
+      },
+      "native_context": {
+        "selection_id": 5,
+        "request_id": 5,
+        "session_version": 7,
+        "process_generation": 5
+      },
+      "result": {
+        "unknown": "position_limit",
+        "positions": 1,
+        "transitions": 1
+      },
+      "board_actions_added": 0,
+      "live_rules_mode": "m2"
+    },
+    {
+      "operation": "explicit Resume then human play",
+      "result": [
+        "e2e4",
+        "a7a5"
+      ],
+      "engine": {
+        "depth": 2,
+        "nodes": 642,
+        "score": 0,
+        "perspective": "black"
+      }
+    }
+  ]
+}

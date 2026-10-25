@@ -9,6 +9,7 @@ use std::{
 fn request(id: u64) -> EngineRequest {
     EngineRequest {
         protocol: PROTOCOL_VERSION,
+        purpose: RequestPurpose::EngineTurn,
         request_id: id,
         session_version: 2,
         process_generation: id,

@@ -41,9 +41,10 @@ An engine failure, incomplete search or cancellation instead pauses the ongoing
 game without adding a move or result; explicit Retry preserves its history.
 
 Games are unsaved: New game or closing the app discards them. The move list is
-the live action history; historical viewing, persistence, analysis, richer
-recovery and the synthetic large-board fixture are later M3 tickets. Full
-adjudication restoration is explicitly unsupported in this slice. M3 remains
+the live action history; historical viewing, persistence and the synthetic large-board fixture are later
+M3 tickets. Bounded analysis and outcome/recovery controls are available now. Full
+live-adjudication restoration is explicitly unsupported; the advanced read-only
+Full operation described below is a separate controlled execution path. M3 remains
 open; see [scope and evidence](../docs/desktop/first-batch-evidence.md).
 
 Build a normal distributable with the platform's supported bundle format:
@@ -114,3 +115,31 @@ Fixture names are `standard`, `claim` (intended fifty-move claim), `current-clai
 Retry restores ordinary play limits. Close before launching a different fixture.
 This build is QA infrastructure, not a normal distributable. The external package
 verifier checks that a normal host contains no fixture initializer marker.
+
+
+## Read-only bounded analysis
+
+Choose **Analyze position** in the inspector. Set depth (1–8) and node budget
+(0–5,000,000), then **Start move analysis**. Analysis pauses play; suggestions,
+claims and continuations are never committed. **Cancel analysis** leaves play
+paused, replacement retires old work, and **Resume play** explicitly returns the
+single supervised resource to the engine turn or human play. Changing inspector
+tabs alone neither starts analysis nor resumes play.
+
+Evaluation is shown in pawn units from the named analyzed side's perspective,
+or as a named side's mate distance. Zero evaluation is not a draw. Position,
+requested budgets and actual final depth/nodes/PV are labeled; native request,
+process and session identities plus raw encodings remain in technical details.
+There is no simulated live progress.
+
+**Advanced: Full mating reachability** asks whether legal cooperative play can
+reach mate for Either side, White or Black. It is not forced-win search and does
+not adjudicate the live M2 game. Mandatory position/transition caps (at most
+100,000/1,000,000) and a 15-second child watchdog keep reconstruction and solving
+off the interaction path. A proof, cooperative witness or unknown work result
+is displayed as analysis only. Cancellation has no fabricated solver counts;
+resource exhaustion and process failure never invent a chess outcome.
+
+The [internal v2 contract](../docs/desktop/internal-engine-v2.md) documents
+purpose-specific acceptance and limits. The [batch evidence](../docs/desktop/second-batch-evidence.md)
+distinguishes controller, frontend and actual packaged GUI verification.

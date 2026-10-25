@@ -5,6 +5,7 @@ use std::io::Cursor;
 fn request(game: &AdjudicatedGame) -> EngineRequest {
     EngineRequest {
         protocol: PROTOCOL_VERSION,
+        purpose: RequestPurpose::EngineTurn,
         request_id: 1,
         session_version: 7,
         process_generation: 3,
@@ -192,4 +193,102 @@ fn native_record_duplicate_fields_are_not_collapsed_before_strict_validation() {
         "\"claim_policy\":\"explicit_only\",\"claim_policy\":",
     );
     assert!(serde_json::from_str::<EngineRequest>(&text).is_err());
+}
+
+fn analysis_target(game: &AdjudicatedGame) -> AnalysisTarget {
+    AnalysisTarget {
+        selection_id: 1,
+        ply: game.history().ply_count() as u64,
+        session_version: 7,
+        label: "Native protocol target".into(),
+        turn: game.position().side_to_move(),
+    }
+}
+fn full_request(game: &AdjudicatedGame, positions: u64) -> EngineRequest {
+    let mut context = request(game);
+    context.purpose = RequestPurpose::FullReachability {
+        target: analysis_target(game),
+        mate: ReachabilityTarget::Either,
+        limits: FullLimits {
+            max_positions: positions,
+            max_transitions: 1000,
+        },
+    };
+    context.limits = FULL_SENTINEL;
+    context
+}
+#[test]
+fn full_child_operation_reports_real_possible_impossible_and_unknown_work() {
+    let mated =
+        AdjudicatedGame::from_fen("7k/6Q1/5K2/8/8/8/8/8 b - - 0 1", ClaimPolicy::ExplicitOnly)
+            .unwrap();
+    assert!(
+        matches!(run(full_request(&mated, 10)).result, EngineResult::Reachability { result: MateReachability::Possible { witness, work } } if witness.is_empty() && work.positions == 1)
+    );
+    let dead = AdjudicatedGame::from_fen("7k/8/8/8/8/8/8/K7 w - - 0 1", ClaimPolicy::ExplicitOnly)
+        .unwrap();
+    assert!(
+        matches!(run(full_request(&dead, 10)).result, EngineResult::Reachability { result: MateReachability::Impossible { work } } if work.static_leaves == 1)
+    );
+    let live = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
+    assert!(
+        matches!(run(full_request(&live, 0)).result, EngineResult::Reachability { result: MateReachability::Unknown { reason: ReachabilityStop::PositionLimit, work } } if work.positions == 0 && work.transitions == 0)
+    );
+}
+#[test]
+fn analysis_requires_exact_provenance_supported_mode_and_explicit_limits() {
+    let live = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
+    let mut context = request(&live);
+    context.purpose = RequestPurpose::MoveAnalysis {
+        target: analysis_target(&live),
+    };
+    assert!(matches!(
+        run(context.clone()).result,
+        EngineResult::Move { .. }
+    ));
+    if let RequestPurpose::MoveAnalysis { target } = &mut context.purpose {
+        target.ply = 1;
+    }
+    assert!(matches!(
+        run(context).result,
+        EngineResult::Failure {
+            failure: EngineFailure {
+                kind: FailureKind::InvalidRequest,
+                ..
+            }
+        }
+    ));
+    let mut invalid = full_request(&live, MAX_FULL_POSITIONS + 1);
+    assert!(matches!(
+        run(invalid.clone()).result,
+        EngineResult::Failure {
+            failure: EngineFailure {
+                kind: FailureKind::InvalidRequest,
+                ..
+            }
+        }
+    ));
+    invalid.purpose = RequestPurpose::MoveAnalysis {
+        target: analysis_target(&live),
+    };
+    invalid.limits = WorkLimits {
+        depth: MAX_ANALYSIS_DEPTH + 1,
+        nodes: 1,
+    };
+    assert!(matches!(
+        run(invalid).result,
+        EngineResult::Failure {
+            failure: EngineFailure {
+                kind: FailureKind::InvalidRequest,
+                ..
+            }
+        }
+    ));
+    let encoded = serde_json::to_string(&request(&live)).unwrap();
+    assert!(
+        serde_json::from_str::<EngineRequest>(
+            &encoded.replace("\"purpose\":{\"kind\":\"engine_turn\"},", "")
+        )
+        .is_err()
+    );
 }

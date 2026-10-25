@@ -43,3 +43,43 @@ initializer nor the helper. [Reproduction/launch](../../desktop/README.md).
 The [MSH-34 record](<../../backlog/tasks/msh-34 - Complete-desktop-outcomes-and-recovery-interactions.md>)
 retains independent review, integrated source and exact native/platform CI.
 This task adds no clocks or evaluation-based resignation/draw policy.
+
+
+## MSH-33 — read-only analysis and controlled Full execution
+
+[Internal protocol v2](internal-engine-v2.md) requires a purpose and exact native
+target/history. The host has a separate `accept_analysis` path with no move/claim
+application. One supervised bridge pauses play for analysis; cancel/replace
+retires old work, and only explicit Resume returns it to play. Advanced Full
+cooperative reachability runs reconstruction and solving in the child under
+recorded position/transition caps and the process watchdog. Unknown or killed
+work cannot adjudicate a live game, and missing observations are not invented.
+Full live-record restoration is still explicitly refused before solver replay.
+
+Independent review passed 22 all-feature session tests, two engine unit/eight
+protocol tests, two actual-process analysis tests, 35 frontend tests and strict
+TypeScript. A focused resignation/analysis retirement refinement was separately
+reviewed and its regression rerun. Primary focused Clippy and all eleven console
+process/play/analysis integration tests passed. Host format/Clippy/tests and the
+normal TypeScript/Vite/package builds passed. Fourteen frontend fixtures retain
+native serialization/actual native solver output; they are not a second rules
+oracle.
+
+Actual final normal macOS `.app` journeys, using its bundled engine:
+
+| Journey | Observations and game protection | Screenshot |
+| --- | --- | --- |
+| Move analysis at standard start, depth 2/20,000 nodes | Actual depth 2/442 nodes, 0.00 pawns from White; suggested `a2a3` not played; zero-action board unchanged | [Move analysis](evidence/analysis-moves-macos.png) |
+| Start depth 8/5,000,000 nodes, Cancel | Cancelled with no final observations; board unchanged and play remains paused | [Cancelled](evidence/analysis-cancelled-macos.png) |
+| Replace active depth 8 work with depth 1/1,000 nodes | Only new depth 1/21-node suggestion displayed; no board action | Retained observations below |
+| Advanced Full, Either side, one position/transition | Unknown position limit; one actual position/transition; live mode remains M2 and no chess result | [Full unknown](evidence/analysis-full-unknown-macos.png) |
+| Explicit Resume then human `e2e4` | Board enabled only after Resume; real `a7a5` reply, depth 2/642 nodes, Black perspective | [Resumed play](evidence/analysis-resumed-play-macos.png) |
+
+The [retained report](evidence/analysis-local-macos.json) includes final host and
+engine identities, real packaged UCI/engine-turn/move-analysis/Full queries and
+GUI observations. Technical details exposed selection/request 5, session 7 and
+the exact Full limits for the zero-ply target. Pawn/mate presentation and
+cooperative possible/impossible proof branches have composed native/frontend
+coverage, not a claim of reaching them in the standard-opening GUI journey.
+No instrumentation is present in the normal host. Platform CI and source are
+recorded in the [MSH-33 completion record](<../../backlog/tasks/msh-33 - Add-bounded-desktop-analysis-and-explicit-Full-mode-execution.md>).

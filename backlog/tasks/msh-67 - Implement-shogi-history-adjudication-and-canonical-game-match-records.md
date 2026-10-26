@@ -1,11 +1,11 @@
 ---
 id: MSH-67
 title: Implement shogi history adjudication and canonical game-match records
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-26T12:48:00Z'
+updated_date: '2026-10-26T13:06:00Z'
 labels:
   - m4
   - owner-msh-41
@@ -20,6 +20,10 @@ references:
 documentation:
   - docs/m4/shogi-profile.md
   - docs/m4/delivery-plan.md
+  - docs/m4/history-state.md
+  - docs/m4/history-validation.md
+  - docs/m4/mutual-check-resolution.md
+  - docs/m4/history-final-review.md
 type: task
 ordinal: 67000
 ---
@@ -36,19 +40,19 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Rules-owned history separates saved-state,repetition and search identity; repetition includes promoted ownership,both hands and turn, with complete checking intervals and explicit known-history origin.
-- [ ] #2 All selected-profile conclusions and precedence are implemented: fourfold/perpetual check,no-legal-action loss,resignation,formal entering-king declaration and declared length policy; advisory probes,illegal API rejection and tournament penalties remain distinct.
-- [ ] #3 Canonical native game/match records preserve initial state,complete actions,commands/events,profile/edition,modes,limits,policies,counters,conclusions and score/replay semantics; strict replay validates independently expected history and rejects unsupported/lossy input.
-- [ ] #4 Imported-SFEN counter/history semantics and overlapping boundary fixtures are resolved under the ratified profile; completing a history-dependent losing cycle is not erased by generic invalid-request rejection.
-- [ ] #5 History/record roundtrips,undo,prefix reconstruction and same-position/different-history cases are independently verified. Timing or external-event policies are either explicitly supported or clearly unsupported,never inferred from chess.
+- [x] #1 Rules-owned history separates saved-state,repetition and search identity; repetition includes promoted ownership,both hands and turn, with complete checking intervals and explicit known-history origin.
+- [x] #2 All selected-profile conclusions and precedence are implemented: fourfold/perpetual check,no-legal-action loss,resignation,formal entering-king declaration and declared length policy; advisory probes,illegal API rejection and tournament penalties remain distinct.
+- [x] #3 Canonical native game/match records preserve initial state,complete actions,commands/events,profile/edition,modes,limits,policies,counters,conclusions and score/replay semantics; strict replay validates independently expected history and rejects unsupported/lossy input.
+- [x] #4 Imported-SFEN counter/history semantics and overlapping boundary fixtures are resolved under the ratified profile; completing a history-dependent losing cycle is not erased by generic invalid-request rejection.
+- [x] #5 History/record roundtrips,undo,prefix reconstruction and same-position/different-history cases are independently verified. Timing or external-event policies are either explicitly supported or clearly unsupported,never inferred from chess.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -69,10 +73,33 @@ Final bounded handoff: research/fixtures/blocker integrated and pushed on codex/
 Resumed2026-10-26 by @codex on codex/shogi-history in restored app-managed /Users/johnweathers/.codex/worktrees/shogi-history/mShogi. Owner supplies proposed proof supplement (archive SHA256 a96bc888fec6c3a0da9c375cd398881d64454c67fd965f82c372acdc6eee33f8) for review, not as mathematical authority; selectedprofileunchanged. Reconciled newer rewrite handoff by retaining canonical Backlog/fixture-derivation versions; original branch history remains intact. Supplement SHA256SUMS all match. Inspected standard-library scripts and ran verify_geometry.py:23normalized pairings/20offsets,46withreflections, two-endpoint cycles; this is conditional necessary geometry, not all-state search. Fresh full-chain and enumeration-constraint reviews pending; no gate markedclosed by supplied claims.
 
 Resumption proof review ACCEPTED. Fresh independent proof_chain_review reconstructed complete Nanka+supplement chain for all locallyadmitted roots with standard stock, including reducedmaterial/unknownprehistory, fixedkings, singlechecker, nongazingcounts, anglemultisets, drops/captures/promotion/sourcechanges, stockreduction and all23normalized cases. Separate geometry_supplement_review ACCEPTED necessaryfilters,bothenumerators,20offsets/23pairings/46reflections,84singlecyclegraphs,all5Hcases,2mixedcases,2simultaneous3Rexclusions,14lockedpairs; addedexplicitnonincreasing-source-inventory justification atarrival. Originalfailedreviewandattempts preservedunchanged, supplementchecksumsallmatch, no profilechange/newoutcome. Currentresolution/docsmetadataupdated; allconcreteexpectedfixturearraysbyte-semanticallyunchangedagainstf259. Implementation replacesprovisionalmutualerror with detailed internalMutualCheckInvariant; prefixResultandRecordErrorretain diagnostics;2privatecorruptiontests do notclaimlegalcounterexample. Rootfocused35PASS; workspace277PASS/0failed/2existingignored; fmt/clippyPASS macOS27.0.1arm64 Rust1.89.0 Python3.14.7. Final independentimplementationreviewandnativeCI/integrationpending; AC/DoDnotcheckedyet. AllBacklogmutationsusepinned1.55.1binary,notglobal1.55.0. Priorrunnerbrokenpipeclassificationfailure/retryretainedwithoutrootcausefixclaim.
+
+Final reviewed source daf438e integrated/pushed in fd58644757bc5edd1842a855b07aad872659293c. Fresh independent final implementation review ACCEPTED (docs/m4/history-final-review.md),35focusedPASS andexactsourcehashes, no materialfindings. Reviewer confirms live-root/replay maintainallproofassumptions and broaderPositionanalysisunchanged. Rootworkspace277PASS/0failed/2existingignored; fmt/clippyPASS. IntegratednativeCI40325840465 PASS firstattempt all3 OS Ubuntu24.04/macOS15/Windows2022: https://github.com/jweathers777/mShogi/actions/runs/40325840465. Desktopregression40325840456 automaticallyrunning separately; no packagedGUI/strengthcampaign claimed. Historicalproofreviewcomparedagainst9325c48 andunchanged; concretefixturearrayscomparedagainstf259andunchanged. SupplementarchiveSHAa96bc888fec6c3a0da9c375cd398881d64454c67fd965f82c372acdc6eee33f8; sourcePDFSHAcd5f987133d89a32bd6de8391015354b16d066a97cea7f719b67a5089275e065; newacceptedproofindex docs/m4/mutual-check-resolution.md. Originalrunnerclassificationfailureandretryremainhistorical, nofixclaimed. Stopafter67;69nextdependencyreadywhenDone,68/70wait69. StillInReviewuntilfinalCI/evidencecompletion.
+
+Completion evidence for MSH-67 (2026-10-26)
+
+Reviewed source daf438e is integrated and pushed at fd58644757bc5edd1842a855b07aad872659293c on codex/rewrite. The integrated core tree matches the reviewed source. No subsequent engine, console, shared integration or desktop shogi task was started.
+
+Acceptance mapping:
+1. GameRoot and Game own exact root/category/counter provenance, accepted actors/commands, complete repetition identities and check intervals. GameContext retains full root plus ordered commands; repetition excludes counters/provenance. Runtime execution identities remain later shared-host work. See history-state.md and shogi_history.rs.
+2. Selected untimed no-action loss, fourfold/continuous-check loss, resignation, formal entering-king win/false-declaration loss and length precedence are verified against independent expectations. Advisory eligibility is harmless; malformed/stale/illegal admission is atomic. The accepted complete-chain proof resolves HIST-INTERVAL without adding an outcome. Native mutual detection is an internal diagnostic with complete candidate evidence, no commit or score.
+3. Strict versioned GameRecord preserves profile/edition, root category, supplied/defaulted counters, known-history origin, policies/limits/mode, event actors/order, derived effects, conclusions and half-point scoring. Authoritative replay checks every prefix and rejects duplicate/unknown/missing/unsupported/lossy/forged/post-terminal input. Maximum320-event complete ledgers and319-plus-terminal-command records fit the bounded1MiB codec. Later shared archives/observations remain separate.
+4. Independently expected21 history/import cases and nine declaration diagrams cover both checker identities, checked/check-relieved endpoints, interruptions, overlapping[3,7,11,15] occurrences, both thresholds/prerequisites, imported n320/321/322/999, defaulted/supplied origins and conclusion precedence. A legal losing-cycle action is retained. Concrete expectation arrays remain identical to f259bb2; original incomplete proof research remains unchanged.
+5. Exact semantic undo, checked event prefixes (including same-ply terminal commands), strict round trips and same-position/different-history cases pass. Prefix and record errors preserve internal diagnostics. Unsupported timing/external policies reject explicitly. Private corruption tests are cfg(test) only, not alleged legal mutual cycles or normal-package instrumentation.
+
+Proof/review evidence: docs/m4/mutual-check-resolution.md indexes two fresh independent AI mathematical reviews (complete chain and geometry/supplement), exact Nanka v3 PDF and supplied archive hashes, both inspected enumerators and all case exclusions. Geometry verification agrees on23 normalized pairings/20 offsets/46 reflected pairings;84 cyclic fixed-king/side/radius graphs each have one simple cycle. This is conditional geometry plus reasoned exclusions, not an all-state search or formal proof assistant certificate. The positive-offset simultaneous-source argument was explicitly justified with a nonincreasing source count while a bishop blocks the ray. Fresh final independent AI implementation review accepts the source/domain boundary and diagnostic propagation, with exact source fingerprints and35 focused tests. Earlier independent fixture/game/record reviews remain applicable to unchanged work.
+
+Verification: local macOS27.0.1 arm64 Rust/Cargo1.89.0 Python3.14.7; cargo fmt and workspace all-target Clippy -D warnings PASS; focused35 PASS; workspace277 PASS,0 failed, two existing deep chess diagnostics ignored. Integrated native CI40325840465 PASS first attempt on Ubuntu24.04, macOS15 and Windows2022: https://github.com/jweathers777/mShogi/actions/runs/40325840465 . The automatically triggered supporting desktop regression40325840456 passed macOS and Windows; Linux remains in native dependency installation before source checks, so its package/GUI result is pending and is not represented as passed: https://github.com/jweathers777/mShogi/actions/runs/40325840456 . Completion relies on this native task's passed three-platform native CI and reuses unchanged M2/M3 application evidence as authorized; no desktop source, packaging, transport or application behavior changed. The earlier runner classification failure/retry is preserved; no runner fix or root-cause resolution is claimed.
+
+The temporary app-managed worktree was clean, had no referring process and its HEAD was an ancestor of pushed rewrite before archival; attachment now records archived_worktree. Main checkout remains codex/rewrite. MSH-41–47 and M4 remain open, M2/M3 and MSH-63–66 stay Done, MSH-61 and roadmap correction remain intact. Next eligible shogi work is MSH-69; MSH-68/70 depend on69. Stop after67.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary
 
 <!-- SECTION:FINAL_SUMMARY:BEGIN -->
-MSH-67 remains unfinished (To Do, explicit rules blocker). Research handoff integrated at f291862; tested provisional Game/history/records retained unmerged at f259bb2 on codex/shogi-history. Local275 testsPASS/two existingignored; WIP native CI passes all three OS, research-only nativeCI passes after one recorded existing runner classification mismatch/retry. Independent AI reviews with exact source fingerprints found no additional material defect, but mutual-continuous-check impossibility/interpretation remains unestablished; no fallback invented or criteria weakened. Worktree archived. Resume the exact proof/source obligation in docs/m4/mutual-check-proof-review.md before integration; no68/69/70work begun.
+Implemented and integrated native shogi GameRoot/Game/GameContext and strict GameRecord under unchanged mshogi.shogi.csa36.v1. Includes explicit initial/imported provenance, complete known history, selected untimed conclusions/declarations, atomic commands, exact undo/prefixes and strict every-prefix replay. Complete-chain and geometry reviews resolve HIST-INTERVAL; original failed research remains historical. Internal invariant diagnostics retain full candidate evidence and never invent an outcome.
+
+Source daf438e integrated/pushed at fd58644757bc5edd1842a855b07aad872659293c. Local277 tests pass (two existing ignored),35 focused tests pass, formatting/Clippy pass; required native CI40325840465 passes all three OS. Separate desktop regression40325840456 passes macOS/Windows; Linux dependency installation is still pending, with unchanged M3 evidence reused and no new GUI claim. Independent AI proof/implementation reviews accepted; source hashes, exact methods and fixture provenance are retained in docs/m4/history-validation.md and linked reviews.
+
+Untimed game-owned API only; no new shogi engine/console/shared archive/desktop consumers. Worktree archived. MSH-41–47/M4 remain open. MSH-69 is next;68/70 await69. Prior runner classification failure/retry retained without claiming a fix.
 <!-- SECTION:FINAL_SUMMARY:END -->

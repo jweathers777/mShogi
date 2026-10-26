@@ -1,0 +1,116 @@
+{
+  "format": "mshogi.shogi.rule-source-manifest.v1",
+  "note": "Byte fingerprints document retrieved editions; tmp archive is developer-local, not a product dependency or bundled content. Source labels/clauses in selected profile. Re-fetches may legitimately change; preserve this evidence rather than overwrite it.",
+  "sources": [
+    {
+      "label": "JSA-R",
+      "url": "https://www.shogi.or.jp/match/taikyoku_rules/taikyoku_rules.pdf",
+      "retrieved_utc": "2026-10-26T09:34:51.312783+00:00",
+      "sha256": "2f738555ebfc2f79f789b1464be97d2236fb50afd7bf77df0b30f0437fa5642f",
+      "bytes": 713905,
+      "content_type": "application/pdf",
+      "etag": "\"ae4b1-6400f0131ec40\"",
+      "last_modified": "Wed, 01 Oct 2025 01:44:09 GMT",
+      "local_archive": "/private/tmp/msh64-rule-sources/JSA-R.pdf"
+    },
+    {
+      "label": "JSA-E",
+      "url": "https://www.shogi.or.jp/match/taikyoku_rules/taikyoku_rules_revision.pdf",
+      "retrieved_utc": "2026-10-26T09:34:53.454655+00:00",
+      "sha256": "9f43b32acdbe9392176e6cf5a06700b726404d80750f32724b34604c3c554586",
+      "bytes": 259451,
+      "content_type": "application/pdf",
+      "etag": "\"3f57b-6400ef4614880\"",
+      "last_modified": "Wed, 01 Oct 2025 01:40:34 GMT",
+      "local_archive": "/private/tmp/msh64-rule-sources/JSA-E.pdf"
+    },
+    {
+      "label": "JSA-B1",
+      "url": "https://www.shogi.or.jp/knowledge/shogi/01.php",
+      "retrieved_utc": "2026-10-26T09:34:55.026548+00:00",
+      "sha256": "745056c1cbc706503e427cb9007bc4b773ae4a022dda060ec38aeec5ab4e73dd",
+      "bytes": 94929,
+      "content_type": "text/html; charset=UTF-8",
+      "etag": null,
+      "last_modified": null,
+      "local_archive": "/private/tmp/msh64-rule-sources/JSA-B1.html"
+    },
+    {
+      "label": "JSA-B2",
+      "url": "https://www.shogi.or.jp/knowledge/shogi/02.php",
+      "retrieved_utc": "2026-10-26T09:34:56.580501+00:00",
+      "sha256": "fd67fcaa8133d331d62086be26d7c85efc9ac5fbd702af4dfbe85067468c4d23",
+      "bytes": 96485,
+      "content_type": "text/html; charset=UTF-8",
+      "etag": null,
+      "last_modified": null,
+      "local_archive": "/private/tmp/msh64-rule-sources/JSA-B2.html"
+    },
+    {
+      "label": "JSA-B3",
+      "url": "https://www.shogi.or.jp/knowledge/shogi/03.php",
+      "retrieved_utc": "2026-10-26T09:34:58.448721+00:00",
+      "sha256": "9ef8cf8dea610e998a0af8e456c350ce0abebbc91486dec4a17961dc7ceabaf7",
+      "bytes": 104511,
+      "content_type": "text/html; charset=UTF-8",
+      "etag": null,
+      "last_modified": null,
+      "local_archive": "/private/tmp/msh64-rule-sources/JSA-B3.html"
+    },
+    {
+      "label": "JSA-B4",
+      "url": "https://www.shogi.or.jp/knowledge/shogi/04.php",
+      "retrieved_utc": "2026-10-26T09:35:00.269056+00:00",
+      "sha256": "b1865d573b3d0fa9304b3b053f79da3b84ca126d6248fc5fc2c84d5d4cb8e519",
+      "bytes": 100037,
+      "content_type": "text/html; charset=UTF-8",
+      "etag": null,
+      "last_modified": null,
+      "local_archive": "/private/tmp/msh64-rule-sources/JSA-B4.html"
+    },
+    {
+      "label": "JSA-B5",
+      "url": "https://www.shogi.or.jp/knowledge/shogi/05.php",
+      "retrieved_utc": "2026-10-26T09:35:02.136194+00:00",
+      "sha256": "cd916dea497360bad4645f2bfd5335e41232cfa053fd9bd2225ddb83e5831bfc",
+      "bytes": 101128,
+      "content_type": "text/html; charset=UTF-8",
+      "etag": null,
+      "last_modified": null,
+      "local_archive": "/private/tmp/msh64-rule-sources/JSA-B5.html"
+    },
+    {
+      "label": "JSA-N",
+      "url": "https://www.shogi.or.jp/faq/kihuhyouki/",
+      "retrieved_utc": "2026-10-26T09:35:03.938275+00:00",
+      "sha256": "bb0713a77e152945d3711b90962e54c5e1a063026a6e24f21ac9b797b126b2c7",
+      "bytes": 102759,
+      "content_type": "text/html; charset=UTF-8",
+      "etag": null,
+      "last_modified": null,
+      "local_archive": "/private/tmp/msh64-rule-sources/JSA-N.html"
+    },
+    {
+      "label": "CSA-36",
+      "url": "https://www.computer-shogi.org/wcsc36/rule.pdf",
+      "retrieved_utc": "2026-10-26T09:35:05.520916+00:00",
+      "sha256": "9387db362c1eb1aa87b294c314c68be6f54d7f9a8165b8a3bb69e7b80a1b5bed",
+      "bytes": 218443,
+      "content_type": "application/pdf",
+      "etag": "\"c81e8433c0d9e432fd408bbd4afd605c\"",
+      "last_modified": "Tue, 03 Feb 2026 13:10:22 GMT",
+      "local_archive": "/private/tmp/msh64-rule-sources/CSA-36.pdf"
+    },
+    {
+      "label": "USI",
+      "url": "https://shogidokoro2.stars.ne.jp/usi.html",
+      "retrieved_utc": "2026-10-26T09:35:07.190233+00:00",
+      "sha256": "c1284996f0ba3d538bd5896399ab3322c9dacf2faaa4b137445046a66bcfe235",
+      "bytes": 51558,
+      "content_type": "text/html",
+      "etag": "\"c966-62f2d8ba2e6af\"",
+      "last_modified": "Fri, 28 Feb 2025 06:02:03 GMT",
+      "local_archive": "/private/tmp/msh64-rule-sources/USI.html"
+    }
+  ]
+}

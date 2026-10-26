@@ -1,11 +1,11 @@
 ---
 id: MSH-65
 title: Implement authoritative shogi state complete actions and exact reversal
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-26T09:36:00Z'
+updated_date: '2026-10-26T09:41:00Z'
 labels:
   - m4
   - owner-msh-41
@@ -46,7 +46,7 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -61,4 +61,12 @@ Add a standalone safe Rust shogi module with native position/action types, stric
 2026-10-26: Authorized bounded batch MSH-63–66. Primary integrator Codex, branch codex/shogi-board, existing next-task worktree. Owner explicitly approved option A SHOGI-P1 mshogi.shogi.csa36.v1 against integration 6db8500e92129b95e502e7b4d5c4a26072e38652.
 
 Implemented standalone shogi state/SFEN/USI and private checked structural transitions. 11 focused groups PASS; cargo test --locked -p mshogi-core PASS including existing chess regressions (2 pre-existing deep tests intentionally ignored); cargo clippy --locked -p mshogi-core --all-targets -- -D warnings PASS on macOS arm64 Rust1.89. Independent AI source/test review PASS, docs/m4/state-review.md; exact API/import scope and commands docs/m4/state-validation.md. Full legal generation is not claimed until66.
+
+Integrated source826cd2f via codex/rewritece42d06111a382436d2d853b5d61d4ac2196ac8b, pushed. Normal Rust workspace CI40300895588 PASS Windows2022/macOS15/Ubuntu24.04: fmt, warnings-denied clippy, workspace tests, isolated desktop constructors, native snapshot fixtures, build and console smoke. https://github.com/jweathers777/mShogi/actions/runs/40300895588 . Desktop package workflow still running and not claimed as new GUI evidence.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Native shogi state, complete Move/Drop identities, derived structural effects, strict scoped SFEN/USI and provenance implemented with exact atomic transitions/undo, chess contracts unchanged. Private structural helpers deliberately do not claim king safety/uchifuzume before66. Eleven focused groups and existing core regressions PASS; independent AI source/test review PASS; integrated/pushedce42d06 with three-platform native CI PASS. No game/history/search/console/UI delivery claimed.
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -1,0 +1,380 @@
+{
+  "format": "mshogi.shogi.search-measurements.v1",
+  "environment": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "toolchain": "rustc 1.89.0 (29483883e 2025-08-04)",
+  "binary_sha256": "3d0b4421132ae1c6e472839f9b26a4ffc032ae6be4d52d75762fdf2853291aff",
+  "method": "three one-shot internal-search release processes per case, elapsed includes parse/replay/startup/search",
+  "cases": [
+    {
+      "name": "standard",
+      "root_command": "position startpos",
+      "limits": {
+        "depth": 1,
+        "nodes": 5000
+      },
+      "elapsed_ms": [
+        11.309,
+        9.088,
+        8.342
+      ],
+      "median_ms": 9.088,
+      "result": {
+        "kind": "choice",
+        "choice": {
+          "kind": "move",
+          "action": "1g1f"
+        },
+        "telemetry": {
+          "evaluator_id": "mshogi.shogi.material.v1",
+          "search_id": "mshogi.shogi.full-width.v1",
+          "perspective": "sente",
+          "score": 0,
+          "completed_depth": 1,
+          "nodes": 31,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "1g1f"
+            }
+          ],
+          "status": "complete"
+        }
+      },
+      "request_bytes": 1551,
+      "response_bytes": 1893
+    },
+    {
+      "name": "standard",
+      "root_command": "position startpos",
+      "limits": {
+        "depth": 2,
+        "nodes": 5000
+      },
+      "elapsed_ms": [
+        35.078,
+        27.708,
+        27.303
+      ],
+      "median_ms": 27.708,
+      "result": {
+        "kind": "choice",
+        "choice": {
+          "kind": "move",
+          "action": "1g1f"
+        },
+        "telemetry": {
+          "evaluator_id": "mshogi.shogi.material.v1",
+          "search_id": "mshogi.shogi.full-width.v1",
+          "perspective": "sente",
+          "score": 0,
+          "completed_depth": 2,
+          "nodes": 962,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "1g1f"
+            },
+            {
+              "kind": "move",
+              "action": "1a1b"
+            }
+          ],
+          "status": "complete"
+        }
+      },
+      "request_bytes": 1551,
+      "response_bytes": 1926
+    },
+    {
+      "name": "standard",
+      "root_command": "position startpos",
+      "limits": {
+        "depth": 2,
+        "nodes": 100000
+      },
+      "elapsed_ms": [
+        27.344,
+        27.021,
+        27.27
+      ],
+      "median_ms": 27.27,
+      "result": {
+        "kind": "choice",
+        "choice": {
+          "kind": "move",
+          "action": "1g1f"
+        },
+        "telemetry": {
+          "evaluator_id": "mshogi.shogi.material.v1",
+          "search_id": "mshogi.shogi.full-width.v1",
+          "perspective": "sente",
+          "score": 0,
+          "completed_depth": 2,
+          "nodes": 962,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "1g1f"
+            },
+            {
+              "kind": "move",
+              "action": "1a1b"
+            }
+          ],
+          "status": "complete"
+        }
+      },
+      "request_bytes": 1553,
+      "response_bytes": 1928
+    },
+    {
+      "name": "sente-hand",
+      "root_command": "position sfen reduced 8k/9/9/9/9/9/9/9/K8 b 2RBGSNLP 1",
+      "limits": {
+        "depth": 1,
+        "nodes": 5000
+      },
+      "elapsed_ms": [
+        6.51,
+        6.145,
+        5.993
+      ],
+      "median_ms": 6.145,
+      "result": {
+        "kind": "choice",
+        "choice": {
+          "kind": "move",
+          "action": "9i8h"
+        },
+        "telemetry": {
+          "evaluator_id": "mshogi.shogi.material.v1",
+          "search_id": "mshogi.shogi.full-width.v1",
+          "perspective": "sente",
+          "score": 3900,
+          "completed_depth": 1,
+          "nodes": 524,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "9i8h"
+            }
+          ],
+          "status": "complete"
+        }
+      },
+      "request_bytes": 1540,
+      "response_bytes": 1886
+    },
+    {
+      "name": "sente-hand",
+      "root_command": "position sfen reduced 8k/9/9/9/9/9/9/9/K8 b 2RBGSNLP 1",
+      "limits": {
+        "depth": 2,
+        "nodes": 5000
+      },
+      "elapsed_ms": [
+        229.045,
+        246.447,
+        232.768
+      ],
+      "median_ms": 232.768,
+      "result": {
+        "kind": "choice",
+        "choice": {
+          "kind": "move",
+          "action": "9i8h"
+        },
+        "telemetry": {
+          "evaluator_id": "mshogi.shogi.material.v1",
+          "search_id": "mshogi.shogi.full-width.v1",
+          "perspective": "sente",
+          "score": 3900,
+          "completed_depth": 2,
+          "nodes": 2494,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "9i8h"
+            },
+            {
+              "kind": "move",
+              "action": "1a1b"
+            }
+          ],
+          "status": "complete"
+        }
+      },
+      "request_bytes": 1540,
+      "response_bytes": 1919
+    },
+    {
+      "name": "sente-hand",
+      "root_command": "position sfen reduced 8k/9/9/9/9/9/9/9/K8 b 2RBGSNLP 1",
+      "limits": {
+        "depth": 2,
+        "nodes": 100000
+      },
+      "elapsed_ms": [
+        228.275,
+        225.634,
+        225.656
+      ],
+      "median_ms": 225.656,
+      "result": {
+        "kind": "choice",
+        "choice": {
+          "kind": "move",
+          "action": "9i8h"
+        },
+        "telemetry": {
+          "evaluator_id": "mshogi.shogi.material.v1",
+          "search_id": "mshogi.shogi.full-width.v1",
+          "perspective": "sente",
+          "score": 3900,
+          "completed_depth": 2,
+          "nodes": 2494,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "9i8h"
+            },
+            {
+              "kind": "move",
+              "action": "1a1b"
+            }
+          ],
+          "status": "complete"
+        }
+      },
+      "request_bytes": 1542,
+      "response_bytes": 1921
+    },
+    {
+      "name": "both-hands",
+      "root_command": "position sfen reduced 8k/9/9/9/9/9/9/9/K8 b RBGSNLPrbgsnlp 1",
+      "limits": {
+        "depth": 1,
+        "nodes": 5000
+      },
+      "elapsed_ms": [
+        116.876,
+        108.449,
+        107.08
+      ],
+      "median_ms": 108.449,
+      "result": {
+        "kind": "choice",
+        "choice": {
+          "kind": "move",
+          "action": "9i8h"
+        },
+        "telemetry": {
+          "evaluator_id": "mshogi.shogi.material.v1",
+          "search_id": "mshogi.shogi.full-width.v1",
+          "perspective": "sente",
+          "score": 0,
+          "completed_depth": 1,
+          "nodes": 524,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "9i8h"
+            }
+          ],
+          "status": "complete"
+        }
+      },
+      "request_bytes": 1546,
+      "response_bytes": 1889
+    },
+    {
+      "name": "both-hands",
+      "root_command": "position sfen reduced 8k/9/9/9/9/9/9/9/K8 b RBGSNLPrbgsnlp 1",
+      "limits": {
+        "depth": 2,
+        "nodes": 5000
+      },
+      "elapsed_ms": [
+        1017.542,
+        1261.609,
+        1790.648
+      ],
+      "median_ms": 1261.609,
+      "result": {
+        "kind": "choice",
+        "choice": {
+          "kind": "move",
+          "action": "9i8h"
+        },
+        "telemetry": {
+          "evaluator_id": "mshogi.shogi.material.v1",
+          "search_id": "mshogi.shogi.full-width.v1",
+          "perspective": "sente",
+          "score": 0,
+          "completed_depth": 1,
+          "nodes": 5000,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "9i8h"
+            }
+          ],
+          "status": "node_limit"
+        }
+      },
+      "request_bytes": 1546,
+      "response_bytes": 1892
+    },
+    {
+      "name": "both-hands",
+      "root_command": "position sfen reduced 8k/9/9/9/9/9/9/9/K8 b RBGSNLPrbgsnlp 1",
+      "limits": {
+        "depth": 2,
+        "nodes": 100000
+      },
+      "elapsed_ms": [
+        21506.749,
+        20212.856,
+        19733.811
+      ],
+      "median_ms": 20212.856,
+      "result": {
+        "kind": "choice",
+        "choice": {
+          "kind": "move",
+          "action": "9i8h"
+        },
+        "telemetry": {
+          "evaluator_id": "mshogi.shogi.material.v1",
+          "search_id": "mshogi.shogi.full-width.v1",
+          "perspective": "sente",
+          "score": 0,
+          "completed_depth": 1,
+          "nodes": 100000,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "9i8h"
+            }
+          ],
+          "status": "node_limit"
+        }
+      },
+      "request_bytes": 1548,
+      "response_bytes": 1896
+    }
+  ],
+  "phase": "exploratory before final supported node cap; 100000-node requests are not supported by final contract",
+  "source_sha256": {
+    "crates/mshogi-search/src/shogi.rs": "e9a81e159c81080d03d0eb3cd6140cfb80400965d3d2b425fb54adbba40b03b5",
+    "crates/mshogi-engine/src/shogi.rs": "b894ad8f655b11b16067b4c4938567486dabdabf730646d457fe8635f8a00f11",
+    "crates/mshogi-engine/src/shared.rs": "1914ad2fa57da9c3cc2b7e4137544107b6b90fbc5a9c380c35661a84297cd759",
+    "crates/mshogi-engine/src/server.rs": "d612809d0e9eab399fcff75922296bd2d4a28d368bbdb7ae685bf1010d9b45d9",
+    "crates/mshogi-core/src/shogi/action.rs": "052a809a16b29750e636ff33b5318177694a2aa6202c8d86c09e886cfc4892d2",
+    "crates/mshogi-core/src/shogi/record.rs": "0d80be4a203ea6469dd2e22ea0a8e3e207519f995bac18836f7d3b7f6643431e"
+  },
+  "driver_timeout_seconds": 45,
+  "runs_per_case": 3,
+  "warmup_runs": 0,
+  "execution_owner": "direct one-shot subprocess; EngineBridge defaults not substituted"
+}

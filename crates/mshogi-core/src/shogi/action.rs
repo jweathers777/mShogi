@@ -69,6 +69,19 @@ impl fmt::Display for Action {
         }
     }
 }
+// The execution transport uses exactly the already scoped native USI primitive;
+// this does not add declarations/resignation to the board-action parser.
+impl serde::Serialize for Action {
+    fn serialize<S: serde::Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
+        s.serialize_str(&self.to_string())
+    }
+}
+impl<'de> serde::Deserialize<'de> for Action {
+    fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        let text = <String as serde::Deserialize>::deserialize(d)?;
+        text.parse().map_err(serde::de::Error::custom)
+    }
+}
 
 /// Rejection leaves every position field unchanged.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

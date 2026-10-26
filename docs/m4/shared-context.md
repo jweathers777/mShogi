@@ -80,10 +80,15 @@ Full record restoration remains unsupported before live replay; the separate
 bounded Full operation on an M2 context remains available. Analysis results are
 observations, never commands implicitly applied by this layer.
 
-`execution_capabilities(Shogi)` is empty until MSH-70 supplies a real engine
-consumer. Every well-formed shogi execution request, including a chess Full
-operation, receives explicit unscored `UnsupportedMode`. It receives no fabricated
-move, telemetry, score, game outcome or pretend tsume result.
+MSH-69 introduced actual shogi context transport with empty execution
+capabilities. MSH-70 supplies the [real native consumer](shogi-engine.md):
+`execution_capabilities(Shogi)` now advertises only engine-turn and bounded
+read-only move-analysis. `SharedResult::Shogi` retains complete board/declaration
+choices, native concluded games and incomplete work separately, with native
+score perspective and real telemetry. Chess Full on shogi remains explicit
+unscored `UnsupportedMode`; no tsume capability is advertised. The completed
+MSH-69 unsupported-execution evidence remains historical rather than being
+rewritten as an earlier implementation claim.
 
 ## Execution lifetime and bounds
 
@@ -113,7 +118,8 @@ native record byte cap. No constants were raised. Focused tests measure actual
 encoded envelopes and full request/response frames, including maximum retained
 shogi history and a large chess observation ledger.
 
-Measured by the composition test (UTF-8 bytes, newline excluded):
+Measured at MSH-69 by the composition test (UTF-8 bytes, newline excluded;
+the shogi response then contained the intentional unsupported failure):
 
 | Actual context | Native payload | Envelope | Request | Echoed response |
 | --- | ---: | ---: | ---: | ---: |
@@ -137,6 +143,7 @@ retirement. Its helper is separately labeled test instrumentation and is not
 packaged. Existing M2/M3 protocol, process, archive and desktop tests remain
 applicable; no MSH-67 rule fixture or mutual-check expectation changed.
 
-MSH-68 owns shogi console diagnostics; MSH-70 owns real shogi engine execution.
+MSH-68 supplies [shogi console diagnostics](shogi-console.md); MSH-70 supplies
+[real shogi engine execution and its bounded work contract](shogi-engine.md).
 MSH-73 owns desktop archive integration. The complete-delivery owners MSH-41–47
 remain open; this boundary does not deliver those consumers or a six-game framework.

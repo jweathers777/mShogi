@@ -53,7 +53,7 @@ fn stop(bridge: &EngineBridge) {
     }
 }
 #[test]
-fn real_entrypoint_executes_shared_chess_and_explicitly_refuses_shogi() {
+fn real_entrypoint_executes_both_native_games() {
     let bridge = bridge(env!("CARGO_BIN_EXE_mshogi"));
     let chess = context(1, false);
     bridge.submit_shared(chess.clone()).unwrap();
@@ -77,15 +77,24 @@ fn real_entrypoint_executes_shared_chess_and_explicitly_refuses_shogi() {
     bridge.submit_shared(shogi.clone()).unwrap();
     let response = wait(&bridge);
     assert!(response.matches(&shogi));
-    assert!(matches!(
-        response.result,
-        SharedResult::Failure {
-            failure: EngineFailure {
-                kind: FailureKind::UnsupportedMode,
-                ..
-            }
-        }
-    ));
+    let SharedResult::Shogi {
+        result:
+            ShogiResult::Choice {
+                choice: ShogiChoice::Move { action },
+                telemetry,
+            },
+    } = response.result
+    else {
+        panic!("{response:?}")
+    };
+    assert!(
+        shogi::Game::new()
+            .position()
+            .legal_actions()
+            .contains(&action)
+    );
+    assert_eq!(telemetry.nodes, 31);
+    assert_eq!(telemetry.score, Some(0));
     let mut incomplete = context(3, false);
     incomplete.limits.nodes = 0;
     bridge.submit_shared(incomplete).unwrap();

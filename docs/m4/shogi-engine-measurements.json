@@ -1,0 +1,380 @@
+{
+  "format": "mshogi.shogi.search-measurements.v1",
+  "environment": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "toolchain": "rustc 1.89.0 (29483883e 2025-08-04)",
+  "binary_sha256": "b776422ca80cf2bf2afe480e1565f403f304378b5aa0a12687a47a96f864fb97",
+  "source_sha256": {
+    "crates/mshogi-search/src/shogi.rs": "9a1a5f8941bd77d047876ecdd7b38a7e3e4b2f2c2efee24159e4cbb15bf4ee93",
+    "crates/mshogi-engine/src/shogi.rs": "b894ad8f655b11b16067b4c4938567486dabdabf730646d457fe8635f8a00f11",
+    "crates/mshogi-engine/src/shared.rs": "1914ad2fa57da9c3cc2b7e4137544107b6b90fbc5a9c380c35661a84297cd759",
+    "crates/mshogi-engine/src/server.rs": "d612809d0e9eab399fcff75922296bd2d4a28d368bbdb7ae685bf1010d9b45d9",
+    "crates/mshogi-core/src/shogi/action.rs": "052a809a16b29750e636ff33b5318177694a2aa6202c8d86c09e886cfc4892d2",
+    "crates/mshogi-core/src/shogi/record.rs": "0d80be4a203ea6469dd2e22ea0a8e3e207519f995bac18836f7d3b7f6643431e"
+  },
+  "phase": "final supported bounds depth1..4, nodes0..20000; defaults depth2/nodes5000",
+  "method": "three actual one-shot release internal-search processes per case; elapsed includes startup, parsing, native replay, search, output",
+  "cases": [
+    {
+      "name": "standard",
+      "root_command": "position startpos",
+      "limits": {
+        "depth": 1,
+        "nodes": 5000
+      },
+      "elapsed_ms": [
+        10.656,
+        8.253,
+        7.02
+      ],
+      "median_ms": 8.253,
+      "result": {
+        "kind": "choice",
+        "choice": {
+          "kind": "move",
+          "action": "1g1f"
+        },
+        "telemetry": {
+          "evaluator_id": "mshogi.shogi.material.v1",
+          "search_id": "mshogi.shogi.full-width.v1",
+          "perspective": "sente",
+          "score": 0,
+          "completed_depth": 1,
+          "nodes": 31,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "1g1f"
+            }
+          ],
+          "status": "complete"
+        }
+      },
+      "request_bytes": 1551,
+      "response_bytes": 1893
+    },
+    {
+      "name": "standard",
+      "root_command": "position startpos",
+      "limits": {
+        "depth": 2,
+        "nodes": 5000
+      },
+      "elapsed_ms": [
+        32.769,
+        27.226,
+        26.139
+      ],
+      "median_ms": 27.226,
+      "result": {
+        "kind": "choice",
+        "choice": {
+          "kind": "move",
+          "action": "1g1f"
+        },
+        "telemetry": {
+          "evaluator_id": "mshogi.shogi.material.v1",
+          "search_id": "mshogi.shogi.full-width.v1",
+          "perspective": "sente",
+          "score": 0,
+          "completed_depth": 2,
+          "nodes": 962,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "1g1f"
+            },
+            {
+              "kind": "move",
+              "action": "1a1b"
+            }
+          ],
+          "status": "complete"
+        }
+      },
+      "request_bytes": 1551,
+      "response_bytes": 1926
+    },
+    {
+      "name": "standard",
+      "root_command": "position startpos",
+      "limits": {
+        "depth": 2,
+        "nodes": 20000
+      },
+      "elapsed_ms": [
+        26.34,
+        26.163,
+        26.015
+      ],
+      "median_ms": 26.163,
+      "result": {
+        "kind": "choice",
+        "choice": {
+          "kind": "move",
+          "action": "1g1f"
+        },
+        "telemetry": {
+          "evaluator_id": "mshogi.shogi.material.v1",
+          "search_id": "mshogi.shogi.full-width.v1",
+          "perspective": "sente",
+          "score": 0,
+          "completed_depth": 2,
+          "nodes": 962,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "1g1f"
+            },
+            {
+              "kind": "move",
+              "action": "1a1b"
+            }
+          ],
+          "status": "complete"
+        }
+      },
+      "request_bytes": 1552,
+      "response_bytes": 1927
+    },
+    {
+      "name": "sente-hand",
+      "root_command": "position sfen reduced 8k/9/9/9/9/9/9/9/K8 b 2RBGSNLP 1",
+      "limits": {
+        "depth": 1,
+        "nodes": 5000
+      },
+      "elapsed_ms": [
+        5.406,
+        5.559,
+        5.466
+      ],
+      "median_ms": 5.466,
+      "result": {
+        "kind": "choice",
+        "choice": {
+          "kind": "move",
+          "action": "9i8h"
+        },
+        "telemetry": {
+          "evaluator_id": "mshogi.shogi.material.v1",
+          "search_id": "mshogi.shogi.full-width.v1",
+          "perspective": "sente",
+          "score": 3900,
+          "completed_depth": 1,
+          "nodes": 524,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "9i8h"
+            }
+          ],
+          "status": "complete"
+        }
+      },
+      "request_bytes": 1540,
+      "response_bytes": 1886
+    },
+    {
+      "name": "sente-hand",
+      "root_command": "position sfen reduced 8k/9/9/9/9/9/9/9/K8 b 2RBGSNLP 1",
+      "limits": {
+        "depth": 2,
+        "nodes": 5000
+      },
+      "elapsed_ms": [
+        220.418,
+        220.944,
+        257.495
+      ],
+      "median_ms": 220.944,
+      "result": {
+        "kind": "choice",
+        "choice": {
+          "kind": "move",
+          "action": "9i8h"
+        },
+        "telemetry": {
+          "evaluator_id": "mshogi.shogi.material.v1",
+          "search_id": "mshogi.shogi.full-width.v1",
+          "perspective": "sente",
+          "score": 3900,
+          "completed_depth": 2,
+          "nodes": 2494,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "9i8h"
+            },
+            {
+              "kind": "move",
+              "action": "1a1b"
+            }
+          ],
+          "status": "complete"
+        }
+      },
+      "request_bytes": 1540,
+      "response_bytes": 1919
+    },
+    {
+      "name": "sente-hand",
+      "root_command": "position sfen reduced 8k/9/9/9/9/9/9/9/K8 b 2RBGSNLP 1",
+      "limits": {
+        "depth": 2,
+        "nodes": 20000
+      },
+      "elapsed_ms": [
+        223.285,
+        220.92,
+        221.084
+      ],
+      "median_ms": 221.084,
+      "result": {
+        "kind": "choice",
+        "choice": {
+          "kind": "move",
+          "action": "9i8h"
+        },
+        "telemetry": {
+          "evaluator_id": "mshogi.shogi.material.v1",
+          "search_id": "mshogi.shogi.full-width.v1",
+          "perspective": "sente",
+          "score": 3900,
+          "completed_depth": 2,
+          "nodes": 2494,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "9i8h"
+            },
+            {
+              "kind": "move",
+              "action": "1a1b"
+            }
+          ],
+          "status": "complete"
+        }
+      },
+      "request_bytes": 1541,
+      "response_bytes": 1920
+    },
+    {
+      "name": "both-hands",
+      "root_command": "position sfen reduced 8k/9/9/9/9/9/9/9/K8 b RBGSNLPrbgsnlp 1",
+      "limits": {
+        "depth": 1,
+        "nodes": 5000
+      },
+      "elapsed_ms": [
+        107.224,
+        108.406,
+        106.737
+      ],
+      "median_ms": 107.224,
+      "result": {
+        "kind": "choice",
+        "choice": {
+          "kind": "move",
+          "action": "9i8h"
+        },
+        "telemetry": {
+          "evaluator_id": "mshogi.shogi.material.v1",
+          "search_id": "mshogi.shogi.full-width.v1",
+          "perspective": "sente",
+          "score": 0,
+          "completed_depth": 1,
+          "nodes": 524,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "9i8h"
+            }
+          ],
+          "status": "complete"
+        }
+      },
+      "request_bytes": 1546,
+      "response_bytes": 1889
+    },
+    {
+      "name": "both-hands",
+      "root_command": "position sfen reduced 8k/9/9/9/9/9/9/9/K8 b RBGSNLPrbgsnlp 1",
+      "limits": {
+        "depth": 2,
+        "nodes": 5000
+      },
+      "elapsed_ms": [
+        989.286,
+        1006.002,
+        1031.624
+      ],
+      "median_ms": 1006.002,
+      "result": {
+        "kind": "choice",
+        "choice": {
+          "kind": "move",
+          "action": "9i8h"
+        },
+        "telemetry": {
+          "evaluator_id": "mshogi.shogi.material.v1",
+          "search_id": "mshogi.shogi.full-width.v1",
+          "perspective": "sente",
+          "score": 0,
+          "completed_depth": 1,
+          "nodes": 5000,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "9i8h"
+            }
+          ],
+          "status": "node_limit"
+        }
+      },
+      "request_bytes": 1546,
+      "response_bytes": 1892
+    },
+    {
+      "name": "both-hands",
+      "root_command": "position sfen reduced 8k/9/9/9/9/9/9/9/K8 b RBGSNLPrbgsnlp 1",
+      "limits": {
+        "depth": 2,
+        "nodes": 20000
+      },
+      "elapsed_ms": [
+        4007.609,
+        4082.335,
+        4042.591
+      ],
+      "median_ms": 4042.591,
+      "result": {
+        "kind": "choice",
+        "choice": {
+          "kind": "move",
+          "action": "9i8h"
+        },
+        "telemetry": {
+          "evaluator_id": "mshogi.shogi.material.v1",
+          "search_id": "mshogi.shogi.full-width.v1",
+          "perspective": "sente",
+          "score": 0,
+          "completed_depth": 1,
+          "nodes": 20000,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "9i8h"
+            }
+          ],
+          "status": "node_limit"
+        }
+      },
+      "request_bytes": 1547,
+      "response_bytes": 1894
+    }
+  ],
+  "driver_timeout_seconds": 15,
+  "runs_per_case": 3,
+  "warmup_runs": 0,
+  "execution_owner": "direct one-shot subprocess; EngineBridge defaults not substituted"
+}

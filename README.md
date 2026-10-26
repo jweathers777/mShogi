@@ -121,6 +121,51 @@ Standard error (exit status 1, because line 4 failed and changed nothing):
 error: line 4: e1g1 (action 1 of 1): action rejected: castling right, rook or empty path is missing; no actions applied
 ```
 
+## Standalone shogi console
+
+`cargo run --locked --release --bin mshogi -- shogi` explicitly selects the
+untimed native `mshogi.shogi.csa36.v1` game. Type `help` for commands. For example:
+
+```bash
+cargo run --locked --release --bin mshogi -- shogi <<'EOF'
+position startpos
+move 7g7f 3c3d
+show
+history
+undo 2
+perft 2
+EOF
+```
+
+This prints the native board, hands, side, event history and conclusions;
+initial local perft2 is900. SFEN imports start a new explicitly identified
+known-history segment. For a sparse drop/promotion example:
+
+```text
+position sfen reduced 8k/9/9/4P4/9/9/9/9/K8 b P 17
+legal
+move 5d5c+
+history
+undo
+move P*4e
+```
+
+`eligibility sente` is a harmless query. `declare sente` is a formal command:
+an ineligible declaration loses under the selected profile. `resign gote`
+submits native resignation, even outside Gote's turn. `undo` reverses an event,
+including declarations/resignation that do not advance board ply.
+
+`record save <new-path>` publishes a complete canonical record to a new file;
+it never overwrites an existing file. `record load <path>` strictly validates and
+replays the complete record before replacing the current game. Paths may contain
+spaces and UTF-8. Record files have a separate1MiB limit; command lines remain
+4096bytes. SFEN/USI text alone cannot preserve provenance or event history.
+See [shogi console contract and evidence](docs/m4/shogi-console.md) for readable
+notation, diagnostic limits, canonical semantics and exact record examples.
+
+The existing `shell` chess commands, `uci` adapter and structured
+`internal-search` wire contracts remain separate.
+
 ## Backlog commands
 
 The starter was generated and validated with Backlog.md 1.55.1. Use that version for this project. If a different global CLI is installed, invoke the pinned version with `npm exec --yes --package backlog.md@1.55.1 -- backlog <command>`; a global upgrade is optional.

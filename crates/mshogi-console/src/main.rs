@@ -9,18 +9,20 @@ use std::{
 use mshogi_core::CHESS_POSITION_PROFILE_ID;
 
 mod session;
+mod shogi_session;
 mod uci;
 
 use session::{MAX_LINE_BYTES, Next, Session};
 
 const HELP: &str = "mShogi headless console
 
-Usage: mshogi [--help | --version | profile | shell | uci | internal-search]
+Usage: mshogi [--help | --version | profile | shell | shogi | uci | internal-search]
 
   --help, -h     Show this help
   --version, -V  Show the application version
   profile        Show the chess rules profile and its coverage
   shell          Read chess commands from standard input, one per line
+  shogi          Read untimed shogi commands (type help for commands)
   uci            Run the bounded UCI chess engine adapter
   internal-search  One-shot structured native desktop search
 
@@ -47,7 +49,14 @@ fn main() -> ExitCode {
                 "Coverage: position/FEN, all chess actions with undo, attacks, legal actions, check/mate/stalemate and perft; diagnostic status is position-only"
             );
         }
-        Some(Some("shell")) => return shell(),
+        Some(Some("shell")) => {
+            let mut session = Session::new();
+            return shell(|line, out| session.execute(line, out));
+        }
+        Some(Some("shogi")) => {
+            let mut session = shogi_session::Session::new();
+            return shell(|line, out| session.execute(line, out));
+        }
         Some(Some("uci")) => return uci::run(),
         Some(Some("internal-search")) => {
             if let Err(error) = mshogi_engine::serve_once(io::stdin().lock(), io::stdout().lock()) {
@@ -60,11 +69,10 @@ fn main() -> ExitCode {
     ExitCode::SUCCESS
 }
 
-fn shell() -> ExitCode {
+fn shell(mut execute: impl FnMut(&str, &mut String) -> Result<Next, String>) -> ExitCode {
     let stdin = io::stdin();
     let mut stdout = io::stdout().lock();
     let mut stderr = io::stderr().lock();
-    let mut session = Session::new();
     let mut failed = false;
     let mut input = stdin.lock();
     for index in 0usize.. {
@@ -95,7 +103,7 @@ fn shell() -> ExitCode {
             continue;
         };
         let mut out = String::new();
-        let result = session.execute(&text, &mut out);
+        let result = execute(&text, &mut out);
         // Report output before errors so the streams stay in command order.
         if stdout
             .write_all(out.as_bytes())

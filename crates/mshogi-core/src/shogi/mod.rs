@@ -9,14 +9,21 @@
 use std::{error::Error, fmt, str::FromStr};
 
 mod action;
+mod game;
 mod legal;
 mod perft;
+mod record;
 mod sfen;
 pub use legal::RepetitionIdentity;
 pub use perft::{DivideEntry, PerftError};
+pub use record::{GameRecord, MAX_RECORD_BYTES, MAX_RECORD_EVENTS, RecordError};
 #[cfg(test)]
 mod tests;
 pub use action::{Action, ActionError, ActionParseError, Undo, UndoError};
+pub use game::{
+    Conclusion, DeclarationEligibility, DrawReason, Game, GameCommand, GameContext, GameError,
+    GameEvent, GameRequest, GameRoot, GameUndo, GameUndoError, RootCategory, RootError, WinReason,
+};
 
 /// Approved standard-shogi rules profile identity.
 pub const PROFILE_ID: &str = "mshogi.shogi.csa36.v1";

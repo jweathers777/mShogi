@@ -1,5 +1,5 @@
 {
-  "source": "MSH-73 source commit introducing this evidence (pin in task completion)",
+  "source": "2ba7ed28781f53f132ed52e678050f8f805379af (product code/package); unchanged interaction evidence reused by the later resource-classification follow-up",
   "environment": "macOS27.0.1 arm64; Rust1.89 workspace/1.90 Tauri; Node24.19.0",
   "package": "separate mShogi Verification.app; MSHOGI_DESKTOP_FIXTURE=shared-contract",
   "method": "primary builder native macOS accessibility/computer interaction; real Tauri native dialogs and bundled engine",
@@ -22,7 +22,8 @@
     "Return to live paused",
     "explicit Resume to Idle human turn",
     "native quit Keep open",
-    "native Save and close existing path"
+    "native Save and close existing path",
+    "fresh disposable fixture: Cmd-Q Save and close/native Save picker Cancel retains dirty session and close guard; explicit discard cleanup"
   ],
   "native_event_count": 2,
   "observations": 2,

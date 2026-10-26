@@ -313,6 +313,7 @@ impl ShogiSession {
             SessionOperation::Analyze { .. }
                 | SessionOperation::Resume {}
                 | SessionOperation::Retry {}
+                | SessionOperation::Play { .. }
         ) && self.observations.len() >= MAX_ARCHIVE_OBSERVATIONS
         {
             return Err(capacity(

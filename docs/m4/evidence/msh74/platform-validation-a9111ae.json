@@ -1,0 +1,364 @@
+{
+  "source_revision": "a9111ae83de1d91149367a136da4ed66efdefee5",
+  "desktop_run": 40414800679,
+  "rust_run": 40414800449,
+  "actual_GUI_platforms": {
+    "linux": {
+      "source_revision": "a9111ae83de1d91149367a136da4ed66efdefee5",
+      "run_id": 40414800679,
+      "run_attempt": 1,
+      "job_id": 121894296571,
+      "platform": "ubuntu-24.04",
+      "status": "passed",
+      "passed_phases": 14,
+      "failed_phases": 0,
+      "all_required_GUI_and_native_shutdown_passed": true,
+      "phases": [
+        {
+          "phase": "normal",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "normal-shogi",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "normal-shogi-reopened",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-standard",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-promotion",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-claim",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-capacity",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-synthetic",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-shogi-hands",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-shogi-promotion",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-shogi-forced",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-shogi-declaration",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-shogi-concluded",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-shogi-capacity",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        }
+      ],
+      "normal_host_sha256": "46ca29ebf56a1597866509fd8ef8c0c57e534e6a187889d14b9e7b6be77fb950",
+      "engine_sha256": "1510531063925103513fe2fe9ac8107b9193c78e64db2ede578c8448dca7b673",
+      "normal_package_manifest_verified": true,
+      "normal_GUI_matches_package": true,
+      "verification_package_sha256": "197e44908bc9390315f63343231f2573560cef34cd2def1d222f1f21ce8464c9",
+      "verification_package_manifest_verified": true,
+      "retained_GUI_files_verified": 187,
+      "all_retained_GUI_file_hashes_verified": true,
+      "artifact_root": "/private/tmp/msh74-ci/a9111ae/attempt1/desktop-ubuntu-24.04",
+      "method": "Actual installed/packaged GUI via W3C pointer/keyboard and native OS dialogs/close, external to distributables. Read-only DOM inspection; no direct IPC or injected input events.",
+      "qualification": "Each observation establishes only the explicit source revision, platform, packages and run attempt. Failed-phase cleanup is never native Quit evidence."
+    },
+    "windows": {
+      "source_revision": "a9111ae83de1d91149367a136da4ed66efdefee5",
+      "run_id": 40414800679,
+      "run_attempt": 1,
+      "job_id": 121894296207,
+      "platform": "windows-2022",
+      "status": "passed",
+      "passed_phases": 14,
+      "failed_phases": 0,
+      "all_required_GUI_and_native_shutdown_passed": true,
+      "phases": [
+        {
+          "phase": "normal",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "normal-shogi",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "normal-shogi-reopened",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-standard",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-promotion",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-claim",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-capacity",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-synthetic",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-shogi-hands",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-shogi-promotion",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-shogi-forced",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-shogi-declaration",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-shogi-concluded",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        },
+        {
+          "phase": "verification-shogi-capacity",
+          "status": "passed",
+          "error": null,
+          "native_shutdown_before_teardown": true,
+          "shutdown_observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        }
+      ],
+      "normal_host_sha256": "0f53337b462c1acb60670aa0f98af08b39e4723d92aa2ea773e618975c6fc7bc",
+      "engine_sha256": "2bfd5e68dd03d9f49dc25efdd6851dc1be5d35553326eec0c0c29ba971f39609",
+      "normal_package_manifest_verified": true,
+      "normal_GUI_matches_package": true,
+      "verification_package_sha256": "7a4529e4b9827e0db0ab929386732592ff0afe49924170dedeac6412f022b122",
+      "verification_package_manifest_verified": true,
+      "retained_GUI_files_verified": 164,
+      "all_retained_GUI_file_hashes_verified": true,
+      "artifact_root": "/private/tmp/msh74-ci/a9111ae/attempt1/desktop-windows-2022",
+      "method": "Actual installed/packaged GUI via W3C pointer/keyboard and native OS dialogs/close, external to distributables. Read-only DOM inspection; no direct IPC or injected input events.",
+      "qualification": "Each observation establishes only the explicit source revision, platform, packages and run attempt. Failed-phase cleanup is never native Quit evidence."
+    }
+  },
+  "method": "Independent artifact validation: every phase, native shutdown before driver teardown, normal and verification package manifests, GUI executable hashes and retained file hashes. Actual packaged interaction remains separate from static visual review."
+}

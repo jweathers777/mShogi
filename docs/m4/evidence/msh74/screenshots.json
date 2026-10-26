@@ -1,0 +1,106 @@
+[
+  {
+    "surface": "Initial Sente",
+    "file": "normal-sente-macos.jpg",
+    "source_revision": "a9111ae83de1d91149367a136da4ed66efdefee5",
+    "environment": "macOS normal package",
+    "sha256": "34c3cfa898004d74c2d60cc41c11fb4a423e5c82d7102e1e3309bb295c71c0b5",
+    "capture": "Unaltered application screenshot; native verification archives opened in normal package for difficult states."
+  },
+  {
+    "surface": "Gote, after the real opening engine move",
+    "file": "normal-gote-macos.jpg",
+    "source_revision": "60796ec18539f600354594f1fab6ee643b93bede",
+    "environment": "macOS normal package",
+    "sha256": "1ef6c893f93c383a086acaf6226d72c1314892f966407289653c716eba6b7263",
+    "capture": "Unaltered application screenshot; native verification archives opened in normal package for difficult states."
+  },
+  {
+    "surface": "Both hands and native promoted pieces",
+    "file": "normal-hands-macos.jpg",
+    "source_revision": "60796ec18539f600354594f1fab6ee643b93bede",
+    "environment": "macOS normal package",
+    "sha256": "65ff41b59dcf9d2bec42f0ed58e32b187c76dd194103342b66f3188cb49fafa0",
+    "capture": "Unaltered application screenshot; native verification archives opened in normal package for difficult states."
+  },
+  {
+    "surface": "Drop selection",
+    "file": "normal-drop-macos.jpg",
+    "source_revision": "60796ec18539f600354594f1fab6ee643b93bede",
+    "environment": "macOS normal package",
+    "sha256": "ec2368281a4dc852ca3aabe7d91281c8625c8342b0cec35ae641f7a59d6c4aa7",
+    "capture": "Unaltered application screenshot; native verification archives opened in normal package for difficult states."
+  },
+  {
+    "surface": "Optional promotion",
+    "file": "normal-promotion-macos.jpg",
+    "source_revision": "60796ec18539f600354594f1fab6ee643b93bede",
+    "environment": "macOS normal package",
+    "sha256": "e53a5d5d789cb50c77cbfb43b73d484aeb2742a934fd5027ce7c3ffb59a1c32c",
+    "capture": "Unaltered application screenshot; native verification archives opened in normal package for difficult states."
+  },
+  {
+    "surface": "Historical viewing",
+    "file": "normal-history-macos.jpg",
+    "source_revision": "60796ec18539f600354594f1fab6ee643b93bede",
+    "environment": "macOS normal package",
+    "sha256": "08f40316990848017279944f93e0afbaa215cc9b0d9cf5e3cc7238a3c47d9405",
+    "capture": "Unaltered application screenshot; native verification archives opened in normal package for difficult states."
+  },
+  {
+    "surface": "Actual active bounded analysis",
+    "file": "normal-analysis-macos.jpg",
+    "source_revision": "60796ec18539f600354594f1fab6ee643b93bede",
+    "environment": "macOS normal package",
+    "sha256": "48884ad9af21150cfb4cfc900dfcb5452229f674e73c512b092206fb211167d3",
+    "capture": "Unaltered application screenshot; native verification archives opened in normal package for difficult states."
+  },
+  {
+    "surface": "Concluded game",
+    "file": "normal-concluded-macos.jpg",
+    "source_revision": "60796ec18539f600354594f1fab6ee643b93bede",
+    "environment": "macOS normal package",
+    "sha256": "437d10775fe5041cb58a29055df39054a2b32da978de3fd574dd2285606847f4",
+    "capture": "Unaltered application screenshot; native verification archives opened in normal package for difficult states."
+  },
+  {
+    "surface": "Linux normal size",
+    "file": "normal-sente-linux.png",
+    "source_revision": "5de74413f43c610dbf0f8fd6f1d462f82a8952ed",
+    "environment": "Ubuntu24.04 normal installed package, CI40408728525",
+    "sha256": "a8a2cb0297854b43cc8d93f648b643ffaf427a2048fb100102d1c8a95cfcf79e",
+    "capture": "Unaltered application screenshot; native verification archives opened in normal package for difficult states."
+  },
+  {
+    "surface": "Linux supported minimum 760 \u00d7 650",
+    "file": "normal-minimum-linux.png",
+    "source_revision": "5de74413f43c610dbf0f8fd6f1d462f82a8952ed",
+    "environment": "Ubuntu24.04 normal installed package, CI40408728525",
+    "sha256": "0f4845d7f2ece2e813bbf7d031640fa6b845885ff65b656470bf4368fe10cd61",
+    "capture": "Unaltered application screenshot; native verification archives opened in normal package for difficult states."
+  },
+  {
+    "surface": "Windows normal size",
+    "file": "normal-sente-windows.png",
+    "source_revision": "5de74413f43c610dbf0f8fd6f1d462f82a8952ed",
+    "environment": "Windows2022 normal installed package, CI40408728525",
+    "sha256": "997e7ab7689144e9ca38d20ac46bd689d8e863196823dd49eed958860e3759f1",
+    "capture": "Unaltered application screenshot; native verification archives opened in normal package for difficult states."
+  },
+  {
+    "surface": "Windows supported minimum 760 \u00d7 650",
+    "file": "normal-minimum-windows.png",
+    "source_revision": "5de74413f43c610dbf0f8fd6f1d462f82a8952ed",
+    "environment": "Windows2022 normal installed package, CI40408728525",
+    "sha256": "226c017d865c6b65b1621d1deb64ada7fe5fcffd832fcd979bbdfc9ef10fb666",
+    "capture": "Unaltered application screenshot; native verification archives opened in normal package for difficult states."
+  },
+  {
+    "surface": "Reopened exact Windows regression archive, stopped",
+    "file": "normal-reopened-macos.jpg",
+    "source_revision": "a9111ae83de1d91149367a136da4ed66efdefee5",
+    "environment": "macOS normal package, fresh-process Chess\u2192Shogi Open",
+    "sha256": "737a8b67bb26ad0689b89e275bfe05ef03c905d9805f12b912e48563e8947b10",
+    "capture": "Unaltered normal application screenshot; exact saved Windows failure archive reopened through native picker."
+  }
+]

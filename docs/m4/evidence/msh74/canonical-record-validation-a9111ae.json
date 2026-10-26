@@ -1,0 +1,67 @@
+{
+  "source_revision": "a9111ae83de1d91149367a136da4ed66efdefee5",
+  "run": 40414800679,
+  "attempt": 1,
+  "records": {
+    "windows-2022": {
+      "complete_native_events": 2,
+      "complete_observations": 2,
+      "complete_retired_floor": 11,
+      "historical_analysis_native_prefix_events": 1,
+      "historical_analysis_target": {
+        "selection_id": 14,
+        "event_index": 1,
+        "board_ply": 1,
+        "session_version": 14,
+        "label": "Shogi event 1 (history)",
+        "turn": {
+          "game_kind": "shogi",
+          "side": "gote"
+        }
+      },
+      "historical_analysis_ids": {
+        "request_id": 13,
+        "session_version": 14,
+        "process_generation": 13
+      },
+      "pre_open_last_ids": {
+        "request_id": 5,
+        "session_version": 11,
+        "process_generation": 5
+      },
+      "history_archive_live_events": 2,
+      "capacity_archive_observations": 256,
+      "capacity_archive_bytes": 579575
+    },
+    "ubuntu-24.04": {
+      "complete_native_events": 2,
+      "complete_observations": 2,
+      "complete_retired_floor": 11,
+      "historical_analysis_native_prefix_events": 1,
+      "historical_analysis_target": {
+        "selection_id": 14,
+        "event_index": 1,
+        "board_ply": 1,
+        "session_version": 14,
+        "label": "Shogi event 1 (history)",
+        "turn": {
+          "game_kind": "shogi",
+          "side": "gote"
+        }
+      },
+      "historical_analysis_ids": {
+        "request_id": 13,
+        "session_version": 14,
+        "process_generation": 13
+      },
+      "pre_open_last_ids": {
+        "request_id": 5,
+        "session_version": 11,
+        "process_generation": 5
+      },
+      "history_archive_live_events": 2,
+      "capacity_archive_observations": 256,
+      "capacity_archive_bytes": 579575
+    }
+  }
+}

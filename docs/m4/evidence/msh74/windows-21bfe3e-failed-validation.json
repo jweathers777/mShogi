@@ -1,0 +1,106 @@
+{
+  "source_revision": "21bfe3e2a3be2d35bd8096b6207f6a8a6af75576",
+  "run_id": 40412052098,
+  "run_attempt": 1,
+  "job_id": 121884951398,
+  "platform": "windows-2022",
+  "status": "failed",
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "passed",
+      "error": null,
+      "native_shutdown_before_teardown": true
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "passed",
+      "error": null,
+      "native_shutdown_before_teardown": true
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "failed",
+      "error": "Timed out: fresh normal Chess launch dispatches shogi archive; last observation: False",
+      "native_shutdown_before_teardown": false
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "error": null,
+      "native_shutdown_before_teardown": true
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "error": null,
+      "native_shutdown_before_teardown": true
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed",
+      "error": null,
+      "native_shutdown_before_teardown": true
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "error": null,
+      "native_shutdown_before_teardown": true
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed",
+      "error": null,
+      "native_shutdown_before_teardown": true
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed",
+      "error": null,
+      "native_shutdown_before_teardown": true
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed",
+      "error": null,
+      "native_shutdown_before_teardown": true
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed",
+      "error": null,
+      "native_shutdown_before_teardown": true
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed",
+      "error": null,
+      "native_shutdown_before_teardown": true
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed",
+      "error": null,
+      "native_shutdown_before_teardown": true
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed",
+      "error": null,
+      "native_shutdown_before_teardown": true
+    }
+  ],
+  "normal_host_sha256": "9fd43363bc17835589d1830e5cdf4ba3785a418b9a64e5e8f582cbb45d3509e0",
+  "engine_sha256": "0d593af65dbe39f488ab927e70f0d439ca6d44a5ec83235998fb7f8485e36734",
+  "normal_package_manifest_verified": true,
+  "normal_GUI_matches_package": true,
+  "verification_package_sha256": "af49f6583dcda4b7b987a7411d21799ed7a9485a13ee8481f6afa1e9c8008581",
+  "verification_package_manifest_verified": true,
+  "artifact_root": "/private/tmp/msh74-ci/21bfe3e/attempt1/desktop-windows-2022",
+  "diagnosis": {
+    "observed": "Open selected the existing complete native shogi archive; UI reported successful shogi-v2 restoration while retaining Chess board for over25seconds. Normal Shogi play/save and other12 phases passed.",
+    "source_inspection_inference": "Chess shared_snapshot branch can call legacy snapshot which installs Shogi file completion, then wrap obsolete Chess presentation with the new shared token. Correct subsequent Shogi snapshot has equal token and strict frontend freshness guard refuses it. Root independently identified same cause; native regression/fix is pending.",
+    "failed_phase_cleanup": "Failure containment only; no native Quit success claimed for failed reopen phase."
+  }
+}

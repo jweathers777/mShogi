@@ -2,7 +2,7 @@
   "package_root": "desktop/src-tauri/target/release/bundle/macos/mShogi.app",
   "engine": "Contents/MacOS/mshogi",
   "sha256": "856556c25566d5dc798def537c9fa00fad8d73b8cfeaebcb6827a0686f59f022",
-  "host_sha256": "3629c8524f4e0aaec394eaf01bd92e23f34814c82a5a93a9c595698fc8cecd1d",
+  "host_sha256": "0247d0760899e33a126253a207e470d1e5f5819e6fb4d64ebf51f368a5079fb3",
   "version": "mshogi 0.1.0",
   "uci_observations": [
     "id name mShogi 0.1.0",
@@ -153,5 +153,7 @@
     "Contents/MacOS/mshogi-desktop",
     "Contents/Resources/icon.icns"
   ],
-  "scope": "Package inventory and actual UCI, engine-turn, move-analysis and bounded Full reachability queries. Host acceptance and installed UI interaction are separate evidence."
+  "scope": "Package inventory and actual UCI, engine-turn, move-analysis and bounded Full reachability queries. Host acceptance and installed UI interaction are separate evidence.",
+  "source_revision": "a9111ae83de1d91149367a136da4ed66efdefee5",
+  "environment": "macOS-27.0.1-arm64-arm-64bit"
 }

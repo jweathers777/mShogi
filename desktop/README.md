@@ -22,9 +22,14 @@ Windows). The frontend has no shell or filesystem plugin. Vite listens on
 127.0.0.1:1420 during development; production web assets are embedded and do not
 require a web server.
 
-## Playing this slice
+## Playing Chess and Shogi
 
-Choose White or Black and press **New game** for an untimed standard chess game.
+Press **New game**, explicitly choose **Chess** or **Shogi**, then choose your
+native side (White/Black or Sente/Gote), or Random. Games are untimed. Your side
+starts at the bottom; **Flip board** remains explicit. The initial application
+opens Chess, and the same normal application opens either game's native archive.
+
+For chess:
 Click a piece and a highlighted destination. Promotion opens explicit native
 choices. On the focused board, arrows move focus, Enter/Space selects, and
 Escape clears selection. **Flip board** changes only orientation.
@@ -59,6 +64,28 @@ and Linux packaged GUI journeys passed MSH-38; see the
 [platform evidence and exact environment limits](../docs/desktop/packaged-gui-verification.md).
 The [M3 integration review](../docs/review/m3-closure.md) records the milestone
 verdict and the next planning boundary.
+
+Shogi has its own warm grid, pentagonal kanji pieces and counted hands beside
+each player. The bundled licensed [mShogi Pieces font](../docs/m4/shogi-font.md)
+needs no Japanese font installation. Select a hand piece and a native highlighted
+square to drop; arrows move focus from the hand into the board, and Enter/Space
+commits a complete action. Optional promotion opens a contextual choice;
+mandatory promotion commits the sole native action without a redundant prompt.
+Escape cancels partial selection. Formal entering-king declaration appears only
+when the native capability allows it and still requires explicit confirmation.
+
+Shogi play uses depth 2 / 5,000-node work limits. Side-panel **Analysis** is read-only,
+with explicit depth 1–4 and 0–20,000-node limits; it pauses play, reports actual
+completed work and never plays a move or declaration. Cancel/Replace act on that
+analysis purpose. History selects exact native event boundaries; **Return to
+live** and **Resume play** are separate. Archives preserve complete native
+semantics, settings and historical observations. An application-capacity pause
+retains the complete save path and cannot be reset by reopening the same file.
+Chess-only Full analysis and timed restoration remain unsupported for shogi.
+
+MSH-74's [product evidence and screenshot review](../docs/m4/evidence/msh74/README.md)
+record the exact revision, actual platform journeys and owner visual-review
+checkpoint. This does not claim completion of the broader M4 delivery gate.
 
 Build a normal distributable with the platform's supported bundle format:
 
@@ -96,9 +123,9 @@ SHA-256 and actual search observations.
 `desktop/scripts/package-smoke.py` is an external verifier. Tests and fixtures
 are not resources or sidecars; only the `mshogi` engine is listed as
 `externalBin`. No instrumentation or test driver is compiled into the normal
-host. The later MSH-38 ticket verifies installed application interactions on all
-three systems after the remaining M3 features exist; a package build and engine
-smoke do not establish that broader result.
+host. MSH-38's recorded M3 interaction evidence remains applicable to unchanged chess
+behavior. Current shogi packaged interactions are recorded separately under
+MSH-74; package construction alone does not establish GUI behavior.
 
 Normal Quit/Cmd-Q, window close and macOS Dock Quit first resolve unsaved changes.
 The narrowly patched native Quit route is documented in

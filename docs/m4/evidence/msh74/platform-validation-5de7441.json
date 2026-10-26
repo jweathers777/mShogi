@@ -1,0 +1,197 @@
+{
+  "source_revision": "5de74413f43c610dbf0f8fd6f1d462f82a8952ed",
+  "desktop_run": 40408728525,
+  "rust_run": 40408728368,
+  "desktop_all_three_platforms": "passed",
+  "rust_all_three_platforms": "passed",
+  "actual_GUI_platforms": {
+    "linux": {
+      "source_revision": "5de74413f43c610dbf0f8fd6f1d462f82a8952ed",
+      "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/40408728525",
+      "run_id": 40408728525,
+      "platform": "ubuntu-24.04",
+      "status": "passed",
+      "phases": [
+        {
+          "phase": "normal",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "normal-shogi",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "normal-shogi-reopened",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-standard",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-promotion",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-claim",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-capacity",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-synthetic",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-shogi-hands",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-shogi-promotion",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-shogi-forced",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-shogi-declaration",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-shogi-concluded",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-shogi-capacity",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        }
+      ],
+      "normal_host_sha256": "5a1746510cd320fccf3187ce6ff34a9dceae8b77899be28532b9c28a9ef1fef3",
+      "engine_sha256": "1510531063925103513fe2fe9ac8107b9193c78e64db2ede578c8448dca7b673",
+      "normal_package_manifest_verified": true,
+      "normal_GUI_matches_package": true,
+      "verification_package_sha256": "dcc11adf461f3c98869159f885721d6066dddfff92e902cc353a5fd899f04e05",
+      "verification_package_manifest_verified": true,
+      "artifact_root": "/private/tmp/msh74-ci/5de7441/desktop-ubuntu-24.04",
+      "images": [
+        "normal-shogi-initial-sente.webview.png",
+        "normal-shogi-initial-gote.webview.png",
+        "normal-shogi-minimum-size.webview.png",
+        "normal-shogi-active-analysis.webview.png",
+        "normal-shogi-reopened-historical-analysis.webview.png"
+      ]
+    },
+    "windows": {
+      "source_revision": "5de74413f43c610dbf0f8fd6f1d462f82a8952ed",
+      "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/40408728525",
+      "run_id": 40408728525,
+      "platform": "windows-2022",
+      "status": "passed",
+      "phases": [
+        {
+          "phase": "normal",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "normal-shogi",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "normal-shogi-reopened",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-standard",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-promotion",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-claim",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-capacity",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-synthetic",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-shogi-hands",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-shogi-promotion",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-shogi-forced",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-shogi-declaration",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-shogi-concluded",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        },
+        {
+          "phase": "verification-shogi-capacity",
+          "status": "passed",
+          "native_shutdown_before_teardown": true
+        }
+      ],
+      "normal_host_sha256": "5df6eb0651c9774ea417e7d944dbe36f91eeda56852d795c062a123ef71f305d",
+      "engine_sha256": "3081cd1f5a88e05922dbc4422451234ad654708fbb16f42beb84e7d268984a09",
+      "normal_package_manifest_verified": true,
+      "normal_GUI_matches_package": true,
+      "verification_package_sha256": "233b7266eed2471e6abd91e9276708495604473e0340e44e96c6824e38474337",
+      "verification_package_manifest_verified": true,
+      "artifact_root": "/private/tmp/msh74-ci/5de7441/desktop-windows-2022",
+      "images": [
+        "normal-shogi-initial-sente.webview.png",
+        "normal-shogi-initial-gote.webview.png",
+        "normal-shogi-minimum-size.webview.png",
+        "normal-shogi-active-analysis.webview.png",
+        "normal-shogi-reopened-historical-analysis.webview.png"
+      ]
+    }
+  },
+  "method": "Existing external W3C pointer/keyboard driver, read-only DOM observations, OS-native pickers/resize/close/quit. Normal installed packages and separately labeled verification packages; no direct game IPC or injected rule behavior.",
+  "qualification": "Supporting evidence at this explicit revision. Subsequent frontend listener change requires its own final relevant CI; these records do not assert that later revision passed."
+}

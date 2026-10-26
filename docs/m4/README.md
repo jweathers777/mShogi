@@ -15,6 +15,7 @@ no evidence-based change to that provisional delivery order at present.
 | Current-code implementation map | [implementation-map.md](implementation-map.md): actual chess boundaries and minimal explicit chess/shogi extensions, old-document compatibility, capabilities and preserved lossless admission |
 | Complete named shogi profile | [shogi-profile.md](shogi-profile.md): selected `mshogi.shogi.csa36.v1`, primary editions/clauses, complete board/history/conclusion conventions and explicit software adaptations |
 | Independent verification/reference/opponent audit | [shogi-verification.md](shogi-verification.md): immutable source pins and exact operation/semantic gaps; source audit is not runtime conformance |
+| Selected contract coverage and current native evidence | [shogi-coverage.md](shogi-coverage.md), [legality-validation.md](legality-validation.md): bounded MSH-63–66 board implementation, reviewed fixtures/reference execution and exact limitations |
 | Initial independent fixture inventory | [shogi-fixtures.md](shogi-fixtures.md): 55 stable IDs, hand-derived examples and clearly pending instantiation/review; no invented test results |
 | Native tasks, traceability and executable graph | [delivery-plan.md](delivery-plan.md): MSH-63–89, original MSH-41/46 criteria mapping, one common owner and no prerequisite/final-delivery cycles |
 | Bounded later-game source/gap inventory | [later-game-sources.md](later-game-sources.md): adopted association editions, historical evidence, proposed revisions and software conventions kept distinct |

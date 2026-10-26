@@ -20,7 +20,7 @@ pub enum ExecutionOperation {
     /// Chess cooperative mating reachability, not shogi tsume or ordinary search.
     ChessFullReachability,
 }
-/// Advertise only real native execution consumers. Shogi remains empty until MSH-70.
+/// Advertise only real native execution consumers. Shogi has no chess Full operation.
 pub fn execution_capabilities(game: GameKind) -> &'static [ExecutionOperation] {
     match game {
         GameKind::Chess => &[
@@ -28,7 +28,10 @@ pub fn execution_capabilities(game: GameKind) -> &'static [ExecutionOperation] {
             ExecutionOperation::MoveAnalysis,
             ExecutionOperation::ChessFullReachability,
         ],
-        GameKind::Shogi => &[],
+        GameKind::Shogi => &[
+            ExecutionOperation::EngineTurn,
+            ExecutionOperation::MoveAnalysis,
+        ],
     }
 }
 /// Exact historical-selection provenance alongside the full native record.
@@ -103,14 +106,29 @@ impl SharedRequest {
                 && !target.label.is_empty()
                 && target.label.len() <= 256
         };
+        let shogi_limits = || {
+            mshogi_search::shogi::Limits {
+                depth: self.limits.depth,
+                nodes: self.limits.nodes,
+            }
+            .valid()
+        };
         match &self.purpose {
             SharedPurpose::EngineTurn {} => {
-                (1..=mshogi_search::search::MAX_DEPTH).contains(&self.limits.depth)
+                if self.game.game_kind() == GameKind::Shogi {
+                    shogi_limits()
+                } else {
+                    (1..=mshogi_search::search::MAX_DEPTH).contains(&self.limits.depth)
+                }
             }
             SharedPurpose::MoveAnalysis { target } => {
                 target_valid(target)
-                    && (1..=MAX_ANALYSIS_DEPTH).contains(&self.limits.depth)
-                    && self.limits.nodes <= MAX_ANALYSIS_NODES
+                    && if self.game.game_kind() == GameKind::Shogi {
+                        shogi_limits()
+                    } else {
+                        (1..=MAX_ANALYSIS_DEPTH).contains(&self.limits.depth)
+                            && self.limits.nodes <= MAX_ANALYSIS_NODES
+                    }
             }
             SharedPurpose::ChessFullReachability { target, limits, .. } => {
                 target_valid(target)
@@ -163,7 +181,7 @@ impl SharedRequest {
     }
 }
 
-/// Actual result families. No shogi execution result is advertised or fabricated.
+/// Actual native result families; scores and conclusions retain native meaning.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum SharedResult {
@@ -171,6 +189,11 @@ pub enum SharedResult {
     Chess {
         /// Existing native chess result and score interpretation.
         result: EngineResult,
+    },
+    /// Actual native shogi result, never a chess or cooperative Full score.
+    Shogi {
+        /// Native board/declaration choice, conclusion or incomplete observation.
+        result: crate::ShogiResult,
     },
     /// Unscored unsupported/invalid/process failure, independent of native game outcomes.
     Failure {
@@ -209,6 +232,7 @@ impl SharedResponse {
         }
         match &self.result {
             SharedResult::Failure { failure } => failure.message.len() <= MAX_STDERR_BYTES,
+            SharedResult::Shogi { result } => result.matches(submitted),
             SharedResult::Chess { result } => {
                 if submitted.game.game_kind() != GameKind::Chess {
                     return false;

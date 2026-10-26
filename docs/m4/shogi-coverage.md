@@ -138,3 +138,17 @@ game outcome. [Validation and review](history-validation.md) distinguish execute
 tests, earlier partial evidence and the final integration/CI record in MSH-67.
 Engine, transport, console, shared archive, desktop and complete-delivery duties
 remain with their existing later owners. MSH-41–47 and M4 remain open.
+
+### Subsequent bounded consumer delivery
+
+MSH-69 supplies the strict [typed shared context](shared-context.md), preserving
+native record identity/history and one supervised execution owner. MSH-68
+supplies the [standalone untimed console](shogi-console.md), complete native
+choices/notation, canonical files and historical undo. MSH-70 supplies the
+[bounded native evaluator/search and real structured consumer](shogi-engine.md),
+with actual process evidence and game-specific scores; it does not establish
+playing strength. Their task records identify exact reviews, tests and source/CI
+revisions. Earlier milestone evidence above remains historical.
+
+USI/external-opponent work, shared desktop sessions/archives/presentation and
+complete-delivery closure remain with MSH-71 onward and MSH-41–47. M4 remains open.

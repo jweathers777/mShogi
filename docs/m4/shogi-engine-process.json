@@ -1,0 +1,676 @@
+{
+  "cases": [
+    {
+      "engine": "gote",
+      "final_game": {
+        "envelope_version": 1,
+        "game_kind": "shogi",
+        "native_schema_version": 1,
+        "payload": {
+          "conclusion": null,
+          "events": [
+            {
+              "actor": "sente",
+              "after_sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/8P/PPPPPPPP1/1B5R1/LNSGKGSNL w - 2",
+              "command": {
+                "action": "1g1f",
+                "kind": "play"
+              },
+              "conclusion": null,
+              "declaration": null,
+              "gave_check": false,
+              "index": 0,
+              "score_half_points": null
+            },
+            {
+              "actor": "gote",
+              "after_sfen": "lnsgkgsn1/1r5bl/ppppppppp/9/9/8P/PPPPPPPP1/1B5R1/LNSGKGSNL b - 3",
+              "command": {
+                "action": "1a1b",
+                "kind": "play"
+              },
+              "conclusion": null,
+              "declaration": null,
+              "gave_check": false,
+              "index": 1,
+              "score_half_points": null
+            },
+            {
+              "actor": "sente",
+              "after_sfen": "lnsgkgsn1/1r5bl/ppppppppp/9/8P/9/PPPPPPPP1/1B5R1/LNSGKGSNL w - 4",
+              "command": {
+                "action": "1f1e",
+                "kind": "play"
+              },
+              "conclusion": null,
+              "declaration": null,
+              "gave_check": false,
+              "index": 2,
+              "score_half_points": null
+            },
+            {
+              "actor": "gote",
+              "after_sfen": "lnsgkgsnb/1r6l/ppppppppp/9/8P/9/PPPPPPPP1/1B5R1/LNSGKGSNL b - 5",
+              "command": {
+                "action": "2b1a",
+                "kind": "play"
+              },
+              "conclusion": null,
+              "declaration": null,
+              "gave_check": false,
+              "index": 3,
+              "score_half_points": null
+            }
+          ],
+          "format": "mshogi.shogi.game",
+          "mode": "untimed",
+          "policies": {
+            "continuous_check": "all_own_actions_first_to_fourth_checker_loses",
+            "counters": "declared_next_ply_minus_one_default_one",
+            "entering_king": "formal_own_turn_camp_unchecked_false_declaration_loses",
+            "external_events": "unsupported",
+            "gote_declaration_points": 27,
+            "imported_history": "root_once_earlier_history_unknown",
+            "length_completed_actions": 320,
+            "live_root_admission": "nonmoving_king_unattacked_necessary_not_reachability",
+            "minimum_other_camp_pieces": 10,
+            "no_legal_action": "loss_with_or_without_check",
+            "precedence": [
+              "no_legal_action",
+              "repetition_including_continuous_check",
+              "length"
+            ],
+            "repetition": "four_known_occurrences_final_draw",
+            "resignation": "opponent_wins",
+            "scoring": "csa_sente_gote_half_point_units",
+            "sente_declaration_points": 28,
+            "timing": "unsupported_untimed_time_prerequisite_true"
+          },
+          "profile_edition": "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026",
+          "profile_id": "mshogi.shogi.csa36.v1",
+          "root": {
+            "category": "standard",
+            "conclusion": null,
+            "counter_source": "initial_fixed",
+            "known_history": "initial",
+            "score_half_points": null,
+            "sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1"
+          },
+          "schema_version": 1,
+          "score_half_points": null
+        },
+        "profile_edition": "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026",
+        "rules_profile": "mshogi.shogi.csa36.v1"
+      },
+      "human": "sente",
+      "observations": [
+        {
+          "context": {
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "shogi",
+              "native_schema_version": 1,
+              "payload": {
+                "conclusion": null,
+                "events": [
+                  {
+                    "actor": "sente",
+                    "after_sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/8P/PPPPPPPP1/1B5R1/LNSGKGSNL w - 2",
+                    "command": {
+                      "action": "1g1f",
+                      "kind": "play"
+                    },
+                    "conclusion": null,
+                    "declaration": null,
+                    "gave_check": false,
+                    "index": 0,
+                    "score_half_points": null
+                  }
+                ],
+                "format": "mshogi.shogi.game",
+                "mode": "untimed",
+                "policies": {
+                  "continuous_check": "all_own_actions_first_to_fourth_checker_loses",
+                  "counters": "declared_next_ply_minus_one_default_one",
+                  "entering_king": "formal_own_turn_camp_unchecked_false_declaration_loses",
+                  "external_events": "unsupported",
+                  "gote_declaration_points": 27,
+                  "imported_history": "root_once_earlier_history_unknown",
+                  "length_completed_actions": 320,
+                  "live_root_admission": "nonmoving_king_unattacked_necessary_not_reachability",
+                  "minimum_other_camp_pieces": 10,
+                  "no_legal_action": "loss_with_or_without_check",
+                  "precedence": [
+                    "no_legal_action",
+                    "repetition_including_continuous_check",
+                    "length"
+                  ],
+                  "repetition": "four_known_occurrences_final_draw",
+                  "resignation": "opponent_wins",
+                  "scoring": "csa_sente_gote_half_point_units",
+                  "sente_declaration_points": 28,
+                  "timing": "unsupported_untimed_time_prerequisite_true"
+                },
+                "profile_edition": "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026",
+                "profile_id": "mshogi.shogi.csa36.v1",
+                "root": {
+                  "category": "standard",
+                  "conclusion": null,
+                  "counter_source": "initial_fixed",
+                  "known_history": "initial",
+                  "score_half_points": null,
+                  "sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1"
+                },
+                "schema_version": 1,
+                "score_half_points": null
+              },
+              "profile_edition": "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026",
+              "rules_profile": "mshogi.shogi.csa36.v1"
+            },
+            "limits": {
+              "depth": 2,
+              "nodes": 5000
+            },
+            "process_generation": 1,
+            "protocol": 3,
+            "purpose": {
+              "kind": "engine_turn"
+            },
+            "request_id": 1,
+            "session_version": 1
+          },
+          "result": {
+            "kind": "shogi",
+            "result": {
+              "choice": {
+                "action": "1a1b",
+                "kind": "move"
+              },
+              "kind": "choice",
+              "telemetry": {
+                "completed_depth": 2,
+                "evaluator_id": "mshogi.shogi.material.v1",
+                "nodes": 1022,
+                "perspective": "gote",
+                "principal_variation": [
+                  {
+                    "action": "1a1b",
+                    "kind": "move"
+                  },
+                  {
+                    "action": "1f1e",
+                    "kind": "move"
+                  }
+                ],
+                "score": 0,
+                "search_id": "mshogi.shogi.full-width.v1",
+                "status": "complete"
+              }
+            }
+          }
+        },
+        {
+          "context": {
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "shogi",
+              "native_schema_version": 1,
+              "payload": {
+                "conclusion": null,
+                "events": [
+                  {
+                    "actor": "sente",
+                    "after_sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/8P/PPPPPPPP1/1B5R1/LNSGKGSNL w - 2",
+                    "command": {
+                      "action": "1g1f",
+                      "kind": "play"
+                    },
+                    "conclusion": null,
+                    "declaration": null,
+                    "gave_check": false,
+                    "index": 0,
+                    "score_half_points": null
+                  },
+                  {
+                    "actor": "gote",
+                    "after_sfen": "lnsgkgsn1/1r5bl/ppppppppp/9/9/8P/PPPPPPPP1/1B5R1/LNSGKGSNL b - 3",
+                    "command": {
+                      "action": "1a1b",
+                      "kind": "play"
+                    },
+                    "conclusion": null,
+                    "declaration": null,
+                    "gave_check": false,
+                    "index": 1,
+                    "score_half_points": null
+                  },
+                  {
+                    "actor": "sente",
+                    "after_sfen": "lnsgkgsn1/1r5bl/ppppppppp/9/8P/9/PPPPPPPP1/1B5R1/LNSGKGSNL w - 4",
+                    "command": {
+                      "action": "1f1e",
+                      "kind": "play"
+                    },
+                    "conclusion": null,
+                    "declaration": null,
+                    "gave_check": false,
+                    "index": 2,
+                    "score_half_points": null
+                  }
+                ],
+                "format": "mshogi.shogi.game",
+                "mode": "untimed",
+                "policies": {
+                  "continuous_check": "all_own_actions_first_to_fourth_checker_loses",
+                  "counters": "declared_next_ply_minus_one_default_one",
+                  "entering_king": "formal_own_turn_camp_unchecked_false_declaration_loses",
+                  "external_events": "unsupported",
+                  "gote_declaration_points": 27,
+                  "imported_history": "root_once_earlier_history_unknown",
+                  "length_completed_actions": 320,
+                  "live_root_admission": "nonmoving_king_unattacked_necessary_not_reachability",
+                  "minimum_other_camp_pieces": 10,
+                  "no_legal_action": "loss_with_or_without_check",
+                  "precedence": [
+                    "no_legal_action",
+                    "repetition_including_continuous_check",
+                    "length"
+                  ],
+                  "repetition": "four_known_occurrences_final_draw",
+                  "resignation": "opponent_wins",
+                  "scoring": "csa_sente_gote_half_point_units",
+                  "sente_declaration_points": 28,
+                  "timing": "unsupported_untimed_time_prerequisite_true"
+                },
+                "profile_edition": "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026",
+                "profile_id": "mshogi.shogi.csa36.v1",
+                "root": {
+                  "category": "standard",
+                  "conclusion": null,
+                  "counter_source": "initial_fixed",
+                  "known_history": "initial",
+                  "score_half_points": null,
+                  "sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1"
+                },
+                "schema_version": 1,
+                "score_half_points": null
+              },
+              "profile_edition": "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026",
+              "rules_profile": "mshogi.shogi.csa36.v1"
+            },
+            "limits": {
+              "depth": 2,
+              "nodes": 5000
+            },
+            "process_generation": 2,
+            "protocol": 3,
+            "purpose": {
+              "kind": "engine_turn"
+            },
+            "request_id": 2,
+            "session_version": 2
+          },
+          "result": {
+            "kind": "shogi",
+            "result": {
+              "choice": {
+                "action": "2b1a",
+                "kind": "move"
+              },
+              "kind": "choice",
+              "telemetry": {
+                "completed_depth": 2,
+                "evaluator_id": "mshogi.shogi.material.v1",
+                "nodes": 1052,
+                "perspective": "gote",
+                "principal_variation": [
+                  {
+                    "action": "2b1a",
+                    "kind": "move"
+                  },
+                  {
+                    "action": "1e1d",
+                    "kind": "move"
+                  }
+                ],
+                "score": 0,
+                "search_id": "mshogi.shogi.full-width.v1",
+                "status": "complete"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "engine": "sente",
+      "final_game": {
+        "envelope_version": 1,
+        "game_kind": "shogi",
+        "native_schema_version": 1,
+        "payload": {
+          "conclusion": null,
+          "events": [
+            {
+              "actor": "sente",
+              "after_sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/8P/PPPPPPPP1/1B5R1/LNSGKGSNL w - 2",
+              "command": {
+                "action": "1g1f",
+                "kind": "play"
+              },
+              "conclusion": null,
+              "declaration": null,
+              "gave_check": false,
+              "index": 0,
+              "score_half_points": null
+            },
+            {
+              "actor": "gote",
+              "after_sfen": "lnsgkgsn1/1r5bl/ppppppppp/9/9/8P/PPPPPPPP1/1B5R1/LNSGKGSNL b - 3",
+              "command": {
+                "action": "1a1b",
+                "kind": "play"
+              },
+              "conclusion": null,
+              "declaration": null,
+              "gave_check": false,
+              "index": 1,
+              "score_half_points": null
+            },
+            {
+              "actor": "sente",
+              "after_sfen": "lnsgkgsn1/1r5bl/ppppppppp/9/8P/9/PPPPPPPP1/1B5R1/LNSGKGSNL w - 4",
+              "command": {
+                "action": "1f1e",
+                "kind": "play"
+              },
+              "conclusion": null,
+              "declaration": null,
+              "gave_check": false,
+              "index": 2,
+              "score_half_points": null
+            },
+            {
+              "actor": "gote",
+              "after_sfen": "lnsgkgsn1/1r5bl/pppppppp1/8p/8P/9/PPPPPPPP1/1B5R1/LNSGKGSNL b - 5",
+              "command": {
+                "action": "1c1d",
+                "kind": "play"
+              },
+              "conclusion": null,
+              "declaration": null,
+              "gave_check": false,
+              "index": 3,
+              "score_half_points": null
+            }
+          ],
+          "format": "mshogi.shogi.game",
+          "mode": "untimed",
+          "policies": {
+            "continuous_check": "all_own_actions_first_to_fourth_checker_loses",
+            "counters": "declared_next_ply_minus_one_default_one",
+            "entering_king": "formal_own_turn_camp_unchecked_false_declaration_loses",
+            "external_events": "unsupported",
+            "gote_declaration_points": 27,
+            "imported_history": "root_once_earlier_history_unknown",
+            "length_completed_actions": 320,
+            "live_root_admission": "nonmoving_king_unattacked_necessary_not_reachability",
+            "minimum_other_camp_pieces": 10,
+            "no_legal_action": "loss_with_or_without_check",
+            "precedence": [
+              "no_legal_action",
+              "repetition_including_continuous_check",
+              "length"
+            ],
+            "repetition": "four_known_occurrences_final_draw",
+            "resignation": "opponent_wins",
+            "scoring": "csa_sente_gote_half_point_units",
+            "sente_declaration_points": 28,
+            "timing": "unsupported_untimed_time_prerequisite_true"
+          },
+          "profile_edition": "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026",
+          "profile_id": "mshogi.shogi.csa36.v1",
+          "root": {
+            "category": "standard",
+            "conclusion": null,
+            "counter_source": "initial_fixed",
+            "known_history": "initial",
+            "score_half_points": null,
+            "sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1"
+          },
+          "schema_version": 1,
+          "score_half_points": null
+        },
+        "profile_edition": "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026",
+        "rules_profile": "mshogi.shogi.csa36.v1"
+      },
+      "human": "gote",
+      "observations": [
+        {
+          "context": {
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "shogi",
+              "native_schema_version": 1,
+              "payload": {
+                "conclusion": null,
+                "events": [],
+                "format": "mshogi.shogi.game",
+                "mode": "untimed",
+                "policies": {
+                  "continuous_check": "all_own_actions_first_to_fourth_checker_loses",
+                  "counters": "declared_next_ply_minus_one_default_one",
+                  "entering_king": "formal_own_turn_camp_unchecked_false_declaration_loses",
+                  "external_events": "unsupported",
+                  "gote_declaration_points": 27,
+                  "imported_history": "root_once_earlier_history_unknown",
+                  "length_completed_actions": 320,
+                  "live_root_admission": "nonmoving_king_unattacked_necessary_not_reachability",
+                  "minimum_other_camp_pieces": 10,
+                  "no_legal_action": "loss_with_or_without_check",
+                  "precedence": [
+                    "no_legal_action",
+                    "repetition_including_continuous_check",
+                    "length"
+                  ],
+                  "repetition": "four_known_occurrences_final_draw",
+                  "resignation": "opponent_wins",
+                  "scoring": "csa_sente_gote_half_point_units",
+                  "sente_declaration_points": 28,
+                  "timing": "unsupported_untimed_time_prerequisite_true"
+                },
+                "profile_edition": "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026",
+                "profile_id": "mshogi.shogi.csa36.v1",
+                "root": {
+                  "category": "standard",
+                  "conclusion": null,
+                  "counter_source": "initial_fixed",
+                  "known_history": "initial",
+                  "score_half_points": null,
+                  "sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1"
+                },
+                "schema_version": 1,
+                "score_half_points": null
+              },
+              "profile_edition": "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026",
+              "rules_profile": "mshogi.shogi.csa36.v1"
+            },
+            "limits": {
+              "depth": 2,
+              "nodes": 5000
+            },
+            "process_generation": 1,
+            "protocol": 3,
+            "purpose": {
+              "kind": "engine_turn"
+            },
+            "request_id": 1,
+            "session_version": 1
+          },
+          "result": {
+            "kind": "shogi",
+            "result": {
+              "choice": {
+                "action": "1g1f",
+                "kind": "move"
+              },
+              "kind": "choice",
+              "telemetry": {
+                "completed_depth": 2,
+                "evaluator_id": "mshogi.shogi.material.v1",
+                "nodes": 962,
+                "perspective": "sente",
+                "principal_variation": [
+                  {
+                    "action": "1g1f",
+                    "kind": "move"
+                  },
+                  {
+                    "action": "1a1b",
+                    "kind": "move"
+                  }
+                ],
+                "score": 0,
+                "search_id": "mshogi.shogi.full-width.v1",
+                "status": "complete"
+              }
+            }
+          }
+        },
+        {
+          "context": {
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "shogi",
+              "native_schema_version": 1,
+              "payload": {
+                "conclusion": null,
+                "events": [
+                  {
+                    "actor": "sente",
+                    "after_sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/8P/PPPPPPPP1/1B5R1/LNSGKGSNL w - 2",
+                    "command": {
+                      "action": "1g1f",
+                      "kind": "play"
+                    },
+                    "conclusion": null,
+                    "declaration": null,
+                    "gave_check": false,
+                    "index": 0,
+                    "score_half_points": null
+                  },
+                  {
+                    "actor": "gote",
+                    "after_sfen": "lnsgkgsn1/1r5bl/ppppppppp/9/9/8P/PPPPPPPP1/1B5R1/LNSGKGSNL b - 3",
+                    "command": {
+                      "action": "1a1b",
+                      "kind": "play"
+                    },
+                    "conclusion": null,
+                    "declaration": null,
+                    "gave_check": false,
+                    "index": 1,
+                    "score_half_points": null
+                  }
+                ],
+                "format": "mshogi.shogi.game",
+                "mode": "untimed",
+                "policies": {
+                  "continuous_check": "all_own_actions_first_to_fourth_checker_loses",
+                  "counters": "declared_next_ply_minus_one_default_one",
+                  "entering_king": "formal_own_turn_camp_unchecked_false_declaration_loses",
+                  "external_events": "unsupported",
+                  "gote_declaration_points": 27,
+                  "imported_history": "root_once_earlier_history_unknown",
+                  "length_completed_actions": 320,
+                  "live_root_admission": "nonmoving_king_unattacked_necessary_not_reachability",
+                  "minimum_other_camp_pieces": 10,
+                  "no_legal_action": "loss_with_or_without_check",
+                  "precedence": [
+                    "no_legal_action",
+                    "repetition_including_continuous_check",
+                    "length"
+                  ],
+                  "repetition": "four_known_occurrences_final_draw",
+                  "resignation": "opponent_wins",
+                  "scoring": "csa_sente_gote_half_point_units",
+                  "sente_declaration_points": 28,
+                  "timing": "unsupported_untimed_time_prerequisite_true"
+                },
+                "profile_edition": "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026",
+                "profile_id": "mshogi.shogi.csa36.v1",
+                "root": {
+                  "category": "standard",
+                  "conclusion": null,
+                  "counter_source": "initial_fixed",
+                  "known_history": "initial",
+                  "score_half_points": null,
+                  "sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1"
+                },
+                "schema_version": 1,
+                "score_half_points": null
+              },
+              "profile_edition": "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026",
+              "rules_profile": "mshogi.shogi.csa36.v1"
+            },
+            "limits": {
+              "depth": 2,
+              "nodes": 5000
+            },
+            "process_generation": 2,
+            "protocol": 3,
+            "purpose": {
+              "kind": "engine_turn"
+            },
+            "request_id": 2,
+            "session_version": 2
+          },
+          "result": {
+            "kind": "shogi",
+            "result": {
+              "choice": {
+                "action": "1f1e",
+                "kind": "move"
+              },
+              "kind": "choice",
+              "telemetry": {
+                "completed_depth": 2,
+                "evaluator_id": "mshogi.shogi.material.v1",
+                "nodes": 1026,
+                "perspective": "sente",
+                "principal_variation": [
+                  {
+                    "action": "1f1e",
+                    "kind": "move"
+                  },
+                  {
+                    "action": "1c1d",
+                    "kind": "move"
+                  }
+                ],
+                "score": 0,
+                "search_id": "mshogi.shogi.full-width.v1",
+                "status": "complete"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "format": "mshogi.shogi.engine-smoke.v1",
+  "method": "actual internal-search child, EngineBridge, native Game::submit",
+  "environment": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "binary_sha256": "152800f9600e3f4a3b0e11cb89008a7aaa0e17bb5b6db2ab4f952fc3d6898382",
+  "source_sha256": {
+    "crates/mshogi-search/src/shogi.rs": "9a1a5f8941bd77d047876ecdd7b38a7e3e4b2f2c2efee24159e4cbb15bf4ee93",
+    "crates/mshogi-engine/src/shogi.rs": "b894ad8f655b11b16067b4c4938567486dabdabf730646d457fe8635f8a00f11",
+    "crates/mshogi-engine/src/shared.rs": "1914ad2fa57da9c3cc2b7e4137544107b6b90fbc5a9c380c35661a84297cd759",
+    "crates/mshogi-engine/src/server.rs": "d612809d0e9eab399fcff75922296bd2d4a28d368bbdb7ae685bf1010d9b45d9",
+    "crates/mshogi-console/tests/shogi_engine.rs": "e7cb0dc24ec3070376d2b1f213b7155551b3de7bf88fe50e1ea00089c217342d"
+  },
+  "bridge_options_seconds": {
+    "watchdog": 30,
+    "cleanup": 1
+  }
+}

@@ -124,10 +124,7 @@ pub(crate) fn execute_shared(context: &SharedRequest) -> SharedResult {
         );
     }
     if context.game.game_kind() == mshogi_core::native::GameKind::Shogi {
-        return SharedResult::failure(
-            FailureKind::UnsupportedMode,
-            "Shogi canonical context is supported; shogi execution capabilities are empty until its native engine consumer is implemented. Chess Full reachability is not a shogi operation.",
-        );
+        return execute_shogi(context);
     }
     let Some(chess) = context.chess_adapter() else {
         return SharedResult::failure(
@@ -137,5 +134,43 @@ pub(crate) fn execute_shared(context: &SharedRequest) -> SharedResult {
     };
     SharedResult::Chess {
         result: execute(&chess),
+    }
+}
+
+fn execute_shogi(context: &SharedRequest) -> SharedResult {
+    if matches!(context.purpose, SharedPurpose::ChessFullReachability { .. }) {
+        return SharedResult::failure(
+            FailureKind::UnsupportedMode,
+            "Chess Full reachability is not a shogi operation; no shogi Full or tsume capability is advertised.",
+        );
+    }
+    let mshogi_core::native::CanonicalRecord::Shogi(record) = &context.game else {
+        unreachable!()
+    };
+    let game = match record.to_game() {
+        Ok(game) => game,
+        Err(error) => return SharedResult::failure(FailureKind::InvalidRequest, error),
+    };
+    if let SharedPurpose::MoveAnalysis { target } = &context.purpose
+        && (target.turn != mshogi_core::native::NativeSide::Shogi(game.position().side_to_move())
+            || target.event_index != game.events().len() as u64
+            || target.board_ply != record.known_board_actions() as u64)
+    {
+        return SharedResult::failure(
+            FailureKind::InvalidRequest,
+            "shogi analysis target disagrees with exact native history and side",
+        );
+    }
+    match mshogi_search::shogi::search(
+        &game,
+        mshogi_search::shogi::Limits {
+            depth: context.limits.depth,
+            nodes: context.limits.nodes,
+        },
+    ) {
+        Ok(result) => SharedResult::Shogi {
+            result: ShogiResult::searched(result),
+        },
+        Err(error) => SharedResult::failure(FailureKind::Search, error),
     }
 }

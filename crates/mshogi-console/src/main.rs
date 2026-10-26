@@ -12,6 +12,7 @@ mod record_io;
 mod session;
 mod shogi_session;
 mod uci;
+mod usi;
 
 use session::{MAX_LINE_BYTES, Next, Session};
 
@@ -56,7 +57,12 @@ fn arguments(args: impl Iterator<Item = std::ffi::OsString>) -> Result<Invocatio
     if mode == "internal-search" && selected.is_some() {
         return Err("--game is incompatible with internal-search: its structured request supplies the game identity".into());
     }
-    let game = if mode == "shogi" {
+    let game = if mode == "usi" {
+        if selected == Some(Game::Chess) {
+            return Err("USI supports shogi only; explicit chess selection conflicts".into());
+        }
+        Game::Shogi
+    } else if mode == "shogi" {
         if selected == Some(Game::Chess) {
             return Err("shogi alias conflicts with --game chess".into());
         }
@@ -66,11 +72,19 @@ fn arguments(args: impl Iterator<Item = std::ffi::OsString>) -> Result<Invocatio
         selected.unwrap_or(Game::Chess)
     };
     if mode == "uci" && game != Game::Chess {
-        return Err("UCI supports chess only; shogi USI is not implemented".into());
+        return Err("UCI supports chess only; select --game shogi usi for shogi".into());
     }
     if !matches!(
         mode.as_str(),
-        "--help" | "-h" | "--version" | "-V" | "profile" | "shell" | "uci" | "internal-search"
+        "--help"
+            | "-h"
+            | "--version"
+            | "-V"
+            | "profile"
+            | "shell"
+            | "uci"
+            | "usi"
+            | "internal-search"
     ) {
         return Err("unsupported arguments".into());
     }
@@ -80,7 +94,7 @@ fn help(game: Game) {
     let game = game.name();
     println!("mShogi headless console — selected game: {game}
 
-Usage: mshogi [--game chess|shogi] [--help | --version | profile | shell | shogi | uci | internal-search]
+Usage: mshogi [--game chess|shogi] [--help | --version | profile | shell | shogi | uci | usi | internal-search]
 
   --game <game>  Select chess or shogi (default chess)
   --help, -h     Show selected-game help
@@ -88,7 +102,8 @@ Usage: mshogi [--game chess|shogi] [--help | --version | profile | shell | shogi
   profile        Show the selected native rules profile and actual coverage
   shell          Read {game} commands from standard input, one per line
   shogi          Compatibility alias for --game shogi shell
-  uci            Chess UCI adapter (rejects --game shogi); USI not implemented
+  uci            Chess UCI adapter (rejects --game shogi)
+  usi            Untimed bounded USI shogi adapter (bare usi selects shogi)
   internal-search  Structured native search; request supplies game, no --game
 
 Use 'mshogi --game {game} shell' and type 'help' for native commands.
@@ -120,7 +135,7 @@ fn main() -> ExitCode {
                 println!("Target rules profile: {}", mshogi_core::shogi::PROFILE_ID);
                 println!("Edition: {}", mshogi_core::shogi::PROFILE_EDITION);
                 println!(
-                    "Coverage: untimed native SFEN/game/events, complete legal moves/drops/promotions, hands, advisory eligibility, formal declarations/resignation, conclusions, event undo and canonical envelope records; local perft/divide depth 0..2. Earlier imported history is unknown. USI is not implemented."
+                    "Coverage: untimed native SFEN/game/events, complete legal moves/drops/promotions, hands, advisory eligibility, formal declarations/resignation, conclusions, event undo and canonical envelope records; local perft/divide depth 0..2. Earlier imported history is unknown. USI is available in separate usi mode."
                 );
             }
         },
@@ -135,6 +150,7 @@ fn main() -> ExitCode {
             }
         },
         "uci" => return uci::run(),
+        "usi" => return usi::run(),
         "internal-search" => {
             if let Err(error) = mshogi_engine::serve_once(io::stdin().lock(), io::stdout().lock()) {
                 eprintln!("internal search failed: {error}");

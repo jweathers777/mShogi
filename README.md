@@ -172,14 +172,28 @@ Native FEN/SFEN and game-specific commands retain their meanings.
 `mshogi --game shogi shell`. The chess `uci` adapter and structured
 `internal-search` wire contracts remain separate. Explicit `--game shogi uci`
 rejects; `internal-search` rejects any `--game` because its request supplies
-the authoritative game/profile identity. No USI support is added.
+the authoritative game/profile identity. USI uses `--game shogi usi`; bare
+`mshogi usi` also selects shogi.
 
 Native shogi v3 now supports engine-turn proposals and bounded read-only move
 analysis. The transparent baseline uses board/promoted pieces and both hands,
 with explicit native declarations/outcomes and root-side score observations.
 Defaults are depth2/5,000 nodes; supported finite bounds are depth1–4 and
 0–20,000 nodes. See the [native engine contract and runnable structured example](docs/m4/shogi-engine.md).
-Shogi USI interoperability and desktop play remain later tickets.
+The [untimed shogi USI adapter and experiment host](docs/m4/usi.md) are available:
+
+```sh
+cargo run --locked --release --bin mshogi -- --game shogi usi
+cargo run --locked --release --bin mshogi-match -- shogi-run docs/m4/usi/selfplay.config.json /tmp/mshogi-selfplay-new.json
+cargo run --locked --release --bin mshogi-match -- shogi-replay /tmp/mshogi-selfplay-new.json
+```
+
+USI supports handshake/readiness/options, full supplied history, finite search,
+stop, declarations, gameover and quit. No-result work stays an unscored failure;
+clock controls and pondering are unsupported, and tsume returns notimplemented.
+Recorded pinned YaneuraOu material games and native self-play establish functional
+interoperability on macOS, with no strength claim. Shogi desktop work remains
+MSH-72 onward.
 
 ## Backlog commands
 

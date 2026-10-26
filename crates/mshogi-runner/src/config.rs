@@ -177,61 +177,11 @@ impl ExperimentConfig {
         if self.max_plies == 0 || self.max_plies > 512 {
             return err("max_plies must be 1..=512");
         }
-        for engine in &self.engines {
-            if !text(&engine.path, 4096)
-                || engine.args.len() > 64
-                || engine.options.len() > 64
-                || engine
-                    .args
-                    .iter()
-                    .any(|s| s.len() > 4096 || s.contains('\0'))
-                || engine.model_path.as_ref().is_some_and(|s| !text(s, 4096))
-                || engine
-                    .model_identity
-                    .as_ref()
-                    .is_some_and(|s| !text(s, 256))
-            {
-                return err("invalid engine configuration size/path");
-            }
-            let mut names = std::collections::HashSet::new();
-            for o in &engine.options {
-                if o.name.is_empty()
-                    || !uci_text(&o.name, 128)
-                    || !uci_text(&o.value, 2048)
-                    || !names.insert(o.name.to_ascii_lowercase())
-                {
-                    return err("invalid or duplicate UCI option");
-                }
-            }
-        }
-        let w = self.watchdogs;
-        if [
-            w.handshake_ms,
-            w.ready_ms,
-            w.response_ms,
-            w.write_ms,
-            w.cleanup_ms,
-        ]
-        .iter()
-        .any(|&n| n == 0 || n > 3_600_000)
-        {
-            return err("watchdogs must be 1..=3600000 milliseconds");
-        }
-        let io = self.io;
-        if io.line_bytes == 0
-            || io.line_bytes > 65536
-            || io.queued_lines == 0
-            || io.queued_lines > 256
-            || io.transcript_bytes > 4_194_304
-            || io.stderr_bytes > 1_048_576
-            || io.command_bytes < 16
-            || io.command_bytes > 4096
-        {
-            return err("invalid I/O bounds");
-        }
+        validate_processes(&self.engines, self.watchdogs, self.io)?;
         // Conservative JSON envelope bound, including escaped diagnostics,
         // bounded last-line failures, identities and per-game metadata. Protocol
         // entry accounting itself uses serialized JSON size, not payload only.
+        let io = self.io;
         let games = self.openings.len() * if self.paired { 2 } else { 1 };
         let per_game = io.transcript_bytes + io.stderr_bytes * 16 + io.line_bytes * 32 + 65536;
         if games * per_game > 120 * 1024 * 1024 {
@@ -292,4 +242,67 @@ impl ExperimentConfig {
             && (self.work.depth.is_some() || self.work.nodes.is_some())
             && self.engines.iter().all(|e| e.deterministic)
     }
+}
+
+/// Common bounded subprocess inputs, without game or clock policy.
+pub(crate) fn validate_processes(
+    engines: &[EngineConfig; 2],
+    watchdogs: Watchdogs,
+    io: IoLimits,
+) -> Result<(), RunnerError> {
+    let err = |s: &str| Err(RunnerError(s.into()));
+    for engine in engines {
+        if !text(&engine.path, 4096)
+            || engine.args.len() > 64
+            || engine.options.len() > 64
+            || engine
+                .args
+                .iter()
+                .any(|s| s.len() > 4096 || s.contains('\0'))
+            || engine.model_path.as_ref().is_some_and(|s| !text(s, 4096))
+            || engine
+                .model_identity
+                .as_ref()
+                .is_some_and(|s| !text(s, 256))
+        {
+            return err("invalid engine configuration size/path");
+        }
+        let mut names = std::collections::HashSet::new();
+        for o in &engine.options {
+            if o.name.is_empty()
+                || !uci_text(&o.name, 128)
+                || !uci_text(&o.value, 2048)
+                || !names.insert(o.name.to_ascii_lowercase())
+            {
+                return err("invalid or duplicate UCI option");
+            }
+        }
+    }
+    let w = watchdogs;
+    if [
+        w.handshake_ms,
+        w.ready_ms,
+        w.response_ms,
+        w.write_ms,
+        w.cleanup_ms,
+    ]
+    .iter()
+    .any(|&n| n == 0 || n > 3_600_000)
+    {
+        return err("watchdogs must be 1..=3600000 milliseconds");
+    }
+
+    if io.line_bytes == 0
+        || io.line_bytes > 65536
+        || io.queued_lines == 0
+        || io.queued_lines > 256
+        || io.transcript_bytes > 4_194_304
+        || io.stderr_bytes > 1_048_576
+        || io.command_bytes < 16
+        || io.command_bytes > 4096
+    {
+        return err("invalid I/O bounds");
+    }
+
+    Ok(())
 }

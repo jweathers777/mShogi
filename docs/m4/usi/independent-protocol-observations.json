@@ -1,0 +1,65 @@
+[
+  {
+    "root": "8k/9/9/4P4/9/9/9/9/K8 b - 1",
+    "expected": "5d5c+",
+    "observed": [
+      "info depth 1 nodes 6 time 2 score cp 500 pv 5d5c+",
+      "info string mshogi native_score Some(500) perspective Sente status Complete distance_units command_edges",
+      "bestmove 5d5c+"
+    ]
+  },
+  {
+    "root": "8k/4P4/9/9/9/9/9/9/K8 b - 1",
+    "expected": "5b5a+",
+    "observed": [
+      "info depth 1 nodes 5 time 2 score cp 500 pv 5b5a+",
+      "info string mshogi native_score Some(500) perspective Sente status Complete distance_units command_edges",
+      "bestmove 5b5a+"
+    ]
+  },
+  {
+    "root": "3lkl3/3p1p3/4K4/9/9/9/9/9/9 b G 1",
+    "expected": "G*5b",
+    "observed": [
+      "info depth 1 nodes 79 time 2 pv G*5b",
+      "info string mshogi native_score Some(999999) perspective Sente status Complete distance_units command_edges",
+      "bestmove G*5b"
+    ]
+  },
+  {
+    "root": "K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B5P 1",
+    "expected": "win",
+    "observed": [
+      "info depth 1 nodes 2 time 2",
+      "info string mshogi native_score Some(999999) perspective Sente status Complete distance_units command_edges",
+      "bestmove win"
+    ]
+  },
+  {
+    "root": "K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k w B5P 1",
+    "expected": "1i1h",
+    "observed": [
+      "info depth 1 nodes 7 time 2 pv 1i1h",
+      "info string mshogi native_score Some(-999998) perspective Gote status Complete distance_units command_edges",
+      "bestmove 1i1h"
+    ]
+  },
+  {
+    "position": "position sfen 4k4/9/5R3/9/9/9/9/9/K8 b - 1 moves 4c3c 5a4a 3c4c 4a5a 4c3c 5a4a 3c4c 4a5a 4c3c 5a4a 3c4c",
+    "expected": "4a5a",
+    "observed": [
+      "info depth 1 nodes 5 time 2 score cp 0 pv 4a5a",
+      "info string mshogi native_score Some(0) perspective Gote status Complete distance_units command_edges",
+      "bestmove 4a5a"
+    ]
+  },
+  {
+    "position": "position sfen 5k3/9/5R3/9/9/9/9/9/K8 w - 12",
+    "expected": "4a3a",
+    "observed": [
+      "info depth 1 nodes 5 time 2 score cp -800 pv 4a3a",
+      "info string mshogi native_score Some(-800) perspective Gote status Complete distance_units command_edges",
+      "bestmove 4a3a"
+    ]
+  }
+]

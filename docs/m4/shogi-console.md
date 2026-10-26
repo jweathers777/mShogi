@@ -11,7 +11,7 @@ native coverage; `--game <game> --help` and shell `help` explain capabilities.
 Unknown games, missing selector values, repeated selectors and extra modes fail
 with exit2 and stderr only. Selectors may precede or follow the one mode.
 `mshogi --game chess uci` and the default `mshogi uci` preserve UCI. An explicit
-shogi/UCI combination rejects; USI stays in MSH-71. `mshogi internal-search`
+shogi/UCI combination rejects; [USI](usi.md) uses `--game shogi usi`. `mshogi internal-search`
 accepts no `--game`: structured v2/v3 requests supply authoritative identity,
 including valid shogi v3 requests without a selector. Human output never appears
 in protocol mode.
@@ -212,8 +212,8 @@ Existing chess, UCI, internal-process and desktop subprocess tests remain in the
 console suite. No rule, fixture expectation, mutual-check proof, native record
 encoding or MSH-61 desktop persistence guarantee changed.
 
-MSH-70 owns native shogi search and actual structured execution; MSH-71 owns USI
-protocol interoperability. This human console does not advertise either engine
+MSH-70 supplies native shogi search and actual structured execution; MSH-71
+supplies the separate [USI adapter and native experiment host](usi.md). This human console does not advertise either engine
 or protocol support by itself. MSH-41–47 and M4 remain open.
 
 

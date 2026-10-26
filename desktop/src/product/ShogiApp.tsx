@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ShogiBoard } from "./ShogiBoard";
 import { Dialog } from "./Dialog";
 import type { GameSnapshot, Operation, SearchView } from "./native";
@@ -31,6 +31,10 @@ export function ShogiApp({ snapshot, session, onNewGame, onOpen, blocked }: { sn
   const [nodes, setNodes] = useState(snapshot.document.settings.settings.analysis_defaults.nodes);
   const [confirmation, setConfirmation] = useState<{ source: GameSnapshot; kind: "resign" | "declare" } | null>(null);
   const boardStatus = useRef<HTMLHeadingElement>(null);
+  const restoreWorkFocus = useRef(false);
+  useLayoutEffect(() => {
+    if (restoreWorkFocus.current) { restoreWorkFocus.current = false; boardStatus.current?.focus(); }
+  }, [snapshot.token.revision]);
   useEffect(() => { setDepth(snapshot.document.settings.settings.analysis_defaults.depth); setNodes(snapshot.document.settings.settings.analysis_defaults.nodes); }, [snapshot.token.document]);
   const analyzing = snapshot.phase === "thinking" && snapshot.execution_purpose === "move_analysis";
   const thinking = snapshot.phase === "thinking" && snapshot.execution_purpose === "engine_turn";
@@ -41,8 +45,9 @@ export function ShogiApp({ snapshot, session, onNewGame, onOpen, blocked }: { sn
   const stopped = snapshot.phase === "cancelled" || snapshot.phase === "incomplete" || snapshot.phase === "failed";
   const filename = snapshot.document.path?.split(/[\\/]/).at(-1) ?? "Untitled shogi game";
   const command = async (operation: Operation) => {
+    if (["return_live", "resume", "retry", "cancel"].includes(operation.kind)) restoreWorkFocus.current = true;
     const next = await session.command(snapshot, operation);
-    if (next && operation.kind === "return_live") document.querySelector<SVGGElement>('.shogi-square[tabindex="0"]')?.focus();
+    if (!next) restoreWorkFocus.current = false;
     return next;
   };
   const capacityMessage = snapshot.capacity.message ?? "";

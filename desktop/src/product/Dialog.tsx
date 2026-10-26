@@ -4,7 +4,7 @@ export function Dialog({ title, children, cancel, className = "" }: { title: str
   // Capture before this commit makes the background inert (and blurs it).
   const invoker = useRef(document.activeElement);
   useLayoutEffect(() => {
-    ref.current?.querySelector<HTMLElement>("[data-cancel], button, select")?.focus();
+    (ref.current?.querySelector<HTMLElement>("[data-cancel]") ?? ref.current?.querySelector<HTMLElement>("button, select"))?.focus();
     return () => {
       const previous = invoker.current;
       queueMicrotask(() => {

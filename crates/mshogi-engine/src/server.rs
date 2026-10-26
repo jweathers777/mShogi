@@ -25,10 +25,15 @@ pub fn serve_once(mut input: impl BufRead, mut output: impl Write) -> io::Result
             "missing newline or oversized internal request",
         ));
     }
-    let context: EngineRequest = serde_json::from_slice(&bytes).map_err(io::Error::other)?;
-    let result = execute(&context);
-    let bytes =
-        serde_json::to_vec(&EngineResponse { context, result }).map_err(io::Error::other)?;
+    let context: crate::wire::WireRequest = serde_json::from_slice(&bytes).map_err(|error| {
+        let EngineResult::Failure { failure } =
+            EngineResult::failure(FailureKind::InvalidRequest, error)
+        else {
+            unreachable!()
+        };
+        io::Error::other(failure.message)
+    })?;
+    let bytes = serde_json::to_vec(&context.execute()).map_err(io::Error::other)?;
     if bytes.len() > MAX_RESPONSE_BYTES {
         return Err(io::Error::new(
             io::ErrorKind::InvalidData,
@@ -39,7 +44,7 @@ pub fn serve_once(mut input: impl BufRead, mut output: impl Write) -> io::Result
     output.write_all(b"\n")?;
     output.flush()
 }
-fn execute(context: &EngineRequest) -> EngineResult {
+pub(crate) fn execute(context: &EngineRequest) -> EngineResult {
     if context.protocol != PROTOCOL_VERSION
         || context.request_id == 0
         || context.process_generation == 0
@@ -104,5 +109,33 @@ fn execute(context: &EngineRequest) -> EngineResult {
             };
         }
         thread::sleep(Duration::from_millis(1));
+    }
+}
+
+pub(crate) fn execute_shared(context: &SharedRequest) -> SharedResult {
+    if context.protocol != SHARED_PROTOCOL_VERSION
+        || context.request_id == 0
+        || context.process_generation == 0
+        || !context.valid_limits()
+    {
+        return SharedResult::failure(
+            FailureKind::InvalidRequest,
+            "invalid shared identity, purpose, selection or limits",
+        );
+    }
+    if context.game.game_kind() == mshogi_core::native::GameKind::Shogi {
+        return SharedResult::failure(
+            FailureKind::UnsupportedMode,
+            "Shogi canonical context is supported; shogi execution capabilities are empty until its native engine consumer is implemented. Chess Full reachability is not a shogi operation.",
+        );
+    }
+    let Some(chess) = context.chess_adapter() else {
+        return SharedResult::failure(
+            FailureKind::InvalidRequest,
+            "purpose target does not belong to chess",
+        );
+    };
+    SharedResult::Chess {
+        result: execute(&chess),
     }
 }

@@ -8,6 +8,47 @@ use std::{
 fn main() {
     let mut text = String::new();
     io::stdin().lock().read_line(&mut text).unwrap();
+    // Explicit v3 verification path, not an execution capability. The shared
+    // supervisor must reject forged echoes and retire old work across games.
+    if serde_json::from_str::<serde_json::Value>(&text).unwrap()["protocol"]
+        == SHARED_PROTOCOL_VERSION
+    {
+        let mut context: SharedRequest = serde_json::from_str(&text).unwrap();
+        if context.request_id == 5 {
+            thread::sleep(Duration::from_secs(30));
+            return;
+        }
+        match context.request_id {
+            20 => context.process_generation += 1,
+            21 => context.request_id += 1,
+            22 => context.session_version += 1,
+            23 => context.limits.nodes += 1,
+            24 => context.purpose = SharedPurpose::EngineTurn {},
+            25 => {
+                if let SharedPurpose::MoveAnalysis { target } = &mut context.purpose {
+                    target.selection_id += 1
+                }
+            }
+            26 => {
+                context.game = mshogi_core::native::CanonicalRecord::shogi(
+                    mshogi_core::shogi::GameRecord::from_game(&mshogi_core::shogi::Game::new()),
+                )
+            }
+            _ => {}
+        }
+        let result = SharedResult::Failure {
+            failure: EngineFailure {
+                kind: FailureKind::UnsupportedMode,
+                message: "Separate supervisor verification fixture; no native search performed"
+                    .into(),
+            },
+        };
+        println!(
+            "{}",
+            serde_json::to_string(&SharedResponse { context, result }).unwrap()
+        );
+        return;
+    }
     let mut context: EngineRequest = serde_json::from_str(&text).unwrap();
     match context.request_id {
         1 => return,

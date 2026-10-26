@@ -192,6 +192,13 @@ impl Game {
 }
 
 impl GameRecord {
+    /// Native encoding identity, independent of transport/envelope versions.
+    pub const fn schema_version(&self) -> u32 {
+        match self.adjudication_mode {
+            AdjudicationMode::M2 => CHESS_RECORD_SCHEMA_VERSION,
+            AdjudicationMode::Full { .. } => CHESS_FULL_RECORD_SCHEMA_VERSION,
+        }
+    }
     /// Exact event prefix, preserving initial state, policy and mode.
     pub fn prefix(&self, count: usize) -> Option<Self> {
         if count > self.events.len() {

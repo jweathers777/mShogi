@@ -16,7 +16,9 @@ mod record;
 mod sfen;
 pub use legal::RepetitionIdentity;
 pub use perft::{DivideEntry, PerftError};
-pub use record::{GameRecord, MAX_RECORD_BYTES, MAX_RECORD_EVENTS, RecordError};
+pub use record::{
+    GameRecord, MAX_RECORD_BYTES, MAX_RECORD_EVENTS, RecordError, SHOGI_RECORD_SCHEMA_VERSION,
+};
 #[cfg(test)]
 mod tests;
 pub use action::{Action, ActionError, ActionParseError, Undo, UndoError};
@@ -28,6 +30,8 @@ pub use game::{
 
 /// Approved standard-shogi rules profile identity.
 pub const PROFILE_ID: &str = "mshogi.shogi.csa36.v1";
+/// Immutable source/software edition already encoded by native schema v1.
+pub const PROFILE_EDITION: &str = "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026";
 /// Independently specified even-game initial SFEN.
 pub const INITIAL_SFEN: &str = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
 

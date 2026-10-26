@@ -1,0 +1,1309 @@
+{
+  "format": "mshogi.shogi.history-fixtures.v1",
+  "rules_profile": "mshogi.shogi.csa36.v1",
+  "established_method": "Independent Codex AI agent hand construction from pinned primary clauses and explicit board geometry/arithmetic, before native adjudication comparison; no reference search-cycle outcome oracle. See docs/m4/history-fixture-derivations.md.",
+  "sources": {
+    "CSA-36": "https://www.computer-shogi.org/wcsc36/rule.pdf",
+    "JSA-R": "https://www.shogi.or.jp/match/taikyoku_rules/taikyoku_rules.pdf",
+    "APP": "docs/m4/shogi-profile.md"
+  },
+  "cases": [
+    {
+      "id": "SH-F029:sente-check-relieved-fourth",
+      "gate": "HIST-INTERVAL",
+      "inventory_ids": [
+        "SH-F028",
+        "SH-F029",
+        "SH-F030"
+      ],
+      "root_sfen": "4k4/9/5R3/9/9/9/9/9/K8 b - 1",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "moves": [
+        "4c5c",
+        "5a4a",
+        "5c4c",
+        "4a5a",
+        "4c5c",
+        "5a4a",
+        "5c4c",
+        "4a5a",
+        "4c5c",
+        "5a4a",
+        "5c4c",
+        "4a5a"
+      ],
+      "expected": {
+        "root_in_check": false,
+        "checks_after_actions": [
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false
+        ],
+        "final_occurrence_indices": [
+          0,
+          4,
+          8,
+          12
+        ],
+        "conclusion": {
+          "kind": "continuous_check",
+          "winner": "gote",
+          "loser": "sente"
+        },
+        "completed_actions": 12
+      },
+      "derivation": "Sente rook alternates files5/4 on rankc; Gote king alternates5a/4a. Each rook move checks its king file; each king evasion removes check. The root is check-relieved. Six Sente checks occur between first and fourth root; Sente loses when Gote legally evades on action12."
+    },
+    {
+      "id": "SH-F029:sente-checked-fourth",
+      "gate": "HIST-INTERVAL",
+      "inventory_ids": [
+        "SH-F028",
+        "SH-F029",
+        "SH-F030"
+      ],
+      "root_sfen": "4k4/9/4R4/9/9/9/9/9/K8 w - 1",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "moves": [
+        "5a4a",
+        "5c4c",
+        "4a5a",
+        "4c5c",
+        "5a4a",
+        "5c4c",
+        "4a5a",
+        "4c5c",
+        "5a4a",
+        "5c4c",
+        "4a5a",
+        "4c5c"
+      ],
+      "expected": {
+        "root_in_check": true,
+        "checks_after_actions": [
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true
+        ],
+        "final_occurrence_indices": [
+          0,
+          4,
+          8,
+          12
+        ],
+        "conclusion": {
+          "kind": "continuous_check",
+          "winner": "gote",
+          "loser": "sente"
+        },
+        "completed_actions": 12
+      },
+      "derivation": "The same geometric loop rotated one event starts with Gote checked. The fourth root follows Sente checking move12. Sente loses; side-to-move orientation does not change checker identity."
+    },
+    {
+      "id": "SH-F029:gote-check-relieved-fourth",
+      "gate": "HIST-INTERVAL",
+      "inventory_ids": [
+        "SH-F028",
+        "SH-F029",
+        "SH-F030"
+      ],
+      "root_sfen": "8k/9/9/9/9/9/3r5/9/4K4 w - 1",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "moves": [
+        "6g5g",
+        "5i6i",
+        "5g6g",
+        "6i5i",
+        "6g5g",
+        "5i6i",
+        "5g6g",
+        "6i5i",
+        "6g5g",
+        "5i6i",
+        "5g6g",
+        "6i5i"
+      ],
+      "expected": {
+        "root_in_check": false,
+        "checks_after_actions": [
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false
+        ],
+        "final_occurrence_indices": [
+          0,
+          4,
+          8,
+          12
+        ],
+        "conclusion": {
+          "kind": "continuous_check",
+          "winner": "sente",
+          "loser": "gote"
+        },
+        "completed_actions": 12
+      },
+      "derivation": "Rotate every square180 degrees and exchange ownership in SH-F029:sente-check-relieved-fourth. This preserves all movements/blocks, reverses forward direction and makes Gote the continuous checker."
+    },
+    {
+      "id": "SH-F029:gote-checked-fourth",
+      "gate": "HIST-INTERVAL",
+      "inventory_ids": [
+        "SH-F028",
+        "SH-F029",
+        "SH-F030"
+      ],
+      "root_sfen": "8k/9/9/9/9/9/4r4/9/4K4 b - 1",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "moves": [
+        "5i6i",
+        "5g6g",
+        "6i5i",
+        "6g5g",
+        "5i6i",
+        "5g6g",
+        "6i5i",
+        "6g5g",
+        "5i6i",
+        "5g6g",
+        "6i5i",
+        "6g5g"
+      ],
+      "expected": {
+        "root_in_check": true,
+        "checks_after_actions": [
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true
+        ],
+        "final_occurrence_indices": [
+          0,
+          4,
+          8,
+          12
+        ],
+        "conclusion": {
+          "kind": "continuous_check",
+          "winner": "sente",
+          "loser": "gote"
+        },
+        "completed_actions": 12
+      },
+      "derivation": "Rotate every square180 degrees and exchange ownership in SH-F029:sente-checked-fourth. This preserves all movements/blocks, reverses forward direction and makes Gote the continuous checker."
+    },
+    {
+      "id": "SH-F028:quiet-fourfold",
+      "gate": "HIST-INTERVAL",
+      "inventory_ids": [
+        "SH-F028",
+        "SH-F029",
+        "SH-F030"
+      ],
+      "root_sfen": "4k4/9/5R3/9/9/9/9/9/K8 b - 1",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "moves": [
+        "4c3c",
+        "5a4a",
+        "3c4c",
+        "4a5a",
+        "4c3c",
+        "5a4a",
+        "3c4c",
+        "4a5a",
+        "4c3c",
+        "5a4a",
+        "3c4c",
+        "4a5a"
+      ],
+      "expected": {
+        "root_in_check": false,
+        "checks_after_actions": [
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          true,
+          false
+        ],
+        "final_occurrence_indices": [
+          0,
+          4,
+          8,
+          12
+        ],
+        "conclusion": {
+          "kind": "repetition",
+          "winner": null,
+          "loser": null
+        },
+        "completed_actions": 12
+      },
+      "derivation": "Each cycle first moves rook4c to3c without checking king5a. Gote shifts5a4a; rook3c4c checks; king4a5a evades. Repetition at12 has three nonchecking Sente actions, so is an ordinary draw."
+    },
+    {
+      "id": "SH-F030:interrupted-before-continuous-tail",
+      "gate": "HIST-INTERVAL",
+      "inventory_ids": [
+        "SH-F028",
+        "SH-F029",
+        "SH-F030"
+      ],
+      "root_sfen": "4k4/9/5R3/9/9/9/9/9/K8 b - 1",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "moves": [
+        "4c3c",
+        "5a4a",
+        "3c4c",
+        "4a5a",
+        "4c5c",
+        "5a4a",
+        "5c4c",
+        "4a5a",
+        "4c5c",
+        "5a4a",
+        "5c4c",
+        "4a5a"
+      ],
+      "expected": {
+        "root_in_check": false,
+        "checks_after_actions": [
+          false,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false
+        ],
+        "final_occurrence_indices": [
+          0,
+          4,
+          8,
+          12
+        ],
+        "conclusion": {
+          "kind": "repetition",
+          "winner": null,
+          "loser": null
+        },
+        "completed_actions": 12
+      },
+      "derivation": "The same root occurs0,4,8,12. Action1 does not check, even though the last two cycles do. All six Sente actions across the entire first-to-fourth interval must check, so this is ordinary repetition."
+    },
+    {
+      "id": "SH-F030:noncheck-outside-selected-interval",
+      "gate": "HIST-INTERVAL",
+      "inventory_ids": [
+        "SH-F028",
+        "SH-F029",
+        "SH-F030"
+      ],
+      "root_sfen": "3k5/9/9/5R3/9/9/9/9/K8 b - 1",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "moves": [
+        "4d4c",
+        "6a5a",
+        "4c5c",
+        "5a4a",
+        "5c4c",
+        "4a5a",
+        "4c5c",
+        "5a4a",
+        "5c4c",
+        "4a5a",
+        "4c5c",
+        "5a4a",
+        "5c4c",
+        "4a5a"
+      ],
+      "expected": {
+        "root_in_check": false,
+        "checks_after_actions": [
+          false,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false
+        ],
+        "final_occurrence_indices": [
+          2,
+          6,
+          10,
+          14
+        ],
+        "conclusion": {
+          "kind": "continuous_check",
+          "winner": "gote",
+          "loser": "sente"
+        },
+        "completed_actions": 14
+      },
+      "derivation": "Actions1/2 reach the uncheck-relieved target root rook4c king5a. The noncheck at1 precedes the first occurrence at2 and does not interrupt Sente checks on3,5,7,9,11,13. Sente loses when action14 produces fourth target root."
+    },
+    {
+      "id": "SH-F030:overlapping-fourfold-before-root-cycle",
+      "gate": "HIST-INTERVAL",
+      "inventory_ids": [
+        "SH-F028",
+        "SH-F029",
+        "SH-F030"
+      ],
+      "root_sfen": "4k4/9/5R3/9/9/9/9/9/K8 b - 1",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "moves": [
+        "4c5c",
+        "5a4a",
+        "5c4c",
+        "4a3a",
+        "4c3c",
+        "3a4a",
+        "3c4c",
+        "4a5a",
+        "4c5c",
+        "5a4a",
+        "5c4c",
+        "4a3a",
+        "4c3c",
+        "3a4a",
+        "3c4c"
+      ],
+      "expected": {
+        "root_in_check": false,
+        "checks_after_actions": [
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true
+        ],
+        "final_occurrence_indices": [
+          3,
+          7,
+          11,
+          15
+        ],
+        "conclusion": {
+          "kind": "continuous_check",
+          "winner": "gote",
+          "loser": "sente"
+        },
+        "completed_actions": 15,
+        "overlapping_occurrence_sets": [
+          [
+            0,
+            8
+          ],
+          [
+            1,
+            9
+          ],
+          [
+            2,
+            10
+          ],
+          [
+            3,
+            7,
+            11,
+            15
+          ],
+          [
+            4,
+            12
+          ],
+          [
+            5,
+            13
+          ],
+          [
+            6,
+            14
+          ]
+        ]
+      },
+      "derivation": "Rook follows king file5,4,3,4; king walks5a4a3a4a5a. The start repeats only at0,8 before conclusion, but checked king4a/rook4c first occurs3 then7,11,15. Other shifted identities have overlapping partial windows. Earliest fourth is15, not a fourth return to supplied root. Every Sente move in(3,15] checks."
+    },
+    {
+      "id": "SH-F028:fresh-identical-board-no-invented-history",
+      "gate": "HIST-INTERVAL",
+      "inventory_ids": [
+        "SH-F028",
+        "SH-F029",
+        "SH-F030"
+      ],
+      "root_sfen": "4k4/9/5R3/9/9/9/9/9/K8 b - 13",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "moves": [],
+      "expected": {
+        "root_in_check": false,
+        "checks_after_actions": [],
+        "final_occurrence_indices": [
+          0
+        ],
+        "conclusion": null,
+        "completed_actions": 12
+      },
+      "derivation": "This supplied imported root has the same board, hands, turn and counter as the concluded12-action history SH-F029:sente-check-relieved-fourth. It is a new known segment with one occurrence and unknown prehistory, so no repetition conclusion is established."
+    },
+    {
+      "id": "SH-F041:n320-next-action-reaches320",
+      "gate": "IMPORT-LENGTH",
+      "inventory_ids": [
+        "SH-F041"
+      ],
+      "root_sfen": "4k4/9/5R3/9/9/9/9/9/K8 b - 320",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "moves": [
+        "4c3c"
+      ],
+      "expected": {
+        "root_in_check": false,
+        "checks_after_actions": [
+          false
+        ],
+        "final_occurrence_indices": [
+          1
+        ],
+        "conclusion": {
+          "kind": "length",
+          "winner": null,
+          "loser": null
+        },
+        "completed_actions": 320
+      },
+      "derivation": "Supplied n320 declares319 completed actions. One legal nonchecking rook slide makes320; no no-action or known repetition event exists, so length draw."
+    },
+    {
+      "id": "SH-F041:n320-checking-nonmate-still-length",
+      "gate": "IMPORT-LENGTH",
+      "inventory_ids": [
+        "SH-F041"
+      ],
+      "root_sfen": "4k4/9/5R3/9/9/9/9/9/K8 b - 320",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "moves": [
+        "4c5c"
+      ],
+      "expected": {
+        "root_in_check": false,
+        "checks_after_actions": [
+          true
+        ],
+        "final_occurrence_indices": [
+          1
+        ],
+        "conclusion": {
+          "kind": "length",
+          "winner": null,
+          "loser": null
+        },
+        "completed_actions": 320
+      },
+      "derivation": "The same counter boundary with checking rook5c: Gote has king evasions, so no no-action loss. CSA cap has no JSA checking extension; draw at320."
+    },
+    {
+      "id": "SH-F041:root-n321",
+      "gate": "IMPORT-LENGTH",
+      "inventory_ids": [
+        "SH-F041"
+      ],
+      "root_sfen": "4k4/9/5R3/9/9/9/9/9/K8 b - 321",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "moves": [],
+      "expected": {
+        "root_in_check": false,
+        "checks_after_actions": [],
+        "final_occurrence_indices": [
+          0
+        ],
+        "conclusion": {
+          "kind": "length",
+          "winner": null,
+          "loser": null
+        },
+        "completed_actions": 320
+      },
+      "derivation": "Supplied n321 declares320 completed actions, already at or beyond320. No-action absent. Root is immediately a length draw and further actions are rejected."
+    },
+    {
+      "id": "SH-F041:root-n322",
+      "gate": "IMPORT-LENGTH",
+      "inventory_ids": [
+        "SH-F041"
+      ],
+      "root_sfen": "4k4/9/5R3/9/9/9/9/9/K8 b - 322",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "moves": [],
+      "expected": {
+        "root_in_check": false,
+        "checks_after_actions": [],
+        "final_occurrence_indices": [
+          0
+        ],
+        "conclusion": {
+          "kind": "length",
+          "winner": null,
+          "loser": null
+        },
+        "completed_actions": 321
+      },
+      "derivation": "Supplied n322 declares321 completed actions, already at or beyond320. No-action absent. Root is immediately a length draw and further actions are rejected."
+    },
+    {
+      "id": "SH-F041:root-n999",
+      "gate": "IMPORT-LENGTH",
+      "inventory_ids": [
+        "SH-F041"
+      ],
+      "root_sfen": "4k4/9/5R3/9/9/9/9/9/K8 b - 999",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "moves": [],
+      "expected": {
+        "root_in_check": false,
+        "checks_after_actions": [],
+        "final_occurrence_indices": [
+          0
+        ],
+        "conclusion": {
+          "kind": "length",
+          "winner": null,
+          "loser": null
+        },
+        "completed_actions": 998
+      },
+      "derivation": "Supplied n999 declares998 completed actions, already at or beyond320. No-action absent. Root is immediately a length draw and further actions are rejected."
+    },
+    {
+      "id": "SH-F041:defaulted-one-is-zero-completed",
+      "gate": "IMPORT-LENGTH",
+      "inventory_ids": [
+        "SH-F041"
+      ],
+      "root_sfen": "4k4/9/5R3/9/9/9/9/9/K8 b - 1",
+      "root_category": "reduced_material",
+      "counter_provenance": "defaulted",
+      "known_history_origin": "imported_unknown_prehistory",
+      "moves": [],
+      "expected": {
+        "root_in_check": false,
+        "checks_after_actions": [],
+        "final_occurrence_indices": [
+          0
+        ],
+        "conclusion": null,
+        "completed_actions": 0
+      },
+      "derivation": "Position-entry adapter explicitly defaulted n1; this records0 completed actions with unknown prehistory, distinct from supplied n1. Strict SFEN still contains four fields."
+    },
+    {
+      "id": "SH-F041:supplied-one-is-zero-completed",
+      "gate": "IMPORT-LENGTH",
+      "inventory_ids": [
+        "SH-F041"
+      ],
+      "root_sfen": "4k4/9/5R3/9/9/9/9/9/K8 b - 1",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "moves": [],
+      "expected": {
+        "root_in_check": false,
+        "checks_after_actions": [],
+        "final_occurrence_indices": [
+          0
+        ],
+        "conclusion": null,
+        "completed_actions": 0
+      },
+      "derivation": "Explicit supplied n1 records0 completed actions and unknown prehistory. Its counter value equals defaulted-one but provenance must remain distinct."
+    },
+    {
+      "id": "SH-F041:repetition-precedes-length",
+      "gate": "IMPORT-LENGTH",
+      "inventory_ids": [
+        "SH-F041"
+      ],
+      "root_sfen": "4k4/9/5R3/9/9/9/9/9/K8 b - 309",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "moves": [
+        "4c3c",
+        "5a4a",
+        "3c4c",
+        "4a5a",
+        "4c3c",
+        "5a4a",
+        "3c4c",
+        "4a5a",
+        "4c3c",
+        "5a4a",
+        "3c4c",
+        "4a5a"
+      ],
+      "expected": {
+        "root_in_check": false,
+        "checks_after_actions": [
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          true,
+          false
+        ],
+        "final_occurrence_indices": [
+          0,
+          4,
+          8,
+          12
+        ],
+        "conclusion": {
+          "kind": "repetition",
+          "winner": null,
+          "loser": null
+        },
+        "completed_actions": 320
+      },
+      "derivation": "Root n309 declares308 completed actions. Quiet repetition at12 makes320. CSA27(3) cap applies only absent repetition, so record repetition draw, preserving its reason."
+    },
+    {
+      "id": "SH-F041:continuous-check-precedes-length",
+      "gate": "IMPORT-LENGTH",
+      "inventory_ids": [
+        "SH-F041"
+      ],
+      "root_sfen": "4k4/9/5R3/9/9/9/9/9/K8 b - 309",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "moves": [
+        "4c5c",
+        "5a4a",
+        "5c4c",
+        "4a5a",
+        "4c5c",
+        "5a4a",
+        "5c4c",
+        "4a5a",
+        "4c5c",
+        "5a4a",
+        "5c4c",
+        "4a5a"
+      ],
+      "expected": {
+        "root_in_check": false,
+        "checks_after_actions": [
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false
+        ],
+        "final_occurrence_indices": [
+          0,
+          4,
+          8,
+          12
+        ],
+        "conclusion": {
+          "kind": "continuous_check",
+          "winner": "gote",
+          "loser": "sente"
+        },
+        "completed_actions": 320
+      },
+      "derivation": "308 declared prior actions plus12 known actions reaches320 exactly as Sente completes all-check interval. Continuous-check loss precedes length draw."
+    },
+    {
+      "id": "SH-F041:no-check-no-action-precedes-root-length",
+      "gate": "IMPORT-LENGTH",
+      "inventory_ids": [
+        "SH-F041"
+      ],
+      "root_sfen": "k6r1/9/9/9/9/9/9/r8/8K b - 321",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "moves": [],
+      "expected": {
+        "root_in_check": false,
+        "checks_after_actions": [],
+        "final_occurrence_indices": [
+          0
+        ],
+        "conclusion": {
+          "kind": "no_legal_action",
+          "winner": "gote",
+          "loser": "sente"
+        },
+        "completed_actions": 320,
+        "legal_actions_count": 0
+      },
+      "derivation": "Sente K1i is not checked. Only possible destinations1h/2h/2i are respectively attacked by rook9h, both rooks, and rook2a. No other Sente piece/hand exists. No-action loss precedes root length at320."
+    },
+    {
+      "id": "SH-F041:checked-no-action-precedes-root-length",
+      "gate": "IMPORT-LENGTH",
+      "inventory_ids": [
+        "SH-F041"
+      ],
+      "root_sfen": "k6rr/9/9/9/9/9/9/9/8K b - 322",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "moves": [],
+      "expected": {
+        "root_in_check": true,
+        "checks_after_actions": [],
+        "final_occurrence_indices": [
+          0
+        ],
+        "conclusion": {
+          "kind": "no_legal_action",
+          "winner": "gote",
+          "loser": "sente"
+        },
+        "completed_actions": 321,
+        "legal_actions_count": 0
+      },
+      "derivation": "Rook1a checks K1i and attacks1h; rook2a attacks2h/2i. No move/hand exists. Nonmoving king9a safe. Checked no-action loss precedes length beyond320."
+    },
+    {
+      "id": "SH-F041:mate-on-action320-precedes-length",
+      "gate": "IMPORT-LENGTH",
+      "inventory_ids": [
+        "SH-F041"
+      ],
+      "root_sfen": "3lkl3/3p1p3/4PG3/9/9/9/9/9/K8 b - 320",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "moves": [
+        "5c5b"
+      ],
+      "expected": {
+        "root_in_check": false,
+        "checks_after_actions": [
+          true
+        ],
+        "final_occurrence_indices": [
+          1
+        ],
+        "conclusion": {
+          "kind": "no_legal_action",
+          "winner": "sente",
+          "loser": "gote"
+        },
+        "completed_actions": 320,
+        "legal_actions_count": 0
+      },
+      "derivation": "Established SH-F017 pawn-advance mate: pawn5b checks5a, gold4c guards5b, king exits4a/6a/4b/6b occupied by own pieces. No available piece move removes pawn check. Ply320 therefore produces Gote no-action loss before length draw."
+    }
+  ],
+  "declaration_cases": [
+    {
+      "id": "SH-F034:sente-exact28",
+      "gate": "DECL-BOUNDARY",
+      "inventory_ids": [
+        "SH-F034",
+        "SH-F035",
+        "SH-F036",
+        "SH-F037"
+      ],
+      "root_sfen": "K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B5P 1",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "actor": "sente",
+      "expected": {
+        "own_turn": true,
+        "king_in_enemy_camp": true,
+        "other_owned_camp_pieces": 10,
+        "points": 28,
+        "threshold": 28,
+        "in_check": false,
+        "time_condition_satisfied": true,
+        "eligible": true,
+        "probe_conclusion": null,
+        "formal_conclusion": {
+          "kind": "entering_king",
+          "winner": "sente",
+          "loser": "gote"
+        },
+        "board_actions_added": 0
+      },
+      "derivation": "Camp has one rook and one bishop worth10 plus eight promoted pawns worth8: ten other pieces and18points. Hand bishop plus five pawns is10, total28. King is excluded. Promoted pawns remain one point each. Opposing king1i is unattacked."
+    },
+    {
+      "id": "SH-F034:sente-27-fails28",
+      "gate": "DECL-BOUNDARY",
+      "inventory_ids": [
+        "SH-F034",
+        "SH-F035",
+        "SH-F036",
+        "SH-F037"
+      ],
+      "root_sfen": "K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B4P 1",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "actor": "sente",
+      "expected": {
+        "own_turn": true,
+        "king_in_enemy_camp": true,
+        "other_owned_camp_pieces": 10,
+        "points": 27,
+        "threshold": 28,
+        "in_check": false,
+        "time_condition_satisfied": true,
+        "eligible": false,
+        "probe_conclusion": null,
+        "formal_conclusion": {
+          "kind": "false_declaration",
+          "winner": "gote",
+          "loser": "sente"
+        },
+        "board_actions_added": 0
+      },
+      "derivation": "Camp has one rook and one bishop worth10 plus eight promoted pawns worth8: ten other pieces and18points. Hand bishop plus five pawns is10, total28. King is excluded. Promoted pawns remain one point each. Opposing king1i is unattacked. Remove one hand pawn:27 is below Sente28."
+    },
+    {
+      "id": "SH-F034:gote-exact27",
+      "gate": "DECL-BOUNDARY",
+      "inventory_ids": [
+        "SH-F034",
+        "SH-F035",
+        "SH-F036",
+        "SH-F037"
+      ],
+      "root_sfen": "K8/9/9/9/9/9/+p+p+p+p+p+p+p+p1/6br1/8k w b4p 1",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "actor": "gote",
+      "expected": {
+        "own_turn": true,
+        "king_in_enemy_camp": true,
+        "other_owned_camp_pieces": 10,
+        "points": 27,
+        "threshold": 27,
+        "in_check": false,
+        "time_condition_satisfied": true,
+        "eligible": true,
+        "probe_conclusion": null,
+        "formal_conclusion": {
+          "kind": "entering_king",
+          "winner": "gote",
+          "loser": "sente"
+        },
+        "board_actions_added": 0
+      },
+      "derivation": "Rotate/exchange owners of Sente camp. Camp18 plus bishop5 and four hand pawns4 is27, meeting Gote27."
+    },
+    {
+      "id": "SH-F034:gote-26-fails27",
+      "gate": "DECL-BOUNDARY",
+      "inventory_ids": [
+        "SH-F034",
+        "SH-F035",
+        "SH-F036",
+        "SH-F037"
+      ],
+      "root_sfen": "K8/9/9/9/9/9/+p+p+p+p+p+p+p+p1/6br1/8k w b3p 1",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "actor": "gote",
+      "expected": {
+        "own_turn": true,
+        "king_in_enemy_camp": true,
+        "other_owned_camp_pieces": 10,
+        "points": 26,
+        "threshold": 27,
+        "in_check": false,
+        "time_condition_satisfied": true,
+        "eligible": false,
+        "probe_conclusion": null,
+        "formal_conclusion": {
+          "kind": "false_declaration",
+          "winner": "sente",
+          "loser": "gote"
+        },
+        "board_actions_added": 0
+      },
+      "derivation": "Same Gote ten-piece camp18; bishop5 plus three hand pawns3 gives26, below27."
+    },
+    {
+      "id": "SH-F035:promoted-majors-still5",
+      "gate": "DECL-BOUNDARY",
+      "inventory_ids": [
+        "SH-F034",
+        "SH-F035",
+        "SH-F036",
+        "SH-F037"
+      ],
+      "root_sfen": "K8/1+R+B6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B5P 1",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "actor": "sente",
+      "expected": {
+        "own_turn": true,
+        "king_in_enemy_camp": true,
+        "other_owned_camp_pieces": 10,
+        "points": 28,
+        "threshold": 28,
+        "in_check": false,
+        "time_condition_satisfied": true,
+        "eligible": true,
+        "probe_conclusion": null,
+        "formal_conclusion": {
+          "kind": "entering_king",
+          "winner": "sente",
+          "loser": "gote"
+        },
+        "board_actions_added": 0
+      },
+      "derivation": "Camp has one rook and one bishop worth10 plus eight promoted pawns worth8: ten other pieces and18points. Hand bishop plus five pawns is10, total28. King is excluded. Promoted pawns remain one point each. Opposing king1i is unattacked. Promoting R and B changes neither18 camp points nor count."
+    },
+    {
+      "id": "SH-F036:king-outside-camp-only",
+      "gate": "DECL-BOUNDARY",
+      "inventory_ids": [
+        "SH-F034",
+        "SH-F035",
+        "SH-F036",
+        "SH-F037"
+      ],
+      "root_sfen": "9/1RB6/1+P+P+P+P+P+P+P+P/K8/9/9/9/9/8k b B5P 1",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "actor": "sente",
+      "expected": {
+        "own_turn": true,
+        "king_in_enemy_camp": false,
+        "other_owned_camp_pieces": 10,
+        "points": 28,
+        "threshold": 28,
+        "in_check": false,
+        "time_condition_satisfied": true,
+        "eligible": false,
+        "probe_conclusion": null,
+        "formal_conclusion": {
+          "kind": "false_declaration",
+          "winner": "gote",
+          "loser": "sente"
+        },
+        "board_actions_added": 0
+      },
+      "derivation": "Camp has one rook and one bishop worth10 plus eight promoted pawns worth8: ten other pieces and18points. Hand bishop plus five pawns is10, total28. King is excluded. Promoted pawns remain one point each. Opposing king1i is unattacked. Move only K9a to9d, outside Sente enemy camp; all other prerequisites remain true."
+    },
+    {
+      "id": "SH-F036:nine-camp-pieces-only",
+      "gate": "DECL-BOUNDARY",
+      "inventory_ids": [
+        "SH-F034",
+        "SH-F035",
+        "SH-F036",
+        "SH-F037"
+      ],
+      "root_sfen": "K8/1RB6/1+P+P+P+P+P+P+P1/8+P/9/9/9/9/8k b B6P 1",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "actor": "sente",
+      "expected": {
+        "own_turn": true,
+        "king_in_enemy_camp": true,
+        "other_owned_camp_pieces": 9,
+        "points": 28,
+        "threshold": 28,
+        "in_check": false,
+        "time_condition_satisfied": true,
+        "eligible": false,
+        "probe_conclusion": null,
+        "formal_conclusion": {
+          "kind": "false_declaration",
+          "winner": "gote",
+          "loser": "sente"
+        },
+        "board_actions_added": 0
+      },
+      "derivation": "Move +P1c outside camp to1d, add one hand pawn so camp17+hand11 remains28. Camp count9 fails independently of points; the outside promoted pawn scores0."
+    },
+    {
+      "id": "SH-F036:checked-only",
+      "gate": "DECL-BOUNDARY",
+      "inventory_ids": [
+        "SH-F034",
+        "SH-F035",
+        "SH-F036",
+        "SH-F037"
+      ],
+      "root_sfen": "K8/1RB6/r+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B5P 1",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "actor": "sente",
+      "expected": {
+        "own_turn": true,
+        "king_in_enemy_camp": true,
+        "other_owned_camp_pieces": 10,
+        "points": 28,
+        "threshold": 28,
+        "in_check": true,
+        "time_condition_satisfied": true,
+        "eligible": false,
+        "probe_conclusion": null,
+        "formal_conclusion": {
+          "kind": "false_declaration",
+          "winner": "gote",
+          "loser": "sente"
+        },
+        "board_actions_added": 0
+      },
+      "derivation": "Camp has one rook and one bishop worth10 plus eight promoted pawns worth8: ten other pieces and18points. Hand bishop plus five pawns is10, total28. King is excluded. Promoted pawns remain one point each. Opposing king1i is unattacked. Add Gote rook9c: open9b gives check toK9a. It does not attack its own king1i; Sente can evade to8a, so root is live. Other declaration conditions remain true."
+    },
+    {
+      "id": "SH-F036:wrong-turn-formal-actor",
+      "gate": "DECL-BOUNDARY",
+      "inventory_ids": [
+        "SH-F034",
+        "SH-F035",
+        "SH-F036",
+        "SH-F037"
+      ],
+      "root_sfen": "K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k w B5P 1",
+      "root_category": "reduced_material",
+      "counter_provenance": "supplied",
+      "known_history_origin": "imported_unknown_prehistory",
+      "actor": "sente",
+      "expected": {
+        "own_turn": false,
+        "king_in_enemy_camp": true,
+        "other_owned_camp_pieces": 10,
+        "points": 28,
+        "threshold": 28,
+        "in_check": false,
+        "time_condition_satisfied": true,
+        "eligible": false,
+        "probe_conclusion": null,
+        "formal_conclusion": {
+          "kind": "false_declaration",
+          "winner": "gote",
+          "loser": "sente"
+        },
+        "board_actions_added": 0
+      },
+      "derivation": "Camp has one rook and one bishop worth10 plus eight promoted pawns worth8: ten other pieces and18points. Hand bishop plus five pawns is10, total28. King is excluded. Promoted pawns remain one point each. Opposing king1i is unattacked. Gote is to move. Explicit Sente formal declaration fails own-turn prerequisite and loses; a separate conflicting actor embedded in a command is malformed wire data rejected before admission."
+    }
+  ],
+  "command_cases": [
+    {
+      "id": "SH-F037:probe-is-harmless",
+      "declaration_fixture": "SH-F034:sente-27-fails28",
+      "command": "eligibility_query",
+      "expected": {
+        "admitted": true,
+        "conclusion": null,
+        "board_actions_added": 0
+      },
+      "actor": "sente"
+    },
+    {
+      "id": "SH-F037:authenticated-wrong-turn-formal-loss",
+      "declaration_fixture": "SH-F036:wrong-turn-formal-actor",
+      "command": "formal_declaration",
+      "expected": {
+        "admitted": true,
+        "conclusion": {
+          "kind": "false_declaration",
+          "winner": "gote",
+          "loser": "sente"
+        },
+        "board_actions_added": 0
+      },
+      "actor": "sente"
+    },
+    {
+      "id": "SH-F037:conflicting-embedded-command-actor-rejected",
+      "declaration_fixture": "SH-F034:sente-exact28",
+      "expected": {
+        "admitted": false,
+        "conclusion": null,
+        "board_actions_added": 0,
+        "reason": "unsupported_embedded_command_actor"
+      },
+      "actor": "gote",
+      "malformed_command": {
+        "kind": "formal_declaration",
+        "actor": "sente"
+      }
+    },
+    {
+      "id": "SH-F037:stale-formal-rejected",
+      "declaration_fixture": "SH-F034:sente-exact28",
+      "command": "formal_declaration",
+      "stale": true,
+      "expected": {
+        "admitted": false,
+        "conclusion": null,
+        "board_actions_added": 0
+      },
+      "actor": "sente"
+    },
+    {
+      "id": "SH-F036:time-untimed-adaptation",
+      "declaration_fixture": "SH-F034:sente-exact28",
+      "requested_mode": "timed",
+      "expected": {
+        "admitted": false,
+        "reason": "unsupported_timing_policy",
+        "conclusion": null
+      }
+    },
+    {
+      "id": "SH-F039:nonmoving-side-may-resign",
+      "root_sfen": "4k4/9/5R3/9/9/9/9/9/K8 b - 1",
+      "command": "resign",
+      "expected": {
+        "admitted": true,
+        "conclusion": {
+          "kind": "resignation",
+          "winner": "sente",
+          "loser": "gote"
+        },
+        "board_actions_added": 0
+      },
+      "actor": "gote"
+    },
+    {
+      "id": "SH-F039:moving-side-may-resign",
+      "root_sfen": "4k4/9/5R3/9/9/9/9/9/K8 b - 1",
+      "command": "resign",
+      "expected": {
+        "admitted": true,
+        "conclusion": {
+          "kind": "resignation",
+          "winner": "gote",
+          "loser": "sente"
+        },
+        "board_actions_added": 0
+      },
+      "actor": "sente"
+    }
+  ],
+  "mutual_continuous_check": {
+    "status": "research_unresolved",
+    "note": "No legal mutual continuous-check cycle established, and no complete impossibility proof established. See derivation note; never choose an arbitrary winner or derive one from a search-cycle helper."
+  }
+}

@@ -89,7 +89,7 @@ function EngineObservations({ snapshot }: { snapshot: Snapshot }) {
     </>
   );
 }
-export function App() {
+export function App({ onChooseGame }: { onChooseGame?: (human: Color) => void } = {}) {
   const session = useNativeSession();
   const { snapshot, error, connected, command } = session;
   const busy =
@@ -199,14 +199,14 @@ export function App() {
           </span>
           <div>
             <h1>mShogi</h1>
-            <p>CHESS · DESKTOP PREVIEW</p>
+            <p>CHESS</p>
           </div>
         </div>
         <div className="session-badges">
           <span>
             <i /> Untimed
           </span>
-          <span>M2 rules profile</span>
+          <span>Local engine</span>
         </div>
       </header>
       <div className="workspace">
@@ -326,7 +326,7 @@ export function App() {
                 disabled={!connected || busy || guard.pending !== null}
                 onClick={() => {
                   setClaimIndex(0);
-                  guard.requestNewGame(newHuman);
+                  if (onChooseGame) onChooseGame(newHuman); else guard.requestNewGame(newHuman);
                 }}
               >
                 New game

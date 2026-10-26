@@ -129,3 +129,82 @@ fn actual_engine_declaration_is_a_terminal_command_and_analysis_cannot_apply_it(
     assert!(c.shared_snapshot().status.concluded);
     c.begin_shutdown();
 }
+
+#[test]
+fn product_new_gote_real_engine_play_analysis_archive_and_resume_use_native_paths() {
+    let mut c = DesktopController::new(env!("CARGO_BIN_EXE_mshogi").into()).unwrap();
+    let (_, receipt) = c
+        .shared_new_game(
+            c.shared_open_token(),
+            GameKind::Shogi,
+            NativeSide::Shogi(s::Side::Gote),
+        )
+        .unwrap();
+    wait(&mut c, |_| receipt.completion().is_some());
+    receipt.completion().unwrap().unwrap();
+    let first = wait(&mut c, |view| view.event_index == 1);
+    assert_eq!(first.human.id, NativeSide::Shogi(s::Side::Gote));
+    assert_eq!(first.turn.id, NativeSide::Shogi(s::Side::Gote));
+    assert_eq!(first.events[0].label, "Sente: 1g1f");
+    assert_eq!(first.search_observations[0].purpose, "engine_turn");
+    assert_eq!(first.search_observations[0].event_index, 0);
+    match first.document.settings {
+        NativeDesktopSettings::Shogi { settings } => {
+            assert_eq!(settings.orientation, s::Side::Gote);
+        }
+        _ => panic!("native shogi settings"),
+    }
+    command(
+        &mut c,
+        SessionOperation::Play {
+            action: "7c7d".parse().unwrap(),
+        },
+    );
+    wait(&mut c, |view| view.event_index == 3);
+    let observed = analyze(&mut c);
+    let response = observed.analysis.as_ref().unwrap().response.clone();
+    assert_eq!(observed.event_index, 3);
+    assert_eq!(response.context.game.event_count(), 3);
+    assert!(observed.search_observations.last().unwrap().selected);
+    let path = std::env::temp_dir().join(format!(
+        "mshogi74-product-process-{}.mshogi",
+        std::process::id()
+    ));
+    let save_id = c.queue_shared_save(path.clone()).unwrap();
+    let saved = wait(&mut c, |view| {
+        view.io.id == save_id && matches!(view.io.phase, IoPhase::Complete | IoPhase::Failed)
+    });
+    assert_eq!(saved.io.phase, IoPhase::Complete, "{:?}", saved.io);
+    assert!(!saved.document.dirty);
+    let open_id = c.queue_shared_open(path.clone(), saved.open_token).unwrap();
+    let opened = wait(&mut c, |view| {
+        view.io.id == open_id && matches!(view.io.phase, IoPhase::Complete | IoPhase::Failed)
+    });
+    assert_eq!(opened.io.phase, IoPhase::Complete, "{:?}", opened.io);
+    assert_eq!(opened.context, saved.context);
+    assert!(opened.paused);
+    assert!(opened.execution_purpose.is_none());
+    assert!(opened.analysis.is_none());
+    assert!(opened.token.document > saved.token.document);
+    assert!(opened.token.version > response.context.session_version);
+    assert!(opened.observations.iter().all(|o| o.historical));
+    assert!(
+        opened
+            .search_observations
+            .iter()
+            .all(|o| o.historical && !o.selected)
+    );
+    assert!(!c.accept_shared(response));
+    let inspected = command(&mut c, SessionOperation::Inspect { event_index: 1 });
+    assert!(inspected.historical);
+    assert_eq!(inspected.context.event_count(), 1);
+    assert_eq!(inspected.context.known_board_actions(), 1);
+    let live = command(&mut c, SessionOperation::ReturnLive {});
+    assert_eq!(live.context, saved.context);
+    assert!(live.paused);
+    let resumed = command(&mut c, SessionOperation::Resume {});
+    assert!(!resumed.paused);
+    assert!(resumed.capabilities.board_action);
+    std::fs::remove_file(path).unwrap();
+    c.begin_shutdown();
+}

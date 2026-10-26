@@ -332,3 +332,8 @@ mShogi. Optional techniques are not an architectural requirement. The MSH-72/73
 surfaces remain development-only verification harnesses; MSH-74 owns the approved
 shogi interaction/visual product. The archive extension is documented in
 [the M4 archive contract](../m4/desktop-archive.md).
+
+MSH-74 normal product work follows [the shogi product design](../m4/shogi-desktop-product.md):
+one application, explicit game/side selection, game-specific board/piece visuals,
+shared native file/session protections, whole-board fit and an owner visual-review
+checkpoint. This does not reopen M3 or replace its evidence.

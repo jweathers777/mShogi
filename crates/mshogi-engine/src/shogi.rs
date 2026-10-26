@@ -61,6 +61,35 @@ pub struct ShogiTelemetry {
     /// Actual completion, work exhaustion or external stop, never a game outcome.
     pub status: StopReason,
 }
+impl ShogiTelemetry {
+    /// Player-facing value in the native root-side interpretation. Terminal
+    /// distance counts complete command edges, including formal declarations;
+    /// it is deliberately never described as a chess mate distance.
+    pub fn score_label(&self) -> Option<String> {
+        self.score.and_then(|score| {
+            let magnitude = i64::from(score).abs();
+            if magnitude > i64::from(search::WIN_SCORE) {
+                return None;
+            }
+            Some(
+                if magnitude >= i64::from(search::WIN_SCORE) - i64::from(search::MAX_DEPTH) - 1 {
+                    let distance = i64::from(search::WIN_SCORE) - magnitude;
+                    let result = if score >= 0 { "Win" } else { "Loss" };
+                    if distance == 0 {
+                        format!("{result} at the analyzed position")
+                    } else {
+                        format!(
+                            "{result} in {distance} command {} (including declarations)",
+                            if distance == 1 { "edge" } else { "edges" }
+                        )
+                    }
+                } else {
+                    format!("{:+.2} pawns", f64::from(score) / 100.0)
+                },
+            )
+        })
+    }
+}
 fn required_score<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Option<i32>, D::Error> {
     Option::<i32>::deserialize(d)
 }
@@ -188,5 +217,43 @@ impl ShogiResult {
                     && telemetry.status != StopReason::Complete
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod presentation_tests {
+    use super::*;
+    #[test]
+    fn score_labels_retain_native_root_units_and_terminal_command_edges() {
+        let mut telemetry = ShogiTelemetry {
+            evaluator_id: search::EVALUATOR_ID.into(),
+            search_id: search::SEARCH_ID.into(),
+            perspective: Side::Gote,
+            score: None,
+            completed_depth: 0,
+            nodes: 0,
+            principal_variation: vec![],
+            status: StopReason::Complete,
+        };
+        assert_eq!(telemetry.score_label(), None);
+        for (score, expected) in [
+            (125, "+1.25 pawns"),
+            (-350, "-3.50 pawns"),
+            (0, "+0.00 pawns"),
+            (search::WIN_SCORE, "Win at the analyzed position"),
+            (
+                search::WIN_SCORE - 1,
+                "Win in 1 command edge (including declarations)",
+            ),
+            (
+                -search::WIN_SCORE + 4,
+                "Loss in 4 command edges (including declarations)",
+            ),
+        ] {
+            telemetry.score = Some(score);
+            assert_eq!(telemetry.score_label().as_deref(), Some(expected));
+        }
+        telemetry.score = Some(i32::MIN);
+        assert_eq!(telemetry.score_label(), None);
     }
 }

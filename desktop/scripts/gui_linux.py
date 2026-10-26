@@ -335,6 +335,16 @@ class Native:
         return self._event("native_close_requested", window=self.window,
                            method="Focused Alt+F4 through the X11 window manager", proof_of_exit=False)
 
+    def resize(self, width: int, height: int) -> dict:
+        """Resize only the bound main window using the real window manager."""
+        if self.window is None or not self.alive():
+            raise RuntimeError("Attach the native application before resizing")
+        self._activate(self.window)
+        self._run(["xdotool", "windowsize", "--sync", str(self.window), str(width), str(height)])
+        return self._event("native_resize_requested", window=self.window,
+                           requested={"width": width, "height": height},
+                           observation=self._run(["xdotool", "getwindowgeometry", "--shell", str(self.window)]).stdout.strip())
+
     def quit_app(self) -> dict:
         if self.window is None:
             raise RuntimeError("Attach the native application before requesting Quit")

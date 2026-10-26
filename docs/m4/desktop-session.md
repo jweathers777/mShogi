@@ -198,3 +198,14 @@ CONTRACT**; minimal file/unsaved-change controls do not turn it into product UI.
 MSH-74 remains next and owns all product visual acceptance. The owner requirement
 for future12x12/16x16 is full-board display without requiring zoom or pan; prior
 capability demonstrations must not be read as requiring either technique.
+
+## MSH-74 normal product surface
+
+The owner-approved implementation direction is recorded in
+[the shogi product design](shogi-desktop-product.md). It introduces actual normal
+Chess/Shogi New Game selection and a distinct shogi board/player/hand layout,
+keeping the MSH-72/73 harness verification-only. Full9x9 visibility is required
+at1180×820 and the760×650 content minimum. Future12x12/16x16 entire-board fit must
+adapt square/piece/type sizing without required zoom/pan. An owner visual review
+checkpoint follows the complete polished surface/screenshots; MSH-74 remains
+In Review until explicit approval, and MSH-75 stays unstarted.

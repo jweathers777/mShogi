@@ -97,7 +97,7 @@ class Webview:
         return value["element-6066-11e4-a52e-4f735466cecf"]
 
     def click(self, selector):
-        if selector.startswith(".square["):
+        if selector.startswith((".square[", ".shogi-square[")):
             # WebKit's element-click heuristic requires the SVG group itself
             # in the hit-test tree, although only its painted children occur
             # there. Observe its real geometry, then send actual pointer input.
@@ -198,10 +198,10 @@ class Journey:
             "inputs": self.web.read("[...document.querySelectorAll('input,select')].map(e=>({tag:e.tagName,type:e.type,value:e.value,min:e.min,max:e.max,disabled:e.disabled}))")
         }, indent=2), encoding="utf-8")
 
-    def start(self, fixture=None):
+    def start(self, fixture=None, product=None):
         host = self.args.normal_host if fixture is None else self.args.verification_host
         engine = self.args.normal_engine if fixture is None else self.args.verification_engine
-        self.phase = "normal" if fixture is None else f"verification-{fixture}"
+        self.phase = ("normal" if product is None else f"normal-{product}") if fixture is None else f"verification-{fixture}"
         self.phase_report = {"phase": self.phase, "status": "running",
             "fixture": fixture, "host": str(host), "host_sha256": digest(host),
             "engine": str(engine), "engine_sha256": digest(engine),
@@ -243,7 +243,8 @@ class Journey:
         self.web = Webview(endpoint, host)
         self.phase_report["capabilities"] = self.web.capabilities
         self.phase_report["native_window"] = self.native.attach(host, engine)
-        wait(lambda: self.web.has(".synthetic-inspector" if fixture == "synthetic" else ".document-card"),
+        wait(lambda: self.web.has(".synthetic-inspector" if fixture == "synthetic" else ".document-card")
+             or (fixture is not None and fixture.startswith("shogi-") and self.web.has(".shogi-application")),
              "actual application frontend ready")
         self.record("Launch actual packaged application", self.phase_report["native_window"])
 
@@ -306,12 +307,107 @@ class Journey:
     def square(self, name):
         return f'.square[aria-label^="{name},"]'
 
-    def file(self, kind, path, cancel=False):
+    def viewport(self, width, height):
+        """Request and measure content size; OS decoration is never assumed."""
+        requested_width, requested_height = width, height
+        observations = []
+        for _ in range(4):
+            native = self.native.resize(requested_width, requested_height)
+            time.sleep(0.2)
+            observed = self.web.read("({width:innerWidth,height:innerHeight,dpr:devicePixelRatio})")
+            observations.append({"native": native, "webview": observed})
+            if abs(observed["width"] - width) <= 1 and abs(observed["height"] - height) <= 1:
+                self.record("Resize actual application content", {
+                    "target": {"width": width, "height": height}, "observations": observations})
+                return observed
+            requested_width += width - observed["width"]
+            requested_height += height - observed["height"]
+        raise AssertionError(f"Native resize did not establish requested content size {width}x{height}: {observations}")
+
+    def shogi_board_fits(self):
+        wait(lambda: self.web.read("[...document.fonts].some(f=>f.family.replaceAll('\"','').replaceAll(\"'\",'')==='mShogi Pieces' && f.status==='loaded')"),
+             "bundled Japanese piece font loaded in actual platform webview")
+        geometry = self.web.read("""(() => {
+            const board = document.querySelector('.shogi-board');
+            const squares = [...document.querySelectorAll('.shogi-square')];
+            const players = [...document.querySelectorAll('.shogi-player')];
+            const essential = [...document.querySelectorAll('.shogi-header button, .shogi-status-line')];
+            const rect = e => {const r=e.getBoundingClientRect(); return {
+                left:r.left, top:r.top, right:r.right, bottom:r.bottom, width:r.width, height:r.height};};
+            const visible = e => {const r=e.getBoundingClientRect();
+                return r.width>0 && r.height>0 && r.left>=-1 && r.top>=-1 && r.right<=innerWidth+1 && r.bottom<=innerHeight+1;};
+            return {viewport:{width:innerWidth,height:innerHeight}, board:board ? rect(board):null,
+                squares:squares.length, allSquaresVisible:squares.length===81 && squares.every(visible),
+                players:players.map(rect), bothPlayerAreasVisible:players.length===2 && players.every(visible),
+                essentialControlsVisible:essential.length>0 && essential.every(visible),
+                pageWidth:document.documentElement.scrollWidth,
+                fonts:document.fonts.status,
+                loadedFontFaces:[...document.fonts].map(f=>({family:f.family,status:f.status})),
+                pieceFonts:[...new Set([...document.querySelectorAll('.shogi-board text')].map(e=>getComputedStyle(e).fontFamily))]};
+        })()""")
+        assert geometry["allSquaresVisible"], geometry
+        assert geometry["bothPlayerAreasVisible"] and geometry["essentialControlsVisible"], geometry
+        assert geometry["pageWidth"] <= geometry["viewport"]["width"] + 1, geometry
+        assert geometry["board"]["width"] > 300, geometry
+        self.record("Observe complete 9x9 native product board without scrolling", geometry)
+        return geometry
+
+    def file(self, kind, path, cancel=False, button_label=None):
         with ThreadPoolExecutor(max_workers=1) as pool:
             picker = pool.submit(self.native.choose_file, kind, None if cancel else path)
-            self.web.button("Open…" if kind == "open" else "Save")
+            self.web.button(button_label or ("Open…" if kind == "open" else "Save"))
+            if kind == "open":
+                wait(lambda: picker.done() or self.web.has(".document-guard"), "native Open picker or unsaved guard")
+                if self.web.has(".document-guard"):
+                    self.web.button("Discard & continue")
             evidence = picker.result(timeout=35)
         self.record(f"Native {kind} {'cancel' if cancel else 'choose file'}", evidence)
+
+    def shogi_square(self, square):
+        return f'.shogi-square[data-square="{square}"]'
+
+    def shogi_events(self, count, selected=None, historical=False):
+        wait(lambda: self.web.read("document.querySelector('.shogi-application')?.dataset.liveEvents") == str(count),
+             f"native shogi history has {count} events")
+        if selected is not None:
+            wait(lambda: self.web.read("document.querySelector('.shogi-application')?.dataset.currentEvent") == str(selected),
+                 f"native shogi selected event {selected}")
+        wait(lambda: self.web.read("document.querySelector('.shogi-application')?.dataset.historical") == str(historical).lower(),
+             f"shogi historical viewing {historical}")
+
+    def shogi_save(self, path, observation_count=None):
+        self.file("save_as", path, button_label="Save as…")
+        wait(lambda: self.web.text(".document-dirty") == "Saved", "complete shogi document saved")
+        wait(path.exists, "native shogi Save As created exact path")
+        archive = json.loads(path.read_text(encoding="utf-8"))
+        assert archive["schema_version"] == 2 and archive["format"] == "mshogi.desktop.archive.v2", archive
+        assert archive["game_kind"] == "shogi" and archive["rules_profile"] == "mshogi.shogi.csa36.v1", archive
+        body = archive["payload"]
+        assert body["current"]["game_kind"] == "shogi"
+        if observation_count is not None:
+            assert len(body["observations"]) == observation_count
+        self.record("Inspect complete native shogi archive", {
+            "path": str(path), "sha256": digest(path), "bytes": path.stat().st_size,
+            "observations": len(body["observations"]), "controls": len(body["controls"]),
+            "native_events": len(body["current"]["payload"]["events"]),
+            "root": body["current"]["payload"].get("root")})
+        return archive
+
+    def shogi_analysis(self, depth=1, nodes=1000):
+        self.web.set('.shogi-analysis input[name="depth"]', depth)
+        self.web.set('.shogi-analysis input[name="nodes"]', nodes)
+        self.web.click('[data-analysis-start="shogi"]')
+
+    def shogi_complete_analysis(self):
+        wait(lambda: "Analysis complete" in self.web.text(".shogi-analysis-state"), "actual read-only shogi analysis completion", 45)
+        assert "No move or declaration was played" in self.web.text(".shogi-analysis")
+        assert "perspective" in self.web.text(".analysis-perspective")
+
+    def shogi_flip(self):
+        previous = self.web.read("document.querySelector('.shogi-application')?.dataset.orientation")
+        self.web.click(".shogi-flip")
+        wait(lambda: self.web.read("document.querySelector('.shogi-application')?.dataset.orientation") != previous,
+             "native shogi orientation changes")
 
     def save(self, path, observation_count=None):
         self.file("save", path)
@@ -431,6 +527,219 @@ class Journey:
         self.plies(2)
         self.quit()
 
+    def new_shogi(self, side):
+        w = self.web
+        w.button("New game")
+        wait(lambda: w.has('.document-guard') or w.has('[aria-label="New game"]'), "New Game guard or explicit game chooser")
+        if w.has(".document-guard"):
+            w.button("Discard & continue")
+        wait(lambda: w.has('[aria-label="New game"]'), "explicit game selection dialog")
+        w.click('[data-game="shogi"]')
+        w.click(f'[data-side="{side}"]')
+        w.click("[data-start-game]")
+        wait(lambda: w.has(".shogi-application") and not w.has('[aria-label="New game"]'), "new native shogi product game")
+        wait(lambda: w.read("document.querySelector('.shogi-application')?.dataset.orientation") == side,
+             f"human {side} at bottom")
+        self.record("Select Shogi and human side in normal New Game", {"side": side, "board_name":
+            w.read("document.querySelector('.shogi-board')?.getAttribute('aria-label')")})
+
+    def normal_shogi(self):
+        self.start(product="shogi")
+        w = self.web
+        self.new_shogi("sente")
+        self.viewport(1180, 820); self.shogi_board_fits()
+        self.shogi_events(0)
+        self.capture("initial-sente")
+        self.viewport(760, 650); self.shogi_board_fits()
+        self.capture("minimum-size")
+        self.viewport(1180, 820)
+        self.new_shogi("gote")
+        self.shogi_events(1)
+        self.shogi_board_fits()
+        assert "Gote at bottom" in w.read("document.querySelector('.shogi-board').getAttribute('aria-label')")
+        self.capture("initial-gote")
+        self.new_shogi("sente")
+        self.shogi_events(0)
+        w.click(self.shogi_square("7g"))
+        assert w.read(f"document.querySelector({json.dumps(self.shogi_square('7f'))}).classList.contains('target')")
+        w.key("\ue00c")  # Escape retains board history and restores origin focus.
+        self.shogi_events(0)
+        assert w.read("document.activeElement?.dataset.square") == "7g"
+        for key in ("\ue007", "\ue013", "\ue007"):  # Enter, ArrowUp, Enter.
+            w.key(key)
+        self.shogi_events(2)
+        wait(lambda: w.has('[data-search-purpose="engine_turn"]'), "actual bundled shogi engine observation")
+        self.capture("play")
+        self.record("Pointer selection / Escape / keyboard 7g7f / actual engine reply", w.text(".shogi-history"))
+
+        self.shogi_analysis(depth=4, nodes=20_000)
+        wait(lambda: w.has('.shogi-analysis[data-phase="analyzing"]'), "actual active shogi analysis")
+        self.capture("active-analysis")
+        w.button("Cancel analysis")
+        wait(lambda: "Search stopped" in w.text(".shogi-analysis-state"), "cancel active shogi analysis")
+        self.shogi_events(2)
+        self.shogi_analysis(depth=4, nodes=20_000)
+        wait(lambda: w.has('.shogi-analysis[data-phase="analyzing"]'), "actual shogi analysis before replacement")
+        w.set('.shogi-analysis input[name="depth"]', 1)
+        w.set('.shogi-analysis input[name="nodes"]', 1000)
+        assert w.has('.shogi-analysis[data-phase="analyzing"]'), "original work completed before replacement input; no active-replacement evidence"
+        w.click('[data-analysis-start="shogi"]')
+        self.shogi_complete_analysis()
+        self.shogi_events(2)
+        self.capture("read-only-analysis")
+        self.record("Cancel and replace actual bounded read-only shogi analysis", w.text(".shogi-analysis"))
+        self.shogi_save(self.args.output / "normal-shogi-complete.mshogi")
+        self.shogi_flip()
+        self.record("Native shogi window-close request", self.native.close_window())
+        wait(lambda: w.has(".document-guard"), "native close protects shogi unsaved preferences")
+        self.capture("native-close-guard")
+        w.button("Cancel")
+        wait(lambda: not w.has(".document-guard"), "cancel native shogi window close")
+        assert self.native.alive()
+        self.shogi_events(2)
+        self.quit()
+
+    def normal_shogi_reopened(self):
+        self.start(product="shogi-reopened")
+        w = self.web
+        self.file("open", self.args.output / "normal-shogi-complete.mshogi")
+        wait(lambda: w.has(".shogi-application"), "fresh normal Chess launch dispatches shogi archive")
+        self.viewport(1180, 820); self.shogi_board_fits()
+        self.shogi_events(2)
+        assert w.read("document.querySelector('.shogi-application').dataset.paused") == "true"
+        assert w.has(".play-paused") and not w.has('.shogi-analysis[data-phase="analyzing"]')
+        w.click(".recorded-searches summary")
+        assert "Saved observation" in w.text(".recorded-searches")
+        w.click(".recorded-searches summary")
+        self.capture("reopened-stopped")
+        w.click('.shogi-history [data-event="1"]')
+        self.shogi_events(2, selected=1, historical=True)
+        assert "live game is unchanged" in w.text(".shogi-history-banner")
+        self.shogi_analysis()
+        self.shogi_complete_analysis()
+        self.shogi_events(2, selected=1, historical=True)
+        self.capture("historical-analysis")
+        archive = self.shogi_save(self.args.output / "normal-shogi-history.mshogi")
+        body = archive["payload"]
+        context = body["observations"][-1]["response"]["context"]
+        assert context["purpose"]["kind"] == "move_analysis"
+        assert len(context["game"]["payload"]["events"]) == 1
+        assert len(body["current"]["payload"]["events"]) == 2
+        self.record("Saved historical analysis uses exact native history prefix", context)
+        w.button("Return to live")
+        self.shogi_events(2, selected=2)
+        assert w.has(".play-paused")
+        w.button("Resume play")
+        wait(lambda: w.read("document.querySelector('.shogi-application').dataset.paused") == "false", "explicit resumed shogi live play")
+        self.shogi_events(2)
+        assert not w.has(".shogi-history-banner")
+        self.capture("return-live-resumed")
+        self.quit()
+
+    def shogi_fixture(self, name):
+        """Difficult native states, explicitly separate from normal packages."""
+        self.start(name)
+        w = self.web
+        self.viewport(1180, 820)
+        self.shogi_board_fits()
+        assert not w.has(".shared-contract-application")
+        if name == "shogi-hands":
+            self.shogi_events(2)
+            for side in ("sente", "gote"):
+                assert "1" in w.text(f'.shogi-player[data-player="{side}"] .hand-piece[data-hand="pawn"]')
+            self.capture("both-hands")
+            w.click('.shogi-player[data-player="sente"] .hand-piece[data-hand="pawn"]')
+            assert w.read(f"document.querySelector({json.dumps(self.shogi_square('5e'))}).classList.contains('target')")
+            self.shogi_events(2)
+            self.capture("drop-selection")
+            w.key("\ue00c")  # Escape cancels without a native action.
+            self.shogi_events(2)
+            assert not w.has(".hand-piece.selected")
+            # Exercise a genuine native process failure at a complete action,
+            # retaining the same imported root and capture history for retry.
+            engine = self.args.verification_engine
+            held = engine.with_name(engine.name + ".gui-verification-held")
+            original = digest(engine)
+            assert not held.exists()
+            try:
+                engine.rename(held)
+                w.click('.shogi-player[data-player="sente"] .hand-piece[data-hand="pawn"]')
+                w.click(self.shogi_square("5e"))
+                wait(lambda: "Engine connection failed" in w.text(".shogi-sidebar"), "genuine shogi bundled engine startup failure")
+                self.shogi_events(3)
+                assert "No game result is implied" in w.text(".shogi-sidebar")
+                assert "Sente pawn" in w.read(f"document.querySelector({json.dumps(self.shogi_square('5e'))}).getAttribute('aria-label')")
+                self.capture("engine-failure")
+            finally:
+                if held.exists():
+                    held.rename(engine)
+            assert digest(engine) == original
+            w.button("Retry engine turn")
+            self.shogi_events(4)
+            self.record("Capture history / cancelled drop / complete native drop / process recovery", {
+                "engine_sha256": original, "history": w.text(".shogi-history"),
+                "status": w.text("[data-game-status]")})
+        elif name == "shogi-promotion":
+            self.shogi_events(0)
+            w.click(self.shogi_square("5d")); w.click(self.shogi_square("5c"))
+            wait(lambda: w.has(".shogi-promotion"), "optional promotion has two complete native choices")
+            self.shogi_events(0)
+            self.capture("optional-promotion")
+            w.key("\ue00c")
+            wait(lambda: not w.has(".shogi-promotion"), "cancel optional promotion")
+            self.shogi_events(0)
+            w.click(self.shogi_square("5d")); w.click(self.shogi_square("5c"))
+            w.button("Promote")
+            wait(lambda: "promoted pawn" in str(w.read(f"document.querySelector({json.dumps(self.shogi_square('5c'))})?.getAttribute('aria-label')")), "native promoted piece appears")
+            self.shogi_events(2)
+        elif name == "shogi-forced":
+            self.shogi_events(0)
+            w.click(self.shogi_square("5b")); w.click(self.shogi_square("5a"))
+            wait(lambda: "promoted pawn" in str(w.read(f"document.querySelector({json.dumps(self.shogi_square('5a'))})?.getAttribute('aria-label')")), "mandatory native promotion commits directly")
+            assert not w.has(".shogi-promotion")
+            self.shogi_events(2)
+        elif name == "shogi-declaration":
+            self.shogi_events(0)
+            assert "Eligibility alone does not conclude" in w.text(".shogi-game-actions")
+            w.button("Declare entering king…")
+            wait(lambda: w.has('[aria-label="Declare entering king?"]'), "formal declaration confirmation")
+            self.shogi_events(0)
+            self.capture("declaration-confirmation")
+            w.button("Confirm declaration")
+            self.shogi_events(1)
+            wait(lambda: "Sente wins by entering-king declaration" in w.text("[data-game-status]"), "authoritative declaration conclusion")
+            assert not w.has(".shogi-game-actions button")
+        elif name == "shogi-concluded":
+            self.shogi_events(1)
+            assert "Sente resigned" in w.text("[data-game-status]")
+            assert not w.has(".shogi-game-actions button")
+            self.capture("concluded")
+            w.click('.shogi-history [data-event="0"]')
+            self.shogi_events(1, selected=0, historical=True)
+            self.capture("before-terminal-event")
+            w.click('.shogi-history [data-event="1"]')
+            self.shogi_events(1, selected=1, historical=True)
+            w.button("Return to live")
+            self.shogi_events(1, selected=1)
+            assert "Sente resigned" in w.text("[data-game-status]")
+            self.record("Select distinct native terminal event at unchanged board ply", w.text(".shogi-history"))
+        elif name == "shogi-capacity":
+            assert "Recorded searches (255)" in w.text(".recorded-searches")
+            self.shogi_analysis(nodes=0)
+            wait(lambda: "Recorded searches (256)" in w.text(".recorded-searches"), "shogi observation256 accepted")
+            self.shogi_analysis(nodes=0)
+            wait(lambda: "Application limit reached" in w.text(".capacity-notice"), "shogi observation257 refused before commitment")
+            assert "Recorded searches (256)" in w.text(".recorded-searches")
+            assert "Saving and reopening does not reset" in w.text(".capacity-notice")
+            self.shogi_events(0)
+            self.capture("capacity-pause")
+            self.shogi_save(self.args.output / "shogi-capacity-complete.mshogi", 256)
+            self.shogi_flip()
+        else:
+            raise AssertionError(name)
+        self.capture("result")
+        self.quit()
+
     def fixture(self, name):
         self.start(name)
         w = self.web
@@ -547,7 +856,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--driver", default="tauri-driver")
     parser.add_argument("--native-driver")
-    parser.add_argument("--phase", choices=["normal", "verification", "all"], default="all")
+    parser.add_argument("--phase", choices=["normal", "normal-shogi", "verification", "verification-shogi", "all"], default="all")
     args = parser.parse_args()
     args.output = args.output.resolve()
     args.output.mkdir(parents=True, exist_ok=True)
@@ -569,17 +878,31 @@ def main():
     journey = None
     try:
         journey = Journey(args, report)
-        phases = ([None] if args.phase == "normal" else
-                  ["standard", "promotion", "claim", "capacity", "synthetic"] if args.phase == "verification" else
-                  [None, "standard", "promotion", "claim", "capacity", "synthetic"])
+        chess_verification = ["standard", "promotion", "claim", "capacity", "synthetic"]
+        shogi_verification = ["shogi-hands", "shogi-promotion", "shogi-forced", "shogi-declaration", "shogi-concluded", "shogi-capacity"]
+        shogi_normal = ["normal-shogi", "normal-shogi-reopened"]
+        phases = ([None, *shogi_normal] if args.phase == "normal" else
+                  shogi_normal if args.phase == "normal-shogi" else
+                  [*chess_verification, *shogi_verification] if args.phase == "verification" else
+                  shogi_verification if args.phase == "verification-shogi" else
+                  [None, *shogi_normal, *chess_verification, *shogi_verification])
         failures = []
         report["phase_failures"] = failures
         for fixture in phases:
             journey.phase_report = None
             try:
-                journey.normal() if fixture is None else journey.fixture(fixture)
+                if fixture is None:
+                    journey.normal()
+                elif fixture == "normal-shogi":
+                    journey.normal_shogi()
+                elif fixture == "normal-shogi-reopened":
+                    journey.normal_shogi_reopened()
+                elif fixture.startswith("shogi-"):
+                    journey.shogi_fixture(fixture)
+                else:
+                    journey.fixture(fixture)
             except Exception as phase_error:
-                failure = {"phase": "normal" if fixture is None else f"verification-{fixture}",
+                failure = {"phase": "normal" if fixture is None else fixture if fixture.startswith("normal-") else f"verification-{fixture}",
                            "error": str(phase_error), "traceback": traceback.format_exc()}
                 failures.append(failure)
                 if journey.phase_report is not None:

@@ -1,0 +1,43 @@
+import type { NativeBoardSnapshot } from "../NativeBoard";
+import type { Snapshot } from "../native";
+export type GameKind = "chess" | "shogi";
+export interface NativeSide { game_kind: GameKind; side: "white" | "black" | "sente" | "gote" }
+export interface Side { id: NativeSide; key: string; label: string; first_mover: boolean }
+export interface OpenToken { document: number; version: number; document_revision: number }
+export interface SearchView {
+  selected: boolean; observation_index: number; purpose: string; event_index: number; board_ply: number;
+  perspective: string; engine: string; score: string | null; completed_depth: number | null;
+  nodes: number | null; variation: string[]; status: string; historical: boolean;
+}
+export interface GameSnapshot extends Omit<NativeBoardSnapshot, "orientations" | "sides" | "capabilities"> {
+  open_token: OpenToken;
+  human: Side; turn: Side; sides: Side[];
+  orientations: { side: Side; files: string[]; ranks: string[] }[];
+  document: { revision: number; dirty: boolean; path: string | null; settings: { game_kind: GameKind; settings: { orientation: string; analysis_defaults: { depth: number; nodes: number } } } };
+  io: { id: number; phase: string; message: string | null };
+  capacity: { id: number; status: "available" | "checking" | "paused"; message: string | null };
+  capabilities: { board_action: boolean; declaration: boolean; resign: boolean; undo: boolean; move_analysis: boolean; save: boolean };
+  status: { concluded: boolean; label: string; score_half_points: number[] | null };
+  events: { index: number; board_ply: number; label: string }[];
+  event_index: number; historical: boolean; paused: boolean;
+  phase: "idle" | "thinking" | "cancelled" | "failed" | "incomplete" | "paused";
+  diagnostic: string | null;
+  execution_purpose: string | null;
+  declaration_advice: { actor: Side; eligible: boolean }[];
+  context: unknown;
+  analysis: Observation | null;
+  observations: Observation[];
+  search_observations: SearchView[];
+  chess: Snapshot | null;
+}
+export interface Observation {
+  historical: boolean; application_error: string | null;
+  response: { context: { request_id: number; session_version: number; process_generation: number;
+    purpose: { kind: string; target?: { selection_id: number; event_index: number; board_ply: number } }; limits: { depth: number; nodes: number } }; result: unknown };
+}
+export type Operation =
+  | { kind: "play"; action: string }
+  | { kind: "resume" | "retry" | "cancel" | "undo" | "return_live" | "resign" | "declare" }
+  | { kind: "inspect"; event_index: number }
+  | { kind: "analyze"; operation: { kind: "moves"; depth: number; nodes: number } }
+  | { kind: "shogi_preferences"; settings: { orientation: string; analysis_defaults: { depth: number; nodes: number } } };

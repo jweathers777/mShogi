@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { App } from "./App";
+import { ProductApp } from "./product/ProductApp";
 import "./style.css";
 
 declare const __MSHOGI_DESKTOP_VERIFICATION__: boolean;
@@ -13,5 +13,5 @@ if (__MSHOGI_DESKTOP_VERIFICATION__) {
       root.render(<main className="loading"><h1>Verification startup failed</h1><p role="alert">{String(reason)}</p></main>);
     });
 } else {
-  root.render(<StrictMode><App /></StrictMode>);
+  root.render(<StrictMode><ProductApp /></StrictMode>);
 }

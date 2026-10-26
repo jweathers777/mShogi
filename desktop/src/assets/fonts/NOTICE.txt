@@ -1,0 +1,6 @@
+mShogi Pieces Regular is a modified glyph subset of Noto Serif CJK JP Regular 2.003.
+Original font copyright: © 2017-2024 Adobe (http://www.adobe.com/).
+Licensed under the SIL Open Font License, Version 1.1; see OFL.txt.
+The subset is renamed mShogi Pieces and remains under the same license.
+Upstream: https://github.com/notofonts/noto-cjk
+Pinned source commit: 9b0f1436e455d902de067a2501422e5dc71ad16b

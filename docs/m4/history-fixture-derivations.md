@@ -3,7 +3,10 @@
 Fixture source: [history-outcomes.json](../../tests/fixtures/shogi/history-outcomes.json).
 Prepared 2026-10-26 by a separate Codex AI fixture/research agent from the native
 history implementer. This is AI derivation and board corroboration, not a claim
-of human rules review. Fresh fixture review is recorded separately when complete.
+of human rules review. Fresh fixture review is retained with the unmerged implementation at
+`f259bb23834d6156f21aeec53db9ee00ef7242e4` on `codex/shogi-history`.
+MSH-67 remains blocked: this research handoff does not integrate the provisional
+native game/record implementation or close its mutual-check gate.
 
 ## Authority, editions and method
 

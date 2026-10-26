@@ -72,6 +72,23 @@ Do not force-push, rewrite published history, discard unrelated edits, delete am
 
 Prefer coherent commits that include code, associated tests, and ticket evidence. Do not put credentials, local databases, large generated training sets, private machine settings, or build output into Git. Record reproducible references for large evidence instead.
 
+## Checkout and worktree lifecycle
+
+Keep `codex/rewrite` checked out in the primary project directory. Use that
+checkout for integration and normal application launches.
+Keep the original `master` branch and history; a separate permanent checkout
+is not required to preserve them.
+
+Create a temporary worktree when a bounded task needs isolation or parallel
+work. After the task is verified, independently reviewed where applicable,
+integrated and pushed, remove its worktree before finishing. First confirm
+that its commits are integrated, preserve any uncommitted or needed untracked
+or ignored files, and check that no running task or process still needs it.
+Archive app-managed worktrees with the app tool; remove ordinary Git worktrees
+with Git. Leave a worktree only when it has an explicit ongoing purpose, and
+record that purpose in the handoff. Reusable build caches may live in the main
+checkout; completed task checkouts are not permanent build locations.
+
 ## Completion and handoff
 
 The active task's final summary must state what changed, why, acceptance/evidence coverage, important decisions or limitations, and linked follow-up work. Record the integration branch and relevant commit references without fabricating a future commit hash.

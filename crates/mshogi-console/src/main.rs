@@ -1,4 +1,4 @@
-//! Headless console entry point: program metadata and a chess command session.
+//! Explicit game-selected human console and isolated machine entry points.
 
 use std::{
     env,
@@ -8,63 +8,140 @@ use std::{
 
 use mshogi_core::CHESS_POSITION_PROFILE_ID;
 
+mod record_io;
 mod session;
 mod shogi_session;
 mod uci;
 
 use session::{MAX_LINE_BYTES, Next, Session};
 
-const HELP: &str = "mShogi headless console
-
-Usage: mshogi [--help | --version | profile | shell | shogi | uci | internal-search]
-
-  --help, -h     Show this help
-  --version, -V  Show the application version
-  profile        Show the chess rules profile and its coverage
-  shell          Read chess commands from standard input, one per line
-  shogi          Read untimed shogi commands (type help for commands)
-  uci            Run the bounded UCI chess engine adapter
-  internal-search  One-shot structured native desktop search
-
-The shell starts at the standard chess position. Results go to standard
-output and errors to standard error as 'error: line N: ...'; a failed
-command changes nothing. Exit status: 0 if every command succeeded, 1 if
-any command failed, 2 for invalid program arguments. Type 'help' in the
-shell for its commands. The shell is a diagnostic console, not a UCI engine. Use 'mshogi uci'
-for the engine adapter.";
-
-fn main() -> ExitCode {
-    let mut args = env::args_os().skip(1);
-    let first = args.next();
-    if args.next().is_some() {
-        return invalid_arguments();
+#[derive(Clone, Copy, PartialEq)]
+enum Game {
+    Chess,
+    Shogi,
+}
+impl Game {
+    fn name(self) -> &'static str {
+        match self {
+            Self::Chess => "chess",
+            Self::Shogi => "shogi",
+        }
     }
+}
+struct Invocation {
+    game: Game,
+    mode: String,
+}
+fn arguments(args: impl Iterator<Item = std::ffi::OsString>) -> Result<Invocation, String> {
+    let mut args = args.into_iter();
+    let mut selected = None;
+    let mut mode = None;
+    while let Some(arg) = args.next() {
+        let arg = arg.to_str().ok_or("arguments must be valid Unicode")?;
+        if arg == "--game" {
+            if selected.is_some() {
+                return Err("duplicate/conflicting --game selections".into());
+            }
+            let value = args.next().ok_or("--game requires chess or shogi")?;
+            selected = Some(match value.to_str() {
+                Some("chess") => Game::Chess,
+                Some("shogi") => Game::Shogi,
+                _ => return Err("unknown or missing game; --game requires chess or shogi".into()),
+            });
+        } else if mode.replace(arg.to_owned()).is_some() {
+            return Err("unsupported extra arguments".into());
+        }
+    }
+    let mut mode = mode.unwrap_or("--help".into());
+    if mode == "internal-search" && selected.is_some() {
+        return Err("--game is incompatible with internal-search: its structured request supplies the game identity".into());
+    }
+    let game = if mode == "shogi" {
+        if selected == Some(Game::Chess) {
+            return Err("shogi alias conflicts with --game chess".into());
+        }
+        mode = "shell".into();
+        Game::Shogi
+    } else {
+        selected.unwrap_or(Game::Chess)
+    };
+    if mode == "uci" && game != Game::Chess {
+        return Err("UCI supports chess only; shogi USI is not implemented".into());
+    }
+    if !matches!(
+        mode.as_str(),
+        "--help" | "-h" | "--version" | "-V" | "profile" | "shell" | "uci" | "internal-search"
+    ) {
+        return Err("unsupported arguments".into());
+    }
+    Ok(Invocation { game, mode })
+}
+fn help(game: Game) {
+    let game = game.name();
+    println!("mShogi headless console — selected game: {game}
 
-    match first.as_ref().map(|arg| arg.to_str()) {
-        None | Some(Some("--help" | "-h")) => println!("{HELP}"),
-        Some(Some("--version" | "-V")) => println!("mshogi {}", env!("CARGO_PKG_VERSION")),
-        Some(Some("profile")) => {
-            println!("Target rules profile: {CHESS_POSITION_PROFILE_ID}");
-            println!(
-                "Coverage: position/FEN, all chess actions with undo, attacks, legal actions, check/mate/stalemate and perft; diagnostic status is position-only"
-            );
-        }
-        Some(Some("shell")) => {
-            let mut session = Session::new();
-            return shell(|line, out| session.execute(line, out));
-        }
-        Some(Some("shogi")) => {
-            let mut session = shogi_session::Session::new();
-            return shell(|line, out| session.execute(line, out));
-        }
-        Some(Some("uci")) => return uci::run(),
-        Some(Some("internal-search")) => {
+Usage: mshogi [--game chess|shogi] [--help | --version | profile | shell | shogi | uci | internal-search]
+
+  --game <game>  Select chess or shogi (default chess)
+  --help, -h     Show selected-game help
+  --version, -V  Show the application version
+  profile        Show the selected native rules profile and actual coverage
+  shell          Read {game} commands from standard input, one per line
+  shogi          Compatibility alias for --game shogi shell
+  uci            Chess UCI adapter (rejects --game shogi); USI not implemented
+  internal-search  Structured native search; request supplies game, no --game
+
+Use 'mshogi --game {game} shell' and type 'help' for native commands.
+The shell is a diagnostic console, not a UCI engine. Results go to stdout;
+errors to stderr as 'error: line N: ...'. A failed command changes nothing.
+Exit status: 0 success, 1 any shell failure, 2 invalid program arguments.
+Chess: FEN, position-only status, known move history, perft/divide depth 0..4.
+Shogi: SFEN, hands, complete native event history/conclusions, advisory eligibility,
+formal entering-king declaration and resignation; perft/divide depth 0..2.
+Both: position/show/legal/move/undo/history/status; canonical envelope record
+print/save/load-file/load-json. Saves require a new file. No shared board engine.");
+}
+fn main() -> ExitCode {
+    let Invocation { game, mode } = match arguments(env::args_os().skip(1)) {
+        Ok(invocation) => invocation,
+        Err(error) => return invalid_arguments(&error),
+    };
+    match mode.as_str() {
+        "--help" | "-h" => help(game),
+        "--version" | "-V" => println!("mshogi {}", env!("CARGO_PKG_VERSION")),
+        "profile" => match game {
+            Game::Chess => {
+                println!("Target rules profile: {CHESS_POSITION_PROFILE_ID}");
+                println!(
+                    "Coverage: position/FEN, all chess actions with undo, attacks, legal actions, check/mate/stalemate and perft; diagnostic status is position-only"
+                );
+            }
+            Game::Shogi => {
+                println!("Target rules profile: {}", mshogi_core::shogi::PROFILE_ID);
+                println!("Edition: {}", mshogi_core::shogi::PROFILE_EDITION);
+                println!(
+                    "Coverage: untimed native SFEN/game/events, complete legal moves/drops/promotions, hands, advisory eligibility, formal declarations/resignation, conclusions, event undo and canonical envelope records; local perft/divide depth 0..2. Earlier imported history is unknown. USI is not implemented."
+                );
+            }
+        },
+        "shell" => match game {
+            Game::Chess => {
+                let mut session = Session::new();
+                return shell(|line, out| session.execute(line, out));
+            }
+            Game::Shogi => {
+                let mut session = shogi_session::Session::new();
+                return shell(|line, out| session.execute(line, out));
+            }
+        },
+        "uci" => return uci::run(),
+        "internal-search" => {
             if let Err(error) = mshogi_engine::serve_once(io::stdin().lock(), io::stdout().lock()) {
                 eprintln!("internal search failed: {error}");
                 return ExitCode::FAILURE;
             }
         }
-        _ => return invalid_arguments(),
+        _ => unreachable!("validated mode"),
     }
     ExitCode::SUCCESS
 }
@@ -128,8 +205,8 @@ fn shell(mut execute: impl FnMut(&str, &mut String) -> Result<Next, String>) -> 
     }
 }
 
-fn invalid_arguments() -> ExitCode {
-    eprintln!("error: unsupported arguments; run 'mshogi --help'");
+fn invalid_arguments(message: &str) -> ExitCode {
+    eprintln!("error: {message}; run 'mshogi --help'");
     ExitCode::from(2)
 }
 

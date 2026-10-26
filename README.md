@@ -1,6 +1,6 @@
 # mShogi rewrite
 
-This repository baseline describes the rewrite of John Weathers's mShogi. It contains a minimal Rust library/headless-console workspace, the design and Backlog.md queue. The core implements explicit chess state/FEN, geometric attack queries, pseudo-legal candidate generation, and checked moves, captures, promotions, castling and en passant with exact undo. It also exposes the legal-action list and position-level check/checkmate/stalemate classification. Perft and divide diagnostics are available in the library and, with every other M1 diagnostic, through the headless `mshogi shell` console. The core also owns [game history and canonical records](docs/rules/chess-history-record-v1.md). A separate native search crate provides the [transparent material evaluator](docs/evaluation.md); [full-width search](docs/search.md) and [bounded live match adjudication/clocks](docs/rules/chess-match-api.md) are available in native libraries. The separate [UCI engine mode](docs/uci.md) connects the native search to external controllers. An opt-in [exact mating-reachability procedure](docs/rules/chess-completeness.md) extends adjudication beyond the default M2 subset, with explicit resource uncertainty.
+This repository baseline describes the rewrite of John Weathers's mShogi. It contains a minimal Rust library/headless-console workspace, the design and Backlog.md queue. The core implements explicit chess state/FEN, geometric attack queries, pseudo-legal candidate generation, and checked moves, captures, promotions, castling and en passant with exact undo. It also exposes the legal-action list and position-level check/checkmate/stalemate classification. Perft and divide diagnostics are available in the library and, with every other M1 diagnostic, through the headless `mshogi --game chess shell` console. The core also owns [game history and canonical records](docs/rules/chess-history-record-v1.md). A separate native search crate provides the [transparent material evaluator](docs/evaluation.md); [full-width search](docs/search.md) and [bounded live match adjudication/clocks](docs/rules/chess-match-api.md) are available in native libraries. The separate [UCI engine mode](docs/uci.md) connects the native search to external controllers. An opt-in [exact mating-reachability procedure](docs/rules/chess-completeness.md) extends adjudication beyond the default M2 subset, with explicit resource uncertainty.
 
 The product goal is a reusable library with complete implementations of chess, shogi, tori shogi, chu shogi, tenjiku shogi, and xiangqi; capable mShogi engines; a standalone and interoperable console application; and a polished desktop application for Windows, macOS, and Linux.
 
@@ -38,15 +38,15 @@ Install [Rust through rustup](https://rustup.rs/) and a native C/C++ linker tool
 cargo build --workspace --locked
 cargo run --locked --bin mshogi -- --help
 cargo run --locked --bin mshogi -- --version
-cargo run --locked --bin mshogi -- profile
-printf 'position startpos\nperft 3\n' | cargo run --locked --bin mshogi -- shell
+cargo run --locked --bin mshogi -- --game chess profile
+printf 'position startpos\nperft 3\n' | cargo run --locked --bin mshogi -- --game chess shell
 
 cargo fmt --all -- --check
 cargo clippy --workspace --all-targets --locked -- -D warnings
 cargo test --workspace --locked
 ```
 
-The console reports its version, rules profile and coverage, and `mshogi shell` runs the chess diagnostics described below; `mshogi uci` provides the documented first engine protocol adapter. The core library exposes [position, action, legal-move, classification and perft APIs](docs/rules/chess-position-v1.md#rust-position-api). Tests exercise real headless subprocess startup, output streams and usage errors. The production core uses pinned Serde/JSON for canonical history records and has no console I/O; tests also use that JSON reader for the independent corpus. Native Windows/macOS/Linux checks are configured in [the Rust workflow](.github/workflows/rust.yml). Actual per-platform outcomes and revisions are recorded in each task and summarized in the [M1 closure review](docs/review/m1-closure.md), separately from configuration.
+The console reports its version, rules profile and coverage, and `mshogi --game chess shell` runs the chess diagnostics described below; `mshogi uci` provides the documented first engine protocol adapter. The core library exposes [position, action, legal-move, classification and perft APIs](docs/rules/chess-position-v1.md#rust-position-api). Tests exercise real headless subprocess startup, output streams and usage errors. The production core uses pinned Serde/JSON for canonical history records and has no console I/O; tests also use that JSON reader for the independent corpus. Native Windows/macOS/Linux checks are configured in [the Rust workflow](.github/workflows/rust.yml). Actual per-platform outcomes and revisions are recorded in each task and summarized in the [M1 closure review](docs/review/m1-closure.md), separately from configuration.
 
 ## UCI engine mode
 
@@ -58,7 +58,7 @@ The console reports its version, rules profile and coverage, and `mshogi shell` 
 
 ## Headless chess console
 
-`mshogi shell` reads chess commands from standard input, one per line, interactively or from a pipe or file. It starts at the standard position. It is a diagnostic console for people and simple scripts, not a UCI engine or a machine protocol. Every rule comes from the core library.
+`mshogi --game chess shell` reads chess commands from standard input, one per line, interactively or from a pipe or file. It starts at the standard position. It is a diagnostic console for people and simple scripts, not a UCI engine or a machine protocol. Every rule comes from the core library.
 
 | Command | Effect and output |
 | --- | --- |
@@ -68,8 +68,10 @@ The console reports its version, rules profile and coverage, and `mshogi shell` 
 | `legal` | `legal <count> <actions...>` in divide order |
 | `move <action>...` | Apply the actions in order, all or none; prints the new `fen` |
 | `history` | Action count, known-history origin, stored claim policy and current repetition count |
-| `record` | `record <JSON>`: canonical chess action/history record |
-| `record load <JSON>` | Atomically restore a move-only record, including undo/history; observation-bearing match records are explicitly refused |
+| `record print` | `record <JSON>`: shared typed envelope around native chess action/history record |
+| `record save <path>` | Publish the envelope to a new file; never overwrite |
+| `record load-file <path>` / `record load-json <JSON>` | Strict envelope restore, including undo/history; match observations and Full mode are explicitly refused |
+| `record` / `record load <JSON>` | Compatibility: print/load native chess JSON without an envelope |
 | `undo [n]` | Undo the last `n` applied actions (default 1); prints the new `fen` |
 | `status` | `status quiet`, `check`, `checkmate` or `stalemate`, from the limited M1 position classifier, not game adjudication |
 | `perft <depth>` | `perft <depth> <nodes>` |
@@ -77,11 +79,11 @@ The console reports its version, rules profile and coverage, and `mshogi shell` 
 | `help` / `quit` | Show the commands / end the session (end of input also ends it) |
 
 - **Actions** use lowercase coordinates: `e2e4`, a promotion suffix `q`/`r`/`b`/`n` (`e7e8n`), castling as the king's move (`e1g1`), en passant as the capturing pawn's move.
-- **Input:** ASCII only, with space, tab, CR, vertical tab and form feed as separators; LF ends a command. Blank lines and lines starting with `#` after trimming are ignored. Lines are limited to 4096 bytes before LF (including CR); an oversized line is discarded in bounded memory, and processing resumes at the next line. Numeric arguments use one or more ASCII digits, with leading zeros allowed and no sign. Undo counts must be positive and fit `usize`; shell perft/divide depth is capped at 4 (divide still needs at least 1). Deeper diagnostics use the uncapped library API or release example.
+- **Input:** Native chess commands use ASCII; record paths/JSON may use UTF-8. Parsing uses space, tab, CR, vertical tab and form feed as separators; LF ends a command. Blank lines and lines starting with `#` after trimming are ignored. Lines are limited to 4096 bytes before LF (including CR); an oversized line is discarded in bounded memory, and processing resumes at the next line. Numeric arguments use one or more ASCII digits, with leading zeros allowed and no sign. Undo counts must be positive and fit `usize`; shell perft/divide depth is capped at 4 (divide still needs at least 1). Deeper diagnostics use the uncapped library API or release example.
 - **Errors:** results go to standard output. A failed command writes `error: line <n>: <reason>` to standard error and changes nothing in the session: malformed FEN, unknown commands or arguments, an illegal or unrepresentable action anywhere in a `move` sequence, undo beyond the history, invalid UTF-8 or non-ASCII input. Echoed tokens escape control characters. Parse and legality failures in move sequences both identify the action index and preserve the whole session.
 - **Exit status:** 0 when every command succeeded, 1 when any failed, 2 for invalid program arguments.
 
-Example (`mshogi shell < session.txt`), checked by the console's process tests:
+Example (`mshogi --game chess shell < session.txt`), checked by the console's process tests:
 
 <!-- console-example:input -->
 ```text
@@ -123,11 +125,11 @@ error: line 4: e1g1 (action 1 of 1): action rejected: castling right, rook or em
 
 ## Standalone shogi console
 
-`cargo run --locked --release --bin mshogi -- shogi` explicitly selects the
+`cargo run --locked --release --bin mshogi -- --game shogi shell` explicitly selects the
 untimed native `mshogi.shogi.csa36.v1` game. Type `help` for commands. For example:
 
 ```bash
-cargo run --locked --release --bin mshogi -- shogi <<'EOF'
+cargo run --locked --release --bin mshogi -- --game shogi shell <<'EOF'
 position startpos
 move 7g7f 3c3d
 show
@@ -156,15 +158,21 @@ submits native resignation, even outside Gote's turn. `undo` reverses an event,
 including declarations/resignation that do not advance board ply.
 
 `record save <new-path>` publishes a complete canonical record to a new file;
-it never overwrites an existing file. `record load <path>` strictly validates and
+it never overwrites an existing file. `record load-file <path>` strictly validates and
 replays the complete record before replacing the current game. Paths may contain
 spaces and UTF-8. Record files have a separate1MiB limit; command lines remain
 4096bytes. SFEN/USI text alone cannot preserve provenance or event history.
 See [shogi console contract and evidence](docs/m4/shogi-console.md) for readable
 notation, diagnostic limits, canonical semantics and exact record examples.
 
-The existing `shell` chess commands, `uci` adapter and structured
-`internal-search` wire contracts remain separate.
+Both games share `position`, `show`, `legal`, `move`, `undo`, `history`, `status`,
+`record print/save/load-file/load-json`, `perft` and `divide` command names.
+Native FEN/SFEN and game-specific commands retain their meanings.
+`mshogi shell` remains the default chess alias; `mshogi shogi` aliases
+`mshogi --game shogi shell`. The chess `uci` adapter and structured
+`internal-search` wire contracts remain separate. Explicit `--game shogi uci`
+rejects; `internal-search` rejects any `--game` because its request supplies
+the authoritative game/profile identity. No USI support is added.
 
 Native shogi v3 now supports engine-turn proposals and bounded read-only move
 analysis. The transparent baseline uses board/promoted pieces and both hands,

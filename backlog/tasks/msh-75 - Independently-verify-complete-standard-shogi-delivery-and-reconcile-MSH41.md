@@ -4,7 +4,7 @@ title: Independently verify complete standard-shogi delivery and reconcile MSH41
 status: Ready
 assignee: []
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-26T07:44:00Z'
+updated_date: '2026-10-26T16:47:00Z'
 labels:
   - m4
   - owner-msh-41
@@ -20,6 +20,7 @@ dependencies:
   - MSH-69
   - MSH-72
   - MSH-73
+  - MSH-90
 references:
   - >-
     backlog/tasks/msh-41 -
@@ -56,3 +57,9 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MSH-90 is the required bounded common-console follow-up to MSH-68/69/70, owned once under MSH-46. Added to this final acceptance gate without removing existing dependencies or changing criteria. MSH-71/72 remain unstarted.
+<!-- SECTION:NOTES:END -->

@@ -4,6 +4,8 @@
 //! output is meant for people and simple scripts. All rules come from
 //! `mshogi-core`; this module only parses text and formats results.
 
+use crate::record_io;
+use mshogi_core::native::CanonicalRecord;
 use std::fmt::Write as _;
 
 use mshogi_core::chess::{
@@ -37,8 +39,12 @@ pub const SHELL_HELP: &str =
   move <action>...         Apply actions in order; all or none
   undo [n]                 Undo the last n applied actions (default 1)
   history                  Show origin, policy and current repetition count
-  record                   Print the canonical chess history record
-  record load <JSON>       Restore a move-only record atomically
+  record print             Print the shared canonical envelope
+  record save <path>       Atomic new-file envelope save; never overwrite
+  record load-file <path>  Bounded strict envelope load before replacement
+  record load-json <JSON>  Strict inline canonical envelope
+  record                   Compatibility: native chess JSON (no envelope)
+  record load <JSON>       Compatibility: native move-only JSON restoration
   status                   Print quiet, check, checkmate or stalemate
   perft <depth>            Count legal action sequences of that depth
   divide <depth>           Per-root-action perft counts and total
@@ -70,9 +76,6 @@ impl Session {
         if line.len() > MAX_LINE_BYTES {
             return Err(format!("line exceeds {MAX_LINE_BYTES} bytes"));
         }
-        if !line.is_ascii() {
-            return Err("input must be ASCII".into());
-        }
         let line = line.trim_matches(separator);
         if line.is_empty() || line.starts_with('#') {
             return Ok(Next::Continue);
@@ -82,6 +85,9 @@ impl Session {
             .map_or((line, ""), |(command, rest)| {
                 (command, rest.trim_matches(separator))
             });
+        if !line.is_ascii() && command != "record" {
+            return Err("input must be ASCII".into());
+        }
         let args: Vec<&str> = rest.split(separator).filter(|s| !s.is_empty()).collect();
         match command {
             "position" => self.load(rest, out)?,
@@ -236,15 +242,30 @@ impl Session {
     }
 
     fn record(&mut self, rest: &str, out: &mut String) -> Result<(), String> {
-        if rest.is_empty() {
-            writeln!(out, "record {}", self.game.record().to_json()).unwrap();
-            return Ok(());
-        }
-        let Some(("load", json)) = rest.split_once(separator) else {
-            return Err("usage: record | record load <JSON>".into());
+        use record_io::Operation;
+        let operation = record_io::parse(rest, record_io::LegacyLoad::Json)?;
+        let record = match operation {
+            Operation::LegacyPrint => {
+                writeln!(out, "record {}", self.game.record().to_json()).unwrap();
+                return Ok(());
+            }
+            Operation::Print | Operation::Save(_) => {
+                let encoded = CanonicalRecord::chess(self.game.record())
+                    .to_json()
+                    .map_err(|e| record_io::diagnostic(&e.to_string()))?;
+                if let Operation::Save(path) = operation {
+                    record_io::save(path, &encoded, out)?;
+                } else {
+                    writeln!(out, "record {encoded}").unwrap();
+                }
+                return Ok(());
+            }
+            Operation::LoadFile(path) => Self::parse_envelope(&record_io::read(path)?)?,
+            Operation::LoadJson(json) => Self::parse_envelope(json)?,
+            Operation::LegacyJson(json) => GameRecord::from_json(json)
+                .map(Box::new)
+                .map_err(|e| record_io::diagnostic(&e.to_string()))?,
         };
-        let record = GameRecord::from_json(json.trim_matches(separator))
-            .map_err(|e| escaped(&e.to_string()))?;
         if record.adjudication_mode() != mshogi_core::chess::AdjudicationMode::M2 {
             return Err(
                 "record uses full adjudication; diagnostic shell cannot restore that mode".into(),
@@ -252,7 +273,7 @@ impl Session {
         }
         let replay = record
             .replay_history()
-            .map_err(|e| escaped(&e.to_string()))?;
+            .map_err(|e| record_io::diagnostic(&e.to_string()))?;
         if !replay.observations.is_empty() {
             return Err(
                 "record includes match observations; diagnostic shell cannot restore match state"
@@ -262,6 +283,15 @@ impl Session {
         self.game = replay.game;
         writeln!(out, "fen {}", self.game.position()).unwrap();
         Ok(())
+    }
+
+    fn parse_envelope(json: &str) -> Result<Box<GameRecord>, String> {
+        let CanonicalRecord::Chess(record) =
+            CanonicalRecord::from_json(json).map_err(|e| record_io::diagnostic(&e.to_string()))?
+        else {
+            return Err("record is not chess; session preserved".into());
+        };
+        Ok(record)
     }
 
     fn show(&self, out: &mut String) {

@@ -25,7 +25,7 @@ The next active worker must inspect the then-current code and record its plan.
 | AC1 — complete sourced profile and consequential interpretations | MSH-63 ratifies SHOGI-P1; MSH-67 implements its history/conclusions; MSH-75 checks completeness | No common rules authority; each implementation retains its own profile. |
 | AC2 — authoritative state/actions/reversal/history/match | MSH-65 state/complete move-drop actions and reversal; MSH-66 full legality; MSH-67 native history/adjudication | MSH-69 carries exact native context; MSH-72 serializes session acceptance. |
 | AC3 — independent fixtures/properties/differential/records | MSH-64 independent board corpus and admitted reference harness; MSH-66 comparisons; MSH-67 outcome/record corpus; MSH-75 review | MSH-69/72/73 verify boundary/context/compatibility and admission. |
-| AC4 — standalone console/notation/diagnostics | MSH-68 shogi shell and adapters | MSH-69 owns common game-selection/routing contract. |
+| AC4 — standalone console/notation/diagnostics | MSH-68 shogi shell and adapters; MSH-90 bounded common console follow-up | MSH-69 typed routing; MSH-90 human game selection and shared record commands under MSH-46. |
 | AC5 — own functional native search/cancellation/interoperability | MSH-70 evaluator/search/structured child; MSH-71 USI and bounded self-play/opponent smoke | MSH-69 common envelope/dispatch; MSH-72 acceptance/execution ownership. MSH-50 retains measured strength. |
 | AC6 — canonical game-specific records and strict replay | MSH-67 native records; MSH-68 notation adapters | MSH-73 common desktop format/migration/worker/admission; it does not own shogi rules replay. |
 | AC7 — actual desktop play/inspection/analysis/persistence | MSH-74 game-specific native/desktop adaptation and running-app journeys | MSH-72 common sides/board/hand-selection/capabilities; MSH-73 Save/Open/history plumbing; final cross-game three-platform acceptance remains MSH-88 under MSH-46. |
@@ -134,3 +134,13 @@ The authorized next batch is MSH-63–66 only; task records track execution.
 Independent later-source MSH-80–83 may be scheduled without changing that game
 delivery order. M5's MSH-50 owns shogi strength targets; functional M4 smoke,
 reference move generation and evaluator correctness are distinct evidence.
+
+
+## Required console follow-up (MSH-90)
+
+After completed MSH-68/69/70, the owner requested common `--game chess|shogi`
+`shell`/`profile`, explicit canonical record operations and compact shogi output.
+MSH-90 owns this bounded shared console work under MSH-46; it does not reopen
+completed tasks or expand native rules/search. Both MSH-46 and MSH-75 now
+explicitly depend on MSH-90, retaining every prior dependency. MSH-47 remains
+transitively gated. MSH-71/72 are unstarted; M4/MSH-41–47 remain open.

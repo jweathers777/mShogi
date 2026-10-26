@@ -4,6 +4,7 @@ title: Deliver shared six-game integration across console engine records and des
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
+updated_date: '2026-10-26T07:46:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -13,8 +14,19 @@ dependencies:
   - MSH-43
   - MSH-44
   - MSH-45
+  - MSH-69
+  - MSH-72
+  - MSH-73
+  - MSH-76
+  - MSH-77
+  - MSH-78
+  - MSH-79
+  - MSH-88
+  - MSH-89
 documentation:
   - docs/design.md
+  - docs/m4/delivery-plan.md
+  - docs/m4/implementation-map.md
 ordinal: 46000
 ---
 
@@ -43,3 +55,9 @@ Delivery may coordinate with game tickets before their completion; dependencies 
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MSH62 planning refinement2026-10-26: original identity,status,AC and DoD remain intact. This complete-delivery record now depends explicitly on its required bounded component/shared work; docs/m4/delivery-plan.md traces each original criterion and single ownership. No game implementation or delivery completion occurred. Earlier M3-context wording remains historical; current authorization is planning-only. Early shared69/72/73 depend on concrete shogi native consumers, not this final record or all five game deliveries. Later game-specific shared extensions76-79 wait on native handoffs84-87 and profile research80-83, not their aggregate delivery. Final integrated packaged acceptance88 and fresh shared review89 retain all original final obligations; MSH47 still gates M4 closure.
+<!-- SECTION:NOTES:END -->

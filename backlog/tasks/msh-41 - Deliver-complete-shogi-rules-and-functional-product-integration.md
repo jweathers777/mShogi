@@ -4,12 +4,20 @@ title: Deliver complete shogi rules and functional product integration
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
+updated_date: '2026-10-26T07:46:00Z'
 labels: []
 milestone: m-4
 dependencies:
   - MSH-39
+  - MSH-63
+  - MSH-69
+  - MSH-72
+  - MSH-73
+  - MSH-75
 documentation:
   - docs/design.md
+  - docs/m4/delivery-plan.md
+  - docs/m4/implementation-map.md
 ordinal: 41000
 ---
 
@@ -40,3 +48,9 @@ Open design questions (D-07/D-08): Resolve the authoritative rule sources and co
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MSH62 planning refinement2026-10-26: original identity,status,AC and DoD remain intact. This complete-delivery record now depends explicitly on its required bounded component/shared work; docs/m4/delivery-plan.md traces each original criterion and single ownership. No game implementation or delivery completion occurred. Earlier M3-context wording remains historical; current authorization is planning-only.
+<!-- SECTION:NOTES:END -->

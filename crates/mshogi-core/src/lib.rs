@@ -17,3 +17,6 @@ pub const CHESS_POSITION_PROFILE_ID: &str = "mshogi.chess.position.v1";
 pub const CHESS_MATCH_PROFILE_ID: &str = "mshogi.chess.match.v1";
 
 pub mod chess;
+
+/// Native standard-shogi state and complete actions, with explicit coverage limits.
+pub mod shogi;

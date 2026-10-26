@@ -1,11 +1,11 @@
 ---
 id: MSH-63
 title: Ratify the standard-shogi profile and software match conventions
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-26T09:32:00Z'
+updated_date: '2026-10-26T09:33:00Z'
 labels:
   - m4
   - owner-msh-41
@@ -46,7 +46,7 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -63,4 +63,12 @@ Record the explicit SHOGI-P1 approval against 6db8500 and reconcile the selected
 Selected profile, D-13, current M4 index/delivery/verification and clause-to-fixture ledger reconciled. Original MSH-62 planning/review records preserved. Fresh independent AI-agent profile review in progress; executed implementation fixtures are not claimed by this decision ticket.
 
 Focused independent review PASS: separate AI reviewer selected_profile_review, author-independent source/clause/document inspection recorded docs/m4/profile-selection-review.md. No material findings; historical MSH-62 reviews reused only as source/planning evidence. git diff --check passed. Documentation-only decision work runs no product tests; executed board fixtures belong64–66.
+
+Integrated source bd374dd via codex/rewrite614d2b465533c285b9e4dbed7421f204c98efc69 and pushed. Documentation-only commit uses skip-ci; no source behavior changed, existing M1/M2/M3 evidence reused. Follow-up implementation/native CI belongs64–66.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Ratified actual owner selection SHOGI-P1 option A mshogi.shogi.csa36.v1, reconciled current design/profile and clause-to-fixture owners, preserved historical proposals/reviews and unselected alternatives. Independent AI profile review PASS (docs/m4/profile-selection-review.md), no material findings. Named MSH-67 history/declaration/import gates remain explicit; no runtime conformance or complete MSH-41 delivery claimed. Integrated/pushed614d2b4.
+<!-- SECTION:FINAL_SUMMARY:END -->

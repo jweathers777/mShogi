@@ -3,10 +3,12 @@
 Fixture source: [history-outcomes.json](../../tests/fixtures/shogi/history-outcomes.json).
 Prepared 2026-10-26 by a separate Codex AI fixture/research agent from the native
 history implementer. This is AI derivation and board corroboration, not a claim
-of human rules review. Fresh fixture review is retained with the unmerged implementation at
+of human rules review. The first fixture review is retained with the then-unmerged implementation at
 `f259bb23834d6156f21aeec53db9ee00ef7242e4` on `codex/shogi-history`.
-MSH-67 remains blocked: this research handoff does not integrate the provisional
-native game/record implementation or close its mutual-check gate.
+That partial implementation and its reviews remain historical evidence. The
+subsequent [complete-chain and supplement resolution](mutual-check-resolution.md)
+now discharges the mutual-check gate. Native final verification and integration
+are recorded separately in MSH-67 and [history validation](history-validation.md).
 
 ## Authority, editions and method
 
@@ -73,10 +75,11 @@ turn and counter as the concluded12-action history. Its known occurrence list is
 only[0]. Earlier checks/repetitions are unknown, so it is live; an SFEN counter
 is not an event log. This is the same-position/different-history witness.
 
-## Mutual continuous-check research gate
+## Mutual continuous-check research history
 
-**Pending: no outcome is asserted for a hypothetical mutual continuous-check
-cycle.** Neither governing rule text supplies a separate mutual-case winner.
+**Historical blocked-stage result, superseded by the
+[reviewed resolution](mutual-check-resolution.md):** no outcome was asserted for
+a hypothetical mutual continuous-check cycle. Neither governing rule text supplies a separate mutual-case winner.
 A concrete legal history plus sourced interpretation or a sound impossibility
 argument is required to close this part of HIST-INTERVAL.
 

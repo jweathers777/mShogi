@@ -87,3 +87,14 @@ All entries below are planned verification; no parser, USI adapter, archive sche
 | SH-F055 | Actual desktop shogi board, both hands, promotion selection, orientation, move history, analysis/PV and conclusions preserve same canonical action/state as library/console, including save/load. | APP MSH-41/46; screenshots alone insufficient; verify authoritative outcomes and native packaged behavior on required platforms. |
 
 Board legality cases are deliberately more concrete than the pending profile/history corpora. Closure requires turning pending rows into reviewed data and observed results; the table does not claim complete instantiated coverage. Reference-admission, differential comparisons, opponent integration, application integration and independent review each need their own evidence and limitations, as described in [the verification proposal](shogi-verification.md).
+
+Current execution supplements preserve these initial planning rows and stable
+identities. MSH-64–66's concrete board evidence is indexed in
+[coverage](shogi-coverage.md). MSH-67 instantiates the assigned history/outcome,
+declaration and import/length scope in
+[history-outcomes.json](../../tests/fixtures/shogi/history-outcomes.json), with
+[independent derivations](history-fixture-derivations.md), strict native replay
+tests and a [reviewed mutual-check impossibility argument](mutual-check-resolution.md).
+Pending adapter, clock, external-engine and presentation portions retain their
+existing later owners; this does not turn the whole55-entry inventory into a
+completed deliverable.

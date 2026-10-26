@@ -44,6 +44,12 @@ interval/precedence from CSA27(2)/JSA-R10(10) with a concrete legal history befo
 assigning that case a result. Otherwise retain a reasoned impossibility proof.
 This gates affected MSH-67 history cases only, not local board enumeration.
 
+Current resolution: [the complete-chain proof and case accounting](mutual-check-resolution.md)
+discharge the mutual-case obligation for every admitted live root. The original
+incomplete proof review remains historical evidence. Checked/check-relieved,
+interrupted and overlapping histories are instantiated in the independently
+expected history corpus and native tests described below.
+
 **DECL-BOUNDARY (MSH-67, SH-F034–037):** material-valid threshold diagrams and
 one-negated-condition cases must distinguish eligibility from formal commitment.
 Untimed live time eligibility is approved; no unnamed timed policy is implemented.
@@ -109,3 +115,26 @@ Final native source0845392 is integrated/pushed at
 desktop regression CI40305615506 pass on Windows, macOS and Linux. Exact commands,
 source fingerprints, review methods and limitations are in the validation records.
 MSH-63–66 complete their bounded obligations; they do not close MSH-41 or M4.
+
+### MSH-67 native history and canonical records
+
+[Independent history fixture derivations](history-fixture-derivations.md) establish
+21 history/import ledgers, nine declaration diagrams and seven command cases.
+The current HIST-INTERVAL, DECL-BOUNDARY and IMPORT-LENGTH obligations have concrete
+reviewed expectations, including checked/check-relieved fourth occurrences, either
+checking side, interrupted checking, overlapping identities, exact28/27
+declaration boundaries, false versus advisory declarations, supplied/defaulted
+counters and loss/repetition/length precedence. Reference cycle helpers do not
+define outcomes. The mutual-check proof uses23 conditional normalized pairings,
+not an exhaustive search of legal states.
+
+The [native contract](history-state.md) supplies explicit live roots and unknown
+imported prehistory, complete rules-owned event/check/occurrence history, selected
+untimed conclusions, atomic command admission, exact undo, same-ply terminal
+prefixes and strict versioned canonical game/match records. Complete-save capacity
+is bounded without discarding accepted history. Invariant diagnostics retain
+candidate context through checked prefix and record replay; they never invent a
+game outcome. [Validation and review](history-validation.md) distinguish executed
+tests, earlier partial evidence and the final integration/CI record in MSH-67.
+Engine, transport, console, shared archive, desktop and complete-delivery duties
+remain with their existing later owners. MSH-41–47 and M4 remain open.

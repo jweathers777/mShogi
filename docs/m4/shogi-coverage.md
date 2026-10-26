@@ -56,3 +56,24 @@ Missing earlier play is never inferred from the declared number.
 These are named fixture/research gates already owned by existing tasks, not a
 new owner-decision request. Source editions, the rejected event alternatives and
 original planning constructions remain traceable in the profile/inventory and Git.
+
+## Executed board evidence by bounded ticket
+
+- **MSH-63:** explicit selection and author-independent AI profile/source review
+  [PASS](profile-selection-review.md). This decision evidence claims no execution.
+- **MSH-64:** [actual isolated reference admission](reference/README.md),
+  [101 concrete independently expected cases](../../tests/fixtures/shogi/board-rules.json),
+  four audited API-gap sentinels and four injected mismatch/failure demonstrations.
+  [Independent AI fixture/harness review](reference-review.md) records the checked
+  subset and resolved findings. Board inventory IDs001–024 are represented;
+  representation of an ID does not certify every future completeness construction.
+  Reference observations are separate from expectations; no native comparison is
+  claimed by this ticket. The complete55-entry inventory is not a prerequisite.
+- **MSH-65:** [state/notation/structural-transition tests](state-validation.md),
+  [independent AI source/test review](state-review.md), source826cd2f integrated
+  at ce42d06111a382436d2d853b5d61d4ac2196ac8b. Native CI40300895588 passed on
+  Windows2022/macOS15/Ubuntu24.04. No full local legality or match outcome is claimed
+  by that intermediate state ticket.
+
+MSH-66 supplies the complete local legal API and native differential evidence;
+MSH-67 and later consumers retain all history/outcome/protocol/archive/UI duties.

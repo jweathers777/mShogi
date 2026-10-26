@@ -77,3 +77,29 @@ original planning constructions remain traceable in the profile/inventory and Gi
 
 MSH-66 supplies the complete local legal API and native differential evidence;
 MSH-67 and later consumers retain all history/outcome/protocol/archive/UI duties.
+
+### MSH-66 execution and corrected reference domain
+
+[Native legality validation](legality-validation.md) and its structured source
+fingerprints record complete local legal choices, both-side movement/promotion,
+drops, legal pawn-drop defenses, attacks/pins, atomic apply and exact undo.
+The additional68 independently reviewed cases cover full central/edge movement
+sets, bishop/lance blockers, empty local choice sets and independently derived
+initial depth2=900/divide30. BOARD-PIN has concrete reviewed and executed coverage;
+it is no longer an unresolved board interpretation gate.
+
+Longer runs exposed two original MSH-64 bishop-evasion roots with both kings
+already checked, outside cshogi's incremental-state domain. MSH-64 was reopened
+and corrected with independently reviewed version2 diagrams and an audited domain
+guard; v1 fixtures/report/manifest and the failed perft observation remain
+preserved. [The domain review](reference-domain-review.md) supersedes that portion
+of the initial admission review. Native structural admission was not narrowed:
+the original diagram has its own independently expected native regression.
+
+The actual admitted-reference/native evidence is167 deterministic sequences,
+4,017 prefixes and169 depth2 perft/divide cases, with zero mismatches after the
+domain correction. Counts beyond the explicitly hand-derived start expectations
+remain differential observations. Separate AI fixture and code reviews identify
+their actual methods; no human review or full game conformance is claimed.
+HIST-INTERVAL, DECL-BOUNDARY and IMPORT-LENGTH remain MSH-67 gates, and all protocol,
+archive, engine, application and complete-delivery duties remain open.

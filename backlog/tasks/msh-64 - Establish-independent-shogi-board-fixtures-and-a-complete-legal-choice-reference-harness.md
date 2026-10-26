@@ -3,7 +3,7 @@ id: MSH-64
 title: >-
   Establish independent shogi board fixtures and a complete-legal-choice
   reference harness
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
@@ -48,7 +48,7 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -69,10 +69,12 @@ Reviewed source368c613 integrated and pushed via codex/rewrite444107cdadfda873d9
 MSH66 longer differential/perft execution exposed two F022 bishop-evasion roots already attacking the nonmoving king (BB4d→WK1a), outside cshogi incremental-check/king-capture invariants. Original101 direct fixture pass remains a true observed result but did not establish safe replay domain. Reopened64 for focused correction: retain v1 fixtures/reports, independently reviewed v2 roots WK1b/mirrorBK9h with unchanged promotion expectations, audited geometric reference-domain guard, all-root audit, original-root refusal sentinel and fresh follow-up review/reintegration. Native behavior must not be changed to match unsupported reference output.
 
 Focused correction complete: preserved original v1 fixture/report/manifest; two bishop-evasion diagrams version2 relocate far king to unattacked square with unchanged independently reviewed promotion facts. Audited raw geometric reference-root admission now rejects prior nonmoving-king check and unsupported local/counter domains before enumeration/push;13 actual rejection sentinels PASS. Independent AI follow-up review PASS docs/m4/reference-domain-review.md; independent all-root geometry audit and actual current101/13domain/4gap/4diagnostic rerun byte-identical. Sourcepin/compiledbinary unchanged; original direct-pass evidence remains historical, not a safe-replay-domain certificate.
+
+Correction source2c25d90 integrated/pushed via codex/rewrite9f9f609c37320863e0fcf803c0fb5d1e834bf584. All current fixture/domain/gap/diagnostic checks PASS and independent domain review resolved; full history of the initial admission and late finding preserved. Native source unchanged from passedce42d06CI; final66source/nativeCI covers current fixtures.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary
 
 <!-- SECTION:FINAL_SUMMARY:BEGIN -->
-Established admitted developer-only cshogi6985fe5 build, audited complete LegalAll harness,101 independently reasoned/reviewed board cases and retained source/compiler/license/binary evidence. Actual101 fixtures,4API-gap sentinels and4useful injected mismatch/failure reductions PASS; staged dirty source rejects. Independent AI reviewer reran admission and fixture diagnostics with PASS. Integrated/pushed444107c. Native comparisons/fulllegality remain66; no full55inventory/history/outcome or complete41delivery claim.
+Admitted exact isolated cshogi6985fe5 build with compiler/source/license/binary provenance and complete LegalAll-only harness. Current101 reviewed board cases,13 domain rejections,4 API-gap sentinels and4 injected mismatch/failure diagnostics PASS; independent AI reviewer reran them. Longer66 checks exposed two unsupported v1 roots; preserved original evidence, corrected v2 diagrams through independent geometry and added audited pre-replay domain guards. Correction integrated/pushed9f9f609. No native/game/history/UI delivery claim by this fixture ticket.
 <!-- SECTION:FINAL_SUMMARY:END -->

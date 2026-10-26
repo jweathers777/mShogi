@@ -2,14 +2,18 @@
 //!
 //! SFEN admits locally valid analysis diagrams, including sparse material. It
 //! does not establish reachability, repetition, prior checks or match outcomes.
-//! The structural transition boundary is crate-private: geometry, promotion,
-//! hands and drop restrictions are checked, but king safety and pawn-drop mate
-//! require the legal-action layer. No chess state or action contract is reused.
+//! The public legal layer includes complete promotion/drop choices, king safety
+//! and pawn-drop mate. Structural transition helpers remain crate-private.
+//! No chess state or action contract is reused.
 
 use std::{error::Error, fmt, str::FromStr};
 
 mod action;
+mod legal;
+mod perft;
 mod sfen;
+pub use legal::RepetitionIdentity;
+pub use perft::{DivideEntry, PerftError};
 #[cfg(test)]
 mod tests;
 pub use action::{Action, ActionError, ActionParseError, Undo, UndoError};

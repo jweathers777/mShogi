@@ -964,6 +964,11 @@ impl DesktopController {
         }
         self.poll_admission();
         self.poll_files();
+        // Open can replace Chess with Shogi while polling. Return its read
+        // adapter before polling or starting any now-retired Chess execution.
+        if self.shared.shogi.is_some() {
+            return self.snapshot();
+        }
         if self.admission_token.is_none()
             && (self.session.pending.is_some() || self.session.analysis_pending.is_some())
             && let Err(error) = self.session.ensure_capacity()

@@ -1380,6 +1380,74 @@ mod tests {
         }
     }
     #[test]
+    fn shared_poll_that_commits_shogi_open_publishes_the_matching_game_family() {
+        use crate::{SessionOperation, SharedDesktopCommand};
+        use mshogi_core::{
+            native::{CanonicalRecord, GameKind, NativeSide},
+            shogi,
+        };
+
+        let directory = directory();
+        let path = directory.join("native-shogi.mshogi");
+        let mut source = controller();
+        source.shared.manual_engine = true;
+        let (_, receipt) = source
+            .shared_command_with_receipt(SharedDesktopCommand {
+                expected: source.shared_token(),
+                game: GameKind::Chess,
+                operation: SessionOperation::Replace {
+                    record: CanonicalRecord::shogi(shogi::GameRecord::from_game(
+                        &shogi::Game::new(),
+                    )),
+                    human: NativeSide::Shogi(shogi::Side::Sente),
+                },
+            })
+            .unwrap();
+        let deadline = Instant::now() + std::time::Duration::from_secs(20);
+        while receipt.completion().is_none() {
+            source.shared_snapshot();
+            assert!(Instant::now() < deadline);
+            thread::sleep(std::time::Duration::from_millis(1));
+        }
+        receipt.completion().unwrap().unwrap();
+        let id = source.queue_shared_save(path.clone()).unwrap();
+        assert_eq!(wait(&mut source, id).io.phase, IoPhase::Complete);
+
+        for legacy_first in [false, true] {
+            let mut opened = controller();
+            // An eligible old Chess engine turn must not start after Open has
+            // committed Shogi, even when the legacy view polls first.
+            opened.session.human = Color::Black;
+            let before = opened.shared_token();
+            opened
+                .queue_shared_open(path.clone(), opened.shared_open_token())
+                .unwrap();
+            // Wait for the real file worker WITHOUT polling the controller:
+            // the chosen first poll must commit the completed cross-game Open.
+            let deadline = Instant::now() + std::time::Duration::from_secs(20);
+            while opened.files.shared.state.lock().unwrap().result.is_none() {
+                assert!(Instant::now() < deadline);
+                thread::sleep(std::time::Duration::from_millis(1));
+            }
+            assert!(opened.shared.shogi.is_none());
+            if legacy_first {
+                opened.snapshot();
+            }
+            let first = opened.shared_snapshot();
+            assert_eq!(first.io.phase, IoPhase::Complete);
+            assert!(first.token.document > before.document);
+            assert_eq!(first.game, GameKind::Shogi);
+            assert_eq!(first.board.files.len(), 9);
+            assert_eq!(first.human.id, NativeSide::Shogi(shogi::Side::Sente));
+            assert!(first.paused);
+            assert!(opened.session.pending.is_none());
+            let next = opened.shared_snapshot();
+            assert_eq!(first.token, next.token);
+            assert_eq!(first.game, next.game);
+        }
+        fs::remove_dir_all(directory).unwrap();
+    }
+    #[test]
     fn claims_and_resignation_roundtrip_complete_match_not_just_moves() {
         for claim in [false, true] {
             let directory = directory();

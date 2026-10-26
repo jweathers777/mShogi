@@ -1027,6 +1027,12 @@ impl DesktopController {
             return self.shogi_snapshot();
         }
         let snapshot = self.snapshot();
+        // The legacy poll may commit a cross-game Open. Never publish its Chess
+        // projection with the replacement Shogi epoch: equal-token freshness
+        // rejection would then hide the correct Shogi view indefinitely.
+        if self.shared.shogi.is_some() {
+            return self.shared_snapshot();
+        }
         self.chess_snapshot(snapshot)
     }
     pub(super) fn pause_shared_for_close(&mut self) {

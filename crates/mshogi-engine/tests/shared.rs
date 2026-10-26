@@ -164,8 +164,14 @@ fn actual_chess_play_claim_terminal_incomplete_analysis_and_full_are_preserved()
     ));
 }
 #[test]
-fn actual_shogi_records_have_no_execution_capability_or_chess_score() {
-    assert!(execution_capabilities(GameKind::Shogi).is_empty());
+fn actual_shogi_records_have_only_implemented_native_operations() {
+    assert_eq!(
+        execution_capabilities(GameKind::Shogi),
+        &[
+            ExecutionOperation::EngineTurn,
+            ExecutionOperation::MoveAnalysis
+        ]
+    );
     assert_eq!(execution_capabilities(GameKind::Chess).len(), 3);
     let mut game = shogi::Game::new();
     game.submit(shogi::GameRequest {
@@ -201,18 +207,30 @@ fn actual_shogi_records_have_no_execution_capability_or_chess_score() {
         context.purpose = purpose;
         let response = run(context.clone());
         assert!(response.matches(&context));
-        assert!(matches!(
-            response.result,
-            SharedResult::Failure {
-                failure: EngineFailure {
-                    kind: FailureKind::UnsupportedMode,
-                    ..
+        if matches!(context.purpose, SharedPurpose::ChessFullReachability { .. }) {
+            assert!(matches!(
+                response.result,
+                SharedResult::Failure {
+                    failure: EngineFailure {
+                        kind: FailureKind::UnsupportedMode,
+                        ..
+                    }
                 }
-            }
-        ));
-        let json = serde_json::to_string(&response).unwrap();
-        assert!(!json.contains("\"score\""));
-        assert!(!json.contains("\"telemetry\""));
+            ));
+        } else {
+            assert!(matches!(
+                response.result,
+                SharedResult::Shogi {
+                    result: ShogiResult::Finished {
+                        conclusion: shogi::Conclusion::Win {
+                            winner: shogi::Side::Sente,
+                            reason: shogi::WinReason::Resignation
+                        },
+                        ..
+                    }
+                }
+            ));
+        }
     }
 }
 #[test]

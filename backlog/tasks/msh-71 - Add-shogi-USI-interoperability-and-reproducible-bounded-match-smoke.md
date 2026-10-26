@@ -1,11 +1,11 @@
 ---
 id: MSH-71
 title: Add shogi USI interoperability and reproducible bounded match smoke
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-26T18:11:00Z'
+updated_date: '2026-10-26T18:27:00Z'
 labels:
   - m4
   - owner-msh-41
@@ -36,19 +36,19 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 A separate USI adapter exposes real shogi native search with handshake/readiness,SFEN+complete history,move/drop/promotion,resign/win,stop/gameover/quit and a documented supported subset while UCI chess stays available.
-- [ ] #2 Host shogi authority validates returned actions and declarations under the recorded profile; protocol draw notification is distinguished from game outcome,score and replay policy. Process/transport failures are distinct from named competition penalties.
-- [ ] #3 Bounded self-play and a recorded match against pinned independent opponent candidate YaneuraOu0f421391ae311df9df57dcfcb2b4a78a1972bdf8 (or independently reviewed justified replacement) preserve binary/build/options/profile,commands,limits,observations and native conclusions.
-- [ ] #4 Invalid move,false declaration,missing/late/malformed reply,timeout,cancellation and process cleanup have explicit reports and actual process fixtures. Work-limited rerun claims are conditional; recorded event replay is deterministic.
-- [ ] #5 Untimed experiments are supported first. Unsupported clock/event profiles fail explicitly; any timed support must define and verify its game-specific timing policy before claiming it. MSH50 retains strength measurement.
+- [x] #1 A separate USI adapter exposes real shogi native search with handshake/readiness,SFEN+complete history,move/drop/promotion,resign/win,stop/gameover/quit and a documented supported subset while UCI chess stays available.
+- [x] #2 Host shogi authority validates returned actions and declarations under the recorded profile; protocol draw notification is distinguished from game outcome,score and replay policy. Process/transport failures are distinct from named competition penalties.
+- [x] #3 Bounded self-play and a recorded match against pinned independent opponent candidate YaneuraOu0f421391ae311df9df57dcfcb2b4a78a1972bdf8 (or independently reviewed justified replacement) preserve binary/build/options/profile,commands,limits,observations and native conclusions.
+- [x] #4 Invalid move,false declaration,missing/late/malformed reply,timeout,cancellation and process cleanup have explicit reports and actual process fixtures. Work-limited rerun claims are conditional; recorded event replay is deterministic.
+- [x] #5 Untimed experiments are supported first. Unsupported clock/event profiles fail explicitly; any timed support must define and verify its game-specific timing policy before claiming it. MSH50 retains strength measurement.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -75,4 +75,17 @@ Independent read-only protocol/fixture audit established USI score/PV/declaratio
 Final local verification on macOS 27.0.1 arm64, Rust 1.89.0: cargo test --workspace --locked passed 353 tests in 53 groups, zero failures. Workspace all-targets Clippy -D warnings, cargo fmt --all -- --check and git diff --check passed. Release production engine/runner builds and actual final experiments/replay passed; source and binaries match docs/m4/usi/execution-manifest.json. Updated native CI includes explicit USI handshake smoke; recorded native reports replay cross-platform without opponent execution. Normal package inspection rejects fixture/test-driver paths; new USI fixture is separate from normal engine bundles.
 Final independent read-only AI implementation reviewer /root/msh71_boundary_review inspected USI lifecycle/result mapping, native admission, runner deadlines/cleanup, full-history identity, strict replay, settings and evidence. Separate CARGO_TARGET_DIR=/private/tmp/msh71-boundary-review-target cargo test --locked -p mshogi-console -p mshogi-runner passed 113 tests (console80/runner33). Independently replayed all 8 valid reports/36 games, rejected the intentionally invalid pre-fix full report, and reran original TAB/late-cleanup-duplicate probes: corrected expectations passed. No remaining actionable findings. Final reviewed USI SHA256 60dbb25a01988aebcc90d08d60df98a5f4c7cad643e6affeb63f029982f3c6ac; runner shogi.rs e99773a3d118ec59a617c81b6a8c4d4fe6648e6da3bc4944973369956061b6aa. Independent protocol/evidence auditor also verified actual binary/source/options, paired assignments, provenance/conclusions/scores, complete normal traffic, failed-work isolation and conditional repeatability; seven actual native USI probes passed. These are AI reviews plus separate actual execution, not human or additional-platform opponent evidence.
 Normal integration/push and current-source CI pending. Primary checkout is the only worktree; no temporary checkout to clean. Preserve MSH90 and all completed inputs unchanged. Stop at71, with72 next in planned desktop sequence.
+
+Reviewed source normally integrated/pushed directly from the sole primary checkout as 6061f11156b4fdb7fa0b572dc9c842eb45b9b3e3 on codex/rewrite. No temporary worktree was required or created. Current-source Rust CI https://github.com/jweathers777/mShogi/actions/runs/40375558458 and desktop CI https://github.com/jweathers777/mShogi/actions/runs/40375558388 launched on exact6061f11; pending, not completion evidence. At this point Linux/macOS native jobs passed, Windows tests and desktop checks still running. Task remains In Review. MSH72–75 unstarted; M4/MSH41–47 remain open.
+
+Final exact-source CI on 6061f11156b4fdb7fa0b572dc9c842eb45b9b3e3: native Rust workspace https://github.com/jweathers777/mShogi/actions/runs/40375558458 attempt1 SUCCESS on ubuntu-24.04/macos-15/windows-2022. Format, Clippy, workspace tests including USI/runner/36-game replay regressions, all-feature desktop-session checks, native snapshot equality, build and both console/USI smokes passed. Desktop packages https://github.com/jweathers777/mShogi/actions/runs/40375558388 attempt1 SUCCESS all3: locked frontend/native checks, normal packages and bundled-engine checks; Linux/Windows separately labeled packaged GUI regression journeys passed. macOS is package/bundled-engine evidence, supplementing unchanged prior M3 GUI/Tao/native-termination evidence. No job reruns, cancellations or failed product checks. Non-failing existing runner-capacity/action-runtime annotations do not change verdicts. External opponent execution remains established only on the actual Mac, not inferred from CI.
+Acceptance coverage: AC1 actual native USI11-process suite and old UCI/common-console/shared/desktop regression tests; AC2 native move/declaration/resignation admission, exact history/actor/context and distinct protocol/game/score/failure records; AC3 pinned unmodified material opponent admission and actual paired 6-game self-play/6-game opponent set, full binary/options/traffic/canonical records; AC4 malformed/illegal/false/missing/late/duplicate/stop/replacement/watchdog/cleanup fixtures, independent reproduced and corrected TAB/retirement defects, source/binary/report hashes and all8 valid reports/36 games replayed; AC5 explicit untimed-only configuration, finite work, separate experiment cutoffs, unsupported clocks/ponder/tsume behavior and MSH50 strength boundary. All5 criteria and4 DoD items now supported. Normal integration/push source6061f11; a task-only completion commit follows. Only main checkout exists, no temporary worktree to remove. MSH90 and completed inputs remain Done;72–75 unstarted and41–47/M4 open.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Completed MSH-71 only and integrated/pushed tested source 6061f11156b4fdb7fa0b572dc9c842eb45b9b3e3 to codex/rewrite. Added explicit --game shogi usi (bare usi defaults to shogi), bounded native search, complete supplied root/history, actual telemetry, native declaration/action admission and responsive stop/readiness. Replacement/end/quit retire old work; incomplete or failed search produces an explicit unscored process failure, never fallback/resignation. Native decisive values are not mislabeled as mate, and declarations do not appear inside board PVs. Existing chess UCI, common console/record/board and structured transport behavior remain intact.
+Added separate untimed shogi-run/shogi-replay in the native experiment host. Fresh children per turn bind untagged replies to exact execution generations; bounded cleanup and observed EOF precede candidate acceptance. Actual pinned YaneuraOu0f421391 materiallevel1 APPLEM1/AppleClang21 build was admitted on macOS arm64 with verified CSA27/book/ponder/thread/hash/other settings. Final self-play6 and opponent6 each establish2 unfinished standard8-action experiments,2 mating-drop wins and2 declaration wins under both assignments; these are functional fixtures, not strength comparisons. Native6-game repeat matched canonical games. Separate zero-work/watchdog/retirement failures remain unscored; all8 supported retained reports/36 games replay offline. Full source/binary/options/traffic/provenance/results and a deliberately rejected pre-fix review counterexample are documented in docs/m4/usi.md and its evidence directory.
+Local final workspace353 tests, formatting, all-targets Clippy and release builds passed. Independent AI protocol/fixture/evidence and implementation reviews included separate113-test rebuild, actual probes and offline replay; two reproduced replay/retirement defects were corrected, with no outstanding findings. Native CI40375558458 and desktop CI40375558388 passed attempt1 on Linux/macOS/Windows. Actual external-opponent execution is Mac-only; CI does not imply otherwise. Untimed/finite work only; pondering/clocks unsupported and tsume notimplemented. MSH72 is next in planned desktop sequence;72–75 unstarted,41–47/M4 open, MSH50 retains strength work. No temporary worktree was created; stop here.
+<!-- SECTION:FINAL_SUMMARY:END -->

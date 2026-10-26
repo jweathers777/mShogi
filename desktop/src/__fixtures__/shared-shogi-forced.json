@@ -1,8 +1,33 @@
 {
+  "document": {
+    "revision": 8,
+    "dirty": true,
+    "path": null,
+    "settings": {
+      "game_kind": "shogi",
+      "settings": {
+        "orientation": "sente",
+        "analysis_defaults": {
+          "depth": 1,
+          "nodes": 1000
+        }
+      }
+    }
+  },
+  "io": {
+    "id": 4,
+    "phase": "idle",
+    "message": null
+  },
+  "capacity": {
+    "id": 16,
+    "status": "available",
+    "message": null
+  },
   "token": {
     "document": 4,
     "version": 9,
-    "revision": 13,
+    "revision": 29,
     "selection": 9
   },
   "game": "shogi",
@@ -346,7 +371,7 @@
     "resign": true,
     "hands": true,
     "history": true,
-    "save": false
+    "save": true
   },
   "status": {
     "concluded": false,

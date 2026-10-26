@@ -853,7 +853,7 @@ impl DesktopController {
                 native::{CanonicalRecord, GameKind, NativeSide},
                 shogi,
             };
-            controller.shared_command(SharedDesktopCommand {
+            let (_, receipt) = controller.shared_command_with_receipt(SharedDesktopCommand {
                 expected: controller.shared_token(),
                 game: GameKind::Chess,
                 operation: SessionOperation::Replace {
@@ -863,6 +863,11 @@ impl DesktopController {
                     human: NativeSide::Shogi(shogi::Side::Sente),
                 },
             })?;
+            while receipt.completion().is_none() {
+                controller.shared_snapshot();
+                std::thread::sleep(std::time::Duration::from_millis(1));
+            }
+            receipt.completion().unwrap()?;
         }
         Ok(controller)
     }
@@ -937,11 +942,20 @@ impl DesktopController {
     }
     /// Poll the bounded completion slot, accept it atomically, and start eligible work.
     pub fn snapshot(&mut self) -> Snapshot {
+        if self.shared.admission.is_some() {
+            let mut snapshot = self.session.snapshot();
+            snapshot.io = self.io_state.clone();
+            return snapshot;
+        }
         if self.shared.shogi.is_some() {
+            self.poll_files();
+            if self.shared.shogi.is_none() {
+                return self.snapshot();
+            }
             // Legacy read adapter cannot poll or start hidden chess work.
             let mut snapshot = self.session.snapshot();
-            snapshot.document.dirty = true;
-            snapshot.document.path = None;
+            snapshot.document = self.session.document_state();
+            snapshot.io = self.io_state.clone();
             return snapshot;
         }
         self.poll_admission();

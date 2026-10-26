@@ -1,6 +1,8 @@
 use super::*;
 fn controller() -> DesktopController {
-    DesktopController::new(PathBuf::from("/unused/msh72-engine")).unwrap()
+    let mut c = DesktopController::new(PathBuf::from("/unused/msh72-engine")).unwrap();
+    c.shared.manual_engine = true;
+    c
 }
 fn imported(fen: &str) -> s::Game {
     s::Game::from_root(
@@ -18,11 +20,21 @@ fn send(c: &mut DesktopController, op: SessionOperation) -> Result<SharedSnapsho
     } else {
         GameKind::Chess
     };
-    c.shared_command(SharedDesktopCommand {
+    let (_, receipt) = c.shared_command_with_receipt(SharedDesktopCommand {
         expected: c.shared_token(),
         game,
         operation: op,
-    })
+    })?;
+    let deadline = Instant::now() + std::time::Duration::from_secs(20);
+    loop {
+        let snapshot = c.shared_snapshot();
+        if let Some(result) = receipt.completion() {
+            result?;
+            return Ok(snapshot);
+        }
+        assert!(Instant::now() < deadline);
+        std::thread::sleep(std::time::Duration::from_millis(1));
+    }
 }
 fn replace(c: &mut DesktopController, g: s::Game, human: s::Side) -> SharedSnapshot {
     send(
@@ -102,7 +114,7 @@ fn identities_native_geometry_and_chess_compatibility() {
         ),
         (&"1".into(), &"i".into())
     );
-    assert!(!shogi.capabilities.save);
+    assert!(shogi.capabilities.save);
     assert!(!shogi.capabilities.chess_full);
     assert!(!shogi.capabilities.claims);
     assert_eq!(shogi.hands.len(), 14);
@@ -178,7 +190,8 @@ fn actual_complete_drop_promotion_capture_and_atomic_rejection() {
         )
         .is_err()
     );
-    assert_eq!(before, c.shared_token());
+    assert_eq!(before.version, c.shared_token().version);
+    assert_eq!(before.selection, c.shared_token().selection);
     let captured = send(
         &mut c,
         SessionOperation::Play {
@@ -323,6 +336,7 @@ fn exact_analysis_context_retirement_and_same_board_history() {
     .unwrap();
     let result = serde_json::from_slice(&output).unwrap();
     assert!(c.accept_shared(result));
+    settle(&mut c);
     assert_eq!(
         c.shared.shogi.as_ref().unwrap().game.context(),
         root.context()
@@ -352,7 +366,8 @@ fn exact_analysis_context_retirement_and_same_board_history() {
         )
         .is_err()
     );
-    assert_eq!(before, c.shared_token());
+    assert_eq!(before.version, c.shared_token().version);
+    assert_eq!(before.selection, c.shared_token().selection);
 }
 #[test]
 fn replacement_retires_chess_files_and_pending_admission() {
@@ -399,6 +414,7 @@ fn semantic_undo_replay_does_not_revive_retired_work() {
     )
     .unwrap();
     assert!(c.accept_shared(serde_json::from_slice(&bytes).unwrap()));
+    settle(&mut c);
     assert!(c.shogi_snapshot().status.concluded);
 }
 #[test]
@@ -471,6 +487,7 @@ fn observation_capacity_refuses_new_work_before_changing_session() {
     let observation = PresentedObservation {
         response: incomplete(request),
         application_error: None,
+        historical: false,
     };
     let state = c.shared.shogi.as_mut().unwrap();
     state.retire();
@@ -487,7 +504,8 @@ fn observation_capacity_refuses_new_work_before_changing_session() {
         .unwrap_err()
         .contains("capacity")
     );
-    assert_eq!(c.shared_token(), token);
+    assert_eq!(c.shared_token().version, token.version);
+    assert_eq!(c.shared_token().selection, token.selection);
     assert_eq!(c.shogi_snapshot().context, context);
     assert_eq!(c.shogi_snapshot().observations.len(), 256);
     assert!(c.shared.shogi.as_ref().unwrap().pending.is_none());
@@ -545,6 +563,7 @@ fn incomplete_failure_and_retry_preserve_native_history_without_fallback() {
     let old = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
     let before = c.shogi_snapshot().context;
     assert!(c.accept_shared(incomplete(old.clone())));
+    settle(&mut c);
     assert_eq!(c.shogi_snapshot().phase, EnginePhase::Incomplete);
     assert_eq!(c.shogi_snapshot().context, before);
     assert!(!c.shogi_snapshot().status.concluded);
@@ -561,7 +580,16 @@ fn incomplete_failure_and_retry_preserve_native_history_without_fallback() {
             }
         }
     }));
+    settle(&mut c);
     assert_eq!(c.shogi_snapshot().phase, EnginePhase::Failed);
     assert_eq!(c.shogi_snapshot().context, before);
     assert!(!c.shogi_snapshot().status.concluded);
+}
+
+fn settle(c: &mut DesktopController) {
+    let end = Instant::now() + std::time::Duration::from_secs(20);
+    while c.shared_snapshot().capacity.status == CapacityPhase::Checking {
+        assert!(Instant::now() < end);
+        std::thread::sleep(std::time::Duration::from_millis(1));
+    }
 }

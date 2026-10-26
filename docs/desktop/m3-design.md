@@ -325,3 +325,10 @@ implementation. Future12x12/16x16 product design must assess full-board fit and
 readability rather than assume zoom/pan/scroll is necessary. Such techniques may
 be evaluated where useful; standard shogi must not inherit them automatically.
 See [the M4 shared contract](../m4/desktop-session.md) and MSH-74 acceptance criteria.
+
+MSH-73 scope clarification: future12x12/16x16 product boards must be designed for
+full-board display **without requiring zoom or pan**, as demonstrated by legacy
+mShogi. Optional techniques are not an architectural requirement. The MSH-72/73
+surfaces remain development-only verification harnesses; MSH-74 owns the approved
+shogi interaction/visual product. The archive extension is documented in
+[the M4 archive contract](../m4/desktop-archive.md).

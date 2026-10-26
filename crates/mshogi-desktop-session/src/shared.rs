@@ -1,6 +1,9 @@
 //! Concrete chess/shogi desktop boundary. Native games remain authoritative.
 //! The stable chess APIs/archive are a compatibility adapter, not a common rules model.
 use super::*;
+#[path = "shared_archive.rs"]
+pub(super) mod archive;
+pub use archive::{NativeDesktopSettings, SharedDocumentState, SharedOpenToken, ShogiSettings};
 use mshogi_core::{
     native::{CanonicalRecord, GameKind, NativeSide, RulesProfile},
     shogi as s,
@@ -215,16 +218,26 @@ pub struct PresentedStatus {
 }
 /// Actual observation retains the exact native execution context. A score is never
 /// reinterpreted as chess mate; declaration distance counts native command edges.
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct PresentedObservation {
     /// Exact submitted context and actual native result.
     pub response: SharedResponse,
     /// Native command admission diagnostic, separate from a game outcome.
+    #[serde(deserialize_with = "archive::required_option")]
     pub application_error: Option<String>,
+    /// True after reopening; evidence never resumes execution.
+    pub historical: bool,
 }
 /// Typed shared desktop view with exact runtime identity and native context.
 #[derive(Clone, Debug, Serialize)]
 pub struct SharedSnapshot {
+    /// Authoritative document metadata and game-native settings.
+    pub document: SharedDocumentState,
+    /// Off-path document operation.
+    pub io: IoState,
+    /// Pre-commit persistence resource admission.
+    pub capacity: CapacityState,
     /// Exact runtime snapshot and selection precondition.
     pub token: SessionToken,
     /// Explicit native game identity.
@@ -331,7 +344,12 @@ pub enum SessionOperation {
         /// Opaque complete native action identifier.
         action: s::Action,
     },
-    /// Submit a formal entering-king declaration, including its native false-declaration semantics.
+    /// Save native shogi desktop preferences; no rules are computed by the client.
+    ShogiPreferences {
+        /// Supported native shogi settings.
+        settings: ShogiSettings,
+    },
+    /// Submit formal native declaration, distinct from advisory eligibility.
     Declare {},
     /// Submit native human resignation.
     Resign {},
@@ -383,6 +401,9 @@ enum OperationWire {
         action: s::Action,
     },
     // Submit a formal entering-king declaration, including its native false-declaration semantics.
+    ShogiPreferences {
+        settings: ShogiSettings,
+    },
     Declare {},
     // Submit native human resignation.
     Resign {},
@@ -439,6 +460,13 @@ impl<'de> Deserialize<'de> for SessionOperation {
 
 #[derive(Clone)]
 pub(super) struct ShogiSession {
+    initial_record: s::GameRecord,
+    initial_settings: ShogiSettings,
+    settings: ShogiSettings,
+    controls: Vec<archive::ShogiControl>,
+    analysis_intent: Option<(CanonicalRecord, WorkLimits)>,
+    durable_needs_stop: bool,
+    execution_floor: u64,
     game: s::Game,
     human: s::Side,
     viewed: Option<s::Game>,
@@ -450,10 +478,30 @@ pub(super) struct ShogiSession {
     analysis: Option<PresentedObservation>,
     observations: Vec<PresentedObservation>,
 }
+type ShogiRollback = (
+    bool,
+    EnginePhase,
+    Option<String>,
+    Option<PresentedObservation>,
+    bool,
+);
 #[derive(Default)]
 pub(super) struct SharedState {
     pub epoch: u64,
     pub shogi: Option<ShogiSession>,
+    pub admission: Option<(u64, bool)>,
+    pub rollback: Option<ShogiRollback>,
+    #[cfg(test)]
+    pub manual_engine: bool,
+}
+impl SharedState {
+    fn auto_submit(&self) -> bool {
+        #[cfg(test)]
+        if self.manual_engine {
+            return false;
+        }
+        true
+    }
 }
 impl ShogiSession {
     fn selected(&self) -> &s::Game {
@@ -462,6 +510,7 @@ impl ShogiSession {
     fn retire(&mut self) {
         self.pending = None;
         self.submitted = false;
+        self.analysis_intent = None;
         self.analysis = None;
         self.phase = EnginePhase::Paused;
         self.diagnostic = None;
@@ -542,10 +591,11 @@ impl DesktopController {
         self.session.revision += 1;
         self.session.selection_id += 1;
         self.session.document_revision += 1;
+        self.session.archive_revision = self.session.revision.min(MAX_SAFE_ID - 65);
     }
     pub(super) fn require_chess(&self) -> Result<(), String> {
         if self.shared.shogi.is_some() {
-            Err("Unsupported operation: shogi desktop archives and the complete shogi application journey are not available in this boundary slice (MSH-73/74).".into())
+            Err("Wrong game: this legacy chess endpoint cannot act on a shogi document; use the shared native endpoint.".into())
         } else {
             Ok(())
         }
@@ -578,55 +628,36 @@ impl DesktopController {
                 return Err("Replacement side and game disagree.".into());
             }
             // Validate before retiring any current state or work.
-            let shogi = match &record {
-                CanonicalRecord::Shogi(record) => Some(ShogiSession {
-                    game: record.to_game().map_err(|e| e.to_string())?,
-                    human: match human {
-                        NativeSide::Shogi(s) => s,
-                        _ => unreachable!(),
-                    },
-                    viewed: None,
-                    paused: true,
-                    pending: None,
-                    submitted: false,
-                    phase: EnginePhase::Paused,
-                    diagnostic: None,
-                    analysis: None,
-                    observations: vec![],
-                }),
-                _ => None,
-            };
-            let chess = match &record {
-                CanonicalRecord::Chess(record) => Some(DesktopSession::from_record(
-                    record,
-                    match human {
-                        NativeSide::Chess(c) => c,
-                        _ => unreachable!(),
-                    },
-                )?),
-                _ => None,
-            };
-            // Prevent chess file/admission completions from crossing the game boundary.
-            self.retire_admission();
-            self.files.cancel();
-            self.bridge.cancel();
-            self.io_state = IoState::default();
-            if let Some(mut chess) = chess {
-                chess.version = self.session.version + 1;
-                chess.revision = self.session.revision + 1;
-                chess.next_request = self.session.next_request;
-                chess.selection_id = self.session.selection_id + 1;
-                chess.document_identity = self.session.document_identity + 1;
-                chess.document_revision = self.session.document_revision + 1;
-                chess.play_paused = true;
-                self.session = chess;
-            } else {
-                self.session.pending = None;
-                self.session.retire_analysis();
-                self.shared_changed();
+            if let CanonicalRecord::Shogi(record) = record {
+                let NativeSide::Shogi(human) = human else {
+                    unreachable!()
+                };
+                let candidate = ShogiSession::restored(&record, human)?;
+                let receipt = self.queue_native_candidate(candidate, None, None, true)?;
+                self.last_command_receipt = Some(receipt);
+            } else if let CanonicalRecord::Chess(record) = record {
+                let NativeSide::Chess(human) = human else {
+                    unreachable!()
+                };
+                let mut candidate = DesktopSession::from_record(&record, human)?;
+                candidate.version = self.session.version + 1;
+                candidate.revision = self.session.revision + 1;
+                candidate.next_request = self.session.next_request;
+                candidate.selection_id = self.session.selection_id + 1;
+                candidate.document_identity = self.session.document_identity + 1;
+                candidate.document_revision = self.session.document_revision + 1;
+                candidate.play_paused = true;
+                self.retire_admission();
+                self.bridge.cancel();
+                self.retire_native_files()?;
+                if let Some(state) = &mut self.shared.shogi {
+                    state.retire();
+                    state.paused = true;
+                }
+                self.queue_admission(candidate)?;
+                self.shared.admission = Some((self.shared.epoch, false));
+                self.last_command_receipt = self.admission_receipt.clone();
             }
-            self.shared.epoch += 1;
-            self.shared.shogi = shogi;
             return Ok(self.shared_snapshot());
         }
         if self.shared.shogi.is_none() {
@@ -672,101 +703,21 @@ impl DesktopController {
             self.command(legacy)?;
             return Ok(self.shared_snapshot());
         }
-        let mut candidate = self.shared.shogi.as_ref().unwrap().clone();
-        let mut analyze = None;
-        if matches!(
-            command.operation,
-            SessionOperation::Analyze { .. }
-                | SessionOperation::Resume {}
-                | SessionOperation::Retry {}
-        ) && candidate.observations.len() >= 256
+        if self.admission_token.is_some()
+            && !matches!(command.operation, SessionOperation::Cancel {})
         {
-            return Err("Application observation capacity (256): no new work was started; all accepted observations remain intact.".into());
+            return Err("Wait for native persistence admission before another command.".into());
         }
-        match command.operation {
-            SessionOperation::Play { action } => {
-                if candidate.paused || candidate.viewed.is_some()
-                    || candidate.game.position().side_to_move() != candidate.human
-                {
-                    return Err("Board actions require the human live turn with play resumed.".into());
-                }
-                candidate.game.submit(s::GameRequest {
-                    expected: candidate.game.context(), actor: candidate.human,
-                    command: s::GameCommand::Play(action),
-                }).map_err(|e| format!("Native action rejected: {e:?}"))?;
-                candidate.retire();
-                candidate.paused = false;
-                candidate.phase = EnginePhase::Idle;
-            }
-            SessionOperation::Declare {} | SessionOperation::Resign {} => {
-                if candidate.viewed.is_some() {
-                    return Err("Return to live before a terminal command.".into());
-                }
-                // Deliberately do NOT impose board-action turn validation here.
-                let native = if matches!(command.operation, SessionOperation::Declare {}) {
-                    s::GameCommand::DeclareEnteringKing
-                } else { s::GameCommand::Resign };
-                candidate.game.submit(s::GameRequest {
-                    expected: candidate.game.context(), actor: candidate.human, command: native,
-                }).map_err(|e| format!("Native terminal command rejected: {e:?}"))?;
-                candidate.retire();
-                candidate.paused = true;
-            }
-            SessionOperation::Undo {} => {
-                if candidate.viewed.is_some() || candidate.game.events().is_empty() {
-                    return Err("Undo requires a live accepted event.".into());
-                }
-                candidate.game = candidate.game.prefix(candidate.game.events().len() - 1)
-                    .map_err(|e| format!("Native undo failed: {e:?}"))?;
-                candidate.retire();
-                candidate.paused = true;
-            }
-            SessionOperation::Inspect { event_index } => {
-                candidate.viewed = Some(candidate.game.prefix(event_index)
-                    .map_err(|e| format!("Native history selection failed: {e:?}"))?);
-                candidate.retire();
-                candidate.paused = true;
-            }
-            SessionOperation::ReturnLive {} => {
-                candidate.viewed = None;
-                candidate.retire();
-                candidate.paused = true;
-            }
-            SessionOperation::Cancel {} => {
-                candidate.retire();
-                candidate.paused = true;
-                candidate.phase = EnginePhase::Cancelled;
-            }
-            SessionOperation::Analyze { operation: AnalysisOperation::Moves { depth, nodes } } => {
-                if !(1..=4).contains(&depth) || nodes > 20_000 {
-                    return Err("Unsupported shogi analysis limits: depth 1–4, at most 20,000 nodes.".into());
-                }
-                candidate.retire();
-                candidate.paused = true;
-                analyze = Some(WorkLimits { depth, nodes });
-            }
-            SessionOperation::Resume {} | SessionOperation::Retry {} => {
-                if candidate.viewed.is_some() || candidate.game.conclusion().is_some() {
-                    return Err("Resume requires a live unconcluded game.".into());
-                }
-                candidate.retire();
-                candidate.paused = false;
-                candidate.phase = EnginePhase::Idle;
-            }
-            _ => return Err("Unsupported operation for shogi; chess Full, claims and chess commands are unavailable.".into()),
-        }
-        self.bridge.cancel();
-        self.shared_changed();
-        self.shared.shogi = Some(candidate);
-        if let Some(limits) = analyze {
-            self.start_shogi(limits, true)?;
-        }
+        let candidate = self.shared.shogi.as_ref().unwrap().clone();
+        let receipt =
+            self.queue_native_candidate(candidate, Some(command.operation), None, false)?;
+        self.last_command_receipt = Some(receipt);
         Ok(self.shared_snapshot())
     }
     fn start_shogi(&mut self, limits: WorkLimits, analysis: bool) -> Result<(), String> {
         let state = self.shared.shogi.as_ref().unwrap();
         if state.observations.len() >= 256 {
-            return Err("Application observation capacity (256): no new work was started. Existing history and observations are retained; shogi desktop saving requires MSH-73.".into());
+            return Err("Application capacity: all256 observations are retained. Save this complete document, then start a new document to continue.".into());
         }
         self.session.ensure_capacity()?;
         self.session.next_request += 1;
@@ -803,6 +754,11 @@ impl DesktopController {
             limits,
         };
         let state = self.shared.shogi.as_mut().unwrap();
+        state.execution_floor = state
+            .execution_floor
+            .max(request.request_id)
+            .max(request.session_version)
+            .max(self.session.selection_id);
         state.pending = Some(request);
         state.submitted = false;
         state.phase = EnginePhase::Thinking;
@@ -825,79 +781,26 @@ impl DesktopController {
         {
             return false;
         }
-        let mut state = state.clone();
-        state.pending = None;
-        state.submitted = false;
-        let analysis = matches!(response.context.purpose, SharedPurpose::MoveAnalysis { .. });
-        let mut error = None;
-        state.phase = match &response.result {
-            SharedResult::Failure { failure } => {
-                state.diagnostic = Some(failure.message.clone());
-                EnginePhase::Failed
-            }
-            SharedResult::Shogi {
-                result: ShogiResult::Incomplete { .. },
-            } => EnginePhase::Incomplete,
-            SharedResult::Shogi {
-                result: ShogiResult::Finished { .. },
-            } => EnginePhase::Idle,
-            SharedResult::Shogi {
-                result: ShogiResult::Choice { choice, .. },
-            } => {
-                if !analysis {
-                    let (actor, command) = match choice {
-                        ShogiChoice::Move { action } => (
-                            state.game.position().side_to_move(),
-                            s::GameCommand::Play(*action),
-                        ),
-                        ShogiChoice::Declare { actor } => {
-                            (*actor, s::GameCommand::DeclareEnteringKing)
-                        }
-                    };
-                    if let Err(e) = state.game.submit(s::GameRequest {
-                        expected: state.game.context(),
-                        actor,
-                        command,
-                    }) {
-                        error = Some(format!("Native engine choice rejected: {e:?}"));
-                    }
-                }
-                if error.is_some() {
-                    EnginePhase::Failed
-                } else {
-                    EnginePhase::Idle
-                }
-            }
-            _ => return false,
-        };
-        if let Some(e) = &error {
-            state.diagnostic = Some(e.clone());
-        }
-        let observation = PresentedObservation {
-            response,
-            application_error: error,
-        };
-        if analysis {
-            state.analysis = Some(observation.clone());
-        } else if state.phase != EnginePhase::Idle {
-            state.paused = true;
-        }
-        state.observations.push(observation);
-        self.shared.shogi = Some(state);
-        // Do not change selection: the observation is bound to its exact target.
-        self.session.version += 1;
-        self.session.revision += 1;
-        self.session.document_revision += 1;
-        true
+        let candidate = state.clone();
+        self.queue_native_candidate(candidate, None, Some(response), false)
+            .is_ok()
     }
     /// Poll only the active game and return its native presentation and provenance.
     pub fn shared_snapshot(&mut self) -> SharedSnapshot {
+        self.poll_native_admission();
         if self.shared.shogi.is_some() {
-            if let Some(response) = self.bridge.poll_shared() {
+            self.poll_files();
+            if self.shared.shogi.is_none() {
+                return self.shared_snapshot();
+            }
+            if self.admission_token.is_none()
+                && let Some(response) = self.bridge.poll_shared()
+            {
                 self.accept_shared(response);
             }
             let state = self.shared.shogi.as_ref().unwrap();
-            if state.pending.is_none()
+            if self.admission_token.is_none()
+                && state.pending.is_none()
                 && !state.paused
                 && state.viewed.is_none()
                 && state.game.conclusion().is_none()
@@ -915,8 +818,11 @@ impl DesktopController {
                 s.phase = EnginePhase::Failed;
                 s.diagnostic = Some(e);
             }
+            let auto_submit = self.shared.auto_submit();
             let state = self.shared.shogi.as_mut().unwrap();
-            if let Some(request) = state.pending.clone()
+            if self.admission_token.is_none()
+                && auto_submit
+                && let Some(request) = state.pending.clone()
                 && !state.submitted
             {
                 state.submitted = true;
@@ -938,9 +844,13 @@ impl DesktopController {
         self.chess_snapshot(snapshot)
     }
     pub(super) fn pause_shared_for_close(&mut self) {
-        if let Some(state) = self.shared.shogi.as_mut() {
+        self.retire_admission();
+        if let Some(state) = self.shared.shogi.as_mut()
+            && (state.pending.is_some() || !state.paused || state.analysis_intent.is_some())
+        {
             state.retire();
             state.paused = true;
+            state.control(None, None, true);
             self.bridge.cancel();
             self.shared_changed();
         }
@@ -1089,6 +999,9 @@ impl DesktopController {
             })
             .collect();
         SharedSnapshot {
+            document: self.shared_document(),
+            io: self.io_state.clone(),
+            capacity: self.session.capacity.clone(),
             token: self.shared_token(),
             game: GameKind::Shogi,
             profile: RulesProfile::ShogiCsa36V1,
@@ -1130,7 +1043,7 @@ impl DesktopController {
                 resign: !historical && !ended,
                 hands: true,
                 history: true,
-                save: false,
+                save: true,
             },
             status: shogi_status(game),
             events,
@@ -1220,6 +1133,9 @@ impl DesktopController {
         };
         let active = !snapshot.view.historical && snapshot.conclusion.is_none();
         SharedSnapshot {
+            document: self.shared_document(),
+            io: self.io_state.clone(),
+            capacity: self.session.capacity.clone(),
             token: self.shared_token(),
             game: GameKind::Chess,
             profile: RulesProfile::ChessMatchV1,

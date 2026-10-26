@@ -32,10 +32,10 @@ impl AdmissionReceipt {
     pub fn completion(&self) -> Option<Result<(), String>> {
         self.0.lock().expect("admission receipt").clone()
     }
-    fn pending() -> Self {
+    pub(super) fn pending() -> Self {
         Self(Arc::new(Mutex::new(None)))
     }
-    fn finish(&self, result: Result<(), String>) {
+    pub(super) fn finish(&self, result: Result<(), String>) {
         let mut value = self.0.lock().expect("admission receipt");
         if value.is_none() {
             *value = Some(result);
@@ -159,6 +159,8 @@ impl DesktopController {
         }
     }
     pub(super) fn retire_admission(&mut self) {
+        self.shared.admission = None;
+        self.shared.rollback = None;
         if let Some(receipt) = self.admission_receipt.take() {
             receipt.finish(Err(
                 "The pending command was superseded before acceptance.".into()

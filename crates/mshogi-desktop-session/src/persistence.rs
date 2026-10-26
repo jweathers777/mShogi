@@ -150,7 +150,7 @@ pub(super) struct ControlEntry {
 }
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-struct Archive {
+pub(super) struct Archive {
     schema_version: u32,
     profile: String,
     match_record_json: String,
@@ -165,7 +165,7 @@ struct Archive {
     next_request: u64,
     document_revision: u64,
 }
-struct Opened {
+pub(super) struct Opened {
     archive: Archive,
     game: ChessMatch,
 }
@@ -175,7 +175,8 @@ pub(super) struct Viewed {
     conclusion: Option<MatchConclusion>,
     index: usize,
 }
-enum Work {
+pub(super) enum Work {
+    Native(Box<super::shared::archive::NativeWork>),
     Admit(Box<DesktopSession>),
     Save {
         archive: Box<Archive>,
@@ -195,7 +196,8 @@ enum Work {
         token: OpenToken,
     },
 }
-enum Completed {
+pub(super) enum Completed {
+    Native(Box<super::shared::archive::NativeCompleted>),
     Admitted(Box<DesktopSession>),
     Saved {
         path: PathBuf,
@@ -294,7 +296,7 @@ impl FileWorker {
         state.pending = None;
         state.result = None;
     }
-    fn submit(&self, id: u64, work: Work) {
+    pub(super) fn submit(&self, id: u64, work: Work) {
         let stop = Arc::new(AtomicBool::new(false));
         let mut state = self.shared.state.lock().expect("document worker metadata");
         if let Some(current) = &state.current {
@@ -313,7 +315,7 @@ impl FileWorker {
         self.shared.wake.notify_one();
         drop(retired);
     }
-    fn poll(&self) -> Option<(u64, Result<Completed, String>)> {
+    pub(super) fn poll(&self) -> Option<(u64, Result<Completed, String>)> {
         self.shared
             .state
             .lock()
@@ -338,7 +340,7 @@ impl Drop for FileWorker {
         self.shutdown();
     }
 }
-fn check(stopped: &mut impl FnMut() -> bool) -> Result<(), String> {
+pub(super) fn check(stopped: &mut impl FnMut() -> bool) -> Result<(), String> {
     if stopped() {
         Err("Document operation cancelled or exceeded its 15-second validation budget.".into())
     } else {
@@ -347,6 +349,8 @@ fn check(stopped: &mut impl FnMut() -> bool) -> Result<(), String> {
 }
 fn execute(work: Work, mut stopped: impl FnMut() -> bool) -> Result<Completed, String> {
     match work {
+        Work::Native(work) => super::shared::archive::execute(*work, &mut stopped)
+            .map(|value| Completed::Native(Box::new(value))),
         Work::Admit(candidate) => {
             candidate.check_archive_capacity(&mut stopped)?;
             Ok(Completed::Admitted(candidate))
@@ -400,38 +404,9 @@ fn execute(work: Work, mut stopped: impl FnMut() -> bool) -> Result<Completed, S
                 }
                 bytes.extend_from_slice(&chunk[..n]);
             }
-            let archive: Archive = serde_json::from_slice(&bytes)
-                .map_err(|e| format!("Invalid desktop archive: {e}"))?;
-            let record = preflight(&archive)?;
-            let mut resave = archive.clone();
-            resave.version = MAX_SAFE_ID - 17;
-            resave.revision = MAX_SAFE_ID - 17;
-            resave.next_request = MAX_SAFE_ID - 17;
-            resave.document_revision = MAX_SAFE_ID - 17;
-            if serde_json::to_vec_pretty(&resave)
-                .map_err(|e| e.to_string())?
-                .len()
-                > MAX_ARCHIVE_BYTES
-            {
-                return Err("Application capacity: reopened runtime identities would exceed the complete 16 MiB archive budget. The current document was preserved.".into());
-            }
-            check(&mut stopped)?;
-            let game = record
-                .replay_with_stop(&mut stopped)
-                .map_err(|e| e.to_string())?;
-            let final_record =
-                GameRecord::from_json(&archive.game_record_json).map_err(|e| e.to_string())?;
-            if game.game().record() != final_record {
-                return Err(
-                    "Desktop final GameRecord disagrees with complete MatchRecord replay.".into(),
-                );
-            }
-            for observation in &archive.observations {
-                check(&mut stopped)?;
-                validate_observation(observation, &final_record, &mut stopped)?;
-            }
+            let opened = super::shared::archive::decode_chess_compatible(&bytes, &mut stopped)?;
             Ok(Completed::Opened {
-                opened: Box::new(Opened { archive, game }),
+                opened: Box::new(opened),
                 path,
                 token,
             })
@@ -448,6 +423,40 @@ fn execute(work: Work, mut stopped: impl FnMut() -> bool) -> Result<Completed, S
             })
         }
     }
+}
+pub(super) fn decode_chess_v1(
+    bytes: &[u8],
+    stopped: &mut impl FnMut() -> bool,
+) -> Result<Opened, String> {
+    let archive: Archive =
+        serde_json::from_slice(bytes).map_err(|e| format!("Invalid desktop archive: {e}"))?;
+    let record = preflight(&archive)?;
+    let mut resave = archive.clone();
+    resave.version = MAX_SAFE_ID - 17;
+    resave.revision = MAX_SAFE_ID - 17;
+    resave.next_request = MAX_SAFE_ID - 17;
+    resave.document_revision = MAX_SAFE_ID - 17;
+    if serde_json::to_vec_pretty(&resave)
+        .map_err(|e| e.to_string())?
+        .len()
+        > MAX_ARCHIVE_BYTES
+    {
+        return Err("Application capacity: reopened runtime identities would exceed the complete 16 MiB archive budget. The current document was preserved.".into());
+    }
+    check(stopped)?;
+    let game = record
+        .replay_with_stop(&mut *stopped)
+        .map_err(|e| e.to_string())?;
+    let final_record =
+        GameRecord::from_json(&archive.game_record_json).map_err(|e| e.to_string())?;
+    if game.game().record() != final_record {
+        return Err("Desktop final GameRecord disagrees with complete MatchRecord replay.".into());
+    }
+    for observation in &archive.observations {
+        check(stopped)?;
+        validate_observation(observation, &final_record, stopped)?;
+    }
+    Ok(Opened { archive, game })
 }
 fn preflight(archive: &Archive) -> Result<MatchRecord, String> {
     if archive.schema_version != 1 || archive.profile != "mshogi.desktop.archive.v1" {
@@ -733,7 +742,7 @@ fn validate_result(
     }
     Ok(())
 }
-fn atomic_write(
+pub(super) fn atomic_write(
     path: &std::path::Path,
     bytes: &[u8],
     stopped: &mut impl FnMut() -> bool,
@@ -1145,6 +1154,7 @@ impl DesktopController {
             return;
         }
         let result = match result {
+            Ok(Completed::Native(value)) => self.finish_native_file(*value),
             Ok(Completed::Admitted(_)) => unreachable!("dedicated file worker"),
             Ok(Completed::Saved {
                 path,
@@ -1167,74 +1177,7 @@ impl DesktopController {
                 if token != self.open_token() {
                     Err("The live document changed during validation. Open was not applied.".into())
                 } else {
-                    let saved = opened.archive;
-                    let next = [
-                        self.session.version,
-                        self.session.revision,
-                        self.session.next_request,
-                        self.session.selection_id,
-                        saved.version,
-                        saved.revision,
-                        saved.next_request,
-                    ]
-                    .into_iter()
-                    .max()
-                    .unwrap_or(0)
-                        + 1;
-                    if next >= MAX_SAFE_ID - 64
-                        || self.session.document_revision.max(saved.document_revision)
-                            >= MAX_SAFE_ID - 65
-                    {
-                        self.io_state.phase = IoPhase::Failed;
-                        self.io_state.message = Some("Application capacity: reopened identities leave no safe save/runtime headroom. Current document preserved.".into());
-                        self.session.revision += 1;
-                        return;
-                    }
-                    self.retire_admission();
-                    self.session.capacity.status = CapacityPhase::Available;
-                    self.session.capacity.message = None;
-                    self.bridge.cancel();
-                    self.clock_floor = opened.game.record().timestamp_floor().max(
-                        saved
-                            .controls
-                            .iter()
-                            .map(|control| control.at_ns)
-                            .max()
-                            .unwrap_or(0),
-                    );
-                    self.origin = Instant::now();
-                    self.session.game = opened.game;
-                    self.session.initial_record = self
-                        .session
-                        .game
-                        .record()
-                        .initial_record()
-                        .expect("worker validated initial record");
-                    self.session.human = saved.human;
-                    self.session.settings = saved.settings;
-                    self.session.play_limits = saved.play_limits;
-                    self.session.observations = saved.observations;
-                    for observation in &mut self.session.observations {
-                        observation.historical = true;
-                    }
-                    self.session.controls = saved.controls;
-                    self.session.validated_observations = self.session.observations.len();
-                    self.session.document_revision =
-                        self.session.document_revision.max(saved.document_revision) + 1;
-                    self.session.saved_revision = self.session.document_revision;
-                    self.session.document_path = Some(path);
-                    self.session.document_identity = next;
-                    self.session.version = next;
-                    self.session.revision = next;
-                    self.session.archive_revision = next;
-                    self.session.next_request = next;
-                    self.session.selection_id = next;
-                    self.session.pending = None;
-                    self.session.retire_analysis();
-                    self.session.viewed = None;
-                    self.session.play_paused = true;
-                    self.session.engine = EngineState { status: EnginePhase::Paused, message: Some("Document reopened with work stopped. Saved observations are historical. Resume play explicitly.".into()), ..EngineState::default() };
-                    Ok("Opened the complete document with work stopped.".into())
+                    self.install_chess_archive(*opened, path)
                 }
             }
             Ok(Completed::Viewed { view, token }) => {
@@ -1257,6 +1200,82 @@ impl DesktopController {
         };
         self.io_state.message = Some(result.unwrap_or_else(|error| error));
         self.session.revision += 1;
+    }
+    pub(super) fn install_chess_archive(
+        &mut self,
+        opened: Opened,
+        path: PathBuf,
+    ) -> Result<String, String> {
+        let saved = opened.archive;
+        let next = [
+            self.session.version,
+            self.session.revision,
+            self.session.next_request,
+            self.session.selection_id,
+            saved.version,
+            saved.revision,
+            saved.next_request,
+        ]
+        .into_iter()
+        .max()
+        .unwrap_or(0)
+            + 1;
+        if next >= MAX_SAFE_ID - 64
+            || self.shared.epoch >= MAX_SAFE_ID - 64
+            || self.session.document_revision.max(saved.document_revision) >= MAX_SAFE_ID - 65
+        {
+            self.io_state.phase = IoPhase::Failed;
+            self.io_state.message = Some("Application capacity: reopened identities leave no safe save/runtime headroom. Current document preserved.".into());
+            self.session.revision += 1;
+            return Err("Application capacity: reopened identity headroom exhausted.".into());
+        }
+        self.retire_admission();
+        self.shared.shogi = None;
+        self.shared.epoch += 1;
+        self.session.capacity.status = CapacityPhase::Available;
+        self.session.capacity.message = None;
+        self.bridge.cancel();
+        self.clock_floor = opened.game.record().timestamp_floor().max(
+            saved
+                .controls
+                .iter()
+                .map(|control| control.at_ns)
+                .max()
+                .unwrap_or(0),
+        );
+        self.origin = Instant::now();
+        self.session.game = opened.game;
+        self.session.initial_record = self
+            .session
+            .game
+            .record()
+            .initial_record()
+            .expect("worker validated initial record");
+        self.session.human = saved.human;
+        self.session.settings = saved.settings;
+        self.session.play_limits = saved.play_limits;
+        self.session.observations = saved.observations;
+        for observation in &mut self.session.observations {
+            observation.historical = true;
+        }
+        self.session.controls = saved.controls;
+        self.session.validated_observations = self.session.observations.len();
+        self.session.document_revision =
+            self.session.document_revision.max(saved.document_revision) + 1;
+        self.session.saved_revision = self.session.document_revision;
+        self.session.document_path = Some(path);
+        self.session.document_identity = next;
+        self.session.version = next;
+        self.session.revision = next;
+        self.session.archive_revision = next;
+        self.session.next_request = next;
+        self.session.selection_id = next;
+        self.session.pending = None;
+        self.session.retire_analysis();
+        self.session.viewed = None;
+        self.session.play_paused = true;
+        self.session.engine = EngineState { status: EnginePhase::Paused, message: Some("Document reopened with work stopped. Saved observations are historical. Resume play explicitly.".into()), ..EngineState::default() };
+        Ok("Opened the complete document with work stopped.".into())
     }
     /// Stabilize a close decision by retiring work without inventing results.
     /// Repeated preflight is idempotent; an untouched initial game stays clean.

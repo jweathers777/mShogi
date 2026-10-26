@@ -270,9 +270,11 @@ fn write_shared_fixtures(directory: &std::path::Path) {
                 .unwrap(),
             )
         };
-        let snapshot = controller
-            .shared_command(SharedDesktopCommand {
-                expected: controller.shared_token(),
+        let expected = controller.shared_token();
+        let snapshot = shared_command(
+            &mut controller,
+            SharedDesktopCommand {
+                expected,
                 game: if name == "shared-shogi-standard" {
                     GameKind::Chess
                 } else {
@@ -282,19 +284,39 @@ fn write_shared_fixtures(directory: &std::path::Path) {
                     record: CanonicalRecord::shogi(s::GameRecord::from_game(&game)),
                     human: NativeSide::Shogi(s::Side::Sente),
                 },
-            })
-            .unwrap();
-        let snapshot = controller
-            .shared_command(SharedDesktopCommand {
+            },
+        )
+        .unwrap();
+        let snapshot = shared_command(
+            &mut controller,
+            SharedDesktopCommand {
                 expected: snapshot.token,
                 game: GameKind::Shogi,
                 operation: SessionOperation::Resume {},
-            })
-            .unwrap();
+            },
+        )
+        .unwrap();
         std::fs::write(
             directory.join(format!("{name}.json")),
             serde_json::to_string_pretty(&snapshot).unwrap() + "\n",
         )
         .unwrap();
+    }
+}
+
+fn shared_command(
+    controller: &mut DesktopController,
+    command: mshogi_desktop_session::SharedDesktopCommand,
+) -> Result<mshogi_desktop_session::SharedSnapshot, String> {
+    let (_, receipt) = controller.shared_command_with_receipt(command)?;
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(20);
+    loop {
+        let snapshot = controller.shared_snapshot();
+        if let Some(result) = receipt.completion() {
+            result?;
+            return Ok(snapshot);
+        }
+        assert!(std::time::Instant::now() < deadline);
+        std::thread::sleep(std::time::Duration::from_millis(1));
     }
 }

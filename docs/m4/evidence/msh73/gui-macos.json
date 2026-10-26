@@ -1,0 +1,35 @@
+{
+  "source": "MSH-73 source commit introducing this evidence (pin in task completion)",
+  "environment": "macOS27.0.1 arm64; Rust1.89 workspace/1.90 Tauri; Node24.19.0",
+  "package": "separate mShogi Verification.app; MSHOGI_DESKTOP_FIXTURE=shared-contract",
+  "method": "primary builder native macOS accessibility/computer interaction; real Tauri native dialogs and bundled engine",
+  "sha256": {
+    "mshogi-desktop": "380144f7d4899b5e8e49c3038e94c8744132a27faae03fa321fd10c1460865fa",
+    "mshogi": "d36e48dc8d6175ab3c9fc073e4de1e119f6850fd7feef5e6bc4bacc3c8830826"
+  },
+  "journey": [
+    "Resume",
+    "7g7f",
+    "bundled engine4c4d",
+    "bounded actual move analysis",
+    "native Save As/private/tmp/msh73-gui.mshogi",
+    "native Cmd-Q Save and close",
+    "relaunch shared-contract fixture",
+    "explicit unsaved replacement guard",
+    "native Open selected saved file",
+    "work stopped; exact2 native events restored; saved observations historical",
+    "Root history event0 with live2-event timeline retained",
+    "Return to live paused",
+    "explicit Resume to Idle human turn",
+    "native quit Keep open",
+    "native Save and close existing path"
+  ],
+  "native_event_count": 2,
+  "observations": 2,
+  "archive_bytes": 9350,
+  "scope_limits": [
+    "development-only visual harness, notMSH74designacceptance",
+    "not Windows/LinuxshogiGUIevidence",
+    "normal package excludes fixture/contract endpoints"
+  ]
+}

@@ -177,22 +177,143 @@ fn native_contract_snapshot(
 }
 #[cfg(feature = "desktop-verification")]
 #[tauri::command]
-fn native_contract_command(
-    controller: State<'_, Mutex<DesktopController>>,
-    shutdown: State<'_, Arc<ShutdownState>>,
+async fn native_contract_command(
+    app: AppHandle,
     command_json: String,
 ) -> Result<mshogi_desktop_session::SharedSnapshot, String> {
     let command = mshogi_desktop_session::SharedDesktopCommand::from_json(&command_json)?;
-    with_controller(&controller, &shutdown, |controller| {
-        if shutdown.close_requested.load(Ordering::Acquire)
-            || shutdown.command_operation.load(Ordering::Acquire)
-            || shutdown.file_operation.load(Ordering::Acquire)
-        {
-            return Err("Finish the current document or close operation first.".into());
+    let shutdown = app.state::<Arc<ShutdownState>>().inner().clone();
+    let (initial, receipt, reservation) = with_controller(
+        &app.state::<Mutex<DesktopController>>(),
+        &shutdown,
+        |controller| {
+            if shutdown.close_requested.load(Ordering::Acquire)
+                || shutdown.file_operation.load(Ordering::Acquire)
+            {
+                return Err("Finish the document or close operation first.".to_string());
+            }
+            shutdown
+                .command_operation
+                .compare_exchange(false, true, Ordering::AcqRel, Ordering::Acquire)
+                .map_err(|_| "Wait for the current native command.".to_string())?;
+            let reservation = CommandOperationGuard(shutdown.clone());
+            let (initial, receipt) = controller.shared_command_with_receipt(command)?;
+            Ok((initial, receipt, reservation))
+        },
+    )??;
+    if let Some(result) = receipt.completion() {
+        result?;
+        return Ok(initial);
+    }
+    tauri::async_runtime::spawn_blocking(move || {
+        let _reservation = reservation;
+        loop {
+            let snapshot = current_contract_snapshot(&app)?;
+            if let Some(result) = receipt.completion() {
+                result?;
+                return Ok(snapshot);
+            }
+            thread::sleep(Duration::from_millis(15));
         }
-        controller.shared_command(command)
-    })?
+    })
+    .await
+    .map_err(|e| format!("Native admission waiter failed: {e}"))?
 }
+#[cfg(feature = "desktop-verification")]
+fn current_contract_snapshot(
+    app: &AppHandle,
+) -> Result<mshogi_desktop_session::SharedSnapshot, String> {
+    with_controller(
+        &app.state::<Mutex<DesktopController>>(),
+        &app.state::<Arc<ShutdownState>>(),
+        DesktopController::shared_snapshot,
+    )
+}
+// These native pickers use the production worker/atomic writer. Only the contract
+// harness endpoint is gated; product shogi interaction belongs to MSH-74.
+#[cfg(feature = "desktop-verification")]
+#[tauri::command]
+async fn native_contract_file(
+    app: AppHandle,
+    action: String,
+    expected: mshogi_desktop_session::SharedOpenToken,
+) -> Result<mshogi_desktop_session::SharedSnapshot, String> {
+    if !matches!(action.as_str(), "save" | "save_as" | "open") {
+        return Err("Unknown native file operation.".into());
+    }
+    let reservation = reserve_file_operation(&app)?;
+    tauri::async_runtime::spawn_blocking(move || {
+        let _reservation = reservation;
+        let actual = with_controller(
+            &app.state::<Mutex<DesktopController>>(),
+            &app.state::<Arc<ShutdownState>>(),
+            |c| c.shared_open_token(),
+        )?;
+        if actual != expected {
+            return Err("The document changed. Review unsaved changes again.".into());
+        }
+        if app
+            .state::<Arc<ShutdownState>>()
+            .close_requested
+            .load(Ordering::Acquire)
+            && action == "open"
+        {
+            return Err("Finish or cancel the close request before opening.".into());
+        }
+        let snapshot = current_contract_snapshot(&app)?;
+        let path = if action == "save" && snapshot.document.path.is_some() {
+            snapshot.document.path.map(PathBuf::from)
+        } else {
+            let picker = app.dialog().file().add_filter("mShogi game", &["mshogi"]);
+            let selected = if action == "open" {
+                picker
+                    .set_title("Open native game archive")
+                    .blocking_pick_file()
+            } else {
+                picker
+                    .set_title("Save complete native game archive")
+                    .set_file_name("shogi.mshogi")
+                    .blocking_save_file()
+            };
+            selected
+                .map(|p| p.into_path().map_err(|e| e.to_string()))
+                .transpose()?
+        };
+        let Some(path) = path else {
+            return current_contract_snapshot(&app);
+        };
+        let id = with_controller(
+            &app.state::<Mutex<DesktopController>>(),
+            &app.state::<Arc<ShutdownState>>(),
+            |c| {
+                if action == "open" {
+                    c.queue_shared_open(path, expected)
+                } else {
+                    c.queue_shared_save(path)
+                }
+            },
+        )??;
+        loop {
+            let snapshot = current_contract_snapshot(&app)?;
+            if snapshot.io.id != id {
+                return Err("Native file operation superseded.".into());
+            }
+            match snapshot.io.phase {
+                IoPhase::Complete => return Ok(snapshot),
+                IoPhase::Failed => {
+                    return Err(snapshot
+                        .io
+                        .message
+                        .unwrap_or_else(|| "Native file operation failed.".into()));
+                }
+                _ => thread::sleep(Duration::from_millis(15)),
+            }
+        }
+    })
+    .await
+    .map_err(|e| format!("Native document waiter failed: {e}"))?
+}
+
 fn engine_path() -> io::Result<PathBuf> {
     let executable = std::env::current_exe()?;
     let directory = executable
@@ -346,7 +467,7 @@ async fn save_document(app: AppHandle, save_as: bool) -> Result<Snapshot, String
         let id = with_controller(
             &app.state::<Mutex<DesktopController>>(),
             &app.state::<Arc<ShutdownState>>(),
-            |controller| controller.queue_save(path),
+            |controller| controller.queue_shared_save(path),
         )??;
         wait_file_operation(&app, id)
     })
@@ -714,6 +835,8 @@ fn main() {
             native_contract_snapshot,
             #[cfg(feature = "desktop-verification")]
             native_contract_command,
+            #[cfg(feature = "desktop-verification")]
+            native_contract_file,
             #[cfg(feature = "desktop-verification")]
             synthetic_snapshot,
             #[cfg(feature = "desktop-verification")]

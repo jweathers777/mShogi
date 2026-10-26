@@ -186,3 +186,15 @@ The owner cites legacy `master`'s longstanding full16x16 Tenjiku display on
 smaller screens. Assess full-board fit/readability first; zoom/pan or other
 large-board techniques are alternatives to justify where useful, not assumed
 requirements. This clarification neither reopens M3 nor implements MSH-74.
+
+## MSH-73 archive extension
+
+The historical MSH-72 evidence and its then-missing Save/Open limitation above
+remain a record of that revision. MSH-73 now adds native shared Save/Open via the
+versioned [archive contract](desktop-archive.md), including strict chess v1
+compatibility, shogi v2 lossless replay, pre-commit capacity and fresh stopped
+reopen. The separately built surface is now labeled **MSH-73 DEVELOPMENT
+CONTRACT**; minimal file/unsaved-change controls do not turn it into product UI.
+MSH-74 remains next and owns all product visual acceptance. The owner requirement
+for future12x12/16x16 is full-board display without requiring zoom or pan; prior
+capability demonstrations must not be read as requiring either technique.

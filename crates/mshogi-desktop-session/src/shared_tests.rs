@@ -374,12 +374,22 @@ fn replacement_retires_chess_files_and_pending_admission() {
     let mut c = controller();
     c.queue_open(PathBuf::from("/unused/absent.mshogi"), c.open_token())
         .unwrap();
-    let (_, receipt) = c
-        .command_with_receipt(DesktopCommand::Play {
-            version: c.session.version,
-            action: "e2e4".parse().unwrap(),
-        })
+    // Stage a real immutable candidate without polling it. The public command
+    // also returns a snapshot and may already accept a fast worker completion;
+    // that legitimately completed command is not pending work to retire.
+    let mut candidate = c.session.clone();
+    candidate
+        .command_unchecked(
+            DesktopCommand::Play {
+                version: c.session.version,
+                action: "e2e4".parse().unwrap(),
+            },
+            0,
+        )
         .unwrap();
+    c.queue_admission(candidate).unwrap();
+    let receipt = c.admission_receipt.clone().unwrap();
+    assert!(receipt.completion().is_none());
     replace(&mut c, s::Game::new(), s::Side::Sente);
     assert!(receipt.completion().unwrap().is_err());
     for _ in 0..20 {

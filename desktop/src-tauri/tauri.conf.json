@@ -42,7 +42,7 @@
       "icons/icon.ico"
     ],
     "category": "Game",
-    "shortDescription": "Chess with the mShogi native engine",
+    "shortDescription": "Chess and Shogi with the mShogi native engine",
     "windows": {
       "nsis": {
         "installMode": "currentUser"

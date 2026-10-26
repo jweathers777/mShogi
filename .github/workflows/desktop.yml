@@ -138,11 +138,11 @@ jobs:
               'sha256': hashlib.sha256(package.read_bytes()).hexdigest(),
               'installation': 'Separately extracted verification package; normal package actually installed with apt.'}, indent=2))
           PY
-      - name: Interact with actual installed and packaged Linux applications
+      - name: Interact with actual installed and packaged Chess and Shogi on Linux
         if: runner.os == 'Linux'
         run: |
           GDK_BACKEND=x11 WEBKIT_DISABLE_COMPOSITING_MODE=1 dbus-run-session -- xvfb-run -a -s '-screen 0 1440x1100x24' python3 desktop/scripts/gui-smoke.py --normal-host /usr/bin/mshogi-desktop --normal-engine /usr/bin/mshogi --verification-host "$PWD/gui-extracted/usr/bin/mshogi-desktop" --verification-engine "$PWD/gui-extracted/usr/bin/mshogi" --output "$PWD/gui-evidence"
-      - name: Install separate Windows verification package and interact with actual applications
+      - name: Install separate Windows verification package and interact with actual Chess and Shogi
         if: runner.os == 'Windows'
         shell: pwsh
         run: |

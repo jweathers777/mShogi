@@ -281,7 +281,7 @@ fn declaration_advice_terminal_history_and_native_wrong_turn_semantics() {
         wrong
             .status
             .label
-            .contains("Sente wins — false declaration")
+            .contains("Gote loses by false entering-king declaration")
     );
     assert_eq!(wrong.events[0].board_ply, 0);
 }
@@ -592,4 +592,195 @@ fn settle(c: &mut DesktopController) {
         assert!(Instant::now() < end);
         std::thread::sleep(std::time::Duration::from_millis(1));
     }
+}
+
+fn new_product_game(
+    c: &mut DesktopController,
+    game: GameKind,
+    human: NativeSide,
+) -> SharedSnapshot {
+    let (_, receipt) = c
+        .shared_new_game(c.shared_open_token(), game, human)
+        .unwrap();
+    let deadline = Instant::now() + std::time::Duration::from_secs(20);
+    loop {
+        let snapshot = c.shared_snapshot();
+        if let Some(result) = receipt.completion() {
+            result.unwrap();
+            return snapshot;
+        }
+        assert!(Instant::now() < deadline);
+        std::thread::sleep(std::time::Duration::from_millis(1));
+    }
+}
+#[test]
+fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identities() {
+    let mut c = controller();
+    let mut previous = c.shared_snapshot().token;
+    for human in [
+        NativeSide::Shogi(s::Side::Sente),
+        NativeSide::Shogi(s::Side::Gote),
+        NativeSide::Chess(Color::Black),
+        NativeSide::Chess(Color::White),
+    ] {
+        let current = new_product_game(&mut c, human.game(), human);
+        assert_eq!(current.game, human.game());
+        assert_eq!(current.human.id, human);
+        assert!(current.token.document > previous.document);
+        assert!(current.token.version > previous.version);
+        assert!(!current.paused);
+        assert!(!current.historical);
+        assert!(current.document.path.is_none());
+        assert!(current.document.dirty);
+        assert_eq!(current.open_token, c.shared_open_token());
+        match human {
+            NativeSide::Shogi(side) => {
+                assert_eq!(current.pieces.len(), 40);
+                assert_eq!(current.choices.len(), 30);
+                assert!(!current.capabilities.declaration);
+                assert_eq!(current.turn.id, NativeSide::Shogi(s::Side::Sente));
+                assert_eq!(c.shared.shogi.as_ref().unwrap().settings.orientation, side);
+                assert_eq!(current.capabilities.board_action, side == s::Side::Sente);
+                assert_eq!(
+                    c.shared.shogi.as_ref().unwrap().pending.is_some(),
+                    side == s::Side::Gote
+                );
+            }
+            NativeSide::Chess(side) => {
+                assert_eq!(current.chess.unwrap().document.settings.orientation, side)
+            }
+        }
+        previous = current.token;
+    }
+}
+#[test]
+fn product_new_rejects_stale_or_conflicting_choices_before_retiring_live_work() {
+    let mut c = controller();
+    let stale = c.shared_open_token();
+    let before = new_product_game(&mut c, GameKind::Shogi, NativeSide::Shogi(s::Side::Gote));
+    let pending = c.shared.shogi.as_ref().unwrap().pending.clone();
+    assert!(
+        c.shared_new_game(stale, GameKind::Chess, NativeSide::Chess(Color::White))
+            .is_err()
+    );
+    assert!(
+        c.shared_new_game(
+            c.shared_open_token(),
+            GameKind::Chess,
+            NativeSide::Shogi(s::Side::Sente)
+        )
+        .is_err()
+    );
+    assert_eq!(c.shared_token(), before.token);
+    assert_eq!(c.shared.shogi.as_ref().unwrap().pending, pending);
+    assert_eq!(c.shared.shogi.as_ref().unwrap().game.events().len(), 0);
+}
+#[test]
+fn product_declaration_capability_is_advisory_eligibility_but_native_terminal_semantics_remain() {
+    let mut c = controller();
+    let initial = new_product_game(&mut c, GameKind::Shogi, NativeSide::Shogi(s::Side::Sente));
+    assert!(!initial.declaration_advice[0].eligible);
+    assert!(!initial.capabilities.declaration);
+    let eligibility = replace(
+        &mut c,
+        imported("K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B5P 1"),
+        s::Side::Sente,
+    );
+    assert!(eligibility.capabilities.declaration);
+    let declared = send(&mut c, SessionOperation::Declare {}).unwrap();
+    assert_eq!(
+        declared.status.label,
+        "Sente wins by entering-king declaration"
+    );
+    assert!(!declared.capabilities.declaration);
+    assert_eq!(declared.events[0].board_ply, 0);
+    new_product_game(&mut c, GameKind::Shogi, NativeSide::Shogi(s::Side::Gote));
+    let resigned = send(&mut c, SessionOperation::Resign {}).unwrap();
+    assert_eq!(resigned.status.label, "Gote resigned · Sente wins");
+    assert_eq!(resigned.events[0].board_ply, 0);
+    assert_eq!(resigned.turn.id, NativeSide::Shogi(s::Side::Sente));
+}
+#[cfg(feature = "desktop-verification")]
+#[test]
+fn product_verification_fixtures_use_real_native_context_and_choices() {
+    for fixture in [
+        "shogi-standard",
+        "shogi-gote",
+        "shogi-hands",
+        "shogi-promotion",
+        "shogi-forced",
+        "shogi-declaration",
+        "shogi-concluded",
+    ] {
+        let mut c =
+            DesktopController::verification("/unused/verification-engine".into(), fixture).unwrap();
+        c.shared.manual_engine = true;
+        let view = c.shared_snapshot();
+        assert_eq!(view.game, GameKind::Shogi);
+        assert!(view.context.game_kind() == GameKind::Shogi);
+        match fixture {
+            "shogi-hands" => {
+                assert_eq!(view.events.len(), 2);
+                assert_eq!(view.hands.iter().filter(|p| p.count > 0).count(), 2);
+                assert!(
+                    view.choices
+                        .iter()
+                        .any(|c| matches!(c.origin, ChoiceOrigin::Hand { .. }))
+                );
+            }
+            "shogi-promotion" => assert_eq!(
+                view.choices
+                    .iter()
+                    .filter(|c| c.from == "5d" && c.steps == ["5c"])
+                    .count(),
+                2
+            ),
+            "shogi-forced" => assert!(view.choices.iter().any(|c| c.action == "5b5a+")),
+            "shogi-declaration" => assert!(view.capabilities.declaration),
+            "shogi-concluded" => assert_eq!(view.status.label, "Sente resigned · Gote wins"),
+            _ => assert_eq!(view.pieces.len(), 40),
+        }
+    }
+}
+
+#[test]
+fn native_search_presentation_preserves_target_purpose_and_real_terminal_distance() {
+    let mut c = controller();
+    replace(
+        &mut c,
+        imported("K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B5P 1"),
+        s::Side::Sente,
+    );
+    let context = analyze(&mut c);
+    let mut bytes = serde_json::to_vec(&context).unwrap();
+    bytes.push(b'\n');
+    let mut output = vec![];
+    mshogi_engine::serve_once(std::io::Cursor::new(bytes), &mut output).unwrap();
+    assert!(c.accept_shared(serde_json::from_slice(&output).unwrap()));
+    settle(&mut c);
+    let view = c.shared_snapshot();
+    assert_eq!(view.event_index, 0);
+    assert!(
+        !view.status.concluded,
+        "read-only declaration analysis cannot declare"
+    );
+    let search = &view.search_observations[0];
+    assert_eq!(search.purpose, "move_analysis");
+    assert_eq!(search.event_index, 0);
+    assert_eq!(search.board_ply, 0);
+    assert_eq!(search.perspective, "Sente");
+    assert_eq!(search.engine, "mShogi");
+    assert_eq!(
+        search.score.as_deref(),
+        Some("Win in 1 command edge (including declarations)")
+    );
+    assert_eq!(search.completed_depth, Some(1));
+    assert_eq!(search.nodes, Some(2));
+    assert_eq!(search.variation, ["Sente declares entering king"]);
+    assert!(search.selected);
+    assert!(!search.historical);
+    assert_eq!(search.status, "Complete");
+    let inspected = send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
+    assert!(!inspected.search_observations[0].selected);
+    assert!(inspected.analysis.is_none());
 }

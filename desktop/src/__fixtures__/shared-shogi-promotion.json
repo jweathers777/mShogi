@@ -1,4 +1,9 @@
 {
+  "open_token": {
+    "document": 3,
+    "version": 7,
+    "document_revision": 6
+  },
   "document": {
     "revision": 6,
     "dirty": true,
@@ -94,7 +99,7 @@
       "h",
       "i"
     ],
-    "label": "Standard shogi contract board (MSH-72; application delivery MSH-74)",
+    "label": "Shogi board",
     "initial_focus": "5g"
   },
   "orientations": [
@@ -382,7 +387,7 @@
     "move_analysis": true,
     "chess_full": false,
     "claims": false,
-    "declaration": true,
+    "declaration": false,
     "resign": true,
     "hands": true,
     "history": true,
@@ -398,6 +403,7 @@
   "historical": false,
   "paused": false,
   "phase": "idle",
+  "execution_purpose": null,
   "diagnostic": null,
   "declaration_advice": [
     {
@@ -447,6 +453,7 @@
   },
   "analysis": null,
   "observations": [],
+  "search_observations": [],
   "score_meaning": "Native shogi root-side hundredths of pawn; terminal win distance counts complete command edges, including declarations. Not a chess mate score.",
   "chess": null
 }

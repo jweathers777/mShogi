@@ -532,6 +532,19 @@ class Native:
             if initialized:
                 com.CoUninitialize()
 
+    def resize(self, width: int, height: int) -> dict:
+        """Resize the bound installed host through its actual native HWND."""
+        import win32con
+        import win32gui
+        if not self.alive() or self.hwnd is None or not win32gui.IsWindow(self.hwnd):
+            raise RuntimeError("The attached installed host has no live native main window")
+        win32gui.ShowWindow(self.hwnd, win32con.SW_RESTORE)
+        win32gui.SetWindowPos(self.hwnd, None, 20, 20, int(width), int(height),
+                             win32con.SWP_NOZORDER | win32con.SWP_NOACTIVATE)
+        return self._event("native_resize_requested", pid=self.pid, hwnd=self.hwnd,
+                           requested={"width": width, "height": height},
+                           observed_rect=list(win32gui.GetWindowRect(self.hwnd)))
+
     def close_window(self) -> dict:
         import win32con
         import win32gui

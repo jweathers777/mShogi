@@ -745,3 +745,49 @@ fn inability_to_start_native_execution_is_a_capacity_pause_not_engine_failure() 
     save(&mut c, &file);
     fs::remove_file(file).unwrap();
 }
+
+#[test]
+fn product_new_game_archive_reopens_native_human_orientation_stopped_and_fresh() {
+    let mut c = controller();
+    let (_, receipt) = c
+        .shared_new_game(
+            c.shared_open_token(),
+            GameKind::Shogi,
+            NativeSide::Shogi(s::Side::Gote),
+        )
+        .unwrap();
+    settle(&mut c);
+    receipt.completion().unwrap().unwrap();
+    let before = c.shared_snapshot();
+    let pending = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
+    let file = path("product-new-gote");
+    save(&mut c, &file);
+    let reopened = open(&mut c, &file).unwrap();
+    assert_eq!(reopened.human.id, NativeSide::Shogi(s::Side::Gote));
+    assert_eq!(reopened.context, before.context);
+    assert!(reopened.paused);
+    assert!(reopened.token.document > before.token.document);
+    assert!(reopened.token.version > pending.session_version);
+    match &reopened.document.settings {
+        NativeDesktopSettings::Shogi { settings } => {
+            assert_eq!(settings.orientation, s::Side::Gote)
+        }
+        _ => panic!("native shogi settings"),
+    }
+    assert!(c.shared.shogi.as_ref().unwrap().pending.is_none());
+    let old_response = run(pending);
+    assert!(!c.accept_shared(old_response));
+    send(&mut c, SessionOperation::Resume {}).unwrap();
+    assert!(
+        c.shared
+            .shogi
+            .as_ref()
+            .unwrap()
+            .pending
+            .as_ref()
+            .unwrap()
+            .request_id
+            > before.token.version
+    );
+    std::fs::remove_file(file).unwrap();
+}

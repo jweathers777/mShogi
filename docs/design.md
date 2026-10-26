@@ -214,6 +214,28 @@ M5/M6 outcomes. Do not erase gaps by renaming scope, archiving unfinished requir
 work or moving it into optional research. MSH-40 records this planning correction
 and its verification, separately from future product delivery.
 
+### Shogi-first M4 planning refinement (2026-10-26)
+
+MSH-62 supplies the [bounded implementation and rules proposals](m4/README.md).
+Standard shogi is the first additional game; the provisional later delivery
+order is xiangqi, tori shogi, chu shogi and tenjiku shogi. Independent source
+research can proceed separately; an evidence-based order change must be recorded.
+This planning batch implements no game and closes no M4 delivery.
+
+The [task/ownership map](m4/delivery-plan.md) preserves MSH-41–47 and all their
+original criteria, and adds bounded tasks MSH-63–89. Early shared MSH-69/72/73
+are prerequisites for concrete shogi consumers without depending on completed
+MSH-41 or MSH-46. Later real-game extensions and final all-game/platform review
+retain the full shared integration and M4 closure obligations.
+
+The named standard-shogi proposal `mshogi.shogi.csa36.v1` is **not approved**.
+SHOGI-P1/MSH-63 selects its coherent CSA software-event convention or a separately
+named alternative; affected history/outcome work MSH-67 waits for that decision.
+Independent board fixtures/state/legality can proceed without settling every
+later game's profile. Existing chess documents, exact history, cancellation and
+MSH-61 lossless capacity admission remain compatibility requirements. Current
+chess search/archive limits are defaults to evaluate for each new consumer.
+
 ## 6. Verification contract
 
 | Evidence category | What it establishes |
@@ -261,6 +283,8 @@ When code reveals a design problem, report the specific conflict and a proposed 
 | D-09 | Deferred | Per-game release-strength targets, evaluator architecture, training hardware, and compute budget. Establish baselines and pilot measurements first. |
 | D-11 | Accepted | John 2026-10-24: optional core claims with recorded unattended auto-claim policy, FEN-limited known history, sound incomplete M2 dead recognition with MSH-26 M4 completion, explicit unscored mating uncertainty, untimed/increment clocks and ordered replayable match events. Evaluation adjudication stays disabled. UCI plus an independent-engine match and focused MSH-25 integration closure are required in M2. See [match v1](rules/chess-match-v1.md). |
 | D-10 | Deferred | Release licensing, redistribution choices, minimum OS policy, and signing/update arrangements. Preserve existing notices; resolve applicable choices before copying restricted dependencies or distributing releases. |
+| D-12 | Accepted | John 2026-10-26: bounded M4 planning only, standard shogi first; provisional later order xiangqi, tori, chu, tenjiku with independent source research possible. Preserve complete MSH-41–47 obligations and closed M2/M3; stop for concrete profile discussion before affected implementation. |
+| D-13 | Proposal, pending SHOGI-P1 | MSH-62 recommends the sourced `mshogi.shogi.csa36.v1` software bundle; JSA professional and other event conventions are distinct alternatives. MSH-63 records the actual owner choice; this register does not approve it. See [profile proposal](m4/shogi-profile.md). |
 
 Accepted records reflect actual owner direction. Working defaults are implementation proposals consistent with it, not fabricated owner decisions. Deferred questions only block work that depends on their resolution. A routine choice within accepted requirements does not need a new approval ceremony.
 

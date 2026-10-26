@@ -24,7 +24,7 @@ next-ply, known history, check, full LegalAll choices and the reference's own
 hash. Hash integers never cross the program boundary.
 
 Each run checks the admitted extension hash, fixture integrity, all independent
-assertions, exact nested push/pop, and four actual upstream API-gap sentinels.
+assertions, exact nested push/pop, four actual upstream API-gap sentinels, and thirteen reference-domain rejection sentinels.
 The sentinel-only parser/is_legal/is_draw observations demonstrate why those
 APIs cannot decide expected negative legality or game results. Board membership
 always comes from `Board.legal_moves` (`MoveList<LegalAll>` at the source pin).
@@ -75,3 +75,29 @@ five-move seeded path. The run must detect each and reduce the evidence to the
 two-move failing prefix. Those injected failures are expected diagnostic tests,
 not observations of defects in mShogi. Native comparison is a separate command;
 MSH-64's admission report contains zero native comparisons.
+
+## Admitted reference input domain
+
+Before C++ Board construction, roots must be canonical bounded ASCII SFEN
+(at most512bytes), have exactly one nonadjacent king per owner, standard
+physical piece caps, no nifu or dead unpromoted board piece, and a positive
+next-ply fitting cshogi's signed32-bit counter including the requested path.
+These restrictions define this reference process, not a change to native
+mShogi's independently specified u32 counter or analysis-position contract.
+
+Before any LegalAll enumeration or push, the public dlshogi feature API is
+used only for its raw geometric attack planes. The source calls
+`pos.attacksFrom` for each piece including kings, and the harness rejects a
+root where the moving side already attacks the nonmoving king. It does not
+use cached incremental check state or parser/is_legal acceptance for this
+guard. The source audit and correction are recorded in
+[reference-domain-review.md](../../docs/m4/reference-domain-review.md).
+
+The original MSH-64 corpus had two bishop-evasion diagrams outside this
+reference domain. Longer seeded play exposed their invalid prior-opponent
+check. Their bytes and original observations are retained as
+`board-rules-v1.json`, `reference-run-v1.json` and `cshogi-admission-v1.json`.
+Current versions move only those opposing kings off the bishop diagonal,
+retain the expected promotion choices, and record version2 supersession.
+The old roots now deliberately fail admission with a named reference-domain
+error; they are never silently filtered from an otherwise passing run.

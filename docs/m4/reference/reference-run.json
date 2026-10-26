@@ -1,8 +1,11 @@
 {
   "format": "mshogi.shogi.reference-run.v1",
   "revision": "6985fe5b516c34072e27c63cf429847f03193522",
-  "fixture_sha256": "579842bc0be0ab74567e1501100ef589be160c140c9371373768dc9fc43b6738",
-  "manifest_sha256": "e38d6b6ae57e1a87256fb04638e97c691da932bbb670e5ed082beda79ed45427",
+  "fixture_sha256": "6a5356e77fe9508df27afcbb6ea66d2e3ea6397ed7f40994161b5583144dcbb1",
+  "manifest_sha256": "ce4769b55ab214d20540049647a91f7a066d32c5e6b235a6bb5677b75fe03e76",
+  "harness_sha256": "658f7a978c6678ca957115fa39a576ae056f299dcb414f89ca5a8c7f9f47aba1",
+  "probe_command": null,
+  "probe_sha256": null,
   "fixtures": [
     {
       "id": "SH-F001:start",
@@ -13950,10 +13953,10 @@
       "id": "SH-F022:evasion-B-sente",
       "passed": true,
       "errors": [],
-      "root_sfen": "8k/9/4b4/5B3/9/9/K8/9/9 b - 1",
+      "root_sfen": "9/8k/4b4/5B3/9/9/K8/9/9 b - 1",
       "moves": [],
       "reference": {
-        "sfen": "8k/9/4b4/5B3/9/9/K8/9/9 b - 1",
+        "sfen": "9/8k/4b4/5B3/9/9/K8/9/9 b - 1",
         "legal_moves": [
           "4d5c",
           "4d5c+",
@@ -13964,8 +13967,8 @@
         ],
         "in_check": true,
         "pieces": [
-          24,
           0,
+          24,
           0,
           0,
           0,
@@ -14069,17 +14072,17 @@
         "turn": 0,
         "move_number": 1,
         "history": [],
-        "reference_hash": 14052526931348671362
+        "reference_hash": 11570321724500576760
       }
     },
     {
       "id": "SH-F022:evasion-B-gote",
       "passed": true,
       "errors": [],
-      "root_sfen": "9/9/8k/9/9/3b5/4B4/9/K8 w - 1",
+      "root_sfen": "9/9/8k/9/9/3b5/4B4/K8/9 w - 1",
       "moves": [],
       "reference": {
-        "sfen": "9/9/8k/9/9/3b5/4B4/9/K8 w - 1",
+        "sfen": "9/9/8k/9/9/3b5/4B4/K8/9 w - 1",
         "legal_moves": [
           "1c1b",
           "1c1d",
@@ -14169,8 +14172,8 @@
           0,
           0,
           0,
-          0,
-          8
+          8,
+          0
         ],
         "hands": [
           [
@@ -14195,7 +14198,7 @@
         "turn": 1,
         "move_number": 1,
         "history": [],
-        "reference_hash": 1023668188481944661
+        "reference_hash": 11194642085967216029
       }
     },
     {
@@ -15699,6 +15702,99 @@
         "history": [],
         "reference_hash": 11871700443903524883
       }
+    }
+  ],
+  "reference_domain_sentinels": [
+    {
+      "id": "SH-F022:evasion-B-sente",
+      "root_sfen": "8k/9/4b4/5B3/9/9/K8/9/9 b - 1",
+      "extra_plies": 0,
+      "rejected": true,
+      "diagnostic": "reference-domain: nonmoving king is already geometrically attacked by side to move; unsupported cshogi incremental-check root: 8k/9/4b4/5B3/9/9/K8/9/9 b - 1"
+    },
+    {
+      "id": "SH-F022:evasion-B-gote",
+      "root_sfen": "9/9/8k/9/9/3b5/4B4/9/K8 w - 1",
+      "extra_plies": 0,
+      "rejected": true,
+      "diagnostic": "reference-domain: nonmoving king is already geometrically attacked by side to move; unsupported cshogi incremental-check root: 9/9/8k/9/9/3b5/4B4/9/K8 w - 1"
+    },
+    {
+      "id": "adjacent-kings",
+      "root_sfen": "9/9/9/9/9/9/9/8k/8K b - 1",
+      "extra_plies": 0,
+      "rejected": true,
+      "diagnostic": "reference-domain: adjacent kings"
+    },
+    {
+      "id": "missing-king",
+      "root_sfen": "8k/9/9/9/9/9/9/9/9 b - 1",
+      "extra_plies": 0,
+      "rejected": true,
+      "diagnostic": "reference-domain: comparison diagrams require one king per owner"
+    },
+    {
+      "id": "dead-pawn",
+      "root_sfen": "4P3k/9/9/9/9/9/9/9/K8 b - 1",
+      "extra_plies": 0,
+      "rejected": true,
+      "diagnostic": "reference-domain: dead unpromoted pawn/lance"
+    },
+    {
+      "id": "dead-knight",
+      "root_sfen": "8k/4N4/9/9/9/9/9/9/K8 b - 1",
+      "extra_plies": 0,
+      "rejected": true,
+      "diagnostic": "reference-domain: dead unpromoted knight"
+    },
+    {
+      "id": "nifu-root",
+      "root_sfen": "8k/9/9/4P4/4P4/9/9/9/K8 b - 1",
+      "extra_plies": 0,
+      "rejected": true,
+      "diagnostic": "reference-domain: nifu diagram"
+    },
+    {
+      "id": "excess-hand-material",
+      "root_sfen": "8k/9/9/9/9/9/9/9/K8 b 19P 1",
+      "extra_plies": 0,
+      "rejected": true,
+      "diagnostic": "reference-domain: SFEN exceeds standard physical piece inventory"
+    },
+    {
+      "id": "non-shogi-piece",
+      "root_sfen": "8k/9/9/4Q4/9/9/9/9/K8 b - 1",
+      "extra_plies": 0,
+      "rejected": true,
+      "diagnostic": "reference-domain: invalid SFEN piece/promotion"
+    },
+    {
+      "id": "counter-int32-overflow",
+      "root_sfen": "8k/9/9/9/9/9/9/9/K8 b - 2147483648",
+      "extra_plies": 0,
+      "rejected": true,
+      "diagnostic": "reference-domain: next-ply exceeds cshogi signed-int32 domain; native u32 contract is separate"
+    },
+    {
+      "id": "prefix-counter-overflow",
+      "root_sfen": "8k/9/9/9/9/9/9/9/K8 b - 2147483647",
+      "extra_plies": 1,
+      "rejected": true,
+      "diagnostic": "reference-domain: supplied prefix exceeds cshogi signed-int32 next-ply limit"
+    },
+    {
+      "id": "non-ascii",
+      "root_sfen": "8k/9/9/9/9/9/9/9/K8\u00a0b - 1",
+      "extra_plies": 0,
+      "rejected": true,
+      "diagnostic": "reference-domain: SFEN must be bounded ASCII, at most512bytes"
+    },
+    {
+      "id": "oversized-input",
+      "root_sfen": "8k/9/9/9/9/9/9/9/K8 b - 1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ",
+      "extra_plies": 0,
+      "rejected": true,
+      "diagnostic": "reference-domain: SFEN must be bounded ASCII, at most512bytes"
     }
   ],
   "audit_gap_sentinels": [

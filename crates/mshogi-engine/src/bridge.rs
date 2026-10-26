@@ -1,3 +1,4 @@
+use crate::wire::{WireRequest, WireResponse};
 use crate::*;
 use std::{
     io::{self, Read, Write},
@@ -45,15 +46,15 @@ impl std::fmt::Display for SubmitError {
 }
 impl std::error::Error for SubmitError {}
 struct Pending {
-    context: Arc<EngineRequest>,
+    context: Arc<WireRequest>,
     cancelled: Arc<AtomicBool>,
 }
 #[derive(Default)]
 struct State {
-    current: Option<Arc<EngineRequest>>,
+    current: Option<Arc<WireRequest>>,
     cancel: Option<Arc<AtomicBool>>,
     pending: Option<Pending>,
-    result: Option<EngineResponse>,
+    result: Option<WireResponse>,
     last_id: u64,
     last_generation: u64,
     shutdown: bool,
@@ -103,7 +104,14 @@ impl EngineBridge {
     }
     /// Replace prior work atomically without launching or serializing on caller.
     pub fn submit(&self, context: EngineRequest) -> Result<(), SubmitError> {
-        if context.protocol != PROTOCOL_VERSION || !context.valid_limits() {
+        self.submit_wire(WireRequest::Legacy(context))
+    }
+    /// Submit an explicit shared context through the same owner and retirement sequence.
+    pub fn submit_shared(&self, context: SharedRequest) -> Result<(), SubmitError> {
+        self.submit_wire(WireRequest::Shared(context))
+    }
+    fn submit_wire(&self, context: WireRequest) -> Result<(), SubmitError> {
+        if !context.valid() {
             return Err(SubmitError::InvalidRequest);
         }
         let context = Arc::new(context);
@@ -112,16 +120,14 @@ impl EngineBridge {
         if state.shutdown {
             return Err(SubmitError::ShuttingDown);
         }
-        if context.request_id <= state.last_id
-            || context.process_generation <= state.last_generation
-        {
+        if context.request_id() <= state.last_id || context.generation() <= state.last_generation {
             return Err(SubmitError::IdentityReused);
         }
         if let Some(cancel) = &state.cancel {
             cancel.store(true, Ordering::Release);
         }
-        state.last_id = context.request_id;
-        state.last_generation = context.process_generation;
+        state.last_id = context.request_id();
+        state.last_generation = context.generation();
         let retired = (
             state.current.replace(context.clone()),
             state.cancel.replace(cancelled.clone()),
@@ -152,12 +158,26 @@ impl EngineBridge {
     /// Consume one current completion. Host must recheck the full context and
     /// native choice legality under its serialized authoritative session lock.
     pub fn poll(&self) -> Option<EngineResponse> {
-        self.shared
-            .state
-            .lock()
-            .expect("engine metadata mutex")
-            .result
-            .take()
+        let mut state = self.shared.state.lock().expect("engine metadata mutex");
+        if !matches!(state.result, Some(WireResponse::Legacy(_))) {
+            return None;
+        }
+        match state.result.take() {
+            Some(WireResponse::Legacy(response)) => Some(response),
+            _ => unreachable!(),
+        }
+    }
+    /// Consume a current shared completion. Calling the legacy poll adapter does
+    /// not discard a shared result; cancellation/replacement still retires both.
+    pub fn poll_shared(&self) -> Option<SharedResponse> {
+        let mut state = self.shared.state.lock().expect("engine metadata mutex");
+        if !matches!(state.result, Some(WireResponse::Shared(_))) {
+            return None;
+        }
+        match state.result.take() {
+            Some(WireResponse::Shared(response)) => Some(response),
+            _ => unreachable!(),
+        }
     }
     /// Cancel and stop the supervisory worker, without joining on the caller.
     pub fn shutdown(&self) {
@@ -199,12 +219,8 @@ fn worker(shared: Arc<Shared>, path: PathBuf, options: BridgeOptions) {
             }
             state.pending.take().expect("pending engine request")
         };
-        let result = run(&path, options, &pending);
-        // Canonical history cloning is off the cancellation metadata lock.
-        let response = EngineResponse {
-            context: (*pending.context).clone(),
-            result,
-        };
+        // Context serialization/cloning remains off the cancellation metadata lock.
+        let response = run(&path, options, &pending);
         let mut state = shared.state.lock().expect("engine metadata mutex");
         if !state.shutdown
             && !pending.cancelled.load(Ordering::Acquire)
@@ -364,14 +380,15 @@ fn finish_pipes(pipes: &mut Vec<JoinHandle<()>>, deadline: Instant) -> Vec<&'sta
     }
     problems
 }
-fn cleanup_failure(context: &EngineRequest, detail: String) -> EngineResult {
-    let result = EngineResult::failure(FailureKind::Cleanup, detail);
-    if let EngineResult::Failure { failure } = &result {
-        // This must precede cancellation/shutdown publication filtering. The
-        // diagnostic is capped by EngineResult::failure, independently of pipes.
+fn cleanup_failure(context: &WireRequest, detail: String) -> WireResponse {
+    let result = context.failure(FailureKind::Cleanup, detail);
+    // Log before cancellation/shutdown publication filtering. Retention is capped.
+    if let Some(message) = result.failure_message() {
         eprintln!(
             "Engine cleanup uncertainty (request {}, generation {}): {}",
-            context.request_id, context.process_generation, failure.message
+            context.request_id(),
+            context.generation(),
+            message
         );
     }
     result
@@ -382,47 +399,54 @@ impl Drop for Process {
         let _ = self.child.try_wait();
     }
 }
-fn run(path: &PathBuf, options: BridgeOptions, pending: &Pending) -> EngineResult {
+fn run(path: &PathBuf, options: BridgeOptions, pending: &Pending) -> WireResponse {
     let mut bytes = match serde_json::to_vec(&*pending.context) {
         Ok(bytes) => bytes,
-        Err(error) => return EngineResult::failure(FailureKind::InvalidRequest, error),
+        Err(error) => return pending.context.failure(FailureKind::InvalidRequest, error),
     };
     if bytes.len() > MAX_REQUEST_BYTES {
-        return EngineResult::failure(FailureKind::InvalidRequest, "request exceeds byte cap");
+        return pending
+            .context
+            .failure(FailureKind::InvalidRequest, "request exceeds byte cap");
     }
     bytes.push(b'\n');
     if pending.cancelled.load(Ordering::Acquire) {
-        return EngineResult::failure(FailureKind::Io, "request cancelled before launch");
+        return pending
+            .context
+            .failure(FailureKind::Io, "request cancelled before launch");
     }
     let deadline = Instant::now() + options.watchdog;
     let mut process = match Process::spawn(path, bytes) {
         Ok(process) => process,
-        Err(SpawnError::Start(error)) => return EngineResult::failure(FailureKind::Start, error),
+        Err(SpawnError::Start(error)) => return pending.context.failure(FailureKind::Start, error),
         Err(SpawnError::Cleanup(detail)) => return cleanup_failure(&pending.context, detail),
     };
     let mut output = None;
     let mut exit = None;
     let result = loop {
         if pending.cancelled.load(Ordering::Acquire) {
-            break EngineResult::failure(FailureKind::Io, "request cancelled");
+            break pending
+                .context
+                .failure(FailureKind::Io, "request cancelled");
         }
         if let Ok(Err(error)) = process.written.try_recv() {
-            break EngineResult::failure(FailureKind::Io, error);
+            break pending.context.failure(FailureKind::Io, error);
         }
         if output.is_none() {
             match process.stdout.try_recv() {
                 Ok(Ok(bytes)) => {
                     if bytes.len() > MAX_RESPONSE_BYTES + 1 {
-                        break EngineResult::failure(
-                            FailureKind::OversizedResponse,
-                            "response exceeds byte cap",
-                        );
+                        break pending
+                            .context
+                            .failure(FailureKind::OversizedResponse, "response exceeds byte cap");
                     }
                     output = Some(bytes);
                 }
-                Ok(Err(error)) => break EngineResult::failure(FailureKind::Io, error),
+                Ok(Err(error)) => break pending.context.failure(FailureKind::Io, error),
                 Err(mpsc::TryRecvError::Disconnected) => {
-                    break EngineResult::failure(FailureKind::Io, "stdout worker disconnected");
+                    break pending
+                        .context
+                        .failure(FailureKind::Io, "stdout worker disconnected");
                 }
                 Err(mpsc::TryRecvError::Empty) => {}
             }
@@ -430,7 +454,7 @@ fn run(path: &PathBuf, options: BridgeOptions, pending: &Pending) -> EngineResul
         if exit.is_none() {
             match process.child.try_wait() {
                 Ok(status) => exit = status,
-                Err(error) => break EngineResult::failure(FailureKind::Io, error),
+                Err(error) => break pending.context.failure(FailureKind::Io, error),
             }
         }
         if let Some(status) = exit {
@@ -438,41 +462,43 @@ fn run(path: &PathBuf, options: BridgeOptions, pending: &Pending) -> EngineResul
                 let diagnostic =
                     String::from_utf8_lossy(&process.stderr.lock().expect("stderr buffer"))
                         .into_owned();
-                break EngineResult::failure(
+                break pending.context.failure(
                     FailureKind::UnexpectedExit,
                     format!("{status}: {diagnostic}"),
                 );
             }
             if let Some(bytes) = &output {
                 if bytes.is_empty() {
-                    break EngineResult::failure(
+                    break pending.context.failure(
                         FailureKind::MissingResponse,
                         "engine exited without a response",
                     );
                 }
                 if bytes.last() != Some(&b'\n') {
-                    break EngineResult::failure(
+                    break pending.context.failure(
                         FailureKind::MalformedResponse,
                         "response missing final newline",
                     );
                 }
-                let response: EngineResponse = match serde_json::from_slice(bytes) {
+                let response: WireResponse = match serde_json::from_slice(bytes) {
                     Ok(response) => response,
                     Err(error) => {
-                        break EngineResult::failure(FailureKind::MalformedResponse, error);
+                        break pending
+                            .context
+                            .failure(FailureKind::MalformedResponse, error);
                     }
                 };
-                if response.context != *pending.context {
-                    break EngineResult::failure(
+                if !response.matches(&pending.context) {
+                    break pending.context.failure(
                         FailureKind::ContextMismatch,
-                        "engine echoed a different complete context",
+                        "engine echoed a different complete context or result family",
                     );
                 }
-                break response.result;
+                break response;
             }
         }
         if Instant::now() >= deadline {
-            break EngineResult::failure(
+            break pending.context.failure(
                 FailureKind::Timeout,
                 "internal engine response/exit watchdog expired",
             );
@@ -525,15 +551,18 @@ mod tests {
             ["pipe helper did not finish within cleanup watchdog; detached"]
         );
         assert!(pipes.is_empty());
-        let result = cleanup_failure(&request(31, 42), problems.join("; "));
+        let result = cleanup_failure(&WireRequest::Legacy(request(31, 42)), problems.join("; "));
         assert!(matches!(
             result,
-            EngineResult::Failure {
-                failure: EngineFailure {
-                    kind: FailureKind::Cleanup,
-                    ..
-                }
-            }
+            WireResponse::Legacy(EngineResponse {
+                result: EngineResult::Failure {
+                    failure: EngineFailure {
+                        kind: FailureKind::Cleanup,
+                        ..
+                    }
+                },
+                ..
+            })
         ));
         release.send(()).unwrap();
         finished.recv_timeout(Duration::from_secs(5)).unwrap();

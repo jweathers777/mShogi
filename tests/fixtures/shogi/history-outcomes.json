@@ -1303,7 +1303,9 @@
     }
   ],
   "mutual_continuous_check": {
-    "status": "research_unresolved",
-    "note": "No legal mutual continuous-check cycle established, and no complete impossibility proof established. See derivation note; never choose an arbitrary winner or derive one from a search-cycle helper."
+    "status": "resolved_by_reviewed_impossibility",
+    "proof": "docs/m4/mutual-check-resolution.md",
+    "domain": "Admitted live roots: standard combined piece-stock bounds, one king each, nonmoving king unattacked, checked local continuations; reduced material and unknown prehistory allowed.",
+    "note": "No nonempty closed all-checking interval exists in this domain. Complete-chain and geometry reviews include the supplement, drops/captures/promotion and count/multiset reasoning. No additional game outcome is assigned. The finite geometry calculation is not a search of all legal states. Historical unresolved review and original fixtures remain at f259bb2/9325c48."
   }
 }

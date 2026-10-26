@@ -144,7 +144,7 @@ fn independent_history_and_import_ledgers_and_exact_reversal() {
         for (index, expected_prefix) in prefixes.iter().enumerate() {
             assert_eq!(
                 game.prefix(index).as_ref(),
-                Some(expected_prefix),
+                Ok(expected_prefix),
                 "{id} prefix {index}"
             );
         }
@@ -215,8 +215,8 @@ fn independently_expected_declaration_boundaries_and_same_ply_prefixes() {
         assert_ne!(game.context(), original.context(), "same-ply context {id}");
         assert_eq!(game.events()[0].declaration, Some(evidence), "{id}");
         expect_conclusion(game.conclusion(), &e["formal_conclusion"], id);
-        assert_eq!(game.prefix(0), Some(original.clone()), "pre-command {id}");
-        assert_eq!(game.prefix(1), Some(game.clone()), "post-command {id}");
+        assert_eq!(game.prefix(0), Ok(original.clone()), "pre-command {id}");
+        assert_eq!(game.prefix(1), Ok(game.clone()), "post-command {id}");
         game.undo(undo).unwrap();
         assert_eq!(game, original, "command undo {id}");
     }

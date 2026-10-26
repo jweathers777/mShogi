@@ -1,11 +1,11 @@
 ---
 id: MSH-67
 title: Implement shogi history adjudication and canonical game-match records
-status: In Progress
+status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-26T12:29:00Z'
+updated_date: '2026-10-26T12:48:00Z'
 labels:
   - m4
   - owner-msh-41
@@ -67,6 +67,8 @@ MSH-67 attempted 2026-10-26 by @codex in temporary codex/shogi-history worktree,
 Final bounded handoff: research/fixtures/blocker integrated and pushed on codex/rewrite at f291862c1fb49e6343a9a48b68994a715fb0561b; provisional native source remains unmerged at f259bb23834d6156f21aeec53db9ee00ef7242e4 on pushed codex/shogi-history. Native CI40317821544 PASS all three OS (Ubuntu24.04/macOS15/Windows2022) for that exact WIP source: https://github.com/jweathers777/mShogi/actions/runs/40317821544. Research-only integration native CI40317964799 PASS all three after one failed Ubuntu job retry: https://github.com/jweathers777/mShogi/actions/runs/40317964799. Original attempt failed unchanged crates/mshogi-runner/tests/runner.rs172: early nonzero child exit expected UnexpectedExit, observed handshake MissingResponse with Broken pipe; rerun of only that job passed without source change. Retain this observation; root cause not resolved, no runner/chess policy changed in this task. Supporting desktop-package workflows40317821476/40317964927 were still running at handoff; no result inferred and no new GUI campaign claimed. Temporary app-managed worktree archived after pushed commit and clean-tree verification; task source can be restored from attachment or recreated from origin/codex/shogi-history. Main checkout remains codex/rewrite. Next shogi action is to resolve the documented MSH-67 mutual-proof/authoritative-adjudication gap, then fresh final review/integration; MSH-68/69 remain dependency-blocked. Globally Ready80-83 are other profile research, outside this authorization and untouched. MSH-41-47 remain open; M2/M3 and63-66 completion evidence unchanged.
 
 Resumed2026-10-26 by @codex on codex/shogi-history in restored app-managed /Users/johnweathers/.codex/worktrees/shogi-history/mShogi. Owner supplies proposed proof supplement (archive SHA256 a96bc888fec6c3a0da9c375cd398881d64454c67fd965f82c372acdc6eee33f8) for review, not as mathematical authority; selectedprofileunchanged. Reconciled newer rewrite handoff by retaining canonical Backlog/fixture-derivation versions; original branch history remains intact. Supplement SHA256SUMS all match. Inspected standard-library scripts and ran verify_geometry.py:23normalized pairings/20offsets,46withreflections, two-endpoint cycles; this is conditional necessary geometry, not all-state search. Fresh full-chain and enumeration-constraint reviews pending; no gate markedclosed by supplied claims.
+
+Resumption proof review ACCEPTED. Fresh independent proof_chain_review reconstructed complete Nanka+supplement chain for all locallyadmitted roots with standard stock, including reducedmaterial/unknownprehistory, fixedkings, singlechecker, nongazingcounts, anglemultisets, drops/captures/promotion/sourcechanges, stockreduction and all23normalized cases. Separate geometry_supplement_review ACCEPTED necessaryfilters,bothenumerators,20offsets/23pairings/46reflections,84singlecyclegraphs,all5Hcases,2mixedcases,2simultaneous3Rexclusions,14lockedpairs; addedexplicitnonincreasing-source-inventory justification atarrival. Originalfailedreviewandattempts preservedunchanged, supplementchecksumsallmatch, no profilechange/newoutcome. Currentresolution/docsmetadataupdated; allconcreteexpectedfixturearraysbyte-semanticallyunchangedagainstf259. Implementation replacesprovisionalmutualerror with detailed internalMutualCheckInvariant; prefixResultandRecordErrorretain diagnostics;2privatecorruptiontests do notclaimlegalcounterexample. Rootfocused35PASS; workspace277PASS/0failed/2existingignored; fmt/clippyPASS macOS27.0.1arm64 Rust1.89.0 Python3.14.7. Final independentimplementationreviewandnativeCI/integrationpending; AC/DoDnotcheckedyet. AllBacklogmutationsusepinned1.55.1binary,notglobal1.55.0. Priorrunnerbrokenpipeclassificationfailure/retryretainedwithoutrootcausefixclaim.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

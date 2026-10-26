@@ -1,8 +1,9 @@
 # M4 shogi-first plan and delivery evidence
 
 Planning prepared 2026-10-26 under **MSH-62**; its reviews remain historical.
-The authorized MSH-63–66 batch selects the profile and implements native board
-state/local legality only. Current evidence is in [coverage](shogi-coverage.md). M2/M3 remain closed; their source/evidence, completed
+MSH-63–66 selected the profile and delivered native board state/local legality.
+MSH-67 adds rules-owned untimed history, conclusions and strict native records;
+later consumers remain separate. Current evidence is in [coverage](shogi-coverage.md). M2/M3 remain closed; their source/evidence, completed
 task history, MSH-61 persistence admission and MSH-40 roadmap correction remain
 intact. MSH-41–47 stay open with their original full delivery/closure criteria.
 
@@ -16,6 +17,7 @@ no evidence-based change to that provisional delivery order at present.
 | Complete named shogi profile | [shogi-profile.md](shogi-profile.md): selected `mshogi.shogi.csa36.v1`, primary editions/clauses, complete board/history/conclusion conventions and explicit software adaptations |
 | Independent verification/reference/opponent audit | [shogi-verification.md](shogi-verification.md): immutable source pins and exact operation/semantic gaps; source audit is not runtime conformance |
 | Selected contract coverage and current native evidence | [shogi-coverage.md](shogi-coverage.md), [legality-validation.md](legality-validation.md): bounded MSH-63–66 board implementation, reviewed fixtures/reference execution and exact limitations |
+| Native history, conclusions and canonical records | [history-state.md](history-state.md), [history-validation.md](history-validation.md), [mutual-check resolution](mutual-check-resolution.md): MSH-67's untimed native contract and independently reviewed proof, with original incomplete evidence retained |
 | Initial independent fixture inventory | [shogi-fixtures.md](shogi-fixtures.md): 55 stable IDs, hand-derived examples and clearly pending instantiation/review; no invented test results |
 | Native tasks, traceability and executable graph | [delivery-plan.md](delivery-plan.md): MSH-63–89, original MSH-41/46 criteria mapping, one common owner and no prerequisite/final-delivery cycles |
 | Bounded later-game source/gap inventory | [later-game-sources.md](later-game-sources.md): adopted association editions, historical evidence, proposed revisions and software conventions kept distinct |

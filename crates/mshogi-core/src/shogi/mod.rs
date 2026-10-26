@@ -22,7 +22,8 @@ mod tests;
 pub use action::{Action, ActionError, ActionParseError, Undo, UndoError};
 pub use game::{
     Conclusion, DeclarationEligibility, DrawReason, Game, GameCommand, GameContext, GameError,
-    GameEvent, GameRequest, GameRoot, GameUndo, GameUndoError, RootCategory, RootError, WinReason,
+    GameEvent, GamePrefixError, GameRequest, GameRoot, GameUndo, GameUndoError,
+    MutualCheckDiagnostic, RootCategory, RootError, WinReason,
 };
 
 /// Approved standard-shogi rules profile identity.

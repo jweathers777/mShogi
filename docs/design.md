@@ -232,7 +232,11 @@ The owner selected option A **SHOGI-P1**, `mshogi.shogi.csa36.v1`, on
 2026-10-26 against integration `6db8500e92129b95e502e7b4d5c4a26072e38652`.
 Its coherent CSA software-event convention and explicit untimed/import/request
 adaptations are accepted; other event conventions remain unselected alternatives.
-MSH-67 still requires full legality and its own history/outcome fixtures.
+MSH-66 supplies full local legality. MSH-67 adds the
+[native game/history and canonical record contract](m4/history-state.md) with
+independently expected history/outcome fixtures and a
+[reviewed mutual-check impossibility argument](m4/mutual-check-resolution.md).
+This game-owned work does not implement later engine, transport or desktop consumers.
 Independent board fixtures/state/legality can proceed without settling every
 later game's profile. Existing chess documents, exact history, cancellation and
 MSH-61 lossless capacity admission remain compatibility requirements. Current

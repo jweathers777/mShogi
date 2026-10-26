@@ -8,8 +8,9 @@ use std::{error::Error, fmt};
 use serde::{Deserialize, Deserializer, Serialize};
 
 use super::{
-    Conclusion, CounterSource, DeclarationEligibility, DrawReason, Game, GameCommand, GameEvent,
-    GameRequest, GameRoot, INITIAL_SFEN, PROFILE_ID, Position, RootCategory, Side, WinReason,
+    Conclusion, CounterSource, DeclarationEligibility, DrawReason, Game, GameCommand, GameError,
+    GameEvent, GamePrefixError, GameRequest, GameRoot, INITIAL_SFEN, MutualCheckDiagnostic,
+    PROFILE_ID, Position, RootCategory, Side, WinReason,
 };
 
 /// Bounded native input/output; independent of later console/archive transports.
@@ -36,6 +37,13 @@ pub enum RecordError {
     Root,
     /// Authoritative replay rejected a command, or its derived effects disagree.
     Event(usize),
+    /// Internal invariant failure during authoritative replay, not malformed-input adjudication.
+    Invariant {
+        /// Event that encountered the internal failure.
+        event_index: usize,
+        /// Exact native candidate evidence.
+        diagnostic: Box<MutualCheckDiagnostic>,
+    },
     /// Final conclusion or half-point score disagrees with replay.
     Conclusion,
     /// Requested prefix is beyond the retained ledger.
@@ -186,7 +194,7 @@ impl GameRecord {
                 actor: event.actor.native(),
                 command,
             })
-            .map_err(|_| RecordError::Event(index))?;
+            .map_err(|error| replay_error(index, error))?;
             if *event != WireEvent::from(game.events().last().expect("just accepted event")) {
                 return Err(RecordError::Event(index));
             }
@@ -202,8 +210,21 @@ impl GameRecord {
     /// Rebuild an event prefix; a same-board terminal command remains a distinct prefix.
     pub fn prefix(&self, event_count: usize) -> Result<Self, RecordError> {
         let game = self.to_game()?;
-        let prefix = game.prefix(event_count).ok_or(RecordError::Prefix)?;
+        let prefix = game.prefix(event_count).map_err(|error| match error {
+            GamePrefixError::OutOfRange => RecordError::Prefix,
+            GamePrefixError::Replay { event_index, error } => replay_error(event_index, error),
+        })?;
         Ok(Self::from_game(&prefix))
+    }
+}
+
+fn replay_error(event_index: usize, error: GameError) -> RecordError {
+    match error {
+        GameError::MutualCheckInvariant(diagnostic) => RecordError::Invariant {
+            event_index,
+            diagnostic,
+        },
+        _ => RecordError::Event(event_index),
     }
 }
 

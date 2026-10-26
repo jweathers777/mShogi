@@ -275,3 +275,13 @@ must separate board legality from
 history/conclusion/command/timing/runner evidence. Pinned external engines are
 bounded comparison tools, not rules authorities. The full standard-shogi scope
 remains MSH-41; this profile and a passing kernel test cannot close it.
+
+Current MSH-67 evidence: the [native game/history contract](history-state.md)
+implements the selected untimed conclusions and strict canonical game/match
+records. [The independently reviewed impossibility argument](mutual-check-resolution.md)
+resolves the mutual-check research obligation for admitted live roots without
+adding an outcome or changing this profile. The original incomplete review,
+source research and failed proof repairs remain traceable. Exact implementation
+verification/integration is recorded in [history validation](history-validation.md)
+and the task record. Later engine, console, shared and desktop consumers remain
+separate delivery obligations.

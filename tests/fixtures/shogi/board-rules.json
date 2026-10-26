@@ -1,0 +1,3252 @@
+{
+  "format": "mshogi.shogi.board-fixtures.v1",
+  "rules_profile": "mshogi.shogi.csa36.v1",
+  "scope": "board choices and state only; outcomes/history adjudication owned by MSH-67",
+  "sources": {
+    "JSA-B1": "https://www.shogi.or.jp/knowledge/shogi/01.php",
+    "JSA-B2": "https://www.shogi.or.jp/knowledge/shogi/02.php",
+    "JSA-B3": "https://www.shogi.or.jp/knowledge/shogi/03.php",
+    "JSA-B4": "https://www.shogi.or.jp/knowledge/shogi/04.php",
+    "JSA-B5": "https://www.shogi.or.jp/knowledge/shogi/05.php",
+    "JSA-R": "https://www.shogi.or.jp/match/taikyoku_rules/taikyoku_rules.pdf"
+  },
+  "cases": [
+    {
+      "id": "SH-F001:start",
+      "inventory_ids": [
+        "SH-F001"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "standard initial state",
+      "root_sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B1",
+          "JSA-B3"
+        ],
+        "edition": "retrieved 2026-10-26",
+        "derivation": "Nine pawn advances, two lance advances, four silver steps, six gold steps, three king steps and six rook slides; all bishop and knight paths blocked. Exact named set hand-enumerated.",
+        "established_by": "manual blocked-path enumeration before reference run",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "legal_moves": [
+          "1g1f",
+          "1i1h",
+          "2g2f",
+          "2h1h",
+          "2h3h",
+          "2h4h",
+          "2h5h",
+          "2h6h",
+          "2h7h",
+          "3g3f",
+          "3i3h",
+          "3i4h",
+          "4g4f",
+          "4i3h",
+          "4i4h",
+          "4i5h",
+          "5g5f",
+          "5i4h",
+          "5i5h",
+          "5i6h",
+          "6g6f",
+          "6i5h",
+          "6i6h",
+          "6i7h",
+          "7g7f",
+          "7i6h",
+          "7i7h",
+          "8g8f",
+          "9g9f",
+          "9i9h"
+        ]
+      }
+    },
+    {
+      "id": "SH-F005:enter-sente",
+      "inventory_ids": [
+        "SH-F005"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/4P4/9/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Pawn advances one forward into camp; either promotion flag is available.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5d5c",
+          "5d5c+"
+        ],
+        "absent": [
+          "5d5b",
+          "5d5c++"
+        ]
+      }
+    },
+    {
+      "id": "SH-F005:enter-gote",
+      "inventory_ids": [
+        "SH-F005"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/4p4/9/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Pawn advances one forward into camp; either promotion flag is available. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5f5g",
+          "5f5g+"
+        ],
+        "absent": [
+          "5f5h",
+          "5f5g++"
+        ]
+      }
+    },
+    {
+      "id": "SH-F005:inside-sente",
+      "inventory_ids": [
+        "SH-F005"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/4P4/9/9/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "A pawn already in camp may remain unpromoted at rank b.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5c5b",
+          "5c5b+"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F005:inside-gote",
+      "inventory_ids": [
+        "SH-F005"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/9/4p4/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "A pawn already in camp may remain unpromoted at rank b. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5g5h",
+          "5g5h+"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F005:forced-sente",
+      "inventory_ids": [
+        "SH-F005"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/4P4/9/9/9/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Pawn at final rank would have no future move, so promotion is compulsory.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5b5a+"
+        ],
+        "absent": [
+          "5b5a"
+        ]
+      }
+    },
+    {
+      "id": "SH-F005:forced-gote",
+      "inventory_ids": [
+        "SH-F005"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/9/9/4p4/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Pawn at final rank would have no future move, so promotion is compulsory. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5h5i+"
+        ],
+        "absent": [
+          "5h5i"
+        ]
+      }
+    },
+    {
+      "id": "SH-F006:lance-sente",
+      "inventory_ids": [
+        "SH-F006"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/4L4/9/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Lance ray enters camp; rank c noncapture and rank b nonpromotion are both choices; final rank forces promotion.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5d5c",
+          "5d5c+",
+          "5d5b",
+          "5d5b+",
+          "5d5a+"
+        ],
+        "absent": [
+          "5d5a"
+        ]
+      }
+    },
+    {
+      "id": "SH-F006:lance-gote",
+      "inventory_ids": [
+        "SH-F006"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/4l4/9/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Lance ray enters camp; rank c noncapture and rank b nonpromotion are both choices; final rank forces promotion. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5f5g",
+          "5f5g+",
+          "5f5h",
+          "5f5h+",
+          "5f5i+"
+        ],
+        "absent": [
+          "5f5i"
+        ]
+      }
+    },
+    {
+      "id": "SH-F007:knight-enter-sente",
+      "inventory_ids": [
+        "SH-F007"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/5p3/9/4N4/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Knight jumps two forward one sideways; both rank c choices legal, including capture.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e4c",
+          "5e4c+",
+          "5e6c",
+          "5e6c+"
+        ],
+        "absent": [
+          "5e4d"
+        ]
+      }
+    },
+    {
+      "id": "SH-F007:knight-enter-gote",
+      "inventory_ids": [
+        "SH-F007"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4n4/9/3P5/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Knight jumps two forward one sideways; both rank c choices legal, including capture. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e6g",
+          "5e6g+",
+          "5e4g",
+          "5e4g+"
+        ],
+        "absent": [
+          "5e6f"
+        ]
+      }
+    },
+    {
+      "id": "SH-F007:knight-forced-sente",
+      "inventory_ids": [
+        "SH-F007"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/4N4/9/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Knight landing on penultimate rank has no future jump, so must promote.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5d4b+",
+          "5d6b+"
+        ],
+        "absent": [
+          "5d4b",
+          "5d6b"
+        ]
+      }
+    },
+    {
+      "id": "SH-F007:knight-forced-gote",
+      "inventory_ids": [
+        "SH-F007"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/4n4/9/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Knight landing on penultimate rank has no future jump, so must promote. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5f6h+",
+          "5f4h+"
+        ],
+        "absent": [
+          "5f6h",
+          "5f4h"
+        ]
+      }
+    },
+    {
+      "id": "SH-F007:knight-last-sente",
+      "inventory_ids": [
+        "SH-F007"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/4N4/9/9/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Knight landing on final rank must promote.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5c4a+",
+          "5c6a+"
+        ],
+        "absent": [
+          "5c4a",
+          "5c6a"
+        ]
+      }
+    },
+    {
+      "id": "SH-F007:knight-last-gote",
+      "inventory_ids": [
+        "SH-F007"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/9/4n4/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Knight landing on final rank must promote. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5g6i+",
+          "5g4i+"
+        ],
+        "absent": [
+          "5g6i",
+          "5g4i"
+        ]
+      }
+    },
+    {
+      "id": "SH-F008:enter-B-sente",
+      "inventory_ids": [
+        "SH-F008"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/5p3/4B4/9/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "B captures into the camp; destination allows optional promotion.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5d4c",
+          "5d4c+"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F008:enter-B-gote",
+      "inventory_ids": [
+        "SH-F008"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/4b4/3P5/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "B captures into the camp; destination allows optional promotion. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5f6g",
+          "5f6g+"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F008:leave-B-sente",
+      "inventory_ids": [
+        "SH-F008"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/4B4/9/9/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "B begins in camp; leaving camp still offers optional promotion.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5c4d",
+          "5c4d+"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F008:leave-B-gote",
+      "inventory_ids": [
+        "SH-F008"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/9/4b4/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "B begins in camp; leaving camp still offers optional promotion. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5g6f",
+          "5g6f+"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F008:enter-R-sente",
+      "inventory_ids": [
+        "SH-F008"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/4p4/4R4/9/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "R captures into the camp; destination allows optional promotion.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5d5c",
+          "5d5c+"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F008:enter-R-gote",
+      "inventory_ids": [
+        "SH-F008"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/4r4/4P4/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "R captures into the camp; destination allows optional promotion. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5f5g",
+          "5f5g+"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F008:leave-R-sente",
+      "inventory_ids": [
+        "SH-F008"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/4R4/9/9/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "R begins in camp; leaving camp still offers optional promotion.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5c5d",
+          "5c5d+"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F008:leave-R-gote",
+      "inventory_ids": [
+        "SH-F008"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/9/4r4/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "R begins in camp; leaving camp still offers optional promotion. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5g5f",
+          "5g5f+"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F008:enter-S-sente",
+      "inventory_ids": [
+        "SH-F008"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/5p3/4S4/9/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "S captures into the camp; destination allows optional promotion.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5d4c",
+          "5d4c+"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F008:enter-S-gote",
+      "inventory_ids": [
+        "SH-F008"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/4s4/3P5/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "S captures into the camp; destination allows optional promotion. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5f6g",
+          "5f6g+"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F008:leave-S-sente",
+      "inventory_ids": [
+        "SH-F008"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/4S4/9/9/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "S begins in camp; leaving camp still offers optional promotion.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5c4d",
+          "5c4d+"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F008:leave-S-gote",
+      "inventory_ids": [
+        "SH-F008"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/9/4s4/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "S begins in camp; leaving camp still offers optional promotion. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5g6f",
+          "5g6f+"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F009:outside-sente",
+      "inventory_ids": [
+        "SH-F009"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4S4/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Silver neither begins nor ends in camp; promotion is unavailable.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e4d"
+        ],
+        "absent": [
+          "5e4d+"
+        ]
+      }
+    },
+    {
+      "id": "SH-F009:outside-gote",
+      "inventory_ids": [
+        "SH-F009"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4s4/9/9/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Silver neither begins nor ends in camp; promotion is unavailable. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e6f"
+        ],
+        "absent": [
+          "5e6f+"
+        ]
+      }
+    },
+    {
+      "id": "SH-F003:promoted-P-sente",
+      "inventory_ids": [
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4+P4/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Promoted P uses gold six steps and cannot promote again.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e4d",
+          "5e5d",
+          "5e6d",
+          "5e4e",
+          "5e6e",
+          "5e5f"
+        ],
+        "absent": [
+          "5e4f",
+          "5e6f",
+          "5e5d+"
+        ]
+      }
+    },
+    {
+      "id": "SH-F003:promoted-P-gote",
+      "inventory_ids": [
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4+p4/9/9/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Promoted P uses gold six steps and cannot promote again. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e6f",
+          "5e5f",
+          "5e4f",
+          "5e6e",
+          "5e4e",
+          "5e5d"
+        ],
+        "absent": [
+          "5e6d",
+          "5e4d",
+          "5e5f+"
+        ]
+      }
+    },
+    {
+      "id": "SH-F003:promoted-L-sente",
+      "inventory_ids": [
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4+L4/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Promoted L uses gold six steps and cannot promote again.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e4d",
+          "5e5d",
+          "5e6d",
+          "5e4e",
+          "5e6e",
+          "5e5f"
+        ],
+        "absent": [
+          "5e4f",
+          "5e6f",
+          "5e5d+"
+        ]
+      }
+    },
+    {
+      "id": "SH-F003:promoted-L-gote",
+      "inventory_ids": [
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4+l4/9/9/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Promoted L uses gold six steps and cannot promote again. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e6f",
+          "5e5f",
+          "5e4f",
+          "5e6e",
+          "5e4e",
+          "5e5d"
+        ],
+        "absent": [
+          "5e6d",
+          "5e4d",
+          "5e5f+"
+        ]
+      }
+    },
+    {
+      "id": "SH-F003:promoted-N-sente",
+      "inventory_ids": [
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4+N4/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Promoted N uses gold six steps and cannot promote again.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e4d",
+          "5e5d",
+          "5e6d",
+          "5e4e",
+          "5e6e",
+          "5e5f"
+        ],
+        "absent": [
+          "5e4f",
+          "5e6f",
+          "5e5d+"
+        ]
+      }
+    },
+    {
+      "id": "SH-F003:promoted-N-gote",
+      "inventory_ids": [
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4+n4/9/9/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Promoted N uses gold six steps and cannot promote again. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e6f",
+          "5e5f",
+          "5e4f",
+          "5e6e",
+          "5e4e",
+          "5e5d"
+        ],
+        "absent": [
+          "5e6d",
+          "5e4d",
+          "5e5f+"
+        ]
+      }
+    },
+    {
+      "id": "SH-F003:promoted-S-sente",
+      "inventory_ids": [
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4+S4/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Promoted S uses gold six steps and cannot promote again.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e4d",
+          "5e5d",
+          "5e6d",
+          "5e4e",
+          "5e6e",
+          "5e5f"
+        ],
+        "absent": [
+          "5e4f",
+          "5e6f",
+          "5e5d+"
+        ]
+      }
+    },
+    {
+      "id": "SH-F003:promoted-S-gote",
+      "inventory_ids": [
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4+s4/9/9/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Promoted S uses gold six steps and cannot promote again. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e6f",
+          "5e5f",
+          "5e4f",
+          "5e6e",
+          "5e4e",
+          "5e5d"
+        ],
+        "absent": [
+          "5e6d",
+          "5e4d",
+          "5e5f+"
+        ]
+      }
+    },
+    {
+      "id": "SH-F010:capture-P-sente",
+      "inventory_ids": [
+        "SH-F010",
+        "SH-F023"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/4+p4/9/4R4/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook captures promoted P; hand receives one base P and rook may promote in camp.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e5c",
+          "5e5c+"
+        ],
+        "absent": [],
+        "after_sfen": {
+          "5e5c+": "8k/9/4+R4/9/9/9/9/9/K8 w P 2"
+        }
+      }
+    },
+    {
+      "id": "SH-F010:capture-P-gote",
+      "inventory_ids": [
+        "SH-F010",
+        "SH-F023"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4r4/9/4+P4/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook captures promoted P; hand receives one base P and rook may promote in camp. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e5g",
+          "5e5g+"
+        ],
+        "absent": [],
+        "after_sfen": {
+          "5e5g+": "8k/9/9/9/9/9/4+r4/9/K8 b p 2"
+        }
+      }
+    },
+    {
+      "id": "SH-F010:capture-L-sente",
+      "inventory_ids": [
+        "SH-F010",
+        "SH-F023"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/4+l4/9/4R4/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook captures promoted L; hand receives one base L and rook may promote in camp.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e5c",
+          "5e5c+"
+        ],
+        "absent": [],
+        "after_sfen": {
+          "5e5c+": "8k/9/4+R4/9/9/9/9/9/K8 w L 2"
+        }
+      }
+    },
+    {
+      "id": "SH-F010:capture-L-gote",
+      "inventory_ids": [
+        "SH-F010",
+        "SH-F023"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4r4/9/4+L4/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook captures promoted L; hand receives one base L and rook may promote in camp. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e5g",
+          "5e5g+"
+        ],
+        "absent": [],
+        "after_sfen": {
+          "5e5g+": "8k/9/9/9/9/9/4+r4/9/K8 b l 2"
+        }
+      }
+    },
+    {
+      "id": "SH-F010:capture-N-sente",
+      "inventory_ids": [
+        "SH-F010",
+        "SH-F023"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/4+n4/9/4R4/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook captures promoted N; hand receives one base N and rook may promote in camp.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e5c",
+          "5e5c+"
+        ],
+        "absent": [],
+        "after_sfen": {
+          "5e5c+": "8k/9/4+R4/9/9/9/9/9/K8 w N 2"
+        }
+      }
+    },
+    {
+      "id": "SH-F010:capture-N-gote",
+      "inventory_ids": [
+        "SH-F010",
+        "SH-F023"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4r4/9/4+N4/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook captures promoted N; hand receives one base N and rook may promote in camp. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e5g",
+          "5e5g+"
+        ],
+        "absent": [],
+        "after_sfen": {
+          "5e5g+": "8k/9/9/9/9/9/4+r4/9/K8 b n 2"
+        }
+      }
+    },
+    {
+      "id": "SH-F010:capture-S-sente",
+      "inventory_ids": [
+        "SH-F010",
+        "SH-F023"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/4+s4/9/4R4/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook captures promoted S; hand receives one base S and rook may promote in camp.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e5c",
+          "5e5c+"
+        ],
+        "absent": [],
+        "after_sfen": {
+          "5e5c+": "8k/9/4+R4/9/9/9/9/9/K8 w S 2"
+        }
+      }
+    },
+    {
+      "id": "SH-F010:capture-S-gote",
+      "inventory_ids": [
+        "SH-F010",
+        "SH-F023"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4r4/9/4+S4/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook captures promoted S; hand receives one base S and rook may promote in camp. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e5g",
+          "5e5g+"
+        ],
+        "absent": [],
+        "after_sfen": {
+          "5e5g+": "8k/9/9/9/9/9/4+r4/9/K8 b s 2"
+        }
+      }
+    },
+    {
+      "id": "SH-F010:capture-B-sente",
+      "inventory_ids": [
+        "SH-F010",
+        "SH-F023"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/4+b4/9/4R4/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook captures promoted B; hand receives one base B and rook may promote in camp.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e5c",
+          "5e5c+"
+        ],
+        "absent": [],
+        "after_sfen": {
+          "5e5c+": "8k/9/4+R4/9/9/9/9/9/K8 w B 2"
+        }
+      }
+    },
+    {
+      "id": "SH-F010:capture-B-gote",
+      "inventory_ids": [
+        "SH-F010",
+        "SH-F023"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4r4/9/4+B4/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook captures promoted B; hand receives one base B and rook may promote in camp. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e5g",
+          "5e5g+"
+        ],
+        "absent": [],
+        "after_sfen": {
+          "5e5g+": "8k/9/9/9/9/9/4+r4/9/K8 b b 2"
+        }
+      }
+    },
+    {
+      "id": "SH-F010:capture-R-sente",
+      "inventory_ids": [
+        "SH-F010",
+        "SH-F023"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/4+r4/9/4R4/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook captures promoted R; hand receives one base R and rook may promote in camp.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e5c",
+          "5e5c+"
+        ],
+        "absent": [],
+        "after_sfen": {
+          "5e5c+": "8k/9/4+R4/9/9/9/9/9/K8 w R 2"
+        }
+      }
+    },
+    {
+      "id": "SH-F010:capture-R-gote",
+      "inventory_ids": [
+        "SH-F010",
+        "SH-F023"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4r4/9/4+R4/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook captures promoted R; hand receives one base R and rook may promote in camp. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e5g",
+          "5e5g+"
+        ],
+        "absent": [],
+        "after_sfen": {
+          "5e5g+": "8k/9/9/9/9/9/4+r4/9/K8 b r 2"
+        }
+      }
+    },
+    {
+      "id": "SH-F011:drops-sente",
+      "inventory_ids": [
+        "SH-F011",
+        "SH-F012",
+        "SH-F023"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/9/9/9/K8 b 2RBGSNLP 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Each hand kind drops unpromoted on an empty live square. Pawn/lance cannot drop on final rank; knight cannot drop on final two. Occupied square prohibited. Two rooks do not duplicate a choice. Empty final-rank pawn target explicitly isolates the dead-rank restriction from occupancy.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "P*5e",
+          "L*5e",
+          "N*5e",
+          "S*5e",
+          "G*5e",
+          "B*5e",
+          "R*5e"
+        ],
+        "absent": [
+          "P*1a",
+          "L*5a",
+          "N*5a",
+          "N*5b",
+          "P*9i",
+          "S*5e+",
+          "P*5a"
+        ],
+        "after_sfen": {
+          "P*5e": "8k/9/9/9/4P4/9/9/9/K8 w 2RBGSNL 2",
+          "L*5e": "8k/9/9/9/4L4/9/9/9/K8 w 2RBGSNP 2",
+          "N*5e": "8k/9/9/9/4N4/9/9/9/K8 w 2RBGSLP 2",
+          "S*5e": "8k/9/9/9/4S4/9/9/9/K8 w 2RBGNLP 2",
+          "G*5e": "8k/9/9/9/4G4/9/9/9/K8 w 2RBSNLP 2",
+          "B*5e": "8k/9/9/9/4B4/9/9/9/K8 w 2RGSNLP 2",
+          "R*5e": "8k/9/9/9/4R4/9/9/9/K8 w RBGSNLP 2"
+        }
+      }
+    },
+    {
+      "id": "SH-F011:drops-gote",
+      "inventory_ids": [
+        "SH-F011",
+        "SH-F012",
+        "SH-F023"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/9/9/9/K8 w 2rbgsnlp 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Each hand kind drops unpromoted on an empty live square. Pawn/lance cannot drop on final rank; knight cannot drop on final two. Occupied square prohibited. Two rooks do not duplicate a choice. Rotate 180 degrees and exchange ownership; forward and camps reverse. Empty final-rank pawn target explicitly isolates the dead-rank restriction from occupancy.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "P*5e",
+          "L*5e",
+          "N*5e",
+          "S*5e",
+          "G*5e",
+          "B*5e",
+          "R*5e"
+        ],
+        "absent": [
+          "P*9i",
+          "L*5i",
+          "N*5i",
+          "N*5h",
+          "P*1a",
+          "S*5e+",
+          "P*5i"
+        ],
+        "after_sfen": {
+          "P*5e": "8k/9/9/9/4p4/9/9/9/K8 b 2rbgsnl 2",
+          "L*5e": "8k/9/9/9/4l4/9/9/9/K8 b 2rbgsnp 2",
+          "N*5e": "8k/9/9/9/4n4/9/9/9/K8 b 2rbgslp 2",
+          "S*5e": "8k/9/9/9/4s4/9/9/9/K8 b 2rbgnlp 2",
+          "G*5e": "8k/9/9/9/4g4/9/9/9/K8 b 2rbsnlp 2",
+          "B*5e": "8k/9/9/9/4b4/9/9/9/K8 b 2rgsnlp 2",
+          "R*5e": "8k/9/9/9/4r4/9/9/9/K8 b rbgsnlp 2"
+        }
+      }
+    },
+    {
+      "id": "SH-F013:nifu-sente",
+      "inventory_ids": [
+        "SH-F013"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4P4/9/9/9/K8 b P 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Only same-owner unpromoted pawn forbids another pawn drop on its file.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "P*4d"
+        ],
+        "absent": [
+          "P*5d"
+        ]
+      }
+    },
+    {
+      "id": "SH-F013:nifu-gote",
+      "inventory_ids": [
+        "SH-F013"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4p4/9/9/9/K8 w p 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Only same-owner unpromoted pawn forbids another pawn drop on its file. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "P*6f"
+        ],
+        "absent": [
+          "P*5f"
+        ]
+      }
+    },
+    {
+      "id": "SH-F013:tokin-sente",
+      "inventory_ids": [
+        "SH-F013"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4+P4/9/9/9/K8 b P 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "A promoted pawn does not count for nifu.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "P*5d"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F013:tokin-gote",
+      "inventory_ids": [
+        "SH-F013"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4+p4/9/9/9/K8 w p 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "A promoted pawn does not count for nifu. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "P*5f"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F013:enemy-pawn-sente",
+      "inventory_ids": [
+        "SH-F013"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4p4/9/9/9/K8 b P 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "An enemy pawn does not count for own nifu.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "P*5d"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F013:enemy-pawn-gote",
+      "inventory_ids": [
+        "SH-F013"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4P4/9/9/9/K8 w p 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "An enemy pawn does not count for own nifu. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "P*5f"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F015:pawn-drop-mate-sente",
+      "inventory_ids": [
+        "SH-F015"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "3lkl3/3p1p3/4G4/9/9/9/9/9/K8 b P 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Pawn5b checks king5a. Own lances4a/6a and pawns4b/6b occupy all other adjacent squares; G5c protects5b. No defender can capture5b. Therefore immediate pawn-drop mate is forbidden.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [],
+        "absent": [
+          "P*5b"
+        ]
+      }
+    },
+    {
+      "id": "SH-F015:pawn-drop-mate-gote",
+      "inventory_ids": [
+        "SH-F015"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/9/4g4/3P1P3/3LKL3 w p 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Pawn5b checks king5a. Own lances4a/6a and pawns4b/6b occupy all other adjacent squares; G5c protects5b. No defender can capture5b. Therefore immediate pawn-drop mate is forbidden. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [],
+        "absent": [
+          "P*5h"
+        ]
+      }
+    },
+    {
+      "id": "SH-F016:king-escape-sente",
+      "inventory_ids": [
+        "SH-F016"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "4kl3/3p1p3/4G4/9/9/9/9/9/K8 b P 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Removing lance6a opens king5a6a; G5c does not attack6a. Checking pawn drop is not mate.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "P*5b"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F016:king-escape-gote",
+      "inventory_ids": [
+        "SH-F016"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/9/4g4/3P1P3/3LK4 w p 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Removing lance6a opens king5a6a; G5c does not attack6a. Checking pawn drop is not mate. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "P*5h"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F016:king-capture-sente",
+      "inventory_ids": [
+        "SH-F016"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "3lkl3/3p1p3/9/9/9/9/9/9/K8 b P 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Without G5c the checking pawn5b is undefended and king can capture it.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "P*5b"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F016:king-capture-gote",
+      "inventory_ids": [
+        "SH-F016"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/9/9/3P1P3/3LKL3 w p 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Without G5c the checking pawn5b is undefended and king can capture it. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "P*5h"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F016:defender-capture-sente",
+      "inventory_ids": [
+        "SH-F016"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "3lkl3/3p1g3/4G4/9/9/9/9/9/K8 b P 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Gold4b may capture5b sideways while protecting its king. Pawn check has a legal nonking defense.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "P*5b"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F016:defender-capture-gote",
+      "inventory_ids": [
+        "SH-F016"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/9/4g4/3G1P3/3LKL3 w p 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Gold4b may capture5b sideways while protecting its king. Pawn check has a legal nonking defense. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "P*5h"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F016:pinned-defender-sente",
+      "inventory_ids": [
+        "SH-F016"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "3lkl3/3p1g3/4G1B2/9/9/9/9/9/K8 b P 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Bishop3c pins gold4b to king5a along3c4b5a. Capturing pawn5b exposes that diagonal; all king escapes remain occupied or protected. No legal defense, so pawn drop is mate.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [],
+        "absent": [
+          "P*5b"
+        ]
+      }
+    },
+    {
+      "id": "SH-F016:pinned-defender-gote",
+      "inventory_ids": [
+        "SH-F016"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/9/2b1g4/3G1P3/3LKL3 w p 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Bishop3c pins gold4b to king5a along3c4b5a. Capturing pawn5b exposes that diagonal; all king escapes remain occupied or protected. No legal defense, so pawn drop is mate. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [],
+        "absent": [
+          "P*5h"
+        ]
+      }
+    },
+    {
+      "id": "SH-F017:pawn-move-mate-sente",
+      "inventory_ids": [
+        "SH-F017"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "3lkl3/3p1p3/4PG3/9/9/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "An existing pawn may advance to mate. G4c protects5b and all escape squares remain blocked. Uchifuzume prohibits the pawn drop action only.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5c5b",
+          "5c5b+"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F017:pawn-move-mate-gote",
+      "inventory_ids": [
+        "SH-F017"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/9/3gp4/3P1P3/3LKL3 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "An existing pawn may advance to mate. G4c protects5b and all escape squares remain blocked. Uchifuzume prohibits the pawn drop action only. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5g5h",
+          "5g5h+"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F017:gold-drop-mate-sente",
+      "inventory_ids": [
+        "SH-F017"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "3lkl3/3p1p3/4G4/9/9/9/9/9/K8 b G 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Gold drop5b checks king5a and is protected by G5c. The pawn-drop-mate restriction does not prohibit other mating drops.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "G*5b"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F017:gold-drop-mate-gote",
+      "inventory_ids": [
+        "SH-F017"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/9/4g4/3P1P3/3LKL3 w g 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Gold drop5b checks king5a and is protected by G5c. The pawn-drop-mate restriction does not prohibit other mating drops. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "G*5h"
+        ],
+        "absent": []
+      }
+    },
+    {
+      "id": "SH-F018:pin-sente",
+      "inventory_ids": [
+        "SH-F018"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "4r3k/9/9/9/9/9/9/4G4/4K4 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Gold5h shields king5i from rook5a. Sideways exposes rook line; forward maintains shield.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5h5g"
+        ],
+        "absent": [
+          "5h4h"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F018:pin-gote",
+      "inventory_ids": [
+        "SH-F018"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "4k4/4g4/9/9/9/9/9/9/K3R4 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Gold5h shields king5i from rook5a. Sideways exposes rook line; forward maintains shield. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5b5c"
+        ],
+        "absent": [
+          "5b6b"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F019:single-check-sente",
+      "inventory_ids": [
+        "SH-F019"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "4r3k/5B3/9/9/9/9/9/5G3/4K4 b S 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook5a checks king5i. King escape4i, gold interposition5h, bishop capture5a with either promotion, and silver drop5h each stop check; irrelevant choices do not.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5i4i",
+          "4h5h",
+          "4b5a",
+          "4b5a+",
+          "S*5h"
+        ],
+        "absent": [
+          "4h3h",
+          "S*4e"
+        ],
+        "in_check": true
+      }
+    },
+    {
+      "id": "SH-F019:single-check-gote",
+      "inventory_ids": [
+        "SH-F019"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "4k4/3g5/9/9/9/9/9/3b5/K3R4 w s 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook5a checks king5i. King escape4i, gold interposition5h, bishop capture5a with either promotion, and silver drop5h each stop check; irrelevant choices do not. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5a6a",
+          "6b5b",
+          "6h5i",
+          "6h5i+",
+          "S*5b"
+        ],
+        "absent": [
+          "6b7b",
+          "S*6e"
+        ],
+        "in_check": true
+      }
+    },
+    {
+      "id": "SH-F019:double-check-sente",
+      "inventory_ids": [
+        "SH-F019"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "4r3k/9/9/9/8b/9/9/3G5/4K4 b S 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook5a and bishop1e simultaneously attack king5i. Interposing on rook ray leaves bishop check; only safe king choices survive.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5i4i"
+        ],
+        "absent": [
+          "6h5h",
+          "S*5h"
+        ],
+        "in_check": true
+      }
+    },
+    {
+      "id": "SH-F019:double-check-gote",
+      "inventory_ids": [
+        "SH-F019"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "4k4/5g3/9/9/B8/9/9/9/K3R4 w s 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook5a and bishop1e simultaneously attack king5i. Interposing on rook ray leaves bishop check; only safe king choices survive. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5a6a"
+        ],
+        "absent": [
+          "4b5b",
+          "S*5b"
+        ],
+        "in_check": true
+      }
+    },
+    {
+      "id": "SH-F020:defended-checker-sente",
+      "inventory_ids": [
+        "SH-F020"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/9/5b3/4r4/4K4 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook5h checks king5i and is defended by bishop4g; king capture5h enters bishop attack.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [],
+        "absent": [
+          "5i5h"
+        ],
+        "in_check": true
+      }
+    },
+    {
+      "id": "SH-F020:defended-checker-gote",
+      "inventory_ids": [
+        "SH-F020"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "4k4/4R4/3B5/9/9/9/9/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook5h checks king5i and is defended by bishop4g; king capture5h enters bishop attack. Rotate 180 degrees and exchange ownership.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [],
+        "absent": [
+          "5a5b"
+        ],
+        "in_check": true
+      }
+    },
+    {
+      "id": "SH-F020:king-origin-xray-sente",
+      "inventory_ids": [
+        "SH-F020"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "4r3k/9/9/9/9/9/9/4K4/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook5a checks king5h. Moving king back to5i vacates5h and exposes5i to the same rook ray; the origin cannot shield its new square. Escape6i leaves the file.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5h6i"
+        ],
+        "absent": [
+          "5h5i"
+        ],
+        "in_check": true
+      }
+    },
+    {
+      "id": "SH-F020:king-origin-xray-gote",
+      "inventory_ids": [
+        "SH-F020"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/4k4/9/9/9/9/9/9/K3R4 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook5a checks king5h. Moving king back to5i vacates5h and exposes5i to the same rook ray; the origin cannot shield its new square. Escape6i leaves the file. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5b4a"
+        ],
+        "absent": [
+          "5b5a"
+        ],
+        "in_check": true
+      }
+    },
+    {
+      "id": "SH-F021:pinned-attacker-sente",
+      "inventory_ids": [
+        "SH-F021"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "5k3/9/5s3/9/4K4/9/9/9/5R3 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Silver4c is pinned along file4 by rook4i to its own king4a. Its geometric forward diagonal still attacks5d, so king5e may not enter5d;5e6e is outside silver and king influence. Pinned-piece king-safety influence is independently reviewed, not inferred from reference output.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e6e"
+        ],
+        "absent": [
+          "5e5d"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F021:pinned-attacker-gote",
+      "inventory_ids": [
+        "SH-F021"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "3r5/9/9/9/4k4/9/3S5/9/3K5 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Silver4c is pinned along file4 by rook4i to its own king4a. Its geometric forward diagonal still attacks5d, so king5e may not enter5d;5e6e is outside silver and king influence. Pinned-piece king-safety influence is independently reviewed, not inferred from reference output. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e4e"
+        ],
+        "absent": [
+          "5e5f"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F022:evasion-P-sente",
+      "inventory_ids": [
+        "SH-F022"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/4b4/4P4/9/9/K8/9/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Bishop5c checks king9g along6d7e8f. P captures checker5c into camp; both promotion flags are legal check evasions.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5d5c",
+          "5d5c+"
+        ],
+        "absent": [],
+        "in_check": true
+      }
+    },
+    {
+      "id": "SH-F022:evasion-P-gote",
+      "inventory_ids": [
+        "SH-F022"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/9/8k/9/9/4p4/4B4/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Bishop5c checks king9g along6d7e8f. P captures checker5c into camp; both promotion flags are legal check evasions. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5f5g",
+          "5f5g+"
+        ],
+        "absent": [],
+        "in_check": true
+      }
+    },
+    {
+      "id": "SH-F022:evasion-L-sente",
+      "inventory_ids": [
+        "SH-F022"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/4b4/9/4L4/9/K8/9/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Bishop5c checks king9g along6d7e8f. L captures checker5c into camp; both promotion flags are legal check evasions.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e5c",
+          "5e5c+"
+        ],
+        "absent": [],
+        "in_check": true
+      }
+    },
+    {
+      "id": "SH-F022:evasion-L-gote",
+      "inventory_ids": [
+        "SH-F022"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/9/8k/9/4l4/9/4B4/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Bishop5c checks king9g along6d7e8f. L captures checker5c into camp; both promotion flags are legal check evasions. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e5g",
+          "5e5g+"
+        ],
+        "absent": [],
+        "in_check": true
+      }
+    },
+    {
+      "id": "SH-F022:evasion-N-sente",
+      "inventory_ids": [
+        "SH-F022"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/4b4/9/5N3/9/K8/9/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Bishop5c checks king9g along6d7e8f. N captures checker5c into camp; both promotion flags are legal check evasions.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "4e5c",
+          "4e5c+"
+        ],
+        "absent": [],
+        "in_check": true
+      }
+    },
+    {
+      "id": "SH-F022:evasion-N-gote",
+      "inventory_ids": [
+        "SH-F022"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/9/8k/9/3n5/9/4B4/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Bishop5c checks king9g along6d7e8f. N captures checker5c into camp; both promotion flags are legal check evasions. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "6e5g",
+          "6e5g+"
+        ],
+        "absent": [],
+        "in_check": true
+      }
+    },
+    {
+      "id": "SH-F022:evasion-B-sente",
+      "inventory_ids": [
+        "SH-F022"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/4b4/5B3/9/9/K8/9/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Bishop5c checks king9g along6d7e8f. B captures checker5c into camp; both promotion flags are legal check evasions.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "4d5c",
+          "4d5c+"
+        ],
+        "absent": [],
+        "in_check": true
+      }
+    },
+    {
+      "id": "SH-F022:evasion-B-gote",
+      "inventory_ids": [
+        "SH-F022"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/9/8k/9/9/3b5/4B4/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Bishop5c checks king9g along6d7e8f. B captures checker5c into camp; both promotion flags are legal check evasions. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "6f5g",
+          "6f5g+"
+        ],
+        "absent": [],
+        "in_check": true
+      }
+    },
+    {
+      "id": "SH-F022:evasion-R-sente",
+      "inventory_ids": [
+        "SH-F022"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/4b4/9/4R4/9/K8/9/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Bishop5c checks king9g along6d7e8f. R captures checker5c into camp; both promotion flags are legal check evasions.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e5c",
+          "5e5c+"
+        ],
+        "absent": [],
+        "in_check": true
+      }
+    },
+    {
+      "id": "SH-F022:evasion-R-gote",
+      "inventory_ids": [
+        "SH-F022"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/9/8k/9/4r4/9/4B4/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Bishop5c checks king9g along6d7e8f. R captures checker5c into camp; both promotion flags are legal check evasions. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e5g",
+          "5e5g+"
+        ],
+        "absent": [],
+        "in_check": true
+      }
+    },
+    {
+      "id": "SH-F024:capture-drop-sequence-sente",
+      "inventory_ids": [
+        "SH-F024",
+        "SH-F023"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/4+p4/9/4R4/9/9/9/K8 b - 1",
+      "moves": [
+        "5e5c+",
+        "1a1b",
+        "P*4d",
+        "1b1a",
+        "5c5d"
+      ],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Capture of enemy tokin yields base pawn; opponent king shuffles on file1; pawn is dropped4d and removed from hand; dragon retreats5d without losing promotion. Every move alternates side, final next-ply6. Root starts one known history segment; no earlier occurrence or outcome is asserted.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [],
+        "absent": [],
+        "sfen": "8k/9/9/4+RP3/9/9/9/9/K8 w - 6"
+      },
+      "known_history": {
+        "root_counts_once": true,
+        "pre_root_history": "unknown",
+        "root_counter": "supplied SFEN next-ply1",
+        "outcomes": "not adjudicated; MSH-67"
+      }
+    },
+    {
+      "id": "SH-F024:capture-drop-sequence-gote",
+      "inventory_ids": [
+        "SH-F024",
+        "SH-F023"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4r4/9/4+P4/9/K8 w - 1",
+      "moves": [
+        "5e5g+",
+        "9i9h",
+        "P*6f",
+        "9h9i",
+        "5g5f"
+      ],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Capture of enemy tokin yields base pawn; opponent king shuffles on file1; pawn is dropped4d and removed from hand; dragon retreats5d without losing promotion. Every move alternates side, final next-ply6. Root starts one known history segment; no earlier occurrence or outcome is asserted. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and state accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [],
+        "absent": [],
+        "sfen": "8k/9/9/9/9/3p+r4/9/9/K8 b - 6"
+      },
+      "known_history": {
+        "root_counts_once": true,
+        "pre_root_history": "unknown",
+        "root_counter": "supplied SFEN next-ply1",
+        "outcomes": "not adjudicated; MSH-67"
+      }
+    },
+    {
+      "id": "SH-F004:rook-blockers-sente",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F004"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/4P4/9/4R4/9/4s4/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook orthogonal rays stop before friendly pawn5c and on capturable enemy silver5g. Intermediate5d/5f and horizontal endpoints1e/9e remain legal; no promotion wholly outside camp.",
+        "established_by": "hand-derived geometry and resource accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e5d",
+          "5e5f",
+          "5e5g",
+          "5e1e",
+          "5e9e"
+        ],
+        "absent": [
+          "5e5c",
+          "5e5b",
+          "5e5h",
+          "5e5g+"
+        ]
+      }
+    },
+    {
+      "id": "SH-F004:rook-blockers-gote",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F004"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/4S4/9/4r4/9/4p4/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Rook orthogonal rays stop before friendly pawn5c and on capturable enemy silver5g. Intermediate5d/5f and horizontal endpoints1e/9e remain legal; no promotion wholly outside camp. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and resource accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e5f",
+          "5e5d",
+          "5e5c",
+          "5e9e",
+          "5e1e"
+        ],
+        "absent": [
+          "5e5g",
+          "5e5h",
+          "5e5b",
+          "5e5c+"
+        ]
+      }
+    },
+    {
+      "id": "SH-F002:knight-jumps-sente",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F004"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/5s3/3GPG3/4N4/9/9/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Knight alone jumps over adjacent own blockers5d/4d/6d to4c/6c. Forward is two ranks toward camp, one file sideways; both promotion flags available.",
+        "established_by": "hand-derived geometry and resource accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e4c",
+          "5e4c+",
+          "5e6c",
+          "5e6c+"
+        ],
+        "absent": [
+          "5e5c",
+          "5e4d"
+        ]
+      }
+    },
+    {
+      "id": "SH-F002:knight-jumps-gote",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F004"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4n4/3gpg3/3S5/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Knight alone jumps over adjacent own blockers5d/4d/6d to4c/6c. Forward is two ranks toward camp, one file sideways; both promotion flags available. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and resource accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [
+          "5e6g",
+          "5e6g+",
+          "5e4g",
+          "5e4g+"
+        ],
+        "absent": [
+          "5e5g",
+          "5e6f"
+        ]
+      }
+    },
+    {
+      "id": "SH-F014:invalid-board-requests-sente",
+      "inventory_ids": [
+        "SH-F014"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/4P4/4R4/9/9/9/K8 b S 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Pawn absent from hand cannot drop; silver cannot drop on own pawn5d; opposing king cannot be moved; same-square rook action is unavailable. Board exclusion is reference-observable. Native atomic rejection/state preservation belongs to MSH-65/66 product tests and is not established by permissive upstream request APIs.",
+        "established_by": "hand-derived geometry and resource accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [],
+        "absent": [
+          "P*4e",
+          "S*5d",
+          "1a1b",
+          "5e5e"
+        ]
+      }
+    },
+    {
+      "id": "SH-F014:invalid-board-requests-gote",
+      "inventory_ids": [
+        "SH-F014"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/4r4/4p4/9/9/K8 w s 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; educational pages retrieved 2026-10-26",
+        "derivation": "Pawn absent from hand cannot drop; silver cannot drop on own pawn5d; opposing king cannot be moved; same-square rook action is unavailable. Board exclusion is reference-observable. Native atomic rejection/state preservation belongs to MSH-65/66 product tests and is not established by permissive upstream request APIs. Rotate 180 degrees and exchange ownership; forward and camps reverse.",
+        "established_by": "hand-derived geometry and resource accounting before reference run; not reference-generated",
+        "review": "Independent Codex fixture review, 2026-10-26; docs/m4/reference-review.md; asserted board facts only, not complete inventory or reachability"
+      },
+      "expected": {
+        "contains": [],
+        "absent": [
+          "P*6e",
+          "S*5f",
+          "9i9h",
+          "5e5e"
+        ]
+      }
+    }
+  ]
+}

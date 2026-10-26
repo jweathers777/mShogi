@@ -53,3 +53,30 @@ Reviewer independently traced both transition directions and executed focused
 App/ProductApp/useGameSession tests **24 passed**, strict TypeScript and diff
 check passed. No material finding. These tests do not substitute for actual
 packaged native quit evidence. Complete frontend suite **122 passed** locally.
+
+
+Final modal follow-up, independently reviewed against b26fd73: native quit
+cancels an uncommitted New Game chooser before opening the close guard, avoiding
+two active root dialogs. No game change is submitted. Reviewer independently
+ran ProductApp **11 tests passed** and diff check passed; complete root frontend
+suite **123 passed**. No material finding remains.
+
+Actual Windows21bfe3e GUI exposed a native cross-game Open race (13/14 phases
+passed; fresh-process Shogi reopen failed). A shared poll could enter the Chess
+branch, commit Shogi Open inside the legacy snapshot poll, then publish a Chess
+projection with the newly advanced Shogi token. The correct next Shogi view had
+an equal token and was correctly rejected by frontend freshness. Independent
+platform/source review corroborated this mechanism. Both native read paths now
+recheck the active family after file polling; the legacy path also returns before
+polling/submitting retired Chess work. Strict frontend freshness is unchanged.
+
+The new deterministic test uses a real saved native Shogi archive and real file
+worker, waits for its completed slot without polling, then forces shared-first
+and legacy-first commit. It checks the first published game/geometry/side/token,
+stopped restoration, subsequent same-token consistency, and no hidden Chess
+request even when the previous Chess engine turn was eligible. The test failed
+on the old implementation (Chess != Shogi) and passes with the correction. An
+initial test draft had incorrect imports; corrected before the demonstrated
+behavioral failure. Fresh independent reviewer traced both read paths and the
+bounded redispatch, independently ran this regression and adjacent archive-open
+test (both passed), and diff check passed. No material finding remained.

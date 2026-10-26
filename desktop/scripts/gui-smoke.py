@@ -384,7 +384,7 @@ class Journey:
 
     def shogi_save(self, path, observation_count=None):
         self.file("save_as", path, button_label="Save as…")
-        wait(lambda: self.web.text(".document-dirty") == "Saved", "complete shogi document saved")
+        wait(lambda: self.web.text(".document-dirty").casefold() == "saved", "complete shogi document saved")
         wait(path.exists, "native shogi Save As created exact path")
         archive = json.loads(path.read_text(encoding="utf-8"))
         assert archive["schema_version"] == 2 and archive["format"] == "mshogi.desktop.archive.v2", archive
@@ -406,7 +406,8 @@ class Journey:
         self.web.click('[data-analysis-start="shogi"]')
 
     def shogi_complete_analysis(self):
-        wait(lambda: "Analysis complete" in self.web.text(".shogi-analysis-state"), "actual read-only shogi analysis completion", 45)
+        wait(lambda: "Analysis result available" in self.web.text(".shogi-analysis-state"), "actual read-only shogi analysis result", 45)
+        assert self.web.has('[data-search-purpose="move_analysis"]')
         assert "No move or declaration was played" in self.web.text(".shogi-analysis")
         assert "perspective" in self.web.text(".analysis-perspective")
 

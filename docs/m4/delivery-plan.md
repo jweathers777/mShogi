@@ -31,7 +31,8 @@ The next active worker must inspect the then-current code and record its plan.
 | AC7 — actual desktop play/inspection/analysis/persistence | MSH-74 game-specific native/desktop adaptation and running-app journeys | MSH-72 common sides/board/hand-selection/capabilities; MSH-73 Save/Open/history plumbing; final cross-game three-platform acceptance remains MSH-88 under MSH-46. |
 | AC8 — complete ledger and independent game review | MSH-75 traces all eight criteria, findings and exact evidence before MSH-41 closes | Required shared MSH-69/72/73 must also be Done. MSH-46/47 retain final cross-game/M4 closure. |
 
-MSH-63 is **To Do**, pending the actual owner choice. MSH-64/65 do not depend on
+SHOGI-P1 option A was explicitly approved on 2026-10-26 against integration
+`6db8500e92129b95e502e7b4d5c4a26072e38652`; MSH-63 records ratification and review. MSH-64/65 do not depend on
 it: independently settled board fixtures and state/reversal work need not wait
 for conclusion-policy selection. Neither component alone claims full legal or
 match conformance. MSH-66 waits for both. **MSH-67 waits for MSH-63** and full
@@ -118,10 +119,10 @@ game delivery it helps supply. Task-count percentages do not change these gates.
 
 ## First bounded implementation queue after this planning batch
 
-Stop now for the owner discussion; this document starts no implementation.
+Historical MSH-62 handoff: the owner discussion has now selected option A.
+The authorized next batch is MSH-63–66 only; task records track execution.
 
-1. Resolve **SHOGI-P1 / MSH-63** against the sourced proposal. This is the only
-   current material owner choice. Do not silently treat the recommendation as approval.
+1. Resolve **SHOGI-P1 / MSH-63** against the sourced proposal. The explicit selection is recorded in the profile and D-13.
 2. MSH-64 independent board corpus/reference admission and MSH-65 native state,
    complete actions/reversal are the first bounded implementation work; they may
    run independently under one integrator. MSH-66 full legality follows both.

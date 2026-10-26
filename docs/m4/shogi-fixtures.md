@@ -1,6 +1,8 @@
 # Standard shogi fixture inventory
 
-MSH-62 planning inventory, 2026-10-26. **No fixture or shogi test implementation is delivered here.** Stable IDs reserve independently expected cases for future MSH-41 work. Every row needs an instantiated position/event record and fresh independent review before it can support delivery evidence. Concrete diagrams below are initial hand-derived expectations, not engine-generated answers or a certified reachable-game corpus. All profile-specific results remain conditional on SHOGI-P1; the proposed bundle is `mshogi.shogi.csa36.v1` in [the profile proposal](shogi-profile.md).
+MSH-62 planning inventory, 2026-10-26. **No fixture or shogi test implementation is delivered here.** Stable IDs reserve independently expected cases for future MSH-41 work. Every row needs an instantiated position/event record and fresh independent review before it can support delivery evidence. Concrete diagrams below are initial hand-derived expectations, not engine-generated answers or a certified reachable-game corpus. SHOGI-P1 now selects option A; the governing bundle is `mshogi.shogi.csa36.v1` in [the selected profile](shogi-profile.md). This inventory preserves the MSH-62
+planning constructions; current clause/owner/status is in [coverage](shogi-coverage.md).
+Unselected JSA expectations below are alternative-only, never expectations for CSA36.
 
 ## Provenance and fixture admission
 

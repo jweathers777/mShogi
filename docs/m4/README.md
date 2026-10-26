@@ -1,7 +1,8 @@
-# M4 shogi-first planning proposal
+# M4 shogi-first plan and delivery evidence
 
-Prepared 2026-10-26 under **MSH-62**. This batch changes documentation and native
-Backlog task records only. M2/M3 remain closed; their source/evidence, completed
+Planning prepared 2026-10-26 under **MSH-62**; its reviews remain historical.
+The authorized MSH-63–66 batch selects the profile and implements native board
+state/local legality only. Current evidence is in [coverage](shogi-coverage.md). M2/M3 remain closed; their source/evidence, completed
 task history, MSH-61 persistence admission and MSH-40 roadmap correction remain
 intact. MSH-41–47 stay open with their original full delivery/closure criteria.
 
@@ -12,7 +13,7 @@ no evidence-based change to that provisional delivery order at present.
 | Deliverable | Proposal and scope |
 | --- | --- |
 | Current-code implementation map | [implementation-map.md](implementation-map.md): actual chess boundaries and minimal explicit chess/shogi extensions, old-document compatibility, capabilities and preserved lossless admission |
-| Complete named shogi profile | [shogi-profile.md](shogi-profile.md): proposed `mshogi.shogi.csa36.v1`, primary editions/clauses, complete board/history/conclusion conventions and explicit software adaptations |
+| Complete named shogi profile | [shogi-profile.md](shogi-profile.md): selected `mshogi.shogi.csa36.v1`, primary editions/clauses, complete board/history/conclusion conventions and explicit software adaptations |
 | Independent verification/reference/opponent audit | [shogi-verification.md](shogi-verification.md): immutable source pins and exact operation/semantic gaps; source audit is not runtime conformance |
 | Initial independent fixture inventory | [shogi-fixtures.md](shogi-fixtures.md): 55 stable IDs, hand-derived examples and clearly pending instantiation/review; no invented test results |
 | Native tasks, traceability and executable graph | [delivery-plan.md](delivery-plan.md): MSH-63–89, original MSH-41/46 criteria mapping, one common owner and no prerequisite/final-delivery cycles |
@@ -20,18 +21,11 @@ no evidence-based change to that provisional delivery order at present.
 
 ## The material owner choice
 
-**SHOGI-P1 / MSH-63:** approve the proposed CSA36 software bundle, or select a
-separately named JSA professional/other event convention. Recommendation is the
-CSA bundle: JSA board rules with explicit CSA conclusions — sente28/gote27-point
-declaration, fourfold draw except continuous-check loss, no-legal-move loss and
-320-ply draw with the sourced precedence. Initial local mode is explicitly
-untimed. Game outcomes, declaration eligibility/commit and optional competition
-scoring remain distinct. The profile document gives exact conditions and options.
-
-The dated JSA professional rules instead use31-point declaration victory and
-24–30 replay, with different repetition/impasse procedures. Those are alternatives,
-not interchangeable thresholds. Unselected profiles are not new required M4
-implementations. The recommendation remains **unapproved** until the owner decides.
+**SHOGI-P1 / MSH-63:** John selected option A, `mshogi.shogi.csa36.v1`,
+on 2026-10-26 against integration `6db8500e92129b95e502e7b4d5c4a26072e38652`.
+The [selected profile](shogi-profile.md) records the exact CSA bundle and approved
+software adaptations. JSA professional and other event conventions remain
+separately named alternatives; they are not additional required implementations.
 
 Ordinary native API/representation details stay autonomous. Illegal/stale API
 requests reject atomically; this does not simulate every physical tournament
@@ -47,7 +41,7 @@ early shared mechanisms without waiting for final MSH-41 or MSH-46. MSH-75
 eventually verifies full shogi delivery; MSH-88/89 and MSH-47 retain final
 all-game/platform and M4 closure obligations.
 
-This planning batch does not execute that queue, certify any shogi rule, run a
+MSH-62 did not execute that queue, certify any shogi rule, run a
 reference/opponent match, implement another game or close an M4 delivery.
 M5/M6 obligations remain future work. Planning verification and independent
 review are recorded in [validation.md](validation.md) when complete.

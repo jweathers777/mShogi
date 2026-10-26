@@ -13,9 +13,11 @@ export interface BoardChoice {
   steps: string[];
   completion: { label: string; glyph: string | null } | null;
 }
+export interface NativePiece { square: string; owner: string; kind: string; promoted: boolean; text: string; label: string }
+export interface NativeHand { origin: string; owner: string; kind: string; count: number; text: string; label: string }
 interface SelectionChoice extends BoardChoice { promotion: boolean }
 interface Props {
-  pieces: BoardPiece[];
+  pieces: (BoardPiece | NativePiece)[];
   choices: LegalChoice[] | BoardChoice[];
   orientation: Color;
   version: number;
@@ -24,6 +26,9 @@ interface Props {
   geometry?: BoardGeometry;
   glyphs?: Record<string, string>;
   profile?: string;
+  nativeOrientation?: { files: string[]; ranks: string[]; label: string; bottomOwner: string };
+  hands?: NativeHand[];
+  nativeFirstOwner?: string;
 }
 const chessGlyphs: Record<string, string> = {
   king: "♚", queen: "♛", rook: "♜", bishop: "♝", knight: "♞", pawn: "♟",
@@ -37,11 +42,12 @@ export function displayedSquares(orientation: Color, geometry = chessGeometry): 
   return ranks.flatMap((rank) => files.map((file) => `${file}${rank}`));
 }
 export function Board({ pieces, choices: supplied, orientation, version, disabled,
-  onPlay, geometry = chessGeometry, glyphs = {}, profile = "chess" }: Props) {
-  const squares = displayedSquares(orientation, geometry);
+  onPlay, geometry = chessGeometry, glyphs = {}, profile = "chess", nativeOrientation, hands = [], nativeFirstOwner }: Props) {
+  const squares = nativeOrientation ? nativeOrientation.ranks.flatMap((rank) => nativeOrientation.files.map((file) => `${file}${rank}`)) : displayedSquares(orientation, geometry);
   const columns = geometry.files.length;
   const rows = geometry.ranks.length;
-  const large = columns > 8 || rows > 8;
+  // Standard 8x8/9x9 boards fit the normal panel; the 16x16 fixture scrolls.
+  const large = columns > 9 || rows > 9;
   const geometryKey = `${geometry.label}|${geometry.files.join(",")}|${geometry.ranks.join(",")}`;
   const choices: SelectionChoice[] = supplied.map((choice) => "steps" in choice
     ? { ...choice, promotion: false }
@@ -54,14 +60,14 @@ export function Board({ pieces, choices: supplied, orientation, version, disable
   const [focused, setFocused] = useState(geometry.initialFocus);
   const [dialogChoices, setDialogChoices] = useState<SelectionChoice[]>([]);
   const [announcement, setAnnouncement] = useState("");
-  const refs = useRef(new Map<string, SVGGElement>());
+  const refs = useRef(new Map<string, SVGGElement | HTMLButtonElement>());
   const dialog = useRef<HTMLDivElement>(null);
   const returnFocus = useRef(geometry.initialFocus);
   useLayoutEffect(() => {
     setSelected(null); setPrefix([]); setDialogChoices([]); setAnnouncement("");
     setFocused((current) => squares.includes(current) ? current : geometry.initialFocus);
   // Native versions/profile and presentation geometry retire partial choices.
-  }, [version, disabled, profile, geometryKey, orientation]);
+  }, [version, disabled, profile, geometryKey, orientation, nativeOrientation?.label]);
   useEffect(() => {
     if (dialogChoices.length > 0)
       dialog.current?.querySelector<HTMLButtonElement>("button")?.focus();
@@ -144,14 +150,31 @@ export function Board({ pieces, choices: supplied, orientation, version, disable
       buttons[(index + (event.shiftKey ? -1 : 1) + buttons.length) % buttons.length]?.focus();
     }
   }
-  const displayFiles = orientation === "white" ? geometry.files : [...geometry.files].reverse();
-  const displayRanks = orientation === "white" ? [...geometry.ranks].reverse() : geometry.ranks;
+  const displayFiles = nativeOrientation?.files ?? (orientation === "white" ? geometry.files : [...geometry.files].reverse());
+  const displayRanks = nativeOrientation?.ranks ?? (orientation === "white" ? [...geometry.ranks].reverse() : geometry.ranks);
   const width = 40 + columns * 100, height = 40 + rows * 100;
   return (
     <div className={`board-wrap${large ? " large-board-wrap" : ""}`}>
+      {hands.length > 0 && <div role="group" aria-label="Native hands">
+        {hands.map((hand, index) => <button key={hand.origin} ref={(element) => { if (element) refs.current.set(hand.origin, element); else refs.current.delete(hand.origin); }}
+          aria-label={hand.label} aria-pressed={selected === hand.origin}
+          disabled={disabled || dialogChoices.length > 0 || !choices.some((choice) => choice.from === hand.origin)}
+          onClick={() => select(hand.origin)} onKeyDown={(event) => {
+            if (event.key === "Escape") { event.preventDefault(); clearSelection(); focusSquare(hand.origin); }
+            if (event.key === "ArrowDown") { event.preventDefault(); focusSquare(geometry.initialFocus); }
+            if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+              event.preventDefault();
+              const direction = event.key === "ArrowLeft" ? -1 : 1;
+              for (let step = 1; step < hands.length; step++) {
+                const next = hands[(index + direction * step + hands.length) % hands.length]!;
+                if (choices.some((choice) => choice.from === next.origin)) { focusSquare(next.origin); break; }
+              }
+            }
+          }}>{hand.label}</button>)}
+      </div>}
       <div className="board-scroll">
         <svg className="chess-board" viewBox={`0 0 ${width} ${height}`} role="group"
-          aria-label={`${geometry.label}, ${orientation} at bottom`}>
+          aria-label={`${geometry.label}, ${nativeOrientation?.label ?? orientation} at bottom`}>
           <rect width={width} height={height} rx="8" className="board-border" />
           {squares.map((square, index) => {
             const piece = pieces.find((piece) => piece.square === square);
@@ -171,8 +194,8 @@ export function Board({ pieces, choices: supplied, orientation, version, disable
                 <rect width="100" height="100" className="square-fill" />
                 {target && <circle cx="50" cy="50" r={piece ? "40" : "12"}
                   className={piece ? "capture-marker" : "move-marker"} />}
-                {piece && <text x="50" y="74" textAnchor="middle" className={`piece ${piece.color}`} aria-hidden="true">
-                  {glyphs[piece.kind] ?? chessGlyphs[piece.kind] ?? "?"}
+                {piece && <text x="50" y="74" textAnchor="middle" data-owner={"owner" in piece ? piece.owner : piece.color} className={`piece ${"owner" in piece ? (piece.owner === nativeFirstOwner ? "native-first-owner" : "native-second-owner") : piece.color}`} aria-hidden="true">
+                  {"text" in piece ? piece.text : glyphs[piece.kind] ?? chessGlyphs[piece.kind] ?? "?"}
                 </text>}
                 {column === 0 && <text x="7" y="20" className="coordinate" aria-hidden="true">{displayRanks[row]}</text>}
                 {row === rows - 1 && <text x="82" y="93" className="coordinate" aria-hidden="true">{displayFiles[column]}</text>}

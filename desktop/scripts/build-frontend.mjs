@@ -19,7 +19,7 @@ if (checked.error) throw checked.error;
 if (checked.status !== 0) process.exit(checked.status ?? 1);
 
 const outDir = verification ? 'dist-verification' : 'dist';
-const forbidden = ['mshogi.synthetic.strider16.v1', 'synthetic_snapshot', 'synthetic_command', 'desktop_verification_mode', 'SYNTHETIC DEVELOPMENT FIXTURE'];
+const forbidden = ['mshogi.synthetic.strider16.v1', 'synthetic_snapshot', 'synthetic_command', 'desktop_verification_mode', 'native_contract_snapshot', 'native_contract_command', 'MSH-72 DEVELOPMENT CONTRACT', 'SYNTHETIC DEVELOPMENT FIXTURE'];
 await build({
   root: desktop,
   build: { outDir, emptyOutDir: true },

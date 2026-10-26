@@ -4,7 +4,7 @@ title: Deliver shogi desktop play analysis saving and historical inspection
 status: Ready
 assignee: []
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-26T07:44:00Z'
+updated_date: '2026-10-26T19:22:00Z'
 labels:
   - m4
   - owner-msh-41
@@ -20,6 +20,7 @@ references:
 documentation:
   - docs/m4/implementation-map.md
   - docs/m4/delivery-plan.md
+  - docs/m4/desktop-session.md
 type: task
 ordinal: 74000
 ---
@@ -41,6 +42,10 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 - [ ] #3 Bounded read-only analysis and live engine work remain separate; cancellation/replacement/profile switching/historical selection preserve exact context and never apply stale or wrong-purpose actions.
 - [ ] #4 Complete Save/Open and history inspection preserve hands,profile,commands/events,conclusions and observation provenance. Reopen is stopped; Return to live/Resume and unsaved replacement/quit guards remain explicit.
 - [ ] #5 Running native application evidence covers full shogi journeys at supported sizes and shogi capacity/defaults. Unsupported chess Full or timed restoration is rejected clearly,not silently relabeled or downgraded.
+- [ ] #6 Product design shows the complete standard 9x9 board without scrolling at supported normal desktop window sizes; standard shogi does not inherit synthetic large-board scrolling or assume zoom/pan is needed.
+- [ ] #7 Deliberate shogi-specific piece presentation preserves Sente/Gote orientation, ownership and promoted semantics; pieces-in-hand/drop and promotion choices form integrated player interaction rather than diagnostic button rows.
+- [ ] #8 The player interface has coherent player, turn and game-status hierarchy with move/history and analysis presentation that does not crowd the board; polished keyboard and pointer operation is verified in the running native application.
+- [ ] #9 Developer/raw diagnostic information is separated from normal play. The MSH-72 DEVELOPMENT CONTRACT harness is not evidence of approved/completed visual design and is not used as the MSH-74 design basis or acceptance target.
 <!-- AC:END -->
 
 ## Definition of Done
@@ -50,3 +55,9 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner clarification during MSH-72, 2026-10-26: MSH-74 must perform actual shogi UI design and implementation. Preserve existing semantic/play/analysis/archive/application criteria; added product criteria define full-board fit, deliberate owner-oriented/promoted shogi pieces, integrated hand/drop/promotion interaction, visual hierarchy and diagnostic separation. MSH-72 harness sizing/layout/Latin fallback/buttons/control strip are verification-only and not product approval. Future large boards must assess full-board fit, informed by owner-reported legacy master full16x16 display on smaller screens; zoom/pan/scroll are not assumed necessary. No MSH-74 implementation started. See docs/m4/desktop-session.md and docs/desktop/m3-design.md.
+<!-- SECTION:NOTES:END -->

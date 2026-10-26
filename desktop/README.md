@@ -215,3 +215,12 @@ uses only that event's known history prefix, with no future moves or claims.
 Selecting another event retires prior analysis. **Return to live** restores the
 live board; **Resume play** is a separate action. Branching and variation editing
 are outside this batch.
+
+## MSH-72 shared chess/shogi contract development surface
+
+The normal application remains the delivered chess desktop. The separately
+labeled `shared-contract` verification fixture exercises the native shogi session,
+hands/complete-choice selection and read-only analysis boundary. It has no shogi
+archive support and is not the finished shogi application. See the
+[contract and launch instructions](../docs/m4/desktop-session.md) and
+[scoped evidence](../docs/m4/desktop-session-validation.md).

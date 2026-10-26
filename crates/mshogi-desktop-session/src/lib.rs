@@ -3,6 +3,8 @@
 mod synthetic;
 #[cfg(feature = "desktop-verification")]
 pub use synthetic::*;
+mod shared;
+pub use shared::*;
 mod capacity;
 pub use capacity::*;
 mod persistence;
@@ -786,6 +788,7 @@ fn new_match() -> ChessMatch {
 
 /// Tauri-owned serialized controller. Process work runs on the bridge worker.
 pub struct DesktopController {
+    shared: shared::SharedState,
     session: DesktopSession,
     bridge: EngineBridge,
     origin: Instant,
@@ -801,6 +804,7 @@ impl DesktopController {
     /// Launch the supervisor worker, without starting a child or doing pipe I/O.
     pub fn new(engine_path: PathBuf) -> io::Result<Self> {
         Ok(Self {
+            shared: shared::SharedState::default(),
             session: DesktopSession::new(),
             bridge: EngineBridge::new(engine_path)?,
             origin: Instant::now(),
@@ -821,7 +825,7 @@ impl DesktopController {
     pub fn verification(engine_path: PathBuf, fixture: &str) -> Result<Self, String> {
         let mut controller = Self::new(engine_path).map_err(|error| error.to_string())?;
         controller.session = match fixture {
-            "standard" => DesktopSession::new(),
+            "standard" | "shared-contract" => DesktopSession::new(),
             "capacity" => DesktopSession::verification_capacity()?,
             "promotion" => {
                 let game = AdjudicatedGame::from_fen("7k/P7/8/8/8/8/8/7K w - - 0 1", ClaimPolicy::ExplicitOnly).map_err(|error| error.to_string())?;
@@ -844,6 +848,22 @@ impl DesktopController {
             }
             _ => return Err("Unknown desktop verification fixture. Use standard, promotion, claim, current-claim, concluded, incomplete or capacity.".into()),
         };
+        if fixture == "shared-contract" {
+            use mshogi_core::{
+                native::{CanonicalRecord, GameKind, NativeSide},
+                shogi,
+            };
+            controller.shared_command(SharedDesktopCommand {
+                expected: controller.shared_token(),
+                game: GameKind::Chess,
+                operation: SessionOperation::Replace {
+                    record: CanonicalRecord::shogi(shogi::GameRecord::from_game(
+                        &shogi::Game::new(),
+                    )),
+                    human: NativeSide::Shogi(shogi::Side::Sente),
+                },
+            })?;
+        }
         Ok(controller)
     }
     fn at_ns(&self) -> u64 {
@@ -853,6 +873,7 @@ impl DesktopController {
     /// Queue an explicit candidate before polling completions; cancellation wins races.
     /// Use `command_with_receipt` when the caller needs its accepted/rejected outcome.
     pub fn command(&mut self, command: DesktopCommand) -> Result<Snapshot, String> {
+        self.require_chess()?;
         if matches!(
             command,
             DesktopCommand::Analyze { .. }
@@ -916,6 +937,13 @@ impl DesktopController {
     }
     /// Poll the bounded completion slot, accept it atomically, and start eligible work.
     pub fn snapshot(&mut self) -> Snapshot {
+        if self.shared.shogi.is_some() {
+            // Legacy read adapter cannot poll or start hidden chess work.
+            let mut snapshot = self.session.snapshot();
+            snapshot.document.dirty = true;
+            snapshot.document.path = None;
+            return snapshot;
+        }
         self.poll_admission();
         self.poll_files();
         if self.admission_token.is_none()

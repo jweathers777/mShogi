@@ -1,14 +1,21 @@
-# Standard shogi profile proposal
+# Selected standard shogi profile
 
-Status: **proposal, not approved or implemented**. Prepared for MSH-62 on
-2026-10-26. Proposed identity: `mshogi.shogi.csa36.v1`. The owner decision
-`SHOGI-P1` selects one coherent convention before outcome-dependent work is
-accepted. This document does not reopen M2/M3, change chess rules, or certify
-shogi delivery.
+Status: **approved profile contract; implementation coverage is tracked separately**.
+Owner John explicitly selected option A, `SHOGI-P1`, on 2026-10-26 against
+integration `6db8500e92129b95e502e7b4d5c4a26072e38652`. Selected immutable identity:
+**`mshogi.shogi.csa36.v1`**. Approval includes initial untimed local play,
+advisory eligibility versus committed declarations, atomic malformed/stale/illegal
+request rejection, and the declared SFEN counter/bounded-known-history semantics.
+Options B/C remain separately named unselected alternatives, outside this batch.
+
+The original MSH-62 proposal and independent planning reviews remain in Git and
+in their historical review records. Approval does not certify implementation or
+close MSH-41. The [clause coverage ledger](shogi-coverage.md) identifies the exact
+fixture owners and deferred research gates.
 
 ## Recommendation and authority
 
-Recommend standard even-game shogi movement under the dated Japan Shogi
+The selected contract uses standard even-game shogi movement under the dated Japan Shogi
 Association (JSA) rules, with the explicit software competition conclusions of
 the Computer Shogi Association's 36th World Computer Shogi Championship
 (CSA WCSC36, 2026). This is a **CSA competition convention**, not a claim to
@@ -38,7 +45,7 @@ URL changes.
 | CSA-36 | [CSA WCSC36 tournament rules, PDF](https://www.computer-shogi.org/wcsc36/rule.pdf), effective/revised **2023-11-27**, used by [WCSC36 (2026)](https://www.computer-shogi.org/wcsc36/menu.html); 12 pages | PDF pp.1,12: edition/effective date; p.8 Art.22: score; p.9 Art.24: clocks; p.10 Arts.25–27: declaration, finalization, losses/repetition; p.11 Art.27: 320-ply limit. Page references in this row are 1-based PDF pages. |
 
 CSA Art.6 requires rule-following shogi, but does not restate every movement.
-The proposal explicitly names JSA-R and its beginner clarifications for that
+The selected profile explicitly names JSA-R and its beginner clarifications for that
 part of the contract. CSA Arts.25–27 govern conclusions where they intentionally
 differ from JSA-R. Software adaptations below are identified separately.
 
@@ -94,19 +101,19 @@ chess stalemate draw is imported.
 King capture is absent from the legal action set and kings never enter hands.
 Mate is check with no legal response; the last legal move concludes play.
 JSA-B4 supplies the distinction between threatening capture and actually
-capturing the king. Under the proposed **CSA** outcome rule, a side with no
+capturing the king. Under the selected **CSA** outcome rule, a side with no
 legal board action loses even if not checked (CSA-36 Art.27(1)(i)); retain a
 diagnostic distinction between mate and other no-action loss. Position queries
 alone do not establish repetition, declaration, clocks or a concluded match.
 
-## History and game conclusions in the recommended bundle
+## History and game conclusions in the selected bundle
 
 The following compact clause map is the source contract. A `ply` is one
 completed board action, not a pair of moves. Custom imports follow the explicit
-counter/history proposal below; a supplied counter is a declared input, not
+counter/history contract below; a supplied counter is a declared input, not
 proof that its preceding moves occurred.
 
-| Topic | Governing clause / proposed application |
+| Topic | Governing clause / selected application |
 | --- | --- |
 | Repetition identity | JSA-R8(1): board + **each owner's** hand + side-to-move. Include piece ownership/promotion; exclude elapsed time and move number. Initial state is an occurrence. |
 | Four occurrences | CSA-36 27(2): final draw, no replay. A first prior occurrence is insufficient. |
@@ -128,7 +135,7 @@ not sufficient match evidence.
 ### Imported roots and the 320-ply rule
 
 The following deterministic software semantics are part of the SHOGI-P1 bundle
-for ratification in **MSH-63**, not an additional open owner question:
+approved in **SHOGI-P1 / MSH-63**, not an additional open owner question:
 
 - Preserve a supplied positive SFEN next-ply number `n` as declared input. The
   completed-action counter at that root is `n - 1`; each committed board action
@@ -156,8 +163,8 @@ for ratification in **MSH-63**, not an additional open owner question:
 
 MSH-65 can preserve the declared position counter without implementing game
 adjudication. MSH-67 implements the above game/history semantics only after
-MSH-63 ratifies the bundle. MSH-64's independent fixtures distinguish supplied,
-defaulted and reconstructed counters and known versus missing history.
+the selected bundle has been ratified in MSH-63. MSH-65 verifies supplied position counters; MSH-67 owns defaulted/reconstructed
+counter and known/missing game-history fixtures.
 
 The source interval definition, not a reference engine's search-cycle
 heuristic, governs continuous-check fixtures. If all own moves are not checks,
@@ -174,7 +181,7 @@ fourfold convention.
 
 ## Software application versus tournament conduct
 
-These are proposed software boundaries, not additional shogi moves:
+These are approved software boundaries, not additional shogi moves:
 
 - A malformed/stale request, illegal board choice, invalid imported position or
   eligibility probe is rejected atomically. It does not commit a tournament
@@ -195,7 +202,7 @@ These are proposed software boundaries, not additional shogi moves:
   15 minutes plus 5 seconds per own turn, second truncation and timeout priority
   even over mate. Do not silently apply chess clocks or this event clock to
   untimed play. Timed shogi support requires separately scoped authorization of
-  a named timing policy and its exact boundary fixtures; this proposal does
+  a named timing policy and its exact boundary fixtures; this profile does
   not promise or silently authorize an unidentified future clock task.
 - No replay is scheduled for a CSA repetition/length draw. Analysis restart,
   rematch and tournament pairings are separate operations. A training or rating
@@ -212,14 +219,12 @@ explicitly rather than claim this playable profile simulates every official.
 
 ## Actual owner choice: SHOGI-P1
 
-Approve **one bundle**, not individual interchangeable thresholds. Recommendation
-is option A. The selected bundle and explicit software adaptations become a
-versioned decision before dependent conclusions are implemented. Board rules,
-state/action boundaries and source fixtures can progress independently.
+**Selected: option A**, by the explicit owner approval recorded above. The table
+preserves the original alternatives for traceability; only A is this contract.
 
 | Option | Meaning and consequence | Evidence |
 | --- | --- | --- |
-| **A — recommended: `mshogi.shogi.csa36.v1`** | JSA board rules with CSA36 conclusions and the software boundaries above: 28/27 declaration, no-action loss, fourfold draw, 320-ply draw, distinct competition score. Practical fully specified computer-play baseline; does not claim JSA professional match procedure. | JSA-R/B1–5/N; CSA-36 Arts.22,24–28 |
+| **A — selected: `mshogi.shogi.csa36.v1`** | JSA board rules with CSA36 conclusions and the software boundaries above: 28/27 declaration, no-action loss, fourfold draw, 320-ply draw, distinct competition score. Practical fully specified computer-play baseline; does not claim JSA professional match procedure. | JSA-R/B1–5/N; CSA-36 Arts.22,24–28 |
 | B — JSA professional convention, separate future profile ID | 24-point agreed impasse; declaration ≥31 wins /24–30 replay; fourfold and impasse generally require side-swapped replay. Requires the additional procedural questions below to be settled before accepting the match profile. Different outcomes from A are intentional. | JSA-R Arts.8–10; JSA-E |
 | C — named amateur/other event convention | Valid only with a pinned organizer ruleset for conclusions, repetition and scoring. JSA-FAQ's 28/27 declaration is evidence that another convention exists, not a complete event profile. A try-rule service would need its own named profile and is not a substitute for standard declaration. | JSA-FAQ; JSA-R9(4)(iii) permits specified 27-point agreement variants |
 
@@ -261,7 +266,7 @@ these formalization checks do not authorize alternative rules by convenience.
 
 ## Acceptance handoff
 
-MSH-63 records SHOGI-P1 and any changes to this proposal. MSH-64 pins retained
+MSH-63 records the actual SHOGI-P1 selection and focused independent review. MSH-64 pins retained
 source bytes/checksums and independent expected positions; this research
 inspected live primary sources but does not claim an archived byte snapshot.
 MSH-64–66's source/board/state/legality work can proceed independently of the
@@ -269,4 +274,4 @@ bundle decision; outcome/history work in MSH-67 depends on MSH-63. Conformance
 must separate board legality from
 history/conclusion/command/timing/runner evidence. Pinned external engines are
 bounded comparison tools, not rules authorities. The full standard-shogi scope
-remains MSH-41; this proposal and a passing kernel test cannot close it.
+remains MSH-41; this profile and a passing kernel test cannot close it.

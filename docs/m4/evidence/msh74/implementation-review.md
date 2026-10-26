@@ -40,3 +40,16 @@ asserts its receipt is pending before replacement. It still requires retirement
 with an error and rejects resurrection through later legacy/shared polls. No
 product rule or admission behavior changed. Reviewer independently reran this
 native test (passed), ShogiApp/ProductApp17 tests (passed), and diff check (passed).
+
+Final independent boundary audit: the cached-game close listener could miss the
+first close request immediately after a native game replacement but before the
+next shared poll. The persistent ProductApp now owns native close for both games,
+fetching fresh native metadata before confirmation. Embedded Chess suppresses
+only its duplicate legacy close guard; standalone Chess preserves the previous
+default and its Open/New Game protection is retained. Native close_requested
+blocks further game replacement/actions, permits identity-checked Save, and
+finishClose rechecks the current document revision under the controller lock.
+Reviewer independently traced both transition directions and executed focused
+App/ProductApp/useGameSession tests **24 passed**, strict TypeScript and diff
+check passed. No material finding. These tests do not substitute for actual
+packaged native quit evidence. Complete frontend suite **122 passed** locally.

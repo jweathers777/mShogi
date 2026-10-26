@@ -15,6 +15,15 @@ beforeEach(() => {
   command.mockReset();
 });
 afterEach(cleanup);
+it("delegates only native close confirmation to the enclosing product shell", () => {
+  const dirty = { ...standard, document: { ...standard.document, dirty: true } };
+  vi.mocked(useNativeSession).mockReturnValue({ ...mockSession(dirty, command), closeRequest: dirty });
+  const { rerender } = render(<App externalCloseGuard />);
+  expect(screen.queryByRole("dialog")).toBeNull();
+  // Standalone Chess still owns its established native quit guard.
+  rerender(<App />);
+  expect(screen.getByRole("dialog")).toBeTruthy();
+});
 it("keeps Save and Save As available while capacity pauses play and analysis", () => {
   session({ ...standard, capacity: { id: 257, status: "paused", message: "Application capacity: 256 observations are already preserved." }, play_paused: true });
   render(<App />);

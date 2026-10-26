@@ -6,12 +6,18 @@ import { useGameSession } from "./useGameSession";
 import type { GameSession } from "./useGameSession";
 import type { GameSnapshot } from "./native";
 import standardJson from "../__fixtures__/shared-shogi-standard.json";
+import chessJson from "../__fixtures__/standard.json";
+import { mockSession } from "../__tests__/session";
+import { useNativeSession } from "../useNativeSession";
+import type { Snapshot } from "../native";
 vi.mock("./useGameSession", () => ({ useGameSession: vi.fn() }));
+vi.mock("../useNativeSession", () => ({ useNativeSession: vi.fn() }));
 const standard = standardJson as GameSnapshot;
 let session: GameSession;
 beforeEach(() => {
   session = { snapshot: { ...standard, document: { ...standard.document, dirty: false } }, busy: false, error: "", closeRequested: false, command: vi.fn().mockResolvedValue(standard), file: vi.fn().mockResolvedValue(standard), newGame: vi.fn().mockResolvedValue(standard), cancelClose: vi.fn().mockResolvedValue(true), finishClose: vi.fn().mockResolvedValue(true) };
   vi.mocked(useGameSession).mockImplementation(() => session);
+  vi.mocked(useNativeSession).mockReturnValue(mockSession(chessJson as Snapshot));
 });
 afterEach(cleanup);
 it.each([["Shogi", "Sente", "shogi", "sente"], ["Shogi", "Gote", "shogi", "gote"], ["Chess", "White", "chess", "white"], ["Chess", "Black", "chess", "black"]])("chooses %s / %s with explicit native game and side identity", async (gameLabel, sideLabel, game, side) => {
@@ -51,6 +57,17 @@ it("protects native quit with Save/Discard/Cancel and returns explicitly to play
   expect(await screen.findByRole("dialog", { name: "Save your changes?" })).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
   expect(session.cancelClose).toHaveBeenCalledTimes(1); expect(session.finishClose).not.toHaveBeenCalled();
+});
+it("owns one close guard across a Shogi-to-Chess view replacement", async () => {
+  const { rerender } = render(<ProductApp />);
+  session = { ...session, snapshot: { ...standard, game: "chess", token: { ...standard.token, document: standard.token.document + 1 } }, closeRequested: true };
+  const chess = { ...(chessJson as Snapshot), document: { ...(chessJson as Snapshot).document, dirty: true } };
+  vi.mocked(useNativeSession).mockReturnValue({ ...mockSession(chess), closeRequest: chess });
+  rerender(<ProductApp />);
+  expect(await screen.findAllByRole("dialog")).toHaveLength(1);
+  expect(screen.getByRole("dialog", { name: "Save your changes?" })).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Discard & continue" }));
+  await waitFor(() => expect(session.finishClose).toHaveBeenCalledExactlyOnceWith(session.snapshot));
 });
 it("provides keyboard radio navigation and restores focus on cancelling New Game", async () => {
   render(<ProductApp />); const newGame = screen.getByRole("button", { name: "New game" }); newGame.focus(); fireEvent.click(newGame);

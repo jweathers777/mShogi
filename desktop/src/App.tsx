@@ -89,14 +89,14 @@ function EngineObservations({ snapshot }: { snapshot: Snapshot }) {
     </>
   );
 }
-export function App({ onChooseGame }: { onChooseGame?: (human: Color) => void } = {}) {
+export function App({ onChooseGame, externalCloseGuard = false }: { onChooseGame?: (human: Color) => void; externalCloseGuard?: boolean } = {}) {
   const session = useNativeSession();
   const { snapshot, error, connected, command } = session;
   const busy =
     session.busy ||
     (snapshot !== null &&
       ["saving", "opening", "viewing"].includes(snapshot.io.phase));
-  const guard = useDocumentGuard(snapshot, session.closeRequest, session);
+  const guard = useDocumentGuard(snapshot, externalCloseGuard ? null : session.closeRequest, session);
   const [newHuman, setNewHuman] = useState<Color>("white");
   const [claimIndex, setClaimIndex] = useState(0);
   const [inspector, setInspector] = useState<"play" | "analysis">("play");

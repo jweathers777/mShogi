@@ -7,7 +7,7 @@ status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-26T10:11:00Z'
+updated_date: '2026-10-26T10:23:00Z'
 labels:
   - m4
   - owner-msh-41
@@ -71,6 +71,8 @@ MSH66 longer differential/perft execution exposed two F022 bishop-evasion roots 
 Focused correction complete: preserved original v1 fixture/report/manifest; two bishop-evasion diagrams version2 relocate far king to unattacked square with unchanged independently reviewed promotion facts. Audited raw geometric reference-root admission now rejects prior nonmoving-king check and unsupported local/counter domains before enumeration/push;13 actual rejection sentinels PASS. Independent AI follow-up review PASS docs/m4/reference-domain-review.md; independent all-root geometry audit and actual current101/13domain/4gap/4diagnostic rerun byte-identical. Sourcepin/compiledbinary unchanged; original direct-pass evidence remains historical, not a safe-replay-domain certificate.
 
 Correction source2c25d90 integrated/pushed via codex/rewrite9f9f609c37320863e0fcf803c0fb5d1e834bf584. All current fixture/domain/gap/diagnostic checks PASS and independent domain review resolved; full history of the initial admission and late finding preserved. Native source unchanged from passedce42d06CI; final66source/nativeCI covers current fixtures.
+
+Final current corpus/harness also covered by MSH66 integration6f6301e: native CI40305615224 and desktop regression CI40305615506 PASS allthree platforms. Current101corrected board cases plus68completenesscases have native fixture/differential/perft evidence; reference execution itself is localmacOS only. V1original evidence preserved and explicitly superseded for unsafe-root admission.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

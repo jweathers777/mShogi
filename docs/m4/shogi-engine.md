@@ -206,7 +206,7 @@ cargo build --locked --release --bin mshogi
 python3 - <<'PY'
 import json, subprocess
 exe = 'target/release/mshogi'
-output = subprocess.check_output([exe, 'shogi'], input='record\n', text=True)
+output = subprocess.check_output([exe, '--game', 'shogi', 'shell'], input='record print\n', text=True)
 game = json.loads(next(line[7:] for line in output.splitlines()
                        if line.startswith('record ')))
 target = dict(selection_id=1, event_index=0, board_ply=0, session_version=1,

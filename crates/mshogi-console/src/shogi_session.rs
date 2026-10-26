@@ -1,16 +1,10 @@
 //! Explicit human console adapter; native game owns all rules and admission.
-use crate::session::{MAX_LINE_BYTES, Next};
-use mshogi_core::{
-    native::{CanonicalRecord, MAX_RECORD_ENVELOPE_BYTES},
-    shogi::*,
+use crate::{
+    record_io,
+    session::{MAX_LINE_BYTES, Next},
 };
-use std::{
-    fmt::Write as _,
-    fs::{self, File, OpenOptions},
-    io::{Read, Write},
-    path::Path,
-    sync::atomic::{AtomicU64, Ordering},
-};
+use mshogi_core::{native::CanonicalRecord, shogi::*};
+use std::fmt::Write as _;
 
 pub const MAX_DIAGNOSTIC_DEPTH: u32 = 2;
 const HELP: &str = "Untimed shogi diagnostic console (not USI protocol):
@@ -24,14 +18,18 @@ const HELP: &str = "Untimed shogi diagnostic console (not USI protocol):
   resign sente|gote                   Native resignation (not restricted to turn)
   undo [n]                           Reverse n events, including terminal commands
   history                            Root provenance, complete event/check history
-  record                             Complete canonical envelope (not SFEN alone)
+  record print                       Complete canonical envelope (not SFEN alone)
   record save <path>                  Atomic new-file save; never overwrite
-  record load <path>                  Bounded strict load/replay before replacement
+  record load-file <path>             Bounded strict load/replay before replacement
+  record load-json <JSON>             Strict inline canonical envelope
+  record | record load <path>         Compatibility aliases for print/load-file
   perft <0..2> | divide <1..2>         Position-only local legality; ignores outcomes
   help | quit
 USI actions: 7g7f, 5c5b+, P*5e. Readable long notation: S:Pawn[7g->7f;keep],
 S:Pawn[5c->5b;promote], S:Pawn[hand->5e;drop]. Always include source; keep
-retains existing promoted identity. Readable labels are output, USI is input.";
+retains existing promoted identity. Readable labels are output, USI is input.
+Compact board: s/g = Sente/Gote, K R B G S N L P; + after colon is promotion.
+Five-character cells; dots and file labels align with token colons.";
 
 pub struct Session {
     game: Game,
@@ -126,19 +124,7 @@ impl Session {
             }
             "show" => {
                 empty(&args)?;
-                for rank in 1..=9 {
-                    let row: Vec<_> = (1..=9)
-                        .rev()
-                        .map(|file| {
-                            self.game
-                                .position()
-                                .piece(Square::new(file, rank).unwrap())
-                                .map_or(".".into(), piece_text)
-                        })
-                        .collect();
-                    writeln!(out, "{} {}", char::from(b'a' + rank - 1), row.join(" ")).unwrap();
-                }
-                writeln!(out, "  9 8 7 6 5 4 3 2 1").unwrap();
+                compact_board(self.game.position(), out);
                 self.hands(out);
                 self.status(out);
             }
@@ -269,63 +255,15 @@ impl Session {
                 }
             }
             "record" => {
-                if rest.is_empty() {
-                    writeln!(
-                        out,
-                        "record {}",
-                        CanonicalRecord::shogi(GameRecord::from_game(&self.game))
-                            .to_json()
-                            .map_err(|e| e.to_string())?
-                    )
-                    .unwrap();
-                } else {
-                    let Some((operation, path)) =
-                        rest.split_once(|c: char| c.is_ascii_whitespace())
-                    else {
-                        return Err("usage: record save|load <path>".into());
-                    };
-                    let path = Path::new(path.trim());
-                    if path.as_os_str().is_empty() {
-                        return Err("record path is empty".into());
+                use record_io::Operation;
+                match record_io::parse(rest, record_io::LegacyLoad::File)? {
+                    Operation::Print | Operation::LegacyPrint => {
+                        writeln!(out, "record {}", self.record_json()?).unwrap();
                     }
-                    match operation {
-                        "save" => {
-                            let encoded = CanonicalRecord::shogi(GameRecord::from_game(&self.game))
-                                .to_json()
-                                .map_err(|e| e.to_string())?;
-                            save_new(path,encoded.as_bytes()).map_err(|e|format!("save failed (use a new path; existing files are preserved): {e}"))?;
-                            writeln!(out, "saved {} bytes", encoded.len()).unwrap();
-                        }
-                        "load" => {
-                            let mut bytes = Vec::new();
-                            File::open(path)
-                                .and_then(|file| {
-                                    file.take((MAX_RECORD_ENVELOPE_BYTES + 1) as u64)
-                                        .read_to_end(&mut bytes)
-                                })
-                                .map_err(|e| format!("open failed: {e}"))?;
-                            if bytes.len() > MAX_RECORD_ENVELOPE_BYTES {
-                                return Err(
-                                    "record exceeds 1048576-byte limit; session preserved".into()
-                                );
-                            }
-                            let text =
-                                std::str::from_utf8(&bytes).map_err(|_| "record is not UTF-8")?;
-                            let CanonicalRecord::Shogi(record) =
-                                CanonicalRecord::from_json(text)
-                                    .map_err(|e| bounded(&e.to_string()))?
-                            else {
-                                return Err("record is not shogi; session preserved".into());
-                            };
-                            let replacement = Self::restored(
-                                record.to_game().map_err(|e| bounded(&e.to_string()))?,
-                            )?;
-                            *self = replacement;
-                            writeln!(out, "loaded complete native record").unwrap();
-                            self.status(out);
-                        }
-                        _ => return Err("usage: record save|load <path>".into()),
-                    }
+                    Operation::Save(path) => record_io::save(path, &self.record_json()?, out)?,
+                    Operation::LoadFile(path) => self.restore_json(&record_io::read(path)?, out)?,
+                    Operation::LoadJson(json) => self.restore_json(json, out)?,
+                    Operation::LegacyJson(_) => unreachable!("shogi legacy load is a file"),
                 }
             }
             "perft" | "divide" => {
@@ -359,6 +297,27 @@ impl Session {
             _ => return Err(format!("unknown shogi command '{}'", line.escape_default())),
         }
         Ok(Next::Continue)
+    }
+    fn record_json(&self) -> Result<String, String> {
+        CanonicalRecord::shogi(GameRecord::from_game(&self.game))
+            .to_json()
+            .map_err(|e| record_io::diagnostic(&e.to_string()))
+    }
+    fn restore_json(&mut self, json: &str, out: &mut String) -> Result<(), String> {
+        let CanonicalRecord::Shogi(record) =
+            CanonicalRecord::from_json(json).map_err(|e| record_io::diagnostic(&e.to_string()))?
+        else {
+            return Err("record is not shogi; session preserved".into());
+        };
+        let replacement = Self::restored(
+            record
+                .to_game()
+                .map_err(|e| record_io::diagnostic(&e.to_string()))?,
+        )?;
+        *self = replacement;
+        writeln!(out, "loaded complete native record").unwrap();
+        self.status(out);
+        Ok(())
     }
     fn status(&self, out: &mut String) {
         writeln!(out, "sfen {}", self.game.position().to_sfen()).unwrap();
@@ -448,34 +407,39 @@ fn readable(position: &Position, action: Action) -> Result<String, String> {
         )),
     }
 }
-fn bounded(text: &str) -> String {
-    text.chars()
-        .take(512)
-        .flat_map(char::escape_default)
-        .take(4096)
-        .collect()
-}
-fn save_new(path: &Path, bytes: &[u8]) -> std::io::Result<()> {
-    static NEXT: AtomicU64 = AtomicU64::new(1);
-    let parent = path
-        .parent()
-        .filter(|p| !p.as_os_str().is_empty())
-        .unwrap_or(Path::new("."));
-    let temp = parent.join(format!(
-        ".mshogi-{}-{}.tmp",
-        std::process::id(),
-        NEXT.fetch_add(1, Ordering::Relaxed)
-    ));
-    let mut file = OpenOptions::new()
-        .write(true)
-        .create_new(true)
-        .open(&temp)?;
-    let result = (|| {
-        file.write_all(bytes)?;
-        file.sync_all()?;
-        drop(file);
-        fs::hard_link(&temp, path)
-    })();
-    let _ = fs::remove_file(temp);
-    result
+/// Human board tokens are deliberately independent of long action labels.
+fn compact_board(position: &Position, out: &mut String) {
+    for rank in 1..=9 {
+        let cells: Vec<_> = (1..=9)
+            .rev()
+            .map(|file| {
+                position
+                    .piece(Square::new(file, rank).unwrap())
+                    .map_or(" .".into(), |piece| {
+                        let code = match piece.kind {
+                            PieceKind::King => 'K',
+                            PieceKind::Rook => 'R',
+                            PieceKind::Bishop => 'B',
+                            PieceKind::Gold => 'G',
+                            PieceKind::Silver => 'S',
+                            PieceKind::Knight => 'N',
+                            PieceKind::Lance => 'L',
+                            PieceKind::Pawn => 'P',
+                        };
+                        format!(
+                            "{}:{}{}",
+                            if piece.side == Side::Sente { 's' } else { 'g' },
+                            if piece.promoted { "+" } else { "" },
+                            code
+                        )
+                    })
+            })
+            .collect();
+        let row = cells
+            .iter()
+            .map(|token| format!("{token:<5}"))
+            .collect::<String>();
+        writeln!(out, "{} {}", char::from(b'a' + rank - 1), row.trim_end()).unwrap();
+    }
+    writeln!(out, "   9    8    7    6    5    4    3    2    1").unwrap();
 }

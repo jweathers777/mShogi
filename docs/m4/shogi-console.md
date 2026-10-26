@@ -1,10 +1,20 @@
-# Standalone shogi console (MSH-68)
+# Standalone shogi console (MSH-68, common interface MSH-90)
 
-`mshogi shogi` selects the real untimed native game, profile
+`mshogi --game shogi shell` selects the real untimed native game, profile
 `mshogi.shogi.csa36.v1`. The host adapter parses and presents; `Game::submit`
 owns action/actor/context admission, adjudication and terminal commands.
-`mshogi shell`, `mshogi uci` and `mshogi internal-search` retain their separate
-existing chess/protocol contracts. Human output never appears in protocol mode.
+`mshogi --game chess shell` uses the chess adapter; `mshogi shell` retains that
+default. `mshogi shogi` is a compatibility alias through the same selection path
+(a matching explicit shogi selection is accepted, a chess selection conflicts).
+`mshogi --game chess profile` and `mshogi --game shogi profile` identify actual
+native coverage; `--game <game> --help` and shell `help` explain capabilities.
+Unknown games, missing selector values, repeated selectors and extra modes fail
+with exit2 and stderr only. Selectors may precede or follow the one mode.
+`mshogi --game chess uci` and the default `mshogi uci` preserve UCI. An explicit
+shogi/UCI combination rejects; USI stays in MSH-71. `mshogi internal-search`
+accepts no `--game`: structured v2/v3 requests supply authoritative identity,
+including valid shogi v3 requests without a selector. Human output never appears
+in protocol mode.
 
 ## Commands and semantics
 
@@ -38,6 +48,44 @@ does not require own turn. Terminal commands may change history and conclusion
 without changing SFEN, board turn or declared completed count. Further commands
 are admitted/rejected by the native concluded-game policy.
 
+## Shared commands and native meaning
+
+Both selected shells expose `position`, `show`, `legal`, `move`, `undo`,
+`history`, `status`, `record print/save/load-file/load-json`, `perft` and `divide`.
+Position notation remains native: chess `position fen <six fields>`, shogi
+`position sfen full|reduced <four fields>`. Neither adapter implements rules.
+Chess `status` is **position-only** quiet/check/checkmate/stalemate; its `history`
+reports known move count, root origin, stored claim policy and repetitions. It
+is not full match adjudication and has no hands or declaration commands. Shogi
+`status`/`history` include native accepted events and conclusions as above.
+Perft is local legality in both games, capped at chess4 and shogi2 (divide >=1).
+
+## Compact board
+
+Only `show` uses short tokens: lowercase `s`/`g` for Sente/Gote, uppercase
+`K R B G S N L P` for piece kind, and `+` after the colon for promotion
+(`s:+P`, `g:+R`, `s:+B`). Cells have a five-character stride. Occupied tokens
+start at the same cell offset; empty dots and file labels align with colons.
+Ranks run a–i, files9–1. Hands and native status follow the diagram.
+
+After `position startpos` and `move 7g7f 3c3d`, the actual `show` board is:
+
+```text
+a g:L  g:N  g:S  g:G  g:K  g:G  g:S  g:N  g:L
+b  .   g:R   .    .    .    .    .   g:B   .
+c g:P  g:P  g:P  g:P  g:P  g:P   .   g:P  g:P
+d  .    .    .    .    .    .   g:P   .    .
+e  .    .    .    .    .    .    .    .    .
+f  .    .   s:P   .    .    .    .    .    .
+g s:P  s:P   .   s:P  s:P  s:P  s:P  s:P  s:P
+h  .   s:B   .    .    .    .    .   s:R   .
+i s:L  s:N  s:S  s:G  s:K  s:G  s:S  s:N  s:L
+   9    8    7    6    5    4    3    2    1
+```
+
+Inspection changes no native state, SFEN/FEN, history or record. The formatter
+is separate from verbose action labels and native USI/record encodings.
+
 ## Explicit readable notation
 
 This is custom source-explicit long notation, **not** a claim to KIF, KI2 or a
@@ -70,14 +118,26 @@ the live game. Perft0 is1 even at a terminal position; divide0 rejects.
 
 ## Bounded records and failure behavior
 
-`record` prints a complete MSH-69 envelope with the native shogi record as raw
-payload. `record save <path>` writes the same bytes. `record load <path>` checks
+`record print` prints a complete MSH-69 envelope with the native record as raw
+payload. `record save <path>` writes the same bytes. `record load-file <path>` checks
 the complete envelope/profile/edition/schema and routes raw bytes to the native
 strict parser, then restores the accepted game. This retains supplied/defaulted
 counter provenance, root category, native policies, complete event history,
 declaration evidence and conclusions. No FEN/SFEN-only or move-only fallback is
 used. Wrong-game, malformed, duplicate/unknown, unsupported, tampered or oversized
-input leaves the current session and its undo history intact.
+input leaves the current session and its undo history intact. `record load-json
+<JSON>` takes an explicit inline envelope, subject to the command-line bound;
+`load-file` always takes a path. Neither command guesses from its argument.
+Both chess and shogi use these same canonical commands and the same strict
+RawValue boundary, so duplicate nested native fields remain visible to rejection.
+
+Compatibility forms remain explicit: shogi bare `record` aliases `record print`
+and `record load <path>` aliases `record load-file`. Chess bare `record` prints
+native chess JSON without an envelope; chess `record load <JSON>` accepts only
+that legacy native encoding. Canonical forms always require the typed envelope.
+Chess restoration accepts only native M2 move/history state; match observations
+and Full mode reject clearly, rather than being silently discarded. No desktop
+archive capability is supplied here.
 
 Files are limited to1,048,576 encoded input bytes, including whitespace and outer
 metadata. Reading uses at most cap+1 bytes and rejects excess before parsing.
@@ -100,13 +160,13 @@ program arguments. Oversized command lines drain to LF and recover.
 To save/reopen a complete capture and terminal history (choose a new path):
 
 ```bash
-cargo run --locked --release --bin mshogi -- shogi <<'EOF'
+cargo run --locked --release --bin mshogi -- --game shogi shell <<'EOF'
 position sfen reduced 8k/9/4+p4/9/4R4/9/9/9/K8 b - 17
 move 5e5c+
 resign gote
 record save /tmp/mshogi-complete.json
 position startpos
-record load /tmp/mshogi-complete.json
+record load-file /tmp/mshogi-complete.json
 history
 undo
 status
@@ -155,3 +215,11 @@ encoding or MSH-61 desktop persistence guarantee changed.
 MSH-70 owns native shogi search and actual structured execution; MSH-71 owns USI
 protocol interoperability. This human console does not advertise either engine
 or protocol support by itself. MSH-41–47 and M4 remain open.
+
+
+MSH-90 adds `tests/common_console.rs`: actual canonical subprocess journeys,
+selected help/profile/argument failures, UCI stdout isolation, both-game shared
+file/JSON roundtrips, restored undo/provenance, wrong-game/strict nested failures,
+unsupported chess observations/Full, byte/line limits, no-clobber saves, exact
+owner-supplied board and promoted alignment. Earlier MSH-68/70 evidence is
+preserved; MSH-71/72 remain unstarted by this follow-up.

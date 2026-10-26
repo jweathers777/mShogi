@@ -7,7 +7,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-26T09:49:00Z'
+updated_date: '2026-10-26T10:11:00Z'
 labels:
   - m4
   - owner-msh-41
@@ -63,4 +63,16 @@ Build the pinned cshogi source in an isolated development environment and retain
 2026-10-26: Authorized bounded batch MSH-63–66. Primary integrator Codex, branch codex/shogi-board, existing next-task worktree. Owner explicitly approved option A SHOGI-P1 mshogi.shogi.csa36.v1 against integration 6db8500e92129b95e502e7b4d5c4a26072e38652.
 
 Actual isolated unmodified pinned cshogi build and runtime admitted on macOS arm64, using temporary LLVM19 after recorded AppleClang failures. docs/m4/reference retains source/license/compiler/flags/dependency/binary/rule-byte provenance. 101 independently reasoned board fixtures PASS;4 API-gap sentinels and4 injected failure/mismatch prefix-minimization demonstrations PASS. Staged-dirty-source admission correctly rejected. Fresh independent AI fixture/source review and independent actual admission/rerun PASS, docs/m4/reference-review.md; no human review claimed. Python compilation/diff checks PASS. Native differential comparisons belong66; history/outcomes/protocol/archive/UI inventory cases remain their existing owners. Native code unchanged fromce42d06; reuse three-platform native CI40300895588.
+
+Reviewed source368c613 integrated and pushed via codex/rewrite444107cdadfda873d993828942f3018b45d59531. Complete execution/provenance docs/m4/reference/README.md; finalfixtureSHA579842bc0be0ab74567e1501100ef589be160c140c9371373768dc9fc43b6738. Native source unchanged from passedce42d06CI; normal integration CI triggers and final66CI will exercise corpus natively.
+
+MSH66 longer differential/perft execution exposed two F022 bishop-evasion roots already attacking the nonmoving king (BB4d→WK1a), outside cshogi incremental-check/king-capture invariants. Original101 direct fixture pass remains a true observed result but did not establish safe replay domain. Reopened64 for focused correction: retain v1 fixtures/reports, independently reviewed v2 roots WK1b/mirrorBK9h with unchanged promotion expectations, audited geometric reference-domain guard, all-root audit, original-root refusal sentinel and fresh follow-up review/reintegration. Native behavior must not be changed to match unsupported reference output.
+
+Focused correction complete: preserved original v1 fixture/report/manifest; two bishop-evasion diagrams version2 relocate far king to unattacked square with unchanged independently reviewed promotion facts. Audited raw geometric reference-root admission now rejects prior nonmoving-king check and unsupported local/counter domains before enumeration/push;13 actual rejection sentinels PASS. Independent AI follow-up review PASS docs/m4/reference-domain-review.md; independent all-root geometry audit and actual current101/13domain/4gap/4diagnostic rerun byte-identical. Sourcepin/compiledbinary unchanged; original direct-pass evidence remains historical, not a safe-replay-domain certificate.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Established admitted developer-only cshogi6985fe5 build, audited complete LegalAll harness,101 independently reasoned/reviewed board cases and retained source/compiler/license/binary evidence. Actual101 fixtures,4API-gap sentinels and4useful injected mismatch/failure reductions PASS; staged dirty source rejects. Independent AI reviewer reran admission and fixture diagnostics with PASS. Integrated/pushed444107c. Native comparisons/fulllegality remain66; no full55inventory/history/outcome or complete41delivery claim.
+<!-- SECTION:FINAL_SUMMARY:END -->

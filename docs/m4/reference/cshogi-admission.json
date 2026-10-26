@@ -12,7 +12,9 @@
     "src/generateMoves.hpp": "3a94c3e573657d71a75b4dd77da629f8979e4254b55090ee73c013c0a4cbfe6c",
     "src/position.cpp": "c5fc3bc0a0e840866a2a1d415cff77fd719a954794523dd13e4dea6b794ef208",
     "src/usi.cpp": "cff5c268cd5e2d3aad75e378f20f9ab5ce8746c6eae9fe9ae9a8171547ba9821",
-    "src/ifdef.hpp": "0cd4fa8461f362e9884a56d2f08d86273c7be896a0896754a124425d2a014b45"
+    "src/ifdef.hpp": "0cd4fa8461f362e9884a56d2f08d86273c7be896a0896754a124425d2a014b45",
+    "src/position.hpp": "d4efa80fb138920296b682226cc80588ae904e235aac159a0b78345048f07a34",
+    "cshogi/dlshogi/__init__.py": "64ac753db580e085fcad16192d0ca41ed5c0c34eeb4157967e09b59010e7aa00"
   },
   "platform": "macOS-27.0.1-arm64-arm-64bit",
   "machine": "arm64",
@@ -55,7 +57,7 @@
   ],
   "build_log_sha256": "55a82fa1fb8414e2e0ebb6abc5e455154ed668c4cc7774728e2c26f553c9799a",
   "banned_history_macros_defined": false,
-  "runtime_surface": "Board.legal_moves -> MoveList<LegalAll>; move_to_usi; push/pop enumerated integers; board state serialization/check/hash only",
+  "runtime_surface": "Board.legal_moves -> MoveList<LegalAll>; move_to_usi; push/pop enumerated integers; board state serialization/check/hash; public dlshogi raw geometric attack planes only for reference-root domain admission",
   "excluded_as_oracles": [
     "MoveList<Legal>",
     "is_legal",

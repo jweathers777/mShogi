@@ -69,6 +69,16 @@ it("owns one close guard across a Shogi-to-Chess view replacement", async () => 
   fireEvent.click(screen.getByRole("button", { name: "Discard & continue" }));
   await waitFor(() => expect(session.finishClose).toHaveBeenCalledExactlyOnceWith(session.snapshot));
 });
+it("replaces an uncommitted New Game chooser with the native quit guard", async () => {
+  const { rerender } = render(<ProductApp />);
+  fireEvent.click(screen.getByRole("button", { name: "New game" }));
+  expect(screen.getByRole("dialog", { name: "New game" })).toBeTruthy();
+  session = { ...session, closeRequested: true };
+  rerender(<ProductApp />);
+  expect(await screen.findAllByRole("dialog")).toHaveLength(1);
+  expect(screen.getByRole("dialog", { name: "Close mShogi?" })).toBeTruthy();
+  expect(session.newGame).not.toHaveBeenCalled();
+});
 it("provides keyboard radio navigation and restores focus on cancelling New Game", async () => {
   render(<ProductApp />); const newGame = screen.getByRole("button", { name: "New game" }); newGame.focus(); fireEvent.click(newGame);
   const game = screen.getByRole("radio", { name: /Shogi/ }); game.focus(); fireEvent.keyDown(game, { key: "ArrowLeft" });

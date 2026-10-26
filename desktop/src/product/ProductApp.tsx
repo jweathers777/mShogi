@@ -40,7 +40,7 @@ export function ProductApp() {
   useEffect(() => {
     if (!session.closeRequested) handledClose.current = false;
     if (session.closeRequested && !handledClose.current && snapshot) {
-      handledClose.current = true; begin("quit", snapshot);
+      handledClose.current = true; setChoice(null); begin("quit", snapshot);
     }
   }, [session.closeRequested, snapshot]);
   const stale = pending !== null && snapshot !== null && !same(pending.source.open_token, snapshot.open_token);

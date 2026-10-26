@@ -75,6 +75,24 @@ impl GameRecord {
             .filter(|event| matches!(event.command, WireCommand::Play { .. }))
             .count()
     }
+    /// Current side from the already validated canonical post-diagram, without
+    /// replaying history on a host acceptance path. This is not an SFEN restore.
+    pub fn side_to_move(&self) -> Side {
+        let sfen = self
+            .wire
+            .events
+            .last()
+            .map_or(self.wire.root.sfen.as_str(), |event| {
+                event.after_sfen.as_str()
+            });
+        Position::from_sfen(sfen)
+            .expect("native record diagrams are validated before construction")
+            .side_to_move()
+    }
+    /// Native final conclusion retained in the validated record, without replay.
+    pub fn conclusion(&self) -> Option<Conclusion> {
+        self.wire.conclusion.clone().map(WireConclusion::native)
+    }
     /// Export a rules-owned game, retaining imported-root provenance and every event.
     pub fn from_game(game: &Game) -> Self {
         let initial = Game::from_root(game.root().clone());
@@ -364,6 +382,16 @@ impl From<Side> for WireSide {
         }
     }
 }
+impl Serialize for Side {
+    fn serialize<S: serde::Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
+        WireSide::from(*self).serialize(s)
+    }
+}
+impl<'de> Deserialize<'de> for Side {
+    fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        WireSide::deserialize(d).map(WireSide::native)
+    }
+}
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -488,6 +516,50 @@ impl From<Conclusion> for WireConclusion {
             }
             Conclusion::Draw(DrawReason::Length) => Self::Length {},
         }
+    }
+}
+impl WireConclusion {
+    fn native(self) -> Conclusion {
+        match self {
+            Self::NoLegalAction { winner, in_check } => Conclusion::Win {
+                winner: winner.native(),
+                reason: WinReason::NoLegalAction { in_check },
+            },
+            Self::ContinuousCheck {
+                winner,
+                first,
+                fourth,
+            } => Conclusion::Win {
+                winner: winner.native(),
+                reason: WinReason::ContinuousCheck { first, fourth },
+            },
+            Self::Resignation { winner } => Conclusion::Win {
+                winner: winner.native(),
+                reason: WinReason::Resignation,
+            },
+            Self::EnteringKing { winner } => Conclusion::Win {
+                winner: winner.native(),
+                reason: WinReason::EnteringKing,
+            },
+            Self::FalseDeclaration { winner } => Conclusion::Win {
+                winner: winner.native(),
+                reason: WinReason::FalseDeclaration,
+            },
+            Self::Fourfold { first, fourth } => {
+                Conclusion::Draw(DrawReason::Fourfold { first, fourth })
+            }
+            Self::Length {} => Conclusion::Draw(DrawReason::Length),
+        }
+    }
+}
+impl Serialize for Conclusion {
+    fn serialize<S: serde::Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
+        WireConclusion::from(*self).serialize(s)
+    }
+}
+impl<'de> Deserialize<'de> for Conclusion {
+    fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        WireConclusion::deserialize(d).map(WireConclusion::native)
     }
 }
 

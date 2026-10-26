@@ -166,6 +166,13 @@ notation, diagnostic limits, canonical semantics and exact record examples.
 The existing `shell` chess commands, `uci` adapter and structured
 `internal-search` wire contracts remain separate.
 
+Native shogi v3 now supports engine-turn proposals and bounded read-only move
+analysis. The transparent baseline uses board/promoted pieces and both hands,
+with explicit native declarations/outcomes and root-side score observations.
+Defaults are depth2/5,000 nodes; supported finite bounds are depth1–4 and
+0–20,000 nodes. See the [native engine contract and runnable structured example](docs/m4/shogi-engine.md).
+Shogi USI interoperability and desktop play remain later tickets.
+
 ## Backlog commands
 
 The starter was generated and validated with Backlog.md 1.55.1. Use that version for this project. If a different global CLI is installed, invoke the pinned version with `npm exec --yes --package backlog.md@1.55.1 -- backlog <command>`; a global upgrade is optional.

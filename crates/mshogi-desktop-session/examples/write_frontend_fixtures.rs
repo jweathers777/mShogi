@@ -11,6 +11,7 @@ fn main() {
             .expect("usage: write_frontend_fixtures <output-directory>"),
     );
     std::fs::create_dir_all(&directory).unwrap();
+    write_shared_fixtures(&directory);
     for (name, fen) in [
         ("standard", STANDARD_START_FEN),
         ("promotion", "7k/P7/8/8/8/8/8/7K w - - 0 1"),
@@ -238,5 +239,62 @@ fn wait_document(controller: &mut DesktopController, id: u64) -> mshogi_desktop_
         }
         assert!(std::time::Instant::now() < deadline);
         std::thread::sleep(std::time::Duration::from_millis(1));
+    }
+}
+
+fn write_shared_fixtures(directory: &std::path::Path) {
+    use mshogi_core::{
+        native::{CanonicalRecord, GameKind, NativeSide},
+        shogi as s,
+    };
+    use mshogi_desktop_session::{SessionOperation, SharedDesktopCommand};
+    let mut controller = DesktopController::new("/unused/fixture-engine".into()).unwrap();
+    for (name, sfen) in [
+        (
+            "shared-shogi-standard",
+            "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+        ),
+        ("shared-shogi-drops", "8k/9/9/9/9/9/9/9/K8 b 2RBGSNLP 1"),
+        ("shared-shogi-promotion", "8k/9/9/4P4/9/9/9/9/K8 b - 1"),
+        ("shared-shogi-forced", "8k/4P4/9/9/9/9/9/9/K8 b - 1"),
+    ] {
+        let game = if name == "shared-shogi-standard" {
+            s::Game::new()
+        } else {
+            s::Game::from_root(
+                s::GameRoot::import(
+                    s::Position::from_sfen(sfen).unwrap(),
+                    s::RootCategory::ReducedMaterialDiagram,
+                    s::CounterSource::Supplied,
+                )
+                .unwrap(),
+            )
+        };
+        let snapshot = controller
+            .shared_command(SharedDesktopCommand {
+                expected: controller.shared_token(),
+                game: if name == "shared-shogi-standard" {
+                    GameKind::Chess
+                } else {
+                    GameKind::Shogi
+                },
+                operation: SessionOperation::Replace {
+                    record: CanonicalRecord::shogi(s::GameRecord::from_game(&game)),
+                    human: NativeSide::Shogi(s::Side::Sente),
+                },
+            })
+            .unwrap();
+        let snapshot = controller
+            .shared_command(SharedDesktopCommand {
+                expected: snapshot.token,
+                game: GameKind::Shogi,
+                operation: SessionOperation::Resume {},
+            })
+            .unwrap();
+        std::fs::write(
+            directory.join(format!("{name}.json")),
+            serde_json::to_string_pretty(&snapshot).unwrap() + "\n",
+        )
+        .unwrap();
     }
 }

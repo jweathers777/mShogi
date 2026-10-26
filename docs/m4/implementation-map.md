@@ -107,3 +107,11 @@ failure identity. Protocol `resign`, `win`, missing reply and invalid move are
 different cases. Preserve cancelled/stale results without applying them. Bounded
 reproducible self-play/opponent smoke is functional M4 evidence; it is not M5
 strength evidence. No new protocol is required for a game without a real consumer.
+
+## MSH-72 concrete desktop boundary
+
+The [shared desktop session contract](desktop-session.md) records the typed
+chess/shogi adapter, native presentation/capabilities and preserved chess
+compatibility. [Verification](desktop-session-validation.md) distinguishes
+native/controller, real subprocess, frontend and platform CI evidence. This
+bounded boundary does not close MSH-73/74/75 or MSH-41–47.

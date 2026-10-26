@@ -136,6 +136,8 @@ fn with_synthetic<T>(
 fn desktop_verification_mode(verification: State<'_, VerificationState>) -> &'static str {
     if verification.is_synthetic() {
         "synthetic"
+    } else if verification.fixture == "shared-contract" {
+        "shared-contract"
     } else {
         "chess"
     }
@@ -161,6 +163,34 @@ fn synthetic_command(
 ) -> Result<SyntheticSnapshot, String> {
     with_synthetic(&controller, &shutdown, &verification, |synthetic| {
         synthetic.command(command)
+    })?
+}
+// Development-only contract endpoints. Raw command JSON preserves duplicate fields
+// through the authoritative parsers rather than a Tauri intermediate object map.
+#[cfg(feature = "desktop-verification")]
+#[tauri::command]
+fn native_contract_snapshot(
+    controller: State<'_, Mutex<DesktopController>>,
+    shutdown: State<'_, Arc<ShutdownState>>,
+) -> Result<mshogi_desktop_session::SharedSnapshot, String> {
+    with_controller(&controller, &shutdown, DesktopController::shared_snapshot)
+}
+#[cfg(feature = "desktop-verification")]
+#[tauri::command]
+fn native_contract_command(
+    controller: State<'_, Mutex<DesktopController>>,
+    shutdown: State<'_, Arc<ShutdownState>>,
+    command_json: String,
+) -> Result<mshogi_desktop_session::SharedSnapshot, String> {
+    let command = mshogi_desktop_session::SharedDesktopCommand::from_json(&command_json)?;
+    with_controller(&controller, &shutdown, |controller| {
+        if shutdown.close_requested.load(Ordering::Acquire)
+            || shutdown.command_operation.load(Ordering::Acquire)
+            || shutdown.file_operation.load(Ordering::Acquire)
+        {
+            return Err("Finish the current document or close operation first.".into());
+        }
+        controller.shared_command(command)
     })?
 }
 fn engine_path() -> io::Result<PathBuf> {
@@ -680,6 +710,10 @@ fn main() {
             desktop_finish_close,
             #[cfg(feature = "desktop-verification")]
             desktop_verification_mode,
+            #[cfg(feature = "desktop-verification")]
+            native_contract_snapshot,
+            #[cfg(feature = "desktop-verification")]
+            native_contract_command,
             #[cfg(feature = "desktop-verification")]
             synthetic_snapshot,
             #[cfg(feature = "desktop-verification")]

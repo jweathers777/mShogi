@@ -297,3 +297,31 @@ normal integration/native CI and three-platform GUI evidence. Unchanged M1/M2
 and earlier M3 evidence may be reused. Closure is authorized only once all
 criteria are supported; unavailable required checks leave their tickets and M3
 open with concrete blockers. No additional procedural approval is required.
+
+## MSH-72 verification harness and later product design (owner clarification, 2026-10-26)
+
+The **MSH-72 DEVELOPMENT CONTRACT** surface is solely a development verification
+harness for the shared native session/presentation semantics. It is not evidence
+of completed or approved shogi visual design, and none of its layout, board
+sizing, Latin-letter rendering, diagnostic hand buttons, raw state or engineering
+control strip is a design basis or acceptance target for MSH-74. Existing M3
+implementation/evidence and closure remain historical and intact.
+
+The shared contract preserves geometry, semantic piece kind/promotion/owner,
+Sente/Gote orientation, hand resources/counts, complete move/drop/promotion
+choices, declaration capability, event history, engine state and analysis
+provenance. It imposes no Latin-piece rendering, standard-board scrolling,
+button-row hands, diagnostic player interface or one visual layout for every game.
+MSH-74 owns deliberate shogi product design: a complete9x9 board visible without
+scrolling at supported normal desktop sizes; shogi-specific owner-oriented pieces
+and promoted states; integrated hands/drop and promotion interaction; coherent
+player/turn/status hierarchy; history/analysis that do not crowd the board;
+polished pointer/keyboard use; and developer diagnostics separate from play.
+
+The M3 synthetic16x16 scrolling exercise verified a capability, not a future
+product mandate. The owner notes that legacy `master` already displays full16x16
+Tenjiku on smaller-resolution screens; this task does not reassess that legacy
+implementation. Future12x12/16x16 product design must assess full-board fit and
+readability rather than assume zoom/pan/scroll is necessary. Such techniques may
+be evaluated where useful; standard shogi must not inherit them automatically.
+See [the M4 shared contract](../m4/desktop-session.md) and MSH-74 acceptance criteria.

@@ -1,0 +1,427 @@
+{
+  "token": {
+    "document": 3,
+    "version": 7,
+    "revision": 10,
+    "selection": 7
+  },
+  "game": "shogi",
+  "profile": "mshogi.shogi.csa36.v1",
+  "edition": "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026",
+  "human": {
+    "id": {
+      "game_kind": "shogi",
+      "side": "sente"
+    },
+    "key": "mshogi.shogi.csa36.v1:sente",
+    "label": "Sente",
+    "first_mover": true
+  },
+  "turn": {
+    "id": {
+      "game_kind": "shogi",
+      "side": "sente"
+    },
+    "key": "mshogi.shogi.csa36.v1:sente",
+    "label": "Sente",
+    "first_mover": true
+  },
+  "sides": [
+    {
+      "id": {
+        "game_kind": "shogi",
+        "side": "sente"
+      },
+      "key": "mshogi.shogi.csa36.v1:sente",
+      "label": "Sente",
+      "first_mover": true
+    },
+    {
+      "id": {
+        "game_kind": "shogi",
+        "side": "gote"
+      },
+      "key": "mshogi.shogi.csa36.v1:gote",
+      "label": "Gote",
+      "first_mover": false
+    }
+  ],
+  "board": {
+    "files": [
+      "9",
+      "8",
+      "7",
+      "6",
+      "5",
+      "4",
+      "3",
+      "2",
+      "1"
+    ],
+    "ranks": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g",
+      "h",
+      "i"
+    ],
+    "label": "Standard shogi contract board (MSH-72; application delivery MSH-74)",
+    "initial_focus": "5g"
+  },
+  "orientations": [
+    {
+      "side": {
+        "id": {
+          "game_kind": "shogi",
+          "side": "sente"
+        },
+        "key": "mshogi.shogi.csa36.v1:sente",
+        "label": "Sente",
+        "first_mover": true
+      },
+      "files": [
+        "9",
+        "8",
+        "7",
+        "6",
+        "5",
+        "4",
+        "3",
+        "2",
+        "1"
+      ],
+      "ranks": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i"
+      ]
+    },
+    {
+      "side": {
+        "id": {
+          "game_kind": "shogi",
+          "side": "gote"
+        },
+        "key": "mshogi.shogi.csa36.v1:gote",
+        "label": "Gote",
+        "first_mover": false
+      },
+      "files": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
+      "ranks": [
+        "i",
+        "h",
+        "g",
+        "f",
+        "e",
+        "d",
+        "c",
+        "b",
+        "a"
+      ]
+    }
+  ],
+  "pieces": [
+    {
+      "square": "1a",
+      "owner": "mshogi.shogi.csa36.v1:gote",
+      "kind": "king",
+      "promoted": false,
+      "text": "K",
+      "label": "1a, Gote K"
+    },
+    {
+      "square": "5d",
+      "owner": "mshogi.shogi.csa36.v1:sente",
+      "kind": "pawn",
+      "promoted": false,
+      "text": "P",
+      "label": "5d, Sente P"
+    },
+    {
+      "square": "9i",
+      "owner": "mshogi.shogi.csa36.v1:sente",
+      "kind": "king",
+      "promoted": false,
+      "text": "K",
+      "label": "9i, Sente K"
+    }
+  ],
+  "hands": [
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "owner": "mshogi.shogi.csa36.v1:sente",
+      "kind": "rook",
+      "count": 0,
+      "text": "R",
+      "label": "Sente hand R, 0"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "owner": "mshogi.shogi.csa36.v1:sente",
+      "kind": "bishop",
+      "count": 0,
+      "text": "B",
+      "label": "Sente hand B, 0"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "owner": "mshogi.shogi.csa36.v1:sente",
+      "kind": "gold",
+      "count": 0,
+      "text": "G",
+      "label": "Sente hand G, 0"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "owner": "mshogi.shogi.csa36.v1:sente",
+      "kind": "silver",
+      "count": 0,
+      "text": "S",
+      "label": "Sente hand S, 0"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "owner": "mshogi.shogi.csa36.v1:sente",
+      "kind": "knight",
+      "count": 0,
+      "text": "N",
+      "label": "Sente hand N, 0"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "owner": "mshogi.shogi.csa36.v1:sente",
+      "kind": "lance",
+      "count": 0,
+      "text": "L",
+      "label": "Sente hand L, 0"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "owner": "mshogi.shogi.csa36.v1:sente",
+      "kind": "pawn",
+      "count": 0,
+      "text": "P",
+      "label": "Sente hand P, 0"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:gote:R",
+      "owner": "mshogi.shogi.csa36.v1:gote",
+      "kind": "rook",
+      "count": 0,
+      "text": "R",
+      "label": "Gote hand R, 0"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:gote:B",
+      "owner": "mshogi.shogi.csa36.v1:gote",
+      "kind": "bishop",
+      "count": 0,
+      "text": "B",
+      "label": "Gote hand B, 0"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:gote:G",
+      "owner": "mshogi.shogi.csa36.v1:gote",
+      "kind": "gold",
+      "count": 0,
+      "text": "G",
+      "label": "Gote hand G, 0"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:gote:S",
+      "owner": "mshogi.shogi.csa36.v1:gote",
+      "kind": "silver",
+      "count": 0,
+      "text": "S",
+      "label": "Gote hand S, 0"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:gote:N",
+      "owner": "mshogi.shogi.csa36.v1:gote",
+      "kind": "knight",
+      "count": 0,
+      "text": "N",
+      "label": "Gote hand N, 0"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:gote:L",
+      "owner": "mshogi.shogi.csa36.v1:gote",
+      "kind": "lance",
+      "count": 0,
+      "text": "L",
+      "label": "Gote hand L, 0"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:gote:P",
+      "owner": "mshogi.shogi.csa36.v1:gote",
+      "kind": "pawn",
+      "count": 0,
+      "text": "P",
+      "label": "Gote hand P, 0"
+    }
+  ],
+  "choices": [
+    {
+      "origin": {
+        "kind": "board",
+        "square": "5d"
+      },
+      "action": "5d5c",
+      "from": "5d",
+      "steps": [
+        "5c"
+      ],
+      "completion": {
+        "label": "Do not promote",
+        "glyph": null
+      }
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "5d"
+      },
+      "action": "5d5c+",
+      "from": "5d",
+      "steps": [
+        "5c"
+      ],
+      "completion": {
+        "label": "Promote",
+        "glyph": null
+      }
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "9i"
+      },
+      "action": "9i8h",
+      "from": "9i",
+      "steps": [
+        "8h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "9i"
+      },
+      "action": "9i8i",
+      "from": "9i",
+      "steps": [
+        "8i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "9i"
+      },
+      "action": "9i9h",
+      "from": "9i",
+      "steps": [
+        "9h"
+      ],
+      "completion": null
+    }
+  ],
+  "capabilities": {
+    "board_action": true,
+    "drops": true,
+    "promotion": true,
+    "undo": false,
+    "engine_turn": false,
+    "move_analysis": true,
+    "chess_full": false,
+    "claims": false,
+    "declaration": true,
+    "resign": true,
+    "hands": true,
+    "history": true,
+    "save": false
+  },
+  "status": {
+    "concluded": false,
+    "label": "Sente to move",
+    "score_half_points": null
+  },
+  "events": [],
+  "event_index": 0,
+  "historical": false,
+  "paused": false,
+  "phase": "idle",
+  "diagnostic": null,
+  "declaration_advice": [
+    {
+      "actor": {
+        "id": {
+          "game_kind": "shogi",
+          "side": "sente"
+        },
+        "key": "mshogi.shogi.csa36.v1:sente",
+        "label": "Sente",
+        "first_mover": true
+      },
+      "eligible": false,
+      "own_turn": true,
+      "king_in_camp": false,
+      "camp_pieces": 0,
+      "points": 0,
+      "required_points": 28,
+      "not_in_check": true
+    },
+    {
+      "actor": {
+        "id": {
+          "game_kind": "shogi",
+          "side": "gote"
+        },
+        "key": "mshogi.shogi.csa36.v1:gote",
+        "label": "Gote",
+        "first_mover": false
+      },
+      "eligible": false,
+      "own_turn": false,
+      "king_in_camp": false,
+      "camp_pieces": 0,
+      "points": 0,
+      "required_points": 27,
+      "not_in_check": true
+    }
+  ],
+  "context": {
+    "envelope_version": 1,
+    "game_kind": "shogi",
+    "rules_profile": "mshogi.shogi.csa36.v1",
+    "profile_edition": "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026",
+    "native_schema_version": 1,
+    "payload": {"format":"mshogi.shogi.game","schema_version":1,"profile_id":"mshogi.shogi.csa36.v1","profile_edition":"JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026","mode":"untimed","policies":{"no_legal_action":"loss_with_or_without_check","repetition":"four_known_occurrences_final_draw","continuous_check":"all_own_actions_first_to_fourth_checker_loses","entering_king":"formal_own_turn_camp_unchecked_false_declaration_loses","sente_declaration_points":28,"gote_declaration_points":27,"minimum_other_camp_pieces":10,"length_completed_actions":320,"precedence":["no_legal_action","repetition_including_continuous_check","length"],"resignation":"opponent_wins","scoring":"csa_sente_gote_half_point_units","imported_history":"root_once_earlier_history_unknown","counters":"declared_next_ply_minus_one_default_one","live_root_admission":"nonmoving_king_unattacked_necessary_not_reachability","timing":"unsupported_untimed_time_prerequisite_true","external_events":"unsupported"},"root":{"category":"reduced_material_diagram","sfen":"8k/9/9/4P4/9/9/9/9/K8 b - 1","counter_source":"supplied","known_history":"imported_unknown","conclusion":null,"score_half_points":null},"events":[],"conclusion":null,"score_half_points":null}
+  },
+  "analysis": null,
+  "observations": [],
+  "score_meaning": "Native shogi root-side hundredths of pawn; terminal win distance counts complete command edges, including declarations. Not a chess mate score.",
+  "chess": null
+}

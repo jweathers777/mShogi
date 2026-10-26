@@ -1057,6 +1057,7 @@ impl DesktopController {
     }
     /// Queue a complete save snapshot; serialization and all file I/O run off-path.
     pub fn queue_save(&mut self, path: PathBuf) -> Result<u64, String> {
+        self.require_chess()?;
         if self.session.controls.len() > MAX_ARCHIVE_CONTROLS
             || self.session.observations.len() > MAX_ARCHIVE_OBSERVATIONS
             || self.session.initial_record.events().len() + self.session.game.record().event_count()
@@ -1095,6 +1096,7 @@ impl DesktopController {
     }
     /// Queue strict bounded validation. A stale token cannot replace any state.
     pub fn queue_open(&mut self, path: PathBuf, token: OpenToken) -> Result<u64, String> {
+        self.require_chess()?;
         if token != self.open_token() {
             return Err(
                 "The document changed before Open. Confirm the current document again.".into(),
@@ -1259,6 +1261,7 @@ impl DesktopController {
     /// Stabilize a close decision by retiring work without inventing results.
     /// Repeated preflight is idempotent; an untouched initial game stays clean.
     pub fn pause_for_close(&mut self) -> Snapshot {
+        self.pause_shared_for_close();
         self.retire_admission();
         if self.session.pending.is_some() || self.session.analysis_pending.is_some() {
             self.bridge.cancel();

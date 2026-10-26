@@ -1,0 +1,7149 @@
+{
+  "token": {
+    "document": 2,
+    "version": 5,
+    "revision": 7,
+    "selection": 5
+  },
+  "game": "shogi",
+  "profile": "mshogi.shogi.csa36.v1",
+  "edition": "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026",
+  "human": {
+    "id": {
+      "game_kind": "shogi",
+      "side": "sente"
+    },
+    "key": "mshogi.shogi.csa36.v1:sente",
+    "label": "Sente",
+    "first_mover": true
+  },
+  "turn": {
+    "id": {
+      "game_kind": "shogi",
+      "side": "sente"
+    },
+    "key": "mshogi.shogi.csa36.v1:sente",
+    "label": "Sente",
+    "first_mover": true
+  },
+  "sides": [
+    {
+      "id": {
+        "game_kind": "shogi",
+        "side": "sente"
+      },
+      "key": "mshogi.shogi.csa36.v1:sente",
+      "label": "Sente",
+      "first_mover": true
+    },
+    {
+      "id": {
+        "game_kind": "shogi",
+        "side": "gote"
+      },
+      "key": "mshogi.shogi.csa36.v1:gote",
+      "label": "Gote",
+      "first_mover": false
+    }
+  ],
+  "board": {
+    "files": [
+      "9",
+      "8",
+      "7",
+      "6",
+      "5",
+      "4",
+      "3",
+      "2",
+      "1"
+    ],
+    "ranks": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g",
+      "h",
+      "i"
+    ],
+    "label": "Standard shogi contract board (MSH-72; application delivery MSH-74)",
+    "initial_focus": "5g"
+  },
+  "orientations": [
+    {
+      "side": {
+        "id": {
+          "game_kind": "shogi",
+          "side": "sente"
+        },
+        "key": "mshogi.shogi.csa36.v1:sente",
+        "label": "Sente",
+        "first_mover": true
+      },
+      "files": [
+        "9",
+        "8",
+        "7",
+        "6",
+        "5",
+        "4",
+        "3",
+        "2",
+        "1"
+      ],
+      "ranks": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i"
+      ]
+    },
+    {
+      "side": {
+        "id": {
+          "game_kind": "shogi",
+          "side": "gote"
+        },
+        "key": "mshogi.shogi.csa36.v1:gote",
+        "label": "Gote",
+        "first_mover": false
+      },
+      "files": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
+      "ranks": [
+        "i",
+        "h",
+        "g",
+        "f",
+        "e",
+        "d",
+        "c",
+        "b",
+        "a"
+      ]
+    }
+  ],
+  "pieces": [
+    {
+      "square": "1a",
+      "owner": "mshogi.shogi.csa36.v1:gote",
+      "kind": "king",
+      "promoted": false,
+      "text": "K",
+      "label": "1a, Gote K"
+    },
+    {
+      "square": "9i",
+      "owner": "mshogi.shogi.csa36.v1:sente",
+      "kind": "king",
+      "promoted": false,
+      "text": "K",
+      "label": "9i, Sente K"
+    }
+  ],
+  "hands": [
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "owner": "mshogi.shogi.csa36.v1:sente",
+      "kind": "rook",
+      "count": 2,
+      "text": "R",
+      "label": "Sente hand R, 2"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "owner": "mshogi.shogi.csa36.v1:sente",
+      "kind": "bishop",
+      "count": 1,
+      "text": "B",
+      "label": "Sente hand B, 1"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "owner": "mshogi.shogi.csa36.v1:sente",
+      "kind": "gold",
+      "count": 1,
+      "text": "G",
+      "label": "Sente hand G, 1"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "owner": "mshogi.shogi.csa36.v1:sente",
+      "kind": "silver",
+      "count": 1,
+      "text": "S",
+      "label": "Sente hand S, 1"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "owner": "mshogi.shogi.csa36.v1:sente",
+      "kind": "knight",
+      "count": 1,
+      "text": "N",
+      "label": "Sente hand N, 1"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "owner": "mshogi.shogi.csa36.v1:sente",
+      "kind": "lance",
+      "count": 1,
+      "text": "L",
+      "label": "Sente hand L, 1"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "owner": "mshogi.shogi.csa36.v1:sente",
+      "kind": "pawn",
+      "count": 1,
+      "text": "P",
+      "label": "Sente hand P, 1"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:gote:R",
+      "owner": "mshogi.shogi.csa36.v1:gote",
+      "kind": "rook",
+      "count": 0,
+      "text": "R",
+      "label": "Gote hand R, 0"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:gote:B",
+      "owner": "mshogi.shogi.csa36.v1:gote",
+      "kind": "bishop",
+      "count": 0,
+      "text": "B",
+      "label": "Gote hand B, 0"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:gote:G",
+      "owner": "mshogi.shogi.csa36.v1:gote",
+      "kind": "gold",
+      "count": 0,
+      "text": "G",
+      "label": "Gote hand G, 0"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:gote:S",
+      "owner": "mshogi.shogi.csa36.v1:gote",
+      "kind": "silver",
+      "count": 0,
+      "text": "S",
+      "label": "Gote hand S, 0"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:gote:N",
+      "owner": "mshogi.shogi.csa36.v1:gote",
+      "kind": "knight",
+      "count": 0,
+      "text": "N",
+      "label": "Gote hand N, 0"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:gote:L",
+      "owner": "mshogi.shogi.csa36.v1:gote",
+      "kind": "lance",
+      "count": 0,
+      "text": "L",
+      "label": "Gote hand L, 0"
+    },
+    {
+      "origin": "hand:mshogi.shogi.csa36.v1:gote:P",
+      "owner": "mshogi.shogi.csa36.v1:gote",
+      "kind": "pawn",
+      "count": 0,
+      "text": "P",
+      "label": "Gote hand P, 0"
+    }
+  ],
+  "choices": [
+    {
+      "origin": {
+        "kind": "board",
+        "square": "9i"
+      },
+      "action": "9i8h",
+      "from": "9i",
+      "steps": [
+        "8h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "9i"
+      },
+      "action": "9i8i",
+      "from": "9i",
+      "steps": [
+        "8i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "9i"
+      },
+      "action": "9i9h",
+      "from": "9i",
+      "steps": [
+        "9h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*1b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "1b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*1c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "1c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*1d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "1d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*1e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "1e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*1f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "1f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*1g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "1g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*1h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "1h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*1i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "1i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*2a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "2a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*2b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "2b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*2c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "2c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*2d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "2d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*2e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "2e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*2f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "2f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*2g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "2g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*2h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "2h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*2i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "2i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*3a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "3a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*3b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "3b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*3c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "3c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*3d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "3d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*3e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "3e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*3f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "3f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*3g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "3g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*3h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "3h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*3i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "3i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*4a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "4a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*4b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "4b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*4c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "4c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*4d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "4d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*4e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "4e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*4f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "4f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*4g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "4g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*4h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "4h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*4i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "4i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*5a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "5a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*5b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "5b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*5c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "5c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*5d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "5d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*5e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "5e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*5f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "5f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*5g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "5g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*5h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "5h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*5i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "5i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*6a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "6a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*6b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "6b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*6c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "6c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*6d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "6d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*6e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "6e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*6f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "6f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*6g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "6g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*6h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "6h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*6i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "6i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*7a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "7a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*7b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "7b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*7c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "7c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*7d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "7d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*7e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "7e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*7f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "7f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*7g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "7g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*7h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "7h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*7i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "7i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*8a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "8a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*8b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "8b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*8c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "8c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*8d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "8d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*8e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "8e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*8f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "8f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*8g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "8g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*8h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "8h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*8i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "8i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*9a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "9a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*9b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "9b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*9c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "9c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*9d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "9d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*9e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "9e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*9f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "9f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*9g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "9g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "bishop"
+      },
+      "action": "B*9h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:B",
+      "steps": [
+        "9h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*1b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "1b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*1c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "1c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*1d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "1d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*1e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "1e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*1f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "1f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*1g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "1g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*1h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "1h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*1i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "1i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*2a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "2a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*2b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "2b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*2c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "2c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*2d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "2d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*2e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "2e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*2f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "2f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*2g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "2g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*2h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "2h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*2i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "2i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*3a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "3a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*3b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "3b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*3c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "3c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*3d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "3d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*3e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "3e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*3f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "3f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*3g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "3g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*3h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "3h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*3i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "3i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*4a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "4a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*4b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "4b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*4c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "4c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*4d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "4d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*4e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "4e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*4f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "4f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*4g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "4g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*4h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "4h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*4i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "4i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*5a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "5a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*5b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "5b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*5c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "5c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*5d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "5d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*5e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "5e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*5f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "5f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*5g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "5g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*5h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "5h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*5i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "5i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*6a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "6a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*6b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "6b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*6c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "6c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*6d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "6d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*6e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "6e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*6f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "6f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*6g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "6g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*6h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "6h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*6i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "6i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*7a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "7a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*7b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "7b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*7c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "7c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*7d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "7d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*7e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "7e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*7f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "7f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*7g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "7g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*7h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "7h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*7i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "7i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*8a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "8a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*8b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "8b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*8c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "8c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*8d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "8d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*8e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "8e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*8f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "8f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*8g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "8g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*8h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "8h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*8i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "8i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*9a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "9a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*9b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "9b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*9c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "9c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*9d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "9d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*9e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "9e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*9f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "9f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*9g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "9g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "gold"
+      },
+      "action": "G*9h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:G",
+      "steps": [
+        "9h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*1b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "1b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*1c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "1c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*1d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "1d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*1e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "1e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*1f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "1f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*1g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "1g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*1h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "1h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*1i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "1i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*2b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "2b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*2c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "2c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*2d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "2d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*2e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "2e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*2f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "2f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*2g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "2g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*2h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "2h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*2i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "2i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*3b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "3b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*3c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "3c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*3d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "3d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*3e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "3e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*3f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "3f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*3g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "3g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*3h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "3h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*3i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "3i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*4b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "4b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*4c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "4c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*4d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "4d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*4e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "4e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*4f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "4f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*4g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "4g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*4h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "4h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*4i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "4i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*5b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "5b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*5c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "5c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*5d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "5d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*5e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "5e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*5f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "5f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*5g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "5g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*5h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "5h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*5i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "5i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*6b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "6b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*6c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "6c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*6d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "6d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*6e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "6e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*6f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "6f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*6g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "6g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*6h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "6h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*6i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "6i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*7b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "7b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*7c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "7c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*7d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "7d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*7e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "7e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*7f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "7f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*7g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "7g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*7h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "7h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*7i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "7i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*8b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "8b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*8c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "8c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*8d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "8d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*8e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "8e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*8f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "8f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*8g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "8g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*8h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "8h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*8i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "8i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*9b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "9b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*9c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "9c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*9d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "9d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*9e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "9e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*9f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "9f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*9g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "9g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "lance"
+      },
+      "action": "L*9h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:L",
+      "steps": [
+        "9h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*1c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "1c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*1d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "1d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*1e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "1e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*1f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "1f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*1g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "1g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*1h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "1h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*1i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "1i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*2c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "2c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*2d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "2d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*2e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "2e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*2f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "2f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*2g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "2g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*2h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "2h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*2i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "2i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*3c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "3c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*3d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "3d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*3e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "3e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*3f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "3f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*3g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "3g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*3h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "3h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*3i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "3i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*4c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "4c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*4d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "4d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*4e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "4e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*4f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "4f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*4g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "4g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*4h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "4h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*4i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "4i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*5c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "5c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*5d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "5d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*5e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "5e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*5f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "5f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*5g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "5g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*5h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "5h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*5i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "5i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*6c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "6c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*6d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "6d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*6e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "6e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*6f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "6f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*6g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "6g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*6h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "6h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*6i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "6i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*7c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "7c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*7d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "7d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*7e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "7e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*7f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "7f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*7g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "7g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*7h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "7h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*7i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "7i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*8c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "8c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*8d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "8d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*8e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "8e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*8f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "8f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*8g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "8g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*8h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "8h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*8i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "8i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*9c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "9c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*9d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "9d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*9e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "9e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*9f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "9f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*9g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "9g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "knight"
+      },
+      "action": "N*9h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:N",
+      "steps": [
+        "9h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*1b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "1b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*1c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "1c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*1d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "1d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*1e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "1e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*1f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "1f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*1g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "1g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*1h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "1h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*1i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "1i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*2b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "2b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*2c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "2c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*2d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "2d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*2e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "2e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*2f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "2f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*2g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "2g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*2h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "2h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*2i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "2i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*3b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "3b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*3c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "3c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*3d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "3d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*3e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "3e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*3f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "3f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*3g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "3g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*3h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "3h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*3i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "3i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*4b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "4b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*4c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "4c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*4d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "4d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*4e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "4e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*4f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "4f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*4g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "4g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*4h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "4h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*4i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "4i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*5b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "5b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*5c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "5c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*5d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "5d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*5e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "5e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*5f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "5f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*5g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "5g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*5h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "5h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*5i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "5i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*6b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "6b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*6c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "6c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*6d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "6d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*6e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "6e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*6f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "6f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*6g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "6g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*6h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "6h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*6i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "6i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*7b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "7b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*7c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "7c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*7d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "7d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*7e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "7e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*7f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "7f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*7g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "7g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*7h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "7h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*7i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "7i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*8b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "8b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*8c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "8c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*8d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "8d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*8e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "8e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*8f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "8f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*8g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "8g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*8h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "8h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*8i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "8i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*9b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "9b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*9c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "9c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*9d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "9d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*9e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "9e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*9f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "9f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*9g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "9g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "pawn"
+      },
+      "action": "P*9h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:P",
+      "steps": [
+        "9h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*1b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "1b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*1c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "1c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*1d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "1d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*1e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "1e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*1f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "1f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*1g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "1g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*1h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "1h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*1i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "1i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*2a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "2a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*2b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "2b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*2c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "2c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*2d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "2d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*2e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "2e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*2f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "2f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*2g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "2g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*2h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "2h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*2i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "2i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*3a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "3a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*3b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "3b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*3c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "3c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*3d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "3d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*3e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "3e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*3f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "3f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*3g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "3g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*3h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "3h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*3i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "3i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*4a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "4a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*4b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "4b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*4c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "4c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*4d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "4d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*4e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "4e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*4f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "4f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*4g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "4g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*4h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "4h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*4i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "4i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*5a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "5a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*5b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "5b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*5c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "5c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*5d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "5d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*5e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "5e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*5f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "5f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*5g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "5g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*5h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "5h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*5i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "5i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*6a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "6a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*6b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "6b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*6c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "6c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*6d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "6d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*6e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "6e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*6f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "6f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*6g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "6g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*6h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "6h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*6i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "6i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*7a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "7a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*7b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "7b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*7c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "7c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*7d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "7d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*7e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "7e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*7f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "7f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*7g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "7g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*7h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "7h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*7i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "7i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*8a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "8a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*8b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "8b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*8c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "8c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*8d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "8d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*8e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "8e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*8f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "8f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*8g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "8g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*8h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "8h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*8i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "8i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*9a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "9a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*9b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "9b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*9c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "9c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*9d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "9d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*9e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "9e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*9f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "9f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*9g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "9g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "rook"
+      },
+      "action": "R*9h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:R",
+      "steps": [
+        "9h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*1b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "1b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*1c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "1c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*1d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "1d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*1e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "1e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*1f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "1f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*1g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "1g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*1h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "1h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*1i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "1i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*2a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "2a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*2b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "2b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*2c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "2c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*2d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "2d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*2e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "2e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*2f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "2f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*2g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "2g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*2h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "2h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*2i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "2i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*3a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "3a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*3b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "3b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*3c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "3c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*3d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "3d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*3e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "3e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*3f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "3f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*3g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "3g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*3h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "3h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*3i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "3i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*4a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "4a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*4b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "4b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*4c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "4c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*4d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "4d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*4e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "4e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*4f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "4f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*4g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "4g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*4h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "4h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*4i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "4i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*5a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "5a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*5b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "5b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*5c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "5c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*5d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "5d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*5e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "5e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*5f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "5f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*5g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "5g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*5h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "5h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*5i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "5i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*6a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "6a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*6b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "6b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*6c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "6c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*6d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "6d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*6e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "6e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*6f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "6f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*6g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "6g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*6h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "6h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*6i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "6i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*7a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "7a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*7b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "7b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*7c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "7c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*7d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "7d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*7e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "7e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*7f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "7f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*7g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "7g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*7h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "7h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*7i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "7i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*8a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "8a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*8b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "8b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*8c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "8c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*8d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "8d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*8e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "8e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*8f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "8f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*8g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "8g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*8h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "8h"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*8i",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "8i"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*9a",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "9a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*9b",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "9b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*9c",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "9c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*9d",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "9d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*9e",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "9e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*9f",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "9f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*9g",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "9g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.shogi.csa36.v1:sente",
+        "piece_kind": "silver"
+      },
+      "action": "S*9h",
+      "from": "hand:mshogi.shogi.csa36.v1:sente:S",
+      "steps": [
+        "9h"
+      ],
+      "completion": null
+    }
+  ],
+  "capabilities": {
+    "board_action": true,
+    "drops": true,
+    "promotion": true,
+    "undo": false,
+    "engine_turn": false,
+    "move_analysis": true,
+    "chess_full": false,
+    "claims": false,
+    "declaration": true,
+    "resign": true,
+    "hands": true,
+    "history": true,
+    "save": false
+  },
+  "status": {
+    "concluded": false,
+    "label": "Sente to move",
+    "score_half_points": null
+  },
+  "events": [],
+  "event_index": 0,
+  "historical": false,
+  "paused": false,
+  "phase": "idle",
+  "diagnostic": null,
+  "declaration_advice": [
+    {
+      "actor": {
+        "id": {
+          "game_kind": "shogi",
+          "side": "sente"
+        },
+        "key": "mshogi.shogi.csa36.v1:sente",
+        "label": "Sente",
+        "first_mover": true
+      },
+      "eligible": false,
+      "own_turn": true,
+      "king_in_camp": false,
+      "camp_pieces": 0,
+      "points": 20,
+      "required_points": 28,
+      "not_in_check": true
+    },
+    {
+      "actor": {
+        "id": {
+          "game_kind": "shogi",
+          "side": "gote"
+        },
+        "key": "mshogi.shogi.csa36.v1:gote",
+        "label": "Gote",
+        "first_mover": false
+      },
+      "eligible": false,
+      "own_turn": false,
+      "king_in_camp": false,
+      "camp_pieces": 0,
+      "points": 0,
+      "required_points": 27,
+      "not_in_check": true
+    }
+  ],
+  "context": {
+    "envelope_version": 1,
+    "game_kind": "shogi",
+    "rules_profile": "mshogi.shogi.csa36.v1",
+    "profile_edition": "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026",
+    "native_schema_version": 1,
+    "payload": {"format":"mshogi.shogi.game","schema_version":1,"profile_id":"mshogi.shogi.csa36.v1","profile_edition":"JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026","mode":"untimed","policies":{"no_legal_action":"loss_with_or_without_check","repetition":"four_known_occurrences_final_draw","continuous_check":"all_own_actions_first_to_fourth_checker_loses","entering_king":"formal_own_turn_camp_unchecked_false_declaration_loses","sente_declaration_points":28,"gote_declaration_points":27,"minimum_other_camp_pieces":10,"length_completed_actions":320,"precedence":["no_legal_action","repetition_including_continuous_check","length"],"resignation":"opponent_wins","scoring":"csa_sente_gote_half_point_units","imported_history":"root_once_earlier_history_unknown","counters":"declared_next_ply_minus_one_default_one","live_root_admission":"nonmoving_king_unattacked_necessary_not_reachability","timing":"unsupported_untimed_time_prerequisite_true","external_events":"unsupported"},"root":{"category":"reduced_material_diagram","sfen":"8k/9/9/9/9/9/9/9/K8 b 2RBGSNLP 1","counter_source":"supplied","known_history":"imported_unknown","conclusion":null,"score_half_points":null},"events":[],"conclusion":null,"score_half_points":null}
+  },
+  "analysis": null,
+  "observations": [],
+  "score_meaning": "Native shogi root-side hundredths of pawn; terminal win distance counts complete command edges, including declarations. Not a chess mate score.",
+  "chess": null
+}

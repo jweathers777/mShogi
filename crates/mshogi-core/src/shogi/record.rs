@@ -17,6 +17,8 @@ use super::{
 pub const MAX_RECORD_BYTES: usize = 1024 * 1024;
 /// Conservative ledger bound, including a possible terminal non-board command.
 pub const MAX_RECORD_EVENTS: usize = 321;
+/// Native game/match record schema, distinct from profile and transport identities.
+pub const SHOGI_RECORD_SCHEMA_VERSION: u32 = 1;
 
 /// Lossless canonical game and untimed match-command ledger.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -57,15 +59,31 @@ impl fmt::Display for RecordError {
 impl Error for RecordError {}
 
 impl GameRecord {
+    /// Validated native schema identity.
+    pub fn schema_version(&self) -> u32 {
+        self.wire.schema_version
+    }
+    /// Accepted command-event count, independent of the declared SFEN counter.
+    pub fn event_count(&self) -> usize {
+        self.wire.events.len()
+    }
+    /// Board actions in known history; terminal commands add no board ply.
+    pub fn known_board_actions(&self) -> usize {
+        self.wire
+            .events
+            .iter()
+            .filter(|event| matches!(event.command, WireCommand::Play { .. }))
+            .count()
+    }
     /// Export a rules-owned game, retaining imported-root provenance and every event.
     pub fn from_game(game: &Game) -> Self {
         let initial = Game::from_root(game.root().clone());
         Self {
             wire: WireRecord {
                 format: "mshogi.shogi.game".into(),
-                schema_version: 1,
+                schema_version: SHOGI_RECORD_SCHEMA_VERSION,
                 profile_id: PROFILE_ID.into(),
-                profile_edition: "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026".into(),
+                profile_edition: super::PROFILE_EDITION.into(),
                 mode: "untimed".into(),
                 policies: Policies::selected(),
                 root: WireRoot {
@@ -125,9 +143,9 @@ impl GameRecord {
             return Err(RecordError::Capacity);
         }
         if wire.format != "mshogi.shogi.game"
-            || wire.schema_version != 1
+            || wire.schema_version != SHOGI_RECORD_SCHEMA_VERSION
             || wire.profile_id != PROFILE_ID
-            || wire.profile_edition != "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026"
+            || wire.profile_edition != super::PROFILE_EDITION
             || wire.mode != "untimed"
             || wire.policies != Policies::selected()
         {

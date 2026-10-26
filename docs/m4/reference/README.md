@@ -37,7 +37,7 @@ engine and application rows retain their assigned work.
 
 ## Durable evidence
 
-- [cshogi-admission.json](cshogi-admission.json): exact source revision, nine
+- [cshogi-admission.json](cshogi-admission.json): exact source revision, eleven
   audited source/license byte hashes, installed package origin, Python/build
   dependency versions, actual compiler commands, successful build-log hash and
   extension hash. The extension SHA-256 is
@@ -147,7 +147,7 @@ CXX=/private/tmp/msh64-llvm19/llvm@19/19.1.7/bin/clang++ \
 The final run after independent review metadata/coverage updates omitted only
 `--admit-source`/`--build-log`, preserving the already admitted binary manifest:
 **101 fixtures passed, 0 failed; 4 API-gap sentinels; 4 diagnostic demonstrations**.
-Each ordinary run requires all fixture and gap assertions to pass. The sentinels
+Each ordinary run requires all fixture, gap and thirteen reference-domain rejection assertions to pass. The sentinels
 observed permissive parser/`is_legal` acceptance of an illegal empty-final-rank
 pawn drop and compulsory-promotion omission, while LegalAll excluded both.
 After one king-shuffle cycle, `is_draw()` already returned REPETITION_DRAW at
@@ -167,3 +167,33 @@ it with `git add`, then invoked `--admit-source` with a temporary output manifes
 It exited1 with `FAIL: reference source must be the exact clean pinned tracked
 revision`; no manifest was produced. This validates the index-aware clean-source
 guard, rather than silently admitting staged edits.
+
+## Domain correction discovered during MSH-66
+
+The original SH-F022 bishop-evasion roots placed both kings in check: the
+moving bishop4d already attacked the opposing king1a (with the rotated
+counterpart equivalent). A longer seeded path entered an unsupported cshogi
+incremental-check state, eventually enumerated a king capture and failed exact
+reference reversal. This was a reference-input admission failure; agreement
+or disagreement on that path is not valid native conformance evidence.
+
+The original fixture, run and admission bytes are preserved in
+[board-rules-v1.json](../../../tests/fixtures/shogi/board-rules-v1.json),
+[reference-run-v1.json](reference-run-v1.json) and
+[cshogi-admission-v1.json](cshogi-admission-v1.json). The current two fixture
+records are version2: opposing king1a→1b before color reversal, outside the
+bishop diagonal. Their independently expected `4d5c`/`4d5c+` checker captures
+and rotated alternatives are unchanged. The correction was geometrically
+reviewed before corrected reference execution; it does not change a shogi rule
+to obtain agreement. The current run passed all101 fixtures,13 domain rejection
+sentinels,4 API-gap sentinels and4 diagnostic demonstrations. Native long-run
+results are separate MSH-66 evidence.
+
+The hardened harness validates local input limits before constructing a C++
+board, then uses source-audited raw geometric attack planes from the public
+dlshogi feature API to reject any already-attacked nonmoving king before
+LegalAll enumeration or push. This is reference-domain admission only, not
+an expected-legality or outcome oracle. The two old roots are actual rejection
+sentinels. Details and fresh review are in
+[reference-domain-review.md](../reference-domain-review.md) and
+[completeness-fixture-notes.md](../completeness-fixture-notes.md).

@@ -39,7 +39,7 @@ def admit(source, path, build_log):
     import cshogi._cshogi as extension
     if git(source, 'rev-parse', 'HEAD') != PIN or git(source, 'status', '--porcelain', '--untracked-files=no'):
         raise ValueError('reference source must be the exact clean pinned tracked revision')
-    files = ['setup.py', 'LICENSE', 'cshogi/_cshogi.pyx', 'src/cshogi.h', 'src/generateMoves.cpp', 'src/generateMoves.hpp', 'src/position.cpp', 'src/usi.cpp', 'src/ifdef.hpp']
+    files = ['setup.py', 'LICENSE', 'cshogi/_cshogi.pyx', 'src/cshogi.h', 'src/generateMoves.cpp', 'src/generateMoves.hpp', 'src/position.cpp', 'src/usi.cpp', 'src/ifdef.hpp', 'src/position.hpp', 'cshogi/dlshogi/__init__.py']
     log = Path(build_log).read_text()
     if 'BAN_BLACK_REPETITION' in log or 'BAN_WHITE_REPETITION' in log:
         raise ValueError('history-ban build flags are incompatible with board-only comparison')
@@ -57,7 +57,7 @@ def admit(source, path, build_log):
                 'compiler': subprocess.check_output(shlex.split(os.environ.get('CXX', 'clang++')) + ['--version'], text=True).strip(),
                 'compiler_commands': compile_lines, 'build_log_sha256': sha(build_log),
                 'banned_history_macros_defined': False,
-                'runtime_surface': 'Board.legal_moves -> MoveList<LegalAll>; move_to_usi; push/pop enumerated integers; board state serialization/check/hash only',
+                'runtime_surface': 'Board.legal_moves -> MoveList<LegalAll>; move_to_usi; push/pop enumerated integers; board state serialization/check/hash; public dlshogi raw geometric attack planes only for reference-root domain admission',
                 'excluded_as_oracles': ['MoveList<Legal>', 'is_legal', 'move_from_usi', 'push_usi', 'is_draw', 'is_game_over', 'is_nyugyoku']}
     path.write_text(json.dumps(manifest, indent=2) + '\n')
     return manifest
@@ -84,9 +84,15 @@ def legal(board, cshogi):
 
 def normalized_sfen(sfen):
     """Independent syntax/semantics normalization, not a reachability oracle."""
+    if not isinstance(sfen, str) or not sfen.isascii() or len(sfen) > 512:
+        raise ValueError('reference-domain: SFEN must be bounded ASCII, at most512bytes')
     fields = sfen.split()
+    if sfen != ' '.join(fields):
+        raise ValueError('reference-domain: comparison SFEN must use canonical single-space fields')
     if len(fields) != 4 or fields[1] not in ['b', 'w'] or not fields[3].isdigit() or int(fields[3]) < 1:
-        raise ValueError('invalid SFEN fields')
+        raise ValueError('reference-domain: invalid SFEN fields')
+    if int(fields[3]) > 2147483647:
+        raise ValueError('reference-domain: next-ply exceeds cshogi signed-int32 domain; native u32 contract is separate')
     rows = fields[0].split('/')
     if len(rows) != 9:
         raise ValueError('SFEN requires nine ranks')
@@ -117,6 +123,21 @@ def normalized_sfen(sfen):
             if p in hands:
                 raise ValueError('duplicate SFEN hand token')
             hands[p] = int(n or 1)
+    king_squares = {piece: square for square, piece in pieces if piece in ['K', 'k']}
+    bk, wk = king_squares['K'], king_squares['k']
+    if abs(int(bk[0]) - int(wk[0])) <= 1 and abs(ord(bk[1]) - ord(wk[1])) <= 1:
+        raise ValueError('reference-domain: adjacent kings')
+    pawn_files = set()
+    for square, piece in pieces:
+        if piece in ['P', 'L'] and square[1] == 'a' or piece in ['p', 'l'] and square[1] == 'i':
+            raise ValueError('reference-domain: dead unpromoted pawn/lance')
+        if piece == 'N' and square[1] in 'ab' or piece == 'n' and square[1] in 'hi':
+            raise ValueError('reference-domain: dead unpromoted knight')
+        if piece in ['P', 'p']:
+            key = (piece, square[0])
+            if key in pawn_files:
+                raise ValueError('reference-domain: nifu diagram')
+            pawn_files.add(key)
     material = {}
     for _, piece in pieces:
         kind = piece.lstrip('+').upper()
@@ -129,6 +150,39 @@ def normalized_sfen(sfen):
     return {'pieces': sorted(pieces), 'turn': fields[1], 'hands': hands, 'next_ply': int(fields[3])}
 
 
+def admitted_root(cshogi, root, extra_plies=0):
+    """Guard the source-audited geometric domain before any move enumeration/push.
+
+    Public dlshogi feature API is used solely for its raw per-piece attack
+    planes; it does not consult Legal/is_legal or cached incremental check state.
+    At this pin, planes14..27 of owner0 hold all moving-side piece attacks,
+    oriented to the mover; source cshogi.h:348-404 calls pos.attacksFrom.
+    """
+    try:
+        state = normalized_sfen(root)
+    except ValueError as error:
+        if str(error).startswith('reference-domain:'):
+            raise
+        raise ValueError('reference-domain: ' + str(error)) from error
+    if extra_plies < 0 or state['next_ply'] + extra_plies > 2147483647:
+        raise ValueError('reference-domain: supplied prefix exceeds cshogi signed-int32 next-ply limit')
+    import numpy as np
+    from cshogi import dlshogi
+    if dlshogi.FEATURES1_NUM != 62:
+        raise ValueError('reference-domain: unexpected feature shape at admitted source pin')
+    board = cshogi.Board(root)
+    features1 = np.zeros((dlshogi.FEATURES1_NUM, 9, 9), dtype=np.float32)
+    features2 = np.zeros((dlshogi.FEATURES2_NUM, 9, 9), dtype=np.float32)
+    dlshogi.make_input_features(board, features1, features2)
+    target = board.king_square(1 - board.turn)
+    if board.turn == cshogi.WHITE:
+        target = 80 - target
+    attacks = features1.reshape(2, 31, 81)[0, 14:28, target]
+    if bool(attacks.any()):
+        raise ValueError('reference-domain: nonmoving king is already geometrically attacked by side to move; unsupported cshogi incremental-check root: ' + root)
+    return board
+
+
 def snapshot(board, cshogi):
     return {'sfen': board.sfen(), 'legal_moves': sorted(legal(board, cshogi)), 'in_check': bool(board.is_check()),
             'pieces': list(board.pieces), 'hands': [list(h) for h in board.pieces_in_hand],
@@ -137,8 +191,7 @@ def snapshot(board, cshogi):
 
 
 def replay(cshogi, root, moves):
-    normalized_sfen(root)
-    board = cshogi.Board(root)
+    board = admitted_root(cshogi, root, len(moves))
     prefixes = [snapshot(board, cshogi)]
     for index, text in enumerate(moves):
         options = legal(board, cshogi)
@@ -150,10 +203,13 @@ def replay(cshogi, root, moves):
 
 
 def verify_reversal(board, prefixes, cshogi):
-    for want in reversed(prefixes[:-1]):
+    for index in range(len(prefixes) - 2, -1, -1):
+        want = prefixes[index]
         board.pop()
-        if snapshot(board, cshogi) != want:
-            raise AssertionError('reference nested push/pop failed exact state restoration')
+        got = snapshot(board, cshogi)
+        if got != want:
+            fields = [key for key in want if want[key] != got[key]]
+            raise AssertionError(f'reference nested push/pop failed restoration at prefix{index}, fields={fields}, expected_sfen={want["sfen"]}, actual_sfen={got["sfen"]}')
 
 
 def check_fixtures(cshogi, path):
@@ -200,6 +256,39 @@ def check_fixtures(cshogi, path):
                              'root_sfen': case['root_sfen'], 'moves': case['moves'],
                              'reference': prefixes[-1]})
     return observations
+
+
+def reference_domain_sentinels(cshogi):
+    """Admission rejection evidence, never a legality/outcome oracle."""
+    quiet = '8k/9/9/9/9/9/9/9/K8 b - 1'
+    old = json.loads((ROOT / 'tests/fixtures/shogi/board-rules-v1.json').read_text())
+    samples = [(case['id'], case['root_sfen'], 0) for case in old['cases']
+               if case['id'].startswith('SH-F022:evasion-B-')]
+    samples += [
+        ('adjacent-kings', '9/9/9/9/9/9/9/8k/8K b - 1', 0),
+        ('missing-king', '8k/9/9/9/9/9/9/9/9 b - 1', 0),
+        ('dead-pawn', '4P3k/9/9/9/9/9/9/9/K8 b - 1', 0),
+        ('dead-knight', '8k/4N4/9/9/9/9/9/9/K8 b - 1', 0),
+        ('nifu-root', '8k/9/9/4P4/4P4/9/9/9/K8 b - 1', 0),
+        ('excess-hand-material', '8k/9/9/9/9/9/9/9/K8 b 19P 1', 0),
+        ('non-shogi-piece', '8k/9/9/4Q4/9/9/9/9/K8 b - 1', 0),
+        ('counter-int32-overflow', quiet[:-1] + '2147483648', 0),
+        ('prefix-counter-overflow', quiet[:-1] + '2147483647', 1),
+        ('non-ascii', quiet.replace(' b ', '\u00a0b '), 0),
+        ('oversized-input', quiet + ' ' * 513, 0),
+    ]
+    observed = []
+    for name, root, extra_plies in samples:
+        try:
+            admitted_root(cshogi, root, extra_plies)
+        except ValueError as error:
+            if not str(error).startswith('reference-domain:'):
+                raise AssertionError('unlabeled reference admission rejection: ' + str(error))
+            observed.append({'id': name, 'root_sfen': root, 'extra_plies': extra_plies,
+                             'rejected': True, 'diagnostic': str(error)})
+        else:
+            raise AssertionError('reference domain sentinel unexpectedly admitted: ' + name)
+    return observed
 
 
 def audit_gap_sentinels(cshogi):
@@ -295,7 +384,7 @@ def compare(cshogi, command, root, moves, seed, timeout):
 
 def seeded_path(cshogi, root, seed, plies):
     rng = random.Random(seed)
-    board = cshogi.Board(root)
+    board = admitted_root(cshogi, root, plies)
     moves = []
     for _ in range(plies):
         choices = legal(board, cshogi)
@@ -351,7 +440,10 @@ def main():
     observations = check_fixtures(cshogi, args.fixtures)
     report = {'format': 'mshogi.shogi.reference-run.v1', 'revision': PIN,
               'fixture_sha256': sha(args.fixtures), 'manifest_sha256': sha(args.manifest),
-              'fixtures': observations, 'audit_gap_sentinels': audit_gap_sentinels(cshogi), 'comparisons': [], 'diagnostics_demo': []}
+              'harness_sha256': sha(__file__),
+              'probe_command': shlex.split(args.probe) if args.probe else None,
+              'probe_sha256': sha(shlex.split(args.probe)[0]) if args.probe else None,
+              'fixtures': observations, 'reference_domain_sentinels': reference_domain_sentinels(cshogi), 'audit_gap_sentinels': audit_gap_sentinels(cshogi), 'comparisons': [], 'diagnostics_demo': []}
     failed = [c for c in observations if not c['passed']]
     if failed:
         for case in failed:
@@ -384,7 +476,7 @@ def main():
     comparison_failures = sum(c['mismatch'] is not None for c in report['comparisons'])
     print(json.dumps({'fixtures_passed': len(observations) - len(failed), 'fixtures_failed': len(failed),
                       'comparison_sequences': len(report['comparisons']), 'comparison_failures': comparison_failures,
-                      'audit_gap_sentinels': len(report['audit_gap_sentinels']), 'diagnostic_demonstrations': len(report['diagnostics_demo'])}))
+                      'reference_domain_sentinels': len(report['reference_domain_sentinels']), 'audit_gap_sentinels': len(report['audit_gap_sentinels']), 'diagnostic_demonstrations': len(report['diagnostics_demo'])}))
     return int(bool(failed or comparison_failures))
 
 

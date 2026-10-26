@@ -151,7 +151,9 @@ Also independently reran `--admit-source /private/tmp/msh62-cshogi-audit
 --build-log /private/tmp/msh64-reference-build.log` with the recorded LLVM CXX
 and temporary output manifest; it reproduced the admission manifest exactly.
 A deliberately false extension hash was rejected with exit 1 and an explicit
-binary-differs diagnostic. Separate temporary subprocess checks exercised
+binary-differs diagnostic. Independently invoking admission against the author's
+temporary staged-dirty source checkout also exited 1 with the clean-pinned-source
+diagnostic. Separate temporary subprocess checks exercised
 nonzero exit, unexpected stderr, truncated JSON, duplicate/malformed choices,
 timeout and a valid response; all produced their intended classifications.
 `git diff --check` passed.

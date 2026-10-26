@@ -23,9 +23,9 @@ export function useGameSession() {
       if (!stopped) timer = setTimeout(() => { void poll(); }, 180);
     }
     void listen("desktop-close-requested", () => {
-      // Chess retains its established close guard. Shared shogi uses current
-      // authoritative metadata rather than treating the chess read adapter as a game.
-      if (!stopped && latest.current?.game === "shogi") {
+      // Open/New Game may have changed games before the next poll. The product
+      // shell owns close for both games, even while a game view is remounting.
+      if (!stopped) {
         void invoke<GameSnapshot>("game_snapshot").then((next) => { if (!stopped) { accept(next); setCloseRequested(true); } }).catch((e: unknown) => { if (!stopped) setError(String(e)); });
       }
     }).then((unlisten) => { if (!stopped) stop = unlisten; else unlisten(); })

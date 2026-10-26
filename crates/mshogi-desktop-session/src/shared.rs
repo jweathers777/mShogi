@@ -813,10 +813,7 @@ impl DesktopController {
                     false,
                 )
             {
-                let s = self.shared.shogi.as_mut().unwrap();
-                s.paused = true;
-                s.phase = EnginePhase::Failed;
-                s.diagnostic = Some(e);
+                self.pause_native_capacity(e);
             }
             let auto_submit = self.shared.auto_submit();
             let state = self.shared.shogi.as_mut().unwrap();

@@ -14,10 +14,10 @@ its unrelated missing simdjson library; it was not substituted into project lock
 
 | Actual command / layer | Result |
 | --- | --- |
-| `cargo test -p mshogi-desktop-session shared::archive::tests` |13 passed: canonical root/history/outcome corpus, hand/drop/promotions, exact same-ply selection, retired branches, inert observations/fresh identities, strict/adversarial identities and nested parsing, frozen v1/tagged chess, interrupted/failed save, stale Open, concurrent Save As/admission, settings retaining pending context/original limits. |
+| `cargo test -p mshogi-desktop-session shared::archive::tests` |14 passed: canonical root/history/outcome corpus, hand/drop/promotions, exact same-ply selection, retired branches, inert observations/fresh identities, strict/adversarial identities and nested parsing, frozen v1/tagged chess, interrupted/failed save, stale Open, concurrent Save As/admission, settings retaining pending context/original limits; automatic execution resource refusal is a capacity pause and remains saveable. |
 | `cargo test -p mshogi-desktop-session shared::archive::capacity_tests -- --nocapture` |8 passed (20.20s isolated run): real256→257, native320-event record,8192 controls/reservations, weighted replay boundary and stop headroom, reopened active journal/preferences, runtime revision exhaustion, real byte/work measurements and complete retained Save/Open. |
-| `cargo test --workspace --locked` |387 passed,2 pre-existing ignored; no failures. Includes actual chess/shogi internal subprocess consumers, existing native rules/search/protocol/runner/archive/capacity regressions. |
-| `cargo test -p mshogi-desktop-session --all-features --locked` |78 passed, including separately compiled QA constructors; no failures. |
+| `cargo test --workspace --locked` |387 passed,2 pre-existing ignored at2ba7ed2; final resource-classification delta adds one independently passed regression. No failures. Includes actual chess/shogi internal subprocess consumers, existing native rules/search/protocol/runner/archive/capacity regressions. |
+| `cargo test -p mshogi-desktop-session --all-features --locked` |78 passed at2ba7ed2, including separately compiled QA constructors; no failures. |
 | workspace fmt/all-target clippy; session all-feature clippy with `-D warnings` |Passed. |
 | Tauri fmt, all-target/all-feature clippy and all-feature tests |Passed;5 host tests. Existing vendored Tao dependency warnings remain distinct from product lints; native termination patch/provenance unchanged. |
 | `npm run check`; `npm test` |Strict TS passed;86 tests/15 files passed. Three new tests protect cancelled Save-and-close/Save-before-Open and successful exact-revision save/close. Existing chess/shared/synthetic interactions retained. |
@@ -70,10 +70,13 @@ Package hashes, exact fixture/settings/steps and saved archive are recorded in
 [evidence/msh73/gui-macos.json](evidence/msh73/gui-macos.json). Screenshots:
 [saved](evidence/msh73/saved-macos.png),
 [reopened stopped](evidence/msh73/reopened-macos.png),
-[historical root](evidence/msh73/history-root-macos.png).
+[historical root](evidence/msh73/history-root-macos.png),
+[cancelled Save-and-close retains dirty work](evidence/msh73/cancel-save-close-macos.png).
 This is actual host I/O evidence, not merely a serializer test. It is **not**
 MSH-74 visual acceptance, accessibility certification or Windows/Linux shogi GUI
-evidence. The ordinary application remains the chess product. Separately gated
+evidence. The macOS GUI package is pinned to2ba7ed2 in its hash report; the later small
+resource-classification follow-up reuses that unchanged journey evidence.
+The ordinary application remains the chess product. Separately gated
 contract controls are absent from normal frontend/host packages.
 
 ## Independent review method
@@ -81,8 +84,8 @@ contract controls are absent from normal frontend/host packages.
 A separate read-only agent `msh73_archive_review` traced the completed diff and
 requirements, strict RawValue/native dispatch, native journal replay/provenance,
 identity/selection/execution retirement, cross-game/file/admission races, atomics,
-chess v1 compatibility and resource policy. It independently executed13 final
-archive tests, three targeted reservation/watermark regressions, three frontend
+chess v1 compatibility and resource policy. It independently executed13 archive tests plus the final resource-classification
+regression, three targeted reservation/watermark regressions, three frontend
 Save/Open/close tests and session clippy/diff checks. No remaining material finding.
 This is a separate reviewer executing tests and reading source, not author
 self-review. Capacity measurements and actual GUI interaction are builder evidence.

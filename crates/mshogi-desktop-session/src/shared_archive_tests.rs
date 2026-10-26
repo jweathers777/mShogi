@@ -719,3 +719,29 @@ fn raw_nested_observation_fields_remain_strict_and_identity_errors_are_explicit(
     assert_ne!(wrong, text);
     assert!(decode_shogi(&wrong, &mut || false).is_err());
 }
+
+#[test]
+fn inability_to_start_native_execution_is_a_capacity_pause_not_engine_failure() {
+    let mut c = controller();
+    replace(&mut c, &s::Game::new(), s::Side::Gote);
+    send(&mut c, SessionOperation::Resume {}).unwrap();
+    // Simulate the already accepted runtime reaching its identity guard before
+    // the next automatic turn starts; current document must still be saveable.
+    let state = c.shared.shogi.as_mut().unwrap();
+    state.retire();
+    state.paused = false;
+    c.session.next_request = MAX_SAFE_ID - 64;
+    let snap = c.shared_snapshot();
+    assert!(snap.paused);
+    assert_eq!(snap.phase, EnginePhase::Paused);
+    assert_eq!(snap.capacity.status, CapacityPhase::Paused);
+    assert!(
+        snap.capacity
+            .message
+            .unwrap()
+            .starts_with("Application capacity:")
+    );
+    let file = path("runtime-capacity");
+    save(&mut c, &file);
+    fs::remove_file(file).unwrap();
+}

@@ -237,6 +237,30 @@ pub struct GameContext {
     root: GameRoot,
     commands: Vec<(Side, GameCommand)>,
 }
+impl GameContext {
+    /// Exact admitted root, including material category and counter/history provenance.
+    pub fn root(&self) -> &GameRoot {
+        &self.root
+    }
+    /// Ordered actors and commands, including any candidate action in an invariant diagnostic.
+    pub fn commands(&self) -> &[(Side, GameCommand)] {
+        &self.commands
+    }
+}
+
+/// Evidence for an internal violation of the reviewed mutual-check impossibility invariant.
+/// This is a defect/corruption diagnostic, never a game outcome or tournament penalty.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct MutualCheckDiagnostic {
+    /// Complete root and command history including the uncommitted candidate action.
+    pub candidate_context: GameContext,
+    /// Exact candidate board, hands, turn and declared counter.
+    pub candidate_sfen: String,
+    /// All known indices of the candidate repetition identity, root indexed zero.
+    pub occurrences: Vec<usize>,
+    /// Actor and stored check observation for each action after first through fourth occurrence.
+    pub interval_checks: Vec<(Side, bool)>,
+}
 /// Admission request bound to the entire known rules context.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct GameRequest {
@@ -248,7 +272,7 @@ pub struct GameRequest {
     pub command: GameCommand,
 }
 /// Rejected admission changes no game state or ledger.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub enum GameError {
     /// Request targets another known event prefix or root.
     StaleContext,
@@ -258,9 +282,23 @@ pub enum GameError {
     WrongActor,
     /// Locally illegal board action, not a chess outcome or tournament forfeit.
     IllegalAction(ActionError),
-    /// Research gate: no approved interpretation of a mutual continuous-check cycle.
-    /// This provisional implementation does not invent a result for that case.
-    UnresolvedMutualCheck,
+    /// Internal state/implementation violates the reviewed impossibility invariant.
+    /// A candidate is not committed and no win, draw or penalty is fabricated.
+    MutualCheckInvariant(Box<MutualCheckDiagnostic>),
+}
+
+/// Prefix reconstruction failure, retaining internal diagnostics rather than erasing them.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub enum GamePrefixError {
+    /// Requested event count exceeds the accepted ledger.
+    OutOfRange,
+    /// An accepted ledger unexpectedly failed authoritative reconstruction.
+    Replay {
+        /// Index of the event that could not be reconstructed.
+        event_index: usize,
+        /// Original native diagnostic.
+        error: GameError,
+    },
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -407,7 +445,7 @@ impl Game {
                 candidate
                     .identities
                     .push(candidate.position.repetition_identity());
-                candidate.conclusion = candidate.after_action_conclusion()?;
+                candidate.conclusion = candidate.after_action_conclusion(request.actor, action)?;
                 (Some(check), None)
             }
             GameCommand::Resign => {
@@ -459,9 +497,9 @@ impl Game {
         Ok(())
     }
     /// Authoritatively reconstruct an accepted event prefix. Same-ply terminal commands count.
-    pub fn prefix(&self, event_count: usize) -> Option<Self> {
+    pub fn prefix(&self, event_count: usize) -> Result<Self, GamePrefixError> {
         if event_count > self.events.len() {
-            return None;
+            return Err(GamePrefixError::OutOfRange);
         }
         let mut prefix = Self::from_root(self.root.clone());
         for event in &self.events[..event_count] {
@@ -471,9 +509,12 @@ impl Game {
                     actor: event.actor,
                     command: event.command,
                 })
-                .ok()?;
+                .map_err(|error| GamePrefixError::Replay {
+                    event_index: event.index,
+                    error,
+                })?;
         }
-        Some(prefix)
+        Ok(prefix)
     }
     fn no_action_conclusion(&self) -> Option<Conclusion> {
         self.position
@@ -492,7 +533,11 @@ impl Game {
                 .then_some(Conclusion::Draw(DrawReason::Length))
         })
     }
-    fn after_action_conclusion(&self) -> Result<Option<Conclusion>, GameError> {
+    fn after_action_conclusion(
+        &self,
+        actor: Side,
+        action: Action,
+    ) -> Result<Option<Conclusion>, GameError> {
         if let Some(conclusion) = self.no_action_conclusion() {
             return Ok(Some(conclusion));
         }
@@ -509,7 +554,24 @@ impl Game {
             let sente = continuous(Side::Sente);
             let gote = continuous(Side::Gote);
             if sente && gote {
-                return Err(GameError::UnresolvedMutualCheck);
+                // The reviewed chain in docs/m4/mutual-check-chain-review.md excludes
+                // this for every admitted root and checked local continuation. Preserve
+                // the complete candidate for diagnosing corrupted caches or a defect.
+                let mut candidate_context = self.context();
+                candidate_context
+                    .commands
+                    .push((actor, GameCommand::Play(action)));
+                return Err(GameError::MutualCheckInvariant(Box::new(
+                    MutualCheckDiagnostic {
+                        candidate_context,
+                        candidate_sfen: self.position.to_sfen(),
+                        occurrences,
+                        interval_checks: self.checks[first..fourth]
+                            .iter()
+                            .map(|step| (step.actor, step.gave_check))
+                            .collect(),
+                    },
+                )));
             }
             return Ok(Some(if sente || gote {
                 Conclusion::Win {
@@ -530,5 +592,112 @@ fn piece_points(kind: PieceKind) -> u16 {
         PieceKind::King => 0,
         PieceKind::Rook | PieceKind::Bishop => 5,
         _ => 1,
+    }
+}
+
+#[cfg(test)]
+mod invariant_tests {
+    use super::*;
+
+    #[test]
+    fn corrupted_check_cache_retains_candidate_evidence_without_committing_or_scoring() {
+        // Test-only corruption, NOT a legal mutual-check example. The real sequence
+        // is the independently established checked-endpoint Sente checking loss.
+        let root = GameRoot::import(
+            Position::from_sfen("4k4/9/4R4/9/9/9/9/9/K8 w - 1").unwrap(),
+            RootCategory::ReducedMaterialDiagram,
+            CounterSource::Supplied,
+        )
+        .unwrap();
+        let mut game = Game::from_root(root);
+        let cycle = ["5a4a", "5c4c", "4a5a", "4c5c"];
+        for text in cycle.iter().cycle().take(11) {
+            game.submit(GameRequest {
+                expected: game.context(),
+                actor: game.position.side_to_move(),
+                command: GameCommand::Play(text.parse().unwrap()),
+            })
+            .unwrap();
+        }
+        // The public API and canonical replay cannot inject these cache values.
+        for step in &mut game.checks {
+            step.gave_check = true;
+        }
+        let before = game.clone();
+        let action = cycle[3].parse().unwrap();
+        let actor = game.position.side_to_move();
+        let error = game
+            .submit(GameRequest {
+                expected: game.context(),
+                actor,
+                command: GameCommand::Play(action),
+            })
+            .unwrap_err();
+        let GameError::MutualCheckInvariant(diagnostic) = error else {
+            panic!("expected internal invariant diagnostic");
+        };
+        assert_eq!(game, before);
+        assert_eq!(game.conclusion(), None);
+        assert_eq!(diagnostic.occurrences, vec![0, 4, 8, 12]);
+        assert_eq!(diagnostic.interval_checks.len(), 12);
+        assert!(diagnostic.interval_checks.iter().all(|(_, check)| *check));
+        assert_eq!(diagnostic.candidate_context.root(), game.root());
+        assert_eq!(diagnostic.candidate_context.commands().len(), 12);
+        assert_eq!(
+            diagnostic.candidate_context.commands().last(),
+            Some(&(actor, GameCommand::Play(action)))
+        );
+        let mut expected_position = game.position.clone();
+        expected_position.apply(action).unwrap();
+        assert_eq!(diagnostic.candidate_sfen, expected_position.to_sfen());
+        assert_eq!(
+            diagnostic.candidate_context.commands()[..11],
+            game.context().commands()[..]
+        );
+        // Authoritative replay recomputes the actual checks; this is an ordinary
+        // one-sided checking loss, demonstrating that the injected data is corrupt.
+        let mut replay = Game::from_root(diagnostic.candidate_context.root().clone());
+        for &(actor, command) in diagnostic.candidate_context.commands() {
+            replay
+                .submit(GameRequest {
+                    expected: replay.context(),
+                    actor,
+                    command,
+                })
+                .unwrap();
+        }
+        assert_eq!(replay.position.to_sfen(), diagnostic.candidate_sfen);
+        assert_eq!(
+            replay.conclusion,
+            Some(Conclusion::Win {
+                winner: Side::Gote,
+                reason: WinReason::ContinuousCheck {
+                    first: 0,
+                    fourth: 12
+                },
+            })
+        );
+    }
+
+    #[test]
+    fn corrupted_command_prefix_preserves_replay_error_and_original_game() {
+        let mut game = Game::new();
+        game.submit(GameRequest {
+            expected: game.context(),
+            actor: Side::Sente,
+            command: GameCommand::Play("7g7f".parse().unwrap()),
+        })
+        .unwrap();
+        game.events[0].actor = Side::Gote;
+        let before = game.clone();
+        assert_eq!(
+            game.prefix(1),
+            Err(GamePrefixError::Replay {
+                event_index: 0,
+                error: GameError::WrongActor
+            })
+        );
+        assert_eq!(game.prefix(2), Err(GamePrefixError::OutOfRange));
+        assert_eq!(game, before);
     }
 }

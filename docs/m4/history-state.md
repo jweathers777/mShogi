@@ -1,7 +1,8 @@
 # MSH-67 native history and records
 
-Implementation work in progress for `mshogi.shogi.csa36.v1`. The mutual-check
-research gate must be resolved before this work can be accepted as complete.
+Native game/history contract for `mshogi.shogi.csa36.v1`.
+The mutual-check research gate is resolved by the
+[reviewed complete argument](mutual-check-resolution.md).
 The [independent fixture derivations](history-fixture-derivations.md) distinguish
 expected facts from board-only corroboration. Earlier MSH-63–66 research and
 reference evidence remains applicable and unchanged.
@@ -67,11 +68,12 @@ is satisfied. Timing, external illegal-move/disconnection policies, chess claims
 dead-position tests and resignation/mating-feasibility adjudication are absent.
 Unsupported record mode/policies reject explicitly; they are never downgraded.
 
-The hypothetical mutual-continuous-check case remains a research blocker at
-this draft revision. The provisional `UnresolvedMutualCheck` admission error
-avoids fabricating a winner but is **not** an accepted selected-profile outcome
-or a completed legal-action contract. This branch must not be integrated as a
-complete MSH-67 implementation until the proof/interpretation gate is settled.
+The reviewed impossibility argument excludes mutual continuous check throughout
+a repeated interval for every admitted live root. `MutualCheckInvariant` is an
+internal defect/corruption diagnostic, not another game rule or ordinary illegal
+request. It retains the complete candidate context (including the pending action),
+SFEN, occurrences and stored interval checks, without committing a result or
+score. Record replay preserves this distinction as `RecordError::Invariant`.
 
 ## Reversal, prefixes and runtime work
 
@@ -79,7 +81,9 @@ complete MSH-67 implementation until the proof/interpretation gate is settled.
 counters, root, events, checks, occurrences and conclusion exactly. A token for
 another state rejects. `Game::prefix` reconstructs accepted event prefixes,
 including a pre-declaration/resignation prefix and the terminal prefix at the
-same board ply. Semantic undo can restore an identical earlier `GameContext`;
+same board ply. Prefix reconstruction returns a checked `Result` and preserves
+the original native error and event index if reconstruction fails. Semantic
+undo can restore an identical earlier `GameContext`;
 this is intentionally not a monotonic runtime execution generation. A future
 host must invalidate pending work through its own request/session/process
 identities when changing a session.

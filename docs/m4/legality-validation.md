@@ -140,3 +140,28 @@ depth2; malformed or unsupported requests exit with an explicit diagnostic.
 No engine work, canonical game restoration or frontend session acceptance is
 provided by this example. Existing chess application launch instructions and
 M2/M3 evidence remain applicable without a new shogi UI claim.
+
+## Integration and CI
+
+Native source commit `0845392` is integrated and pushed as
+`6f6301e5a6b90a1dca986e88c6ce6e022f07e5d7` on `codex/rewrite`.
+All recorded native/tool source fingerprints were checked against that actual
+integrated tree; the independent final review also checked Git source bytes and
+report bindings. Subsequent completion bookkeeping changes documentation/tasks
+only and reuse this exact source evidence.
+
+- [Rust workspace CI40305615224](https://github.com/jweathers777/mShogi/actions/runs/40305615224)
+  **PASS** on Ubuntu24.04, macOS15 and Windows2022: format, warnings-denied lint,
+  workspace tests, isolated desktop constructors, native snapshot fixtures,
+  workspace build and existing chess console smoke.
+- [Desktop regression CI40305615506](https://github.com/jweathers777/mShogi/actions/runs/40305615506)
+  **PASS** on all three platforms, including its normal package/bundled-engine
+  and existing application regression checks. This is compatibility evidence;
+  no shogi desktop consumer or new manual GUI verification is claimed.
+
+The integrated diff leaves chess rules, search, engine, runner, desktop and
+M2/M3 sources/evidence unchanged. Their existing deeper evidence is reused.
+MSH-61 lossless persistence admission, MSH-40 roadmap correction and milestone
+records remain unchanged. MSH-41–47 remain open with their original criteria.
+The next dependency-ready bounded shogi ticket is MSH-67, which this batch does
+not start. Its named history/declaration/import fixture gates remain explicit.

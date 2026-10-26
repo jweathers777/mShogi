@@ -40,5 +40,30 @@
     "stderr": "FAIL: reference-domain: supplied prefix exceeds cshogi signed-int32 next-ply limit",
     "probe_invoked": false
   },
-  "limits": "Board position only; no history/outcome/search/console/desktop shogi delivery; reference itself narrower than native diagram/counter domain."
+  "limits": "Board position only; no history/outcome/search/console/desktop shogi delivery; reference itself narrower than native diagram/counter domain.",
+  "verified_source_commit": "0845392",
+  "verified_integration": "6f6301e5a6b90a1dca986e88c6ce6e022f07e5d7",
+  "ci": {
+    "native": {
+      "run": 40305615224,
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/40305615224",
+      "result": "success",
+      "platforms": [
+        "ubuntu-24.04",
+        "macos-15",
+        "windows-2022"
+      ]
+    },
+    "desktop_regression": {
+      "run": 40305615506,
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/40305615506",
+      "result": "success",
+      "platforms": [
+        "ubuntu-24.04",
+        "macos-15",
+        "windows-2022"
+      ]
+    }
+  },
+  "preservation": "Integrated fingerprints verified; chess/search/engine/runner/desktop/M2/M3/milestone sources unchanged from6db8500; MSH41\u201347 remain ToDo, MSH61 guarantee and MSH40 correction unchanged."
 }

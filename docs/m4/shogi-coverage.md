@@ -103,3 +103,9 @@ remain differential observations. Separate AI fixture and code reviews identify
 their actual methods; no human review or full game conformance is claimed.
 HIST-INTERVAL, DECL-BOUNDARY and IMPORT-LENGTH remain MSH-67 gates, and all protocol,
 archive, engine, application and complete-delivery duties remain open.
+
+Final native source0845392 is integrated/pushed at
+6f6301e5a6b90a1dca986e88c6ce6e022f07e5d7. Normal native CI40305615224 and
+desktop regression CI40305615506 pass on Windows, macOS and Linux. Exact commands,
+source fingerprints, review methods and limitations are in the validation records.
+MSH-63–66 complete their bounded obligations; they do not close MSH-41 or M4.

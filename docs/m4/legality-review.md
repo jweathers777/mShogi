@@ -125,7 +125,7 @@ where both kings were checked. Manually confirmed the latter diagram's exact
 three Gote replies after `9g8g`: `1a1b`, `1a2a`, `5c4d`. The nonmoving king was
 initially checked in that structural diagram; reference limitations must not
 replace the native geometric rule. MSH-64's independently reviewed v2 fixture
-and reference-domain guard are recorded separately in `reference-review.md`.
+and reference-domain guard are recorded separately in `reference-domain-review.md`.
 
 Reviewed the new development-only `tools/shogi/compare_perft.py`. One concrete
 harness finding was reported and resolved: deduplicating equal roots before
@@ -173,3 +173,36 @@ Follow-up reviewed bytes:
 | --- | --- |
 | `tests/shogi_legal.rs` | `976b0ad10513bf08f880c9a077caf8ec7ca819824337833efefba754aaf7b7c9` |
 | repository `tools/shogi/compare_perft.py` | `70ec2a2b34fd22c4be643daf14bb17eae6f84f94a6fe75c17410faeed4108544` |
+
+## Final integrated evidence boundary
+
+Read `legality-validation.md`/`.json`, the final completeness/domain review
+reports and all three retained native comparison reports after source
+`0845392f9c9e5772ec19f281eee32f189ad84fa4` was integrated at
+`6f6301e5a6b90a1dca986e88c6ce6e022f07e5d7`. Independently checked every one of
+the validation manifest's ten source fingerprints against both working files
+and `git show` of that integration. Product legality, perft and probe bytes,
+and the seven-group test file, match the reviewed hashes above. The final
+perft tool hash is
+`8bfecc527dbe8e2615d9732d626452607500f7befffdb121d037fa53aac00fa8`;
+its additional signed-counter traversal-headroom preflight was independently
+reviewed in `reference-domain-review.md`.
+
+Independently summed the actual retained observations: **167 sequences,
+3,850 executed plies, 4,017 compared prefixes, zero mismatches**; all **169
+depth-two perft/divide cases** have no errors. Both separately identified
+Sente/Gote initial expectations record 900 total with every root divide 30.
+Verified each report's fixture, admitted-manifest, harness/tool and probe hashes
+against actual bytes. These report inspections validate the supplied evidence;
+they do not claim this reviewer reran the integrator's full comparisons.
+
+This supports AC1/2's complete local legality and atomic API, AC3's admitted
+complete-set/transition and perft comparisons, and AC4's both-side edge fixtures
+and exact restoration within the bounded task. Separate independent reviews
+approve the 101 corrected board cases and 68 completeness cases. The reported
+local workspace result is 260 passed, zero failed, two existing ignored deep
+chess tests, with formatting and warnings-denied Clippy passing; this reviewer
+did not repeat those unchanged broad checks. Remote CI run `40305615224` was
+still running at this report boundary, so no remote CI pass is asserted here.
+The independent native-legality verdict remains **PASS**, with no material
+findings remaining and the history/product-delivery exclusions unchanged.

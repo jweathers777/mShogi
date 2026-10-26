@@ -26,3 +26,10 @@ sha2 = "=0.10.9"
 
 [lints]
 workspace = true
+
+# Verification process only; desktop packages select the production mshogi binary.
+[[bin]]
+name = "mshogi-usi-fixture"
+path = "tests/support/usi_fixture.rs"
+test = false
+doc = false

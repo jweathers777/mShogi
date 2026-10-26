@@ -13,7 +13,7 @@ use std::{
     time::{Duration, Instant},
 };
 
-fn identity(path: &str) -> FileIdentity {
+pub(crate) fn identity(path: &str) -> FileIdentity {
     let mut result = FileIdentity {
         path: path.into(),
         canonical_path: None,

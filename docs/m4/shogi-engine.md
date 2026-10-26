@@ -230,3 +230,9 @@ fresh monotonic request/generation/selection identities when replacing work.
 MSH-71 USI interoperability and MSH-72 shared desktop sessions are next; neither
 is delivered here. MSH-73 archives and all desktop shogi/presentation duties stay
 with their existing owners. MSH-41–47 and M4 remain open.
+
+
+MSH-71 now supplies the separate [USI adapter and untimed experiment host](usi.md).
+Its native terminal scores are not mislabeled as mate, declarations are not PV
+board moves, and incomplete work has no fallback. MSH-70 measurements and
+structured contracts remain unchanged; MSH-72 is next in the desktop sequence.

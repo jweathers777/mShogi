@@ -56,3 +56,4 @@ jobs:
           printf 'position startpos\nmove e2e4 e7e5\nshow\nundo 2\nstatus\nperft 3\ndivide 1\n' | cargo run --locked --bin mshogi -- --game chess shell
           cargo run --locked --bin mshogi -- --game shogi profile
           printf 'position startpos\nmove 7g7f 3c3d\nshow\nrecord print\nundo 2\nperft 2\n' | cargo run --locked --bin mshogi -- --game shogi shell
+          printf 'usi\nisready\nquit\n' | cargo run --locked --bin mshogi -- --game shogi usi

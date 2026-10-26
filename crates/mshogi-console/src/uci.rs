@@ -89,7 +89,9 @@ pub fn run() -> ExitCode {
 }
 // UCI permits CR and LF line endings. Treat CRLF as an empty extra line;
 // empty commands are ignored. Drain oversized lines without growing allocation.
-fn bounded_uci_line(input: &mut impl BufRead) -> io::Result<Option<Result<Vec<u8>, ()>>> {
+pub(super) fn bounded_uci_line(
+    input: &mut impl BufRead,
+) -> io::Result<Option<Result<Vec<u8>, ()>>> {
     let mut line = Vec::new();
     let mut oversized = false;
     let mut seen = false;

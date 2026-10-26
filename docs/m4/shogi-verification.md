@@ -54,3 +54,14 @@ The [Shogidokoro USI specification](https://shogidokoro2.stars.ne.jp/usi.html) g
 ## Closure conditions and remaining gaps
 
 Before MSH-41 closes: retain the selected SHOGI-P1 contract (CSA-36 explicitly covers no-check/no-legal-move loss; the unselected JSA alternative still has an authority gap there); instantiate the inventory as independently reviewed concrete positions/events with exact expected outputs; admit the pinned reference by actual bounded execution; implement and run applicable comparisons; run actual opponent sessions; verify archive/UI/console result preservation; obtain independent review. The inventory is a coverage promise, not those results. Record unavailable or failed work as such. Neither source audit nor chess-only checks close any shogi delivery obligation.
+
+
+## Executed MSH-71 update
+
+The candidate proposal above is preserved as planning/source evidence. MSH-71
+actually built and admitted its exact pin/material edition on macOS arm64, checked
+advertised settings, and ran paired native self-play/opponent experiments with
+complete protocol/native records and offline replay. See [USI contract and actual
+evidence](usi.md), including separate native-only and injected failure reports.
+This neither replaces MSH-64/66 legal conformance nor establishes strength or
+opponent execution on Windows/Linux. MSH-41–47/M4 remain open.

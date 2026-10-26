@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "profile": "mshogi.shogi.csa36.v1",
+  "id": "msh71-opponent",
+  "time_control": "untimed",
+  "process_policy": "fresh_per_turn",
+  "openings": [
+    {
+      "id": "standard",
+      "sfen": null,
+      "moves": []
+    },
+    {
+      "id": "independent-mating-drop",
+      "sfen": "3lkl3/3p1p3/4K4/9/9/9/9/9/9 b G 1",
+      "moves": []
+    },
+    {
+      "id": "independent-csa28-declaration",
+      "sfen": "K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B5P 1",
+      "moves": []
+    }
+  ],
+  "paired": true,
+  "work": [
+    {
+      "depth": 2,
+      "nodes": 5000,
+      "movetime_ms": null
+    },
+    {
+      "depth": 2,
+      "nodes": 5000,
+      "movetime_ms": null
+    }
+  ],
+  "max_actions": 8,
+  "max_game_ms": 60000,
+  "watchdogs": {
+    "handshake_ms": 5000,
+    "ready_ms": 5000,
+    "response_ms": 10000,
+    "write_ms": 2000,
+    "cleanup_ms": 1000
+  },
+  "io": {
+    "line_bytes": 4096,
+    "queued_lines": 32,
+    "transcript_bytes": 1048576,
+    "stderr_bytes": 4096,
+    "command_bytes": 4096
+  },
+  "engines": [
+    {
+      "path": "target/release/mshogi",
+      "args": [
+        "--game",
+        "shogi",
+        "usi"
+      ],
+      "options": [
+        {
+          "name": "RulesProfile",
+          "value": "mshogi.shogi.csa36.v1"
+        }
+      ],
+      "model_path": null,
+      "model_identity": "mshogi.shogi.material.v1 / full-width.v1",
+      "deterministic": true
+    },
+    {
+      "path": "/private/tmp/msh71-yaneuraou/source/YaneuraOu-by-gcc",
+      "args": [],
+      "options": [
+        {
+          "name": "Threads",
+          "value": "1"
+        },
+        {
+          "name": "USI_Hash",
+          "value": "64"
+        },
+        {
+          "name": "USI_Ponder",
+          "value": "false"
+        },
+        {
+          "name": "Stochastic_Ponder",
+          "value": "false"
+        },
+        {
+          "name": "MultiPV",
+          "value": "1"
+        },
+        {
+          "name": "BookFile",
+          "value": "no_book"
+        },
+        {
+          "name": "BookMoves",
+          "value": "0"
+        },
+        {
+          "name": "USI_OwnBook",
+          "value": "false"
+        },
+        {
+          "name": "GenerateAllLegalMoves",
+          "value": "true"
+        },
+        {
+          "name": "EnteringKingRule",
+          "value": "CSARule27"
+        },
+        {
+          "name": "MaxMovesToDraw",
+          "value": "0"
+        },
+        {
+          "name": "ResignValue",
+          "value": "99999"
+        },
+        {
+          "name": "DrawValueBlack",
+          "value": "0"
+        },
+        {
+          "name": "DrawValueWhite",
+          "value": "0"
+        }
+      ],
+      "model_path": null,
+      "model_identity": "YaneuraOu0f421391 MaterialLv1 APPLEM1",
+      "deterministic": false
+    }
+  ]
+}

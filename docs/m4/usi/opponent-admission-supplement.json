@@ -1,0 +1,309 @@
+{
+  "binary": "/private/tmp/msh71-yaneuraou/source/YaneuraOu-by-gcc",
+  "settings": {
+    "Threads": "1",
+    "USI_Hash": "64",
+    "USI_Ponder": "false",
+    "Stochastic_Ponder": "false",
+    "MultiPV": "1",
+    "BookFile": "no_book",
+    "BookMoves": "0",
+    "USI_OwnBook": "false",
+    "GenerateAllLegalMoves": "true",
+    "EnteringKingRule": "CSARule27",
+    "MaxMovesToDraw": "0",
+    "ResignValue": "99999",
+    "DrawValueBlack": "0",
+    "DrawValueWhite": "0"
+  },
+  "stop_probe": {
+    "input": "position startpos; go infinite; wait0.1s; stop",
+    "output": [
+      "info depth 1 seldepth 2 multipv 1 score cp 0 nodes 30 nps 30000 hashfull 0 time 1 pv 1g1f",
+      "info depth 2 seldepth 3 multipv 1 score cp 0 nodes 91 nps 91000 hashfull 0 time 1 pv 1g1f 2c2d",
+      "info depth 3 seldepth 4 multipv 1 score cp 0 nodes 128 nps 128000 hashfull 0 time 1 pv 1g1f 1c1d",
+      "info depth 4 seldepth 5 multipv 1 score cp 0 nodes 168 nps 168000 hashfull 0 time 1 pv 1g1f 1c1d 5i4h 2c2d",
+      "info depth 5 seldepth 7 multipv 1 score cp 0 nodes 258 nps 258000 hashfull 0 time 1 pv 1g1f 1c1d 5i4h 2c2d 2g2f",
+      "info depth 6 seldepth 8 multipv 1 score cp 2 nodes 549 nps 549000 hashfull 0 time 1 pv 1g1f 1c1d 5i4h 6c6d 6i5i",
+      "info depth 7 seldepth 8 multipv 1 score cp 0 nodes 1696 nps 1696000 hashfull 0 time 1 pv 1g1f 2c2d 5i4h 1a1b 2h3h",
+      "info depth 8 seldepth 9 multipv 1 score cp 0 nodes 1996 nps 1996000 hashfull 0 time 1 pv 1g1f 2c2d 5i4h 1a1b 2h3h 6c6d",
+      "info depth 9 seldepth 10 multipv 1 score cp 0 nodes 2467 nps 1233500 hashfull 0 time 2 pv 1g1f 2c2d 5i4h 1a1b 2h3h 6c6d 3i2h 5a5b 6i5i",
+      "info depth 10 seldepth 11 multipv 1 score cp 0 nodes 3711 nps 1855500 hashfull 0 time 2 pv 1g1f 2c2d 5i4h 4a4b 2h3h 1a1b 3h1h 6c6d",
+      "info depth 11 seldepth 12 multipv 1 score cp 0 nodes 6255 nps 1563750 hashfull 0 time 4 pv 1g1f 2c2d 5i4h 4a4b 2h3h 1a1b 5g5f 8b5b 7i7h 7a6b",
+      "info depth 12 seldepth 13 multipv 1 score cp 4 nodes 138318 nps 2384793 hashfull 11 time 58 pv 4i4h 5a5b 3g3f 1a1b",
+      "info depth 13 seldepth 14 multipv 1 score cp 62 nodes 188834 nps 2390303 hashfull 17 time 79 pv 4i4h 3a3b",
+      "info depth 14 seldepth 15 multipv 1 score cp 2 upperbound nodes 251005 nps 2390523 hashfull 20 time 105 pv 4i4h 2c2d",
+      "bestmove 4i4h ponder 2c2d"
+    ],
+    "meaning": "Actual protocol stop response; timing-dependent work is observational only."
+  },
+  "declaration_probe": {
+    "position": "sfen K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B5P 1",
+    "output": [
+      "info depth 0 multipv 1 score mate 1 nodes 0 nps 0 hashfull 0 time 1 pv win",
+      "bestmove win"
+    ],
+    "meaning": "Externally observed USI win response. Expected declaration derives from existing independent native fixture; host remains authority."
+  },
+  "events": [
+    {
+      "in": "usi"
+    },
+    {
+      "stdout": "id name YaneuraOu MaterialLv1 9.80git 64APPLEM1"
+    },
+    {
+      "stdout": "id author yaneurao"
+    },
+    {
+      "stdout": "option name Threads type spin default 4 min 1 max 1024"
+    },
+    {
+      "stdout": "option name NumaPolicy type string default auto"
+    },
+    {
+      "stdout": "option name USI_Ponder type check default false"
+    },
+    {
+      "stdout": "option name Stochastic_Ponder type check default false"
+    },
+    {
+      "stdout": "option name DepthLimit type spin default 0 min 0 max 2147483647"
+    },
+    {
+      "stdout": "option name NodesLimit type spin default 0 min 0 max 9223372036854775807"
+    },
+    {
+      "stdout": "option name DebugLogFile type string default <empty>"
+    },
+    {
+      "stdout": "option name USI_Hash type spin default 1024 min 1 max 33554432"
+    },
+    {
+      "stdout": "option name MultiPV type spin default 1 min 1 max 600"
+    },
+    {
+      "stdout": "option name DrawValueBlack type spin default -2 min -30000 max 30000"
+    },
+    {
+      "stdout": "option name DrawValueWhite type spin default -2 min -30000 max 30000"
+    },
+    {
+      "stdout": "option name ResignValue type spin default 99999 min 0 max 99999"
+    },
+    {
+      "stdout": "option name MaxMovesToDraw type spin default 0 min 0 max 100000"
+    },
+    {
+      "stdout": "option name PvInterval type spin default 300 min 0 max 100000000"
+    },
+    {
+      "stdout": "option name ConsiderationMode type check default false"
+    },
+    {
+      "stdout": "option name OutputFailLHPV type check default true"
+    },
+    {
+      "stdout": "option name GenerateAllLegalMoves type check default false"
+    },
+    {
+      "stdout": "option name EnteringKingRule type combo default CSARule27 var NoEnteringKing var CSARule24 var CSARule24H var CSARule27 var CSARule27H var TryRule"
+    },
+    {
+      "stdout": "option name NetworkDelay type spin default 120 min 0 max 10000"
+    },
+    {
+      "stdout": "option name NetworkDelay2 type spin default 1120 min 0 max 10000"
+    },
+    {
+      "stdout": "option name MinimumThinkingTime type spin default 2000 min 1 max 100000"
+    },
+    {
+      "stdout": "option name SlowMover type spin default 100 min 1 max 1000"
+    },
+    {
+      "stdout": "option name RoundUpToFullSecond type check default true"
+    },
+    {
+      "stdout": "option name USI_OwnBook type check default true"
+    },
+    {
+      "stdout": "option name NarrowBook type check default false"
+    },
+    {
+      "stdout": "option name BookMoves type spin default 16 min 0 max 10000"
+    },
+    {
+      "stdout": "option name BookIgnoreRate type spin default 0 min 0 max 100"
+    },
+    {
+      "stdout": "option name BookFile type combo default standard_book.db var no_book var standard_book.db var yaneura_book1.db var yaneura_book2.db var yaneura_book3.db var yaneura_book4.db var user_book1.db var user_book2.db var user_book3.db var book.bin"
+    },
+    {
+      "stdout": "option name BookDir type string default book"
+    },
+    {
+      "stdout": "option name BookEvalDiff type spin default 30 min 0 max 99999"
+    },
+    {
+      "stdout": "option name BookEvalBlackLimit type spin default 0 min -99999 max 99999"
+    },
+    {
+      "stdout": "option name BookEvalWhiteLimit type spin default -140 min -99999 max 99999"
+    },
+    {
+      "stdout": "option name BookDepthLimit type spin default 16 min 0 max 99999"
+    },
+    {
+      "stdout": "option name BookOnTheFly type check default false"
+    },
+    {
+      "stdout": "option name ConsiderBookMoveCount type check default false"
+    },
+    {
+      "stdout": "option name BookPvMoves type spin default 8 min 1 max 246"
+    },
+    {
+      "stdout": "option name IgnoreBookPly type check default false"
+    },
+    {
+      "stdout": "option name FlippedBook type check default true"
+    },
+    {
+      "stdout": "usiok"
+    },
+    {
+      "in": "setoption name Threads value 1"
+    },
+    {
+      "in": "setoption name USI_Hash value 64"
+    },
+    {
+      "in": "setoption name USI_Ponder value false"
+    },
+    {
+      "in": "setoption name Stochastic_Ponder value false"
+    },
+    {
+      "in": "setoption name MultiPV value 1"
+    },
+    {
+      "in": "setoption name BookFile value no_book"
+    },
+    {
+      "in": "setoption name BookMoves value 0"
+    },
+    {
+      "in": "setoption name USI_OwnBook value false"
+    },
+    {
+      "in": "setoption name GenerateAllLegalMoves value true"
+    },
+    {
+      "in": "setoption name EnteringKingRule value CSARule27"
+    },
+    {
+      "in": "setoption name MaxMovesToDraw value 0"
+    },
+    {
+      "in": "setoption name ResignValue value 99999"
+    },
+    {
+      "in": "setoption name DrawValueBlack value 0"
+    },
+    {
+      "in": "setoption name DrawValueWhite value 0"
+    },
+    {
+      "in": "isready"
+    },
+    {
+      "stdout": "info string Using 1 thread"
+    },
+    {
+      "stdout": "info string USI_Hash : Start clearing with 1 threads , size =  64[MB]"
+    },
+    {
+      "stdout": "info string USI_Hash : Finish clearing."
+    },
+    {
+      "stdout": "readyok"
+    },
+    {
+      "in": "usinewgame"
+    },
+    {
+      "in": "position startpos"
+    },
+    {
+      "in": "go infinite"
+    },
+    {
+      "in": "stop"
+    },
+    {
+      "stdout": "info depth 1 seldepth 2 multipv 1 score cp 0 nodes 30 nps 30000 hashfull 0 time 1 pv 1g1f"
+    },
+    {
+      "stdout": "info depth 2 seldepth 3 multipv 1 score cp 0 nodes 91 nps 91000 hashfull 0 time 1 pv 1g1f 2c2d"
+    },
+    {
+      "stdout": "info depth 3 seldepth 4 multipv 1 score cp 0 nodes 128 nps 128000 hashfull 0 time 1 pv 1g1f 1c1d"
+    },
+    {
+      "stdout": "info depth 4 seldepth 5 multipv 1 score cp 0 nodes 168 nps 168000 hashfull 0 time 1 pv 1g1f 1c1d 5i4h 2c2d"
+    },
+    {
+      "stdout": "info depth 5 seldepth 7 multipv 1 score cp 0 nodes 258 nps 258000 hashfull 0 time 1 pv 1g1f 1c1d 5i4h 2c2d 2g2f"
+    },
+    {
+      "stdout": "info depth 6 seldepth 8 multipv 1 score cp 2 nodes 549 nps 549000 hashfull 0 time 1 pv 1g1f 1c1d 5i4h 6c6d 6i5i"
+    },
+    {
+      "stdout": "info depth 7 seldepth 8 multipv 1 score cp 0 nodes 1696 nps 1696000 hashfull 0 time 1 pv 1g1f 2c2d 5i4h 1a1b 2h3h"
+    },
+    {
+      "stdout": "info depth 8 seldepth 9 multipv 1 score cp 0 nodes 1996 nps 1996000 hashfull 0 time 1 pv 1g1f 2c2d 5i4h 1a1b 2h3h 6c6d"
+    },
+    {
+      "stdout": "info depth 9 seldepth 10 multipv 1 score cp 0 nodes 2467 nps 1233500 hashfull 0 time 2 pv 1g1f 2c2d 5i4h 1a1b 2h3h 6c6d 3i2h 5a5b 6i5i"
+    },
+    {
+      "stdout": "info depth 10 seldepth 11 multipv 1 score cp 0 nodes 3711 nps 1855500 hashfull 0 time 2 pv 1g1f 2c2d 5i4h 4a4b 2h3h 1a1b 3h1h 6c6d"
+    },
+    {
+      "stdout": "info depth 11 seldepth 12 multipv 1 score cp 0 nodes 6255 nps 1563750 hashfull 0 time 4 pv 1g1f 2c2d 5i4h 4a4b 2h3h 1a1b 5g5f 8b5b 7i7h 7a6b"
+    },
+    {
+      "stdout": "info depth 12 seldepth 13 multipv 1 score cp 4 nodes 138318 nps 2384793 hashfull 11 time 58 pv 4i4h 5a5b 3g3f 1a1b"
+    },
+    {
+      "stdout": "info depth 13 seldepth 14 multipv 1 score cp 62 nodes 188834 nps 2390303 hashfull 17 time 79 pv 4i4h 3a3b"
+    },
+    {
+      "stdout": "info depth 14 seldepth 15 multipv 1 score cp 2 upperbound nodes 251005 nps 2390523 hashfull 20 time 105 pv 4i4h 2c2d"
+    },
+    {
+      "stdout": "bestmove 4i4h ponder 2c2d"
+    },
+    {
+      "in": "usinewgame"
+    },
+    {
+      "in": "position sfen K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B5P 1"
+    },
+    {
+      "in": "go depth 2 nodes 5000"
+    },
+    {
+      "stdout": "info depth 0 multipv 1 score mate 1 nodes 0 nps 0 hashfull 0 time 1 pv win"
+    },
+    {
+      "stdout": "bestmove win"
+    },
+    {
+      "in": "quit"
+    }
+  ],
+  "exit_code": 0
+}

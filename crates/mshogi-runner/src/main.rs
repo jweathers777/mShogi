@@ -21,6 +21,26 @@ fn execute() -> Result<(), String> {
         })
         .collect::<Result<_, _>>()?;
     match args.as_slice() {
+        [_, command, config, output] if command == "shogi-run" => {
+            let config = mshogi_runner::shogi::Config::from_json(&read(config, 1_048_576)?)
+                .map_err(|e| e.to_string())?;
+            let report = mshogi_runner::shogi::run(&config).map_err(|e| e.to_string())?;
+            let encoded = report.to_json().map_err(|e| e.to_string())?;
+            use std::io::Write;
+            let mut file = fs::OpenOptions::new().write(true).create_new(true)
+                .open(output).map_err(|e| e.to_string())?;
+            file.write_all(encoded.as_bytes()).map_err(|e| e.to_string())?;
+            for (i, game) in report.games.iter().enumerate() {
+                println!("game {i}: {:?} native {:?} score {:?}", game.stop, game.conclusion, game.score);
+            }
+            Ok(())
+        }
+        [_, command, input] if command == "shogi-replay" => {
+            let report = mshogi_runner::shogi::Report::from_json(&read(input, 67_108_864)?)
+                .map_err(|e| e.to_string())?;
+            println!("replayed {} shogi game(s)", report.replay().map_err(|e| e.to_string())?.len());
+            Ok(())
+        }
         [_, command, config, output] if command == "run" => {
             let config = ExperimentConfig::from_json(&read(config, 1_048_576)?)
                 .map_err(|e| e.to_string())?;
@@ -51,7 +71,7 @@ fn execute() -> Result<(), String> {
             Ok(())
         }
         _ => Err(
-            "usage: mshogi-match run CONFIG.json REPORT.json | mshogi-match replay REPORT.json"
+            "usage: mshogi-match run CONFIG.json REPORT.json | mshogi-match replay REPORT.json | mshogi-match shogi-run CONFIG.json REPORT.json | mshogi-match shogi-replay REPORT.json"
                 .into(),
         ),
     }

@@ -1,0 +1,475 @@
+{
+  "source_url": "https://github.com/yaneurao/YaneuraOu.git",
+  "source_pin": "0f421391ae311df9df57dcfcb2b4a78a1972bdf8",
+  "tree": "0844b429c4fb89e0c4f9160aa65447dcc17bcd58",
+  "binary": "/private/tmp/msh71-yaneuraou/source/YaneuraOu-by-gcc",
+  "binary_sha256": "74eded93711841dbdef41c0d38c8b85de9af77b9925274269c7b42a6d3987f86",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin27.0.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n",
+  "build_command": "make -j4 YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1 TARGET_CPU=APPLEM1 COMPILER=clang++",
+  "build_log": "/private/tmp/msh71-yaneuraou-build.log",
+  "license": "GPL-3.0 (upstream LICENSE); developer-only external opponent, not bundled",
+  "handshake": [
+    "id name YaneuraOu MaterialLv1 9.80git 64APPLEM1",
+    "id author yaneurao",
+    "option name Threads type spin default 4 min 1 max 1024",
+    "option name NumaPolicy type string default auto",
+    "option name USI_Ponder type check default false",
+    "option name Stochastic_Ponder type check default false",
+    "option name DepthLimit type spin default 0 min 0 max 2147483647",
+    "option name NodesLimit type spin default 0 min 0 max 9223372036854775807",
+    "option name DebugLogFile type string default <empty>",
+    "option name USI_Hash type spin default 1024 min 1 max 33554432",
+    "option name MultiPV type spin default 1 min 1 max 600",
+    "option name DrawValueBlack type spin default -2 min -30000 max 30000",
+    "option name DrawValueWhite type spin default -2 min -30000 max 30000",
+    "option name ResignValue type spin default 99999 min 0 max 99999",
+    "option name MaxMovesToDraw type spin default 0 min 0 max 100000",
+    "option name PvInterval type spin default 300 min 0 max 100000000",
+    "option name ConsiderationMode type check default false",
+    "option name OutputFailLHPV type check default true",
+    "option name GenerateAllLegalMoves type check default false",
+    "option name EnteringKingRule type combo default CSARule27 var NoEnteringKing var CSARule24 var CSARule24H var CSARule27 var CSARule27H var TryRule",
+    "option name NetworkDelay type spin default 120 min 0 max 10000",
+    "option name NetworkDelay2 type spin default 1120 min 0 max 10000",
+    "option name MinimumThinkingTime type spin default 2000 min 1 max 100000",
+    "option name SlowMover type spin default 100 min 1 max 1000",
+    "option name RoundUpToFullSecond type check default true",
+    "option name USI_OwnBook type check default true",
+    "option name NarrowBook type check default false",
+    "option name BookMoves type spin default 16 min 0 max 10000",
+    "option name BookIgnoreRate type spin default 0 min 0 max 100",
+    "option name BookFile type combo default standard_book.db var no_book var standard_book.db var yaneura_book1.db var yaneura_book2.db var yaneura_book3.db var yaneura_book4.db var user_book1.db var user_book2.db var user_book3.db var book.bin",
+    "option name BookDir type string default book",
+    "option name BookEvalDiff type spin default 30 min 0 max 99999",
+    "option name BookEvalBlackLimit type spin default 0 min -99999 max 99999",
+    "option name BookEvalWhiteLimit type spin default -140 min -99999 max 99999",
+    "option name BookDepthLimit type spin default 16 min 0 max 99999",
+    "option name BookOnTheFly type check default false",
+    "option name ConsiderBookMoveCount type check default false",
+    "option name BookPvMoves type spin default 8 min 1 max 246",
+    "option name IgnoreBookPly type check default false",
+    "option name FlippedBook type check default true",
+    "usiok"
+  ],
+  "settings": {
+    "Threads": "1",
+    "USI_Hash": "64",
+    "USI_Ponder": "false",
+    "Stochastic_Ponder": "false",
+    "MultiPV": "1",
+    "BookFile": "no_book",
+    "BookMoves": "0",
+    "GenerateAllLegalMoves": "true",
+    "EnteringKingRule": "CSARule27",
+    "MaxMovesToDraw": "0",
+    "ResignValue": "99999"
+  },
+  "missing_settings": {},
+  "searches": [
+    {
+      "position": "startpos",
+      "output": [
+        "info depth 2 seldepth 3 multipv 1 score cp 0 nodes 91 nps 91000 hashfull 0 time 1 pv 1g1f 2c2d",
+        "bestmove 1g1f ponder 2c2d"
+      ]
+    },
+    {
+      "position": "startpos moves 7g7f 3c3d",
+      "output": [
+        "info depth 2 seldepth 4 multipv 1 score cp 0 nodes 187 nps 187000 hashfull 0 time 1 pv 1g1f 2b8h+",
+        "bestmove 1g1f ponder 2b8h+"
+      ]
+    },
+    {
+      "position": "sfen 8k/9/9/4p4/4R4/9/9/9/K8 b - 1",
+      "output": [
+        "info depth 2 seldepth 3 multipv 1 score cp 1200 nodes 38 nps 38000 hashfull 0 time 1 pv 5e5d 1a1b",
+        "bestmove 5e5d ponder 1a1b"
+      ]
+    }
+  ],
+  "exit_code": 0,
+  "events": [
+    {
+      "direction": "in",
+      "line": "usi"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "id name YaneuraOu MaterialLv1 9.80git 64APPLEM1"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "id author yaneurao"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name Threads type spin default 4 min 1 max 1024"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name NumaPolicy type string default auto"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name USI_Ponder type check default false"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name Stochastic_Ponder type check default false"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name DepthLimit type spin default 0 min 0 max 2147483647"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name NodesLimit type spin default 0 min 0 max 9223372036854775807"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name DebugLogFile type string default <empty>"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name USI_Hash type spin default 1024 min 1 max 33554432"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name MultiPV type spin default 1 min 1 max 600"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name DrawValueBlack type spin default -2 min -30000 max 30000"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name DrawValueWhite type spin default -2 min -30000 max 30000"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name ResignValue type spin default 99999 min 0 max 99999"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name MaxMovesToDraw type spin default 0 min 0 max 100000"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name PvInterval type spin default 300 min 0 max 100000000"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name ConsiderationMode type check default false"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name OutputFailLHPV type check default true"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name GenerateAllLegalMoves type check default false"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name EnteringKingRule type combo default CSARule27 var NoEnteringKing var CSARule24 var CSARule24H var CSARule27 var CSARule27H var TryRule"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name NetworkDelay type spin default 120 min 0 max 10000"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name NetworkDelay2 type spin default 1120 min 0 max 10000"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name MinimumThinkingTime type spin default 2000 min 1 max 100000"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name SlowMover type spin default 100 min 1 max 1000"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name RoundUpToFullSecond type check default true"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name USI_OwnBook type check default true"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name NarrowBook type check default false"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name BookMoves type spin default 16 min 0 max 10000"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name BookIgnoreRate type spin default 0 min 0 max 100"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name BookFile type combo default standard_book.db var no_book var standard_book.db var yaneura_book1.db var yaneura_book2.db var yaneura_book3.db var yaneura_book4.db var user_book1.db var user_book2.db var user_book3.db var book.bin"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name BookDir type string default book"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name BookEvalDiff type spin default 30 min 0 max 99999"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name BookEvalBlackLimit type spin default 0 min -99999 max 99999"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name BookEvalWhiteLimit type spin default -140 min -99999 max 99999"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name BookDepthLimit type spin default 16 min 0 max 99999"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name BookOnTheFly type check default false"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name ConsiderBookMoveCount type check default false"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name BookPvMoves type spin default 8 min 1 max 246"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name IgnoreBookPly type check default false"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "option name FlippedBook type check default true"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "usiok"
+    },
+    {
+      "direction": "in",
+      "line": "setoption name Threads value 1"
+    },
+    {
+      "direction": "in",
+      "line": "setoption name USI_Hash value 64"
+    },
+    {
+      "direction": "in",
+      "line": "setoption name USI_Ponder value false"
+    },
+    {
+      "direction": "in",
+      "line": "setoption name Stochastic_Ponder value false"
+    },
+    {
+      "direction": "in",
+      "line": "setoption name MultiPV value 1"
+    },
+    {
+      "direction": "in",
+      "line": "setoption name BookFile value no_book"
+    },
+    {
+      "direction": "in",
+      "line": "setoption name BookMoves value 0"
+    },
+    {
+      "direction": "in",
+      "line": "setoption name GenerateAllLegalMoves value true"
+    },
+    {
+      "direction": "in",
+      "line": "setoption name EnteringKingRule value CSARule27"
+    },
+    {
+      "direction": "in",
+      "line": "setoption name MaxMovesToDraw value 0"
+    },
+    {
+      "direction": "in",
+      "line": "setoption name ResignValue value 99999"
+    },
+    {
+      "direction": "in",
+      "line": "isready"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "info string Using 1 thread"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "info string USI_Hash : Start clearing with 1 threads , size =  64[MB]"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "info string USI_Hash : Finish clearing."
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "readyok"
+    },
+    {
+      "direction": "in",
+      "line": "usinewgame"
+    },
+    {
+      "direction": "in",
+      "line": "position startpos"
+    },
+    {
+      "direction": "in",
+      "line": "go depth 2 nodes 5000"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "info depth 2 seldepth 3 multipv 1 score cp 0 nodes 91 nps 91000 hashfull 0 time 1 pv 1g1f 2c2d"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "bestmove 1g1f ponder 2c2d"
+    },
+    {
+      "direction": "in",
+      "line": "usinewgame"
+    },
+    {
+      "direction": "in",
+      "line": "position startpos moves 7g7f 3c3d"
+    },
+    {
+      "direction": "in",
+      "line": "go depth 2 nodes 5000"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "info depth 2 seldepth 4 multipv 1 score cp 0 nodes 187 nps 187000 hashfull 0 time 1 pv 1g1f 2b8h+"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "bestmove 1g1f ponder 2b8h+"
+    },
+    {
+      "direction": "in",
+      "line": "usinewgame"
+    },
+    {
+      "direction": "in",
+      "line": "position sfen 8k/9/9/4p4/4R4/9/9/9/K8 b - 1"
+    },
+    {
+      "direction": "in",
+      "line": "go depth 2 nodes 5000"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "info depth 2 seldepth 3 multipv 1 score cp 1200 nodes 38 nps 38000 hashfull 0 time 1 pv 5e5d 1a1b"
+    },
+    {
+      "direction": "out",
+      "stream": "stdout",
+      "line": "bestmove 5e5d ponder 1a1b"
+    },
+    {
+      "direction": "in",
+      "line": "gameover draw"
+    },
+    {
+      "direction": "in",
+      "line": "quit"
+    }
+  ],
+  "failed_attempts": [
+    {
+      "operation": "initial git fetch upstream pin under sandbox",
+      "outcome": "DNS resolution denied; exact fetch succeeded with authorized network escalation; build itself succeeded first attempt"
+    }
+  ],
+  "os_version": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0.1\nBuildVersion:\t\t26A434\n",
+  "uname": "Darwin macbookpro.home 27.0.0 Darwin Kernel Version 27.0.0: Tue Aug 11 21:22:49 PDT 2026; root:xnu-13432.1.9~1/RELEASE_ARM64_T6000 arm64",
+  "license_sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+  "source_modifications": "None. git status --short reports only generated source/YaneuraOu-by-gcc; objects are ignored. Exact upstream pin fetched successfully after initial sandbox DNS failure.",
+  "build_attempts": [
+    {
+      "command": "make -j4 YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1 TARGET_CPU=APPLEM1 COMPILER=clang++",
+      "result": "exit0 first build attempt; linker warns -s is obsolete",
+      "log_sha256": "253bd90137f422e94209180aeb0b9f3968458f76c81d80b7900771dede7224ab"
+    }
+  ],
+  "compile_flags": "-std=c++17 -fno-exceptions -fno-rtti -Wextra -MMD -MP -fpermissive -O3 -ffast-math -DNDEBUG -Wno-unused-parameter -D_LINUX -DUNICODE -DNO_EXCEPTIONS -DMATERIAL_LEVEL=1 -DTARGET_CPU=APPLEM1 -DIS_64BIT -DUSE_NEON -target arm64-apple-macos11 -DYANEURAOU_ENGINE_MATERIAL",
+  "link_flags": "-Wl,-s -lpthread -v; native Apple ld64, no LTO for plain make target",
+  "evidence_scope": "Independent external opponent build and USI admission only; no rules oracle, strength estimate, or independent-lineage conformance claim. Three search probes are not matches and carry no adjudicated game score. gameover draw in admission transcript tests protocol notification only, not an asserted chess/shogi outcome.",
+  "experiment_recommendations": [
+    "Use the exact admitted binary SHA and settings; both node and depth work limits and a separate wall watchdog. Record engine settings, traffic, starts, history, and host-native admissions/conclusions.",
+    "Use fresh processes or usinewgame at game starts; do not claim identical elapsed times. Timed runs are observational, not rerun-deterministic.",
+    "Set USI_OwnBook=false as additionally advertised defense in depth, alongside BookFile=no_book and BookMoves=0; this option was not set in these initial admission probes.",
+    "DrawValueBlack/DrawValueWhite default -2 are native engine preference scores, not authoritative match outcomes. If zeroing for deterministic experiments, record options explicitly after verifying advertised values.",
+    "MaxMovesToDraw=0 uses an upstream 100000 sentinel, not genuine infinity. Keep experiments below sentinel; mShogi host owns selected CSA36 cap and conclusions.",
+    "USI_Ponder=false does not suppress bestmove ponder suffix; it forbids host launching pondering. Parse or preserve suffix without treating it as a played action.",
+    "GenerateAllLegalMoves=true affects search choices, not admission as a LegalAll rules oracle. Material engine cp differs from mShogi score units/weights; preserve native semantics."
+  ]
+}

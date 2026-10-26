@@ -3,6 +3,8 @@ mod config;
 mod process;
 mod report;
 mod run;
+/// Native shogi USI experiments, separate from chess clocks and outcomes.
+pub mod shogi;
 pub use config::*;
 pub use report::*;
 pub use run::run_experiment;

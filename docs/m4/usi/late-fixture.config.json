@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "profile": "mshogi.shogi.csa36.v1",
+  "id": "msh71-instrumented-late-reply",
+  "time_control": "untimed",
+  "process_policy": "fresh_per_turn",
+  "openings": [
+    {
+      "id": "standard",
+      "sfen": null,
+      "moves": []
+    }
+  ],
+  "paired": true,
+  "work": [
+    {
+      "depth": 2,
+      "nodes": 5000,
+      "movetime_ms": null
+    },
+    {
+      "depth": 2,
+      "nodes": 5000,
+      "movetime_ms": null
+    }
+  ],
+  "max_actions": 1,
+  "max_game_ms": 60000,
+  "watchdogs": {
+    "handshake_ms": 5000,
+    "ready_ms": 5000,
+    "response_ms": 20,
+    "write_ms": 2000,
+    "cleanup_ms": 300
+  },
+  "io": {
+    "line_bytes": 4096,
+    "queued_lines": 32,
+    "transcript_bytes": 1048576,
+    "stderr_bytes": 4096,
+    "command_bytes": 4096
+  },
+  "engines": [
+    {
+      "path": "target/debug/mshogi-usi-fixture",
+      "args": [
+        "late"
+      ],
+      "options": [],
+      "model_path": null,
+      "model_identity": "separate USI verification fixture",
+      "deterministic": false
+    },
+    {
+      "path": "target/debug/mshogi-usi-fixture",
+      "args": [
+        "late"
+      ],
+      "options": [],
+      "model_path": null,
+      "model_identity": "separate USI verification fixture",
+      "deterministic": false
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+# Selected shogi contract: clause and fixture coverage
+
+Current profile: **`mshogi.shogi.csa36.v1`**, option A, owner decision SHOGI-P1
+2026-10-26 against `6db8500e92129b95e502e7b4d5c4a26072e38652`.
+[The profile](shogi-profile.md) fixes editions and precedence. This ledger separates
+accepted contract, concrete independently expected cases, reference observations
+and implemented evidence. Historical MSH-62 reviews are retained unchanged.
+A listed fixture is an obligation, not an assertion that it has executed.
+
+| Selected clause / source | Stable fixture scope | Implementation owner / evidence boundary |
+| --- | --- | --- |
+| Setup, side-relative geometry, blockers, promoted movement; JSA-R2–6/B1–3 | SH-F001–004 | MSH-64 expected board corpus; MSH-65 state; MSH-66 complete legality |
+| Optional/compulsory promotion, camp entry/exit, capture demotion; JSA-R5/10(1)(ii), B2/3/N | SH-F005–010,022–024 | MSH-64–66, both sides and evasions; LegalAll required |
+| Hands, drops, nifu, dead ranks, pawn-drop mate and legal defenses; JSA-B2/B4/B5 | SH-F011–017 | MSH-64–66; existing-pawn mate and other-piece drop mate are allowed |
+| King safety, pins, checker capture/interposition, no king capture; JSA-B3–5 | SH-F018–022,031/032 board-only | MSH-64–66; geometric influence is distinct from whether an attacker can legally move |
+| Complete position equality and exact undo; APP and JSA-R8(1) | SH-F023/024/026/027 position-only | MSH-65/66: board, owners, promotion, hands, turn; counter/provenance retained but excluded from repetition identity |
+| Four occurrences, checking interval first through fourth, checker's loss before draw; CSA27(2), JSA-R8/10(10) | SH-F025–030 | MSH-67 history and independently reviewed event ledger; not inferred from reference is_draw |
+| No legal action loses with/without check; CSA27(1)(i) | SH-F031–033 | MSH-66 supplies exact empty board-choice set only; MSH-67 assigns reason/result |
+| Advisory entry eligibility vs explicit declaration; camp, ten other pieces, point thresholds28/27, no check, own turn, time; CSA25 | SH-F034–037 | MSH-67 native untimed declarations. Invalid admitted formal declaration loses; malformed/stale request rejected before admission |
+| JSA24/31 declaration/agreement/replay | SH-F038 and alternative portions035/042 | **Unselected alternative**, no selected-profile implementation obligation |
+| Resignation, digital request rejection, external committed foul vs failure; JSA-R6, CSA25–28, APP | SH-F039/040 | MSH-67 untimed resignation/request semantics; MSH-71 named runner policy; timed/retrospective officiating outside initial mode |
+| 320 completed plies; loss/repetition precede length; positive SFEN n means n−1 declared completed plies; CSA27(3)+approved APP | SH-F041/043/044 | MSH-65 preserves strict supplied counter/provenance. MSH-67 classifies imported roots n≥321, boundary n320, defaulted adapters and canonical reconstruction |
+| Final draw and distinct 0.5-per-side score, no replay; CSA22/27 | SH-F042 | MSH-67 result/score metadata; MSH-71 export/runner |
+| Strict SFEN/USI board-action primitives, no invented history | SH-F043–045 | MSH-65; protocol commands resign/win are not board actions |
+| Full canonical game/command provenance, records, restoration | SH-F046–048 | MSH-67/68/69/73; MSH-61 complete-save-path guarantee preserved |
+| Presentation, complete choices, capacity, protocol/search, actual application | SH-F049–055 | MSH-68–75; full MSH-41 and MSH-46 delivery remain open |
+
+## Interpretation boundaries and named gates
+
+**BOARD-PIN (MSH-64/66, SH-F016/020/021):** attacks used for king safety are
+geometric with occupancy: an attacked king cannot be left capturable even when
+the attacking piece is pinned to its own king. Test the pinned defender contrast
+and king-origin x-ray on independently reviewed diagrams. A defender's proposed
+capture in a pawn-drop-mate test must itself preserve its king. This is an
+operational formalization of JSA-B4/B5's threatened-capture/self-check rules,
+not permission to use an engine helper as authority.
+
+**HIST-INTERVAL (MSH-67, SH-F028–030):** before accepting history adjudication,
+instantiate and independently review checked/check-relieved fourth occurrences,
+interrupted checking and overlapping candidate repeat windows. The contract is
+all own moves between first/fourth occurrences, not a first prior hash hit. If a
+mutual continuous-check cycle is structurally possible, establish the exact
+interval/precedence from CSA27(2)/JSA-R10(10) with a concrete legal history before
+assigning that case a result. Otherwise retain a reasoned impossibility proof.
+This gates affected MSH-67 history cases only, not local board enumeration.
+
+**DECL-BOUNDARY (MSH-67, SH-F034–037):** material-valid threshold diagrams and
+one-negated-condition cases must distinguish eligibility from formal commitment.
+Untimed live time eligibility is approved; no unnamed timed policy is implemented.
+
+**IMPORT-LENGTH (MSH-67, SH-F041):** review n320/n321/+ and no-action/repetition
+precedence with explicit known-history origin. Sparse diagrams are structurally
+admissible analysis inputs; material inventory and two kings do not prove reachability.
+Missing earlier play is never inferred from the declared number.
+
+These are named fixture/research gates already owned by existing tasks, not a
+new owner-decision request. Source editions, the rejected event alternatives and
+original planning constructions remain traceable in the profile/inventory and Git.

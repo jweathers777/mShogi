@@ -228,9 +228,11 @@ are prerequisites for concrete shogi consumers without depending on completed
 MSH-41 or MSH-46. Later real-game extensions and final all-game/platform review
 retain the full shared integration and M4 closure obligations.
 
-The named standard-shogi proposal `mshogi.shogi.csa36.v1` is **not approved**.
-SHOGI-P1/MSH-63 selects its coherent CSA software-event convention or a separately
-named alternative; affected history/outcome work MSH-67 waits for that decision.
+The owner selected option A **SHOGI-P1**, `mshogi.shogi.csa36.v1`, on
+2026-10-26 against integration `6db8500e92129b95e502e7b4d5c4a26072e38652`.
+Its coherent CSA software-event convention and explicit untimed/import/request
+adaptations are accepted; other event conventions remain unselected alternatives.
+MSH-67 still requires full legality and its own history/outcome fixtures.
 Independent board fixtures/state/legality can proceed without settling every
 later game's profile. Existing chess documents, exact history, cancellation and
 MSH-61 lossless capacity admission remain compatibility requirements. Current
@@ -284,7 +286,7 @@ When code reveals a design problem, report the specific conflict and a proposed 
 | D-11 | Accepted | John 2026-10-24: optional core claims with recorded unattended auto-claim policy, FEN-limited known history, sound incomplete M2 dead recognition with MSH-26 M4 completion, explicit unscored mating uncertainty, untimed/increment clocks and ordered replayable match events. Evaluation adjudication stays disabled. UCI plus an independent-engine match and focused MSH-25 integration closure are required in M2. See [match v1](rules/chess-match-v1.md). |
 | D-10 | Deferred | Release licensing, redistribution choices, minimum OS policy, and signing/update arrangements. Preserve existing notices; resolve applicable choices before copying restricted dependencies or distributing releases. |
 | D-12 | Accepted | John 2026-10-26: bounded M4 planning only, standard shogi first; provisional later order xiangqi, tori, chu, tenjiku with independent source research possible. Preserve complete MSH-41–47 obligations and closed M2/M3; stop for concrete profile discussion before affected implementation. |
-| D-13 | Proposal, pending SHOGI-P1 | MSH-62 recommends the sourced `mshogi.shogi.csa36.v1` software bundle; JSA professional and other event conventions are distinct alternatives. MSH-63 records the actual owner choice; this register does not approve it. See [profile proposal](m4/shogi-profile.md). |
+| D-13 | Accepted, SHOGI-P1, 2026-10-26 | John explicitly approved option A `mshogi.shogi.csa36.v1` against integration `6db8500e92129b95e502e7b4d5c4a26072e38652`, including untimed local play, advisory/committed declarations, atomic rejection and declared-counter/bounded-history adaptations. JSA professional and other event conventions remain separate unselected alternatives. See [selected profile](m4/shogi-profile.md) and [coverage](m4/shogi-coverage.md); approval is not delivery evidence. |
 
 Accepted records reflect actual owner direction. Working defaults are implementation proposals consistent with it, not fabricated owner decisions. Deferred questions only block work that depends on their resolution. A routine choice within accepted requirements does not need a new approval ceremony.
 

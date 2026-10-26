@@ -140,8 +140,15 @@ class Webview:
                         {"type": "keyDown", "value": "\ue003"},
                         {"type": "keyUp", "value": "\ue003"}]}]})
         self.command("POST", f"/element/{element}/value", {"text": str(value)})
-        observed = self.read(f"document.querySelector({json.dumps(selector)})?.value")
-        assert observed == str(value), (selector, value, observed)
+        observed = self.read(f"""(() => {{ const e=document.querySelector({json.dumps(selector)});
+            return e ? {{type:e.type,text:e.value,number:e.type==='number'?e.valueAsNumber:null}} : null;
+        }})()""")
+        # HTML number controls may retain a leading zero during real typing
+        # after React renders Number('') as zero. Assert their actual submitted
+        # numeric meaning rather than treating '04' as a different depth.
+        assert observed is not None and (
+            observed["number"] == float(value) if observed["type"] == "number"
+            else observed["text"] == str(value)), (selector, value, observed)
 
     def key(self, key):
         self.command("POST", "/actions", {"actions": [{"type": "key", "id": "keyboard",

@@ -12,6 +12,20 @@ function app(snapshot = standard, error = "") {
   const props = { snapshot, session, onNewGame: vi.fn(), onOpen: vi.fn(), blocked: false };
   return { ...render(<ShogiApp {...props} />), props, session };
 }
+it("allows clearing and typing numeric work limits without inserting a leading zero", () => {
+  const { session } = app();
+  const depth = screen.getByRole("spinbutton", { name: "Depth" }) as HTMLInputElement;
+  const nodes = screen.getByRole("spinbutton", { name: "Node limit" }) as HTMLInputElement;
+  fireEvent.change(depth, { target: { value: "" } });
+  expect(depth.value).toBe("");
+  fireEvent.change(depth, { target: { value: "4" } });
+  fireEvent.change(nodes, { target: { value: "" } });
+  expect(nodes.value).toBe("");
+  fireEvent.change(nodes, { target: { value: "20000" } });
+  expect(depth.value).toBe("4"); expect(nodes.value).toBe("20000");
+  fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "analyze", operation: { kind: "moves", depth: 4, nodes: 20000 } });
+});
 it("routes bounded analysis through the read-only operation and cancellation path", () => {
   const { session, props, rerender } = app();
   fireEvent.change(screen.getByRole("spinbutton", { name: "Depth" }), { target: { value: "3" } });

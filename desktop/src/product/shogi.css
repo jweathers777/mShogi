@@ -14,7 +14,7 @@
 .shogi-workspace { height:calc(100dvh - 76px); display:grid; grid-template-columns:minmax(0,1fr) 292px; gap:28px; padding:22px 28px 16px; max-width:1520px; margin:auto; }
 .shogi-play { min-height:0; min-width:0; display:flex; flex-direction:column; }
 .shogi-status-line { min-height:64px; display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
-.shogi-eyebrow { font-size:9px; letter-spacing:.16em; color:#667c6d; font-weight:700; margin-bottom:5px; }
+.shogi-eyebrow { font-size:9px; letter-spacing:.16em; color:#53634f; font-weight:700; margin-bottom:5px; }
 .shogi-status-line h2 { font-family:Georgia,serif; font-size:25px; font-weight:500; line-height:1.2; letter-spacing:-.025em; max-width:560px; }
 .shogi-application button { font-size:12px; }
 .shogi-application .quiet { color:#365449; border-color:#b9c7ba; background:transparent; }
@@ -31,11 +31,11 @@
 .shogi-player-identity { display:flex; align-items:center; gap:9px; flex-shrink:0; }
 .player-avatar { background:#e0e7dd; border:1px solid #ccd6ca; color:#416351; width:31px; height:31px; border-radius:50%; display:grid; place-items:center; font-family:Georgia,serif; font-size:19px; }
 .shogi-player strong { display:block; font-size:12px; }
-.shogi-player strong span { font-weight:400; color:#687a72; margin-left:8px; font-size:11px; }
-.shogi-player small { display:block; color:#66786e; font-size:10px; margin-top:3px; }
+.shogi-player strong span { font-weight:400; color:#53634f; margin-left:8px; font-size:11px; }
+.shogi-player small { display:block; color:#53634f; font-size:10px; margin-top:3px; }
 .turn-indicator { font-size:9px; color:#315745; background:#dce7d3; padding:3px 5px; border-radius:3px; }
 .shogi-hand { display:flex; justify-content:flex-end; align-items:center; gap:3px; min-height:40px; }
-.empty-hand { color:#879184; font-size:10px; font-style:italic; }
+.empty-hand { color:#53634f; font-size:10px; font-style:italic; }
 .hand-piece { position:relative; padding:0!important; border-radius:4px; width:31px; height:38px; background:transparent; border:1px solid transparent; flex-shrink:0; }
 .hand-piece:disabled { opacity:1; cursor:default; }
 .hand-piece:enabled:hover { background:#e9dfc4; border-color:#ae8b53; }
@@ -61,7 +61,7 @@
 .shogi-piece text { font-family:"mShogi Pieces",serif; font-size:35px; font-weight:400; fill:#262622; stroke:none; }
 .shogi-piece.promoted text { fill:#94382b; }
 .shogi-coordinate { font-family:system-ui,sans-serif; font-size:18px; fill:#715a3c; }
-.shogi-board-help { width:min(100%,calc(100dvh - 290px)); display:flex; justify-content:space-between; gap:8px; padding-top:5px; font-size:9px; color:#758075; line-height:1.3; }
+.shogi-board-help { width:min(100%,calc(100dvh - 290px)); display:flex; justify-content:space-between; gap:8px; padding-top:5px; font-size:10px; color:#53634f; line-height:1.3; }
 .shogi-route { font-size:12px; }
 .shogi-promotion { position:absolute; z-index:5; left:50%; transform:translateX(-50%); width:270px; padding:15px; color:#263d32; background:#fffdf3; border:1px solid #b59a67; border-radius:9px; box-shadow:0 9px 35px #183a3a55; }
 .shogi-promotion strong { font-family:Georgia,serif; font-size:19px; font-weight:500; }
@@ -75,37 +75,37 @@
 .shogi-sidebar>section,.shogi-sidebar>.shogi-technical { flex-shrink:0; }
 .shogi-document { background:transparent; border-bottom:1px solid #d7ded2; padding:0 0 13px; }
 .shogi-document h2 { font-size:12px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin:5px 0; }
-.shogi-document p { color:#6e7b6f; font-size:10px; }
-.shogi-document .document-dirty { font-size:9px; text-transform:uppercase; letter-spacing:.13em; color:#647d65; }
-.shogi-document .document-dirty.dirty { color:#946e35; }
+.shogi-document p { color:#53634f; font-size:10px; }
+.shogi-document .document-dirty { font-size:9px; text-transform:uppercase; letter-spacing:.13em; color:#53634f; }
+.shogi-document .document-dirty.dirty { color:#855c24; }
 .shogi-history,.shogi-analysis { border:1px solid #d5ded0; background:#fcfcf6; border-radius:8px; padding:14px; }
 .shogi-section-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; }
 .shogi-section-heading h2 { font-size:13px; font-weight:650; }
-.shogi-section-heading>span { font-size:10px; color:#7a8778; }
+.shogi-section-heading>span { font-size:10px; color:#53634f; }
 .shogi-history ol { list-style:none; padding:0; margin:9px -5px 0; max-height:174px; overflow-y:auto; }
 .shogi-history li button { display:flex; align-items:center; text-align:left; gap:10px; width:100%; background:transparent; color:#445c4b; border-radius:4px; padding:7px 6px; font-weight:400; font-size:11px; }
 .shogi-history li button:hover:enabled { background:#eaf0e3; }
 .shogi-history li button[aria-current="step"] { color:#244d38; background:#e1e9d8; font-weight:600; }
-.event-number { color:#8b9683; font-size:10px; width:14px; font-variant-numeric:tabular-nums; flex-shrink:0; }
+.event-number { color:#53634f; font-size:10px; width:14px; font-variant-numeric:tabular-nums; flex-shrink:0; }
 .shogi-analysis { background:#f7faf2; }
-.analysis-location { color:#75816f; font-size:10px; margin:7px 0 12px; }
+.analysis-location { color:#53634f; font-size:10px; margin:7px 0 12px; }
 .shogi-analysis-fields { display:grid; grid-template-columns:1fr 1.4fr; gap:9px; }
 .shogi-analysis-fields label { font-size:10px; color:#65765f; }
 .shogi-analysis-fields input { width:100%; border:1px solid #c8d3bf; border-radius:4px; background:#fffef8; color:#314b38; margin-top:4px; padding:6px 8px; font:inherit; font-size:12px; }
 .shogi-analysis-actions { display:flex; gap:7px; margin-top:10px; }
 .shogi-analysis-actions button { padding:8px; font-size:11px; flex:1; }
-.shogi-analysis-state { font-size:10px; color:#72826b; margin-top:10px; }
+.shogi-analysis-state { font-size:10px; color:#53634f; margin-top:10px; }
 .shogi-search-observation { border-top:1px solid #dbe2d2; padding-top:12px; margin-top:12px; }
-.search-target { font-size:10px; color:#76836c; }
+.search-target { font-size:10px; color:#53634f; }
 .shogi-evaluation { font-family:Georgia,serif; font-size:20px; color:#31583c; margin:5px 0; }
-.analysis-perspective { color:#647960; font-size:10px; }
+.analysis-perspective { color:#53634f; font-size:10px; }
 .shogi-telemetry { display:grid; grid-template-columns:1fr 1fr; margin:12px 0; gap:8px; }
-.shogi-telemetry dt { color:#7b8874; font-size:9px; }
+.shogi-telemetry dt { color:#53634f; font-size:9px; }
 .shogi-telemetry dd { margin:3px 0 0; font-variant-numeric:tabular-nums; color:#4f694d; font-size:17px; }
 .shogi-pv { font-size:11px; color:#52694d; overflow-wrap:anywhere; line-height:1.7; }
-.shogi-pv>span { display:block; color:#85917d; font-size:9px; }
-.analysis-readonly { font-size:9px; color:#86917c; margin-top:9px; }
-.recorded-searches { margin-top:14px; font-size:10px; color:#75816a; }
+.shogi-pv>span { display:block; color:#53634f; font-size:9px; }
+.analysis-readonly { font-size:10px; color:#53634f; margin-top:9px; }
+.recorded-searches { margin-top:14px; font-size:10px; color:#53634f; }
 .recorded-searches article { padding-top:5px; }
 .shogi-notice,.shogi-resume { border:1px solid #cbbf99; background:#f9f1d8; border-radius:7px; padding:11px; }
 .shogi-notice h3 { margin:0 0 5px; font-size:12px; color:#6c592c; }
@@ -115,17 +115,17 @@
 .shogi-resume { display:flex; align-items:center; gap:8px; justify-content:space-between; background:#e8efde; border-color:#becfad; }
 .shogi-resume button { margin:0; padding:8px 10px; width:auto; }
 .shogi-game-actions { border-top:1px solid #d7ded0; padding-top:11px; }
-.shogi-game-actions h2 { font-size:11px; color:#819075; margin-bottom:8px; }
+.shogi-game-actions h2 { font-size:11px; color:#53634f; margin-bottom:8px; }
 .shogi-game-actions button { margin:5px 4px 0 0; font-size:11px; padding:7px 9px; }
-.shogi-game-actions p { font-size:11px; color:#6e7d63; }
-.shogi-technical { border-top:1px solid #d7ded0; padding:12px 0; color:#839076; font-size:10px; }
+.shogi-game-actions p { font-size:11px; color:#53634f; }
+.shogi-technical { border-top:1px solid #d7ded0; padding:12px 0; color:#53634f; font-size:10px; }
 .shogi-technical summary { cursor:pointer; }
 .shogi-technical p,.shogi-technical details { margin:8px 0; }
 .shogi-technical pre { white-space:pre-wrap; overflow-wrap:anywhere; max-height:200px; overflow:auto; font-size:10px; }
 .shogi-technical a { color:#3f684d; }
 .product-dialog { color:#263d35; background:#f9faf3; border:1px solid #a8b79f; padding:26px; border-radius:13px; width:min(520px,calc(100vw - 36px)); box-shadow:0 22px 100px #06292c88; }
 .product-dialog h2 { font-family:Georgia,serif; font-size:26px; font-weight:500; margin-bottom:10px; }
-.product-dialog p { color:#697b69; font-size:13px; }
+.product-dialog p { color:#53634f; font-size:13px; }
 .product-dialog .quiet { color:#456149; border-color:#b0c1a4; background:transparent; }
 .product-dialog .secondary { background:#3b5b49; color:#f7f8ec; }
 .product-dialog .primary { background:#345a42; color:#fffdf0; }
@@ -137,7 +137,7 @@
 .game-mark { font-size:40px; line-height:1.4; }
 .game-mark.shogi { font-family:"mShogi Pieces",serif; }
 .game-choices strong { margin:6px 0; font-size:16px; }
-.game-choices small { font-size:10px; color:#7e8b75; }
+.game-choices small { font-size:10px; color:#53634f; }
 .product-dialog h3 { font-size:12px; margin:14px 0 9px; }
 .side-choices { display:flex; gap:9px; }
 .side-choices button { flex:1; background:#eef1e8; color:#52664a; border:1px solid #c7d4bc; font-size:12px; }
@@ -176,7 +176,7 @@
  .shogi-player { height:45px; }
  .shogi-player,.shogi-board-frame,.shogi-board-help { width:min(100%,calc(100dvh - 239px)); }
  .shogi-player small { display:none; }
- .shogi-board-help { font-size:8px; }
+ .shogi-board-help { font-size:9px; }
 }
 /* History adds its own strip while preserving whole-board fit. */
 .shogi-application[data-historical="true"] .shogi-board-frame,

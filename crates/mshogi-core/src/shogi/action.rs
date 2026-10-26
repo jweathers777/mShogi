@@ -134,10 +134,6 @@ impl Error for UndoError {}
 impl Position {
     /// Resolve local geometry/resources only. King safety and uchifuzume belong
     /// to the legal layer; callers must never expose this as full legality.
-    #[allow(
-        dead_code,
-        reason = "Private transition boundary reserved for the MSH-66 legal layer"
-    )]
     pub(crate) fn apply_structural(&mut self, action: Action) -> Result<Undo, ActionError> {
         let next_ply = self
             .next_ply
@@ -231,10 +227,6 @@ impl Position {
     }
 
     /// Restore every field only when this is the record's exact saved post-state.
-    #[allow(
-        dead_code,
-        reason = "Private transition boundary reserved for the MSH-66 legal layer"
-    )]
     pub(crate) fn undo_structural(&mut self, undo: Undo) -> Result<(), UndoError> {
         if *self != undo.after {
             return Err(UndoError::PositionMismatch);

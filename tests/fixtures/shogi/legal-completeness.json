@@ -1,0 +1,2875 @@
+{
+  "format": "mshogi.shogi.board-fixtures.v1",
+  "rules_profile": "mshogi.shogi.csa36.v1",
+  "scope": "MSH-66 focused complete central/edge movement sets, blocked rays, board empty-choice classification and independently counted shallow start tree; no history/outcomes",
+  "sources": {
+    "JSA-B1": "https://www.shogi.or.jp/knowledge/shogi/01.php",
+    "JSA-B2": "https://www.shogi.or.jp/knowledge/shogi/02.php",
+    "JSA-B3": "https://www.shogi.or.jp/knowledge/shogi/03.php",
+    "JSA-B4": "https://www.shogi.or.jp/knowledge/shogi/04.php",
+    "JSA-B5": "https://www.shogi.or.jp/knowledge/shogi/05.php",
+    "JSA-R": "https://www.shogi.or.jp/match/taikyoku_rules/taikyoku_rules.pdf"
+  },
+  "cases": [
+    {
+      "id": "SH-F002:central-K-sente",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "7k1/9/9/9/4K4/9/9/9/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Every adjacent board square; there are no neighboring enemy attacks. Central source 5e; exact destination list 4d 5d 6d 4e 6e 4f 5f 6f.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "5e4d",
+          "5e4e",
+          "5e4f",
+          "5e5d",
+          "5e5f",
+          "5e6d",
+          "5e6e",
+          "5e6f"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-K-gote",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/9/9/9/4k4/9/9/9/1K7 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Every adjacent board square; there are no neighboring enemy attacks. Central source 5e; exact destination list 4d 5d 6d 4e 6e 4f 5f 6f. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "5e4d",
+          "5e4e",
+          "5e4f",
+          "5e5d",
+          "5e5f",
+          "5e6d",
+          "5e6e",
+          "5e6f"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-G-sente",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "7k1/9/9/9/4G4/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "One forward, forward diagonals, sideways, and one straight backward; no backward diagonals. Central source 5e; exact destination list 4d 5d 6d 4e 6e 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "5e4d",
+          "5e4e",
+          "5e5d",
+          "5e5f",
+          "5e6d",
+          "5e6e",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-G-gote",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/4g4/9/9/9/1K7 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "One forward, forward diagonals, sideways, and one straight backward; no backward diagonals. Central source 5e; exact destination list 4d 5d 6d 4e 6e 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "5e4e",
+          "5e4f",
+          "5e5d",
+          "5e5f",
+          "5e6e",
+          "5e6f"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-S-sente",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "7k1/9/9/9/4S4/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "One forward and four diagonals; no sideways or straight backward. Central source 5e; exact destination list 4d 5d 6d 4f 6f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "5e4d",
+          "5e4f",
+          "5e5d",
+          "5e6d",
+          "5e6f",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-S-gote",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/4s4/9/9/9/1K7 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "One forward and four diagonals; no sideways or straight backward. Central source 5e; exact destination list 4d 5d 6d 4f 6f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "5e4d",
+          "5e4f",
+          "5e5f",
+          "5e6d",
+          "5e6f"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-N-sente",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "7k1/9/9/9/4N4/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Jumps two ranks forward and one file sideways. Central source 5e; exact destination list 4c 6c. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "5e4c",
+          "5e4c+",
+          "5e6c",
+          "5e6c+",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-N-gote",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/4n4/9/9/9/1K7 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Jumps two ranks forward and one file sideways. Central source 5e; exact destination list 4c 6c. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "5e4g",
+          "5e4g+",
+          "5e6g",
+          "5e6g+"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-L-sente",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "7k1/9/9/9/4L4/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Forward ray only, stopping at board edge; final-rank move must promote. Central source 5e; exact destination list 5d 5c 5b 5a. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "5e5a+",
+          "5e5b",
+          "5e5b+",
+          "5e5c",
+          "5e5c+",
+          "5e5d",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-L-gote",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/4l4/9/9/9/1K7 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Forward ray only, stopping at board edge; final-rank move must promote. Central source 5e; exact destination list 5d 5c 5b 5a. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "5e5f",
+          "5e5g",
+          "5e5g+",
+          "5e5h",
+          "5e5h+",
+          "5e5i+"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-P-sente",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "7k1/9/9/9/4P4/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Exactly one forward step, including captures; no double move. Central source 5e; exact destination list 5d. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "5e5d",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-P-gote",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/4p4/9/9/9/1K7 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Exactly one forward step, including captures; no double move. Central source 5e; exact destination list 5d. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "5e5f"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-R-sente",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "7k1/9/9/9/4R4/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Orthogonal rays to all four board edges. Central source 5e; exact destination list 5d 5c 5b 5a 5f 5g 5h 5i 4e 3e 2e 1e 6e 7e 8e 9e. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "5e1e",
+          "5e2e",
+          "5e3e",
+          "5e4e",
+          "5e5a",
+          "5e5a+",
+          "5e5b",
+          "5e5b+",
+          "5e5c",
+          "5e5c+",
+          "5e5d",
+          "5e5f",
+          "5e5g",
+          "5e5h",
+          "5e5i",
+          "5e6e",
+          "5e7e",
+          "5e8e",
+          "5e9e",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-R-gote",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/4r4/9/9/9/1K7 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Orthogonal rays to all four board edges. Central source 5e; exact destination list 5d 5c 5b 5a 5f 5g 5h 5i 4e 3e 2e 1e 6e 7e 8e 9e. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "5e1e",
+          "5e2e",
+          "5e3e",
+          "5e4e",
+          "5e5a",
+          "5e5b",
+          "5e5c",
+          "5e5d",
+          "5e5f",
+          "5e5g",
+          "5e5g+",
+          "5e5h",
+          "5e5h+",
+          "5e5i",
+          "5e5i+",
+          "5e6e",
+          "5e7e",
+          "5e8e",
+          "5e9e"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-B-sente",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "7k1/9/9/9/4B4/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Diagonal rays to all four board edges. Central source 5e; exact destination list 4d 3c 2b 1a 6d 7c 8b 9a 4f 3g 2h 1i 6f 7g 8h 9i. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "5e1a",
+          "5e1a+",
+          "5e1i",
+          "5e2b",
+          "5e2b+",
+          "5e2h",
+          "5e3c",
+          "5e3c+",
+          "5e3g",
+          "5e4d",
+          "5e4f",
+          "5e6d",
+          "5e6f",
+          "5e7c",
+          "5e7c+",
+          "5e7g",
+          "5e8b",
+          "5e8b+",
+          "5e8h",
+          "5e9a",
+          "5e9a+",
+          "5e9i",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-B-gote",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/4b4/9/9/9/1K7 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Diagonal rays to all four board edges. Central source 5e; exact destination list 4d 3c 2b 1a 6d 7c 8b 9a 4f 3g 2h 1i 6f 7g 8h 9i. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "5e1a",
+          "5e1i",
+          "5e1i+",
+          "5e2b",
+          "5e2h",
+          "5e2h+",
+          "5e3c",
+          "5e3g",
+          "5e3g+",
+          "5e4d",
+          "5e4f",
+          "5e6d",
+          "5e6f",
+          "5e7c",
+          "5e7g",
+          "5e7g+",
+          "5e8b",
+          "5e8h",
+          "5e8h+",
+          "5e9a",
+          "5e9i",
+          "5e9i+"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-promoted-P-sente",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "7k1/9/9/9/4+P4/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Promoted P has exactly gold movement, with no further promotion. Central source 5e; exact destination list 4d 5d 6d 4e 6e 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "5e4d",
+          "5e4e",
+          "5e5d",
+          "5e5f",
+          "5e6d",
+          "5e6e",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-promoted-P-gote",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/4+p4/9/9/9/1K7 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Promoted P has exactly gold movement, with no further promotion. Central source 5e; exact destination list 4d 5d 6d 4e 6e 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "5e4e",
+          "5e4f",
+          "5e5d",
+          "5e5f",
+          "5e6e",
+          "5e6f"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-promoted-L-sente",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "7k1/9/9/9/4+L4/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Promoted L has exactly gold movement, with no further promotion. Central source 5e; exact destination list 4d 5d 6d 4e 6e 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "5e4d",
+          "5e4e",
+          "5e5d",
+          "5e5f",
+          "5e6d",
+          "5e6e",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-promoted-L-gote",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/4+l4/9/9/9/1K7 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Promoted L has exactly gold movement, with no further promotion. Central source 5e; exact destination list 4d 5d 6d 4e 6e 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "5e4e",
+          "5e4f",
+          "5e5d",
+          "5e5f",
+          "5e6e",
+          "5e6f"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-promoted-N-sente",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "7k1/9/9/9/4+N4/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Promoted N has exactly gold movement, with no further promotion. Central source 5e; exact destination list 4d 5d 6d 4e 6e 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "5e4d",
+          "5e4e",
+          "5e5d",
+          "5e5f",
+          "5e6d",
+          "5e6e",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-promoted-N-gote",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/4+n4/9/9/9/1K7 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Promoted N has exactly gold movement, with no further promotion. Central source 5e; exact destination list 4d 5d 6d 4e 6e 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "5e4e",
+          "5e4f",
+          "5e5d",
+          "5e5f",
+          "5e6e",
+          "5e6f"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-promoted-S-sente",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "7k1/9/9/9/4+S4/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Promoted S has exactly gold movement, with no further promotion. Central source 5e; exact destination list 4d 5d 6d 4e 6e 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "5e4d",
+          "5e4e",
+          "5e5d",
+          "5e5f",
+          "5e6d",
+          "5e6e",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-promoted-S-gote",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/4+s4/9/9/9/1K7 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Promoted S has exactly gold movement, with no further promotion. Central source 5e; exact destination list 4d 5d 6d 4e 6e 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "5e4e",
+          "5e4f",
+          "5e5d",
+          "5e5f",
+          "5e6e",
+          "5e6f"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-promoted-B-sente",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "7k1/9/9/9/4+B4/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "All bishop diagonal rays plus the four orthogonal adjacent squares. Central source 5e; exact destination list 4d 3c 2b 1a 6d 7c 8b 9a 4f 3g 2h 1i 6f 7g 8h 9i 4e 6e 5d 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "5e1a",
+          "5e1i",
+          "5e2b",
+          "5e2h",
+          "5e3c",
+          "5e3g",
+          "5e4d",
+          "5e4e",
+          "5e4f",
+          "5e5d",
+          "5e5f",
+          "5e6d",
+          "5e6e",
+          "5e6f",
+          "5e7c",
+          "5e7g",
+          "5e8b",
+          "5e8h",
+          "5e9a",
+          "5e9i",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-promoted-B-gote",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/4+b4/9/9/9/1K7 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "All bishop diagonal rays plus the four orthogonal adjacent squares. Central source 5e; exact destination list 4d 3c 2b 1a 6d 7c 8b 9a 4f 3g 2h 1i 6f 7g 8h 9i 4e 6e 5d 5f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "5e1a",
+          "5e1i",
+          "5e2b",
+          "5e2h",
+          "5e3c",
+          "5e3g",
+          "5e4d",
+          "5e4e",
+          "5e4f",
+          "5e5d",
+          "5e5f",
+          "5e6d",
+          "5e6e",
+          "5e6f",
+          "5e7c",
+          "5e7g",
+          "5e8b",
+          "5e8h",
+          "5e9a",
+          "5e9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-promoted-R-sente",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "7k1/9/9/9/4+R4/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "All rook orthogonal rays plus the four diagonal adjacent squares. Central source 5e; exact destination list 5d 5c 5b 5a 5f 5g 5h 5i 4e 3e 2e 1e 6e 7e 8e 9e 4d 6d 4f 6f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "5e1e",
+          "5e2e",
+          "5e3e",
+          "5e4d",
+          "5e4e",
+          "5e4f",
+          "5e5a",
+          "5e5b",
+          "5e5c",
+          "5e5d",
+          "5e5f",
+          "5e5g",
+          "5e5h",
+          "5e5i",
+          "5e6d",
+          "5e6e",
+          "5e6f",
+          "5e7e",
+          "5e8e",
+          "5e9e",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:central-promoted-R-gote",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/4+r4/9/9/9/1K7 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "All rook orthogonal rays plus the four diagonal adjacent squares. Central source 5e; exact destination list 5d 5c 5b 5a 5f 5g 5h 5i 4e 3e 2e 1e 6e 7e 8e 9e 4d 6d 4f 6f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king2a is off all initial attack rays and too far to restrict them. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "5e1e",
+          "5e2e",
+          "5e3e",
+          "5e4d",
+          "5e4e",
+          "5e4f",
+          "5e5a",
+          "5e5b",
+          "5e5c",
+          "5e5d",
+          "5e5f",
+          "5e5g",
+          "5e5h",
+          "5e5i",
+          "5e6d",
+          "5e6e",
+          "5e6f",
+          "5e7e",
+          "5e8e",
+          "5e9e"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-K-sente",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "1k7/9/9/9/8K/9/9/9/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Every adjacent board square; there are no neighboring enemy attacks. Edge source 1e; exact destination list 1d 2d 2e 1f 2f. Squares outside file1 are omitted, never wrapped.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1e1d",
+          "1e1f",
+          "1e2d",
+          "1e2e",
+          "1e2f"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-K-gote",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/9/9/9/k8/9/9/9/7K1 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Every adjacent board square; there are no neighboring enemy attacks. Edge source 1e; exact destination list 1d 2d 2e 1f 2f. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "9e8d",
+          "9e8e",
+          "9e8f",
+          "9e9d",
+          "9e9f"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-G-sente",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "1k7/9/9/9/8G/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "One forward, forward diagonals, sideways, and one straight backward; no backward diagonals. Edge source 1e; exact destination list 1d 2d 2e 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1e1d",
+          "1e1f",
+          "1e2d",
+          "1e2e",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-G-gote",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/g8/9/9/9/7K1 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "One forward, forward diagonals, sideways, and one straight backward; no backward diagonals. Edge source 1e; exact destination list 1d 2d 2e 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "9e8e",
+          "9e8f",
+          "9e9d",
+          "9e9f"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-S-sente",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "1k7/9/9/9/8S/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "One forward and four diagonals; no sideways or straight backward. Edge source 1e; exact destination list 1d 2d 2f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1e1d",
+          "1e2d",
+          "1e2f",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-S-gote",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/s8/9/9/9/7K1 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "One forward and four diagonals; no sideways or straight backward. Edge source 1e; exact destination list 1d 2d 2f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "9e8d",
+          "9e8f",
+          "9e9f"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-N-sente",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "1k7/9/9/9/8N/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Jumps two ranks forward and one file sideways. Edge source 1e; exact destination list 2c. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1e2c",
+          "1e2c+",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-N-gote",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/n8/9/9/9/7K1 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Jumps two ranks forward and one file sideways. Edge source 1e; exact destination list 2c. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "9e8g",
+          "9e8g+"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-L-sente",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "1k7/9/9/9/8L/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Forward ray only, stopping at board edge; final-rank move must promote. Edge source 1e; exact destination list 1d 1c 1b 1a. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1e1a+",
+          "1e1b",
+          "1e1b+",
+          "1e1c",
+          "1e1c+",
+          "1e1d",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-L-gote",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/l8/9/9/9/7K1 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Forward ray only, stopping at board edge; final-rank move must promote. Edge source 1e; exact destination list 1d 1c 1b 1a. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "9e9f",
+          "9e9g",
+          "9e9g+",
+          "9e9h",
+          "9e9h+",
+          "9e9i+"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-P-sente",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "1k7/9/9/9/8P/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Exactly one forward step, including captures; no double move. Edge source 1e; exact destination list 1d. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1e1d",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-P-gote",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/p8/9/9/9/7K1 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Exactly one forward step, including captures; no double move. Edge source 1e; exact destination list 1d. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "9e9f"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-R-sente",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "1k7/9/9/9/8R/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Orthogonal rays to all four board edges. Edge source 1e; exact destination list 1d 1c 1b 1a 1f 1g 1h 1i 2e 3e 4e 5e 6e 7e 8e 9e. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1e1a",
+          "1e1a+",
+          "1e1b",
+          "1e1b+",
+          "1e1c",
+          "1e1c+",
+          "1e1d",
+          "1e1f",
+          "1e1g",
+          "1e1h",
+          "1e1i",
+          "1e2e",
+          "1e3e",
+          "1e4e",
+          "1e5e",
+          "1e6e",
+          "1e7e",
+          "1e8e",
+          "1e9e",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-R-gote",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/r8/9/9/9/7K1 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Orthogonal rays to all four board edges. Edge source 1e; exact destination list 1d 1c 1b 1a 1f 1g 1h 1i 2e 3e 4e 5e 6e 7e 8e 9e. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "9e1e",
+          "9e2e",
+          "9e3e",
+          "9e4e",
+          "9e5e",
+          "9e6e",
+          "9e7e",
+          "9e8e",
+          "9e9a",
+          "9e9b",
+          "9e9c",
+          "9e9d",
+          "9e9f",
+          "9e9g",
+          "9e9g+",
+          "9e9h",
+          "9e9h+",
+          "9e9i",
+          "9e9i+"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-B-sente",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "1k7/9/9/9/8B/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Diagonal rays to all four board edges. Edge source 1e; exact destination list 2d 3c 4b 5a 2f 3g 4h 5i. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1e2d",
+          "1e2f",
+          "1e3c",
+          "1e3c+",
+          "1e3g",
+          "1e4b",
+          "1e4b+",
+          "1e4h",
+          "1e5a",
+          "1e5a+",
+          "1e5i",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-B-gote",
+      "inventory_ids": [
+        "SH-F002"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/b8/9/9/9/7K1 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Diagonal rays to all four board edges. Edge source 1e; exact destination list 2d 3c 4b 5a 2f 3g 4h 5i. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Source lies outside camp; destination ranksa/b/c offer optional promotion except immobile last-rank lance, which must promote. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "9e5a",
+          "9e5i",
+          "9e5i+",
+          "9e6b",
+          "9e6h",
+          "9e6h+",
+          "9e7c",
+          "9e7g",
+          "9e7g+",
+          "9e8d",
+          "9e8f"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-promoted-P-sente",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "1k7/9/9/9/8+P/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Promoted P has exactly gold movement, with no further promotion. Edge source 1e; exact destination list 1d 2d 2e 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1e1d",
+          "1e1f",
+          "1e2d",
+          "1e2e",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-promoted-P-gote",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/+p8/9/9/9/7K1 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Promoted P has exactly gold movement, with no further promotion. Edge source 1e; exact destination list 1d 2d 2e 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "9e8e",
+          "9e8f",
+          "9e9d",
+          "9e9f"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-promoted-L-sente",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "1k7/9/9/9/8+L/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Promoted L has exactly gold movement, with no further promotion. Edge source 1e; exact destination list 1d 2d 2e 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1e1d",
+          "1e1f",
+          "1e2d",
+          "1e2e",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-promoted-L-gote",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/+l8/9/9/9/7K1 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Promoted L has exactly gold movement, with no further promotion. Edge source 1e; exact destination list 1d 2d 2e 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "9e8e",
+          "9e8f",
+          "9e9d",
+          "9e9f"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-promoted-N-sente",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "1k7/9/9/9/8+N/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Promoted N has exactly gold movement, with no further promotion. Edge source 1e; exact destination list 1d 2d 2e 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1e1d",
+          "1e1f",
+          "1e2d",
+          "1e2e",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-promoted-N-gote",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/+n8/9/9/9/7K1 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Promoted N has exactly gold movement, with no further promotion. Edge source 1e; exact destination list 1d 2d 2e 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "9e8e",
+          "9e8f",
+          "9e9d",
+          "9e9f"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-promoted-S-sente",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "1k7/9/9/9/8+S/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Promoted S has exactly gold movement, with no further promotion. Edge source 1e; exact destination list 1d 2d 2e 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1e1d",
+          "1e1f",
+          "1e2d",
+          "1e2e",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-promoted-S-gote",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/+s8/9/9/9/7K1 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Promoted S has exactly gold movement, with no further promotion. Edge source 1e; exact destination list 1d 2d 2e 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "9e8e",
+          "9e8f",
+          "9e9d",
+          "9e9f"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-promoted-B-sente",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "1k7/9/9/9/8+B/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "All bishop diagonal rays plus the four orthogonal adjacent squares. Edge source 1e; exact destination list 2d 3c 4b 5a 2f 3g 4h 5i 2e 1d 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1e1d",
+          "1e1f",
+          "1e2d",
+          "1e2e",
+          "1e2f",
+          "1e3c",
+          "1e3g",
+          "1e4b",
+          "1e4h",
+          "1e5a",
+          "1e5i",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-promoted-B-gote",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/+b8/9/9/9/7K1 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "All bishop diagonal rays plus the four orthogonal adjacent squares. Edge source 1e; exact destination list 2d 3c 4b 5a 2f 3g 4h 5i 2e 1d 1f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "9e5a",
+          "9e5i",
+          "9e6b",
+          "9e6h",
+          "9e7c",
+          "9e7g",
+          "9e8d",
+          "9e8e",
+          "9e8f",
+          "9e9d",
+          "9e9f"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-promoted-R-sente",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "1k7/9/9/9/8+R/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "All rook orthogonal rays plus the four diagonal adjacent squares. Edge source 1e; exact destination list 1d 1c 1b 1a 1f 1g 1h 1i 2e 3e 4e 5e 6e 7e 8e 9e 2d 2f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1e1a",
+          "1e1b",
+          "1e1c",
+          "1e1d",
+          "1e1f",
+          "1e1g",
+          "1e1h",
+          "1e1i",
+          "1e2d",
+          "1e2e",
+          "1e2f",
+          "1e3e",
+          "1e4e",
+          "1e5e",
+          "1e6e",
+          "1e7e",
+          "1e8e",
+          "1e9e",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F002:edge-promoted-R-gote",
+      "inventory_ids": [
+        "SH-F002",
+        "SH-F003"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/+r8/9/9/9/7K1 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "All rook orthogonal rays plus the four diagonal adjacent squares. Edge source 1e; exact destination list 1d 1c 1b 1a 1f 1g 1h 1i 2e 3e 4e 5e 6e 7e 8e 9e 2d 2f. The only other mover is king9h with five choices8g/8h/8i/9g/9i; opponent king8a is off all initial attack rays and too far to restrict them. Squares outside file1 are omitted, never wrapped. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "9e1e",
+          "9e2e",
+          "9e3e",
+          "9e4e",
+          "9e5e",
+          "9e6e",
+          "9e7e",
+          "9e8d",
+          "9e8e",
+          "9e8f",
+          "9e9a",
+          "9e9b",
+          "9e9c",
+          "9e9d",
+          "9e9f",
+          "9e9g",
+          "9e9h",
+          "9e9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F004:bishop-two-blockers-sente",
+      "inventory_ids": [
+        "SH-F004"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "7k1/9/6P2/9/4B4/9/2s6/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Bishop5e has four diagonal rays. Friendly pawn3c stops the4d3c ray before3c; enemy silver7g is capturable after6f and stops the6f7g8h9i ray. Other rays stay open. Only targets7c/8b/9a enter camp and allow promotion;7g does not. Opponent king2a is initially unthreatened.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "contains": [
+          "5e4d",
+          "5e6d",
+          "5e7c",
+          "5e7c+",
+          "5e8b",
+          "5e8b+",
+          "5e9a",
+          "5e9a+",
+          "5e6f",
+          "5e7g",
+          "5e4f",
+          "5e3g",
+          "5e2h",
+          "5e1i"
+        ],
+        "absent": [
+          "5e3c",
+          "5e3c+",
+          "5e2b",
+          "5e1a",
+          "5e8h",
+          "5e9i",
+          "5e7g+"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F004:lance-friendly-blocker-sente",
+      "inventory_ids": [
+        "SH-F004"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "7k1/9/4P4/9/4L4/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Lance5e advances only to5d before own pawn5c; cannot land on or pass it. Pawn5c advances5b with either promotion flag. King9h contributes its five safe steps; no other board choices exist.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "5c5b",
+          "5c5b+",
+          "5e5d",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F004:lance-enemy-blocker-sente",
+      "inventory_ids": [
+        "SH-F004"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "7k1/9/4s4/9/4L4/9/9/K8/9 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Lance5e may advance5d or capture enemy silver5c with either promotion flag, then ray stops. It cannot reach5b/5a beyond the enemy. King9h contributes its five safe steps; no other board choices exist.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "5e5c",
+          "5e5c+",
+          "5e5d",
+          "9h8g",
+          "9h8h",
+          "9h8i",
+          "9h9g",
+          "9h9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F031:local-checkmate-sente",
+      "inventory_ids": [
+        "SH-F031"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "3lkl3/3pPp3/4G4/9/9/9/9/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Pawn5b attacks king5a. All other king destinations4a/6a/4b/6b contain own pieces;5b is protected by gold5c. Lances cannot jump their own4b/6b pawns or capture5b; pawn advances do not remove pawn5b check. There is no capture, interposition against adjacent pawn, king escape or hand drop, so exact legal board set is empty. This is a board-check/empty-choice observation only; no game outcome is asserted.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [],
+        "in_check": true
+      }
+    },
+    {
+      "id": "SH-F032:local-no-check-no-action-sente",
+      "inventory_ids": [
+        "SH-F032"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/6NG1/9/9/9/9/9/K8 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "King1a is not attacked: gold2c attacks1b/2b/3b/1c/3c/2d; knight3c attacks2a/4a. Its only board destinations1b/2a/2b are all attacked. It has no other pieces or hand drops, so exact legal board set is empty while not checked. No history, CSA outcome or chess stalemate result is inferred.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F004:bishop-two-blockers-gote",
+      "inventory_ids": [
+        "SH-F004"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/6S2/9/4b4/9/2p6/9/1K7 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Bishop5e has four diagonal rays. Friendly pawn3c stops the4d3c ray before3c; enemy silver7g is capturable after6f and stops the6f7g8h9i ray. Other rays stay open. Only targets7c/8b/9a enter camp and allow promotion;7g does not. Opponent king2a is initially unthreatened. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "contains": [
+          "5e1i",
+          "5e1i+",
+          "5e2h",
+          "5e2h+",
+          "5e3c",
+          "5e3g",
+          "5e3g+",
+          "5e4d",
+          "5e4f",
+          "5e6d",
+          "5e6f",
+          "5e7c",
+          "5e8b",
+          "5e9a"
+        ],
+        "absent": [
+          "5e1a",
+          "5e2b",
+          "5e3c+",
+          "5e7g",
+          "5e7g+",
+          "5e8h",
+          "5e9i"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F004:lance-friendly-blocker-gote",
+      "inventory_ids": [
+        "SH-F004"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/4l4/9/4p4/9/1K7 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Lance5e advances only to5d before own pawn5c; cannot land on or pass it. Pawn5c advances5b with either promotion flag. King9h contributes its five safe steps; no other board choices exist. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "5e5f",
+          "5g5h",
+          "5g5h+"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F004:lance-enemy-blocker-gote",
+      "inventory_ids": [
+        "SH-F004"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "9/8k/9/9/4l4/9/4S4/9/1K7 w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Lance5e may advance5d or capture enemy silver5c with either promotion flag, then ray stops. It cannot reach5b/5a beyond the enemy. King9h contributes its five safe steps; no other board choices exist. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1b1a",
+          "1b1c",
+          "1b2a",
+          "1b2b",
+          "1b2c",
+          "5e5f",
+          "5e5g",
+          "5e5g+"
+        ],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F031:local-checkmate-gote",
+      "inventory_ids": [
+        "SH-F031"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/9/4g4/3PpP3/3LKL3 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Pawn5b attacks king5a. All other king destinations4a/6a/4b/6b contain own pieces;5b is protected by gold5c. Lances cannot jump their own4b/6b pawns or capture5b; pawn advances do not remove pawn5b check. There is no capture, interposition against adjacent pawn, king escape or hand drop, so exact legal board set is empty. This is a board-check/empty-choice observation only; no game outcome is asserted. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [],
+        "in_check": true
+      }
+    },
+    {
+      "id": "SH-F032:local-no-check-no-action-gote",
+      "inventory_ids": [
+        "SH-F032"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "structurally valid sparse analysis diagram; reachable full-material history not asserted",
+      "root_sfen": "8k/9/9/9/9/9/1gn6/9/K8 b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4",
+          "JSA-B5"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "King1a is not attacked: gold2c attacks1b/2b/3b/1c/3c/2d; knight3c attacks2a/4a. Its only board destinations1b/2a/2b are all attacked. It has no other pieces or hand drops, so exact legal board set is empty while not checked. No history, CSA outcome or chess stalemate result is inferred. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [],
+        "in_check": false
+      }
+    },
+    {
+      "id": "SH-F001:start-divide-sente",
+      "inventory_ids": [
+        "SH-F001"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "standard initial placement; specified first mover",
+      "root_sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B1",
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Independently named30 opening choices: nine pawns,two lances,four silvers,six golds,three kings,six rook moves. Each first action stays on its own half and neither captures, promotes nor moves an opponent blocker. Pawn advances remain on rankf; other moves remain behind own pawn wall. Opening bishop diagonal after7g7f runs8h7g6f5e4d3c2b and misses opposing king5a and each4b/5b/6b king destination. Thus every first action leaves exactly all30 opponent choices legal: each depth2 divide entry30,total30x30=900.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1g1f",
+          "1i1h",
+          "2g2f",
+          "2h1h",
+          "2h3h",
+          "2h4h",
+          "2h5h",
+          "2h6h",
+          "2h7h",
+          "3g3f",
+          "3i3h",
+          "3i4h",
+          "4g4f",
+          "4i3h",
+          "4i4h",
+          "4i5h",
+          "5g5f",
+          "5i4h",
+          "5i5h",
+          "5i6h",
+          "6g6f",
+          "6i5h",
+          "6i6h",
+          "6i7h",
+          "7g7f",
+          "7i6h",
+          "7i7h",
+          "8g8f",
+          "9g9f",
+          "9i9h"
+        ],
+        "in_check": false,
+        "perft": {
+          "1": 30,
+          "2": 900
+        },
+        "divide": {
+          "2": {
+            "1g1f": 30,
+            "1i1h": 30,
+            "2g2f": 30,
+            "2h1h": 30,
+            "2h3h": 30,
+            "2h4h": 30,
+            "2h5h": 30,
+            "2h6h": 30,
+            "2h7h": 30,
+            "3g3f": 30,
+            "3i3h": 30,
+            "3i4h": 30,
+            "4g4f": 30,
+            "4i3h": 30,
+            "4i4h": 30,
+            "4i5h": 30,
+            "5g5f": 30,
+            "5i4h": 30,
+            "5i5h": 30,
+            "5i6h": 30,
+            "6g6f": 30,
+            "6i5h": 30,
+            "6i6h": 30,
+            "6i7h": 30,
+            "7g7f": 30,
+            "7i6h": 30,
+            "7i7h": 30,
+            "8g8f": 30,
+            "9g9f": 30,
+            "9i9h": 30
+          }
+        }
+      }
+    },
+    {
+      "id": "SH-F001:start-divide-gote",
+      "inventory_ids": [
+        "SH-F001"
+      ],
+      "version": 1,
+      "rules_profile": "mshogi.shogi.csa36.v1",
+      "admission": "standard initial placement; specified first mover",
+      "root_sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL w - 1",
+      "moves": [],
+      "provenance": {
+        "source_labels": [
+          "JSA-B1",
+          "JSA-B2",
+          "JSA-B3",
+          "JSA-B4"
+        ],
+        "edition": "JSA-R corrected 2025-10-01; JSA education bytes retained in MSH-64 rule-source-manifest, 2026-10-26",
+        "derivation": "Independently named30 opening choices: nine pawns,two lances,four silvers,six golds,three kings,six rook moves. Each first action stays on its own half and neither captures, promotes nor moves an opponent blocker. Pawn advances remain on rankf; other moves remain behind own pawn wall. Opening bishop diagonal after7g7f runs8h7g6f5e4d3c2b and misses opposing king5a and each4b/5b/6b king destination. Thus every first action leaves exactly all30 opponent choices legal: each depth2 divide entry30,total30x30=900. Rotate all squares180degrees and exchange ownership; forward and promotion camp reverse, with every complete USI choice transformed.",
+        "established_by": "explicit handwritten geometric target lists and accounting before cshogi or mShogi execution; independent review required",
+        "review": "Independent Codex expected-fact review, 2026-10-26; docs/m4/completeness-fixture-review.md; completed before reference/native execution; board facts only"
+      },
+      "expected": {
+        "legal_moves": [
+          "1a1b",
+          "1c1d",
+          "2c2d",
+          "3a3b",
+          "3a4b",
+          "3c3d",
+          "4a3b",
+          "4a4b",
+          "4a5b",
+          "4c4d",
+          "5a4b",
+          "5a5b",
+          "5a6b",
+          "5c5d",
+          "6a5b",
+          "6a6b",
+          "6a7b",
+          "6c6d",
+          "7a6b",
+          "7a7b",
+          "7c7d",
+          "8b3b",
+          "8b4b",
+          "8b5b",
+          "8b6b",
+          "8b7b",
+          "8b9b",
+          "8c8d",
+          "9a9b",
+          "9c9d"
+        ],
+        "in_check": false,
+        "perft": {
+          "1": 30,
+          "2": 900
+        },
+        "divide": {
+          "2": {
+            "9c9d": 30,
+            "9a9b": 30,
+            "8c8d": 30,
+            "8b9b": 30,
+            "8b7b": 30,
+            "8b6b": 30,
+            "8b5b": 30,
+            "8b4b": 30,
+            "8b3b": 30,
+            "7c7d": 30,
+            "7a7b": 30,
+            "7a6b": 30,
+            "6c6d": 30,
+            "6a7b": 30,
+            "6a6b": 30,
+            "6a5b": 30,
+            "5c5d": 30,
+            "5a6b": 30,
+            "5a5b": 30,
+            "5a4b": 30,
+            "4c4d": 30,
+            "4a5b": 30,
+            "4a4b": 30,
+            "4a3b": 30,
+            "3c3d": 30,
+            "3a4b": 30,
+            "3a3b": 30,
+            "2c2d": 30,
+            "1c1d": 30,
+            "1a1b": 30
+          }
+        }
+      }
+    }
+  ]
+}

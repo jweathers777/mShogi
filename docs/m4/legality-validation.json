@@ -1,0 +1,44 @@
+{
+  "format": "mshogi.shogi.native-validation.v1",
+  "profile": "mshogi.shogi.csa36.v1",
+  "environment": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "rust": "rustc 1.89.0 (29483883e 2025-08-04)\nbinary: rustc\ncommit-hash: 29483883eed69d5fb4db01964cdf2af4d86e9cb2\ncommit-date: 2025-08-04\nhost: aarch64-apple-darwin\nrelease: 1.89.0\nLLVM version: 20.1.7\n",
+  "builder_base": "368c613348b07dd37f05415ded63bedb6ee26b29",
+  "source_sha256": {
+    "crates/mshogi-core/src/lib.rs": "47609273a847a105e02a532267f95caeadce6286c8b6d4441268f18073fa0ab0",
+    "crates/mshogi-core/src/shogi/action.rs": "569fee1952af078f55aa192b864c4dc588ff1faf2a15af166bd637b7a2519235",
+    "crates/mshogi-core/src/shogi/legal.rs": "a79edeef800bfc6dc316b6363cc408011189fd9b9018f05987b413ba3bea96cd",
+    "crates/mshogi-core/src/shogi/mod.rs": "5d307c27662518e4b22b71b441ef449baac5cbd4771d35d8c41e38cae0de7ef8",
+    "crates/mshogi-core/src/shogi/perft.rs": "bc98a1ae0384ac3f1b53cc0bf0b5af49f3ef46f39f20cb42a0a6152da832f0fd",
+    "crates/mshogi-core/src/shogi/sfen.rs": "63a25a516fa58b4279a4a2436236c4dabcd67c4bd8037c5f8af542721ccb7bf8",
+    "crates/mshogi-core/src/shogi/tests.rs": "efe48aa6fb2f59f69eb191cdfb869669eae748fc9acc7183575a3403bdcd8403",
+    "crates/mshogi-core/tests/shogi_legal.rs": "976b0ad10513bf08f880c9a077caf8ec7ca819824337833efefba754aaf7b7c9",
+    "crates/mshogi-core/examples/shogi_probe.rs": "0af107c745054e2f891623d395afb441ac7a18e23c364fb1b0b377ef55dbed5d",
+    "tools/shogi/compare_perft.py": "8bfecc527dbe8e2615d9732d626452607500f7befffdb121d037fa53aac00fa8"
+  },
+  "probe_sha256": "9352288fe27729cfa31984bb1d1d659f13c2a201c3a6d443040312be35f2d76c",
+  "local_commands": {
+    "cargo test --locked -p mshogi-core --test shogi_legal": "7 passed",
+    "cargo test --workspace --locked": "260 passed;0 failed;2 pre-existing deep chess tests ignored",
+    "cargo fmt --all -- --check": "passed",
+    "cargo clippy --workspace --all-targets --locked -- -D warnings": "passed",
+    "cargo build --locked --release -p mshogi-core --example shogi_probe": "passed"
+  },
+  "workspace_test_log_sha256": "d987f5ecf4eaac3ccbefb7a9edd56ed14d8a112fc9b44cf1bc951930cb04e9fb",
+  "clippy_log_sha256": "1db7b4e77f63a0faecdc2318c9845daf4d00fae530e0a386d124f297a5e57145",
+  "reference_comparisons": {
+    "sequences": 167,
+    "plies": 3850,
+    "prefixes": 4017,
+    "mismatches": 0
+  },
+  "perft_divide_cases": 169,
+  "perft_failures": 0,
+  "independent_initial_depth2": 900,
+  "counter_limit_negative": {
+    "exit": 1,
+    "stderr": "FAIL: reference-domain: supplied prefix exceeds cshogi signed-int32 next-ply limit",
+    "probe_invoked": false
+  },
+  "limits": "Board position only; no history/outcome/search/console/desktop shogi delivery; reference itself narrower than native diagram/counter domain."
+}

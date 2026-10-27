@@ -1,0 +1,143 @@
+{
+  "format": "mshogi.xiangqi.mutual-check-source-fixture.v1",
+  "profile": "mshogi.xiangqi.wxf2018.v1",
+  "id": "F025-MUTUAL-CANNON-CROSSCHECK",
+  "root_fen": "3c5/9/C4k3/1N7/3n5/9/9/3K5/9/9 w - - 0 1",
+  "word": [
+    "b6d7",
+    "d5e7",
+    "d7b6",
+    "e7d5"
+  ],
+  "moves": [
+    "b6d7",
+    "d5e7",
+    "d7b6",
+    "e7d5",
+    "b6d7",
+    "d5e7",
+    "d7b6",
+    "e7d5",
+    "b6d7",
+    "d5e7",
+    "d7b6",
+    "e7d5"
+  ],
+  "independently_expected": {
+    "root_side_to_move_in_check": true,
+    "root_occurrence_plies": [
+      0,
+      4,
+      8,
+      12
+    ],
+    "all_accepted_moves_give_check": true,
+    "red_check_plies": [
+      1,
+      3,
+      5,
+      7,
+      9,
+      11
+    ],
+    "black_check_plies": [
+      2,
+      4,
+      6,
+      8,
+      10,
+      12
+    ],
+    "captures": [],
+    "warning_at8": null,
+    "warnings": [],
+    "conclusion_at12": {
+      "kind": "draw",
+      "reason": "repetition"
+    },
+    "fault_category": "equal_mutual_perpetual_check_WXF20.1_not_one_sided_obligation"
+  },
+  "source_basis": "WXF2018 2.5 Horse / 2.6 Cannon / 2.10 check resolution, 3.2C and 20.1 equal perpetual check; selected owner third/fourth board occurrence policy; concrete independent paper construction, not a printed WXF diagram transcription",
+  "paper_trace": [
+    {
+      "prefix_plies": 0,
+      "red_horse": "b6",
+      "black_horse": "d5",
+      "black_d9_cannon_mounts_toward_red_general_d2": [
+        "d5"
+      ],
+      "red_a7_cannon_mounts_toward_black_general_f7": [],
+      "red_in_check": true,
+      "black_in_check": false
+    },
+    {
+      "prefix_plies": 1,
+      "action": "b6d7",
+      "actor": "red",
+      "horse_leg": "c6",
+      "red_horse": "d7",
+      "black_horse": "d5",
+      "black_d9_cannon_mounts_toward_red_general_d2": [
+        "d7",
+        "d5"
+      ],
+      "red_a7_cannon_mounts_toward_black_general_f7": [
+        "d7"
+      ],
+      "red_in_check": false,
+      "black_in_check": true
+    },
+    {
+      "prefix_plies": 2,
+      "action": "d5e7",
+      "actor": "black",
+      "horse_leg": "d6",
+      "red_horse": "d7",
+      "black_horse": "e7",
+      "black_d9_cannon_mounts_toward_red_general_d2": [
+        "d7"
+      ],
+      "red_a7_cannon_mounts_toward_black_general_f7": [
+        "d7",
+        "e7"
+      ],
+      "red_in_check": true,
+      "black_in_check": false
+    },
+    {
+      "prefix_plies": 3,
+      "action": "d7b6",
+      "actor": "red",
+      "horse_leg": "c7",
+      "red_horse": "b6",
+      "black_horse": "e7",
+      "black_d9_cannon_mounts_toward_red_general_d2": [],
+      "red_a7_cannon_mounts_toward_black_general_f7": [
+        "e7"
+      ],
+      "red_in_check": false,
+      "black_in_check": true
+    },
+    {
+      "prefix_plies": 4,
+      "action": "e7d5",
+      "actor": "black",
+      "horse_leg": "e6",
+      "red_horse": "b6",
+      "black_horse": "d5",
+      "black_d9_cannon_mounts_toward_red_general_d2": [
+        "d5"
+      ],
+      "red_a7_cannon_mounts_toward_black_general_f7": [],
+      "red_in_check": true,
+      "black_in_check": false
+    }
+  ],
+  "independent_geometry_notes": [
+    "Red General d2 and Black General f7 lie inside their palaces and on different files.",
+    "All four Horse legs c6/d6/c7/e6 are empty; none of the Horse positions attacks an opposing General.",
+    "Cannon captures/attacks require exactly one screen; zero or two screens do not check. Every complete Horse action both removes the incoming check and gives outgoing check.",
+    "Every prefix has the next displayed legal check evasion; therefore no prefix is checkmate/stalemate.",
+    "Four distinct board+side states; root third8/fourth12. Both sides check every move, so the WXF equal fault draw applies; do not copy Shogi impossibility arguments."
+  ]
+}

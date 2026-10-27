@@ -8,7 +8,11 @@ The [owner decision record](owner-decisions.md) supersedes the
 its fourth-occurrence warning and language-precedence suggestions. The filename
 is retained so existing task/document references remain valid.
 
-This is a planning/profile contract, not an implemented Xiangqi capability.
+Selection itself was a planning/profile contract, not an implemented capability.
+Current implementation: MSH-91/92/93 board rules and MSH-94 native history,
+canonical records and sound fast assessment; see [history contract](history-contract.md)
+and [evidence](history-evidence.md). Exact verification105 and product consumers
+remain outstanding. The selection-stage claims below are preserved history.
 Native schema and transport versions remain separately identified. No public
 profile constant, native rule implementation, runtime reference or UI support
 is introduced by selection. Existing Chess/Shogi identities remain unchanged.
@@ -44,11 +48,13 @@ names, source editions and owner decisions.
 4. This selected software interpretation reconciles threefold prohibited-conduct
    classification/warning with the separate four-occurrence draw provision.
    Do not use a generic chess repetition rule or a program's repetition score.
-5. **G-CYCLE**, owned by MSH-94 before affected coding/Ready: fix witness selection
+5. **G-CYCLE**, now resolved in [MSH-94 contract](history-contract.md): the original
+   gate required witness selection
    for differing/overlapping return paths, simultaneous anchors, retained/retired
    warnings and the same victim across paths using independently reviewed WXF
    examples. The third/fourth boundary is settled; these classification cases
-   must not silently default to draw/loss. They do not affect MSH-91's restricted
+   must not silently default to draw/loss. Reviewed full contiguous witness and
+   warning-prefix fixtures now establish this boundary. They do not affect MSH-91's restricted
    board corpus or MSH-92's state/action/reversal scope. The preserved F002 seed
    supplies concrete C/Q overlapping histories for that gate.
 
@@ -117,15 +123,21 @@ of exact work proves neither side of the question. Record mode, limits, exact
 target/history/provenance and accepted proof/unknown observations. Bound replay
 and reconstruction too; unsupported restoration is explicit.
 
-**G-NOWIN**, native MSH-94/105 semantic gate before affected implementation:
-independently establish what constitutes a winning continuation under WXF3.2A,
-including stalemate-as-loss, selected repetition/claim/history modes, possibility
-versus forced-win quantification, and exclusion/treatment of voluntary resignation
-and administrative sanctions. Otherwise arbitrary resignation would make every
-position appear winnable. The sources do not justify importing Chess's mating-only
-algorithm or an engine material table. Any material residual interpretation returns
-to the owner with its exact source/position. This named later gate does not block
-unaffected MSH-91/92. No sound-class or exact-algorithm success is claimed now.
+**G-NOWIN resolved by John during MSH-94:** use the existential natural-course
+board-win question, identifier `mshogi.xiangqi.natural-board-win.exists.v1`.
+A positive witness is a finite admitted ordinary board-action continuation to
+WXF3.1A checkmate or no-legal-action/stalemate loss. It is not a forced-win test.
+Exclude repetition/prohibited-conduct penalties, resignation, agreement,
+time/lateness, administrative/technical faults, invalid claims, misconduct and
+the no-win draw itself. Article3 separates natural board losses from later
+penalty clauses. Full history still governs actual game outcomes; a penalty
+award cannot prove intrinsic natural winning capability. F002's possible Black
+repetition award is specifically not a positive Black natural-win witness.
+See the [explicit owner resolution](owner-decisions.md#g-nowin-resolution-during-msh-94-2026-10-27).
+The earlier recommendation to include repetition awards was rejected. Exact
+algorithm, proof/resource evidence and MSH-105 delivery remain required, not
+claimed by this semantic decision. A missed fast proof remains unknown.
+
 
 ## Complete native contract / clause coverage
 
@@ -158,3 +170,14 @@ or blanket prerequisites for the board/kernel batch. No native rules begin in
 MSH-80. After reviewed planning completion, MSH-91 and MSH-92 are Ready;93
 follows both. Complete delivery remains MSH-45, shared all-game/platform closure
 MSH-46/47, and measured strength MSH-54 in M5.
+
+
+## MSH-94 implementation status
+
+The current [native history contract](history-contract.md) resolves G-CYCLE and
+records the consequence-relevant classification/admission software policy.
+[History evidence](history-evidence.md) traces actual fixtures, review and tests.
+The planning-boundary text above is preserved history; G-NOWIN semantics now have
+the explicit owner resolution above. MSH-94 does not implement the required
+exact backend105 or any future Xiangqi consumer. Complete M4 delivery still waits
+for the recorded graph, including105; MSH-45/M4 remain open.

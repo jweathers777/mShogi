@@ -81,3 +81,22 @@ rules or claims of executed conformance. MSH-80 can close its planning scope
 under the supplied owner decisions; MSH-84/103/45 cannot close without actual
 required3.2A implementation105. Source research and first board/kernel work
 remain independent of unavailable unrelated alternative corpora.
+
+
+## MSH-94 source/fixture resolution (supersedes the planning gates above)
+
+G-CYCLE/R-CLASS now have independent bilingual/pixel review, concrete legal
+histories and completed native-boundary review. See
+[contract](history-contract.md), [evidence](history-evidence.md), and preserved
+[source review](history-reviews/independent-source-review.md). This retains the
+correction trail for diagrams109/110, protected-Rook geometry and open-prefix
+warning retirement. No reference outcome is a WXF oracle.
+
+John resolved G-NOWIN to existential **natural board-win only** (WXF3.1A
+checkmate/stalemate), excluding repetition penalties and other non-board awards.
+[Owner decision](owner-decisions.md#g-nowin-resolution-during-msh-94-2026-10-27)
+supersedes the research workers' initial proposal to include repetition wins.
+Full game history still governs actual penalties/claims, not a positive natural
+win witness. Sound fast proof/unknown is94; required exact backend105 remains
+unstarted behind94/95. Older planning gates above are historical, not unresolved
+semantic approval requests.

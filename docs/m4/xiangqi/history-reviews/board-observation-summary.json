@@ -1,0 +1,340 @@
+{
+  "format": "mshogi.xiangqi.history-board-observation-summary.v1",
+  "scope": "board-only observations; no history/adjudication/claim/outcome oracle",
+  "expected_fixtures_modified": false,
+  "all_requested_checks_passed": true,
+  "source_revision": "067d1767d06fa0e781aff2a325e4b21a9ecf1d75",
+  "environment": {
+    "system": "Darwin",
+    "release": "27.0.0",
+    "machine": "arm64",
+    "python": "3.11.0"
+  },
+  "source_working_tree_dirty": true,
+  "native_source_sha256": {
+    "crates/mshogi-core/src/xiangqi/action.rs": "5cfdede8383c9304582f8ba7fb48d52e2b57ee5a958958191a151d34dd1401e5",
+    "crates/mshogi-core/src/xiangqi/assessment.rs": "e27485c454d3f2091bb02fe853a287c9de6d9854027da8e0726eb52dd8551f2c",
+    "crates/mshogi-core/src/xiangqi/codec.rs": "b060d993b88dd1c571f83db9e7d53f7a0bd9822c69a3f276a7b070fd14ba2390",
+    "crates/mshogi-core/src/xiangqi/conduct.rs": "082e720cdcbccfc22a2d759ffd8468043478140459163e453273728bd51dfecc",
+    "crates/mshogi-core/src/xiangqi/game.rs": "fb0acbf15fbd4b2c6247f43065d209d2eca5c460a596532b90d0529d83b169e9",
+    "crates/mshogi-core/src/xiangqi/legal.rs": "033daee2f34930b3faebc204ae351c7259be0011d667832f66473caabb7f3072",
+    "crates/mshogi-core/src/xiangqi/mod.rs": "0c0a8fc143e9756998bf1f8895708d1c2f08668f9af662032cb39323dc2a1092",
+    "crates/mshogi-core/src/xiangqi/perft.rs": "312f2975e14972570d2da2d2e19f5f9a0df1555184e1edbd321b15b9b1d227d5",
+    "crates/mshogi-core/src/xiangqi/record.rs": "176ba898195234075a4580f4fa61a38efc2fc62d79b894ba736527e05240a5f1",
+    "crates/mshogi-core/src/xiangqi/tests.rs": "0501852de437ba1028a7da104a23b0980774b209a758ac078eff1ac051b90c38",
+    "crates/mshogi-core/examples/xiangqi_probe.rs": "d2c087a5671ecf6b242f2ada6b3c12eb32473d283db607d2af2a0215a5b8e4ed",
+    "Cargo.lock": "abcf13906b91498b343c21b7da9b35fb8d046ed09952a64536435a8260899693"
+  },
+  "collector_sha256": "3239d3e498ff1bacc8beaa2ab1ca6810c0275cc10add7b818b3b7ecb14f776a7",
+  "command": "/Users/johnweathers/.pyenv/versions/3.11.0/bin/python3 /Users/johnweathers/Development/Personal/mShogi/tools/xiangqi/collect_history_boards.py --report /private/tmp/msh94-research/history-board-final.json",
+  "native_probe": {
+    "path": "/Users/johnweathers/Development/Personal/mShogi/target/debug/examples/xiangqi_probe",
+    "sha256": "c1a5a9953b9984fd4b71336a05c20aacfae18a6707cee139190143ac3c8e12f9"
+  },
+  "admitted_reference": {
+    "source_revision": "9d7833aa113626b3ea63ad83f49fb9b456bd5839",
+    "manifest_path": "/Users/johnweathers/Development/Personal/mShogi/docs/m4/xiangqi/reference/pikafish-admission.json",
+    "manifest_sha256": "6037cadd10f63b96cbeeb0899d67e6fdf74bd23835c477af6df888bcc17a6415",
+    "binary_path": "/private/tmp/msh91-reference/admitted3/pikafish-board-probe",
+    "binary_sha256": "b60ae49a031272032aeb9263cc3a47307b0b81ccff77633c87eb85de9291c7b9",
+    "wrapper_sha256": "843a804d64aa07df9756c107bb6a569a114be5ec4830b294747fc43843f4dece",
+    "harness_sha256": "37a8f59b4029f2019c082e80b6027ee09faa8bff5b5b2b5cb4feb9656506831e"
+  },
+  "fixture_file_sha256": {
+    "tests/fixtures/xiangqi/history-cycles.json": "f1b71dc8c3cdec4b7d2744c409fa9bdfe45bf7b131a07a6db1c8ef56d57935dc",
+    "tests/fixtures/xiangqi/natural-count.json": "2c15872d6037e1b5806d09da44ce9804d6886c12e8eca837d622a145328dd93f",
+    "tests/fixtures/xiangqi/history-mutual-check.json": "2f02f2431e256f68899b5949f73ed8677a0b809be7a234ac62fdb65e9cf3fc90",
+    "tests/fixtures/xiangqi/history-precedence.json": "b17c0acc926c2d6b4a0ae287a6e037e98a2c7adc048b984272fa5a314015f2ff"
+  },
+  "fixture_histories": 17,
+  "native_prefixes_passed": 492,
+  "admitted_reference_comparisons_passed": 492,
+  "native_only_prefixes": 0,
+  "comparison": "complete sorted legal actions, side-to-move check, exact undo, board/side/fullmove; foreign halfcounter excluded only",
+  "raw_observation_stream_sha256": "057cbda0151461903123b69b94d9583ae3c66b226fc548fdd0ebc765a91c50ff",
+  "raw_retention": "not stored by collector; deterministic ordered frames hashed; rerun collector to reproduce",
+  "fixtures": [
+    {
+      "fixture_file": "history-cycles.json",
+      "fixture": "F022-CC",
+      "complete_actions": 8,
+      "prefixes": 9,
+      "native_prefixes_passed": 9,
+      "admitted_reference_comparisons_passed": 9,
+      "native_only_prefixes": 0,
+      "side_to_move_checked_prefixes": [
+        1,
+        3,
+        5,
+        7
+      ],
+      "raw_observation_stream_sha256": "f5a7a7f359086d6fdc72dfacd609fb17272f8fda8fb2e9127f1d4f05112a089e"
+    },
+    {
+      "fixture_file": "history-cycles.json",
+      "fixture": "F023-CCC",
+      "complete_actions": 12,
+      "prefixes": 13,
+      "native_prefixes_passed": 13,
+      "admitted_reference_comparisons_passed": 13,
+      "native_only_prefixes": 0,
+      "side_to_move_checked_prefixes": [
+        1,
+        3,
+        5,
+        7,
+        9,
+        11
+      ],
+      "raw_observation_stream_sha256": "1b73e4bc3deffb8dccf0fb79a424a6c548b9fd3941ca67a5bfb7e30bfa49dbc6"
+    },
+    {
+      "fixture_file": "history-cycles.json",
+      "fixture": "F024-QQQ",
+      "complete_actions": 12,
+      "prefixes": 13,
+      "native_prefixes_passed": 13,
+      "admitted_reference_comparisons_passed": 13,
+      "native_only_prefixes": 0,
+      "side_to_move_checked_prefixes": [],
+      "raw_observation_stream_sha256": "27b65acc644dccd7fac480bddccdfec6bcace5a1b235a6f40d735f700954f63b"
+    },
+    {
+      "fixture_file": "history-cycles.json",
+      "fixture": "F026-CQC",
+      "complete_actions": 12,
+      "prefixes": 13,
+      "native_prefixes_passed": 13,
+      "admitted_reference_comparisons_passed": 13,
+      "native_only_prefixes": 0,
+      "side_to_move_checked_prefixes": [
+        1,
+        3,
+        9,
+        11
+      ],
+      "raw_observation_stream_sha256": "b4980c1ef7dec7568d20f546599ebda395b07c40aa71e2611ecb0e507ae92244"
+    },
+    {
+      "fixture_file": "history-cycles.json",
+      "fixture": "F026-QCC",
+      "complete_actions": 12,
+      "prefixes": 13,
+      "native_prefixes_passed": 13,
+      "admitted_reference_comparisons_passed": 13,
+      "native_only_prefixes": 0,
+      "side_to_move_checked_prefixes": [
+        5,
+        7,
+        9,
+        11
+      ],
+      "raw_observation_stream_sha256": "23e7d45c60b71ed68bc8c2956ab15280b855c871d71fd66000ae4ff1cc941375"
+    },
+    {
+      "fixture_file": "history-cycles.json",
+      "fixture": "F026-CCQ",
+      "complete_actions": 12,
+      "prefixes": 13,
+      "native_prefixes_passed": 13,
+      "admitted_reference_comparisons_passed": 13,
+      "native_only_prefixes": 0,
+      "side_to_move_checked_prefixes": [
+        1,
+        3,
+        5,
+        7
+      ],
+      "raw_observation_stream_sha256": "3388b6ff3dd335f9cebffaa5ede05004f879e3ffd47c8449331ceaaab76b75c6"
+    },
+    {
+      "fixture_file": "history-cycles.json",
+      "fixture": "F026-CCD",
+      "complete_actions": 16,
+      "prefixes": 17,
+      "native_prefixes_passed": 17,
+      "admitted_reference_comparisons_passed": 17,
+      "native_only_prefixes": 0,
+      "side_to_move_checked_prefixes": [
+        1,
+        3,
+        5,
+        7,
+        9,
+        11,
+        13,
+        15
+      ],
+      "raw_observation_stream_sha256": "d89067df92ab2e50a03c8517770f712c96f1f0706f3c1baecf20a0d1b4754f67"
+    },
+    {
+      "fixture_file": "history-cycles.json",
+      "fixture": "F026-TTT",
+      "complete_actions": 12,
+      "prefixes": 13,
+      "native_prefixes_passed": 13,
+      "admitted_reference_comparisons_passed": 13,
+      "native_only_prefixes": 0,
+      "side_to_move_checked_prefixes": [],
+      "raw_observation_stream_sha256": "4622457545c291607e681d978c24cb53bdafbc086c1a52f918ac46a5057df016"
+    },
+    {
+      "fixture_file": "history-cycles.json",
+      "fixture": "F026-CTC",
+      "complete_actions": 12,
+      "prefixes": 13,
+      "native_prefixes_passed": 13,
+      "admitted_reference_comparisons_passed": 13,
+      "native_only_prefixes": 0,
+      "side_to_move_checked_prefixes": [
+        1,
+        3,
+        9,
+        11
+      ],
+      "raw_observation_stream_sha256": "5af620807bbc2037f260c5e1d8547783c44489e07dbe982e23dbdc0d3143961c"
+    },
+    {
+      "fixture_file": "history-cycles.json",
+      "fixture": "F026-TCC",
+      "complete_actions": 12,
+      "prefixes": 13,
+      "native_prefixes_passed": 13,
+      "admitted_reference_comparisons_passed": 13,
+      "native_only_prefixes": 0,
+      "side_to_move_checked_prefixes": [
+        5,
+        7,
+        9,
+        11
+      ],
+      "raw_observation_stream_sha256": "5811ff15c20dc66118aba1f4608334fac300a7dba1f3c21a61c8eac2a5f5233c"
+    },
+    {
+      "fixture_file": "history-cycles.json",
+      "fixture": "F026-CCT",
+      "complete_actions": 12,
+      "prefixes": 13,
+      "native_prefixes_passed": 13,
+      "admitted_reference_comparisons_passed": 13,
+      "native_only_prefixes": 0,
+      "side_to_move_checked_prefixes": [
+        1,
+        3,
+        5,
+        7
+      ],
+      "raw_observation_stream_sha256": "5bf9c39ac97397edfcd01cdca47d9f8f69c88878af5a2e49eaf658d24a358e2e"
+    },
+    {
+      "fixture_file": "natural-count.json",
+      "fixture": "NATURAL-10-CHECKS",
+      "complete_actions": 101,
+      "prefixes": 102,
+      "native_prefixes_passed": 102,
+      "admitted_reference_comparisons_passed": 102,
+      "native_only_prefixes": 0,
+      "side_to_move_checked_prefixes": [
+        9,
+        17,
+        21,
+        23,
+        25,
+        31,
+        39,
+        45,
+        53,
+        55
+      ],
+      "raw_observation_stream_sha256": "86382ea64676cdad276822d7dd2996a7e218268b4c06fcd44928c2a88565315b"
+    },
+    {
+      "fixture_file": "natural-count.json",
+      "fixture": "NATURAL-11-CHECKS",
+      "complete_actions": 101,
+      "prefixes": 102,
+      "native_prefixes_passed": 102,
+      "admitted_reference_comparisons_passed": 102,
+      "native_only_prefixes": 0,
+      "side_to_move_checked_prefixes": [
+        5,
+        7,
+        9,
+        13,
+        21,
+        23,
+        29,
+        43,
+        47,
+        49,
+        53
+      ],
+      "raw_observation_stream_sha256": "5a5c61240480f8c4544dbea7650e416cf0ab9dc8bc52999be24dd6fb2fbad36f"
+    },
+    {
+      "fixture_file": "natural-count.json",
+      "fixture": "NATURAL-CAPTURE-RESET",
+      "complete_actions": 27,
+      "prefixes": 28,
+      "native_prefixes_passed": 28,
+      "admitted_reference_comparisons_passed": 28,
+      "native_only_prefixes": 0,
+      "side_to_move_checked_prefixes": [
+        5,
+        7,
+        9,
+        13,
+        21,
+        23
+      ],
+      "raw_observation_stream_sha256": "d7c07708beb1e074e47609b21e6dbade7220f161c027bbf782cd274fff4d0ede"
+    },
+    {
+      "fixture_file": "natural-count.json",
+      "fixture": "NATURAL-IMPORTED-DECLARED-COUNTER",
+      "complete_actions": 0,
+      "prefixes": 1,
+      "native_prefixes_passed": 1,
+      "admitted_reference_comparisons_passed": 1,
+      "native_only_prefixes": 0,
+      "side_to_move_checked_prefixes": [],
+      "raw_observation_stream_sha256": "4b1019007324073417ea0c28cf27949820e34d37dae87c8f9f510f3d6a25b547"
+    },
+    {
+      "fixture_file": "history-mutual-check.json",
+      "fixture": "F025-MUTUAL-CANNON-CROSSCHECK",
+      "complete_actions": 12,
+      "prefixes": 13,
+      "native_prefixes_passed": 13,
+      "admitted_reference_comparisons_passed": 13,
+      "native_only_prefixes": 0,
+      "side_to_move_checked_prefixes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "raw_observation_stream_sha256": "2a9c43abadf1782a6d992aeee123009a7da620387f1646f636467ae6f39e4627"
+    },
+    {
+      "fixture_file": "history-precedence.json",
+      "fixture": "NATURAL-PRECEDENCE-FOURTH-AT102",
+      "complete_actions": 102,
+      "prefixes": 103,
+      "native_prefixes_passed": 103,
+      "admitted_reference_comparisons_passed": 103,
+      "native_only_prefixes": 0,
+      "side_to_move_checked_prefixes": [],
+      "raw_observation_stream_sha256": "b6ffe1e5758539cb75ebb05d153eea5f1b72ce0f2a3484fff27b1ae456bb7c00"
+    }
+  ]
+}

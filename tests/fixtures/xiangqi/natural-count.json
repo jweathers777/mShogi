@@ -1,0 +1,563 @@
+{
+  "format": "mshogi.xiangqi.natural-count-source-fixtures.v1",
+  "profile": "mshogi.xiangqi.wxf2018.v1",
+  "purpose": "independently source-counted concrete fixtures; not execution outcome observations",
+  "formula": "known no-capture plies - max(0,claimant checking moves since capture - 10); valid at >=100",
+  "construction": "two seeded capture-free local-legal walks; independent straight-line rook/General check witnesses and arithmetic frozen before reference comparison; no WXF outcome comparator",
+  "fixtures": [
+    {
+      "id": "NATURAL-10-CHECKS",
+      "root_fen": "5k2r/9/9/9/R8/9/9/9/9/3K5 w - - 0 1",
+      "moves": [
+        "a5d5",
+        "i9i6",
+        "d5d6",
+        "i6i1",
+        "d6i6",
+        "i1b1",
+        "i6e6",
+        "b1i1",
+        "e6e9",
+        "f9f8",
+        "e9e0",
+        "i1f1",
+        "e0f0",
+        "f8f9",
+        "f0i0",
+        "f1e1",
+        "i0f0",
+        "f9e9",
+        "f0f4",
+        "e1e6",
+        "f4f9",
+        "e9e8",
+        "f9f8",
+        "e8e7",
+        "f8f7",
+        "e7e8",
+        "f7d7",
+        "e6e7",
+        "d7d3",
+        "e7f7",
+        "d3d8",
+        "e8e9",
+        "d8d5",
+        "f7g7",
+        "d0d1",
+        "g7g5",
+        "d5d4",
+        "g5g9",
+        "d4e4",
+        "e9f9",
+        "e4e1",
+        "g9g5",
+        "e1e4",
+        "g5g6",
+        "e4e9",
+        "f9f8",
+        "e9e1",
+        "g6g3",
+        "d1d0",
+        "g3g8",
+        "e1e9",
+        "g8g9",
+        "e9e8",
+        "f8f7",
+        "e8f8",
+        "f7e7",
+        "f8g8",
+        "g9a9",
+        "g8f8",
+        "a9a5",
+        "f8f3",
+        "a5a8",
+        "f3h3",
+        "a8a1",
+        "h3h5",
+        "a1a9",
+        "h5h4",
+        "a9a8",
+        "h4d4",
+        "a8g8",
+        "d4g4",
+        "g8h8",
+        "g4b4",
+        "e7e8",
+        "b4b0",
+        "h8h7",
+        "b0b4",
+        "h7f7",
+        "b4b0",
+        "f7f2",
+        "b0c0",
+        "f2f7",
+        "c0c4",
+        "f7f5",
+        "c4d4",
+        "f5e5",
+        "d0d1",
+        "e5f5",
+        "d4h4",
+        "f5i5",
+        "d1d0",
+        "i5e5",
+        "d0d1",
+        "e5e0",
+        "h4h1",
+        "e8f8",
+        "h1g1",
+        "f8e8",
+        "d1d2",
+        "e0a0",
+        "g1c1"
+      ],
+      "expected": {
+        "red_check_plies": [
+          9,
+          17,
+          21,
+          23,
+          25,
+          31,
+          39,
+          45,
+          53,
+          55
+        ],
+        "black_check_plies": [],
+        "captures": [],
+        "check_witnesses": [
+          {
+            "ply": 9,
+            "actor": "red",
+            "rook": "e9",
+            "opposing_general": "f9",
+            "intervening_pieces": []
+          },
+          {
+            "ply": 17,
+            "actor": "red",
+            "rook": "f0",
+            "opposing_general": "f9",
+            "intervening_pieces": []
+          },
+          {
+            "ply": 21,
+            "actor": "red",
+            "rook": "f9",
+            "opposing_general": "e9",
+            "intervening_pieces": []
+          },
+          {
+            "ply": 23,
+            "actor": "red",
+            "rook": "f8",
+            "opposing_general": "e8",
+            "intervening_pieces": []
+          },
+          {
+            "ply": 25,
+            "actor": "red",
+            "rook": "f7",
+            "opposing_general": "e7",
+            "intervening_pieces": []
+          },
+          {
+            "ply": 31,
+            "actor": "red",
+            "rook": "d8",
+            "opposing_general": "e8",
+            "intervening_pieces": []
+          },
+          {
+            "ply": 39,
+            "actor": "red",
+            "rook": "e4",
+            "opposing_general": "e9",
+            "intervening_pieces": []
+          },
+          {
+            "ply": 45,
+            "actor": "red",
+            "rook": "e9",
+            "opposing_general": "f9",
+            "intervening_pieces": []
+          },
+          {
+            "ply": 53,
+            "actor": "red",
+            "rook": "e8",
+            "opposing_general": "f8",
+            "intervening_pieces": []
+          },
+          {
+            "ply": 55,
+            "actor": "red",
+            "rook": "f8",
+            "opposing_general": "f7",
+            "intervening_pieces": []
+          }
+        ],
+        "physical_plies": 100,
+        "captures_in_first100": 0,
+        "red_checks_in_first100": 10,
+        "black_checks_in_first100": 0,
+        "red_count_at100": 100,
+        "black_count_at100": 100,
+        "red_eligible_at100": true,
+        "red_count_at101": 101,
+        "red_eligible_at101": true,
+        "repetition_max_occurrences": 1
+      },
+      "expected_claim_boundaries": [
+        {
+          "prefix_plies": 99,
+          "claimant": "red",
+          "count": 99,
+          "eligible": false
+        },
+        {
+          "prefix_plies": 100,
+          "claimant": "red",
+          "count": 100,
+          "eligible": true
+        },
+        {
+          "prefix_plies": 100,
+          "claimant": "black",
+          "count": 100,
+          "eligible": true
+        },
+        {
+          "prefix_plies": 101,
+          "claimant": "red",
+          "count": 101,
+          "eligible": true
+        }
+      ]
+    },
+    {
+      "id": "NATURAL-11-CHECKS",
+      "root_fen": "5k2r/9/9/9/R8/9/9/9/9/3K5 w - - 0 1",
+      "moves": [
+        "a5a6",
+        "f9f8",
+        "a6h6",
+        "i9i3",
+        "h6h8",
+        "f8f9",
+        "h8f8",
+        "f9e9",
+        "f8f9",
+        "e9e8",
+        "f9f3",
+        "i3i8",
+        "f3e3",
+        "e8f8",
+        "e3e1",
+        "i8i7",
+        "e1d1",
+        "i7i9",
+        "d1d5",
+        "i9i4",
+        "d5f5",
+        "f8e8",
+        "f5e5",
+        "e8f8",
+        "e5d5",
+        "i4i5",
+        "d5d3",
+        "i5c5",
+        "d3f3",
+        "f8e8",
+        "f3f7",
+        "c5b5",
+        "f7f6",
+        "b5b7",
+        "f6g6",
+        "e8e7",
+        "g6g0",
+        "b7b1",
+        "g0g6",
+        "b1c1",
+        "g6g2",
+        "c1c8",
+        "g2g7",
+        "e7e8",
+        "g7g9",
+        "c8c4",
+        "g9g8",
+        "e8e9",
+        "g8e8",
+        "e9f9",
+        "d0e0",
+        "c4c3",
+        "e8e9",
+        "f9f8",
+        "e0d0",
+        "c3c6",
+        "e9g9",
+        "c6c8",
+        "g9a9",
+        "c8c2",
+        "a9e9",
+        "c2a2",
+        "e9g9",
+        "f8e8",
+        "g9g5",
+        "a2a8",
+        "d0d1",
+        "a8c8",
+        "g5i5",
+        "c8b8",
+        "i5i7",
+        "b8b9",
+        "i7b7",
+        "e8e9",
+        "b7b8",
+        "b9a9",
+        "b8b1",
+        "a9a8",
+        "d1d0",
+        "a8e8",
+        "b1b2",
+        "e9f9",
+        "b2d2",
+        "e8g8",
+        "d2h2",
+        "g8g4",
+        "h2h6",
+        "g4h4",
+        "h6i6",
+        "h4h2",
+        "i6i0",
+        "h2h5",
+        "i0g0",
+        "h5h6",
+        "g0g6",
+        "h6h4",
+        "g6h6",
+        "h4c4",
+        "h6h0",
+        "c4a4",
+        "h0h8"
+      ],
+      "expected": {
+        "red_check_plies": [
+          5,
+          7,
+          9,
+          13,
+          21,
+          23,
+          29,
+          43,
+          47,
+          49,
+          53
+        ],
+        "black_check_plies": [],
+        "captures": [],
+        "check_witnesses": [
+          {
+            "ply": 5,
+            "actor": "red",
+            "rook": "h8",
+            "opposing_general": "f8",
+            "intervening_pieces": []
+          },
+          {
+            "ply": 7,
+            "actor": "red",
+            "rook": "f8",
+            "opposing_general": "f9",
+            "intervening_pieces": []
+          },
+          {
+            "ply": 9,
+            "actor": "red",
+            "rook": "f9",
+            "opposing_general": "e9",
+            "intervening_pieces": []
+          },
+          {
+            "ply": 13,
+            "actor": "red",
+            "rook": "e3",
+            "opposing_general": "e8",
+            "intervening_pieces": []
+          },
+          {
+            "ply": 21,
+            "actor": "red",
+            "rook": "f5",
+            "opposing_general": "f8",
+            "intervening_pieces": []
+          },
+          {
+            "ply": 23,
+            "actor": "red",
+            "rook": "e5",
+            "opposing_general": "e8",
+            "intervening_pieces": []
+          },
+          {
+            "ply": 29,
+            "actor": "red",
+            "rook": "f3",
+            "opposing_general": "f8",
+            "intervening_pieces": []
+          },
+          {
+            "ply": 43,
+            "actor": "red",
+            "rook": "g7",
+            "opposing_general": "e7",
+            "intervening_pieces": []
+          },
+          {
+            "ply": 47,
+            "actor": "red",
+            "rook": "g8",
+            "opposing_general": "e8",
+            "intervening_pieces": []
+          },
+          {
+            "ply": 49,
+            "actor": "red",
+            "rook": "e8",
+            "opposing_general": "e9",
+            "intervening_pieces": []
+          },
+          {
+            "ply": 53,
+            "actor": "red",
+            "rook": "e9",
+            "opposing_general": "f9",
+            "intervening_pieces": []
+          }
+        ],
+        "physical_plies": 100,
+        "captures_in_first100": 0,
+        "red_checks_in_first100": 11,
+        "black_checks_in_first100": 0,
+        "red_count_at100": 99,
+        "black_count_at100": 100,
+        "red_eligible_at100": false,
+        "red_count_at101": 100,
+        "red_eligible_at101": true,
+        "repetition_max_occurrences": 1
+      },
+      "expected_claim_boundaries": [
+        {
+          "prefix_plies": 99,
+          "claimant": "red",
+          "count": 98,
+          "eligible": false
+        },
+        {
+          "prefix_plies": 100,
+          "claimant": "red",
+          "count": 99,
+          "eligible": false
+        },
+        {
+          "prefix_plies": 100,
+          "claimant": "black",
+          "count": 100,
+          "eligible": true
+        },
+        {
+          "prefix_plies": 101,
+          "claimant": "red",
+          "count": 100,
+          "eligible": true
+        }
+      ]
+    },
+    {
+      "id": "NATURAL-CAPTURE-RESET",
+      "root_fen": "5k2r/9/9/9/R8/9/9/9/9/3K5 w - - 0 1",
+      "moves": [
+        "a5a6",
+        "f9f8",
+        "a6h6",
+        "i9i3",
+        "h6h8",
+        "f8f9",
+        "h8f8",
+        "f9e9",
+        "f8f9",
+        "e9e8",
+        "f9f3",
+        "i3i8",
+        "f3e3",
+        "e8f8",
+        "e3e1",
+        "i8i7",
+        "e1d1",
+        "i7i9",
+        "d1d5",
+        "i9i4",
+        "d5f5",
+        "f8e8",
+        "f5e5",
+        "e8f8",
+        "e5d5",
+        "i4i5",
+        "d5i5"
+      ],
+      "expected": {
+        "capture_ply": 27,
+        "captured_piece": "r",
+        "capture_action": "d5i5",
+        "capture_free_plies_after_capture": 0,
+        "claimant_checks_since_capture": {
+          "red": 0,
+          "black": 0
+        },
+        "natural_count": {
+          "red": 0,
+          "black": 0
+        },
+        "eligibility": {
+          "red": false,
+          "black": false
+        }
+      },
+      "expected_claim_boundaries": [
+        {
+          "prefix_plies": 27,
+          "claimant": "red",
+          "count": 0,
+          "eligible": false
+        },
+        {
+          "prefix_plies": 27,
+          "claimant": "black",
+          "count": 0,
+          "eligible": false
+        }
+      ]
+    },
+    {
+      "id": "NATURAL-IMPORTED-DECLARED-COUNTER",
+      "root_fen": "5k2r/9/9/9/R8/9/9/9/9/3K5 w - - 100 51",
+      "moves": [],
+      "expected": {
+        "declared_no_capture_plies": 100,
+        "known_history_plies": 0,
+        "earlier_check_history": "unavailable",
+        "verified_natural_count": {
+          "red": 0,
+          "black": 0
+        },
+        "eligibility": {
+          "red": false,
+          "black": false
+        },
+        "reason": "declared counter is not verified prior claim/check history"
+      }
+    }
+  ]
+}

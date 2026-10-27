@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-27T12:06:00Z'
+updated_date: '2026-10-27T12:15:00Z'
 labels:
   - m4
   - owner-msh-41
@@ -128,6 +128,8 @@ Final consistency implementation: DocumentState uses one path+dirty model (Unsav
 Verification so far: strictTS+161frontend/21filesPASS;22driverPASS; native session85testsPASS; added nonzero move/terminal/history regressionPASS. Independently delegated reviewer msh74_implementation_review read bounded diff vs95c7e00 and traced native budget/history and unchanged guards; independently ran34frontend/4files+strictTS,1native and12driverPASS, no material findings. Normal Mac rebuilt successfully (Rust1.90, existingTao warnings); actual updated captures/nativeCI pending. MSH-74 staysInReview/no75.
 
 First final-consistency Rust CI40500442835 atabe66c5 failed all3 at generated snapshot drift, after tests/lint passed: four manually added field positions/formatting differed from native example output, values unchanged. Regenerated exact write_frontend_fixtures output; second independent-directory generation byte-matches all20fixtures. No product behavior or drift gate weakened. Applicable exact-source CI will run on fixture correction; abe Desktop outcome remains separately labeled.
+
+Final fixture-source7df91d3 Rust CI40501219346 all3PASS. Supportingabe Desktop Linux10/14FAIL: new driver wrongly hardcoded comma grouping but actualLinux renders5000/20000; old plieshelperexpected1plies although normalnativepromotion succeeded andfootercorrectlyshowed1ply. Interruptedordinaryphasesdidnotsave, dependentreopenmissingfile. These failedchecks retained, no rerun of known-wrongassertions. Correctedonlyexternaldriver/test: compareexactdepth/numericnodebudget allowinglocalegrouping, andsingular1ply; no productsource, save/inspectioninvariant ornativepolicychange.25driverPASS; separate reviewer readboundedfollowup and independentlyran25PASS/pycompile/diffcheck, nofindings. Mechanicalfixturefollowup review confirmsbefore/after4JSONvaluesidentical; defaultgenerator20outputs andverificationfeature22includingcapacity/synthetic allbyte-match. UpdatednormalMacsave/Flip/headerlabels, realplay/history/Returnpause/Open/handinspection observed, paired2360x1640 screenshots independentlyreviewedPASS. ExactfinaldriverrevisionGUI/CIstillrequired beforeDone; no75.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

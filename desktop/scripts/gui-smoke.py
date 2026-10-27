@@ -15,6 +15,7 @@ import json
 import os
 from pathlib import Path
 import platform
+import re
 import signal
 import shutil
 import subprocess
@@ -42,6 +43,13 @@ def saved_document_accepted(observation, expected_path):
             and not any(word in status.casefold()
                         for status in observation["statuses"]
                         for word in ("saving", "opening")))
+
+
+def play_limit_matches(text, depth, nodes):
+    """Compare actual displayed integers without imposing a WebView locale."""
+    match = re.fullmatch(r"Play limit: depth ([0-9]+) · ([0-9,. \u00a0\u202f]+) nodes", text or "")
+    return bool(match and int(match[1]) == depth
+                and int(re.sub(r"[,. \u00a0\u202f]", "", match[2]) or "-1") == nodes)
 
 
 def terminal_transport_closed(error):
@@ -354,7 +362,7 @@ class Journey:
             self.native = None
 
     def plies(self, count, historical=False):
-        text = f"{'Selected' if historical else 'Live'} position · {count} plies"
+        text = f"{'Selected' if historical else 'Live'} position · {count} {'ply' if count == 1 else 'plies'}"
         wait(lambda: text in self.web.text(".game-footnote"), text)
 
     def square(self, name):
@@ -443,7 +451,7 @@ class Journey:
         assert layout['help'] and layout['help']['height'] > 0 and layout['helpVisible'] and layout['footnoteVisible'], ('live help belongs visibly in the shared footer',layout)
         assert layout['documentState'] == 'unsaved', layout
         assert layout['positionStatus'] == 'Your turnLive position · 0 plies', layout
-        assert layout['playLimits'] == f"Play limit: depth 2 · {'5,000' if game == 'shogi' else '20,000'} nodes", layout
+        assert play_limit_matches(layout['playLimits'], 2, 5000 if game == 'shogi' else 20000), layout
         assert layout['documentInHeader'] and layout['flipInHeading'] and layout['technicalCollapsed'], layout
         assert layout['headerButtons'] == ['New game','Save','Save as…','Open…'], layout
         assert layout['boardPanel']['left'] < layout['sidebar']['left'], layout

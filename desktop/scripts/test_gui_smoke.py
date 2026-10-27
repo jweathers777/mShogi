@@ -4,12 +4,39 @@ import http.client
 import importlib.util
 from pathlib import Path
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 import urllib.error
 
 spec = importlib.util.spec_from_file_location('gui_smoke', Path(__file__).with_name('gui-smoke.py'))
 module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
+
+
+class SharedPresentationTests(unittest.TestCase):
+    def test_actual_numeric_budget_is_independent_of_locale_grouping(self):
+        for value in ('5000', '5,000', '5.000', '5\u00a0000', '5\u202f000'):
+            with self.subTest(value=value):
+                self.assertTrue(module.play_limit_matches(f'Play limit: depth 2 · {value} nodes', 2, 5000))
+        self.assertTrue(module.play_limit_matches('Play limit: depth 2 · 20000 nodes', 2, 20000))
+
+    def test_wrong_or_missing_budget_is_not_accepted(self):
+        for value in ('Untimed · bounded native search', 'Play limit: depth 3 · 5,000 nodes',
+                      'Play limit: depth 2 · 5,001 nodes', 'Play limit: depth 2 · 20,000 nodes', None):
+            with self.subTest(value=value):
+                self.assertFalse(module.play_limit_matches(value, 2, 5000))
+
+    def test_native_footer_accepts_singular_and_plural_in_live_and_history(self):
+        journey = object.__new__(module.Journey)
+        journey.web = Mock()
+        for count, historical, actual in (
+                (0, False, 'Your turn Live position · 0 plies'),
+                (1, True, 'Read-only history · Selected position · 1 ply'),
+                (1, False, 'Game concluded Live position · 1 ply'),
+                (2, False, 'Play paused Live position · 2 plies')):
+            with self.subTest(count=count, historical=historical):
+                journey.web.text.return_value = actual
+                with patch.object(module, 'wait', side_effect=lambda check, label: self.assertTrue(check(), label)):
+                    journey.plies(count, historical)
 
 
 class SaveAcceptanceTests(unittest.TestCase):

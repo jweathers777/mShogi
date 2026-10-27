@@ -14,6 +14,15 @@ pub struct RepetitionIdentity {
 }
 
 impl Position {
+    /// Read-only complete local movement/drop choices for an owner's hypothetical
+    /// turn. Uses native king safety, promotion and drop restrictions on a private
+    /// copy; does not establish a game outcome or permission to commit a command.
+    pub fn inspection_actions(&self, side: Side) -> Vec<Action> {
+        let mut copy = self.clone();
+        copy.side = side;
+        copy.legal_actions()
+    }
+
     /// Geometric attackers of a square in SFEN square order.
     ///
     /// Occupancy stops rays, including at a friendly defended target. Pinned
@@ -167,5 +176,55 @@ impl Position {
         let mut copy = self.clone();
         copy.next_ply = 1;
         copy
+    }
+}
+
+#[cfg(test)]
+mod inspection_tests {
+    use super::*;
+    fn actions(p: &Position, side: Side, from: &str) -> Vec<String> {
+        p.inspection_actions(side)
+            .into_iter()
+            .map(|a| a.to_string())
+            .filter(|a| a.starts_with(from))
+            .collect()
+    }
+    #[test]
+    fn opposite_side_movement_promotions_capture_and_pin_preserve_position() {
+        let p = Position::from_sfen("4k4/4r4/6s2/9/6P2/9/9/9/K3R4 b - 23").unwrap();
+        let before = p.clone();
+        assert_eq!(
+            actions(&p, Side::Gote, "3c"),
+            ["3c2b", "3c2d", "3c3d", "3c4b", "3c4d"]
+        );
+        let rook = actions(&p, Side::Gote, "5b");
+        assert!(!rook.iter().any(|a| a.starts_with("5b4b")));
+        assert!(rook.contains(&"5b5i".into()));
+        assert!(rook.contains(&"5b5i+".into()));
+        assert_eq!(p, before);
+    }
+    #[test]
+    fn hypothetical_drops_retain_nifu_dead_ranks_and_resources() {
+        let p = Position::from_sfen("4k4/9/9/9/4p4/9/9/9/4K4 b pn 7").unwrap();
+        let before = p.clone();
+        let pawn = actions(&p, Side::Gote, "P*");
+        assert!(pawn.contains(&"P*4f".into()));
+        assert!(
+            !pawn
+                .iter()
+                .any(|a| a.as_bytes()[2] == b'5' || a.ends_with('i'))
+        );
+        let knight = actions(&p, Side::Gote, "N*");
+        assert!(!knight.iter().any(|a| a.ends_with('h') || a.ends_with('i')));
+        assert_eq!(p, before);
+    }
+    #[test]
+    fn hypothetical_inspection_still_excludes_pawn_drop_mate() {
+        // The gold protects 5b; the gote king's other exits are occupied by
+        // its lances/pawns. A dropped pawn on 5b gives undefendable check.
+        let p = Position::from_sfen("3lkl3/3p1p3/4G4/9/9/9/9/9/K8 w P 1").unwrap();
+        let before = p.clone();
+        assert!(!actions(&p, Side::Sente, "P*").contains(&"P*5b".into()));
+        assert_eq!(p, before);
     }
 }

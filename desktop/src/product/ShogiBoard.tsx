@@ -1,6 +1,8 @@
 import { useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
 import type { BoardChoice, NativePiece } from "../Board";
 import type { GameSnapshot, Side } from "./native";
+import type { InspectMovement, MovementInspection } from "./movementInspection";
+import "../movement-inspection.css";
 
 // Decoration only. Native kind/promotion/owner remain the action and identity data.
 export function pieceGlyph(kind: string, promoted = false, first = true): string[] {
@@ -22,7 +24,10 @@ function pieceName(piece: NativePiece, sides: Side[]) {
   const owner = sides.find((s) => s.key === piece.owner)?.label ?? "Player";
   return `${piece.square}, ${owner} ${piece.promoted ? "promoted " : ""}${piece.kind}`;
 }
-export function ShogiBoard({ snapshot, disabled, onPlay }: { snapshot: GameSnapshot; disabled: boolean; onPlay: (action: string) => void }) {
+export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDisabled = disabled, inspectionContextKey }: {
+  snapshot: GameSnapshot; disabled: boolean; onPlay: (action: string) => void;
+  onInspect?: InspectMovement; inspectionDisabled?: boolean; inspectionContextKey?: string;
+}) {
   const bottom = snapshot.document.settings.settings.orientation;
   const orientation = snapshot.orientations.find((o) => o.side.id.side === bottom) ?? snapshot.orientations[0]!;
   const topSide = snapshot.sides.find((s) => s.key !== orientation.side.key)!;
@@ -32,23 +37,29 @@ export function ShogiBoard({ snapshot, disabled, onPlay }: { snapshot: GameSnaps
   const [focused, setFocused] = useState(snapshot.board.initial_focus);
   const [completions, setCompletions] = useState<BoardChoice[]>([]);
   const [announcement, setAnnouncement] = useState("");
+  const [inspection, setInspection] = useState<MovementInspection | null>(null);
+  const [inspectionPending, setInspectionPending] = useState(false);
+  const inspectionRequest = useRef(0);
   const refs = useRef(new Map<string, SVGGElement | HTMLButtonElement>());
   const chooser = useRef<HTMLDivElement>(null), lastDestination = useRef(snapshot.board.initial_focus);
   const hadFocus = useRef(false);
   useLayoutEffect(() => {
+    inspectionRequest.current++; setInspection(null); setInspectionPending(false);
     setSelected(null); setPrefix([]); setCompletions([]); setAnnouncement("");
     if (hadFocus.current) refs.current.get(lastDestination.current)?.focus();
-  }, [snapshot.token.document, snapshot.token.selection, snapshot.token.version, orientation.side.key, disabled]);
+    return () => { inspectionRequest.current++; };
+  }, [snapshot.token.document, snapshot.token.selection, snapshot.token.version, orientation.side.key, disabled, inspectionDisabled, inspectionContextKey, onInspect]);
   useLayoutEffect(() => { if (completions.length) chooser.current?.querySelector<HTMLButtonElement>("button")?.focus(); }, [completions]);
-  const candidates = snapshot.choices.filter((c) => c.from === selected && prefix.every((step, i) => c.steps[i] === step));
+  const activeChoices = inspection ? inspection.choices : disabled ? [] : snapshot.choices;
+  const candidates = activeChoices.filter((c) => c.from === selected && prefix.every((step, i) => c.steps[i] === step));
   const destinations = candidates.map((c) => c.steps[prefix.length]);
   const terminal = prefix.length ? candidates.filter((c) => c.steps.length === prefix.length) : [];
   const continuation = prefix.length > 0 && candidates.some((c) => c.steps.length > prefix.length);
   function focus(key: string) { setFocused(key); refs.current.get(key)?.focus(); }
-  function clear(message = "Selection cancelled.") { setSelected(null); setPrefix([]); setCompletions([]); setAnnouncement(message); }
+  function clear(message = "Selection cancelled.") { inspectionRequest.current++; setInspection(null); setInspectionPending(false); setSelected(null); setPrefix([]); setCompletions([]); setAnnouncement(message); }
   function cancel() { const target = selected ?? lastDestination.current; clear(); focus(target); }
   function commit(choice: BoardChoice) {
-    if (disabled || !snapshot.choices.some((c) => c.action === choice.action)) return;
+    if (inspection || disabled || !snapshot.choices.some((c) => c.action === choice.action)) return;
     clear("Move submitted."); focus(lastDestination.current); onPlay(choice.action);
   }
   function finish(choices: BoardChoice[]) {
@@ -57,18 +68,35 @@ export function ShogiBoard({ snapshot, disabled, onPlay }: { snapshot: GameSnaps
     if (choices.length === 1) commit(choices[0]!); else setCompletions(choices);
   }
   function select(key: string) {
-    if (disabled || completions.length) return;
+    if ((disabled && (inspectionDisabled || !onInspect)) || completions.length) return;
     hadFocus.current = true; focus(key);
+    const actionableOrigin = !disabled && (snapshot.pieces.some((p) => p.square === key && p.owner === snapshot.human.key) || snapshot.hands.some((h) => h.origin === key && h.owner === snapshot.human.key && h.count > 0)) && snapshot.choices.some((c) => c.from === key);
+    if (inspection && actionableOrigin) {
+      clear(); setSelected(key); setAnnouncement("Piece selected. Choose a marked legal destination."); return;
+    }
     const next = candidates.filter((c) => c.steps[prefix.length] === key);
     if (next.length) {
       lastDestination.current = key;
       const route = [...prefix, key]; setPrefix(route);
       if (next.some((c) => c.steps.length > route.length)) {
         setAnnouncement("Route selected. Continue to a marked square or complete here; no move has been played.");
-      } else finish(next.filter((c) => c.steps.length === route.length));
+      } else {
+        const complete = next.filter((c) => c.steps.length === route.length);
+        if (inspection) setAnnouncement(`Inspection route complete. ${complete.map((c) => c.completion?.label ?? "Complete route").join(" or ")}. Read-only; no action submitted.`);
+        else finish(complete);
+      }
     } else if (selected === key) clear();
-    else if (snapshot.choices.some((c) => c.from === key)) { setSelected(key); setPrefix([]); setAnnouncement("Piece selected. Choose a marked legal destination."); }
-    else setAnnouncement("Choose a piece or one of its marked destinations. Escape cancels.");
+    else if (actionableOrigin) { clear(); setSelected(key); setPrefix([]); setAnnouncement("Piece selected. Choose a marked legal destination."); }
+    else if (onInspect && !inspectionDisabled && (snapshot.pieces.some((p) => p.square === key) || snapshot.hands.some((h) => h.origin === key && h.count > 0))) {
+      clear(); setSelected(key); setInspectionPending(true); setAnnouncement("Loading read-only movement inspection.");
+      const request = ++inspectionRequest.current;
+      void onInspect(key).then((result) => {
+        if (request !== inspectionRequest.current) return;
+        setInspectionPending(false);
+        if (result && result.origin === key) { setInspection(result); setAnnouncement(`Inspecting ${result.label}. Read-only movement choices; no action can be played.`); }
+        else { setSelected(null); setAnnouncement("Movement inspection is unavailable for this context. Select the piece again to query the current position."); }
+      });
+    } else setAnnouncement("Choose a piece or one of its marked destinations. Escape cancels.");
   }
   function boardKey(e: KeyboardEvent<SVGGElement>, square: string) {
     const offsets: Record<string, number> = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -columns, ArrowDown: columns };
@@ -86,13 +114,13 @@ export function ShogiBoard({ snapshot, disabled, onPlay }: { snapshot: GameSnaps
       <div className="shogi-player-identity"><span className="player-avatar" aria-hidden="true">{human ? "Y" : "m"}</span><div><strong>{human ? "You" : "mShogi"}<span>{side.label}</span></strong><small>{human ? "Human player" : "Your opponent"}</small></div>{snapshot.turn.key === side.key && !snapshot.status.concluded && <span className="turn-indicator">To move</span>}</div>
       <div className="shogi-hand" role="group" aria-label={`${side.label} pieces in hand`}>
         {!hands.length && <span className="empty-hand">No pieces in hand</span>}
-        {hands.map((h) => <button key={h.origin} className={`hand-piece${selected === h.origin ? " selected" : ""}`} ref={(node) => { if (node) refs.current.set(h.origin, node); else refs.current.delete(h.origin); }}
-          disabled={disabled || completions.length > 0 || !snapshot.choices.some((c) => c.from === h.origin)}
-          data-hand={h.kind} data-hand-piece={h.kind} data-owner={side.id.side} aria-label={`${side.label} ${h.kind} in hand, ${h.count}${selected === h.origin ? ", selected for drop" : ""}`} aria-pressed={selected === h.origin}
+        {hands.map((h) => <button key={h.origin} className={`hand-piece${selected === h.origin ? inspection ? " inspecting" : inspectionPending ? "" : " selected" : ""}`} ref={(node) => { if (node) refs.current.set(h.origin, node); else refs.current.delete(h.origin); }}
+          disabled={completions.length > 0 || ((disabled || !snapshot.choices.some((c) => c.from === h.origin)) && (!onInspect || inspectionDisabled))}
+          data-hand={h.kind} data-hand-piece={h.kind} data-owner={side.id.side} aria-label={`${side.label} ${h.kind} in hand, ${h.count}${selected === h.origin ? inspection ? `, Inspecting ${inspection.label}` : inspectionPending ? ", loading movement inspection" : ", selected for drop" : ""}`} aria-pressed={selected === h.origin}
           onClick={() => select(h.origin)} onKeyDown={(e) => {
             if (e.key === "Escape") { e.preventDefault(); cancel(); }
             else if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); focus(snapshot.board.initial_focus); }
-            else if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); const available = hands.filter((hand) => snapshot.choices.some((c) => c.from === hand.origin)); const index = available.findIndex((hand) => hand.origin === h.origin); const next = available[(index + (e.key === "ArrowRight" ? 1 : -1) + available.length) % available.length]; if (next) focus(next.origin); }
+            else if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); const available = hands.filter((hand) => (!disabled && snapshot.choices.some((c) => c.from === hand.origin)) || (onInspect && !inspectionDisabled)); const index = available.findIndex((hand) => hand.origin === h.origin); const next = available[(index + (e.key === "ArrowRight" ? 1 : -1) + available.length) % available.length]; if (next) focus(next.origin); }
           }}><svg viewBox="0 0 100 100" aria-hidden="true"><ShogiPiece kind={h.kind} first={side.first_mover} rotated={side.key !== orientation.side.key} /></svg><span className="hand-count">{h.count}</span></button>)}
       </div>
     </div>;
@@ -108,15 +136,17 @@ export function ShogiBoard({ snapshot, disabled, onPlay }: { snapshot: GameSnaps
         {squares.map((square, index) => {
           const row = Math.floor(index / columns), column = index % columns;
           const piece = snapshot.pieces.find((p) => p.square === square), target = destinations.includes(square);
-          return <g key={square} className={`shogi-square${selected === square ? " selected" : ""}${target ? " target" : ""}`} data-square={square}
+          return <g key={square} className={`shogi-square${selected === square && !inspection && !inspectionPending ? " selected" : ""}${target && !inspection ? " target" : ""}`} data-square={square}
             transform={`translate(${28 + column * 100},${28 + row * 100})`} ref={(node) => { if (node) refs.current.set(square, node); else refs.current.delete(square); }}
-            role="button" tabIndex={(squares.includes(focused) ? focused : snapshot.board.initial_focus) === square ? 0 : -1} aria-disabled={disabled || completions.length > 0} aria-pressed={selected === square}
-            aria-label={`${piece ? pieceName(piece, snapshot.sides) : `${square}, empty`}${selected === square ? ", selected" : ""}${target ? ", legal destination" : ""}${prefix.includes(square) ? ", route step" : ""}`}
+            role="button" tabIndex={(squares.includes(focused) ? focused : snapshot.board.initial_focus) === square ? 0 : -1} aria-disabled={(disabled && (inspectionDisabled || !onInspect)) || completions.length > 0} aria-pressed={selected === square}
+            aria-label={`${piece ? pieceName(piece, snapshot.sides) : `${square}, empty`}${selected === square ? inspection ? `, Inspecting ${inspection.label}` : inspectionPending ? ", loading movement inspection" : ", selected" : ""}${target ? inspection ? ", read-only inspection destination" : ", legal destination" : ""}${prefix.includes(square) ? ", route step" : ""}`}
             onFocus={() => setFocused(square)} onClick={() => select(square)} onKeyDown={(e) => boardKey(e, square)}>
             <rect className="shogi-cell" width="100" height="100" />
             <rect className="shogi-selection-ring" x="5" y="5" width="90" height="90" rx="3" />
             {piece && <g transform="translate(5 3) scale(.9)"><ShogiPiece kind={piece.kind} promoted={piece.promoted} first={snapshot.sides.find((s) => s.key === piece.owner)?.first_mover ?? true} rotated={piece.owner !== orientation.side.key} /></g>}
-            {target && <g className="shogi-destination" aria-hidden="true"><path d="M9 28V9H28 M72 9H91V28 M91 72V91H72 M28 91H9V72" />{!piece && <circle cx="50" cy="50" r="9" />}</g>}
+            {target && !inspection && <g className="shogi-destination" aria-hidden="true"><path d="M9 28V9H28 M72 9H91V28 M91 72V91H72 M28 91H9V72" />{!piece && <circle cx="50" cy="50" r="9" />}</g>}
+            {inspection?.origin === square && <rect className="inspection-origin-ring" x="5" y="5" width="90" height="90" rx="3" aria-hidden="true" />}
+            {target && inspection && <circle className="inspection-marker" cx="50" cy="50" r={piece ? "46" : "19"} aria-hidden="true" />}
             <rect className="shogi-focus-ring" x="3" y="3" width="94" height="94" rx="3" />
           </g>;
         })}
@@ -129,8 +159,8 @@ export function ShogiBoard({ snapshot, disabled, onPlay }: { snapshot: GameSnaps
       }}><strong>Promotion</strong><p>Choose how this piece completes its move.</p><div>{completions.map((c) => <button key={c.action} className="primary" onClick={() => commit(c)}>{c.completion?.label ?? "Complete move"}</button>)}</div><button className="quiet" onClick={cancel}>Cancel promotion</button></div>}
     </div>
     {tray(orientation.side)}
-    <div className="shogi-board-help"><span>Select a piece or hand piece, then a marked square.</span><span>Arrows · Enter · Esc</span></div>
-    {continuation && <div className="shogi-route"><p>{announcement}</p>{terminal.length > 0 && <button onClick={() => finish(terminal)}>Complete action here</button>}<button onClick={cancel}>Cancel selection</button></div>}
+    <div className={`shogi-board-help${inspection || inspectionPending ? " movement-inspection-status" : ""}`}><span>{inspection ? `Inspecting ${inspection.label} · Read-only · ${inspection.choices.length ? "Hollow rings show movement choices" : "No native movement choices"}` : inspectionPending ? "Loading read-only movement inspection…" : "Select a piece or hand piece, then a marked square."}</span><span>Arrows · Enter · Esc</span></div>
+    {continuation && <div className="shogi-route" onKeyDown={(e) => { if (e.key === "Escape") { e.preventDefault(); cancel(); } }}><p>{announcement}</p>{terminal.length > 0 && !inspection && <button onClick={() => finish(terminal)}>Complete action here</button>}<button onClick={cancel}>Cancel selection</button></div>}
     <span className="sr-only" role="status" aria-live="polite">{announcement}</span>
   </div>;
 }

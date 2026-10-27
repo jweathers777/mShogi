@@ -170,6 +170,24 @@ fn synthetic_command(
 // Normal product entry points. Raw commands retain duplicate fields through
 // the authoritative parsers rather than a Tauri intermediate object map.
 #[tauri::command]
+fn game_inspection(
+    controller: State<'_, Mutex<DesktopController>>,
+    shutdown: State<'_, Arc<ShutdownState>>,
+    query_json: String,
+) -> Result<mshogi_desktop_session::MovementInspection, String> {
+    inspect_game(&controller, &shutdown, &query_json)
+}
+fn inspect_game(
+    controller: &Mutex<DesktopController>,
+    shutdown: &ShutdownState,
+    query_json: &str,
+) -> Result<mshogi_desktop_session::MovementInspection, String> {
+    let query = mshogi_desktop_session::MovementInspectionQuery::from_json(query_json)?;
+    with_controller(controller, shutdown, |controller| {
+        controller.shared_inspection(query)
+    })?
+}
+#[tauri::command]
 fn game_snapshot(
     controller: State<'_, Mutex<DesktopController>>,
     shutdown: State<'_, Arc<ShutdownState>>,
@@ -898,6 +916,7 @@ fn main() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
+            game_inspection,
             game_snapshot,
             game_command,
             game_file,
@@ -984,6 +1003,33 @@ mod tests {
     fn controller() -> Mutex<DesktopController> {
         // No search is submitted in these host-gate tests, so no child starts.
         Mutex::new(DesktopController::new(PathBuf::from("unused-test-engine")).unwrap())
+    }
+
+    #[test]
+    fn normal_movement_inspection_is_strict_atomic_and_does_not_poll() {
+        let controller = controller();
+        let shutdown = ShutdownState::default();
+        let token = controller.lock().unwrap().shared_token();
+        let query = format!(
+            r#"{{"expected":{{"document":{},"version":{},"revision":{},"selection":{}}},"origin":"b8"}}"#,
+            token.document, token.version, token.revision, token.selection
+        );
+        let result = inspect_game(&controller, &shutdown, &query).unwrap();
+        assert_eq!(result.label, "Black knight");
+        assert!(result.read_only);
+        assert_eq!(result.token, token);
+        assert_eq!(controller.lock().unwrap().shared_token(), token);
+        assert!(
+            inspect_game(
+                &controller,
+                &shutdown,
+                &query.replace("\"b8\"", "\"b8\",\"origin\":\"a8\"")
+            )
+            .is_err()
+        );
+        assert_eq!(controller.lock().unwrap().shared_token(), token);
+        shutdown.started.store(true, Ordering::Release);
+        assert!(inspect_game(&controller, &shutdown, &query).is_err());
     }
 
     #[cfg(feature = "desktop-verification")]

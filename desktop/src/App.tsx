@@ -3,12 +3,15 @@ import { OutcomeCard, RecoveryNotice, ResignConfirmation } from "./Recovery";
 import { CapacityNotice } from "./Capacity";
 import { Board } from "./Board";
 import { AnalysisPanel } from "./Analysis";
-import { DocumentToolbar, UnsavedDialog, useDocumentGuard } from "./Document";
+import { UnsavedDialog, useDocumentGuard } from "./Document";
 import { HistoryPanel, SavedObservations } from "./History";
 import { readableAction, scoreDescription } from "./analysisPresentation";
 import type { Color, Snapshot } from "./native";
 import { claimName, colorName, gameStatus } from "./presentation";
 import { useNativeSession } from "./useNativeSession";
+import { ApplicationShell, LiveGameHeading } from "./product/ApplicationShell";
+import type { GameSnapshot } from "./product/native";
+import { useMovementInspection } from "./product/useMovementInspection";
 
 function EngineObservations({ snapshot }: { snapshot: Snapshot }) {
   const { engine } = snapshot;
@@ -89,9 +92,11 @@ function EngineObservations({ snapshot }: { snapshot: Snapshot }) {
     </>
   );
 }
-export function App({ onChooseGame, externalCloseGuard = false }: { onChooseGame?: (human: Color) => void; externalCloseGuard?: boolean } = {}) {
+export function App({ onChooseGame, externalCloseGuard = false, sharedSnapshot }: { onChooseGame?: (human: Color) => void; externalCloseGuard?: boolean; sharedSnapshot?: GameSnapshot } = {}) {
   const session = useNativeSession();
-  const { snapshot, error, connected, command } = session;
+  const { snapshot: legacySnapshot, error, connected, command } = session;
+  const snapshot = sharedSnapshot?.chess ?? legacySnapshot;
+  const onInspect = useMovementInspection(sharedSnapshot ? { token: sharedSnapshot.token, game: sharedSnapshot.game } : null);
   const busy =
     session.busy ||
     (snapshot !== null &&
@@ -185,48 +190,11 @@ export function App({ onChooseGame, externalCloseGuard = false }: { onChooseGame
   const claim = snapshot.claims[claimIndex] ?? snapshot.claims[0];
   const orientation = snapshot.document.settings.orientation;
   const historical = snapshot.view.historical;
-  return (
-    <main className="application" onFocusCapture={(event) => {
-      if (event.target instanceof Element) {
-        lastFocused.current = event.target;
-        suspendedFocus.current = null;
-      }
-    }}>
-      <header className="app-header">
-        <div className="brand">
-          <span className="brand-mark" aria-hidden="true">
-            ♜
-          </span>
-          <div>
-            <h1>mShogi</h1>
-            <p>CHESS</p>
-          </div>
-        </div>
-        <div className="session-badges">
-          <span>
-            <i /> Untimed
-          </span>
-          <span>Local engine</span>
-        </div>
-      </header>
-      <div className="workspace">
-        <section
-          className="board-panel"
-          aria-label={historical ? "Historical position" : "Live game"}
-        >
-          <div className="board-heading">
-            <div>
-              <p className="eyebrow">
-                {historical ? "HISTORICAL · READ ONLY" : "LIVE GAME"}
-              </p>
-              <h2 role="status" aria-live="polite" tabIndex={-1} data-game-status>
-                {historical ? snapshot.view.label : gameStatus(snapshot)}
-              </h2>
-              <p className="player-line">
-                You play {colorName(snapshot.human)} <span>against</span> mShogi
-              </p>
-            </div>
-            <button
+  return <ApplicationShell game="chess" runtime={!connected ? "Connecting…" : snapshot.engine.status === "thinking" ? "mShogi is thinking" : snapshot.analysis.status === "thinking" ? "Analyzing selected position" : "Local engine"} historical={historical}
+    onFocusCapture={(event) => { if (event.target instanceof Element) { lastFocused.current = event.target; suspendedFocus.current = null; } }}
+    document={<><span className={`document-dirty${snapshot.document.dirty ? " dirty" : ""}`}>{snapshot.document.dirty ? "Unsaved" : snapshot.document.path ? "Saved" : "Unmodified"}</span><h2 title={snapshot.document.path ?? undefined}>{snapshot.document.path?.split(/[\\/]/).at(-1) ?? "Untitled game"}</h2>{snapshot.io.phase !== "idle" && <p role={snapshot.io.phase === "failed" ? "alert" : "status"}>{snapshot.io.message ?? "File operation in progress…"}</p>}</>}
+    actions={<><button className="primary" disabled={!connected || busy || guard.pending !== null || resigning !== null} onClick={() => { setClaimIndex(0); if (onChooseGame) onChooseGame(snapshot.human); else guard.requestNewGame(newHuman); }}>New game</button><button className="quiet" disabled={!connected || busy || guard.pending !== null || resigning !== null} onClick={() => { void session.save(); }}>Save</button><button className="quiet" disabled={!connected || busy || guard.pending !== null || resigning !== null} onClick={() => { void session.saveAs(); }}>Save as…</button><button className="quiet" disabled={!connected || busy || guard.pending !== null || resigning !== null} onClick={guard.requestOpen}>Open…</button></>}
+    heading={<LiveGameHeading eyebrow={historical ? "HISTORY · READ ONLY" : snapshot.conclusion ? "GAME CONCLUDED" : "YOUR GAME"} status={historical ? snapshot.view.label : gameStatus(snapshot)} player={<>You play {colorName(snapshot.human)} against mShogi</>} flip={<>            <button
               className="quiet flip-button"
               disabled={!connected || busy || guard.pending !== null}
               onClick={() => {
@@ -241,14 +209,18 @@ export function App({ onChooseGame, externalCloseGuard = false }: { onChooseGame
             >
               ↕ <span>Flip board</span>
             </button>
-          </div>
-          <Board
+</>} />}
+    board={<>          <Board
             key={snapshot.view.selection_id}
             pieces={snapshot.view.pieces}
             choices={snapshot.legal_choices}
             orientation={orientation}
             version={snapshot.version}
             disabled={!canPlay}
+            onInspect={sharedSnapshot ? onInspect : undefined}
+            humanOwner={snapshot.human}
+            inspectionDisabled={!connected || busy || guard.pending !== null || resigning !== null}
+            inspectionContextKey={JSON.stringify(sharedSnapshot?.token ?? null)}
             onPlay={(action) => {
               void command({ kind: "play", version: snapshot.version, action });
             }}
@@ -272,16 +244,8 @@ export function App({ onChooseGame, externalCloseGuard = false }: { onChooseGame
               {snapshot.view.ply} plies
             </span>
           </div>
-        </section>
-        <aside className="sidebar" aria-label="Game controls and inspection">
-          <DocumentToolbar
-            snapshot={snapshot}
-            busy={busy || guard.pending !== null}
-            connected={connected}
-            actions={session}
-            onOpen={guard.requestOpen}
-          />
-          <CapacityNotice capacity={snapshot.capacity} />
+</>}
+    notices={<>          <CapacityNotice capacity={snapshot.capacity} />
           {historical && (
             <section className="notice historical-notice">
               <strong>Viewing history · read only</strong>
@@ -309,50 +273,6 @@ export function App({ onChooseGame, externalCloseGuard = false }: { onChooseGame
               </button>
             </section>
           )}
-          <section className="card new-game">
-            <p className="eyebrow">PLAY</p>
-            <label htmlFor="human-color">Your color for a new game</label>
-            <div className="new-game-controls">
-              <select
-                id="human-color"
-                value={newHuman}
-                onChange={(event) => setNewHuman(event.target.value as Color)}
-              >
-                <option value="white">White</option>
-                <option value="black">Black</option>
-              </select>
-              <button
-                className="primary"
-                disabled={!connected || busy || guard.pending !== null}
-                onClick={() => {
-                  setClaimIndex(0);
-                  if (onChooseGame) onChooseGame(newHuman); else guard.requestNewGame(newHuman);
-                }}
-              >
-                New game
-              </button>
-            </div>
-            <p className="caption">
-              Save the native game document to preserve context, events and
-              observations.
-            </p>
-            {snapshot.conclusion === null && !historical && (
-              <button
-                className="quiet resign-button"
-                ref={resignButton}
-                data-focus-after="outcome"
-                disabled={!connected || busy || guard.pending !== null || capacityPaused}
-                onClick={() =>
-                  setResigning({
-                    version: snapshot.version,
-                    human: snapshot.human,
-                  })
-                }
-              >
-                Resign game…
-              </button>
-            )}
-          </section>
           {snapshot.conclusion !== null && !historical && (
             <OutcomeCard conclusion={snapshot.conclusion} />
           )}
@@ -396,7 +316,8 @@ export function App({ onChooseGame, externalCloseGuard = false }: { onChooseGame
               </button>
             </section>
           )}
-          <div
+</>}
+    analysis={<>          <div
             className="inspector-switch"
             role="group"
             aria-label="Inspector view"
@@ -477,6 +398,34 @@ export function App({ onChooseGame, externalCloseGuard = false }: { onChooseGame
               </div>
             </section>
           )}
+          <SavedObservations observations={snapshot.observations} />
+</>}
+    history={<>          <HistoryPanel
+            snapshot={snapshot}
+            busy={busy || guard.pending !== null}
+            connected={connected}
+            command={command}
+          />
+</>}
+    gameActions={<>          <section className="card new-game">
+            {!onChooseGame && <><label htmlFor="human-color">Your color for a new game</label><select id="human-color" value={newHuman} onChange={(event) => setNewHuman(event.target.value as Color)}><option value="white">White</option><option value="black">Black</option></select></>}
+            {snapshot.conclusion === null && !historical && (
+              <button
+                className="quiet resign-button"
+                ref={resignButton}
+                data-focus-after="outcome"
+                disabled={!connected || busy || guard.pending !== null || capacityPaused}
+                onClick={() =>
+                  setResigning({
+                    version: snapshot.version,
+                    human: snapshot.human,
+                  })
+                }
+              >
+                Resign game…
+              </button>
+            )}
+          </section>
           {snapshot.claims.length > 0 &&
             snapshot.conclusion === null &&
             !historical && (
@@ -537,16 +486,9 @@ export function App({ onChooseGame, externalCloseGuard = false }: { onChooseGame
                 )}
               </section>
             )}
-          <HistoryPanel
-            snapshot={snapshot}
-            busy={busy || guard.pending !== null}
-            connected={connected}
-            command={command}
-          />
-          <SavedObservations observations={snapshot.observations} />
-        </aside>
-      </div>
-      {guard.pending !== null && (
+</>}
+    technical={<><p>mShogi · untimed chess · native rules and complete game records.</p><details><summary>Session details</summary><p>Session version {snapshot.version} · snapshot revision {snapshot.revision}</p></details><details className="document-details"><summary>File details</summary><p>{snapshot.document.path ?? "No file selected"}</p><p>Document revision {snapshot.document.revision}. Modes, limits, match events and observations are saved by the native host.</p></details><button className="quiet" disabled={!connected || busy} onClick={() => { void session.requestClose(); }}>Quit application</button></>}
+    overlays={<>      {guard.pending !== null && (
         <UnsavedDialog
           guard={guard}
           dirty={snapshot.document.dirty}
@@ -575,16 +517,6 @@ export function App({ onChooseGame, externalCloseGuard = false }: { onChooseGame
           }}
         />
       )}
-      <footer className="app-footer">
-        <span>One native rules engine. Complete actions. Optional claims.</span>
-        <details className="footer-details">
-          <summary>Session details</summary>
-          <span>
-            Session version {snapshot.version} · snapshot revision{" "}
-            {snapshot.revision}
-          </span>
-        </details>
-      </footer>
-    </main>
-  );
+</>}
+  />;
 }

@@ -1,0 +1,6 @@
+/* Shape, explicit wording and color distinguish read-only movement inspection. */
+.inspection-marker { fill:none; stroke:#702239; stroke-width:5; pointer-events:none; paint-order:stroke; filter:drop-shadow(0 0 2px #ffffffc9); }
+.inspection-origin-ring { fill:none; stroke:#702239; stroke-width:5; stroke-dasharray:10 5; pointer-events:none; }
+.movement-inspection-status { border-left:3px solid #702239; padding:4px 6px; color:#79253e; background:#f7e9ed; line-height:1.4; }
+.board-wrap .movement-inspection-status { color:#ffd3df; background:#3c2430; border-color:#f59ab0; }
+.hand-piece.inspecting { outline:3px dashed #702239; outline-offset:2px; }

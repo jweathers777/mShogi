@@ -101,3 +101,37 @@ failed checks and resolved findings will be recorded in the task evidence. Separ
 native tests, frontend tests, actual GUI interaction, platform evidence and owner
 visual approval. No material departure from the supplied product specification
 is currently proposed.
+
+## Owner refinement — 2026-10-27
+
+The owner approves the overall visual quality and distinct Chess/Shogi character,
+but requires the following before final approval. MSH-74 stays In Review; MSH-75
+is not started. Preserve the earlier evidence as revision-specific history.
+
+Both games use one actual shared shell: global identity/runtime and New Game,
+Save/Save As/Open in the header; a single consistent document title/dirty-state
+location; shared live heading/player status/Flip; board/player region left;
+sidebar ordered Analysis, Game history, Game actions; collapsed technical access.
+Chess retains dark styling/checkerboard/pieces, Shogi light styling/warm grid,
+kanji/orientation/hands. Responsive sizing is game-aware without relocating
+common controls simply because the game changed.
+
+Movement inspection is an educational read-only native query bound to the exact
+selected native token/history prefix. It returns complete semantic actions with
+ordered routes/completions for the selected board or hand origin. The native
+position adapter may evaluate that owner's hypothetical turn on a private
+position; it does not change live turn, counters, rights, history, outcomes or
+execution. Chess en-passant remains available only to its actual entitled side;
+changing the hypothetical inspected side cannot transfer that transient right.
+These are local movement choices, not predictions, history-dependent outcomes,
+claims or engine threats. No query polls, starts, cancels or accepts engine work.
+
+Friendly actionable selection remains native legal-choice entry. Opponent
+selection, including available Shogi hand resources, uses hollow burgundy rings
+and an explicit Inspecting label; occupied destinations retain readable pieces.
+Pointer/keyboard support switching origins/modes, Escape and read-only multi-step
+continuations without submitting any action. Historical inspection uses the exact
+selected prefix and is always read-only. Superseded query responses cannot appear
+on another position or revive executable choices. Native and frontend tests,
+packaged Mac screenshots of both shared-shell themes and all selection modes,
+independent reviews and applicable CI precede another owner visual checkpoint.

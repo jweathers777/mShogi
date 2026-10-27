@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
+import { createPortal } from "react-dom";
 import type { BoardPiece, Color, LegalChoice } from "./native";
 import type { InspectMovement, MovementInspection } from "./product/movementInspection";
 import "./movement-inspection.css";
@@ -35,6 +36,9 @@ interface Props {
   onInspect?: InspectMovement | undefined;
   inspectionDisabled?: boolean;
   inspectionContextKey?: string;
+  // Product shells place live help in their stable footer. Standalone fixtures
+  // retain the inline help when no target is supplied.
+  helpTarget?: HTMLElement | null;
 }
 const chessGlyphs: Record<string, string> = {
   king: "♚", queen: "♛", rook: "♜", bishop: "♝", knight: "♞", pawn: "♟",
@@ -48,7 +52,7 @@ export function displayedSquares(orientation: Color, geometry = chessGeometry): 
   return ranks.flatMap((rank) => files.map((file) => `${file}${rank}`));
 }
 export function Board({ pieces, choices: supplied, orientation, version, disabled,
-  onPlay, geometry = chessGeometry, glyphs = {}, profile = "chess", nativeOrientation, hands = [], nativeFirstOwner, humanOwner, onInspect, inspectionDisabled = disabled, inspectionContextKey }: Props) {
+  onPlay, geometry = chessGeometry, glyphs = {}, profile = "chess", nativeOrientation, hands = [], nativeFirstOwner, humanOwner, onInspect, inspectionDisabled = disabled, inspectionContextKey, helpTarget }: Props) {
   const squares = nativeOrientation ? nativeOrientation.ranks.flatMap((rank) => nativeOrientation.files.map((file) => `${file}${rank}`)) : displayedSquares(orientation, geometry);
   const columns = geometry.files.length;
   const rows = geometry.ranks.length;
@@ -187,6 +191,7 @@ export function Board({ pieces, choices: supplied, orientation, version, disable
   const displayFiles = nativeOrientation?.files ?? (orientation === "white" ? geometry.files : [...geometry.files].reverse());
   const displayRanks = nativeOrientation?.ranks ?? (orientation === "white" ? [...geometry.ranks].reverse() : geometry.ranks);
   const width = 40 + columns * 100, height = 40 + rows * 100;
+  const help = <p className={`board-help${inspection || inspectionPending ? " movement-inspection-status" : ""}`}>{inspection ? `Inspecting ${inspection.label} · Read-only · ${inspection.choices.length ? "Hollow rings show movement choices" : "No native movement choices"} · Esc clears` : inspectionPending ? "Loading read-only movement inspection…" : "Select a piece, then a destination. Arrow keys move focus · Enter or Space selects · Escape cancels."}</p>;
   return (
     <div className={`board-wrap${large ? " large-board-wrap" : ""}`}>
       {hands.length > 0 && <div role="group" aria-label="Native hands">
@@ -241,7 +246,7 @@ export function Board({ pieces, choices: supplied, orientation, version, disable
           })}
         </svg>
       </div>
-      <p className={`board-help${inspection || inspectionPending ? " movement-inspection-status" : ""}`}>{inspection ? `Inspecting ${inspection.label} · Read-only · ${inspection.choices.length ? "Hollow rings show movement choices" : "No native movement choices"} · Esc clears` : inspectionPending ? "Loading read-only movement inspection…" : "Select a piece, then a destination. Arrow keys move focus · Enter or Space selects · Escape cancels."}</p>
+      {helpTarget === undefined ? help : helpTarget ? createPortal(help, helpTarget) : null}
       {large && <p className="board-help">The large board scrolls to keep squares readable. Arrow keys bring the focused square into view.</p>}
       {selected !== null && prefix.length > 0 && hasContinuation && (
         <div className="route-selection" role="group" aria-label="Partial route selection"

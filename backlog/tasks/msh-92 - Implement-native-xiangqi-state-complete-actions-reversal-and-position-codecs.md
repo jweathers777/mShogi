@@ -1,11 +1,11 @@
 ---
 id: MSH-92
 title: Implement native xiangqi state complete actions reversal and position codecs
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-27T18:11:00Z'
+updated_date: '2026-10-27T18:12:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -29,18 +29,18 @@ Future bounded Xiangqi delivery work refined by MSH-80. Intent and acceptance on
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Implement game-owned Red/Black state and intersection geometry, all seven native piece identities, complete origin/destination actions, capture/derived effects and exact checked transitions/reversal under the selected profile; no promotion/hands/declaration or chess representation default.
-- [ ] #2 Distinguish strict structurally admissible diagrams, declared counters, known history and proven historical reachability. Specify and test scoped position/coordinate codecs, alphabet/rank/side conventions, bounds and malformed/duplicate rejection; a FEN-like position is not a canonical full game.
-- [ ] #3 Keep structural or transition helpers private or explicitly limited until the local-legality ticket establishes the complete legal-action contract. Test atomic rejection and exact restoration including side/material/counters and derived state.
-- [ ] #4 Record focused native tests and independent boundary review; preserve existing chess/shogi APIs and fixtures. No history conclusion or complete-game claim is inferred from this state slice.
+- [x] #1 Implement game-owned Red/Black state and intersection geometry, all seven native piece identities, complete origin/destination actions, capture/derived effects and exact checked transitions/reversal under the selected profile; no promotion/hands/declaration or chess representation default.
+- [x] #2 Distinguish strict structurally admissible diagrams, declared counters, known history and proven historical reachability. Specify and test scoped position/coordinate codecs, alphabet/rank/side conventions, bounds and malformed/duplicate rejection; a FEN-like position is not a canonical full game.
+- [x] #3 Keep structural or transition helpers private or explicitly limited until the local-legality ticket establishes the complete legal-action contract. Test atomic rejection and exact restoration including side/material/counters and derived state.
+- [x] #4 Record focused native tests and independent boundary review; preserve existing chess/shogi APIs and fixtures. No history conclusion or complete-game claim is inferred from this state slice.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -60,3 +60,9 @@ Ownerauthorized batch91+92 then93 only. Startup clean primarycodex/rewrite53e90a
 
 Native state/action/private transition foundation implemented, strict scoped FEN/position JSON and immutable root provenance documented. 12 focused native tests PASS, core all-target clippy -Dwarnings and workspace fmt PASS. Independent source/boundary reviewer separately ran checks: PASS; initial FEN and missing nullable-field findings resolved with tests. Evidence docs/m4/xiangqi/board-foundation-evidence.md, position-api.md, reviews/state-review.md and reviewed hashes. Complete legality remains93; history94/105 untouched.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Completed and independently reviewed; integrated and pushed to codex/rewrite at 16042f291bf3190ff2712c77344b2c6885d65f10. Task-scoped acceptance evidence and exact commands: docs/m4/xiangqi/board-foundation-evidence.md; independent reports/hashes: docs/m4/xiangqi/reviews/. MSH-91 provides105 independent fixtures,101 admitted reference cases,15 sentinels/520 prefixes; MSH-92 provides native state/codecs/private transitions with12 focused tests. No full local legality claim until93, no history/adjudication/consumer implementation. Normal final native workspace CI will additionally cover integrated93; unchanged prior product/platform evidence retained.
+<!-- SECTION:FINAL_SUMMARY:END -->

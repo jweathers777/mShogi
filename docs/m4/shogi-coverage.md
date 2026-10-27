@@ -7,6 +7,14 @@ accepted contract, concrete independently expected cases, reference observations
 and implemented evidence. Historical MSH-62 reviews are retained unchanged.
 A listed fixture is an obligation, not an assertion that it has executed.
 
+Current complete-delivery assessment (MSH-75,2026-10-27): all required selected
+clauses below have reviewed implementation and execution evidence, reconciled
+against original MSH-41 AC1–8 in [the delivery review](shogi-delivery-review.md).
+The bounded-ticket sections preserve what each earlier stage established at
+that time; their historical future-tense statements do not supersede this result.
+Unselected alternatives remain explicitly outside the contract. M4/MSH-42–47
+remain open; no required shogi correctness is deferred to M5 strength work.
+
 | Selected clause / source | Stable fixture scope | Implementation owner / evidence boundary |
 | --- | --- | --- |
 | Setup, side-relative geometry, blockers, promoted movement; JSA-R2–6/B1–3 | SH-F001–004 | MSH-64 expected board corpus; MSH-65 state; MSH-66 complete legality |
@@ -23,7 +31,7 @@ A listed fixture is an obligation, not an assertion that it has executed.
 | Final draw and distinct 0.5-per-side score, no replay; CSA22/27 | SH-F042 | MSH-67 result/score metadata; MSH-71 export/runner |
 | Strict SFEN/USI board-action primitives, no invented history | SH-F043–045 | MSH-65; protocol commands resign/win are not board actions |
 | Full canonical game/command provenance, records, restoration | SH-F046–048 | MSH-67/68/69/73; MSH-61 complete-save-path guarantee preserved |
-| Presentation, complete choices, capacity, protocol/search, actual application | SH-F049–055 | MSH-68–75; full MSH-41 and MSH-46 delivery remain open |
+| Presentation, complete choices, capacity, protocol/search, actual application | SH-F049–055 | MSH-68–75/90 delivered and independently assessed below; MSH-46 retains final six-game integration |
 
 ## Interpretation boundaries and named gates
 
@@ -150,5 +158,39 @@ with actual process evidence and game-specific scores; it does not establish
 playing strength. Their task records identify exact reviews, tests and source/CI
 revisions. Earlier milestone evidence above remains historical.
 
-USI/external-opponent work, shared desktop sessions/archives/presentation and
-complete-delivery closure remain with MSH-71 onward and MSH-41–47. M4 remains open.
+At that historical handoff, USI/external-opponent work, shared desktop
+sessions/archives/presentation and complete-delivery closure remained with
+MSH-71 onward. Their current evidence follows; M4 remains open.
+
+### MSH-71–75/90 complete consumer and delivery evidence
+
+[USI and runner](usi.md) deliver the documented finite untimed protocol and
+recorded native selfplay/independent-opponent experiments. MSH-90 supplies the
+common game-selected console. MSH-72's native session owns full-context result
+acceptance and complete presentation choices; its development-only harness is
+not product UI evidence. MSH-73's shared v2 archive retains native profile/root/
+event semantics, observations/settings/control history, stopped fresh Open and
+MSH-61's lossless precommit capacity admission. MSH-74 supplies the real normal
+shogi desktop, owner-approved shared shell, hands/kanji/ownership, complete
+choices, read-only opponent inspection, analysis/history and recovery.
+
+MSH-75 independently traces **all eight original MSH-41 criteria** through those
+actual consumers. [Rules review](evidence/msh75/rules-review.md) freshly verifies
+169 fixtures against the admitted reference with zero mismatches, independently
+reconstructs21 history ledgers/149 prefixes and nine declaration diagrams, and
+checks the complete selected-clause disposition including the mutual-check proof.
+[Engine/console review](evidence/msh75/engine-console-review.md) runs actual
+canonical roundtrips, structured history-aware search, six selfplay and six real
+pinned external-opponent games and replay. [Archive/desktop review](evidence/msh75/archive-desktop-review.md)
+executes strict capacity/context tests and rehashes175 retained platform artifacts.
+Fresh normal macOS Sente/Gote play, captures/demotion, promotion/drop cancellation
+and completion, engine turns, Save/Open, historical-prefix analysis, Return/Resume,
+opponent inspection and resignation are [retained separately](evidence/msh75/macos/README.md).
+Current native/frontend/host tests and Windows/macOS/Linux CI pass; current-source
+equivalence supports explicitly labeled reuse of prior packaged platform GUI.
+
+No required selected clause remains unresolved or silently deferred. The complete
+[acceptance/evidence/limits record](shogi-delivery-review.md) distinguishes native
+rules expectations, differential observations, real process/opponent execution,
+normal versus verification GUI, AI review and owner approval. It supports MSH-41
+completion only; later games and final MSH-46/47 acceptance remain outstanding.

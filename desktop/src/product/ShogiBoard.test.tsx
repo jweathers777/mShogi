@@ -132,3 +132,26 @@ it("keeps occupied native inspection destinations readable and never prompts to 
   expect(square("5i").querySelector(".shogi-piece")).toBeTruthy(); expect(square("5i").querySelector(".inspection-marker")?.getAttribute("r")).toBe("46");
   fireEvent.click(square("5i")); expect(onPlay).not.toHaveBeenCalled(); expect(screen.queryByRole("dialog")).toBeNull(); expect(screen.getByRole("status").textContent).toContain("Promote or Do not promote");
 });
+it("uses the shared player/board/footer slots while retaining native hands and keyboard focus", async () => {
+  const snapshot = dropsJson as GameSnapshot;
+  const onPlay = vi.fn(); const props = { snapshot, disabled: false, onPlay };
+  const { rerender } = render(<ShogiBoard {...props} />);
+  const area = document.querySelector(".shell-game-area.shogi-stage")!;
+  expect(area).toBeTruthy();
+  expect([...area.children].map((node) => node.getAttribute("data-game-slot"))).toEqual(["upper-player", "board", "lower-player", "footer"]);
+  const upper = area.querySelector('[data-game-slot="upper-player"]')!, lower = area.querySelector('[data-game-slot="lower-player"]')!;
+  expect(upper.querySelector('[data-player="gote"]')).toBeTruthy();
+  expect(lower.querySelector('[data-player="sente"]')).toBeTruthy();
+  expect(area.querySelectorAll('[data-game-slot="board"] .shogi-square')).toHaveLength(81);
+  expect(area.querySelector('[data-game-slot="footer"] .shogi-board-help')).toBeTruthy();
+  const pawn = screen.getByRole("button", { name: "Sente pawn in hand, 1" });
+  pawn.focus(); await userEvent.setup().keyboard("{Enter}");
+  fireEvent.keyDown(pawn, { key: "ArrowDown" }); expect(document.activeElement).toBe(square("5g"));
+  fireEvent.keyDown(square("5g"), { key: "Escape" }); expect(document.activeElement).toBe(pawn);
+  const flipped = { ...snapshot, document: { ...snapshot.document, settings: { ...snapshot.document.settings, settings: { ...snapshot.document.settings.settings, orientation: "gote" } } } };
+  rerender(<ShogiBoard {...props} snapshot={flipped} />);
+  expect(upper.querySelector('[data-player="sente"]')).toBeTruthy(); expect(lower.querySelector('[data-player="gote"]')).toBeTruthy();
+  const movedPawn = screen.getByRole("button", { name: "Sente pawn in hand, 1" });
+  movedPawn.focus(); await userEvent.setup().keyboard("{Enter}"); fireEvent.keyDown(movedPawn, { key: "ArrowDown" });
+  expect(document.activeElement).toBe(square("5g")); fireEvent.click(square("5e")); expect(onPlay).toHaveBeenCalledExactlyOnceWith("P*5e");
+});

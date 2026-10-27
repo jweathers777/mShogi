@@ -363,20 +363,40 @@ class Journey:
     def shared_shell(self, game):
         layout = self.web.read("""(() => {
             const root=document.querySelector('.game-shell');
-            const rect=s=>{const e=document.querySelector(s);if(!e)return null;const r=e.getBoundingClientRect();return {left:r.left,top:r.top,width:r.width,height:r.height};};
+            const rectElement=e=>{if(!e)return null;const r=e.getBoundingClientRect();return {left:r.left,top:r.top,width:r.width,height:r.height};};
+            const rect=s=>rectElement(document.querySelector(s));
+            const theme=s=>{const e=document.querySelector(s);if(!e)return null;const c=getComputedStyle(e);return Object.fromEntries(['backgroundColor','color','borderTopColor','borderTopWidth','borderRadius','fontSize','fontFamily','colorScheme'].map(k=>[k,c[k]]));};
+            const visible=e=>{const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&r.left>=-1&&r.top>=-1&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1;};
+            const squares=[...document.querySelectorAll('.square,.shogi-square')];
             return {game:root?.classList.contains('shell-shogi')?'shogi':'chess',viewport:{width:innerWidth,height:innerHeight},
+                themeIdentity:root?.dataset.theme,
+                themes:Object.fromEntries(['.game-shell','.shell-header','.shell-card','.shell-section-title','.shell-file-actions .primary','.shell-file-actions .quiet','.inspector-switch button[aria-pressed="true"]'].map(s=>[s,theme(s)])),
                 header:rect('.shell-header'),document:rect('.shell-document'),actions:rect('.shell-file-actions'),
                 heading:rect('.shell-live-heading'),boardPanel:rect('.shell-board-panel'),sidebar:rect('.shell-sidebar'),
+                gameArea:rect('.shell-game-area'),
+                slots:[...document.querySelectorAll('.shell-game-area>[data-game-slot]')].map(e=>({name:e.dataset.gameSlot,rect:rectElement(e)})),
+                cards:[...document.querySelectorAll('[data-shell-section]')].map(e=>({name:e.dataset.shellSection,rect:rectElement(e)})),
+                squareCount:squares.length,allSquaresVisible:squares.every(visible),pageWidth:document.documentElement.scrollWidth,
                 sections:[...document.querySelectorAll('[data-shell-section]')].map(e=>e.dataset.shellSection),
+                inspectorButtons:[...document.querySelectorAll('.inspector-switch button')].map(e=>({label:e.textContent.trim(),pressed:e.getAttribute('aria-pressed')})),
                 documentInHeader:document.querySelector('.shell-header')?.contains(document.querySelector('.shell-document')),
                 flipInHeading:document.querySelector('.shell-live-heading')?.contains(document.querySelector('.flip-button')),
                 headerButtons:[...document.querySelectorAll('.shell-file-actions button')].map(e=>e.textContent.trim()),
                 technicalCollapsed:document.querySelector('.shell-technical')?.open===false};
         })()""")
         assert layout['game'] == game and layout['sections'] == ['analysis','history','actions'], layout
+        assert layout['themeIdentity'] == 'mshogi-dark' and all(layout['themes'].values()), layout
+        assert layout['squareCount']==(64 if game=='chess' else 81) and layout['allSquaresVisible'] and layout['pageWidth']<=layout['viewport']['width']+1, layout
+        assert layout['inspectorButtons'] == [{'label':'Play details','pressed':'true'}, {'label':'Analyze position','pressed':'false'}], layout
+        assert [slot['name'] for slot in layout['slots']] == ['upper-player','board','lower-player','footer'], layout
         assert layout['documentInHeader'] and layout['flipInHeading'] and layout['technicalCollapsed'], layout
         assert layout['headerButtons'] == ['New game','Save','Save as…','Open…'], layout
         assert layout['boardPanel']['left'] < layout['sidebar']['left'], layout
+        for slot in layout['slots']:
+            box=slot['rect']
+            assert box['width']>0 and box['height']>0 and box['left']>=-1 and box['top']>=-1 and box['left']+box['width']<=layout['viewport']['width']+1 and box['top']+box['height']<=layout['viewport']['height']+1, slot
+        for upper,lower in zip(layout['slots'],layout['slots'][1:]):
+            assert upper['rect']['top']+upper['rect']['height']<=lower['rect']['top']+1,(upper,lower)
         key=(layout['viewport']['width'],layout['viewport']['height'])
         previous=self.shell_layouts.get(key)
         if previous and previous['game'] != game:
@@ -385,8 +405,14 @@ class Journey:
                     assert abs(layout[part][axis]-previous[part][axis])<=3,(part,axis,previous,layout)
             assert abs((layout['document']['top']+layout['document']['height']/2)-
                        (previous['document']['top']+previous['document']['height']/2))<=3,(previous,layout)
+            assert layout['themes']==previous['themes'],('shared chrome/panel/control theme differs',previous,layout)
+            for collection in ['slots','cards']:
+                for current,prior in zip(layout[collection],previous[collection]):
+                    assert current['name']==prior['name'],(previous,layout)
+                    for axis in ['left','top','width','height']:
+                        assert abs(current['rect'][axis]-prior['rect'][axis])<=3,(collection,current['name'],axis,prior,current)
         self.shell_layouts[key]=layout
-        self.record('Observe shared application shell and consistent control locations',layout)
+        self.record('Observe one dark application shell, shared physical slots and initial cards',layout)
 
     def inspection_state(self):
         return self.web.read("""(() => {
@@ -464,9 +490,15 @@ class Journey:
         return archive
 
     def shogi_analysis(self, depth=1, nodes=1000):
+        self.shogi_analysis_tab()
         self.web.set('.shogi-analysis input[name="depth"]', depth)
         self.web.set('.shogi-analysis input[name="nodes"]', nodes)
         self.web.click('[data-analysis-start="shogi"]')
+
+    def shogi_analysis_tab(self):
+        if not self.web.has('[data-analysis-start="shogi"]'):
+            self.web.button('Analyze position')
+        wait(lambda:self.web.has('[data-analysis-start="shogi"]'),'Shogi analysis tab exposes real bounded analysis controls')
 
     def shogi_complete_analysis(self):
         wait(lambda: "Analysis result available" in self.web.text(".shogi-analysis-state"), "actual read-only shogi analysis result", 45)
@@ -517,7 +549,12 @@ class Journey:
         self.viewport(1180,820)
         self.shared_shell('chess')
         self.plies(0)
+        self.capture('initial-chess-normal-size')
+        self.viewport(760,650)
+        self.shared_shell('chess')
+        self.capture('initial-chess-minimum-size')
         self.inspect_piece('chess','e7','e5','Black pawn')
+        self.viewport(1180,820)
         w.click(self.square('e2'))
         assert w.read(f"document.querySelector({json.dumps(self.square('e4'))})?.classList.contains('target')")
         w.click(self.square('b8'))
@@ -643,7 +680,9 @@ class Journey:
         self.inspect_piece('shogi','7c','7d','Gote pawn')
         self.capture("initial-sente")
         self.viewport(760, 650); self.shogi_board_fits()
+        self.shared_shell('shogi')
         self.capture("minimum-size")
+        self.inspect_piece('shogi','7c','7d','Gote pawn')
         self.viewport(1180, 820)
         self.new_shogi("gote")
         self.shogi_events(1)
@@ -701,6 +740,7 @@ class Journey:
         self.shogi_events(2)
         assert w.read("document.querySelector('.shogi-application').dataset.paused") == "true"
         assert w.has(".play-paused") and not w.has('.shogi-analysis[data-phase="analyzing"]')
+        self.shogi_analysis_tab()
         w.click(".recorded-searches summary")
         assert "Saved observation" in w.text(".recorded-searches")
         w.click(".recorded-searches summary")
@@ -853,6 +893,7 @@ class Journey:
             assert "Sente resigned" in w.text("[data-game-status]")
             self.record("Select distinct native terminal event at unchanged board ply", w.text(".shogi-history"))
         elif name == "shogi-capacity":
+            self.shogi_analysis_tab()
             assert "Recorded searches (255)" in w.text(".recorded-searches")
             self.shogi_analysis(nodes=0)
             wait(lambda: "Recorded searches (256)" in w.text(".recorded-searches"), "shogi observation256 accepted")

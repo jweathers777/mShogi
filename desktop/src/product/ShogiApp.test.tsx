@@ -10,7 +10,9 @@ const standard = standardJson as GameSnapshot;
 function app(snapshot = standard, error = "") {
   const session: GameSession = { snapshot, busy: false, error, closeRequested: false, command: vi.fn().mockResolvedValue(snapshot), file: vi.fn().mockResolvedValue(snapshot), newGame: vi.fn().mockResolvedValue(snapshot), cancelClose: vi.fn().mockResolvedValue(true), finishClose: vi.fn().mockResolvedValue(true) };
   const props = { snapshot, session, onNewGame: vi.fn(), onOpen: vi.fn(), blocked: false };
-  return { ...render(<ShogiApp {...props} />), props, session };
+  const rendered = render(<ShogiApp {...props} />);
+  fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
+  return { ...rendered, props, session };
 }
 it("allows clearing and typing numeric work limits without inserting a leading zero", () => {
   const { session } = app();
@@ -23,14 +25,14 @@ it("allows clearing and typing numeric work limits without inserting a leading z
   expect(nodes.value).toBe("");
   fireEvent.change(nodes, { target: { value: "20000" } });
   expect(depth.value).toBe("4"); expect(nodes.value).toBe("20000");
-  fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
+  fireEvent.click(screen.getByRole("button", { name: "Start move analysis" }));
   expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "analyze", operation: { kind: "moves", depth: 4, nodes: 20000 } });
 });
 it("routes bounded analysis through the read-only operation and cancellation path", () => {
   const { session, props, rerender } = app();
   fireEvent.change(screen.getByRole("spinbutton", { name: "Depth" }), { target: { value: "3" } });
   fireEvent.change(screen.getByRole("spinbutton", { name: "Node limit" }), { target: { value: "700" } });
-  fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
+  fireEvent.click(screen.getByRole("button", { name: "Start move analysis" }));
   expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "analyze", operation: { kind: "moves", depth: 3, nodes: 700 } });
   const analyzing = { ...standard, phase: "thinking" as const, execution_purpose: "move_analysis", paused: true };
   rerender(<ShogiApp {...props} snapshot={analyzing} />);
@@ -105,7 +107,7 @@ it("distinguishes application capacity from engine failure and keeps the complet
   expect(screen.getByRole("heading", { name: "Application limit reached" })).toBeTruthy();
   expect(screen.getByText(/Saving and reopening does not reset this limit/)).toBeTruthy();
   expect(screen.queryByRole("button", { name: "Retry engine turn" })).toBeNull();
-  expect((screen.getByRole("button", { name: "Analyze position" }) as HTMLButtonElement).disabled).toBe(true);
+  expect((screen.getByRole("button", { name: "Start move analysis" }) as HTMLButtonElement).disabled).toBe(true);
   fireEvent.click(screen.getByRole("button", { name: "Save" })); expect(session.file).toHaveBeenCalledExactlyOnceWith(snapshot, "save");
 });
 it("presents failures as recoverable execution problems, never as a chess result", () => {

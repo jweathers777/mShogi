@@ -135,3 +135,30 @@ selected prefix and is always read-only. Superseded query responses cannot appea
 on another position or revive executable choices. Native and frontend tests,
 packaged Mac screenshots of both shared-shell themes and all selection modes,
 independent reviews and applicable CI precede another owner visual checkpoint.
+
+## Owner shell refinement 2 — one application theme (2026-10-27)
+
+This supersedes the earlier dark-Chess/light-Shogi workspace direction, while
+preserving those records and the approved native movement-inspection contract.
+The surrounding application now uses one dark theme based on the Chess treatment:
+header, workspace, panels, type hierarchy, controls, status surfaces and details.
+Warm Shogi wood, kanji/pentagonal pieces, ownership rotation and counted hands
+remain game content; selecting a game does not select an application theme.
+
+Both adapters render the same ApplicationShell and GameArea composition. The
+header owns identity/runtime, title/dirty state and New/Save/Save As/Open. The
+left region owns a shared live heading/Flip and stable upper-player, board,
+lower-player and help/status slots. Player labels remain native; Shogi fills the
+hand content while Chess omits hands without moving other controls. The right
+sidebar uses identical card treatments and order: Analysis, Game history, Game
+actions, then collapsed technical details. Game-specific operations remain inside
+these slots. Ordinary initial states and historical states must compare like
+with like; differences in native capability/content do not justify unrelated
+control migration. Board size remains game-aware within the same region.
+
+Capture both games at matching normal and supported minimum dimensions; compare
+actual screenshots side by side independently. Review theme, card geometry,
+header/document controls, live heading/Flip, player/board relationship and sidebar
+order; unexplained migration is a finding. Existing native/query behavior is
+reused unchanged. MSH-74 remains In Review for final owner visual approval and
+MSH-75 remains unstarted.

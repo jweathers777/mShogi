@@ -9,7 +9,7 @@ import { readableAction, scoreDescription } from "./analysisPresentation";
 import type { Color, Snapshot } from "./native";
 import { claimName, colorName, gameStatus } from "./presentation";
 import { useNativeSession } from "./useNativeSession";
-import { ApplicationShell, LiveGameHeading } from "./product/ApplicationShell";
+import { ApplicationShell, GameArea, InspectorSwitch, LiveGameHeading, PlayerArea } from "./product/ApplicationShell";
 import type { GameSnapshot } from "./product/native";
 import { useMovementInspection } from "./product/useMovementInspection";
 
@@ -210,7 +210,10 @@ export function App({ onChooseGame, externalCloseGuard = false, sharedSnapshot }
               ↕ <span>Flip board</span>
             </button>
 </>} />}
-    board={<>          <Board
+    board={<GameArea
+      upperPlayer={<PlayerArea side={colorName(orientation === "white" ? "black" : "white")} playerKey={orientation === "white" ? "black" : "white"} human={snapshot.human !== orientation} toMove={snapshot.view.turn !== orientation && snapshot.view.conclusion === null} />}
+      lowerPlayer={<PlayerArea side={colorName(orientation)} playerKey={orientation} human={snapshot.human === orientation} toMove={snapshot.view.turn === orientation && snapshot.view.conclusion === null} />}
+      board={          <Board
             key={snapshot.view.selection_id}
             pieces={snapshot.view.pieces}
             choices={snapshot.legal_choices}
@@ -225,7 +228,7 @@ export function App({ onChooseGame, externalCloseGuard = false, sharedSnapshot }
               void command({ kind: "play", version: snapshot.version, action });
             }}
           />
-          <div className="game-footnote">
+} footer={<div className="game-footnote">
             <span>
               {historical
                 ? "Read-only history · return to live to play"
@@ -244,9 +247,8 @@ export function App({ onChooseGame, externalCloseGuard = false, sharedSnapshot }
               {snapshot.view.ply} plies
             </span>
           </div>
-</>}
-    notices={<>          <CapacityNotice capacity={snapshot.capacity} />
-          {historical && (
+} />}
+    positionNotice={<>          {historical && (
             <section className="notice historical-notice">
               <strong>Viewing history · read only</strong>
               <p>
@@ -273,6 +275,8 @@ export function App({ onChooseGame, externalCloseGuard = false, sharedSnapshot }
               </button>
             </section>
           )}
+</>}
+    notices={<>          <CapacityNotice capacity={snapshot.capacity} />
           {snapshot.conclusion !== null && !historical && (
             <OutcomeCard conclusion={snapshot.conclusion} />
           )}
@@ -317,24 +321,7 @@ export function App({ onChooseGame, externalCloseGuard = false, sharedSnapshot }
             </section>
           )}
 </>}
-    analysis={<>          <div
-            className="inspector-switch"
-            role="group"
-            aria-label="Inspector view"
-          >
-            <button
-              aria-pressed={inspector === "play"}
-              onClick={() => setInspector("play")}
-            >
-              Play details
-            </button>
-            <button
-              aria-pressed={inspector === "analysis"}
-              onClick={() => setInspector("analysis")}
-            >
-              Analyze position
-            </button>
-          </div>
+    analysis={<><InspectorSwitch value={inspector} onChange={setInspector} />
           {inspector === "analysis" ? (
             <AnalysisPanel
               key={session.documentEpoch}

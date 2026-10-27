@@ -7,7 +7,8 @@ planning ledger. Executed board foundations and local-rule conformance are now
 recorded in [foundation evidence](board-foundation-evidence.md),
 [local contract](local-legality.md) and the MSH-91/92/93 task records. The
 restricted reference admission does not admit history helpers or playing strength;
-there is still no Xiangqi engine, full native game, console or desktop consumer.
+the native history/game contract is now implemented in MSH-94 (see below).
+There is still no Xiangqi engine, console or desktop consumer.
 All original MSH-45 requirements remain in M4. Profile selection is not delivery.
 
 | Required scope / clause | Independent expectations / evidence plan | Delivery owner and gate |
@@ -16,10 +17,10 @@ All original MSH-45 requirements remain in M4. Profile selection is not delivery
 | Every complete move/capture/derived effect,2 | F004–008 horse leg, elephant eye/river, palace, cannon screens, soldiers, kings, pins/evasions; all complete choices |92 transitions/reversal/codecs;93 full local conformance |
 | Checkmate and stalemate both loss,2/3 | Separate in-check flag but same native no-action loss; no king-capture continuation |93 local/94 native outcomes |
 | Native state versus history/provenance | F002 same target with checking/quiet prefixes; declared counters not proof; no inferred pre-import repetition |92 roots;94 exact history/native records;95 strict typed boundary |
-| Third warning/fourth loss or WXF draw,3/19/20 | F022–026 independent boundary, equal-fault/responsibility and overlap expectations; native warnings/events preserve board ply |94; **G-CYCLE** source/witness/anchor/classification review before affected coding/Ready |
+| Third warning/fourth loss or WXF draw,3/19/20 | F022–026 independent boundary, equal-fault/responsibility and overlap expectations; native warnings/events preserve board ply |94 executed; **G-CYCLE** resolved with reviewed contiguous anchor fixtures; see history contract |
 | All check/chase/mating-threat/exchange/offer/block/idle and exceptions,19/20/chapter5 | F009–015, WXF diagrams38/109 and legal/fake roots, victims/pins/river/same-type/frequency cases |94 full native adjudication; no comparator outcome oracle or ignored category |
 | Natural-count Art8 and3.2D | F003 claimant98/100 ledger; F017/F027 complete legal history, manual rejection audit, optional policy, capture/reset/root and result ordering |94 native command/event admission;99 bounded audit/archive;102 actual interaction |
-| Impossible for either side to win,3.2A | F016/F028 sound recognizer, exact proof/witness, cancellation/resource unknown; no inference from unrecognized material |94 assessment/fast recognizer;105 exact path; **G-NOWIN** quantification/eligible conclusions/full-history domain before affected implementation |
+| Impossible for either side to win,3.2A | F016/F028 sound recognizer, exact proof/witness, cancellation/resource unknown; no inference from unrecognized material |94 executed assessment/fast recognizer; owner-selected natural-board-win existential goal;105 exact path still required |
 | Resignation, agreement, other concluded outcomes and ordering,3 | Serialized no-overwrite outcomes; board terminal then repetition then proven3.2A; admitted commands and automatic-claim policy explicit |94 native;97 engine;102 recovery/outcomes |
 | Exact native action/event reversal and canonical records | F018 strict bounded duplicate-preserving native parse, complete commands/events/modes/policies/root; semantic undo never revives execution |92/94 native;95 tagged envelope;99 desktop archive |
 | Own functional evaluator/search and actual external match | F019 context/purpose/history/limits/session/process identity, legal native results, cancellation; real independent opponent admission/config/record |97 own search;100 protocol/runner;54 measured M5 strength |
@@ -30,25 +31,30 @@ All original MSH-45 requirements remain in M4. Profile selection is not delivery
 
 ## Residual case ledger — not omitted behavior
 
-- **G-CYCLE / MSH-94:** exact witness/interval/anchor choice for alternate and
-  overlapping return paths; victim identity versus board equality; continued
-  prohibited conduct versus merely a different move sequence; priority when
-  different anchors mature. Preserve WXF equal-fault versus unilateral priority.
-  Independent fixtures/review are a precondition of affected implementation.
-- **G-NOWIN / MSH-94 and105:**3.2A possible/forced-win quantifier, eligible native
-  win conclusions and history/claim modes. Voluntary resignation or event failure
-  cannot trivially prove all boards winnable. Native owner resolves the exact
-  source/fixture contract before its fast proof and exact algorithm; a material
-  residual choice returns to John. Complete delivery cannot bypass this gate.
+- **G-CYCLE / MSH-94 — resolved:** the complete contiguous first→third/fourth
+  interval, anchor-specific obligations, persistent victim IDs and proved warning
+  retirement are defined in [native history contract](history-contract.md).
+  The independent cycle/conduct/source and completed-boundary reviews, exact
+  fixtures and executed tests are linked in [history evidence](history-evidence.md).
+- **G-NOWIN semantics — resolved by owner:** existential natural board win only
+  (WXF3.1A mate or stalemate); history-dependent penalties cannot create a
+  positive witness. [Owner resolution](owner-decisions.md#g-nowin-resolution-during-msh-94-2026-10-27).
+  MSH-94 supplies sound fast proof/witness/unknown and strict recorded modes.
+  **MSH-105 exact computation and feasibility remain required**, unstarted until
+  MSH-94 and MSH-95 are Done. No general proof-backend performance is claimed.
 - **R-EDITION / scoped research:** undated AXF revision and complete CXA2020
   text/amendments remain unverified. Their absence is not claimed resolved and
   does not block91/92; use them only when an actual WXF question needs them.
-- **R-CLASS /94:** instantiate and independently review all relevant published
-  history/classification families before native history conformance. This is not
-  a prerequisite to the restricted board-reference/state pair91/92.
+- **R-CLASS /94 — executed:**20 source witness histories and additional independent
+  warning-prefix regressions cover the consequence-relevant19/20/chapter5
+  families. Native classification preserves permitted label distinctions without
+  claiming a mate-threat search/telemetry API. Published37/38/108/109/110 ownership,
+  root/pin and alternating/simultaneous cases were independently checked against
+  both official texts/pixels. Actual corrections and review findings are retained.
 
 MSH-80 completes a selected complete-scope planning contract with named gates,
 not an implemented complete game or proof algorithm. The subsequent authorized
 MSH-91/92/93 batch implements only the board foundation and local legal contract;
-94/105 stay To Do pending their semantic/source fixture gates.
+MSH-94 now adds the reviewed native history/record/fast-assessment boundary;
+105 remains unstarted behind94/95. The exact path is not replaced by this work.
 MSH-41/MSH-75 stay Done; MSH-42–47 and M4 remain open.

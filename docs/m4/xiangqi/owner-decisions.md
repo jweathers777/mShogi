@@ -25,3 +25,33 @@ than assertions that WXF specifies application transport behavior.
 The same owner instruction separately approves the future M5 opening-knowledge
 experiment. Its [scope and clarification](../../m5/opening-knowledge.md) are
 recorded by MSH-104; no opening mechanism or model is selected for shipping.
+
+## G-NOWIN resolution during MSH-94, 2026-10-27
+
+John selected **option 2**, the existential **natural-course board-win** test,
+under the same `mshogi.xiangqi.wxf2018.v1` identity. A side has a witness when
+some finite sequence of admitted ordinary board actions ends with the opponent
+losing under **WXF3.1A**: checkmate or no-legal-action/stalemate loss. This is
+possibility, not a forced-win/minimax test against optimal resistance.
+
+Do not count repetition/prohibited-conduct penalties, resignation, agreement,
+time/lateness, technical/administrative faults, invalid claims, misconduct or
+the no-win draw being decided. WXF Article3 separates natural board losses in
+3.1A from the later penalty and other loss clauses;3.2A is interpreted as an
+intrinsic simple-position/no-winning-possibility condition. An opponent's
+willingness to commit a punishable offense cannot create mating/stalemating
+capability. Exact proof must not import Chess's mating-only target: Xiangqi
+stalemate-as-loss is included.
+
+Full known history, warnings and claims remain authoritative for the **actual
+game**. They do not create a positive natural-win witness. In F002, C+C+C may
+award Black a repetition-fault win, but that award is **not** evidence that
+Black can achieve a natural board win. A missed fast proof stays unknown.
+MSH-94 owns the goal/fast sound contract; exact implementation MSH-105 remains
+unstarted until its recorded dependencies MSH-94 and MSH-95 are complete.
+
+The initial research recommendation included repetition-fault awards in the
+existential target. John expressly rejected that recommendation. Preserve it
+as research history, not as an accepted interpretation or an executable fixture.
+This decision supersedes the previously open G-NOWIN quantifier/eligible-win
+question; algorithmic feasibility and exact-path delivery are still unproved.

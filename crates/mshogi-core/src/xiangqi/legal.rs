@@ -23,7 +23,8 @@ impl fmt::Display for LocalPositionError {
 impl Error for LocalPositionError {}
 
 /// Local reason for having no action. Both lose under WXF; not a concluded game.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "snake_case")]
 pub enum NoActionReason {
     /// No evasion of a geometric check exists.
     Checkmate,

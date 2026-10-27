@@ -1,0 +1,398 @@
+{
+  "format": "mshogi.xiangqi.proposed-cycle-source-fixtures.v1",
+  "profile": "mshogi.xiangqi.wxf2018.v1",
+  "status": "independently_constructed_proposal_for_review_not_accepted_implementation_tests",
+  "coordinate_dialect": "red-bottom a-i /0-9",
+  "cycles": {
+    "C": [
+      "e9f9",
+      "f8e8",
+      "f9e9",
+      "e8f8"
+    ],
+    "Q": [
+      "e9a9",
+      "f8f7",
+      "a9e9",
+      "f7f8"
+    ],
+    "D": [
+      "e9e8",
+      "f8f7",
+      "e8e7",
+      "f7f8",
+      "e7e8",
+      "f8f9",
+      "e8e9",
+      "f9f8"
+    ],
+    "T": [
+      "e9a9",
+      "a7e7",
+      "a9e9",
+      "e7a7"
+    ]
+  },
+  "fixtures": [
+    {
+      "id": "F022-CC",
+      "root_fen": "4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1",
+      "moves": [
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8",
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8"
+      ],
+      "expected_root_occurrence_plies": [
+        0,
+        4,
+        8
+      ],
+      "expected_warning": {
+        "ply": 8,
+        "offender": "red",
+        "kind": "red_perpetual_check_warning"
+      },
+      "expected_conclusion": null,
+      "interpretation_basis": "selected_owner_first_third_fourth_board_occurrence_policy_plus_contiguous_WXF_conduct; not reference_engine_outcome"
+    },
+    {
+      "id": "F023-CCC",
+      "root_fen": "4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1",
+      "moves": [
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8",
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8",
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8"
+      ],
+      "expected_root_occurrence_plies": [
+        0,
+        4,
+        8,
+        12
+      ],
+      "expected_warning": {
+        "ply": 8,
+        "offender": "red",
+        "kind": "red_perpetual_check_warning"
+      },
+      "expected_conclusion": {
+        "ply": 12,
+        "result": "black_win",
+        "reason": "continued_red_perpetual_check"
+      },
+      "interpretation_basis": "selected_owner_first_third_fourth_board_occurrence_policy_plus_contiguous_WXF_conduct; not reference_engine_outcome"
+    },
+    {
+      "id": "F024-QQQ",
+      "root_fen": "4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1",
+      "moves": [
+        "e9a9",
+        "f8f7",
+        "a9e9",
+        "f7f8",
+        "e9a9",
+        "f8f7",
+        "a9e9",
+        "f7f8",
+        "e9a9",
+        "f8f7",
+        "a9e9",
+        "f7f8"
+      ],
+      "expected_root_occurrence_plies": [
+        0,
+        4,
+        8,
+        12
+      ],
+      "expected_warning": null,
+      "expected_conclusion": {
+        "ply": 12,
+        "result": "draw",
+        "reason": "fourth_position_without_one_sided_obligation"
+      },
+      "interpretation_basis": "selected_owner_first_third_fourth_board_occurrence_policy_plus_contiguous_WXF_conduct; not reference_engine_outcome"
+    },
+    {
+      "id": "F026-CQC",
+      "root_fen": "4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1",
+      "moves": [
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8",
+        "e9a9",
+        "f8f7",
+        "a9e9",
+        "f7f8",
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8"
+      ],
+      "expected_root_occurrence_plies": [
+        0,
+        4,
+        8,
+        12
+      ],
+      "expected_warning": null,
+      "expected_conclusion": {
+        "ply": 12,
+        "result": "draw",
+        "reason": "contiguous_check_noncheck_mixture_not_all_check"
+      },
+      "interpretation_basis": "selected_owner_first_third_fourth_board_occurrence_policy_plus_contiguous_WXF_conduct; not reference_engine_outcome"
+    },
+    {
+      "id": "F026-QCC",
+      "root_fen": "4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1",
+      "moves": [
+        "e9a9",
+        "f8f7",
+        "a9e9",
+        "f7f8",
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8",
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8"
+      ],
+      "expected_root_occurrence_plies": [
+        0,
+        4,
+        8,
+        12
+      ],
+      "expected_warning": null,
+      "expected_conclusion": {
+        "ply": 12,
+        "result": "draw",
+        "reason": "first_to_third_window_contains_noncheck_moves_no_warning_at_third"
+      },
+      "interpretation_basis": "selected_owner_first_third_fourth_board_occurrence_policy_plus_contiguous_WXF_conduct; not reference_engine_outcome"
+    },
+    {
+      "id": "F026-CCQ",
+      "root_fen": "4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1",
+      "moves": [
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8",
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8",
+        "e9a9",
+        "f8f7",
+        "a9e9",
+        "f7f8"
+      ],
+      "expected_root_occurrence_plies": [
+        0,
+        4,
+        8,
+        12
+      ],
+      "expected_warning": {
+        "ply": 8,
+        "offender": "red",
+        "kind": "red_perpetual_check_warning"
+      },
+      "expected_conclusion": {
+        "ply": 12,
+        "result": "draw",
+        "reason": "check_warning_historical_but_continuous_check_broken_at_ply9"
+      },
+      "interpretation_basis": "selected_owner_first_third_fourth_board_occurrence_policy_plus_contiguous_WXF_conduct; not reference_engine_outcome"
+    },
+    {
+      "id": "F026-CCD",
+      "root_fen": "4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1",
+      "moves": [
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8",
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8",
+        "e9e8",
+        "f8f7",
+        "e8e7",
+        "f7f8",
+        "e7e8",
+        "f8f9",
+        "e8e9",
+        "f9f8"
+      ],
+      "expected_root_occurrence_plies": [
+        0,
+        4,
+        8,
+        16
+      ],
+      "expected_warning": {
+        "ply": 8,
+        "offender": "red",
+        "kind": "red_perpetual_check_warning"
+      },
+      "expected_conclusion": {
+        "ply": 16,
+        "result": "black_win",
+        "reason": "all_check_continues_despite_changed_action_word_and_longer_return"
+      },
+      "interpretation_basis": "selected_owner_first_third_fourth_board_occurrence_policy_plus_contiguous_WXF_conduct; not reference_engine_outcome"
+    },
+    {
+      "id": "F026-TTT",
+      "root_fen": "4R4/5k3/c8/9/9/9/9/9/9/3K5 w - - 0 1",
+      "moves": [
+        "e9a9",
+        "a7e7",
+        "a9e9",
+        "e7a7",
+        "e9a9",
+        "a7e7",
+        "a9e9",
+        "e7a7",
+        "e9a9",
+        "a7e7",
+        "a9e9",
+        "e7a7"
+      ],
+      "expected_root_occurrence_plies": [
+        0,
+        4,
+        8,
+        12
+      ],
+      "expected_warning": {
+        "ply": 8,
+        "offender": "red",
+        "kind": "red_same_cannon_perpetual_chase_warning"
+      },
+      "expected_conclusion": {
+        "ply": 12,
+        "result": "black_win",
+        "reason": "continued_unprotected_same_cannon_chase"
+      },
+      "interpretation_basis": "selected_owner_first_third_fourth_board_occurrence_policy_plus_contiguous_WXF_conduct; not reference_engine_outcome"
+    },
+    {
+      "id": "F026-CTC",
+      "root_fen": "4R4/5k3/c8/9/9/9/9/9/9/3K5 w - - 0 1",
+      "moves": [
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8",
+        "e9a9",
+        "a7e7",
+        "a9e9",
+        "e7a7",
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8"
+      ],
+      "expected_root_occurrence_plies": [
+        0,
+        4,
+        8,
+        12
+      ],
+      "expected_warning": null,
+      "expected_conclusion": {
+        "ply": 12,
+        "result": "draw",
+        "reason": "check_chase_mixture_not_cherry_picked_latest_pure_cycle"
+      },
+      "interpretation_basis": "selected_owner_first_third_fourth_board_occurrence_policy_plus_contiguous_WXF_conduct; not reference_engine_outcome"
+    },
+    {
+      "id": "F026-TCC",
+      "root_fen": "4R4/5k3/c8/9/9/9/9/9/9/3K5 w - - 0 1",
+      "moves": [
+        "e9a9",
+        "a7e7",
+        "a9e9",
+        "e7a7",
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8",
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8"
+      ],
+      "expected_root_occurrence_plies": [
+        0,
+        4,
+        8,
+        12
+      ],
+      "expected_warning": null,
+      "expected_conclusion": {
+        "ply": 12,
+        "result": "draw",
+        "reason": "first_to_third_contiguous_witness_not_cherry_picked_latest_check_return"
+      },
+      "interpretation_basis": "selected_owner_first_third_fourth_board_occurrence_policy_plus_contiguous_WXF_conduct; not reference_engine_outcome"
+    },
+    {
+      "id": "F026-CCT",
+      "root_fen": "4R4/5k3/c8/9/9/9/9/9/9/3K5 w - - 0 1",
+      "moves": [
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8",
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8",
+        "e9a9",
+        "a7e7",
+        "a9e9",
+        "e7a7"
+      ],
+      "expected_root_occurrence_plies": [
+        0,
+        4,
+        8,
+        12
+      ],
+      "expected_warning": {
+        "ply": 8,
+        "offender": "red",
+        "kind": "red_perpetual_check_warning"
+      },
+      "expected_conclusion": {
+        "ply": 12,
+        "result": "draw",
+        "reason": "check_warning_not_conclusion_new_chase_move_breaks_all_check_at9"
+      },
+      "interpretation_basis": "selected_owner_first_third_fourth_board_occurrence_policy_plus_contiguous_WXF_conduct; not reference_engine_outcome"
+    }
+  ]
+}

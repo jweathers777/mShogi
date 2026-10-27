@@ -118,3 +118,33 @@ The earlier `docs/m4/xiangqi/comparator-audit.md` remains historical source-only
 research. This runtime admission supersedes its *not yet built/admitted* status
 only for the restricted operation above, not its outcome exclusions. The
 alternative Fairy-Stockfish pin remains unbuilt and unadmitted.
+
+## Reviewed MSH-94 history board paths
+
+The four frozen cycle/count/mutual-check/precedence corpora are also exercised
+through the existing board-only native probe and admitted reference. This does
+not make reference repetition/count outcomes authoritative. To rebuild the
+native executable from the checked-out source and collect a compact report:
+
+```sh
+cargo build --locked -p mshogi-core --example xiangqi_probe
+python3 tools/xiangqi/collect_history_boards.py --report /tmp/history-board-summary.json
+python3 tools/xiangqi/review_count_history.py --output /tmp/count-arithmetic.json
+```
+
+The collector defaults to current directory as repository; `--repo` and
+`--native-probe` can name explicit paths. It checks every prefix (492 over17
+histories), all complete legal choices, check, exact undo and comparable FEN
+fields. `--native-only` is explicitly labeled and makes no reference claim.
+Each process uses the existing bounded adapter; failure/mismatch names the
+fixture/prefix. Input/source/binary mutations during collection refuse a report.
+Expected fixtures are never regenerated. Reports retain hashes and per-fixture
+counts rather than bulky raw streams; deterministic ordered observation frames
+can be reproduced with the same tools/binaries. Source hashes identify observed
+files; the preceding Cargo build, not the collector, establishes their build
+relationship to the native executable. Independent expected outcomes and their
+source review remain in `docs/m4/xiangqi/history-evidence.md`.
+
+`review_count_history.py` is a deliberately limited independent arithmetic check
+for the four reviewed Rook/General count fixtures, with straight-line placement
+and capture/check evidence. It is not a reusable rules engine or product dependency.

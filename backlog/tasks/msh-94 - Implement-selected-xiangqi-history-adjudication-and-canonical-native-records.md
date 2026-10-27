@@ -1,10 +1,11 @@
 ---
 id: MSH-94
 title: Implement selected xiangqi history adjudication and canonical native records
-status: To Do
-assignee: []
+status: In Review
+assignee:
+  - '@codex'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-27T16:18:00Z'
+updated_date: '2026-10-27T19:25:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -18,6 +19,8 @@ documentation:
   - docs/m4/xiangqi/handoff.md
   - docs/m4/xiangqi/coverage.md
   - docs/m4/xiangqi/owner-decisions.md
+  - docs/m4/xiangqi/history-contract.md
+  - docs/m4/xiangqi/history-evidence.md
 ordinal: 94000
 ---
 
@@ -45,8 +48,22 @@ Future bounded Xiangqi delivery work refined by MSH-80. Intent and acceptance on
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Root@codex is the sole builder/integrator in primary codex/rewrite at067d1767d06fa0e781aff2a325e4b21a9ecf1d75; startup clean, no other active task ownership or disposable worktrees. 1.Reconcile governing bilingual WXF19/20/Art8/3.2A source and independently instantiate/review conduct, cycle-overlap and proof-goal fixtures before affected adjudication is accepted; separate source workers own disjoint research only. 2.Build unaffected native complete history/event/actor/persistent-piece identity foundations, claimant-specific known-history count commands, atomic bounded rejection audit, terminal commands/precedence, exact undo and strict replay-validated native canonical records. Preserve the existing board API and never turn unresolved classification into a draw/loss or board illegality. 3.Implement only source/fixture-resolved conduct and sound assessment behavior; if a material source ambiguity remains, retain concrete histories/options and continue unaffected work while requesting that narrow owner decision. 4.Focused native/replay/strict parsing/limit fixtures, separate completed-boundary review, relevant regressions and normal native CI, integrate/push completed scope; do not mark Done unless all criteria are supported. MSH105 is not ready: direct dependencies MSH94 and MSH95 are both To Do at startup; do not start it or change its graph. No later console/engine/protocol/archive/desktop Xiangqi implementation.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 XIANGQI-P1 owner-refinement2026-10-27: original4AC/DoD preserved, complete native contract remains required; R-NOWIN now G-NOWIN before affected native recognition/proof and R-CYCLE now G-CYCLE before classification.94 owns history/event/canonical contracts, sound fast recognition and explicit unknown/proven statuses;105 owns full bounded exact backend after94/95. This is explicit staged allocation of the computational obligation, not silent scope removal:84,103,45 wait105. Strict native replay handles modes/limits honestly and refuses unsupported restoration before actual backend exists. Rejected claim audit is distinct from semantic game mutation and subject to61/99 admission.91/92 do not depend on these later cases.
+
+Owner-authorized next batch inspected. MSH94 dependencies80/93 are Done. MSH105 dependencies94/95 are not satisfied, so the requested fallback applies: work only on94 and report those exact dependencies. Backlog PATH1.55.0 is read-only for this session; pinned1.55.1 mutation binary matches AGENTS baseline. Source research workers: /root/xq_cycle_sources and /root/xq_conduct_sources; root retains product files and durable planning integration. G-CYCLE/G-NOWIN gate affected semantics, not ordinary representation choices or unaffected history/record work.
+
+Owner explicitly resolved G-NOWIN during this task (option2): WXF3.2A is existential natural-course board-win capability under3.1A: checkmate or no-legal-move/stalemate loss only. Exclude repetition/prohibited-conduct awards, resignation/agreement, time/lateness, technical/admin/misconduct/invalid-claim penalties and recursive no-win draw. Full known history remains authoritative for actual match outcomes but those mechanisms cannot create a positive natural-win witness. F002 C^3 must not prove Black natural capability. This supersedes research workers initial recommendation to include repetition-fault wins; preserve that as rejected historical proposal. MSH105 remains unstarted behind94/95. Root owns game.rs/record.rs/assessment.rs; isolated conduct.rs delegate /root/xq_conduct_sources; fixture integration test delegate /root/xq_cycle_sources; separate /root/xq_history_reviewer source and boundary review.
+
+Completed native history/adjudication/canonical boundary. Durable contract and evidence: docs/m4/xiangqi/history-contract.md and history-evidence.md; source/conduct/cycle and separate completed-boundary reviews retained under history-reviews/. Independent reviewer /root/xq_history_reviewer actually ran8 conduct +15 history +9 boundary tests and resolved all material findings (warning retirement, pending exemption, undo/runtime identity, source-correct offer admission). Final production hashes match reviewed files. Local final fmt/workspace clippy pass; cargo test --workspace --locked462passed0failed2existing ignored deep-perft; isolated desktop-session all-features92passed, native fixture regeneration unchanged, workspace build pass. Final-source board-only admitted-reference refresh and normal native CI/integration still pending; no check is claimed before execution. All claim audits and actual encoded canonical limits are admitted before commit with reserved closure. MSH105 remains unstarted, dependencies94/95 unchanged; no subsequent consumer work begun.
+
+Final-source native board probe rebuilt with cargo; reproducible collector PASS17histories/492native prefixes/492admitted-reference comparisons/0native-only. Compact provenance+fixture/source/binary hashes retained in docs/m4/xiangqi/history-reviews/board-observation-summary.json; WXF outcomes remain independently expected, never comparator-produced. Working-tree source hashes match the separate reviewed production hashes. Source/fixture gates resolved before adjudication acceptance. Review status retained until integration and normal native CI complete.
 <!-- SECTION:NOTES:END -->

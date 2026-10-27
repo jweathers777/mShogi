@@ -1,6 +1,23 @@
 # Xiangqi native/shared delivery handoff
 
-## Subsequent board implementation handoff
+## MSH-94 native history handoff
+
+The [native history contract](history-contract.md) and
+[executed evidence](history-evidence.md) add authoritative history, WXF
+responsibility/warnings, count claims, native outcomes, strict complete canonical
+records, semantic undo and sound fast natural-win assessment. Owner G-NOWIN
+is resolved as existential natural board win only; penalty awards do not count.
+Source/conduct/cycle gates have independent fixture and code review evidence.
+The exact no-win backend is not implemented here.
+
+Next dependency-ready native task after94 closes is **MSH-95** (strict shared
+routing using real records). **MSH-105 remains unstarted** because its dependency
+95 is not Done; retain its94/95 edges. No later console, search, engine,
+protocol, archive, session or desktop consumer was started. MSH-45/M4 stay open.
+The earlier board handoff and historical planning below are preserved snapshots,
+not statements that supersede current task/evidence status.
+
+## Subsequent board implementation handoff (historical MSH-91/92/93 snapshot)
 
 The authorized MSH-91/92/93 batch adds independently expected board fixtures,
 an actually built restricted Pikafish reference, native state/root codecs and

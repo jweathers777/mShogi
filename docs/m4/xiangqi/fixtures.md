@@ -130,3 +130,25 @@ all overlap outcomes and exact proof positions are not claimed instantiated or
 passed. Their tickets must add independent review and executable evidence before
 accepting affected behavior. This scoped gating satisfies planning without
 pretending the rules implementation already exists.
+
+
+## Executed MSH-94 native history extension
+
+Current [contract](history-contract.md) / [evidence](history-evidence.md) supersede
+planning-only gate/status statements above. Independently expected corpus facts
+were frozen before native adjudication; their original proposal status strings
+remain as provenance. Acceptance is established by the independent source review
+and completed-boundary review, not by rewriting expected data to match output.
+
+| Native corpus | Cases / exercised obligations | Current owner |
+| --- | --- | --- |
+| `history-cycles.json` |11 complete same-board/different-history C/Q/D/T histories; first→third/fourth full intervals, changed move words, check/chase variation, warnings/outcomes |94; F002/F022–026 |
+| `history-conduct.json` |20 source witnesses including published37/38/108/109/110, roots/pins/blocked legs, persistent/multiple victims, General/Soldier/river/same-kind exceptions and2:1counterfrequency; identical-Rook identity permutation |94; F009–015; private consequence classifier tests |
+| `natural-count.json` |4 known-history cases:10/11 checks,99/100/101 boundary, capture/reset, declared imported counter without prior evidence |94; F003/F017/F027 |
+| `history-mutual-check.json` |Legal Cannon-screen mutual checking cycle, no unilateral warning, fourth-return equal-fault draw |94; WXF20.1 |
+| `history-precedence.json` |34-ply return word, third68/fourth102; optional versus automatic count100 precedence |94; F017 |
+| `xiangqi_game_boundary.rs` |108 bare-General proof placements/successors; actual mate/stalemate0/1ply witnesses; F002 penalty excluded; strict canonical parsing, reserved closure capacity, undo/stale tokens, offer admission, chase-prefix independent counterexamples |94; F016/F018 and native part of F020 |
+
+MSH-105 owns required exact natural-board-win proof beyond the sound fast subset;
+95/engine/session/archive/desktop fixtures remain with their owners. No current
+history outcome is generated from Pikafish's repetition score or material table.

@@ -1,0 +1,32 @@
+{
+  "source_revision": "4c4145eaacf7fcaf89a338773aa110a3700e4c75",
+  "run": 40512188317,
+  "attempt": 2,
+  "job": 122223390154,
+  "artifact_id": 12739498661,
+  "zip_bytes": 66674491,
+  "zip_sha256": "75cd0650063f3b695e537ed9c63f779a9a931ceeb65e99188a8d64a0d17c5d8e",
+  "result": "14/14 actual GUI phases PASS; no product, driver, fixture or assertion changes from failed attempt1",
+  "files": [
+    {
+      "file": "gui-report.json",
+      "bytes": 439631,
+      "sha256": "c34d40e72b32c289a58dad673e939da703e7ba7c7da1c84ad8a17f3298dfea08"
+    },
+    {
+      "file": "verification-standard-driver.log",
+      "bytes": 347,
+      "sha256": "5551cd6affe06b08bb7b5652e48d57794a308abcf5cdf30ac6347f21d8eaf1f7"
+    },
+    {
+      "file": "verification-standard-engine-failure.webview.png",
+      "bytes": 107428,
+      "sha256": "cfedafa8155b3799d36c813537d8f0420defa88cf5dddf826e3da0d2de454e6f"
+    },
+    {
+      "file": "verification-standard-result.webview.png",
+      "bytes": 104166,
+      "sha256": "4c91a7269ff04864827db8dccd23252aadb99b15f2267540cc54753391ce679a"
+    }
+  ]
+}

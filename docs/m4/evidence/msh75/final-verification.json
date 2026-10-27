@@ -97,5 +97,21 @@
     "mutation_cli": "/private/tmp/mshogi-bootstrap-npm-cache/_npx/749414256ca1c44f/node_modules/backlog.md-darwin-arm64/backlog",
     "default_path_version": "1.55.0",
     "policy": "Only the explicit compatible pinned CLI mutates task records."
+  },
+  "integrated_ci": {
+    "revision": "4c4145eaacf7fcaf89a338773aa110a3700e4c75",
+    "production_delta_from_reviewed_revision": [],
+    "rust": {
+      "run": 40512188338,
+      "result": "All three platforms PASS",
+      "metadata": "integrated-rust-ci.json"
+    },
+    "desktop": {
+      "run": 40512188317,
+      "attempt": 2,
+      "result": "All three platforms PASS",
+      "metadata": "integrated-desktop-ci.json"
+    },
+    "incident": "Attempt1 Linux13/14: ambiguous first pointer response disconnected. Unchanged attempt2 actual14/14, independently audited223original artifacts. Both attempts retained separately; no product/driver/assertion change. Dependency installation delay and transient stale status metadata are not application failures."
   }
 }

@@ -1,11 +1,11 @@
 ---
 id: MSH-75
 title: Independently verify complete standard-shogi delivery and reconcile MSH41
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-27T13:22:00Z'
+updated_date: '2026-10-27T14:09:00Z'
 labels:
   - m4
   - owner-msh-41
@@ -29,6 +29,8 @@ references:
 documentation:
   - docs/m4/implementation-map.md
   - docs/m4/delivery-plan.md
+  - docs/m4/shogi-delivery-review.md
+  - docs/m4/evidence/msh75/closure-review.md
 type: task
 ordinal: 75000
 ---
@@ -45,18 +47,18 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Independent review traces every original MSH41AC1-8 to accepted profile,authoritative state/legal/reversal/history,independent corpus,console,own native engine,records and actual desktop evidence.
-- [ ] #2 Runtime reference comparisons,real interoperability,self-play,strict archive/history/capacity and game-specific application journeys are supported; unavailable/failed checks remain blockers and source audit alone is not conformance.
-- [ ] #3 Material findings and coverage gaps are resolved,with actual revisions/commands/environments and honest functional-versus-strength limits. Shared final acceptance stays in MSH46/MSH47.
-- [ ] #4 The complete MSH41 delivery record is closed only after all its original obligations and required shared tickets satisfy acceptance and integration. No child completion alone marks the game complete.
+- [x] #1 Independent review traces every original MSH41AC1-8 to accepted profile,authoritative state/legal/reversal/history,independent corpus,console,own native engine,records and actual desktop evidence.
+- [x] #2 Runtime reference comparisons,real interoperability,self-play,strict archive/history/capacity and game-specific application journeys are supported; unavailable/failed checks remain blockers and source audit alone is not conformance.
+- [x] #3 Material findings and coverage gaps are resolved,with actual revisions/commands/environments and honest functional-versus-strength limits. Shared final acceptance stays in MSH46/MSH47.
+- [x] #4 The complete MSH41 delivery record is closed only after all its original obligations and required shared tickets satisfy acceptance and integration. No child completion alone marks the game complete.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -78,4 +80,14 @@ MSH-90 is the required bounded common-console follow-up to MSH-68/69/70, owned o
 Owner current request retained as task authority: attachment c9d5505e-91b8-409b-8893-33cd14a95d50. MSH-74 accepted final shared Chess/Shogi shell has owner visual approval. MSH-75 independently reviews complete integrated MSH-41 delivery; closure of41 is authorized only if alloriginalrequirements pass. No M4 closure or another-game implementation authorized.
 
 Final review boundary 2026-10-27: 80d6b5cc71c8ceb5bf782d93295797aed1e18d66 (codex/rewrite), no production or expected-fixture edits. Three fresh independent AI reviewers inspected integrated native rules/history, engine/console/USI/runner, and archive/session/normal desktop boundaries; all report no material blocker. Reports and exact execution/provenance are in docs/m4/evidence/msh75/. Root fresh workspace: 409 passed, 0 failed, 2 optional deep chess checks ignored; fmt/clippy PASS; strict TypeScript and 161 frontend tests PASS. Reviewer fresh reference:169 independently expected fixtures,167 sequences,1304 plies/1471 prefixes,zero mismatches; independent21 history-ledger/149-prefix and9 declaration-root audits PASS. Six fresh selfplay + six actual pinned independent YaneuraOu games and replay PASS (functional, not strength). Fresh normal Mac CUA Sente/Gote, capture/demotion, promotion/drop cancellation/completion, engine, read-only opponent inspection, native Save/Open fresh tokens/stopped runtime, prefix analysis, Return/Resume/Flip and resignation journeys PASS; native records/screenshots/AX retained. Current80 Rust40505357243 and Desktop40505357155 all three platforms success. Independent source/hash applicability audit supports reused final MSH74 actual Windows/Linux GUI:14 phases each=3 normal+11 verification;175 retained artifacts match. Primary original41AC1–8 mapping: docs/m4/shogi-delivery-review.md; current ledger stale future-tense summary reconciled while preserving historical evidence. Fresh final reconciliation reviewer msh75_closure_review assesses complete mapping and fresh normal GUI; no ticket closure before verdict.
+
+Post-integration verification at evidence commit4c4145eaacf7fcaf89a338773aa110a3700e4c75: Rust40512188338 all3 platforms PASS. Desktop40512188317 attempt1: macOS/Windows PASS; Linux13/14 phases, first Chess verification e2 pointer POST /actions lost its HTTP response (RemoteDisconnected, driver SendRequest peer reset). All3 normal+all6 Shogi verification phases pass; failure capture subsequently reads same0-ply native app, no panic/crash evidence. Independent bounded follow-up docs/m4/evidence/msh75/ci-followup-review.md audits all220original artifacts, failure DOM/image/traceback and unchanged product/driver/hash bytes; root cause of downstream reset remains unknown. Original failure evidence retained in ci-linux-attempt1; no assertion weakened and no ambiguous input retried. Only failed Linux job rerun unchanged as attempt2, currently pending; task stays In Review until actual result. Earlier actual-source CI and independent complete-delivery verdict remain distinct from this new incomplete check.
+
+Final independent reconciliation PASS: docs/m4/evidence/msh75/closure-review.md traces original41AC1–8 through complete selected profile and actual integrated consumers. Three fresh independent AI source/test/artifact tracks plus fresh independent final reconciliation; no material product finding. Reviewed/freshly locally tested80d6b5cc71c8ceb5bf782d93295797aed1e18d66; evidence integration4c4145eaacf7fcaf89a338773aa110a3700e4c75 pushed to origin/codex/rewrite, production/expected-fixture sources identical. Final Rust40512188338 and Desktop40512188317 allthreeplatformjobscompleted/success at4c. Linux attempt2 actual14/14GUI passes; independent follow-up verifies exact artifact12739498661/ZIP75cd0650063f3b695e537ed9c63f779a9a931ceeb65e99188a8d64a0d17c5d8e,223original fingerprints,16unchanged fullinspectionobjects,14nativeabsences. Genuine missing-engine3ply failure→restore identical engine→Retry4plies→nativeQuit is now executed. Initial13/14failed pointer transport attempt remains failed original evidence; no ambiguous action retried, assertions weakened or source fixed. Slow11m47s OSdependency install and stale API summary fields are separately identified, final fullmetadata now success. All41obligations supported; close75 then41 perexplicitownerrequest. M4/42–47 remainopen, MSH50 strengthfuture, nexteligibleM4research80–83 only; no nextgame started.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Independently verified complete standard-shogi delivery against every original MSH-41 AC1–8 and selected mshogi.shogi.csa36.v1. All required profile clauses and real native→console→history-aware engine→structured transport/USI/runner→v2 archive→normal desktop paths have evidence; MSH-61 lossless admission remains intact. Four fresh independent AI reviews found no material product defect; stale current-facing ledger prose was reconciled while historical records were preserved. Fresh local409native passes/2optionaldeepchess ignored,161frontend passes,fmt/clippy/strictTS and8host checks PASS. Fresh admitted-reference169fixtures zero mismatches, independent21history/nine declaration audits,6selfplay+6actualpinnedopponentgames/replays, normalMacSente/Gote Save/Open/history/analysis/hand/promotion/drop/engine/resignation journeys PASS. Source80d6b5c; integrated evidence4c4145eaacf7fcaf89a338773aa110a3700e4c75, codex/rewrite. Final native40512188338 and desktop40512188317 allthreeplatformCI PASS; unchanged Linux rerun14/14 resolves the incomplete verification while preserving its first13/14transportfailure and independent diagnosis. Full mapping/review/commands/provenance/limitations: docs/m4/shogi-delivery-review.md and evidence/msh75/. Supports MSH-41 closure; M4 and other-game/shared-final/strength obligations remain open. No production change or other-game implementation.
+<!-- SECTION:FINAL_SUMMARY:END -->

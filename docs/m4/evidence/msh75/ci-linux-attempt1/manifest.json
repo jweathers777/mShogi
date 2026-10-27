@@ -1,0 +1,36 @@
+{
+  "source_revision": "4c4145eaacf7fcaf89a338773aa110a3700e4c75",
+  "run": 40512188317,
+  "attempt": 1,
+  "job": 122216678483,
+  "artifact_id": 12737629351,
+  "artifact_bytes": 66427194,
+  "scope": "Original failed attempt preserved;13 of14 phases pass. A lost pointer response is not retried in place. Full unchanged Linux job rerun requested after independent review.",
+  "files": [
+    {
+      "file": "gui-report.json",
+      "bytes": 443001,
+      "sha256": "8360994044334db7045b0e58c87d7b6858cc2b6bff203668a038e8b27f4c7c56"
+    },
+    {
+      "file": "verification-standard-driver.log",
+      "bytes": 512,
+      "sha256": "e1a903733ef33cdca9530bc07fe5317a818cc0d54550d59b0213eb08dfd7dc9f"
+    },
+    {
+      "file": "verification-standard-failure.desktop.png",
+      "bytes": 107314,
+      "sha256": "6a3e92f4017742c8d7331cbd93ce138f6354726552ed2984c2aa113ca7948628"
+    },
+    {
+      "file": "verification-standard-failure.dom.json",
+      "bytes": 2738,
+      "sha256": "a58e332a0b3ebcbf2c593508b65c6478635be8d61a12e5efa8dba5b97da7de7f"
+    },
+    {
+      "file": "verification-standard-failure.webview.png",
+      "bytes": 94172,
+      "sha256": "0310cc795df588abe3fee594f5d30d43fadfef62347e8c40a28db05dc552c789"
+    }
+  ]
+}

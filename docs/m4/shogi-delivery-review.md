@@ -103,6 +103,35 @@ as closure evidence. Independent reviews identify their actual methods; AI revie
 independently expected fixture facts, differential observations, native tests,
 actual processes/opponent games, packaged GUI and owner approval remain distinct.
 
+### Post-integration CI follow-up
+
+The evidence integration is `4c4145eaacf7fcaf89a338773aa110a3700e4c75`;
+production/expected-fixture sources remain identical to80d6b5c. Its
+[native CI40512188338](https://github.com/jweathers777/mShogi/actions/runs/40512188338)
+passes all three platforms; [original metadata](evidence/msh75/integrated-rust-ci.json)
+is retained. Desktop40512188317 attempt1 passes macOS/Windows, while Linux
+passes13/14 phases and loses the response to its first Chess verification pointer
+request. All normal-product and Shogi phases pass. The same session subsequently
+returns the zero-ply application image and DOM; no product panic is evidenced.
+The [independent incident review](evidence/msh75/ci-followup-review.md) distinguishes
+the observed WebDriver peer reset from an unproven internal root cause.
+[Original failed report and captures](evidence/msh75/ci-linux-attempt1/manifest.json)
+remain failed evidence. No ambiguous pointer request is automatically retried,
+no assertion is weakened, and no production fix is inferred. Only the Linux job
+was rerun unchanged. Attempt2's [actual report](evidence/msh75/ci-linux-attempt2/gui-report.json)
+passes14/14, including the complete genuine missing-engine/Retry/native-Quit
+sequence that attempt1 did not reach. Independent audit verifies all223 retained
+artifact fingerprints,16 full inspection comparisons and14 native absence
+observations; host/engine hashes match attempt1. Its exact artifact ZIP is pinned
+by ID12739498661 and SHA-256 in [the manifest](evidence/msh75/ci-linux-attempt2/manifest.json),
+avoiding the two attempts' duplicate artifact names. The rerun's approximately
+12-minute dependency-installation delay happened before application checks.
+GitHub temporarily retained an in-progress overall status despite completed
+successful steps; [the observation](evidence/msh75/ci-linux-attempt2/completed-steps-awaiting-status.json)
+is kept separately. The final workflow concludes success; actual integration CI
+and its three-platform results are retained in
+[the final metadata](evidence/msh75/integrated-desktop-ci.json).
+
 ## Limits and next boundary
 
 This is complete delivery of the selected initial **untimed** profile with a

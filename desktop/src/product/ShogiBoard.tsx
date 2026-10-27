@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
 import type { BoardChoice, NativePiece } from "../Board";
 import type { GameSnapshot, Side } from "./native";
 import type { InspectMovement, MovementInspection } from "./movementInspection";
+import { GameArea, PlayerArea } from "./ApplicationShell";
 import "../movement-inspection.css";
 
 // Decoration only. Native kind/promotion/owner remain the action and identity data.
@@ -110,8 +111,8 @@ export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDi
   function tray(side: Side) {
     const hands = snapshot.hands.filter((h) => h.owner === side.key && h.count > 0);
     const human = side.key === snapshot.human.key;
-    return <div className={`shogi-player${snapshot.turn.key === side.key && !snapshot.status.concluded ? " to-move" : ""}`} data-player={side.id.side}>
-      <div className="shogi-player-identity"><span className="player-avatar" aria-hidden="true">{human ? "Y" : "m"}</span><div><strong>{human ? "You" : "mShogi"}<span>{side.label}</span></strong><small>{human ? "Human player" : "Your opponent"}</small></div>{snapshot.turn.key === side.key && !snapshot.status.concluded && <span className="turn-indicator">To move</span>}</div>
+    return <PlayerArea className="shogi-player" side={side.label} human={human}
+      toMove={snapshot.turn.key === side.key && !snapshot.status.concluded} playerKey={side.id.side}>
       <div className="shogi-hand" role="group" aria-label={`${side.label} pieces in hand`}>
         {!hands.length && <span className="empty-hand">No pieces in hand</span>}
         {hands.map((h) => <button key={h.origin} className={`hand-piece${selected === h.origin ? inspection ? " inspecting" : inspectionPending ? "" : " selected" : ""}`} ref={(node) => { if (node) refs.current.set(h.origin, node); else refs.current.delete(h.origin); }}
@@ -123,13 +124,11 @@ export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDi
             else if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); const available = hands.filter((hand) => (!disabled && snapshot.choices.some((c) => c.from === hand.origin)) || (onInspect && !inspectionDisabled)); const index = available.findIndex((hand) => hand.origin === h.origin); const next = available[(index + (e.key === "ArrowRight" ? 1 : -1) + available.length) % available.length]; if (next) focus(next.origin); }
           }}><svg viewBox="0 0 100 100" aria-hidden="true"><ShogiPiece kind={h.kind} first={side.first_mover} rotated={side.key !== orientation.side.key} /></svg><span className="hand-count">{h.count}</span></button>)}
       </div>
-    </div>;
+    </PlayerArea>;
   }
   const width = columns * 100 + 56, height = rows * 100 + 56;
   const destinationIndex = squares.indexOf(lastDestination.current);
-  return <div className="shogi-stage" onFocusCapture={() => { hadFocus.current = true; }} onBlurCapture={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node | null)) hadFocus.current = false; }}>
-    {tray(topSide)}
-    <div className="shogi-board-frame">
+  const board = <div className="shogi-board-frame">
       <svg className="shogi-board" viewBox={`0 0 ${width} ${height}`} role="group" aria-label={`Shogi board, ${orientation.side.label} at bottom`}>
         <defs><linearGradient id="shogi-wood" x1="0" x2="1"><stop stopColor="#e4c38d" /><stop offset="0.5" stopColor="#ebd09d" /><stop offset="1" stopColor="#dfbc82" /></linearGradient></defs>
         <rect className="shogi-field" width={width} height={height} rx="7" />
@@ -157,10 +156,14 @@ export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDi
         if (e.key === "Escape") { e.preventDefault(); cancel(); }
         if (e.key === "Tab") { const buttons = [...(chooser.current?.querySelectorAll<HTMLButtonElement>("button") ?? [])]; const index = buttons.indexOf(document.activeElement as HTMLButtonElement); e.preventDefault(); buttons[(index + (e.shiftKey ? -1 : 1) + buttons.length) % buttons.length]?.focus(); }
       }}><strong>Promotion</strong><p>Choose how this piece completes its move.</p><div>{completions.map((c) => <button key={c.action} className="primary" onClick={() => commit(c)}>{c.completion?.label ?? "Complete move"}</button>)}</div><button className="quiet" onClick={cancel}>Cancel promotion</button></div>}
-    </div>
-    {tray(orientation.side)}
+    </div>;
+  const footer = <>
     <div className={`shogi-board-help${inspection || inspectionPending ? " movement-inspection-status" : ""}`}><span>{inspection ? `Inspecting ${inspection.label} · Read-only · ${inspection.choices.length ? "Hollow rings show movement choices" : "No native movement choices"}` : inspectionPending ? "Loading read-only movement inspection…" : "Select a piece or hand piece, then a marked square."}</span><span>Arrows · Enter · Esc</span></div>
     {continuation && <div className="shogi-route" onKeyDown={(e) => { if (e.key === "Escape") { e.preventDefault(); cancel(); } }}><p>{announcement}</p>{terminal.length > 0 && !inspection && <button onClick={() => finish(terminal)}>Complete action here</button>}<button onClick={cancel}>Cancel selection</button></div>}
     <span className="sr-only" role="status" aria-live="polite">{announcement}</span>
-  </div>;
+  </>;
+  return <GameArea className="shogi-stage" upperPlayer={tray(topSide)} board={board}
+    lowerPlayer={tray(orientation.side)} footer={footer}
+    onFocusCapture={() => { hadFocus.current = true; }}
+    onBlurCapture={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node | null)) hadFocus.current = false; }} />;
 }

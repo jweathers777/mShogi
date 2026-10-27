@@ -1,74 +1,131 @@
-.game-shell.game-shell { height:100dvh; max-width:none; margin:0; padding:0; overflow:hidden; }
+/* One application palette and composition; game-specific art stays in the board. */
+.game-shell.game-shell {
+ --shell-bg:#111e23; --shell-panel:#1b2e35; --shell-header:#14292e;
+ --shell-text:#e7ece5; --shell-muted:#b9cbc7; --shell-border:#3b5258; --shell-accent:#d5e4bd;
+ color:var(--shell-text); background:var(--shell-bg); color-scheme:dark;
+ height:100dvh; max-width:none; margin:0; padding:0; overflow:hidden; font-size:14px;
+}
 .game-shell .shell-content { display:contents; }
-.game-shell .shell-header { height:82px; padding:0 28px; display:flex; align-items:center; gap:22px; border-bottom:1px solid #355057; }
-.game-shell .product-brand { flex:0 0 168px; gap:12px; }
-.game-shell .product-brand h1 { font-size:27px; }
-.game-shell .product-brand p { font-size:9px; letter-spacing:.13em; }
-.game-shell .shell-runtime { display:block; color:#bacbc4; font-size:10px; margin-top:4px; }
-.game-shell .shell-document { flex:1; min-width:0; border:0; background:transparent; padding:0; }
-.game-shell .shell-document h2 { font-size:12px; line-height:1.4; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin:3px 0; }
-.game-shell .shell-document .document-dirty { font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:#bacbc4; }
+.game-shell.game-shell .shell-header { height:82px; padding:0 28px; display:flex; align-items:center; gap:22px; background:var(--shell-header); border-bottom:1px solid var(--shell-border); }
+.game-shell .product-brand { flex:0 0 168px; display:flex; align-items:center; gap:12px; }
+.game-shell .product-brand h1 { font:500 27px Georgia,serif; letter-spacing:-.04em; }
+.game-shell .product-brand>span { font-family:Georgia,serif; color:#c3dca5; font-size:34px; }
+.game-shell .product-brand p { color:var(--shell-muted); font-size:9px; letter-spacing:.13em; }
+.game-shell .shell-runtime { display:block; color:var(--shell-muted); font-size:10px; margin-top:4px; }
+.game-shell .shell-document { flex:1; min-width:0; border:0; background:transparent; padding:0; color:var(--shell-muted); }
+.game-shell .shell-document h2 { font-size:12px; line-height:1.4; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin:3px 0; color:var(--shell-text); }
+.game-shell .shell-document .document-dirty { font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:var(--shell-muted); }
+.game-shell .shell-document .document-dirty.dirty { color:#e2c58b; }
 .game-shell .shell-document p { font-size:10px; overflow-wrap:anywhere; max-height:30px; overflow:auto; color:inherit; }
 .game-shell .shell-file-actions { flex-shrink:0; display:flex; gap:7px; }
 .game-shell .shell-file-actions button { font-size:12px; padding:9px 12px; }
+.game-shell.game-shell .primary,.game-shell.game-shell .shell-header button.primary { color:#192e29; background:var(--shell-accent); border-color:var(--shell-accent); }
+.game-shell.game-shell .quiet,.game-shell.game-shell .shell-header button.quiet { color:var(--shell-text); border-color:#56716f; background:transparent; }
+.game-shell.game-shell .quiet:hover:enabled { background:#2a4247; }
+.game-shell.game-shell .secondary { color:#eaf1e6; background:#345b50; border-color:#56796c; }
+.game-shell.game-shell button { font-size:12px; }
+.game-shell.game-shell button:focus-visible,.game-shell.game-shell input:focus-visible,.game-shell.game-shell summary:focus-visible { outline:3px solid #e4c381; outline-offset:3px; }
 .game-shell .shell-workspace { height:calc(100dvh - 82px); display:grid; grid-template-columns:minmax(0,1fr) 292px; gap:28px; padding:20px 28px 16px; max-width:1520px; margin:auto; align-items:stretch; }
 .game-shell .shell-board-panel { min-width:0; min-height:0; display:flex; flex-direction:column; }
-.game-shell .shell-live-heading { min-height:80px; flex-shrink:0; margin:0; display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
-.game-shell .shell-live-heading h2 { font-size:25px; line-height:1.2; }
-.game-shell .shell-live-heading .player-line { margin:5px 0 0; font-size:11px; }
-.game-shell .shell-live-heading .eyebrow { font-size:9px; margin-bottom:5px; }
+.game-shell .shell-live-heading { height:80px; min-height:80px; flex-shrink:0; margin:0; display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.game-shell .shell-live-heading h2 { font:500 25px/1.2 Georgia,serif; letter-spacing:-.025em; color:var(--shell-text); }
+.game-shell .shell-live-heading .player-line { margin:5px 0 0; font-size:11px; color:var(--shell-muted); }
+.game-shell .shell-live-heading .eyebrow { color:#aac7bb; font-size:9px; margin-bottom:5px; }
+.game-shell .shell-live-heading .flip-button { padding:8px 10px; font-size:16px; white-space:nowrap; }
+.game-shell .shell-live-heading .flip-button span { font-size:12px; }
+.game-shell.game-shell .shell-game-area { flex:1; min-height:0; min-width:0; display:grid; grid-template-rows:52px minmax(0,1fr) 52px 44px; align-items:stretch; width:100%; }
+.game-shell .shell-player-slot { min-width:0; display:flex; align-items:center; }
+.game-shell.game-shell .shell-player { width:100%; max-width:none; height:48px; display:flex; justify-content:space-between; align-items:center; gap:12px; color:var(--shell-text); }
+.game-shell .shell-player-identity { display:flex; align-items:center; gap:9px; flex-shrink:0; }
+.game-shell .shell-player strong { display:block; font-size:12px; }
+.game-shell .shell-player strong span { color:var(--shell-muted); font-weight:400; margin-left:8px; font-size:11px; }
+.game-shell .shell-player small { display:block; font-size:10px; margin-top:3px; color:var(--shell-muted); }
+.game-shell .player-avatar { display:grid; place-items:center; border:1px solid; border-radius:50%; font-family:Georgia,serif; background:#243c42; border-color:#456058; color:#d5e4bd; width:31px; height:31px; font-size:19px; }
+.game-shell .turn-indicator { color:#d5e4bd; background:#30483f; font-size:9px; padding:3px 5px; }
+.game-shell .empty-hand { color:var(--shell-muted); }
+.game-shell .shell-board-slot { min-height:0; min-width:0; width:100%; display:flex; align-items:flex-start; justify-content:center; container-type:size; }
+.game-shell.game-shell .shell-board-slot .board-wrap,.game-shell.game-shell .shell-board-slot .shogi-board-frame { width:min(100cqw,calc(100cqh - 24px)); max-width:none; margin:0 auto; flex:none; }
+.game-shell .board-help { font-size:10px; padding-top:5px; color:var(--shell-muted); }
+.game-shell .shell-game-footer { min-width:0; font-size:10px; color:var(--shell-muted); }
+.game-shell.game-shell .shogi-board-help { width:100%; max-width:none; padding-top:5px; font-size:10px; color:var(--shell-muted); }
+.game-shell .game-footnote { margin:0; font-size:10px; }
+.game-shell .movement-inspection-status { color:#ffd3df; background:#3c2430; border-color:#f59ab0; }
+.game-shell .hand-piece.inspecting { outline-color:#f59ab0; }
 .game-shell .shell-sidebar { min-height:0; display:flex; flex-direction:column; gap:14px; overflow-y:auto; scrollbar-gutter:stable; padding-right:4px; }
 .game-shell .shell-sidebar>* { flex-shrink:0; }
 .shell-notices:empty { display:none; }
 .shell-notices>*+* { margin-top:10px; }
-.shell-section-title { font-size:13px; margin-bottom:9px; }
-.game-shell .shell-actions { border-top:1px solid #3b5254; padding-top:12px; }
-.game-shell .shell-actions .resign-button { width:auto; }
-.game-shell .shell-technical { font-size:11px; padding-top:12px; border-top:1px solid #3b5254; }
+.game-shell .shell-card { background:var(--shell-panel); border:1px solid var(--shell-border); border-radius:9px; padding:13px; }
+.game-shell .shell-analysis { min-height:218px; }
+.game-shell .shell-history { height:236px; min-height:236px; overflow:auto; }
+.game-shell .shell-history>.history-card,.game-shell .shell-history>.shogi-history { height:100%; display:flex; flex-direction:column; }
+.game-shell .shell-history .event-timeline,.game-shell .shell-history .shogi-history ol { flex:1; min-height:45px; max-height:none; margin:8px 0; overflow:auto; }
+.game-shell .shell-section-title { font-size:13px; margin:0 0 9px; }
+.game-shell.game-shell .shell-sidebar .card,.game-shell.game-shell .shogi-analysis,.game-shell.game-shell .shogi-history,.game-shell.game-shell .shogi-game-actions { background:transparent; color:var(--shell-text); padding:0; margin:0; border:0; border-radius:0; }
+.game-shell .shell-card h2,.game-shell .shogi-section-heading h2 { font-size:13px; color:var(--shell-text); }
+.game-shell .shell-card .caption,.game-shell .shell-card .muted,.game-shell .shogi-section-heading>span,
+.game-shell .analysis-location,.game-shell .shogi-analysis-fields label,.game-shell .shogi-analysis-state,
+.game-shell .search-target,.game-shell .analysis-perspective,.game-shell .shogi-telemetry dt,
+.game-shell .shogi-pv,.game-shell .shogi-pv>span,.game-shell .analysis-readonly,.game-shell .recorded-searches,
+.game-shell .event-number,.game-shell .shogi-game-actions p { color:var(--shell-muted); font-size:10px; }
+.game-shell .shogi-telemetry dd,.game-shell .shogi-evaluation { color:#d5e4bd; }
+.game-shell .shogi-search-observation { border-color:var(--shell-border); }
+.game-shell .shogi-analysis-fields input { color:var(--shell-text); background:#13252a; border-color:#56716f; }
+.game-shell .shogi-history ol { max-height:174px; }
+.game-shell .shogi-history li button { color:var(--shell-text); }
+.game-shell .shogi-history li button:hover:enabled { background:#2a4247; }
+.game-shell .shogi-history li button[aria-current="step"] { color:#e5eddc; background:#344b41; }
+.game-shell .shell-actions .resign-button { width:auto; margin:0; }
+.game-shell .shogi-game-actions button { margin:0 4px 0 0; }
+.game-shell .shell-technical { font-size:11px; padding:12px 0; border-top:1px solid var(--shell-border); color:var(--shell-muted); }
+.game-shell .shell-technical a { color:#c3dca5; }
 .shell-technical pre { white-space:pre-wrap; overflow-wrap:anywhere; max-height:220px; overflow:auto; }
-.shell-chess { color:#e7ece5; background:#111e23; color-scheme:dark; }
-.shell-chess .shell-header { background:#14292e; }
-.shell-chess .product-brand>span { font-family:Georgia,serif; color:#c3dca5; }
-.shell-chess .shell-document { color:#bbceca; }
-.shell-chess .document-dirty.dirty { color:#e2c58b; }
-.shell-chess .shell-live-heading h2 { color:#e7ece5; }
-.shell-chess .shell-live-heading .eyebrow { color:#aac7bb; }
-.game-shell.shell-chess .board-wrap { width:min(100%,calc(100dvh - 272px)); max-width:none; }
-.game-shell.shell-chess .board-help { font-size:10px; padding-top:6px; }
-.game-shell.shell-chess .game-footnote { font-size:10px; margin-top:8px; }
-.game-shell.shell-chess .card { padding:13px; }
-.shell-chess .shell-technical { color:#b9cfca; }
-.shell-chess .shell-technical button { color:#d5e2de; }
-.shell-shogi { color-scheme:light; }
-.shell-shogi .shell-document { color:#dae5d6; }
-.shell-shogi .shell-document .document-dirty.dirty { color:#f0d69c; }
-.shell-shogi .shell-live-heading .player-line { color:#53634f; }
-.shell-shogi .shell-live-heading .eyebrow { color:#53634f; }
-.shell-shogi .shogi-resume { border-color:#cbbf99; background:#f9f1d8; }
-.shell-shogi .shell-actions,.shell-shogi .shell-technical { border-color:#d7ded0; }
-.game-shell.shell-shogi .shogi-player,.game-shell.shell-shogi .shogi-board-frame,.game-shell.shell-shogi .shogi-board-help { width:min(100%,calc(100dvh - 320px)); max-width:none; }
-.game-shell.shell-shogi[data-historical="true"] .shogi-player,.game-shell.shell-shogi[data-historical="true"] .shogi-board-frame,.game-shell.shell-shogi[data-historical="true"] .shogi-board-help { max-width:calc(100dvh - 358px); }
-.game-shell .shogi-analysis,.game-shell .shogi-history { margin:0; }
-.shell-analysis .shogi-section-heading { margin-bottom:5px; }
+.game-shell .shogi-notice,.game-shell .shogi-resume { color:var(--shell-text); border:1px solid #72816a; background:#263d36; border-radius:8px; padding:12px; }
+.game-shell .shogi-notice h3,.game-shell .shogi-notice p,.game-shell .shogi-resume p { color:#d5e2ce; }
+.game-shell .shogi-notice.error { background:#402c31; border-color:#c28c8c; color:#f3c4bf; }
+.game-shell .shogi-notice button { background:#345b50; color:#eaf1e6; border-color:#56796c; }
+.game-shell .shogi-history-banner { flex-shrink:0; color:#e2d3a9; background:#383a2d; border-color:#837752; }
+.game-shell .shogi-history-banner button { color:#e2d3a9; background:#30352a; border-color:#837752; }
+.game-shell .shogi-promotion { color:var(--shell-text); background:var(--shell-panel); border-color:var(--shell-border); }
+.game-shell .shogi-promotion p { color:var(--shell-muted); }
+.product-dialog.product-dialog { color:#e7ece5; background:#1b2e35; border-color:#56716f; color-scheme:dark; }
+.product-dialog.product-dialog p,.product-dialog.product-dialog small { color:#b9cbc7; }
+.product-dialog.product-dialog .quiet { color:#e7ece5; border-color:#56716f; }
+.product-dialog.product-dialog .primary { color:#192e29; background:#d5e4bd; }
+.product-dialog.product-dialog .secondary { background:#345b50; color:#eaf1e6; }
+.product-dialog.product-dialog .game-choices button,.product-dialog.product-dialog .side-choices button { background:#243b42; color:#e7ece5; border-color:#56716f; }
+.product-dialog.product-dialog button.chosen { background:#345448; border-color:#c3dca5; box-shadow:inset 0 0 0 1px #c3dca5; }
 @media(max-width:960px) {
  .game-shell .shell-header { padding:0 18px; gap:13px; }
  .game-shell .product-brand { flex-basis:145px; gap:9px; }
  .game-shell .product-brand h1 { font-size:24px; }
- .game-shell .product-brand>span { font-size:30px; }
  .game-shell .shell-file-actions { gap:5px; }
  .game-shell .shell-file-actions button { font-size:11px; padding:8px 9px; }
  .game-shell .shell-workspace { grid-template-columns:minmax(0,1fr) 236px; gap:18px; padding:15px 18px 12px; }
+ .game-shell .shell-live-heading { min-height:70px; height:70px; }
  .game-shell .shell-live-heading h2 { font-size:21px; }
  .game-shell .shell-live-heading .flip-button span { display:none; }
- .game-shell .shell-live-heading .flip-button { padding:7px 9px; }
- .game-shell .shell-live-heading { min-height:70px; }
+ .game-shell .shell-player { gap:8px; }
+ .game-shell .shell-player-identity { gap:6px; }
+ .game-shell .shell-player small { font-size:9px; }
+ .game-shell .player-avatar { width:26px; height:26px; font-size:17px; }
+ .game-shell .turn-indicator { display:none; }
+ .game-shell .shell-history { height:220px; min-height:220px; }
 }
 @media(max-height:700px) {
- .game-shell .shell-header { height:76px; }
+ .game-shell.game-shell .shell-header { height:76px; }
  .game-shell .shell-workspace { height:calc(100dvh - 76px); padding-top:12px; padding-bottom:8px; }
- .game-shell .shell-live-heading { min-height:65px; }
+ .game-shell .shell-live-heading { min-height:65px; height:65px; }
  .game-shell .shell-live-heading h2 { font-size:20px; }
- .game-shell.shell-chess .board-wrap { width:min(100%,calc(100dvh - 244px)); }
- .game-shell.shell-shogi .shogi-player,.game-shell.shell-shogi .shogi-board-frame,.game-shell.shell-shogi .shogi-board-help { width:min(100%,calc(100dvh - 282px)); }
- .game-shell.shell-shogi[data-historical="true"] .shogi-player,.game-shell.shell-shogi[data-historical="true"] .shogi-board-frame,.game-shell.shell-shogi[data-historical="true"] .shogi-board-help { max-width:calc(100dvh - 320px); }
+ .game-shell.game-shell .shell-game-area { grid-template-rows:45px minmax(0,1fr) 45px 40px; }
+ .game-shell.game-shell .shell-player { height:42px; }
+ .game-shell .shell-player small { display:none; }
+ .game-shell .shell-analysis { min-height:200px; }
 }
+
+.shell-position-notice:empty { display:none; }
+.shell-position-notice { flex-shrink:0; margin-bottom:8px; }
+.game-shell .shell-position-notice .historical-notice,.game-shell .shell-position-notice .shogi-history-banner { background:#383a2d; color:#e2d3a9; border:1px solid #837752; border-radius:6px; padding:8px 10px; margin:0; font-size:11px; }
+.game-shell .shell-position-notice .historical-notice p { font-size:10px; margin:3px 0; }
+.game-shell .shell-position-notice button { padding:5px 9px; font-size:11px; }
+.game-shell .inspector-switch { margin-bottom:12px; }

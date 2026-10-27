@@ -1,8 +1,8 @@
 # Xiangqi native/shared delivery handoff
 
-Planning only, baseline `14b9643`, MSH-80. All new tickets are **To Do**.
-MSH-80 owns ratification/reconciliation; no product implementation is authorized
-by this refinement. Existing MSH-45/76/84 identities and original criteria remain.
+Planning only, baseline `14b9643`, MSH-80. XIANGQI-P1 is selected; MSH-80 owns reviewed planning completion.91/92 become
+**Ready** only after80 closes; all other future implementation stays To Do.
+No product implementation is authorized by this planning batch. Existing MSH-45/76/84 identities and original criteria remain.
 There is one durable integrator, root@codex, in the primary `codex/rewrite`
 checkout. No temporary worktree is required for this documentation-only batch.
 
@@ -48,9 +48,10 @@ and verification expectations, no speculative implementation plan.
 | MSH-91 | Independent board corpus and actually built/admitted restricted reference |80 |
 | MSH-92 | Native state, complete move/capture action, reversal and scoped codecs |80 |
 | MSH-93 | Complete local legality, sequences/perft/divide and admitted comparisons |91,92 |
-| MSH-94 | Complete selected history/adjudication and strict canonical native records, including R-NOWIN |80,93 |
+| MSH-94 | Complete selected history/adjudication and strict canonical native records, assessment contract/fast sound recognition; G-CYCLE/G-NOWIN gated |80,93 |
 | MSH-95 | Real-record typed shared context/result routing, honest unsupported execution |94,69 |
-| MSH-84 (preserved) | Independently verified authoritative native handoff, consumed by95 |80,91–95 |
+| MSH-105 | Required bounded/terminable exact3.2A path beyond the fast recognizer |94,95 |
+| MSH-84 (preserved) | Independently verified authoritative native handoff, consumed by95 |80,91–95,105 |
 | MSH-96 | Independently usable console/notation/diagnostics/record adapters |84,95 |
 | MSH-97 | Own functional native evaluator/search and structured child consumer |84,95 |
 | MSH-98 | Serialized native session, real semantic geometry/pieces/choices and read-only inspection |84,95,97,72 |
@@ -59,10 +60,13 @@ and verification expectations, no speculative implementation plan.
 | MSH-100 | External dialect/runner and actual bounded self-play/opponent match evidence |96,97 |
 | MSH-101 | Actual untimed human-engine Xiangqi, intersection UI in accepted shell |76,97,96 |
 | MSH-102 | Analysis/outcomes/recovery/save/history/live/resume and access journeys |101,99,97 |
-| MSH-103 | Fresh independent all-eight-criteria game delivery review |100,102,84,76,96,97 |
-| MSH-45 (preserved) | Original complete Xiangqi delivery, original eight criteria unchanged |39,72,73,76,80,84,103 |
+| MSH-103 | Fresh independent all-eight-criteria game delivery review |100,102,84,76,96,97,105 |
+| MSH-45 (preserved) | Original complete Xiangqi delivery, original eight criteria unchanged |39,72,73,76,80,84,103,105 |
 
-MSH-84 does **not** depend on76;95 does **not** depend on84. Thus the native
+MSH-84 does **not** depend on76;95 does **not** depend on84.105 depends on
+94/95, not84 or ordinary engine97, so exact native verification does not create
+a cycle. It supplies actual bounded native verification;95 keeps unsupported
+ordinary play/analysis unadvertised until97 implements those real consumers. Thus the native
 handoff has an actual typed-record consumer without a cycle through the full
 session or game delivery. MSH-76 adds shared95/98/99 but does not duplicate
 native94, engine97 or product101/102. MSH-46 remains their aggregate shared
@@ -74,28 +78,32 @@ on Tori, Chu, Tenjiku final delivery or their source research.
 
 | Original criterion | Required evidence owners |
 | --- | --- |
-|1 complete sourced immutable profile |80 decisions/reconciliation;94 executable history;103 coverage review |
-|2 authoritative native state/actions/undo/history |92 state;93 legality;94 full match semantics;84 handoff |
-|3 independent fixtures/reversal/perft/reference/records |91 independently expected corpus/admitted reference;93 local comparisons;94 history/records;103 independent reconciliation |
+|1 complete sourced immutable profile |80 decisions/reconciliation;94 executable history/fast sound recognition;105 exact3.2A;103 coverage review |
+|2 authoritative native state/actions/undo/history |92 state;93 legality;94 full match semantics/assessment contract;105 exact verification;84 handoff |
+|3 independent fixtures/reversal/perft/reference/records |91 independently expected corpus/admitted reference;93 local comparisons;94 history/records;105 independently reviewed proof/unknown cases;103 independent reconciliation |
 |4 standalone console |96 actual native console/adapters;100 protocol is additional, not a console substitute |
 |5 own functional engine |97 native search/child;100 actual self-play/external smoke;54 retains measured M5 strength |
 |6 complete canonical save/replay |94 native semantics;95 common dispatch;99 common desktop format/admission;102 actual journeys |
 |7 actual desktop |98 real native session/presentation;99 documents;101 real UI;102 full journeys;76 shared boundary. All-game/platform closure stays with46/88/47, not assumed from local GUI. |
-|8 complete ledger and independent review |103 maps all evidence/findings;45 may close only with every original criterion. Shared findings remain46/47 blockers. |
+|8 complete ledger and independent review |103 maps all evidence/findings including both3.2A levels;45 directly waits105 and may close only with every original criterion. Shared findings remain46/47 blockers. |
 
 ## First bounded implementation queue and present stop
 
-1. Finish **MSH-80**: resolve R-EDITION/R-NOWIN and material XQ-P1–P3,
-   independently review resulting profile and fixture expectations. R-CYCLE
-   interval/anchor policy and examples must be precise before ratification;
-   R-CLASS corpus instantiation continues in its actual fixture/history owner.
-2. Only then authorize **MSH-91 + MSH-92**, independent corpus/reference and
-   native state/actions/reversal. One integrator; no competing builders.
-3. **MSH-93** follows both. **MSH-94** is the next separate history/record batch,
-   not hidden inside local legality.95 and later real consumers follow the graph.
+1. **MSH-80** completes selected-profile planning under the explicit owner
+   decisions, independent review and integrated evidence. It does not implement
+   Xiangqi. AXF/CXA research is scoped, not an all-corpus gate.
+2. **MSH-91 + MSH-92** are then Ready and dependency-satisfied: independently
+   expected board corpus/actual reference admission and native state/action/
+   reversal/codecs. One integrator; no history/adjudication implementation hidden
+   inside either ticket. Preserve44-action opening set and F002 prefix seeds.
+3. **MSH-93** follows both. **MSH-94** remains To Do until G-CYCLE and G-NOWIN
+   source/fixture semantics are resolved for affected code. Its history/record/
+   fast-recognizer boundary feeds95, then required exact verification105.
+4. **84** waits105 and91–95; subsequent console/functional engine/session/archive/
+   desktop and103 follow the graph.105 cannot be silently omitted at45 closure.
 
-At this decision boundary **no Xiangqi product ticket is dependency-ready**.
-MSH-80 remains In Review with its incomplete criteria recorded. Independent
-source acquisition under81–83 remains possible but does not block80; those
-partial passes have their own unresolved texts/interpretations. This planning
-batch stops here; it neither begins91 nor closes45,46,47 or M4.
+The current batch stops after80 and the separate future M5 scope addition104.
+No91–105 implementation, comparator build/admission, other game implementation,
+M5 training, or M4 closure begins. Independent81–83 research remains separate.
+The accepted shell/native ownership/cancellation/replay/saveability constraints
+and every original45/46/47 delivery requirement are unchanged.

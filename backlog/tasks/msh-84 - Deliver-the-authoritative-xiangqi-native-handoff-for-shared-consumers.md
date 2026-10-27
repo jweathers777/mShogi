@@ -4,7 +4,7 @@ title: Deliver the authoritative xiangqi native handoff for shared consumers
 status: To Do
 assignee: []
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-27T15:04:00Z'
+updated_date: '2026-10-27T16:18:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -16,6 +16,7 @@ dependencies:
   - MSH-93
   - MSH-94
   - MSH-95
+  - MSH-105
 references:
   - >-
     backlog/tasks/msh-45 -
@@ -24,6 +25,7 @@ documentation:
   - docs/m4/later-game-sources.md
   - docs/m4/delivery-plan.md
   - docs/m4/xiangqi/handoff.md
+  - docs/m4/xiangqi/coverage.md
 type: task
 ordinal: 84000
 ---
@@ -58,4 +60,6 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 
 <!-- SECTION:NOTES:BEGIN -->
 MSH-80 refinement2026-10-27: original4AC/DoD retained. Native slices91 fixtures/reference,92 state/actions/reversal/codecs,93 full local legality,94 complete selected history/adjudication/canonical records,95 actual typed-record consumer supply this handoff. None depends on84 or45 final completion, so no aggregate cycle.95 extends the shared record/routing boundary only; engine97 and full session/archive98/99 remain later. All future tickets To Do pending80 ratification/research, not implementation authorization. R-EDITION/R-CYCLE/R-CLASS/R-NOWIN remain named obligations; no unsupported convention or scope reduction.
+
+XIANGQI-P1 two-level3.2A refinement2026-10-27: add required105 boundedexact verifier to complete native handoff.94 owns fastsound/native contract;105 depends94/95 and never84/97, avoiding aggregatecycle. Original4AC/DoD/allprior dependencies preserved; native completeness cannot be claimed from recognizer misses or unknown proofs.
 <!-- SECTION:NOTES:END -->

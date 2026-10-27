@@ -1,70 +1,160 @@
-# Proposed Xiangqi profile and decision boundary
+# Selected Xiangqi rules profile — XIANGQI-P1
 
-**Status: unselected, incomplete pending the named decisions/research below.**
-Candidate identity **`mshogi.xiangqi.wxf2018.v1`**, game `xiangqi`, governing
-edition **WXF2018**, with separately documented software-event adaptations.
-No profile constant, public schema or supported capability has been added.
-An immutable rules-profile ID, native record schema and transport version will
-remain different identities. Rules changes require a different profile/version;
-a wire wrapper version cannot change rules. Current delivered identities for
-Chess and Standard Shogi are untouched.
+**Selected by John on 2026-10-27: `mshogi.xiangqi.wxf2018.v1`.**
+Game identity `xiangqi`; immutable governing edition **World Xiangqi Rules2018**,
+published by WXF as an official **bilingual Chinese/English publication**.
+The [owner decision record](owner-decisions.md) supersedes the
+[historical unselected proposal](profile-proposal-before-xiangqi-p1.md), including
+its fourth-occurrence warning and language-precedence suggestions. The filename
+is retained so existing task/document references remain valid.
 
-## Material owner choices — not implementation defaults
+This is a planning/profile contract, not an implemented Xiangqi capability.
+Native schema and transport versions remain separately identified. No public
+profile constant, native rule implementation, runtime reference or UI support
+is introduced by selection. Existing Chess/Shogi identities remain unchanged.
 
-The recommendation is a coherent **option A** comprising XQ-P1–P3 below.
-It is a proposal requiring explicit selection, not inferred approval from the
-instruction to research MSH-80. Alternatives retain separate names and scope.
+## Authority and explicit interpretation method
 
-| Decision | Recommended option A | Material alternatives / reason |
-| --- | --- | --- |
-| **XQ-P1 authority and language** | WXF2018 international profile; use the Chinese clauses to resolve the specifically documented English discrepancies, with bilingual diagrams and explicit software supplements. Retain the whole applicable code, including check/chase and3.2A. | CXA2020 would require authoritative fulltext/amendments first; an exact AXF edition likewise remains unverified. An English-only threefold/two-pursuer interpretation contradicts the paired source. WXF publishes no located controlling-language ruling; choosing this precedence is a product convention. |
-| **XQ-P2 repetition / referee adaptation** | On the **fourth occurrence including the known initial position** (three completed returns), classify the repeating interval. If both/neither offend, conclude the appropriate draw. If one side owes change, commit an explicit warning event identifying the side, anchor position and offending cycle/classification. If the next completed return to that warned anchor preserves that side's prohibited repetition, commit refusal and its loss; a break of that cycle retires that warning. Warning and refusal are canonical match events, not illegal board moves. No hidden frontend warning state. | A direct loss on the fourth occurrence would remove the warning step and is a different software adaptation. A three-occurrence rule would be another profile, not silently borrowed from an engine. The proposed full-extra-cycle refusal trigger is precise software policy, **not asserted verbatim tournament law**. Complex/overlapping cycles still require an exact interval/anchor tie-break (R-CYCLE) and independently reviewed fixtures before acceptance; this candidate is not yet a complete deterministic classifier. |
-| **XQ-P3 natural-count and untimed event policy** | Initial local play untimed. Native/core and initial desktop use recorded `explicit` claims; advisory eligibility is separate from a committed request. A valid player request may be submitted by either named participant at a serialized command boundary; it need not consume a board ply. Count100 no-capture plies, subtract only that claimant's checks above10 since the last capture/known root. Core does not invent a claimant for arbiter initiative. Initial unattended runner uses recorded `auto_valid_claims`: after each accepted nonterminal move check both claimants and commit a valid claim (record claimant; stable Red-first order if both eligible). No automatic count outcome in `explicit` mode. Invalid/malformed/stale requests reject atomically; replace physical clock/foul penalties with an explicit request error. Accept immediate board terminal outcome before a later claim request. | Exact physical referee/clock sanctions require a separate timed/event profile. Automatic natural-count adjudication without a recorded claimant changes the claimant-specific rule. Source “regardless of position” does not itself settle software event ordering; board-terminal-first and removal of sanctions require approval. No evaluation-based draw or resignation policy is introduced. |
+The [source reconciliation](sources.md) identifies exact official PDF hashes,
+clauses/pages, differences and evidence limits. There is **no blanket Chinese
+precedence**. Each discrepancy is resolved by comparing both wordings, surrounding
+WXF clauses and official examples, with predecessor AXF or subsequent official
+WXF interpretation where relevant. Selected repairs are recorded individually.
+Unknown questions stay named and block their affected implementation; comparator
+helpers do not settle them. AXF/CXA corpus acquisition is not a blanket gate to
+this selected WXF profile or unaffected board work. Other profiles need separate
+names, source editions and owner decisions.
 
-Recommendation A also includes the following necessary software boundaries:
-imported diagrams begin known history, supplied counters remain declared rather
-than proof of earlier checks/captures, missing context remains explicit, and a
-history-dependent conclusion cannot be asserted from a FEN alone. A sound proof
-may establish an outcome; incomplete/resource-limited adjudication is unknown
-and unscored, distinct from illegal action and process failure. Full required
-rule coverage remains a delivery obligation; a limitation is not evidence that
-either side can win. Physical touch-move, arbiter appeals, tournament scoring,
-event pairings and over-the-board penalties are outside this local software
-profile. This does not delete their source provenance or turn other tournament
-codes into equivalent profiles.
+## Repetition, warnings and continued conduct
 
-**Unresolved research, not an invitation to guess:** R-EDITION and R-NOWIN in
-[sources](sources.md). R-NOWIN may reveal an additional material choice; bring
-the concrete source/fixture conflict back then. No full-profile or conformance
-claim until required gaps and choices are resolved. Executed implementation
-fixtures are not required for the planning decision, but independently reviewed
-expectations and complete normative coverage are.
+1. Repetition equality is the same native piece types/owners on all intersections
+   and the same side to move. Known root counts as occurrence1. Declared counters,
+   warning events and runtime identifiers do not change this board equality;
+   actual piece identity remains available to classify pursuit/history.
+2. At the **third occurrence**, identify/classify the repeating cycle. If WXF's
+   responsibility rules identify one side with a unilateral prohibited perpetual
+   obligation, commit the native requirement/warning to vary with its witness,
+   responsible side and classification. Warning does not consume board ply.
+3. If that side continues the prohibited cycle and produces the **fourth
+   occurrence**, conclude its loss. If no one-sided prohibited obligation exists,
+   the fourth occurrence produces the applicable WXF draw, including properly
+   classified equal prohibited conduct. Equal fault is a WXF category, not a
+   Boolean test that both sides have some prohibited label: all-check versus
+   opposing chase still has the WXF checking-side responsibility.
+4. This selected software interpretation reconciles threefold prohibited-conduct
+   classification/warning with the separate four-occurrence draw provision.
+   Do not use a generic chess repetition rule or a program's repetition score.
+5. **G-CYCLE**, owned by MSH-94 before affected coding/Ready: fix witness selection
+   for differing/overlapping return paths, simultaneous anchors, retained/retired
+   warnings and the same victim across paths using independently reviewed WXF
+   examples. The third/fourth boundary is settled; these classification cases
+   must not silently default to draw/loss. They do not affect MSH-91's restricted
+   board corpus or MSH-92's state/action/reversal scope. The preserved F002 seed
+   supplies concrete C/Q overlapping histories for that gate.
 
-## Proposed complete native contract / clause coverage
+## Untimed natural-movecount requests and event ordering
 
-This is the scope to implement after ratification, not a claim all definitions
-are already fixture-complete. The fixture ledger distinguishes concrete seeds,
+Initial local play is **untimed**. Advisory eligibility and committed requests
+are separate. A native participant may request an explicit manual/desktop claim
+at a serialized command boundary; terminal-command actor admission is distinct
+from board-action turn validation. Under Art8 count100 total no-capture plies,
+deducting only the requesting side's checks above10 in that capture-free window.
+No pawn-progress reset, inferred pre-import checks or shared global check
+subtraction. Supplied counters remain declared; insufficient known history cannot
+prove eligibility. Exact100 is eligible under the individually reconciled source
+interpretation. No untimed five-minute penalty or simulated technical foul.
+
+Manual mode is `explicit`. Unattended matches **may select** the named recorded
+`auto_valid_claims` policy: after each accepted nonterminal move, validate both
+claimants natively and exercise a valid claim, recording claimant, witness and
+policy; Red-first provides a stable tie-break if both qualify. Automatic exercise
+is an explicit match policy, not a different core draw rule or a mandatory mode.
+
+An invalid admitted manual claim is rejected atomically: board, side, move prefix,
+counters, warnings and game conclusion stay unchanged. Retain the request and
+rejection reason in a separate bounded authoritative command/audit record, not
+as an accepted game action or a fictitious foul outcome. Pre-admission reserves
+space for this result; resource-limit refusal stays distinct from invalid claim
+and preserves the complete current save path (MSH-61/99). Repeated invalid
+requests cannot consume unbounded memory or erase accepted observations.
+
+Selected serialized ordering (software event policy, not an invented physical
+arbiter procedure):
+
+- A concluded game cannot be overwritten by a later resignation, claim or reply.
+- Validate an incoming board action atomically, then resolve immediate native
+  no-action outcome: checkmate or stalemate is a loss. This has precedence over
+  a repetition/count request generated afterward at that boundary.
+- Resolve the selected repetition result (one-sided continuation loss or WXF
+  draw) next; a warning is an event, not a concluded game. Resolve a soundly
+  proven3.2A impossibility draw next. A request requiring expensive/unresolved
+  proof enters the bounded path; unknown alone never concludes a draw or loss.
+- In still-live state process explicit commands in host receipt order:
+  resignation, agreement offer/acceptance, manual natural-count claim or other
+  supported native request. No event retroactively changes a prior conclusion.
+  Apply `auto_valid_claims` only after the move's automatic conclusions, before
+  admitting the next external command; no evaluation-based adjudication.
+- If an experiment genuinely needs an incomplete exact result to adjudicate,
+  retain an unresolved/unscored state. Cancellation, resource exhaustion and
+  engine/process failure are execution observations, never invented game results.
+
+Physical touch-move, arbiters/appeals, tournament clock/foul sanctions, pairings
+and scoring remain outside this initial local software profile. Later timed/event
+policies require explicit names; no runtime clock behavior is implemented here.
+
+## WXF3.2A: required two-level verification
+
+The impossible-for-either-side-to-win condition remains required M4 behavior:
+**MSH-94** owns the native assessment contract and fast sound recognizer;
+**MSH-105** owns the separately bounded or independently terminable exact path
+beyond it. MSH-84 native handoff, MSH-103 full review and MSH-45 completion all
+wait for105. Required completeness is not deferred to M5.
+
+Native assessment distinguishes **proven impossible for both**, **proven at
+least one side can win** (with the verifier's actual witness/proof), and
+**unknown/incomplete**. Failure of the fast recognizer or exhaustion/cancellation
+of exact work proves neither side of the question. Record mode, limits, exact
+target/history/provenance and accepted proof/unknown observations. Bound replay
+and reconstruction too; unsupported restoration is explicit.
+
+**G-NOWIN**, native MSH-94/105 semantic gate before affected implementation:
+independently establish what constitutes a winning continuation under WXF3.2A,
+including stalemate-as-loss, selected repetition/claim/history modes, possibility
+versus forced-win quantification, and exclusion/treatment of voluntary resignation
+and administrative sanctions. Otherwise arbitrary resignation would make every
+position appear winnable. The sources do not justify importing Chess's mating-only
+algorithm or an engine material table. Any material residual interpretation returns
+to the owner with its exact source/position. This named later gate does not block
+unaffected MSH-91/92. No sound-class or exact-algorithm success is claimed now.
+
+## Complete native contract / clause coverage
+
+
+This is the selected complete delivery scope, not a claim of implemented or
+executed conformance. The fixture ledger distinguishes concrete seeds,
 uninstantiated source families and decision-dependent expected outcomes.
 
 | Area / governing clauses | Native obligation and consumer implication |
 | --- | --- |
-| Setup, board, sides —1 | Ninety **intersections**, nine files/ten ranks; river between ranks4/5, palaces d–f/ranks0–2 and7–9 in the proposed Red-bottom coordinate convention. Red/Black native sides, Red first,32 starting pieces. Geometry metadata represents lines, intersections, palace diagonals and river; no chess-square semantics. |
+| Setup, board, sides —1 | Ninety **intersections**, nine files/ten ranks; river between ranks4/5, palaces d–f/ranks0–2 and7–9 in the Red-bottom diagnostic coordinate convention. Red/Black native sides, Red first,32 starting pieces. Geometry metadata represents lines, intersections, palace diagonals and river; no chess-square semantics. |
 | Pieces and complete actions —2 | General/king orthogonal palace step; advisor diagonal palace step; elephant two-diagonal with eye blocker, own half only; horse orthogonal leg then diagonal destination; chariot orthogonal sliding; cannon quiet sliding or capture over exactly one screen; soldier owner-relative forward and sideways after crossing river, never backward. Capture removes one destination victim. No promotions, hands, drops, castling or declaration is imported. Complete action is native origin+destination; derived capture/check effects are rules-owned. |
 | Board legality —2/3 | Reject own-piece landing, malformed/off-board requests, moving wrong side, exposing own general, and unobstructed facing generals. General capture is not a playable continuation API. Check evasions must enumerate **all** legal choices, including removing/adding cannon screens and horse-leg interpositions. Empty legal set loses whether checked or not; retain mate versus stalemate reason. |
 | History classifications —19/20 and5 | Preserve complete known actions and identity of relevant pieces. Classify all-check, mating threat, chase, exchange, block, offer, idle and mixtures; same victim versus changing victims; real/fake protection, pinned/blocked same-type targets, cannon/horse against protected chariot, own king/soldier and uncrossed victim exceptions, two-to-one counter-chase frequency, overlapping labels and responsibility precedence. No attack-set-only substitute. |
-| Match events —3/8/19/20 | Native resignation, agreement offer/accept, count claims, warning/refusal under XQ-P2, board-terminal outcomes and neither-can-win3.2A. Event actor/turn semantics belong to native adapter; board-ply checks must not reject legitimate terminal commands merely because actor is not side to move. Availability is not conclusion. Preserve claim denials, unresolved assessment, failures and cancellations as different categories; invalid commands do not mutate canonical history. |
+| Match events —3/8/19/20 | Native resignation, agreement offer/accept, count claims, warning/refusal under XIANGQI-P1, board-terminal outcomes and neither-can-win3.2A with sound fast recognition and the bounded exact path. Event actor/turn semantics belong to native adapter; board-ply checks must not reject legitimate terminal commands merely because actor is not side to move. Availability is not conclusion. Preserve claim denials, unresolved assessment, failures and cancellations as different categories; invalid claims preserve semantic game state while the separately admitted request/rejection audit is retained. |
 | Imported roots and identities | Structural diagram admissibility differs from proven historical reachability. Preserve root provenance, declared counters, unavailable prefix, capture/check/pursuit history and warning state. Separate board equality, rules-history identity, saved-document identity and search reuse identity. Repetition starts with known root; no invented earlier occurrence. |
 | Exact transition/reversal | Validate atomically, apply complete action/events once, undo exact board/material/side/counters/history/classification. Semantic undo changes game state, never revives old engine execution identities. Canonical commands and accepted events replay exactly. |
-| Notation / records | Proposed internal diagnostic coordinate dialect: files a–i from Red's left, ranks0–9 from Red baseline, e.g. `a0a1`; name/pin dialect explicitly. ICCS/UCI/UCCI/Chinese notation are adapters, **not a native canonical record**. FEN-like import must pin piece alphabet, active-color meaning, unused fields/counters and strict parsing; preserve unsupported fields or reject, never guess. Pure board FEN cannot restore full history. Schema/version/strict duplicate rejection and encoded size limits use the existing native-envelope boundary. |
+| Notation / records | Selected diagnostic coordinate dialect: files a–i from Red's left, ranks0–9 from Red baseline, e.g. `a0a1`; name/pin dialect explicitly. ICCS/UCI/UCCI/Chinese notation are adapters, **not a native canonical record**. FEN-like import must pin piece alphabet, active-color meaning, unused fields/counters and strict parsing; preserve unsupported fields or reject, never guess. Pure board FEN cannot restore full history. Schema/version/strict duplicate rejection and encoded size limits use the existing native-envelope boundary. |
 | Native engine and evaluation | M4 delivers own functional evaluator/search using native full context, local legality and selected history/event policy. Red/Black score perspective explicit; no borrowed Chess Full operation or Shogi declaration. Requests/results bind purpose, profile/native record, exact target prefix, request/session/process identity and limits. Board action, committed claim, conclusion, incomplete search and failure remain tagged distinct results. |
 | Console, runner and desktop | Own console diagnostics and bounded interoperability; external reply checked by native adapter and runner owns selected adjudication. Common accepted mShogi dark shell and stable controls/sidebar. Xiangqi-specific intersection SVG/river/palaces/pieces, whole board visible at supported normal/minimum sizes, native read-only enemy inspection. Preserve click/keyboard/orientation, analysis provenance, cancellation, history/live distinction, Save/Open and lossless capacity admission. |
 
-## Acceptance boundary
+## Planning completion and implementation boundary
 
-The profile can be selected only with recorded owner decisions and resolution
-of required research semantics. Selection does not prove algorithms, references
-or fixtures pass. MSH-80 is unfinished at this handoff; native implementation
-is gated. MSH-45 closes only after every original criterion, including its own
-functional engine, console, canonical replay and actual desktop, has evidence.
-MSH-54 owns measured playing strength in M5. MSH-46/47 retain all-game and
-three-platform closure; an extra Xiangqi task does not close them.
+XIANGQI-P1 settles the material profile choices for the first native queue.
+The [coverage ledger](coverage.md) assigns every required area and residual gate;
+the [fixture plan](fixtures.md) retains independently reasoned expectations and
+separates executable future evidence from planning. G-CYCLE/G-NOWIN remain
+blocking **affected history/adjudication work**, not hidden missing requirements
+or blanket prerequisites for the board/kernel batch. No native rules begin in
+MSH-80. After reviewed planning completion, MSH-91 and MSH-92 are Ready;93
+follows both. Complete delivery remains MSH-45, shared all-game/platform closure
+MSH-46/47, and measured strength MSH-54 in M5.

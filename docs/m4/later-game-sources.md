@@ -12,8 +12,9 @@ a later game's historical text does not block unaffected standard-shogi work.
 **Current research addendum,2026-10-27:** preserve the original snapshot below.
 MSH-80 acquired both official WXF2018 languages and the linked AXF PDFs;
 [the current reconciliation](xiangqi/sources.md) supersedes the old Chinese
-timeout as an acquisition status. It still has named AXF/CXA and interpretation
-gaps and no selected Xiangqi profile. Independent research adds exact Tori
+timeout as an acquisition status. XIANGQI-P1 now selects bilingual WXF2018; named AXF/CXA acquisition gaps are
+scoped to actual provenance/ambiguity, not a blanket corpus gate. The current
+profile/coverage ledger gates residual G-CYCLE/G-NOWIN affected behavior. Independent research adds exact Tori
 holdings/article identifiers in [MSH-81](research/tori.md), a directly inspected
 1915 historical-text witness and current JCSA code in [MSH-82](research/chu.md),
 and separates the Tenjiku catalogue/translation witnesses in

@@ -20,11 +20,14 @@ preserve all five delivery commitments.
 ## Current Xiangqi planning/refinement handoff (2026-10-27)
 
 The owner accepts MSH-41/MSH-75 as Done. [MSH-80's dossier](xiangqi/README.md)
-records acquired/reconciled source facts and an unselected named profile proposal.
-Its AC1–3 remain unfinished at a material source/decision boundary. The
+records the selected bilingual WXF2018 profile XIANGQI-P1 and per-case source
+interpretations. Third-occurrence warning/fourth continuation loss or WXF draw,
+untimed manual/recorded automatic claims and two-level3.2A verification are
+owner-directed. G-CYCLE/G-NOWIN gate affected94/105 work, not91/92. The
 [current consumer/task map](xiangqi/handoff.md) refines existing MSH-84/76/45
-into bounded MSH-91–103, with all original criteria preserved. After80 is
-resolved,91 independent fixtures/reference and92 native state/actions/reversal
+into bounded MSH-91–103 plus105 exact verification, with complete delivery
+obligations preserved.84/103/45 explicitly depend105. After80 reviewed completion,
+91 independent fixtures/reference and92 native state/actions/reversal
 are the first independent pair;93 local legality follows. No Xiangqi code is
 implemented or authorized by planning. Actual shared changes are explicit
 native record/result dispatch, intersection/palace/river presentation, session

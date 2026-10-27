@@ -1,27 +1,40 @@
-# Xiangqi planning dossier — MSH-80
+# Selected Xiangqi planning dossier — MSH-80
 
-2026-10-27, source/consumer baseline `14b9643dac70f09394ccc60aea8b0f8c5bbd5b03`.
-**Proposal, not selected rules and not an implemented game.** Standard Shogi
-MSH-41/MSH-75 and M2/M3 remain Done; MSH-42–47 and M4 remain open.
+John selected **`mshogi.xiangqi.wxf2018.v1`**, XIANGQI-P1, on2026-10-27.
+The governing publication is official **bilingual WXF2018**, with individually
+recorded interpretations and no blanket Chinese precedence. This is selected
+planning, not implemented Xiangqi support. MSH-41/MSH-75 and M2/M3 remain Done;
+MSH-42–47 and M4 remain open.
 
-- [Profile and material owner decisions](profile-proposal.md)
-- [Source reconciliation, editions and remaining research](sources.md)
-- [Acquisition hashes](source-manifest.json)
-- [Initial independent expectations and fixture obligations](fixtures.md)
-- [Audited comparator candidates](comparator-audit.md) and
-  [inspected source hashes](comparator-source-manifest.json)
-- [Native/shared consumer and delivery mapping](handoff.md)
-- [Independent primary-source review](source-independent-review.md)
-- [Final proposal and dependency reviews](planning-review.md)
+- [Owner decision record](owner-decisions.md) and [selected profile](profile-proposal.md)
+- [Current coverage and affected-work gates](coverage.md)
+- [Source reconciliation/editions](sources.md) and [acquisition hashes](source-manifest.json)
+- [Independent fixture expectations](fixtures.md), preserving the44-action set and F002
+- [Consumer/task mapping and first queue](handoff.md)
+- [Current resolution review and verification](resolution-review.md)
+- [Audited comparator candidates](comparator-audit.md) and [source hashes](comparator-source-manifest.json)
 
-MSH-80 owns profile ratification and refinement. This pass does not split that
-decision into a new ticket to make MSH-80 appear complete. Its unchanged AC1–3
-still require source reconciliation, recorded decisions and a complete profile;
-the acquisition/interpretation gaps below prevent a Done verdict. The bounded
-research/refinement result is reviewable at the decision boundary. No Xiangqi
-product code, comparator build, fixture execution or performance claim follows.
+MSH-80 closes only after reviewed planning criteria and normal integration are
+supported;91/92 then become Ready. No native rules, comparator build/admission,
+console/engine/UI work or training is implemented in this batch. Residual
+G-CYCLE/G-NOWIN questions gate affected94/105 work rather than the settled first
+board/state queue. Required exact3.2A delivery105 gates84/103/45, preserving full
+M4 completeness. AXF/CXA acquisition remains scoped to concrete questions.
 
-Independent partial research for [Tori](../research/tori.md),
-[Chu](../research/chu.md) and [Tenjiku](../research/tenjiku.md) creates no
-dependency on this dossier. No concrete evidence changes the provisional order
-Xiangqi → Tori → Chu → Tenjiku. Their own profile tickets remain unfinished.
+Historical unselected proposal and actual prior reviews are preserved:
+[proposal](profile-proposal-before-xiangqi-p1.md),
+[primary-source review](source-independent-review.md),
+[first proposal review](proposal-source-review.md),
+[first architecture review](architecture-plan-review.md),
+[first integration/validation](planning-review.md).
+Those records describe the earlier unfinished state at14b9643/f4e564b/a2cf50b;
+the owner decisions above supersede their conflicting recommendations without
+rewriting the historical evidence.
+
+The separately approved future [M5 opening experiment](../../m5/opening-knowledge.md)
+is MSH-104, including a first-class dedicated teacher-distilled opening policy.
+No model/book adoption or Python product runtime follows from task creation.
+
+Independent partial [Tori](../research/tori.md), [Chu](../research/chu.md) and
+[Tenjiku](../research/tenjiku.md) research remains unfinished and independent.
+Provisional delivery order stays Xiangqi → Tori → Chu → Tenjiku.

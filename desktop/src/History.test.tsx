@@ -58,7 +58,9 @@ it("renders the native historical board separately from live history and require
     (screen.getByRole("button", { name: "Resume play" }) as HTMLButtonElement)
       .disabled,
   ).toBe(true);
-  fireEvent.click(screen.getByRole("button", { name: "Return to live game" }));
+  const returnLive = screen.getByRole("button", { name: "Return to live" });
+  expect(returnLive.closest(".shell-history-notice-heading")).not.toBeNull();
+  fireEvent.click(returnLive);
   expect(session.command).toHaveBeenCalledExactlyOnceWith({
     kind: "return_live",
     version: snapshot.version,
@@ -176,7 +178,7 @@ it("restores keyboard focus to the live SVG board after Return to live removes i
   const session = mockSession(historical);
   vi.mocked(useNativeSession).mockReturnValue(session);
   const { rerender } = render(<App />);
-  const trigger = screen.getByRole("button", { name: "Return to live game" });
+  const trigger = screen.getByRole("button", { name: "Return to live" });
   trigger.focus();
   const live: Snapshot = {
     ...standard,
@@ -191,7 +193,7 @@ it("restores keyboard focus to the live SVG board after Return to live removes i
   vi.mocked(useNativeSession).mockReturnValue({ ...session, snapshot: live });
   rerender(<App />);
   expect(
-    screen.queryByRole("button", { name: "Return to live game" }),
+    screen.queryByRole("button", { name: "Return to live" }),
   ).toBeNull();
   expect(document.activeElement).toBe(
     screen.getByRole("button", { name: /^e2,/ }),

@@ -32,6 +32,18 @@ def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def saved_document_accepted(observation, expected_path):
+    """One DOM observation must establish native acceptance, not an old Saved label."""
+    return (observation["path"] == str(expected_path)
+            and observation["dirty"].casefold() == "saved"
+            and observation["buttons"] == [
+                {"label": label, "enabled": True}
+                for label in ("New game", "Save", "Save as…", "Open…")]
+            and not any(word in status.casefold()
+                        for status in observation["statuses"]
+                        for word in ("saving", "opening")))
+
+
 def terminal_transport_closed(error):
     """Only meaningful after dispatching the known native-close guard action."""
     if isinstance(error, (http.client.RemoteDisconnected, ConnectionResetError, BrokenPipeError)):
@@ -66,9 +78,10 @@ def wait(predicate, label, seconds=25):
 
 
 class Webview:
-    def __init__(self, endpoint, host):
+    def __init__(self, endpoint, host, record=None):
         self.endpoint = endpoint
         self.session = None
+        self.record = record
         response = self.request("POST", "/session", {"capabilities": {
             "alwaysMatch": {"browserName": "wry", "tauri:options": {
                 "application": str(host)}}}})
@@ -76,6 +89,25 @@ class Webview:
         self.capabilities = response.get("capabilities", {})
 
     def request(self, method, path, data=None):
+        lookup = (self.session is not None and method == "POST" and path in {
+            f"/session/{self.session}/element", f"/session/{self.session}/elements"})
+        for attempt in range(2 if lookup else 1):
+            try:
+                result = self._request_once(method, path, data)
+            except (http.client.RemoteDisconnected, ConnectionResetError, urllib.error.URLError) as error:
+                if lookup and self.record is not None:
+                    self.record("Read-only element lookup transport observation", {
+                        "method": method, "path": path, "attempt": attempt + 1,
+                        "error": repr(error), "retry": attempt == 0})
+                if not lookup or attempt == 1:
+                    raise
+            else:
+                if attempt == 1 and self.record is not None:
+                    self.record("Read-only element lookup retry recovered", {
+                        "method": method, "path": path, "attempt": 2})
+                return result
+
+    def _request_once(self, method, path, data=None):
         payload = None if data is None else json.dumps(data).encode()
         request = urllib.request.Request(self.endpoint + path, data=payload,
             headers={"Content-Type": "application/json"}, method=method)
@@ -199,10 +231,23 @@ class Journey:
             # retain the raw desktop if a failed session cannot supply a view.
             time.sleep(0.15)
             self.native.screenshot(prefix.with_suffix(".desktop.png"))
+        common_actions = self.web.read("""[...document.querySelectorAll('button')]
+            .filter(e=>['Cancel analysis','Return to live'].includes(e.textContent.trim()))
+            .map(e=>{const h=e.closest('.shell-history-notice-heading'),a=e.closest('.shell-analysis-actions'),s=a?.querySelector('[data-analysis-start]');return {
+                label:e.textContent.trim(),section:e.closest('[data-shell-section]')?.dataset.shellSection??null,
+                analysisActionRow:!!a,sameRowWithStart:s?Math.abs(s.getBoundingClientRect().top-e.getBoundingClientRect().top)<=1:null,
+                historyHeading:!!h,rightGap:h?h.getBoundingClientRect().right-e.getBoundingClientRect().right:null};})""")
+        self.record('Observe shared analysis and historical action slots', common_actions)
+        for action in common_actions:
+            if action['label'] == 'Cancel analysis':
+                assert action['section'] == 'analysis' and action['analysisActionRow'] and action['sameRowWithStart'], action
+            else:
+                assert action['historyHeading'] and abs(action['rightGap']) <= 3, action
         prefix.with_suffix(".dom.json").write_text(json.dumps({
             "text": self.web.text(), "focus": self.web.read(
                 "({tag:document.activeElement?.tagName,label:document.activeElement?.getAttribute('aria-label'),text:document.activeElement?.textContent})"),
             "dimensions": self.web.read("({width:innerWidth,height:innerHeight,dpr:devicePixelRatio})"),
+            "common_actions": common_actions,
             "inputs": self.web.read("[...document.querySelectorAll('input,select')].map(e=>({tag:e.tagName,type:e.type,value:e.value,min:e.min,max:e.max,disabled:e.disabled}))")
         }, indent=2), encoding="utf-8")
 
@@ -248,7 +293,7 @@ class Journey:
                 startup["last_transport_error"] = repr(error)
                 return False
         wait(ready, "external native driver startup")
-        self.web = Webview(endpoint, host)
+        self.web = Webview(endpoint, host, self.record)
         self.phase_report["capabilities"] = self.web.capabilities
         self.phase_report["native_window"] = self.native.attach(host, engine)
         wait(lambda: self.web.has(".synthetic-inspector" if fixture == "synthetic" else ".document-card")
@@ -433,6 +478,11 @@ class Journey:
                 event:root?.dataset.currentEvent,liveEvents:root?.dataset.liveEvents,historical:root?.dataset.historical,paused:root?.dataset.paused};
         })()""")
 
+    def assert_inspection_unchanged(self, before, label):
+        after = self.inspection_state()
+        self.record(label, {"before": before, "after": after, "unchanged": before == after})
+        assert after == before, (label, {"before": before, "after": after})
+
     def inspect_piece(self, game, origin, destination, label):
         """Real native query through normal UI; completing a route stays read-only."""
         w=self.web; before=self.inspection_state()
@@ -446,11 +496,11 @@ class Journey:
         self.capture(f'inspect-{game}-{origin}')
         w.click(square(destination))
         time.sleep(0.35)  # Observe across native snapshot polls, not only local selection state.
-        assert self.inspection_state()==before, ('inspection changed authoritative presentation',before,self.inspection_state())
+        self.assert_inspection_unchanged(before, 'Board inspection complete route preserves authoritative context')
         assert not w.has('.promotion-dialog,.shogi-promotion')
         w.key('\ue00c')
         wait(lambda:not w.has('.inspection-marker,.inspection-origin-ring'), 'Escape clears read-only inspection')
-        assert self.inspection_state()==before
+        self.assert_inspection_unchanged(before, 'Board inspection Escape preserves authoritative context')
         self.record('Native movement inspection and complete read-only route preserve context',{'game':game,'origin':origin,'destination':destination,'label':label,'native_token':before['nativeToken'],'chess_version':before['chessVersion'],'history':before['history']})
 
     def file(self, kind, path, cancel=False, button_label=None):
@@ -478,7 +528,7 @@ class Journey:
 
     def shogi_save(self, path, observation_count=None):
         self.file("save_as", path, button_label="Save as…")
-        wait(lambda: self.web.text(".document-dirty").casefold() == "saved", "complete shogi document saved")
+        self.wait_saved(path)
         wait(path.exists, "native shogi Save As created exact path")
         archive = json.loads(path.read_text(encoding="utf-8"))
         assert archive["schema_version"] == 2 and archive["format"] == "mshogi.desktop.archive.v2", archive
@@ -519,7 +569,7 @@ class Journey:
 
     def save(self, path, observation_count=None):
         self.file("save", path)
-        wait(lambda: self.web.text(".document-dirty").casefold() == "saved", "complete document saved")
+        self.wait_saved(path)
         wait(path.exists, "native save created file")
         archive = json.loads(path.read_text(encoding="utf-8"))
         assert archive["profile"] == "mshogi.desktop.archive.v1"
@@ -530,6 +580,19 @@ class Journey:
             "observations": len(archive["observations"]), "controls": len(archive["controls"]),
             "game_events": len(json.loads(archive["game_record_json"])["events"])})
         return archive
+
+    def wait_saved(self, path):
+        def accepted():
+            observation = self.web.read("""(() => ({
+                path:document.querySelector('.shell-document h2')?.getAttribute('title')??null,
+                dirty:document.querySelector('.document-dirty')?.textContent??'',
+                buttons:[...document.querySelectorAll('.shell-file-actions button')].map(e=>({label:e.textContent.trim(),enabled:!e.disabled})),
+                statuses:[...document.querySelectorAll('.shell-document [role="status"]')].map(e=>e.textContent)
+            }))()""")
+            return observation if saved_document_accepted(observation, path) else None
+        observation = wait(accepted, f"native document accepts exact saved path with file work settled: {path}")
+        self.record('Observe native accepted save path and settled file controls', observation)
+        return observation
 
     def quit(self, synthetic=False):
         evidence = self.native.quit_app()
@@ -608,7 +671,7 @@ class Journey:
         before_write=path.stat().st_mtime_ns
         w.button('Save')
         wait(lambda:path.stat().st_mtime_ns!=before_write,'native Save commits a fresh archive after inspection')
-        wait(lambda:w.text('.document-dirty').casefold()=='saved','save after read-only chess inspection')
+        self.wait_saved(path)
         assert json.loads(path.read_text(encoding='utf-8'))==archive,'inspection changed canonical chess archive'
         self.file("open", path)
         wait(lambda: "Opened the complete document with work stopped" in w.text(".document-card"), "reopen completed")
@@ -629,7 +692,7 @@ class Journey:
         assert "Black" in w.text(".analysis-result")
         self.plies(1, historical=True)
         self.capture("historical-analysis")
-        w.button("Return to live game")
+        w.button("Return to live")
         self.plies(2)
         assert not w.has(".historical-notice") and w.has(".play-paused")
         assert "Viewing an exact read-only history prefix" not in w.text(".document-card")
@@ -640,7 +703,7 @@ class Journey:
         # Save to the existing path uses no picker; the earlier observation is
         # canonical historical information, never resumable pending work.
         w.button("Save")
-        wait(lambda: w.text(".document-dirty").casefold() == "saved", "save history observation")
+        self.wait_saved(path)
         archive = json.loads(path.read_text(encoding="utf-8"))
         observation = archive["observations"][-1]["response"]["context"]
         assert observation["purpose"]["kind"] == "move_analysis"
@@ -795,10 +858,11 @@ class Journey:
         for key in ('\ue015','\ue013','\ue013','\ue007'):  # Down to board, Up twice, Enter at5e.
             w.key(key)
         time.sleep(0.35)
-        assert self.inspection_state()==before,'opponent hand inspection changed native context'
+        self.assert_inspection_unchanged(before, 'Opponent hand inspection complete route preserves authoritative context')
         assert not w.has('.shogi-promotion')
         w.key('\ue00c')
         wait(lambda:not w.has('.inspection-marker'),'Escape clears opponent drop inspection')
+        self.assert_inspection_unchanged(before, 'Opponent hand inspection Escape preserves authoritative context')
         after_archive=self.shogi_save(self.args.output/'normal-shogi-inspection-after.mshogi')
         assert after_archive==before_archive,'read-only hand inspection changed canonical native archive'
         self.record('Normal-package opponent hand inspection preserves complete canonical archive',{

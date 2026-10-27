@@ -65,6 +65,8 @@
 .game-shell .shell-section-title { font-size:13px; margin:0 0 9px; }
 .game-shell.game-shell .shell-sidebar .card,.game-shell.game-shell .shogi-analysis,.game-shell.game-shell .shogi-history,.game-shell.game-shell .shogi-game-actions { background:transparent; color:var(--shell-text); padding:0; margin:0; border:0; border-radius:0; }
 .game-shell .shell-card h2,.game-shell .shogi-section-heading h2 { font-size:13px; color:var(--shell-text); }
+.game-shell .shell-history h2 { white-space:nowrap; }
+.game-shell .shell-history .card-title,.game-shell .shell-history .shogi-section-heading { align-items:flex-start; }
 .game-shell .shell-card .caption,.game-shell .shell-card .muted,.game-shell .shogi-section-heading>span,
 .game-shell .analysis-location,.game-shell .shogi-analysis-fields label,.game-shell .shogi-analysis-state,
 .game-shell .search-target,.game-shell .analysis-perspective,.game-shell .shogi-telemetry dt,
@@ -87,7 +89,6 @@
 .game-shell .shogi-notice.error { background:#402c31; border-color:#c28c8c; color:#f3c4bf; }
 .game-shell .shogi-notice button { background:#345b50; color:#eaf1e6; border-color:#56796c; }
 .game-shell .shogi-history-banner { flex-shrink:0; color:#e2d3a9; background:#383a2d; border-color:#837752; }
-.game-shell .shogi-history-banner button { color:#e2d3a9; background:#30352a; border-color:#837752; }
 .game-shell .shogi-promotion { color:var(--shell-text); background:var(--shell-panel); border-color:var(--shell-border); }
 .game-shell .shogi-promotion p { color:var(--shell-muted); }
 .product-dialog.product-dialog { color:#e7ece5; background:#1b2e35; border-color:#56716f; color-scheme:dark; }
@@ -130,4 +131,11 @@
 .game-shell .shell-position-notice .historical-notice,.game-shell .shell-position-notice .shogi-history-banner { background:#383a2d; color:#e2d3a9; border:1px solid #837752; border-radius:6px; padding:8px 10px; margin:0; font-size:11px; }
 .game-shell .shell-position-notice .historical-notice p { font-size:10px; margin:3px 0; }
 .game-shell .shell-position-notice button { padding:5px 9px; font-size:11px; }
+.game-shell .shell-history-notice.shell-history-notice { display:block; }
+.game-shell .shell-history-notice-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.game-shell .shell-history-notice-heading button { flex:none; }
+.game-shell.game-shell .shell-history-notice-heading button { color:#e2d3a9; background:#30352a; border-color:#837752; white-space:nowrap; }
+.game-shell .shell-history-notice-content p { margin:5px 0 0; }
+.game-shell .shell-analysis-actions { display:flex; gap:7px; margin-top:10px; }
+.game-shell .shell-analysis-actions button { flex:1; min-width:0; width:auto; margin:0; padding:8px; font-size:11px; }
 .game-shell .inspector-switch { margin-bottom:12px; }

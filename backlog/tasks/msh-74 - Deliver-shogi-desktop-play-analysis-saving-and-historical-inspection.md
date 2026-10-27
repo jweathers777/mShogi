@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-27T12:00:00Z'
+updated_date: '2026-10-27T12:06:00Z'
 labels:
   - m4
   - owner-msh-41
@@ -126,6 +126,8 @@ Owner accepts common application visual design; latest request permits MSH-74 co
 
 Final consistency implementation: DocumentState uses one path+dirty model (Unsaved/Unmodified/Unsaved changes) in Chess, Shogi and legacy toolbar without changing native dirty guards or IO handling. Native SharedSnapshot now exposes selected known board_ply and actual play_limits; Shogi submitted play and displayed limits use same2/5000 constant; Chess uses existing limits. NativeEnginePanel and GamePositionStatus are actual shared composition. Hand and instruction selection remain in their existing slots; common footer restored for Shogi. Native selected-prefix ply excludes terminal events and supplied SFEN counter. Driver exact-path/settled-save assertions now require Unmodified, protected changes require Unsaved changes, and paired layout checks require actual status footer and native play budget.
 Verification so far: strictTS+161frontend/21filesPASS;22driverPASS; native session85testsPASS; added nonzero move/terminal/history regressionPASS. Independently delegated reviewer msh74_implementation_review read bounded diff vs95c7e00 and traced native budget/history and unchanged guards; independently ran34frontend/4files+strictTS,1native and12driverPASS, no material findings. Normal Mac rebuilt successfully (Rust1.90, existingTao warnings); actual updated captures/nativeCI pending. MSH-74 staysInReview/no75.
+
+First final-consistency Rust CI40500442835 atabe66c5 failed all3 at generated snapshot drift, after tests/lint passed: four manually added field positions/formatting differed from native example output, values unchanged. Regenerated exact write_frontend_fixtures output; second independent-directory generation byte-matches all20fixtures. No product behavior or drift gate weakened. Applicable exact-source CI will run on fixture correction; abe Desktop outcome remains separately labeled.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

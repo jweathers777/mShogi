@@ -1,0 +1,128 @@
+{
+  "format": "mshogi.xiangqi.initial-admission-mismatch.v1",
+  "frozen_fixture_sha256": "bf945517e4ea8a3627d2914d7206ab80f1394c571a30c29f65b3db9b84f63ad9",
+  "full_report_sha256": "0f75989fa87ec74d38dec3761581b59ce6bfc0c25b0ff6298d8f1115f70eaafc",
+  "full_report_bytes": 146263,
+  "results": {
+    "fixtures": 105,
+    "eligible": 101,
+    "passed": 99,
+    "failed": 2,
+    "excluded": 4
+  },
+  "mismatch_records": [
+    {
+      "id": "XQ-B38",
+      "expected_facts": {
+        "in_check": true,
+        "legal_moves": [
+          "a1f1",
+          "e0d0",
+          "e0e1"
+        ]
+      },
+      "errors": [
+        {
+          "complete_actions": {
+            "missing": [],
+            "unexpected": [
+              "e0f0"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "root_fen": "5k3/9/9/9/9/9/9/5n3/R8/4K4 w - - 0 1",
+        "moves": [],
+        "perft_depth": 2
+      },
+      "reference_observation": {
+        "fen": "5k3/9/9/9/9/9/9/5n3/R8/4K4 w - - 0 1",
+        "in_check": true,
+        "legal_moves": [
+          "a1f1",
+          "e0d0",
+          "e0e1",
+          "e0f0"
+        ],
+        "undo_restored": true,
+        "divide": [
+          {
+            "action": "a1f1",
+            "nodes": 1
+          },
+          {
+            "action": "e0d0",
+            "nodes": 10
+          },
+          {
+            "action": "e0e1",
+            "nodes": 9
+          },
+          {
+            "action": "e0f0",
+            "nodes": 2
+          }
+        ],
+        "perft": 22
+      }
+    },
+    {
+      "id": "XQ-B38-black",
+      "expected_facts": {
+        "in_check": true,
+        "legal_moves": [
+          "e9e8",
+          "e9f9",
+          "i8d8"
+        ]
+      },
+      "errors": [
+        {
+          "complete_actions": {
+            "missing": [],
+            "unexpected": [
+              "e9d9"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "root_fen": "4k4/8r/3N5/9/9/9/9/9/9/3K5 b - - 0 1",
+        "moves": [],
+        "perft_depth": 2
+      },
+      "reference_observation": {
+        "fen": "4k4/8r/3N5/9/9/9/9/9/9/3K5 b - - 0 1",
+        "in_check": true,
+        "legal_moves": [
+          "e9d9",
+          "e9e8",
+          "e9f9",
+          "i8d8"
+        ],
+        "undo_restored": true,
+        "divide": [
+          {
+            "action": "e9d9",
+            "nodes": 2
+          },
+          {
+            "action": "e9e8",
+            "nodes": 9
+          },
+          {
+            "action": "e9f9",
+            "nodes": 10
+          },
+          {
+            "action": "i8d8",
+            "nodes": 1
+          }
+        ],
+        "perft": 22
+      }
+    }
+  ],
+  "resolution": "Independent governing-rule review confirms f2 Horse also blocks f0-f9 General file; e0f0 is legal and mirror e9d9 is legal. Expected fixture correction is separately reviewed/re-frozen. Comparator did not edit expected data."
+}

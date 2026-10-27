@@ -1,0 +1,42 @@
+{
+  "format": "mshogi.xiangqi.fixture-corrections.v1",
+  "original_corpus_sha256": "bf945517e4ea8a3627d2914d7206ab80f1394c571a30c29f65b3db9b84f63ad9",
+  "corrected_corpus_sha256": "a0724cf66703a63256efd77fe67313259ca8ce0062095155d85286d1f1b4ed4d",
+  "trigger": "First admitted-reference differential run reported extra actions; original independently expected lists and mismatch are preserved, not overwritten as reference observations.",
+  "source": "WXF2018 Articles2.5,2.9,2.10",
+  "review_method": "Fixture author and separate boundary reviewer independently re-examined explicit piece geometry; both acknowledged overlooking the interposing Horse in the original review.",
+  "corrections": [
+    {
+      "id": "XQ-B38",
+      "original_legal_moves": [
+        "a1f1",
+        "e0d0",
+        "e0e1"
+      ],
+      "added_action": "e0f0",
+      "corrected_legal_moves": [
+        "a1f1",
+        "e0d0",
+        "e0e1",
+        "e0f0"
+      ],
+      "reasoning": "Black Horse f2 interposes between Generals f0/f9 and does not attack f0."
+    },
+    {
+      "id": "XQ-B38-black",
+      "original_legal_moves": [
+        "e9e8",
+        "e9f9",
+        "i8d8"
+      ],
+      "added_action": "e9d9",
+      "corrected_legal_moves": [
+        "e9d9",
+        "e9e8",
+        "e9f9",
+        "i8d8"
+      ],
+      "reasoning": "Red Horse d7 interposes between Generals d9/d0 and does not attack d9."
+    }
+  ]
+}

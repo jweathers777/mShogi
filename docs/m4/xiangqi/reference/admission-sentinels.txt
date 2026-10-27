@@ -1,0 +1,20 @@
+test_exited_leader_does_not_leave_pipe_holding_descendant (__main__.AdmissionSentinels.test_exited_leader_does_not_leave_pipe_holding_descendant) ... ok
+test_expected_facts_preserved_on_deliberate_mismatch (__main__.AdmissionSentinels.test_expected_facts_preserved_on_deliberate_mismatch) ... ok
+test_foreign_check10_clock_is_excluded_from_board_comparison (__main__.AdmissionSentinels.test_foreign_check10_clock_is_excluded_from_board_comparison) ... ok
+test_initial_independent_count_and_known_memberships (__main__.AdmissionSentinels.test_initial_independent_count_and_known_memberships) ... ok
+test_invalid_and_unsupported_reference_domains (__main__.AdmissionSentinels.test_invalid_and_unsupported_reference_domains) ... ok
+test_malformed_native_responses_remain_failures (__main__.AdmissionSentinels.test_malformed_native_responses_remain_failures) ... ok
+test_nonlegal_complete_action_rejected (__main__.AdmissionSentinels.test_nonlegal_complete_action_rejected) ... ok
+test_process_failure_is_explicit (__main__.AdmissionSentinels.test_process_failure_is_explicit) ... ok
+test_recorded_prefix_does_not_alias_later_sequence_work (__main__.AdmissionSentinels.test_recorded_prefix_does_not_alias_later_sequence_work) ... ok
+test_reference_sequence_restores_every_prefix (__main__.AdmissionSentinels.test_reference_sequence_restores_every_prefix) ... ok
+test_response_and_diagnostic_limits (__main__.AdmissionSentinels.test_response_and_diagnostic_limits) ... ok
+test_strict_duplicate_unknown_and_nonfinite_parsing (__main__.AdmissionSentinels.test_strict_duplicate_unknown_and_nonfinite_parsing) ... ok
+test_timeout (__main__.AdmissionSentinels.test_timeout) ... ok
+test_upstream_semantic_domain_rejects_opponent_already_in_check (__main__.AdmissionSentinels.test_upstream_semantic_domain_rejects_opponent_already_in_check) ... ok
+test_wrong_binary_identity_rejected (__main__.AdmissionSentinels.test_wrong_binary_identity_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 1.023s
+
+OK

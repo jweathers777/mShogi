@@ -1,0 +1,5 @@
+Cloning into '/private/tmp/msh91-reference/admitted3/source'...
+git clone --shared --no-hardlinks /private/tmp/msh80-research/xiangqi/pikafish /private/tmp/msh91-reference/admitted3/source
+git -C /private/tmp/msh91-reference/admitted3/source apply --check /private/tmp/msh91-reference/admitted3/harness.patch
+git -C /private/tmp/msh91-reference/admitted3/source apply /private/tmp/msh91-reference/admitted3/harness.patch
+clang++ -std=c++17 -O2 -g -DIS_64BIT -ffunction-sections -fdata-sections -pthread -Wl,-dead_strip -I/private/tmp/msh91-reference/admitted3/source/src /private/tmp/msh91-reference/admitted3/source/src/mshogi_board_probe.cpp /private/tmp/msh91-reference/admitted3/source/src/position.cpp /private/tmp/msh91-reference/admitted3/source/src/movegen.cpp /private/tmp/msh91-reference/admitted3/source/src/attacks.cpp /private/tmp/msh91-reference/admitted3/source/src/bitboard.cpp /private/tmp/msh91-reference/admitted3/source/src/nnue/features/k6r2nc2.cpp -o /private/tmp/msh91-reference/admitted3/pikafish-board-probe

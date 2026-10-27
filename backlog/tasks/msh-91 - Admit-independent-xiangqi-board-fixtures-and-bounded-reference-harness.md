@@ -1,11 +1,11 @@
 ---
 id: MSH-91
 title: Admit independent xiangqi board fixtures and bounded reference harness
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-27T18:11:00Z'
+updated_date: '2026-10-27T18:12:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -29,18 +29,18 @@ Future bounded Xiangqi delivery work refined by MSH-80. Intent and acceptance on
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Freeze and independently review rule-derived complete board/action fixture expectations before differential runs, including both sides, full initial44 action set, horse legs, elephant eyes/river, palace, soldiers, cannon screens, facing generals, all check evasions and no-action loss. Keep history/outcome and consumer families with their named owners; no all-family inventory prerequisite for state work.
-- [ ] #2 Build the audited pinned comparator in isolation and retain source/patch/toolchain/flags/binary/license provenance, exact supported board domain and separately pinned weights if required. Execute positive/negative admission sentinels and exact apply/undo checks; source inspection or a mutable network fetch does not admit a runtime reference.
-- [ ] #3 Compare complete legal action sets and independently established shallow perft/divide expectations; normalize dialects explicitly. Demonstrate useful deliberate mismatch, malformed input, timeout and engine-failure reporting. Keep expected facts and reference observations separate; resolve disagreements through sources and reviewed positions.
-- [ ] #4 Record independent fixture/harness review and reproducible commands/results. Neither reference outcome helpers nor software agreement establish WXF history conformance or playing strength.
+- [x] #1 Freeze and independently review rule-derived complete board/action fixture expectations before differential runs, including both sides, full initial44 action set, horse legs, elephant eyes/river, palace, soldiers, cannon screens, facing generals, all check evasions and no-action loss. Keep history/outcome and consumer families with their named owners; no all-family inventory prerequisite for state work.
+- [x] #2 Build the audited pinned comparator in isolation and retain source/patch/toolchain/flags/binary/license provenance, exact supported board domain and separately pinned weights if required. Execute positive/negative admission sentinels and exact apply/undo checks; source inspection or a mutable network fetch does not admit a runtime reference.
+- [x] #3 Compare complete legal action sets and independently established shallow perft/divide expectations; normalize dialects explicitly. Demonstrate useful deliberate mismatch, malformed input, timeout and engine-failure reporting. Keep expected facts and reference observations separate; resolve disagreements through sources and reviewed positions.
+- [x] #4 Record independent fixture/harness review and reproducible commands/results. Neither reference outcome helpers nor software agreement establish WXF history conformance or playing strength.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -60,3 +60,9 @@ Ownerauthorized batch91+92 then93 only. Startup clean primarycodex/rewrite53e90a
 
 Completed independent105-fixture corpus (101 admitted,4 deliberate structural exclusions) and actually built pinned restricted Pikafish board reference. 15 admission/failure sentinels and520 sequence-prefix observations passed; independent perft2/3/7 and divide5+2 confirmed. Source-based B38 correction, foreign counter exclusion, process-group cleanup and prefix-provenance findings retained/resolved. Separate independent reviewer manually inspected rule fixtures and reran harness/corpus: final PASS. Evidence/reproduction: docs/m4/xiangqi/board-foundation-evidence.md, reference/, reviews/. No history/strength admission.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Completed and independently reviewed; integrated and pushed to codex/rewrite at 16042f291bf3190ff2712c77344b2c6885d65f10. Task-scoped acceptance evidence and exact commands: docs/m4/xiangqi/board-foundation-evidence.md; independent reports/hashes: docs/m4/xiangqi/reviews/. MSH-91 provides105 independent fixtures,101 admitted reference cases,15 sentinels/520 prefixes; MSH-92 provides native state/codecs/private transitions with12 focused tests. No full local legality claim until93, no history/adjudication/consumer implementation. Normal final native workspace CI will additionally cover integrated93; unchanged prior product/platform evidence retained.
+<!-- SECTION:FINAL_SUMMARY:END -->

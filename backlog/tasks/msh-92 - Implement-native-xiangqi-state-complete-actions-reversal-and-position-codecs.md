@@ -5,7 +5,7 @@ status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-27T18:12:00Z'
+updated_date: '2026-10-27T18:28:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -59,6 +59,8 @@ MSH80 planning completed under XIANGQI-P1 with reviewed integrated/pushed eviden
 Ownerauthorized batch91+92 then93 only. Startup clean primarycodex/rewrite53e90a9, one worktree, nootheractiveBacklogownership. Backlog1.55.1 pinned mutationbinary resolvesPATH1.55.0difference.80Done selectedXIANGQI-P1 governs. Root sole durabletaskowner/integrator; isolatedindependentfixture/reference contributors will be recorded; no taskDone until own evidence/review/integration. G-CYCLE/G-NOWIN stay94/105 and must not affectlocal boardlegality.
 
 Native state/action/private transition foundation implemented, strict scoped FEN/position JSON and immutable root provenance documented. 12 focused native tests PASS, core all-target clippy -Dwarnings and workspace fmt PASS. Independent source/boundary reviewer separately ran checks: PASS; initial FEN and missing nullable-field findings resolved with tests. Evidence docs/m4/xiangqi/board-foundation-evidence.md, position-api.md, reviews/state-review.md and reviewed hashes. Complete legality remains93; history94/105 untouched.
+
+Post-integration native CI confirmation: Rust workspace run40557737936 succeeded on actual ubuntu-24.04, macos-15 and windows-2022 at16042f291bf3190ff2712c77344b2c6885d65f10. Final combined batch source a71d27b1bca2d75d789ead1acc2f8a3132dcdc81 additionally passed run40559507815 on all three systems (fmt, workspace all-target clippy, tests, isolated desktop QA constructors, unchanged frontend snapshot generation, build and existing console smoke). https://github.com/jweathers777/mShogi/actions/runs/40559507815 . No Xiangqi GUI/engine or history conformance claim; unchanged earlier product evidence remains applicable.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

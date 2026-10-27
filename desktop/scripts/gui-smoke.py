@@ -182,6 +182,7 @@ class Journey:
         self.phase = None
         self.phase_report = None
         self.native_events = []
+        self.shell_layouts = {}
 
     def record(self, operation, observation):
         item = {"at_utc": stamp(), "operation": operation, "observation": observation}
@@ -359,6 +360,68 @@ class Journey:
         self.record("Observe complete 9x9 native product board without scrolling", geometry)
         return geometry
 
+    def shared_shell(self, game):
+        layout = self.web.read("""(() => {
+            const root=document.querySelector('.game-shell');
+            const rect=s=>{const e=document.querySelector(s);if(!e)return null;const r=e.getBoundingClientRect();return {left:r.left,top:r.top,width:r.width,height:r.height};};
+            return {game:root?.classList.contains('shell-shogi')?'shogi':'chess',viewport:{width:innerWidth,height:innerHeight},
+                header:rect('.shell-header'),document:rect('.shell-document'),actions:rect('.shell-file-actions'),
+                heading:rect('.shell-live-heading'),boardPanel:rect('.shell-board-panel'),sidebar:rect('.shell-sidebar'),
+                sections:[...document.querySelectorAll('[data-shell-section]')].map(e=>e.dataset.shellSection),
+                documentInHeader:document.querySelector('.shell-header')?.contains(document.querySelector('.shell-document')),
+                flipInHeading:document.querySelector('.shell-live-heading')?.contains(document.querySelector('.flip-button')),
+                headerButtons:[...document.querySelectorAll('.shell-file-actions button')].map(e=>e.textContent.trim()),
+                technicalCollapsed:document.querySelector('.shell-technical')?.open===false};
+        })()""")
+        assert layout['game'] == game and layout['sections'] == ['analysis','history','actions'], layout
+        assert layout['documentInHeader'] and layout['flipInHeading'] and layout['technicalCollapsed'], layout
+        assert layout['headerButtons'] == ['New game','Save','Save as…','Open…'], layout
+        assert layout['boardPanel']['left'] < layout['sidebar']['left'], layout
+        key=(layout['viewport']['width'],layout['viewport']['height'])
+        previous=self.shell_layouts.get(key)
+        if previous and previous['game'] != game:
+            for part in ['header','actions','heading','boardPanel','sidebar']:
+                for axis in ['left','top','width']:
+                    assert abs(layout[part][axis]-previous[part][axis])<=3,(part,axis,previous,layout)
+            assert abs((layout['document']['top']+layout['document']['height']/2)-
+                       (previous['document']['top']+previous['document']['height']/2))<=3,(previous,layout)
+        self.shell_layouts[key]=layout
+        self.record('Observe shared application shell and consistent control locations',layout)
+
+    def inspection_state(self):
+        return self.web.read("""(() => {
+            const text=s=>document.querySelector(s)?.textContent??null;
+            const squareLabels=[...document.querySelectorAll('.square,.shogi-square')].map(e=>e.getAttribute('aria-label')?.split(',').slice(0,2).join(','));
+            const pre=[...document.querySelectorAll('.shell-technical pre')].map(e=>{try{return JSON.parse(e.textContent);}catch{return null;}}).find(v=>v?.token);
+            const root=document.querySelector('.game-shell');
+            return {pieces:squareLabels,history:text('.event-timeline')??text('.shogi-history'),
+                status:text('[data-game-status]'),dirty:text('.document-dirty')?.toLowerCase(),
+                documentTitle:text('.shell-document h2'),runtime:text('.shell-runtime'),
+                analysis:text('.shell-analysis'),nativeToken:pre?.token??null,
+                chessVersion:[...document.querySelectorAll('.shell-technical details')].map(e=>e.textContent).find(t=>t.includes('Session version'))??null,
+                event:root?.dataset.currentEvent,liveEvents:root?.dataset.liveEvents,historical:root?.dataset.historical,paused:root?.dataset.paused};
+        })()""")
+
+    def inspect_piece(self, game, origin, destination, label):
+        """Real native query through normal UI; completing a route stays read-only."""
+        w=self.web; before=self.inspection_state()
+        square=self.square if game=='chess' else self.shogi_square
+        w.click(square(origin))
+        wait(lambda: f'Inspecting {label}' in w.text('.movement-inspection-status'), 'native opponent movement inspection')
+        assert 'read only' in w.text('.movement-inspection-status').casefold().replace('-',' ')
+        assert w.read(f"document.querySelector({json.dumps(square(destination))})?.getAttribute('aria-label')?.includes('read-only inspection destination')")
+        assert w.read(f"document.querySelector({json.dumps(square(destination))})?.querySelector('.inspection-marker')!==null")
+        assert not w.has('.square.target,.shogi-square.target')
+        self.capture(f'inspect-{game}-{origin}')
+        w.click(square(destination))
+        time.sleep(0.35)  # Observe across native snapshot polls, not only local selection state.
+        assert self.inspection_state()==before, ('inspection changed authoritative presentation',before,self.inspection_state())
+        assert not w.has('.promotion-dialog,.shogi-promotion')
+        w.key('\ue00c')
+        wait(lambda:not w.has('.inspection-marker,.inspection-origin-ring'), 'Escape clears read-only inspection')
+        assert self.inspection_state()==before
+        self.record('Native movement inspection and complete read-only route preserve context',{'game':game,'origin':origin,'destination':destination,'label':label,'native_token':before['nativeToken'],'chess_version':before['chessVersion'],'history':before['history']})
+
     def file(self, kind, path, cancel=False, button_label=None):
         with ThreadPoolExecutor(max_workers=1) as pool:
             picker = pool.submit(self.native.choose_file, kind, None if cancel else path)
@@ -419,7 +482,7 @@ class Journey:
 
     def save(self, path, observation_count=None):
         self.file("save", path)
-        wait(lambda: self.web.text(".document-dirty") == "Saved", "complete document saved")
+        wait(lambda: self.web.text(".document-dirty").casefold() == "saved", "complete document saved")
         wait(path.exists, "native save created file")
         archive = json.loads(path.read_text(encoding="utf-8"))
         assert archive["profile"] == "mshogi.desktop.archive.v1"
@@ -451,7 +514,19 @@ class Journey:
     def normal(self):
         self.start()
         w = self.web
+        self.viewport(1180,820)
+        self.shared_shell('chess')
         self.plies(0)
+        self.inspect_piece('chess','e7','e5','Black pawn')
+        w.click(self.square('e2'))
+        assert w.read(f"document.querySelector({json.dumps(self.square('e4'))})?.classList.contains('target')")
+        w.click(self.square('b8'))
+        wait(lambda:'Inspecting Black knight' in w.text('.movement-inspection-status'),'friendly selection switches to enemy inspection')
+        assert not w.has('.square.target')
+        w.click(self.square('e2'))
+        assert not w.has('.inspection-marker')
+        assert w.read(f"document.querySelector({json.dumps(self.square('e4'))})?.classList.contains('target')")
+        w.key('\ue00c');self.plies(0)
         w.click(self.square("e2")); w.click(self.square("e4"))
         self.plies(2)
         wait(lambda: "Move returned:" in w.text(".engine-choice"), "actual engine reply")
@@ -487,6 +562,12 @@ class Journey:
         path = self.args.output / "normal-complete.mshogi"
         archive = self.save(path)
         assert len(archive["observations"]) >= 2
+        self.inspect_piece('chess','b8','c6','Black knight')
+        before_write=path.stat().st_mtime_ns
+        w.button('Save')
+        wait(lambda:path.stat().st_mtime_ns!=before_write,'native Save commits a fresh archive after inspection')
+        wait(lambda:w.text('.document-dirty').casefold()=='saved','save after read-only chess inspection')
+        assert json.loads(path.read_text(encoding='utf-8'))==archive,'inspection changed canonical chess archive'
         self.file("open", path)
         wait(lambda: "Opened the complete document with work stopped" in w.text(".document-card"), "reopen completed")
         self.plies(2)
@@ -497,6 +578,7 @@ class Journey:
         w.click(".event-timeline li:nth-child(3) button")
         self.plies(1, historical=True)
         assert "read only" in w.text(".historical-notice")
+        self.inspect_piece('chess','b8','c6','Black knight')
         w.button("Analyze position")
         w.set('.analysis-fields input[min="1"]', 1)
         w.set('.analysis-fields input[min="0"]', 1_000)
@@ -516,7 +598,7 @@ class Journey:
         # Save to the existing path uses no picker; the earlier observation is
         # canonical historical information, never resumable pending work.
         w.button("Save")
-        wait(lambda: w.text(".document-dirty") == "Saved", "save history observation")
+        wait(lambda: w.text(".document-dirty").casefold() == "saved", "save history observation")
         archive = json.loads(path.read_text(encoding="utf-8"))
         observation = archive["observations"][-1]["response"]["context"]
         assert observation["purpose"]["kind"] == "move_analysis"
@@ -525,7 +607,7 @@ class Journey:
             "historical_request": observation, "live_game_events":
                 len(json.loads(archive["game_record_json"])["events"])})
         w.click(".flip-button")
-        wait(lambda: w.text(".document-dirty") == "Unsaved", "orientation change is protected")
+        wait(lambda: w.text(".document-dirty").casefold() == "unsaved", "orientation change is protected")
         self.record("Native window-close request", self.native.close_window())
         wait(lambda: w.has(".document-guard"), "native close protects unsaved work")
         self.capture("native-close-guard")
@@ -556,7 +638,9 @@ class Journey:
         w = self.web
         self.new_shogi("sente")
         self.viewport(1180, 820); self.shogi_board_fits()
+        self.shared_shell('shogi')
         self.shogi_events(0)
+        self.inspect_piece('shogi','7c','7d','Gote pawn')
         self.capture("initial-sente")
         self.viewport(760, 650); self.shogi_board_fits()
         self.capture("minimum-size")
@@ -564,6 +648,7 @@ class Journey:
         self.new_shogi("gote")
         self.shogi_events(1)
         self.shogi_board_fits()
+        self.inspect_piece('shogi','5g','5f','Sente pawn')
         assert "Gote at bottom" in w.read("document.querySelector('.shogi-board').getAttribute('aria-label')")
         self.capture("initial-gote")
         self.new_shogi("sente")
@@ -623,6 +708,7 @@ class Journey:
         w.click('.shogi-history [data-event="1"]')
         self.shogi_events(2, selected=1, historical=True)
         assert "live game is unchanged" in w.text(".shogi-history-banner")
+        self.inspect_piece('shogi','7c','7d','Gote pawn')
         self.shogi_analysis()
         self.shogi_complete_analysis()
         self.shogi_events(2, selected=1, historical=True)
@@ -642,6 +728,41 @@ class Journey:
         self.shogi_events(2)
         assert not w.has(".shogi-history-banner")
         self.capture("return-live-resumed")
+        # A previously recorded native reduced-material diagram supplies real
+        # captured resources in the ordinary package; no fixture entry point is
+        # enabled and the archive retains its explicit diagram provenance.
+        captures=Path(__file__).resolve().parents[2]/'docs/m4/evidence/msh74/records/msh74-native-captures.mshogi'
+        assert captures.is_file(),captures
+        self.file('open',captures)
+        self.shogi_events(2)
+        wait(lambda:w.has('.shogi-player[data-player="gote"] .hand-piece[data-hand-piece="pawn"]'),'normal reopened opponent hand resource')
+        before_archive=self.shogi_save(self.args.output/'normal-shogi-inspection-before.mshogi')
+        before=self.inspection_state()
+        hand='.shogi-player[data-player="gote"] .hand-piece[data-hand-piece="pawn"]'
+        w.click(hand)
+        wait(lambda:'Inspecting Gote pawn in hand' in w.text('.movement-inspection-status'),'native opponent hand/drop inspection')
+        assert w.read(f"document.querySelector({json.dumps(self.shogi_square('5e'))})?.querySelector('.inspection-marker')!==null")
+        assert not w.has('.shogi-square.target')
+        self.capture('opponent-hand-inspection')
+        w.key('\ue00c')
+        w.key('\ue007')  # Enter on the returned hand button starts a new query.
+        wait(lambda:'Inspecting Gote pawn in hand' in w.text('.movement-inspection-status'),'keyboard opponent hand inspection')
+        for key in ('\ue015','\ue013','\ue013','\ue007'):  # Down to board, Up twice, Enter at5e.
+            w.key(key)
+        time.sleep(0.35)
+        assert self.inspection_state()==before,'opponent hand inspection changed native context'
+        assert not w.has('.shogi-promotion')
+        w.key('\ue00c')
+        wait(lambda:not w.has('.inspection-marker'),'Escape clears opponent drop inspection')
+        after_archive=self.shogi_save(self.args.output/'normal-shogi-inspection-after.mshogi')
+        assert after_archive==before_archive,'read-only hand inspection changed canonical native archive'
+        self.record('Normal-package opponent hand inspection preserves complete canonical archive',{
+            'source_archive':str(captures),'source_sha256':digest(captures),
+            'root':before_archive['payload']['current']['payload']['root'],
+            'native_events':len(before_archive['payload']['current']['payload']['events']),
+            'before_sha256':digest(self.args.output/'normal-shogi-inspection-before.mshogi'),
+            'after_sha256':digest(self.args.output/'normal-shogi-inspection-after.mshogi')})
+        self.shogi_flip()  # Keep the native unsaved-close guard journey meaningful.
         self.quit()
 
     def shogi_fixture(self, name):
@@ -815,7 +936,7 @@ class Journey:
             # A preference change keeps this temporary saved document dirty for
             # the native lifecycle guard; it does not remove any observation.
             w.click(".flip-button")
-            wait(lambda: w.text(".document-dirty") == "Unsaved", "protected preference change completes before Quit")
+            wait(lambda: w.text(".document-dirty").casefold() == "unsaved", "protected preference change completes before Quit")
         elif name == "synthetic":
             assert "not a real shogi variant" in w.text()
             assert not w.has(".document-card")

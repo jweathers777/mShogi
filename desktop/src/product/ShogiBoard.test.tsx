@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ShogiBoard } from "./ShogiBoard";
 import type { GameSnapshot } from "./native";
@@ -76,4 +76,59 @@ it("retires a pending selection when native context changes or interaction is di
   expect(screen.queryByRole("dialog")).toBeNull(); fireEvent.click(square("5c")); expect(onPlay).not.toHaveBeenCalled();
   rerender(<ShogiBoard {...props} snapshot={snapshot} disabled />);
   fireEvent.click(square("5d")); fireEvent.click(square("5c")); expect(onPlay).not.toHaveBeenCalled();
+});
+
+// Mock native query replies test read-only presentation. Native/session tests own
+// movement/drop expectations; these tests do not implement shogi legality.
+const gote = standard.sides.find((side) => side.id.side === "gote")!;
+const inspectionReply = { game: "shogi" as const, token: standard.token, origin: "3c", side: gote, label: "Gote pawn", read_only: true as const, choices: [{ action: "3c3d", from: "3c", steps: ["3d"], completion: null }] };
+it.each(["sente", "gote"])("uses read-only board inspection and actionable friendly switching in %s orientation", async (orientation) => {
+  const onPlay = vi.fn(), onInspect = vi.fn().mockImplementation(async (origin: string) => ({ ...inspectionReply, origin, label: origin === "4a" ? "Gote gold" : "Gote pawn", choices: origin === "4a" ? [] : inspectionReply.choices }));
+  const snapshot = { ...standard, document: { ...standard.document, settings: { ...standard.document.settings, settings: { ...standard.document.settings.settings, orientation } } } };
+  render(<ShogiBoard snapshot={snapshot} disabled={false} onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
+  square("3c").focus(); fireEvent.keyDown(square("3c"), { key: "Enter" }); await screen.findByText(/Inspecting Gote pawn · Read-only/);
+  expect(square("3c").getAttribute("aria-label")).toContain("Inspecting Gote pawn"); expect(square("3d").getAttribute("aria-label")).toContain("read-only inspection destination");
+  expect(square("3d").querySelector(".inspection-marker")).toBeTruthy(); expect(square("3d").querySelector(".shogi-destination")).toBeNull();
+  fireEvent.click(square("3d")); expect(onPlay).not.toHaveBeenCalled();
+  fireEvent.click(square("4a")); await screen.findByText(/Inspecting Gote gold · Read-only/); expect(document.querySelectorAll(".inspection-marker")).toHaveLength(0);
+  fireEvent.click(square("7g")); expect(square("7f").getAttribute("aria-label")).toContain("legal destination");
+  fireEvent.keyDown(square("7g"), { key: "Escape" }); expect(square("7g").getAttribute("aria-pressed")).toBe("false");
+  fireEvent.click(square("7g")); fireEvent.click(square("7f")); expect(onPlay).toHaveBeenCalledExactlyOnceWith("7g7f");
+});
+it("inspects available opponent hand drops by keyboard during historical viewing without committing", async () => {
+  const source = dropsJson as GameSnapshot;
+  const snapshot = { ...source, historical: true, capabilities: { ...source.capabilities, board_action: false }, hands: [...source.hands,
+    { origin: "gote-pawn-hand", owner: gote.key, kind: "pawn", count: 1, text: "P", label: "Gote pawn in hand" },
+    { origin: "gote-rook-zero", owner: gote.key, kind: "rook", count: 0, text: "R", label: "Gote rook in hand" },
+  ] };
+  const onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue({ ...inspectionReply, token: snapshot.token, origin: "gote-pawn-hand", label: "Gote pawn in hand", choices: [{ action: "P*5e", from: "gote-pawn-hand", steps: ["5e"], completion: null }] });
+  render(<ShogiBoard snapshot={snapshot} disabled onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
+  expect(screen.queryByRole("button", { name: /Gote rook in hand/ })).toBeNull();
+  const pawn = screen.getByRole("button", { name: "Gote pawn in hand, 1" });
+  expect(pawn.hasAttribute("disabled")).toBe(false); pawn.focus(); await userEvent.setup().keyboard("{Enter}"); await screen.findByText(/Inspecting Gote pawn in hand · Read-only/);
+  expect(pawn.getAttribute("aria-label")).toContain("Inspecting Gote pawn in hand");
+  fireEvent.keyDown(pawn, { key: "ArrowDown" }); expect(document.activeElement).toBe(square("5g"));
+  fireEvent.click(square("5e")); expect(onPlay).not.toHaveBeenCalled();
+  fireEvent.keyDown(square("5e"), { key: "Escape" }); expect(document.activeElement).toBe(pawn); expect(screen.queryByText(/Inspecting Gote pawn in hand · Read-only/)).toBeNull();
+});
+it("retires asynchronous inspection after friendly switching and native historical selection", async () => {
+  let resolve!: (value: typeof inspectionReply) => void;
+  const onInspect = vi.fn().mockReturnValue(new Promise((r) => { resolve = r; })), onPlay = vi.fn();
+  const props = { snapshot: standard, disabled: false, onPlay, onInspect, inspectionDisabled: false };
+  const { rerender } = render(<ShogiBoard {...props} />);
+  fireEvent.click(square("3c")); fireEvent.click(square("7g"));
+  await act(async () => resolve(inspectionReply)); expect(screen.queryByText(/Inspecting Gote pawn · Read-only/)).toBeNull(); expect(square("7f").getAttribute("aria-label")).toContain("legal destination");
+  onInspect.mockResolvedValue(inspectionReply); fireEvent.click(square("3c")); await screen.findByText(/Inspecting Gote pawn · Read-only/);
+  rerender(<ShogiBoard {...props} snapshot={{ ...standard, historical: true, token: { ...standard.token, selection: standard.token.selection + 1 } }} disabled />);
+  expect(screen.queryByText(/Inspecting Gote pawn · Read-only/)).toBeNull(); expect(onPlay).not.toHaveBeenCalled();
+});
+it("keeps occupied native inspection destinations readable and never prompts to play promotion", async () => {
+  const onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue({ ...inspectionReply, origin: "5a", label: "Gote king", choices: [
+    { action: "synthetic-route-a", from: "5a", steps: ["5b", "5i"], completion: { label: "Promote", glyph: null } },
+    { action: "synthetic-route-b", from: "5a", steps: ["5b", "5i"], completion: { label: "Do not promote", glyph: null } },
+  ] });
+  render(<ShogiBoard snapshot={standard} disabled onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
+  fireEvent.click(square("5a")); await screen.findByText(/Inspecting Gote king · Read-only/); fireEvent.click(square("5b"));
+  expect(square("5i").querySelector(".shogi-piece")).toBeTruthy(); expect(square("5i").querySelector(".inspection-marker")?.getAttribute("r")).toBe("46");
+  fireEvent.click(square("5i")); expect(onPlay).not.toHaveBeenCalled(); expect(screen.queryByRole("dialog")).toBeNull(); expect(screen.getByRole("status").textContent).toContain("Promote or Do not promote");
 });

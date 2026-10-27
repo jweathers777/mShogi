@@ -5,7 +5,7 @@
 
 use std::fmt;
 
-use super::{Action, PieceKind, Position, Square};
+use super::{Action, Color, PieceKind, Position, Square};
 
 /// Position-level classification of the side to move, per the profile's
 /// `(in_check, has_legal_action)` rule. This is the limited M1 classifier,
@@ -38,6 +38,19 @@ impl fmt::Display for Classification {
 }
 
 impl Position {
+    /// Read-only local movement inspection for a hypothetical turn by `side`.
+    /// This is educational position data, not permission to commit a move or a
+    /// game/history conclusion. All rights stay on a private copy; en passant
+    /// is available only to the actual entitled side. The original is unchanged.
+    pub fn inspection_actions(&self, side: Color) -> Vec<Action> {
+        let mut copy = self.clone();
+        if side != self.side_to_move {
+            copy.en_passant_target = None;
+        }
+        copy.side_to_move = side;
+        copy.legal_actions()
+    }
+
     /// Every legal action for the side to move: ordinary moves and captures,
     /// each promotion choice, castling and en passant, after king safety.
     ///
@@ -95,5 +108,56 @@ impl Position {
             (true, false) => Classification::Checkmate,
             (false, false) => Classification::Stalemate,
         }
+    }
+}
+
+#[cfg(test)]
+mod inspection_tests {
+    use super::*;
+    fn actions(position: &Position, side: Color, origin: &str) -> Vec<String> {
+        let mut moves = position
+            .inspection_actions(side)
+            .into_iter()
+            .filter(|a| a.from.to_string() == origin)
+            .map(|a| a.to_string())
+            .collect::<Vec<_>>();
+        moves.sort();
+        moves
+    }
+    #[test]
+    fn hypothetical_knight_and_pin_are_local_and_immutable() {
+        let p = Position::from_fen("4k3/4r1n1/8/8/8/8/8/K3R3 w - - 37 18").unwrap();
+        let before = p.clone();
+        assert_eq!(actions(&p, Color::Black, "g7"), ["g7e6", "g7f5", "g7h5"]);
+        let rook = actions(&p, Color::Black, "e7");
+        assert!(rook.contains(&"e7e1".into()));
+        assert!(!rook.contains(&"e7d7".into()));
+        assert_eq!(p, before);
+    }
+    #[test]
+    fn inspection_preserves_actual_en_passant_without_transferring_it() {
+        let p = Position::from_fen("4k3/8/8/3pP3/8/8/8/4K3 w - d6 0 9").unwrap();
+        let before = p.clone();
+        assert!(actions(&p, Color::White, "e5").contains(&"e5d6".into()));
+        assert!(actions(&p, Color::Black, "d5").contains(&"d5d4".into()));
+        assert!(!actions(&p, Color::Black, "d5").contains(&"d5e4".into()));
+        assert_eq!(p, before);
+    }
+    #[test]
+    fn hypothetical_promotion_contains_all_four_completions() {
+        let p = Position::from_fen("4k3/8/8/8/8/8/p7/4K3 w - - 0 1").unwrap();
+        assert_eq!(
+            actions(&p, Color::Black, "a2"),
+            ["a2a1b", "a2a1n", "a2a1q", "a2a1r"]
+        );
+    }
+    #[test]
+    fn hypothetical_castling_uses_existing_rights_without_mutation() {
+        let p = Position::from_fen("r3k2r/8/8/8/8/8/8/4K3 w kq - 12 24").unwrap();
+        let before = p.clone();
+        let choices = actions(&p, Color::Black, "e8");
+        assert!(choices.contains(&"e8c8".into()));
+        assert!(choices.contains(&"e8g8".into()));
+        assert_eq!(p, before);
     }
 }

@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { Board } from "./Board";
 import userEvent from "@testing-library/user-event";
 import type { Snapshot } from "./native";
@@ -117,4 +117,66 @@ describe("native complete choice selection", () => {
     fireEvent.click(square("e4"));
     expect(onPlay).not.toHaveBeenCalled();
   });
+});
+
+// These supplied inspection replies exercise presentation dispatch, not a second
+// movement oracle. Native rules/session tests establish the returned legality.
+const inspectedPawn = {
+  game: "chess" as const, token: { document: 1, version: 0, revision: 0, selection: 0 },
+  origin: "e7", side: { id: { game_kind: "chess" as const, side: "black" as const }, key: "black", label: "Black", first_mover: false },
+  label: "Black pawn", read_only: true as const,
+  choices: ["e6", "e5"].map((destination) => ({ action: `e7${destination}`, from: "e7", steps: [destination], completion: null })),
+};
+it.each(["white", "black"] as const)("inspects an opponent in %s orientation, switches to friendly action, and clears with Escape", async (orientation) => {
+  const onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue(inspectedPawn);
+  render(<Board pieces={standard.pieces} choices={standard.legal_choices} version={0} orientation={orientation} disabled={false} humanOwner="white" onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
+  square("e7").focus(); fireEvent.keyDown(square("e7"), { key: "Enter" });
+  await screen.findByText(/Inspecting Black pawn · Read-only/);
+  expect(square("e7").getAttribute("aria-label")).toContain("Inspecting Black pawn");
+  expect(square("e6").getAttribute("aria-label")).toContain("read-only inspection destination");
+  expect(square("e6").querySelector(".inspection-marker")).toBeTruthy();
+  expect(square("e6").querySelector(".move-marker")).toBeNull();
+  fireEvent.click(square("e6")); expect(onPlay).not.toHaveBeenCalled();
+  fireEvent.click(square("e2")); expect(square("e4").getAttribute("aria-label")).toContain("legal destination");
+  expect(screen.queryByText(/Inspecting Black pawn · Read-only/)).toBeNull();
+  fireEvent.keyDown(square("e2"), { key: "Escape" }); expect(square("e2").getAttribute("aria-pressed")).toBe("false");
+  fireEvent.click(square("e2")); fireEvent.click(square("e4")); expect(onPlay).toHaveBeenCalledExactlyOnceWith("e2e4");
+});
+it("keeps historical/engine-turn inspection available when board actions are disabled and retires late results", async () => {
+  let resolve!: (value: typeof inspectedPawn) => void;
+  const onInspect = vi.fn().mockReturnValue(new Promise((r) => { resolve = r; })), onPlay = vi.fn();
+  const props = { pieces: standard.pieces, choices: standard.legal_choices, version: 0, orientation: "white" as const, disabled: true, humanOwner: "white", onPlay, onInspect, inspectionDisabled: false, inspectionContextKey: "historical-1" };
+  const { rerender } = render(<Board {...props} />);
+  fireEvent.click(square("e7")); expect(onInspect).toHaveBeenCalledWith("e7");
+  rerender(<Board {...props} inspectionContextKey="historical-2" />);
+  await act(async () => resolve(inspectedPawn)); expect(screen.queryByText(/Inspecting Black pawn · Read-only/)).toBeNull();
+  onInspect.mockResolvedValue(inspectedPawn); fireEvent.click(square("e7")); await screen.findByText(/Inspecting Black pawn · Read-only/);
+  fireEvent.click(square("e6")); expect(onPlay).not.toHaveBeenCalled();
+  fireEvent.keyDown(square("e6"), { key: "Escape" }); expect(screen.queryByText(/Inspecting Black pawn · Read-only/)).toBeNull();
+});
+it("retains complete compound inspection routes and completion alternatives without executable controls", async () => {
+  const onPlay = vi.fn();
+  const onInspect = vi.fn().mockResolvedValue({ ...inspectedPawn, choices: [
+    { action: "synthetic-route-a", from: "e7", steps: ["e6", "d6"], completion: { label: "Promote", glyph: null } },
+    { action: "synthetic-route-b", from: "e7", steps: ["e6", "d6"], completion: { label: "Do not promote", glyph: null } },
+    { action: "synthetic-route-stop", from: "e7", steps: ["e6"], completion: null },
+  ] });
+  render(<Board pieces={standard.pieces} choices={standard.legal_choices} version={0} orientation="white" disabled={false} humanOwner="white" onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
+  fireEvent.click(square("e7")); await screen.findByText(/Inspecting Black pawn · Read-only/); fireEvent.click(square("e6"));
+  expect(square("d6").getAttribute("aria-label")).toContain("read-only inspection destination");
+  expect(screen.queryByRole("button", { name: "Complete action here" })).toBeNull();
+  fireEvent.click(square("d6")); expect(onPlay).not.toHaveBeenCalled();
+  expect(screen.getByRole("status").textContent).toContain("Promote or Do not promote"); expect(screen.queryByRole("dialog")).toBeNull();
+});
+it("preserves actionable capture destination precedence over enemy-origin inspection", () => {
+  const onPlay = vi.fn(), onInspect = vi.fn();
+  // Synthetic adapter choice isolates event precedence, not chess legality.
+  render(<Board pieces={standard.pieces} choices={[{ action: "capture-contract", from: "e2", steps: ["e7"], completion: null }]} version={0} orientation="white" disabled={false} humanOwner="white" onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
+  fireEvent.click(square("e2")); fireEvent.click(square("e7")); expect(onPlay).toHaveBeenCalledExactlyOnceWith("capture-contract"); expect(onInspect).not.toHaveBeenCalled();
+});
+it("switches from an inspection capture marker to the friendly piece's actionable choices", async () => {
+  const onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue({ ...inspectedPawn, choices: [{ action: "inspection-capture-contract", from: "e7", steps: ["e2"], completion: null }] });
+  render(<Board pieces={standard.pieces} choices={standard.legal_choices} version={0} orientation="white" disabled={false} humanOwner="white" onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
+  fireEvent.click(square("e7")); await screen.findByText(/Inspecting Black pawn · Read-only/);
+  fireEvent.click(square("e2")); expect(square("e2").getAttribute("aria-label")).toContain("selected"); expect(square("e4").getAttribute("aria-label")).toContain("legal destination"); expect(onPlay).not.toHaveBeenCalled();
 });

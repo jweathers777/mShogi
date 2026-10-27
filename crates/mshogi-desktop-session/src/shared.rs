@@ -4,6 +4,9 @@ use super::*;
 #[path = "shared_archive.rs"]
 pub(super) mod archive;
 pub use archive::{NativeDesktopSettings, SharedDocumentState, SharedOpenToken, ShogiSettings};
+#[path = "shared_inspection.rs"]
+mod inspection;
+pub use inspection::{MovementInspection, MovementInspectionQuery};
 pub use mshogi_core::native::{GameKind, NativeSide};
 pub use mshogi_core::shogi::Side as ShogiSide;
 use mshogi_core::{

@@ -66,8 +66,8 @@ even if the native record already contains a genuine conclusion or fast proof.
 Chess Full is never reinterpreted as a Xiangqi analysis operation. Malformed
 identities/targets are `InvalidRequest` or strict transport parse errors instead.
 There is no evaluator/search/default/max-work policy or execution implementation
-in95. The `u8` depth / `u64` node fields are retained as opaque requested settings
-for an unsupported response, including0/0 and255/u64-max; this is transport
+in95. The `u16` depth / `u64` node fields are retained as opaque requested settings
+for an unsupported response, including0/0 and65535/u64-max; this is transport
 representability, not advertised search capability. Full-shaped settings retain
 their existing bounded wire structure and sentinel before unsupported rejection.
 
@@ -110,7 +110,7 @@ payload fitting its own cap does not promise room for envelope/purpose overhead.
 Actual complete encoding, not payload-only arithmetic, determines admission.
 
 The measured512-command/1024-event native audit ledger plus resignation is
-253656 native bytes,253832 envelope bytes,253999 request bytes and254281 echoed
+253656 native bytes,253832 envelope bytes,254001 request bytes and254283 echoed
 unsupported-response bytes. Exact1MiB request and standalone-envelope input is
 accepted; one additional byte is refused. These are concrete measured cases,
 not a proof that all native maximums fit an enclosing frame. No constants rose.

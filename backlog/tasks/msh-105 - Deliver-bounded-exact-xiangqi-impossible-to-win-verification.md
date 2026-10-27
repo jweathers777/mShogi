@@ -4,7 +4,7 @@ title: Deliver bounded exact xiangqi impossible-to-win verification
 status: To Do
 assignee: []
 created_date: '2026-10-27T16:10:00Z'
-updated_date: '2026-10-27T16:18:00Z'
+updated_date: '2026-10-27T19:43:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -39,3 +39,11 @@ XIANGQI-P1 owner decision retains WXF3.2A as required M4 scope. MSH-94 supplies 
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner G-NOWIN resolution during MSH94 selects mshogi.xiangqi.natural-board-win.exists.v1: existential ordinary board-action continuation to WXF3.1A checkmate or stalemate loss only, not minimax and not repetition/conduct/resignation/agreement/admin/time/invalid-claim awards. Full known history governs actual match outcomes but cannot create a positive natural-win witness through penalties. See docs/m4/xiangqi/owner-decisions.md and history-contract.md. This resolves the prior goal semantics gate; exact algorithm, independently reviewed proof/unknown fixtures, bounded/terminable execution and feasibility remain this ticket required scope. No implementation started or dependency changed;94 and95 must both be Done.
+
+MSH94 is now Done with tested source integration a822450d1618810e0ef37efb9ef05035939c5746 and native/package CI PASS. This task remains To Do, unassigned and unstarted: MSH95 is the remaining unmet direct dependency. No graph change or exact-backend/feasibility work occurred.
+<!-- SECTION:NOTES:END -->

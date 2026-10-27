@@ -1,0 +1,88 @@
+{
+  "research_date_utc": "2026-10-27",
+  "repository_context_revision": "14b9643dac70f09394ccc60aea8b0f8c5bbd5b03",
+  "scope": "MSH-83 independent source research only; no profile adoption or conformance verdict",
+  "sources": [
+    {
+      "id": "H1696",
+      "url": "https://www.digital.archives.go.jp/file/3144172",
+      "class": "holding_institution_catalogue_metadata",
+      "institution": "National Archives of Japan, Cabinet Library",
+      "title": "諸象戯図式",
+      "author_catalogued": "西沢貞陣",
+      "date_catalogued": "元禄9 / 1696",
+      "call_number": "199-0411",
+      "quantity": "4冊",
+      "former_owner": "昌平坂学問所",
+      "status": "browser catalogue verified; no image viewer or subordinate item list exposed; historical text unacquired",
+      "folio": null,
+      "sha256": null
+    },
+    {
+      "id": "E1",
+      "url": "https://www.archives.go.jp/exhibition/popup_jousetsu_23_1/23_5_0002_1.jpg",
+      "class": "institution_hosted_partial_facsimile",
+      "status": "fetched and visually inspected; cover only; intermediate removed",
+      "sha256": "a8de6a55aab0b73104e4a1ea3ea294ce52f691cf9f465a64c5225f656efc7033",
+      "bytes": 47215,
+      "folio": null
+    },
+    {
+      "id": "E2",
+      "url": "https://www.archives.go.jp/exhibition/popup_jousetsu_23_1/23_5_0002_2.jpg",
+      "class": "institution_hosted_partial_facsimile",
+      "status": "fetched and visually inspected; sho shogi spread, not Tenjiku; intermediate removed",
+      "sha256": "e49991c5788aaad67e20b4e33d3cde007856142f52094e7d1546a5d89d6ca4cd",
+      "bytes": 100997,
+      "folio": null
+    },
+    {
+      "id": "K",
+      "url": "https://crd.ndl.go.jp/reference/entry/index.php?id=1000247371&page=ref_view",
+      "class": "institutional_reference_record",
+      "status": "record read; historical copy/facsimile not acquired",
+      "holding_institution": "京都府立京都学・歴彩館",
+      "call_number": "和/780/64",
+      "material_id": "119040343",
+      "catalogue_bibid": "305666",
+      "acquisition_annotation": "1903-09-25, not date of composition/copying",
+      "folio": null,
+      "sha256": null
+    },
+    {
+      "id": "A1999",
+      "url": "http://history.chess.free.fr/papers/Tenjiku-Colin%20Adams.pdf",
+      "class": "authorial_reconstruction_and_attributed_translation_on_third_party_mirror",
+      "title": "The Struggle for Survival: Testing Times for Tenjiku Shogi",
+      "author": "Colin Adams",
+      "edition": "Second Edition, 14 February 1999",
+      "pages": 185,
+      "bytes": 1000783,
+      "sha256": "a189a4a83f6e9554c4e8443241a5ab7307d6937f46b81f6c5ae35dc5063aef91",
+      "status": "retrieved with curl; relevant pages rendered and inspected; intermediate removed; no current author-hosted copy acquired",
+      "inspected_pdf_pages": [2,15,16,23,24,25,28,29,177,178,179],
+      "appendix_A": {
+        "printed_pages": "166-168",
+        "pdf_pages_one_based": "177-179",
+        "translator": "Peter Banaschak",
+        "underlying_source": "Shōgi zushiki, date unknown",
+        "repository_copy_and_folios": null
+      }
+    },
+    {
+      "id": "M",
+      "url": "https://hgm.nubati.net/tenjiku/tenjiku.html",
+      "class": "first_party_modern_software_convention_explanation",
+      "sha256": "a52aee2913c846719d916cd020f85c14eea68cdb2a1f597227b5ebcb814159f5",
+      "status": "HTML retrieved/read; intermediate removed; hash includes dynamic challenge script and may change without rules changes",
+      "software_binary_or_release_verified": false
+    }
+  ],
+  "unresolved": [
+    "Institution-held 1694 witness and edition identity",
+    "Complete relevant 1696 volume and Tenjiku folios",
+    "Identity of Banaschak translation's source copy",
+    "Independently reviewed Japanese transcription and translation",
+    "All consequential profile decisions and complete independent fixtures"
+  ]
+}

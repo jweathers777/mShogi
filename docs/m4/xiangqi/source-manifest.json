@@ -1,0 +1,49 @@
+{
+  "purpose": "MSH-80 research acquisition; not profile adoption or conformance evidence",
+  "sources": [
+    {
+      "id": "WXF-EN-2018",
+      "url": "https://www.wxf-xiangqi.org/images/wxf-rules/2018_World_XiangQi_Rules_English2018.pdf",
+      "sha256": "2b45534953bbfcca42dc2c52e06be48ff44ebe3bf7237248b12e39576c494cf3",
+      "bytes": 8234985,
+      "pdf_pages": 116,
+      "acquired_date": "2026-10-27",
+      "method": "Public HTTPS GET; local PDF rendering. Body OCR was reading aid only; critical clauses visually inspected.",
+      "edition_status": "2018 official named bilingual publication",
+      "retention": "Metadata only in repository; copyrighted full text and renders remain temporary research inputs."
+    },
+    {
+      "id": "WXF-ZH-2018",
+      "url": "https://www.wxf-xiangqi.org/images/wxf-rules/2018_World_Xiangqi_Rules_Chinese_2018.pdf",
+      "sha256": "f61f5c82ddaf2abb45eb25c24d58f2b278d2c150439f391d413c32c4ce275b3e",
+      "bytes": 6278474,
+      "pdf_pages": 92,
+      "acquired_date": "2026-10-27",
+      "method": "Public HTTPS GET; local PDF rendering. Body OCR was reading aid only; critical clauses visually inspected.",
+      "edition_status": "2018 official named bilingual publication",
+      "retention": "Metadata only in repository; copyrighted full text and renders remain temporary research inputs."
+    },
+    {
+      "id": "AXF-EN-undated",
+      "url": "https://www.asianxiangqi.org/English/AXF_rules_Eng.pdf",
+      "sha256": "93feb99cc8849853fe0b731f7417e6a25fada2f3ee0c13608e7dc8a07467a387",
+      "bytes": 2693664,
+      "pdf_pages": 21,
+      "acquired_date": "2026-10-27",
+      "method": "Public HTTPS GET; local PDF rendering. Body OCR was reading aid only; critical clauses visually inspected.",
+      "edition_status": "Undated official download; exact revision unverified",
+      "retention": "Metadata only in repository; copyrighted full text and renders remain temporary research inputs."
+    },
+    {
+      "id": "AXF-ZH-undated",
+      "url": "https://www.asianxiangqi.org/AXF%20Rules%20of%20XQ%20Competition.pdf",
+      "sha256": "560312b1c0fcbc47af99ce87eeec292cec1e9a23f93f645aba89edb399dcc0d2",
+      "bytes": 1035521,
+      "pdf_pages": 32,
+      "acquired_date": "2026-10-27",
+      "method": "Public HTTPS GET; local PDF rendering. Body OCR was reading aid only; critical clauses visually inspected.",
+      "edition_status": "Undated official download; exact revision unverified",
+      "retention": "Metadata only in repository; copyrighted full text and renders remain temporary research inputs."
+    }
+  ]
+}

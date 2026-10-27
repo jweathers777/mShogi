@@ -4,13 +4,18 @@ title: Deliver the authoritative xiangqi native handoff for shared consumers
 status: To Do
 assignee: []
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-26T07:44:00Z'
+updated_date: '2026-10-27T15:04:00Z'
 labels:
   - m4
   - owner-msh-45
 milestone: m-4
 dependencies:
   - MSH-80
+  - MSH-91
+  - MSH-92
+  - MSH-93
+  - MSH-94
+  - MSH-95
 references:
   - >-
     backlog/tasks/msh-45 -
@@ -18,6 +23,7 @@ references:
 documentation:
   - docs/m4/later-game-sources.md
   - docs/m4/delivery-plan.md
+  - docs/m4/xiangqi/handoff.md
 type: task
 ordinal: 84000
 ---
@@ -47,3 +53,9 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MSH-80 refinement2026-10-27: original4AC/DoD retained. Native slices91 fixtures/reference,92 state/actions/reversal/codecs,93 full local legality,94 complete selected history/adjudication/canonical records,95 actual typed-record consumer supply this handoff. None depends on84 or45 final completion, so no aggregate cycle.95 extends the shared record/routing boundary only; engine97 and full session/archive98/99 remain later. All future tickets To Do pending80 ratification/research, not implementation authorization. R-EDITION/R-CYCLE/R-CLASS/R-NOWIN remain named obligations; no unsupported convention or scope reduction.
+<!-- SECTION:NOTES:END -->

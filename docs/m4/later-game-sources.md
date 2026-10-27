@@ -9,6 +9,17 @@ that order now; a later change should record the actual blocker, source evidence
 shared-boundary impact and proposed order in the owning task. Difficulty obtaining
 a later game's historical text does not block unaffected standard-shogi work.
 
+**Current research addendum,2026-10-27:** preserve the original snapshot below.
+MSH-80 acquired both official WXF2018 languages and the linked AXF PDFs;
+[the current reconciliation](xiangqi/sources.md) supersedes the old Chinese
+timeout as an acquisition status. It still has named AXF/CXA and interpretation
+gaps and no selected Xiangqi profile. Independent research adds exact Tori
+holdings/article identifiers in [MSH-81](research/tori.md), a directly inspected
+1915 historical-text witness and current JCSA code in [MSH-82](research/chu.md),
+and separates the Tenjiku catalogue/translation witnesses in
+[MSH-83](research/tenjiku.md). None is a completed profile or a new dependency
+between games. Provisional delivery order is unchanged.
+
 ## Authority and evidence policy
 
 Keep four categories separate in every future profile and fixture manifest:

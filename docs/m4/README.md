@@ -14,6 +14,13 @@ Standard shogi is first; provisional later order is xiangqi, tori, chu, tenjiku.
 Independent rules research may proceed separately. The source inventory records
 no evidence-based change to that provisional delivery order at present.
 
+Current next-game handoff (MSH-80,2026-10-27): [Xiangqi planning dossier](xiangqi/README.md).
+It proposes `mshogi.xiangqi.wxf2018.v1` without adoption, preserves unresolved
+source/owner decisions and refines native/shared/console/engine/desktop work
+into MSH-91–103 under the existing MSH-45/76/84 records. No Xiangqi implementation
+has begun. Partial [Tori](research/tori.md), [Chu](research/chu.md) and
+[Tenjiku](research/tenjiku.md) research remains independent and unfinished.
+
 | Deliverable | Proposal and scope |
 | --- | --- |
 | Current-code implementation map | [implementation-map.md](implementation-map.md): actual chess boundaries and minimal explicit chess/shogi extensions, old-document compatibility, capabilities and preserved lossless admission |

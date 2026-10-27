@@ -1,10 +1,10 @@
 ---
 id: MSH-83
 title: Acquire and ratify sourced tenjiku shogi profile and fixtures
-status: Ready
+status: To Do
 assignee: []
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-26T07:44:00Z'
+updated_date: '2026-10-27T15:09:00Z'
 labels:
   - m4
   - owner-msh-44
@@ -18,6 +18,7 @@ references:
 documentation:
   - docs/m4/later-game-sources.md
   - docs/m4/delivery-plan.md
+  - docs/m4/research/tenjiku.md
 type: task
 ordinal: 83000
 ---
@@ -47,3 +48,17 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Bounded independent tenjiku shogi source-research pass only: inspect existing scope/inventory, acquire exact primary editions/facsimile locators where available, separate actual text from catalogue/translation/reconstruction/software, and identify concrete unresolved clauses, independently expected fixture seeds and owner decisions. No rules adoption, product implementation, source-profile changes, dependencies on MSH80, institutional messages or game delivery closure. Research worker msh83_research supplies isolated findings; root@codex is sole durable integrator on primary codex/rewrite. Report unavailable source as a named gap; completion is assessed against original AC, never inferred from this partial pass.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner2026-10-27 permits independent research in parallel with primaryMSH80 only within this existing task. Provisional delivery order unchanged; no blocker from this game is placed on unaffectedXiangqi. Root@codex owns record/integration; delegated msh83_research researches in isolated /private/tmp output only. No substantive game implementation authorized.
+
+Bounded independent research2026-10-27 by msh83_research, root soleintegrator: currentNationalArchives1696諸象戯図式199-0411 catalogue identified, but Tenjikutext/fullvolume not acquired; exhibition spread is smallshogi, not Tenjiku.1694copy remains unverified. ActualAdams secondedition1999-02-14 PDF acquired/read/hash-pinned; AppendixA translation names no exacthistoricalcopy/folio. ModernAdams/Muller dying-demon burn conflict, lionhawk/general-rank/promotion/royal/history gaps remain distinct modernconventions, not adoptedhistoricalrules. Next acquire actual1696Tenjikuspreads/colophon and Kyoto witness, independently reviewtranslation. AC1–4unchecked; no code/profile/reorder/dependency on80. Research pass ended; To Do/unassigned with preciseacquisition blockers.
+<!-- SECTION:NOTES:END -->

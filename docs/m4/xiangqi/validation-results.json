@@ -1,0 +1,13 @@
+{
+  "tasks": 103,
+  "dag": "acyclic; all dependency targets exist",
+  "original_45_76_84": "criteria/DoD/dependencies preserved",
+  "status": "41/75Done;42\u201347open;80InReview;81\u201383/91\u2013103ToDo",
+  "other_game_dependencies": "none introduced",
+  "local_links_checked": 20,
+  "source_pdf_hashes": 4,
+  "pinned_clean_reference_files": 28,
+  "initial_fixture_members": "44 unique tokens; count-only document check, not rule execution",
+  "product_changes": "none",
+  "json": "all dossier/research manifests parse"
+}

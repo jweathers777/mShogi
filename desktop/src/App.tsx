@@ -9,7 +9,7 @@ import { readableAction, scoreDescription } from "./analysisPresentation";
 import type { Color, Snapshot } from "./native";
 import { claimName, colorName, gameStatus } from "./presentation";
 import { useNativeSession } from "./useNativeSession";
-import { ApplicationShell, GameArea, HistoricalNotice, InspectorSwitch, LiveGameHeading, PlayerArea } from "./product/ApplicationShell";
+import { ApplicationShell, DocumentState, GameArea, GamePositionStatus, HistoricalNotice, InspectorSwitch, LiveGameHeading, NativeEnginePanel, PlayerArea } from "./product/ApplicationShell";
 import type { GameSnapshot } from "./product/native";
 import { useMovementInspection } from "./product/useMovementInspection";
 
@@ -193,7 +193,7 @@ export function App({ onChooseGame, externalCloseGuard = false, sharedSnapshot }
   const historical = snapshot.view.historical;
   return <ApplicationShell game="chess" runtime={!connected ? "Connecting…" : snapshot.engine.status === "thinking" ? "mShogi is thinking" : snapshot.analysis.status === "thinking" ? "Analyzing selected position" : "Local engine"} historical={historical}
     onFocusCapture={(event) => { if (event.target instanceof Element) { lastFocused.current = event.target; suspendedFocus.current = null; } }}
-    document={<><span className={`document-dirty${snapshot.document.dirty ? " dirty" : ""}`}>{snapshot.document.dirty ? "Unsaved" : snapshot.document.path ? "Saved" : "Unmodified"}</span><h2 title={snapshot.document.path ?? undefined}>{snapshot.document.path?.split(/[\\/]/).at(-1) ?? "Untitled game"}</h2>{snapshot.io.phase !== "idle" && <p role={snapshot.io.phase === "failed" ? "alert" : "status"}>{snapshot.io.message ?? "File operation in progress…"}</p>}</>}
+    document={<><DocumentState document={snapshot.document} /><h2 title={snapshot.document.path ?? undefined}>{snapshot.document.path?.split(/[\\/]/).at(-1) ?? "Untitled game"}</h2>{snapshot.io.phase !== "idle" && <p role={snapshot.io.phase === "failed" ? "alert" : "status"}>{snapshot.io.message ?? "File operation in progress…"}</p>}</>}
     actions={<><button className="primary" disabled={!connected || busy || guard.pending !== null || resigning !== null} onClick={() => { setClaimIndex(0); if (onChooseGame) onChooseGame(snapshot.human); else guard.requestNewGame(newHuman); }}>New game</button><button className="quiet" disabled={!connected || busy || guard.pending !== null || resigning !== null} onClick={() => { void session.save(); }}>Save</button><button className="quiet" disabled={!connected || busy || guard.pending !== null || resigning !== null} onClick={() => { void session.saveAs(); }}>Save as…</button><button className="quiet" disabled={!connected || busy || guard.pending !== null || resigning !== null} onClick={guard.requestOpen}>Open…</button></>}
     heading={<LiveGameHeading eyebrow={historical ? "HISTORY · READ ONLY" : snapshot.conclusion ? "GAME CONCLUDED" : "YOUR GAME"} status={historical ? snapshot.view.label : gameStatus(snapshot)} player={<>You play {colorName(snapshot.human)} against mShogi</>} flip={<>            <button
               className="quiet flip-button"
@@ -230,25 +230,9 @@ export function App({ onChooseGame, externalCloseGuard = false, sharedSnapshot }
               void command({ kind: "play", version: snapshot.version, action });
             }}
           />
-} footer={<><div ref={setBoardHelpTarget} className="shell-board-help" /><div className="game-footnote">
-            <span>
-              {historical
-                ? "Read-only history · return to live to play"
-                : snapshot.conclusion !== null
-                  ? "Game concluded"
-                  : snapshot.play_paused
-                    ? "Play paused · resume explicitly to continue"
-                    : humanTurn
-                      ? "Your turn"
-                      : snapshot.engine.status === "thinking"
-                        ? "mShogi is searching within fixed work limits"
-                        : "Engine turn paused"}
-            </span>
-            <span>
-              {historical ? "Selected position" : "Live position"} ·{" "}
-              {snapshot.view.ply} plies
-            </span>
-          </div></>
+} footer={<><div ref={setBoardHelpTarget} className="shell-board-help" /><GamePositionStatus historical={historical} concluded={snapshot.conclusion !== null}
+            paused={snapshot.play_paused} humanTurn={humanTurn} thinking={snapshot.engine.status === "thinking"} ply={snapshot.view.ply} />
+          </>
 } />}
     positionNotice={<>          {historical && (
             <HistoricalNotice action={<button
@@ -316,22 +300,7 @@ export function App({ onChooseGame, externalCloseGuard = false, sharedSnapshot }
               command={command}
             />
           ) : (
-            <section className="card engine-card">
-              <div className="card-title">
-                <h2>Native engine</h2>
-                <span className={`engine-phase ${snapshot.engine.status}`}
-                  role="status" aria-label="Engine turn status">
-                  {snapshot.engine.status === "thinking"
-                    ? "Searching"
-                    : snapshot.engine.status === "paused"
-                      ? "Play paused"
-                      : snapshot.engine.status}
-                </span>
-              </div>
-              <p className="caption">
-                Play limit: depth {snapshot.limits.depth} ·{" "}
-                {snapshot.limits.nodes.toLocaleString()} nodes
-              </p>
+            <NativeEnginePanel limits={snapshot.limits} status={snapshot.engine.status === "thinking" ? "Searching" : snapshot.engine.status === "paused" ? "Play paused" : snapshot.engine.status}>
               <EngineObservations snapshot={snapshot} />
               <div className="engine-actions">
                 {snapshot.engine.status === "thinking" && (
@@ -368,7 +337,7 @@ export function App({ onChooseGame, externalCloseGuard = false, sharedSnapshot }
                     </button>
                   )}
               </div>
-            </section>
+            </NativeEnginePanel>
           )}
           <SavedObservations observations={snapshot.observations} />
 </>}

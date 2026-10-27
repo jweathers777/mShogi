@@ -16,7 +16,7 @@ class SaveAcceptanceTests(unittest.TestCase):
     def setUp(self):
         self.expected = '/games/new.mshogi'
         self.observation = {
-            'path': self.expected, 'dirty': 'SAVED', 'statuses': [],
+            'path': self.expected, 'dirty': 'UNMODIFIED', 'statuses': [],
             'buttons': [{'label': label, 'enabled': True}
                         for label in ('New game', 'Save', 'Save as…', 'Open…')]}
 
@@ -29,7 +29,7 @@ class SaveAcceptanceTests(unittest.TestCase):
         self.assertFalse(module.saved_document_accepted(self.observation, self.expected))
 
     def test_new_path_dirty_is_not_acceptance(self):
-        self.observation['dirty'] = 'Unsaved'
+        self.observation['dirty'] = 'Unsaved changes'
         self.assertFalse(module.saved_document_accepted(self.observation, self.expected))
 
     def test_new_path_settled_saved_is_acceptance(self):

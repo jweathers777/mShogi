@@ -169,3 +169,31 @@ and historical viewing uses a common notice header with Return to live aligned
 at its right edge. Native history explanations and Chess-only Full operations
 remain game content. Live selection/inspection help follows the lower player in
 the common footer, including when native inspection is active at minimum size.
+
+## Owner final consistency pass — 2026-10-27
+
+The owner accepts the major shared-shell visual design. Preserve its layout;
+only these bounded consistency corrections precede completion:
+
+- One document label model for both games: no accepted disk path is **Unsaved**,
+  regardless of the native dirty flag; an accepted saved/opened path with no
+  changes is **Unmodified**; a changed saved/opened document is **Unsaved changes**.
+  These are presentation states, separate from native dirty/guard policy and
+  in-progress, failed or cancelled file operations. A failed Save cannot establish
+  a disk identity or clear native dirty state.
+- One Native engine panel structure: title and actual lifecycle status, then
+  **Play limit: depth N · M nodes**, then actual observations/actions. Native
+  game budgets differ: Chess2/20,000 and Shogi2/5,000. Shogi's snapshot and
+  submitted play requests use the same native constant; analysis defaults and
+  past observations do not substitute for the current play budget.
+- One bottom status row after selection/inspection instructions, preserving
+  live/history, concluded, paused and human/engine turn meanings. Position counts
+  use native known board actions at the selected prefix, not event indices or
+  imported declared counters. Shogi hands remain in player/hand slots and do not
+  displace this row. No new board or layout design is introduced.
+
+The owner authorizes MSH-74 Done after these corrections pass focused regression,
+updated same-size actual captures and required independent review/verification,
+without another owner visual checkpoint. This supersedes the procedural gate in
+older sections; it does not waive their behavioral or evidence criteria.
+MSH-75 remains unstarted until MSH-74 is actually Done.

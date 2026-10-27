@@ -19,7 +19,7 @@ export interface GameSnapshot extends Omit<NativeBoardSnapshot, "orientations" |
   capabilities: { board_action: boolean; declaration: boolean; resign: boolean; undo: boolean; move_analysis: boolean; save: boolean };
   status: { concluded: boolean; label: string; score_half_points: number[] | null };
   events: { index: number; board_ply: number; label: string }[];
-  event_index: number; historical: boolean; paused: boolean;
+  event_index: number; board_ply: number; play_limits: { depth: number; nodes: number }; historical: boolean; paused: boolean;
   phase: "idle" | "thinking" | "cancelled" | "failed" | "incomplete" | "paused";
   diagnostic: string | null;
   execution_purpose: string | null;

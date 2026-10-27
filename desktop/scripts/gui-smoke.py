@@ -35,7 +35,7 @@ def digest(path):
 def saved_document_accepted(observation, expected_path):
     """One DOM observation must establish native acceptance, not an old Saved label."""
     return (observation["path"] == str(expected_path)
-            and observation["dirty"].casefold() == "saved"
+            and observation["dirty"].casefold() == "unmodified"
             and observation["buttons"] == [
                 {"label": label, "enabled": True}
                 for label in ("New game", "Save", "Save as…", "Open…")]
@@ -421,7 +421,10 @@ class Journey:
                 gameArea:rect('.shell-game-area'),
                 help:rect('.shell-game-footer .board-help,.shell-game-footer .shogi-board-help'),
                 helpVisible:visible(document.querySelector('.shell-game-footer .board-help,.shell-game-footer .shogi-board-help')),
-                footnoteVisible:!document.querySelector('.game-footnote')||visible(document.querySelector('.game-footnote')),
+                footnoteVisible:!!document.querySelector('[data-position-status]')&&visible(document.querySelector('[data-position-status]')),
+                positionStatus:document.querySelector('[data-position-status]')?.textContent,
+                documentState:document.querySelector('[data-document-state]')?.dataset.documentState,
+                playLimits:document.querySelector('[data-play-limits]')?.textContent,
                 slots:[...document.querySelectorAll('.shell-game-area>[data-game-slot]')].map(e=>({name:e.dataset.gameSlot,rect:rectElement(e)})),
                 cards:[...document.querySelectorAll('[data-shell-section]')].map(e=>({name:e.dataset.shellSection,rect:rectElement(e)})),
                 squareCount:squares.length,allSquaresVisible:squares.every(visible),pageWidth:document.documentElement.scrollWidth,
@@ -438,6 +441,9 @@ class Journey:
         assert layout['inspectorButtons'] == [{'label':'Play details','pressed':'true'}, {'label':'Analyze position','pressed':'false'}], layout
         assert [slot['name'] for slot in layout['slots']] == ['upper-player','board','lower-player','footer'], layout
         assert layout['help'] and layout['help']['height'] > 0 and layout['helpVisible'] and layout['footnoteVisible'], ('live help belongs visibly in the shared footer',layout)
+        assert layout['documentState'] == 'unsaved', layout
+        assert layout['positionStatus'] == 'Your turnLive position · 0 plies', layout
+        assert layout['playLimits'] == f"Play limit: depth 2 · {'5,000' if game == 'shogi' else '20,000'} nodes", layout
         assert layout['documentInHeader'] and layout['flipInHeading'] and layout['technicalCollapsed'], layout
         assert layout['headerButtons'] == ['New game','Save','Save as…','Open…'], layout
         assert layout['boardPanel']['left'] < layout['sidebar']['left'], layout
@@ -712,7 +718,7 @@ class Journey:
             "historical_request": observation, "live_game_events":
                 len(json.loads(archive["game_record_json"])["events"])})
         w.click(".flip-button")
-        wait(lambda: w.text(".document-dirty").casefold() == "unsaved", "orientation change is protected")
+        wait(lambda: w.text(".document-dirty").casefold() == "unsaved changes", "orientation change is protected")
         self.record("Native window-close request", self.native.close_window())
         wait(lambda: w.has(".document-guard"), "native close protects unsaved work")
         self.capture("native-close-guard")
@@ -1046,7 +1052,7 @@ class Journey:
             # A preference change keeps this temporary saved document dirty for
             # the native lifecycle guard; it does not remove any observation.
             w.click(".flip-button")
-            wait(lambda: w.text(".document-dirty").casefold() == "unsaved", "protected preference change completes before Quit")
+            wait(lambda: w.text(".document-dirty").casefold() == "unsaved changes", "protected preference change completes before Quit")
         elif name == "synthetic":
             assert "not a real shogi variant" in w.text()
             assert not w.has(".document-card")

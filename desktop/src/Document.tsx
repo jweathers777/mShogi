@@ -1,3 +1,4 @@
+import { documentState } from "./documentState";
 import {
   useCallback,
   useEffect,
@@ -304,11 +305,7 @@ export function DocumentToolbar({
         <span
           className={`document-dirty ${snapshot.document.dirty ? "dirty" : ""}`}
         >
-          {snapshot.document.dirty
-            ? "Unsaved"
-            : snapshot.document.path === null
-              ? "Unmodified"
-              : "Saved"}
+          {documentState(snapshot.document).label}
         </span>
       </div>
       <div className="document-actions">

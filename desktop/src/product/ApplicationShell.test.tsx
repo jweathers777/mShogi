@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
-import { ApplicationShell, LiveGameHeading } from "./ApplicationShell";
+import { ApplicationShell, DocumentState, GamePositionStatus, LiveGameHeading, NativeEnginePanel } from "./ApplicationShell";
 
 afterEach(cleanup);
 describe("one application shell for native games", () => {
@@ -23,4 +23,34 @@ describe("one application shell for native games", () => {
       expect(container.querySelector("main")?.classList.contains(`shell-${game}`)).toBe(true);
     });
   }
+});
+
+it.each([
+  [null, false, "Unsaved", "unsaved"],
+  [null, true, "Unsaved", "unsaved"],
+  ["/games/game.mshogi", false, "Unmodified", "unmodified"],
+  ["/games/game.mshogi", true, "Unsaved changes", "modified"],
+] as const)("labels disk identity %s and native dirty %s consistently", (path, dirty, label, kind) => {
+  const { container } = render(<DocumentState document={{ path, dirty }} />);
+  expect(container.querySelector("[data-document-state]")?.getAttribute("data-document-state")).toBe(kind);
+  expect(screen.getByText(label)).toBeTruthy();
+});
+
+it("keeps actual play limits between native engine status and observations", () => {
+  const { container, rerender } = render(<NativeEnginePanel status="Searching" limits={{ depth: 2, nodes: 5000 }}><p>No completed observation</p></NativeEnginePanel>);
+  expect([...container.querySelector(".engine-card")!.children].map(e => e.textContent)).toEqual(["Native engineSearching", "Play limit: depth 2 · 5,000 nodes", "No completed observation"]);
+  rerender(<NativeEnginePanel status="Play paused" limits={{ depth: 3, nodes: 12345 }}><p>Real observation</p></NativeEnginePanel>);
+  expect(screen.getByText("Play limit: depth 3 · 12,345 nodes")).toBeTruthy();
+});
+
+it.each([
+  [{ historical: false, concluded: false, paused: false, humanTurn: true, thinking: false }, "Your turn"],
+  [{ historical: false, concluded: false, paused: false, humanTurn: false, thinking: true }, "mShogi is searching within fixed work limits"],
+  [{ historical: false, concluded: false, paused: true, humanTurn: true, thinking: false }, "Play paused · resume explicitly to continue"],
+  [{ historical: false, concluded: true, paused: true, humanTurn: true, thinking: false }, "Game concluded"],
+  [{ historical: true, concluded: true, paused: true, humanTurn: true, thinking: false }, "Read-only history · return to live to play"],
+])("preserves footer status precedence for %j", (state, label) => {
+  render(<GamePositionStatus {...state} ply={1} />);
+  expect(screen.getByText(label)).toBeTruthy();
+  expect(screen.getByText(`${state.historical ? "Selected" : "Live"} position · 1 ply`)).toBeTruthy();
 });

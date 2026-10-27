@@ -7,6 +7,20 @@ import type { GameSession } from "./useGameSession";
 import standardJson from "../__fixtures__/shared-shogi-standard.json";
 afterEach(cleanup);
 const standard = standardJson as GameSnapshot;
+it("uses disk-aware document labels, supplied play budget and native selected board ply", () => {
+  const snapshot = { ...standard, document: { ...standard.document, path: null, dirty: false }, play_limits: { depth: 3, nodes: 1234 } };
+  const { container, props, rerender } = app(snapshot);
+  fireEvent.click(screen.getByRole("button", { name: "Play details" }));
+  expect(container.querySelector("[data-document-state]")?.textContent).toBe("Unsaved");
+  expect(container.querySelector("[data-play-limits]")?.textContent).toBe("Play limit: depth 3 · 1,234 nodes");
+  expect(container.querySelector("[data-position-status]")?.textContent).toBe("Your turnLive position · 0 plies");
+  const history = { ...snapshot, historical: true, event_index: 2, board_ply: 1, paused: true, document: { ...snapshot.document, path: "/games/shogi.mshogi", dirty: false } };
+  rerender(<ShogiApp {...props} snapshot={history} />);
+  expect(container.querySelector("[data-document-state]")?.textContent).toBe("Unmodified");
+  expect(container.querySelector("[data-position-status]")?.textContent).toBe("Read-only history · return to live to playSelected position · 1 ply");
+  rerender(<ShogiApp {...props} snapshot={{ ...history, document: { ...history.document, dirty: true } }} />);
+  expect(container.querySelector("[data-document-state]")?.textContent).toBe("Unsaved changes");
+});
 function app(snapshot = standard, error = "") {
   const session: GameSession = { snapshot, busy: false, error, closeRequested: false, command: vi.fn().mockResolvedValue(snapshot), file: vi.fn().mockResolvedValue(snapshot), newGame: vi.fn().mockResolvedValue(snapshot), cancelClose: vi.fn().mockResolvedValue(true), finishClose: vi.fn().mockResolvedValue(true) };
   const props = { snapshot, session, onNewGame: vi.fn(), onOpen: vi.fn(), blocked: false };

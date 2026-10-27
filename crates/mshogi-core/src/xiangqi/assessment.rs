@@ -1,4 +1,4 @@
-//! MSH-94 sound fast recognition, not the MSH-105 exact backend.
+//! Sound fast recognition and the native assessment vocabulary; exact work stays explicit.
 use super::{Action, LocalStatus, PieceKind, Position, Side};
 use serde::{Deserialize, Serialize};
 /// Owner-selected natural-course board-win goal. Penalty awards are excluded.
@@ -16,8 +16,13 @@ pub enum NoWinAssessment {
         /// Complete local actions; zero length for an already terminal board.
         witness: Vec<Action>,
     },
-    /// No sound fast proof was found. MSH-105 has not supplied its exact backend.
+    /// No sound fast proof was found; a separate explicit exact request is needed.
     UnknownExactUnavailable,
+    /// An explicitly requested exact run stopped without establishing either proof.
+    UnknownExactIncomplete {
+        /// Cancellation or the actual work/resource limit, never win capability.
+        reason: super::ExactStop,
+    },
     /// Local input/invariant failed; never a chess outcome.
     Failure,
 }
@@ -56,4 +61,25 @@ pub fn assess_natural_win(position: &Position) -> NoWinAssessment {
         }
     }
     NoWinAssessment::UnknownExactUnavailable
+}
+
+impl super::ExactReport {
+    /// Native assessment result, preserving the distinction between a fast miss,
+    /// completed proof, incomplete exact work and execution/invariant failure.
+    /// This query is not permission to overwrite an actual history conclusion.
+    pub fn assessment(&self) -> NoWinAssessment {
+        match &self.verdict {
+            super::ExactVerdict::NeitherCanWin => NoWinAssessment::ProvenNeitherCanWin,
+            super::ExactVerdict::NaturalWin {
+                winner, witness, ..
+            } => NoWinAssessment::ProvenNaturalWin {
+                winner: *winner,
+                witness: witness.clone(),
+            },
+            super::ExactVerdict::Unknown { reason } => {
+                NoWinAssessment::UnknownExactIncomplete { reason: *reason }
+            }
+            super::ExactVerdict::Failure { .. } => NoWinAssessment::Failure,
+        }
+    }
 }

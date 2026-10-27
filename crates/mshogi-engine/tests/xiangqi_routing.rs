@@ -43,7 +43,7 @@ fn request(g: &x::Game) -> SharedRequest {
         game: CanonicalRecord::xiangqi(x::GameRecord::from_game(g).unwrap()),
         // Opaque unsupported settings; these are NOT an advertised native search policy.
         limits: WorkLimits {
-            depth: 255,
+            depth: u16::MAX,
             nodes: u64::MAX,
         },
     }
@@ -85,7 +85,7 @@ fn no_xiangqi_execution_is_advertised_or_inferred_for_any_purpose_or_native_resu
     for limits in [
         WorkLimits { depth: 0, nodes: 0 },
         WorkLimits {
-            depth: 255,
+            depth: u16::MAX,
             nodes: u64::MAX,
         },
     ] {

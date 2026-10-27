@@ -127,7 +127,7 @@ impl SharedRequest {
             }
             .valid(),
             // No Xiangqi execution limits or capability exist yet. The wire's
-            // u8/u64 values are exact opaque settings for an unsupported response,
+            // u16/u64 values are exact opaque settings for an unsupported response,
             // never borrowed Chess/Shogi defaults or a native search policy.
             GameKind::Xiangqi => true,
         };

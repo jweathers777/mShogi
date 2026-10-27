@@ -34,7 +34,7 @@ for the subsequent actual checks.
 - `cargo test --locked -p mshogi-core --test native_xiangqi_envelope`: PASS5.
 - `cargo test --locked -p mshogi-engine --test xiangqi_routing -- --nocapture`:
   PASS5;512commands/1024events measured native253656/envelope253832/
-  request253999/response254281 bytes; no limits increased.
+  request254001/response254283 bytes; no limits increased.
 - `cargo test --locked -p mshogi-console --test xiangqi_internal`: PASS5, actual
   normal `mshogi internal-search` child and separately labeled adversarial helper.
 - `cargo test --locked -p mshogi-desktop-session xiangqi_tags_do_not_enable`:

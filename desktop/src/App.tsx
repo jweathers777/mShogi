@@ -105,6 +105,7 @@ export function App({ onChooseGame, externalCloseGuard = false, sharedSnapshot }
   const [newHuman, setNewHuman] = useState<Color>("white");
   const [claimIndex, setClaimIndex] = useState(0);
   const [inspector, setInspector] = useState<"play" | "analysis">("play");
+  const [boardHelpTarget, setBoardHelpTarget] = useState<HTMLDivElement | null>(null);
   const resignButton = useRef<HTMLButtonElement>(null);
   const lastFocused = useRef<Element | null>(null);
   const suspendedFocus = useRef<Element | null>(null);
@@ -214,6 +215,7 @@ export function App({ onChooseGame, externalCloseGuard = false, sharedSnapshot }
       upperPlayer={<PlayerArea side={colorName(orientation === "white" ? "black" : "white")} playerKey={orientation === "white" ? "black" : "white"} human={snapshot.human !== orientation} toMove={snapshot.view.turn !== orientation && snapshot.view.conclusion === null} />}
       lowerPlayer={<PlayerArea side={colorName(orientation)} playerKey={orientation} human={snapshot.human === orientation} toMove={snapshot.view.turn === orientation && snapshot.view.conclusion === null} />}
       board={          <Board
+            helpTarget={boardHelpTarget}
             key={snapshot.view.selection_id}
             pieces={snapshot.view.pieces}
             choices={snapshot.legal_choices}
@@ -228,7 +230,7 @@ export function App({ onChooseGame, externalCloseGuard = false, sharedSnapshot }
               void command({ kind: "play", version: snapshot.version, action });
             }}
           />
-} footer={<div className="game-footnote">
+} footer={<><div ref={setBoardHelpTarget} className="shell-board-help" /><div className="game-footnote">
             <span>
               {historical
                 ? "Read-only history · return to live to play"
@@ -246,7 +248,7 @@ export function App({ onChooseGame, externalCloseGuard = false, sharedSnapshot }
               {historical ? "Selected position" : "Live position"} ·{" "}
               {snapshot.view.ply} plies
             </span>
-          </div>
+          </div></>
 } />}
     positionNotice={<>          {historical && (
             <section className="notice historical-notice">

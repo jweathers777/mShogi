@@ -180,3 +180,21 @@ it("switches from an inspection capture marker to the friendly piece's actionabl
   fireEvent.click(square("e7")); await screen.findByText(/Inspecting Black pawn · Read-only/);
   fireEvent.click(square("e2")); expect(square("e2").getAttribute("aria-label")).toContain("selected"); expect(square("e4").getAttribute("aria-label")).toContain("legal destination"); expect(onPlay).not.toHaveBeenCalled();
 });
+it("keeps live inspection help in the shell footer without changing board selection or keyboard clearing", async () => {
+  const helpTarget = document.createElement("div");
+  document.body.append(helpTarget);
+  const onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue(inspectedPawn);
+  const { container, unmount } = render(<Board pieces={standard.pieces} choices={standard.legal_choices} version={0} orientation="white" disabled={false} humanOwner="white" onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} helpTarget={helpTarget} />);
+  expect(helpTarget.textContent).toContain("Select a piece");
+  expect(container.querySelector(".board-wrap .board-help")).toBeNull();
+  fireEvent.click(square("e7"));
+  await screen.findByText(/Inspecting Black pawn · Read-only/);
+  expect(helpTarget.querySelector(".movement-inspection-status")).not.toBeNull();
+  expect(document.activeElement).toBe(square("e7"));
+  fireEvent.keyDown(square("e7"), { key: "Escape" });
+  expect(helpTarget.textContent).toContain("Select a piece");
+  expect(onPlay).not.toHaveBeenCalled();
+  unmount();
+  expect(helpTarget.textContent).toBe("");
+  helpTarget.remove();
+});

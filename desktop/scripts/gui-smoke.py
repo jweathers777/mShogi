@@ -374,6 +374,9 @@ class Journey:
                 header:rect('.shell-header'),document:rect('.shell-document'),actions:rect('.shell-file-actions'),
                 heading:rect('.shell-live-heading'),boardPanel:rect('.shell-board-panel'),sidebar:rect('.shell-sidebar'),
                 gameArea:rect('.shell-game-area'),
+                help:rect('.shell-game-footer .board-help,.shell-game-footer .shogi-board-help'),
+                helpVisible:visible(document.querySelector('.shell-game-footer .board-help,.shell-game-footer .shogi-board-help')),
+                footnoteVisible:!document.querySelector('.game-footnote')||visible(document.querySelector('.game-footnote')),
                 slots:[...document.querySelectorAll('.shell-game-area>[data-game-slot]')].map(e=>({name:e.dataset.gameSlot,rect:rectElement(e)})),
                 cards:[...document.querySelectorAll('[data-shell-section]')].map(e=>({name:e.dataset.shellSection,rect:rectElement(e)})),
                 squareCount:squares.length,allSquaresVisible:squares.every(visible),pageWidth:document.documentElement.scrollWidth,
@@ -389,6 +392,7 @@ class Journey:
         assert layout['squareCount']==(64 if game=='chess' else 81) and layout['allSquaresVisible'] and layout['pageWidth']<=layout['viewport']['width']+1, layout
         assert layout['inspectorButtons'] == [{'label':'Play details','pressed':'true'}, {'label':'Analyze position','pressed':'false'}], layout
         assert [slot['name'] for slot in layout['slots']] == ['upper-player','board','lower-player','footer'], layout
+        assert layout['help'] and layout['help']['height'] > 0 and layout['helpVisible'] and layout['footnoteVisible'], ('live help belongs visibly in the shared footer',layout)
         assert layout['documentInHeader'] and layout['flipInHeading'] and layout['technicalCollapsed'], layout
         assert layout['headerButtons'] == ['New game','Save','Save as…','Open…'], layout
         assert layout['boardPanel']['left'] < layout['sidebar']['left'], layout
@@ -406,6 +410,7 @@ class Journey:
             assert abs((layout['document']['top']+layout['document']['height']/2)-
                        (previous['document']['top']+previous['document']['height']/2))<=3,(previous,layout)
             assert layout['themes']==previous['themes'],('shared chrome/panel/control theme differs',previous,layout)
+            assert abs(layout['help']['top']-previous['help']['top'])<=3, ('live help moved across games',previous,layout)
             for collection in ['slots','cards']:
                 for current,prior in zip(layout[collection],previous[collection]):
                     assert current['name']==prior['name'],(previous,layout)

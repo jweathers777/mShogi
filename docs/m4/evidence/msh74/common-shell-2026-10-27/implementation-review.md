@@ -156,3 +156,38 @@ output path. Compilation and diff checking passed. No material finding remains
 in this driver-only change. These simulations establish its branching and
 identity checks, not actual GTK GUI success or an atomic X11 focus/input guarantee.
 A fresh packaged Linux run must establish the real interaction outcome.
+
+## Later bounded review: shared live-help footer
+
+Reviewed the subsequent uncommitted five-file delta on
+`61afcec45ccd59f78d3df66ed60586846ffecf42`: Board, App, its focused test, shared
+footer CSS and the external GUI driver. An actual screenshot review identified
+that Chess help remained inside the board region before the lower player while
+Shogi help occupied the shared footer. This was a real spatial inconsistency,
+not a reason to relax the visual comparison.
+
+Board now retains ownership of the live help text and inspection state while
+optionally rendering that noninteractive text into App's footer target through
+a React portal. Omitted targets retain inline standalone/fixture behavior;
+explicit null suppresses an interim product fallback while the footer ref is
+established. The change does not alter Board identity, native actions, inspection
+request retirement, focus references or keyboard handlers. Portal content is
+removed when Board unmounts. Shared dark inspection styling remains applicable
+at the footer location. The native Chess footnote remains separate below the
+help. The driver now requires an actual help node inside the shared footer and
+compares its top coordinate across the two initial game views.
+
+Independently executed from `desktop/`:
+
+```sh
+npm test -- src/Board.test.tsx src/App.test.tsx src/product/ApplicationShell.test.tsx
+npm run check
+```
+
+Results: **20 tests passed across three files**, including the added live portal,
+inspection, focus, Escape, nonplay and unmount regression; strict TypeScript
+checking passed. From the repository root, Python compilation of
+`desktop/scripts/gui-smoke.py` and `git diff --check` also passed. No material
+implementation finding remains in this delta. These checks do not establish
+rendered line wrapping, final footer fit or actual cross-platform GUI results;
+the changed product source requires its own fresh packaged evidence.

@@ -1,0 +1,152 @@
+Window: "mShogi", App: mShogi.
+0 standard window mShogi, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 container
+				4 heading mShogi, Value: 1
+					5 text mShogi
+				6 text SHOGI · UNTIMED
+				7 text Local engine
+				8 container Game file
+					9 text UNSAVED CHANGES
+					10 heading msh74-native-captures.mshogi, Value: 2, Help: /Users/johnweathers/Development/Personal/mShogi/docs/m4/evidence/msh74/records/msh74-native-captures.mshogi
+						11 text msh74-native-captures.mshogi
+				12 button New game
+				13 button Save
+				14 button Save as…
+				15 button Open…
+				16 container Live shogi game
+					17 text YOUR GAME
+					18 text Sente to move
+					19 text You play Sente against mShogi
+					20 button Flip board; currently Sente at bottom
+					21 text mShogiGote
+					22 text Your opponent
+					23 container Gote pieces in hand
+						24 toggle button Gote pawn in hand, 1, Value: off
+					25 container Shogi board, Sente at bottom
+						26 image
+						27 toggle button Description: 9a, empty, Value: off
+						28 toggle button Description: 8a, empty, Value: off
+						29 toggle button Description: 7a, empty, Value: off
+						30 toggle button Description: 6a, empty, Value: off
+						31 toggle button Description: 5a, empty, Value: off
+						32 toggle button Description: 4a, empty, Value: off
+						33 toggle button Description: 3a, empty, Value: off
+						34 toggle button Description: 2a, empty, Value: off
+						35 toggle button Description: 1a, Gote king, Value: off
+						36 toggle button Description: 9b, empty, legal destination, Value: off
+						37 toggle button Description: 8b, empty, legal destination, Value: off
+						38 toggle button Description: 7b, empty, legal destination, Value: off
+						39 toggle button Description: 6b, empty, legal destination, Value: off
+						40 toggle button Description: 5b, empty, legal destination, Value: off
+						41 toggle button Description: 4b, empty, legal destination, Value: off
+						42 toggle button Description: 3b, empty, legal destination, Value: off
+						43 toggle button Description: 2b, empty, legal destination, Value: off
+						44 toggle button Description: 1b, empty, legal destination, Value: off
+						45 toggle button Description: 9c, empty, legal destination, Value: off
+						46 toggle button Description: 8c, empty, legal destination, Value: off
+						47 toggle button Description: 7c, empty, legal destination, Value: off
+						48 toggle button Description: 6c, empty, legal destination, Value: off
+						49 toggle button Description: 5c, Sente promoted rook, Value: off
+						50 toggle button Description: 4c, empty, legal destination, Value: off
+						51 toggle button Description: 3c, empty, legal destination, Value: off
+						52 toggle button Description: 2c, empty, legal destination, Value: off
+						53 toggle button Description: 1c, empty, legal destination, Value: off
+						54 toggle button Description: 9d, empty, legal destination, Value: off
+						55 toggle button Description: 8d, empty, legal destination, Value: off
+						56 toggle button Description: 7d, empty, legal destination, Value: off
+						57 toggle button Description: 6d, empty, legal destination, Value: off
+						58 toggle button Description: 5d, empty, legal destination, Value: off
+						59 toggle button Description: 4d, empty, legal destination, Value: off
+						60 toggle button Description: 3d, empty, legal destination, Value: off
+						61 toggle button Description: 2d, empty, legal destination, Value: off
+						62 toggle button Description: 1d, empty, legal destination, Value: off
+						63 toggle button Description: 9e, empty, legal destination, Value: off
+						64 toggle button Description: 8e, empty, legal destination, Value: off
+						65 toggle button Description: 7e, empty, legal destination, Value: off
+						66 toggle button Description: 6e, empty, legal destination, Value: off
+						67 toggle button Description: 5e, empty, legal destination, Value: off
+						68 toggle button Description: 4e, empty, legal destination, Value: off
+						69 toggle button Description: 3e, empty, legal destination, Value: off
+						70 toggle button Description: 2e, empty, legal destination, Value: off
+						71 toggle button Description: 1e, empty, legal destination, Value: off
+						72 toggle button Description: 9f, empty, legal destination, Value: off
+						73 toggle button Description: 8f, empty, legal destination, Value: off
+						74 toggle button Description: 7f, empty, legal destination, Value: off
+						75 toggle button Description: 6f, empty, legal destination, Value: off
+						76 toggle button Description: 5f, empty, legal destination, Value: off
+						77 toggle button Description: 4f, empty, legal destination, Value: off
+						78 toggle button Description: 3f, empty, legal destination, Value: off
+						79 toggle button Description: 2f, empty, legal destination, Value: off
+						80 toggle button Description: 1f, empty, legal destination, Value: off
+						81 toggle button Description: 9g, empty, legal destination, Value: off
+						82 toggle button Description: 8g, empty, legal destination, Value: off
+						83 toggle button Description: 7g, empty, legal destination, Value: off
+						84 toggle button Description: 6g, empty, legal destination, Value: off
+						85 toggle button Description: 5g, empty, legal destination, Value: off
+						86 toggle button Description: 4g, Gote promoted rook, Value: off
+						87 toggle button Description: 3g, empty, legal destination, Value: off
+						88 toggle button Description: 2g, empty, legal destination, Value: off
+						89 toggle button Description: 1g, empty, legal destination, Value: off
+						90 toggle button Description: 9h, empty, legal destination, Value: off
+						91 toggle button Description: 8h, empty, legal destination, Value: off
+						92 toggle button Description: 7h, empty, legal destination, Value: off
+						93 toggle button Description: 6h, empty, legal destination, Value: off
+						94 toggle button Description: 5h, empty, legal destination, Value: off
+						95 toggle button Description: 4h, empty, legal destination, Value: off
+						96 toggle button Description: 3h, empty, legal destination, Value: off
+						97 toggle button Description: 2h, empty, legal destination, Value: off
+						98 toggle button Description: 1h, empty, legal destination, Value: off
+						99 toggle button Description: 9i, Sente king, Value: off
+						100 toggle button Description: 8i, empty, legal destination, Value: off
+						101 toggle button Description: 7i, empty, legal destination, Value: off
+						102 toggle button Description: 6i, empty, legal destination, Value: off
+						103 toggle button Description: 5i, empty, legal destination, Value: off
+						104 toggle button Description: 4i, empty, legal destination, Value: off
+						105 toggle button Description: 3i, empty, legal destination, Value: off
+						106 toggle button Description: 2i, empty, legal destination, Value: off
+						107 toggle button Description: 1i, empty, legal destination, Value: off
+					108 text YouSente
+					109 text Human player To move
+					110 container Sente pieces in hand
+						111 toggle button Sente pawn in hand, 1, selected for drop, Value: on
+					112 text Select a piece or hand piece, then a marked square. Arrows · Enter · Esc Your turn Live position · 2 plies
+					113 text Piece selected. Choose a marked legal destination.
+				114 container Game controls and inspection
+					115 heading Analysis, Value: 2
+						116 text Analysis
+					117 container Inspector view
+						118 toggle button Play details, Value: on
+						119 toggle button Analyze position, Value: off
+					120 container Engine analysis
+						121 heading Native engine, Value: 2
+							122 text Native engine
+						123 container Engine turn status
+							124 text Idle
+						125 text Play limit: depth 2 · 5,000 nodes
+						126 text No engine search has completed in this game.
+					127 container Game history
+						128 heading Game history, Value: 2
+							129 text Game history
+						130 text 2 events
+						131 container
+							132 button 0 Starting position
+							133 button 1 Sente: 5e5c+
+							134 button 2 Gote: 4e4g+
+					135 heading Game actions, Value: 2
+						136 text Game actions
+					137 button Resign game…
+					138 summary About & technical details, Value: off
+						139 text About & technical details
+	140 close button
+	141 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	142 minimize button
+	143 text mShogi
+144 menu bar
+	145 mShogi
+	146 Edit
+	147 View
+	148 Window
+
+The focused UI element is 111 toggle button Sente pawn in hand, 1, selected for drop, Value: on

@@ -1,0 +1,508 @@
+{
+  "reviewed_source": "80d6b5cc71c8ceb5bf782d93295797aed1e18d66",
+  "reviewer": "msh75_archive_desktop_review",
+  "method": "Read-only retained report/hash/source applicability audit; no live GUI automation",
+  "retained_evidence": {
+    "linux": {
+      "retained_files_verified": 73,
+      "hash_or_size_failures": [],
+      "source": "1b10277436b94541235e15189a3af7fce867351c",
+      "status": "passed",
+      "phases": [
+        {
+          "phase": "normal",
+          "status": "passed"
+        },
+        {
+          "phase": "normal-shogi",
+          "status": "passed"
+        },
+        {
+          "phase": "normal-shogi-reopened",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-standard",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-promotion",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-claim",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-capacity",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-synthetic",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-hands",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-promotion",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-forced",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-declaration",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-concluded",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-capacity",
+          "status": "passed"
+        }
+      ],
+      "normal_phase_count": 3,
+      "verification_phase_count": 11,
+      "full_equal_inspection_state_comparisons": 16,
+      "native_shutdown_absence_observations": 14,
+      "board_fit_observations": [
+        {
+          "viewport": {
+            "height": 820,
+            "width": 1180
+          },
+          "board": {
+            "left": 211,
+            "width": 438,
+            "right": 649,
+            "top": 242,
+            "height": 438,
+            "bottom": 680
+          }
+        },
+        {
+          "viewport": {
+            "height": 650,
+            "width": 760
+          },
+          "board": {
+            "left": 93.5,
+            "width": 319,
+            "right": 412.5,
+            "top": 206,
+            "height": 319,
+            "bottom": 525
+          }
+        },
+        {
+          "viewport": {
+            "height": 820,
+            "width": 1180
+          },
+          "board": {
+            "left": 211,
+            "width": 438,
+            "right": 649,
+            "top": 242,
+            "height": 438,
+            "bottom": 680
+          }
+        },
+        {
+          "viewport": {
+            "height": 820,
+            "width": 1180
+          },
+          "board": {
+            "left": 211,
+            "width": 438,
+            "right": 649,
+            "top": 242,
+            "height": 438,
+            "bottom": 680
+          }
+        },
+        {
+          "viewport": {
+            "height": 820,
+            "width": 1180
+          },
+          "board": {
+            "left": 211,
+            "width": 438,
+            "right": 649,
+            "top": 242,
+            "height": 438,
+            "bottom": 680
+          }
+        },
+        {
+          "viewport": {
+            "height": 820,
+            "width": 1180
+          },
+          "board": {
+            "left": 211,
+            "width": 438,
+            "right": 649,
+            "top": 242,
+            "height": 438,
+            "bottom": 680
+          }
+        },
+        {
+          "viewport": {
+            "height": 820,
+            "width": 1180
+          },
+          "board": {
+            "left": 211,
+            "width": 438,
+            "right": 649,
+            "top": 242,
+            "height": 438,
+            "bottom": 680
+          }
+        },
+        {
+          "viewport": {
+            "height": 820,
+            "width": 1180
+          },
+          "board": {
+            "left": 211,
+            "width": 438,
+            "right": 649,
+            "top": 242,
+            "height": 438,
+            "bottom": 680
+          }
+        },
+        {
+          "viewport": {
+            "height": 820,
+            "width": 1180
+          },
+          "board": {
+            "left": 211,
+            "width": 438,
+            "right": 649,
+            "top": 242,
+            "height": 438,
+            "bottom": 680
+          }
+        },
+        {
+          "viewport": {
+            "height": 820,
+            "width": 1180
+          },
+          "board": {
+            "left": 211,
+            "width": 438,
+            "right": 649,
+            "top": 242,
+            "height": 438,
+            "bottom": 680
+          }
+        }
+      ],
+      "gui_environment": {
+        "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+        "python": "3.12.3",
+        "runner_image": "20261026.354.1",
+        "runner_os": "Linux",
+        "renderer_environment": {
+          "GDK_BACKEND": "x11",
+          "WEBKIT_DISABLE_COMPOSITING_MODE": "1",
+          "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+          "LIBGL_ALWAYS_SOFTWARE": null
+        }
+      }
+    },
+    "windows": {
+      "retained_files_verified": 71,
+      "hash_or_size_failures": [],
+      "source": "1b10277436b94541235e15189a3af7fce867351c",
+      "status": "passed",
+      "phases": [
+        {
+          "phase": "normal",
+          "status": "passed"
+        },
+        {
+          "phase": "normal-shogi",
+          "status": "passed"
+        },
+        {
+          "phase": "normal-shogi-reopened",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-standard",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-promotion",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-claim",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-capacity",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-synthetic",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-hands",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-promotion",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-forced",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-declaration",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-concluded",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-capacity",
+          "status": "passed"
+        }
+      ],
+      "normal_phase_count": 3,
+      "verification_phase_count": 11,
+      "full_equal_inspection_state_comparisons": 16,
+      "native_shutdown_absence_observations": 14,
+      "board_fit_observations": [
+        {
+          "viewport": {
+            "height": 820,
+            "width": 1180
+          },
+          "board": {
+            "bottom": 680,
+            "height": 438,
+            "left": 211,
+            "right": 649,
+            "top": 242,
+            "width": 438
+          }
+        },
+        {
+          "viewport": {
+            "height": 650,
+            "width": 760
+          },
+          "board": {
+            "bottom": 525,
+            "height": 319,
+            "left": 93.5,
+            "right": 412.5,
+            "top": 206,
+            "width": 319
+          }
+        },
+        {
+          "viewport": {
+            "height": 820,
+            "width": 1180
+          },
+          "board": {
+            "bottom": 680,
+            "height": 438,
+            "left": 211,
+            "right": 649,
+            "top": 242,
+            "width": 438
+          }
+        },
+        {
+          "viewport": {
+            "height": 820,
+            "width": 1180
+          },
+          "board": {
+            "bottom": 680,
+            "height": 438,
+            "left": 211,
+            "right": 649,
+            "top": 242,
+            "width": 438
+          }
+        },
+        {
+          "viewport": {
+            "height": 820,
+            "width": 1180
+          },
+          "board": {
+            "bottom": 680,
+            "height": 438,
+            "left": 211,
+            "right": 649,
+            "top": 242,
+            "width": 438
+          }
+        },
+        {
+          "viewport": {
+            "height": 820,
+            "width": 1180
+          },
+          "board": {
+            "bottom": 680,
+            "height": 438,
+            "left": 211,
+            "right": 649,
+            "top": 242,
+            "width": 438
+          }
+        },
+        {
+          "viewport": {
+            "height": 820,
+            "width": 1180
+          },
+          "board": {
+            "bottom": 680,
+            "height": 438,
+            "left": 211,
+            "right": 649,
+            "top": 242,
+            "width": 438
+          }
+        },
+        {
+          "viewport": {
+            "height": 820,
+            "width": 1180
+          },
+          "board": {
+            "bottom": 680,
+            "height": 438,
+            "left": 211,
+            "right": 649,
+            "top": 242,
+            "width": 438
+          }
+        },
+        {
+          "viewport": {
+            "height": 820,
+            "width": 1180
+          },
+          "board": {
+            "bottom": 680,
+            "height": 438,
+            "left": 211,
+            "right": 649,
+            "top": 242,
+            "width": 438
+          }
+        },
+        {
+          "viewport": {
+            "height": 820,
+            "width": 1180
+          },
+          "board": {
+            "bottom": 680,
+            "height": 438,
+            "left": 211,
+            "right": 649,
+            "top": 242,
+            "width": 438
+          }
+        }
+      ],
+      "gui_environment": {
+        "platform": "Windows-2022Server-10.0.20348-SP0",
+        "python": "3.12.10",
+        "runner_image": "20261022.344.1",
+        "runner_os": "Windows",
+        "renderer_environment": {
+          "GDK_BACKEND": null,
+          "WEBKIT_DISABLE_COMPOSITING_MODE": null,
+          "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+          "LIBGL_ALWAYS_SOFTWARE": null
+        }
+      }
+    },
+    "macos": {
+      "retained_files_verified": 31,
+      "hash_or_size_failures": []
+    }
+  },
+  "reused_ci": {
+    "rust-ci.json": {
+      "source": "1b10277436b94541235e15189a3af7fce867351c",
+      "conclusion": "success",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/40502381395",
+      "jobs": [
+        {
+          "name": "Rust (ubuntu-24.04)",
+          "conclusion": "success",
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40502381395/job/122182995994"
+        },
+        {
+          "name": "Rust (macos-15)",
+          "conclusion": "success",
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40502381395/job/122182996432"
+        },
+        {
+          "name": "Rust (windows-2022)",
+          "conclusion": "success",
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40502381395/job/122182996499"
+        }
+      ]
+    },
+    "desktop-ci.json": {
+      "source": "1b10277436b94541235e15189a3af7fce867351c",
+      "conclusion": "success",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/40502381314",
+      "jobs": [
+        {
+          "name": "Desktop (ubuntu-24.04)",
+          "conclusion": "success",
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40502381314/job/122182996283"
+        },
+        {
+          "name": "Desktop (macos-15)",
+          "conclusion": "success",
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40502381314/job/122182996589"
+        },
+        {
+          "name": "Desktop (windows-2022)",
+          "conclusion": "success",
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40502381314/job/122182996723"
+        }
+      ]
+    }
+  },
+  "source_applicability": {
+    "command": "git diff --name-only 1b10277..80d6b5c -- crates desktop .github Cargo.toml Cargo.lock rust-toolchain.toml",
+    "changed_paths": [
+      "desktop/README.md"
+    ],
+    "interpretation": "Only desktop/README.md changed within these trees; no product source, dependency lock, build configuration, platform workflow or verifier code changed."
+  }
+}

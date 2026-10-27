@@ -1,8 +1,11 @@
 # M4 delivery and dependency refinement
 
-MSH-62 is a planning-only batch. No shogi/variant implementation has started.
+Historical MSH-62 planning baseline: no shogi/variant implementation had started.
 MSH-41–47 remain the complete-delivery/closure records with all their original
-acceptance criteria and DoD unchanged and unchecked. M2/M3, MSH-26, MSH-40 and
+acceptance criteria and DoD unchanged. Current MSH-75 evidence supports MSH-41
+completion; MSH-42–47 and M4 remain open. See the complete
+[independent acceptance mapping](shogi-delivery-review.md).
+M2/M3, MSH-26, MSH-40 and
 MSH-61 remain Done with their evidence. The new tickets are native Backlog.md
 records, not a replacement status board; this document explains their contracts
 and traces obligations.
@@ -143,4 +146,7 @@ After completed MSH-68/69/70, the owner requested common `--game chess|shogi`
 MSH-90 owns this bounded shared console work under MSH-46; it does not reopen
 completed tasks or expand native rules/search. Both MSH-46 and MSH-75 now
 explicitly depend on MSH-90, retaining every prior dependency. MSH-47 remains
-transitively gated. MSH-71/72 are unstarted; M4/MSH-41–47 remain open.
+transitively gated. At that historical handoff MSH-71/72 were unstarted.
+They and MSH-73/74/90 are now integrated; MSH-75 reviews the actual complete
+consumer paths rather than inferring completion from that status. Only MSH-41
+is reconciled by this delivery review; M4/MSH-42–47 retain their full gates.

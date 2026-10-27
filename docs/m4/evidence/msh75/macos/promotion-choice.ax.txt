@@ -1,0 +1,21 @@
+Window: "mShogi", App: mShogi.
+0 standard window mShogi, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 container Choose promotion
+				4 text Promotion
+				5 text Choose how this piece completes its move.
+				6 button Do not promote
+				7 button Promote
+				8 button Cancel promotion
+	9 close button
+	10 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	11 minimize button
+	12 text mShogi
+13 menu bar
+	14 mShogi
+	15 Edit
+	16 View
+	17 Window
+
+The focused UI element is 6 button Do not promote

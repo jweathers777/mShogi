@@ -1,0 +1,101 @@
+{
+  "reviewed_revision": "80d6b5cc71c8ceb5bf782d93295797aed1e18d66",
+  "branch": "codex/rewrite",
+  "environment": "macOS-27.0.1-arm64-arm-64bit",
+  "source_equivalence": {
+    "retained_gui_revision": "1b10277436b94541235e15189a3af7fce867351c",
+    "paths": [
+      "crates",
+      "desktop/src",
+      "desktop/src-tauri",
+      "desktop/scripts",
+      ".github/workflows",
+      "Cargo.toml",
+      "Cargo.lock",
+      "rust-toolchain.toml",
+      "desktop/package.json",
+      "desktop/package-lock.json"
+    ],
+    "diff": ""
+  },
+  "commands": [
+    {
+      "command": "cargo fmt --all -- --check",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo clippy --locked --workspace --all-targets --all-features -- -D warnings",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --locked --workspace --all-targets --all-features",
+      "result": "PASS",
+      "passed": 409,
+      "failed": 0,
+      "ignored": 2,
+      "groups": 56,
+      "ignored_tests": [
+        "deep_independent_divides_match_in_order (optional deep chess release perft)",
+        "deep_fixed_seed_sequences (optional deep chess release sequence)"
+      ],
+      "raw_local_log": "/private/tmp/msh75-workspace-tests.log",
+      "raw_log_sha256": "dfc78027f093968cd38c66efa847929e3b2e41d8918025294f19b1ee23c9f778"
+    },
+    {
+      "command": "cd desktop && npm run check && npm test",
+      "result": "PASS",
+      "test_files": 21,
+      "tests": 161,
+      "raw_local_log": "/private/tmp/msh75-frontend-tests.log",
+      "raw_log_sha256": "a04982e9b37b5e4e2c3998c9c12ec8d0acfa3b8769e48ebe774b9668df38c805"
+    }
+  ],
+  "ci": [
+    {
+      "file": "rust-ci.json",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/40505357243",
+      "head": "80d6b5cc71c8ceb5bf782d93295797aed1e18d66",
+      "jobs": [
+        {
+          "name": "Rust (macos-15)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust (windows-2022)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust (ubuntu-24.04)",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "file": "desktop-ci.json",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/40505357155",
+      "head": "80d6b5cc71c8ceb5bf782d93295797aed1e18d66",
+      "jobs": [
+        {
+          "name": "Desktop (macos-15)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Desktop (windows-2022)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Desktop (ubuntu-24.04)",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "limits": "Focused reviewer runs overlap workspace tests; counts are not added as unique coverage. Optional deep chess tests were not rerun. Fresh native/protocol/opponent checks are macOS; actual reused Windows/Linux GUI is separately labeled.",
+  "backlog": {
+    "project_baseline": "1.55.1",
+    "mutation_cli_version": "1.55.1",
+    "mutation_cli": "/private/tmp/mshogi-bootstrap-npm-cache/_npx/749414256ca1c44f/node_modules/backlog.md-darwin-arm64/backlog",
+    "default_path_version": "1.55.0",
+    "policy": "Only the explicit compatible pinned CLI mutates task records."
+  }
+}

@@ -1,0 +1,309 @@
+{
+  "method": "Reviewer-authored direct SFEN geometry/hand arithmetic and event replay; no native or cshogi outcomes read. This checks fixture facts, not exhaustive legal membership or primary-source interpretation. No expectations changed. No-action loss geometry is separately reasoned in rules-review.md.",
+  "history_ledgers": [
+    {
+      "id": "SH-F029:sente-check-relieved-fourth",
+      "geometric_checks_match": true,
+      "identity_occurrences": [
+        0,
+        4,
+        8,
+        12
+      ],
+      "counter_matches": true,
+      "independent_interval_continuous": {
+        "sente": true,
+        "gote": false
+      }
+    },
+    {
+      "id": "SH-F029:sente-checked-fourth",
+      "geometric_checks_match": true,
+      "identity_occurrences": [
+        0,
+        4,
+        8,
+        12
+      ],
+      "counter_matches": true,
+      "independent_interval_continuous": {
+        "sente": true,
+        "gote": false
+      }
+    },
+    {
+      "id": "SH-F029:gote-check-relieved-fourth",
+      "geometric_checks_match": true,
+      "identity_occurrences": [
+        0,
+        4,
+        8,
+        12
+      ],
+      "counter_matches": true,
+      "independent_interval_continuous": {
+        "sente": false,
+        "gote": true
+      }
+    },
+    {
+      "id": "SH-F029:gote-checked-fourth",
+      "geometric_checks_match": true,
+      "identity_occurrences": [
+        0,
+        4,
+        8,
+        12
+      ],
+      "counter_matches": true,
+      "independent_interval_continuous": {
+        "sente": false,
+        "gote": true
+      }
+    },
+    {
+      "id": "SH-F028:quiet-fourfold",
+      "geometric_checks_match": true,
+      "identity_occurrences": [
+        0,
+        4,
+        8,
+        12
+      ],
+      "counter_matches": true,
+      "independent_interval_continuous": {
+        "sente": false,
+        "gote": false
+      }
+    },
+    {
+      "id": "SH-F030:interrupted-before-continuous-tail",
+      "geometric_checks_match": true,
+      "identity_occurrences": [
+        0,
+        4,
+        8,
+        12
+      ],
+      "counter_matches": true,
+      "independent_interval_continuous": {
+        "sente": false,
+        "gote": false
+      }
+    },
+    {
+      "id": "SH-F030:noncheck-outside-selected-interval",
+      "geometric_checks_match": true,
+      "identity_occurrences": [
+        2,
+        6,
+        10,
+        14
+      ],
+      "counter_matches": true,
+      "independent_interval_continuous": {
+        "sente": true,
+        "gote": false
+      }
+    },
+    {
+      "id": "SH-F030:overlapping-fourfold-before-root-cycle",
+      "geometric_checks_match": true,
+      "identity_occurrences": [
+        3,
+        7,
+        11,
+        15
+      ],
+      "counter_matches": true,
+      "independent_interval_continuous": {
+        "sente": true,
+        "gote": false
+      }
+    },
+    {
+      "id": "SH-F028:fresh-identical-board-no-invented-history",
+      "geometric_checks_match": true,
+      "identity_occurrences": [
+        0
+      ],
+      "counter_matches": true
+    },
+    {
+      "id": "SH-F041:n320-next-action-reaches320",
+      "geometric_checks_match": true,
+      "identity_occurrences": [
+        1
+      ],
+      "counter_matches": true
+    },
+    {
+      "id": "SH-F041:n320-checking-nonmate-still-length",
+      "geometric_checks_match": true,
+      "identity_occurrences": [
+        1
+      ],
+      "counter_matches": true
+    },
+    {
+      "id": "SH-F041:root-n321",
+      "geometric_checks_match": true,
+      "identity_occurrences": [
+        0
+      ],
+      "counter_matches": true
+    },
+    {
+      "id": "SH-F041:root-n322",
+      "geometric_checks_match": true,
+      "identity_occurrences": [
+        0
+      ],
+      "counter_matches": true
+    },
+    {
+      "id": "SH-F041:root-n999",
+      "geometric_checks_match": true,
+      "identity_occurrences": [
+        0
+      ],
+      "counter_matches": true
+    },
+    {
+      "id": "SH-F041:defaulted-one-is-zero-completed",
+      "geometric_checks_match": true,
+      "identity_occurrences": [
+        0
+      ],
+      "counter_matches": true
+    },
+    {
+      "id": "SH-F041:supplied-one-is-zero-completed",
+      "geometric_checks_match": true,
+      "identity_occurrences": [
+        0
+      ],
+      "counter_matches": true
+    },
+    {
+      "id": "SH-F041:repetition-precedes-length",
+      "geometric_checks_match": true,
+      "identity_occurrences": [
+        0,
+        4,
+        8,
+        12
+      ],
+      "counter_matches": true,
+      "independent_interval_continuous": {
+        "sente": false,
+        "gote": false
+      }
+    },
+    {
+      "id": "SH-F041:continuous-check-precedes-length",
+      "geometric_checks_match": true,
+      "identity_occurrences": [
+        0,
+        4,
+        8,
+        12
+      ],
+      "counter_matches": true,
+      "independent_interval_continuous": {
+        "sente": true,
+        "gote": false
+      }
+    },
+    {
+      "id": "SH-F041:no-check-no-action-precedes-root-length",
+      "geometric_checks_match": true,
+      "identity_occurrences": [
+        0
+      ],
+      "counter_matches": true
+    },
+    {
+      "id": "SH-F041:checked-no-action-precedes-root-length",
+      "geometric_checks_match": true,
+      "identity_occurrences": [
+        0
+      ],
+      "counter_matches": true
+    },
+    {
+      "id": "SH-F041:mate-on-action320-precedes-length",
+      "geometric_checks_match": true,
+      "identity_occurrences": [
+        1
+      ],
+      "counter_matches": true
+    }
+  ],
+  "declarations": [
+    {
+      "id": "SH-F034:sente-exact28",
+      "camp_other_pieces": 10,
+      "camp_and_hand_points": 28,
+      "geometric_check": false,
+      "matches": true
+    },
+    {
+      "id": "SH-F034:sente-27-fails28",
+      "camp_other_pieces": 10,
+      "camp_and_hand_points": 27,
+      "geometric_check": false,
+      "matches": true
+    },
+    {
+      "id": "SH-F034:gote-exact27",
+      "camp_other_pieces": 10,
+      "camp_and_hand_points": 27,
+      "geometric_check": false,
+      "matches": true
+    },
+    {
+      "id": "SH-F034:gote-26-fails27",
+      "camp_other_pieces": 10,
+      "camp_and_hand_points": 26,
+      "geometric_check": false,
+      "matches": true
+    },
+    {
+      "id": "SH-F035:promoted-majors-still5",
+      "camp_other_pieces": 10,
+      "camp_and_hand_points": 28,
+      "geometric_check": false,
+      "matches": true
+    },
+    {
+      "id": "SH-F036:king-outside-camp-only",
+      "camp_other_pieces": 10,
+      "camp_and_hand_points": 28,
+      "geometric_check": false,
+      "matches": true
+    },
+    {
+      "id": "SH-F036:nine-camp-pieces-only",
+      "camp_other_pieces": 9,
+      "camp_and_hand_points": 28,
+      "geometric_check": false,
+      "matches": true
+    },
+    {
+      "id": "SH-F036:checked-only",
+      "camp_other_pieces": 10,
+      "camp_and_hand_points": 28,
+      "geometric_check": true,
+      "matches": true
+    },
+    {
+      "id": "SH-F036:wrong-turn-formal-actor",
+      "camp_other_pieces": 10,
+      "camp_and_hand_points": 28,
+      "geometric_check": false,
+      "matches": true
+    }
+  ],
+  "history_prefixes": 149
+}

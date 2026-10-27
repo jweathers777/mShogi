@@ -1,0 +1,133 @@
+{
+  "revision": "80d6b5cc71c8ceb5bf782d93295797aed1e18d66",
+  "branch": "codex/rewrite",
+  "environment": "macOS-27.0.1-arm64-arm-64bit",
+  "rust": "rustc 1.89.0 (29483883e 2025-08-04)",
+  "cargo": "cargo 1.89.0 (c24e10642 2025-06-23)",
+  "reference_python": "Python 3.11.0",
+  "reviewer_python": "3.11.0",
+  "sha256": {
+    "crates/mshogi-core/src/shogi/action.rs": "052a809a16b29750e636ff33b5318177694a2aa6202c8d86c09e886cfc4892d2",
+    "crates/mshogi-core/src/shogi/game.rs": "b5aaf5cada447bc1e6e57b409714f99af63b3a06706bc0c1cc7a26f2df68726d",
+    "crates/mshogi-core/src/shogi/perft.rs": "bc98a1ae0384ac3f1b53cc0bf0b5af49f3ef46f39f20cb42a0a6152da832f0fd",
+    "crates/mshogi-core/src/shogi/sfen.rs": "63a25a516fa58b4279a4a2436236c4dabcd67c4bd8037c5f8af542721ccb7bf8",
+    "crates/mshogi-core/src/shogi/legal.rs": "8a68aff7c3c62c6b3cdb34824173825e85cac8edad7ff63598e1e4efcd2a1071",
+    "crates/mshogi-core/src/shogi/mod.rs": "ec7f93ba3b962afd6798e87b8bbd929852ba9b6c7ad62634836ee2789cfff0c8",
+    "crates/mshogi-core/src/shogi/tests.rs": "efe48aa6fb2f59f69eb191cdfb869669eae748fc9acc7183575a3403bdcd8403",
+    "crates/mshogi-core/src/shogi/record.rs": "0d80be4a203ea6469dd2e22ea0a8e3e207519f995bac18836f7d3b7f6643431e",
+    "crates/mshogi-core/tests/shogi_history.rs": "cd5f3841e3f73798368863df32f429600b6bc05e316b25144506e34b1892f77f",
+    "crates/mshogi-core/tests/shogi_record.rs": "04208aaed6008b4c8478abbefbf18c92eee72254fbb37d3415c9f9c5a0364a63",
+    "crates/mshogi-core/tests/shogi_legal.rs": "976b0ad10513bf08f880c9a077caf8ec7ca819824337833efefba754aaf7b7c9",
+    "tests/fixtures/shogi/board-rules-v1.json": "579842bc0be0ab74567e1501100ef589be160c140c9371373768dc9fc43b6738",
+    "tests/fixtures/shogi/legal-completeness.json": "a562a265da4c49ca09702b14c2ca16b1a9eb7db9b779f426d0da3cd782cfc902",
+    "tests/fixtures/shogi/board-rules.json": "6a5356e77fe9508df27afcbb6ea66d2e3ea6397ed7f40994161b5583144dcbb1",
+    "tests/fixtures/shogi/history-outcomes.json": "c88fe0e02140c8a094a9bce001201e3a00dbcfc9f543518c6f0d7664c06e9116",
+    "crates/mshogi-core/examples/shogi_probe.rs": "0af107c745054e2f891623d395afb441ac7a18e23c364fb1b0b377ef55dbed5d",
+    "tools/shogi/reference.py": "658f7a978c6678ca957115fa39a576ae056f299dcb414f89ca5a8c7f9f47aba1",
+    "tools/shogi/compare_perft.py": "8bfecc527dbe8e2615d9732d626452607500f7befffdb121d037fa53aac00fa8",
+    "docs/m4/shogi-profile.md": "bf4a5afe90a59c270cb17651e057a8bee8c40661c984e47ad4e45e05e7d4db7d",
+    "docs/m4/shogi-coverage.md": "84620032786b513ecceb699d14f1bfc5d76792bfd602a20a3348409eebad3e36",
+    "docs/m4/shogi-fixtures.md": "dae86cbeb47cb894b4c2491f35186b8c54311135bf5b9122401b15e038d8667b",
+    "docs/m4/shogi-verification.md": "0211f47e43f6478eda69650ad71ada9e3af019f75e0c15b1a5e979941fe53f7c",
+    "docs/m4/history-state.md": "e15967205a5f53a6e3d28ad6f8d6fdbeb773ecd6e6233c3c5ca98c8bff200286",
+    "docs/m4/mutual-check-resolution.md": "205cab843449e936c0dfc5610dcac22a525fcf4663b17f7071cec54c5da047ca",
+    "docs/m4/mutual-check-chain-review.md": "cf3fdb729e76fd8a6778d16e6363067e5af8785357ea03556a556356d3f8bd92",
+    "docs/m4/mutual-check-geometry-review.md": "48a3dc214e9974641807797eac9d38e3825d62746c069c2f09742a7d12ce6b51",
+    "docs/m4/reference/cshogi-admission.json": "ce4769b55ab214d20540049647a91f7a066d32c5e6b235a6bb5677b75fe03e76",
+    "docs/m4/reference/rule-source-manifest.json": "5b846cc9778eb3e014e64f11db817840b9077bc6fbef3673fe62979070b3a3a7",
+    "docs/m4/reference/native-perft-comparison.json": "a797e4e1df0c6bfb4294eca872c54c56af4fc80ff924d99321889ecf6bae0939"
+  },
+  "raw_rule_sources": [
+    {
+      "label": "JSA-R",
+      "exists": true,
+      "expected_sha256": "2f738555ebfc2f79f789b1464be97d2236fb50afd7bf77df0b30f0437fa5642f",
+      "actual_sha256": "2f738555ebfc2f79f789b1464be97d2236fb50afd7bf77df0b30f0437fa5642f"
+    },
+    {
+      "label": "JSA-E",
+      "exists": true,
+      "expected_sha256": "9f43b32acdbe9392176e6cf5a06700b726404d80750f32724b34604c3c554586",
+      "actual_sha256": "9f43b32acdbe9392176e6cf5a06700b726404d80750f32724b34604c3c554586"
+    },
+    {
+      "label": "JSA-B1",
+      "exists": true,
+      "expected_sha256": "745056c1cbc706503e427cb9007bc4b773ae4a022dda060ec38aeec5ab4e73dd",
+      "actual_sha256": "745056c1cbc706503e427cb9007bc4b773ae4a022dda060ec38aeec5ab4e73dd"
+    },
+    {
+      "label": "JSA-B2",
+      "exists": true,
+      "expected_sha256": "fd67fcaa8133d331d62086be26d7c85efc9ac5fbd702af4dfbe85067468c4d23",
+      "actual_sha256": "fd67fcaa8133d331d62086be26d7c85efc9ac5fbd702af4dfbe85067468c4d23"
+    },
+    {
+      "label": "JSA-B3",
+      "exists": true,
+      "expected_sha256": "9ef8cf8dea610e998a0af8e456c350ce0abebbc91486dec4a17961dc7ceabaf7",
+      "actual_sha256": "9ef8cf8dea610e998a0af8e456c350ce0abebbc91486dec4a17961dc7ceabaf7"
+    },
+    {
+      "label": "JSA-B4",
+      "exists": true,
+      "expected_sha256": "b1865d573b3d0fa9304b3b053f79da3b84ca126d6248fc5fc2c84d5d4cb8e519",
+      "actual_sha256": "b1865d573b3d0fa9304b3b053f79da3b84ca126d6248fc5fc2c84d5d4cb8e519"
+    },
+    {
+      "label": "JSA-B5",
+      "exists": true,
+      "expected_sha256": "cd916dea497360bad4645f2bfd5335e41232cfa053fd9bd2225ddb83e5831bfc",
+      "actual_sha256": "cd916dea497360bad4645f2bfd5335e41232cfa053fd9bd2225ddb83e5831bfc"
+    },
+    {
+      "label": "JSA-N",
+      "exists": true,
+      "expected_sha256": "bb0713a77e152945d3711b90962e54c5e1a063026a6e24f21ac9b797b126b2c7",
+      "actual_sha256": "bb0713a77e152945d3711b90962e54c5e1a063026a6e24f21ac9b797b126b2c7"
+    },
+    {
+      "label": "CSA-36",
+      "exists": true,
+      "expected_sha256": "9387db362c1eb1aa87b294c314c68be6f54d7f9a8165b8a3bb69e7b80a1b5bed",
+      "actual_sha256": "9387db362c1eb1aa87b294c314c68be6f54d7f9a8165b8a3bb69e7b80a1b5bed"
+    },
+    {
+      "label": "USI",
+      "exists": true,
+      "expected_sha256": "c1284996f0ba3d538bd5896399ab3322c9dacf2faaa4b137445046a66bcfe235",
+      "actual_sha256": "c1284996f0ba3d538bd5896399ab3322c9dacf2faaa4b137445046a66bcfe235"
+    }
+  ],
+  "probe_sha256": "ec07d7134145eb8361680d984d5f515018a2f14f48f70dc7c1e8ab4451ce6764",
+  "native_test_command": "CARGO_TARGET_DIR=/private/tmp/msh75-rules-target cargo test --locked -p mshogi-core --lib --test shogi_legal --test shogi_history --test shogi_record",
+  "native_tests": {
+    "passed": 42,
+    "failed": 0,
+    "ignored": 0,
+    "groups": {
+      "library": 20,
+      "history": 5,
+      "legal": 7,
+      "record": 10
+    }
+  },
+  "fresh_reference": {
+    "board": {
+      "report_sha256": "51d1294d6b289a9f3fdd524ef604675cf77cdf6acc9262864b808f1a14abd7ed",
+      "fixtures": 101,
+      "sequences": 99,
+      "plies": 792,
+      "prefixes": 891,
+      "mismatches": 0
+    },
+    "completeness": {
+      "report_sha256": "cb20131ebe76c1c74688211c4066842d29f7f520ba49085dbd2155331d693091",
+      "fixtures": 68,
+      "sequences": 68,
+      "plies": 512,
+      "prefixes": 580,
+      "mismatches": 0
+    }
+  }
+}

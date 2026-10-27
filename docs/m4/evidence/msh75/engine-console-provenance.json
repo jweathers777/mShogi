@@ -1,0 +1,93 @@
+{
+  "revision": "80d6b5cc71c8ceb5bf782d93295797aed1e18d66",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "source_checks": {
+    "crates/mshogi-console/src/main.rs": {
+      "retained": "8ce2d4db3813a33ac6fedca3d1af7ebd7988f6d55b6e648710c44d7cb399b760",
+      "current": "8ce2d4db3813a33ac6fedca3d1af7ebd7988f6d55b6e648710c44d7cb399b760",
+      "same": true
+    },
+    "crates/mshogi-console/src/uci.rs": {
+      "retained": "d77cb55cf006c61ccf17696b7275dffce1d3d497eeb0508eecf68a1f9e9767e7",
+      "current": "d77cb55cf006c61ccf17696b7275dffce1d3d497eeb0508eecf68a1f9e9767e7",
+      "same": true
+    },
+    "crates/mshogi-console/src/usi.rs": {
+      "retained": "60dbb25a01988aebcc90d08d60df98a5f4c7cad643e6affeb63f029982f3c6ac",
+      "current": "60dbb25a01988aebcc90d08d60df98a5f4c7cad643e6affeb63f029982f3c6ac",
+      "same": true
+    },
+    "crates/mshogi-runner/src/config.rs": {
+      "retained": "296eb4355ede1880685f75cce5ea6f4400e54e445e53b553ad416e9209a8ff2d",
+      "current": "296eb4355ede1880685f75cce5ea6f4400e54e445e53b553ad416e9209a8ff2d",
+      "same": true
+    },
+    "crates/mshogi-runner/src/lib.rs": {
+      "retained": "19bee5a482c5b3911b8ebebd987530de4395cde70ada224b64cef73e1719fe2e",
+      "current": "19bee5a482c5b3911b8ebebd987530de4395cde70ada224b64cef73e1719fe2e",
+      "same": true
+    },
+    "crates/mshogi-runner/src/main.rs": {
+      "retained": "ba536f10a29d7e87fd6e18714c3a6e874dcbdde0eb69bca5bca6346e2d7e1c6c",
+      "current": "ba536f10a29d7e87fd6e18714c3a6e874dcbdde0eb69bca5bca6346e2d7e1c6c",
+      "same": true
+    },
+    "crates/mshogi-runner/src/process.rs": {
+      "retained": "87045d92ea32b82e0e8880513670998d86c9e8f7c5ee9dbb8e27e09b0aadac04",
+      "current": "87045d92ea32b82e0e8880513670998d86c9e8f7c5ee9dbb8e27e09b0aadac04",
+      "same": true
+    },
+    "crates/mshogi-runner/src/run.rs": {
+      "retained": "c3d1135ec1a75bb1dd90c3b71bcce1df3f23f8c703e3050286b6894ee5ec1993",
+      "current": "c3d1135ec1a75bb1dd90c3b71bcce1df3f23f8c703e3050286b6894ee5ec1993",
+      "same": true
+    },
+    "crates/mshogi-runner/src/shogi.rs": {
+      "retained": "e99773a3d118ec59a617c81b6a8c4d4fe6648e6da3bc4944973369956061b6aa",
+      "current": "e99773a3d118ec59a617c81b6a8c4d4fe6648e6da3bc4944973369956061b6aa",
+      "same": true
+    }
+  },
+  "report_checks": {
+    "retirement-fixture.report.json": {
+      "expected": "9817409e6165bc3cae0fd0a65faa2e8eda752ab37ca0da1ab16f9e2cf4aad2c0",
+      "actual": "9817409e6165bc3cae0fd0a65faa2e8eda752ab37ca0da1ab16f9e2cf4aad2c0",
+      "same": true
+    },
+    "late-fixture.report.json": {
+      "expected": "f2133569fc464ef9fb3301564d137b6bf25ffd248ad7e3321986a9c7a9bd53cf",
+      "actual": "f2133569fc464ef9fb3301564d137b6bf25ffd248ad7e3321986a9c7a9bd53cf",
+      "same": true
+    },
+    "selfplay.report.json": {
+      "expected": "49144dc3f252fd4e37abf960ea972ac16ace934c7848373eab552da5ef4a243b",
+      "actual": "49144dc3f252fd4e37abf960ea972ac16ace934c7848373eab552da5ef4a243b",
+      "same": true
+    },
+    "opponent.report.json": {
+      "expected": "28b0f82660d124b3b990b5b4f8e44f2c3d01b90f1b0e24611f4450029cc1aa2b",
+      "actual": "28b0f82660d124b3b990b5b4f8e44f2c3d01b90f1b0e24611f4450029cc1aa2b",
+      "same": true
+    },
+    "selfplay-repeat.report.json": {
+      "expected": "6de1609480dcd9cc76a9fc9ad3478cdf1b40f99860d28f91e61400f53b4881bb",
+      "actual": "6de1609480dcd9cc76a9fc9ad3478cdf1b40f99860d28f91e61400f53b4881bb",
+      "same": true
+    },
+    "no-result.report.json": {
+      "expected": "d97a712f39266c466df7da95fb7d498a9f85a8384378d7299100f819c0db1794",
+      "actual": "d97a712f39266c466df7da95fb7d498a9f85a8384378d7299100f819c0db1794",
+      "same": true
+    },
+    "exploratory/selfplay.report.json": {
+      "expected": "1894252fadc87d15b8b2105d10c5678272153cd93aaa6353db807a5755418968",
+      "actual": "1894252fadc87d15b8b2105d10c5678272153cd93aaa6353db807a5755418968",
+      "same": true
+    },
+    "exploratory/opponent.report.json": {
+      "expected": "53e869698b71efdb8cfee93ca325031d1a73fd0e1014407f15f9db8a2cef3e22",
+      "actual": "53e869698b71efdb8cfee93ca325031d1a73fd0e1014407f15f9db8a2cef3e22",
+      "same": true
+    }
+  }
+}

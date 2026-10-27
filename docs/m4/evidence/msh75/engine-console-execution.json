@@ -1,0 +1,259 @@
+{
+  "revision": "80d6b5cc71c8ceb5bf782d93295797aed1e18d66",
+  "commands": [
+    {
+      "argv": [
+        "/private/tmp/msh75-engine-review-target/release/mshogi-match",
+        "shogi-run",
+        "/private/tmp/msh75-engine-review/selfplay.config.json",
+        "docs/m4/evidence/msh75/engine-console-selfplay.report.json"
+      ],
+      "exit": 0,
+      "elapsed_s": 0.9356,
+      "stdout": "game 0: ActionLimit native None score None\ngame 1: ActionLimit native None score None\ngame 2: NativeConclusion native Some(Win { winner: Sente, reason: NoLegalAction { in_check: true } }) score Some([2, 0])\ngame 3: NativeConclusion native Some(Win { winner: Sente, reason: NoLegalAction { in_check: true } }) score Some([2, 0])\ngame 4: NativeConclusion native Some(Win { winner: Sente, reason: EnteringKing }) score Some([2, 0])\ngame 5: NativeConclusion native Some(Win { winner: Sente, reason: EnteringKing }) score Some([2, 0])\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/private/tmp/msh75-engine-review-target/release/mshogi-match",
+        "shogi-replay",
+        "docs/m4/evidence/msh75/engine-console-selfplay.report.json"
+      ],
+      "exit": 0,
+      "elapsed_s": 0.0117,
+      "stdout": "replayed 6 shogi game(s)\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/private/tmp/msh75-engine-review-target/release/mshogi-match",
+        "shogi-run",
+        "/private/tmp/msh75-engine-review/opponent.config.json",
+        "docs/m4/evidence/msh75/engine-console-opponent.report.json"
+      ],
+      "exit": 0,
+      "elapsed_s": 1.9873,
+      "stdout": "game 0: ActionLimit native None score None\ngame 1: ActionLimit native None score None\ngame 2: NativeConclusion native Some(Win { winner: Sente, reason: NoLegalAction { in_check: true } }) score Some([2, 0])\ngame 3: NativeConclusion native Some(Win { winner: Sente, reason: NoLegalAction { in_check: true } }) score Some([2, 0])\ngame 4: NativeConclusion native Some(Win { winner: Sente, reason: EnteringKing }) score Some([2, 0])\ngame 5: NativeConclusion native Some(Win { winner: Sente, reason: EnteringKing }) score Some([2, 0])\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/private/tmp/msh75-engine-review-target/release/mshogi-match",
+        "shogi-replay",
+        "docs/m4/evidence/msh75/engine-console-opponent.report.json"
+      ],
+      "exit": 0,
+      "elapsed_s": 0.0123,
+      "stdout": "replayed 6 shogi game(s)\n",
+      "stderr": ""
+    }
+  ],
+  "binaries": {
+    "/private/tmp/msh75-engine-review-target/release/mshogi": "5d0fa23fdd7ca5683c848c7117379aabed033288c6d9114f697492153f2f5615",
+    "/private/tmp/msh75-engine-review-target/release/mshogi-match": "e9e398d703cdcdc80074bfd4c3c1b7e3cb43003e29188c2a3121999dcc5f8efa",
+    "/private/tmp/msh71-yaneuraou/source/YaneuraOu-by-gcc": "74eded93711841dbdef41c0d38c8b85de9af77b9925274269c7b42a6d3987f86"
+  },
+  "selfplay": {
+    "report_sha256": "9a9525d49ac8f16f130e709a06d77e92b43c8fffd0274224a3c09d83f047e925",
+    "games": [
+      {
+        "stop": "action_limit",
+        "conclusion": null,
+        "score": null,
+        "traffic_complete": true,
+        "accepted_turns": 8
+      },
+      {
+        "stop": "action_limit",
+        "conclusion": null,
+        "score": null,
+        "traffic_complete": true,
+        "accepted_turns": 8
+      },
+      {
+        "stop": "native_conclusion",
+        "conclusion": {
+          "kind": "no_legal_action",
+          "winner": "sente",
+          "in_check": true
+        },
+        "score": [
+          2,
+          0
+        ],
+        "traffic_complete": true,
+        "accepted_turns": 1
+      },
+      {
+        "stop": "native_conclusion",
+        "conclusion": {
+          "kind": "no_legal_action",
+          "winner": "sente",
+          "in_check": true
+        },
+        "score": [
+          2,
+          0
+        ],
+        "traffic_complete": true,
+        "accepted_turns": 1
+      },
+      {
+        "stop": "native_conclusion",
+        "conclusion": {
+          "kind": "entering_king",
+          "winner": "sente"
+        },
+        "score": [
+          2,
+          0
+        ],
+        "traffic_complete": true,
+        "accepted_turns": 1
+      },
+      {
+        "stop": "native_conclusion",
+        "conclusion": {
+          "kind": "entering_king",
+          "winner": "sente"
+        },
+        "score": [
+          2,
+          0
+        ],
+        "traffic_complete": true,
+        "accepted_turns": 1
+      }
+    ],
+    "canonical_games_equal_retained": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "opponent": {
+    "report_sha256": "8bd2d9b0749187ea3c32d4cc082e261137b98ee422bc1efe0acaa02e1509bab4",
+    "games": [
+      {
+        "stop": "action_limit",
+        "conclusion": null,
+        "score": null,
+        "traffic_complete": true,
+        "accepted_turns": 8
+      },
+      {
+        "stop": "action_limit",
+        "conclusion": null,
+        "score": null,
+        "traffic_complete": true,
+        "accepted_turns": 8
+      },
+      {
+        "stop": "native_conclusion",
+        "conclusion": {
+          "kind": "no_legal_action",
+          "winner": "sente",
+          "in_check": true
+        },
+        "score": [
+          2,
+          0
+        ],
+        "traffic_complete": true,
+        "accepted_turns": 1
+      },
+      {
+        "stop": "native_conclusion",
+        "conclusion": {
+          "kind": "no_legal_action",
+          "winner": "sente",
+          "in_check": true
+        },
+        "score": [
+          2,
+          0
+        ],
+        "traffic_complete": true,
+        "accepted_turns": 1
+      },
+      {
+        "stop": "native_conclusion",
+        "conclusion": {
+          "kind": "entering_king",
+          "winner": "sente"
+        },
+        "score": [
+          2,
+          0
+        ],
+        "traffic_complete": true,
+        "accepted_turns": 1
+      },
+      {
+        "stop": "native_conclusion",
+        "conclusion": {
+          "kind": "entering_king",
+          "winner": "sente"
+        },
+        "score": [
+          2,
+          0
+        ],
+        "traffic_complete": true,
+        "accepted_turns": 1
+      }
+    ],
+    "canonical_games_equal_retained": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "tests": [
+    {
+      "command": "cargo test --locked --target-dir /private/tmp/msh75-engine-review-target -p mshogi-search -p mshogi-engine -p mshogi-console -p mshogi-runner --test shogi --test shogi_protocol --test shogi_engine --test shared_internal --test common_console --test shogi_cli --test usi --test shogi_runner --test shogi_recorded",
+      "exit": 0,
+      "counts": {
+        "common_console": 9,
+        "shared_internal": 3,
+        "shogi_cli": 8,
+        "shogi_engine": 3,
+        "usi": 11,
+        "shogi_protocol": 6,
+        "shogi_recorded": 1,
+        "shogi_runner": 14,
+        "shogi": 8
+      },
+      "total_passed": 63
+    },
+    {
+      "command": "cargo test --locked --target-dir /private/tmp/msh75-engine-review-target -p mshogi-search --lib shogi::tests",
+      "exit": 0,
+      "passed": 2,
+      "filtered_out": 4
+    },
+    {
+      "command": "cargo test --locked --target-dir /private/tmp/msh75-engine-review-target -p mshogi-engine --lib",
+      "exit": 0,
+      "passed": 3
+    }
+  ],
+  "build": {
+    "command": "cargo build --locked --release --target-dir /private/tmp/msh75-engine-review-target --bin mshogi --bin mshogi-match",
+    "exit": 0
+  },
+  "environment": {
+    "date": "2026-10-27",
+    "os": "macOS 27.0.1 arm64",
+    "rustc": "1.89.0 (29483883e 2025-08-04)",
+    "backlog_installed": "1.55.0",
+    "backlog_managed_instructions": "1.55.1",
+    "note": "Read-only task inspection only; no Backlog mutation by this reviewer."
+  }
+}

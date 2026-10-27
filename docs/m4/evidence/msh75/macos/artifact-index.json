@@ -1,0 +1,300 @@
+{
+  "reviewed_revision": "80d6b5cc71c8ceb5bf782d93295797aed1e18d66",
+  "files": [
+    {
+      "file": "capture-hand-engine-reply.ax.txt",
+      "bytes": 7613,
+      "sha256": "208bdd28595393eee3afa014c359190dc00407bc6634ad87e1d28e29687dfa7d"
+    },
+    {
+      "file": "capture-hand-engine-reply.jpg",
+      "bytes": 368550,
+      "sha256": "0c8e9bc72fa2e0135a50323304d363f0ef21a33c620c3018fa9a097d6e0978bf"
+    },
+    {
+      "file": "final-normal-reopened-stopped.ax.txt",
+      "bytes": 7704,
+      "sha256": "6fab1bf228c6373fe946486bdc8700171448c3ef6188e7e192e98a885eb5c766"
+    },
+    {
+      "file": "final-normal-reopened-stopped.jpg",
+      "bytes": 371247,
+      "sha256": "bd90543e12f84161beb0227138bc9adc6e36249a2b53f793adfc03dd86312f0f"
+    },
+    {
+      "file": "fixture-complete-drop-engine-reply.ax.txt",
+      "bytes": 7583,
+      "sha256": "37b54774eea5f7833801fefefb25f0f899892ba95842dad41513978a3a1d9399"
+    },
+    {
+      "file": "fixture-complete-drop-engine-reply.jpg",
+      "bytes": 295585,
+      "sha256": "e8c0e10af4d85e85e627693c522dc78ede9b9295aa5c4d8946be81b6fabde4cf"
+    },
+    {
+      "file": "fixture-drop-cancelled-no-action.ax.txt",
+      "bytes": 7344,
+      "sha256": "a6573dc89459354e7bba805a17fd54a8d4df899aed1ef44c0a4e9d6e3ef87a95"
+    },
+    {
+      "file": "fixture-drop-cancelled-no-action.jpg",
+      "bytes": 285125,
+      "sha256": "5010735b1ed3396ccf4628c84503388fd46f23fb15cc1eb8a6bf692d5e600e5d"
+    },
+    {
+      "file": "fixture-native-drop-choices.ax.txt",
+      "bytes": 8721,
+      "sha256": "215c5325e32bf334ea74304d6cb63ebe660c57281052c720d9eb43828ddd77f6"
+    },
+    {
+      "file": "fixture-native-drop-choices.jpg",
+      "bytes": 370201,
+      "sha256": "4c3bc8e79c35e75f1db9d705694d1da215c9ef92ad172ee893fafeb44e45a75b"
+    },
+    {
+      "file": "fixture-resignation-cancelled.ax.txt",
+      "bytes": 7532,
+      "sha256": "07c88b072cc988f2df8f1a7874ab0efd770c2688e5847291559bfbb107ec554b"
+    },
+    {
+      "file": "fixture-resignation-cancelled.jpg",
+      "bytes": 295398,
+      "sha256": "b3a45561bd9b747d96082e41c63517400076085dea27b956dc0a1f23e9d98f10"
+    },
+    {
+      "file": "fixture-resignation-saved.ax.txt",
+      "bytes": 7563,
+      "sha256": "c775dcf227ad5c7e8ce57f153d0e806e812802a9cae7c6438a3d3bfc10d41b9f"
+    },
+    {
+      "file": "fixture-resignation-saved.jpg",
+      "bytes": 303121,
+      "sha256": "7d5b413b97b035ede768898a256aff5b5b42e3bafa9f31a45b0bc3ec424b7f81"
+    },
+    {
+      "file": "fixture-resignation-terminal-event.ax.txt",
+      "bytes": 7568,
+      "sha256": "f3fd51d878a5bc5cb468f86eaeb6602a40e56b73d81cc07a964e15e1eed2b78c"
+    },
+    {
+      "file": "fixture-resignation-terminal-event.jpg",
+      "bytes": 309842,
+      "sha256": "7a875e93e8d676db674f5f6ff98cf83ca35db8d4243163f743e1f3f881aa4758"
+    },
+    {
+      "file": "gote-engine-opening.ax.txt",
+      "bytes": 7479,
+      "sha256": "87fb2fe486afc12d349dcd1fb8024be39fe800bb2f1fa9983528437342faed15"
+    },
+    {
+      "file": "gote-engine-opening.jpg",
+      "bytes": 361850,
+      "sha256": "037c586c767a959d9909d7e2ad7d9bcba3cbacec2181c66b70852da4e05497a2"
+    },
+    {
+      "file": "gote-human-and-engine-reply.ax.txt",
+      "bytes": 7544,
+      "sha256": "65b847919245e5034b2a1111edb9ae5581400b96ce3fb46993464c44838d2028"
+    },
+    {
+      "file": "gote-human-and-engine-reply.jpg",
+      "bytes": 367812,
+      "sha256": "92352390bba6862bee7cb7958ff6cf29fc1396f64579a261807b39f1f5e14719"
+    },
+    {
+      "file": "gote-saved.ax.txt",
+      "bytes": 7632,
+      "sha256": "0e5e713f816a80a85498aea91d315aaf92e03007d3d18a166bcc4312005cbf3c"
+    },
+    {
+      "file": "gote-saved.jpg",
+      "bytes": 373032,
+      "sha256": "48ed3294d8591d5d14bd5914f3747b6750cbbbe3dc268c799d6bf61797b04339"
+    },
+    {
+      "file": "historical-read-only-analysis.ax.txt",
+      "bytes": 8354,
+      "sha256": "d83fdf609669d6724a9e61b5c3bb587088620784a8a5f14f43e87d2f4ae03f1c"
+    },
+    {
+      "file": "historical-read-only-analysis.jpg",
+      "bytes": 382915,
+      "sha256": "378ae68805c153dce410bea8a8a02451e7798e597c65bf322e1fb4f769a9608d"
+    },
+    {
+      "file": "history-prefix-without-future-hand.ax.txt",
+      "bytes": 7704,
+      "sha256": "c537812d3754ae40d9ffb615fd5bb6bad1aef47f12d438d684190aca63ca3008"
+    },
+    {
+      "file": "history-prefix-without-future-hand.jpg",
+      "bytes": 364255,
+      "sha256": "9b48d7534f23b4418701f7a115b8aa0077483f63d7d4307c81d7dc1e9fee4a99"
+    },
+    {
+      "file": "keyboard-play-engine-reply.ax.txt",
+      "bytes": 7516,
+      "sha256": "65127cdef51095a7d1dbd10ca33e255b1fa0e8e73435ca5ed5f88e884f7700e5"
+    },
+    {
+      "file": "keyboard-play-engine-reply.jpg",
+      "bytes": 368066,
+      "sha256": "839dd863c957b28bc2d46a7f9d5435773ad25b8d8ac3288dc87faf3118479d0b"
+    },
+    {
+      "file": "opponent-hand-inspection.ax.txt",
+      "bytes": 9360,
+      "sha256": "4e27e5a6b5141277a04acc11a834e189d1d51ee2f8ada16f539d417be8282c2d"
+    },
+    {
+      "file": "opponent-hand-inspection.jpg",
+      "bytes": 413437,
+      "sha256": "183b5768a75d471235d0688034c94d9a414ae56bccd63352461617b2cedec3c7"
+    },
+    {
+      "file": "opponent-piece-inspection.ax.txt",
+      "bytes": 7906,
+      "sha256": "3abdba658d4474c2f9cfa855028d27bc91d7ebae8e1f4d10920033932461bb91"
+    },
+    {
+      "file": "opponent-piece-inspection.jpg",
+      "bytes": 374637,
+      "sha256": "09594fc45db0eda5e37f030d6f62d071268454d9e5fc256f223ef3542f787128"
+    },
+    {
+      "file": "package-smoke.json",
+      "bytes": 4092,
+      "sha256": "a97c2196da4f2c1b22de4c7e78f99f727ea1bb32cca3a42e66098e3f1ae05d54"
+    },
+    {
+      "file": "promotion-cancelled-no-action.ax.txt",
+      "bytes": 7648,
+      "sha256": "df62c020a2cb0dd7c5cddf9fb0d6e2627e314da13bb08737ecb3114e224643a4"
+    },
+    {
+      "file": "promotion-cancelled-no-action.jpg",
+      "bytes": 369662,
+      "sha256": "1a0128db6d3c26b71d0dccf474da07927285f971df64080645be44095002400c"
+    },
+    {
+      "file": "promotion-choice.ax.txt",
+      "bytes": 612,
+      "sha256": "b89ffed6d58abdee3558092a7ce5558f5b1954b8d6bd9275d25a05438eacd572"
+    },
+    {
+      "file": "promotion-choice.jpg",
+      "bytes": 372953,
+      "sha256": "25cbc4e732084634169b5e4e94d51dc976da34a05c1089fce313e393afd754e9"
+    },
+    {
+      "file": "promotion-complete-engine-reply.ax.txt",
+      "bytes": 7679,
+      "sha256": "2be86cfbbb1f931ee3967e149eb306fc2ee1eef7b5a7e9ec61bcc5ca26d2d487"
+    },
+    {
+      "file": "promotion-complete-engine-reply.jpg",
+      "bytes": 364696,
+      "sha256": "bde04ef9a6b3352ed5dd8c9cb34269282a1a503dca567448ac922f236c116621"
+    },
+    {
+      "file": "records/imported-drop.mshogi",
+      "bytes": 7406,
+      "sha256": "8fc34b02b1d27c02946989197acc86f2b8b5a14c1e03ca43ac58e5b5cf02f6c1"
+    },
+    {
+      "file": "records/imported-resignation.mshogi",
+      "bytes": 7744,
+      "sha256": "02f11cd8c6d1411e279bac570d521a397276992e434b51d60dd616828fdc4b0b"
+    },
+    {
+      "file": "records/normal-gote.mshogi",
+      "bytes": 8762,
+      "sha256": "4803dc1466c27599c414e797b97d629bb87089f7831474aa1b655d5dbb88d39f"
+    },
+    {
+      "file": "records/normal-sente.mshogi",
+      "bytes": 21017,
+      "sha256": "f9c7bdb934a084a6a63ede84bfd0b7e7c599a029f2db47b0bab34b0543992bb1"
+    },
+    {
+      "file": "reopened-native-after.ax.txt",
+      "bytes": 8567,
+      "sha256": "bb36e2dbb77829752299e3175709a1003162badc104a37b81bc88d60952cd95c"
+    },
+    {
+      "file": "reopened-native-before.ax.txt",
+      "bytes": 8572,
+      "sha256": "69afbcc9ff44b854656501764fd79c0311977594a948849f8b12025b32dbbd93"
+    },
+    {
+      "file": "reopened-six-event-game-stopped.ax.txt",
+      "bytes": 7643,
+      "sha256": "6b0b619294e16f3c7ddc504f3f9ecd3b9e2fb41f7aaede896c3bd8d126dbafa9"
+    },
+    {
+      "file": "reopened-six-event-game-stopped.jpg",
+      "bytes": 373677,
+      "sha256": "511ac1efaaeb17da49c8521317feebdefca13488cb146c6b2733c3ee4b984f85"
+    },
+    {
+      "file": "reopened-technical-before.ax.txt",
+      "bytes": 8040,
+      "sha256": "5c473e5df8fe8fcc754ac06b385a676c062a84112e0e07ace877ded80dac7253"
+    },
+    {
+      "file": "resumed-engine-play.ax.txt",
+      "bytes": 7834,
+      "sha256": "9b72fb28a9daf53ebde88047df2842e3b2da09cd2827f4664988bb67de8dd008"
+    },
+    {
+      "file": "resumed-engine-play.jpg",
+      "bytes": 370451,
+      "sha256": "99985ab7250f0b7d84a6e012913219e05e7b2f1689ceae0389caddee92575a68"
+    },
+    {
+      "file": "resumed-flipped-live.ax.txt",
+      "bytes": 7882,
+      "sha256": "a49ee69e297edc4d1bb085018ad5c824f5aaa4aefde3150faeaa8435b3835eba"
+    },
+    {
+      "file": "resumed-flipped-live.jpg",
+      "bytes": 377054,
+      "sha256": "37bcae88e459e4a0b10446bcd3dc034b2b0cdb4da7432b4c824fc3ea827817ab"
+    },
+    {
+      "file": "return-live-analysis-retired.ax.txt",
+      "bytes": 7951,
+      "sha256": "35c06bf9a6973eb05331a79494d5a0a47bbcf7e883c15132b18c2e05f2e18c1c"
+    },
+    {
+      "file": "return-live-analysis-retired.jpg",
+      "bytes": 385554,
+      "sha256": "b0411fe6cfafd0d5842218c7e27a3731da913493eadce86a5ce8380dfd5df030"
+    },
+    {
+      "file": "runtime.json",
+      "bytes": 4934,
+      "sha256": "c571ac3df4c52f23f5beceb525d622a89c291ee9304c319899d54c84ff2f989f"
+    },
+    {
+      "file": "saved-six-event-game.ax.txt",
+      "bytes": 7768,
+      "sha256": "7cd121f90747960f525086c70a989fd821e7173df45396910d1962c667eb842f"
+    },
+    {
+      "file": "saved-six-event-game.jpg",
+      "bytes": 369182,
+      "sha256": "49d7afe74ab9cf7b2d347680a54d3ad1c85b7238798860295eda7b1905279734"
+    },
+    {
+      "file": "sente-initial.ax.txt",
+      "bytes": 7208,
+      "sha256": "bfebff66d0f91d104c42861b4f86d708ca324d8b020084de0b4125215efda283"
+    },
+    {
+      "file": "sente-initial.jpg",
+      "bytes": 355598,
+      "sha256": "4cb6aedf3dfb88ddf14155466a4cae1a91011e1cd20fac4f733ea8d23a28fe3e"
+    }
+  ]
+}

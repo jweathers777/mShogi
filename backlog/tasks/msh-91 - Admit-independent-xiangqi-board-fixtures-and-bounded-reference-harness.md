@@ -5,7 +5,7 @@ status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-27T18:12:00Z'
+updated_date: '2026-10-27T18:28:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -59,6 +59,8 @@ MSH80 planning completed under XIANGQI-P1 with reviewed integrated/pushed eviden
 Ownerauthorized batch91+92 then93 only. Startup clean primarycodex/rewrite53e90a9, one worktree, nootheractiveBacklogownership. Backlog1.55.1 pinned mutationbinary resolvesPATH1.55.0difference.80Done selectedXIANGQI-P1 governs. Root sole durabletaskowner/integrator; isolatedindependentfixture/reference contributors will be recorded; no taskDone until own evidence/review/integration. G-CYCLE/G-NOWIN stay94/105 and must not affectlocal boardlegality.
 
 Completed independent105-fixture corpus (101 admitted,4 deliberate structural exclusions) and actually built pinned restricted Pikafish board reference. 15 admission/failure sentinels and520 sequence-prefix observations passed; independent perft2/3/7 and divide5+2 confirmed. Source-based B38 correction, foreign counter exclusion, process-group cleanup and prefix-provenance findings retained/resolved. Separate independent reviewer manually inspected rule fixtures and reran harness/corpus: final PASS. Evidence/reproduction: docs/m4/xiangqi/board-foundation-evidence.md, reference/, reviews/. No history/strength admission.
+
+Post-integration native CI confirmation: Rust workspace run40557737936 succeeded on actual ubuntu-24.04, macos-15 and windows-2022 at16042f291bf3190ff2712c77344b2c6885d65f10. Final combined batch source a71d27b1bca2d75d789ead1acc2f8a3132dcdc81 additionally passed run40559507815 on all three systems (fmt, workspace all-target clippy, tests, isolated desktop QA constructors, unchanged frontend snapshot generation, build and existing console smoke). https://github.com/jweathers777/mShogi/actions/runs/40559507815 . No Xiangqi GUI/engine or history conformance claim; unchanged earlier product evidence remains applicable.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

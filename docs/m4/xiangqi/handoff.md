@@ -1,6 +1,22 @@
 # Xiangqi native/shared delivery handoff
 
-## MSH-94 native history handoff
+## MSH-95 shared record/context handoff
+
+The [routing contract](shared-routing.md) and [evidence](routing-evidence.md)
+add explicit Xiangqi canonical identities/record/native-command dispatch and
+complete v3 context routing. Xiangqi execution remains unsupported/unscored,
+with an empty capability list; no evaluator/search, verifier or desktop feature
+was added. Existing Chess/Shogi consumers and versions stay compatible.
+The owner corrected the erroneous evaluator/search assignment to95; its conflict
+note and original task/ownership graph are preserved.
+
+After95 completes, **MSH-105** is dependency-ready (94/95); it remains unstarted
+in this batch. **MSH-84** waits105 and the other native prerequisites. **MSH-97**
+then owns functional evaluator/search/real child after84/95, while96 owns console.
+No later task starts automatically. MSH-45/M4 remain open. The earlier native
+handoffs below are historical snapshots, superseded by this current routing status.
+
+## MSH-94 native history handoff (historical snapshot)
 
 The [native history contract](history-contract.md) and
 [executed evidence](history-evidence.md) add authoritative history, WXF

@@ -28,6 +28,7 @@ pub fn execution_capabilities(game: GameKind) -> &'static [ExecutionOperation] {
             ExecutionOperation::MoveAnalysis,
             ExecutionOperation::ChessFullReachability,
         ],
+        GameKind::Xiangqi => &[],
         GameKind::Shogi => &[
             ExecutionOperation::EngineTurn,
             ExecutionOperation::MoveAnalysis,
@@ -94,7 +95,9 @@ pub struct SharedRequest {
 impl SharedRequest {
     /// Cheap bounded static admission. Native live replay stays in the supervised child.
     pub fn valid_limits(&self) -> bool {
-        if self.game.event_count() > MAX_SHARED_CHESS_EVENTS {
+        if self.game.game_kind() == GameKind::Chess
+            && self.game.event_count() > MAX_SHARED_CHESS_EVENTS
+        {
             return false;
         }
         let target_valid = |target: &SharedAnalysisTarget| {
@@ -103,32 +106,35 @@ impl SharedRequest {
                 && target.event_index == self.game.event_count() as u64
                 && target.board_ply == self.game.known_board_actions() as u64
                 && target.turn.game() == self.game.game_kind()
+                && match &self.game {
+                    CanonicalRecord::Xiangqi(record) => {
+                        target.turn == NativeSide::Xiangqi(record.side_to_move())
+                    }
+                    _ => true,
+                }
                 && !target.label.is_empty()
                 && target.label.len() <= 256
         };
-        let shogi_limits = || {
-            mshogi_search::shogi::Limits {
+        let ordinary_limits_valid = |analysis: bool| match self.game.game_kind() {
+            GameKind::Chess if analysis => {
+                (1..=MAX_ANALYSIS_DEPTH).contains(&self.limits.depth)
+                    && self.limits.nodes <= MAX_ANALYSIS_NODES
+            }
+            GameKind::Chess => (1..=mshogi_search::search::MAX_DEPTH).contains(&self.limits.depth),
+            GameKind::Shogi => mshogi_search::shogi::Limits {
                 depth: self.limits.depth,
                 nodes: self.limits.nodes,
             }
-            .valid()
+            .valid(),
+            // No Xiangqi execution limits or capability exist yet. The wire's
+            // u8/u64 values are exact opaque settings for an unsupported response,
+            // never borrowed Chess/Shogi defaults or a native search policy.
+            GameKind::Xiangqi => true,
         };
         match &self.purpose {
-            SharedPurpose::EngineTurn {} => {
-                if self.game.game_kind() == GameKind::Shogi {
-                    shogi_limits()
-                } else {
-                    (1..=mshogi_search::search::MAX_DEPTH).contains(&self.limits.depth)
-                }
-            }
+            SharedPurpose::EngineTurn {} => ordinary_limits_valid(false),
             SharedPurpose::MoveAnalysis { target } => {
-                target_valid(target)
-                    && if self.game.game_kind() == GameKind::Shogi {
-                        shogi_limits()
-                    } else {
-                        (1..=MAX_ANALYSIS_DEPTH).contains(&self.limits.depth)
-                            && self.limits.nodes <= MAX_ANALYSIS_NODES
-                    }
+                target_valid(target) && ordinary_limits_valid(true)
             }
             SharedPurpose::ChessFullReachability { target, limits, .. } => {
                 target_valid(target)

@@ -1,8 +1,8 @@
-# Shared native context and routing (MSH-69)
+# Shared native context and routing (MSH-69 / MSH-95)
 
-The library supports two explicit native games through `mshogi_core::native`.
-`CanonicalRecord` holds either the existing chess `GameRecord` or the approved
-shogi `GameRecord`. It does not merge board storage, actions, rules, sides,
+The library routes three explicit native payloads through `mshogi_core::native`.
+`CanonicalRecord` holds the existing chess, approved shogi or selected Xiangqi
+`GameRecord`. Xiangqi record routing is distinct from execution support. It does not merge board storage, actions, rules, sides,
 outcomes or scores. Native payload encodings and historical evidence are unchanged.
 
 ## Identities and strict records
@@ -19,6 +19,7 @@ intermediate object map must never precede strict native parsing.
 | --- | --- | --- | --- |
 | Chess | `mshogi.chess.match.v1` | `FIDE-2023-01-01+mshogi.chess.match.v1` | 1 (M2) or 2 (Full, with its limits) |
 | Shogi | `mshogi.shogi.csa36.v1` | `JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026` | 1 |
+| Xiangqi | `mshogi.xiangqi.wxf2018.v1` | `WXF-2018+XIANGQI-P1-2026-10-27` | 1 |
 
 The chess edition names the already accepted FIDE source edition and software
 profile, without changing chess behavior. The shogi edition is the existing
@@ -36,7 +37,7 @@ This is transport support, not the desktop archive feature owned by MSH-73.
 
 ## Commands and native ownership
 
-`NativeCommandTarget` borrows a chess `ChessMatch` or shogi `Game`.
+`NativeCommandTarget` borrows a chess `ChessMatch`, shogi `Game` or Xiangqi `Game`.
 `dispatch_command` checks only that the native command tag matches its owner,
 then delegates the unmodified native request and returns its native reply.
 Native owners decide version, actor, turn, legal action, claim/declaration and
@@ -147,3 +148,27 @@ MSH-68 supplies [shogi console diagnostics](shogi-console.md); MSH-70 supplies
 [real shogi engine execution and its bounded work contract](shogi-engine.md).
 MSH-73 owns desktop archive integration. The complete-delivery owners MSH-41–47
 remain open; this boundary does not deliver those consumers or a six-game framework.
+
+
+## MSH-95 Xiangqi extension
+
+[Selected native routing contract](xiangqi/shared-routing.md) and
+[evidence](xiangqi/routing-evidence.md) extend the same envelope1/shared3 dispatch
+with authoritative MSH-94 records. Cached native event/action/turn metadata avoids
+repeated replay during static context checks. Complete warnings/claims/audits,
+policy, provenance and assessment modes remain in the native record. Xiangqi
+`Submission` retains its result and undo, including semantically rejected claims
+with separately admitted audit events; native actor/turn admission remains native.
+
+Xiangqi execution capabilities are empty. Well-formed ordinary/Full-shaped requests
+return only unscored UnsupportedMode and the exact native context; target-side,
+prefix, history and identity mismatches remain refusals. No Chess limits or score
+meaning becomes a Xiangqi search contract. The same supervisor owns all3game
+contexts and both wire versions. Actual whole-frame caps remain unchanged.
+Existing desktop New/Replace rejects Xiangqi before retiring current documents
+or work; there is no selectable Xiangqi desktop game or archive consumer.
+
+MSH-105 becomes dependency-ready after95 completes; it remains unstarted here.
+MSH-97 owns evaluator/search/real engine execution after handoff84 including105.
+The earlier MSH-69 evidence/ownership narrative above is preserved history;
+Standard Shogi41/75 is now accepted Done. Xiangqi45, shared46/47 and M4 remain open.

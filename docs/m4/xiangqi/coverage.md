@@ -8,7 +8,8 @@ recorded in [foundation evidence](board-foundation-evidence.md),
 [local contract](local-legality.md) and the MSH-91/92/93 task records. The
 restricted reference admission does not admit history helpers or playing strength;
 the native history/game contract is now implemented in MSH-94 (see below).
-There is still no Xiangqi engine, console or desktop consumer.
+MSH-95 adds [typed record/context routing](shared-routing.md) with explicit
+unsupported execution. There is still no Xiangqi engine, console or desktop consumer.
 All original MSH-45 requirements remain in M4. Profile selection is not delivery.
 
 | Required scope / clause | Independent expectations / evidence plan | Delivery owner and gate |

@@ -3,9 +3,13 @@
 John selected **`mshogi.xiangqi.wxf2018.v1`**, XIANGQI-P1, on2026-10-27.
 The governing publication is official **bilingual WXF2018**, with individually
 recorded interpretations and no blanket Chinese precedence. This is selected
-planning, not implemented Xiangqi support. MSH-41/MSH-75 and M2/M3 remain Done;
+planning; native board/history foundations91–94 and shared record/context routing95
+are documented separately below. Xiangqi execution remains unsupported.
+MSH-41/MSH-75 and M2/M3 remain Done;
 MSH-42–47 and M4 remain open.
 
+- [Native history and canonical contract](history-contract.md) and [evidence](history-evidence.md)
+- [Shared routing contract](shared-routing.md) and [evidence](routing-evidence.md)
 - [Owner decision record](owner-decisions.md) and [selected profile](profile-proposal.md)
 - [Current coverage and affected-work gates](coverage.md)
 - [Source reconciliation/editions](sources.md) and [acquisition hashes](source-manifest.json)
@@ -13,6 +17,9 @@ MSH-42–47 and M4 remain open.
 - [Consumer/task mapping and first queue](handoff.md)
 - [Current resolution review and verification](resolution-review.md)
 - [Audited comparator candidates](comparator-audit.md) and [source hashes](comparator-source-manifest.json)
+
+The following MSH-80 planning-stage handoff is preserved history; current
+status is in the linked contracts/evidence and task records.
 
 MSH-80 closes only after reviewed planning criteria and normal integration are
 supported;91/92 then become Ready. No native rules, comparator build/admission,

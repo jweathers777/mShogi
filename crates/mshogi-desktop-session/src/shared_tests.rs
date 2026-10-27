@@ -703,6 +703,7 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
         assert!(current.document.dirty);
         assert_eq!(current.open_token, c.shared_open_token());
         match human {
+            NativeSide::Xiangqi(_) => unreachable!("not a supported product new-game choice"),
             NativeSide::Shogi(side) => {
                 assert_eq!(current.pieces.len(), 40);
                 assert_eq!(current.choices.len(), 30);
@@ -852,4 +853,47 @@ fn native_search_presentation_preserves_target_purpose_and_real_terminal_distanc
     let inspected = send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
     assert!(!inspected.search_observations[0].selected);
     assert!(inspected.analysis.is_none());
+}
+
+#[test]
+fn xiangqi_tags_do_not_enable_desktop_creation_replacement_or_retire_live_work() {
+    use mshogi_core::xiangqi as x;
+    let mut c = controller();
+    for shogi in [false, true] {
+        if shogi {
+            replace(&mut c, s::Game::new(), s::Side::Gote);
+        }
+        let before = c.shared_snapshot();
+        let token = c.shared_token();
+        let open = c.shared_open_token();
+        let pending = c.shared.shogi.as_ref().and_then(|g| g.pending.clone());
+        let native = CanonicalRecord::xiangqi(
+            x::GameRecord::from_game(&x::Game::standard(x::ClaimPolicy::Explicit).unwrap())
+                .unwrap(),
+        );
+        let error = c
+            .shared_new_game(open, GameKind::Xiangqi, NativeSide::Xiangqi(x::Side::Red))
+            .unwrap_err();
+        assert!(error.contains("not available"));
+        let request = serde_json::json!({
+            "expected": token, "game": before.game,
+            "operation": { "kind": "replace", "record": native, "human": NativeSide::Xiangqi(x::Side::Red) }
+        });
+        let command = SharedDesktopCommand::from_json(&request.to_string()).unwrap();
+        let error = c.shared_command(command).unwrap_err();
+        assert!(error.contains("not supported"));
+        assert_eq!(c.shared_token(), token);
+        assert_eq!(c.shared_open_token(), open);
+        let after = c.shared_snapshot();
+        assert_eq!(after.context, before.context);
+        assert_eq!(after.game, before.game);
+        assert_eq!(
+            c.shared.shogi.as_ref().and_then(|g| g.pending.clone()),
+            pending
+        );
+        assert_eq!(
+            serde_json::to_value(after.document).unwrap(),
+            serde_json::to_value(before.document).unwrap()
+        );
+    }
 }

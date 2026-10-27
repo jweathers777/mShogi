@@ -34,6 +34,21 @@ fn main() {
                     mshogi_core::shogi::GameRecord::from_game(&mshogi_core::shogi::Game::new()),
                 )
             }
+            // Same Xiangqi board and turn, different authoritative audit history.
+            27 => {
+                if let mshogi_core::native::CanonicalRecord::Xiangqi(record) = &context.game {
+                    let mut game = record.to_game().unwrap();
+                    game.submit(mshogi_core::xiangqi::GameRequest {
+                        expected: game.context(),
+                        actor: mshogi_core::xiangqi::Side::Red,
+                        command: mshogi_core::xiangqi::GameCommand::ClaimNaturalCount,
+                    })
+                    .unwrap();
+                    context.game = mshogi_core::native::CanonicalRecord::xiangqi(
+                        mshogi_core::xiangqi::GameRecord::from_game(&game).unwrap(),
+                    );
+                }
+            }
             _ => {}
         }
         let result = SharedResult::Failure {

@@ -48,6 +48,7 @@ fn actual_native_payloads_round_trip_with_derived_identity_and_provenance() {
         assert_eq!(wire["envelope_version"], 1);
         assert_eq!(wire["native_schema_version"], 1);
         match native {
+            CanonicalRecord::Xiangqi(_) => unreachable!("covered by native_xiangqi_envelope"),
             CanonicalRecord::Chess(r) => {
                 assert_eq!(wire["rules_profile"], "mshogi.chess.match.v1");
                 assert_eq!(

@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-27T10:17:00Z'
+updated_date: '2026-10-27T10:28:00Z'
 labels:
   - m4
   - owner-msh-41
@@ -99,6 +99,8 @@ Owner refinement complete at integrated/pushed product d6d76816932763182eee574c9
 Owner approves inspection in concept; remaining shell correction explicitly supersedes the earlier distinct dark Chess/light Shogi workspace decision. One dark application theme based on Chess is now required for both; game identity differences primarily board/pieces/native hands. Same structural page with stable upper-player, board, lower-player, document, status, sidebar/card slots. Existing inspection and historical evidence remain intact. Installed default Backlog1.55.0 differs from baseline; mutations use existing verified1.55.1 binary. No unrelated dirty work or other worktrees.
 
 Shell refinement2 source checkpoint: actual shared GameArea/PlayerArea plus InspectorSwitch, one dark token palette and shared cards; obsolete Shogi app-level light theme/layout removed, native board art retained. Historical notices now share the same positionNotice slot. Full frontend148/21 and strictTS passed; isolated ShogiBoard13 include slot/orientation/hand-focus/drop coverage. Independent source reviewer found lost avatar base geometry and legacy Chess resign margin; restored common avatar geometry and normalized margin (no assertion weakening). History card has common bounded height with scrollable native event content. GUI driver now checks actual computed theme and full slot/card coordinates at both sizes, both-game minimum native inspection, and unchanged canonical/archive/quit journeys. Native/query/controller sources unchanged; reuse d6 native evidence. NormalMac build passes, but actual Mac GUI is currently locked: unlock question pending; independent tests and CI preparation continue.
+
+Shell2 product integrated/pushed at a2524c10d2067f9f5ac3294c1a78efcddd771e99; full frontend148/21+strictTS and normalMacbuild/package-smoke pass. RustCI40487524835 PASS all3; Desktop40487524795 MacPASS, Windows/Linux still running. Prior evidence-only0c Desktop40475158549 has actual failed Linux phases, not inferred PASS: two external GTK picker fallback races after picker closure and a separate upstream transport reset. Narrow external gui_linux fallback now re-observes exact picker/host/focus, skips input on closed picker, preserves actual Saved/file/archive/Open assertions; retained10 simulation tests and separate independent review pass. This does not assert fresh actualGTK success or resolve the separate driver reset. Mac remains locked; required localGUI capture blocked pending user unlock. Status stays In Review; no75.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

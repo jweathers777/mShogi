@@ -242,6 +242,39 @@ class Native:
         # rather than XSendEvent events which GTK applications can reject.
         self._run(["xdotool", "key", "--clearmodifiers", *keys])
 
+    def _picker_fallback(self, picker: dict, kind: str, stem: str) -> dict | None:
+        """Accept a still-open exact picker; closure is not outcome evidence."""
+        def present():
+            if not self.alive():
+                raise RuntimeError("Bound application exited before native picker fallback")
+            matches = [window for window in self._windows() if window["id"] == picker["id"]]
+            if matches and (matches[0]["pid"], matches[0]["title"]) != (picker["pid"], picker["title"]):
+                raise RuntimeError(f"Native picker identity changed: {matches!r}")
+            return bool(matches)
+
+        if not present():
+            return None
+        try:
+            self._activate(picker["id"])
+        except (RuntimeError, TimeoutError):
+            # GTK can complete the preceding Return between enumeration and
+            # activation. Never redirect input to the newly focused window.
+            if not present():
+                return None
+            raise
+        if not present():
+            return None
+        before_accept = self.output / f"{stem}-before-accept-fallback.png"
+        self.screenshot(before_accept)
+        if not present():
+            return None
+        active = self._run(["xdotool", "getactivewindow"], check=False)
+        if active.returncode != 0 or active.stdout.strip() != str(picker["id"]):
+            raise RuntimeError("Bound native picker lost focus before fallback input")
+        mnemonic = "alt+o" if kind == "open" else "alt+s"
+        self._key(mnemonic)
+        return {"key": mnemonic, "before_screenshot": str(before_accept)}
+
     def choose_file(self, kind: str, path: Path | None) -> dict:
         """Wait for, screenshot, and operate the bound process's real picker."""
         kind = kind.lower()
@@ -291,13 +324,7 @@ class Native:
                         break
                     time.sleep(0.1)
                 else:
-                    self._activate(picker["id"])
-                    before_accept = self.output / f"{stem}-before-accept-fallback.png"
-                    self.screenshot(before_accept)
-                    mnemonic = "alt+o" if kind == "open" else "alt+s"
-                    acceptance_fallback = {"key": mnemonic,
-                                           "before_screenshot": str(before_accept)}
-                    self._key(mnemonic)
+                    acceptance_fallback = self._picker_fallback(picker, kind, stem)
             self._wait(lambda: picker["id"] not in {item["id"] for item in self._windows()},
                        f"Native {kind} picker did not close after {'Cancel' if selected is None else 'path selection'}")
             if not self.alive():

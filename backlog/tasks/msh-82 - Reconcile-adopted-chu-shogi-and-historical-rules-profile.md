@@ -4,7 +4,7 @@ title: Reconcile adopted chu shogi and historical rules profile
 status: To Do
 assignee: []
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-27T15:09:00Z'
+updated_date: '2026-10-27T15:14:00Z'
 labels:
   - m4
   - owner-msh-43
@@ -61,4 +61,6 @@ Bounded independent chu shogi source-research pass only: inspect existing scope/
 Owner2026-10-27 permits independent research in parallel with primaryMSH80 only within this existing task. Provisional delivery order unchanged; no blocker from this game is placed on unaffectedXiangqi. Root@codex owns record/integration; delegated msh82_research researches in isolated /private/tmp output only. No substantive game implementation authorized.
 
 Bounded independent research2026-10-27 by msh82_research, root soleintegrator: acquired currentJCSA2019general/2004supplement/movement texts; directly inspected NDL1915雑芸叢書第一 pp212–217 witness DOI10.11501/1869566, not original1703facsimile.32sourceGETs hash/time/status recorded in chu-provenance.json. Setup/movement and compound-lion/promotion/royal seeds are preliminary translations, not ratified expectations. Royal self-exposure/no-action, repetition responsibility, material-win/immediate-recapture and edition/diagram review remain named obligations; no complete profile. AC1–4unchecked, no implementation/adoption/reorder/dependency on80. Research pass ended; To Do/unassigned pending these source/interpretation gates.
+
+Partial independent research report/provenance integrated and pushed with MSH-80 planning at f4e564b66ccecca6d76cadea5a354bb1e366a77d on codex/rewrite. No criterion checked, no full profile/fixture or product completion; exact remaining acquisition/interpretation gates stay in this task and its report. No dependency blocks unaffected Xiangqi.
 <!-- SECTION:NOTES:END -->

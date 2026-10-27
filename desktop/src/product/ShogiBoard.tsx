@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
 import type { BoardChoice, NativePiece } from "../Board";
 import type { GameSnapshot, Side } from "./native";
 import type { InspectMovement, MovementInspection } from "./movementInspection";
-import { GameArea, PlayerArea } from "./ApplicationShell";
+import { GameArea, GamePositionStatus, PlayerArea } from "./ApplicationShell";
 import "../movement-inspection.css";
 
 // Decoration only. Native kind/promotion/owner remain the action and identity data.
@@ -159,6 +159,9 @@ export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDi
     </div>;
   const footer = <>
     <div className={`shogi-board-help${inspection || inspectionPending ? " movement-inspection-status" : ""}`}><span>{inspection ? `Inspecting ${inspection.label} · Read-only · ${inspection.choices.length ? "Hollow rings show movement choices" : "No native movement choices"}` : inspectionPending ? "Loading read-only movement inspection…" : "Select a piece or hand piece, then a marked square."}</span><span>Arrows · Enter · Esc</span></div>
+    <GamePositionStatus historical={snapshot.historical} concluded={snapshot.status.concluded}
+      paused={snapshot.paused} humanTurn={snapshot.turn.key === snapshot.human.key}
+      thinking={snapshot.phase === "thinking" && snapshot.execution_purpose === "engine_turn"} ply={snapshot.board_ply} />
     {continuation && <div className="shogi-route" onKeyDown={(e) => { if (e.key === "Escape") { e.preventDefault(); cancel(); } }}><p>{announcement}</p>{terminal.length > 0 && !inspection && <button onClick={() => finish(terminal)}>Complete action here</button>}<button onClick={cancel}>Cancel selection</button></div>}
     <span className="sr-only" role="status" aria-live="polite">{announcement}</span>
   </>;

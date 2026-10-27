@@ -39,6 +39,17 @@ it("keeps Save and Save As available while capacity pauses play and analysis", (
 function session(snapshot: Snapshot) {
   vi.mocked(useNativeSession).mockReturnValue(mockSession(snapshot, command));
 }
+it("uses the shared document, native engine budget and live/history footer", () => {
+  session({ ...standard, document: { ...standard.document, path: null, dirty: false } });
+  const { container, rerender } = render(<App />);
+  expect(container.querySelector("[data-document-state]")?.textContent).toBe("Unsaved");
+  expect(container.querySelector("[data-play-limits]")?.textContent).toBe("Play limit: depth 2 · 20,000 nodes");
+  expect(container.querySelector("[data-position-status]")?.textContent).toBe("Your turnLive position · 0 plies");
+  session({ ...standard, document: { ...standard.document, path: "/games/chess.mshogi", dirty: false }, view: { ...standard.view, historical: true, ply: 1 } });
+  rerender(<App />);
+  expect(container.querySelector("[data-document-state]")?.textContent).toBe("Unmodified");
+  expect(container.querySelector("[data-position-status]")?.textContent).toBe("Read-only history · return to live to playSelected position · 1 ply");
+});
 it("persists native orientation independently of human color and binds new-game document revision", () => {
   session(standard);
   const { rerender } = render(<App />);

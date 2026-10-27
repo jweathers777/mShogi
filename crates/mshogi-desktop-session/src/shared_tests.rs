@@ -88,6 +88,8 @@ fn identities_native_geometry_and_chess_compatibility() {
     assert_eq!(chess.game, GameKind::Chess);
     assert_eq!(chess.sides[0].label, "White");
     assert_eq!(chess.choices.len(), 20);
+    assert_eq!(chess.play_limits, chess.chess.as_ref().unwrap().limits);
+    assert_eq!(chess.board_ply, 0);
     assert!(chess.capabilities.chess_full);
     assert!(!chess.capabilities.hands);
     let old = chess.token;
@@ -148,6 +150,63 @@ fn identities_native_geometry_and_chess_compatibility() {
     let snapshot = c.pause_for_close();
     assert!(snapshot.document.dirty);
     assert!(c.shared.shogi.as_ref().unwrap().paused);
+}
+
+#[test]
+fn presented_budget_matches_submitted_play_and_board_ply_ignores_terminal_events() {
+    let mut c = controller();
+    let initial = replace(&mut c, s::Game::new(), s::Side::Gote);
+    assert_eq!(
+        initial.play_limits,
+        WorkLimits {
+            depth: 2,
+            nodes: 5000
+        }
+    );
+    assert_eq!(initial.board_ply, 0);
+    let playing = send(&mut c, SessionOperation::Resume {}).unwrap();
+    assert_eq!(
+        c.shared
+            .shogi
+            .as_ref()
+            .unwrap()
+            .pending
+            .as_ref()
+            .unwrap()
+            .limits,
+        playing.play_limits
+    );
+    send(&mut c, SessionOperation::Cancel {}).unwrap();
+    let ended = send(&mut c, SessionOperation::Resign {}).unwrap();
+    assert_eq!(ended.event_index, 1);
+    assert_eq!(ended.board_ply, 0);
+    assert_eq!(
+        serde_json::to_value(&ended).unwrap()["play_limits"]["nodes"],
+        5000
+    );
+    let prefix = send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
+    assert!(prefix.historical);
+    assert_eq!(prefix.board_ply, 0);
+    assert!(!prefix.status.concluded);
+
+    replace(&mut c, s::Game::new(), s::Side::Sente);
+    send(&mut c, SessionOperation::Resume {}).unwrap();
+    let moved = send(
+        &mut c,
+        SessionOperation::Play {
+            action: "7g7f".parse().unwrap(),
+        },
+    )
+    .unwrap();
+    assert_eq!((moved.event_index, moved.board_ply), (1, 1));
+    send(&mut c, SessionOperation::Cancel {}).unwrap();
+    let ended = send(&mut c, SessionOperation::Resign {}).unwrap();
+    assert_eq!((ended.event_index, ended.board_ply), (2, 1));
+    let prefix = send(&mut c, SessionOperation::Inspect { event_index: 1 }).unwrap();
+    assert_eq!((prefix.event_index, prefix.board_ply), (1, 1));
+    assert!(!prefix.status.concluded);
+    let root = send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
+    assert_eq!((root.event_index, root.board_ply), (0, 0));
 }
 #[test]
 fn actual_complete_drop_promotion_capture_and_atomic_rejection() {

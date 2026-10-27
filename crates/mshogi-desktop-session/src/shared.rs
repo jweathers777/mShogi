@@ -18,6 +18,12 @@ use mshogi_engine::{
     SharedResult, ShogiChoice, ShogiResult,
 };
 
+// The displayed play budget and submitted work use the same native value.
+const SHOGI_PLAY_LIMITS: WorkLimits = WorkLimits {
+    depth: 2,
+    nodes: 5000,
+};
+
 /// Exact UI precondition; neither board ply nor semantic undo restores this token.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -388,6 +394,10 @@ pub struct SharedSnapshot {
     pub events: Vec<PresentedEvent>,
     /// Selected complete event prefix, not a board move number.
     pub event_index: usize,
+    /// Known board actions at the selected prefix, distinct from terminal events.
+    pub board_ply: u64,
+    /// Actual native budget used for ordinary engine turns, not analysis defaults.
+    pub play_limits: WorkLimits,
     /// Whether viewing a read-only earlier event prefix.
     pub historical: bool,
     /// Whether explicit Resume is required before live engine work.
@@ -997,13 +1007,7 @@ impl DesktopController {
                 && state.viewed.is_none()
                 && state.game.conclusion().is_none()
                 && state.game.position().side_to_move() != state.human
-                && let Err(e) = self.start_shogi(
-                    WorkLimits {
-                        depth: 2,
-                        nodes: 5000,
-                    },
-                    false,
-                )
+                && let Err(e) = self.start_shogi(SHOGI_PLAY_LIMITS, false)
             {
                 self.pause_native_capacity(e);
             }
@@ -1193,6 +1197,7 @@ impl DesktopController {
                 }
             })
             .collect();
+        let record = state.record();
         SharedSnapshot {
             open_token: self.shared_open_token(),
             document: self.shared_document(),
@@ -1246,6 +1251,8 @@ impl DesktopController {
             status: shogi_status(game),
             events,
             event_index: game.events().len(),
+            board_ply: record.known_board_actions() as u64,
+            play_limits: SHOGI_PLAY_LIMITS,
             historical,
             paused: state.paused,
             phase: state.phase,
@@ -1256,7 +1263,7 @@ impl DesktopController {
             }),
             diagnostic: state.diagnostic.clone(),
             declaration_advice,
-            context: state.record(),
+            context: record,
             analysis: state.analysis.clone(),
             observations: state.observations.clone(),
             search_observations: state
@@ -1394,6 +1401,8 @@ impl DesktopController {
             status,
             events,
             event_index: snapshot.view.event_index,
+            board_ply: snapshot.view.ply,
+            play_limits: snapshot.limits,
             historical: snapshot.view.historical,
             paused: snapshot.play_paused,
             phase: snapshot.engine.status,

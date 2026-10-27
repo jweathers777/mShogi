@@ -455,5 +455,7 @@
   "observations": [],
   "search_observations": [],
   "score_meaning": "Native shogi root-side hundredths of pawn; terminal win distance counts complete command edges, including declarations. Not a chess mate score.",
-  "chess": null
+  "chess": null,
+  "play_limits": { "depth": 2, "nodes": 5000 },
+  "board_ply": 0
 }

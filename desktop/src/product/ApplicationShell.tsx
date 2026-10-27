@@ -1,5 +1,30 @@
 import type { FocusEventHandler, ReactNode, Ref } from "react";
+import { documentState } from "../documentState";
 import "./shell.css";
+
+export function DocumentState({ document }: { document: { path: string | null; dirty: boolean } }) {
+  const state = documentState(document);
+  return <span className={`document-dirty${state.kind !== "unmodified" ? " dirty" : ""}`} data-document-state={state.kind}>{state.label}</span>;
+}
+
+export function NativeEnginePanel({ status, limits, children }: {
+  status: string; limits: { depth: number; nodes: number }; children: ReactNode;
+}) {
+  return <section className="card engine-card">
+    <div className="card-title"><h2>Native engine</h2><span className="engine-phase" role="status" aria-label="Engine turn status">{status}</span></div>
+    <p className="caption" data-play-limits>Play limit: depth {limits.depth} · {limits.nodes.toLocaleString()} nodes</p>
+    {children}
+  </section>;
+}
+
+export function GamePositionStatus({ historical, concluded, paused, humanTurn, thinking, ply }: {
+  historical: boolean; concluded: boolean; paused: boolean; humanTurn: boolean; thinking: boolean; ply: number;
+}) {
+  return <div className="game-footnote" data-position-status>
+    <span>{historical ? "Read-only history · return to live to play" : concluded ? "Game concluded" : paused ? "Play paused · resume explicitly to continue" : humanTurn ? "Your turn" : thinking ? "mShogi is searching within fixed work limits" : "Engine turn paused"}</span>
+    <span>{historical ? "Selected position" : "Live position"} · {ply} {ply === 1 ? "ply" : "plies"}</span>
+  </div>;
+}
 
 export function LiveGameHeading({ eyebrow, status, player, flip, statusRef }: {
   eyebrow: string; status: string; player: ReactNode; flip: ReactNode; statusRef?: Ref<HTMLHeadingElement>;

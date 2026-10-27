@@ -136,3 +136,52 @@ dependencies. Reproduce the comparison with the pinned CLI against base commit
 Rust/frontend tests, runtime architecture diagnostics and packaged application
 checks were not run for this planning-only change. No game, performance,
 strength or platform verification result is inferred from these planning checks.
+
+## Integration validation (2026-10-27)
+
+After MSH-95 completed and pushed, the designated integrator merged planning
+commit `75d99a66939465c1577d748e8b5509d70bf6d8e0` into `codex/rewrite` at
+`ebc7bd8b15f44b27b0abe71c6d9a75125588db3f`, with implementation parent
+`50b114a9a1624ed15700cc88e5a221fb23745457`. This supersedes the isolated
+planner's session-only integration restriction above; its historical account
+remains intact. The primary checkout stays on `codex/rewrite`.
+
+Reconciliation required no task edits or renumbering. The planning diff and all
+later implementation/evidence paths were disjoint. MSH-95 remains Done;
+MSH-105 retains its complete latest evidence, To Do status and satisfied
+dependencies. No subsequent implementation or diagnostic review was started.
+
+Actual checks on Darwin 27.0.0 arm64, pinned Backlog.md 1.55.1 (the PATH version
+is 1.55.0 and was not used for mutations):
+
+- Refreshed `origin` with `git fetch origin`; the clean primary checkout and
+  remote integration tip both matched `50b114a`. No In Progress/In Review tasks
+  were found by `backlog task list --status 'In Progress,In Review' --plain`.
+- Read-only Python/PyYAML comparison of every task against Git parent `50b114a`
+  passed: all 105 existing task bodies/evidence and metadata remain identical
+  except the nine explicitly requested dependency additions and timestamps.
+  Four new records produce 109 unique/resolved IDs. Full dependency DFS passed
+  with no missing dependencies, duplicate edges, self-dependencies or cycles.
+- Exact gate and reachability assertions passed for MSH-106–109, MSH-47,
+  MSH-49–55/MSH-104 and transitive MSH-56. Earlier implementation tasks and
+  MSH-48 gain no review prerequisite. MSH-106–108 remain in M4 and MSH-109 in M5;
+  each remains unassigned Ready with eight unchecked criteria, four unchecked
+  DoD items, no implementation plan and valid documentation references. All
+  retain the full diagnostic/output contract and valid no-material-change
+  outcome. These assertions can be reproduced from the task frontmatter and
+  bodies at the two merge parents and the merged tree; temporary scripts are
+  convenience files only.
+- Pinned `backlog doctor`, `git diff --check` and `git diff --cached --check`
+  passed. The integrated planning scope is exactly 13 task records and three
+  documentation files. Production behavior is unchanged, so no new production,
+  GUI or platform tests were run; existing MSH-95 evidence remains applicable.
+- A separate Codex reviewer independently read every planning change and
+  performed read-only Git/Python graph and preservation checks against the
+  planning base and final implementation parent. Review passed with no
+  actionable findings. This reviewed planning integrity, not runtime
+  architectural health.
+- Before cleanup, the ordinary planning worktree had no tracked changes,
+  untracked files or ignored files. `lsof +D` found no process using it; its
+  recorded sole remaining purpose was integration. Cleanup is permitted only
+  after the merge is confirmed pushed, using ordinary non-forced Git worktree
+  removal and deletion of the integrated disposable local branch.

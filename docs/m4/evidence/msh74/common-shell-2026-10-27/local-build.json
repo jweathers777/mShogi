@@ -1,0 +1,23 @@
+{
+  "product_source": "19beb7437f11003734d65ee68f69a5f34bbdd02c",
+  "integration_after_external_driver_fix": "19beb7437f11003734d65ee68f69a5f34bbdd02c",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "macos": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0.1\nBuildVersion:\t\t26A434\n",
+  "normal_bundle": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+  "host_sha256": "77b46b68ae293f355a716f8d04709263d5012b55e64a4d32b87f0043913acc20",
+  "engine_sha256": "5d0fa23fdd7ca5683c848c7117379aabed033288c6d9114f697492153f2f5615",
+  "frontend": {
+    "tests": 149,
+    "files": 21,
+    "strict_typescript": "passed",
+    "node": "24.19.0"
+  },
+  "commands": [
+    "cd desktop && npm run check && npm test",
+    "cd desktop && npm run desktop:build -- --bundles app",
+    "python3 desktop/scripts/package-smoke.py desktop/src-tauri/target/release/bundle/macos/mShogi.app --report docs/m4/evidence/msh74/common-shell-2026-10-27/macos-package.json",
+    "python3 -m unittest discover -s desktop/scripts -p test_gui_linux.py -v"
+  ],
+  "gui_status": "Actual normal19 macOS package launched after owner unlock: paired Chess/Shogi normal native screenshots, real Shogi play, read-only board/hand/keyboard/history/Flip inspection, bounded historical and incomplete analysis, Save/Open stopped, and native saved-game Quit with host/engine absence. No current Mac minimum-size or successful rapid-Cancel claim; current Windows/Linux GUI journeys supply minimum/cancellation evidence.",
+  "scope": "Local frontend, normal package/protocol checks and separately retained actual native GUI evidence in macos/README.md. Platform-specific and visual review limits remain explicit."
+}

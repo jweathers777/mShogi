@@ -1,0 +1,9 @@
+{
+  "product_source": "19beb7437f11003734d65ee68f69a5f34bbdd02c",
+  "method": "Exact native normal bundle path after fresh CUA launch; no development server or verification package",
+  "processes": [
+    "75549 /Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi.app/Contents/MacOS/mshogi-desktop"
+  ],
+  "host_sha256": "77b46b68ae293f355a716f8d04709263d5012b55e64a4d32b87f0043913acc20",
+  "engine_sha256": "5d0fa23fdd7ca5683c848c7117379aabed033288c6d9114f697492153f2f5615"
+}

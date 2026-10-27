@@ -1,0 +1,365 @@
+{
+  "schema_version": 1,
+  "source_revision": "44aeb47022d57fff55142799bb6ba55980f4dc33",
+  "status": "failed",
+  "passed_phases": 12,
+  "failed_phases": [
+    "normal-shogi",
+    "normal-shogi-reopened"
+  ],
+  "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/40489563132",
+  "job_url": "https://github.com/jweathers777/mShogi/actions/runs/40489563132/job/122139776773",
+  "original_artifact_name": "desktop-ubuntu-24.04",
+  "original_download_directory": "/private/tmp/msh74-shell2-ci/44aeb47022d57fff55142799bb6ba55980f4dc33/linux",
+  "retention": "Exact originals; final product source, FAILED full Linux journey. New footer/theme/sizing assertions and12phases passed; connection reset interrupted normalShogi, dependentreopenarchive absent. QA hands pictures explicitlyverification. No normalShogi complete/history/hand invariant archive was created in this run. Packages/binaries omitted.",
+  "files": [
+    {
+      "path": "gui-report.json",
+      "artifact_path": "gui-evidence/gui-report.json",
+      "sha256": "8db898b08611abaa7b6744d73f39bce052bd089b36080f0b33452f6f90dff20e",
+      "bytes": 248344
+    },
+    {
+      "path": "normal-complete.mshogi",
+      "artifact_path": "gui-evidence/normal-complete.mshogi",
+      "sha256": "81b7f8b3f855efabd03102eecd70fb9fe73f8c1f4b216c7094f41f1ee18d1d3c",
+      "bytes": 7709
+    },
+    {
+      "path": "normal-historical-analysis.desktop.png",
+      "artifact_path": "gui-evidence/normal-historical-analysis.desktop.png",
+      "sha256": "484fe823cba89fdd1c1cd1497ad16ec7f99153582061f765a932cff0a4691cd0",
+      "bytes": 135895
+    },
+    {
+      "path": "normal-historical-analysis.dom.json",
+      "artifact_path": "gui-evidence/normal-historical-analysis.dom.json",
+      "sha256": "38a8b5077fb380332d64573b5251e656e7a3022b08b78a79875b9c70cc626571",
+      "bytes": 3429
+    },
+    {
+      "path": "normal-historical-analysis.webview.png",
+      "artifact_path": "gui-evidence/normal-historical-analysis.webview.png",
+      "sha256": "582e187091258f45eb2f61f53b6907b6279437eb9fe30bd49442e206b3e0e022",
+      "bytes": 127918
+    },
+    {
+      "path": "normal-initial-chess-minimum-size.desktop.png",
+      "artifact_path": "gui-evidence/normal-initial-chess-minimum-size.desktop.png",
+      "sha256": "07dc7c5e6a96a6920db9b8b4fbf409d523dc939cf8bdb145d81ab5cc82335469",
+      "bytes": 83916
+    },
+    {
+      "path": "normal-initial-chess-minimum-size.dom.json",
+      "artifact_path": "gui-evidence/normal-initial-chess-minimum-size.dom.json",
+      "sha256": "b1562cabfe74abac7fafba4e5b831db4aa9d8dca5476bd82f5f353c62a9b7406",
+      "bytes": 2669
+    },
+    {
+      "path": "normal-initial-chess-minimum-size.webview.png",
+      "artifact_path": "gui-evidence/normal-initial-chess-minimum-size.webview.png",
+      "sha256": "fc368e53e94e5b1bfd9b920b817fc62367c1463d89f39a1a24b3375be31a312d",
+      "bytes": 72960
+    },
+    {
+      "path": "normal-initial-chess-normal-size.desktop.png",
+      "artifact_path": "gui-evidence/normal-initial-chess-normal-size.desktop.png",
+      "sha256": "ad5ccd55d45bbdbe1c4199a6efa25493dacdc7ecc7f0364ecfcbf5a4bcea0971",
+      "bytes": 106058
+    },
+    {
+      "path": "normal-initial-chess-normal-size.dom.json",
+      "artifact_path": "gui-evidence/normal-initial-chess-normal-size.dom.json",
+      "sha256": "59a96b5ae594033f624c2434ae2ad125578bc542d0f2cf01d8141c7cb2420446",
+      "bytes": 2720
+    },
+    {
+      "path": "normal-initial-chess-normal-size.webview.png",
+      "artifact_path": "gui-evidence/normal-initial-chess-normal-size.webview.png",
+      "sha256": "f3072404d72d92fb85918b85ee6cb1dadcc68d037550d5aaf0f6f22887fd7058",
+      "bytes": 98997
+    },
+    {
+      "path": "normal-inspect-chess-b8.desktop.png",
+      "artifact_path": "gui-evidence/normal-inspect-chess-b8.desktop.png",
+      "sha256": "d4fe07c3007a0b42b9213bb6a7c8593298c75699ae3506b60b89efc39d102b6e",
+      "bytes": 129569
+    },
+    {
+      "path": "normal-inspect-chess-b8.dom.json",
+      "artifact_path": "gui-evidence/normal-inspect-chess-b8.dom.json",
+      "sha256": "91257a1e17e3d7400855d5aad8ed0e217e266f83d931b046c9930919e5631477",
+      "bytes": 1985
+    },
+    {
+      "path": "normal-inspect-chess-b8.webview.png",
+      "artifact_path": "gui-evidence/normal-inspect-chess-b8.webview.png",
+      "sha256": "bcb9de7c76427561bed5887b8d1e57c79207f7efb81e8b92e8a6eb802a4a7114",
+      "bytes": 121981
+    },
+    {
+      "path": "normal-inspect-chess-e7.desktop.png",
+      "artifact_path": "gui-evidence/normal-inspect-chess-e7.desktop.png",
+      "sha256": "9bd58b13f5052a01c1c00b19017602708565d6314849635e8d05474395044d35",
+      "bytes": 85039
+    },
+    {
+      "path": "normal-inspect-chess-e7.dom.json",
+      "artifact_path": "gui-evidence/normal-inspect-chess-e7.dom.json",
+      "sha256": "f1620dafd3968471dcc283fb6fdca4b8c65a6719d0350b62bf2606f22f237c19",
+      "bytes": 1410
+    },
+    {
+      "path": "normal-inspect-chess-e7.webview.png",
+      "artifact_path": "gui-evidence/normal-inspect-chess-e7.webview.png",
+      "sha256": "fd58d27665e8a82ab34f061262cae289ff97ab5b12b73957c9393a1bffcbcbbc",
+      "bytes": 74552
+    },
+    {
+      "path": "normal-native-close-guard.desktop.png",
+      "artifact_path": "gui-evidence/normal-native-close-guard.desktop.png",
+      "sha256": "1cf44dfd799c15b58f1cfaaeafb17bbe2e560545b7ae3f1adee25618941c5b60",
+      "bytes": 130251
+    },
+    {
+      "path": "normal-native-close-guard.dom.json",
+      "artifact_path": "gui-evidence/normal-native-close-guard.dom.json",
+      "sha256": "5a54daa357bee6b3aa8cff40e7cf8d88d25c9d6b1189c5ae586b595bce9e38ce",
+      "bytes": 2685
+    },
+    {
+      "path": "normal-native-close-guard.webview.png",
+      "artifact_path": "gui-evidence/normal-native-close-guard.webview.png",
+      "sha256": "94b4391c0cc827c31767ac8c0cc9d4a051f0a12e8b3cf04972b543ff23e68406",
+      "bytes": 122028
+    },
+    {
+      "path": "normal-shogi-driver.log",
+      "artifact_path": "gui-evidence/normal-shogi-driver.log",
+      "sha256": "12f2071ec4216de553d70bc80cb00ff9c57809a090251cd8336fe5198c8e64c1",
+      "bytes": 512
+    },
+    {
+      "path": "normal-shogi-failure.desktop.png",
+      "artifact_path": "gui-evidence/normal-shogi-failure.desktop.png",
+      "sha256": "8ff3ac7a34df5b0df4dab7fb90aba739489b1a3d4ff0bb9933edb1f1ed677672",
+      "bytes": 120858
+    },
+    {
+      "path": "normal-shogi-failure.dom.json",
+      "artifact_path": "gui-evidence/normal-shogi-failure.dom.json",
+      "sha256": "181009ca734b110c20f8054a6811147bca8f2b4440ee42bde8b00c39ff7ff582",
+      "bytes": 1944
+    },
+    {
+      "path": "normal-shogi-failure.webview.png",
+      "artifact_path": "gui-evidence/normal-shogi-failure.webview.png",
+      "sha256": "a72fbc75b4a5c21d64e9aa6fc6cd8b061c664335d98529fde63ddf24006bd409",
+      "bytes": 112460
+    },
+    {
+      "path": "normal-shogi-initial-gote.desktop.png",
+      "artifact_path": "gui-evidence/normal-shogi-initial-gote.desktop.png",
+      "sha256": "177a9fb37c506cee99b5aac8c29f5288ca03467a4e719f6dfed1f16bd52806a4",
+      "bytes": 136695
+    },
+    {
+      "path": "normal-shogi-initial-gote.dom.json",
+      "artifact_path": "gui-evidence/normal-shogi-initial-gote.dom.json",
+      "sha256": "1a84b41d2e0bb98851904801bfc86c8747dd2c5a8df6841e1c44035e003725b8",
+      "bytes": 1696
+    },
+    {
+      "path": "normal-shogi-initial-gote.webview.png",
+      "artifact_path": "gui-evidence/normal-shogi-initial-gote.webview.png",
+      "sha256": "c1a9f45f45f9a3107cd1133fdf145a325163b7850a12589d3a5b36737479fb4f",
+      "bytes": 129192
+    },
+    {
+      "path": "normal-shogi-initial-sente.desktop.png",
+      "artifact_path": "gui-evidence/normal-shogi-initial-sente.desktop.png",
+      "sha256": "d1a4e5bb5a3847205428693bbf567e09776434deb37123e0307722b559f2bcf1",
+      "bytes": 132251
+    },
+    {
+      "path": "normal-shogi-initial-sente.dom.json",
+      "artifact_path": "gui-evidence/normal-shogi-initial-sente.dom.json",
+      "sha256": "e9d5dd738628fca333354edc7b3cbf3795d57545fb9e43ed950ae264bfafda95",
+      "bytes": 1565
+    },
+    {
+      "path": "normal-shogi-initial-sente.webview.png",
+      "artifact_path": "gui-evidence/normal-shogi-initial-sente.webview.png",
+      "sha256": "4c4e7a4f86f7d4cc527abcb3304b40d1f8bc3549d4cfe85432792bab4b897bdc",
+      "bytes": 124393
+    },
+    {
+      "path": "normal-shogi-inspect-shogi-5g.desktop.png",
+      "artifact_path": "gui-evidence/normal-shogi-inspect-shogi-5g.desktop.png",
+      "sha256": "58845791fa115e0fee45a2efef88a8128cfbd6a5a89257d0731dee5bae18d353",
+      "bytes": 139420
+    },
+    {
+      "path": "normal-shogi-inspect-shogi-5g.dom.json",
+      "artifact_path": "gui-evidence/normal-shogi-inspect-shogi-5g.dom.json",
+      "sha256": "ef93a5cb67a628cce481b0f2db02a97d49b6c3cfcf76a700e14c021b8badc72e",
+      "bytes": 1803
+    },
+    {
+      "path": "normal-shogi-inspect-shogi-5g.webview.png",
+      "artifact_path": "gui-evidence/normal-shogi-inspect-shogi-5g.webview.png",
+      "sha256": "6ad5a4275438a9f70a7d9a99e56a1166639e82617b767bea0fe2d9d00b228ebd",
+      "bytes": 132071
+    },
+    {
+      "path": "normal-shogi-inspect-shogi-7c.desktop.png",
+      "artifact_path": "gui-evidence/normal-shogi-inspect-shogi-7c.desktop.png",
+      "sha256": "76d3f4c10c3f77a880aae88e44a7cf696efde39e513592a773875d44f4a667d3",
+      "bytes": 104702
+    },
+    {
+      "path": "normal-shogi-inspect-shogi-7c.dom.json",
+      "artifact_path": "gui-evidence/normal-shogi-inspect-shogi-7c.dom.json",
+      "sha256": "478c25c40a72bf7ff8c25c398d0c99d05120f5823839272cdc9543d709997dbc",
+      "bytes": 1618
+    },
+    {
+      "path": "normal-shogi-inspect-shogi-7c.webview.png",
+      "artifact_path": "gui-evidence/normal-shogi-inspect-shogi-7c.webview.png",
+      "sha256": "10c3699d871acb9240f6c6eb737ba8ab13efc44bb4a190185520e9f56978e501",
+      "bytes": 93057
+    },
+    {
+      "path": "normal-shogi-minimum-size.desktop.png",
+      "artifact_path": "gui-evidence/normal-shogi-minimum-size.desktop.png",
+      "sha256": "03dd06a963e1d96d594365ae702b7e990d775915a1ba036cf1b02b16b084ef3e",
+      "bytes": 102079
+    },
+    {
+      "path": "normal-shogi-minimum-size.dom.json",
+      "artifact_path": "gui-evidence/normal-shogi-minimum-size.dom.json",
+      "sha256": "988542973862dd9444bb97400b479abc8d767a58a429a77ff3ad8d3f7a3c7ebc",
+      "bytes": 1514
+    },
+    {
+      "path": "normal-shogi-minimum-size.webview.png",
+      "artifact_path": "gui-evidence/normal-shogi-minimum-size.webview.png",
+      "sha256": "521486d5800cad4e1a45e33d766a3f415abc57155f6b4b75e23792f2858c0676",
+      "bytes": 91167
+    },
+    {
+      "path": "normal-shogi-reopened-driver.log",
+      "artifact_path": "gui-evidence/normal-shogi-reopened-driver.log",
+      "sha256": "9d3670c00de756fe27d5a0fa1aa5dba5b3b23bb7bf88013f3173ac8524065291",
+      "bytes": 638
+    },
+    {
+      "path": "normal-shogi-reopened-failure.desktop.png",
+      "artifact_path": "gui-evidence/normal-shogi-reopened-failure.desktop.png",
+      "sha256": "bfef6d48c4a05f535a1e02df6125a9f2d2896a8ef8a180404753319c584c8b65",
+      "bytes": 108399
+    },
+    {
+      "path": "normal-shogi-reopened-failure.dom.json",
+      "artifact_path": "gui-evidence/normal-shogi-reopened-failure.dom.json",
+      "sha256": "e9c0806d15c82395ebe579b86a6e6e4fdd8df0479c25922e0c70e1f14b151929",
+      "bytes": 1578
+    },
+    {
+      "path": "normal-shogi-reopened-failure.webview.png",
+      "artifact_path": "gui-evidence/normal-shogi-reopened-failure.webview.png",
+      "sha256": "c758c95ec47694973a70f889b41bceb2e0a90869331a91f33826d9033855a0be",
+      "bytes": 101109
+    },
+    {
+      "path": "normal-shogi-reopened/linux-bound.json",
+      "artifact_path": "gui-evidence/normal-shogi-reopened/linux-bound.json",
+      "sha256": "772e886178701416e541bc6c89c111dcd5c2e3d4adbb1f9563404c83a8185ad6",
+      "bytes": 426
+    },
+    {
+      "path": "normal-shogi/linux-bound.json",
+      "artifact_path": "gui-evidence/normal-shogi/linux-bound.json",
+      "sha256": "62bab06cc821614c586bada62f06f98ff09b1aec5a41526c070692fb2c48b322",
+      "bytes": 426
+    },
+    {
+      "path": "normal/linux-bound.json",
+      "artifact_path": "gui-evidence/normal/linux-bound.json",
+      "sha256": "84c0a3f2b12c0d36c35984d78ffcc0a1db5dcf3a76d4afbf5734177a1391e21a",
+      "bytes": 426
+    },
+    {
+      "path": "packages/normal/manifest.json",
+      "artifact_path": "gui-packages/normal/manifest.json",
+      "sha256": "ccb5044c3fbdacd18bb740d8211ce84bc598a70c68d7d1cafe36d8b35acecef1",
+      "bytes": 1789
+    },
+    {
+      "path": "packages/normal/package-smoke.json",
+      "artifact_path": "gui-packages/normal/package-smoke.json",
+      "sha256": "29a1102f1316765811ee8f20498a5a03468e4c300a07fbf44bc1333c6a45054f",
+      "bytes": 4203
+    },
+    {
+      "path": "packages/verification/manifest.json",
+      "artifact_path": "gui-packages/verification/manifest.json",
+      "sha256": "69b49955078ac62fa42c3c6b08ef706e6e68d10bfb2c99bf16c2f5928f8e0242",
+      "bytes": 351
+    },
+    {
+      "path": "verification-shogi-hands-both-hands.desktop.png",
+      "artifact_path": "gui-evidence/verification-shogi-hands-both-hands.desktop.png",
+      "sha256": "fac3fcf7c601881af297140151c4b7208799b9119a5f5656dc8a1feb8e09d3cb",
+      "bytes": 86457
+    },
+    {
+      "path": "verification-shogi-hands-both-hands.dom.json",
+      "artifact_path": "gui-evidence/verification-shogi-hands-both-hands.dom.json",
+      "sha256": "736ed5dc266dcce99311c0244a22eb5f8d7f2be125f55734e40509a3452a0aa1",
+      "bytes": 7248
+    },
+    {
+      "path": "verification-shogi-hands-both-hands.webview.png",
+      "artifact_path": "gui-evidence/verification-shogi-hands-both-hands.webview.png",
+      "sha256": "e732c72971e2e17ac753ad7b2f429038e6edb2098dd9599166d9d447ce4af171",
+      "bytes": 73037
+    },
+    {
+      "path": "verification-shogi-hands-drop-selection.desktop.png",
+      "artifact_path": "gui-evidence/verification-shogi-hands-drop-selection.desktop.png",
+      "sha256": "1bcfbeb348daf7f834d71b5950ff361a2d3c1d4aa241e1682de641081d6b4712",
+      "bytes": 125713
+    },
+    {
+      "path": "verification-shogi-hands-drop-selection.dom.json",
+      "artifact_path": "gui-evidence/verification-shogi-hands-drop-selection.dom.json",
+      "sha256": "7c96c9810b46b69ea12f292c2cf305260926f2251b8e19a59739bd5ea91b26c4",
+      "bytes": 1093
+    },
+    {
+      "path": "verification-shogi-hands-drop-selection.webview.png",
+      "artifact_path": "gui-evidence/verification-shogi-hands-drop-selection.webview.png",
+      "sha256": "427ebc9efe471a187b91d8ca29ced7dad77c0b04e3b107930b0f6a834dc2ac52",
+      "bytes": 112390
+    },
+    {
+      "path": "verification-shogi-hands-result.desktop.png",
+      "artifact_path": "gui-evidence/verification-shogi-hands-result.desktop.png",
+      "sha256": "172a093d89a91d4b5286762d54a9f0a44633836406cbf91687d24b9ef8ac203d",
+      "bytes": 93249
+    },
+    {
+      "path": "verification-shogi-hands-result.dom.json",
+      "artifact_path": "gui-evidence/verification-shogi-hands-result.dom.json",
+      "sha256": "9b20eb64632916c3184d0510f85fd48499a58205cd93a73fd141b4d1413022df",
+      "bytes": 1163
+    },
+    {
+      "path": "verification-shogi-hands-result.webview.png",
+      "artifact_path": "gui-evidence/verification-shogi-hands-result.webview.png",
+      "sha256": "4cdfc252d721e5a1af2d97af84876ea46135973d6ed2360ca33ae053c4880bfe",
+      "bytes": 80366
+    }
+  ]
+}

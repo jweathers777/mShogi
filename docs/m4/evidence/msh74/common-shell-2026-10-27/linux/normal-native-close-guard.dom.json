@@ -1,0 +1,55 @@
+{
+  "text": "\u265c\nmShogi\nCHESS \u00b7 UNTIMED\nLocal engine\nUNSAVED\nnormal-complete.mshogi\nSaved a complete desktop document.\nNew game\nSave\nSave as\u2026\nOpen\u2026\nYOUR GAME\n\nWhite to move\nYou play White against mShogi\n\u2195\nFlip board\nY\nYouWhite\nHuman player\nTo move\n\u265c\n1\n\u265e\n\u265d\n\u265a\n\u265b\n\u265d\n\u265e\n\u265c\n\u265f\n2\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n3\n4\n\u265f\n5\n\u265f\n6\n\u265f\n7\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265c\n8\nh\n\u265e\ng\n\u265d\nf\n\u265a\ne\n\u265b\nd\n\u265d\nc\n\u265e\nb\n\u265c\na\nSelect a piece, then a destination. Arrow keys move focus \u00b7 Enter or Space selects \u00b7 Escape cancels.\nm\nmShogiBlack\nYour opponent\nYour turn\nLive position \u00b7 2 plies\nAnalysis\n\nPlay details\nAnalyze position\nRead-only analysis\nIdle\nStarting analysis pauses play. Results suggest or inspect; they never play a move, claim a draw or change the live game.\nSelected: Live game \u00b7 live position\nBounded move search\n\nSearch depth\nNode budget\nStart move analysis\nAdvanced: Full mating reachability\nFinal native observations only. Every request has work budgets and a 15-second process watchdog; these are not hard realtime guarantees.\nRecorded search observations (3)\nGame history\nNative event timeline\nInspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.\n\nInitial known position\n0 plies\n\nMatch started\n0 plies\n\ne2e4\n1 plies\n\na7a5\n2 plies\nPlayed move identifiers\nGame actions\n\nResign game\u2026\nAbout & technical details\nSave your changes?\nSave this game before closing mShogi, or explicitly discard its unsaved changes.\nSave & continue\nDiscard & continue\nCancel",
+  "focus": {
+    "label": null,
+    "text": "Cancel",
+    "tag": "BUTTON"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 820,
+    "width": 1180
+  },
+  "inputs": [
+    {
+      "min": "1",
+      "disabled": false,
+      "type": "number",
+      "value": "1",
+      "max": "8",
+      "tag": "INPUT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "1000",
+      "max": "5000000",
+      "tag": "INPUT"
+    },
+    {
+      "min": null,
+      "disabled": false,
+      "type": "select-one",
+      "value": "either",
+      "max": null,
+      "tag": "SELECT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "1000",
+      "max": "100000",
+      "tag": "INPUT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "10000",
+      "max": "1000000",
+      "tag": "INPUT"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "process": {
+    "pid": 28846,
+    "parent_pid": 28844,
+    "start_ticks": "63664",
+    "state": "S",
+    "executable": "/usr/bin/mshogi-desktop",
+    "command": "/usr/bin/mshogi-desktop"
+  },
+  "window": {
+    "id": 2097155,
+    "pid": 28846,
+    "title": "mShogi",
+    "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+  },
+  "host": "/usr/bin/mshogi-desktop",
+  "engine": "/usr/bin/mshogi"
+}

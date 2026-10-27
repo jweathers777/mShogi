@@ -1,0 +1,15 @@
+{
+  "text": "\u265c\nmShogi\nCHESS \u00b7 UNTIMED\nLocal engine\nUNMODIFIED\nUntitled game\nNew game\nSave\nSave as\u2026\nOpen\u2026\nYOUR GAME\n\nWhite to move\nYou play White against mShogi\n\u2195\nm\nmShogiBlack\n\u265c\n8\n\u265e\n\u265d\n\u265b\n\u265a\n\u265d\n\u265e\n\u265c\n\u265f\n7\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n6\n5\n4\n3\n\u265f\n2\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265c\n1\na\n\u265e\nb\n\u265d\nc\n\u265b\nd\n\u265a\ne\n\u265d\nf\n\u265e\ng\n\u265c\nh\nY\nYouWhite\nSelect a piece, then a destination. Arrow keys move focus \u00b7 Enter or Space selects \u00b7 Escape cancels.\nYour turn\nLive position \u00b7 0 plies\nAnalysis\n\nPlay details\nAnalyze position\nNative engine\nIdle\nPlay limit: depth 2 \u00b7 20000 nodes\nNo engine search has completed in this game.\nGame history\nNative event timeline\nInspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.\n\nInitial known position\n0 plies\n\nMatch started\n0 plies\nPlayed move identifiers\nGame actions\n\nResign game\u2026\nAbout & technical details\n",
+  "focus": {
+    "label": null,
+    "text": "\u265cmShogiCHESS \u00b7 UNTIMEDLocal engineUnmodifiedUntitled gameNew gameSaveSave as\u2026Open\u2026YOUR GAMEWhite to moveYou play White against mShogi            \u2195 Flip board          mmShogiBlackYour opponent\u265c8\u265e\u265d\u265b\u265a\u265d\u265e\u265c\u265f7\u265f\u265f\u265f\u265f\u265f\u265f\u265f6543\u265f2\u265f\u265f\u265f\u265f\u265f\u265f\u265f\u265c1a\u265eb\u265dc\u265bd\u265ae\u265df\u265eg\u265chYYouWhiteHuman playerTo moveSelect a piece, then a destination. Arrow keys move focus \u00b7 Enter or Space selects \u00b7 Escape cancels.Your turnLive position \u00b7 0 plies          AnalysisPlay detailsAnalyze positionNative engineidlePlay limit: depth 2 \u00b7 20000 nodesNo engine search has completed in this game.          Game historyNative event timelineInspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.Initial known position0 pliesMatch started0 pliesPlayed move identifiersMoves appear here as the game is played.Game actions          Resign game\u2026About & technical detailsmShogi \u00b7 untimed chess \u00b7 native rules and complete game records.Session detailsSession version 1 \u00b7 snapshot revision 1File detailsNo file selectedDocument revision 0. Modes, limits, match events and observations are saved by the native host.Quit application      \n",
+    "tag": "BODY"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 650,
+    "width": 760
+  },
+  "common_actions": [],
+  "inputs": []
+}

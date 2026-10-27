@@ -1,0 +1,41 @@
+{
+  "text": "\u265c\nmShogi\nSHOGI \u00b7 UNTIMED\nLocal engine\nUNSAVED\nnormal-shogi-complete.mshogi\nNew game\nSave\nSave as\u2026\nOpen\u2026\nHISTORY \u00b7 READ ONLY\n\nViewing event 1\nYou play Sente against mShogi\n\u2195\nFlip board\nViewing history \u00b7 read only\nReturn to live\nViewing event 1 \u00b7 the live game is unchanged\nm\nmShogiGote\nYour opponent\nTo move\nNo pieces in hand\n\u9999\n\u8eca\n\u6842\n\u99ac\n\u9280\n\u5c06\n\u91d1\n\u5c06\n\u738b\n\u5c06\n\u91d1\n\u5c06\n\u9280\n\u5c06\n\u6842\n\u99ac\n\u9999\n\u8eca\n\u98db\n\u8eca\n\u89d2\n\u884c\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u89d2\n\u884c\n\u98db\n\u8eca\n\u9999\n\u8eca\n\u6842\n\u99ac\n\u9280\n\u5c06\n\u91d1\n\u5c06\n\u7389\n\u5c06\n\u91d1\n\u5c06\n\u9280\n\u5c06\n\u6842\n\u99ac\n\u9999\n\u8eca\n9\n8\n7\n6\n5\n4\n3\n2\n1\na\nb\nc\nd\ne\nf\ng\nh\ni\nY\nYouSente\nHuman player\nNo pieces in hand\nInspecting Gote pawn \u00b7 Read-only \u00b7 Hollow rings show movement choices\nArrows \u00b7 Enter \u00b7 Esc\nInspecting Gote pawn. Read-only movement choices; no action can be played.\nAnalysis\n\nPlay details\nAnalyze position\nRead-only analysis\nSelected event 1 \u00b7 Gote perspective\n\nDepth\nNode limit\nStart move analysis\nChoose Analyze to inspect this position.\nRecorded searches (2)\nGame history\n2 events\n\n0\nStarting position\n\n1\nSente: 7g7f\n\n2\nGote: 4c4d\nGame actions\n\nAbout & technical details\n",
+  "focus": {
+    "label": "7c, Gote pawn, Inspecting Gote pawn",
+    "text": "\u6b69\u5175",
+    "tag": "g"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 820,
+    "width": 1180
+  },
+  "common_actions": [
+    {
+      "rightGap": 0,
+      "label": "Return to live",
+      "sameRowWithStart": null,
+      "section": null,
+      "analysisActionRow": false,
+      "historyHeading": true
+    }
+  ],
+  "inputs": [
+    {
+      "min": "1",
+      "disabled": false,
+      "type": "number",
+      "value": "1",
+      "max": "4",
+      "tag": "INPUT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "1000",
+      "max": "20000",
+      "tag": "INPUT"
+    }
+  ]
+}

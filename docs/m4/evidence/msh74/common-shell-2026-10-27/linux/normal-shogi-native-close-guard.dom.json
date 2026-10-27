@@ -1,0 +1,31 @@
+{
+  "text": "\u265c\nmShogi\nSHOGI \u00b7 UNTIMED\nLocal engine\nUNSAVED\nnormal-shogi-complete.mshogi\nNew game\nSave\nSave as\u2026\nOpen\u2026\nYOUR GAME\n\nSente to move\nYou play Sente against mShogi\n\u2195\nFlip board\nY\nYouSente\nHuman player\nTo move\nNo pieces in hand\n\u9999\n\u8eca\n\u6842\n\u99ac\n\u9280\n\u5c06\n\u91d1\n\u5c06\n\u7389\n\u5c06\n\u91d1\n\u5c06\n\u9280\n\u5c06\n\u6842\n\u99ac\n\u9999\n\u8eca\n\u98db\n\u8eca\n\u89d2\n\u884c\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u89d2\n\u884c\n\u98db\n\u8eca\n\u9999\n\u8eca\n\u6842\n\u99ac\n\u9280\n\u5c06\n\u91d1\n\u5c06\n\u738b\n\u5c06\n\u91d1\n\u5c06\n\u9280\n\u5c06\n\u6842\n\u99ac\n\u9999\n\u8eca\n1\n2\n3\n4\n5\n6\n7\n8\n9\ni\nh\ng\nf\ne\nd\nc\nb\na\nm\nmShogiGote\nYour opponent\nNo pieces in hand\nSelect a piece or hand piece, then a marked square.\nArrows \u00b7 Enter \u00b7 Esc\nPlay is paused.\nResume play\nAnalysis\n\nPlay details\nAnalyze position\nRead-only analysis\nSelected event 2 \u00b7 Sente perspective\n\nDepth\nNode limit\nStart move analysis\nAnalysis result available\nMove analysis \u00b7 event 2\n+2.00 pawns\nSente perspective \u00b7 Complete\nCompleted depth\n1\nNodes\n36\nContinuation\n8h \u2192 4d\nRead-only analysis. No move or declaration was played.\nRecorded searches (2)\nGame history\n2 events\n\n0\nStarting position\n\n1\nSente: 7g7f\n\n2\nGote: 4c4d\nGame actions\n\nResign game\u2026\nAbout & technical details\nSave your changes?\nSave this game before closing mShogi, or explicitly discard its unsaved changes.\nSave & continue\nDiscard & continue\nCancel",
+  "focus": {
+    "label": null,
+    "text": "Cancel",
+    "tag": "BUTTON"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 820,
+    "width": 1180
+  },
+  "inputs": [
+    {
+      "min": "1",
+      "disabled": false,
+      "type": "number",
+      "value": "1",
+      "max": "4",
+      "tag": "INPUT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "1000",
+      "max": "20000",
+      "tag": "INPUT"
+    }
+  ]
+}

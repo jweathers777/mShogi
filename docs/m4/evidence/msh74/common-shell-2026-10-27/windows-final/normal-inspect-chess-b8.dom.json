@@ -1,0 +1,24 @@
+{
+  "text": "\u265c\nmShogi\n\nCHESS \u00b7 UNTIMED\n\nLocal engine\nSAVED\nnormal-complete.mshogi\n\nReconstructed an exact read-only history prefix.\n\nNew game\nSave\nSave as\u2026\nOpen\u2026\n\nHISTORY \u00b7 READ ONLY\n\nRead-only history event 2 of 3\n\nYou play White against mShogi\n\n\u2195\nFlip board\nViewing history \u00b7 read only\nReturn to live\n\nRead-only history event 2 of 3 \u00b7 Black to move. The live game remains after 2 plies. Analysis uses this selected native history prefix.\n\nm\nmShogiBlack\nYour opponent\nTo move\n\u265c\n8\n\u265e\n\u265d\n\u265b\n\u265a\n\u265d\n\u265e\n\u265c\n\u265f\n7\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n6\n5\n4\n\u265f\n3\n\u265f\n2\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265c\n1\na\n\u265e\nb\n\u265d\nc\n\u265b\nd\n\u265a\ne\n\u265d\nf\n\u265e\ng\n\u265c\nh\nInspecting Black knight. Read-only movement choices; no action can be played.\nY\nYouWhite\nHuman player\n\nInspecting Black knight \u00b7 Read-only \u00b7 Hollow rings show movement choices \u00b7 Esc clears\n\nRead-only history \u00b7 return to live to play\nSelected position \u00b7 1 plies\nPlay paused\n\nBoard moves and draw claims are paused. Returning to live and resuming retires analysis and continues play.\n\nResume play\nAnalysis\nPlay details\nAnalyze position\nNative engine\nPlay Paused\n\nPlay limit: depth 2 \u00b7 20,000 nodes\n\nNo engine search has completed in this game.\n\nRecorded search observations (2)\nGame history\nNative event timeline\n\nInspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.\n\nInitial known position\n0 plies\nMatch started\n0 plies\ne2e4\n1 plies\na7a5\n2 plies\nPlayed move identifiers\nGame actions\nAbout & technical details",
+  "focus": {
+    "label": "b8, Black knight, Inspecting Black knight",
+    "tag": "g",
+    "text": "\u265e"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 820,
+    "width": 1180
+  },
+  "common_actions": [
+    {
+      "analysisActionRow": false,
+      "historyHeading": true,
+      "label": "Return to live",
+      "rightGap": 0,
+      "sameRowWithStart": null,
+      "section": null
+    }
+  ],
+  "inputs": []
+}

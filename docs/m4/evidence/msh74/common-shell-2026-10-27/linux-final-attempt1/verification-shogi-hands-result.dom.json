@@ -1,0 +1,14 @@
+{
+  "text": "\u265c\nmShogi\nSHOGI \u00b7 UNTIMED\nLocal engine\nUNSAVED\nUntitled shogi game\nNew game\nSave\nSave as\u2026\nOpen\u2026\nYOUR GAME\n\nSente to move\nYou play Sente against mShogi\n\u2195\nFlip board\nm\nmShogiGote\nYour opponent\n\n\u6b69\n\u5175\n1\n\u738b\n\u5c06\n\u9f8d\n\u738b\n\u6b69\n\u5175\n\u9f8d\n\u738b\n\u7389\n\u5c06\n9\n8\n7\n6\n5\n4\n3\n2\n1\na\nb\nc\nd\ne\nf\ng\nh\ni\nY\nYouSente\nHuman player\nTo move\nNo pieces in hand\nSelect a piece or hand piece, then a marked square.\nArrows \u00b7 Enter \u00b7 Esc\nAnalysis\n\nPlay details\nAnalyze position\nNative engine\nIdle\nUntimed \u00b7 bounded native search\nLast engine turn \u00b7 event 3\n+0.00 pawns\nGote perspective \u00b7 Complete\nCompleted depth\n2\nNodes\n1833\nContinuation\n1a \u2192 1b \u00b7 5c \u2192 1c\nGame history\n4 events\n\n0\nStarting position\n\n1\nSente: 5e5c+\n\n2\nGote: 4e4g+\n\n3\nSente: P*5e\n\n4\nGote: 1a1b\nGame actions\n\nResign game\u2026\nAbout & technical details\n",
+  "focus": {
+    "label": null,
+    "text": "Sente to move",
+    "tag": "H2"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 820,
+    "width": 1180
+  },
+  "inputs": []
+}

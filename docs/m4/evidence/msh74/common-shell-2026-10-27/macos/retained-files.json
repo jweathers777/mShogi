@@ -1,0 +1,147 @@
+{
+  "product_source": "19beb7437f11003734d65ee68f69a5f34bbdd02c",
+  "package_report": "../macos-package.json",
+  "method": "Unaltered normal-package native CUA JPEG captures; macOS27 arm64; paired1180x820 native windows at2xRetina; no current Mac minimum or successful rapid-cancel claim. Original provisional .png suffix corrected to .jpg without changing image bytes. Generated QA records copied byte-for-byte after actual normal Save/Open.",
+  "files": {
+    "README.md": {
+      "sha256": "02a58cfc5d41b0479381fa54bbc6fbec5915d00e71a57e161f5d889fe41c4f1d",
+      "bytes": 3779
+    },
+    "chess-normal.jpg": {
+      "sha256": "e1d94e07e7a8641a32e04b19e92b3fea6af2b0c1e9a4353d3329be6e8f8f5f13",
+      "bytes": 330436,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "chess-opponent-inspection.jpg": {
+      "sha256": "fecef5e1e7771261ae473e8b9c70614702c3696ae9c127b212ca7dd875d03e4e",
+      "bytes": 339001,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "native-quit.json": {
+      "sha256": "9f840c8c0f94c842949fa3d85ab3ca3f6ce6d98f2efab5585c98c9b587ddb768",
+      "bytes": 573
+    },
+    "native-saved-quit-guard.jpg": {
+      "sha256": "25e23693ea9edbe378398806cadeb2c0c7c608db3180979fc84cac444675ac10",
+      "bytes": 212450,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "records/inspection-flipped.mshogi": {
+      "sha256": "fb472b9f7450894fcb4e404daff2f2cf597877d33fd9ff51cdb5631aab526e13",
+      "bytes": 4539
+    },
+    "records/play-analysis.mshogi": {
+      "sha256": "b4fea6c5668d9f85e6d90cbe1a560492fb24667bf03b5cdbb2b92581f2a70e6a",
+      "bytes": 22939
+    },
+    "running-package.json": {
+      "sha256": "59bdbf7436db2199886f405d7a7551d80bec69d42a5b5d4732d6015bc6f261d9",
+      "bytes": 525
+    },
+    "shogi-historical-analysis.jpg": {
+      "sha256": "1be8017828517c5abe74df5c3d19133232f7c2e59f9a643e8b601843f5c4c090",
+      "bytes": 372800,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "shogi-historical-opponent-inspection.jpg": {
+      "sha256": "2b9f0bcea26ac8c505fee0e20fdff1ec15f9be751cda1b72d6a2615ef3c41582",
+      "bytes": 321503,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "shogi-history.jpg": {
+      "sha256": "4f5146585fd686d87c44f386df65c4f4bf077f8356c93a3f2d4ff6622b5302c5",
+      "bytes": 354731,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "shogi-incomplete-analysis.jpg": {
+      "sha256": "a7cd006bb8ff0b77bd29bd3f8ff4ed4ca6e60afe20b77dbe29f68af5907a51aa",
+      "bytes": 397922,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "shogi-node-limited-analysis.jpg": {
+      "sha256": "b2333adc5998e794945c53c3459afc7aa8b9f6a85bd3d339e491a008f358bfcf",
+      "bytes": 390203,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "shogi-normal.jpg": {
+      "sha256": "9b86072d36333c774ade7222c054cf38222911e679f8dc62982f5cde42f60fd9",
+      "bytes": 354001,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "shogi-opponent-hand-flipped.jpg": {
+      "sha256": "d3decc36722ded162befda372b5c0f1d80efeefaa946ca24bc442255b55c91ea",
+      "bytes": 366940,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "shogi-opponent-hand-keyboard.jpg": {
+      "sha256": "1aa153193223f23a447cc8a6ffcefacdb3ec473d1aed5254372488a647382675",
+      "bytes": 366793,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "shogi-opponent-hand.jpg": {
+      "sha256": "df712ddad1d3684a1e0e766cc7407e9fcd59c901251d040046a8e9f064506126",
+      "bytes": 366004,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "shogi-opponent-inspection.jpg": {
+      "sha256": "f36076e2e4dd5446e765ea8085bb0d70e8a8c300a53387c73e1ca77661ac7cbf",
+      "bytes": 362843,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "shogi-play.jpg": {
+      "sha256": "7e180ce908d38810775fc08c85e34f436ba3baa6f04d1984940adb30a583759c",
+      "bytes": 361509,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "shogi-reopened-stopped.jpg": {
+      "sha256": "3b1f304a85f160fefd218a8a034eeab34953ef751a91ce2e27fae3cd318d1e3a",
+      "bytes": 368290,
+      "pixels": [
+        2360,
+        1640
+      ]
+    }
+  }
+}

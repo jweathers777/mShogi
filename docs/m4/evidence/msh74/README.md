@@ -289,3 +289,14 @@ fresh request/process generation 13 and session version 14 establish new runtime
 work. Capacity saves retain 256 observations / 579575 bytes. These concrete
 observations supplement the broader native archive/history/capacity regressions;
 they do not substitute for those tests or make historical observations pending.
+
+## Owner common-shell refinement (2026-10-27)
+
+The subsequent [common dark application shell evidence](common-shell-2026-10-27/README.md)
+records the owner's requirement for one theme and one composition across Chess
+and Shogi. It supersedes the earlier light Shogi surroundings while preserving
+the native inspection and game-specific board/piece work. The intermediate paired
+screenshot review caught a remaining Chess help-row migration; the corrected
+source moves live help/inspection into the shared footer. Each capture and CI
+result retains its own revision and platform scope. MSH-74 remains In Review for
+final owner visual approval; MSH-75 is unstarted.

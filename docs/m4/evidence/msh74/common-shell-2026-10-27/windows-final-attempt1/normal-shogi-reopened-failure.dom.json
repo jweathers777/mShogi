@@ -1,0 +1,31 @@
+{
+  "text": "\u265c\nmShogi\n\nSHOGI \u00b7 UNTIMED\n\nLocal engine\nSAVED\nnormal-shogi-inspection-before.mshogi\nNew game\nSave\nSave as\u2026\nOpen\u2026\n\nYOUR GAME\n\nSente to move\n\nYou play Sente against mShogi\n\n\u2195\nFlip board\nm\nmShogiGote\nYour opponent\n\u6b69\n\u5175\n1\n\u738b\n\u5c06\n\u9f8d\n\u738b\n\u9f8d\n\u738b\n\u7389\n\u5c06\n9\n8\n7\n6\n5\n4\n3\n2\n1\na\nb\nc\nd\ne\nf\ng\nh\ni\nY\nYouSente\nHuman player\nTo move\n\u6b69\n\u5175\n1\nInspecting Gote pawn in hand \u00b7 Read-only \u00b7 Hollow rings show movement choices\nArrows \u00b7 Enter \u00b7 Esc\nInspection route complete. Complete route. Read-only; no action submitted.\n\nPlay is paused.\n\nResume play\nAnalysis\nPlay details\nAnalyze position\nRead-only analysis\n\nSelected event 2 \u00b7 Sente perspective\n\nDepth\nNode limit\nStart move analysis\n\nChoose Analyze to inspect this position.\n\nGame history\n2 events\n0\nStarting position\n1\nSente: 5e5c+\n2\nGote: 4e4g+\nGame actions\nResign game\u2026\nAbout & technical details",
+  "focus": {
+    "label": "5e, empty, route step",
+    "tag": "g",
+    "text": ""
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 820,
+    "width": 1180
+  },
+  "inputs": [
+    {
+      "disabled": false,
+      "max": "4",
+      "min": "1",
+      "tag": "INPUT",
+      "type": "number",
+      "value": "1"
+    },
+    {
+      "disabled": false,
+      "max": "20000",
+      "min": "0",
+      "tag": "INPUT",
+      "type": "number",
+      "value": "1000"
+    }
+  ]
+}

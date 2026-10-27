@@ -1,0 +1,10 @@
+{
+  "product_source": "19beb7437f11003734d65ee68f69a5f34bbdd02c",
+  "method": "Normal macOS Cmd+Q, saved-game Continue confirmation, CUA reported App quit; exact bundle host/sidecar process absence observed before relaunch",
+  "checked_paths": [
+    "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi.app/Contents/MacOS/mshogi-desktop",
+    "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi.app/Contents/MacOS/mshogi"
+  ],
+  "residual_processes": [],
+  "passed": true
+}

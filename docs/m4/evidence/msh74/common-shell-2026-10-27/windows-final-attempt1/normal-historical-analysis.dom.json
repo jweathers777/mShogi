@@ -1,0 +1,55 @@
+{
+  "text": "\u265c\nmShogi\n\nCHESS \u00b7 UNTIMED\n\nLocal engine\nUNSAVED\nnormal-complete.mshogi\n\nReconstructed an exact read-only history prefix.\n\nNew game\nSave\nSave as\u2026\nOpen\u2026\n\nHISTORY \u00b7 READ ONLY\n\nRead-only history event 2 of 3\n\nYou play White against mShogi\n\n\u2195\nFlip board\nViewing history \u00b7 read only\n\nRead-only history event 2 of 3 \u00b7 Black to move. The live game remains after 2 plies. Analysis uses this selected native history prefix.\n\nReturn to live game\nm\nmShogiBlack\nYour opponent\nTo move\n\u265c\n8\n\u265e\n\u265d\n\u265b\n\u265a\n\u265d\n\u265e\n\u265c\n\u265f\n7\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n6\n5\n4\n\u265f\n3\n\u265f\n2\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265c\n1\na\n\u265e\nb\n\u265d\nc\n\u265b\nd\n\u265a\ne\n\u265d\nf\n\u265e\ng\n\u265c\nh\nY\nYouWhite\nHuman player\n\nSelect a piece, then a destination. Arrow keys move focus \u00b7 Enter or Space selects \u00b7 Escape cancels.\n\nRead-only history \u00b7 return to live to play\nSelected position \u00b7 1 plies\nPlay paused\n\nBoard moves and draw claims are paused. Returning to live and resuming retires analysis and continues play.\n\nResume play\nAnalysis\nPlay details\nAnalyze position\nRead-only analysis\nComplete\n\nStarting analysis pauses play. Results suggest or inspect; they never play a move, claim a draw or change the live game.\n\nSelected: Read-only history event 2 of 3 \u00b7 historical prefix\n\nBounded move search\nSearch depth\nNode budget\nStart move analysis\nAdvanced: Full mating reachability\n\nFinal native observations only. Every request has work budgets and a 15-second process watchdog; these are not hard realtime guarantees.\n\nMove analysis completed for Historical position after 1 plies, Black to move. Suggested move: a7 \u2192 a5; not played.\n\nHistorical position after 1 plies\n\nBlack to move \u00b7 Bounded move search\n\nRecorded limit: depth 1, 1,000 nodes.\n\nSuggested move: a7 \u2192 a5 \u00b7 not played\n\n0.00 pawns from Black perspective\n\nCompleted depth\n1\nVisited nodes\n21\n\nSuggested continuation \u00b7 not played\na7 \u2192 a5\n\nAnalysis technical details\nRecorded search observations (3)\nGame history\nNative event timeline\n\nInspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.\n\nInitial known position\n0 plies\nMatch started\n0 plies\ne2e4\n1 plies\na7a5\n2 plies\nPlayed move identifiers\nGame actions\nAbout & technical details",
+  "focus": {
+    "label": null,
+    "tag": "BUTTON",
+    "text": "Start move analysis"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 820,
+    "width": 1180
+  },
+  "inputs": [
+    {
+      "disabled": false,
+      "max": "8",
+      "min": "1",
+      "tag": "INPUT",
+      "type": "number",
+      "value": "1"
+    },
+    {
+      "disabled": false,
+      "max": "5000000",
+      "min": "0",
+      "tag": "INPUT",
+      "type": "number",
+      "value": "1000"
+    },
+    {
+      "disabled": false,
+      "max": null,
+      "min": null,
+      "tag": "SELECT",
+      "type": "select-one",
+      "value": "either"
+    },
+    {
+      "disabled": false,
+      "max": "100000",
+      "min": "0",
+      "tag": "INPUT",
+      "type": "number",
+      "value": "1000"
+    },
+    {
+      "disabled": false,
+      "max": "1000000",
+      "min": "0",
+      "tag": "INPUT",
+      "type": "number",
+      "value": "10000"
+    }
+  ]
+}

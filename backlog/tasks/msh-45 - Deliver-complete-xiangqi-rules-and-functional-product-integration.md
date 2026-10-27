@@ -4,7 +4,7 @@ title: Deliver complete xiangqi rules and functional product integration
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-10-27T15:04:00Z'
+updated_date: '2026-10-27T16:18:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -15,11 +15,13 @@ dependencies:
   - MSH-80
   - MSH-84
   - MSH-103
+  - MSH-105
 documentation:
   - docs/design.md
   - docs/m4/delivery-plan.md
   - docs/m4/implementation-map.md
   - docs/m4/xiangqi/handoff.md
+  - docs/m4/xiangqi/coverage.md
 ordinal: 45000
 ---
 
@@ -57,4 +59,6 @@ Open design questions (D-07/D-08): Resolve the authoritative rules authority/ver
 MSH62 planning refinement2026-10-26: original identity,status,AC and DoD remain intact. This complete-delivery record now depends explicitly on its required bounded component/shared work; docs/m4/delivery-plan.md traces each original criterion and single ownership. No game implementation or delivery completion occurred. Earlier M3-context wording remains historical; current authorization is planning-only.
 
 MSH-80 refinement2026-10-27 preserves all original8AC/DoD and previous dependencies. Added required independent complete-game review103; docs/m4/xiangqi/handoff.md maps91–103 to all native/console/own-engine/protocol/record/desktop obligations. Functional delivery is M4; measured strength remains54/M5. No Xiangqi implementation started or profile selected;80 remains the decision/source gate.41/75Done,42–47/M4open and all prior evidence preserved.
+
+Owner selected XIANGQI-P1 mshogi.xiangqi.wxf2018.v1 on2026-10-27: officialbilingualWXF2018, no blanketlanguageprecedence, thirdwarning/fourthcontinuedloss/appropriateWXFdraw, untimedclaimpolicy and twolevel3.2A verification. Original8AC/DoD/allprior dependencies preserved;105 exactverification is directrequireddependency as well as through84/103. Functional M4 completeness cannot be replaced by fastsubset-only results or deferred to54/M5. AXF/CXAfullcorpus acquisition is scopedresearch, not a blanketunaffectedimplementation gate.
 <!-- SECTION:NOTES:END -->

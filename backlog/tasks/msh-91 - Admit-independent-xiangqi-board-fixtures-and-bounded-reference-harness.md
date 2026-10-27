@@ -4,6 +4,7 @@ title: Admit independent xiangqi board fixtures and bounded reference harness
 status: To Do
 assignee: []
 created_date: '2026-10-27T15:03:00Z'
+updated_date: '2026-10-27T16:18:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -14,6 +15,8 @@ documentation:
   - docs/m4/xiangqi/profile-proposal.md
   - docs/m4/xiangqi/fixtures.md
   - docs/m4/xiangqi/handoff.md
+  - docs/m4/xiangqi/owner-decisions.md
+  - docs/m4/xiangqi/coverage.md
 ordinal: 91000
 ---
 
@@ -38,3 +41,9 @@ Future bounded Xiangqi delivery work refined by MSH-80. Intent and acceptance on
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+XIANGQI-P1 selected2026-10-27. This independently settled board/state scope is unaffected by G-CYCLE/G-NOWIN later history/proof questions or missing complete AXF/CXA corpora. Ready status will be set only after80 reviewed planning integration; no execution in80 batch. Preserve44-action opening set/F002 seeds; actual reference build/admission remains91, not80.
+<!-- SECTION:NOTES:END -->

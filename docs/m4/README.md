@@ -15,10 +15,10 @@ Independent rules research may proceed separately. The source inventory records
 no evidence-based change to that provisional delivery order at present.
 
 Current next-game handoff (MSH-80,2026-10-27): [Xiangqi planning dossier](xiangqi/README.md).
-It proposes `mshogi.xiangqi.wxf2018.v1` without adoption, preserves unresolved
-source/owner decisions and refines native/shared/console/engine/desktop work
-into MSH-91–103 under the existing MSH-45/76/84 records. No Xiangqi implementation
-has begun. Partial [Tori](research/tori.md), [Chu](research/chu.md) and
+John has now selected `mshogi.xiangqi.wxf2018.v1` under XIANGQI-P1 as the
+bilingual WXF2018 profile. Current coverage/gates and reviewed native/shared/
+console/engine/desktop work are MSH-91–103 plus required exact-verification105
+under existing MSH-45/76/84. No Xiangqi implementation has begun. Partial [Tori](research/tori.md), [Chu](research/chu.md) and
 [Tenjiku](research/tenjiku.md) research remains independent and unfinished.
 
 | Deliverable | Proposal and scope |

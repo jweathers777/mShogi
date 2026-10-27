@@ -29,7 +29,7 @@ including its own native rules/history, console, engine/USI, canonical records
 and game-specific desktop in the shared application shell. See the
 [delivery evidence](docs/m4/shogi-delivery-review.md). M4 remains open; the
 [current Xiangqi planning dossier](docs/m4/xiangqi/README.md) is a source/profile
-proposal and future task refinement, not support for playing Xiangqi yet.
+selection and future task refinement, not support for playing Xiangqi yet.
 
 ## Repository and existing work
 

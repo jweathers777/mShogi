@@ -168,7 +168,7 @@ implementation batch unchanged and does not authorize starting future games.
 | Milestone | Scope and owning tasks | Required closure gate |
 | --- | --- | --- |
 | M4 | MSH-26: completed chess completeness; MSH-41: shogi; MSH-42: tori shogi; MSH-43: chu shogi; MSH-44: tenjiku shogi; MSH-45: xiangqi; MSH-46: shared six-game integration | MSH-47 depends on MSH-26, MSH-39 and every MSH-41–46 deliverable. |
-| M5 | MSH-48: shared reproducible strength/learning experiment infrastructure; MSH-49: chess strength; MSH-50: shogi strength; MSH-51: tori shogi strength; MSH-52: chu shogi strength; MSH-53: tenjiku shogi strength; MSH-54: xiangqi strength; MSH-55: initial learned evaluator, training/export/native inference and demonstrated improvement | MSH-56 depends on M4 closure and every MSH-48–55 deliverable. |
+| M5 | MSH-48: shared reproducible strength/learning experiment infrastructure; MSH-49: chess strength; MSH-50: shogi strength; MSH-51: tori shogi strength; MSH-52: chu shogi strength; MSH-53: tenjiku shogi strength; MSH-54: xiangqi strength; MSH-55: initial learned evaluator, training/export/native inference and demonstrated improvement; MSH-104: per-game opening-knowledge experiment | MSH-56 depends on M4 closure, every MSH-48–55 deliverable and MSH-104 experiment completion; opening mechanism adoption is optional. |
 | M6 required product delivery | MSH-57: six-game analysis, accessibility and product polish; MSH-58: release policy and three-platform distribution | MSH-60 depends on M5 closure and MSH-57–58. |
 | M6 optional research | MSH-59: policy/value search and budgeted learning experiments | Explicitly excluded from required MSH-60 closure dependencies. Research may remain To Do when required product delivery closes. |
 
@@ -247,10 +247,15 @@ chess search/archive limits are defaults to evaluate for each new consumer.
 John accepts Standard Shogi as fully delivered under MSH-41; MSH-41 and
 MSH-75 remain Done. M4 and MSH-42–47 remain open. The next primary task is
 MSH-80 source/profile/refinement for Xiangqi, with independent research81–83
-permitted. The [Xiangqi dossier](m4/xiangqi/README.md) records an **unselected**
-WXF2018-based proposal, exact source gaps, material owner choices, independent
-fixture expectations, audited software limitations and bounded future tasks.
-It does not adopt a profile or authorize substantive native implementation.
+permitted. John subsequently selected **XIANGQI-P1**,
+`mshogi.xiangqi.wxf2018.v1`, under official bilingual WXF2018. The
+[Xiangqi dossier](m4/xiangqi/README.md) records per-case interpretations without
+blanket language precedence, independent expectations, audited references and
+future tasks. Third warning/fourth continuation loss or applicable WXF draw,
+untimed claim handling and required two-level3.2A verification are selected.
+Named G-CYCLE/G-NOWIN questions gate affected later history/proof work;
+unavailable complete alternative corpora do not block the settled91/92 queue.
+This planning batch does not authorize starting substantive native implementation.
 
 The shared shell accepted in MSH-74 is a product requirement for future games:
 one application theme, document controls, live/status hierarchy, board/sidebar
@@ -261,6 +266,19 @@ with the whole board visible at supported desktop sizes without board scrolling
 or zooming. Native read-only opponent inspection remains authoritative; frontend
 code does not recreate movement rules. Real consumers may justify small explicit
 dispatch/metadata extensions, not a uniform rules or board representation.
+
+### Approved M5 opening-knowledge experiment (2026-10-27)
+
+[MSH-104](m5/opening-knowledge.md) adds a required experiment to MSH-56 closure,
+with evidence-supported per-game non-adoption a valid result. Existing six-game
+strength and MSH-55 learned-evaluator improvement requirements remain intact.
+A dedicated compact opening-policy model distilled from expensive offline teacher
+search/self-play is a first-class arm distinct from the learned evaluator and
+optional full policy/value engine59. Compare direct selection, search ordering,
+book-policy hybrids and no learned prior where practical. Include sparse-corpus
+Chu/Tenjiku search-distillation research, regeneration provenance and full cost/
+strength/work-saving metrics. No training implementation, mandatory model/book
+shipping or Python product-runtime dependency is introduced by this plan.
 
 ## 6. Verification contract
 
@@ -312,6 +330,8 @@ When code reveals a design problem, report the specific conflict and a proposed 
 | D-12 | Accepted | John 2026-10-26: bounded M4 planning only, standard shogi first; provisional later order xiangqi, tori, chu, tenjiku with independent source research possible. Preserve complete MSH-41–47 obligations and closed M2/M3; stop for concrete profile discussion before affected implementation. |
 | D-13 | Accepted, SHOGI-P1, 2026-10-26 | John explicitly approved option A `mshogi.shogi.csa36.v1` against integration `6db8500e92129b95e502e7b4d5c4a26072e38652`, including untimed local play, advisory/committed declarations, atomic rejection and declared-counter/bounded-history adaptations. JSA professional and other event conventions remain separate unselected alternatives. See [selected profile](m4/shogi-profile.md) and [coverage](m4/shogi-coverage.md); approval is not delivery evidence. |
 | D-14 | Accepted delivery/shell boundary, 2026-10-27 | John accepts Standard Shogi under MSH-41/75 and requires the MSH-74 common shell for future games. MSH-80 is next planning/refinement;81–83 may research independently. No Xiangqi rules profile is selected by this instruction; resolve material sourced decisions before native implementation. See [current dossier](m4/xiangqi/README.md). |
+| D-15 | Accepted XIANGQI-P1, 2026-10-27 | John selects `mshogi.xiangqi.wxf2018.v1`, official bilingual WXF2018 with individual discrepancy reconciliation and no blanket language precedence; third-occurrence warning/fourth continued unilateral loss or applicable WXF draw; untimed native claims and scoped AXF/CXA research; required sound fast plus bounded/terminable exact3.2A path. G-CYCLE/G-NOWIN gate affected work, not settled91/92. MSH-80 closes planning only; stop before implementation. See [owner decisions](m4/xiangqi/owner-decisions.md). |
+| D-16 | Accepted future M5 experiment, 2026-10-27 | John adds MSH-104 per-game opening knowledge to56 closure while adoption remains optional. Dedicated compact teacher-distilled opening policy, learned evaluator55 and optional full policy/value59 are distinct. Compare practical direct/order/book-hybrid/no-prior uses, sparse Chu/Tenjiku generation, provenance/regeneration and total benefit/cost; no product Python or mandatory opening mechanism. See [scope](m5/opening-knowledge.md). |
 
 Accepted records reflect actual owner direction. Working defaults are implementation proposals consistent with it, not fabricated owner decisions. Deferred questions only block work that depends on their resolution. A routine choice within accepted requirements does not need a new approval ceremony.
 

@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "baseline": "a2cf50bdfa7de6b501e668cfc4bccb4b60ec7a80",
+  "phase": "review",
+  "tasks": 105,
+  "dag": "acyclic/all dependencies resolve",
+  "unchanged_completed_records": 57,
+  "original_criteria_and_dependencies": "preserved; owner-directed80AC1 reconciliation explicit",
+  "local_links": 41,
+  "initial44_and_paired_cycles": "preserved, not executed",
+  "acquired_pdf_and_pinned_source_hashes": 32,
+  "product_and_milestone_changes": "none",
+  "opening_experiment": "104 required by56; adoption optional",
+  "exact_verification": "105 required by84/103/45",
+  "runtime_verification": "not run; documentation-only change"
+}

@@ -68,9 +68,13 @@ must preserve rules, model/action identities, execution limits and save semantic
 
 ## Dependency/ownership boundary
 
-MSH-104 depends on shared experiment infrastructure48, not evaluator55 or optional
-policy/value59. Before substantial per-game experiments, refine against relevant
-actual game delivery/strength baselines; no artificial all-game delivery chain
-or guessed model architecture is created now. MSH-56 retains all original47–55
+MSH-104 depends on shared experiment infrastructure48 and the pre-optimization
+architectural diagnostic109, not evaluator55 or optional policy/value59.
+The [health-review roadmap](../architecture-health-roadmap.md) intentionally
+places109 after the all-six architecture checkpoint108 and infrastructure48;
+earlier game implementations and48 baseline/pilot work retain their existing
+prerequisites. Before substantial per-game experiments, refine against relevant
+actual game delivery/strength baselines; no model architecture is selected by
+these gates. MSH-56 retains all original47–55
 dependencies and adds104; its original criteria remain, with additive experiment
 completion acceptance. The existing M5 learned-evaluator requirement stays separate.

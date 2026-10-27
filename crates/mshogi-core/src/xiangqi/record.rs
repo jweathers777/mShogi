@@ -3,7 +3,7 @@ use super::game::CommandEntry;
 use super::{
     ClaimPolicy, Conclusion, Game, GameError, GameEvent, GameRequest, MAX_GAME_COMMANDS,
     MAX_GAME_EVENTS, NoWinAssessment, PROFILE_EDITION, PROFILE_ID, PendingAdjudication,
-    PositionRoot,
+    PositionRoot, Side,
 };
 use serde::{Deserialize, Serialize};
 use serde_json::value::RawValue;
@@ -16,6 +16,10 @@ pub const GAME_RECORD_SCHEMA_VERSION: u32 = 1;
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct GameRecord {
     json: String,
+    // Derived once by the authoritative constructor/replay, never trusted wire data.
+    event_count: usize,
+    known_board_actions: usize,
+    side_to_move: Side,
 }
 /// Malformed, unsupported, resource-limited or forged data is never a game outcome.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -104,7 +108,26 @@ impl GameRecord {
     pub fn from_game(game: &Game) -> Result<Self, RecordError> {
         Ok(Self {
             json: Self::encoded_candidate(game)?,
+            event_count: game.events().len(),
+            known_board_actions: game
+                .events()
+                .iter()
+                .filter(|event| matches!(event.event, super::EventKind::BoardAction { .. }))
+                .count(),
+            side_to_move: game.position().side_to_move(),
         })
+    }
+    /// Exact complete event count, including same-ply warnings and claim audits.
+    pub const fn event_count(&self) -> usize {
+        self.event_count
+    }
+    /// Known board actions; an imported declared counter never adds missing history.
+    pub const fn known_board_actions(&self) -> usize {
+        self.known_board_actions
+    }
+    /// Native current turn, not a winner or an execution capability.
+    pub const fn side_to_move(&self) -> Side {
+        self.side_to_move
     }
     /// Stable compact JSON, independent of runtime request identities.
     pub fn to_json(&self) -> &str {

@@ -123,8 +123,15 @@ pub(crate) fn execute_shared(context: &SharedRequest) -> SharedResult {
             "invalid shared identity, purpose, selection or limits",
         );
     }
-    if context.game.game_kind() == mshogi_core::native::GameKind::Shogi {
-        return execute_shogi(context);
+    match context.game.game_kind() {
+        mshogi_core::native::GameKind::Xiangqi => {
+            return SharedResult::failure(
+                FailureKind::UnsupportedMode,
+                "Xiangqi execution is not implemented: no engine-turn, move-analysis or Chess Full capability is advertised. The complete native context is retained; no move, score or game result is inferred.",
+            );
+        }
+        mshogi_core::native::GameKind::Shogi => return execute_shogi(context),
+        mshogi_core::native::GameKind::Chess => {}
     }
     let Some(chess) = context.chess_adapter() else {
         return SharedResult::failure(

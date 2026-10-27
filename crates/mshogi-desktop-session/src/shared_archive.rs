@@ -173,7 +173,7 @@ fn valid_limits(limits: WorkLimits) -> Result<(), String> {
 fn native(record: &CanonicalRecord) -> Result<&s::GameRecord, String> {
     match record {
         CanonicalRecord::Shogi(record) => Ok(record),
-        _ => Err("Wrong game: a shogi archive contains a chess native record.".into()),
+        _ => Err("Wrong game: a shogi archive contains a non-shogi native record.".into()),
     }
 }
 fn archive(state: &ShogiSession, floor: u64) -> ShogiArchive {

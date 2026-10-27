@@ -55,6 +55,14 @@ fn side(id: NativeSide) -> PresentedSide {
         NativeSide::Chess(Color::Black) => (RulesProfile::ChessMatchV1, "Black", false),
         NativeSide::Shogi(s::Side::Sente) => (RulesProfile::ShogiCsa36V1, "Sente", true),
         NativeSide::Shogi(s::Side::Gote) => (RulesProfile::ShogiCsa36V1, "Gote", false),
+        // Qualified labels are type compatibility only; desktop admission below
+        // rejects Xiangqi until its actual native session/presentation consumer.
+        NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Red) => {
+            (RulesProfile::XiangqiWxf2018V1, "Red", true)
+        }
+        NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Black) => {
+            (RulesProfile::XiangqiWxf2018V1, "Black", false)
+        }
     };
     PresentedSide {
         id,
@@ -742,11 +750,17 @@ impl DesktopController {
         if human.game() != game {
             return Err("The selected player side does not belong to this game.".into());
         }
+        if game == GameKind::Xiangqi {
+            return Err("Xiangqi desktop play is not available yet.".into());
+        }
         self.session.ensure_capacity()?;
         if self.shared.epoch >= MAX_SAFE_ID - 64 {
             return Err("Application capacity: document identity exhausted.".into());
         }
         let receipt = match human {
+            NativeSide::Xiangqi(_) => {
+                return Err("Xiangqi desktop play is not available yet.".into());
+            }
             NativeSide::Shogi(human) => {
                 let record = s::GameRecord::from_game(&s::Game::new());
                 let mut candidate = ShogiSession::restored(&record, human)?;
@@ -821,6 +835,13 @@ impl DesktopController {
         if command.game != active {
             return Err("Command game does not match the active native session.".into());
         }
+        if let SessionOperation::Replace {
+            record: CanonicalRecord::Xiangqi(_),
+            ..
+        } = &command.operation
+        {
+            return Err("Xiangqi desktop documents are not supported yet; the current document was preserved.".into());
+        }
         self.session.ensure_capacity()?;
         if self.shared.epoch >= MAX_SAFE_ID - 64 {
             return Err("Application capacity: document identity exhausted.".into());
@@ -859,6 +880,8 @@ impl DesktopController {
                 self.queue_admission(candidate)?;
                 self.shared.admission = Some((self.shared.epoch, false));
                 self.last_command_receipt = self.admission_receipt.clone();
+            } else {
+                return Err("Unsupported desktop game; the current document was preserved.".into());
             }
             return Ok(self.shared_snapshot());
         }

@@ -153,3 +153,17 @@ No91–105 implementation, comparator build/admission, other game implementation
 M5 training, or M4 closure begins. Independent81–83 research remains separate.
 The accepted shell/native ownership/cancellation/replay/saveability constraints
 and every original45/46/47 delivery requirement are unchanged.
+
+## MSH-105 native handoff update
+
+The [exact contract and measured evidence](exact-verification.md) supersede prior
+statements here that backend105 is unimplemented. Native exact reachability is
+an explicit bounded/cancellable read-only assessment, with native full-context
+request retirement and proof/Unknown/failure conversion. It is independent of
+engine97 and aggregate84; no later product task was started. Historical fast-only
+canonical records remain supported exactly; unsupported exact-mode restoration
+is rejected, and saved data never resumes work. A consumer genuinely requiring
+incomplete exact adjudication must preserve unresolved/unscored state. The
+MSH-84 native handoff must verify this boundary rather than interpreting it as
+completed game45/engine97/console96 delivery. Measurements do not prove general
+feasibility or full live-product WXF completeness.

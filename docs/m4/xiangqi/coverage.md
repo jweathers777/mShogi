@@ -21,7 +21,7 @@ All original MSH-45 requirements remain in M4. Profile selection is not delivery
 | Third warning/fourth loss or WXF draw,3/19/20 | F022–026 independent boundary, equal-fault/responsibility and overlap expectations; native warnings/events preserve board ply |94 executed; **G-CYCLE** resolved with reviewed contiguous anchor fixtures; see history contract |
 | All check/chase/mating-threat/exchange/offer/block/idle and exceptions,19/20/chapter5 | F009–015, WXF diagrams38/109 and legal/fake roots, victims/pins/river/same-type/frequency cases |94 full native adjudication; no comparator outcome oracle or ignored category |
 | Natural-count Art8 and3.2D | F003 claimant98/100 ledger; F017/F027 complete legal history, manual rejection audit, optional policy, capture/reset/root and result ordering |94 native command/event admission;99 bounded audit/archive;102 actual interaction |
-| Impossible for either side to win,3.2A | F016/F028 sound recognizer, exact proof/witness, cancellation/resource unknown; no inference from unrecognized material |94 executed assessment/fast recognizer; owner-selected natural-board-win existential goal;105 exact path still required |
+| Impossible for either side to win,3.2A | F016/F028 sound recognizer, exact proof/witness, cancellation/resource unknown; no inference from unrecognized material |94 executed assessment/fast recognizer; owner-selected natural-board-win existential goal;105 implements explicit bounded native exact assessment (see current status below) |
 | Resignation, agreement, other concluded outcomes and ordering,3 | Serialized no-overwrite outcomes; board terminal then repetition then proven3.2A; admitted commands and automatic-claim policy explicit |94 native;97 engine;102 recovery/outcomes |
 | Exact native action/event reversal and canonical records | F018 strict bounded duplicate-preserving native parse, complete commands/events/modes/policies/root; semantic undo never revives execution |92/94 native;95 tagged envelope;99 desktop archive |
 | Own functional evaluator/search and actual external match | F019 context/purpose/history/limits/session/process identity, legal native results, cancellation; real independent opponent admission/config/record |97 own search;100 protocol/runner;54 measured M5 strength |
@@ -59,3 +59,21 @@ MSH-91/92/93 batch implements only the board foundation and local legal contract
 MSH-94 now adds the reviewed native history/record/fast-assessment boundary;
 105 remains unstarted behind94/95. The exact path is not replaced by this work.
 MSH-41/MSH-75 stay Done; MSH-42–47 and M4 remain open.
+
+## MSH-105 current native exact assessment
+
+The [exact-verification contract/evidence](exact-verification.md) implements the
+owner-selected intrinsic board graph with bounded native BFS/DFS, replayable
+positive witnesses, complete reachable-closure negative proofs and distinct
+Unknown/failure. Independent palace-universe expectations and executable fixture
+coverage support this boundary; raw measurements retain limits and observations.
+The older unstarted105 statements above describe the preceding planning/history
+stage, not the current source capability.
+
+ExactAnalysis is an explicit read-only native assessment resource; accepting its
+report does not overwrite Game history/fast-only canonical mode, conclude an
+actual match or advertise shared-engine capabilities. MSH-84 handoff and later
+MSH-97 consumers must retain the explicit unknown/unscored policy, full context,
+limits and stale-result guards. Universal ordinary-play WXF completeness and
+Xiangqi engine/console/desktop delivery are not inferred. All later delivery and
+M4 gates remain open under their existing task ownership.

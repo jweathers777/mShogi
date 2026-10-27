@@ -11,8 +11,9 @@ is retained so existing task/document references remain valid.
 Selection itself was a planning/profile contract, not an implemented capability.
 Current implementation: MSH-91/92/93 board rules and MSH-94 native history,
 canonical records and sound fast assessment; see [history contract](history-contract.md)
-and [evidence](history-evidence.md). Exact verification105 and product consumers
-remain outstanding. The selection-stage claims below are preserved history.
+and [evidence](history-evidence.md). MSH-105 now supplies the explicit bounded
+read-only [native exact path](exact-verification.md); product consumers remain
+outstanding, and this is not general ordinary-play WXF completeness. The selection-stage claims below are preserved history.
 Native schema and transport versions remain separately identified. No public
 profile constant, native rule implementation, runtime reference or UI support
 is introduced by selection. Existing Chess/Shogi identities remain unchanged.

@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "source_revision": "abe66c5c40f56bb98041ce0491b1004f5f9498b8",
+  "status": "failed",
+  "passed_phases": 10,
+  "failed_phases": [
+    "normal",
+    "normal-shogi",
+    "normal-shogi-reopened",
+    "verification-promotion"
+  ],
+  "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/40500443053",
+  "job_url": "https://github.com/jweathers777/mShogi/actions/runs/40500443053/job/122176497679",
+  "original_artifact_name": "desktop-ubuntu-24.04",
+  "original_download_directory": "/private/tmp/msh74-consistency-ci/abe66c5c40f56bb98041ce0491b1004f5f9498b8/linux",
+  "scope": "Compact exact originals of failed supporting abe66c5 Linux run. Driver locale-grouping and singular-ply expectations caused normal and promotion failures; dependent reopen lacked the normal save. Tests passing elsewhere and successful failure cleanup do not make these GUI phases pass. Both packages/payload executable bindings and normal-host verification-marker exclusion audited; no application binary retained. Rust generation-drift failure retained separately in original Rust log; no reruns dispatched by reviewer.",
+  "files": [
+    {
+      "path": "gui-evidence/gui-report.json",
+      "original_artifact_path": "gui-evidence/gui-report.json",
+      "sha256": "9b9e0d263545cce8d99b00925ee88760b0c68dece658f87a1e7450c3c16c503e",
+      "bytes": 239596
+    },
+    {
+      "path": "gui-packages/normal/manifest.json",
+      "original_artifact_path": "gui-packages/normal/manifest.json",
+      "sha256": "56a16e09f0ed75e1b50f5ec0e875e06f0cb85e285f58541b7e3c02da4fed5c23",
+      "bytes": 1789
+    },
+    {
+      "path": "gui-packages/normal/package-smoke.json",
+      "original_artifact_path": "gui-packages/normal/package-smoke.json",
+      "sha256": "9d007f96da726851793a412da12c0080768f038438fbf68900835cd310c5109e",
+      "bytes": 4203
+    },
+    {
+      "path": "gui-packages/verification/manifest.json",
+      "original_artifact_path": "gui-packages/verification/manifest.json",
+      "sha256": "52c5c75772391de8fcbe5ed7d80fcd043023e842c052c63f1c6c3f8418c45953",
+      "bytes": 351
+    },
+    {
+      "path": "gui-evidence/normal-failure.desktop.png",
+      "original_artifact_path": "gui-evidence/normal-failure.desktop.png",
+      "sha256": "f93a65869114cd51a06e03b78587803dad2a4cb37e4c799dc7507b4d9679f092",
+      "bytes": 106070
+    },
+    {
+      "path": "gui-evidence/normal-failure.webview.png",
+      "original_artifact_path": "gui-evidence/normal-failure.webview.png",
+      "sha256": "fac72da4109fb4dab548848907af9996fb9dccc72d2170a8f2c0f7e768c5e19c",
+      "bytes": 99016
+    },
+    {
+      "path": "gui-evidence/normal-failure.dom.json",
+      "original_artifact_path": "gui-evidence/normal-failure.dom.json",
+      "sha256": "281c4cbb3430e661257ed89df447ff19ab1a115bd87e3629f7c90b0104772e1b",
+      "bytes": 2738
+    },
+    {
+      "path": "gui-evidence/normal-driver.log",
+      "original_artifact_path": "gui-evidence/normal-driver.log",
+      "sha256": "798dbc2e25d9b5e249ad8aef793b467fdef37280b2c73eec4b26ec5cb217522d",
+      "bytes": 347
+    },
+    {
+      "path": "gui-evidence/normal-shogi-failure.desktop.png",
+      "original_artifact_path": "gui-evidence/normal-shogi-failure.desktop.png",
+      "sha256": "69ad8837915c4689aee43a6d293c02cfe55929901d180aa224c6e5618e2f3aef",
+      "bytes": 133695
+    },
+    {
+      "path": "gui-evidence/normal-shogi-failure.webview.png",
+      "original_artifact_path": "gui-evidence/normal-shogi-failure.webview.png",
+      "sha256": "35364258b78ec1d5f15d87315928afb58521f8afc77219a1b41c1a5b76223e7c",
+      "bytes": 125714
+    },
+    {
+      "path": "gui-evidence/normal-shogi-failure.dom.json",
+      "original_artifact_path": "gui-evidence/normal-shogi-failure.dom.json",
+      "sha256": "99dba6f1a69251b476c8d4da57f8f37b1d9d33398b67821bbe818fe889a001e4",
+      "bytes": 8302
+    },
+    {
+      "path": "gui-evidence/normal-shogi-driver.log",
+      "original_artifact_path": "gui-evidence/normal-shogi-driver.log",
+      "sha256": "5c26fd18b58ab3a153fcd17b377a873e75d02c94c7849057a9f0a60fd9f85e7a",
+      "bytes": 347
+    },
+    {
+      "path": "gui-evidence/normal-shogi-reopened-failure.desktop.png",
+      "original_artifact_path": "gui-evidence/normal-shogi-reopened-failure.desktop.png",
+      "sha256": "0fa5f9056d45650733515eae5b6b409c6a1649f2387a2d75a535b8d58af10b27",
+      "bytes": 108334
+    },
+    {
+      "path": "gui-evidence/normal-shogi-reopened-failure.webview.png",
+      "original_artifact_path": "gui-evidence/normal-shogi-reopened-failure.webview.png",
+      "sha256": "82fcea87293d02a54d20c35402eee1a831e6779a62b5a6657c41279826b7e0c6",
+      "bytes": 101053
+    },
+    {
+      "path": "gui-evidence/normal-shogi-reopened-failure.dom.json",
+      "original_artifact_path": "gui-evidence/normal-shogi-reopened-failure.dom.json",
+      "sha256": "89053b79086fc68a995247c1645c9498e847388a46a47332f30bbc97efb7d957",
+      "bytes": 1599
+    },
+    {
+      "path": "gui-evidence/normal-shogi-reopened-driver.log",
+      "original_artifact_path": "gui-evidence/normal-shogi-reopened-driver.log",
+      "sha256": "12d66b8762bc7fa3f818398c7b1e54e28ac32e327015bb724e9c83694cdfed4e",
+      "bytes": 752
+    },
+    {
+      "path": "gui-evidence/verification-promotion-failure.desktop.png",
+      "original_artifact_path": "gui-evidence/verification-promotion-failure.desktop.png",
+      "sha256": "7a7cf60330abe187a707651e271fb31d8f39bf7541929b8757703412cf7c16ce",
+      "bytes": 102341
+    },
+    {
+      "path": "gui-evidence/verification-promotion-failure.webview.png",
+      "original_artifact_path": "gui-evidence/verification-promotion-failure.webview.png",
+      "sha256": "2a79bf9540c6dfc7c82cb2fa50d857927b7cdd710f19a0173a0702b9869f4411",
+      "bytes": 89189
+    },
+    {
+      "path": "gui-evidence/verification-promotion-failure.dom.json",
+      "original_artifact_path": "gui-evidence/verification-promotion-failure.dom.json",
+      "sha256": "15df02df8081e6f835aeadede63af4dc314b31c3557d43ad767d5f8216881430",
+      "bytes": 1386
+    },
+    {
+      "path": "gui-evidence/verification-promotion-driver.log",
+      "original_artifact_path": "gui-evidence/verification-promotion-driver.log",
+      "sha256": "7f42dd6e4789cafaca8ddfbf1f8490d09b1cab42d62166333a08b4bf76971870",
+      "bytes": 347
+    },
+    {
+      "path": "linux-job.log",
+      "original_download_path": "/private/tmp/msh74-consistency-abe-linux.log",
+      "origin": "Original GitHub job log, downloaded without editing",
+      "sha256": "a906aab348eb60c8821fcfb9882bd70bc32d032fb0e8eac2cbbfc87904c1a01c",
+      "bytes": 354983
+    },
+    {
+      "path": "rust-linux-job.log",
+      "original_download_path": "/private/tmp/msh74-consistency-rust-linux.log",
+      "origin": "Original GitHub job log, downloaded without editing",
+      "sha256": "3d0a0703bd6ee0fb2199379250c997fa2677481d8ab33744829731f5520332de",
+      "bytes": 108388
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "product_source": "abe66c5c40f56bb98041ce0491b1004f5f9498b8",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "native": {
+    "command": "cargo test -p mshogi-desktop-session --lib",
+    "tests": 85,
+    "result": "passed",
+    "additional_selected_prefix_terminal_board_ply_case": "passed after extension",
+    "clippy": "cargo clippy -p mshogi-desktop-session --all-targets --all-features -- -D warnings: passed"
+  },
+  "frontend": {
+    "command": "cd desktop && npm run check && npm test",
+    "tests": 161,
+    "files": 21,
+    "result": "passed",
+    "strict_typescript": "passed",
+    "node": "24.19.0"
+  },
+  "external_driver": {
+    "command": "python3 -m unittest discover -s desktop/scripts -p 'test_gui*.py' -v",
+    "tests": 25,
+    "result": "passed",
+    "followup": "Exact numeric budgets across locale grouping and singular1ply match actual native display; independent25-pass review; no product code change."
+  },
+  "normal_package": {
+    "command": "cd desktop && npm run desktop:build -- --bundles app",
+    "result": "passed",
+    "desktop_toolchain": "Rust1.90",
+    "existing_vendor_tao_warnings": "retained, not new failures",
+    "smoke_command": "python3 desktop/scripts/package-smoke.py desktop/src-tauri/target/release/bundle/macos/mShogi.app --report docs/m4/evidence/msh74/final-consistency-2026-10-27/macos-package.json",
+    "smoke_result": "passed",
+    "final_rebuild": "Same normal build/smoke commands passed at7df91d3; host and engine SHA256 equal toabe build. macos-package-final.json"
+  },
+  "actual_mac_gui": {
+    "method": "Normal bundled app; native CUA accessibility/pointer/keyboard and native file pickers; unaltered JPEG captures. Same1180x820 native window including titlebar,2360x1640 pixels.",
+    "journeys": [
+      "Chess/Shogi fresh Unsaved, actual native play limits in same panel",
+      "Shogi first Save cancelled retains Unsaved; successful Save Unmodified; Flip Unsaved changes; Save Unmodified",
+      "Native Shogi7g7f and real engine4c4d: live2plies; historicalevent1: selected1ply; Returnlive: explicitlypaused live2plies",
+      "Chess Save Unmodified; Flip Unsaved changes; Save Unmodified",
+      "Cross-game native Open own saved Shogi2event archive: Unmodified, workstopped untilResume",
+      "Normal Open existing reduced-material capture archive: both hands, opponent hand inspection, shared paused/live2plies footer; source fixture untouched.",
+      "Saved-game native Quit confirmation; prior host81434 absent and fresh host83587 observed. CUA may relaunch; no new host-absent interval claimed."
+    ],
+    "preserved_prior_session": "/private/tmp/msh74-preserved-before-consistency-20261027.mshogi",
+    "limitations": [
+      "No currentMac minimum-size capture; current source Windows/Linux minimum evidence recorded separately when available.",
+      "No new successful Mac cancellation claim; reuse current platform cancellation evidence separately."
+    ],
+    "fresh_final_pair": "chess-final-normal.jpg/shogi-final-normal.jpg after saved-game Quit guard and fresh initial process; exact runtime path and unchanged executable hashes in macos/runtime.json"
+  },
+  "final_fixture_source": "7df91d37abb6ff872779188f83d03132bab3df11",
+  "fixture_generation": {
+    "default": "20 generated JSONs all byte-match from separate output directory",
+    "independent_desktop_verification": "22 generated JSONs including capacity/synthetic all byte-match",
+    "correction": "Native field order/format only; all4changedJSONvalues deeply equal; failedabe Rust run retained"
+  },
+  "final_external_driver_source": "1b10277436b94541235e15189a3af7fce867351c",
+  "final_ci": {
+    "source": "1b10277436b94541235e15189a3af7fce867351c",
+    "rust_run": 40502381395,
+    "desktop_run": 40502381314,
+    "all_three_jobs_each": "passed",
+    "actual_linux_gui": "14/14 passed",
+    "actual_windows_gui": "14/14 passed",
+    "independent_artifact_review": "passed",
+    "independent_actual_visual_review": "passed; no material findings",
+    "limits": "Mac GUI manual normal-size; Windows/Linux current normal/minimum evidence. No formal accessibility or strength claim."
+  }
+}

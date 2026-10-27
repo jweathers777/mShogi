@@ -1,15 +1,16 @@
-# MSH-74 product review checkpoint
+# MSH-74 desktop product evidence
 
-The normal application now supports Chess and untimed standard Shogi. MSH-74
-remains open for the explicitly required owner visual review. This is not M4,
-MSH-41 or MSH-75 closure; M2/M3 and their unchanged evidence remain closed.
+Current source/evidence is the [final consistency pass](final-consistency-2026-10-27/README.md).
+The owner accepts the common dark application design and authorizes completion
+after its three bounded document/engine/footer corrections and required checks,
+without another visual checkpoint. MSH-74 is Done after final-source verification and
+independent review passed; MSH-75 remains unstarted. This is not M4 or MSH-41 closure.
+M2/M3 and completed task evidence remain closed.
 
-The owner-requested shared shell and native read-only movement inspection are
-integrated at `d6d76816932763182eee574c9c241daa6ef9a91a`. See the
-[current refinement evidence and nine-image gallery](refinement-2026-10-27/README.md)
-for the latest product screenshots, tests, independent reviews and CI. The earlier
-revision-specific records below remain historical evidence; their old layouts are
-superseded by this refinement. Final owner visual approval remains pending.
+The records below preserve the original product implementation and its exact
+revision-specific screenshots/journeys. Later [inspection refinement](refinement-2026-10-27/README.md)
+and [common dark shell](common-shell-2026-10-27/README.md) records supersede their
+old layouts; those sources do not replace the final consistency evidence.
 
 ## Source, package and launch
 
@@ -209,7 +210,7 @@ Intermediate b26fd73 Rust40411273387 also passed all three; its desktop
 run 40411273334 was cancelled as superseded by `21bfe3e`, not counted as a pass.
 
 
-## Acceptance coverage and remaining gate
+## Historical initial acceptance coverage and review gate
 
 | MSH-74 criterion | Evidence |
 | --- | --- |
@@ -221,8 +222,9 @@ run 40411273334 was cancelled as superseded by `21bfe3e`, not counted as a pass.
 |6–9: full-board visual/semantic interaction|Screenshot set, native geometry checks at 1180×820/760×650, independent visual review, keyboard/pointer GUI phases; harness remains separate|
 |11: screenshots/review/owner approval|Screenshot set and independent assessment present; **owner visual approval remains pending**|
 
-Implementation is integrated; task remains **In Review**. No MSH-75 work has been
-started. After owner approval and any resulting bounded refinements, close 74
+At this historical checkpoint implementation was integrated and the task remained
+**In Review**. No MSH-75 work had started. The then-pending instruction was to close74
+after owner approval and any resulting bounded refinements,
 only against all its criteria; MSH-75 is the next dependent delivery review.
 MSH-41–47 and M4 remain open. There is no material product-design departure;
 current-source minimum-window screenshots are Windows/Linux, with the earlier
@@ -298,5 +300,7 @@ and Shogi. It supersedes the earlier light Shogi surroundings while preserving
 the native inspection and game-specific board/piece work. The intermediate paired
 screenshot review caught a remaining Chess help-row migration; the corrected
 source moves live help/inspection into the shared footer. Each capture and CI
-result retains its own revision and platform scope. MSH-74 remains In Review for
-final owner visual approval; MSH-75 is unstarted.
+result retains its own revision and platform scope. At that checkpoint MSH-74
+remained In Review for final owner approval; the final consistency pass linked
+at the top records the superseding authorization, verified corrections and closure.
+MSH-75 remains unstarted.

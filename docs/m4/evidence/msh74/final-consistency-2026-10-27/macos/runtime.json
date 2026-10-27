@@ -1,0 +1,12 @@
+{
+  "product_source": "abe66c5c40f56bb98041ce0491b1004f5f9498b8",
+  "final_fixture_source": "7df91d37abb6ff872779188f83d03132bab3df11",
+  "host_sha256": "a2f5fa4f05745e12e14f4e80b0349b6e203e266b2a59c4cd68fc7986d8611dcc",
+  "engine_sha256": "5d0fa23fdd7ca5683c848c7117379aabed033288c6d9114f697492153f2f5615",
+  "processes": [
+    "83587 /Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi.app/Contents/MacOS/mshogi-desktop"
+  ],
+  "previous_host_pid": 81434,
+  "previous_host_absent": true,
+  "observation": "Native saved-game Quit guard Continue led to fresh initial Chess in subsequent CUA observation. CUA observation may relaunch the application; do not claim a host-absent interval or separate current successful cancellation from this observation."
+}

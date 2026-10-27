@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "profile": "mshogi.desktop.archive.v1",
+  "match_record_json": "{\"schema_version\":1,\"rules_profile\":\"mshogi.chess.match.v1\",\"initial_record_json\":\"{\\\"schema_version\\\":1,\\\"rules_profile\\\":\\\"mshogi.chess.match.v1\\\",\\\"initial_fen\\\":\\\"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\\\",\\\"history_origin\\\":\\\"standard_start\\\",\\\"claim_policy\\\":\\\"explicit_only\\\",\\\"events\\\":[]}\",\"time_control\":\"untimed\",\"events\":[{\"request\":{\"at_ns\":0,\"version\":0,\"actor\":\"white\",\"command\":\"start\"},\"reply\":{\"version\":1,\"remaining_ns\":null,\"active\":\"white\",\"conclusion\":null,\"rejection\":null}}]}",
+  "game_record_json": "{\"schema_version\":1,\"rules_profile\":\"mshogi.chess.match.v1\",\"initial_fen\":\"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\",\"history_origin\":\"standard_start\",\"claim_policy\":\"explicit_only\",\"events\":[]}",
+  "human": "white",
+  "settings": {
+    "orientation": "black",
+    "analysis_defaults": {
+      "kind": "moves",
+      "depth": 4,
+      "nodes": 100000
+    }
+  },
+  "play_limits": {
+    "depth": 2,
+    "nodes": 20000
+  },
+  "observations": [],
+  "controls": [
+    {
+      "sequence": 1,
+      "at_ns": 255744335625,
+      "version": 7,
+      "command": {
+        "kind": "preferences",
+        "orientation": "black",
+        "analysis_defaults": {
+          "kind": "moves",
+          "depth": 4,
+          "nodes": 100000
+        }
+      },
+      "close_pause": false
+    }
+  ],
+  "version": 7,
+  "revision": 33,
+  "next_request": 7,
+  "document_revision": 8
+}

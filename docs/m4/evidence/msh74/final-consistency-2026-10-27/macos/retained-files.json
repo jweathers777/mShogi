@@ -1,0 +1,188 @@
+{
+  "product_source": "abe66c5c40f56bb98041ce0491b1004f5f9498b8",
+  "fixture_source": "7df91d37abb6ff872779188f83d03132bab3df11",
+  "final_driver_source": "1b10277436b94541235e15189a3af7fce867351c",
+  "method": "Unaltered normal native Mac CUA JPEG captures and actualAX text; same1180x820 native includingtitlebar/2360x1640Retina. Fresh final pair follows fixture-only identical executable rebuild. No currentMac minimum-size claim. OwncompleteQA archives copiedbyteforbyte; originalownerfile notcommitted.",
+  "files": {
+    "chess-final-normal.ax.txt": {
+      "sha256": "03f10b604b12e80a9d5d73d0e6f2e0a7544e70d48952d5f0dbb5ad1bdc890864",
+      "bytes": 6268
+    },
+    "chess-final-normal.jpg": {
+      "sha256": "8e6b7fb4684349d34b5e5ac938a0385778721c1a9c0c8e080ba0ee881992fc6f",
+      "bytes": 330785,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "chess-modified.ax.txt": {
+      "sha256": "3abb6ec14fd72ad14ce685d8f4f73c3222faf4d8c31087d063606e47ac63c909",
+      "bytes": 6522
+    },
+    "chess-modified.jpg": {
+      "sha256": "9041e9c0720c9087e2c47cbac3546c32a2e528726260276fbfa18f4742e1e2f5",
+      "bytes": 344548,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "chess-normal.ax.txt": {
+      "sha256": "03f10b604b12e80a9d5d73d0e6f2e0a7544e70d48952d5f0dbb5ad1bdc890864",
+      "bytes": 6268
+    },
+    "chess-normal.jpg": {
+      "sha256": "8e6b7fb4684349d34b5e5ac938a0385778721c1a9c0c8e080ba0ee881992fc6f",
+      "bytes": 330785,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "chess-unmodified.ax.txt": {
+      "sha256": "824821737abc9e64b8e474937e67bd5bfddedd080e013a471d5606733c9e295c",
+      "bytes": 6517
+    },
+    "chess-unmodified.jpg": {
+      "sha256": "cd1ca424bc29fbcfdb01045a87da20e4627f9d050822614ee2e2c180232a9132",
+      "bytes": 342898,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "native-quit-guard.jpg": {
+      "sha256": "d1d06254a2aec0bbc0a46689c2d9a9d8b509c679d94808f27df434590343c073",
+      "bytes": 212110,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "records/chess.mshogi": {
+      "sha256": "96666236b66abb3816ad166191982a84403ddfd1fd67d3700536e09404c5a543",
+      "bytes": 1613
+    },
+    "records/shogi.mshogi": {
+      "sha256": "1b4e40c9c6eb2b7291d77d042e87a7da77c85d297f0dada0ad6c5d73022557f1",
+      "bytes": 6600
+    },
+    "runtime.json": {
+      "sha256": "77fbe526585d037d684ae00e3718b4ae23f1f27e8f5c2ecd1da98a9847f372f9",
+      "bytes": 805
+    },
+    "shogi-cancelled-first-save.ax.txt": {
+      "sha256": "bfebff66d0f91d104c42861b4f86d708ca324d8b020084de0b4125215efda283",
+      "bytes": 7208
+    },
+    "shogi-final-normal.ax.txt": {
+      "sha256": "bfebff66d0f91d104c42861b4f86d708ca324d8b020084de0b4125215efda283",
+      "bytes": 7208
+    },
+    "shogi-final-normal.jpg": {
+      "sha256": "015f6f841cf21c97502c3ce81a631aa1cf5cafd850855516bcd9d421a8e597e0",
+      "bytes": 355606,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "shogi-hand-inspection.ax.txt": {
+      "sha256": "49c95f167daf4e536c02291da1d3f0f3384bc9aa1edf5d2b564a6c301ab4632a",
+      "bytes": 9931
+    },
+    "shogi-hand-inspection.jpg": {
+      "sha256": "71cf8ac27a8d6fc9170525f347bffe7c3dc21fcc15f44da9045b913975dcd319",
+      "bytes": 362553,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "shogi-hands-reopened.ax.txt": {
+      "sha256": "4fcb3df9d4d0c149c9dd55cccef5e362b154866e0b98b6bd3478df9fad271e35",
+      "bytes": 7411
+    },
+    "shogi-hands-reopened.jpg": {
+      "sha256": "3163ca018bc97d1c602f7ca6ccc280ba9c1f63c522731f762a52e71d995b9560",
+      "bytes": 292380,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "shogi-history.ax.txt": {
+      "sha256": "806c3ce9abf152ff3e011db605a41753bb3fa6fcbc4fd9707e2d901dfefcbdc8",
+      "bytes": 7793
+    },
+    "shogi-history.jpg": {
+      "sha256": "130b7526781366d791edbde9384c096dd87d632b5e1ed7bf3e8e945e5ed60187",
+      "bytes": 367903,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "shogi-live-paused.ax.txt": {
+      "sha256": "f228988afd8426680d2ec71fce6a9d16e85db6e6457a064993bd8c6329637692",
+      "bytes": 7698
+    },
+    "shogi-live-paused.jpg": {
+      "sha256": "cb7f27caec42ebc1f539c97d309344ef5a6893a37c046ce4c131d730bda495f7",
+      "bytes": 383017,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "shogi-modified.ax.txt": {
+      "sha256": "8af5eb631b6fac4d7a30ce7f653ceb8feb4a749432243d4d1b8d52eee0e29d52",
+      "bytes": 7229
+    },
+    "shogi-modified.jpg": {
+      "sha256": "33d691ce3d8a7ed75165144ac8d429706ca8059518ed520365b28244dcfab5f2",
+      "bytes": 361391,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "shogi-normal.ax.txt": {
+      "sha256": "bfebff66d0f91d104c42861b4f86d708ca324d8b020084de0b4125215efda283",
+      "bytes": 7208
+    },
+    "shogi-normal.jpg": {
+      "sha256": "ef386a9b77fb7ab776a062d2730ac8fbced3ca4e9aa1720a401c6a627b37306c",
+      "bytes": 355638,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "shogi-reopened.ax.txt": {
+      "sha256": "51294a868934f30fa7c811e942d36c09a92ab8b58d74651eb6a0374aa1e46013",
+      "bytes": 7493
+    },
+    "shogi-reopened.jpg": {
+      "sha256": "5ab180f7767fbfc79f4c3cdf70b3e46ceba20321aa29cba38b407f35c825a7a2",
+      "bytes": 375727,
+      "pixels": [
+        2360,
+        1640
+      ]
+    },
+    "shogi-unmodified.ax.txt": {
+      "sha256": "6b9039c5f049ba367608cdc4c7200cd73303c39e692e82bf7e295c0ebc0c6169",
+      "bytes": 7311
+    },
+    "shogi-unmodified.jpg": {
+      "sha256": "393af81e900d06706fbdc8720bf988a0b6e972cd252e9207bea74adc1b973e36",
+      "bytes": 360811,
+      "pixels": [
+        2360,
+        1640
+      ]
+    }
+  }
+}

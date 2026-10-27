@@ -1,0 +1,1235 @@
+﻿2026-10-27T12:00:51.6901961Z Current runner version: '2.338.0'
+2026-10-27T12:00:51.6924064Z ##[group]Runner Image Provisioner
+2026-10-27T12:00:51.6924986Z Hosted Compute Agent
+2026-10-27T12:00:51.6925584Z Version: 20261021.618
+2026-10-27T12:00:51.6926255Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-27T12:00:51.6926945Z Build Date: 2026-10-21T00:45:21Z
+2026-10-27T12:00:51.6927579Z Worker ID: {dfef641d-19f0-4261-8b52-50fc5ebaf376}
+2026-10-27T12:00:51.6928289Z Region: westcentralus
+2026-10-27T12:00:51.6928859Z Cloud: Azure
+2026-10-27T12:00:51.6929377Z ##[endgroup]
+2026-10-27T12:00:51.6930713Z ##[group]Operating System
+2026-10-27T12:00:51.6931311Z Ubuntu
+2026-10-27T12:00:51.6931827Z 24.04.5
+2026-10-27T12:00:51.6932336Z LTS
+2026-10-27T12:00:51.6932806Z ##[endgroup]
+2026-10-27T12:00:51.6933403Z ##[group]Runner Image
+2026-10-27T12:00:51.6933962Z Image: ubuntu-24.04
+2026-10-27T12:00:51.6934507Z Version: 20261012.334.1
+2026-10-27T12:00:51.6935701Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-27T12:00:51.6937534Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-27T12:00:51.6938427Z ##[endgroup]
+2026-10-27T12:00:51.6939501Z ##[group]GITHUB_TOKEN Permissions
+2026-10-27T12:00:51.6941552Z Contents: read
+2026-10-27T12:00:51.6942138Z Metadata: read
+2026-10-27T12:00:51.6942665Z ##[endgroup]
+2026-10-27T12:00:51.6944524Z Secret source: Actions
+2026-10-27T12:00:51.6945380Z Cache mode: write
+2026-10-27T12:00:51.6945994Z Prepare workflow directory
+2026-10-27T12:00:51.7327933Z Prepare all required actions
+2026-10-27T12:00:51.7373691Z Getting action download info
+2026-10-27T12:00:52.0189047Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-10-27T12:00:52.2062306Z Complete job name: Rust (ubuntu-24.04)
+2026-10-27T12:00:52.2826961Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-10-27T12:00:52.2827907Z with:
+2026-10-27T12:00:52.2828507Z   persist-credentials: false
+2026-10-27T12:00:52.2829106Z   repository: jweathers777/mShogi
+2026-10-27T12:00:52.2833348Z   token: ***
+2026-10-27T12:00:52.2833873Z   ssh-strict: true
+2026-10-27T12:00:52.2834379Z   ssh-user: git
+2026-10-27T12:00:52.2835022Z   clean: true
+2026-10-27T12:00:52.2835771Z   sparse-checkout-cone-mode: true
+2026-10-27T12:00:52.2836559Z   fetch-depth: 1
+2026-10-27T12:00:52.2837229Z   fetch-tags: false
+2026-10-27T12:00:52.2837736Z   show-progress: true
+2026-10-27T12:00:52.2838292Z   lfs: false
+2026-10-27T12:00:52.2838757Z   submodules: false
+2026-10-27T12:00:52.2839268Z   set-safe-directory: true
+2026-10-27T12:00:52.2839863Z   allow-unsafe-pr-checkout: false
+2026-10-27T12:00:52.2840856Z ##[endgroup]
+2026-10-27T12:00:52.3801566Z Syncing repository: jweathers777/mShogi
+2026-10-27T12:00:52.3804122Z ##[group]Getting Git version info
+2026-10-27T12:00:52.3804896Z Working directory is '/home/runner/work/mShogi/mShogi'
+2026-10-27T12:00:52.3806272Z [command]/usr/bin/git version
+2026-10-27T12:00:52.3859099Z git version 2.55.0
+2026-10-27T12:00:52.3880829Z ##[endgroup]
+2026-10-27T12:00:52.3892156Z Temporarily overriding HOME='/home/runner/work/_temp/bc15449e-ed28-4396-bd47-c8e22f55e42f' before making global git config changes
+2026-10-27T12:00:52.3894133Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T12:00:52.3899278Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/mShogi/mShogi
+2026-10-27T12:00:52.3945530Z Deleting the contents of '/home/runner/work/mShogi/mShogi'
+2026-10-27T12:00:52.3949252Z ##[group]Determining repository object format
+2026-10-27T12:00:52.3951398Z ##[endgroup]
+2026-10-27T12:00:52.3952373Z ##[group]Initializing the repository
+2026-10-27T12:00:52.3955499Z [command]/usr/bin/git init /home/runner/work/mShogi/mShogi
+2026-10-27T12:00:52.4056236Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-27T12:00:52.4057950Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-27T12:00:52.4059724Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-27T12:00:52.4061093Z hint: call:
+2026-10-27T12:00:52.4061743Z hint:
+2026-10-27T12:00:52.4062607Z hint: 	git config --global init.defaultBranch <name>
+2026-10-27T12:00:52.4063518Z hint:
+2026-10-27T12:00:52.4064799Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-27T12:00:52.4066186Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-27T12:00:52.4067307Z hint:
+2026-10-27T12:00:52.4068024Z hint: 	git branch -m <name>
+2026-10-27T12:00:52.4068732Z hint:
+2026-10-27T12:00:52.4069671Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-27T12:00:52.4075203Z Initialized empty Git repository in /home/runner/work/mShogi/mShogi/.git/
+2026-10-27T12:00:52.4083921Z [command]/usr/bin/git remote add origin https://github.com/jweathers777/mShogi
+2026-10-27T12:00:52.4146595Z ##[endgroup]
+2026-10-27T12:00:52.4148325Z ##[group]Disabling automatic garbage collection
+2026-10-27T12:00:52.4149246Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-27T12:00:52.4211971Z ##[endgroup]
+2026-10-27T12:00:52.4222017Z ##[group]Setting up auth
+2026-10-27T12:00:52.4240958Z Removing SSH command configuration
+2026-10-27T12:00:52.4242565Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T12:00:52.4246180Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T12:00:52.4563742Z Removing HTTP extra header
+2026-10-27T12:00:52.4569385Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T12:00:52.4598705Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T12:00:52.4773165Z Removing includeIf entries pointing to credentials config files
+2026-10-27T12:00:52.4778510Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T12:00:52.4814488Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T12:00:52.4992269Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-d081c4bc-01da-46af-ba6a-360a3a136a7b.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-27T12:00:52.5025496Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/mShogi/mShogi/.git.path /home/runner/work/_temp/git-credentials-d081c4bc-01da-46af-ba6a-360a3a136a7b.config
+2026-10-27T12:00:52.5055188Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/mShogi/mShogi/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-d081c4bc-01da-46af-ba6a-360a3a136a7b.config
+2026-10-27T12:00:52.5088213Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-d081c4bc-01da-46af-ba6a-360a3a136a7b.config
+2026-10-27T12:00:52.5118606Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-d081c4bc-01da-46af-ba6a-360a3a136a7b.config
+2026-10-27T12:00:52.5146108Z ##[endgroup]
+2026-10-27T12:00:52.5147415Z ##[group]Fetching the repository
+2026-10-27T12:00:52.5153322Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +abe66c5c40f56bb98041ce0491b1004f5f9498b8:refs/remotes/origin/codex/rewrite
+2026-10-27T12:00:56.7617066Z From https://github.com/jweathers777/mShogi
+2026-10-27T12:00:56.7620111Z  * [new ref]         abe66c5c40f56bb98041ce0491b1004f5f9498b8 -> origin/codex/rewrite
+2026-10-27T12:00:56.7626501Z [command]/usr/bin/git branch --list --remote origin/codex/rewrite
+2026-10-27T12:00:56.7653299Z   origin/codex/rewrite
+2026-10-27T12:00:56.7661369Z [command]/usr/bin/git rev-parse refs/remotes/origin/codex/rewrite
+2026-10-27T12:00:56.7683280Z abe66c5c40f56bb98041ce0491b1004f5f9498b8
+2026-10-27T12:00:56.7688090Z ##[endgroup]
+2026-10-27T12:00:56.7689798Z ##[group]Determining the checkout info
+2026-10-27T12:00:56.7692547Z ##[endgroup]
+2026-10-27T12:00:56.7693719Z [command]/usr/bin/git sparse-checkout disable
+2026-10-27T12:00:56.7740703Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-27T12:00:56.7773402Z ##[group]Checking out the ref
+2026-10-27T12:00:56.7776796Z [command]/usr/bin/git checkout --progress --force -B codex/rewrite refs/remotes/origin/codex/rewrite
+2026-10-27T12:00:57.1893302Z Switched to a new branch 'codex/rewrite'
+2026-10-27T12:00:57.1898131Z branch 'codex/rewrite' set up to track 'origin/codex/rewrite'.
+2026-10-27T12:00:57.1913965Z ##[endgroup]
+2026-10-27T12:00:57.1957768Z [command]/usr/bin/git log -1 --format=%H
+2026-10-27T12:00:57.1993830Z abe66c5c40f56bb98041ce0491b1004f5f9498b8
+2026-10-27T12:00:57.1995837Z ##[group]Removing auth
+2026-10-27T12:00:57.1996324Z Removing SSH command configuration
+2026-10-27T12:00:57.2004614Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T12:00:57.2027200Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T12:00:57.2225489Z Removing HTTP extra header
+2026-10-27T12:00:57.2229129Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T12:00:57.2256649Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T12:00:57.2433691Z Removing includeIf entries pointing to credentials config files
+2026-10-27T12:00:57.2437284Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T12:00:57.2471010Z includeif.gitdir:/home/runner/work/mShogi/mShogi/.git.path
+2026-10-27T12:00:57.2471950Z includeif.gitdir:/home/runner/work/mShogi/mShogi/.git/worktrees/*.path
+2026-10-27T12:00:57.2472697Z includeif.gitdir:/github/workspace/.git.path
+2026-10-27T12:00:57.2473507Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-27T12:00:57.2479428Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/mShogi/mShogi/.git.path
+2026-10-27T12:00:57.2499706Z /home/runner/work/_temp/git-credentials-d081c4bc-01da-46af-ba6a-360a3a136a7b.config
+2026-10-27T12:00:57.2507329Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/mShogi/mShogi/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-d081c4bc\-01da\-46af\-ba6a\-360a3a136a7b\.config
+2026-10-27T12:00:57.2540135Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/mShogi/mShogi/.git/worktrees/*.path
+2026-10-27T12:00:57.2559675Z /home/runner/work/_temp/git-credentials-d081c4bc-01da-46af-ba6a-360a3a136a7b.config
+2026-10-27T12:00:57.2567094Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/mShogi/mShogi/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-d081c4bc\-01da\-46af\-ba6a\-360a3a136a7b\.config
+2026-10-27T12:00:57.2601756Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-27T12:00:57.2626022Z /github/runner_temp/git-credentials-d081c4bc-01da-46af-ba6a-360a3a136a7b.config
+2026-10-27T12:00:57.2633693Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-d081c4bc\-01da\-46af\-ba6a\-360a3a136a7b\.config
+2026-10-27T12:00:57.2664942Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-27T12:00:57.2684081Z /github/runner_temp/git-credentials-d081c4bc-01da-46af-ba6a-360a3a136a7b.config
+2026-10-27T12:00:57.2691801Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-d081c4bc\-01da\-46af\-ba6a\-360a3a136a7b\.config
+2026-10-27T12:00:57.2723582Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T12:00:57.2895418Z Removing credentials config '/home/runner/work/_temp/git-credentials-d081c4bc-01da-46af-ba6a-360a3a136a7b.config'
+2026-10-27T12:00:57.2904993Z ##[endgroup]
+2026-10-27T12:00:57.3099690Z ##[group]Run rustup show
+2026-10-27T12:00:57.3100208Z [36;1mrustup show[0m
+2026-10-27T12:00:57.3100953Z [36;1mrustc --version --verbose[0m
+2026-10-27T12:00:57.3101378Z [36;1mcargo --version[0m
+2026-10-27T12:00:57.3293186Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T12:00:57.3293754Z ##[endgroup]
+2026-10-27T12:00:58.0439957Z Default host: x86_64-unknown-linux-gnu
+2026-10-27T12:00:58.0587916Z info: syncing channel updates for 1.89.0-x86_64-unknown-linux-gnu
+2026-10-27T12:00:58.0588442Z rustup home:  /home/runner/.rustup
+2026-10-27T12:00:58.0588667Z 
+2026-10-27T12:00:58.7468843Z info: latest update on 2025-08-07 for version 1.89.0 (29483883e 2025-08-04)
+2026-10-27T12:00:58.7471365Z info: downloading 5 components
+2026-10-27T12:01:07.7200792Z warn: the missing active toolchain `1.89.0-x86_64-unknown-linux-gnu` has been auto-installed
+2026-10-27T12:01:07.7201840Z installed toolchains
+2026-10-27T12:01:07.7202294Z --------------------
+2026-10-27T12:01:07.7203135Z stable-x86_64-unknown-linux-gnu (default)
+2026-10-27T12:01:07.7203461Z 
+2026-10-27T12:01:07.7203761Z active toolchain
+2026-10-27T12:01:07.7204268Z ----------------
+2026-10-27T12:01:07.7204754Z name: 1.89.0-x86_64-unknown-linux-gnu
+2026-10-27T12:01:07.7205429Z active because: overridden by '/home/runner/work/mShogi/mShogi/rust-toolchain.toml'
+2026-10-27T12:01:07.7206152Z installed targets:
+2026-10-27T12:01:07.7207461Z warn: auto-installation is deprecated for most `rustup` commands
+2026-10-27T12:01:07.7208627Z warn: scripts relying on this behavior in `rustup` may stop working in the future
+2026-10-27T12:01:07.7209677Z warn: to install the active toolchain, use `rustup install` instead
+2026-10-27T12:01:07.7210771Z warn: see <https://github.com/rust-lang/rustup/issues/4836> for more info
+2026-10-27T12:01:07.7346409Z   x86_64-unknown-linux-gnu
+2026-10-27T12:01:07.7633055Z rustc 1.89.0 (29483883e 2025-08-04)
+2026-10-27T12:01:07.7633927Z binary: rustc
+2026-10-27T12:01:07.7634979Z commit-hash: 29483883eed69d5fb4db01964cdf2af4d86e9cb2
+2026-10-27T12:01:07.7635741Z commit-date: 2025-08-04
+2026-10-27T12:01:07.7636376Z host: x86_64-unknown-linux-gnu
+2026-10-27T12:01:07.7637010Z release: 1.89.0
+2026-10-27T12:01:07.7637659Z LLVM version: 20.1.7
+2026-10-27T12:01:07.7873674Z cargo 1.89.0 (c24e10642 2025-06-23)
+2026-10-27T12:01:07.7925591Z ##[group]Run cargo fmt --all -- --check
+2026-10-27T12:01:07.7926066Z [36;1mcargo fmt --all -- --check[0m
+2026-10-27T12:01:07.7977407Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T12:01:07.7978063Z ##[endgroup]
+2026-10-27T12:01:08.2570635Z ##[group]Run cargo clippy --workspace --all-targets --locked -- -D warnings
+2026-10-27T12:01:08.2571298Z [36;1mcargo clippy --workspace --all-targets --locked -- -D warnings[0m
+2026-10-27T12:01:08.2611566Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T12:01:08.2612025Z ##[endgroup]
+2026-10-27T12:01:08.3345237Z     Updating crates.io index
+2026-10-27T12:01:08.6725367Z  Downloading crates ...
+2026-10-27T12:01:08.7605907Z   Downloaded cpufeatures v0.2.17
+2026-10-27T12:01:08.7836341Z   Downloaded generic-array v0.14.7
+2026-10-27T12:01:08.7848625Z   Downloaded block-buffer v0.10.4
+2026-10-27T12:01:08.7858104Z   Downloaded cfg-if v1.0.5
+2026-10-27T12:01:08.7872257Z   Downloaded crypto-common v0.1.7
+2026-10-27T12:01:08.8012099Z   Downloaded version_check v0.9.5
+2026-10-27T12:01:08.8095936Z   Downloaded itoa v1.0.18
+2026-10-27T12:01:08.8164865Z   Downloaded digest v0.10.7
+2026-10-27T12:01:08.8258995Z   Downloaded sha2 v0.10.9
+2026-10-27T12:01:08.8307779Z   Downloaded quote v1.0.47
+2026-10-27T12:01:08.8444439Z   Downloaded unicode-ident v1.0.27
+2026-10-27T12:01:08.8467355Z   Downloaded ryu v1.0.23
+2026-10-27T12:01:08.8490833Z   Downloaded serde_derive v1.0.229
+2026-10-27T12:01:08.8513675Z   Downloaded serde_core v1.0.229
+2026-10-27T12:01:08.8532962Z   Downloaded serde v1.0.229
+2026-10-27T12:01:08.8557027Z   Downloaded proc-macro2 v1.0.107
+2026-10-27T12:01:08.8576557Z   Downloaded memchr v2.8.3
+2026-10-27T12:01:08.8635267Z   Downloaded typenum v1.20.1
+2026-10-27T12:01:08.8662448Z   Downloaded serde_json v1.0.145
+2026-10-27T12:01:08.8711728Z   Downloaded syn v3.0.9
+2026-10-27T12:01:08.9015743Z    Compiling proc-macro2 v1.0.107
+2026-10-27T12:01:08.9016381Z    Compiling quote v1.0.47
+2026-10-27T12:01:08.9017115Z    Compiling unicode-ident v1.0.27
+2026-10-27T12:01:08.9017690Z    Compiling serde_core v1.0.229
+2026-10-27T12:01:08.9671472Z    Compiling serde_json v1.0.145
+2026-10-27T12:01:09.4254009Z    Compiling serde v1.0.229
+2026-10-27T12:01:09.4466800Z     Checking ryu v1.0.23
+2026-10-27T12:01:09.5263779Z     Checking itoa v1.0.18
+2026-10-27T12:01:09.6093638Z     Checking memchr v2.8.3
+2026-10-27T12:01:09.6583981Z    Compiling version_check v0.9.5
+2026-10-27T12:01:09.9491675Z    Compiling generic-array v0.14.7
+2026-10-27T12:01:10.0571618Z    Compiling syn v3.0.9
+2026-10-27T12:01:10.0701615Z     Checking typenum v1.20.1
+2026-10-27T12:01:10.1042115Z     Checking cpufeatures v0.2.17
+2026-10-27T12:01:10.1285238Z     Checking cfg-if v1.0.5
+2026-10-27T12:01:10.7169038Z     Checking crypto-common v0.1.7
+2026-10-27T12:01:10.7169905Z     Checking block-buffer v0.10.4
+2026-10-27T12:01:10.7721052Z     Checking digest v0.10.7
+2026-10-27T12:01:10.8429948Z     Checking sha2 v0.10.9
+2026-10-27T12:01:11.6266234Z    Compiling serde_derive v1.0.229
+2026-10-27T12:01:13.3089280Z     Checking mshogi-core v0.1.0 (/home/runner/work/mShogi/mShogi/crates/mshogi-core)
+2026-10-27T12:01:14.9636853Z     Checking mshogi-search v0.1.0 (/home/runner/work/mShogi/mShogi/crates/mshogi-search)
+2026-10-27T12:01:14.9638197Z     Checking mshogi-runner v0.1.0 (/home/runner/work/mShogi/mShogi/crates/mshogi-runner)
+2026-10-27T12:01:15.1993840Z     Checking mshogi-engine v0.1.0 (/home/runner/work/mShogi/mShogi/crates/mshogi-engine)
+2026-10-27T12:01:16.3957030Z     Checking mshogi-desktop-session v0.1.0 (/home/runner/work/mShogi/mShogi/crates/mshogi-desktop-session)
+2026-10-27T12:01:17.1312889Z     Checking mshogi-console v0.1.0 (/home/runner/work/mShogi/mShogi/crates/mshogi-console)
+2026-10-27T12:01:19.8630871Z     Finished `dev` profile [unoptimized + debuginfo] target(s) in 11.55s
+2026-10-27T12:01:19.8802859Z ##[group]Run cargo test --workspace --locked
+2026-10-27T12:01:19.8803300Z [36;1mcargo test --workspace --locked[0m
+2026-10-27T12:01:19.8844275Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T12:01:19.8844725Z ##[endgroup]
+2026-10-27T12:01:19.9623031Z    Compiling serde_core v1.0.229
+2026-10-27T12:01:19.9624003Z    Compiling memchr v2.8.3
+2026-10-27T12:01:19.9624587Z    Compiling ryu v1.0.23
+2026-10-27T12:01:19.9625194Z    Compiling itoa v1.0.18
+2026-10-27T12:01:20.0951806Z    Compiling typenum v1.20.1
+2026-10-27T12:01:20.0994422Z    Compiling cfg-if v1.0.5
+2026-10-27T12:01:20.1381607Z    Compiling cpufeatures v0.2.17
+2026-10-27T12:01:20.5806999Z    Compiling generic-array v0.14.7
+2026-10-27T12:01:20.8997585Z    Compiling block-buffer v0.10.4
+2026-10-27T12:01:20.8998733Z    Compiling crypto-common v0.1.7
+2026-10-27T12:01:20.9564596Z    Compiling digest v0.10.7
+2026-10-27T12:01:21.0373626Z    Compiling sha2 v0.10.9
+2026-10-27T12:01:21.4795223Z    Compiling serde v1.0.229
+2026-10-27T12:01:22.0614855Z    Compiling serde_json v1.0.145
+2026-10-27T12:01:22.0615474Z    Compiling mshogi-core v0.1.0 (/home/runner/work/mShogi/mShogi/crates/mshogi-core)
+2026-10-27T12:01:23.7857175Z    Compiling mshogi-search v0.1.0 (/home/runner/work/mShogi/mShogi/crates/mshogi-search)
+2026-10-27T12:01:23.7868390Z    Compiling mshogi-runner v0.1.0 (/home/runner/work/mShogi/mShogi/crates/mshogi-runner)
+2026-10-27T12:01:24.5352134Z    Compiling mshogi-engine v0.1.0 (/home/runner/work/mShogi/mShogi/crates/mshogi-engine)
+2026-10-27T12:01:25.9872644Z    Compiling mshogi-desktop-session v0.1.0 (/home/runner/work/mShogi/mShogi/crates/mshogi-desktop-session)
+2026-10-27T12:01:28.3538081Z    Compiling mshogi-console v0.1.0 (/home/runner/work/mShogi/mShogi/crates/mshogi-console)
+2026-10-27T12:01:47.1922302Z     Finished `test` profile [unoptimized + debuginfo] target(s) in 27.27s
+2026-10-27T12:01:47.2008878Z      Running unittests src/main.rs (target/debug/deps/mshogi-07c0b72010cce163)
+2026-10-27T12:01:47.2020108Z 
+2026-10-27T12:01:47.2021138Z running 2 tests
+2026-10-27T12:01:47.2030713Z test uci::tests::independent_clock_allocations_and_numeric_limits ... ok
+2026-10-27T12:01:47.2031476Z      Running tests/cli.rs (target/debug/deps/cli-921be35f36055fe7)
+2026-10-27T12:01:47.2032035Z test uci::tests::cr_lf_and_oversized_input_are_bounded_and_recover ... ok
+2026-10-27T12:01:47.2032349Z 
+2026-10-27T12:01:47.2032605Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-27T12:01:47.2032996Z 
+2026-10-27T12:01:47.2034106Z 
+2026-10-27T12:01:47.2034439Z running 19 tests
+2026-10-27T12:01:47.2055514Z test diagnostic_depth_limit_is_inclusive ... ok
+2026-10-27T12:01:47.2056671Z test diagnostic_import_cannot_silently_drop_full_adjudication_mode ... ok
+2026-10-27T12:01:47.2067964Z test ascii_grammar_numeric_bounds_and_escaped_diagnostics ... ok
+2026-10-27T12:01:47.2079036Z test failed_commands_report_errors_and_preserve_session_state ... ok
+2026-10-27T12:01:47.2085648Z test help_lists_every_shell_command ... ok
+2026-10-27T12:01:47.2093599Z test history_is_rules_owned_and_import_resets_known_repetitions ... ok
+2026-10-27T12:01:47.2098324Z test exported_record_restores_position_history_policy_and_undo_in_a_fresh_process ... ok
+2026-10-27T12:01:47.2099295Z test help_and_default_invocation_are_headless ... ok
+2026-10-27T12:01:47.2101707Z test invalid_utf8_lines_are_reported_and_skipped ... ok
+2026-10-27T12:01:47.2107078Z test legal_order_matches_library_divide_order_and_errors_are_clear ... ok
+2026-10-27T12:01:47.2110629Z test non_unicode_argument_is_a_usage_error_instead_of_a_panic ... ok
+2026-10-27T12:01:47.2113843Z test profile_identifies_coverage_without_claiming_game_adjudication ... ok
+2026-10-27T12:01:47.2127431Z test invalid_or_observation_bearing_records_never_replace_the_diagnostic_game ... ok
+2026-10-27T12:01:47.2165078Z test quit_ends_the_session_and_end_of_input_is_success ... ok
+2026-10-27T12:01:47.2214992Z test unsupported_commands_and_extra_arguments_fail_without_stdout ... ok
+2026-10-27T12:01:47.2226361Z test version_is_available_without_resources ... ok
+2026-10-27T12:01:47.2256344Z test streaming_line_bound_recovers_and_accepts_exact_limit ... ok
+2026-10-27T12:01:47.2641167Z test readme_console_example_reproduces ... ok
+2026-10-27T12:01:47.2656313Z test shell_runs_the_full_diagnostic_workflow ... ok
+2026-10-27T12:01:47.2656808Z 
+2026-10-27T12:01:47.2657304Z test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+2026-10-27T12:01:47.2657723Z 
+2026-10-27T12:01:47.2659106Z      Running tests/common_console.rs (target/debug/deps/common_console-92bbc18de5042bc2)
+2026-10-27T12:01:47.2668542Z 
+2026-10-27T12:01:47.2668758Z running 9 tests
+2026-10-27T12:01:47.2715143Z test common_chess_restore_refuses_observations_and_full_modes_without_losing_undo ... ok
+2026-10-27T12:01:47.2799647Z test common_shogi_restore_preserves_import_and_terminal_event_undo ... ok
+2026-10-27T12:01:47.2835439Z test exact_compact_board_and_inspection_preserve_state_and_native_notation ... ok
+2026-10-27T12:01:47.2883165Z test canonical_shells_route_native_commands_and_compatibility_aliases_match ... ok
+2026-10-27T12:01:47.2911687Z test explicit_record_operations_never_guess_path_vs_json_and_recover_after_long_lines ... ok
+2026-10-27T12:01:47.2918651Z test promotions_use_fixed_stride_without_changing_long_labels ... ok
+2026-10-27T12:01:47.3062549Z test selected_help_profiles_and_argument_admission_are_explicit ... ok
+2026-10-27T12:01:47.8556854Z test both_games_roundtrip_common_files_json_and_restored_undo ... ok
+2026-10-27T12:01:48.2785575Z test hostile_common_loads_are_atomic_including_undo_and_strict_nested_fields ... ok
+2026-10-27T12:01:48.2786821Z 
+2026-10-27T12:01:48.2787252Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.01s
+2026-10-27T12:01:48.2787581Z 
+2026-10-27T12:01:48.2788957Z      Running tests/desktop_analysis.rs (target/debug/deps/desktop_analysis-ff00e45210169ee4)
+2026-10-27T12:01:48.2800480Z 
+2026-10-27T12:01:48.2801186Z running 2 tests
+2026-10-27T12:01:49.7809899Z test actual_full_budget_exhaustion_and_cancelled_replacement_leave_match_unchanged ... ok
+2026-10-27T12:01:51.9519538Z test actual_analysis_suggestions_never_commit_a_turn_and_resume_is_explicit ... ok
+2026-10-27T12:01:51.9520151Z 
+2026-10-27T12:01:51.9520791Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.67s
+2026-10-27T12:01:51.9521287Z 
+2026-10-27T12:01:51.9523135Z      Running tests/desktop_persistence.rs (target/debug/deps/desktop_persistence-b2e27ecf4a874e4b)
+2026-10-27T12:01:51.9533826Z 
+2026-10-27T12:01:51.9534010Z running 3 tests
+2026-10-27T12:01:51.9864655Z test reopening_retains_unscored_resignation_but_an_earlier_same_ply_view_does_not ... ok
+2026-10-27T12:01:51.9865545Z test failed_save_and_corrupt_open_preserve_the_valid_file_and_live_document ... ok
+2026-10-27T12:01:53.6765387Z test complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix ... ok
+2026-10-27T12:01:53.6765925Z 
+2026-10-27T12:01:53.6766205Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.72s
+2026-10-27T12:01:53.6766550Z 
+2026-10-27T12:01:53.6769800Z      Running tests/desktop_play.rs (target/debug/deps/desktop_play-aa662c27c6d30bb7)
+2026-10-27T12:01:53.6780600Z 
+2026-10-27T12:01:53.6780825Z running 4 tests
+2026-10-27T12:01:53.7381705Z test actual_missing_response_and_failed_process_pause_without_a_chess_score ... ok
+2026-10-27T12:01:56.7701806Z test human_black_gets_an_automatic_native_opening_and_can_answer_it ... ok
+2026-10-27T12:01:57.8641240Z test cancel_new_game_stale_commands_and_retry_protect_the_live_game ... ok
+2026-10-27T12:01:58.5696989Z test human_white_plays_two_turns_against_actual_bounded_native_replies ... ok
+2026-10-27T12:01:58.5697365Z 
+2026-10-27T12:01:58.5697657Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.89s
+2026-10-27T12:01:58.5698076Z 
+2026-10-27T12:01:58.5701430Z      Running tests/desktop_shared.rs (target/debug/deps/desktop_shared-e7885a7f302d0845)
+2026-10-27T12:01:58.5711914Z 
+2026-10-27T12:01:58.5712129Z running 3 tests
+2026-10-27T12:01:58.7772894Z test actual_engine_declaration_is_a_terminal_command_and_analysis_cannot_apply_it ... ok
+2026-10-27T12:01:59.3594003Z test real_chess_shogi_chess_execution_uses_one_supervisor_and_fresh_ids ... ok
+2026-10-27T12:01:59.7938808Z test product_new_gote_real_engine_play_analysis_archive_and_resume_use_native_paths ... ok
+2026-10-27T12:01:59.7939503Z 
+2026-10-27T12:01:59.7940017Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.22s
+2026-10-27T12:01:59.7940769Z 
+2026-10-27T12:01:59.7943093Z      Running tests/internal.rs (target/debug/deps/internal-ec2d8ae2e992f1a7)
+2026-10-27T12:01:59.7953265Z 
+2026-10-27T12:01:59.7953625Z running 5 tests
+2026-10-27T12:01:59.8025520Z test real_entrypoint_preserves_incomplete_search_instead_of_fallback_move ... ok
+2026-10-27T12:01:59.8236404Z test cancellation_replacement_and_reused_identity_cannot_publish_old_work ... ok
+2026-10-27T12:01:59.8263391Z test shutdown_terminates_an_active_child_without_waiting_on_the_caller ... ok
+2026-10-27T12:01:59.8452156Z test real_bundled_entrypoint_echoes_context_and_plays_an_actual_legal_move ... ok
+2026-10-27T12:01:59.9393416Z test actual_process_failures_remain_explicit_unscored_and_bounded ... ok
+2026-10-27T12:01:59.9393979Z 
+2026-10-27T12:01:59.9394507Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+2026-10-27T12:01:59.9395155Z 
+2026-10-27T12:01:59.9396279Z      Running tests/shared_internal.rs (target/debug/deps/shared_internal-147df64655bd73eb)
+2026-10-27T12:01:59.9405492Z 
+2026-10-27T12:01:59.9405662Z running 3 tests
+2026-10-27T12:01:59.9652164Z test forged_purpose_history_limits_selection_and_identities_never_publish_as_valid_work ... ok
+2026-10-27T12:02:00.0169465Z test real_entrypoint_executes_both_native_games ... ok
+2026-10-27T12:02:00.1691747Z test one_owner_retires_work_across_versions_games_selection_and_semantic_undo ... ok
+2026-10-27T12:02:00.1692458Z 
+2026-10-27T12:02:00.1693004Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+2026-10-27T12:02:00.1693640Z 
+2026-10-27T12:02:00.1694918Z      Running tests/shogi_cli.rs (target/debug/deps/shogi_cli-28d23ce01ac3c06c)
+2026-10-27T12:02:00.1704399Z 
+2026-10-27T12:02:00.1704767Z running 8 tests
+2026-10-27T12:02:00.1839189Z test complete_canonical_save_load_replay_and_restored_undo ... ok
+2026-10-27T12:02:00.1870171Z test drop_capture_hands_optional_forced_and_already_promoted_choices ... ok
+2026-10-27T12:02:00.1871391Z test actual_history_conclusions_are_not_reconstructed_from_sfen_counter ... ok
+2026-10-27T12:02:00.1901713Z test declarations_queries_and_resignation_preserve_native_terminal_semantics ... ok
+2026-10-27T12:02:00.1937879Z test same_piece_destinations_have_explicit_sources_and_illegal_batches_are_atomic ... ok
+2026-10-27T12:02:00.2109865Z test standard_diagnostics_remain_position_only_and_preserve_state ... ok
+2026-10-27T12:02:00.2117806Z test short_command_lines_and_complete_large_record_sizes_have_separate_limits ... ok
+2026-10-27T12:02:00.2295873Z test malformed_unsupported_tampered_oversized_loads_and_failed_saves_preserve_session ... ok
+2026-10-27T12:02:00.2296599Z 
+2026-10-27T12:02:00.2297089Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+2026-10-27T12:02:00.2297654Z 
+2026-10-27T12:02:00.2298058Z      Running tests/shogi_engine.rs (target/debug/deps/shogi_engine-8f97ee7d7b72918c)
+2026-10-27T12:02:00.2307194Z 
+2026-10-27T12:02:00.2307387Z running 3 tests
+2026-10-27T12:02:00.2690645Z test actual_analysis_declaration_incomplete_and_history_contexts_remain_distinct ... ok
+2026-10-27T12:02:00.3317583Z test actual_cross_game_cancel_replacement_and_historical_selection_retire_old_work ... ok
+2026-10-27T12:02:02.1182702Z test actual_child_plays_both_assignments_with_native_admission_and_recorded_observations ... ok
+2026-10-27T12:02:02.1183127Z 
+2026-10-27T12:02:02.1183912Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.89s
+2026-10-27T12:02:02.1184274Z 
+2026-10-27T12:02:02.1186221Z      Running tests/uci.rs (target/debug/deps/uci-b29efcb91bb42fa5)
+2026-10-27T12:02:02.1195967Z 
+2026-10-27T12:02:02.1196134Z running 11 tests
+2026-10-27T12:02:02.1284723Z test infinite_search_failure_exits_immediately_without_waiting_for_stop ... ok
+2026-10-27T12:02:02.1297898Z test descendant_search_representation_failure_exits_without_fabricated_result ... ok
+2026-10-27T12:02:02.1457772Z test handshake_readiness_and_live_stop_keep_stdout_protocol_only ... ok
+2026-10-27T12:02:02.1741228Z test infinite_terminal_waits_for_stop_and_new_position_suppresses_stale_output ... ok
+2026-10-27T12:02:02.1873307Z test deterministic_depth_and_node_limits_return_legal_bestmoves ... ok
+2026-10-27T12:02:02.1897385Z test optional_claim_channel_limitation_and_recorded_auto_policy_are_explicit ... ok
+2026-10-27T12:02:02.1907730Z test movetime_and_increment_clock_budgets_stop_live_search ... ok
+2026-10-27T12:02:02.1951230Z test invalid_input_and_unsupported_controls_recover_without_stdout_diagnostics ... ok
+2026-10-27T12:02:02.1952560Z test quit_terminates_during_unbounded_search_without_waiting_for_join ... ok
+2026-10-27T12:02:02.2047153Z test same_fen_with_different_known_repetition_history_changes_search ... ok
+2026-10-27T12:02:02.2411422Z test position_replays_history_and_invalid_sequence_is_atomic ... ok
+2026-10-27T12:02:02.2411932Z 
+2026-10-27T12:02:02.2412325Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+2026-10-27T12:02:02.2413078Z 
+2026-10-27T12:02:02.2414312Z      Running tests/usi.rs (target/debug/deps/usi-e095dae4b91a4f96)
+2026-10-27T12:02:02.2423765Z 
+2026-10-27T12:02:02.2423967Z running 11 tests
+2026-10-27T12:02:02.2490671Z test checked_native_no_action_root_has_the_protocol_mandated_resignation ... ok
+2026-10-27T12:02:02.2581583Z test native_terminal_handling_does_not_turn_draw_or_nonmate_into_resignation ... ok
+2026-10-27T12:02:02.2724538Z test malformed_positions_controls_and_options_are_atomic_and_explicit ... ok
+2026-10-27T12:02:02.2871207Z test promotion_drop_declaration_and_pv_mapping_are_native ... ok
+2026-10-27T12:02:02.3651826Z test same_context_request_replacement_and_failed_position_retire_held_results ... ok
+2026-10-27T12:02:02.3661204Z test stop_keeps_completed_result_and_readiness_stays_responsive ... ok
+2026-10-27T12:02:02.3721559Z test replacement_newgame_gameover_and_quit_retire_old_observations ... ok
+2026-10-27T12:02:02.3793595Z test supplied_history_changes_search_without_invented_pre_root_history ... ok
+2026-10-27T12:02:02.3883664Z test tsume_request_has_standard_notimplemented_reply_without_native_work ... ok
+2026-10-27T12:02:02.4244375Z test zero_or_insufficient_work_never_becomes_resignation_or_fallback ... ok
+2026-10-27T12:02:03.1980716Z test handshake_options_readiness_defaults_alias_and_incompatible_selection ... ok
+2026-10-27T12:02:03.1981183Z 
+2026-10-27T12:02:03.1981580Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.96s
+2026-10-27T12:02:03.1982043Z 
+2026-10-27T12:02:03.1982730Z      Running unittests src/lib.rs (target/debug/deps/mshogi_core-4865f3d199d20ef3)
+2026-10-27T12:02:03.1992004Z 
+2026-10-27T12:02:03.1992264Z running 20 tests
+2026-10-27T12:02:03.1995969Z test chess::legal::inspection_tests::hypothetical_promotion_contains_all_four_completions ... ok
+2026-10-27T12:02:03.1997167Z test chess::legal::inspection_tests::hypothetical_castling_uses_existing_rights_without_mutation ... ok
+2026-10-27T12:02:03.1998362Z test chess::legal::inspection_tests::hypothetical_knight_and_pin_are_local_and_immutable ... ok
+2026-10-27T12:02:03.2011278Z test chess::legal::inspection_tests::inspection_preserves_actual_en_passant_without_transferring_it ... ok
+2026-10-27T12:02:03.2024584Z test shogi::game::invariant_tests::corrupted_command_prefix_preserves_replay_error_and_original_game ... ok
+2026-10-27T12:02:03.2026714Z test shogi::legal::inspection_tests::hypothetical_inspection_still_excludes_pawn_drop_mate ... ok
+2026-10-27T12:02:03.2027859Z test shogi::legal::inspection_tests::opposite_side_movement_promotions_capture_and_pin_preserve_position ... ok
+2026-10-27T12:02:03.2028956Z test shogi::tests::custom_sfen_preserves_hands_promotions_counter_and_unknown_prehistory ... ok
+2026-10-27T12:02:03.2030084Z test shogi::legal::inspection_tests::hypothetical_drops_retain_nifu_dead_ranks_and_resources ... ok
+2026-10-27T12:02:03.2031537Z test shogi::tests::every_promotable_base_capture_returns_its_own_kind_not_gold ... ok
+2026-10-27T12:02:03.2032587Z test shogi::tests::drop_resources_nifu_and_dead_ranks_are_native_for_both_sides ... ok
+2026-10-27T12:02:03.2033635Z test shogi::tests::forced_optional_and_leaving_zone_promotions_for_both_sides ... ok
+2026-10-27T12:02:03.2034561Z test shogi::tests::initial_placement_sfen_and_declared_origin ... ok
+2026-10-27T12:02:03.2035492Z test shogi::tests::geometry_matches_independent_center_movement_sets_and_ray_blocks ... ok
+2026-10-27T12:02:03.2036642Z test shogi::tests::rejected_choices_are_atomic_and_undo_requires_exact_context ... ok
+2026-10-27T12:02:03.2037677Z test shogi::tests::sparse_diagrams_are_local_and_do_not_claim_king_safety_or_reachability ... ok
+2026-10-27T12:02:03.2039001Z test shogi::tests::opening_capture_demotes_transfers_and_nested_undo_is_exact ... ok
+2026-10-27T12:02:03.2039950Z test shogi::tests::square_and_complete_usi_choices_roundtrip ... ok
+2026-10-27T12:02:03.2041122Z test shogi::tests::malformed_and_locally_invalid_imports_are_rejected_without_touching_existing_state ... ok
+2026-10-27T12:02:03.2051785Z test shogi::game::invariant_tests::corrupted_check_cache_retains_candidate_evidence_without_committing_or_scoring ... ok
+2026-10-27T12:02:03.2052589Z 
+2026-10-27T12:02:03.2052996Z test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+2026-10-27T12:02:03.2053509Z 
+2026-10-27T12:02:03.2054128Z      Running tests/action_boundary.rs (target/debug/deps/action_boundary-f9c7711bbd24a180)
+2026-10-27T12:02:03.2062644Z 
+2026-10-27T12:02:03.2062979Z running 10 tests
+2026-10-27T12:02:03.2067021Z test equal_endpoints_with_distinct_routes_are_distinct_actions_with_distinct_effects ... ok
+2026-10-27T12:02:03.2067774Z test multiple_rule_derived_effects_reverse_completely ... ok
+2026-10-27T12:02:03.2068592Z test an_invalid_later_step_rejects_the_whole_action_atomically ... ok
+2026-10-27T12:02:03.2071508Z test partial_selection_is_not_a_committed_turn ... ok
+2026-10-27T12:02:03.2072530Z test production_multi_effect_actions_derive_every_effect_from_the_board ... ok
+2026-10-27T12:02:03.2073545Z test production_rejection_is_atomic_and_needs_a_complete_choice ... ok
+2026-10-27T12:02:03.2074506Z test production_square_is_intentionally_limited_to_the_chess_board ... ok
+2026-10-27T12:02:03.2075855Z test serialized_identity_round_trips_and_carries_no_effects ... ok
+2026-10-27T12:02:03.2076802Z test synthetic_squares_beyond_the_chess_range_are_addressable ... ok
+2026-10-27T12:02:03.2111523Z test chess_action_identity_needs_no_route_field ... ok
+2026-10-27T12:02:03.2111988Z 
+2026-10-27T12:02:03.2112425Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-27T12:02:03.2112813Z 
+2026-10-27T12:02:03.2114090Z      Running tests/adjudication.rs (target/debug/deps/adjudication-89c9f70076a38be0)
+2026-10-27T12:02:03.2122572Z 
+2026-10-27T12:02:03.2122883Z running 8 tests
+2026-10-27T12:02:03.2135372Z test intended_claim_legality_does_not_depend_on_fullmove_representability ... ok
+2026-10-27T12:02:03.2161091Z test invalid_claims_and_wrong_actor_are_atomic ... ok
+2026-10-27T12:02:03.2162112Z test independent_automatic_results_and_bounded_dead_recognition ... ok
+2026-10-27T12:02:03.2231444Z test optional_claims_conclude_only_when_exercised_and_round_trip_without_playing_intention ... ok
+2026-10-27T12:02:03.2261563Z test live_path_refuses_continuation_after_automatic_result_and_undo_restores_it ... ok
+2026-10-27T12:02:03.2263317Z test policy_returns_the_exact_profile_priority_and_square_order ... ok
+2026-10-27T12:02:03.2279338Z test policy_selection_current_before_intended_and_intended_before_prospective_mate ... ok
+2026-10-27T12:02:03.2285143Z      Running tests/attacks.rs (target/debug/deps/attacks-0a2b9387b4064b30)
+2026-10-27T12:02:03.2286040Z test profile_claim_thresholds_and_intended_actions ... ok
+2026-10-27T12:02:03.2286583Z 
+2026-10-27T12:02:03.2287066Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+2026-10-27T12:02:03.2287633Z 
+2026-10-27T12:02:03.2294132Z 
+2026-10-27T12:02:03.2294596Z running 4 tests
+2026-10-27T12:02:03.2298574Z test attacks_ignore_whether_moving_the_attacker_would_expose_its_king ... ok
+2026-10-27T12:02:03.2299375Z test attack_maps_follow_occupancy_changes_from_checked_actions ... ok
+2026-10-27T12:02:03.2323738Z test original_corpus_attack_queries_are_satisfied ... ok
+2026-10-27T12:02:03.2494202Z test independent_attack_fixtures_match_exact_attacker_sets_and_complete_maps ... ok
+2026-10-27T12:02:03.2495001Z 
+2026-10-27T12:02:03.2495365Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+2026-10-27T12:02:03.2495953Z 
+2026-10-27T12:02:03.2496733Z      Running tests/completeness.rs (target/debug/deps/completeness-50640ec476f7d306)
+2026-10-27T12:02:03.2506315Z 
+2026-10-27T12:02:03.2506729Z running 8 tests
+2026-10-27T12:02:03.2513883Z test forced_capture_dead_and_one_sided_impossibility_are_not_material_guesses ... ok
+2026-10-27T12:02:03.6972363Z test blocked_wall_exact_exhaustion_matches_independent_king_graph ... ok
+2026-10-27T12:02:03.7131687Z test full_live_adjudication_records_mode_preserves_legacy_and_restores_undo ... ok
+2026-10-27T12:02:03.7211189Z test positive_witnesses_are_complete_legal_actions_and_counter_independent ... ok
+2026-10-27T12:02:03.7212098Z test zero_full_budget_does_not_erase_an_existing_sound_side_specific_proof ... ok
+2026-10-27T12:02:03.7213057Z test budgets_and_cancellation_are_unknown_and_leave_input_unchanged ... ok
+2026-10-27T12:02:03.7301552Z test full_timeout_resignation_use_generated_proofs_and_replay_configuration ... ok
+2026-10-27T12:02:04.0113087Z test a_committed_move_can_create_full_deadness_and_undo_restores_analysis ... ok
+2026-10-27T12:02:04.0113516Z 
+2026-10-27T12:02:04.0113857Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.76s
+2026-10-27T12:02:04.0114351Z 
+2026-10-27T12:02:04.0119270Z      Running tests/fen_corpus.rs (target/debug/deps/fen_corpus-611aa6f6511086ed)
+2026-10-27T12:02:04.0126685Z 
+2026-10-27T12:02:04.0127066Z running 9 tests
+2026-10-27T12:02:04.0151277Z test castling_flags_are_permissions_not_derived_from_current_paths ... ok
+2026-10-27T12:02:04.0152196Z test every_specified_ascii_whitespace_and_leading_zeroes_normalize ... ok
+2026-10-27T12:02:04.0152942Z test getters_expose_the_full_position_tuple ... ok
+2026-10-27T12:02:04.0153754Z test earliest_category_wins_across_fields_and_no_failure_mutates_state ... ok
+2026-10-27T12:02:04.0154641Z test local_king_safety_uses_geometric_attacks_including_pinned_pieces ... ok
+2026-10-27T12:02:04.0155553Z test raw_ep_and_counters_belong_to_saved_identity_but_not_a_history_claim ... ok
+2026-10-27T12:02:04.0156313Z test structural_reasons_are_machine_readable ... ok
+2026-10-27T12:02:04.0214935Z test independent_corpus_fen_contracts_and_canonical_positions ... ok
+2026-10-27T12:02:04.0431465Z test bounded_malformed_inputs_never_panic_or_partially_replace ... ok
+2026-10-27T12:02:04.0431986Z 
+2026-10-27T12:02:04.0432256Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+2026-10-27T12:02:04.0432785Z 
+2026-10-27T12:02:04.0434112Z      Running tests/game_history.rs (target/debug/deps/game_history-a9f6e0bdf9865dc4)
+2026-10-27T12:02:04.0444765Z 
+2026-10-27T12:02:04.0445196Z running 5 tests
+2026-10-27T12:02:04.0484734Z test independently_specified_repetition_equivalences ... ok
+2026-10-27T12:02:04.0485342Z test rejection_and_branch_undo_restore_all_history_fields ... ok
+2026-10-27T12:02:04.0490807Z test independent_history_counts_and_identical_fen_different_histories ... ok
+2026-10-27T12:02:04.0514896Z test independent_special_transition_fixtures_restore_game_and_records ... ok
+2026-10-27T12:02:04.3376189Z test fixed_seed_games_restore_positions_history_and_occurrence_tables ... ok
+2026-10-27T12:02:04.3376697Z 
+2026-10-27T12:02:04.3377481Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.29s
+2026-10-27T12:02:04.3377939Z 
+2026-10-27T12:02:04.3379404Z      Running tests/game_record.rs (target/debug/deps/game_record-7a40344a3e943c82)
+2026-10-27T12:02:04.3390743Z 
+2026-10-27T12:02:04.3391301Z running 5 tests
+2026-10-27T12:02:04.3403560Z test canonical_record_has_an_independent_expected_encoding ... ok
+2026-10-27T12:02:04.3404566Z test invalid_versions_metadata_effects_contexts_and_actions_are_rejected ... ok
+2026-10-27T12:02:04.3405390Z test strict_coordinate_identity_is_shared_without_legalizing_actions ... ok
+2026-10-27T12:02:04.3406075Z test every_observation_variant_round_trips_and_preserves_context ... ok
+2026-10-27T12:02:04.3406802Z test ordered_same_ply_observations_and_intended_claim_are_preserved_without_execution ... ok
+2026-10-27T12:02:04.3407269Z 
+2026-10-27T12:02:04.3407671Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-27T12:02:04.3408377Z 
+2026-10-27T12:02:04.3409412Z      Running tests/legal_actions.rs (target/debug/deps/legal_actions-9c79938011ef3c71)
+2026-10-27T12:02:04.3419439Z 
+2026-10-27T12:02:04.3420083Z running 9 tests
+2026-10-27T12:02:04.3461328Z test empty_legal_sets_are_distinguished_by_check ... ok
+2026-10-27T12:02:04.3480867Z test counter_overflow_is_atomic_for_each_counter_side_and_action_kind ... ok
+2026-10-27T12:02:04.4641772Z test legal_sets_and_classification_are_identical_across_counter_values ... ok
+2026-10-27T12:02:04.4661375Z test legality_and_classification_ignore_the_counter_domain ... ok
+2026-10-27T12:02:04.4662634Z test overflow_never_turns_a_live_position_into_mate_or_stalemate ... ok
+2026-10-27T12:02:04.4663523Z test queries_do_not_mutate_and_are_deterministic ... ok
+2026-10-27T12:02:04.5316712Z test independent_classification_fixtures_match_exactly ... ok
+2026-10-27T12:02:04.8808236Z test legal_sets_match_the_special_and_candidate_fixture_families ... ok
+2026-10-27T12:02:05.1358098Z test corpus_legal_sets_and_classifications_match_exactly ... ok
+2026-10-27T12:02:05.1358625Z 
+2026-10-27T12:02:05.1359041Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.79s
+2026-10-27T12:02:05.1359586Z 
+2026-10-27T12:02:05.1361919Z      Running tests/match_profile_preparation.rs (target/debug/deps/match_profile_preparation-2f0c0f6f349808f4)
+2026-10-27T12:02:05.1372645Z 
+2026-10-27T12:02:05.1373665Z running 1 test
+2026-10-27T12:02:05.1389643Z test declared_profile_paths_are_valid_and_history_pair_is_identical ... ok
+2026-10-27T12:02:05.1390131Z 
+2026-10-27T12:02:05.1390749Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-27T12:02:05.1391246Z 
+2026-10-27T12:02:05.1391645Z      Running tests/matchplay.rs (target/debug/deps/matchplay-d9e2194264adc371)
+2026-10-27T12:02:05.1401484Z 
+2026-10-27T12:02:05.1401837Z running 10 tests
+2026-10-27T12:02:05.1446239Z test expiry_precedes_move_and_invalid_witness_never_delays_it ... ok
+2026-10-27T12:02:05.1471653Z test bad_certificate_does_not_cancel_an_explicit_resignation ... ok
+2026-10-27T12:02:05.1479232Z test claims_stop_clock_and_intention_stays_unplayed ... ok
+2026-10-27T12:02:05.1480079Z test hypothetical_mate_is_article_three_reachability_not_counter_or_claim_policy ... ok
+2026-10-27T12:02:05.1481281Z test nested_outcomes_and_direct_serde_identity_cannot_bypass_record_checks ... ok
+2026-10-27T12:02:05.1482068Z test profile_resign_and_flag_possible_impossible_and_unresolved ... ok
+2026-10-27T12:02:05.1482787Z test offers_require_recorded_first_moves_persist_and_reject_atomically ... ok
+2026-10-27T12:02:05.1483900Z test records_reject_corrupted_observations_and_unknown_schema_fields ... ok
+2026-10-27T12:02:05.1484400Z test execute_independent_clock_profile_fixtures ... ok
+2026-10-27T12:02:05.1484940Z test rejected_moves_stale_context_and_increment_overflow_charge_time_without_moving ... ok
+2026-10-27T12:02:05.1485279Z 
+2026-10-27T12:02:05.1485600Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+2026-10-27T12:02:05.1485947Z 
+2026-10-27T12:02:05.1486250Z      Running tests/native_envelope.rs (target/debug/deps/native_envelope-39dacf1c687f0820)
+2026-10-27T12:02:05.1493166Z 
+2026-10-27T12:02:05.1493319Z running 5 tests
+2026-10-27T12:02:05.1511905Z test native_owners_admit_claims_declarations_and_resignation_without_shared_turn_rules ... ok
+2026-10-27T12:02:05.1551451Z test known_history_and_same_ply_terminal_events_do_not_collapse ... ok
+2026-10-27T12:02:05.1570904Z test actual_native_payloads_round_trip_with_derived_identity_and_provenance ... ok
+2026-10-27T12:02:05.1587319Z test outer_and_native_duplicates_unknown_missing_and_cross_identities_reject ... ok
+2026-10-27T12:02:05.2847700Z test record_byte_event_and_diagnostic_bounds_are_explicit ... ok
+2026-10-27T12:02:05.2848107Z 
+2026-10-27T12:02:05.2848417Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+2026-10-27T12:02:05.2849546Z 
+2026-10-27T12:02:05.2850918Z      Running tests/ordinary_actions.rs (target/debug/deps/ordinary_actions-ce32ed5604606874)
+2026-10-27T12:02:05.2861411Z 
+2026-10-27T12:02:05.2861695Z running 6 tests
+2026-10-27T12:02:05.2882132Z test counter_overflow_cannot_publish_any_piece_right_or_ep_effect ... ok
+2026-10-27T12:02:05.2884741Z test the_ordinary_only_boundary_refuses_special_actions_without_effects ... ok
+2026-10-27T12:02:05.2885872Z test undo_requires_the_complete_post_state_and_rejects_wrong_order_atomically ... ok
+2026-10-27T12:02:05.2886981Z test unsafe_results_are_rejected_after_resolving_capture_and_movement ... ok
+2026-10-27T12:02:05.2887721Z test rejected_ordinary_preconditions_are_atomic ... ok
+2026-10-27T12:02:05.2902775Z test independently_expected_transitions_restore_every_saved_field_in_reverse ... ok
+2026-10-27T12:02:05.2903207Z 
+2026-10-27T12:02:05.2903468Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-27T12:02:05.2903863Z 
+2026-10-27T12:02:05.2905763Z      Running tests/ordinary_candidates.rs (target/debug/deps/ordinary_candidates-e1307d202923503a)
+2026-10-27T12:02:05.2914874Z 
+2026-10-27T12:02:05.2915042Z running 5 tests
+2026-10-27T12:02:05.2920005Z test generation_is_deterministic_and_does_not_mutate_the_position ... ok
+2026-10-27T12:02:05.2921431Z test every_promotion_choice_stays_a_distinct_action_through_transition ... ok
+2026-10-27T12:02:05.3068983Z test candidates_ignore_counter_bounds_which_the_checked_boundary_enforces ... ok
+2026-10-27T12:02:05.4587401Z test independent_candidate_fixtures_match_exact_sets_and_contract ... ok
+2026-10-27T12:02:05.6225580Z test original_corpus_ordinary_legal_moves_are_exactly_the_safe_candidates ... ok
+2026-10-27T12:02:05.6226493Z      Running tests/perft.rs (target/debug/deps/perft-1dea9ad81ea4de38)
+2026-10-27T12:02:05.6226884Z 
+2026-10-27T12:02:05.6227193Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+2026-10-27T12:02:05.6227600Z 
+2026-10-27T12:02:05.6236748Z 
+2026-10-27T12:02:05.6237085Z running 6 tests
+2026-10-27T12:02:05.6244763Z test deep_independent_divides_match_in_order ... ignored, deep perft: run in release with --ignored
+2026-10-27T12:02:05.6245852Z test depth_semantics_and_errors_are_explicit ... ok
+2026-10-27T12:02:05.6278246Z test the_disagreement_locator_names_the_first_differing_root_action ... ok
+2026-10-27T12:02:07.4227892Z test corpus_perft_totals_match_at_documented_depths ... ok
+2026-10-27T12:02:08.6461512Z test independent_divides_match_in_order ... ok
+2026-10-27T12:02:10.2652791Z test counters_never_limit_traversal ... ok
+2026-10-27T12:02:10.2653356Z 
+2026-10-27T12:02:10.2654287Z test result: ok. 5 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 4.64s
+2026-10-27T12:02:10.2654816Z 
+2026-10-27T12:02:10.2657399Z      Running tests/sequences.rs (target/debug/deps/sequences-c22c98bfd577cfb0)
+2026-10-27T12:02:10.2667112Z 
+2026-10-27T12:02:10.2667544Z running 4 tests
+2026-10-27T12:02:10.2691366Z test deep_fixed_seed_sequences ... ignored, deep sequence run: use --release --ignored
+2026-10-27T12:02:10.2692261Z test the_checker_rejects_a_corrupted_transition ... ok
+2026-10-27T12:02:10.3233900Z test saved_regression_sequences_replay_deterministically ... ok
+2026-10-27T12:02:12.8157143Z test fixed_seed_sequences_restore_and_round_trip_every_ply ... ok
+2026-10-27T12:02:12.8157767Z 
+2026-10-27T12:02:12.8158165Z test result: ok. 3 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 2.55s
+2026-10-27T12:02:12.8158814Z 
+2026-10-27T12:02:12.8161098Z      Running tests/shogi_history.rs (target/debug/deps/shogi_history-3d93834b95bc2759)
+2026-10-27T12:02:12.8170779Z 
+2026-10-27T12:02:12.8171205Z running 5 tests
+2026-10-27T12:02:12.8211093Z test rejection_is_atomic_and_resignation_does_not_require_own_turn ... ok
+2026-10-27T12:02:12.8211960Z test root_provenance_is_not_a_bare_positions_origin ... ok
+2026-10-27T12:02:12.8224860Z test identical_saved_position_does_not_supply_repetition_history ... ok
+2026-10-27T12:02:12.8547231Z test independently_expected_declaration_boundaries_and_same_ply_prefixes ... ok
+2026-10-27T12:02:13.0186011Z test independent_history_and_import_ledgers_and_exact_reversal ... ok
+2026-10-27T12:02:13.0186582Z 
+2026-10-27T12:02:13.0186990Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+2026-10-27T12:02:13.0187408Z 
+2026-10-27T12:02:13.0188067Z      Running tests/shogi_legal.rs (target/debug/deps/shogi_legal-57ab70bfc4eba335)
+2026-10-27T12:02:13.0197941Z 
+2026-10-27T12:02:13.0198186Z running 7 tests
+2026-10-27T12:02:13.0231170Z test attacks_candidates_and_legal_choices_are_distinct ... ok
+2026-10-27T12:02:13.0250960Z test counter_domain_never_changes_local_legality_or_identity ... ok
+2026-10-27T12:02:13.0251971Z test pawn_drop_defense_keeps_compulsory_knight_promotion_and_preexisting_check_distinct ... ok
+2026-10-27T12:02:13.0262081Z test structural_diagrams_outside_reference_domain_still_use_native_king_safety ... ok
+2026-10-27T12:02:13.1011489Z test independently_reviewed_complete_movement_and_diagnostic_contract ... ok
+2026-10-27T12:02:13.1657041Z test independently_reviewed_board_fixture_contract ... ok
+2026-10-27T12:02:13.2073525Z test deterministic_sequences_restore_every_prefix_and_material ... ok
+2026-10-27T12:02:13.2074119Z 
+2026-10-27T12:02:13.2074606Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+2026-10-27T12:02:13.2075148Z 
+2026-10-27T12:02:13.2077142Z      Running tests/shogi_record.rs (target/debug/deps/shogi_record-2b0c9040bafce264)
+2026-10-27T12:02:13.2088074Z 
+2026-10-27T12:02:13.2089017Z running 10 tests
+2026-10-27T12:02:13.2131640Z test declarations_retain_actor_and_evidence_and_reject_embedded_conflicting_actor ... ok
+2026-10-27T12:02:13.2171505Z test empty_command_and_conclusion_variants_reject_unknown_content ... ok
+2026-10-27T12:02:13.2191287Z test byte_and_event_capacity_are_bounded_without_truncation ... ok
+2026-10-27T12:02:13.2241316Z test automatic_root_conclusions_and_all_post_terminal_commands_are_validated ... ok
+2026-10-27T12:02:13.2312825Z test root_category_origin_and_counter_provenance_are_enforced ... ok
+2026-10-27T12:02:13.2411594Z test every_derived_effect_is_checked_even_if_final_state_is_unchanged ... ok
+2026-10-27T12:02:13.2491457Z test strict_decode_rejects_duplicate_unknown_missing_and_unsupported_fields ... ok
+2026-10-27T12:02:13.2740579Z test standard_round_trip_retains_every_prefix_and_same_ply_terminal_commands ... ok
+2026-10-27T12:02:14.2416061Z test independently_established_history_and_declaration_ledgers_round_trip ... ok
+2026-10-27T12:02:15.0362990Z test maximum_retained_board_ledger_and_terminal_command_always_fit ... ok
+2026-10-27T12:02:15.0363376Z 
+2026-10-27T12:02:15.0364118Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.83s
+2026-10-27T12:02:15.0364550Z 
+2026-10-27T12:02:15.0369056Z      Running tests/special_actions.rs (target/debug/deps/special_actions-c70a4f58bceff7c8)
+2026-10-27T12:02:15.0376891Z 
+2026-10-27T12:02:15.0377177Z running 6 tests
+2026-10-27T12:02:15.0399608Z test castling_effects_and_rights_are_exact_for_each_side_and_color ... ok
+2026-10-27T12:02:15.0412067Z test independent_rejections_report_the_expected_error_without_mutation ... ok
+2026-10-27T12:02:15.0412995Z test ordinary_only_boundary_still_refuses_specials_that_apply_executes ... ok
+2026-10-27T12:02:15.0413803Z test independent_sequences_reach_exact_states_and_undo_in_reverse ... ok
+2026-10-27T12:02:15.4755181Z test independent_positions_match_special_candidates_and_full_legal_sets ... ok
+2026-10-27T12:02:15.7403035Z test corpus_legal_sets_equal_candidates_accepted_by_apply ... ok
+2026-10-27T12:02:15.7403495Z 
+2026-10-27T12:02:15.7403943Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.70s
+2026-10-27T12:02:15.7404316Z 
+2026-10-27T12:02:15.7407088Z      Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-9fa342094d3d3105)
+2026-10-27T12:02:15.7418804Z 
+2026-10-27T12:02:15.7419059Z running 85 tests
+2026-10-27T12:02:15.7446605Z test analysis::tests::cancel_keeps_pause_and_has_no_fabricated_final_observations ... ok
+2026-10-27T12:02:15.7471917Z test analysis::tests::analysis_has_a_read_only_acceptance_path_and_explicit_resume ... ok
+2026-10-27T12:02:15.7501153Z test analysis::tests::analysis_claims_and_failures_are_observations_only_with_exact_context_guards ... ok
+2026-10-27T12:02:15.7502852Z test persistence::tests::archive_capacity_exact_count_and_byte_boundaries_include_stop_reservations ... ok
+2026-10-27T12:02:15.7551322Z test analysis::tests::mixed_turn_analysis_replacement_and_resume_share_one_owner ... ok
+2026-10-27T12:02:15.7561267Z test analysis::tests::same_fen_different_history_and_wrong_purpose_are_rejected ... ok
+2026-10-27T12:02:15.7583127Z test persistence::tests::cancellation_retires_an_uncommitted_engine_result_candidate ... ok
+2026-10-27T12:02:15.7588564Z test analysis::tests::resignation_retires_analysis_and_concluded_positions_remain_analyzable ... ok
+2026-10-27T12:02:15.7658012Z test persistence::tests::concurrent_save_as_bookkeeping_survives_later_candidate_commit ... ok
+2026-10-27T12:02:15.7739274Z test persistence::tests::command_receipts_survive_following_work_and_close_supersedes_pending_admission ... ok
+2026-10-27T12:02:15.8102087Z test persistence::tests::claims_and_resignation_roundtrip_complete_match_not_just_moves ... ok
+2026-10-27T12:02:15.8150684Z test persistence::tests::historical_analysis_excludes_future_claim_and_survives_only_its_selection ... ok
+2026-10-27T12:02:15.8191356Z test persistence::tests::interrupted_atomic_write_keeps_prior_file_and_removes_temporary ... ok
+2026-10-27T12:02:16.0522100Z test persistence::tests::io_and_rejection_revisions_cannot_consume_the_persisted_save_watermark ... ok
+2026-10-27T12:02:16.0542252Z test persistence::tests::control_boundary_rejects_unchanged_and_reserved_close_is_saveable ... ok
+2026-10-27T12:02:16.1845160Z test persistence::tests::observation_corruption_and_future_control_timestamps_are_validated ... ok
+2026-10-27T12:02:16.3322230Z test persistence::tests::event_4096_commits_but_engine_event_4097_rejects_before_move_or_observation ... ok
+2026-10-27T12:02:16.3362215Z test persistence::tests::preflight_rejects_timed_full_identity_and_resource_limits_before_replay ... ok
+2026-10-27T12:02:17.1687792Z test persistence::tests::oversized_raw_engine_failure_is_rejected_before_observation_or_game_commit ... ok
+2026-10-27T12:02:17.4972934Z test persistence::tests::save_during_admission_keeps_new_contents_dirty_and_successful_open_retires_candidate ... ok
+2026-10-27T12:02:17.6128390Z test persistence::tests::shared_poll_that_commits_shogi_open_publishes_the_matching_game_family ... ok
+2026-10-27T12:02:17.9907280Z test persistence::tests::stale_save_and_stale_open_do_not_mark_or_replace_current_document ... ok
+2026-10-27T12:02:17.9962258Z test persistence::tests::stored_full_witnesses_require_legal_requested_mate_and_cooperative_budget ... ok
+2026-10-27T12:02:20.4481846Z test persistence::tests::final_engine_observation_256_commits_once_then_further_engine_work_resource_pauses ... ok
+2026-10-27T12:02:20.4962292Z test shared::archive::capacity_tests::conservative_reconstruction_budget_is_enforced_before_accepting_a_journal ... ok
+2026-10-27T12:02:20.7293215Z test persistence::tests::observation_256_is_accepted_257_rejected_and_save_open_preserves_every_observation ... ok
+2026-10-27T12:02:20.8352024Z test shared::archive::capacity_tests::control_boundary_reserves_the_last_slot_for_close_and_never_truncates ... ok
+2026-10-27T12:02:23.6502001Z test shared::archive::capacity_tests::real_maximum_native_ledger_has_bounded_record_context_response_and_archive_sizes ... ok
+2026-10-27T12:02:24.3235890Z test shared::archive::capacity_tests::reopened_active_journal_retains_stop_reservation_across_preferences ... ok
+2026-10-27T12:02:27.0052078Z test shared::archive::capacity_tests::replay_capacity_retains_one_exact_stop_action_of_headroom ... ok
+2026-10-27T12:02:27.0784928Z test shared::archive::capacity_tests::runtime_only_revision_exhaustion_preserves_save_and_fresh_reopen_path ... ok
+2026-10-27T12:02:27.6562592Z test shared::archive::tests::canonical_fixture_roundtrips_preserve_native_root_history_and_all_outcomes ... ok
+2026-10-27T12:02:27.6976663Z test shared::archive::tests::concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it ... ok
+2026-10-27T12:02:27.8615602Z test shared::archive::tests::hostile_archives_reject_without_changing_the_current_document ... ok
+2026-10-27T12:02:27.9572025Z test shared::archive::tests::imported_capture_hand_and_drop_after_reopen_preserve_counter_provenance ... ok
+2026-10-27T12:02:28.0009279Z test shared::archive::tests::inability_to_start_native_execution_is_a_capacity_pause_not_engine_failure ... ok
+2026-10-27T12:02:28.0664611Z test shared::archive::tests::interrupted_and_failed_native_saves_preserve_file_and_dirty_state ... ok
+2026-10-27T12:02:28.9131949Z test shared::archive::tests::observations_keep_exact_retired_branch_targets_and_never_resume_on_open ... ok
+2026-10-27T12:02:29.5981818Z test shared::archive::tests::pending_runtime_is_not_archived_and_resume_allocates_fresh_identity ... ok
+2026-10-27T12:02:29.6662691Z test shared::archive::tests::persisted_preferences_keep_exact_pending_execution_and_original_limits ... ok
+2026-10-27T12:02:30.3372670Z test shared::archive::tests::product_new_game_archive_reopens_native_human_orientation_stopped_and_fresh ... ok
+2026-10-27T12:02:30.3982054Z test shared::archive::tests::raw_nested_observation_fields_remain_strict_and_identity_errors_are_explicit ... ok
+2026-10-27T12:02:30.6242132Z test shared::archive::tests::same_ply_terminal_history_and_saved_selection_remain_distinct ... ok
+2026-10-27T12:02:30.6738085Z test shared::archive::tests::stale_open_and_cross_game_save_completion_never_replace_current_state ... ok
+2026-10-27T12:02:30.7202946Z test shared::archive::tests::v1_chess_and_explicit_tagged_chess_preserve_existing_semantics ... ok
+2026-10-27T12:02:30.8272172Z test shared::archive::tests::wrong_native_game_and_semantic_journal_or_observation_tampering_reject ... ok
+2026-10-27T12:02:30.8571837Z test shared::inspection::tests::chess_pending_engine_work_and_historical_prefix_are_not_touched ... ok
+2026-10-27T12:02:30.8651922Z test shared::inspection::tests::exact_historical_selection_and_conclusion_are_read_only ... ok
+2026-10-27T12:02:30.8721557Z test shared::inspection::tests::exact_native_chess_query_is_not_a_snapshot_poll_or_mutation ... ok
+2026-10-27T12:02:30.8739469Z test shared::inspection::tests::selected_shogi_owner_promotions_hands_and_pending_work_stay_native ... ok
+2026-10-27T12:02:30.8775569Z test shared::inspection::tests::strict_query_rejects_duplicate_nested_unknown_missing_and_oversize ... ok
+2026-10-27T12:02:30.9839841Z test shared::tests::actual_complete_drop_promotion_capture_and_atomic_rejection ... ok
+2026-10-27T12:02:31.0392931Z test shared::tests::close_document_preconditions_advance_for_shogi_events_observations_and_replacement ... ok
+2026-10-27T12:02:31.0401558Z test shared::tests::command_diagnostics_are_bounded_without_splitting_utf8 ... ok
+2026-10-27T12:02:31.0441273Z test shared::tests::command_json_strict_native_payload_and_encoded_capacity ... ok
+2026-10-27T12:02:31.1516611Z test shared::tests::declaration_advice_terminal_history_and_native_wrong_turn_semantics ... ok
+2026-10-27T12:02:31.2050682Z test shared::tests::exact_analysis_context_retirement_and_same_board_history ... ok
+2026-10-27T12:02:31.2201609Z test shared::tests::identities_native_geometry_and_chess_compatibility ... ok
+2026-10-27T12:02:31.2751840Z test shared::tests::incomplete_failure_and_retry_preserve_native_history_without_fallback ... ok
+2026-10-27T12:02:31.3558160Z test shared::tests::native_search_presentation_preserves_target_purpose_and_real_terminal_distance ... ok
+2026-10-27T12:02:31.4106118Z test shared::tests::observation_capacity_refuses_new_work_before_changing_session ... ok
+2026-10-27T12:02:31.4776807Z test shared::tests::presented_budget_matches_submitted_play_and_board_ply_ignores_terminal_events ... ok
+2026-10-27T12:02:31.5300892Z test shared::tests::product_declaration_capability_is_advisory_eligibility_but_native_terminal_semantics_remain ... ok
+2026-10-27T12:02:31.5568976Z test shared::tests::product_new_games_are_native_qualified_oriented_and_live_with_fresh_identities ... ok
+2026-10-27T12:02:31.5634412Z test shared::tests::product_new_rejects_stale_or_conflicting_choices_before_retiring_live_work ... ok
+2026-10-27T12:02:31.6622017Z test shared::tests::replacement_retires_chess_files_and_pending_admission ... ok
+2026-10-27T12:02:31.7632086Z test shared::tests::semantic_undo_replay_does_not_revive_retired_work ... ok
+2026-10-27T12:02:31.7674781Z test tests::cancel_wins_even_if_a_complete_response_has_arrived ... ok
+2026-10-27T12:02:31.7711698Z test tests::cancellation_and_retry_reject_invalid_states_atomically ... ok
+2026-10-27T12:02:31.7753463Z test tests::engine_applies_once_and_keeps_actual_observations ... ok
+2026-10-27T12:02:31.7831658Z test tests::engine_claim_remains_a_claim ... ok
+2026-10-27T12:02:31.7891512Z test tests::exact_same_fen_with_different_known_history_cannot_accept ... ok
+2026-10-27T12:02:31.7911847Z test tests::full_mode_restoration_is_explicitly_rejected_before_solver_execution ... ok
+2026-10-27T12:02:31.7983746Z test tests::incomplete_search_never_falls_back_to_a_move ... ok
+2026-10-27T12:02:31.8011369Z test tests::intended_claim_is_an_opportunity_then_conclusion_without_a_move ... ok
+2026-10-27T12:02:31.8071193Z test tests::invalid_engine_choice_is_unscored_and_atomic ... ok
+2026-10-27T12:02:31.8211425Z test tests::native_snapshot_and_atomic_human_rejection ... ok
+2026-10-27T12:02:31.8321352Z test tests::new_game_aba_and_generation_changes_reject_old_results ... ok
+2026-10-27T12:02:31.8391041Z test tests::promotion_choices_and_automatic_checkmate_are_native ... ok
+2026-10-27T12:02:31.8699291Z test tests::recovery_preserves_exact_match_and_game_records_and_retires_old_results ... ok
+2026-10-27T12:02:31.8736753Z test tests::resignation_is_a_draw_only_when_opponents_mate_is_proven_impossible ... ok
+2026-10-27T12:02:31.9183967Z test tests::resignation_is_unresolved_with_no_proof_on_either_players_turn ... ok
+2026-10-27T12:02:38.0261687Z test persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable ... ok
+2026-10-27T12:02:40.1795400Z test shared::archive::capacity_tests::actual_256_observations_save_reopen_and_reject_257_without_changing_accepted_document ... ok
+2026-10-27T12:02:44.0454371Z test shared::archive::capacity_tests::long_history_observations_enforce_both_encoded_byte_and_replay_capacity_without_data_loss ... ok
+2026-10-27T12:02:44.0455013Z 
+2026-10-27T12:02:44.0455298Z test result: ok. 85 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 28.30s
+2026-10-27T12:02:44.0455706Z 
+2026-10-27T12:02:44.0543996Z      Running unittests src/lib.rs (target/debug/deps/mshogi_engine-823c33bf6a5c71c2)
+2026-10-27T12:02:44.0554400Z 
+2026-10-27T12:02:44.0557093Z running 3 tests
+2026-10-27T12:02:44.0560252Z test shogi::presentation_tests::score_labels_retain_native_root_units_and_terminal_command_edges ... ok
+2026-10-27T12:02:44.0561229Z test bridge::tests::blocked_pipe_cleanup_is_explicit_bounded_and_does_not_join_unfinished_work ... ok
+2026-10-27T12:02:44.0591992Z test bridge::tests::cancel_and_replace_discard_even_an_already_published_completion ... ok
+2026-10-27T12:02:44.0592391Z 
+2026-10-27T12:02:44.0592745Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-27T12:02:44.0593123Z 
+2026-10-27T12:02:44.0595121Z      Running tests/protocol.rs (target/debug/deps/protocol-0e0ccb69fc334feb)
+2026-10-27T12:02:44.0604478Z 
+2026-10-27T12:02:44.0604730Z running 8 tests
+2026-10-27T12:02:44.0620043Z test full_child_operation_reports_real_possible_impossible_and_unknown_work ... ok
+2026-10-27T12:02:44.0641172Z test malformed_oversized_unknown_and_unterminated_input_are_rejected ... ok
+2026-10-27T12:02:44.0653690Z test invalid_settings_and_search_failure_have_no_score ... ok
+2026-10-27T12:02:44.0671359Z test native_record_duplicate_fields_are_not_collapsed_before_strict_validation ... ok
+2026-10-27T12:02:44.0681311Z test rejects_full_before_replay_without_downgrading_context ... ok
+2026-10-27T12:02:44.0734759Z test same_position_different_known_histories_preserve_different_claim_results ... ok
+2026-10-27T12:02:44.0754107Z test moves_claims_conclusions_and_incomplete_work_are_distinct ... ok
+2026-10-27T12:02:44.1076485Z test analysis_requires_exact_provenance_supported_mode_and_explicit_limits ... ok
+2026-10-27T12:02:44.1076948Z 
+2026-10-27T12:02:44.1077380Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+2026-10-27T12:02:44.1077865Z 
+2026-10-27T12:02:44.1079916Z      Running tests/shared.rs (target/debug/deps/shared-9c87d7ecb470fcea)
+2026-10-27T12:02:44.1090071Z 
+2026-10-27T12:02:44.1090248Z running 6 tests
+2026-10-27T12:02:44.1211555Z test actual_shogi_records_have_only_implemented_native_operations ... ok
+2026-10-27T12:02:44.1331597Z test same_position_different_history_is_not_interchangeable ... ok
+2026-10-27T12:02:44.1332715Z test actual_chess_play_claim_terminal_incomplete_analysis_and_full_are_preserved ... ok
+2026-10-27T12:02:44.1352147Z test strict_outer_purpose_target_envelope_and_native_bytes_survive_routing ... ok
+2026-10-27T12:02:44.1666631Z test acceptance_checks_every_execution_and_selection_field ... ok
+2026-10-27T12:02:45.7303864Z test composed_size_evidence_counts_native_wrapper_request_and_echoed_response ... ok
+2026-10-27T12:02:45.7304546Z 
+2026-10-27T12:02:45.7304908Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.62s
+2026-10-27T12:02:45.7305419Z 
+2026-10-27T12:02:45.7310871Z      Running tests/shogi_protocol.rs (target/debug/deps/shogi_protocol-1916518fec8cab50)
+2026-10-27T12:02:45.7321417Z 
+2026-10-27T12:02:45.7321808Z running 6 tests
+2026-10-27T12:02:45.7371830Z test raw_request_routing_keeps_native_duplicates_and_unknowns_visible ... ok
+2026-10-27T12:02:45.7491492Z test analysis_is_read_only_and_bound_to_native_side_and_same_ply_terminal_prefix ... ok
+2026-10-27T12:02:45.7611219Z test capabilities_and_result_families_do_not_make_chess_full_a_shogi_operation ... ok
+2026-10-27T12:02:45.7759241Z test real_native_choices_conclusions_and_score_perspective_roundtrip ... ok
+2026-10-27T12:02:45.7793796Z test strict_result_parsing_and_native_observation_acceptance ... ok
+2026-10-27T12:02:45.7893288Z test precise_limits_and_incomplete_work_do_not_invent_scores_or_moves ... ok
+2026-10-27T12:02:45.7893701Z 
+2026-10-27T12:02:45.7894139Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+2026-10-27T12:02:45.7894585Z 
+2026-10-27T12:02:45.7897278Z      Running unittests src/lib.rs (target/debug/deps/mshogi_runner-855f124ea2eb7813)
+2026-10-27T12:02:45.7907743Z 
+2026-10-27T12:02:45.7907974Z running 4 tests
+2026-10-27T12:02:45.7921760Z test run::tests::earliest_deadline_wins_even_if_controller_wakes_after_both ... ok
+2026-10-27T12:02:45.7922595Z test run::tests::fixed_reply_receipt_precedes_later_processing_and_status_collection ... ok
+2026-10-27T12:02:45.7923424Z test run::tests::delayed_clock_detection_records_observation_time_in_all_paths ... ok
+2026-10-27T12:02:45.7924323Z test run::tests::go_projects_elapsed_transport_without_mutating_or_double_charging_clock ... ok
+2026-10-27T12:02:45.7924727Z 
+2026-10-27T12:02:45.7925013Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-27T12:02:45.7925330Z 
+2026-10-27T12:02:45.7925674Z      Running unittests src/main.rs (target/debug/deps/mshogi_match-355c25218d14335a)
+2026-10-27T12:02:45.7933308Z 
+2026-10-27T12:02:45.7933536Z running 0 tests
+2026-10-27T12:02:45.7933779Z 
+2026-10-27T12:02:45.7934129Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-27T12:02:45.7934693Z 
+2026-10-27T12:02:45.7935270Z      Running tests/recorded_evidence.rs (target/debug/deps/recorded_evidence-d5a60f2d2a2dbd46)
+2026-10-27T12:02:45.7943734Z 
+2026-10-27T12:02:45.7944184Z running 4 tests
+2026-10-27T12:02:45.7989880Z test runner_clock_expiry_shuts_down_outstanding_real_uci_search_unscored ... ok
+2026-10-27T12:02:45.8078953Z test actual_claim_and_engine_failure_have_distinct_meanings ... ok
+2026-10-27T12:02:46.0295376Z test documented_work_limited_reruns_repeat_commands_and_conclusions ... ok
+2026-10-27T12:02:46.1223462Z test all_twenty_one_recorded_games_replay_with_complete_diagnostics ... ok
+2026-10-27T12:02:46.1224250Z 
+2026-10-27T12:02:46.1224655Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+2026-10-27T12:02:46.1225155Z 
+2026-10-27T12:02:46.1226545Z      Running tests/runner.rs (target/debug/deps/runner-f98849ff4c7717ec)
+2026-10-27T12:02:46.1237470Z 
+2026-10-27T12:02:46.1237784Z running 10 tests
+2026-10-27T12:02:46.1260754Z test non_utf8_cli_arguments_fail_normally_without_panicking ... ok
+2026-10-27T12:02:46.2572599Z test nonregular_identity_paths_are_rejected_without_opening_a_fifo ... ok
+2026-10-27T12:02:46.4091514Z test explicit_auto_claim_uses_known_history_before_any_go ... ok
+2026-10-27T12:02:46.5201968Z test ply_limit_is_a_distinct_unscored_experiment_stop ... ok
+2026-10-27T12:02:46.6792029Z test complete_scripted_pair_records_commands_identity_colors_results_and_replays ... ok
+2026-10-27T12:02:47.3595686Z test silent_and_blocked_stdin_children_cannot_block_cleanup ... ok
+2026-10-27T12:02:47.4762439Z test all_stream_and_metadata_buffers_are_bounded_with_truncation_markers ... ok
+2026-10-27T12:02:47.5019334Z test separate_watchdog_and_chess_clock_expiry_preserve_observations ... ok
+2026-10-27T12:02:47.5900472Z test strict_configuration_and_replay_reject_inconsistent_or_oversized_evidence ... ok
+2026-10-27T12:02:47.8965763Z test process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored ... ok
+2026-10-27T12:02:47.8966177Z 
+2026-10-27T12:02:47.8966580Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.77s
+2026-10-27T12:02:47.8966958Z 
+2026-10-27T12:02:47.8969947Z      Running tests/shogi_recorded.rs (target/debug/deps/shogi_recorded-18b514001a751bcc)
+2026-10-27T12:02:47.8980124Z 
+2026-10-27T12:02:47.8980564Z running 1 test
+2026-10-27T12:02:48.4966999Z test recorded_games_and_intentional_retirement_regression_have_explicit_verdicts ... ok
+2026-10-27T12:02:48.4967572Z 
+2026-10-27T12:02:48.4967877Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
+2026-10-27T12:02:48.4968334Z 
+2026-10-27T12:02:48.4969179Z      Running tests/shogi_runner.rs (target/debug/deps/shogi_runner-044d7f292f2fb950)
+2026-10-27T12:02:48.4979431Z 
+2026-10-27T12:02:48.4979721Z running 14 tests
+2026-10-27T12:02:48.7761823Z test accepted_ascii_whitespace_reply_roundtrips_raw_and_escaped_traffic ... ok
+2026-10-27T12:02:48.8595691Z test bounded_traffic_failure_is_explicit_and_keeps_native_prefix ... ok
+2026-10-27T12:02:49.1396068Z test clocks_and_unsupported_profiles_reject_before_spawning ... ok
+2026-10-27T12:02:49.1601044Z test exact_27point_false_declaration_retains_admission_evidence ... ok
+2026-10-27T12:02:49.2733413Z test all_reported_options_must_be_advertised_with_supported_values ... ok
+2026-10-27T12:02:49.5367835Z test actual_move_drop_promotion_and_action_cutoff_are_not_invented_outcomes ... ok
+2026-10-27T12:02:49.6887562Z test imported_counter_and_complete_prefix_survive_terminal_precheck_and_replay ... ok
+2026-10-27T12:02:50.1591603Z test resignation_and_false_declaration_are_native_conclusions_not_transport_failures ... ok
+2026-10-27T12:02:50.1636272Z test post_reply_process_and_cleanup_failures_cannot_commit_candidates ... ok
+2026-10-27T12:02:50.3212236Z test missing_retirement_eof_cannot_hide_a_delayed_duplicate_bestmove ... ok
+2026-10-27T12:02:50.4320424Z test strict_replay_rejects_context_limits_traffic_and_native_payload_tampering ... ok
+2026-10-27T12:02:50.4698652Z test valid_entering_king_declaration_uses_accepted_28point_fixture ... ok
+2026-10-27T12:02:50.5018511Z test malformed_illegal_missing_crashed_and_resource_replies_stay_unscored ... ok
+2026-10-27T12:02:50.9244400Z test watchdog_and_late_reply_retirement_preserve_native_game_and_reap_children ... ok
+2026-10-27T12:02:50.9245021Z 
+2026-10-27T12:02:50.9245529Z test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.43s
+2026-10-27T12:02:50.9246125Z 
+2026-10-27T12:02:50.9247877Z      Running unittests src/lib.rs (target/debug/deps/mshogi_search-eb8050d2bc42a641)
+2026-10-27T12:02:50.9257748Z 
+2026-10-27T12:02:50.9257933Z running 6 tests
+2026-10-27T12:02:50.9262322Z test search::tests::halted_tree_unwinds_private_transitions ... ok
+2026-10-27T12:02:50.9266715Z test search::tests::independent_minimax_tree_checks_depth_perspective_and_full_width ... ok
+2026-10-27T12:02:50.9276950Z test shogi::tests::independently_solvable_tree_checks_stable_root_minimax_and_full_width ... ok
+2026-10-27T12:02:50.9278093Z test shogi::tests::limited_and_failed_descendants_unwind_and_retain_native_diagnostic ... ok
+2026-10-27T12:02:50.9289338Z test coordination::tests::active_superseded_request_cannot_publish_a_delayed_completion ... ok
+2026-10-27T12:02:50.9303764Z test coordination::tests::already_running_worker_cancels_at_a_node_boundary ... ok
+2026-10-27T12:02:50.9304374Z 
+2026-10-27T12:02:50.9304824Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-27T12:02:50.9305335Z 
+2026-10-27T12:02:50.9306799Z      Running tests/coordination.rs (target/debug/deps/coordination-db9c84ff030ad90e)
+2026-10-27T12:02:50.9315993Z 
+2026-10-27T12:02:50.9316192Z running 9 tests
+2026-10-27T12:02:50.9334517Z test cancellation_is_nonjoining_acknowledged_and_preserves_caller ... ok
+2026-10-27T12:02:50.9351175Z test identical_current_fen_with_different_history_rejects_delayed_result ... ok
+2026-10-27T12:02:50.9368980Z test repeated_supersession_keeps_only_latest_pending_request_and_result ... ok
+2026-10-27T12:02:51.0016738Z test invalid_submission_does_not_supersede_current_work ... ok
+2026-10-27T12:02:51.0029122Z test delayed_result_after_position_change_is_rejected_even_without_version_bump ... ok
+2026-10-27T12:02:51.0037547Z test shutdown_discards_work_and_rejects_new_submissions_without_joining ... ok
+2026-10-27T12:02:51.0042657Z test recorded_adjudication_mode_is_part_of_request_identity ... ok
+2026-10-27T12:02:51.0491215Z test request_and_result_keep_exact_context_without_mutating_caller ... ok
+2026-10-27T12:02:51.0879986Z test request_ids_prevent_aba_and_are_unique_across_coordinators ... ok
+2026-10-27T12:02:51.0880644Z 
+2026-10-27T12:02:51.0881263Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+2026-10-27T12:02:51.0881751Z 
+2026-10-27T12:02:51.0882609Z      Running tests/evaluation.rs (target/debug/deps/evaluation-40fdf9239a3743dc)
+2026-10-27T12:02:51.0893530Z 
+2026-10-27T12:02:51.0896034Z running 5 tests
+2026-10-27T12:02:51.0897427Z test moving_side_counters_rights_and_raw_ep_do_not_change_material ... ok
+2026-10-27T12:02:51.0898321Z test material_does_not_adjudicate_terminal_diagrams_or_claims ... ok
+2026-10-27T12:02:51.0899107Z test promotion_contribution_changes_by_the_documented_amount ... ok
+2026-10-27T12:02:51.0900175Z test transparent_values_and_both_perspectives ... ok
+2026-10-27T12:02:51.0901778Z      Running tests/search.rs (target/debug/deps/search-6dfe9bebcb9e8435)
+2026-10-27T12:02:51.0902659Z test reflected_colors_negate_white_score_and_preserve_moving_side_score ... ok
+2026-10-27T12:02:51.0903368Z 
+2026-10-27T12:02:51.0903851Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-27T12:02:51.0904545Z 
+2026-10-27T12:02:51.0911697Z 
+2026-10-27T12:02:51.0912085Z running 9 tests
+2026-10-27T12:02:51.0940969Z test invalid_depth_and_unrepresentable_transition_are_explicit_errors ... ok
+2026-10-27T12:02:51.0968934Z test auto_claim_is_respected_at_leaf_turn_boundaries ... ok
+2026-10-27T12:02:51.1062123Z test mate_in_one_for_both_colors_and_already_mated_root ... ok
+2026-10-27T12:02:51.1063171Z test rules_draws_are_terminal_before_static_evaluation ... ok
+2026-10-27T12:02:51.1141251Z test optional_claim_is_a_choice_while_auto_claim_forces_draw_even_over_mate ... ok
+2026-10-27T12:02:51.1155160Z test material_capture_perspective_and_deterministic_ties ... ok
+2026-10-27T12:02:51.1161517Z test same_current_fen_differs_with_relevant_repetition_history ... ok
+2026-10-27T12:02:51.3518641Z test work_limits_publish_only_complete_iterations_and_leave_caller_untouched ... ok
+2026-10-27T12:02:51.3993299Z test forced_mate_in_two_becomes_visible_only_at_three_plies ... ok
+2026-10-27T12:02:51.3993831Z 
+2026-10-27T12:02:51.3994455Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+2026-10-27T12:02:51.3995052Z 
+2026-10-27T12:02:51.3995471Z      Running tests/shogi.rs (target/debug/deps/shogi-3a0f27abd6247ee9)
+2026-10-27T12:02:51.4005639Z 
+2026-10-27T12:02:51.4005878Z running 8 tests
+2026-10-27T12:02:51.4114883Z test declaration_is_a_native_terminal_choice_at_root_and_static_leaves ... ok
+2026-10-27T12:02:51.4118551Z test independent_material_arithmetic_covers_promoted_board_and_both_hands ... ok
+2026-10-27T12:02:51.4217168Z test native_terminal_winner_precedes_static_score_and_declared_length ... ok
+2026-10-27T12:02:51.4340989Z test same_board_different_history_changes_choice_and_score ... ok
+2026-10-27T12:02:51.4381649Z test search_does_not_reward_a_legal_checking_move_that_loses_by_history ... ok
+2026-10-27T12:02:51.4406971Z test independent_capture_demote_promotion_and_mating_drop_selections ... ok
+2026-10-27T12:02:51.9562938Z test exact_work_completion_cancellation_and_root_restoration ... ok
+2026-10-27T12:02:53.1592858Z test full_width_preserves_optional_choices_and_drop_branching ... ok
+2026-10-27T12:02:53.1593474Z 
+2026-10-27T12:02:53.1593957Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.76s
+2026-10-27T12:02:53.1594584Z 
+2026-10-27T12:02:53.1594909Z    Doc-tests mshogi_core
+2026-10-27T12:02:53.7191169Z 
+2026-10-27T12:02:53.7192212Z running 6 tests
+2026-10-27T12:02:53.7206854Z test crates/mshogi-core/src/chess/action.rs - chess::action::Position::apply (line 189) ... ok
+2026-10-27T12:02:53.7208173Z test crates/mshogi-core/src/chess/action.rs - chess::action::Position::apply_ordinary (line 216) ... ok
+2026-10-27T12:02:53.7209355Z test crates/mshogi-core/src/chess/attack.rs - chess::attack::Position::attackers (line 21) ... ok
+2026-10-27T12:02:53.7210712Z test crates/mshogi-core/src/chess/generate.rs - chess::generate::Position::ordinary_candidates (line 52) ... ok
+2026-10-27T12:02:53.7217776Z test crates/mshogi-core/src/chess/legal.rs - chess::legal::Position::legal_actions (line 65) ... ok
+2026-10-27T12:02:53.7235121Z test crates/mshogi-core/src/chess/perft.rs - chess::perft::Position::perft (line 73) ... ok
+2026-10-27T12:02:53.7235657Z 
+2026-10-27T12:02:53.7236251Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-27T12:02:53.7236605Z 
+2026-10-27T12:02:53.7263918Z    Doc-tests mshogi_desktop_session
+2026-10-27T12:02:53.8921426Z 
+2026-10-27T12:02:53.8922243Z running 0 tests
+2026-10-27T12:02:53.8922630Z 
+2026-10-27T12:02:53.8923050Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-27T12:02:53.8923716Z 
+2026-10-27T12:02:53.8933377Z    Doc-tests mshogi_engine
+2026-10-27T12:02:54.0027621Z 
+2026-10-27T12:02:54.0028111Z running 0 tests
+2026-10-27T12:02:54.0028472Z 
+2026-10-27T12:02:54.0028891Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-27T12:02:54.0029400Z 
+2026-10-27T12:02:54.0039113Z    Doc-tests mshogi_runner
+2026-10-27T12:02:54.1413683Z 
+2026-10-27T12:02:54.1414548Z running 0 tests
+2026-10-27T12:02:54.1414991Z 
+2026-10-27T12:02:54.1415559Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-27T12:02:54.1416055Z 
+2026-10-27T12:02:54.1428631Z    Doc-tests mshogi_search
+2026-10-27T12:02:54.5160748Z 
+2026-10-27T12:02:54.5161504Z running 1 test
+2026-10-27T12:02:54.5172038Z test crates/mshogi-search/src/chess.rs - chess::evaluate (line 49) ... ok
+2026-10-27T12:02:54.5172848Z 
+2026-10-27T12:02:54.5173270Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-27T12:02:54.5173752Z 
+2026-10-27T12:02:54.5259964Z ##[group]Run cargo clippy --locked -p mshogi-desktop-session --all-targets --all-features -- -D warnings
+2026-10-27T12:02:54.5261211Z [36;1mcargo clippy --locked -p mshogi-desktop-session --all-targets --all-features -- -D warnings[0m
+2026-10-27T12:02:54.5261824Z [36;1mcargo test --locked -p mshogi-desktop-session --all-features[0m
+2026-10-27T12:02:54.5301218Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T12:02:54.5301640Z ##[endgroup]
+2026-10-27T12:02:54.6201509Z     Checking mshogi-desktop-session v0.1.0 (/home/runner/work/mShogi/mShogi/crates/mshogi-desktop-session)
+2026-10-27T12:02:56.8839760Z     Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.30s
+2026-10-27T12:02:56.9556926Z    Compiling mshogi-desktop-session v0.1.0 (/home/runner/work/mShogi/mShogi/crates/mshogi-desktop-session)
+2026-10-27T12:03:02.3599247Z     Finished `test` profile [unoptimized + debuginfo] target(s) in 5.44s
+2026-10-27T12:03:02.3620103Z      Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-e0b571116ca9dc19)
+2026-10-27T12:03:02.3631033Z 
+2026-10-27T12:03:02.3631561Z running 92 tests
+2026-10-27T12:03:02.3671923Z test analysis::tests::analysis_claims_and_failures_are_observations_only_with_exact_context_guards ... ok
+2026-10-27T12:03:02.3681189Z test analysis::tests::cancel_keeps_pause_and_has_no_fabricated_final_observations ... ok
+2026-10-27T12:03:02.3714396Z test analysis::tests::analysis_has_a_read_only_acceptance_path_and_explicit_resume ... ok
+2026-10-27T12:03:02.3731307Z test persistence::tests::archive_capacity_exact_count_and_byte_boundaries_include_stop_reservations ... ok
+2026-10-27T12:03:02.3741523Z test analysis::tests::mixed_turn_analysis_replacement_and_resume_share_one_owner ... ok
+2026-10-27T12:03:02.3742532Z test analysis::tests::same_fen_different_history_and_wrong_purpose_are_rejected ... ok
+2026-10-27T12:03:02.3802994Z test analysis::tests::resignation_retires_analysis_and_concluded_positions_remain_analyzable ... ok
+2026-10-27T12:03:02.3811103Z test persistence::tests::cancellation_retires_an_uncommitted_engine_result_candidate ... ok
+2026-10-27T12:03:02.3881363Z test persistence::tests::concurrent_save_as_bookkeeping_survives_later_candidate_commit ... ok
+2026-10-27T12:03:02.4019248Z test persistence::tests::command_receipts_survive_following_work_and_close_supersedes_pending_admission ... ok
+2026-10-27T12:03:02.4139877Z test persistence::tests::claims_and_resignation_roundtrip_complete_match_not_just_moves ... ok
+2026-10-27T12:03:02.4194065Z test persistence::tests::historical_analysis_excludes_future_claim_and_survives_only_its_selection ... ok
+2026-10-27T12:03:02.4249478Z test persistence::tests::interrupted_atomic_write_keeps_prior_file_and_removes_temporary ... ok
+2026-10-27T12:03:02.6563140Z test persistence::tests::io_and_rejection_revisions_cannot_consume_the_persisted_save_watermark ... ok
+2026-10-27T12:03:02.6981863Z test persistence::tests::control_boundary_rejects_unchanged_and_reserved_close_is_saveable ... ok
+2026-10-27T12:03:02.8094409Z test persistence::tests::observation_corruption_and_future_control_timestamps_are_validated ... ok
+2026-10-27T12:03:03.0003049Z test persistence::tests::event_4096_commits_but_engine_event_4097_rejects_before_move_or_observation ... ok
+2026-10-27T12:03:03.0021095Z test persistence::tests::preflight_rejects_timed_full_identity_and_resource_limits_before_replay ... ok
+2026-10-27T12:03:03.7712034Z test persistence::tests::oversized_raw_engine_failure_is_rejected_before_observation_or_game_commit ... ok
+2026-10-27T12:03:03.7818846Z test persistence::tests::save_during_admission_keeps_new_contents_dirty_and_successful_open_retires_candidate ... ok
+2026-10-27T12:03:03.8282075Z test persistence::tests::shared_poll_that_commits_shogi_open_publishes_the_matching_game_family ... ok
+2026-10-27T12:03:03.8462127Z test persistence::tests::stale_save_and_stale_open_do_not_mark_or_replace_current_document ... ok
+2026-10-27T12:03:03.8512394Z test persistence::tests::stored_full_witnesses_require_legal_requested_mate_and_cooperative_budget ... ok
+2026-10-27T12:03:06.9051989Z test persistence::tests::final_engine_observation_256_commits_once_then_further_engine_work_resource_pauses ... ok
+2026-10-27T12:03:06.9291476Z test shared::archive::capacity_tests::conservative_reconstruction_budget_is_enforced_before_accepting_a_journal ... ok
+2026-10-27T12:03:07.2081781Z test shared::archive::capacity_tests::control_boundary_reserves_the_last_slot_for_close_and_never_truncates ... ok
+2026-10-27T12:03:07.2982625Z test persistence::tests::observation_256_is_accepted_257_rejected_and_save_open_preserves_every_observation ... ok
+2026-10-27T12:03:10.0751863Z test shared::archive::capacity_tests::real_maximum_native_ledger_has_bounded_record_context_response_and_archive_sizes ... ok
+2026-10-27T12:03:10.7291635Z test shared::archive::capacity_tests::reopened_active_journal_retains_stop_reservation_across_preferences ... ok
+2026-10-27T12:03:13.8802171Z test shared::archive::capacity_tests::replay_capacity_retains_one_exact_stop_action_of_headroom ... ok
+2026-10-27T12:03:13.9704280Z test shared::archive::capacity_tests::runtime_only_revision_exhaustion_preserves_save_and_fresh_reopen_path ... ok
+2026-10-27T12:03:14.5329712Z test shared::archive::tests::canonical_fixture_roundtrips_preserve_native_root_history_and_all_outcomes ... ok
+2026-10-27T12:03:14.5700732Z test shared::archive::tests::concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it ... ok
+2026-10-27T12:03:14.7135878Z test shared::archive::tests::hostile_archives_reject_without_changing_the_current_document ... ok
+2026-10-27T12:03:14.8220065Z test shared::archive::tests::imported_capture_hand_and_drop_after_reopen_preserve_counter_provenance ... ok
+2026-10-27T12:03:14.8538871Z test shared::archive::tests::inability_to_start_native_execution_is_a_capacity_pause_not_engine_failure ... ok
+2026-10-27T12:03:14.8842002Z test shared::archive::tests::interrupted_and_failed_native_saves_preserve_file_and_dirty_state ... ok
+2026-10-27T12:03:15.7322131Z test shared::archive::tests::observations_keep_exact_retired_branch_targets_and_never_resume_on_open ... ok
+2026-10-27T12:03:16.4472336Z test shared::archive::tests::pending_runtime_is_not_archived_and_resume_allocates_fresh_identity ... ok
+2026-10-27T12:03:16.5135413Z test shared::archive::tests::persisted_preferences_keep_exact_pending_execution_and_original_limits ... ok
+2026-10-27T12:03:17.2116748Z test shared::archive::tests::product_new_game_archive_reopens_native_human_orientation_stopped_and_fresh ... ok
+2026-10-27T12:03:17.2710227Z test shared::archive::tests::raw_nested_observation_fields_remain_strict_and_identity_errors_are_explicit ... ok
+2026-10-27T12:03:17.5092106Z test shared::archive::tests::same_ply_terminal_history_and_saved_selection_remain_distinct ... ok
+2026-10-27T12:03:17.5526264Z test shared::archive::tests::stale_open_and_cross_game_save_completion_never_replace_current_state ... ok
+2026-10-27T12:03:17.6016450Z test shared::archive::tests::v1_chess_and_explicit_tagged_chess_preserve_existing_semantics ... ok
+2026-10-27T12:03:17.6991893Z test shared::archive::tests::wrong_native_game_and_semantic_journal_or_observation_tampering_reject ... ok
+2026-10-27T12:03:17.7152376Z test shared::inspection::tests::chess_pending_engine_work_and_historical_prefix_are_not_touched ... ok
+2026-10-27T12:03:17.7231478Z test shared::inspection::tests::exact_historical_selection_and_conclusion_are_read_only ... ok
+2026-10-27T12:03:17.7321182Z test shared::inspection::tests::exact_native_chess_query_is_not_a_snapshot_poll_or_mutation ... ok
+2026-10-27T12:03:17.7351702Z test shared::inspection::tests::selected_shogi_owner_promotions_hands_and_pending_work_stay_native ... ok
+2026-10-27T12:03:17.7381403Z test shared::inspection::tests::strict_query_rejects_duplicate_nested_unknown_missing_and_oversize ... ok
+2026-10-27T12:03:17.8472686Z test shared::tests::actual_complete_drop_promotion_capture_and_atomic_rejection ... ok
+2026-10-27T12:03:17.8902526Z test shared::tests::close_document_preconditions_advance_for_shogi_events_observations_and_replacement ... ok
+2026-10-27T12:03:17.8951206Z test shared::tests::command_diagnostics_are_bounded_without_splitting_utf8 ... ok
+2026-10-27T12:03:17.8981441Z test shared::tests::command_json_strict_native_payload_and_encoded_capacity ... ok
+2026-10-27T12:03:18.0061982Z test shared::tests::declaration_advice_terminal_history_and_native_wrong_turn_semantics ... ok
+2026-10-27T12:03:18.0508115Z test shared::tests::exact_analysis_context_retirement_and_same_board_history ... ok
+2026-10-27T12:03:18.0651362Z test shared::tests::identities_native_geometry_and_chess_compatibility ... ok
+2026-10-27T12:03:18.1051766Z test shared::tests::incomplete_failure_and_retry_preserve_native_history_without_fallback ... ok
+2026-10-27T12:03:18.1922062Z test shared::tests::native_search_presentation_preserves_target_purpose_and_real_terminal_distance ... ok
+2026-10-27T12:03:18.2341856Z test shared::tests::observation_capacity_refuses_new_work_before_changing_session ... ok
+2026-10-27T12:03:18.3119270Z test shared::tests::presented_budget_matches_submitted_play_and_board_ply_ignores_terminal_events ... ok
+2026-10-27T12:03:18.3731941Z test shared::tests::product_declaration_capability_is_advisory_eligibility_but_native_terminal_semantics_remain ... ok
+2026-10-27T12:03:18.4052094Z test shared::tests::product_new_games_are_native_qualified_oriented_and_live_with_fresh_identities ... ok
+2026-10-27T12:03:18.4131857Z test shared::tests::product_new_rejects_stale_or_conflicting_choices_before_retiring_live_work ... ok
+2026-10-27T12:03:18.4686688Z test shared::tests::product_verification_fixtures_use_real_native_context_and_choices ... ok
+2026-10-27T12:03:18.5691828Z test shared::tests::replacement_retires_chess_files_and_pending_admission ... ok
+2026-10-27T12:03:18.6921889Z test shared::tests::semantic_undo_replay_does_not_revive_retired_work ... ok
+2026-10-27T12:03:18.6961664Z test synthetic::tests::exact_complete_routes_derive_different_effects_and_replay_without_chess ... ok
+2026-10-27T12:03:18.7031772Z test synthetic::tests::native_geometry_and_complete_choices_include_distinct_return_routes ... ok
+2026-10-27T12:03:18.7362125Z test synthetic::tests::prefix_stale_invalid_and_effect_inputs_are_atomic_and_reset_is_monotonic ... ok
+2026-10-27T12:03:18.7391254Z test synthetic::tests::replay_and_command_decoders_reject_other_profiles_and_raw_board_effects ... ok
+2026-10-27T12:03:18.7411578Z test tests::cancel_wins_even_if_a_complete_response_has_arrived ... ok
+2026-10-27T12:03:18.7441301Z test tests::cancellation_and_retry_reject_invalid_states_atomically ... ok
+2026-10-27T12:03:18.7483019Z test tests::engine_applies_once_and_keeps_actual_observations ... ok
+2026-10-27T12:03:18.7533951Z test tests::engine_claim_remains_a_claim ... ok
+2026-10-27T12:03:18.7684843Z test tests::exact_same_fen_with_different_known_history_cannot_accept ... ok
+2026-10-27T12:03:18.7691657Z test tests::full_mode_restoration_is_explicitly_rejected_before_solver_execution ... ok
+2026-10-27T12:03:18.7841473Z test tests::incomplete_search_never_falls_back_to_a_move ... ok
+2026-10-27T12:03:18.7871078Z test tests::intended_claim_is_an_opportunity_then_conclusion_without_a_move ... ok
+2026-10-27T12:03:18.7895788Z test tests::invalid_engine_choice_is_unscored_and_atomic ... ok
+2026-10-27T12:03:18.8031226Z test tests::native_snapshot_and_atomic_human_rejection ... ok
+2026-10-27T12:03:18.8078405Z test tests::new_game_aba_and_generation_changes_reject_old_results ... ok
+2026-10-27T12:03:18.8107963Z test tests::promotion_choices_and_automatic_checkmate_are_native ... ok
+2026-10-27T12:03:18.8338887Z test tests::recovery_preserves_exact_match_and_game_records_and_retires_old_results ... ok
+2026-10-27T12:03:18.8401220Z test tests::resignation_is_a_draw_only_when_opponents_mate_is_proven_impossible ... ok
+2026-10-27T12:03:18.8728201Z test tests::resignation_is_unresolved_with_no_proof_on_either_players_turn ... ok
+2026-10-27T12:03:18.8861763Z test tests::verification_promotion_has_four_native_choices_and_roundtrips_complete_archive ... ok
+2026-10-27T12:03:18.9011384Z test tests::verification_states_are_native_and_zero_work_retry_restores_play_limits ... ok
+2026-10-27T12:03:24.3405479Z test persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable ... ok
+2026-10-27T12:03:26.6432505Z test shared::archive::capacity_tests::actual_256_observations_save_reopen_and_reject_257_without_changing_accepted_document ... ok
+2026-10-27T12:03:30.0783515Z test shared::archive::capacity_tests::long_history_observations_enforce_both_encoded_byte_and_replay_capacity_without_data_loss ... ok
+2026-10-27T12:03:30.0784179Z 
+2026-10-27T12:03:30.0784568Z test result: ok. 92 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 27.72s
+2026-10-27T12:03:30.0785016Z 
+2026-10-27T12:03:30.0865130Z    Doc-tests mshogi_desktop_session
+2026-10-27T12:03:30.2677764Z 
+2026-10-27T12:03:30.2678579Z running 0 tests
+2026-10-27T12:03:30.2679101Z 
+2026-10-27T12:03:30.2679583Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-27T12:03:30.2680107Z 
+2026-10-27T12:03:30.2742332Z ##[group]Run cargo run --locked -p mshogi-desktop-session --example write_frontend_fixtures -- desktop/src/__fixtures__
+2026-10-27T12:03:30.2743246Z [36;1mcargo run --locked -p mshogi-desktop-session --example write_frontend_fixtures -- desktop/src/__fixtures__[0m
+2026-10-27T12:03:30.2743853Z [36;1mgit diff --exit-code -- desktop/src/__fixtures__[0m
+2026-10-27T12:03:30.2784010Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T12:03:30.2784515Z ##[endgroup]
+2026-10-27T12:03:30.3246439Z     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.01s
+2026-10-27T12:03:30.3257121Z      Running `target/debug/examples/write_frontend_fixtures desktop/src/__fixtures__`
+2026-10-27T12:03:30.4974647Z diff --git a/desktop/src/__fixtures__/shared-shogi-drops.json b/desktop/src/__fixtures__/shared-shogi-drops.json
+2026-10-27T12:03:30.4975678Z index 8a6e9fd..fb4f462 100644
+2026-10-27T12:03:30.4976517Z --- a/desktop/src/__fixtures__/shared-shogi-drops.json
+2026-10-27T12:03:30.4977460Z +++ b/desktop/src/__fixtures__/shared-shogi-drops.json
+2026-10-27T12:03:30.4978258Z @@ -7122,6 +7122,11 @@
+2026-10-27T12:03:30.4978815Z    },
+2026-10-27T12:03:30.4979239Z    "events": [],
+2026-10-27T12:03:30.4979659Z    "event_index": 0,
+2026-10-27T12:03:30.4980163Z +  "board_ply": 0,
+2026-10-27T12:03:30.4980684Z +  "play_limits": {
+2026-10-27T12:03:30.4981070Z +    "depth": 2,
+2026-10-27T12:03:30.4981440Z +    "nodes": 5000
+2026-10-27T12:03:30.4981802Z +  },
+2026-10-27T12:03:30.4982235Z    "historical": false,
+2026-10-27T12:03:30.4982541Z    "paused": false,
+2026-10-27T12:03:30.4982822Z    "phase": "idle",
+2026-10-27T12:03:30.4983115Z @@ -7177,7 +7182,5 @@
+2026-10-27T12:03:30.4983411Z    "observations": [],
+2026-10-27T12:03:30.4983795Z    "search_observations": [],
+2026-10-27T12:03:30.4984489Z    "score_meaning": "Native shogi root-side hundredths of pawn; terminal win distance counts complete command edges, including declarations. Not a chess mate score.",
+2026-10-27T12:03:30.4985165Z -  "chess": null,
+2026-10-27T12:03:30.4985491Z -  "play_limits": { "depth": 2, "nodes": 5000 },
+2026-10-27T12:03:30.4985846Z -  "board_ply": 0
+2026-10-27T12:03:30.4986170Z +  "chess": null
+2026-10-27T12:03:30.4986444Z  }
+2026-10-27T12:03:30.4986935Z diff --git a/desktop/src/__fixtures__/shared-shogi-forced.json b/desktop/src/__fixtures__/shared-shogi-forced.json
+2026-10-27T12:03:30.4987524Z index cd8fa73..a8e849e 100644
+2026-10-27T12:03:30.4988030Z --- a/desktop/src/__fixtures__/shared-shogi-forced.json
+2026-10-27T12:03:30.4988757Z +++ b/desktop/src/__fixtures__/shared-shogi-forced.json
+2026-10-27T12:03:30.4989295Z @@ -385,6 +385,11 @@
+2026-10-27T12:03:30.4989664Z    },
+2026-10-27T12:03:30.4990071Z    "events": [],
+2026-10-27T12:03:30.4990565Z    "event_index": 0,
+2026-10-27T12:03:30.4991278Z +  "board_ply": 0,
+2026-10-27T12:03:30.4991683Z +  "play_limits": {
+2026-10-27T12:03:30.4992078Z +    "depth": 2,
+2026-10-27T12:03:30.4992486Z +    "nodes": 5000
+2026-10-27T12:03:30.4992866Z +  },
+2026-10-27T12:03:30.4993335Z    "historical": false,
+2026-10-27T12:03:30.4993760Z    "paused": false,
+2026-10-27T12:03:30.4994148Z    "phase": "idle",
+2026-10-27T12:03:30.4994570Z @@ -440,7 +445,5 @@
+2026-10-27T12:03:30.4994955Z    "observations": [],
+2026-10-27T12:03:30.4995387Z    "search_observations": [],
+2026-10-27T12:03:30.4996421Z    "score_meaning": "Native shogi root-side hundredths of pawn; terminal win distance counts complete command edges, including declarations. Not a chess mate score.",
+2026-10-27T12:03:30.4997467Z -  "chess": null,
+2026-10-27T12:03:30.4997909Z -  "play_limits": { "depth": 2, "nodes": 5000 },
+2026-10-27T12:03:30.4998498Z -  "board_ply": 0
+2026-10-27T12:03:30.4998850Z +  "chess": null
+2026-10-27T12:03:30.4999250Z  }
+2026-10-27T12:03:30.5000002Z diff --git a/desktop/src/__fixtures__/shared-shogi-promotion.json b/desktop/src/__fixtures__/shared-shogi-promotion.json
+2026-10-27T12:03:30.5001025Z index c45da22..da3625f 100644
+2026-10-27T12:03:30.5001770Z --- a/desktop/src/__fixtures__/shared-shogi-promotion.json
+2026-10-27T12:03:30.5002419Z +++ b/desktop/src/__fixtures__/shared-shogi-promotion.json
+2026-10-27T12:03:30.5002945Z @@ -400,6 +400,11 @@
+2026-10-27T12:03:30.5003315Z    },
+2026-10-27T12:03:30.5003724Z    "events": [],
+2026-10-27T12:03:30.5004137Z    "event_index": 0,
+2026-10-27T12:03:30.5004527Z +  "board_ply": 0,
+2026-10-27T12:03:30.5004933Z +  "play_limits": {
+2026-10-27T12:03:30.5005310Z +    "depth": 2,
+2026-10-27T12:03:30.5005661Z +    "nodes": 5000
+2026-10-27T12:03:30.5006095Z +  },
+2026-10-27T12:03:30.5006447Z    "historical": false,
+2026-10-27T12:03:30.5006854Z    "paused": false,
+2026-10-27T12:03:30.5007323Z    "phase": "idle",
+2026-10-27T12:03:30.5007838Z @@ -455,7 +460,5 @@
+2026-10-27T12:03:30.5008293Z    "observations": [],
+2026-10-27T12:03:30.5008707Z    "search_observations": [],
+2026-10-27T12:03:30.5009744Z    "score_meaning": "Native shogi root-side hundredths of pawn; terminal win distance counts complete command edges, including declarations. Not a chess mate score.",
+2026-10-27T12:03:30.5010940Z -  "chess": null,
+2026-10-27T12:03:30.5011374Z -  "play_limits": { "depth": 2, "nodes": 5000 },
+2026-10-27T12:03:30.5011938Z -  "board_ply": 0
+2026-10-27T12:03:30.5012357Z +  "chess": null
+2026-10-27T12:03:30.5012717Z  }
+2026-10-27T12:03:30.5013484Z diff --git a/desktop/src/__fixtures__/shared-shogi-standard.json b/desktop/src/__fixtures__/shared-shogi-standard.json
+2026-10-27T12:03:30.5014346Z index 97af969..05961dd 100644
+2026-10-27T12:03:30.5015417Z --- a/desktop/src/__fixtures__/shared-shogi-standard.json
+2026-10-27T12:03:30.5016055Z +++ b/desktop/src/__fixtures__/shared-shogi-standard.json
+2026-10-27T12:03:30.5016576Z @@ -990,6 +990,11 @@
+2026-10-27T12:03:30.5017160Z    },
+2026-10-27T12:03:30.5017511Z    "events": [],
+2026-10-27T12:03:30.5017995Z    "event_index": 0,
+2026-10-27T12:03:30.5018378Z +  "board_ply": 0,
+2026-10-27T12:03:30.5018742Z +  "play_limits": {
+2026-10-27T12:03:30.5019172Z +    "depth": 2,
+2026-10-27T12:03:30.5019544Z +    "nodes": 5000
+2026-10-27T12:03:30.5019938Z +  },
+2026-10-27T12:03:30.5020417Z    "historical": false,
+2026-10-27T12:03:30.5020841Z    "paused": false,
+2026-10-27T12:03:30.5021240Z    "phase": "idle",
+2026-10-27T12:03:30.5021619Z @@ -1045,7 +1050,5 @@
+2026-10-27T12:03:30.5022023Z    "observations": [],
+2026-10-27T12:03:30.5022530Z    "search_observations": [],
+2026-10-27T12:03:30.5023545Z    "score_meaning": "Native shogi root-side hundredths of pawn; terminal win distance counts complete command edges, including declarations. Not a chess mate score.",
+2026-10-27T12:03:30.5024604Z -  "chess": null,
+2026-10-27T12:03:30.5025035Z -  "play_limits": { "depth": 2, "nodes": 5000 },
+2026-10-27T12:03:30.5025544Z -  "board_ply": 0
+2026-10-27T12:03:30.5025954Z +  "chess": null
+2026-10-27T12:03:30.5026315Z  }
+2026-10-27T12:03:30.6134754Z ##[error]Process completed with exit code 1.
+2026-10-27T12:03:30.6273932Z Post job cleanup.
+2026-10-27T12:03:30.7063372Z [command]/usr/bin/git version
+2026-10-27T12:03:30.7108677Z git version 2.55.0
+2026-10-27T12:03:30.7155669Z Temporarily overriding HOME='/home/runner/work/_temp/1057fe25-e063-4b8c-a5d1-a8fab6d76b8d' before making global git config changes
+2026-10-27T12:03:30.7156575Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T12:03:30.7162044Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/mShogi/mShogi
+2026-10-27T12:03:30.7193955Z Removing SSH command configuration
+2026-10-27T12:03:30.7200659Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T12:03:30.7234063Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T12:03:30.7435952Z Removing HTTP extra header
+2026-10-27T12:03:30.7441396Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T12:03:30.7471212Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T12:03:30.7661321Z Removing includeIf entries pointing to credentials config files
+2026-10-27T12:03:30.7666522Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T12:03:30.7696220Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T12:03:30.8097507Z Cleaning up orphan processes

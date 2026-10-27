@@ -1,5 +1,9 @@
 # MSH-74 owner refinement — shared shell and movement inspection
 
+Historical revision-specific checkpoint. The [final consistency pass](../final-consistency-2026-10-27/README.md)
+records the current product/status and superseding owner authorization. Pending
+approval language below describes this earlier checkpoint, not a new approval gate.
+
 Product source: `d6d76816932763182eee574c9c241daa6ef9a91a`, integrated and pushed
 to `codex/rewrite`. MSH-74 remains **In Review** for owner visual approval; no MSH-75
 work is authorized or started. M2/M3 and prior completed task evidence are preserved.

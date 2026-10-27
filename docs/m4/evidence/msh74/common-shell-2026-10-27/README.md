@@ -1,5 +1,9 @@
 # MSH-74 common dark application shell
 
+Historical revision-specific checkpoint. The [final consistency pass](../final-consistency-2026-10-27/README.md)
+records the current product/status and superseding owner authorization. Pending
+approval language below describes this earlier checkpoint, not a new approval gate.
+
 Product source: `19beb7437f11003734d65ee68f69a5f34bbdd02c`, integrated and pushed
 to `codex/rewrite`. MSH-74 remains **In Review**, with owner visual approval pending.
 MSH-75 is unstarted. This refinement supersedes the earlier light Shogi workspace;

@@ -1,0 +1,32 @@
+{
+  "text": "\u265c\nmShogi\n\nSHOGI \u00b7 UNTIMED\n\nLocal engine\nUNSAVED CHANGES\nnormal-shogi-history.mshogi\nNew game\nSave\nSave as\u2026\nOpen\u2026\n\nYOUR GAME\n\nSente to move\n\nYou play Sente against mShogi\n\n\u2195\nFlip board\nm\nmShogiGote\nYour opponent\nNo pieces in hand\n\u9999\n\u8eca\n\u6842\n\u99ac\n\u9280\n\u5c06\n\u91d1\n\u5c06\n\u738b\n\u5c06\n\u91d1\n\u5c06\n\u9280\n\u5c06\n\u6842\n\u99ac\n\u9999\n\u8eca\n\u98db\n\u8eca\n\u89d2\n\u884c\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u89d2\n\u884c\n\u98db\n\u8eca\n\u9999\n\u8eca\n\u6842\n\u99ac\n\u9280\n\u5c06\n\u91d1\n\u5c06\n\u7389\n\u5c06\n\u91d1\n\u5c06\n\u9280\n\u5c06\n\u6842\n\u99ac\n\u9999\n\u8eca\n9\n8\n7\n6\n5\n4\n3\n2\n1\na\nb\nc\nd\ne\nf\ng\nh\ni\nY\nYouSente\nHuman player\nTo move\nNo pieces in hand\nSelect a piece or hand piece, then a marked square.\nArrows \u00b7 Enter \u00b7 Esc\nYour turn\nLive position \u00b7 2 plies\nAnalysis\nPlay details\nAnalyze position\nRead-only analysis\n\nSelected event 2 \u00b7 Sente perspective\n\nDepth\nNode limit\nStart move analysis\n\nChoose Analyze to inspect this position.\n\nRecorded searches (3)\nGame history\n2 events\n0\nStarting position\n1\nSente: 7g7f\n2\nGote: 4c4d\nGame actions\nResign game\u2026\nAbout & technical details",
+  "focus": {
+    "label": null,
+    "tag": "H2",
+    "text": "Sente to move"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 820,
+    "width": 1180
+  },
+  "common_actions": [],
+  "inputs": [
+    {
+      "disabled": false,
+      "max": "4",
+      "min": "1",
+      "tag": "INPUT",
+      "type": "number",
+      "value": "1"
+    },
+    {
+      "disabled": false,
+      "max": "20000",
+      "min": "0",
+      "tag": "INPUT",
+      "type": "number",
+      "value": "1000"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "text": "\u265c\nmShogi\n\nSHOGI \u00b7 UNTIMED\n\nLocal engine\nUNSAVED\nUntitled shogi game\nNew game\nSave\nSave as\u2026\nOpen\u2026\n\nYOUR GAME\n\nSente to move\n\nYou play Sente against mShogi\n\n\u2195\nm\nmShogiGote\nNo pieces in hand\n\u9999\n\u8eca\n\u6842\n\u99ac\n\u9280\n\u5c06\n\u91d1\n\u5c06\n\u738b\n\u5c06\n\u91d1\n\u5c06\n\u9280\n\u5c06\n\u6842\n\u99ac\n\u9999\n\u8eca\n\u98db\n\u8eca\n\u89d2\n\u884c\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u89d2\n\u884c\n\u98db\n\u8eca\n\u9999\n\u8eca\n\u6842\n\u99ac\n\u9280\n\u5c06\n\u91d1\n\u5c06\n\u7389\n\u5c06\n\u91d1\n\u5c06\n\u9280\n\u5c06\n\u6842\n\u99ac\n\u9999\n\u8eca\n9\n8\n7\n6\n5\n4\n3\n2\n1\na\nb\nc\nd\ne\nf\ng\nh\ni\nY\nYouSente\nNo pieces in hand\nInspecting Gote pawn \u00b7 Read-only \u00b7 Hollow rings show movement choices\nArrows \u00b7 Enter \u00b7 Esc\nYour turn\nLive position \u00b7 0 plies\nInspecting Gote pawn. Read-only movement choices; no action can be played.\nAnalysis\nPlay details\nAnalyze position\nNative engine\nIdle\n\nPlay limit: depth 2 \u00b7 5,000 nodes\n\nNo engine search has completed in this game.\n\nGame history\n0 events\n0\nStarting position\nGame actions\nResign game\u2026\nAbout & technical details",
+  "focus": {
+    "label": "7c, Gote pawn, Inspecting Gote pawn",
+    "tag": "g",
+    "text": "\u6b69\u5175"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 650,
+    "width": 760
+  },
+  "common_actions": [],
+  "inputs": []
+}

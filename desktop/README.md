@@ -83,9 +83,15 @@ semantics, settings and historical observations. An application-capacity pause
 retains the complete save path and cannot be reset by reopening the same file.
 Chess-only Full analysis and timed restoration remain unsupported for shogi.
 
+Both games use the same document labels: **Unsaved** before the first save,
+**Unmodified** when identical to the saved/opened file, and **Unsaved changes**
+after modification. Native file-operation and unsaved-change guards remain in
+force. Play details displays the actual native play budget; the common bottom
+status row distinguishes live play, exact historical position, pause and conclusion.
+
 MSH-74's [product evidence and screenshot review](../docs/m4/evidence/msh74/README.md)
-record the exact revision, actual platform journeys and owner visual-review
-checkpoint. This does not claim completion of the broader M4 delivery gate.
+record the exact revision, actual platform journeys, independent reviews and
+owner authorization. This does not claim completion of the broader M4 delivery gate.
 
 Build a normal distributable with the platform's supported bundle format:
 

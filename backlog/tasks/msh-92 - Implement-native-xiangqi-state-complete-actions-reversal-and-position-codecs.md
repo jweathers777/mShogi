@@ -1,10 +1,10 @@
 ---
 id: MSH-92
 title: Implement native xiangqi state complete actions reversal and position codecs
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-27T16:18:00Z'
+updated_date: '2026-10-27T16:30:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -46,4 +46,6 @@ Future bounded Xiangqi delivery work refined by MSH-80. Intent and acceptance on
 
 <!-- SECTION:NOTES:BEGIN -->
 XIANGQI-P1 selected2026-10-27. This independently settled board/state scope is unaffected by G-CYCLE/G-NOWIN later history/proof questions or missing complete AXF/CXA corpora. Ready status will be set only after80 reviewed planning integration; no execution in80 batch. Preserve44-action opening set/F002 seeds; actual reference build/admission remains91, not80.
+
+MSH80 planning completed under XIANGQI-P1 with reviewed integrated/pushed evidence412bbe743f78cef47a931854eef3cdd39783a83b. This task is now Ready and dependency80 satisfied. No implementation/reference build/tests performed for this future ticket, no ACchecked, no assignee/implementationplan. Root stops at implementation boundary;91+92 then93 is first bounded queue. G-CYCLE/G-NOWIN remain affected94/105gates, not this scope.
 <!-- SECTION:NOTES:END -->

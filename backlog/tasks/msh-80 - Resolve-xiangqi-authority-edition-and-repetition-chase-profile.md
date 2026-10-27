@@ -1,11 +1,11 @@
 ---
 id: MSH-80
 title: Resolve xiangqi authority edition and repetition-chase profile
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-27T16:29:00Z'
+updated_date: '2026-10-27T16:31:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -50,7 +50,7 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -79,4 +79,14 @@ Explicit owner-scope clarification2026-10-27 replaces the prior blanket reading 
 Selected-resolution implementation (planning only) ready for independent assessment: XIANGQI-P1currentprofile/ownerdecision/per-casebilingualreconciliation,28-IDfixtureledger preserving44/F002 and new third/fourth/equalfault/overlap expectations, completecoverage/gates, native graph105required84/103/45. AXF/CXAunknown availability remains recorded under explicitlyscopedownerinstruction. G-CYCLE/G-NOWIN blockaffected94/105, not91/92.104M5creatednextID with firstclass compactteacher-distilled policy and all4practicaluses/provenance/sparseChuTenjiku/costmetrics/noadoption option;56 originalAC1–3/DoD/47–55deps explicitlypreserved and104completionadded. No product implementation, reference build, training or rulesconformance claim. Actual fresh reviews and validations follow before checkoff.
 
 Resolution verification2026-10-27, sourcebaselinea2cf50b: fresh independent AI source/profile/fixture review (docs/m4/xiangqi/resolution-source-review.md) and independent AI architecture/graph/M5review (resolution-plan-review.md) found no blocking planning findings; actual method is source/document/paperfixture reasoning plus graph assertions, not certifiedtranslation/nativeconformance/runtimeadmission. Primary officialsource evidence and pinnedreference audit reused unchanged, not built here. Executed python3 docs/m4/xiangqi/validate-resolution.py --phase review --research-root /private/tmp/msh80-research/xiangqi --output docs/m4/xiangqi/resolution-validation.json: PASS105tasks/allresolvableacyclicdeps,57previousDone records byteunchanged,allpriorcriteria/DoD/depspreserved except explicitlyowner-reconciled80AC1,41local links,44-set andpairedcycles preserved,4PDF+28sourcehashes,empty product/build/milestone diff. Compatible Backlog1.55.1 doctor PASS no duplicates/selfdependency/cycles. git diff --check PASS. Initial artifact-link validation waited for resultsfile materialization; rerun passed. Existing successful native/desktopCI40528733214/40528733468 at f4e564b applies to unchanged product; no newlocalnative/rules/reference/app/platform test is claimed. Currentdocs identify everyfuturecasegate and original45complete-scope obligation, with105required84/103/45.104M5 and56 additivecriterion preserve55evaluator andallstrengthrequirements; no model/book adoption mandated. Normal planning integration/push and actual revision will be recorded after they exist; then80Done and91/92Ready, no implementation.
+
+Normal planning integration/push succeeded at412bbe743f78cef47a931854eef3cdd39783a83b oncodex/rewrite; reviewed source/task evidence is durable there. Re-ran full review-phase helper in integrated primarycheckout: PASS105DAG,57priorDonebytes,originalcriteria/deps,41links,32hashes,44/F002preservation,emptyproduct/milestone diff. Existinggreen unchanged-productCI40528733214/40528733468 reused as appropriate for docs-only task; no localproducttests needed/reported. Automaticnew workflows at 2026-10-27T16:30:37+00:00: Rust40541416874 IN PROGRESS; Desktop40541416903 QUEUED, not assertedpassed. These are supporting rebuilds of unchangedproduct, not missing planning/source/Backlog evidence. All4AC supported and all4DoD now supported including actualintegration; mark80Done and91/92Ready, neither started. Subsequent closure record commit changes Backlog only.
+
+Final closed-phase checks passed after80Done/91–92Ready: python3 docs/m4/xiangqi/validate-resolution.py --phase closed --research-root /private/tmp/msh80-research/xiangqi; compatible backlog doctor; backlog task list --status Ready --ready --plain returns exactlyMSH91 andMSH92, each0/4ACchecked/unassigned/unstarted. All105dependencytargets resolve/acyclic,57legacyDonebytes intact, originalcriteria/DoD/deps preserved with explicitowner80AC1clarification,41links/32hashes and44/F002preserved, product/build/milestone diffempty. No Ready implementation was started. This records completedplanning, not a runtimeconformance claim; exact105 and104experiment remainToDo.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Selected and integrated XIANGQI-P1 mshogi.xiangqi.wxf2018.v1 as official bilingual WXF2018, with per-case discrepancy repair and no blanket language precedence. Current profile/coverage/owner decisions specify third-occurrence unilateral warning and fourth continued loss or applicable WXF draw, claimant-specific untimed manual/optional recorded automatic claims, atomic semantic rejection plus bounded audit, serialized outcomes and required two-level3.2A proof semantics. Preserved44-action opening/F002 seeds, historical proposal/reviews and completed history. G-CYCLE/G-NOWIN remain explicit blockers of affected94/105 behavior, not settled91/92; scoped AXF/CXA acquisition is not a blanket gate.105 exact verification is required by84/103/45, preventing fast-subset-only game completion. Separately created futureM5MSH104 with dedicated compact teacher-distilled opening-policy arm, practical direct/order/book-hybrid/no-prior comparisons, regeneration provenance and sparseChu/Tenjiku/cost/strength evidence;56 adds104 completion while every originalM5commitment remains and adoption is optional. Fresh independent AI source/profile/fixture and architecture/roadmap reviews found no blocking planning findings. Review-phase durable validator/doctor/staged-diff passed;57priorDone records byteunchanged,105-task DAG/criteria/deps,41links,32sourcehashes and fixtures preserved. Actual planning integration and push: codex/rewrite412bbe743f78cef47a931854eef3cdd39783a83b. Product/build/workflow/milestone sources unchanged; green exact-source Rust40528733214/Desktop40528733468 reused. No Xiangqi implementation/reference execution/model training or runtime/platform conformance claimed.80 planning criteria/DoD satisfied;91+92Ready then93 is first future bounded implementation queue.41/75Done and42–47/M4open; stop at implementation boundary.
+<!-- SECTION:FINAL_SUMMARY:END -->

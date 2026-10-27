@@ -1,0 +1,372 @@
+{
+  "research_date": "2026-10-27",
+  "source_bytes_retained": false,
+  "repository_revision": "14b9643",
+  "scope": "MSH-82 research only; no adoption or complete conformance verdict",
+  "records": [
+    {
+      "id": "C1",
+      "url": "https://www.chushogi-renmei.com/kouza/rule2007.htm",
+      "edition": "2019 edition corrected 2019-09-14",
+      "inspection": "HTML text read; diagrams not all visually reconstructed",
+      "retrieved_utc": "2026-10-27T14:44:16.906886+00:00",
+      "status": 200,
+      "bytes": 25264,
+      "content_type": "text/html",
+      "sha256": "f8f4d2474aad76021d06b611569794fa76dac32d9fa3e4d44d45efbec868603f"
+    },
+    {
+      "id": "C2",
+      "url": "https://www.chushogi-renmei.com/kouza/rule_hosoku2004.htm",
+      "edition": "updated 2004-06-06",
+      "inspection": "HTML text read; diagrams not all visually reconstructed",
+      "retrieved_utc": "2026-10-27T14:44:16.907499+00:00",
+      "status": 200,
+      "bytes": 22508,
+      "content_type": "text/html",
+      "sha256": "097aea93f27e2d996e794b95d61589051e8fa051861d0a779818081374d43ced"
+    },
+    {
+      "id": "C3",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.htm",
+      "edition": "revised 2004-04-22",
+      "inspection": "HTML read; setup viewed; full movement diagram audit pending",
+      "retrieved_utc": "2026-10-27T14:44:16.907681+00:00",
+      "status": 200,
+      "bytes": 16369,
+      "content_type": "text/html",
+      "sha256": "fd5127eae2d54969e6b57840faf081f4fb7255565eb0231b172b1f05bb1048d6"
+    },
+    {
+      "id": "T1",
+      "url": "https://www.chushogi-renmei.com/kouza/Okazaki.htm",
+      "edition": "web update 2001-02-14; booklet edition unverified",
+      "inspection": "claimed original-text transcription; diagrams mostly omitted",
+      "retrieved_utc": "2026-10-27T14:44:16.907812+00:00",
+      "status": 200,
+      "bytes": 23848,
+      "content_type": "text/html",
+      "sha256": "83965cb25d5d467f4e8ad3857a97be416374ec8a0630f3587d37c322315d2154"
+    },
+    {
+      "id": "H1-manifest",
+      "url": "https://dl.ndl.go.jp/api/iiif/1869566/manifest.json",
+      "edition": "NDL 1869566; 1915",
+      "inspection": "official metadata acquired",
+      "retrieved_utc": "2026-10-27T14:44:16.907950+00:00",
+      "status": 200,
+      "bytes": 144039,
+      "content_type": "application/json; charset=utf-8",
+      "sha256": "8d23cc0cb635c0c55477247a350e251df20ac79662686db51298fec122c937e5"
+    },
+    {
+      "id": "H1-image121",
+      "url": "https://dl.ndl.go.jp/api/iiif/1869566/R0000121/full/full/0/default.jpg",
+      "edition": "1915; printed pages 212–213",
+      "inspection": "visually inspected in NDL browser; bytes read for checksum only",
+      "retrieved_utc": "2026-10-27T14:44:17.058266+00:00",
+      "status": 200,
+      "bytes": 3862980,
+      "content_type": "image/jpeg",
+      "sha256": "21100d28ff3b358b39cce7ea4132d43d50a4b08692a9e779a507a201c87096b8"
+    },
+    {
+      "id": "H1-image122",
+      "url": "https://dl.ndl.go.jp/api/iiif/1869566/R0000122/full/full/0/default.jpg",
+      "edition": "1915; printed pages 214–215",
+      "inspection": "visually inspected in NDL browser; bytes read for checksum only",
+      "retrieved_utc": "2026-10-27T14:44:17.368377+00:00",
+      "status": 200,
+      "bytes": 3986663,
+      "content_type": "image/jpeg",
+      "sha256": "3a629b0bcb3cf8c717038546d719d14b24c94e727012aac33b842a62e8c56f72"
+    },
+    {
+      "id": "H1-image123",
+      "url": "https://dl.ndl.go.jp/api/iiif/1869566/R0000123/full/full/0/default.jpg",
+      "edition": "1915; printed pages 216–217",
+      "inspection": "visually inspected in NDL browser; bytes read for checksum only",
+      "retrieved_utc": "2026-10-27T14:44:17.524382+00:00",
+      "status": 200,
+      "bytes": 3766298,
+      "content_type": "image/jpeg",
+      "sha256": "7dac6a4074739af82f90784c49a4db775600aa5c5549659a6fc12b7f0e0cb446"
+    },
+    {
+      "id": "C3-setup",
+      "url": "https://www.chushogi-renmei.com/kouza/rule/game1.jpg",
+      "edition": "companion to page revised 2004-04-22",
+      "inspection": "viewed in browser; full transcription also checked against H1p214",
+      "retrieved_utc": "2026-10-27T14:44:17.754734+00:00",
+      "status": 200,
+      "bytes": 187557,
+      "content_type": "image/jpeg",
+      "sha256": "d9116906820835b5bba975ded577e146975b344dd81c8d8685ffc273cd969826"
+    },
+    {
+      "id": "C1-diagram1",
+      "url": "https://www.chushogi-renmei.com/kouza/rule/image001.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:18.381526+00:00",
+      "status": 200,
+      "bytes": 4253,
+      "content_type": "image/gif",
+      "sha256": "94a2fb963b8171543b58e63ebf1a01a294fd295219a6cde750606c5a8c17a473"
+    },
+    {
+      "id": "C1-diagram2",
+      "url": "https://www.chushogi-renmei.com/kouza/rule/image002.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:18.408784+00:00",
+      "status": 200,
+      "bytes": 4244,
+      "content_type": "image/gif",
+      "sha256": "3c8ab9f9c60eb835381267480e9d7e65a0d6447cadcdd9c18a90ea621c3215ea"
+    },
+    {
+      "id": "C1-diagram3",
+      "url": "https://www.chushogi-renmei.com/kouza/rule/image003.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:18.409792+00:00",
+      "status": 200,
+      "bytes": 3275,
+      "content_type": "image/gif",
+      "sha256": "134778115f20beb49e7d9c58fded3ebf17f6a84982dd9c65a2be0bcea09ff67f"
+    },
+    {
+      "id": "C1-diagram4",
+      "url": "https://www.chushogi-renmei.com/kouza/rule/image004.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:18.447146+00:00",
+      "status": 200,
+      "bytes": 2455,
+      "content_type": "image/gif",
+      "sha256": "9f55ee9bc241386d00713cbef0626fdac410faeed51dd35c815019556fd6c920"
+    },
+    {
+      "id": "C1-diagram5",
+      "url": "https://www.chushogi-renmei.com/kouza/rule/image005.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:19.574060+00:00",
+      "status": 200,
+      "bytes": 2664,
+      "content_type": "image/gif",
+      "sha256": "e96d09b88839e2c71e44d697bda6c31ce56eedfed73a1beae7948ebc18c33f3c"
+    },
+    {
+      "id": "C1-diagram6",
+      "url": "https://www.chushogi-renmei.com/kouza/rule/image006.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:19.653951+00:00",
+      "status": 200,
+      "bytes": 2482,
+      "content_type": "image/gif",
+      "sha256": "60cbd8500daf6c427c0f10c4cdb6baaf1609819feb4ae54f28523f61f6a8560a"
+    },
+    {
+      "id": "C1-diagram7",
+      "url": "https://www.chushogi-renmei.com/kouza/rule/rule201.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:19.657782+00:00",
+      "status": 200,
+      "bytes": 30837,
+      "content_type": "image/gif",
+      "sha256": "6f4089931f34fbd8e2fb30a89200c887c24b1498db7be35c1fc1df1596833a51"
+    },
+    {
+      "id": "C1-diagram8",
+      "url": "https://www.chushogi-renmei.com/kouza/rule/rule202.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:19.669312+00:00",
+      "status": 200,
+      "bytes": 31841,
+      "content_type": "image/gif",
+      "sha256": "2cf77720138bdde7897712c0783f7408ffa100d3c5c585164541e48cfdbfcacc"
+    },
+    {
+      "id": "C2-diagram1",
+      "url": "https://www.chushogi-renmei.com/kouza/Rulegazou.files/image002.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:20.874642+00:00",
+      "status": 200,
+      "bytes": 1163,
+      "content_type": "image/gif",
+      "sha256": "b8095b3cc4cd4fda280dbf72b3252354feea8f82a45c80572a20c79fce162a01"
+    },
+    {
+      "id": "C2-diagram2",
+      "url": "https://www.chushogi-renmei.com/kouza/Rulegazou.files/image004.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:20.876254+00:00",
+      "status": 200,
+      "bytes": 1553,
+      "content_type": "image/gif",
+      "sha256": "89930cbfab3fefec9c6c9140f1bab666800ee6662cf32ce4181721e1523511ac"
+    },
+    {
+      "id": "C2-diagram3",
+      "url": "https://www.chushogi-renmei.com/kouza/Rulegazou.files/image006.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:21.054175+00:00",
+      "status": 200,
+      "bytes": 1836,
+      "content_type": "image/gif",
+      "sha256": "55debd8ea0ec425b79cc6f816bb721d7cb685d29e498095e5356e5068cb58b0b"
+    },
+    {
+      "id": "C2-diagram4",
+      "url": "https://www.chushogi-renmei.com/kouza/Rulegazou.files/image008.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:21.400552+00:00",
+      "status": 200,
+      "bytes": 1520,
+      "content_type": "image/gif",
+      "sha256": "217b767200498249c5791ccb12bcbf2daf5eb3c7da81b3f3ca61858d685d0c6d"
+    },
+    {
+      "id": "C2-diagram5",
+      "url": "https://www.chushogi-renmei.com/kouza/Rulegazou.files/image010.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:21.438094+00:00",
+      "status": 200,
+      "bytes": 1393,
+      "content_type": "image/gif",
+      "sha256": "c7f65d6a0d1ff9f770feb682151979466ee8093705a3e4cd9e1da8beef31e10a"
+    },
+    {
+      "id": "C3-diagram1",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.files/image005.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:21.978404+00:00",
+      "status": 200,
+      "bytes": 964,
+      "content_type": "image/gif",
+      "sha256": "fce81da607d2572315a64747b08f8131d44725dcbe87bd69d60082b8c4759590"
+    },
+    {
+      "id": "C3-diagram2",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.files/image007.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:22.062032+00:00",
+      "status": 200,
+      "bytes": 4749,
+      "content_type": "image/gif",
+      "sha256": "a13e9a2a1760db248689614d0bcf395b3101bb548779dc1bec9cb083a69bbc64"
+    },
+    {
+      "id": "C3-diagram3",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.files/image009.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:22.217765+00:00",
+      "status": 200,
+      "bytes": 1386,
+      "content_type": "image/gif",
+      "sha256": "a51d7e87bb52d512c808f4e41fac5e934c7fab26844f4198ef1151cb5ae06822"
+    },
+    {
+      "id": "C3-diagram4",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.files/image011.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:22.584443+00:00",
+      "status": 200,
+      "bytes": 1371,
+      "content_type": "image/gif",
+      "sha256": "13b563a3a9799b421cff371b3ae22af2db31ac811711777127c5929b84f2a2e9"
+    },
+    {
+      "id": "C3-diagram5",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.files/11.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:22.623116+00:00",
+      "status": 200,
+      "bytes": 7113,
+      "content_type": "image/gif",
+      "sha256": "d02c2dc94c17fcdfbf5f404cd1593ffd63ff6aa844fa9add3459dfee0e2de70a"
+    },
+    {
+      "id": "C3-diagram6",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.files/12.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:23.113395+00:00",
+      "status": 200,
+      "bytes": 8686,
+      "content_type": "image/gif",
+      "sha256": "4991c100b8e0dafdc51cd8508813ba980fe77fa897ddf7d1be5b1ec285625b6c"
+    },
+    {
+      "id": "C3-diagram7",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.files/13.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:23.313603+00:00",
+      "status": 200,
+      "bytes": 7235,
+      "content_type": "image/gif",
+      "sha256": "47be6c5a3b4c5e3be6ad7ffcb9dfe627611a5cda4daf790c2d1eca1020f17196"
+    },
+    {
+      "id": "C3-diagram8",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.files/14.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:23.497537+00:00",
+      "status": 200,
+      "bytes": 8386,
+      "content_type": "image/gif",
+      "sha256": "390932dde68c8d14329633a2d2eccc0c9f4ae3797bb7557904f21e5cc0ac7d91"
+    },
+    {
+      "id": "C3-diagram9",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.files/15.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:23.810453+00:00",
+      "status": 200,
+      "bytes": 3265,
+      "content_type": "image/gif",
+      "sha256": "4cfa4b7983dc986f7ca55fde4c2159afce1fa842add8af052970b9265d20b64e"
+    },
+    {
+      "id": "C3-diagram10",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.files/image023.gif",
+      "edition": "linked source image; date inherited only from linking page",
+      "inspection": "bytes acquired/checksummed; no full visual transcription claimed",
+      "retrieved_utc": "2026-10-27T14:44:23.820493+00:00",
+      "status": 200,
+      "bytes": 2094,
+      "content_type": "image/gif",
+      "sha256": "c38071f273a29a1ed5fa41caff93ed3f9d9309fad7095921a03e67f3f71f468d"
+    }
+  ],
+  "unacquired": [
+    "Original identified 1703 printing/copy of 中将棊指南抄",
+    "Identified original/copy of 中将棊絹篩",
+    "中将棋全集 rules-volume pages",
+    "Okazaki booklet identified edition/facsimile"
+  ],
+  "locator_gaps": [
+    {
+      "url": "https://www.archives.kyoto.jp/wp-content/uploads/tosyoitiranall2021v1.pdf",
+      "status": "web-tool 404 on 2026-10-27; search cache had catalogue entries; not treated as actual text"
+    }
+  ]
+}

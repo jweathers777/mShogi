@@ -22,7 +22,14 @@ Design and product decisions are developed with John in ChatGPT. Codex or Claude
 
 The native chess baseline provides rules/history, live match adjudication and clocks, transparent evaluation, full-width search, cancellation and UCI. The [match runner](docs/match-runner.md) connects real UCI engines to that rules boundary and preserves replayable experiment evidence. Default M2 dead recognition remains a sound subset; exact opt-in analysis can exceed practical resource limits. No competitive playing-strength claim follows.
 
-The Tauri desktop application plays untimed chess against the bundled native engine, runs bounded read-only analysis, saves and reopens complete games, and inspects history. Its [three-platform packaged GUI evidence](docs/desktop/packaged-gui-verification.md) distinguishes actual application interaction from package construction. Remaining games, measured engine strength, learned evaluation and release distribution follow the preserved roadmap in `docs/design.md`.
+The Tauri desktop application plays untimed chess against the bundled native engine, runs bounded read-only analysis, saves and reopens complete games, and inspects history. Its [three-platform packaged GUI evidence](docs/desktop/packaged-gui-verification.md) distinguishes actual application interaction from package construction. The four remaining games, measured engine strength, learned evaluation and release distribution follow the preserved roadmap in `docs/design.md`.
+
+Standard Shogi is also accepted as fully delivered under MSH-41/MSH-75,
+including its own native rules/history, console, engine/USI, canonical records
+and game-specific desktop in the shared application shell. See the
+[delivery evidence](docs/m4/shogi-delivery-review.md). M4 remains open; the
+[current Xiangqi planning dossier](docs/m4/xiangqi/README.md) is a source/profile
+proposal and future task refinement, not support for playing Xiangqi yet.
 
 ## Repository and existing work
 

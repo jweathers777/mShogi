@@ -197,3 +197,14 @@ updated same-size actual captures and required independent review/verification,
 without another owner visual checkpoint. This supersedes the procedural gate in
 older sections; it does not waive their behavioral or evidence criteria.
 MSH-75 remains unstarted until MSH-74 is actually Done.
+
+## Accepted shell requirement for subsequent games (2026-10-27)
+
+The owner requires the actual shared MSH-74 composition/theme for subsequent
+games. Application/document controls, live/status footer and sidebar structure
+remain in stable slots. A different game may have a different board, pieces,
+native labels and hand/player content without changing the surrounding app.
+The [Xiangqi handoff](xiangqi/handoff.md) requires an intersection/river/palace
+renderer and a complete visible board at normal/minimum desktop sizes; it does
+not authorize redesigning the accepted Chess/Shogi shell or recreating rules
+in TypeScript. This is future planning, not Xiangqi visual implementation evidence.

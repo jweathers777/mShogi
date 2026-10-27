@@ -17,6 +17,23 @@ forcing independent source research to wait for completed earlier games. The
 strong enough to change that order. A future change should cite evidence and
 preserve all five delivery commitments.
 
+## Current Xiangqi planning/refinement handoff (2026-10-27)
+
+The owner accepts MSH-41/MSH-75 as Done. [MSH-80's dossier](xiangqi/README.md)
+records acquired/reconciled source facts and an unselected named profile proposal.
+Its AC1–3 remain unfinished at a material source/decision boundary. The
+[current consumer/task map](xiangqi/handoff.md) refines existing MSH-84/76/45
+into bounded MSH-91–103, with all original criteria preserved. After80 is
+resolved,91 independent fixtures/reference and92 native state/actions/reversal
+are the first independent pair;93 local legality follows. No Xiangqi code is
+implemented or authorized by planning. Actual shared changes are explicit
+native record/result dispatch, intersection/palace/river presentation, session
+and lossless archive adapters; the accepted common application shell is retained.
+
+MSH-81–83 partial acquisition/reconciliation reports are linked from the dossier.
+They remain unfinished, do not gate80 and establish no reason to reorder games.
+The rest of this document retains the historical Shogi planning and evidence.
+
 ## Standard shogi components and original acceptance coverage
 
 Each component's task contains scope, observable acceptance, dependencies and

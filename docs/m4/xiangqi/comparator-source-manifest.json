@@ -1,0 +1,160 @@
+{
+  "audit_date": "2026-10-27",
+  "scope": "source-only; no builds, runtime queries, network acquisition or admission",
+  "candidates": [
+    {
+      "name": "pikafish",
+      "commit": "9d7833aa113626b3ea63ad83f49fb9b456bd5839",
+      "tree": "93fb0853d2d60dcfbb455b033b94907f4d572f61",
+      "files": [
+        {
+          "path": "README.md",
+          "sha256": "34b7b31204b5d2d1a69bad317cbc7a323b3558594075ff04e49a2ae7246a764a",
+          "bytes": 7805
+        },
+        {
+          "path": "Copying.txt",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "bytes": 35149
+        },
+        {
+          "path": "src/movegen.cpp",
+          "sha256": "e0161ef73b7925bc50e784904d5d1d8a7114e5d7b5e6a441aa6de2e1a391190c",
+          "bytes": 5788
+        },
+        {
+          "path": "src/perft.h",
+          "sha256": "256b4e407007a98e10c5ed0af1f07d50778b356e5ac6696220f5dc82d00bf804",
+          "bytes": 1942
+        },
+        {
+          "path": "src/position.cpp",
+          "sha256": "ad17f3640bd01afbf6e9f4e6682d4add7d25c2b8e12a6669140a9f5f07617e4f",
+          "bytes": 49248
+        },
+        {
+          "path": "src/position.h",
+          "sha256": "4ac979cc8628e6179de149b9520e768f4c0bbdc14f8596d13b7003c1e51ab140",
+          "bytes": 13458
+        },
+        {
+          "path": "src/attacks.h",
+          "sha256": "986f2c02dfde7ae79509fd2c38a39a30231daf09b75f69c2aa89196794a77fec",
+          "bytes": 9690
+        },
+        {
+          "path": "src/attacks.cpp",
+          "sha256": "44402b1a24912836efb18246cc8516c7b1caa2506be593681ea196c977ba28f1",
+          "bytes": 5951
+        },
+        {
+          "path": "src/engine.cpp",
+          "sha256": "9e3bbf2cbcf47656eea5682f8f414d3bb5334c5d84becb624d2b2efa02cf67f3",
+          "bytes": 11173
+        },
+        {
+          "path": "src/uci.cpp",
+          "sha256": "ee04e9bca5b6601ab1b9e5cef50043190073baadb2047ef1b0d5fb2290d6b36c",
+          "bytes": 22468
+        },
+        {
+          "path": "src/evaluate.h",
+          "sha256": "f0b7feed1335ba20923c30dd73e95b35b98d0d1eb3d968649b1bda6f46083496",
+          "bytes": 1760
+        },
+        {
+          "path": "src/Makefile",
+          "sha256": "ecf30d65ea9ed132f0651d064c32a654a2fd8943f9d04255d080028c98ea2d8b",
+          "bytes": 44740
+        },
+        {
+          "path": "src/nnue/features/k6r2nc2.h",
+          "sha256": "7ae23a0b38985bd14d3548e6f67b00a1baf1fa313a8e6aa1154c1e897364d885",
+          "bytes": 12322
+        },
+        {
+          "path": "scripts/net.sh",
+          "sha256": "9610f6c15ccf7509e9ed78a89e55f2b12b0734253e7f7fd674489dc7fe44ad55",
+          "bytes": 1002
+        }
+      ]
+    },
+    {
+      "name": "fairy-stockfish",
+      "commit": "9f778da667f6e07dae1e85d3e2ea204fc6dee94d",
+      "tree": "05d169a143d732939d893d9f69258cb2cfde3308",
+      "files": [
+        {
+          "path": "README.md",
+          "sha256": "5332b6c7cfb8a8983536ddcdc4a6dddf3b9a79ad5f2be07e44fbbd4d59653e2a",
+          "bytes": 13608
+        },
+        {
+          "path": "Copying.txt",
+          "sha256": "0b383d5a63da644f628d99c33976ea6487ed89aaa59f0b3257992deac1171e6b",
+          "bytes": 35821
+        },
+        {
+          "path": "src/movegen.cpp",
+          "sha256": "0ec1dd919ee6778f690030dc78dce9b18fded040089904b55ea37f9fb781b748",
+          "bytes": 20966
+        },
+        {
+          "path": "src/search.cpp",
+          "sha256": "02f1a8002cfd945f18b70582740139311c61dcb9805315f735bde4ad5b5be01a",
+          "bytes": 81839
+        },
+        {
+          "path": "src/position.cpp",
+          "sha256": "16f28fecb31f9d68fcd6010e3d231aea9c08182db10edf66ed232964ecc684fc",
+          "bytes": 122811
+        },
+        {
+          "path": "src/position.h",
+          "sha256": "afa87108128a1562a02878cb6dbd8ae3667af338c46d207ef774ae5bad3da43e",
+          "bytes": 50041
+        },
+        {
+          "path": "src/variant.cpp",
+          "sha256": "0e835a90bb2c2d27b03e55ef164092927d68084087cdad19ccd29ba9981058d4",
+          "bytes": 96305
+        },
+        {
+          "path": "src/variant.h",
+          "sha256": "c8b43102aa59a0eddb69741c92982f9d248f21ebc23a03640f3a22c71d2b9f51",
+          "bytes": 9093
+        },
+        {
+          "path": "src/piece.cpp",
+          "sha256": "6695601cb82b230aab5bd3f8f7422ff8be1ab05163f80bc374ec8137e23399ef",
+          "bytes": 10799
+        },
+        {
+          "path": "src/uci.cpp",
+          "sha256": "a087a5ee7a26f23fc80dbf5f4891f609e338ed8bd38d3532689806c03a9389ac",
+          "bytes": 22339
+        },
+        {
+          "path": "src/ucioption.cpp",
+          "sha256": "b41c40fe1ad75e21ba33bc6fe1c85fca736a5cf61eced73bdc0a1f38143e1022",
+          "bytes": 13762
+        },
+        {
+          "path": "src/Makefile",
+          "sha256": "09d661b25b89670e10634b0ca45feb3b677682345a3465d4babafa251245ab2f",
+          "bytes": 26820
+        },
+        {
+          "path": "src/evaluate.cpp",
+          "sha256": "8a45b069bdceb99f5eac6e059b681a56e6235003193c4d0f04058024b9052fef",
+          "bytes": 72017
+        },
+        {
+          "path": "src/bitboard.h",
+          "sha256": "b50e9349fc763d483beb0c8169fce60b972969e6a764516e7243d1f6aad06c69",
+          "bytes": 23817
+        }
+      ]
+    }
+  ]
+}

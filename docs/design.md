@@ -242,6 +242,26 @@ later game's profile. Existing chess documents, exact history, cancellation and
 MSH-61 lossless capacity admission remain compatibility requirements. Current
 chess search/archive limits are defaults to evaluate for each new consumer.
 
+### Next-game boundary and accepted shared shell (2026-10-27)
+
+John accepts Standard Shogi as fully delivered under MSH-41; MSH-41 and
+MSH-75 remain Done. M4 and MSH-42–47 remain open. The next primary task is
+MSH-80 source/profile/refinement for Xiangqi, with independent research81–83
+permitted. The [Xiangqi dossier](m4/xiangqi/README.md) records an **unselected**
+WXF2018-based proposal, exact source gaps, material owner choices, independent
+fixture expectations, audited software limitations and bounded future tasks.
+It does not adopt a profile or authorize substantive native implementation.
+
+The shared shell accepted in MSH-74 is a product requirement for future games:
+one application theme, document controls, live/status hierarchy, board/sidebar
+spatial grammar and analysis/history/actions structure. Common controls stay in
+the same slots; game-specific content does not rearrange unrelated controls.
+Xiangqi requires intersections, river, palaces and its own native pieces/labels,
+with the whole board visible at supported desktop sizes without board scrolling
+or zooming. Native read-only opponent inspection remains authoritative; frontend
+code does not recreate movement rules. Real consumers may justify small explicit
+dispatch/metadata extensions, not a uniform rules or board representation.
+
 ## 6. Verification contract
 
 | Evidence category | What it establishes |
@@ -291,6 +311,7 @@ When code reveals a design problem, report the specific conflict and a proposed 
 | D-10 | Deferred | Release licensing, redistribution choices, minimum OS policy, and signing/update arrangements. Preserve existing notices; resolve applicable choices before copying restricted dependencies or distributing releases. |
 | D-12 | Accepted | John 2026-10-26: bounded M4 planning only, standard shogi first; provisional later order xiangqi, tori, chu, tenjiku with independent source research possible. Preserve complete MSH-41–47 obligations and closed M2/M3; stop for concrete profile discussion before affected implementation. |
 | D-13 | Accepted, SHOGI-P1, 2026-10-26 | John explicitly approved option A `mshogi.shogi.csa36.v1` against integration `6db8500e92129b95e502e7b4d5c4a26072e38652`, including untimed local play, advisory/committed declarations, atomic rejection and declared-counter/bounded-history adaptations. JSA professional and other event conventions remain separate unselected alternatives. See [selected profile](m4/shogi-profile.md) and [coverage](m4/shogi-coverage.md); approval is not delivery evidence. |
+| D-14 | Accepted delivery/shell boundary, 2026-10-27 | John accepts Standard Shogi under MSH-41/75 and requires the MSH-74 common shell for future games. MSH-80 is next planning/refinement;81–83 may research independently. No Xiangqi rules profile is selected by this instruction; resolve material sourced decisions before native implementation. See [current dossier](m4/xiangqi/README.md). |
 
 Accepted records reflect actual owner direction. Working defaults are implementation proposals consistent with it, not fabricated owner decisions. Deferred questions only block work that depends on their resolution. A routine choice within accepted requirements does not need a new approval ceremony.
 

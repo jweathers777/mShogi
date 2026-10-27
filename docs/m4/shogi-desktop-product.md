@@ -162,3 +162,10 @@ header/document controls, live heading/Flip, player/board relationship and sideb
 order; unexplained migration is a finding. Existing native/query behavior is
 reused unchanged. MSH-74 remains In Review for final owner visual approval and
 MSH-75 remains unstarted.
+
+Expanded active-state comparisons apply the same rule to common secondary
+actions: Start/Replace and Cancel analysis share one action row inside Analysis,
+and historical viewing uses a common notice header with Return to live aligned
+at its right edge. Native history explanations and Chess-only Full operations
+remain game content. Live selection/inspection help follows the lower player in
+the common footer, including when native inspection is active at minimum size.

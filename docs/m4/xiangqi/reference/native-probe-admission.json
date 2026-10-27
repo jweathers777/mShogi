@@ -1,0 +1,367 @@
+{
+  "format": "mshogi.xiangqi.native-probe-admission.v1",
+  "provenance": {
+    "base_integration_revision": "22c10c18914d3d7b774335163bef1edec3193535",
+    "working_source_status": "MSH93 working source, not yet integrated at time of execution",
+    "native_binary": "/private/tmp/msh93-native/xiangqi_probe",
+    "native_binary_sha256": "aced652a098c28abf9d63a1842414a301a9bb45e5aab0f761965c36ab7acd7af",
+    "native_source_sha256": {
+      "crates/mshogi-core/examples/xiangqi_probe.rs": "d2c087a5671ecf6b242f2ada6b3c12eb32473d283db607d2af2a0215a5b8e4ed",
+      "crates/mshogi-core/Cargo.toml": "7660fc473d3809b92ea41e6a7a1e1aa344fe433a01b94af31fa9bec14140dfbb",
+      "Cargo.lock": "abcf13906b91498b343c21b7da9b35fb8d046ed09952a64536435a8260899693",
+      "crates/mshogi-core/src/xiangqi/action.rs": "5cfdede8383c9304582f8ba7fb48d52e2b57ee5a958958191a151d34dd1401e5",
+      "crates/mshogi-core/src/xiangqi/codec.rs": "b060d993b88dd1c571f83db9e7d53f7a0bd9822c69a3f276a7b070fd14ba2390",
+      "crates/mshogi-core/src/xiangqi/legal.rs": "78d002d71148ccfd1df11aafde637c979d72c5e3fd47a037ae6aca26a2bd5d3e",
+      "crates/mshogi-core/src/xiangqi/mod.rs": "1ef0ca558751d5a7e7e5606638d443e12405307dd586813935bbe63b35f4a156",
+      "crates/mshogi-core/src/xiangqi/perft.rs": "312f2975e14972570d2da2d2e19f5f9a0df1555184e1edbd321b15b9b1d227d5",
+      "crates/mshogi-core/src/xiangqi/tests.rs": "0501852de437ba1028a7da104a23b0980774b209a758ac078eff1ac051b90c38"
+    },
+    "reference_manifest_sha256": "6037cadd10f63b96cbeeb0899d67e6fdf74bd23835c477af6df888bcc17a6415",
+    "comparison_tool_sha256": "2a1e5910250fd19ed7424b07eb78c15f69e9a3f72f50aa01052b534a616a692c",
+    "reference_adapter_sha256": "843a804d64aa07df9756c107bb6a569a114be5ec4830b294747fc43843f4dece",
+    "python": "3.11.0 (main, Dec  2 2022, 11:49:20) [Clang 14.0.0 (clang-1400.0.29.102)]",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "exact_source_correction": {
+      "superseded_native_binary_sha256": "f9cc6f4277cb70d147cd55dfe0ad50daa61604feda4bdf72ea2fd321c0ab954c",
+      "reason": "The first native probe binary preceded the final legal.rs empty-target API documentation clarification. Logic is unchanged, but its earlier evidence is superseded by actual execution of the rebuilt immutable executable against exact final source hashes.",
+      "immutable_final_binary": "/private/tmp/msh93-native/xiangqi_probe",
+      "superseded_evidence": {
+        "native-board-admission.json": {
+          "sha256": "d1546e8193cf134ced3a159105a1560e462e2efe0d45d611d8cbddddcf55d318",
+          "preserved_local_path": "/private/tmp/msh91-reference/superseded-pre-doc-evidence/native-board-admission.json"
+        },
+        "native-depth3.json": {
+          "sha256": "ce014fb183bd6eebbd75da50fdade70f3490e73a42eac6ca70c6311a8a396038",
+          "preserved_local_path": "/private/tmp/msh91-reference/superseded-pre-doc-evidence/native-depth3.json"
+        },
+        "native-probe-admission.json": {
+          "sha256": "b169317d616dae5d8d3f11a6a497cfb9a126a18080441aac6f19d0aa7872a79b",
+          "preserved_local_path": "/private/tmp/msh91-reference/superseded-pre-doc-evidence/native-probe-admission.json"
+        }
+      }
+    },
+    "native_source_hashes_unchanged_after_execution": true,
+    "collection_command": "python3 /private/tmp/msh91-reference/ms93-evidence-frozen.py",
+    "collection_script_sha256": "4be603f6198c3cc70a965cfbff9377bd5d255d66e939ea4420c80941332f2160"
+  },
+  "probe_kind": "Developer-only native example; not product engine/protocol capability",
+  "raw_process_operation": "subprocess.run([native_binary],input=request_bytes,capture_output=True,timeout=20); require exit nonzero/stdout empty/expected diagnostic/bounded stderr for each refusal",
+  "refusal_records": [
+    {
+      "id": "duplicate-root",
+      "request_bytes": 167,
+      "request_sha256": "8891eaf974d03fa121a080b597575dcb83880aca451e22c4fcdc0952f788cbf3",
+      "request_utf8": "{\"root_fen\":\"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1\",\"root_fen\":\"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1\"}",
+      "command": [
+        "/private/tmp/msh93-native/xiangqi_probe"
+      ],
+      "exit_code": 1,
+      "stdout_bytes": 0,
+      "stderr": "native board probe refused: duplicate field `root_fen` at line 1 column 94\n",
+      "expected_diagnostic_substring": "duplicate field",
+      "passed": true,
+      "request_generation": "request_utf8 encoded as UTF-8 without added newline"
+    },
+    {
+      "id": "duplicate-depth",
+      "request_bytes": 116,
+      "request_sha256": "fef8b8dc1e9018ff292e2b6c7c7f0e269807ed91e6991e3f452245bad2182aa4",
+      "request_utf8": "{\"root_fen\":\"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1\",\"perft_depth\":1,\"perft_depth\":2}",
+      "command": [
+        "/private/tmp/msh93-native/xiangqi_probe"
+      ],
+      "exit_code": 1,
+      "stdout_bytes": 0,
+      "stderr": "native board probe refused: duplicate field `perft_depth` at line 1 column 113\n",
+      "expected_diagnostic_substring": "duplicate field",
+      "passed": true,
+      "request_generation": "request_utf8 encoded as UTF-8 without added newline"
+    },
+    {
+      "id": "unknown-field",
+      "request_bytes": 102,
+      "request_sha256": "c3303864395251de212e5cd9b7594138e39184260c2352f54b65f4de44cb3d75",
+      "request_utf8": "{\"root_fen\": \"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1\", \"unknown\": true}",
+      "command": [
+        "/private/tmp/msh93-native/xiangqi_probe"
+      ],
+      "exit_code": 1,
+      "stdout_bytes": 0,
+      "stderr": "native board probe refused: unknown field `unknown`, expected one of `root_fen`, `moves`, `perft_depth` at line 1 column 95\n",
+      "expected_diagnostic_substring": "unknown field",
+      "passed": true,
+      "request_generation": "request_utf8 encoded as UTF-8 without added newline"
+    },
+    {
+      "id": "oversized-input",
+      "request_bytes": 4097,
+      "request_sha256": "4f4ead552223cb2905a4828972dfae7740586dabae603924a7810598256dbdd9",
+      "request_utf8": null,
+      "command": [
+        "/private/tmp/msh93-native/xiangqi_probe"
+      ],
+      "exit_code": 1,
+      "stdout_bytes": 0,
+      "stderr": "native board probe refused: request byte limit4096\n",
+      "expected_diagnostic_substring": "request byte limit",
+      "passed": true,
+      "request_generation": "ASCII space repeated request_bytes times"
+    },
+    {
+      "id": "missing-root",
+      "request_bytes": 12,
+      "request_sha256": "4cba52032dfb0839b8138eb84ebcb5bd281253019dfc6efb447d211ac4333f8e",
+      "request_utf8": "{\"moves\":[]}",
+      "command": [
+        "/private/tmp/msh93-native/xiangqi_probe"
+      ],
+      "exit_code": 1,
+      "stdout_bytes": 0,
+      "stderr": "native board probe refused: missing field `root_fen` at line 1 column 12\n",
+      "expected_diagnostic_substring": "missing field",
+      "passed": true,
+      "request_generation": "request_utf8 encoded as UTF-8 without added newline"
+    },
+    {
+      "id": "malformed-json",
+      "request_bytes": 12,
+      "request_sha256": "ecf27b9a73900ed5954968d9bc2a2d962756e263f5df95ac4f8a32c1c8433e69",
+      "request_utf8": "{\"root_fen\":",
+      "command": [
+        "/private/tmp/msh93-native/xiangqi_probe"
+      ],
+      "exit_code": 1,
+      "stdout_bytes": 0,
+      "stderr": "native board probe refused: EOF while parsing a value at line 1 column 12\n",
+      "expected_diagnostic_substring": "EOF",
+      "passed": true,
+      "request_generation": "request_utf8 encoded as UTF-8 without added newline"
+    },
+    {
+      "id": "malformed-action",
+      "request_bytes": 105,
+      "request_sha256": "44ef174dc90e99510e445b3cfd8df9c77a4fec948edb79aef95f80c1a1de7ab0",
+      "request_utf8": "{\"root_fen\": \"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1\", \"moves\": [\"e0e1+\"]}",
+      "command": [
+        "/private/tmp/msh93-native/xiangqi_probe"
+      ],
+      "exit_code": 1,
+      "stdout_bytes": 0,
+      "stderr": "native board probe refused: invalid Xiangqi coordinate board action at line 1 column 104\n",
+      "expected_diagnostic_substring": "invalid Xiangqi",
+      "passed": true,
+      "request_generation": "request_utf8 encoded as UTF-8 without added newline"
+    },
+    {
+      "id": "wrong-action-type",
+      "request_bytes": 124,
+      "request_sha256": "3fd4f780bdeb1f10c25693498fdc31abe41e7cb333bd626aa9348301bd57e711",
+      "request_utf8": "{\"root_fen\": \"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1\", \"moves\": [{\"from\": \"e0\", \"to\": \"e1\"}]}",
+      "command": [
+        "/private/tmp/msh93-native/xiangqi_probe"
+      ],
+      "exit_code": 1,
+      "stdout_bytes": 0,
+      "stderr": "native board probe refused: invalid type: map, expected a string at line 1 column 96\n",
+      "expected_diagnostic_substring": "invalid type",
+      "passed": true,
+      "request_generation": "request_utf8 encoded as UTF-8 without added newline"
+    },
+    {
+      "id": "negative-depth",
+      "request_bytes": 104,
+      "request_sha256": "811bdb2370e30bd1bfbfbdabdbc1362a183d2c6ccb54e59925b3c3bd8d88faa5",
+      "request_utf8": "{\"root_fen\": \"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1\", \"perft_depth\": -1}",
+      "command": [
+        "/private/tmp/msh93-native/xiangqi_probe"
+      ],
+      "exit_code": 1,
+      "stdout_bytes": 0,
+      "stderr": "native board probe refused: invalid value: integer `-1`, expected u8 at line 1 column 103\n",
+      "expected_diagnostic_substring": "invalid value",
+      "passed": true,
+      "request_generation": "request_utf8 encoded as UTF-8 without added newline"
+    },
+    {
+      "id": "depth-over-limit",
+      "request_bytes": 103,
+      "request_sha256": "9f9403fe8dad7fedcc9dd66262604add56a7ecaebcdae3a4824edb46a23d9340",
+      "request_utf8": "{\"root_fen\": \"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1\", \"perft_depth\": 4}",
+      "command": [
+        "/private/tmp/msh93-native/xiangqi_probe"
+      ],
+      "exit_code": 1,
+      "stdout_bytes": 0,
+      "stderr": "native board probe refused: replay/depth limit256/3\n",
+      "expected_diagnostic_substring": "replay/depth limit",
+      "passed": true,
+      "request_generation": "request_utf8 encoded as UTF-8 without added newline"
+    },
+    {
+      "id": "replay-over-limit",
+      "request_bytes": 2152,
+      "request_sha256": "8ac444fbb6e3d82e9c3bca9323192b153e7016af31ea70941269702b01c59e17",
+      "request_utf8": "{\"root_fen\": \"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1\", \"moves\": [\"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\", \"b0a2\"]}",
+      "command": [
+        "/private/tmp/msh93-native/xiangqi_probe"
+      ],
+      "exit_code": 1,
+      "stdout_bytes": 0,
+      "stderr": "native board probe refused: replay/depth limit256/3\n",
+      "expected_diagnostic_substring": "replay/depth limit",
+      "passed": true,
+      "request_generation": "request_utf8 encoded as UTF-8 without added newline"
+    },
+    {
+      "id": "illegal-replay",
+      "request_bytes": 104,
+      "request_sha256": "a20b1adc47f476d4c84c1d27a2c0329b064a0caa287bd1200774acb55d65c6e5",
+      "request_utf8": "{\"root_fen\": \"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1\", \"moves\": [\"b2b8\"]}",
+      "command": [
+        "/private/tmp/msh93-native/xiangqi_probe"
+      ],
+      "exit_code": 1,
+      "stdout_bytes": 0,
+      "stderr": "native board probe refused: xiangqi action rejected: Movement\n",
+      "expected_diagnostic_substring": "Movement",
+      "passed": true,
+      "request_generation": "request_utf8 encoded as UTF-8 without added newline"
+    },
+    {
+      "id": "wrong-side-replay",
+      "request_bytes": 104,
+      "request_sha256": "1bfe76d23721e1eae7e1c832e04423252347aa4a061cf5ea6a861dcecd191f67",
+      "request_utf8": "{\"root_fen\": \"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1\", \"moves\": [\"a9a8\"]}",
+      "command": [
+        "/private/tmp/msh93-native/xiangqi_probe"
+      ],
+      "exit_code": 1,
+      "stdout_bytes": 0,
+      "stderr": "native board probe refused: xiangqi action rejected: WrongSide\n",
+      "expected_diagnostic_substring": "WrongSide",
+      "passed": true,
+      "request_generation": "request_utf8 encoded as UTF-8 without added newline"
+    },
+    {
+      "id": "same-intersection-replay",
+      "request_bytes": 104,
+      "request_sha256": "7a628595540844f92f5a2fdadaa72e1a81792e5c6eede5714afced23e72d0e37",
+      "request_utf8": "{\"root_fen\": \"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1\", \"moves\": [\"e0e0\"]}",
+      "command": [
+        "/private/tmp/msh93-native/xiangqi_probe"
+      ],
+      "exit_code": 1,
+      "stdout_bytes": 0,
+      "stderr": "native board probe refused: xiangqi action rejected: SameIntersection\n",
+      "expected_diagnostic_substring": "SameIntersection",
+      "passed": true,
+      "request_generation": "request_utf8 encoded as UTF-8 without added newline"
+    },
+    {
+      "id": "counter-overflow",
+      "request_bytes": 113,
+      "request_sha256": "962e4b1be096ed83b185873b1d346cff25fae8319b5a1c4489f38bc6b4358431",
+      "request_utf8": "{\"root_fen\": \"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 4294967295 1\", \"moves\": [\"b0a2\"]}",
+      "command": [
+        "/private/tmp/msh93-native/xiangqi_probe"
+      ],
+      "exit_code": 1,
+      "stdout_bytes": 0,
+      "stderr": "native board probe refused: xiangqi action rejected: CounterOverflow\n",
+      "expected_diagnostic_substring": "CounterOverflow",
+      "passed": true,
+      "request_generation": "request_utf8 encoded as UTF-8 without added newline"
+    }
+  ],
+  "counter_sentinel": {
+    "request": {
+      "root_fen": "4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1",
+      "moves": [
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8",
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8",
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8",
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8",
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8",
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8"
+      ]
+    },
+    "raw_non_capture_plies": 24,
+    "red_check_count": 12,
+    "native_observation": {
+      "fen": "4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 24 13",
+      "legal_moves": [
+        "d0d1",
+        "d0e0",
+        "e9a9",
+        "e9b9",
+        "e9c9",
+        "e9d9",
+        "e9e0",
+        "e9e1",
+        "e9e2",
+        "e9e3",
+        "e9e4",
+        "e9e5",
+        "e9e6",
+        "e9e7",
+        "e9e8",
+        "e9f9",
+        "e9g9",
+        "e9h9",
+        "e9i9"
+      ],
+      "in_check": false,
+      "undo_restored": true
+    },
+    "reference_observation": {
+      "fen": "4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 20 13",
+      "in_check": false,
+      "legal_moves": [
+        "d0d1",
+        "d0e0",
+        "e9a9",
+        "e9b9",
+        "e9c9",
+        "e9d9",
+        "e9e0",
+        "e9e1",
+        "e9e2",
+        "e9e3",
+        "e9e4",
+        "e9e5",
+        "e9e6",
+        "e9e7",
+        "e9e8",
+        "e9f9",
+        "e9g9",
+        "e9h9",
+        "e9i9"
+      ],
+      "undo_restored": true
+    },
+    "interpretation": "Native preserves24 raw noncapture plies; foreign rule60/check10 reports20. Full board/side/fullmove,19actions,check andundo agree. No WXF warning/claim/outcome is inferred."
+  },
+  "summary": {
+    "refusals": 15,
+    "passed": 15,
+    "counter_sentinel_passed": true
+  }
+}

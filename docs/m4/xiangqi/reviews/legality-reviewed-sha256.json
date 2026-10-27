@@ -1,0 +1,14 @@
+{
+  "baseline": "22c10c18914d3d7b774335163bef1edec3193535",
+  "files": {
+    "crates/mshogi-core/src/xiangqi/action.rs": "5cfdede8383c9304582f8ba7fb48d52e2b57ee5a958958191a151d34dd1401e5",
+    "crates/mshogi-core/src/xiangqi/perft.rs": "312f2975e14972570d2da2d2e19f5f9a0df1555184e1edbd321b15b9b1d227d5",
+    "crates/mshogi-core/src/xiangqi/legal.rs": "78d002d71148ccfd1df11aafde637c979d72c5e3fd47a037ae6aca26a2bd5d3e",
+    "crates/mshogi-core/src/xiangqi/mod.rs": "1ef0ca558751d5a7e7e5606638d443e12405307dd586813935bbe63b35f4a156",
+    "crates/mshogi-core/src/xiangqi/codec.rs": "b060d993b88dd1c571f83db9e7d53f7a0bd9822c69a3f276a7b070fd14ba2390",
+    "crates/mshogi-core/src/xiangqi/tests.rs": "0501852de437ba1028a7da104a23b0980774b209a758ac078eff1ac051b90c38",
+    "crates/mshogi-core/tests/xiangqi_board.rs": "4d5d8bc5a068caadb834439156185343bdff7530e91de4656fda958d7f495d64",
+    "crates/mshogi-core/examples/xiangqi_probe.rs": "d2c087a5671ecf6b242f2ada6b3c12eb32473d283db607d2af2a0215a5b8e4ed",
+    "docs/m4/xiangqi/local-legality.md": "11fc06a151a6b3589aa7ab186b4f9e15124381785e8b205e5a309a09f1b9bfc1"
+  }
+}

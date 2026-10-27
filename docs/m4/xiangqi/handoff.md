@@ -1,5 +1,18 @@
 # Xiangqi native/shared delivery handoff
 
+## Subsequent board implementation handoff
+
+The authorized MSH-91/92/93 batch adds independently expected board fixtures,
+an actually built restricted Pikafish reference, native state/root codecs and
+complete local legality. See [foundation evidence](board-foundation-evidence.md),
+[local contract](local-legality.md) and the task records for exact revisions,
+review and executed checks. There is no Xiangqi product consumer yet. The next
+dependency-ready native item is MSH-94, still subject to G-CYCLE/G-NOWIN source
+and fixture gates; this batch does not implement it or MSH-105. All native/full
+game/shared/consumer ownership below remains in effect. MSH-45 and M4 remain open.
+
+## Historical MSH-80 planning handoff (preserved)
+
 Planning only, baseline `14b9643`, MSH-80. XIANGQI-P1 is selected; MSH-80 owns reviewed planning completion.91/92 become
 **Ready** only after80 closes; all other future implementation stays To Do.
 No product implementation is authorized by this planning batch. Existing MSH-45/76/84 identities and original criteria remain.

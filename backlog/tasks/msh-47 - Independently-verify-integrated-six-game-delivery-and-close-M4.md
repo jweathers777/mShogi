@@ -4,6 +4,7 @@ title: Independently verify integrated six-game delivery and close M4
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
+updated_date: '2026-10-27T20:26:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -15,6 +16,7 @@ dependencies:
   - MSH-44
   - MSH-45
   - MSH-46
+  - MSH-108
 documentation:
   - docs/design.md
 ordinal: 47000

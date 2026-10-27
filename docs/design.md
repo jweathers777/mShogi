@@ -167,8 +167,8 @@ implementation batch unchanged and does not authorize starting future games.
 
 | Milestone | Scope and owning tasks | Required closure gate |
 | --- | --- | --- |
-| M4 | MSH-26: completed chess completeness; MSH-41: shogi; MSH-42: tori shogi; MSH-43: chu shogi; MSH-44: tenjiku shogi; MSH-45: xiangqi; MSH-46: shared six-game integration | MSH-47 depends on MSH-26, MSH-39 and every MSH-41–46 deliverable. |
-| M5 | MSH-48: shared reproducible strength/learning experiment infrastructure; MSH-49: chess strength; MSH-50: shogi strength; MSH-51: tori shogi strength; MSH-52: chu shogi strength; MSH-53: tenjiku shogi strength; MSH-54: xiangqi strength; MSH-55: initial learned evaluator, training/export/native inference and demonstrated improvement; MSH-104: per-game opening-knowledge experiment | MSH-56 depends on M4 closure, every MSH-48–55 deliverable and MSH-104 experiment completion; opening mechanism adoption is optional. |
+| M4 | MSH-26: completed chess completeness; MSH-41: shogi; MSH-42: tori shogi; MSH-43: chu shogi; MSH-44: tenjiku shogi; MSH-45: xiangqi; MSH-46: shared six-game integration; MSH-106–108: architectural health diagnostics | MSH-47 depends on MSH-26, MSH-39, every MSH-41–46 deliverable and MSH-108 (including MSH-106/107). |
+| M5 | MSH-48: shared reproducible strength/learning experiment infrastructure; MSH-49: chess strength; MSH-50: shogi strength; MSH-51: tori shogi strength; MSH-52: chu shogi strength; MSH-53: tenjiku shogi strength; MSH-54: xiangqi strength; MSH-55: initial learned evaluator, training/export/native inference and demonstrated improvement; MSH-104: per-game opening-knowledge experiment; MSH-109: pre-optimization architecture diagnostic | MSH-56 depends on M4 closure, every MSH-48–55 deliverable and MSH-104 experiment completion, inheriting MSH-109 through MSH-49–55/104; opening mechanism adoption is optional. |
 | M6 required product delivery | MSH-57: six-game analysis, accessibility and product polish; MSH-58: release policy and three-platform distribution | MSH-60 depends on M5 closure and MSH-57–58. |
 | M6 optional research | MSH-59: policy/value search and budgeted learning experiments | Explicitly excluded from required MSH-60 closure dependencies. Research may remain To Do when required product delivery closes. |
 
@@ -279,6 +279,25 @@ book-policy hybrids and no learned prior where practical. Include sparse-corpus
 Chu/Tenjiku search-distillation research, regeneration provenance and full cost/
 strength/work-saving metrics. No training implementation, mandatory model/book
 shipping or Python product-runtime dependency is introduced by this plan.
+
+### Architectural health checkpoints (2026-10-27)
+
+The [architectural health roadmap](architecture-health-roadmap.md) adds future
+diagnostic reviews after complete Xiangqi (MSH-106) and Chu Shogi (MSH-107),
+then an all-six-game review (MSH-108) before MSH-47 closes M4. MSH-109 reassesses
+architecture with MSH-48 experiment/pilot evidence before substantial M5 strength,
+learned-evaluator or opening-knowledge optimization in MSH-49–55/MSH-104.
+MSH-48 and earlier game implementation retain their existing prerequisites.
+
+Generalize when multiple real consumers demonstrate the same semantics, not
+merely similar-looking code. Reviews assess coherent, independently testable
+responsibilities rather than identical filenames/layouts, and examine both
+duplication and premature abstractions. Reports include source-backed findings,
+severity/risk, acceptable areas, benefits/consumers, regression risks and bounded
+follow-ups. No material changes recommended is valid; material refactors require
+separate behavior-preserving tasks and focused differential/regression evidence.
+The reviews do not replace game delivery, independent conformance or milestone
+acceptance, and create no current refactor obligation.
 
 ## 6. Verification contract
 

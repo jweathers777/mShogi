@@ -1,0 +1,61 @@
+{
+  "format": "mshogi.xiangqi.reference-counter-exclusion.v1",
+  "request": {
+    "root_fen": "4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1",
+    "moves": [
+      "e9f9",
+      "f8e8",
+      "f9e9",
+      "e8f8",
+      "e9f9",
+      "f8e8",
+      "f9e9",
+      "e8f8",
+      "e9f9",
+      "f8e8",
+      "f9e9",
+      "e8f8",
+      "e9f9",
+      "f8e8",
+      "f9e9",
+      "e8f8",
+      "e9f9",
+      "f8e8",
+      "f9e9",
+      "e8f8",
+      "e9f9",
+      "f8e8",
+      "f9e9",
+      "e8f8"
+    ]
+  },
+  "independently_counted_non_capture_plies": 24,
+  "independently_counted_red_checks": 12,
+  "reference_observation": {
+    "fen": "4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 20 13",
+    "in_check": false,
+    "legal_moves": [
+      "d0d1",
+      "d0e0",
+      "e9a9",
+      "e9b9",
+      "e9c9",
+      "e9d9",
+      "e9e0",
+      "e9e1",
+      "e9e2",
+      "e9e3",
+      "e9e4",
+      "e9e5",
+      "e9e6",
+      "e9e7",
+      "e9e8",
+      "e9f9",
+      "e9g9",
+      "e9h9",
+      "e9i9"
+    ],
+    "undo_restored": true
+  },
+  "meaning": "The pinned reference rule60/check10 clock reports20. It is retained as foreign behavior and excluded from raw native counter agreement. No WXF warning, claim, adjudication or outcome is inferred."
+}

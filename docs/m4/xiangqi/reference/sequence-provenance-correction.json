@@ -1,0 +1,14 @@
+{
+  "format": "mshogi.xiangqi.sequence-evidence-correction.v1",
+  "superseded_full_report": {
+    "sha256": "eb043d82893aa55c48495a0675f9f895d616af5b9c10243388d26a3d9a8a6b44",
+    "bytes": 1375978,
+    "local_path": "/private/tmp/msh91-reference/corrected-board-comparison-final.json",
+    "reproduction": "Use the exact command and recorded manifest; fresh environment requires explicit rebuild/admission with its own binary hash."
+  },
+  "finding": "Prior sequence request records aliased the mutable caller move list; later work changed recorded prefixes. Actual subprocess queries and compared outputs were correct, but prior saved request provenance was not. Superseded sequence summaries are not final evidence.",
+  "example_superseded_final_request_length": 65,
+  "required_final_prefix_length": 64,
+  "fix": "Copy submitted moves into each request record; stop after requested final prefix; regression extends caller list after an actual query and proves saved request stays unchanged.",
+  "independent_review": "Final provenance inspection by separate reviewer; renewed execution required before acceptance."
+}

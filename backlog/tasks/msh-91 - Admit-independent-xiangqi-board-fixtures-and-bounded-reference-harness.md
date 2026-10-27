@@ -1,10 +1,11 @@
 ---
 id: MSH-91
 title: Admit independent xiangqi board fixtures and bounded reference harness
-status: Ready
-assignee: []
+status: In Review
+assignee:
+  - '@codex'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-27T16:30:00Z'
+updated_date: '2026-10-27T18:11:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -42,10 +43,20 @@ Future bounded Xiangqi delivery work refined by MSH-80. Intent and acceptance on
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Root@codex is sole integrator on primarycodex/rewrite at53e90a93aa8954965cd69e336a9806ea5f59acaa; independent fixtures and restricted reference/harness work use disjoint files. 1.Freeze source-derived board cases preserving44/F002; independent expectation review before reference observations; cover bothsides/topology/captures/evasions/pins. 2.Build pinned audited Pikafish source in isolatedtmp via minimal network-free board-only harness (or auditedcompatibleFairyfallback); retain exact patch/source/compiler/commands/binary/operation/notation/provenance and exclude allhistory/outcome helpers. 3.Execute admission sentinels/fullsets/applyundo, malformed/domainnegative/timeout/failure/deliberate-mismatch diagnostics without changing expectations. 4.Independent fixture/harness review, reproducible evidence, normalintegration/push beforeDone. No94/105/console/engine/protocol/archive/desktop implementation.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 XIANGQI-P1 selected2026-10-27. This independently settled board/state scope is unaffected by G-CYCLE/G-NOWIN later history/proof questions or missing complete AXF/CXA corpora. Ready status will be set only after80 reviewed planning integration; no execution in80 batch. Preserve44-action opening set/F002 seeds; actual reference build/admission remains91, not80.
 
 MSH80 planning completed under XIANGQI-P1 with reviewed integrated/pushed evidence412bbe743f78cef47a931854eef3cdd39783a83b. This task is now Ready and dependency80 satisfied. No implementation/reference build/tests performed for this future ticket, no ACchecked, no assignee/implementationplan. Root stops at implementation boundary;91+92 then93 is first bounded queue. G-CYCLE/G-NOWIN remain affected94/105gates, not this scope.
+
+Ownerauthorized batch91+92 then93 only. Startup clean primarycodex/rewrite53e90a9, one worktree, nootheractiveBacklogownership. Backlog1.55.1 pinned mutationbinary resolvesPATH1.55.0difference.80Done selectedXIANGQI-P1 governs. Root sole durabletaskowner/integrator; isolatedindependentfixture/reference contributors will be recorded; no taskDone until own evidence/review/integration. G-CYCLE/G-NOWIN stay94/105 and must not affectlocal boardlegality.
+
+Completed independent105-fixture corpus (101 admitted,4 deliberate structural exclusions) and actually built pinned restricted Pikafish board reference. 15 admission/failure sentinels and520 sequence-prefix observations passed; independent perft2/3/7 and divide5+2 confirmed. Source-based B38 correction, foreign counter exclusion, process-group cleanup and prefix-provenance findings retained/resolved. Separate independent reviewer manually inspected rule fixtures and reran harness/corpus: final PASS. Evidence/reproduction: docs/m4/xiangqi/board-foundation-evidence.md, reference/, reviews/. No history/strength admission.
 <!-- SECTION:NOTES:END -->

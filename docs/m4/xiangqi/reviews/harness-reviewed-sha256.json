@@ -1,0 +1,17 @@
+{
+  "tools/xiangqi/test_reference.py": "f161ade713a85ec81639cf03b01e4b98f378934d93d45f46bafe2108fee39ee0",
+  "tools/xiangqi/build_reference.py": "4341bfe8551befd74ac90b8b27877fc1116504d4cec764fca4796996a81179df",
+  "tools/xiangqi/reference.py": "843a804d64aa07df9756c107bb6a569a114be5ec4830b294747fc43843f4dece",
+  "tools/xiangqi/compare.py": "2a1e5910250fd19ed7424b07eb78c15f69e9a3f72f50aa01052b534a616a692c",
+  "tools/xiangqi/pikafish_board_probe.cpp": "37a8f59b4029f2019c082e80b6027ee09faa8bff5b5b2b5cb4feb9656506831e",
+  "docs/m4/xiangqi/reference/admission-sentinels.txt": "3edf91b87e8303ffa9fe85e7a584f9c104f173bc7a05c3891c915e3c35bb4727",
+  "docs/m4/xiangqi/reference/negative-evidence.json": "a25c731439345be78d15c0002493c37400d78d7bd80f5c714b31d8c748b2c323",
+  "docs/m4/xiangqi/reference/pikafish-admission.json": "6037cadd10f63b96cbeeb0899d67e6fdf74bd23835c477af6df888bcc17a6415",
+  "docs/m4/xiangqi/reference/pikafish-harness.patch": "ba3c1d833efad6dc73a3ddf8f03a44a03e5a3e5b58dfda8a654a6e1afc4d9d8f",
+  "docs/m4/xiangqi/reference/counter-exclusion.json": "e41186b68a8bd824f73d7f2ab2c01202fdc3bb30597b361348ef4b6cac4155fb",
+  "docs/m4/xiangqi/reference/independent-perft-depth3.json": "3aa1f6c9b52c5379a7fed40083b4fbd2633304e30043a22e0a0b9da369e13a3a",
+  "docs/m4/xiangqi/reference/board-admission.json": "1478f0cc2cd40799e679e6635e197f9de325df4296ed1392d08fba299908b51f",
+  "docs/m4/xiangqi/reference/pikafish-build.txt": "ee478bf21126ca3bf0cfa12edb5a03d4746c33b893e5fad658673ae0865276cf",
+  "docs/m4/xiangqi/reference/initial-admission-mismatch.json": "ad550d94d534b617d61d67556a4159b46d5f4121bd1ccef9cf9636d42d3e40ca",
+  "docs/m4/xiangqi/reference/sequence-provenance-correction.json": "2ea7beb81df12d85a0947b80549bd33cf15d1b187170307efa9014b65c258dc4"
+}

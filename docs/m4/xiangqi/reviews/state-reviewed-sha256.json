@@ -1,0 +1,11 @@
+{
+  "baseline": "53e90a93aa8954965cd69e336a9806ea5f59acaa",
+  "reviewed_sha256": {
+    "crates/mshogi-core/src/xiangqi/action.rs": "4adf38264b7a2e80b889fd467f20bc6de44e65c82f22fc87268c406b389ba975",
+    "crates/mshogi-core/src/xiangqi/mod.rs": "30f4cdb34f74ca154112842351a18680f2893e2244a58ddb17bcbe27f9c52899",
+    "crates/mshogi-core/src/xiangqi/codec.rs": "b060d993b88dd1c571f83db9e7d53f7a0bd9822c69a3f276a7b070fd14ba2390",
+    "crates/mshogi-core/src/xiangqi/tests.rs": "b31807efcf95e1ae20ee3e4f5f53a72222c35f32b1c2f6da9b036754fa89a717",
+    "crates/mshogi-core/src/lib.rs": "04c5339c9a805cfbc03f8a4f087a9ba43508434671ecdd6e3f88c3e22e5dc25f",
+    "docs/m4/xiangqi/position-api.md": "91d669de2e1e19bfa85d1a6647c732a45bd7a71726ac9271f254cb5c43fe8a12"
+  }
+}

@@ -1,0 +1,1696 @@
+{
+  "format": "mshogi.xiangqi.board-fixtures.v1",
+  "profile": "mshogi.xiangqi.wxf2018.v1",
+  "coordinates": "Red-bottom files a-i, ranks 0-9; n=Horse,b=Elephant; w=Red,b=Black",
+  "expectation_provenance": "Independently reasoned from WXF2018 Articles1/2 and previously reviewed MSH80 F001/F002 before any native/reference execution. Rotations only transcribe explicit side-relative rule geometry.",
+  "fixtures": [
+    {
+      "id": "XQ-F001-red",
+      "fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+      "source": "WXF2018 1.4 and 2.1\u20132.7; independently reviewed MSH80 XQ-F001",
+      "reasoning": "Setup-derived exhaustive list: 4 rook + 4 horse + 4 elephant + 2 advisor + 1 general + 24 cannon + 5 soldier = 44. No perft or comparator output used.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": false,
+      "legal_moves": [
+        "a0a1",
+        "a0a2",
+        "a3a4",
+        "b0a2",
+        "b0c2",
+        "b2a2",
+        "b2b1",
+        "b2b3",
+        "b2b4",
+        "b2b5",
+        "b2b6",
+        "b2b9",
+        "b2c2",
+        "b2d2",
+        "b2e2",
+        "b2f2",
+        "b2g2",
+        "c0a2",
+        "c0e2",
+        "c3c4",
+        "d0e1",
+        "e0e1",
+        "e3e4",
+        "f0e1",
+        "g0e2",
+        "g0i2",
+        "g3g4",
+        "h0g2",
+        "h0i2",
+        "h2c2",
+        "h2d2",
+        "h2e2",
+        "h2f2",
+        "h2g2",
+        "h2h1",
+        "h2h3",
+        "h2h4",
+        "h2h5",
+        "h2h6",
+        "h2h9",
+        "h2i2",
+        "i0i1",
+        "i0i2",
+        "i3i4"
+      ]
+    },
+    {
+      "id": "XQ-B01",
+      "fen": "5k3/9/9/9/9/4R4/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.4/2.8",
+      "reasoning": "Open rook has eight horizontal and nine vertical destinations, except own General e0; e0 is excluded by friendly occupancy.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e4": [
+          "e4a4",
+          "e4b4",
+          "e4c4",
+          "e4d4",
+          "e4e1",
+          "e4e2",
+          "e4e3",
+          "e4e5",
+          "e4e6",
+          "e4e7",
+          "e4e8",
+          "e4e9",
+          "e4f4",
+          "e4g4",
+          "e4h4",
+          "e4i4"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B02",
+      "fen": "5k3/9/9/4p4/9/2P1R4/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.4/2.8",
+      "reasoning": "Friendly c4 stops left ray before c4; enemy e6 is capturable and stops the upward ray; own General stops downward ray.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e4": [
+          "e4d4",
+          "e4e1",
+          "e4e2",
+          "e4e3",
+          "e4e5",
+          "e4e6",
+          "e4f4",
+          "e4g4",
+          "e4h4",
+          "e4i4"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B03",
+      "fen": "5k3/9/9/9/9/9/9/9/9/R3K4 w - - 0 1",
+      "source": "WXF2018 2.4/2.8",
+      "reasoning": "Boundary rook has only positive file/rank rays; e0 is occupied by its General and blocks the rank.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "a0": [
+          "a0a1",
+          "a0a2",
+          "a0a3",
+          "a0a4",
+          "a0a5",
+          "a0a6",
+          "a0a7",
+          "a0a8",
+          "a0a9",
+          "a0b0",
+          "a0c0",
+          "a0d0"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B04",
+      "fen": "5k3/9/9/9/9/4C4/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.6/2.8",
+      "reasoning": "Without a screen a cannon moves quietly along open rook rays; the General e0 blocks its downward ray.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e4": [
+          "e4a4",
+          "e4b4",
+          "e4c4",
+          "e4d4",
+          "e4e1",
+          "e4e2",
+          "e4e3",
+          "e4e5",
+          "e4e6",
+          "e4e7",
+          "e4e8",
+          "e4e9",
+          "e4f4",
+          "e4g4",
+          "e4h4",
+          "e4i4"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B05",
+      "fen": "5k3/9/4n4/9/9/4C4/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.6",
+      "reasoning": "A cannon cannot capture with zero screens, cannot jump an enemy as a quiet move, and may stop before it.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e4e5",
+        "e4e6"
+      ],
+      "must_exclude": [
+        "e4e7",
+        "e4e8",
+        "e4e9"
+      ]
+    },
+    {
+      "id": "XQ-B06",
+      "fen": "5k3/4n4/9/4P4/9/4C4/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.6",
+      "reasoning": "One friendly screen enables capture of nearest enemy e8; empty e7 beyond the screen is not a quiet destination.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e4e5",
+        "e4e8"
+      ],
+      "must_exclude": [
+        "e4e6",
+        "e4e7",
+        "e4e9"
+      ]
+    },
+    {
+      "id": "XQ-B07",
+      "fen": "5k3/4n4/9/4p4/9/4C4/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.6",
+      "reasoning": "One enemy screen enables capture of nearest enemy e8; the mount itself cannot be captured by this cannon.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e4e8"
+      ],
+      "must_exclude": [
+        "e4e6",
+        "e4e7"
+      ]
+    },
+    {
+      "id": "XQ-B08",
+      "fen": "4nk3/9/4P4/9/4P4/9/4C4/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.6",
+      "reasoning": "Two screens prevent the e9 capture. Friendly second screen cannot be captured; no landing past first screen without an enemy capture.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e3e4"
+      ],
+      "must_exclude": [
+        "e3e5",
+        "e3e6",
+        "e3e7",
+        "e3e8",
+        "e3e9"
+      ]
+    },
+    {
+      "id": "XQ-B09",
+      "fen": "4nk3/9/4n4/9/4P4/9/4C4/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.6",
+      "reasoning": "Nearest enemy beyond one screen is e7; e9 has two intervening pieces and cannot be captured.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e3e7"
+      ],
+      "must_exclude": [
+        "e3e9"
+      ]
+    },
+    {
+      "id": "XQ-B10",
+      "fen": "5k3/9/9/9/9/4N4/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.5",
+      "reasoning": "All four horse legs are empty, giving exactly eight two-by-one destinations.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e4": [
+          "e4c3",
+          "e4c5",
+          "e4d2",
+          "e4d6",
+          "e4f2",
+          "e4f6",
+          "e4g3",
+          "e4g5"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B11",
+      "fen": "5k3/9/9/9/4P4/4N4/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.5",
+      "reasoning": "Friendly e5 blocks the north leg and both d6/f6 destinations only.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e4": [
+          "e4c3",
+          "e4c5",
+          "e4d2",
+          "e4f2",
+          "e4g3",
+          "e4g5"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B12",
+      "fen": "5k3/9/9/9/9/4Np3/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.5",
+      "reasoning": "Enemy f4 blocks the east leg and both g3/g5 destinations only; the horse cannot capture its leg blocker.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e4": [
+          "e4c3",
+          "e4c5",
+          "e4d2",
+          "e4d6",
+          "e4f2",
+          "e4f6"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B13",
+      "fen": "5k3/9/9/9/9/9/9/9/9/N3K4 w - - 0 1",
+      "source": "WXF2018 2.5",
+      "reasoning": "Boundary horse has two in-board moves and six off-board candidates.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "a0": [
+          "a0b2",
+          "a0c1"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B14",
+      "fen": "5k3/9/9/9/9/9/9/9/9/2B1K4 w - - 0 1",
+      "source": "WXF2018 2.3",
+      "reasoning": "Home Elephant moves two diagonals through b1/d1; both eyes are empty.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "c0": [
+          "c0a2",
+          "c0e2"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B15",
+      "fen": "5k3/9/9/9/9/9/9/9/1N7/2B1K4 w - - 0 1",
+      "source": "WXF2018 2.3",
+      "reasoning": "Friendly b1 blocks the a2 eye but not e2.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "c0": [
+          "c0e2"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B16",
+      "fen": "5k3/9/9/9/9/9/9/9/3n5/2B1K4 w - - 0 1",
+      "source": "WXF2018 2.3",
+      "reasoning": "Enemy d1 blocks the e2 eye just as a friendly eye blocker would.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "c0": [
+          "c0a2"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B17",
+      "fen": "5k3/9/9/9/9/9/9/4B4/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.3",
+      "reasoning": "Interior home-side Elephant has all four eye-clear diagonal moves.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e2": [
+          "e2c0",
+          "e2c4",
+          "e2g0",
+          "e2g4"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B18",
+      "fen": "5k3/9/9/9/9/2B6/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.3",
+      "reasoning": "At rank4 the two increasing-rank Elephant moves cross the river and are forbidden.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "c4": [
+          "c4a2",
+          "c4e2"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B19",
+      "fen": "5k3/9/9/9/9/9/9/9/9/3AK4 w - - 0 1",
+      "source": "WXF2018 2.2",
+      "reasoning": "Advisor in palace corner d0 has one legal diagonal destination e1.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "d0": [
+          "d0e1"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B20",
+      "fen": "5k3/9/9/9/9/9/9/9/4A4/4K4 w - - 0 1",
+      "source": "WXF2018 2.2",
+      "reasoning": "Central palace Advisor has exactly four diagonal palace destinations; no orthogonal move.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e1": [
+          "e1d0",
+          "e1d2",
+          "e1f0",
+          "e1f2"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B21",
+      "fen": "5k3/9/9/9/9/9/9/5A3/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.2",
+      "reasoning": "Upper palace corner Advisor cannot leave its palace on diagonals to g1/g3/e3.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "f2": [
+          "f2e1"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B22",
+      "fen": "5k3/9/9/9/9/9/9/9/9/3K5 w - - 0 1",
+      "source": "WXF2018 2.1/2.9",
+      "reasoning": "General in d0 palace corner may move one orthogonal step; neither destination faces the opposing General.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "d0": [
+          "d0d1",
+          "d0e0"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B23",
+      "fen": "5k3/9/9/9/9/9/9/9/4K4/9 w - - 0 1",
+      "source": "WXF2018 2.1/2.9",
+      "reasoning": "General f1 destination is inside its palace but faces f9 and is forbidden; other three orthogonal steps are safe.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e1": [
+          "e1d1",
+          "e1e0",
+          "e1e2"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B24",
+      "fen": "5k3/9/9/9/9/9/P8/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.7",
+      "reasoning": "Uncrossed edge Soldier can only advance; sideways and backward are forbidden.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "a3": [
+          "a3a4"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B25",
+      "fen": "5k3/9/9/9/9/4P4/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.7",
+      "reasoning": "A Soldier on rank4 has not yet crossed the river; crossing occurs by its forward move to rank5.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e4": [
+          "e4e5"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B26",
+      "fen": "5k3/9/9/9/4P4/9/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.7",
+      "reasoning": "A Soldier on rank5 has crossed the river, gains sideways movement, and still cannot retreat.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e5": [
+          "e5d5",
+          "e5e6",
+          "e5f5"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B27",
+      "fen": "5k3/9/9/9/P8/9/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.7",
+      "reasoning": "Post-river edge Soldier has one forward and one inward lateral move; no off-board or backward action.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "a5": [
+          "a5a6",
+          "a5b5"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B28",
+      "fen": "4Pk3/9/9/9/9/9/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.7/2.8",
+      "reasoning": "At the far rank, Soldier cannot advance or retreat. It may move laterally to d9; f9 is the opposing General and is never a capturable piece (2.8). This root already threatens f9, so it is a structural-only rejection diagnostic.",
+      "domain": "structural_analysis",
+      "reference_eligible": false,
+      "moves_from": {
+        "e9": [
+          "e9d9"
+        ]
+      },
+      "must_exclude": [
+        "e9f9"
+      ]
+    },
+    {
+      "id": "XQ-B29",
+      "fen": "4k4/9/9/9/9/4N4/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.5/2.9/2.10",
+      "reasoning": "The horse is the sole facing-General blocker. Every horse departure exposes the Generals, hence its entire legal action set is empty.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e4": []
+      },
+      "in_check": false
+    },
+    {
+      "id": "XQ-B30",
+      "fen": "4k4/9/9/9/9/9/9/9/9/3K5 w - - 0 1",
+      "source": "WXF2018 2.1/2.9",
+      "reasoning": "General d0-e0 would newly face e9 without an intervening piece and is forbidden.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "d0d1"
+      ],
+      "must_exclude": [
+        "d0e0"
+      ]
+    },
+    {
+      "id": "XQ-B31",
+      "fen": "4k4/9/9/5n3/9/4N4/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.5/2.8/2.9",
+      "reasoning": "Even capturing the enemy horse on f6 does not excuse exposing the Generals by vacating the e-file.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_exclude": [
+        "e4f6"
+      ],
+      "moves_from": {
+        "e4": []
+      }
+    },
+    {
+      "id": "XQ-B32",
+      "fen": "5k3/4r4/9/9/9/9/9/9/4R4/4K4 w - - 0 1",
+      "source": "WXF2018 2.4/2.10",
+      "reasoning": "Pinned rook must remain on the e-file or capture the checking-line rook; horizontal departures expose its General.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e1": [
+          "e1e2",
+          "e1e3",
+          "e1e4",
+          "e1e5",
+          "e1e6",
+          "e1e7",
+          "e1e8"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B33",
+      "fen": "5k3/9/9/9/9/9/9/5n3/5R3/4K4 w - - 0 1",
+      "source": "WXF2018 2.5/2.10",
+      "reasoning": "Moving f1 rook off the enemy horse leg exposes the General; capturing the horse is a valid cure.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "f1f2"
+      ],
+      "must_exclude": [
+        "f1e1",
+        "f1f0"
+      ]
+    },
+    {
+      "id": "XQ-B34",
+      "fen": "5k3/4c4/9/9/9/4P4/9/4R4/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.6/2.10",
+      "reasoning": "Two existing cannon screens are safe; moving one off the e-file creates exactly one screen and exposes check.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": false,
+      "must_include": [
+        "e2e1",
+        "e2e3"
+      ],
+      "must_exclude": [
+        "e2d2",
+        "e2f2"
+      ]
+    },
+    {
+      "id": "XQ-B35",
+      "fen": "4k4/4r4/9/9/9/9/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.1/2.4/2.10",
+      "reasoning": "Rook line check can only be escaped here by d0 or f0; e1 remains attacked.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": true,
+      "legal_moves": [
+        "e0d0",
+        "e0f0"
+      ]
+    },
+    {
+      "id": "XQ-B36",
+      "fen": "5k3/9/9/9/9/9/9/9/4r4/4K4 w - - 0 1",
+      "source": "WXF2018 2.1/2.4/2.8/2.9/2.10",
+      "reasoning": "Capture e1 removes the checker. d0 is safe. f0 faces the opposing General f9 and is forbidden.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": true,
+      "legal_moves": [
+        "e0d0",
+        "e0e1"
+      ]
+    },
+    {
+      "id": "XQ-B37",
+      "fen": "5k3/4r4/9/9/9/9/9/9/R8/4K4 w - - 0 1",
+      "source": "WXF2018 2.4/2.9/2.10",
+      "reasoning": "Only rook a1-e1 blocks the e-file check; General d0 escapes; f0 faces f9.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": true,
+      "legal_moves": [
+        "a1e1",
+        "e0d0"
+      ]
+    },
+    {
+      "id": "XQ-B38",
+      "fen": "5k3/9/9/9/9/9/9/5n3/R8/4K4 w - - 0 1",
+      "source": "WXF2018 2.5/2.9/2.10",
+      "reasoning": "Horse f2 checks e0 through f1; rook a1-f1 blocks that leg. General d0/e1/f0 all escape: on f0, the horse f2 itself interposes between the Generals, and a horse on f2 does not attack f0. Thus there are exactly four evasions.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": true,
+      "legal_moves": [
+        "a1f1",
+        "e0d0",
+        "e0e1",
+        "e0f0"
+      ]
+    },
+    {
+      "id": "XQ-B39",
+      "fen": "5k3/4c4/9/9/9/4R4/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.6/2.10",
+      "reasoning": "Friendly rook is the single cannon mount: moving it off-file or capturing the cannon cures check; leaving it on-file does not.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": true,
+      "must_include": [
+        "e0d0",
+        "e4d4",
+        "e4e8",
+        "e4f4"
+      ],
+      "must_exclude": [
+        "e0e1",
+        "e4e3",
+        "e4e5"
+      ]
+    },
+    {
+      "id": "XQ-B40",
+      "fen": "5k3/4c4/9/9/9/4p4/9/R8/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.6/2.10",
+      "reasoning": "Adding a second screen by a2-e2 cures cannon check; an unrelated rook move does not.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": true,
+      "must_include": [
+        "a2e2",
+        "e0d0"
+      ],
+      "must_exclude": [
+        "a2a3",
+        "e0e1"
+      ]
+    },
+    {
+      "id": "XQ-B41",
+      "fen": "5k3/4c4/9/9/9/R3p4/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.6/2.8/2.10",
+      "reasoning": "Capturing the enemy mount a4-e4 merely replaces it with the friendly rook: one screen remains and check is not cured.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": true,
+      "must_exclude": [
+        "a4e4"
+      ]
+    },
+    {
+      "id": "XQ-B42",
+      "fen": "4k4/9/9/9/9/4p4/9/9/3r1r3/4K4 w - - 0 1",
+      "source": "WXF2018 2.1/2.4/2.9/2.10",
+      "reasoning": "General is not presently checked, but d0/f0 are attacked by the respective rooks and e1 by both. This proves zero local actions without assigning a game result.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": false,
+      "legal_moves": []
+    },
+    {
+      "id": "XQ-B43",
+      "fen": "4k4/9/9/9/9/4p4/9/2n6/5r3/3rK4 w - - 0 1",
+      "source": "WXF2018 2.1/2.4/2.5/2.10",
+      "reasoning": "Rook d0 checks; capturing it exposes the horse c2 attack on d0. The f0/e1 escapes are covered by f1 rook. Zero local actions is distinct from the prior non-check case.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": true,
+      "legal_moves": []
+    },
+    {
+      "id": "XQ-B44",
+      "fen": "5k3/9/9/4r4/9/4R4/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.4/2.8",
+      "reasoning": "The rook has an unobstructed line capture of enemy Rook. The captured family has no hand/promotion effect.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e4e6"
+      ]
+    },
+    {
+      "id": "XQ-B45",
+      "fen": "5k3/9/9/4c4/9/4R4/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.4/2.8",
+      "reasoning": "The rook has an unobstructed line capture of enemy Cannon. The captured family has no hand/promotion effect.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e4e6"
+      ]
+    },
+    {
+      "id": "XQ-B46",
+      "fen": "5k3/9/9/4n4/9/4R4/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.4/2.8",
+      "reasoning": "The rook has an unobstructed line capture of enemy Horse. The captured family has no hand/promotion effect.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e4e6"
+      ]
+    },
+    {
+      "id": "XQ-B47",
+      "fen": "5k3/9/9/4p4/9/4R4/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.4/2.8",
+      "reasoning": "The rook has an unobstructed line capture of enemy Soldier. The captured family has no hand/promotion effect.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e4e6"
+      ]
+    },
+    {
+      "id": "XQ-B48",
+      "fen": "5k3/9/4b4/9/4R4/9/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.4/2.8",
+      "reasoning": "The rook has an unobstructed line capture of enemy Elephant. The captured family has no hand/promotion effect.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e5e7"
+      ]
+    },
+    {
+      "id": "XQ-B49",
+      "fen": "5k3/4a4/9/4R4/9/9/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.4/2.8",
+      "reasoning": "The rook has an unobstructed line capture of enemy Advisor. The captured family has no hand/promotion effect.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e6e8"
+      ]
+    },
+    {
+      "id": "XQ-B50",
+      "fen": "5k3/9/9/9/9/5R3/9/9/9/4K4 w - - 0 1",
+      "source": "WXF2018 2.4/2.8",
+      "reasoning": "General capture is explicitly excluded even on a structural diagram already checking the opposing General. No king-capture continuation is admitted.",
+      "domain": "structural_analysis",
+      "reference_eligible": false,
+      "must_exclude": [
+        "f4f9"
+      ]
+    },
+    {
+      "id": "XQ-F001-black",
+      "fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR b - - 0 1",
+      "source": "WXF2018 1.4 and 2.1\u20132.7; independently reviewed MSH80 XQ-F001",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Setup-derived exhaustive list: 4 rook + 4 horse + 4 elephant + 2 advisor + 1 general + 24 cannon + 5 soldier = 44. No perft or comparator output used.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": false,
+      "legal_moves": [
+        "a6a5",
+        "a9a7",
+        "a9a8",
+        "b7a7",
+        "b7b0",
+        "b7b3",
+        "b7b4",
+        "b7b5",
+        "b7b6",
+        "b7b8",
+        "b7c7",
+        "b7d7",
+        "b7e7",
+        "b7f7",
+        "b7g7",
+        "b9a7",
+        "b9c7",
+        "c6c5",
+        "c9a7",
+        "c9e7",
+        "d9e8",
+        "e6e5",
+        "e9e8",
+        "f9e8",
+        "g6g5",
+        "g9e7",
+        "g9i7",
+        "h7c7",
+        "h7d7",
+        "h7e7",
+        "h7f7",
+        "h7g7",
+        "h7h0",
+        "h7h3",
+        "h7h4",
+        "h7h5",
+        "h7h6",
+        "h7h8",
+        "h7i7",
+        "h9g7",
+        "h9i7",
+        "i6i5",
+        "i9i7",
+        "i9i8"
+      ]
+    },
+    {
+      "id": "XQ-B01-black",
+      "fen": "4k4/9/9/9/4r4/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.4/2.8",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Open rook has eight horizontal and nine vertical destinations, except own General e0; e0 is excluded by friendly occupancy.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e5": [
+          "e5a5",
+          "e5b5",
+          "e5c5",
+          "e5d5",
+          "e5e0",
+          "e5e1",
+          "e5e2",
+          "e5e3",
+          "e5e4",
+          "e5e6",
+          "e5e7",
+          "e5e8",
+          "e5f5",
+          "e5g5",
+          "e5h5",
+          "e5i5"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B02-black",
+      "fen": "4k4/9/9/9/4r1p2/9/4P4/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.4/2.8",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Friendly c4 stops left ray before c4; enemy e6 is capturable and stops the upward ray; own General stops downward ray.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e5": [
+          "e5a5",
+          "e5b5",
+          "e5c5",
+          "e5d5",
+          "e5e3",
+          "e5e4",
+          "e5e6",
+          "e5e7",
+          "e5e8",
+          "e5f5"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B03-black",
+      "fen": "4k3r/9/9/9/9/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.4/2.8",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Boundary rook has only positive file/rank rays; e0 is occupied by its General and blocks the rank.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "i9": [
+          "i9f9",
+          "i9g9",
+          "i9h9",
+          "i9i0",
+          "i9i1",
+          "i9i2",
+          "i9i3",
+          "i9i4",
+          "i9i5",
+          "i9i6",
+          "i9i7",
+          "i9i8"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B04-black",
+      "fen": "4k4/9/9/9/4c4/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.6/2.8",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Without a screen a cannon moves quietly along open rook rays; the General e0 blocks its downward ray.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e5": [
+          "e5a5",
+          "e5b5",
+          "e5c5",
+          "e5d5",
+          "e5e0",
+          "e5e1",
+          "e5e2",
+          "e5e3",
+          "e5e4",
+          "e5e6",
+          "e5e7",
+          "e5e8",
+          "e5f5",
+          "e5g5",
+          "e5h5",
+          "e5i5"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B05-black",
+      "fen": "4k4/9/9/9/4c4/9/9/4N4/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.6",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. A cannon cannot capture with zero screens, cannot jump an enemy as a quiet move, and may stop before it.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e5e3",
+        "e5e4"
+      ],
+      "must_exclude": [
+        "e5e0",
+        "e5e1",
+        "e5e2"
+      ]
+    },
+    {
+      "id": "XQ-B06-black",
+      "fen": "4k4/9/9/9/4c4/9/4p4/9/4N4/3K5 b - - 0 1",
+      "source": "WXF2018 2.6",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. One friendly screen enables capture of nearest enemy e8; empty e7 beyond the screen is not a quiet destination.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e5e1",
+        "e5e4"
+      ],
+      "must_exclude": [
+        "e5e0",
+        "e5e2",
+        "e5e3"
+      ]
+    },
+    {
+      "id": "XQ-B07-black",
+      "fen": "4k4/9/9/9/4c4/9/4P4/9/4N4/3K5 b - - 0 1",
+      "source": "WXF2018 2.6",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. One enemy screen enables capture of nearest enemy e8; the mount itself cannot be captured by this cannon.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e5e1"
+      ],
+      "must_exclude": [
+        "e5e2",
+        "e5e3"
+      ]
+    },
+    {
+      "id": "XQ-B08-black",
+      "fen": "4k4/9/9/4c4/9/4p4/9/4p4/9/3KN4 b - - 0 1",
+      "source": "WXF2018 2.6",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Two screens prevent the e9 capture. Friendly second screen cannot be captured; no landing past first screen without an enemy capture.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e6e5"
+      ],
+      "must_exclude": [
+        "e6e0",
+        "e6e1",
+        "e6e2",
+        "e6e3",
+        "e6e4"
+      ]
+    },
+    {
+      "id": "XQ-B09-black",
+      "fen": "4k4/9/9/4c4/9/4p4/9/4N4/9/3KN4 b - - 0 1",
+      "source": "WXF2018 2.6",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Nearest enemy beyond one screen is e7; e9 has two intervening pieces and cannot be captured.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e6e2"
+      ],
+      "must_exclude": [
+        "e6e0"
+      ]
+    },
+    {
+      "id": "XQ-B10-black",
+      "fen": "4k4/9/9/9/4n4/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.5",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. All four horse legs are empty, giving exactly eight two-by-one destinations.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e5": [
+          "e5c4",
+          "e5c6",
+          "e5d3",
+          "e5d7",
+          "e5f3",
+          "e5f7",
+          "e5g4",
+          "e5g6"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B11-black",
+      "fen": "4k4/9/9/9/4n4/4p4/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.5",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Friendly e5 blocks the north leg and both d6/f6 destinations only.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e5": [
+          "e5c4",
+          "e5c6",
+          "e5d7",
+          "e5f7",
+          "e5g4",
+          "e5g6"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B12-black",
+      "fen": "4k4/9/9/9/3Pn4/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.5",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Enemy f4 blocks the east leg and both g3/g5 destinations only; the horse cannot capture its leg blocker.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e5": [
+          "e5d3",
+          "e5d7",
+          "e5f3",
+          "e5f7",
+          "e5g4",
+          "e5g6"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B13-black",
+      "fen": "4k3n/9/9/9/9/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.5",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Boundary horse has two in-board moves and six off-board candidates.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "i9": [
+          "i9g8",
+          "i9h7"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B14-black",
+      "fen": "4k1b2/9/9/9/9/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.3",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Home Elephant moves two diagonals through b1/d1; both eyes are empty.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "g9": [
+          "g9e7",
+          "g9i7"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B15-black",
+      "fen": "4k1b2/7n1/9/9/9/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.3",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Friendly b1 blocks the a2 eye but not e2.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "g9": [
+          "g9e7"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B16-black",
+      "fen": "4k1b2/5N3/9/9/9/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.3",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Enemy d1 blocks the e2 eye just as a friendly eye blocker would.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "g9": [
+          "g9i7"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B17-black",
+      "fen": "4k4/9/4b4/9/9/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.3",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Interior home-side Elephant has all four eye-clear diagonal moves.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e7": [
+          "e7c5",
+          "e7c9",
+          "e7g5",
+          "e7g9"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B18-black",
+      "fen": "4k4/9/9/9/6b2/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.3",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. At rank4 the two increasing-rank Elephant moves cross the river and are forbidden.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "g5": [
+          "g5e7",
+          "g5i7"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B19-black",
+      "fen": "4ka3/9/9/9/9/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.2",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Advisor in palace corner d0 has one legal diagonal destination e1.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "f9": [
+          "f9e8"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B20-black",
+      "fen": "4k4/4a4/9/9/9/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.2",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Central palace Advisor has exactly four diagonal palace destinations; no orthogonal move.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e8": [
+          "e8d7",
+          "e8d9",
+          "e8f7",
+          "e8f9"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B21-black",
+      "fen": "4k4/9/3a5/9/9/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.2",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Upper palace corner Advisor cannot leave its palace on diagonals to g1/g3/e3.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "d7": [
+          "d7e8"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B22-black",
+      "fen": "5k3/9/9/9/9/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.1/2.9",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. General in d0 palace corner may move one orthogonal step; neither destination faces the opposing General.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "f9": [
+          "f9e9",
+          "f9f8"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B23-black",
+      "fen": "9/4k4/9/9/9/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.1/2.9",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. General f1 destination is inside its palace but faces f9 and is forbidden; other three orthogonal steps are safe.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e8": [
+          "e8e7",
+          "e8e9",
+          "e8f8"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B24-black",
+      "fen": "4k4/9/9/8p/9/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.7",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Uncrossed edge Soldier can only advance; sideways and backward are forbidden.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "i6": [
+          "i6i5"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B25-black",
+      "fen": "4k4/9/9/9/4p4/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.7",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. A Soldier on rank4 has not yet crossed the river; crossing occurs by its forward move to rank5.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e5": [
+          "e5e4"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B26-black",
+      "fen": "4k4/9/9/9/9/4p4/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.7",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. A Soldier on rank5 has crossed the river, gains sideways movement, and still cannot retreat.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e4": [
+          "e4d4",
+          "e4e3",
+          "e4f4"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B27-black",
+      "fen": "4k4/9/9/9/9/8p/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.7",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Post-river edge Soldier has one forward and one inward lateral move; no off-board or backward action.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "i4": [
+          "i4h4",
+          "i4i3"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B28-black",
+      "fen": "4k4/9/9/9/9/9/9/9/9/3Kp4 b - - 0 1",
+      "source": "WXF2018 2.7/2.8",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. At the far rank, Soldier cannot advance or retreat. It may move laterally to d9; f9 is the opposing General and is never a capturable piece (2.8). This root already threatens f9, so it is a structural-only rejection diagnostic.",
+      "domain": "structural_analysis",
+      "reference_eligible": false,
+      "moves_from": {
+        "e0": [
+          "e0f0"
+        ]
+      },
+      "must_exclude": [
+        "e0d0"
+      ]
+    },
+    {
+      "id": "XQ-B29-black",
+      "fen": "4k4/9/9/9/4n4/9/9/9/9/4K4 b - - 0 1",
+      "source": "WXF2018 2.5/2.9/2.10",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. The horse is the sole facing-General blocker. Every horse departure exposes the Generals, hence its entire legal action set is empty.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e5": []
+      },
+      "in_check": false
+    },
+    {
+      "id": "XQ-B30-black",
+      "fen": "5k3/9/9/9/9/9/9/9/9/4K4 b - - 0 1",
+      "source": "WXF2018 2.1/2.9",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. General d0-e0 would newly face e9 without an intervening piece and is forbidden.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "f9f8"
+      ],
+      "must_exclude": [
+        "f9e9"
+      ]
+    },
+    {
+      "id": "XQ-B31-black",
+      "fen": "4k4/9/9/9/4n4/9/3N5/9/9/4K4 b - - 0 1",
+      "source": "WXF2018 2.5/2.8/2.9",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Even capturing the enemy horse on f6 does not excuse exposing the Generals by vacating the e-file.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_exclude": [
+        "e5d3"
+      ],
+      "moves_from": {
+        "e5": []
+      }
+    },
+    {
+      "id": "XQ-B32-black",
+      "fen": "4k4/4r4/9/9/9/9/9/9/4R4/3K5 b - - 0 1",
+      "source": "WXF2018 2.4/2.10",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Pinned rook must remain on the e-file or capture the checking-line rook; horizontal departures expose its General.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "moves_from": {
+        "e8": [
+          "e8e1",
+          "e8e2",
+          "e8e3",
+          "e8e4",
+          "e8e5",
+          "e8e6",
+          "e8e7"
+        ]
+      }
+    },
+    {
+      "id": "XQ-B33-black",
+      "fen": "4k4/3r5/3N5/9/9/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.5/2.10",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Moving f1 rook off the enemy horse leg exposes the General; capturing the horse is a valid cure.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "d8d7"
+      ],
+      "must_exclude": [
+        "d8d9",
+        "d8e8"
+      ]
+    },
+    {
+      "id": "XQ-B34-black",
+      "fen": "4k4/9/4r4/9/4p4/9/9/9/4C4/3K5 b - - 0 1",
+      "source": "WXF2018 2.6/2.10",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Two existing cannon screens are safe; moving one off the e-file creates exactly one screen and exposes check.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": false,
+      "must_include": [
+        "e7e6",
+        "e7e8"
+      ],
+      "must_exclude": [
+        "e7d7",
+        "e7f7"
+      ]
+    },
+    {
+      "id": "XQ-B35-black",
+      "fen": "4k4/9/9/9/9/9/9/9/4R4/4K4 b - - 0 1",
+      "source": "WXF2018 2.1/2.4/2.10",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Rook line check can only be escaped here by d0 or f0; e1 remains attacked.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": true,
+      "legal_moves": [
+        "e9d9",
+        "e9f9"
+      ]
+    },
+    {
+      "id": "XQ-B36-black",
+      "fen": "4k4/4R4/9/9/9/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.1/2.4/2.8/2.9/2.10",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Capture e1 removes the checker. d0 is safe. f0 faces the opposing General f9 and is forbidden.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": true,
+      "legal_moves": [
+        "e9e8",
+        "e9f9"
+      ]
+    },
+    {
+      "id": "XQ-B37-black",
+      "fen": "4k4/8r/9/9/9/9/9/9/4R4/3K5 b - - 0 1",
+      "source": "WXF2018 2.4/2.9/2.10",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Only rook a1-e1 blocks the e-file check; General d0 escapes; f0 faces f9.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": true,
+      "legal_moves": [
+        "e9f9",
+        "i8e8"
+      ]
+    },
+    {
+      "id": "XQ-B38-black",
+      "fen": "4k4/8r/3N5/9/9/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.5/2.9/2.10",
+      "reasoning": "Black General e9 is checked by Red Horse d7 through d8; rook i8-d8 blocks that leg. General f9/e8/d9 all escape: on d9, the horse d7 itself interposes between the Generals, and a horse on d7 does not attack d9. Thus there are exactly four evasions.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": true,
+      "legal_moves": [
+        "e9d9",
+        "e9e8",
+        "e9f9",
+        "i8d8"
+      ]
+    },
+    {
+      "id": "XQ-B39-black",
+      "fen": "4k4/9/9/9/4r4/9/9/9/4C4/3K5 b - - 0 1",
+      "source": "WXF2018 2.6/2.10",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Friendly rook is the single cannon mount: moving it off-file or capturing the cannon cures check; leaving it on-file does not.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": true,
+      "must_include": [
+        "e5d5",
+        "e5e1",
+        "e5f5",
+        "e9f9"
+      ],
+      "must_exclude": [
+        "e5e4",
+        "e5e6",
+        "e9e8"
+      ]
+    },
+    {
+      "id": "XQ-B40-black",
+      "fen": "4k4/9/8r/9/4P4/9/9/9/4C4/3K5 b - - 0 1",
+      "source": "WXF2018 2.6/2.10",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Adding a second screen by a2-e2 cures cannon check; an unrelated rook move does not.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": true,
+      "must_include": [
+        "e9f9",
+        "i7e7"
+      ],
+      "must_exclude": [
+        "e9e8",
+        "i7i6"
+      ]
+    },
+    {
+      "id": "XQ-B41-black",
+      "fen": "4k4/9/9/9/4P3r/9/9/9/4C4/3K5 b - - 0 1",
+      "source": "WXF2018 2.6/2.8/2.10",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Capturing the enemy mount a4-e4 merely replaces it with the friendly rook: one screen remains and check is not cured.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": true,
+      "must_exclude": [
+        "i5e5"
+      ]
+    },
+    {
+      "id": "XQ-B42-black",
+      "fen": "4k4/3R1R3/9/9/4P4/9/9/9/9/4K4 b - - 0 1",
+      "source": "WXF2018 2.1/2.4/2.9/2.10",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. General is not presently checked, but d0/f0 are attacked by the respective rooks and e1 by both. This proves zero local actions without assigning a game result.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": false,
+      "legal_moves": []
+    },
+    {
+      "id": "XQ-B43-black",
+      "fen": "4kR3/3R5/6N2/9/4P4/9/9/9/9/4K4 b - - 0 1",
+      "source": "WXF2018 2.1/2.4/2.5/2.10",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Rook d0 checks; capturing it exposes the horse c2 attack on d0. The f0/e1 escapes are covered by f1 rook. Zero local actions is distinct from the prior non-check case.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": true,
+      "legal_moves": []
+    },
+    {
+      "id": "XQ-B44-black",
+      "fen": "4k4/9/9/9/4r4/9/4R4/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.4/2.8",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. The rook has an unobstructed line capture of enemy Rook. The captured family has no hand/promotion effect.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e5e3"
+      ]
+    },
+    {
+      "id": "XQ-B45-black",
+      "fen": "4k4/9/9/9/4r4/9/4C4/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.4/2.8",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. The rook has an unobstructed line capture of enemy Cannon. The captured family has no hand/promotion effect.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e5e3"
+      ]
+    },
+    {
+      "id": "XQ-B46-black",
+      "fen": "4k4/9/9/9/4r4/9/4N4/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.4/2.8",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. The rook has an unobstructed line capture of enemy Horse. The captured family has no hand/promotion effect.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e5e3"
+      ]
+    },
+    {
+      "id": "XQ-B47-black",
+      "fen": "4k4/9/9/9/4r4/9/4P4/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.4/2.8",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. The rook has an unobstructed line capture of enemy Soldier. The captured family has no hand/promotion effect.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e5e3"
+      ]
+    },
+    {
+      "id": "XQ-B48-black",
+      "fen": "4k4/9/9/9/9/4r4/9/4B4/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.4/2.8",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. The rook has an unobstructed line capture of enemy Elephant. The captured family has no hand/promotion effect.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e4e2"
+      ]
+    },
+    {
+      "id": "XQ-B49-black",
+      "fen": "4k4/9/9/9/9/9/4r4/9/4A4/3K5 b - - 0 1",
+      "source": "WXF2018 2.4/2.8",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. The rook has an unobstructed line capture of enemy Advisor. The captured family has no hand/promotion effect.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "must_include": [
+        "e3e1"
+      ]
+    },
+    {
+      "id": "XQ-B50-black",
+      "fen": "4k4/9/9/9/3r5/9/9/9/9/3K5 b - - 0 1",
+      "source": "WXF2018 2.4/2.8",
+      "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. General capture is explicitly excluded even on a structural diagram already checking the opposing General. No king-capture continuation is admitted.",
+      "domain": "structural_analysis",
+      "reference_eligible": false,
+      "must_exclude": [
+        "d5d0"
+      ]
+    },
+    {
+      "id": "XQ-F002-C",
+      "fen": "4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1",
+      "source": "WXF2018 2 and MSH80 F002; history classification remains MSH94",
+      "reasoning": "C+C and Q+Q return to this exact root. This file asserts only local board facts; no warning, repetition or result is asserted.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": false,
+      "must_include": [
+        "e9a9",
+        "e9f9"
+      ],
+      "history_seed": [
+        "e9f9",
+        "f8e8",
+        "f9e9",
+        "e8f8"
+      ]
+    },
+    {
+      "id": "XQ-F002-Q",
+      "fen": "4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1",
+      "source": "WXF2018 2 and MSH80 F002; history classification remains MSH94",
+      "reasoning": "Same exact FEN and side as F002-C with a different known history seed; complete board legal sets must match.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": false,
+      "must_include": [
+        "e9a9",
+        "e9f9"
+      ],
+      "history_seed": [
+        "e9a9",
+        "f8f7",
+        "a9e9",
+        "f7f8"
+      ]
+    },
+    {
+      "id": "XQ-P001",
+      "fen": "5k3/9/9/9/9/9/9/9/9/3K5 w - - 0 1",
+      "source": "WXF2018 2.1 and 2.9; explicit hand enumeration in board-fixture-design.md",
+      "reasoning": "Board-only enumeration: two initial General moves; opponent replies 2+1; subsequent Red replies 3+2+2. This diagnostic does not invoke any history or impossibility conclusion.",
+      "domain": "live_root",
+      "reference_eligible": true,
+      "in_check": false,
+      "legal_moves": [
+        "d0d1",
+        "d0e0"
+      ],
+      "perft": {
+        "1": 2,
+        "2": 3,
+        "3": 7
+      },
+      "divide": {
+        "2": {
+          "d0d1": 2,
+          "d0e0": 1
+        },
+        "3": {
+          "d0d1": 5,
+          "d0e0": 2
+        }
+      }
+    }
+  ]
+}

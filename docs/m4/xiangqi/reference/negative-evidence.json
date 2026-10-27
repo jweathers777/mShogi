@@ -1,0 +1,99 @@
+{
+  "format": "mshogi.xiangqi.harness-negative-evidence.v1",
+  "reference_revision": "9d7833aa113626b3ea63ad83f49fb9b456bd5839",
+  "label": "Deliberately incorrect expected facts ONLY to exercise diagnostics; not a rule fixture",
+  "independent_input": {
+    "id": "intentional-mismatch-only",
+    "fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+    "moves_from": {
+      "e0": []
+    },
+    "must_include": [
+      "b2b8"
+    ]
+  },
+  "observed_reference": {
+    "fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+    "in_check": false,
+    "legal_moves": [
+      "a0a1",
+      "a0a2",
+      "a3a4",
+      "b0a2",
+      "b0c2",
+      "b2a2",
+      "b2b1",
+      "b2b3",
+      "b2b4",
+      "b2b5",
+      "b2b6",
+      "b2b9",
+      "b2c2",
+      "b2d2",
+      "b2e2",
+      "b2f2",
+      "b2g2",
+      "c0a2",
+      "c0e2",
+      "c3c4",
+      "d0e1",
+      "e0e1",
+      "e3e4",
+      "f0e1",
+      "g0e2",
+      "g0i2",
+      "g3g4",
+      "h0g2",
+      "h0i2",
+      "h2c2",
+      "h2d2",
+      "h2e2",
+      "h2f2",
+      "h2g2",
+      "h2h1",
+      "h2h3",
+      "h2h4",
+      "h2h5",
+      "h2h6",
+      "h2h9",
+      "h2i2",
+      "i0i1",
+      "i0i2",
+      "i3i4"
+    ],
+    "undo_restored": true
+  },
+  "mismatches": [
+    {
+      "origin": "e0",
+      "missing": [],
+      "unexpected": [
+        "e0e1"
+      ]
+    },
+    {
+      "membership": {
+        "missing": [
+          "b2b8"
+        ],
+        "unexpected": []
+      }
+    }
+  ],
+  "input_after_comparison": {
+    "id": "intentional-mismatch-only",
+    "fen": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+    "moves_from": {
+      "e0": []
+    },
+    "must_include": [
+      "b2b8"
+    ]
+  },
+  "input_unchanged": true,
+  "sentinels": {
+    "tests": 15,
+    "passed": 15,
+    "log_sha256": "3edf91b87e8303ffa9fe85e7a584f9c104f173bc7a05c3891c915e3c35bb4727"
+  }
+}

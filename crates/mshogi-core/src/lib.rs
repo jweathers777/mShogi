@@ -21,5 +21,8 @@ pub mod chess;
 /// Native standard-shogi state and complete actions, with explicit coverage limits.
 pub mod shogi;
 
+/// Native Xiangqi position/action foundation; coverage is explicitly game-owned.
+pub mod xiangqi;
+
 /// Small tagged native-record and command dispatch for actual chess/shogi consumers.
 pub mod native;

@@ -1,0 +1,45 @@
+{
+  "id": "XQ-P001",
+  "expected_facts": {
+    "in_check": false,
+    "legal_moves": [
+      "d0d1",
+      "d0e0"
+    ],
+    "perft": {
+      "3": 7
+    },
+    "divide": {
+      "3": {
+        "d0d1": 5,
+        "d0e0": 2
+      }
+    }
+  },
+  "errors": [],
+  "request": {
+    "root_fen": "5k3/9/9/9/9/9/9/9/9/3K5 w - - 0 1",
+    "moves": [],
+    "perft_depth": 3
+  },
+  "reference_observation": {
+    "fen": "5k3/9/9/9/9/9/9/9/9/3K5 w - - 0 1",
+    "in_check": false,
+    "legal_moves": [
+      "d0d1",
+      "d0e0"
+    ],
+    "undo_restored": true,
+    "divide": [
+      {
+        "action": "d0d1",
+        "nodes": 5
+      },
+      {
+        "action": "d0e0",
+        "nodes": 2
+      }
+    ],
+    "perft": 7
+  }
+}

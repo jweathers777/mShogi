@@ -1,0 +1,157 @@
+// Developer-only GPL-3.0-or-later adapter to the pinned Pikafish board routines.
+// No search, NNUE, rule_judge, repetition or outcome API is called.
+#include "attacks.h"
+#include "movegen.h"
+#include "position.h"
+#include <algorithm>
+#include <array>
+#include <deque>
+#include <iostream>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+using namespace Stockfish;
+
+static std::string text(Move m) {
+    const auto square = [](Square s) {
+        return std::string{char('a' + file_of(s)), char('0' + rank_of(s))};
+    };
+    return square(m.from_sq()) + square(m.to_sq());
+}
+
+static std::vector<Move> legal(const Position& p) {
+    std::vector<Move> result;
+    for (Move m : MoveList<ALL>(p)) result.push_back(m);
+    std::sort(result.begin(), result.end(), [](Move a, Move b) { return text(a) < text(b); });
+    return result;
+}
+
+struct Snapshot {
+    std::string fen;
+    std::array<Piece, SQUARE_NB> board;
+    StateInfo* state;
+    std::array<unsigned char, sizeof(StateInfo)> stateBytes;
+    Key key, pawn, minor, red, black;
+    std::vector<Move> moves;
+    explicit Snapshot(const Position& p)
+      : fen(p.fen()), board(p.piece_array()), state(p.state()),
+        key(p.key()), pawn(p.pawn_key()), minor(p.minor_piece_key()),
+        red(p.non_pawn_key(WHITE)), black(p.non_pawn_key(BLACK)), moves(legal(p)) {
+        // Byte capture avoids the unspecified padding of C++ memberwise copies.
+        std::memcpy(stateBytes.data(), p.state(), sizeof(StateInfo));
+    }
+    void verify(const Position& p) const {
+        if (fen != p.fen()) throw std::runtime_error("undo restoration mismatch: FEN");
+        if (board != p.piece_array()) throw std::runtime_error("undo restoration mismatch: board");
+        if (state != p.state()) throw std::runtime_error("undo restoration mismatch: state identity");
+        if (std::memcmp(stateBytes.data(), p.state(), sizeof(StateInfo)) != 0)
+            throw std::runtime_error("undo restoration mismatch: state bytes");
+        if (key != p.key() || pawn != p.pawn_key() || minor != p.minor_piece_key()
+            || red != p.non_pawn_key(WHITE) || black != p.non_pawn_key(BLACK))
+            throw std::runtime_error("undo restoration mismatch: keys");
+        if (moves != legal(p)) throw std::runtime_error("undo restoration mismatch: legal set");
+    }
+};
+
+static uint64_t perft(Position& p, int depth) {
+    if (depth == 0) return 1;
+    const auto moves = legal(p);
+    if (depth == 1) return moves.size();
+    const Snapshot before(p);
+    uint64_t nodes = 0;
+    for (Move m : moves) {
+        StateInfo state;
+        p.do_move(m, state);
+        nodes += perft(p, depth - 1);
+        p.undo_move(m);
+        before.verify(p);
+    }
+    return nodes;
+}
+
+int main() {
+    try {
+        Attacks::init();
+        Position::init();
+        std::string line;
+        char c;
+        while (std::cin.get(c) && c != '\n') {
+            if (line.size() >= 4096) throw std::runtime_error("request byte limit");
+            line.push_back(c);
+        }
+        // Deliberately tiny internal format. Python validates the public JSONL
+        // schema/domain first. This executable still rejects excess input.
+        if (std::cin.peek() != EOF) throw std::runtime_error("one request required");
+        auto first = line.find('\t'), second = line.find('\t', first + 1);
+        if (first != 1 || second == std::string::npos || line[0] < '0' || line[0] > '3')
+            throw std::runtime_error("malformed internal request");
+        int depth = line[0] - '0';
+        std::string fen = line.substr(first + 1, second - first - 1);
+        Position p;
+        std::deque<StateInfo> states(1);
+        if (auto err = p.set(fen, &states.back())) throw std::runtime_error(err->what());
+        if (p.fen() != fen) throw std::runtime_error("reference FEN round-trip mismatch");
+        const Snapshot root(p);
+        std::vector<Move> played;
+        std::vector<Snapshot> prefixes;
+        std::istringstream sequence(line.substr(second + 1));
+        std::string action;
+        while (sequence >> action) {
+            if (played.size() >= 256) throw std::runtime_error("move limit");
+            auto choices = legal(p);
+            auto it = std::find_if(choices.begin(), choices.end(), [&](Move m) { return text(m) == action; });
+            if (it == choices.end()) throw std::runtime_error("action absent from complete legal list: " + action);
+            prefixes.emplace_back(p);
+            states.emplace_back();
+            played.push_back(*it);
+            p.do_move(*it, states.back());
+        }
+        const Snapshot final(p);
+        const auto choices = legal(p);
+        std::ostringstream out;
+        out << "{\"fen\":\"" << p.fen() << "\",\"in_check\":" << (p.checkers() ? "true" : "false")
+            << ",\"legal_moves\":[";
+        bool comma = false;
+        for (Move m : choices) {
+            if (comma) out << ',';
+            comma = true;
+            out << '"' << text(m) << '"';
+            StateInfo next;
+            p.do_move(m, next);
+            p.undo_move(m);
+            final.verify(p);
+        }
+        out << "],\"undo_restored\":true";
+        if (depth) {
+            uint64_t nodes = 0;
+            out << ",\"divide\":[";
+            comma = false;
+            for (Move m : choices) {
+                StateInfo next;
+                p.do_move(m, next);
+                const auto count = perft(p, depth - 1);
+                p.undo_move(m);
+                final.verify(p);
+                if (comma) out << ',';
+                comma = true;
+                out << "{\"action\":\"" << text(m) << "\",\"nodes\":" << count << '}';
+                nodes += count;
+            }
+            out << "],\"perft\":" << nodes;
+        }
+        while (!played.empty()) {
+            p.undo_move(played.back());
+            played.pop_back();
+            prefixes.back().verify(p);
+            prefixes.pop_back();
+        }
+        root.verify(p);
+        out << "}\n";
+        std::cout << out.str();
+    } catch (const std::exception& e) {
+        std::cerr << "reference-board-error: " << e.what() << '\n';
+        return 2;
+    }
+}

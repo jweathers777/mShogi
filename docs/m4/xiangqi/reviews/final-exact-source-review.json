@@ -1,0 +1,21 @@
+{
+  "binary": "/private/tmp/msh93-native/xiangqi_probe",
+  "binary_sha256": "aced652a098c28abf9d63a1842414a301a9bb45e5aab0f761965c36ab7acd7af",
+  "full_report": "/private/tmp/msh91-reference/native-board-comparison-frozen.json",
+  "full_report_sha256": "1802c7daa30b426d88f9b3537a1b74c878f89a6e1ac5a44f128f98217aef4185",
+  "source_sha256": {
+    "crates/mshogi-core/examples/xiangqi_probe.rs": "d2c087a5671ecf6b242f2ada6b3c12eb32473d283db607d2af2a0215a5b8e4ed",
+    "crates/mshogi-core/Cargo.toml": "7660fc473d3809b92ea41e6a7a1e1aa344fe433a01b94af31fa9bec14140dfbb",
+    "Cargo.lock": "abcf13906b91498b343c21b7da9b35fb8d046ed09952a64536435a8260899693",
+    "crates/mshogi-core/src/xiangqi/action.rs": "5cfdede8383c9304582f8ba7fb48d52e2b57ee5a958958191a151d34dd1401e5",
+    "crates/mshogi-core/src/xiangqi/codec.rs": "b060d993b88dd1c571f83db9e7d53f7a0bd9822c69a3f276a7b070fd14ba2390",
+    "crates/mshogi-core/src/xiangqi/legal.rs": "78d002d71148ccfd1df11aafde637c979d72c5e3fd47a037ae6aca26a2bd5d3e",
+    "crates/mshogi-core/src/xiangqi/mod.rs": "1ef0ca558751d5a7e7e5606638d443e12405307dd586813935bbe63b35f4a156",
+    "crates/mshogi-core/src/xiangqi/perft.rs": "312f2975e14972570d2da2d2e19f5f9a0df1555184e1edbd321b15b9b1d227d5",
+    "crates/mshogi-core/src/xiangqi/tests.rs": "0501852de437ba1028a7da104a23b0980774b209a758ac078eff1ac051b90c38"
+  },
+  "fixtures": 105,
+  "sequence_positions": 520,
+  "failures": 0,
+  "probe_refusals": 15
+}

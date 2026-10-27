@@ -1,4 +1,4 @@
-//! Complete native actions and private structural transitions, not a legality API.
+//! Complete native actions, derived effects and exact local reversal.
 use super::{Counters, Intersection, Piece, PieceKind, Position, Side};
 use std::{error::Error, fmt, str::FromStr};
 
@@ -70,6 +70,12 @@ pub enum ActionError {
     FriendlyDestination,
     /// General capture is not a playable continuation.
     GeneralCapture,
+    /// Structural diagram is not an admissible local live root.
+    InvalidPosition(super::LocalPositionError),
+    /// Piece movement, blocking or capture geometry does not permit this action.
+    Movement,
+    /// The action would leave the moving General geometrically attacked.
+    GeneralExposed,
     /// A declared counter cannot represent the next state; not board illegality.
     CounterOverflow,
     /// A prepared action belongs to a different complete position.
@@ -82,7 +88,7 @@ impl fmt::Display for ActionError {
 }
 impl Error for ActionError {}
 /// A private native resolution tied to its exact before-state.
-/// No public unchecked preparation/commit path exists in the state-only layer.
+/// Only native legal resolution constructs this value; no public unchecked path.
 #[derive(Debug)]
 pub struct ResolvedAction {
     pub(crate) before: Position,
@@ -124,7 +130,6 @@ impl Error for UndoError {}
 impl Position {
     // Deliberately private: ownership/capture/counter structure only. Movement,
     // blockers and General safety belong to the separately verified legal layer.
-    #[allow(dead_code)] // State-only foundation: exercised by tests; legal layer is MSH-93.
     pub(crate) fn prepare_structural(&self, action: Action) -> Result<ResolvedAction, ActionError> {
         if action.from == action.to {
             return Err(ActionError::SameIntersection);
@@ -172,7 +177,6 @@ impl Position {
             },
         })
     }
-    #[allow(dead_code)] // No public unchecked action-acceptance path in MSH-92.
     pub(crate) fn commit_resolved(
         &mut self,
         resolved: ResolvedAction,

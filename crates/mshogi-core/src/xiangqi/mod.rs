@@ -1,17 +1,21 @@
 //! Native intersection-board state for `mshogi.xiangqi.wxf2018.v1`.
 //!
 //! Position codecs describe diagrams and declared counters, not prior moves,
-//! reachability or WXF history/adjudication. Structural transition helpers are
-//! private until the separately verified local legal-action boundary is added.
+//! reachability or WXF history/adjudication. Local board legality is separate
+//! from history-dependent permission and concluded games.
 
 use std::{error::Error, fmt, str::FromStr};
 
 mod action;
 mod codec;
+mod legal;
+mod perft;
 pub use action::{
     Action, ActionEffects, ActionError, ActionParseError, ResolvedAction, Undo, UndoError,
 };
 pub use codec::{MAX_FEN_BYTES, MAX_POSITION_BYTES, PositionRoot, RootOrigin};
+pub use legal::{LocalPositionError, LocalStatus, NoActionReason};
+pub use perft::{MAX_PERFT_DEPTH, PerftError};
 #[cfg(test)]
 mod tests;
 

@@ -389,3 +389,128 @@ fn stale_preparation_and_out_of_order_undo_are_atomic() {
     assert_eq!(position.undo(first), Err(UndoError::PositionMismatch));
     assert_eq!(position, current);
 }
+
+#[test]
+fn local_sets_and_perft_ignore_counter_exhaustion_but_commit_is_atomic() {
+    for (side, quiet) in [(Side::Red, "d0d1"), (Side::Black, "f9f8")] {
+        let mut position = sparse(side, Counters::new(Some(u32::MAX), Some(u32::MAX)).unwrap());
+        let before = position.clone();
+        let mut ordinary = position.clone();
+        ordinary.counters = Counters::new(Some(0), Some(1)).unwrap();
+        assert_eq!(position.legal_actions(), ordinary.legal_actions());
+        assert_eq!(position.local_status(), ordinary.local_status());
+        assert_eq!(position.perft(2), ordinary.perft(2));
+        let action = quiet.parse().unwrap();
+        assert!(position.legal_actions().unwrap().contains(&action));
+        assert_eq!(
+            position.apply(action).unwrap_err(),
+            ActionError::CounterOverflow
+        );
+        assert_eq!(position, before);
+        assert_eq!(
+            position
+                .apply(quiet[..2].repeat(2).parse().unwrap())
+                .unwrap_err(),
+            ActionError::SameIntersection
+        );
+        assert_eq!(position, before);
+    }
+    let mut capture = sparse(Side::Red, Counters::new(Some(u32::MAX), Some(1)).unwrap());
+    let before = capture.clone();
+    let undo = capture.apply("a1a2".parse().unwrap()).unwrap();
+    assert_eq!(capture.counters().no_capture_plies(), Some(0));
+    capture.undo(undo).unwrap();
+    assert_eq!(capture, before);
+}
+
+#[test]
+fn complete_public_action_admission_is_atomic_for_all_coordinate_pairs_and_stale_values() {
+    let mut position = Position::initial();
+    let before = position.clone();
+    let legal = position.legal_actions().unwrap();
+    for from in Intersection::all() {
+        for to in Intersection::all() {
+            let action = Action { from, to };
+            match position.apply(action) {
+                Ok(undo) => {
+                    assert!(legal.contains(&action));
+                    position.undo(undo).unwrap();
+                }
+                Err(_) => assert!(!legal.contains(&action)),
+            }
+            assert_eq!(position, before);
+        }
+    }
+    let stale = position.resolve_action("a0a1".parse().unwrap()).unwrap();
+    let first = position.apply("b0a2".parse().unwrap()).unwrap();
+    let changed = position.clone();
+    assert_eq!(
+        position.apply_resolved(stale).unwrap_err(),
+        ActionError::StalePosition
+    );
+    assert_eq!(position, changed);
+    position.undo(first).unwrap();
+    assert_eq!(position, before);
+}
+
+#[test]
+fn structural_geography_and_nonmoving_threats_are_not_false_empty_legal_sets() {
+    // Explicit off-home diagnostics remain constructible, but not live roots.
+    for (side, kind, invalid) in [
+        (Side::Red, PieceKind::Advisor, "e0"),
+        (Side::Black, PieceKind::Advisor, "e9"),
+        (Side::Red, PieceKind::Elephant, "c2"),
+        (Side::Black, PieceKind::Elephant, "g7"),
+        (Side::Red, PieceKind::Soldier, "b3"),
+        (Side::Black, PieceKind::Soldier, "h6"),
+    ] {
+        let position = Position::from_diagram(
+            &[
+                (point("d0"), Piece::new(Side::Red, PieceKind::General)),
+                (point("f9"), Piece::new(Side::Black, PieceKind::General)),
+                (point(invalid), Piece::new(side, kind)),
+            ],
+            side,
+            Counters::unknown(),
+        )
+        .unwrap();
+        assert_eq!(
+            position.validate_local(),
+            Err(LocalPositionError::PieceGeography { at: point(invalid) })
+        );
+        assert!(position.legal_actions().is_err());
+        assert!(position.local_status().is_err());
+        assert!(position.perft(0).is_err());
+        assert!(position.divide(0).is_err());
+    }
+    let facing = Position::from_fen("4k4/9/9/9/9/9/9/9/9/4K4 w - - 0 1").unwrap();
+    assert!(facing.is_in_check(Side::Red));
+    assert!(facing.is_in_check(Side::Black));
+    assert_eq!(
+        facing.validate_local(),
+        Err(LocalPositionError::NonMovingGeneralAttacked)
+    );
+    assert!(facing.legal_actions().is_err());
+    assert_eq!(Position::initial().perft(4), Err(PerftError::DepthLimit));
+}
+
+#[test]
+fn raw_counter_preserves_check_plies_and_root_provenance_through_reversal() {
+    let root = PositionRoot::from_fen("4R4/5k3/9/9/9/9/9/9/9/3K5 w - - 0 1").unwrap();
+    let encoded_root = root.to_json();
+    let mut position = root.position().clone();
+    let mut records = Vec::new();
+    for _ in 0..6 {
+        for name in ["e9f9", "f8e8", "f9e9", "e8f8"] {
+            records.push(position.apply(name.parse().unwrap()).unwrap());
+        }
+    }
+    assert_eq!(position.counters().no_capture_plies(), Some(24));
+    assert_eq!(position.counters().fullmove_number(), Some(13));
+    assert_eq!(root.to_json(), encoded_root);
+    while let Some(undo) = records.pop() {
+        position.undo(undo).unwrap();
+    }
+    assert_eq!(&position, root.position());
+    assert_eq!(root.to_json(), encoded_root);
+}

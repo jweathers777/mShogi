@@ -3,8 +3,9 @@
 MSH-92 foundation for selected `mshogi.xiangqi.wxf2018.v1`, governing edition
 `WXF-2018+XIANGQI-P1-2026-10-27`. Rust module `mshogi_core::xiangqi` is independent
 of Chess/Shogi types, console I/O, Tauri, Python and comparator code. This
-document distinguishes the state foundation from the later verified local
-legal-action boundary; it is not complete-game delivery evidence.
+document distinguishes the state foundation from the verified MSH-93 local
+legal-action boundary in [local-legality.md](local-legality.md); neither is
+complete-game delivery evidence.
 
 ## Native state and construction domains
 
@@ -20,8 +21,8 @@ and excess original per-owner inventory. Sparse material and off-home placements
 are useful **structural analysis diagrams** and are intentionally representable.
 Exactly one General per side is required even for these diagrams. Construction
 does not establish static live-root validity, legal preceding play or historical
-reachability. The MSH-93 local layer must explicitly distinguish its admission
-domain rather than manufacture a no-action outcome from an invalid diagram.
+reachability. The MSH-93 local layer explicitly distinguishes its admission domain rather
+than manufacture a no-action outcome from an invalid diagram.
 
 `Counters` contains explicitly known/unknown raw capture-free plies and fullmove
 number. A supplied fullmove number is positive; values fitu32. These are declared
@@ -79,7 +80,7 @@ The MSH-92 foundation keeps `prepare_structural`/`commit_resolved` crate-private
 they check source/ownership/destination/royal capture/counter representation and
 derive atomic state changes, but **do not establish movement legality**. There is
 no public unchecked action preparation/commit API. MSH-93 supplies the complete
-verified geometry/General-safety boundary before exposing playable actions.
+verified geometry/General-safety boundary through public resolve/apply methods.
 
 `ResolvedAction` privately binds a before-state, after-state and native effects;
 the commit guard rejects a different complete before-state. `Undo` stores exact

@@ -3,9 +3,11 @@ id: MSH-93
 title: >-
   Establish complete local xiangqi legal actions and exact transition
   conformance
-status: To Do
-assignee: []
+status: In Review
+assignee:
+  - '@codex'
 created_date: '2026-10-27T15:03:00Z'
+updated_date: '2026-10-27T18:23:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -41,3 +43,19 @@ Future bounded Xiangqi delivery work refined by MSH-80. Intent and acceptance on
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Root@codex remains sole native builder/integrator on primary codex/rewrite; prerequisites91/92 integrated/pushed at16042f2 and Done at22c10c1. 1.Add explicit static live-query admission separate from structural diagnostics; implement native geometric threats, pseudo actions, complete legal filtering, local checked/unchecked no-action reasons and checked public resolution/apply with exact undo. Counters/history must not prune board legality. 2.Execute frozen independent105-case corpus, counter and malformed/stale/illegal atomicity, both-side geometry/evasion/capture fixtures; enumerate every choice make/unmake during deterministic sequences and preserve F002 distinct-history seeds. 3.Add bounded developer-only native probe and board-only perft/divide; compare complete sets and observed counts against admitted pinned reference, keeping paper totals2/3/7 distinct from reference observations. 4.Obtain separate completed-boundary review, resolve findings, run focused then workspace fmt/clippy/regressions and actual normal native CI, integrate/push with exact evidence before Done. No94/105 or product consumer implementation.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MSH91 and92 satisfied with independent review and pushed integration. MSH93 begins only now. Four deliberate General-threat/capture diagrams remain structural-only: exercise explicit live-query rejection, not a silent skip. Preserve foreign reference counter exclusion; raw declared counters remain native.
+
+Completed local-rule implementation and separate-agent boundary review PASS. 16 unit and5 independent fixture/sequence integration tests pass:105 frozen fixtures (101 live,4 explicit structural rejections), all-choice exact reversal,3x64 native sequences, F002 prefixes,8100 public coordinate-pair admissions, stale/counter/domain atomicity and pinned geometric attackers. Workspace fmt/clippy PASS; native workspace430 passed with2 existing opt-in deep Chess tests ignored; desktop-session all-features92 passed. Broad actual native/reference105-fixture/520-prefix comparison PASS; depth3 initial Red/Black79666 are observations, sparse2/3/7 divide5+2 independent. Exact final-source frozen executable rerun/evidence is being retained before integration. Docs: local-legality.md, local-legality-evidence.md, reference/native-*.json, reviews/legality-review.md. Final committed native CI remains required before Done. No later scope implemented.
+
+Final exact-source reference rerun PASS against immutable example SHA256 aced652a098c28abf9d63a1842414a301a9bb45e5aab0f761965c36ab7acd7af. Full report SHA2561802c7daa30b426d88f9b3537a1b74c878f89a6e1ac5a44f128f98217aef4185;105 fixtures/4 explicit reference exclusions/520 prefixes/0 failures. Source hashes unchanged through execution, independently verified in reviews/final-exact-source-review.json. Both opening depth3 observations79666; independent P0017/divide5+2;15 raw developer probe refusal cases PASS. Earlier pre-documentation-build binary/report supersession preserved transparently. Independent completed-boundary verdict PASS, no material finding. Foundations native CI40557737936 passed actual Windows/macOS/Linux at16042f2; final93 committed CI remains pending before closure.
+<!-- SECTION:NOTES:END -->

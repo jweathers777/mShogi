@@ -2,8 +2,12 @@
 
 Current profile: **`mshogi.xiangqi.wxf2018.v1`**, selected XIANGQI-P1 on
 2026-10-27. Authority: official bilingual WXF2018, individual reconciliations
-in [sources](sources.md). This is a **planning ledger**: no row claims executed
-Xiangqi code, admitted runtime reference, passing test or actual desktop support.
+in [sources](sources.md). The table below preserves the selected complete-scope
+planning ledger. Executed board foundations and local-rule conformance are now
+recorded in [foundation evidence](board-foundation-evidence.md),
+[local contract](local-legality.md) and the MSH-91/92/93 task records. The
+restricted reference admission does not admit history helpers or playing strength;
+there is still no Xiangqi engine, full native game, console or desktop consumer.
 All original MSH-45 requirements remain in M4. Profile selection is not delivery.
 
 | Required scope / clause | Independent expectations / evidence plan | Delivery owner and gate |
@@ -44,6 +48,7 @@ All original MSH-45 requirements remain in M4. Profile selection is not delivery
   a prerequisite to the restricted board-reference/state pair91/92.
 
 MSH-80 completes a selected complete-scope planning contract with named gates,
-not an implemented complete game or proof algorithm.91 and92 may be Ready after
-that task closes;94/105 stay To Do pending their semantic/source fixture gates.
+not an implemented complete game or proof algorithm. The subsequent authorized
+MSH-91/92/93 batch implements only the board foundation and local legal contract;
+94/105 stay To Do pending their semantic/source fixture gates.
 MSH-41/MSH-75 stay Done; MSH-42–47 and M4 remain open.

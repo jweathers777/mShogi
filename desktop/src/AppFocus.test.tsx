@@ -29,6 +29,7 @@ it("recovers focus from a removed Cancel analysis control to the surviving analy
   const { rerender } = render(<App />);
   fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
   const cancel = screen.getByRole("button", { name: "Cancel analysis" });
+  expect(cancel.closest('[data-shell-section="analysis"]')).not.toBeNull();
   cancel.focus(); fireEvent.click(cancel);
   expect(command).toHaveBeenCalledWith({ kind: "cancel_analysis", version: standard.version });
   session({ ...thinking(), analysis: { ...standard.analysis, status: "cancelled" } });
@@ -52,7 +53,7 @@ it("restores an initiating button blurred by WebKit while it was disabled", () =
   session(thinking());
   const { rerender } = render(<App />);
   fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
-  const replace = screen.getByRole("button", { name: "Replace with move analysis" });
+  const replace = screen.getByRole("button", { name: "Replace analysis" });
   replace.focus();
   session(thinking(), true); rerender(<App />);
   expect(replace.hasAttribute("disabled")).toBe(true);
@@ -66,7 +67,7 @@ it("does not restore a previously disabled initiator over a newly focused input"
   session(thinking());
   const { rerender } = render(<App />);
   fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
-  const replace = screen.getByRole("button", { name: "Replace with move analysis" });
+  const replace = screen.getByRole("button", { name: "Replace analysis" });
   replace.focus();
   session(thinking(), true); rerender(<App />); replace.blur();
   const input = screen.getByLabelText("Node budget"); input.focus();

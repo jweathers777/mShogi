@@ -47,8 +47,6 @@
 .analysis-location { margin:7px 0 12px; }
 .shogi-analysis-fields { display:grid; grid-template-columns:1fr 1.4fr; gap:9px; }
 .shogi-analysis-fields input { width:100%; border:1px solid; border-radius:4px; margin-top:4px; padding:6px 8px; font:inherit; font-size:12px; }
-.shogi-analysis-actions { display:flex; gap:7px; margin-top:10px; }
-.shogi-analysis-actions button { padding:8px; font-size:11px; flex:1; }
 .shogi-analysis-state { margin-top:10px; }
 .shogi-search-observation { border-top:1px solid; padding-top:12px; margin-top:12px; }
 .shogi-evaluation { font-family:Georgia,serif; font-size:20px; margin:5px 0; }
@@ -86,5 +84,4 @@
  .hand-piece svg { width:26px; height:29px; }
  .shogi-hand { gap:1px; }
  .shogi-board-help>span:first-child { max-width:70%; }
- .shogi-analysis-actions { flex-wrap:wrap; }
 }

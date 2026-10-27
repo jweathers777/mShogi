@@ -191,3 +191,91 @@ checking passed. From the repository root, Python compilation of
 implementation finding remains in this delta. These checks do not establish
 rendered line wrapping, final footer fit or actual cross-platform GUI results;
 the changed product source requires its own fresh packaged evidence.
+
+## Later bounded review: common history/analysis actions and driver diagnostics
+
+Reviewed the uncommitted delta against
+`44aeb47022d57fff55142799bb6ba55980f4dc33`: shared HistoricalNotice and both
+native adapters, AnalysisPanel, related focus/history tests, shared CSS, the
+external GUI driver and retained driver unit tests. The common footer's
+48-pixel allocation and actual help/footnote visibility assertions remain in
+place; they require real rendered evidence rather than a source-only fit claim.
+
+Both games now render Return to live in the same right-aligned history-notice
+header. Native selected-prefix text, Chess's historical outcome content, exact
+commands and Return focus handling are preserved. The title no-wrap and header
+alignment rules keep the common Game history heading together without changing
+event semantics. Chess's Cancel analysis moved into AnalysisPanel beside its
+replacement action: it remains a `type="button"` using the same
+`cancel_analysis`, captured version and focus-recovery marker. It is available
+whenever that panel is working, including Full work; invalid move-search form
+input does not turn cancellation into a submission. Selecting Play details
+changes presentation only; selecting Analyze position again exposes the active
+analysis controls.
+
+The external driver now waits for one DOM observation containing the exact
+native Save path, Saved state, all four enabled file controls, and no
+Saving/Opening status before recording the inspection baseline. Existing
+filesystem/archive parsing checks remain. Inspection comparison retains exact
+equality of all previously compared fields and records both before/after
+objects, including failures; it does not remove a changed field to make the
+comparison pass.
+
+Transport retry is limited to one retry of the exact active-session POST
+`element` or `elements` lookup endpoint. Both transport failures and recovery
+are logged. HTTP/driver semantic errors are converted to RuntimeError and are
+not retried. Session creation/deletion, clicks, input values, actions and script
+execution are outside this retry path, so no mutating action is replayed.
+Additional capture assertions read and retain actual common-action ancestry and
+Return-button alignment; they introduce no action input.
+
+Independently executed from `desktop/`:
+
+```sh
+npm test -- src/Analysis.test.tsx src/AppFocus.test.tsx src/History.test.tsx src/product/ShogiApp.test.tsx
+npm run check
+```
+
+Results: **39 tests passed across four files**; strict TypeScript checking
+passed. From the repository root:
+
+```sh
+python3 -m unittest discover -s desktop/scripts -p 'test_gui*.py' -v
+python3 -m py_compile desktop/scripts/gui-smoke.py
+git diff --check
+```
+
+Results: **22 external-adapter/driver tests passed** (10 retained Linux picker
+cases plus 12 driver boundary cases); compilation and diff checking passed.
+No material implementation or driver finding remains in this delta.
+
+This review does not turn the earlier `44aeb47` packaged attempts into passes.
+The reported Linux 12/14 and Windows 13/14 attempts remain failed evidence. A
+Save-baseline race was a plausible explanation for the Windows mismatch, not an
+established cause where the changed field was not retained. The added exact
+state diagnostics and fresh packaged runs must establish subsequent outcomes.
+No actual GUI success or owner approval is inferred from these focused checks.
+
+The final pre-integration action-row refinement was also independently reviewed.
+Both forms now use the same `AnalysisActions` composition and explicit common
+button spacing. The shorter Replace analysis label preserves the bounded-move
+operation defined by the form heading and its unchanged submission handler.
+Cancel remains a separate non-submit action with unchanged native purpose and
+version binding. Obsolete Shogi-only action-bar rules were removed.
+
+One final CSS finding was resolved: the common amber Return-button rule initially
+had lower specificity than Chess's existing shared `.secondary` rule, so it
+would not have produced the same button treatment. The final
+`.game-shell.game-shell .shell-history-notice-heading button` selector overrides
+that rule for both games. The reviewer inspected this correction in source.
+Independently reran:
+
+```sh
+# From desktop/
+npm test -- src/Analysis.test.tsx src/AppFocus.test.tsx src/product/ShogiApp.test.tsx
+```
+
+Result: **32 tests passed across three files**; the final diff check also passed.
+No unresolved implementation finding remains in this small follow-up. Actual
+computed colors and final side-by-side action-row appearance still belong to the
+fresh packaged GUI evidence and owner visual checkpoint.

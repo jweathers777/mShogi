@@ -9,7 +9,7 @@ import { readableAction, scoreDescription } from "./analysisPresentation";
 import type { Color, Snapshot } from "./native";
 import { claimName, colorName, gameStatus } from "./presentation";
 import { useNativeSession } from "./useNativeSession";
-import { ApplicationShell, GameArea, InspectorSwitch, LiveGameHeading, PlayerArea } from "./product/ApplicationShell";
+import { ApplicationShell, GameArea, HistoricalNotice, InspectorSwitch, LiveGameHeading, PlayerArea } from "./product/ApplicationShell";
 import type { GameSnapshot } from "./product/native";
 import { useMovementInspection } from "./product/useMovementInspection";
 
@@ -251,17 +251,7 @@ export function App({ onChooseGame, externalCloseGuard = false, sharedSnapshot }
           </div></>
 } />}
     positionNotice={<>          {historical && (
-            <section className="notice historical-notice">
-              <strong>Viewing history · read only</strong>
-              <p>
-                {snapshot.view.label} · {colorName(snapshot.view.turn)} to move.
-                The live game remains after {snapshot.history.length} plies.
-                Analysis uses this selected native history prefix.
-              </p>
-              {snapshot.view.conclusion !== null && (
-                <OutcomeCard conclusion={snapshot.view.conclusion} />
-              )}
-              <button
+            <HistoricalNotice action={<button
                 className="secondary"
                 disabled={busy || !connected || guard.pending !== null}
                 onClick={async () => {
@@ -273,9 +263,17 @@ export function App({ onChooseGame, externalCloseGuard = false, sharedSnapshot }
                   if (result === null) returnLiveFocus.current = false;
                 }}
               >
-                Return to live game
-              </button>
-            </section>
+                Return to live
+              </button>}>
+              <p>
+                {snapshot.view.label} · {colorName(snapshot.view.turn)} to move.
+                The live game remains after {snapshot.history.length} plies.
+                Analysis uses this selected native history prefix.
+              </p>
+              {snapshot.view.conclusion !== null && (
+                <OutcomeCard conclusion={snapshot.view.conclusion} />
+              )}
+            </HistoricalNotice>
           )}
 </>}
     notices={<>          <CapacityNotice capacity={snapshot.capacity} />
@@ -291,21 +289,6 @@ export function App({ onChooseGame, externalCloseGuard = false, sharedSnapshot }
                   ? "Board moves and draw claims are paused. Returning to live and resuming retires analysis and continues play."
                   : "The game remains concluded. Finishing analysis does not reopen it."}
               </p>
-              {snapshot.analysis.status === "thinking" && (
-                <button
-                  className="quiet"
-                  data-focus-after="analysis"
-                  disabled={busy || !connected}
-                  onClick={() => {
-                    void command({
-                      kind: "cancel_analysis",
-                      version: snapshot.version,
-                    });
-                  }}
-                >
-                  Cancel analysis
-                </button>
-              )}
               <button
                 className="secondary"
                 data-focus-after={snapshot.conclusion === null ? "board" : "outcome"}

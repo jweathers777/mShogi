@@ -39,6 +39,17 @@ export function InspectorSwitch({ value, onChange }: { value: "play" | "analysis
   </div>;
 }
 
+export function HistoricalNotice({ action, children, className = "" }: { action: ReactNode; children: ReactNode; className?: string }) {
+  return <section className={`notice historical-notice shell-history-notice ${className}`}>
+    <div className="shell-history-notice-heading"><strong>Viewing history · read only</strong>{action}</div>
+    <div className="shell-history-notice-content">{children}</div>
+  </section>;
+}
+
+export function AnalysisActions({ children }: { children: ReactNode }) {
+  return <div className="shell-analysis-actions">{children}</div>;
+}
+
 export function ApplicationShell({ game, runtime, document, actions, heading, board, positionNotice, notices, analysis, history, gameActions, technical, overlays, blocked, historical, attributes = {}, onFocusCapture }: {
   game: "chess" | "shogi"; runtime: string; document: ReactNode; actions: ReactNode;
   heading: ReactNode; board: ReactNode; positionNotice?: ReactNode; notices?: ReactNode; analysis: ReactNode;

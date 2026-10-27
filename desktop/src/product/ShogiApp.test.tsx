@@ -59,7 +59,9 @@ it("selects exact history event identities and requires explicit Return to live 
   expect(screen.getByRole("region", { name: "Historical shogi position" })).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: /Recorded command/ }));
   expect(session.command).toHaveBeenLastCalledWith(snapshot, { kind: "inspect", event_index: 2 });
-  fireEvent.click(screen.getByRole("button", { name: "Return to live" }));
+  const returnLive = screen.getByRole("button", { name: "Return to live" });
+  expect(returnLive.closest(".shell-history-notice-heading")).not.toBeNull();
+  fireEvent.click(returnLive);
   expect(session.command).toHaveBeenLastCalledWith(snapshot, { kind: "return_live" });
   expect(screen.queryByRole("button", { name: "Resume play" })).toBeNull();
   const live = { ...snapshot, historical: false, event_index: 2 };

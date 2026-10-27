@@ -125,7 +125,7 @@ it("cancels and replaces analysis through separate commands while keeping play p
     version: working.version,
   });
   fireEvent.click(
-    screen.getByRole("button", { name: "Replace with move analysis" }),
+    screen.getByRole("button", { name: "Replace analysis" }),
   );
   expect(command).toHaveBeenLastCalledWith({
     kind: "analyze",

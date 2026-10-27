@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { AnalysisActions } from "./product/ApplicationShell";
 import type { DesktopCommand, ReachabilityTarget, Snapshot } from "./native";
 import {
   choiceDescription,
@@ -206,9 +207,12 @@ export function AnalysisPanel({
             />
           </label>
         </div>
-        <button className="secondary" disabled={disabled} type="submit" data-analysis-start="moves">
-          {working ? "Replace with move analysis" : "Start move analysis"}
+        <AnalysisActions><button className="secondary" disabled={disabled} type="submit" data-analysis-start="moves">
+          {working ? "Replace analysis" : "Start move analysis"}
         </button>
+        {working && <button type="button" className="quiet" data-focus-after="analysis" disabled={disabled} onClick={() => {
+          void command({ kind: "cancel_analysis", version: snapshot.version });
+        }}>Cancel analysis</button>}</AnalysisActions>
       </form>
       <details className="advanced-analysis">
         <summary>Advanced: Full mating reachability</summary>

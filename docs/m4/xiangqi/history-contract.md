@@ -45,8 +45,8 @@ known interval from an anchor's first occurrence to its third/fourth occurrence.
 It does not restart a count for each action word or cherry-pick matching cycles
 from mixed return paths. This is the recorded software witness policy within
 the selected profile, not a claim that WXF uniquely specifies an anchor algorithm.
-Each board/turn anchor has its own warning. A fourth-return loss needs the same
-active side/fault/anchor obligation; otherwise the selected fourth-return draw
+Each board/turn anchor has its own warning. A fourth-occurrence loss needs the same
+active side/fault/anchor obligation; otherwise the selected fourth-occurrence draw
 applies. Actual earliest terminal events end play; a later anchor cannot overwrite
 an earlier outcome. Captures make the old board anchors unreachable and retire
 their obligations.

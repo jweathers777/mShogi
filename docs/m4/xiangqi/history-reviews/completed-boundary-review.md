@@ -66,3 +66,17 @@ Final reviewed production SHA256:
 Final record change separately reread: invariant/capacity replay errors retain their distinct typed reporting instead of all becoming command rejection; no parser or acceptance relaxation. No additional material finding.
 
 Scope limits: this establishes the MSH94 native history/adjudication/canonical boundary, not a universal move-nature telemetry API, playing strength, Xiangqi product consumers or full exact no-win verification. The fast proof only covers its documented bare-General invariant and genuine zero/one-ply natural mate/stalemate witness; misses remain explicit UnknownExactUnavailable. MSH105 remains blocked by94/95 and no feasibility success is claimed. Normal workspace regressions, relevant native CI and final integration/push evidence remain the integrator's completion responsibility.
+
+## Proportionate final documentary review
+
+Independently reviewed the durable `history-contract.md`, `history-evidence.md`, coverage/handoff/source/profile supersession additions, owner decision text and executed fixture ledger against the actual code, independently reviewed seeds and recorded failures/fixes. **No material false or overbroad completion, platform, comparator authority or exact-backend claim found.** Native consumer scope remains bounded to94,105 dependencies and mandatory delivery gap remain visible, and the original penalty-inclusive proposal is explicitly historical and superseded by John's natural-board-win decision.
+
+Two minor wording corrections were requested: call the boundary 'fourth occurrence' rather than 'fourth return' to avoid suggesting a fifth position occurrence; explain that monotonic runtime revision/fresh transaction IDs never rewind or get reused, while the semantic lineage prefix itself is intentionally truncated during LIFO undo. These are documentation clarifications, not additional product findings. The root integrator's actual fmt/clippy/workspace462-pass evidence is attributed to its execution; this reviewer independently ran the32 focused tests recorded above. Pending final revision/CI evidence is not represented here as completed.
+
+Final documentary verdict: **PASS subject to those minor wording corrections**, with normal integration/CI status remaining the integrator's completion gate. No new owner/source decision is requested.
+
+Documentary correction confirmation: independently read integrated `a822450d1618810e0ef37efb9ef05035939c5746`; the lineage statement now correctly says runtime revision never rewinds and newly admitted branches receive fresh command lineage IDs. The remaining 'fourth-return' wording is scheduled for the documentary follow-up as 'fourth-occurrence'. Neither clarification changes reviewed production behavior. The integrator reports final rebuilt native board collector492 paired observations PASS and native CI40569025619 running on three systems; this review does not relabel running CI as passed. No further product work is requested by the reviewer.
+
+Integrator disposition: both final documentary suggestions applied: runtime
+revision/fresh lineage IDs wording and fourth-occurrence terminology. No
+production file changed after the final reviewed hashes.

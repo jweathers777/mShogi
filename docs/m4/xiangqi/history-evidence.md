@@ -129,3 +129,43 @@ Native probe SHA256 `c1a5a9953b9984fd4b71336a05c20aacfae18a6707cee139190143ac3c8
 This refresh upgrades the earlier143 native-only cycle prefixes to paired board
 observations; it does not upgrade Pikafish to a history/outcome oracle. Conduct
 witness108 native prefixes and independent outcome fixtures remain distinct.
+
+## Integrated production source and native CI
+
+Implemented/reviewed/tested source, normally committed and pushed to
+`codex/rewrite`: **`a822450d1618810e0ef37efb9ef05035939c5746`**.
+Later evidence/task/documentary corrections do not change the production hashes
+recorded in the independent review. No history rewrite or force push was used.
+
+[Native CI40569025619](https://github.com/jweathers777/mShogi/actions/runs/40569025619)
+completed **success** for that exact source. Actual log-derived results:
+
+| Runner | Workspace tests | Isolated desktop QA | Other required workflow checks |
+| --- | --- | --- | --- |
+| `windows-2022` |459 passed,0 failed,2 intentionally ignored |92 passed,0 failed |fmt, workspace/all-feature clippy, native frontend fixture regeneration unchanged, build and console smoke PASS |
+| `macos-15` |462 passed,0 failed,2 intentionally ignored |92 passed,0 failed |same workflow checks PASS |
+| `ubuntu-24.04` |462 passed,0 failed,2 intentionally ignored |92 passed,0 failed |same workflow checks PASS |
+
+All runners actually used pinned Rust1.89.0 (`29483883e`). Platform-specific
+counts are retained rather than inferring Windows execution from Unix counts.
+No new Xiangqi console/engine capability is implied by existing Chess/Shogi
+console smoke. MSH-105 remains unstarted; MSH-95 is the next dependency-ready
+native boundary after94 closes, and105 still waits95. MSH-45/M4 remain open.
+
+The automatically triggered
+[Desktop packages40569025438](https://github.com/jweathers777/mShogi/actions/runs/40569025438)
+also completed **success on Windows2022/macOS15/Ubuntu24.04** at the same
+production source. This establishes the workflow's locked frontend/native
+checks, normal package construction/inspection and bundled-engine checks;
+Linux and Windows additionally executed the existing installed/separately
+packaged Chess/Shogi GUI regressions. Normal-versus-verification package
+separation checks passed. The macOS job is package/bundled-engine evidence,
+not a new macOS interactive GUI campaign. Earlier accepted macOS interaction
+and native termination/Tao provenance evidence is reused unchanged.
+No Xiangqi GUI or engine capability is implied. No unrelated product campaign
+was manually repeated; these were the existing automatic integration workflows.
+
+Final documentation follow-up only clarifies fourth-occurrence terminology and
+retains the separate documentary PASS review; all reviewed production hashes
+remain identical to tested integration `a822450d1618810e0ef37efb9ef05035939c5746`.
+The final MSH-94 task summary records completion and unchanged future dependencies.

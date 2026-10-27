@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "runtime_version": "131.0.2903.86",
+  "runtime_source": "highest valid installed WebView2 Runtime pv; all detected locations retained",
+  "registry": [
+    {
+      "key": "HKLM:\\SOFTWARE\\WOW6432Node\\Microsoft\\EdgeUpdate\\Clients\\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}",
+      "version": "131.0.2903.86"
+    }
+  ],
+  "runtime_registry_recheck": [
+    {
+      "key": "HKLM:\\SOFTWARE\\WOW6432Node\\Microsoft\\EdgeUpdate\\Clients\\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}",
+      "before": "131.0.2903.86",
+      "after": "131.0.2903.86"
+    }
+  ],
+  "driver_path": "D:\\a\\_temp\\mshogi-webview-driver\\msedgedriver.exe",
+  "driver_version": "131.0.2903.86",
+  "driver_version_output": "Microsoft Edge WebDriver 131.0.2903.86 (cf5bf303997cad93d7a0bede234d3c3dc01cc63d)",
+  "compatible_build": "131.0.2903",
+  "architecture": "win64",
+  "download_url": "https://msedgedriver.microsoft.com/131.0.2903.86/edgedriver_win64.zip",
+  "archive_sha256": "16ad3ea073e26f0000d1315e0a851eeb44b2754c66d47652e265cce5dea662af",
+  "sha256": "c34a6b22814a18599f2a67bef922ba879ae44158f216d4d2df797d293f545665",
+  "signer": "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+  "signature_status": "Valid",
+  "powershell": "7.6.8",
+  "os": "Microsoft Windows 10.0.20348",
+  "utc": "2026-10-27T08:28:51.8928832Z"
+}

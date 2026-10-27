@@ -1,0 +1,110 @@
+[
+  {
+    "file": "chess-friendly-selection.png",
+    "sha256": "dca4f5345039c12bfbc912155236733d1ccc6bca8b2159280471fe1fff97f26c",
+    "pixels": [
+      4718592,
+      4292935744
+    ],
+    "source": "d6d76816932763182eee574c9c241daa6ef9a91a",
+    "package": "macos-normal-package.json",
+    "environment": "normal uninstrumented macOS 27 arm64 package; external CUA; 1180x820 native window / Retina2x",
+    "scope": "Actual native application interaction; not a controller fixture or browser mock"
+  },
+  {
+    "file": "chess-opponent-inspection.png",
+    "sha256": "f2204d71ecc34634e7b4b86c5c51c253cf179267febd746ef9417cf0b7457383",
+    "pixels": [
+      4718592,
+      4292935744
+    ],
+    "source": "d6d76816932763182eee574c9c241daa6ef9a91a",
+    "package": "macos-normal-package.json",
+    "environment": "normal uninstrumented macOS 27 arm64 package; external CUA; 1180x820 native window / Retina2x",
+    "scope": "Actual native application interaction; not a controller fixture or browser mock"
+  },
+  {
+    "file": "chess-shared-shell.png",
+    "sha256": "2a63c4511bf0abdbce170cec270bb23291e944d019b904f91b6aaa43e6324503",
+    "pixels": [
+      4718592,
+      4292935744
+    ],
+    "source": "d6d76816932763182eee574c9c241daa6ef9a91a",
+    "package": "macos-normal-package.json",
+    "environment": "normal uninstrumented macOS 27 arm64 package; external CUA; 1180x820 native window / Retina2x",
+    "scope": "Actual native application interaction; not a controller fixture or browser mock"
+  },
+  {
+    "file": "shogi-friendly-selection.png",
+    "sha256": "0ae99de202eebf30b51ce414e5b045468a1815c7bddbd8369ee0b03a3eea6dd0",
+    "pixels": [
+      4718592,
+      4292935744
+    ],
+    "source": "d6d76816932763182eee574c9c241daa6ef9a91a",
+    "package": "macos-normal-package.json",
+    "environment": "normal uninstrumented macOS 27 arm64 package; external CUA; 1180x820 native window / Retina2x",
+    "scope": "Actual native application interaction; not a controller fixture or browser mock"
+  },
+  {
+    "file": "shogi-historical-inspection.png",
+    "sha256": "105a9895a6ed9337476b729c18179f391435667ed2e364a6c9b1a7c6f551c5f4",
+    "pixels": [
+      4718592,
+      4292935744
+    ],
+    "source": "d6d76816932763182eee574c9c241daa6ef9a91a",
+    "package": "macos-normal-package.json",
+    "environment": "normal uninstrumented macOS 27 arm64 package; external CUA; 1180x820 native window / Retina2x",
+    "scope": "Actual native application interaction; not a controller fixture or browser mock"
+  },
+  {
+    "file": "shogi-opponent-hand-flipped.png",
+    "sha256": "011407c9683d38b59925b56d0502376aea47e7d1fbd2ce1ebe9bf0fe5a9489cd",
+    "pixels": [
+      4718592,
+      4292935744
+    ],
+    "source": "d6d76816932763182eee574c9c241daa6ef9a91a",
+    "package": "macos-normal-package.json",
+    "environment": "normal uninstrumented macOS 27 arm64 package; external CUA; 1180x820 native window / Retina2x",
+    "scope": "Actual native application interaction; not a controller fixture or browser mock"
+  },
+  {
+    "file": "shogi-opponent-hand-inspection.png",
+    "sha256": "5a103b972b030cfb45eda0c453aa7b1b157833642cd4ee1fecca214308c849b7",
+    "pixels": [
+      4718592,
+      4292935744
+    ],
+    "source": "d6d76816932763182eee574c9c241daa6ef9a91a",
+    "package": "macos-normal-package.json",
+    "environment": "normal uninstrumented macOS 27 arm64 package; external CUA; 1180x820 native window / Retina2x",
+    "scope": "Actual native application interaction; not a controller fixture or browser mock"
+  },
+  {
+    "file": "shogi-opponent-inspection.png",
+    "sha256": "7692f23a1d3a69cfd173b66dccc1281d8993101be1084fce4eef79ebc53cedb7",
+    "pixels": [
+      4718592,
+      4292935744
+    ],
+    "source": "d6d76816932763182eee574c9c241daa6ef9a91a",
+    "package": "macos-normal-package.json",
+    "environment": "normal uninstrumented macOS 27 arm64 package; external CUA; 1180x820 native window / Retina2x",
+    "scope": "Actual native application interaction; not a controller fixture or browser mock"
+  },
+  {
+    "file": "shogi-shared-shell.png",
+    "sha256": "ffbc1c0318586f0fa9ca799c0fe412e6e0940c74049156bfacea783455239f72",
+    "pixels": [
+      4718592,
+      4292935744
+    ],
+    "source": "d6d76816932763182eee574c9c241daa6ef9a91a",
+    "package": "macos-normal-package.json",
+    "environment": "normal uninstrumented macOS 27 arm64 package; external CUA; 1180x820 native window / Retina2x",
+    "scope": "Actual native application interaction; not a controller fixture or browser mock"
+  }
+]

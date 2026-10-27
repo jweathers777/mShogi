@@ -4,6 +4,13 @@ The normal application now supports Chess and untimed standard Shogi. MSH-74
 remains open for the explicitly required owner visual review. This is not M4,
 MSH-41 or MSH-75 closure; M2/M3 and their unchanged evidence remain closed.
 
+The owner-requested shared shell and native read-only movement inspection are
+integrated at `d6d76816932763182eee574c9c241daa6ef9a91a`. See the
+[current refinement evidence and nine-image gallery](refinement-2026-10-27/README.md)
+for the latest product screenshots, tests, independent reviews and CI. The earlier
+revision-specific records below remain historical evidence; their old layouts are
+superseded by this refinement. Final owner visual approval remains pending.
+
 ## Source, package and launch
 
 Visual source: `60796ec18539f600354594f1fab6ee643b93bede`, integrated and

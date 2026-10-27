@@ -1,0 +1,97 @@
+{
+  "source_revision": "d6d76816932763182eee574c9c241daa6ef9a91a",
+  "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/40472402431",
+  "artifact_id": 12719362957,
+  "files": [
+    {
+      "file": "gui-report.json",
+      "artifact_path": "gui-evidence/gui-report.json",
+      "sha256": "2c5affb62176182ec57d972f34526ec9653c07b9c43f8fad9aea175affdc845d",
+      "bytes": 243959
+    },
+    {
+      "file": "package-smoke.json",
+      "artifact_path": "package-smoke.json",
+      "sha256": "598ff96b772e40b38d16813058727ef5887f408b8a0e3ac97b78aa6f14f116c4",
+      "bytes": 4203
+    },
+    {
+      "file": "normal-manifest.json",
+      "artifact_path": "gui-packages/normal/manifest.json",
+      "sha256": "a4e4b2065a6a9b234e29b41283bc3a22f3a0bb31fed3428ec84f4bec380afd41",
+      "bytes": 1789
+    },
+    {
+      "file": "verification-manifest.json",
+      "artifact_path": "gui-packages/verification/manifest.json",
+      "sha256": "aad5cd2f42858a306f1918eaa55683199938d92904131da7df9b8b4557716e18",
+      "bytes": 351
+    },
+    {
+      "file": "normal-shogi-minimum-size.webview.png",
+      "artifact_path": "gui-evidence/normal-shogi-minimum-size.webview.png",
+      "sha256": "fe99c6ede854d6d5b055e1fed196c072014ef07c3daa10754880e2bb976b9eb2",
+      "bytes": 96369
+    },
+    {
+      "file": "normal-shogi-minimum-size.dom.json",
+      "artifact_path": "gui-evidence/normal-shogi-minimum-size.dom.json",
+      "sha256": "c92c0551635755d63b2a2f3e6fb05672bfec692f0974b389f8732eef50021d7c",
+      "bytes": 1805
+    },
+    {
+      "file": "normal-shogi-reopened-opponent-hand-inspection.webview.png",
+      "artifact_path": "gui-evidence/normal-shogi-reopened-opponent-hand-inspection.webview.png",
+      "sha256": "89ee42eb2e08a2e8d9dd488ffe7bf3b1c99fedd9d19c536086505d6d2d3a053f",
+      "bytes": 134110
+    },
+    {
+      "file": "normal-shogi-reopened-opponent-hand-inspection.dom.json",
+      "artifact_path": "gui-evidence/normal-shogi-reopened-opponent-hand-inspection.dom.json",
+      "sha256": "7dc31ffc7cf3a0bfa7abce1b8f17f0b281f0124b1c7f6215bbca4accd8922cb0",
+      "bytes": 1508
+    },
+    {
+      "file": "normal-shogi-inspection-before.mshogi",
+      "artifact_path": "gui-evidence/normal-shogi-inspection-before.mshogi",
+      "sha256": "9278472ea18c3e0e312707c6471c9ce0a8fab473d2058fa9a26458f7c1d97666",
+      "bytes": 4182
+    },
+    {
+      "file": "normal-shogi-inspection-after.mshogi",
+      "artifact_path": "gui-evidence/normal-shogi-inspection-after.mshogi",
+      "sha256": "9278472ea18c3e0e312707c6471c9ce0a8fab473d2058fa9a26458f7c1d97666",
+      "bytes": 4182
+    },
+    {
+      "file": "normal-complete.mshogi",
+      "artifact_path": "gui-evidence/normal-complete.mshogi",
+      "sha256": "e0148e4cc4d6f0f4a18970ab9ae25704f3f6a53674919abb2f25e6ef7b14551a",
+      "bytes": 7709
+    },
+    {
+      "file": "normal-shogi-complete.mshogi",
+      "artifact_path": "gui-evidence/normal-shogi-complete.mshogi",
+      "sha256": "a4a3c3b04382b22d502f953764dcc879203db612cd8177cafb1ac25cddb87985",
+      "bytes": 9374
+    },
+    {
+      "file": "normal-shogi-history.mshogi",
+      "artifact_path": "gui-evidence/normal-shogi-history.mshogi",
+      "sha256": "f484c79e8e93f700d34ccee258e0987743dbc1bb97407be1ee1bd1e93c8e5e02",
+      "bytes": 12017
+    },
+    {
+      "file": "normal-shogi-minimum-size.desktop.png",
+      "artifact_path": "gui-evidence/normal-shogi-minimum-size.desktop.png",
+      "sha256": "6ed0240e7798dd9b6e80cdb8431a57d06af458778b0c9f1c6aae66eb3ee55f16",
+      "bytes": 107146
+    },
+    {
+      "file": "normal-shogi-reopened-opponent-hand-inspection.desktop.png",
+      "artifact_path": "gui-evidence/normal-shogi-reopened-opponent-hand-inspection.desktop.png",
+      "sha256": "476d9978644dfe971d79a1c5ebc828cfe2ba8077c2d4e09b1f389744a7c67dad",
+      "bytes": 141672
+    }
+  ]
+}

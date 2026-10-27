@@ -1,0 +1,103 @@
+{
+  "source_revision": "d6d76816932763182eee574c9c241daa6ef9a91a",
+  "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/40472402431",
+  "artifact_id": 12719938459,
+  "files": [
+    {
+      "file": "gui-report.json",
+      "artifact_path": "gui-evidence/gui-report.json",
+      "sha256": "75157518c7c5b0bfa60015e1bad6b6bce277a7d2055427e024834d51a4b6d7b1",
+      "bytes": 404164
+    },
+    {
+      "file": "package-smoke.json",
+      "artifact_path": "package-smoke.json",
+      "sha256": "4f2a054f4f1ef8a1fec811ea1da47f69af638974b9f85dcf493a0c8a9e55e11b",
+      "bytes": 4151
+    },
+    {
+      "file": "normal-manifest.json",
+      "artifact_path": "gui-packages/normal/manifest.json",
+      "sha256": "f732895522a21c3cbd41c35017c01e7ef06523b6bb92c96ac65bdc4a50935f2e",
+      "bytes": 300
+    },
+    {
+      "file": "verification-manifest.json",
+      "artifact_path": "gui-packages/verification/manifest.json",
+      "sha256": "323728d534aa45d08393d6ccc453e63d58786077145c789ceac269875b8b50ba",
+      "bytes": 345
+    },
+    {
+      "file": "normal-shogi-minimum-size.webview.png",
+      "artifact_path": "gui-evidence/normal-shogi-minimum-size.webview.png",
+      "sha256": "436351de6c592447cbe4ad1d086e7a4f3f6b44b74620ad4017e52ab95ab2227d",
+      "bytes": 120169
+    },
+    {
+      "file": "normal-shogi-minimum-size.dom.json",
+      "artifact_path": "gui-evidence/normal-shogi-minimum-size.dom.json",
+      "sha256": "1f900e07b4639f1b6e1b57432404cbb9a4cdd68f00c7f232a41ddb685d2b6016",
+      "bytes": 1843
+    },
+    {
+      "file": "normal-shogi-reopened-opponent-hand-inspection.webview.png",
+      "artifact_path": "gui-evidence/normal-shogi-reopened-opponent-hand-inspection.webview.png",
+      "sha256": "6faeda30b49168db8b31f77949cb2db7071db54562ca6b752dfe5e21088dd746",
+      "bytes": 225379
+    },
+    {
+      "file": "normal-shogi-reopened-opponent-hand-inspection.dom.json",
+      "artifact_path": "gui-evidence/normal-shogi-reopened-opponent-hand-inspection.dom.json",
+      "sha256": "23c2bbd21107888acad4c7c7ea7d09b5be121e4618e8ba9f712f2bf8899a7d10",
+      "bytes": 1542
+    },
+    {
+      "file": "normal-shogi-inspection-before.mshogi",
+      "artifact_path": "gui-evidence/normal-shogi-inspection-before.mshogi",
+      "sha256": "9278472ea18c3e0e312707c6471c9ce0a8fab473d2058fa9a26458f7c1d97666",
+      "bytes": 4182
+    },
+    {
+      "file": "normal-shogi-inspection-after.mshogi",
+      "artifact_path": "gui-evidence/normal-shogi-inspection-after.mshogi",
+      "sha256": "9278472ea18c3e0e312707c6471c9ce0a8fab473d2058fa9a26458f7c1d97666",
+      "bytes": 4182
+    },
+    {
+      "file": "normal-complete.mshogi",
+      "artifact_path": "gui-evidence/normal-complete.mshogi",
+      "sha256": "b7ea2bbaf243df991abd9c513d7ad1aee1020565feaf4101bf8cc8ff972cda81",
+      "bytes": 7709
+    },
+    {
+      "file": "normal-shogi-complete.mshogi",
+      "artifact_path": "gui-evidence/normal-shogi-complete.mshogi",
+      "sha256": "a4a3c3b04382b22d502f953764dcc879203db612cd8177cafb1ac25cddb87985",
+      "bytes": 9374
+    },
+    {
+      "file": "normal-shogi-history.mshogi",
+      "artifact_path": "gui-evidence/normal-shogi-history.mshogi",
+      "sha256": "f484c79e8e93f700d34ccee258e0987743dbc1bb97407be1ee1bd1e93c8e5e02",
+      "bytes": 12017
+    },
+    {
+      "file": "normal-shogi-minimum-size.desktop.png",
+      "artifact_path": "gui-evidence/normal-shogi-minimum-size.desktop.png",
+      "sha256": "0aa4348ebc8b42aa700e7d358d307d822f0f8478881d51dd6a24ee191f270f42",
+      "bytes": 180095
+    },
+    {
+      "file": "normal-shogi-reopened-opponent-hand-inspection.desktop.png",
+      "artifact_path": "gui-evidence/normal-shogi-reopened-opponent-hand-inspection.desktop.png",
+      "sha256": "f5e5a617f5bbcba7e504935655c2c5c9d2f1bd851a4ecf265757a0549eefa842",
+      "bytes": 211762
+    },
+    {
+      "file": "webview-driver.json",
+      "artifact_path": "webview-driver.json",
+      "sha256": "349004c7e92aa9db99a023e4399c5c98600a495a908378165598d807e57f4e6f",
+      "bytes": 1384
+    }
+  ]
+}

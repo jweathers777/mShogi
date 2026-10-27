@@ -24,3 +24,9 @@ read-only meaning in the existing help row, avoiding an extra vertical layout ro
 
 Visual fit, actual package interaction and platform CI are separately recorded.
 MSH-74 remains In Review; MSH-75 is not started.
+
+The same independent reviewer subsequently inspected the GUI-driver refinement:
+measured shared-shell geometry at equal viewports, real UI/native query selection,
+stable presentation/token equality across polls, and complete canonical SaveAs
+equality before/after hand inspection. Syntax/diff checks passed; no false semantic
+expectation or material finding was found. Actual platform runs remain separate.

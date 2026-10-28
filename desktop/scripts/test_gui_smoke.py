@@ -206,5 +206,50 @@ class InspectionDiagnosticsTests(unittest.TestCase):
         self.assertTrue(journey.record.call_args.args[1]['unchanged'])
 
 
+class FatalWaitBoundaryTests(unittest.TestCase):
+    def test_exhausted_observations_are_fatal_inside_wait(self):
+        for reason in (ConnectionResetError('reset'), http.client.RemoteDisconnected('closed')):
+            for kind in ('dom', 'lookup'):
+                with self.subTest(reason=type(reason).__name__, kind=kind):
+                    web = object.__new__(module.Webview)
+                    web.session, web.record = 'boundary', Mock()
+                    # Wrapped resets were previously swallowed by wait(),
+                    # silently opening another two-attempt observation budget.
+                    web._request_once = Mock(side_effect=urllib.error.URLError(reason))
+                    predicate = (lambda: web.read('document.body.innerText')) if kind == 'dom' else (
+                        lambda: web.find('.board'))
+                    with self.assertRaises(urllib.error.URLError):
+                        module.wait(predicate, 'exhausted')
+                    self.assertEqual(web._request_once.call_count, 2)
+
+    def test_semantic_errors_are_fatal_inside_wait(self):
+        predicate = Mock(side_effect=RuntimeError('no such element'))
+        with self.assertRaisesRegex(RuntimeError, 'no such element'):
+            module.wait(predicate, 'semantic')
+        predicate.assert_called_once()
+
+    def test_false_observations_still_poll_without_replaying_input(self):
+        predicate = Mock(side_effect=[False, False, 'ready'])
+        with patch.object(module.time, 'sleep'):
+            self.assertEqual(module.wait(predicate, 'ordinary observation'), 'ready')
+        self.assertEqual(predicate.call_count, 3)
+
+    def test_high_level_mutations_do_not_replay_after_delivery_failure(self):
+        for action in ('click', 'button', 'key', 'set', 'close'):
+            with self.subTest(action=action):
+                web = object.__new__(module.Webview)
+                web.session, web.record = 'boundary', Mock()
+                web.find = Mock(return_value='node')
+                web._request_once = Mock(side_effect=http.client.RemoteDisconnected('after delivery'))
+                with self.assertRaises(http.client.RemoteDisconnected):
+                    if action == 'click': web.click('#save')
+                    elif action == 'button': web.button('Save')
+                    elif action == 'key': web.key('a')
+                    elif action == 'set': web.set('#name', 'x')
+                    else: web.close()
+                web._request_once.assert_called_once()
+                web.record.assert_not_called()
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

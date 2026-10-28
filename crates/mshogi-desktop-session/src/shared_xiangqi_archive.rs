@@ -605,6 +605,13 @@ impl XiangqiSession {
         Ok(analysis)
     }
     fn apply_response(&mut self, response: SharedResponse) -> Result<(), String> {
+        self.apply_response_reusing(response, &mut ValidatedVariations::default())
+    }
+    fn apply_response_reusing(
+        &mut self,
+        response: SharedResponse,
+        variations: &mut ValidatedVariations,
+    ) -> Result<(), String> {
         if serde_json::to_vec(&response.context).map_err(error)?.len()
             > mshogi_engine::MAX_REQUEST_BYTES
             || serde_json::to_vec(&response).map_err(error)?.len()
@@ -674,18 +681,7 @@ impl XiangqiSession {
         if let Some(t) = telemetry
             && !t.principal_variation.is_empty()
         {
-            let (mut probe, _) = native(&expected)?.to_game_with_undo().map_err(error)?;
-            for choice in &t.principal_variation {
-                let (actor, command) = native_choice(*choice, probe.position().side_to_move());
-                if let Err(e) = probe.submit(x::GameRequest {
-                    expected: probe.context(),
-                    actor,
-                    command,
-                }) {
-                    pv_error = Some(e.to_string());
-                    break;
-                }
-            }
+            pv_error = variations.check(&expected, &t.principal_variation)?;
         }
         match &response.result {
             SharedResult::Xiangqi {
@@ -892,6 +888,141 @@ struct RawArchive {
     exact_observations: Vec<Box<RawValue>>,
     retired_execution_floor: u64,
 }
+
+/// One Open's already-authoritatively-validated original encodings. Equality is
+/// byte equality, never diagram equality or a normalized JSON map. Repeated
+/// observations often retain the same complete context hundreds of times.
+#[derive(Default)]
+struct ValidatedRecords(std::collections::HashMap<String, CanonicalRecord>);
+impl ValidatedRecords {
+    fn parse(&mut self, raw: &RawValue) -> Result<CanonicalRecord, String> {
+        if let Some(record) = self.0.get(raw.get()) {
+            return Ok(record.clone());
+        }
+        let record = CanonicalRecord::from_json(raw.get()).map_err(error)?;
+        self.0.insert(raw.get().to_owned(), record.clone());
+        Ok(record)
+    }
+}
+
+/// Pure proposal validation, scoped to one Open (or a single live admission).
+/// Transport acceptance and actual engine-turn application are never cached.
+#[derive(Default)]
+struct ValidatedVariations(std::collections::HashMap<(String, String), Option<String>>);
+impl ValidatedVariations {
+    fn check(
+        &mut self,
+        source: &CanonicalRecord,
+        variation: &[XiangqiChoice],
+    ) -> Result<Option<String>, String> {
+        let key = (
+            source.to_json().map_err(error)?,
+            serde_json::to_string(variation).map_err(error)?,
+        );
+        if let Some(result) = self.0.get(&key) {
+            return Ok(result.clone());
+        }
+        let (mut probe, _) = native(source)?.to_game_with_undo().map_err(error)?;
+        let mut rejection = None;
+        for choice in variation {
+            let (actor, command) = native_choice(*choice, probe.position().side_to_move());
+            if let Err(e) = probe.submit(x::GameRequest {
+                expected: probe.context(),
+                actor,
+                command,
+            }) {
+                rejection = Some(e.to_string());
+                break;
+            }
+        }
+        self.0.insert(key, rejection.clone());
+        Ok(rejection)
+    }
+}
+
+// These concrete archive readers defer only canonical payload parsing. Every
+// surrounding field stays strict and every original nested byte reaches the
+// authoritative parser before it can enter the per-Open cache.
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct RawRequest {
+    protocol: u32,
+    purpose: SharedPurpose,
+    request_id: u64,
+    session_version: u64,
+    process_generation: u64,
+    game: Box<RawValue>,
+    limits: WorkLimits,
+}
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct RawResponse {
+    context: RawRequest,
+    result: SharedResult,
+}
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct RawObservation {
+    response: RawResponse,
+    #[serde(deserialize_with = "super::super::archive::required_option")]
+    application_error: Option<String>,
+    historical: bool,
+}
+impl RawObservation {
+    fn validated(self, records: &mut ValidatedRecords) -> Result<PresentedObservation, String> {
+        let r = self.response.context;
+        Ok(PresentedObservation {
+            response: SharedResponse {
+                context: SharedRequest {
+                    protocol: r.protocol,
+                    purpose: r.purpose,
+                    request_id: r.request_id,
+                    session_version: r.session_version,
+                    process_generation: r.process_generation,
+                    game: records.parse(&r.game)?,
+                    limits: r.limits,
+                },
+                result: self.response.result,
+            },
+            application_error: self.application_error,
+            historical: self.historical,
+        })
+    }
+}
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct RawExactEvidence {
+    format: String,
+    executor: String,
+    source: Box<RawValue>,
+    purpose: String,
+    goal: String,
+    event_count: usize,
+    historical_target: bool,
+    position_json: String,
+    native_session: u64,
+    native_generation: u64,
+    limits: x::ExactLimits,
+    report: x::ExactReport,
+}
+impl RawExactEvidence {
+    fn validated(self, records: &mut ValidatedRecords) -> Result<XiangqiExactEvidence, String> {
+        Ok(XiangqiExactEvidence {
+            format: self.format,
+            executor: self.executor,
+            source: records.parse(&self.source)?,
+            purpose: self.purpose,
+            goal: self.goal,
+            event_count: self.event_count,
+            historical_target: self.historical_target,
+            position_json: self.position_json,
+            native_session: self.native_session,
+            native_generation: self.native_generation,
+            limits: self.limits,
+            report: self.report,
+        })
+    }
+}
 fn raw_work(text: &str) -> Result<usize, String> {
     if text.len() > mshogi_core::native::MAX_RECORD_ENVELOPE_BYTES {
         return Err(capacity("Saved canonical wrapper exceeds1MiB."));
@@ -1060,9 +1191,10 @@ pub(crate) fn decode(
         ));
     }
     persistence::check(stopped)?;
-    let initial: CanonicalRecord = serde_json::from_str(raw.initial.get()).map_err(error)?;
+    let mut records = ValidatedRecords::default();
+    let initial = records.parse(&raw.initial)?;
     persistence::check(stopped)?;
-    let current: CanonicalRecord = serde_json::from_str(raw.current.get()).map_err(error)?;
+    let current = records.parse(&raw.current)?;
     valid_limits(raw.initial_settings.analysis_defaults)?;
     valid_limits(raw.settings.analysis_defaults)?;
     if raw.retired_execution_floor >= MAX_SAFE_ID - 64 {
@@ -1077,14 +1209,17 @@ pub(crate) fn decode(
     let mut observations: Vec<PresentedObservation> = Vec::with_capacity(raw.observations.len());
     for text in raw.observations {
         persistence::check(stopped)?;
-        observations.push(serde_json::from_str(text.get()).map_err(error)?);
+        let wire: RawObservation = serde_json::from_str(text.get()).map_err(error)?;
+        observations.push(wire.validated(&mut records)?);
     }
     let mut exact = Vec::<XiangqiExactEvidence>::with_capacity(raw.exact_observations.len());
     for text in raw.exact_observations {
         persistence::check(stopped)?;
-        exact.push(serde_json::from_str(text.get()).map_err(error)?);
+        let wire: RawExactEvidence = serde_json::from_str(text.get()).map_err(error)?;
+        exact.push(wire.validated(&mut records)?);
     }
     let mut last_request = 0;
+    let mut variations = ValidatedVariations::default();
     for (index, c) in controls.into_iter().enumerate() {
         persistence::check(stopped)?;
         if c.sequence != index + 1
@@ -1123,7 +1258,7 @@ pub(crate) fn decode(
                 return Err("Corrupt historical selection identity.".into());
             }
             last_request = r.request_id;
-            state.apply_response(o.response.clone())?;
+            state.apply_response_reusing(o.response.clone(), &mut variations)?;
             let admitted = state.observations.last_mut().unwrap();
             if admitted.application_error != o.application_error {
                 return Err("Corrupt observation application-admission evidence.".into());

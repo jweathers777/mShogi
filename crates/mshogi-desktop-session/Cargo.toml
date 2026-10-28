@@ -17,3 +17,7 @@ serde_json = "=1.0.145"
 mshogi-core = { path = "../mshogi-core" }
 mshogi-engine = { path = "../mshogi-engine" }
 serde = { version = "=1.0.229", features = ["derive"] }
+
+[[example]]
+name = "xiangqi_session_probe"
+required-features = ["desktop-verification"]

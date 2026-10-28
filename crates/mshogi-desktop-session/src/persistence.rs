@@ -1230,6 +1230,7 @@ impl DesktopController {
             return Err("Application capacity: reopened identity headroom exhausted.".into());
         }
         self.retire_admission();
+        self.shared.xiangqi = None;
         self.shared.shogi = None;
         self.shared.epoch += 1;
         self.session.capacity.status = CapacityPhase::Available;

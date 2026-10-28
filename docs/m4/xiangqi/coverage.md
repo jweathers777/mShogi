@@ -77,3 +77,15 @@ MSH-97 consumers must retain the explicit unknown/unscored policy, full context,
 limits and stale-result guards. Universal ordinary-play WXF completeness and
 Xiangqi engine/console/desktop delivery are not inferred. All later delivery and
 M4 gates remain open under their existing task ownership.
+
+## MSH-84 consumer-readiness record
+
+[The native consumer contract](native-consumer-contract.md) and
+[handoff evidence](native-handoff-evidence.md) review91–95/105 together rather
+than infer readiness from Done statuses. They distinguish local board choices,
+actual native command authority, canonical/context identity and fast/exact
+proof provenance/Unknown. Existing public game-owned APIs and shared typed
+routing suffice; no production framework/refactor or consumer implementation
+was required. Exact work stays explicit/read-only, and unresolved required
+adjudication stays unscored. Later96/97/98/99/100–103 retain their implementation
+and product integration responsibilities. M4/45 are not closed by this handoff.

@@ -1,6 +1,7 @@
 # Natural board-win exact verification (MSH-105)
 
-Status: active research/implementation, not completed game delivery. Governing
+Status: delivered explicit native path under completed MSH-105, not complete
+game delivery. MSH-84 composes it in the [consumer contract](native-consumer-contract.md). Governing
 profile and goal remain `mshogi.xiangqi.wxf2018.v1` and
 `mshogi.xiangqi.natural-board-win.exists.v1`. Read the controlling
 [owner decision](owner-decisions.md#g-nowin-resolution-during-msh-94-2026-10-27)

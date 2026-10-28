@@ -1,6 +1,24 @@
 # Xiangqi native/shared delivery handoff
 
-## MSH-95 shared record/context handoff
+## MSH-84 current consumer-readiness boundary
+
+Completed native slices MSH-91–95 and MSH-105 are reviewed together through
+[the native consumer contract](native-consumer-contract.md) and
+[cross-boundary evidence](native-handoff-evidence.md). The existing public native
+module and typed record/command routing form the coherent handoff; no universal
+interface or production refactor is required. Fast/exact provenance, six native
+identity layers, errors and unresolved/unscored policy are explicit. Ordinary
+queries and canonical replay never implicitly run the exact graph.
+
+The current native exact path is bounded and read-only; shared engine execution
+still returns unsupported/unscored until MSH-97. MSH-96 and MSH-97 are the next
+consumers after MSH-84's verified completion, not work implemented here. MSH-45,
+M4 and post-complete-Xiangqi architecture review106 remain open/unstarted.
+Final reviewed/tested revisions and actual task verdict are in MSH-84's record.
+The snapshots below retain earlier planning and implementation evidence; their
+then-current queue statements do not supersede this status.
+
+## MSH-95 shared record/context handoff (historical snapshot)
 
 The [routing contract](shared-routing.md) and [evidence](routing-evidence.md)
 add explicit Xiangqi canonical identities/record/native-command dispatch and
@@ -14,7 +32,7 @@ After95 completes, **MSH-105** is dependency-ready (94/95); it remains unstarted
 in this batch. **MSH-84** waits105 and the other native prerequisites. **MSH-97**
 then owns functional evaluator/search/real child after84/95, while96 owns console.
 No later task starts automatically. MSH-45/M4 remain open. The earlier native
-handoffs below are historical snapshots, superseded by this current routing status.
+handoffs below are historical snapshots; the MSH-84 status above is current.
 
 ## MSH-94 native history handoff (historical snapshot)
 
@@ -97,7 +115,7 @@ and verification expectations, no speculative implementation plan.
 | MSH-94 | Complete selected history/adjudication and strict canonical native records, assessment contract/fast sound recognition; G-CYCLE/G-NOWIN gated |80,93 |
 | MSH-95 | Real-record typed shared context/result routing, honest unsupported execution |94,69 |
 | MSH-105 | Required bounded/terminable exact3.2A path beyond the fast recognizer |94,95 |
-| MSH-84 (preserved) | Independently verified authoritative native handoff, consumed by95 |80,91–95,105 |
+| MSH-84 (preserved) | Independently verified authoritative native handoff over95 routing and105 proof path, for96/97/98 |80,91–95,105 |
 | MSH-96 | Independently usable console/notation/diagnostics/record adapters |84,95 |
 | MSH-97 | Own functional native evaluator/search and structured child consumer |84,95 |
 | MSH-98 | Serialized native session, real semantic geometry/pieces/choices and read-only inspection |84,95,97,72 |

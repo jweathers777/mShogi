@@ -497,6 +497,8 @@ fn replay_traffic(
     let mut ready = false;
     let mut new_ready = false;
     let mut replied = false;
+    let mut advertisements = Vec::new();
+    let mut handshake_lines = 0usize;
     for event in events {
         match event.direction.as_str() {
             "command" => {
@@ -533,6 +535,17 @@ fn replay_traffic(
                 let text = event.text.as_str();
                 match awaiting {
                     "handshake" if text == "uciok" => {
+                        for option in &config.options {
+                            let prefix = format!("option name {} type ", option.name);
+                            let advertised = advertisements
+                                .iter()
+                                .copied()
+                                .find(|line: &&str| line.starts_with(&prefix))
+                                .ok_or_else(invalid)?;
+                            if !option_value(advertised, &option.value) {
+                                return Err(invalid());
+                            }
+                        }
                         handshake = true;
                         awaiting = "";
                     }
@@ -552,11 +565,19 @@ fn replay_traffic(
                         awaiting = "";
                     }
                     "handshake"
-                        if text.is_empty()
-                            || text.starts_with("id ")
+                        if text.starts_with("id ")
                             || text.starts_with("option ")
-                            || text.starts_with("info ")
-                            || text.starts_with("Pikafish ") => {}
+                            || text.starts_with("Pikafish ") =>
+                    {
+                        handshake_lines += 1;
+                        if handshake_lines > 256 {
+                            return Err(invalid());
+                        }
+                        if text.starts_with("option ") {
+                            advertisements.push(text);
+                        }
+                    }
+                    "handshake" if text.is_empty() || text.starts_with("info ") => {}
                     "readiness" | "newgame_ready" | "search"
                         if text.is_empty()
                             || (text.starts_with("info ")

@@ -1,6 +1,9 @@
 //! Native MSH-98 consumer verification; no product UI/packaging claim.
 use super::*;
 
+#[path = "shared_xiangqi_handoff_tests.rs"]
+mod handoff;
+
 fn controller() -> DesktopController {
     let mut c = DesktopController::new(PathBuf::from("/unused/msh98-engine")).unwrap();
     c.shared.manual_engine = true;

@@ -1,6 +1,19 @@
 # Xiangqi native/shared delivery handoff
 
-## Native desktop archive boundary (MSH-99)
+## Aggregate shared contract (MSH-76)
+
+The [aggregate handoff](shared-contract-handoff.md) reconciles the existing native
+rules, typed routing, session, engine context, semantic presentation and lossless
+archive into one consumer path. No production change was necessary. Combined
+native tests cover warning-prefix inspection through Save/Open and stale results
+across historical selection, cancellation and cross-game replacement. The native
+output can feed the accepted dark shell's stable slots without frontend rules or
+mandatory square rendering. Actual Xiangqi rendering and product admission remain
+MSH-101/102; MSH-101 is the next dependency-ready owner after76 completion.
+MSH-45/M4 stay open and106 remains future complete-delivery review. The earlier
+delivery snapshots below preserve their original scope and evidence.
+
+## Native desktop archive boundary (MSH-99, preserved snapshot)
 
 [Native Xiangqi archives](desktop-archive.md) extend taggedv2 with complete
 native records, accepted command/observation history, exact event selection,

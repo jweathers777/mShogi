@@ -643,11 +643,12 @@ impl DesktopController {
                 move_analysis: !historical || state.viewed_game.is_some(),
                 chess_full: false,
                 claims: active
+                    && !state.paused
                     && count_advice
                         .iter()
                         .any(|e| e.claimant == state.human && e.eligible),
                 declaration: false,
-                resign: active,
+                resign: active && !state.paused,
                 hands: false,
                 history: true,
                 save: false,

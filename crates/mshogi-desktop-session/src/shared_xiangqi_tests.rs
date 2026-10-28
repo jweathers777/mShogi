@@ -728,3 +728,69 @@ fn cancel_retires_pending_cross_game_admission_and_its_receipt_immediately() {
         assert_eq!(c.shared_snapshot().game, GameKind::Xiangqi);
     }
 }
+
+#[test]
+fn paused_terminal_capabilities_match_admission_without_erasing_claim_advice() {
+    // Reuse the independently specified 100/102 WXF precedence ledger.
+    let fixture: serde_json::Value = serde_json::from_str(include_str!(
+        "../../../tests/fixtures/xiangqi/history-precedence.json"
+    ))
+    .unwrap();
+    let mut game = x::Game::from_root(
+        x::PositionRoot::from_fen(fixture["root_fen"].as_str().unwrap()).unwrap(),
+        x::ClaimPolicy::Explicit,
+    )
+    .unwrap();
+    for action in fixture["moves"].as_array().unwrap().iter().take(100) {
+        game.submit(x::GameRequest {
+            expected: game.context(),
+            actor: game.position().side_to_move(),
+            command: x::GameCommand::Play {
+                action: action.as_str().unwrap().parse().unwrap(),
+            },
+        })
+        .unwrap();
+    }
+    assert!(game.natural_count_eligibility(x::Side::Red).eligible);
+    let mut c = controller();
+    let paused = replace(&mut c, &game, x::Side::Red);
+    assert!(
+        paused
+            .xiangqi
+            .as_ref()
+            .unwrap()
+            .count_advice
+            .iter()
+            .all(|e| e.eligible)
+    );
+    assert!(!paused.capabilities.claims);
+    assert!(!paused.capabilities.resign);
+    let before = native(&c);
+    assert!(send(&mut c, SessionOperation::Resign {}).is_err());
+    assert!(
+        send(
+            &mut c,
+            SessionOperation::Xiangqi {
+                command: x::GameCommand::ClaimNaturalCount
+            }
+        )
+        .is_err()
+    );
+    assert_eq!(native(&c), before);
+    let live = send(&mut c, SessionOperation::Resume {}).unwrap();
+    assert!(live.capabilities.claims);
+    assert!(live.capabilities.resign);
+    let stopped = send(&mut c, SessionOperation::Cancel {}).unwrap();
+    assert!(!stopped.capabilities.claims);
+    assert!(!stopped.capabilities.resign);
+    assert!(
+        stopped
+            .xiangqi
+            .as_ref()
+            .unwrap()
+            .count_advice
+            .iter()
+            .all(|e| e.eligible)
+    );
+    assert_eq!(native(&c), before);
+}

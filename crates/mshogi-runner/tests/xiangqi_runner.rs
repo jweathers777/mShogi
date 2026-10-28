@@ -386,3 +386,32 @@ fn accepted_generation_replay_rejects_retired_duplicate_and_reordered_responses(
         assert!(bad.replay().is_err(), "contradictory transcript {kind}");
     }
 }
+
+#[test]
+fn replay_requires_actual_supported_advertisement_for_each_configured_option() {
+    let mut c = config("resign");
+    for e in &mut c.engines {
+        e.options.push(UciOption {
+            name: "Nodes".into(),
+            value: "128".into(),
+        });
+    }
+    let report = xiangqi::run(&c).unwrap();
+    for invalid in [false, true] {
+        let mut bad = report.clone();
+        let events = &mut bad.games[0].traffic;
+        if invalid {
+            events
+                .iter_mut()
+                .find(|e| e.text.starts_with("option name Nodes "))
+                .unwrap()
+                .text = "option name Nodes type spin default 0 min 0 max 127".into();
+        } else {
+            events.retain(|e| !e.text.starts_with("option name Nodes "));
+        }
+        assert!(
+            bad.replay().is_err(),
+            "missing/invalid advertisement must reject like runtime"
+        );
+    }
+}

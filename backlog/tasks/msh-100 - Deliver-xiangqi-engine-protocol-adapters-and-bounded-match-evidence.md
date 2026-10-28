@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex-protocol'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-28T12:38:00Z'
+updated_date: '2026-10-28T12:47:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -59,4 +59,6 @@ Before source root inspected full98/100 records/deps/ownership/fileboundaries. P
 Implemented isolated Pikafish-compatible UCI0-9 and native Xiangqi runner; no98/core/search/sharedengine changes. Seven actual console protocol and seven runner tests pass, reusing native94/97/105 expectations (Red/Black stalemate, history-sensitive warning/fourth loss, claimant-specific natural count). Full console+runner compatibility tests and strict Clippy passed on macOS arm64. Runner rejects unsupported live non-board histories/provenance/counters rather than losing context; terminal canonical records retain all native commands. Actual independent unmodified Pikafish9d7833aa build succeeded with fetched50,241,164byte NNUE sha256cd396741e9e0ffd22043216c5f8aed5d8960be6422ddefc4a5bc09a5344fec14 verified against upstream release asset684051879. Runtime admission/match evidence and independent review pending; not yet complete.
 
 Independent reviewer /root/xiangqi100_review found replay accepted contradictory retired bestmove evidence even though runtime rejected it; fixed accepted-generation replay with ordered phase/command/token state machine and six new tamper cases. All8runner tests pass. Reviewer independently executed real ownengine selfplay+replay, matching native canonical games/actions/context digests under finite deterministicsettings. First pinnedOct26Pikafish actual opponent match failed cleanly/unscored because mutableOct28network architecture differed; preserved exact report/config under protocol/exploratory/incompatible-network*. Investigated raw headers/hash and historical release network. Selected immutable officialSep06release source4c17cee11f888ae1d48a9494f2e2239f019f0a1f plus its matching archive NNUE; independently rebuilt clean source, actual search now loads64MiBnetwork and returnslegal b2e2, cleanexit0. Same UCI0-9/FEN bounds and no selectable WXFprofile; added exact source/archive/binary/network/license manifest, no product rules/search changes. Full runtime admission/matches and finalreview stillpending.
+
+Follow-up independent review reproduced missing option advertisements accepted on replay although runtime rejected them. Resolved with the same advertised-name/type/value validation as runtime and missing/invalid-advertisement regression. All9runner+2retained-recorded tests pass; seven actual UCI subprocess tests previously pass. Reviewer independently reran actual selfplay and compatible-source opponent4games, confirming canonical games/actions/context/position/go equality with retained reports. Verification helper finalverdict now requires every replay pass and no game failures, and admission script explicitly verifies native played acknowledgement plus canonical acceptedcommand/boardevent. No native rules/search changes; final docs/review/integration pending.
 <!-- SECTION:NOTES:END -->

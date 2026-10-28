@@ -1,11 +1,11 @@
 ---
 id: MSH-100
 title: Deliver xiangqi engine protocol adapters and bounded match evidence
-status: In Review
+status: Done
 assignee:
   - '@codex-protocol'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-28T12:55:00Z'
+updated_date: '2026-10-28T13:21:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -28,18 +28,18 @@ Future bounded Xiangqi delivery work refined by MSH-80. Intent and acceptance on
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Choose and document the minimum real external dialect(s) from admitted opponents; pin rank/alphabet/FEN/options differences (Pikafish UCI0-9 versus Fairy generic UCI1-10/UCCI0-9). Preserve structured native functionality and do not advertise unsupported conversions.
-- [ ] #2 Actual supervised handshake/position/go/stop/quit and bounded runner uses native match authority and complete known history. Explicitly report invalid replies, unsupported adjudication policy, missing responses, timeout/process exit and unscored unresolved work separately from native game outcomes.
-- [ ] #3 Record own-engine self-play and a bounded match against an independently built/admitted Xiangqi engine with exact source/binary/network/options/work policy and replayable commands/moves/events. Deterministic replay is required; rerun equality only under documented deterministic settings/limits, never promised for timed observations.
-- [ ] #4 Execute protocol-negative/cancel/cleanup/replay tests and independent review. Audit/licensing/source facts alone do not admit an opponent or establish playing strength.
+- [x] #1 Choose and document the minimum real external dialect(s) from admitted opponents; pin rank/alphabet/FEN/options differences (Pikafish UCI0-9 versus Fairy generic UCI1-10/UCCI0-9). Preserve structured native functionality and do not advertise unsupported conversions.
+- [x] #2 Actual supervised handshake/position/go/stop/quit and bounded runner uses native match authority and complete known history. Explicitly report invalid replies, unsupported adjudication policy, missing responses, timeout/process exit and unscored unresolved work separately from native game outcomes.
+- [x] #3 Record own-engine self-play and a bounded match against an independently built/admitted Xiangqi engine with exact source/binary/network/options/work policy and replayable commands/moves/events. Deterministic replay is required; rerun equality only under documented deterministic settings/limits, never promised for timed observations.
+- [x] #4 Execute protocol-negative/cancel/cleanup/replay tests and independent review. Audit/licensing/source facts alone do not admit an opponent or establish playing strength.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -65,4 +65,18 @@ Follow-up independent review reproduced missing option advertisements accepted o
 Branch implementation/review complete, pending root integration+nativeCI and Done. Final production4d6481bffbb7c83ee9461e4036ccaff71057b6ee; actual main matches source8d6a0dd1851966ef1df3515155730f1abf4c74dd reused after replay-onlyadvertisement fix. Final macOS arm64 cargoClippy alltargets -Dwarnings PASS; cargo test console+runner153tests/25suites PASS incl7newactualUCI+9runner+3recorded suites; releaseproduction build/fmt/diffcheck PASS. docs/m4/xiangqi/protocol/review.md records independent reviewer method, two resolved material replay findings, independent own/opponent actual reruns and no remaining material findings. Exact source/network/license/provenance in protocol/opponent-source.json and opponent-admission.md; finalactualadmission5probes PASS. Twelve successful bounded own/opponent/repeat games33acceptedactions:5native stalematewins,7unscoredcutoffs; replayallPASS and own semanticrepeatPASS. Two actual ownzero-work games at4d6481b correctlyincomplete_work/noaction/noscore/replayPASS. Preserved initial incompatible-network3unscoredfailures+1nativeconclusion and prereviewselfplay/admission as exploratoryevidence. NativeCI/combinedintegration/push/ACDoD finalchecks are sole rootintegrator work; no100branch merge/push. No98/core/sharedengine/search/Cargo.lock production changes. All owned runtimeengine/testprocessesreaped, no neededignored worktreefiles beyond reproducibletargetcache; external admittedsource/network/archive retained outsideworktree under/private/tmp/msh100-* for reproduction.
 
 Root sole integration:2ae336819284ac24df8ec3a86c1c1b605ac73bd6 into codex/rewrite from reviewed clean98873ec5b8586b42500a4e5cf84deb73c853d674 after98 source16c6827; no conflict or dependency change. Reviewer independently approved final988 including third retained-record test3/3, with production unchanged4d6481bffbb7c83ee9461e4036ccaff71057b6ee. All current production work reviewed; final combined-source verification and native/desktop CI pending. Task remains In Review.
+
+Exact final combined-source2b50ac2f8c7fea6174be71a479cf532324347a3e verification passed: fmt; strict workspace/all-target Clippy; cargo test --workspace --locked; desktop all-feature tests/Clippy; unchanged native frontend fixtures; cargo build --release --locked --bin mshogi --bin mshogi-match. Fresh actual experiment command: python3 docs/m4/xiangqi/protocol/reproduce.py --mshogi target/release/mshogi --runner target/release/mshogi-match --opponent /private/tmp/msh100-pikafish-stable/src/pikafish --network /private/tmp/msh100-release-network/pikafish.nnue --out /private/tmp/msh98-100-integrated-protocol. All12 games replayed, all three experiment verdicts passed, finite-work selfplay repeat equality true. Canonical games/conclusions/scores and actor/reply/context digests separately compared equal to all committed8d6a0dd reports; timings/PIDs excluded. Actual native binary SHA2562d7c08ba819360c05899c626efd67e7abe23a3a95382bed9a6c6c9885b440af1, runner2bac763ed9d7a77e2704dfa16f07c41d99b420248898a32454d6669c9a33c90c; independent engine/network hashes unchanged/admitted. Final manifest SHA256b81948791dbb1948fd9caae09147ae0a6aa208883bcf491cdc793e7a2e478ebe; raw report hashes selfplay5c300b88f382ed7c8c261a517d96e8a2010d5b305d96974917d95e92c3a7d585, opponentb1481784c8afffc47182e1cd4e04c2236e95ced49bc1f6b3be641d2bc0294c18, repeatbc3031edb2acb940b3715ea71fa28feeaaaf66ec76e98f29ec6c9af0bb65addc. Reproducible final raw files remain/private/tmp; original actual reports/configs/provenance are committed. Native CI40692691079/desktop40692691108 pending at this note; no platform/strength/UI success inferred.
+
+Applicable native CI40692691079 completed success on all three OS at exact2b50ac2 source; protocol completion relies on actual native execution and external interoperability evidence, not pending GUI work. Separate integrator completion recorded after source push; no production difference from tested2b50ac2.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Delivered the real Xiangqi Pikafish UCI0–9 adapter and bounded native-authoritative match runner. Full known native board history, profile/counter policy, generation/context identity, deterministic record replay and explicit unscored failures are preserved. Only the admitted dialect/domain is supported; no Fairy/UCCI conversion, implicit exact analysis or strength claim.
+
+Independent source/evidence review approved98873ec (production4d6481b). Both adversarial replay findings were fixed and independently reproduced as rejected. Final integration2ae336819284ac24df8ec3a86c1c1b605ac73bd6; tested/pushed combined source2b50ac2f8c7fea6174be71a479cf532324347a3e. Focused19 new tests, existing console/runner153 tests, final workspace/feature regressions, strict Clippy and actual final-source12game self/opponent/repeat experiment passed. Native CI40692691079 passed macOS15, Windows2022 and Ubuntu24.04: https://github.com/jweathers777/mShogi/actions/runs/40692691079 . Original12 actual records and2 real zero-work incomplete cases remain in docs/m4/xiangqi/protocol; final integrated reruns match their native semantics exactly. External opponent admission is local macOS evidence with exact source/network/binary/license provenance, not cross-platform opponent or playing-strength evidence.
+
+The unrelated desktop Linux screenshot-proxy reset in40692691108 is preserved and independently diagnosed; macOS/Windows package jobs passed and Linux normal package/native checks passed. That GUI retry gates98 completion, not protocol100 criteria. No product source/assertion changed for the rerun. MSH-45/M4 remain open; MSH-99 archives is the next Xiangqi queue after98, with76/101/102/103 still future and106 blocked by complete45 delivery.
+<!-- SECTION:FINAL_SUMMARY:END -->

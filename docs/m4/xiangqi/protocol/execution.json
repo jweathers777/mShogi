@@ -1,0 +1,205 @@
+{
+  "format": "mshogi.xiangqi.protocol-execution.v1",
+  "source_revision": "8d6a0dd1851966ef1df3515155730f1abf4c74dd",
+  "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "command": [
+    "docs/m4/xiangqi/protocol/reproduce.py",
+    "--mshogi",
+    "target/release/mshogi",
+    "--runner",
+    "target/release/mshogi-match",
+    "--opponent",
+    "/private/tmp/msh100-pikafish-stable/src/pikafish",
+    "--network",
+    "/private/tmp/msh100-release-network/pikafish.nnue",
+    "--out",
+    "docs/m4/xiangqi/protocol"
+  ],
+  "engines": {
+    "/Users/johnweathers/.codex/worktrees/xiangqi-protocol100/mShogi/target/release/mshogi": {
+      "bytes": 2539456,
+      "sha256": "2d1c69ed974d8feefc65f75b19e1c7ffb3682f85b690b89a7dc5303ca8a5e511"
+    },
+    "/Users/johnweathers/.codex/worktrees/xiangqi-protocol100/mShogi/target/release/mshogi-match": {
+      "bytes": 2960496,
+      "sha256": "836060c85fe8f633554817cddf3df97771bc957ec8f04884cf529b5f7b893638"
+    },
+    "/private/tmp/msh100-pikafish-stable/src/pikafish": {
+      "bytes": 800616,
+      "sha256": "b768f26e7b7006eb4f7b1f595a3c865195dd0488f2a5b65971e9a1130a6b68b3"
+    },
+    "/private/tmp/msh100-release-network/pikafish.nnue": {
+      "bytes": 50706378,
+      "sha256": "7d13d73569a9b571ba0eb20cf1596247bc2a42738967e61afef6482b231e900e"
+    }
+  },
+  "results": [
+    {
+      "label": "selfplay",
+      "run_command": [
+        "/Users/johnweathers/.codex/worktrees/xiangqi-protocol100/mShogi/target/release/mshogi-match",
+        "xiangqi-run",
+        "docs/m4/xiangqi/protocol/selfplay.config.json",
+        "docs/m4/xiangqi/protocol/selfplay.report.json"
+      ],
+      "returncode": 0,
+      "stdout": "game 0: ActionLimit native None score None\ngame 1: ActionLimit native None score None\ngame 2: NativeConclusion native Some(Win { winner: Red, reason: NoLegalAction { reason: Stalemate } }) score Some([2, 0])\ngame 3: NativeConclusion native Some(Win { winner: Red, reason: NoLegalAction { reason: Stalemate } }) score Some([2, 0])\n",
+      "stderr": "",
+      "replay": {
+        "returncode": 0,
+        "stdout": "replayed 4 xiangqi game(s)\n",
+        "stderr": ""
+      },
+      "games": [
+        {
+          "stop": "action_limit",
+          "conclusion": null,
+          "turns": 4,
+          "failure": null
+        },
+        {
+          "stop": "action_limit",
+          "conclusion": null,
+          "turns": 4,
+          "failure": null
+        },
+        {
+          "stop": "native_conclusion",
+          "conclusion": {
+            "kind": "win",
+            "winner": "red",
+            "reason": {
+              "kind": "no_legal_action",
+              "reason": "stalemate"
+            }
+          },
+          "turns": 1,
+          "failure": null
+        },
+        {
+          "stop": "native_conclusion",
+          "conclusion": {
+            "kind": "win",
+            "winner": "red",
+            "reason": {
+              "kind": "no_legal_action",
+              "reason": "stalemate"
+            }
+          },
+          "turns": 1,
+          "failure": null
+        }
+      ]
+    },
+    {
+      "label": "opponent",
+      "run_command": [
+        "/Users/johnweathers/.codex/worktrees/xiangqi-protocol100/mShogi/target/release/mshogi-match",
+        "xiangqi-run",
+        "docs/m4/xiangqi/protocol/opponent.config.json",
+        "docs/m4/xiangqi/protocol/opponent.report.json"
+      ],
+      "returncode": 0,
+      "stdout": "game 0: ActionLimit native None score None\ngame 1: ActionLimit native None score None\ngame 2: NativeConclusion native Some(Win { winner: Red, reason: NoLegalAction { reason: Stalemate } }) score Some([2, 0])\ngame 3: ActionLimit native None score None\n",
+      "stderr": "",
+      "replay": {
+        "returncode": 0,
+        "stdout": "replayed 4 xiangqi game(s)\n",
+        "stderr": ""
+      },
+      "games": [
+        {
+          "stop": "action_limit",
+          "conclusion": null,
+          "turns": 4,
+          "failure": null
+        },
+        {
+          "stop": "action_limit",
+          "conclusion": null,
+          "turns": 4,
+          "failure": null
+        },
+        {
+          "stop": "native_conclusion",
+          "conclusion": {
+            "kind": "win",
+            "winner": "red",
+            "reason": {
+              "kind": "no_legal_action",
+              "reason": "stalemate"
+            }
+          },
+          "turns": 1,
+          "failure": null
+        },
+        {
+          "stop": "action_limit",
+          "conclusion": null,
+          "turns": 4,
+          "failure": null
+        }
+      ]
+    },
+    {
+      "label": "selfplay-repeat",
+      "run_command": [
+        "/Users/johnweathers/.codex/worktrees/xiangqi-protocol100/mShogi/target/release/mshogi-match",
+        "xiangqi-run",
+        "docs/m4/xiangqi/protocol/selfplay-repeat.config.json",
+        "docs/m4/xiangqi/protocol/selfplay-repeat.report.json"
+      ],
+      "returncode": 0,
+      "stdout": "game 0: ActionLimit native None score None\ngame 1: ActionLimit native None score None\ngame 2: NativeConclusion native Some(Win { winner: Red, reason: NoLegalAction { reason: Stalemate } }) score Some([2, 0])\ngame 3: NativeConclusion native Some(Win { winner: Red, reason: NoLegalAction { reason: Stalemate } }) score Some([2, 0])\n",
+      "stderr": "",
+      "replay": {
+        "returncode": 0,
+        "stdout": "replayed 4 xiangqi game(s)\n",
+        "stderr": ""
+      },
+      "games": [
+        {
+          "stop": "action_limit",
+          "conclusion": null,
+          "turns": 4,
+          "failure": null
+        },
+        {
+          "stop": "action_limit",
+          "conclusion": null,
+          "turns": 4,
+          "failure": null
+        },
+        {
+          "stop": "native_conclusion",
+          "conclusion": {
+            "kind": "win",
+            "winner": "red",
+            "reason": {
+              "kind": "no_legal_action",
+              "reason": "stalemate"
+            }
+          },
+          "turns": 1,
+          "failure": null
+        },
+        {
+          "stop": "native_conclusion",
+          "conclusion": {
+            "kind": "win",
+            "winner": "red",
+            "reason": {
+              "kind": "no_legal_action",
+              "reason": "stalemate"
+            }
+          },
+          "turns": 1,
+          "failure": null
+        }
+      ]
+    }
+  ],
+  "repeat_equal": true,
+  "repeat_scope": "Full native canonical games, accepted actions/actors/context digests and conclusions under finite depth1/nodes128, single-thread/fresh-process settings; OS times/PIDs/diagnostics remain observations."
+}

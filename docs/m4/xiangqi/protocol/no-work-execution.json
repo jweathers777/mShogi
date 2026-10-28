@@ -1,0 +1,6 @@
+{
+  "source_revision": "4d6481bffbb7c83ee9461e4036ccaff71057b6ee",
+  "result": "game 0: Failure native None score None\ngame 1: Failure native None score None\n",
+  "replay": "replayed 2 xiangqi game(s)\n",
+  "meaning": "Actual own-engine zero visits emits no move or score; runner keeps original canonical root and distinguishes incomplete_work from chess outcome."
+}

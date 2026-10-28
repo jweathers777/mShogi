@@ -1,0 +1,92 @@
+{
+  "format": "mshogi.xiangqi.playing-opponent-source.v1",
+  "source_url": "https://github.com/official-pikafish/Pikafish",
+  "tag": "Pikafish-2026-09-06",
+  "commit": "4c17cee11f888ae1d48a9494f2e2239f019f0a1f",
+  "tree": "43eb3e0166f6e8bda566aa8477d034288bb37e89",
+  "tracked_clean": true,
+  "command": "make -j4 build ARCH=apple-silicon COMP=clang",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin27.0.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 7805,
+      "sha256": "34b7b31204b5d2d1a69bad317cbc7a323b3558594075ff04e49a2ae7246a764a"
+    },
+    {
+      "path": "Copying.txt",
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "path": "src/uci.cpp",
+      "bytes": 22304,
+      "sha256": "3b49ab2d2f06b5c7b1cbd3f0da77f96cac4cf5e94511953702e84ded9ca7a82c"
+    },
+    {
+      "path": "src/position.cpp",
+      "bytes": 49389,
+      "sha256": "aaae991cc0e1c63a46002442bdd00baf67f1ff36d4f3b79713bb01f333073494"
+    },
+    {
+      "path": "src/position.h",
+      "bytes": 13189,
+      "sha256": "99a349a6c275680727679cda203fdf66f9b05b6a420bb1a48dcbc389cf466f46"
+    },
+    {
+      "path": "src/movegen.cpp",
+      "bytes": 6752,
+      "sha256": "047d984c9bef6f88f8593845874ace639870d2e8860a3d34db8711614a8bd99c"
+    },
+    {
+      "path": "src/ucioption.cpp",
+      "bytes": 6326,
+      "sha256": "5d699e2fa1d57cfa5f3169412dc8fc5d26685563be38c221cdbfde7237305e8a"
+    },
+    {
+      "path": "src/engine.cpp",
+      "bytes": 11309,
+      "sha256": "2c72f56103de2bf5208ea364c28a8c6e1f6a81c10f6d7edd1d02472b7c957514"
+    },
+    {
+      "path": "src/nnue/nnue_common.h",
+      "bytes": 10556,
+      "sha256": "e1dd6f3a2d7bda4a2b02e93fb5afeb002e00b2f0a8e0ee48b90e138c4d52978c"
+    },
+    {
+      "path": "src/nnue/network.cpp",
+      "bytes": 10302,
+      "sha256": "0bb5b1bbd6865cb62087c34b29662934e7a114ad1e47d382b880bbdb60902d7e"
+    },
+    {
+      "path": "src/nnue/nnue_architecture.h",
+      "bytes": 7228,
+      "sha256": "a364055a6b80ee1ec37152c0062ec6875b56af2609b8c43ff2b9da94f3530439"
+    },
+    {
+      "path": "scripts/net.sh",
+      "bytes": 1002,
+      "sha256": "9610f6c15ccf7509e9ed78a89e55f2b12b0734253e7f7fd674489dc7fe44ad55"
+    }
+  ],
+  "binary": {
+    "path": "/private/tmp/msh100-pikafish-stable/src/pikafish",
+    "bytes": 800616,
+    "sha256": "b768f26e7b7006eb4f7b1f595a3c865195dd0488f2a5b65971e9a1130a6b68b3"
+  },
+  "archive": {
+    "url": "https://github.com/official-pikafish/Pikafish/releases/download/Pikafish-2026-09-06/Pikafish.2026-09-06.7z",
+    "asset_id": 547038364,
+    "bytes": 53603424,
+    "sha256": "41952bbfe2520faceb5902c69e6ab4845cc999841d2b49a95cc1be7867a25e5b"
+  },
+  "network": {
+    "archive_member": "pikafish.nnue",
+    "path": "/private/tmp/msh100-release-network/pikafish.nnue",
+    "bytes": 50706378,
+    "sha256": "7d13d73569a9b571ba0eb20cf1596247bc2a42738967e61afef6482b231e900e",
+    "license_member": "NNUE-License.md",
+    "license_sha256": "7f3320aa61ceefecec1d5cd158d6d1d2a8adde93728e83a79448df50903c367b",
+    "license_scope": "legal use; noncommercial without permission; local functional verification only, no redistribution or product dependency"
+  }
+}

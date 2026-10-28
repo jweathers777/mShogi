@@ -132,7 +132,10 @@ fn selected_help_profiles_and_argument_admission_are_explicit() {
             "duplicate",
         ),
         (vec!["--game", "chess", "shogi"], "conflicts"),
-        (vec!["--game", "shogi", "uci"], "UCI supports chess only"),
+        (
+            vec!["--game", "shogi", "uci"],
+            "UCI supports chess or xiangqi",
+        ),
         (
             vec!["--game", "shogi", "internal-search"],
             "request supplies the game identity",

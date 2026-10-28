@@ -1,11 +1,11 @@
 ---
 id: MSH-98
 title: Extend native session and semantic presentation for xiangqi consumers
-status: In Review
+status: Done
 assignee:
   - '@codex-session'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-28T13:41:00Z'
+updated_date: '2026-10-28T14:01:00Z'
 labels:
   - m4
   - owner-msh-46
@@ -30,18 +30,18 @@ Future bounded Xiangqi delivery work refined by MSH-80. Intent and acceptance on
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Authoritative serialized native session consumes real xiangqi rules/engine contexts and owns command admission, result acceptance and all actions; preserve exact history/purpose/request/session/generation/limits and cancel/replacement/undo/historical-selection protection.
-- [ ] #2 Expose native semantic Red/Black pieces/labels, intersection topology, river/palaces, orientation, complete choices, outcomes/claims and analysis provenance without forcing chess squares or shogi promotion/hands/declaration. Extend only fields required by this consumer.
-- [ ] #3 Provide native read-only opponent movement inspection against the exact live or selected history prefix; no TypeScript movement rules or actionable enemy markers. Distinguish view changes from live mutation; requests/late observations never migrate to another selected target.
-- [ ] #4 Run concrete native session/presentation/race fixtures and shared chess/shogi regressions with independent review. A diagnostic harness is separate from finished product UI and excluded from normal distributables.
+- [x] #1 Authoritative serialized native session consumes real xiangqi rules/engine contexts and owns command admission, result acceptance and all actions; preserve exact history/purpose/request/session/generation/limits and cancel/replacement/undo/historical-selection protection.
+- [x] #2 Expose native semantic Red/Black pieces/labels, intersection topology, river/palaces, orientation, complete choices, outcomes/claims and analysis provenance without forcing chess squares or shogi promotion/hands/declaration. Extend only fields required by this consumer.
+- [x] #3 Provide native read-only opponent movement inspection against the exact live or selected history prefix; no TypeScript movement rules or actionable enemy markers. Distinguish view changes from live mutation; requests/late observations never migrate to another selected target.
+- [x] #4 Run concrete native session/presentation/race fixtures and shared chess/shogi regressions with independent review. A diagnostic harness is separate from finished product UI and excluded from normal distributables.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -74,4 +74,24 @@ CI native40692691079 passed all3OS at2b50ac2. Desktop40692691108 attempt1: macOS
 Plan amendment after integrated CI attempt 2: correct the external GUI verification client only. Add at most one logged retry to the explicitly read-only DOM observation and screenshot wrappers for proxy transport resets; generic script commands, mutations, input, session creation/deletion and semantic errors stay single-attempt/fatal. Preserve all actual journey assertions. Cover recovery, exhaustion and non-replay with focused Python boundary tests; obtain independent review before pushing and run actual native desktop CI on the resulting revision. Prior failed Linux observations remain retained evidence; production semantics and task scope are unchanged.
 
 Desktop40692691108 attempt2 job122841060757/artifact12819867638:13of14 phases passed, including normal Shogi play/analysis/save/reopen that failed previously. Claim fixture failed before pressing Claim at pure w.text()/read POST execute/sync (old gui-smoke.py1037); proxy SendRequest/ECONNRESET. Immediate same-session failure PNG/DOM succeeded with expected claim opportunity, ongoing game and0plies. Retained/private/tmp/msh98-100-linux-retry-artifacts.zip. No product defect inferred; no blind third unchanged rerun. External-only client correction adds one logged transport retry through explicit DOM-read/screenshot wrappers, preserves generic script/mutation/input/session single-attempt and every journey assertion. Independent separate xiangqi98_review audited every read call for DOM-only observation, reviewed whitelist/error/exhaustion boundaries and independently passed29 Python tests plus diffcheck; no material findings. Production source unchanged from2b50ac2. New actual package CI required before completion.
+
+Final verification revision6f6ea696e37b0be44288086aed0368bcc7e01b04 is pushed; production code is unchanged from combined tested2b50ac2f8c7fea6174be71a479cf532324347a3e. Native CI40698789051 passed macOS15, Windows2022 and Ubuntu24.04, including shared all-feature tests and unchanged native frontend fixtures. Desktop40698788452: locked frontend/native checks, normal package construction and actual bundled-engine/package smoke passed individually on all3OS. macOS job passed (package evidence only); Windows job passed with actual14/14normal+verification GUI phases, report SHA2567024e3fc2a551c763d0eda0513d70535ed8eb81f9cf3f31035fb0ea01c598169, artifact12822016081. No macOS GUI run is inferred from that CI package job.
+
+Linux job122852618159/artifact12820413138 remains FAILED overall:12/14GUIphases passed, normal-shogi New game one-shot WebDriver click lost its response (RemoteDisconnected/Hyper SendRequest/ECONNRESET) before changing the initial Chess state; downstream reopen then lacked the producer save. Native and package steps passed. Report SHA25607dd84b2406a4f51ecab9a06294baf1a64a042e91cae907dbfd813ca119e1794, retained/private/tmp/msh98-linux-6f6ea69.zip and extracted reports. No mutation was retried, no GUI assertion weakened, no aggregate green desktop workflow claimed. Independent reviewer separately confirmed AC4 requires native session/presentation/race and shared regressions, all directly passed; finished Xiangqi GUI is not a98criterion. Explicit scope assessment permits native-contract completion without extending98 into unrelated GUI infrastructure. Future unstarted MSH-111 retains the recurring baseline/integrated proxy diagnosis and full Linux GUI obligation; no existing dependencies or acceptance criteria changed. Pooling in pinned driver is only a hypothesis, not an established root cause.
+
+Both app-managed worktree branches are clean and ancestors of pushed codex/rewrite; tracked evidence is committed, needed external opponent source/network and final reports retained outside them, ignored files only reproducible target/generated resources, no bound process remains. Archive requests for both returned queued and list_artifacts still shows active attachments: removal/branch deletion is NOT claimed. Their sole remaining purpose is pending app-managed cleanup; primary remains codex/rewrite. No99/76/101/102/103/106implementation started; MSH-45/M4 remain open.
+
+Final separate reviewer xiangqi98_review re-read MSH-111, independently checked exact Windows14/14passed and Linux12/14failed reports/hashes, and confirmed AC1–4 covered by direct native/shared evidence with no unresolved material findings. The final-summary scoped verdict supersedes historical pending-CI notes; no required criterion waived, no failed GUI campaign relabeled passed.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Delivered the authoritative native Xiangqi desktop-session and semantic-presentation boundary, using existing Game/search/process authority. Complete actions and claimant-specific commands, immutable all-event history versus committed analysis prefixes, native Red/Black intersection/river/palace/orientation data, read-only native opponent inspection, and full purpose/history/identity/limit acceptance guards are verified. Cancel/replacement/Undo/view changes retire work; analysis never applies a live action. Fast Unknown stays unscored; ordinary depth1/128 and supported1–3/1–512 limits are unchanged. Shared Chess Full is rejected for Xiangqi; native explicit bounded exact facilities remain separate.
+
+AC1–4 and all completion items have direct evidence:12 focused session tests,4 core helpers,105 all-feature session tests, shared Chess/Shogi regressions, unchanged native frontend fixtures, actual supervised-child probe, strict Clippy/format/workspace checks, and independent source/requirements/adversarial review. Resolved capability/paused-state and cross-game retirement findings were independently rechecked. One root integrator merged98 at16c6827256c8ea65f63f01016f03d177eb6521b8 and independent100 at2ae336819284ac24df8ec3a86c1c1b605ac73bd6. Production tested at2b50ac2f8c7fea6174be71a479cf532324347a3e; external-driver correction tested/pushed at6f6ea696e37b0be44288086aed0368bcc7e01b04.
+
+Final scoped verdict supersedes earlier pending-CI notes. Native CI40698789051 passed all3OS: https://github.com/jweathers777/mShogi/actions/runs/40698789051 . Desktop40698788452 host/frontend/package/bundled-engine checks passed all3; macOS package job and Windows job passed, including actual Windows14/14GUIphases. Linux overall GUI job FAILED12/14 after a one-shot New game proxy reset and consequential missing producer save: https://github.com/jweathers777/mShogi/actions/runs/40698788452 . Every failed attempt remains retained; no assertion or acceptance criterion was weakened and no aggregate green desktop campaign is claimed. Independent reviewer separately rehashed final Windows/Linux reports and confirmed existing98AC coverage. MSH-111 is unstarted future infrastructure diagnosis, not a new gate on unaffected delivery.
+
+Normal product Xiangqi new-game/archive admission stays explicitly gated until99/101; no finished board UI, Xiangqi desktop save/open, timed play or strength claim. MSH-99 is next dependency-satisfied Xiangqi work, still To Do;76/101/102/103 and106 remain future. MSH-45/M4 stay open. Both clean integrated disposable worktrees have queued app archive requests; removal/local-branch deletion remains unconfirmed and their sole remaining purpose is pending cleanup.
+<!-- SECTION:FINAL_SUMMARY:END -->

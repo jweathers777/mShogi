@@ -1,11 +1,11 @@
 ---
 id: MSH-111
 title: Diagnose Linux packaged GUI driver proxy resets without replaying actions
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-28T13:58:00Z'
-updated_date: '2026-10-28T14:52:00Z'
+updated_date: '2026-10-28T14:56:00Z'
 labels:
   - ci
   - verification
@@ -31,15 +31,15 @@ Linux tauri-driver2.0.6 intermittently loses the downstream connection with Hype
 - [x] #1 Concretely diagnose or reproduce the failures with exact driver, WebKit, package, source and environment provenance; distinguish proxy failures from application/native IPC failures and retain original failed evidence.
 - [x] #2 Any correction is external to normal distributables, bounded and independently reviewed. Never automatically replay ambiguously delivered mutations, input or lifecycle actions; semantic errors and exhausted observations remain fatal and all journey assertions remain intact.
 - [x] #3 Record a complete successful actual Linux installed/packaged Chess/Shogi GUI campaign across all current phases, including play, analysis/cancellation, claims, recovery, Save/Open, history and native close/quit. Distinguish driver tests, package checks and actual GUI evidence.
-- [ ] #4 Run focused boundary tests and appropriate compatibility checks for shared verification changes; record exact tested/integrated revisions and CI including failures, without inferring other-platform success.
+- [x] #4 Run focused boundary tests and appropriate compatibility checks for shared verification changes; record exact tested/integrated revisions and CI including failures, without inferring other-platform success.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -62,4 +62,16 @@ Corrected CI2611d09: Rust40706737330 passed on Ubuntu24.04, macOS15 and Windows2
 Actual Linux Desktop40706737407/job122880769223 at2611d09 PASSED all14installed/packaged phases; independent reviewer audited all223GUI file checksums,13normal-package manifest files, verification Deb hash, executed driver/provenance, all14native host/engine absence events and six real-proxy cases, with no findings. No ordinary observation/lookup retry events; five final guard transport closures remain qualified by independent native absence. Windows job122880769625 PASSED all14actual GUI phases; root verified196report file hashes and14shutdown events. Raw reports, exact job logs/package identities/proxy provenance and selected native captures preserved under docs/desktop/evidence/msh111/success with artifact IDs/digests and SHA256index. Final macOS package build still running; no macOS GUI claim. Ready for independent final evidence assessment and integration.
 
 Final independent assessment recommends acceptance/integration: Windows14phases/196hashes, all142selected success-index hashes, Linux14phases/223hashes/sixproxy experiments, allplatform Desktop40706737407 and Rust40706737330 metadata verified at2611d09. No code/evidence blockers; all findings resolved. macOS evidence is native/frontend/package smoke only. Primary MSH-99 remains In Progress with its own owner; no other dependency-ready Ready task currently listed. Integration criterion4/checklist completion awaits recorded codex/rewrite commit and preservation check.
+
+Integrated and pushed codex/rewrite at d85d9e18a19096e71989036cf8c074556caf9350; all14unrelated primary-checkout dirty/untracked files preserved byte-for-byte across integration. Runtime precision: elevated local invocations resolve Python3.14; the explicit final primary-checkout Python3.11.0 run at d85d9e1 also passed36focused tests. Independent reviewer Python3.14.7 passed36; LinuxCI Python3.12.3 passed36. Temporary worktree clean, no running processes, only disposable pycaches ignored; all commits reachable from pushed rewrite. App-managed archive_worktree returned queued and the checkout remains listed. Its sole ongoing purpose is awaiting app-managed archival; no active task/build depends on it. Preserve this cleanup handoff rather than remove an app-managed checkout behind the app.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Completed the bounded Linux GUI transport diagnosis and correction without changing product rules, native IPC, distributables or journey assertions. Checksum-pinned tauri-driver2.0.6 changes only downstream connection pooling, retaining retry_canceled_requests(false); shared waits now fail on semantic/exhausted observations. Mutations/input/lifecycle stay single-attempt, including failure after full downstream delivery. Controlled pooling reproduction is distinct from proof of the exclusive historical WebKit cause.
+
+Coverage: all four ACs supported by original failed reports/logs/captures/package provenance,36focused tests, six actual-proxy cases, complete14-phase Linux installed/packaged GUI campaign and separate14-phase Windows compatibility campaign. Desktop40706737407 and Rust40706737330 passed allthreeplatform jobs at tested2611d0921dd3c637e76b7bb08bc0a23b49d84f33; macOS evidence is native/frontend/package smoke only. Earlier b8beae4 CI runs40706231031/40706230906 were cancelled after the independently found synthetic keep-alive harness flaw; all prior actual GUI failures remain failed and retained. Independent review resolved harness and documentation findings and recommends acceptance.
+
+Integration: implementation b8beae4, corrected harness2611d09, reviewed evidence and mechanical workspace-relative provenance copy d85d9e18a19096e71989036cf8c074556caf9350 integrated/pushed to codex/rewrite. Durable diagnosis, review, raw reports, identities and checksum indexes are under docs/desktop/linux-gui-proxy.md and docs/desktop/evidence/msh111. MSH-99 work preserved and remains independently owned. No further Ready/dependency-ready task listed; no follow-up implementation opened. No acceptance blocker remains. Temporary worktree archival was requested through the app tool and is queued; the clean checkout is retained solely pending that app-managed cleanup.
+<!-- SECTION:FINAL_SUMMARY:END -->

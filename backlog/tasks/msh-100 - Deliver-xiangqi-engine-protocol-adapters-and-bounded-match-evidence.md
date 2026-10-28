@@ -1,10 +1,11 @@
 ---
 id: MSH-100
 title: Deliver xiangqi engine protocol adapters and bounded match evidence
-status: To Do
-assignee: []
+status: In Progress
+assignee:
+  - '@codex-protocol'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-27T15:09:00Z'
+updated_date: '2026-10-28T12:09:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -40,3 +41,18 @@ Future bounded Xiangqi delivery work refined by MSH-80. Intent and acceptance on
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Audit current admitted opponent sources/binaries/network and current UCI/USI process/runner seams; select the minimum evidenced real Xiangqi dialect, documenting rank/alphabet/FEN/options and unsupported conversions without changing selected WXF rules.
+2. Add bounded native-game-owned external protocol adapter and runner, using full known native history, actual measured97limits and explicit claim/no-win policy; supervised handshake/position/go/stop/quit with cancel, generation/identity retirement, bounded I/O/diagnostics and no fallback result.
+3. Record source/binary/network/options/work provenance for actual own-engine self-play and an independently built/admitted opponent match. Native commands/outcomes own results; replay exact commands/moves/events and separate replay determinism from timed rerun claims.
+4. Run protocol-negative/cancel/cleanup/replay/nativefixtures and relevant compatibility checks; independent review, then root integrates completed98/100 branches after both reviews. No desktop/session/inspection/native-rule/search redesign or product UI.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Before source root inspected full98/100 records/deps/ownership/fileboundaries. Parallel independent consumers:100 has96/97Done and no98edge;98 has84/95/97/72Done. Isolatedworker @codex-protocol in appmanaged /Users/johnweathers/.codex/worktrees/xiangqi-protocol100/mShogi on codex/msh100-xiangqi-protocol; root soleintegrator and98builder separatebranch. Own consoleexternalprotocol/mainselectors, runnernewXQmodules/productionbinary entry/tests, protocol-specificdocs/evidence. Do not edit desktop-session/coreinspection/sharedengine/search or globalhandoff/coverage/task98. Escalate actualsharedboundaryneed tointegrator before touching; no dependencies changed forparallelism. Sourcebasee923cfd5712698d4a8b059ffb3b37b0e31de8f8b; pinnedBacklog1.55.1. Refinecurrentplan afterworker inspection beforecoding ifnecessary; root owns finalCI/Done/integration/push. Stop100, no later tasks.
+<!-- SECTION:NOTES:END -->

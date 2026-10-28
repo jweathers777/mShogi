@@ -1,0 +1,15 @@
+{
+  "text": "\u265c\nmShogi\nCHESS \u00b7 UNTIMED\nLocal engine\nUNSAVED\nUntitled game\nNew game\nSave\nSave as\u2026\nOpen\u2026\nYOUR GAME\n\nWhite to move\nYou play White against mShogi\n\u2195\nm\nmShogiBlack\n\u265c\n8\n\u265e\n\u265d\n\u265b\n\u265a\n\u265d\n\u265e\n\u265c\n\u265f\n7\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n6\n5\n4\n3\n\u265f\n2\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265c\n1\na\n\u265e\nb\n\u265d\nc\n\u265b\nd\n\u265a\ne\n\u265d\nf\n\u265e\ng\n\u265c\nh\nInspecting Black pawn. Read-only movement choices; no action can be played.\nY\nYouWhite\nInspecting Black pawn \u00b7 Read-only \u00b7 Hollow rings show movement choices \u00b7 Esc clears\nYour turn\nLive position \u00b7 0 plies\nAnalysis\n\nPlay details\nAnalyze position\nNative engine\nIdle\nPlay limit: depth 2 \u00b7 20000 nodes\nNo engine search has completed in this game.\nGame history\nNative event timeline\nInspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.\n\nInitial known position\n0 plies\n\nMatch started\n0 plies\nPlayed move identifiers\nGame actions\n\nResign game\u2026\nAbout & technical details\n",
+  "focus": {
+    "label": "e7, Black pawn, Inspecting Black pawn",
+    "text": "\u265f",
+    "tag": "g"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 650,
+    "width": 760
+  },
+  "common_actions": [],
+  "inputs": []
+}

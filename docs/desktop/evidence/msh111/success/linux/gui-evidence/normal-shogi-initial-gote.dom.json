@@ -1,0 +1,15 @@
+{
+  "text": "\u265c\nmShogi\nSHOGI \u00b7 UNTIMED\nLocal engine\nUNSAVED\nUntitled shogi game\nNew game\nSave\nSave as\u2026\nOpen\u2026\nYOUR GAME\n\nGote to move\nYou play Gote against mShogi\n\u2195\nFlip board\nm\nmShogiSente\nYour opponent\nNo pieces in hand\n\u9999\n\u8eca\n\u6842\n\u99ac\n\u9280\n\u5c06\n\u91d1\n\u5c06\n\u7389\n\u5c06\n\u91d1\n\u5c06\n\u9280\n\u5c06\n\u6842\n\u99ac\n\u9999\n\u8eca\n\u98db\n\u8eca\n\u89d2\n\u884c\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u89d2\n\u884c\n\u98db\n\u8eca\n\u9999\n\u8eca\n\u6842\n\u99ac\n\u9280\n\u5c06\n\u91d1\n\u5c06\n\u738b\n\u5c06\n\u91d1\n\u5c06\n\u9280\n\u5c06\n\u6842\n\u99ac\n\u9999\n\u8eca\n1\n2\n3\n4\n5\n6\n7\n8\n9\ni\nh\ng\nf\ne\nd\nc\nb\na\nY\nYouGote\nHuman player\nTo move\nNo pieces in hand\nSelect a piece or hand piece, then a marked square.\nArrows \u00b7 Enter \u00b7 Esc\nYour turn\nLive position \u00b7 1 ply\nSelection cancelled.\nAnalysis\n\nPlay details\nAnalyze position\nNative engine\nIdle\nPlay limit: depth 2 \u00b7 5000 nodes\nLast engine turn \u00b7 event 0\n+0.00 pawns\nSente perspective \u00b7 Complete\nCompleted depth\n2\nNodes\n962\nContinuation\n1g \u2192 1f \u00b7 1a \u2192 1b\nGame history\n1 event\n\n0\nStarting position\n\n1\nSente: 1g1f\nGame actions\n\nResign game\u2026\nAbout & technical details\n",
+  "focus": {
+    "label": "5g, Sente pawn",
+    "text": "\u6b69\u5175",
+    "tag": "g"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 820,
+    "width": 1180
+  },
+  "common_actions": [],
+  "inputs": []
+}

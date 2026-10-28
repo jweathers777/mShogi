@@ -1,0 +1,15 @@
+{
+  "text": "\u265c\nmShogi\nSHOGI \u00b7 UNTIMED\nLocal engine\nUNSAVED\nUntitled shogi game\nNew game\nSave\nSave as\u2026\nOpen\u2026\nYOUR GAME\n\nGote to move\nYou play Sente against mShogi\n\u2195\nFlip board\nm\nmShogiGote\nYour opponent\nTo move\n\n\u6b69\n\u5175\n1\n\u738b\n\u5c06\n\u9f8d\n\u738b\n\u6b69\n\u5175\n\u9f8d\n\u738b\n\u7389\n\u5c06\n9\n8\n7\n6\n5\n4\n3\n2\n1\na\nb\nc\nd\ne\nf\ng\nh\ni\nY\nYouSente\nHuman player\nNo pieces in hand\nSelect a piece or hand piece, then a marked square.\nArrows \u00b7 Enter \u00b7 Esc\nPlay paused \u00b7 resume explicitly to continue\nLive position \u00b7 3 plies\nEngine connection failed\nThe current game is intact. No game result is implied.\nRetry engine turn\nPlay is paused.\nResume play\nAnalysis\n\nPlay details\nAnalyze position\nNative engine\nPlay Paused\nPlay limit: depth 2 \u00b7 5000 nodes\nLast engine turn \u00b7 event 3\nNo completed evaluation\nGote perspective \u00b7 Engine failure\nCompleted depth\n\u2014\nNodes\n\u2014\nGame history\n3 events\n\n0\nStarting position\n\n1\nSente: 5e5c+\n\n2\nGote: 4e4g+\n\n3\nSente: P*5e\nGame actions\n\nResign game\u2026\nAbout & technical details\n",
+  "focus": {
+    "label": "5e, Sente pawn",
+    "text": "\u6b69\u5175",
+    "tag": "g"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 820,
+    "width": 1180
+  },
+  "common_actions": [],
+  "inputs": []
+}

@@ -1,0 +1,18 @@
+{
+  "process": {
+    "pid": 38990,
+    "parent_pid": 38988,
+    "start_ticks": "76114",
+    "state": "S",
+    "executable": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+    "command": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop"
+  },
+  "window": {
+    "id": 2097155,
+    "pid": 38990,
+    "title": "mShogi Verification \u2014 shogi-capacity (test state) \u2014 content 1180.0 \u00d7 820.0 logical",
+    "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+  },
+  "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+  "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi"
+}

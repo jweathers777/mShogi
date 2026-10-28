@@ -1,0 +1,15 @@
+{
+  "text": "\u265c\nmShogi\nCHESS \u00b7 UNTIMED\nLocal engine\nUNSAVED\nUntitled game\nNew game\nSave\nSave as\u2026\nOpen\u2026\nYOUR GAME\n\nWhite to move\nYou play White against mShogi\n\u2195\nFlip board\nm\nmShogiBlack\nYour opponent\n8\n\u265a\n\u265f\n7\n6\n5\n4\n3\n2\n1\na\nb\nc\nd\ne\nf\ng\n\u265a\nh\na7 selected. Choose a highlighted destination.\nCOMPLETE YOUR MOVE\n\nChoose promotion\nThe action is applied only after you choose.\n\n\u265b\nQueen\n\n\u265c\nRook\n\n\u265d\nBishop\n\n\u265e\nKnight\nCancel promotion\nY\nYouWhite\nHuman player\nTo move\nSelect a piece, then a destination. Arrow keys move focus \u00b7 Enter or Space selects \u00b7 Escape cancels.\nYour turn\nLive position \u00b7 0 plies\nAnalysis\n\nPlay details\nAnalyze position\nNative engine\nIdle\nPlay limit: depth 2 \u00b7 20000 nodes\nNo engine search has completed in this game.\nGame history\nNative event timeline\nInspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.\n\nInitial known position\n0 plies\n\nMatch started\n0 plies\nPlayed move identifiers\nGame actions\n\nResign game\u2026\nAbout & technical details\n",
+  "focus": {
+    "label": null,
+    "text": "\u265bqueen",
+    "tag": "BUTTON"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 795,
+    "width": 1180
+  },
+  "common_actions": [],
+  "inputs": []
+}

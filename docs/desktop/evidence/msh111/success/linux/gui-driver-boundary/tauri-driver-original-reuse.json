@@ -1,0 +1,28 @@
+{
+  "binary": "/home/runner/work/_temp/mshogi-gui-driver/tauri-driver-original",
+  "binary_sha256": "f2673b1e3f50b44cf8bd5a083b9eef56cf573c148a79eddf51d54b812338b1cc",
+  "mode": "reuse",
+  "client": "explicit HTTP/1.1 keep-alive",
+  "requests": [
+    {
+      "connection": 1,
+      "on_connection": 1,
+      "method": "GET",
+      "path": "/status",
+      "body": "",
+      "connection_header": "keep-alive",
+      "reset_after_receipt": false
+    },
+    {
+      "connection": 1,
+      "on_connection": 2,
+      "method": "POST",
+      "path": "/session/boundary/element/save/click",
+      "body": "{}",
+      "connection_header": "keep-alive",
+      "reset_after_receipt": true
+    }
+  ],
+  "client_events": [],
+  "failure": "RemoteDisconnected('Remote end closed connection without response')"
+}

@@ -1,0 +1,24 @@
+{
+  "text": "\u265c\nmShogi\nCHESS \u00b7 UNTIMED\nLocal engine\nUNSAVED\nUntitled game\nNew game\nSave\nSave as\u2026\nOpen\u2026\nYOUR GAME\n\nWhite to move\nYou play White against mShogi\n\u2195\nFlip board\nm\nmShogiBlack\nYour opponent\n8\n\u265a\n7\n6\n5\n4\n3\n\u265c\n2\n\u265a\n1\na\nb\nc\nd\ne\nf\ng\nh\nY\nYouWhite\nHuman player\nTo move\nSelect a piece, then a destination. Arrow keys move focus \u00b7 Enter or Space selects \u00b7 Escape cancels.\nYour turn\nLive position \u00b7 0 plies\nAnalysis\n\nPlay details\nAnalyze position\nNative engine\nIdle\nPlay limit: depth 2 \u00b7 20000 nodes\nNo engine search has completed in this game.\nGame history\nNative event timeline\nInspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.\n\nInitial known position\n0 plies\n\nMatch started\n0 plies\nPlayed move identifiers\nGame actions\n\nResign game\u2026\nDraw claim available\nAn opportunity to claim, while the game remains ongoing. An intended move is not played by claiming.\nNative draw claim\nIntended-move claim \u00b7 a1b1\nThis action is an unplayed intention. Claiming does not add this move to the board or move history.\nClaim selected draw\nAbout & technical details\n",
+  "focus": {
+    "label": null,
+    "text": "\u265cmShogiCHESS \u00b7 UNTIMEDLocal engineUnsavedUntitled gameNew gameSaveSave as\u2026Open\u2026YOUR GAMEWhite to moveYou play White against mShogi            \u2195 Flip board          mmShogiBlackYour opponent8\u265a76543\u265c2\u265a1abcdefghYYouWhiteHuman playerTo moveSelect a piece, then a destination. Arrow keys move focus \u00b7 Enter or Space selects \u00b7 Escape cancels.Your turnLive position \u00b7 0 plies          AnalysisPlay detailsAnalyze positionNative engineidlePlay limit: depth 2 \u00b7 20000 nodesNo engine search has completed in this game.          Game historyNative event timelineInspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.Initial known position0 pliesMatch started0 pliesPlayed move identifiersMoves appear here as the game is played.Game actions          Resign game\u2026Draw claim availableAn opportunity to claim, while the game remains ongoing. An intended move is not played by claiming.Native draw claimClaim draw: fifty-move rule, intending a1b1 (move not played)Claim draw: fifty-move rule, intending a1b2 (move not played)Claim draw: fifty-move rule, intending a2b2 (move not played)Claim draw: fifty-move rule, intending a2c2 (move not played)Claim draw: fifty-move rule, intending a2d2 (move not played)Claim draw: fifty-move rule, intending a2e2 (move not played)Claim draw: fifty-move rule, intending a2f2 (move not played)Claim draw: fifty-move rule, intending a2g2 (move not played)Claim draw: fifty-move rule, intending a2h2 (move not played)Claim draw: fifty-move rule, intending a2a3 (move not played)Claim draw: fifty-move rule, intending a2a4 (move not played)Claim draw: fifty-move rule, intending a2a5 (move not played)Claim draw: fifty-move rule, intending a2a6 (move not played)Claim draw: fifty-move rule, intending a2a7 (move not played)Claim draw: fifty-move rule, intending a2a8 (move not played)Intended-move claim \u00b7 a1b1This action is an unplayed intention. Claiming does not add this move to the board or move history.Claim selected drawAbout & technical detailsmShogi \u00b7 untimed chess \u00b7 native rules and complete game records.Session detailsSession version 1 \u00b7 snapshot revision 1File detailsNo file selectedDocument revision 0. Modes, limits, match events and observations are saved by the native host.Quit application      \n",
+    "tag": "BODY"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 795,
+    "width": 1180
+  },
+  "common_actions": [],
+  "inputs": [
+    {
+      "min": null,
+      "disabled": false,
+      "type": "select-one",
+      "value": "0",
+      "max": null,
+      "tag": "SELECT"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+Error serving connection: hyper::Error(User(Service), client error (SendRequest)
+
+Caused by:
+    0: connection error
+    1: Connection reset by peer (os error 104))

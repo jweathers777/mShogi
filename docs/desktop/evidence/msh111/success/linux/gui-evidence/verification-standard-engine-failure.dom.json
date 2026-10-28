@@ -1,0 +1,15 @@
+{
+  "text": "\u265c\nmShogi\nCHESS \u00b7 UNTIMED\nLocal engine\nUNSAVED\nUntitled game\nNew game\nSave\nSave as\u2026\nOpen\u2026\nYOUR GAME\n\nBlack to move\nYou play White against mShogi\n\u2195\nFlip board\nm\nmShogiBlack\nYour opponent\nTo move\n\u265c\n8\n\u265e\n\u265d\n\u265b\n\u265a\n\u265d\n\u265e\n\u265c\n7\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n6\n\u265f\n5\n4\n\u265f\n\u265f\n3\n\u265f\n2\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265c\n1\na\n\u265e\nb\n\u265d\nc\n\u265b\nd\n\u265a\ne\n\u265d\nf\n\u265e\ng\n\u265c\nh\nY\nYouWhite\nHuman player\nSelect a piece, then a destination. Arrow keys move focus \u00b7 Enter or Space selects \u00b7 Escape cancels.\nEngine turn paused\nLive position \u00b7 3 plies\nEngine failure \u00b7 play paused\nThe engine could not complete this turn. The game is still ongoing. No engine move or chess result was added.\nRetry the engine turn to continue from this position, or start a new game.\nNative status details\nAnalysis\n\nPlay details\nAnalyze position\nNative engine\nFailed\nPlay limit: depth 2 \u00b7 20000 nodes\nEngine diagnostic details\nRetry engine turn\nRecorded search observations (2)\nGame history\nNative event timeline\nInspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.\n\nInitial known position\n0 plies\n\nMatch started\n0 plies\n\ne2e4\n1 plies\n\na7a5\n2 plies\n\nd2d4\n3 plies\nPlayed move identifiers\nGame actions\n\nResign game\u2026\nAbout & technical details\n",
+  "focus": {
+    "label": "d4, White pawn",
+    "text": "\u265f",
+    "tag": "g"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 795,
+    "width": 1180
+  },
+  "common_actions": [],
+  "inputs": []
+}

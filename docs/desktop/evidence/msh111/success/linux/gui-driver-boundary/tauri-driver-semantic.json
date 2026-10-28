@@ -1,0 +1,28 @@
+{
+  "binary": "/home/runner/work/_temp/mshogi-gui-driver/tauri-driver",
+  "binary_sha256": "94e7345a51842e7a3f78bbd2194b1675cc02f86a9b7ae7ca986b0bf447b754ab",
+  "mode": "semantic",
+  "client": "actual Webview urllib transport",
+  "requests": [
+    {
+      "connection": 1,
+      "on_connection": 1,
+      "method": "GET",
+      "path": "/status",
+      "body": "",
+      "connection_header": "close",
+      "reset_after_receipt": false
+    },
+    {
+      "connection": 2,
+      "on_connection": 1,
+      "method": "POST",
+      "path": "/session/boundary/execute/sync",
+      "body": "{\"script\": \"return document.body.innerText\", \"args\": []}",
+      "connection_header": "close",
+      "reset_after_receipt": false
+    }
+  ],
+  "client_events": [],
+  "failure": "RuntimeError('{\"error\": \"no such element\", \"message\": \"deliberate semantic rejection\"}')"
+}

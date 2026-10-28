@@ -1,0 +1,56 @@
+{
+  "text": "\u265c\nmShogi\nCHESS \u00b7 UNTIMED\nLocal engine\nUNSAVED\nUntitled game\nNew game\nSave\nSave as\u2026\nOpen\u2026\nYOUR GAME\n\nWhite to move\nYou play White against mShogi\n\u2195\nFlip board\nm\nmShogiBlack\nYour opponent\n\u265c\n8\n\u265e\n\u265d\n\u265b\n\u265a\n\u265d\n\u265e\n\u265c\n\u265f\n7\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n6\n5\n4\n3\n\u265f\n2\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265c\n1\na\n\u265e\nb\n\u265d\nc\n\u265b\nd\n\u265a\ne\n\u265d\nf\n\u265e\ng\n\u265c\nh\nY\nYouWhite\nHuman player\nTo move\nSelect a piece, then a destination. Arrow keys move focus \u00b7 Enter or Space selects \u00b7 Escape cancels.\nPlay paused \u00b7 resume explicitly to continue\nLive position \u00b7 0 plies\nApplication limit reached\nApplication capacity: all 256 observation slots are retained. Save this complete document, then start a new game/document to continue analysis or engine play.\nThis is an application resource limit. No chess result or illegal move is implied. Your complete accepted game and observations are preserved.\nSave or Save as to keep this document, then start a new game or open another document to continue. Saving and reopening retains all recorded history and observations; it does not reset their limits.\nAnalysis\n\nPlay details\nAnalyze position\nRead-only analysis\nIncomplete\nStarting analysis pauses play. Results suggest or inspect; they never play a move, claim a draw or change the live game.\nSelected: Live game \u00b7 live position\nBounded move search\n\nSearch depth\nNode budget\nStart move analysis\nAdvanced: Full mating reachability\nFinal native observations only. Every request has work budgets and a 15-second process watchdog; these are not hard realtime guarantees.\nAnalysis incomplete. A work limit or stop ended the request for Live position after 0 plies, White to move; it does not conclude the live game. Suggestions were not played.\nLive position after 0 plies\n\nWhite to move \u00b7 Bounded move search\nRecorded limit: depth 1, 0 nodes.\nNo completed evaluation\n\nCompleted depth\n0\nVisited nodes\n0\nAnalysis technical details\nRecorded search observations (256)\nGame history\nNative event timeline\nInspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.\n\nInitial known position\n0 plies\n\nMatch started\n0 plies\nPlayed move identifiers\nGame actions\n\nResign game\u2026\nAbout & technical details\n",
+  "focus": {
+    "label": "Document capacity",
+    "text": "Application limit reachedApplication capacity: all 256 observation slots are retained. Save this complete document, then start a new game/document to continue analysis or engine play.This is an application resource limit. No chess result or illegal move is implied. Your complete accepted game and observations are preserved.Save or Save as to keep this document, then start a new game or open another document to continue. Saving and reopening retains all recorded history and observations; it does not reset their limits.",
+    "tag": "SECTION"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 795,
+    "width": 1180
+  },
+  "common_actions": [],
+  "inputs": [
+    {
+      "min": "1",
+      "disabled": false,
+      "type": "number",
+      "value": "1",
+      "max": "8",
+      "tag": "INPUT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "0",
+      "max": "5000000",
+      "tag": "INPUT"
+    },
+    {
+      "min": null,
+      "disabled": false,
+      "type": "select-one",
+      "value": "either",
+      "max": null,
+      "tag": "SELECT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "1000",
+      "max": "100000",
+      "tag": "INPUT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "10000",
+      "max": "1000000",
+      "tag": "INPUT"
+    }
+  ]
+}

@@ -9,7 +9,7 @@ measurement. MSH-98 is an independent native desktop-session consumer.
 ## Selected external dialect
 
 The minimum delivered dialect is **`pikafish_uci0_9`**, pinned to the actually
-built Pikafish `9d7833aa113626b3ea63ad83f49fb9b456bd5839`. The executable
+built immutable-release Pikafish `4c17cee11f888ae1d48a9494f2e2239f019f0a1f`. The executable
 `mshogi --game xiangqi uci` implements the compatible bounded untimed subset.
 Bare `mshogi uci` remains Chess; Shogi still uses USI. Neither UCCI nor Fairy's
 generic UCI1-10 dialect is advertised or silently converted.

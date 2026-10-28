@@ -122,7 +122,7 @@ fn selected_help_profiles_and_argument_admission_are_explicit() {
     for (args, message) in [
         (vec!["--game"], "requires"),
         (vec!["--game", "--help"], "missing game"),
-        (vec!["--game", "xiangqi", "shell"], "unknown"),
+        (vec!["--game", "xiangqii", "shell"], "unknown"),
         (
             vec!["--game", "chess", "--game", "shogi", "shell"],
             "conflicting",

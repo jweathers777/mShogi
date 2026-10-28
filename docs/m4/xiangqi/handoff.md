@@ -1,6 +1,14 @@
 # Xiangqi native/shared delivery handoff
 
-## MSH-84 current consumer-readiness boundary
+## Current console delivery boundary
+
+MSH-96 supplies the independently usable [native console](console.md), including
+complete command history/claims/outcomes, canonical Save/Load with native undo,
+and explicit bounded read-only exact diagnostics. Shared Xiangqi engine execution
+remains unsupported/unscored until MSH-97; no external protocol or desktop
+consumer is implied. MSH-45/M4 remain open and review106 remains unstarted.
+
+## MSH-84 consumer-readiness boundary (preserved snapshot)
 
 Completed native slices MSH-91–95 and MSH-105 are reviewed together through
 [the native consumer contract](native-consumer-contract.md) and

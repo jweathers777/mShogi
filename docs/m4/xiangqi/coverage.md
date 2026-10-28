@@ -9,7 +9,9 @@ recorded in [foundation evidence](board-foundation-evidence.md),
 restricted reference admission does not admit history helpers or playing strength;
 the native history/game contract is now implemented in MSH-94 (see below).
 MSH-95 adds [typed record/context routing](shared-routing.md) with explicit
-unsupported execution. There is still no Xiangqi engine, console or desktop consumer.
+unsupported execution. MSH-96 adds the [standalone native console](console.md),
+including bounded explicit exact diagnostics and lossless canonical restoration.
+There is still no Xiangqi engine or desktop consumer; MSH-97 owns engine delivery.
 All original MSH-45 requirements remain in M4. Profile selection is not delivery.
 
 | Required scope / clause | Independent expectations / evidence plan | Delivery owner and gate |

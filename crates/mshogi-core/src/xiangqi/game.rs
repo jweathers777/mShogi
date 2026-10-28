@@ -405,6 +405,10 @@ impl Game {
     pub fn standard(policy: ClaimPolicy) -> Result<Self, GameError> {
         Self::from_root(PositionRoot::standard(), policy)
     }
+    /// Recorded optional/automatic native claim policy, independent of turn.
+    pub const fn claim_policy(&self) -> ClaimPolicy {
+        self.policy
+    }
     /// Exact authoritative current position.
     pub fn position(&self) -> &Position {
         &self.position

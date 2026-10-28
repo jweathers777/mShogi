@@ -5,7 +5,7 @@ status: Done
 assignee:
   - '@codex-protocol'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-28T13:21:00Z'
+updated_date: '2026-10-28T13:59:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -69,6 +69,8 @@ Root sole integration:2ae336819284ac24df8ec3a86c1c1b605ac73bd6 into codex/rewrit
 Exact final combined-source2b50ac2f8c7fea6174be71a479cf532324347a3e verification passed: fmt; strict workspace/all-target Clippy; cargo test --workspace --locked; desktop all-feature tests/Clippy; unchanged native frontend fixtures; cargo build --release --locked --bin mshogi --bin mshogi-match. Fresh actual experiment command: python3 docs/m4/xiangqi/protocol/reproduce.py --mshogi target/release/mshogi --runner target/release/mshogi-match --opponent /private/tmp/msh100-pikafish-stable/src/pikafish --network /private/tmp/msh100-release-network/pikafish.nnue --out /private/tmp/msh98-100-integrated-protocol. All12 games replayed, all three experiment verdicts passed, finite-work selfplay repeat equality true. Canonical games/conclusions/scores and actor/reply/context digests separately compared equal to all committed8d6a0dd reports; timings/PIDs excluded. Actual native binary SHA2562d7c08ba819360c05899c626efd67e7abe23a3a95382bed9a6c6c9885b440af1, runner2bac763ed9d7a77e2704dfa16f07c41d99b420248898a32454d6669c9a33c90c; independent engine/network hashes unchanged/admitted. Final manifest SHA256b81948791dbb1948fd9caae09147ae0a6aa208883bcf491cdc793e7a2e478ebe; raw report hashes selfplay5c300b88f382ed7c8c261a517d96e8a2010d5b305d96974917d95e92c3a7d585, opponentb1481784c8afffc47182e1cd4e04c2236e95ced49bc1f6b3be641d2bc0294c18, repeatbc3031edb2acb940b3715ea71fa28feeaaaf66ec76e98f29ec6c9af0bb65addc. Reproducible final raw files remain/private/tmp; original actual reports/configs/provenance are committed. Native CI40692691079/desktop40692691108 pending at this note; no platform/strength/UI success inferred.
 
 Applicable native CI40692691079 completed success on all three OS at exact2b50ac2 source; protocol completion relies on actual native execution and external interoperability evidence, not pending GUI work. Separate integrator completion recorded after source push; no production difference from tested2b50ac2.
+
+Final native CI40698789051 also passed all3OS at6f6ea696e37b0be44288086aed0368bcc7e01b04, production unchanged from tested2b50ac2. Desktop40698788452 macOS/Windows jobs passed; Linux host/frontend/normal+verification package/bundled-engine checks passed but overall GUI job failed on unrelated one-shot New game proxy reset. All failures remain recorded; unstarted MSH-111 owns separate infrastructure diagnosis without altering100completion or native WXF contracts. Both source branches are clean/integrated/pushed; app-managed archive requests remain queued, so worktree/branch removal is not claimed.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

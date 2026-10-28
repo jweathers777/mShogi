@@ -856,10 +856,10 @@ fn native_search_presentation_preserves_target_purpose_and_real_terminal_distanc
 }
 
 #[test]
-fn xiangqi_tags_do_not_enable_desktop_creation_replacement_or_retire_live_work() {
+fn xiangqi_product_creation_is_still_gated_but_native_replacement_is_admitted() {
     use mshogi_core::xiangqi as x;
-    let mut c = controller();
     for shogi in [false, true] {
+        let mut c = controller();
         if shogi {
             replace(&mut c, s::Game::new(), s::Side::Gote);
         }
@@ -880,20 +880,20 @@ fn xiangqi_tags_do_not_enable_desktop_creation_replacement_or_retire_live_work()
             "operation": { "kind": "replace", "record": native, "human": NativeSide::Xiangqi(x::Side::Red) }
         });
         let command = SharedDesktopCommand::from_json(&request.to_string()).unwrap();
-        let error = c.shared_command(command).unwrap_err();
-        assert!(error.contains("not supported"));
         assert_eq!(c.shared_token(), token);
         assert_eq!(c.shared_open_token(), open);
-        let after = c.shared_snapshot();
-        assert_eq!(after.context, before.context);
-        assert_eq!(after.game, before.game);
         assert_eq!(
             c.shared.shogi.as_ref().and_then(|g| g.pending.clone()),
             pending
         );
-        assert_eq!(
-            serde_json::to_value(after.document).unwrap(),
-            serde_json::to_value(before.document).unwrap()
+        let after = c.shared_command(command).unwrap();
+        assert_eq!(after.game, GameKind::Xiangqi);
+        assert_ne!(after.token, token);
+        assert!(after.paused);
+        assert!(!after.capabilities.save);
+        assert!(
+            c.queue_shared_save(PathBuf::from("/unused/xq-save"))
+                .is_err()
         );
     }
 }

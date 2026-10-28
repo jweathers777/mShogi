@@ -58,8 +58,6 @@ fn side(id: NativeSide) -> PresentedSide {
         NativeSide::Chess(Color::Black) => (RulesProfile::ChessMatchV1, "Black", false),
         NativeSide::Shogi(s::Side::Sente) => (RulesProfile::ShogiCsa36V1, "Sente", true),
         NativeSide::Shogi(s::Side::Gote) => (RulesProfile::ShogiCsa36V1, "Gote", false),
-        // Qualified labels are type compatibility only; desktop admission below
-        // rejects Xiangqi until its actual native session/presentation consumer.
         NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Red) => {
             (RulesProfile::XiangqiWxf2018V1, "Red", true)
         }
@@ -125,7 +123,6 @@ pub struct PresentedChoice {
 #[derive(Clone, Debug, Serialize)]
 #[serde(tag = "kind", rename_all = "snake_case")]
 pub enum ChoiceOrigin {
-    /// Board square occupied by the moving piece.
     /// Native intersection occupied by the moving piece (not a square cell).
     Intersection {
         /// Native intersection coordinate.
@@ -152,7 +149,7 @@ pub struct Completion {
     /// Optional decorative glyph; the label is always available.
     pub glyph: Option<String>,
 }
-/// Native square geometry; no rules or coordinate parsing in the webview.
+/// Native geometry metadata; no rules or coordinate parsing in the webview.
 #[derive(Clone, Debug, Serialize)]
 pub struct BoardDescriptor {
     /// Explicit native intersection geometry where applicable; absent for existing square games.
@@ -401,7 +398,7 @@ pub struct SharedSnapshot {
     pub turn: PresentedSide,
     /// Native side identities and labels in first-mover order.
     pub sides: Vec<PresentedSide>,
-    /// Native square geometry descriptor.
+    /// Native geometry descriptor; explicit intersection topology where applicable.
     pub board: BoardDescriptor,
     /// Native display ordering for each side at the bottom.
     pub orientations: Vec<Orientation>,
@@ -480,7 +477,7 @@ impl SharedDesktopCommand {
         })
     }
 }
-/// Small concrete dispatch across two native desktop games.
+/// Small concrete dispatch across three native games; product admission is separate.
 #[derive(Clone, Debug, Serialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum SessionOperation {

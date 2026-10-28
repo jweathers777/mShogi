@@ -922,6 +922,15 @@ impl DesktopController {
             return Ok(self.shared_snapshot());
         }
         if self.shared.xiangqi.is_some() {
+            if self.admission_token.is_some() {
+                if !matches!(command.operation, SessionOperation::Cancel {}) {
+                    return Err(
+                        "Wait for native replacement admission before another command.".into(),
+                    );
+                }
+                self.retire_admission();
+            }
+            self.last_command_receipt = None;
             return self.xiangqi_command(command.operation);
         }
         if self.shared.shogi.is_none() {

@@ -699,3 +699,32 @@ fn chess_full_and_historical_mutation_are_explicitly_unsupported_without_retirin
     assert_eq!(c.shared_token(), before);
     assert!(!c.accept_shared(execute(&request)));
 }
+
+#[test]
+fn cancel_retires_pending_cross_game_admission_and_its_receipt_immediately() {
+    let mut c = controller();
+    replace(
+        &mut c,
+        &x::Game::standard(x::ClaimPolicy::Explicit).unwrap(),
+        x::Side::Red,
+    );
+    let before = native(&c);
+    let candidate =
+        ShogiSession::restored(&s::GameRecord::from_game(&s::Game::new()), s::Side::Sente).unwrap();
+    let receipt = c
+        .queue_native_candidate(candidate, None, None, true)
+        .unwrap();
+    assert_eq!(receipt.completion(), None);
+    assert!(send(&mut c, SessionOperation::Resume {}).is_err());
+    let cancelled = send(&mut c, SessionOperation::Cancel {}).unwrap();
+    assert_eq!(cancelled.game, GameKind::Xiangqi);
+    assert_eq!(native(&c), before);
+    assert_eq!(cancelled.phase, EnginePhase::Cancelled);
+    assert_eq!(cancelled.capacity.status, CapacityPhase::Available);
+    assert!(receipt.completion().unwrap().is_err());
+    assert!(c.shared.admission.is_none());
+    assert!(c.admission_token.is_none());
+    for _ in 0..3 {
+        assert_eq!(c.shared_snapshot().game, GameKind::Xiangqi);
+    }
+}

@@ -14,6 +14,7 @@ mod shogi_session;
 mod uci;
 mod usi;
 mod xiangqi_session;
+mod xiangqi_uci;
 
 use session::{MAX_LINE_BYTES, Next, Session};
 
@@ -81,8 +82,8 @@ fn arguments(args: impl Iterator<Item = std::ffi::OsString>) -> Result<Invocatio
     } else {
         selected.unwrap_or(Game::Chess)
     };
-    if mode == "uci" && game != Game::Chess {
-        return Err("UCI supports chess only; select --game shogi usi for shogi".into());
+    if mode == "uci" && game == Game::Shogi {
+        return Err("UCI supports chess or xiangqi; select --game shogi usi for shogi".into());
     }
     if !matches!(
         mode.as_str(),
@@ -112,7 +113,7 @@ Usage: mshogi [--game chess|shogi|xiangqi] [--help | --version | profile | shell
   profile        Show the selected native rules profile and actual coverage
   shell          Read {game} commands from standard input, one per line
   shogi          Compatibility alias for --game shogi shell
-  uci            Chess UCI adapter (rejects --game shogi)
+  uci            Selected Chess UCI or Xiangqi UCI0-9 adapter (rejects shogi)
   usi            Untimed bounded USI shogi adapter (bare usi selects shogi)
   internal-search  Structured native search; request supplies game, no --game
 
@@ -154,7 +155,7 @@ fn main() -> ExitCode {
                 println!("Target rules profile: {}", mshogi_core::xiangqi::PROFILE_ID);
                 println!("Edition: {}", mshogi_core::xiangqi::PROFILE_EDITION);
                 println!(
-                    "Coverage: untimed native intersection board, complete legal actions/undo, known history/WXF warnings/claims/conclusions, strict canonical envelopes, local perft/divide0..3, fast and explicit bounded exact no-win diagnostics; exact Unknown stays unresolved/unscored. Bounded native engine-turn and read-only move-analysis execution are available through internal-search; external Xiangqi protocol is not yet available."
+                    "Coverage: untimed native intersection board, complete legal actions/undo, known history/WXF warnings/claims/conclusions, strict canonical envelopes, local perft/divide0..3, fast and explicit bounded exact no-win diagnostics; exact Unknown stays unresolved/unscored. Bounded native engine-turn and read-only move-analysis execution are available through internal-search; untimed bounded Pikafish-compatible UCI0-9 is available via --game xiangqi uci."
                 );
             }
         },
@@ -178,7 +179,13 @@ fn main() -> ExitCode {
                 return shell(|line, out| session.execute(line, out));
             }
         },
-        "uci" => return uci::run(),
+        "uci" => {
+            return match game {
+                Game::Chess => uci::run(),
+                Game::Xiangqi => xiangqi_uci::run(),
+                Game::Shogi => unreachable!("validated protocol"),
+            };
+        }
         "usi" => return usi::run(),
         "internal-search" => {
             if let Err(error) = mshogi_engine::serve_once(io::stdin().lock(), io::stdout().lock()) {

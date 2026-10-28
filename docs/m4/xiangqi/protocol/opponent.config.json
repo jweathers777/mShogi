@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "profile": "mshogi.xiangqi.wxf2018.v1",
+  "dialect": "pikafish_uci0_9",
+  "claim_policy": "auto_valid_claims",
+  "id": "msh100-opponent",
+  "time_control": "untimed",
+  "process_policy": "fresh_per_turn",
+  "engines": [
+    {
+      "path": "/Users/johnweathers/.codex/worktrees/xiangqi-protocol100/mShogi/target/release/mshogi",
+      "args": [
+        "--game",
+        "xiangqi",
+        "uci"
+      ],
+      "options": [],
+      "model_path": null,
+      "model_identity": "mshogi.xiangqi.material-advance.v1; mshogi.xiangqi.full-width.v1; sound_fast_only",
+      "deterministic": true
+    },
+    {
+      "path": "/private/tmp/msh100-pikafish-stable/src/pikafish",
+      "args": [],
+      "options": [
+        {
+          "name": "Threads",
+          "value": "1"
+        },
+        {
+          "name": "Hash",
+          "value": "16"
+        },
+        {
+          "name": "Ponder",
+          "value": "false"
+        },
+        {
+          "name": "MultiPV",
+          "value": "1"
+        },
+        {
+          "name": "EvalFile",
+          "value": "/private/tmp/msh100-release-network/pikafish.nnue"
+        }
+      ],
+      "model_path": "/private/tmp/msh100-release-network/pikafish.nnue",
+      "model_identity": "Pikafish2026-09-06 NNUE sha256:7d13d73569a9b571ba0eb20cf1596247bc2a42738967e61afef6482b231e900e",
+      "deterministic": true
+    }
+  ],
+  "openings": [
+    {
+      "id": "standard-functional",
+      "fen": null,
+      "canonical": null,
+      "moves": []
+    },
+    {
+      "id": "MSH105-P1-natural-stalemate",
+      "fen": "5k3/9/4R4/9/9/9/9/9/9/3K5 w - - 0 1",
+      "canonical": null,
+      "moves": []
+    }
+  ],
+  "paired": true,
+  "work": [
+    {
+      "depth": 1,
+      "nodes": 128,
+      "movetime_ms": null
+    },
+    {
+      "depth": 1,
+      "nodes": 128,
+      "movetime_ms": null
+    }
+  ],
+  "max_actions": 4,
+  "max_game_ms": 30000,
+  "watchdogs": {
+    "handshake_ms": 3000,
+    "ready_ms": 3000,
+    "response_ms": 5000,
+    "write_ms": 1000,
+    "cleanup_ms": 1000
+  },
+  "io": {
+    "line_bytes": 4096,
+    "queued_lines": 32,
+    "transcript_bytes": 262144,
+    "stderr_bytes": 4096,
+    "command_bytes": 4096
+  }
+}

@@ -1,0 +1,1651 @@
+{
+  "format": "mshogi.xiangqi.playing-opponent-admission.v1",
+  "source": "4c17cee11f888ae1d48a9494f2e2239f019f0a1f",
+  "observations": [
+    {
+      "id": "XQ-F001-red",
+      "expected": {
+        "source": "tests/fixtures/xiangqi/board.json",
+        "legal_moves": [
+          "a0a1",
+          "a0a2",
+          "a3a4",
+          "b0a2",
+          "b0c2",
+          "b2a2",
+          "b2b1",
+          "b2b3",
+          "b2b4",
+          "b2b5",
+          "b2b6",
+          "b2b9",
+          "b2c2",
+          "b2d2",
+          "b2e2",
+          "b2f2",
+          "b2g2",
+          "c0a2",
+          "c0e2",
+          "c3c4",
+          "d0e1",
+          "e0e1",
+          "e3e4",
+          "f0e1",
+          "g0e2",
+          "g0i2",
+          "g3g4",
+          "h0g2",
+          "h0i2",
+          "h2c2",
+          "h2d2",
+          "h2e2",
+          "h2f2",
+          "h2g2",
+          "h2h1",
+          "h2h3",
+          "h2h4",
+          "h2h5",
+          "h2h6",
+          "h2h9",
+          "h2i2",
+          "i0i1",
+          "i0i2",
+          "i3i4"
+        ],
+        "reasoning": "Setup-derived exhaustive list: 4 rook + 4 horse + 4 elephant + 2 advisor + 1 general + 24 cannon + 5 soldier = 44. No perft or comparator output used."
+      },
+      "observation": {
+        "legal_moves": [
+          "a0a1",
+          "a0a2",
+          "a3a4",
+          "b0a2",
+          "b0c2",
+          "b2a2",
+          "b2b1",
+          "b2b3",
+          "b2b4",
+          "b2b5",
+          "b2b6",
+          "b2b9",
+          "b2c2",
+          "b2d2",
+          "b2e2",
+          "b2f2",
+          "b2g2",
+          "c0a2",
+          "c0e2",
+          "c3c4",
+          "d0e1",
+          "e0e1",
+          "e3e4",
+          "f0e1",
+          "g0e2",
+          "g0i2",
+          "g3g4",
+          "h0g2",
+          "h0i2",
+          "h2c2",
+          "h2d2",
+          "h2e2",
+          "h2f2",
+          "h2g2",
+          "h2h1",
+          "h2h3",
+          "h2h4",
+          "h2h5",
+          "h2h6",
+          "h2h9",
+          "h2i2",
+          "i0i1",
+          "i0i2",
+          "i3i4"
+        ]
+      },
+      "process": {
+        "traffic": [
+          {
+            "at_ns": 230875,
+            "direction": "command",
+            "text": "uci"
+          },
+          {
+            "at_ns": 4686292,
+            "direction": "response",
+            "text": "Pikafish dev-20260906-4c17cee1 by the Pikafish developers (see AUTHORS file)"
+          },
+          {
+            "at_ns": 197908959,
+            "direction": "response",
+            "text": "id name Pikafish dev-20260906-4c17cee1"
+          },
+          {
+            "at_ns": 197917750,
+            "direction": "response",
+            "text": "id author the Pikafish developers (see AUTHORS file)"
+          },
+          {
+            "at_ns": 197919625,
+            "direction": "response",
+            "text": ""
+          },
+          {
+            "at_ns": 197920917,
+            "direction": "response",
+            "text": "option name Debug Log File type string default <empty>"
+          },
+          {
+            "at_ns": 197921959,
+            "direction": "response",
+            "text": "option name NumaPolicy type string default auto"
+          },
+          {
+            "at_ns": 197923000,
+            "direction": "response",
+            "text": "option name Threads type spin default 1 min 1 max 1024"
+          },
+          {
+            "at_ns": 197923959,
+            "direction": "response",
+            "text": "option name Hash type spin default 16 min 1 max 33554432"
+          },
+          {
+            "at_ns": 197924917,
+            "direction": "response",
+            "text": "option name Clear Hash type button"
+          },
+          {
+            "at_ns": 197925834,
+            "direction": "response",
+            "text": "option name Ponder type check default false"
+          },
+          {
+            "at_ns": 197926792,
+            "direction": "response",
+            "text": "option name MultiPV type spin default 1 min 1 max 128"
+          },
+          {
+            "at_ns": 197927709,
+            "direction": "response",
+            "text": "option name Move Overhead type spin default 10 min 0 max 5000"
+          },
+          {
+            "at_ns": 197928625,
+            "direction": "response",
+            "text": "option name nodestime type spin default 0 min 0 max 10000"
+          },
+          {
+            "at_ns": 197929500,
+            "direction": "response",
+            "text": "option name UCI_ShowWDL type check default false"
+          },
+          {
+            "at_ns": 197930375,
+            "direction": "response",
+            "text": "option name EvalFile type string default pikafish.nnue"
+          },
+          {
+            "at_ns": 197931292,
+            "direction": "response",
+            "text": "uciok"
+          },
+          {
+            "at_ns": 198106917,
+            "direction": "command",
+            "text": "setoption name Threads value 1"
+          },
+          {
+            "at_ns": 198109459,
+            "direction": "command",
+            "text": "setoption name Hash value 16"
+          },
+          {
+            "at_ns": 198110917,
+            "direction": "command",
+            "text": "setoption name Ponder value false"
+          },
+          {
+            "at_ns": 198112125,
+            "direction": "command",
+            "text": "setoption name MultiPV value 1"
+          },
+          {
+            "at_ns": 198113375,
+            "direction": "command",
+            "text": "setoption name EvalFile value /private/tmp/msh100-release-network/pikafish.nnue"
+          },
+          {
+            "at_ns": 198114625,
+            "direction": "command",
+            "text": "isready"
+          },
+          {
+            "at_ns": 207631250,
+            "direction": "response",
+            "text": "info string Using 1 thread"
+          },
+          {
+            "at_ns": 358566750,
+            "direction": "response",
+            "text": "readyok"
+          },
+          {
+            "at_ns": 358584834,
+            "direction": "command",
+            "text": "ucinewgame"
+          },
+          {
+            "at_ns": 358586250,
+            "direction": "command",
+            "text": "isready"
+          },
+          {
+            "at_ns": 362537667,
+            "direction": "response",
+            "text": "readyok"
+          },
+          {
+            "at_ns": 362572250,
+            "direction": "command",
+            "text": "position fen rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1"
+          },
+          {
+            "at_ns": 362573917,
+            "direction": "command",
+            "text": "go perft 1"
+          },
+          {
+            "at_ns": 362704125,
+            "direction": "response",
+            "text": "info string Available processors: 0-9"
+          },
+          {
+            "at_ns": 362706542,
+            "direction": "response",
+            "text": "info string Using 1 thread"
+          },
+          {
+            "at_ns": 362708459,
+            "direction": "response",
+            "text": "info string NNUE evaluation using /private/tmp/msh100-release-network/pikafish.nnue (64MiB, (62083, 1024, 32, 32, 1))"
+          },
+          {
+            "at_ns": 362709917,
+            "direction": "response",
+            "text": "info string Network replica 1: Shared memory."
+          },
+          {
+            "at_ns": 362710917,
+            "direction": "response",
+            "text": "a3a4: 1"
+          },
+          {
+            "at_ns": 362711917,
+            "direction": "response",
+            "text": "c3c4: 1"
+          },
+          {
+            "at_ns": 362712709,
+            "direction": "response",
+            "text": "e3e4: 1"
+          },
+          {
+            "at_ns": 362713625,
+            "direction": "response",
+            "text": "g3g4: 1"
+          },
+          {
+            "at_ns": 362714417,
+            "direction": "response",
+            "text": "i3i4: 1"
+          },
+          {
+            "at_ns": 362715209,
+            "direction": "response",
+            "text": "c0a2: 1"
+          },
+          {
+            "at_ns": 362716042,
+            "direction": "response",
+            "text": "c0e2: 1"
+          },
+          {
+            "at_ns": 362723084,
+            "direction": "response",
+            "text": "g0e2: 1"
+          },
+          {
+            "at_ns": 362723917,
+            "direction": "response",
+            "text": "g0i2: 1"
+          },
+          {
+            "at_ns": 362724834,
+            "direction": "response",
+            "text": "d0e1: 1"
+          },
+          {
+            "at_ns": 362725667,
+            "direction": "response",
+            "text": "f0e1: 1"
+          },
+          {
+            "at_ns": 362726459,
+            "direction": "response",
+            "text": "b0a2: 1"
+          },
+          {
+            "at_ns": 362727250,
+            "direction": "response",
+            "text": "b0c2: 1"
+          },
+          {
+            "at_ns": 362728042,
+            "direction": "response",
+            "text": "h0g2: 1"
+          },
+          {
+            "at_ns": 362728875,
+            "direction": "response",
+            "text": "h0i2: 1"
+          },
+          {
+            "at_ns": 362729625,
+            "direction": "response",
+            "text": "b2b1: 1"
+          },
+          {
+            "at_ns": 362730584,
+            "direction": "response",
+            "text": "b2a2: 1"
+          },
+          {
+            "at_ns": 362731417,
+            "direction": "response",
+            "text": "b2c2: 1"
+          },
+          {
+            "at_ns": 362732209,
+            "direction": "response",
+            "text": "b2d2: 1"
+          },
+          {
+            "at_ns": 362735875,
+            "direction": "response",
+            "text": "b2e2: 1"
+          },
+          {
+            "at_ns": 362736709,
+            "direction": "response",
+            "text": "b2f2: 1"
+          },
+          {
+            "at_ns": 362737542,
+            "direction": "response",
+            "text": "b2g2: 1"
+          },
+          {
+            "at_ns": 362738375,
+            "direction": "response",
+            "text": "b2b3: 1"
+          },
+          {
+            "at_ns": 362739292,
+            "direction": "response",
+            "text": "b2b4: 1"
+          },
+          {
+            "at_ns": 362740084,
+            "direction": "response",
+            "text": "b2b5: 1"
+          },
+          {
+            "at_ns": 362740875,
+            "direction": "response",
+            "text": "b2b6: 1"
+          },
+          {
+            "at_ns": 362741667,
+            "direction": "response",
+            "text": "b2b9: 1"
+          },
+          {
+            "at_ns": 362742459,
+            "direction": "response",
+            "text": "h2h1: 1"
+          },
+          {
+            "at_ns": 362743292,
+            "direction": "response",
+            "text": "h2c2: 1"
+          },
+          {
+            "at_ns": 362744084,
+            "direction": "response",
+            "text": "h2d2: 1"
+          },
+          {
+            "at_ns": 362744917,
+            "direction": "response",
+            "text": "h2e2: 1"
+          },
+          {
+            "at_ns": 362749417,
+            "direction": "response",
+            "text": "h2f2: 1"
+          },
+          {
+            "at_ns": 362750292,
+            "direction": "response",
+            "text": "h2g2: 1"
+          },
+          {
+            "at_ns": 362751084,
+            "direction": "response",
+            "text": "h2i2: 1"
+          },
+          {
+            "at_ns": 362751917,
+            "direction": "response",
+            "text": "h2h3: 1"
+          },
+          {
+            "at_ns": 362752709,
+            "direction": "response",
+            "text": "h2h4: 1"
+          },
+          {
+            "at_ns": 362753542,
+            "direction": "response",
+            "text": "h2h5: 1"
+          },
+          {
+            "at_ns": 362754334,
+            "direction": "response",
+            "text": "h2h6: 1"
+          },
+          {
+            "at_ns": 362755125,
+            "direction": "response",
+            "text": "h2h9: 1"
+          },
+          {
+            "at_ns": 362755959,
+            "direction": "response",
+            "text": "a0a1: 1"
+          },
+          {
+            "at_ns": 362756792,
+            "direction": "response",
+            "text": "a0a2: 1"
+          },
+          {
+            "at_ns": 362757625,
+            "direction": "response",
+            "text": "i0i1: 1"
+          },
+          {
+            "at_ns": 362758417,
+            "direction": "response",
+            "text": "i0i2: 1"
+          },
+          {
+            "at_ns": 362761042,
+            "direction": "response",
+            "text": "e0e1: 1"
+          },
+          {
+            "at_ns": 362761917,
+            "direction": "response",
+            "text": ""
+          },
+          {
+            "at_ns": 362762875,
+            "direction": "response",
+            "text": "Nodes searched: 44"
+          },
+          {
+            "at_ns": 363051042,
+            "direction": "command",
+            "text": "quit"
+          }
+        ],
+        "exit": 0,
+        "stderr": "",
+        "observed_stderr_bytes": 0
+      }
+    },
+    {
+      "id": "XQ-F001-black",
+      "expected": {
+        "source": "tests/fixtures/xiangqi/board.json",
+        "legal_moves": [
+          "a6a5",
+          "a9a7",
+          "a9a8",
+          "b7a7",
+          "b7b0",
+          "b7b3",
+          "b7b4",
+          "b7b5",
+          "b7b6",
+          "b7b8",
+          "b7c7",
+          "b7d7",
+          "b7e7",
+          "b7f7",
+          "b7g7",
+          "b9a7",
+          "b9c7",
+          "c6c5",
+          "c9a7",
+          "c9e7",
+          "d9e8",
+          "e6e5",
+          "e9e8",
+          "f9e8",
+          "g6g5",
+          "g9e7",
+          "g9i7",
+          "h7c7",
+          "h7d7",
+          "h7e7",
+          "h7f7",
+          "h7g7",
+          "h7h0",
+          "h7h3",
+          "h7h4",
+          "h7h5",
+          "h7h6",
+          "h7h8",
+          "h7i7",
+          "h9g7",
+          "h9i7",
+          "i6i5",
+          "i9i7",
+          "i9i8"
+        ],
+        "reasoning": "Black-facing independent counterpart: Black advances toward decreasing ranks; palaces/rivers and all blockers are transcribed by 180-degree board rotation and owner exchange. Setup-derived exhaustive list: 4 rook + 4 horse + 4 elephant + 2 advisor + 1 general + 24 cannon + 5 soldier = 44. No perft or comparator output used."
+      },
+      "observation": {
+        "legal_moves": [
+          "a6a5",
+          "a9a7",
+          "a9a8",
+          "b7a7",
+          "b7b0",
+          "b7b3",
+          "b7b4",
+          "b7b5",
+          "b7b6",
+          "b7b8",
+          "b7c7",
+          "b7d7",
+          "b7e7",
+          "b7f7",
+          "b7g7",
+          "b9a7",
+          "b9c7",
+          "c6c5",
+          "c9a7",
+          "c9e7",
+          "d9e8",
+          "e6e5",
+          "e9e8",
+          "f9e8",
+          "g6g5",
+          "g9e7",
+          "g9i7",
+          "h7c7",
+          "h7d7",
+          "h7e7",
+          "h7f7",
+          "h7g7",
+          "h7h0",
+          "h7h3",
+          "h7h4",
+          "h7h5",
+          "h7h6",
+          "h7h8",
+          "h7i7",
+          "h9g7",
+          "h9i7",
+          "i6i5",
+          "i9i7",
+          "i9i8"
+        ]
+      },
+      "process": {
+        "traffic": [
+          {
+            "at_ns": 203292,
+            "direction": "command",
+            "text": "uci"
+          },
+          {
+            "at_ns": 2991834,
+            "direction": "response",
+            "text": "Pikafish dev-20260906-4c17cee1 by the Pikafish developers (see AUTHORS file)"
+          },
+          {
+            "at_ns": 179765334,
+            "direction": "response",
+            "text": "id name Pikafish dev-20260906-4c17cee1"
+          },
+          {
+            "at_ns": 179770750,
+            "direction": "response",
+            "text": "id author the Pikafish developers (see AUTHORS file)"
+          },
+          {
+            "at_ns": 179772209,
+            "direction": "response",
+            "text": ""
+          },
+          {
+            "at_ns": 179773417,
+            "direction": "response",
+            "text": "option name Debug Log File type string default <empty>"
+          },
+          {
+            "at_ns": 179774417,
+            "direction": "response",
+            "text": "option name NumaPolicy type string default auto"
+          },
+          {
+            "at_ns": 179775334,
+            "direction": "response",
+            "text": "option name Threads type spin default 1 min 1 max 1024"
+          },
+          {
+            "at_ns": 179776250,
+            "direction": "response",
+            "text": "option name Hash type spin default 16 min 1 max 33554432"
+          },
+          {
+            "at_ns": 179777209,
+            "direction": "response",
+            "text": "option name Clear Hash type button"
+          },
+          {
+            "at_ns": 179778125,
+            "direction": "response",
+            "text": "option name Ponder type check default false"
+          },
+          {
+            "at_ns": 179779042,
+            "direction": "response",
+            "text": "option name MultiPV type spin default 1 min 1 max 128"
+          },
+          {
+            "at_ns": 179779917,
+            "direction": "response",
+            "text": "option name Move Overhead type spin default 10 min 0 max 5000"
+          },
+          {
+            "at_ns": 179780750,
+            "direction": "response",
+            "text": "option name nodestime type spin default 0 min 0 max 10000"
+          },
+          {
+            "at_ns": 179781625,
+            "direction": "response",
+            "text": "option name UCI_ShowWDL type check default false"
+          },
+          {
+            "at_ns": 179782500,
+            "direction": "response",
+            "text": "option name EvalFile type string default pikafish.nnue"
+          },
+          {
+            "at_ns": 179783500,
+            "direction": "response",
+            "text": "uciok"
+          },
+          {
+            "at_ns": 179911500,
+            "direction": "command",
+            "text": "setoption name Threads value 1"
+          },
+          {
+            "at_ns": 179913292,
+            "direction": "command",
+            "text": "setoption name Hash value 16"
+          },
+          {
+            "at_ns": 179914500,
+            "direction": "command",
+            "text": "setoption name Ponder value false"
+          },
+          {
+            "at_ns": 179915542,
+            "direction": "command",
+            "text": "setoption name MultiPV value 1"
+          },
+          {
+            "at_ns": 179916667,
+            "direction": "command",
+            "text": "setoption name EvalFile value /private/tmp/msh100-release-network/pikafish.nnue"
+          },
+          {
+            "at_ns": 179918125,
+            "direction": "command",
+            "text": "isready"
+          },
+          {
+            "at_ns": 188375000,
+            "direction": "response",
+            "text": "info string Using 1 thread"
+          },
+          {
+            "at_ns": 338355875,
+            "direction": "response",
+            "text": "readyok"
+          },
+          {
+            "at_ns": 338368042,
+            "direction": "command",
+            "text": "ucinewgame"
+          },
+          {
+            "at_ns": 338369625,
+            "direction": "command",
+            "text": "isready"
+          },
+          {
+            "at_ns": 342902834,
+            "direction": "response",
+            "text": "readyok"
+          },
+          {
+            "at_ns": 343046584,
+            "direction": "command",
+            "text": "position fen rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR b - - 0 1"
+          },
+          {
+            "at_ns": 343048334,
+            "direction": "command",
+            "text": "go perft 1"
+          },
+          {
+            "at_ns": 343185167,
+            "direction": "response",
+            "text": "info string Available processors: 0-9"
+          },
+          {
+            "at_ns": 343188709,
+            "direction": "response",
+            "text": "info string Using 1 thread"
+          },
+          {
+            "at_ns": 343190250,
+            "direction": "response",
+            "text": "info string NNUE evaluation using /private/tmp/msh100-release-network/pikafish.nnue (64MiB, (62083, 1024, 32, 32, 1))"
+          },
+          {
+            "at_ns": 343191584,
+            "direction": "response",
+            "text": "info string Network replica 1: Shared memory."
+          },
+          {
+            "at_ns": 343192709,
+            "direction": "response",
+            "text": "a6a5: 1"
+          },
+          {
+            "at_ns": 343193875,
+            "direction": "response",
+            "text": "c6c5: 1"
+          },
+          {
+            "at_ns": 343194917,
+            "direction": "response",
+            "text": "e6e5: 1"
+          },
+          {
+            "at_ns": 343195917,
+            "direction": "response",
+            "text": "g6g5: 1"
+          },
+          {
+            "at_ns": 343196917,
+            "direction": "response",
+            "text": "i6i5: 1"
+          },
+          {
+            "at_ns": 343198000,
+            "direction": "response",
+            "text": "c9a7: 1"
+          },
+          {
+            "at_ns": 343198959,
+            "direction": "response",
+            "text": "c9e7: 1"
+          },
+          {
+            "at_ns": 343203625,
+            "direction": "response",
+            "text": "g9e7: 1"
+          },
+          {
+            "at_ns": 343204667,
+            "direction": "response",
+            "text": "g9i7: 1"
+          },
+          {
+            "at_ns": 343205792,
+            "direction": "response",
+            "text": "d9e8: 1"
+          },
+          {
+            "at_ns": 343206875,
+            "direction": "response",
+            "text": "f9e8: 1"
+          },
+          {
+            "at_ns": 343207834,
+            "direction": "response",
+            "text": "b9a7: 1"
+          },
+          {
+            "at_ns": 343208834,
+            "direction": "response",
+            "text": "b9c7: 1"
+          },
+          {
+            "at_ns": 343209875,
+            "direction": "response",
+            "text": "h9g7: 1"
+          },
+          {
+            "at_ns": 343210834,
+            "direction": "response",
+            "text": "h9i7: 1"
+          },
+          {
+            "at_ns": 343211834,
+            "direction": "response",
+            "text": "b7b0: 1"
+          },
+          {
+            "at_ns": 343212792,
+            "direction": "response",
+            "text": "b7b3: 1"
+          },
+          {
+            "at_ns": 343213750,
+            "direction": "response",
+            "text": "b7b4: 1"
+          },
+          {
+            "at_ns": 343214709,
+            "direction": "response",
+            "text": "b7b5: 1"
+          },
+          {
+            "at_ns": 343215834,
+            "direction": "response",
+            "text": "b7b6: 1"
+          },
+          {
+            "at_ns": 343216750,
+            "direction": "response",
+            "text": "b7a7: 1"
+          },
+          {
+            "at_ns": 343217709,
+            "direction": "response",
+            "text": "b7c7: 1"
+          },
+          {
+            "at_ns": 343218709,
+            "direction": "response",
+            "text": "b7d7: 1"
+          },
+          {
+            "at_ns": 343219709,
+            "direction": "response",
+            "text": "b7e7: 1"
+          },
+          {
+            "at_ns": 343220625,
+            "direction": "response",
+            "text": "b7f7: 1"
+          },
+          {
+            "at_ns": 343221584,
+            "direction": "response",
+            "text": "b7g7: 1"
+          },
+          {
+            "at_ns": 343222500,
+            "direction": "response",
+            "text": "b7b8: 1"
+          },
+          {
+            "at_ns": 343223459,
+            "direction": "response",
+            "text": "h7h0: 1"
+          },
+          {
+            "at_ns": 343224584,
+            "direction": "response",
+            "text": "h7h3: 1"
+          },
+          {
+            "at_ns": 343225792,
+            "direction": "response",
+            "text": "h7h4: 1"
+          },
+          {
+            "at_ns": 343226834,
+            "direction": "response",
+            "text": "h7h5: 1"
+          },
+          {
+            "at_ns": 343230042,
+            "direction": "response",
+            "text": "h7h6: 1"
+          },
+          {
+            "at_ns": 343231000,
+            "direction": "response",
+            "text": "h7c7: 1"
+          },
+          {
+            "at_ns": 343232000,
+            "direction": "response",
+            "text": "h7d7: 1"
+          },
+          {
+            "at_ns": 343232959,
+            "direction": "response",
+            "text": "h7e7: 1"
+          },
+          {
+            "at_ns": 343233959,
+            "direction": "response",
+            "text": "h7f7: 1"
+          },
+          {
+            "at_ns": 343236500,
+            "direction": "response",
+            "text": "h7g7: 1"
+          },
+          {
+            "at_ns": 343237500,
+            "direction": "response",
+            "text": "h7i7: 1"
+          },
+          {
+            "at_ns": 343238500,
+            "direction": "response",
+            "text": "h7h8: 1"
+          },
+          {
+            "at_ns": 343239500,
+            "direction": "response",
+            "text": "a9a7: 1"
+          },
+          {
+            "at_ns": 343240459,
+            "direction": "response",
+            "text": "a9a8: 1"
+          },
+          {
+            "at_ns": 343241459,
+            "direction": "response",
+            "text": "i9i7: 1"
+          },
+          {
+            "at_ns": 343242500,
+            "direction": "response",
+            "text": "i9i8: 1"
+          },
+          {
+            "at_ns": 343247500,
+            "direction": "response",
+            "text": "e9e8: 1"
+          },
+          {
+            "at_ns": 343248625,
+            "direction": "response",
+            "text": ""
+          },
+          {
+            "at_ns": 343249667,
+            "direction": "response",
+            "text": "Nodes searched: 44"
+          },
+          {
+            "at_ns": 343332667,
+            "direction": "command",
+            "text": "quit"
+          }
+        ],
+        "exit": 0,
+        "stderr": "",
+        "observed_stderr_bytes": 0
+      }
+    },
+    {
+      "id": "standard",
+      "observed_reply": "bestmove b2e2",
+      "native_acceptance": {
+        "exit": 0,
+        "stdout": "fen rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1\nside red policy \"auto_valid_claims\" known-board-plies 0 known-events 0 conclusion null pending null\nno-win-fast {\"kind\":\"unknown_exact_unavailable\"} (not an exact or ongoing-game verdict)\nhistory-segment starts-at-root; earlier imported history unknown\nplayed b2e2\nfen rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/4C2C1/9/RNBAKABNR b - - 1 1\nside black policy \"auto_valid_claims\" known-board-plies 1 known-events 1 conclusion null pending null\nno-win-fast {\"kind\":\"unknown_exact_unavailable\"} (not an exact or ongoing-game verdict)\nrecord {\"envelope_version\":1,\"game_kind\":\"xiangqi\",\"rules_profile\":\"mshogi.xiangqi.wxf2018.v1\",\"profile_edition\":\"WXF-2018+XIANGQI-P1-2026-10-27\",\"native_schema_version\":1,\"payload\":{\"format\":\"mshogi.xiangqi.game\",\"schema_version\":1,\"game\":\"xiangqi\",\"profile\":\"mshogi.xiangqi.wxf2018.v1\",\"edition\":\"WXF-2018+XIANGQI-P1-2026-10-27\",\"mode\":\"untimed\",\"no_win_goal\":\"mshogi.xiangqi.natural-board-win.exists.v1\",\"no_win_mode\":\"sound_fast_only\",\"fast_witness_limit\":1,\"claim_policy\":\"auto_valid_claims\",\"root\":{\"schema\":\"mshogi.xiangqi.position.v1\",\"profile\":\"mshogi.xiangqi.wxf2018.v1\",\"edition\":\"WXF-2018+XIANGQI-P1-2026-10-27\",\"history\":\"starts_at_this_position\",\"origin\":\"standard_initial\",\"board\":\"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR\",\"side\":\"red\",\"no_capture_plies\":0,\"fullmove_number\":1},\"commands\":[{\"actor\":\"red\",\"command\":{\"kind\":\"play\",\"action\":\"b2e2\"},\"result\":\"accepted\",\"event_end\":1}],\"events\":[{\"index\":0,\"board_ply\":1,\"actor\":\"red\",\"event\":{\"kind\":\"board_action\",\"action\":\"b2e2\",\"moving_id\":9,\"captured_id\":null,\"gave_check\":false}}],\"current_position\":{\"schema\":\"mshogi.xiangqi.position.v1\",\"profile\":\"mshogi.xiangqi.wxf2018.v1\",\"edition\":\"WXF-2018+XIANGQI-P1-2026-10-27\",\"history\":\"starts_at_this_position\",\"origin\":\"analysis_diagram\",\"board\":\"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/4C2C1/9/RNBAKABNR\",\"side\":\"black\",\"no_capture_plies\":1,\"fullmove_number\":1},\"conclusion\":null,\"pending\":null,\"no_win_assessment\":{\"kind\":\"unknown_exact_unavailable\"}}}\n",
+        "stderr": ""
+      },
+      "process": {
+        "traffic": [
+          {
+            "at_ns": 235333,
+            "direction": "command",
+            "text": "uci"
+          },
+          {
+            "at_ns": 2929917,
+            "direction": "response",
+            "text": "Pikafish dev-20260906-4c17cee1 by the Pikafish developers (see AUTHORS file)"
+          },
+          {
+            "at_ns": 177782042,
+            "direction": "response",
+            "text": "id name Pikafish dev-20260906-4c17cee1"
+          },
+          {
+            "at_ns": 177789417,
+            "direction": "response",
+            "text": "id author the Pikafish developers (see AUTHORS file)"
+          },
+          {
+            "at_ns": 177791167,
+            "direction": "response",
+            "text": ""
+          },
+          {
+            "at_ns": 177792500,
+            "direction": "response",
+            "text": "option name Debug Log File type string default <empty>"
+          },
+          {
+            "at_ns": 177793583,
+            "direction": "response",
+            "text": "option name NumaPolicy type string default auto"
+          },
+          {
+            "at_ns": 177794542,
+            "direction": "response",
+            "text": "option name Threads type spin default 1 min 1 max 1024"
+          },
+          {
+            "at_ns": 177795583,
+            "direction": "response",
+            "text": "option name Hash type spin default 16 min 1 max 33554432"
+          },
+          {
+            "at_ns": 177796583,
+            "direction": "response",
+            "text": "option name Clear Hash type button"
+          },
+          {
+            "at_ns": 177797458,
+            "direction": "response",
+            "text": "option name Ponder type check default false"
+          },
+          {
+            "at_ns": 177799208,
+            "direction": "response",
+            "text": "option name MultiPV type spin default 1 min 1 max 128"
+          },
+          {
+            "at_ns": 177800125,
+            "direction": "response",
+            "text": "option name Move Overhead type spin default 10 min 0 max 5000"
+          },
+          {
+            "at_ns": 177801083,
+            "direction": "response",
+            "text": "option name nodestime type spin default 0 min 0 max 10000"
+          },
+          {
+            "at_ns": 177802042,
+            "direction": "response",
+            "text": "option name UCI_ShowWDL type check default false"
+          },
+          {
+            "at_ns": 177802958,
+            "direction": "response",
+            "text": "option name EvalFile type string default pikafish.nnue"
+          },
+          {
+            "at_ns": 177804125,
+            "direction": "response",
+            "text": "uciok"
+          },
+          {
+            "at_ns": 177937042,
+            "direction": "command",
+            "text": "setoption name Threads value 1"
+          },
+          {
+            "at_ns": 177939417,
+            "direction": "command",
+            "text": "setoption name Hash value 16"
+          },
+          {
+            "at_ns": 177941750,
+            "direction": "command",
+            "text": "setoption name Ponder value false"
+          },
+          {
+            "at_ns": 177942917,
+            "direction": "command",
+            "text": "setoption name MultiPV value 1"
+          },
+          {
+            "at_ns": 177944125,
+            "direction": "command",
+            "text": "setoption name EvalFile value /private/tmp/msh100-release-network/pikafish.nnue"
+          },
+          {
+            "at_ns": 177945458,
+            "direction": "command",
+            "text": "isready"
+          },
+          {
+            "at_ns": 186803958,
+            "direction": "response",
+            "text": "info string Using 1 thread"
+          },
+          {
+            "at_ns": 330474667,
+            "direction": "response",
+            "text": "readyok"
+          },
+          {
+            "at_ns": 330497667,
+            "direction": "command",
+            "text": "ucinewgame"
+          },
+          {
+            "at_ns": 330499208,
+            "direction": "command",
+            "text": "isready"
+          },
+          {
+            "at_ns": 334537750,
+            "direction": "response",
+            "text": "readyok"
+          },
+          {
+            "at_ns": 334650458,
+            "direction": "command",
+            "text": "position startpos"
+          },
+          {
+            "at_ns": 334654167,
+            "direction": "command",
+            "text": "go depth 1 nodes 128"
+          },
+          {
+            "at_ns": 334757958,
+            "direction": "response",
+            "text": "info string Available processors: 0-9"
+          },
+          {
+            "at_ns": 334760792,
+            "direction": "response",
+            "text": "info string Using 1 thread"
+          },
+          {
+            "at_ns": 334762792,
+            "direction": "response",
+            "text": "info string NNUE evaluation using /private/tmp/msh100-release-network/pikafish.nnue (64MiB, (62083, 1024, 32, 32, 1))"
+          },
+          {
+            "at_ns": 334767292,
+            "direction": "response",
+            "text": "info string Network replica 1: Shared memory."
+          },
+          {
+            "at_ns": 335082458,
+            "direction": "response",
+            "text": "info depth 1 seldepth 3 multipv 1 score cp 22 nodes 53 nps 53000 hashfull 0 tbhits 0 time 1 pv b2e2"
+          },
+          {
+            "at_ns": 335097083,
+            "direction": "response",
+            "text": "bestmove b2e2"
+          },
+          {
+            "at_ns": 343369708,
+            "direction": "command",
+            "text": "quit"
+          }
+        ],
+        "exit": 0,
+        "stderr": "",
+        "observed_stderr_bytes": 0
+      }
+    },
+    {
+      "id": "native-P1",
+      "observed_reply": "bestmove e7e1",
+      "native_acceptance": {
+        "exit": 0,
+        "stdout": "fen 5k3/9/4R4/9/9/9/9/9/9/3K5 w - - 0 1\nside red policy \"auto_valid_claims\" known-board-plies 0 known-events 0 conclusion null pending null\nno-win-fast {\"kind\":\"proven_natural_win\",\"winner\":\"red\",\"witness\":[\"e7e8\"]} (not an exact or ongoing-game verdict)\nhistory-segment starts-at-root; earlier imported history unknown\nplayed e7e1\nfen 5k3/9/9/9/9/9/9/9/4R4/3K5 b - - 1 1\nside black policy \"auto_valid_claims\" known-board-plies 1 known-events 1 conclusion null pending null\nno-win-fast {\"kind\":\"unknown_exact_unavailable\"} (not an exact or ongoing-game verdict)\nrecord {\"envelope_version\":1,\"game_kind\":\"xiangqi\",\"rules_profile\":\"mshogi.xiangqi.wxf2018.v1\",\"profile_edition\":\"WXF-2018+XIANGQI-P1-2026-10-27\",\"native_schema_version\":1,\"payload\":{\"format\":\"mshogi.xiangqi.game\",\"schema_version\":1,\"game\":\"xiangqi\",\"profile\":\"mshogi.xiangqi.wxf2018.v1\",\"edition\":\"WXF-2018+XIANGQI-P1-2026-10-27\",\"mode\":\"untimed\",\"no_win_goal\":\"mshogi.xiangqi.natural-board-win.exists.v1\",\"no_win_mode\":\"sound_fast_only\",\"fast_witness_limit\":1,\"claim_policy\":\"auto_valid_claims\",\"root\":{\"schema\":\"mshogi.xiangqi.position.v1\",\"profile\":\"mshogi.xiangqi.wxf2018.v1\",\"edition\":\"WXF-2018+XIANGQI-P1-2026-10-27\",\"history\":\"starts_at_this_position\",\"origin\":\"imported_fen\",\"board\":\"5k3/9/4R4/9/9/9/9/9/9/3K5\",\"side\":\"red\",\"no_capture_plies\":0,\"fullmove_number\":1},\"commands\":[{\"actor\":\"red\",\"command\":{\"kind\":\"play\",\"action\":\"e7e1\"},\"result\":\"accepted\",\"event_end\":1}],\"events\":[{\"index\":0,\"board_ply\":1,\"actor\":\"red\",\"event\":{\"kind\":\"board_action\",\"action\":\"e7e1\",\"moving_id\":1,\"captured_id\":null,\"gave_check\":false}}],\"current_position\":{\"schema\":\"mshogi.xiangqi.position.v1\",\"profile\":\"mshogi.xiangqi.wxf2018.v1\",\"edition\":\"WXF-2018+XIANGQI-P1-2026-10-27\",\"history\":\"starts_at_this_position\",\"origin\":\"analysis_diagram\",\"board\":\"5k3/9/9/9/9/9/9/9/4R4/3K5\",\"side\":\"black\",\"no_capture_plies\":1,\"fullmove_number\":1},\"conclusion\":null,\"pending\":null,\"no_win_assessment\":{\"kind\":\"unknown_exact_unavailable\"}}}\n",
+        "stderr": ""
+      },
+      "process": {
+        "traffic": [
+          {
+            "at_ns": 251250,
+            "direction": "command",
+            "text": "uci"
+          },
+          {
+            "at_ns": 2929250,
+            "direction": "response",
+            "text": "Pikafish dev-20260906-4c17cee1 by the Pikafish developers (see AUTHORS file)"
+          },
+          {
+            "at_ns": 180990292,
+            "direction": "response",
+            "text": "id name Pikafish dev-20260906-4c17cee1"
+          },
+          {
+            "at_ns": 180997792,
+            "direction": "response",
+            "text": "id author the Pikafish developers (see AUTHORS file)"
+          },
+          {
+            "at_ns": 181000584,
+            "direction": "response",
+            "text": ""
+          },
+          {
+            "at_ns": 181001917,
+            "direction": "response",
+            "text": "option name Debug Log File type string default <empty>"
+          },
+          {
+            "at_ns": 181002917,
+            "direction": "response",
+            "text": "option name NumaPolicy type string default auto"
+          },
+          {
+            "at_ns": 181003834,
+            "direction": "response",
+            "text": "option name Threads type spin default 1 min 1 max 1024"
+          },
+          {
+            "at_ns": 181004750,
+            "direction": "response",
+            "text": "option name Hash type spin default 16 min 1 max 33554432"
+          },
+          {
+            "at_ns": 181005750,
+            "direction": "response",
+            "text": "option name Clear Hash type button"
+          },
+          {
+            "at_ns": 181007709,
+            "direction": "response",
+            "text": "option name Ponder type check default false"
+          },
+          {
+            "at_ns": 181008625,
+            "direction": "response",
+            "text": "option name MultiPV type spin default 1 min 1 max 128"
+          },
+          {
+            "at_ns": 181009542,
+            "direction": "response",
+            "text": "option name Move Overhead type spin default 10 min 0 max 5000"
+          },
+          {
+            "at_ns": 181010375,
+            "direction": "response",
+            "text": "option name nodestime type spin default 0 min 0 max 10000"
+          },
+          {
+            "at_ns": 181011292,
+            "direction": "response",
+            "text": "option name UCI_ShowWDL type check default false"
+          },
+          {
+            "at_ns": 181012167,
+            "direction": "response",
+            "text": "option name EvalFile type string default pikafish.nnue"
+          },
+          {
+            "at_ns": 181013250,
+            "direction": "response",
+            "text": "uciok"
+          },
+          {
+            "at_ns": 181118334,
+            "direction": "command",
+            "text": "setoption name Threads value 1"
+          },
+          {
+            "at_ns": 181120334,
+            "direction": "command",
+            "text": "setoption name Hash value 16"
+          },
+          {
+            "at_ns": 181121709,
+            "direction": "command",
+            "text": "setoption name Ponder value false"
+          },
+          {
+            "at_ns": 181122834,
+            "direction": "command",
+            "text": "setoption name MultiPV value 1"
+          },
+          {
+            "at_ns": 181123959,
+            "direction": "command",
+            "text": "setoption name EvalFile value /private/tmp/msh100-release-network/pikafish.nnue"
+          },
+          {
+            "at_ns": 181125167,
+            "direction": "command",
+            "text": "isready"
+          },
+          {
+            "at_ns": 190304417,
+            "direction": "response",
+            "text": "info string Using 1 thread"
+          },
+          {
+            "at_ns": 324734375,
+            "direction": "response",
+            "text": "readyok"
+          },
+          {
+            "at_ns": 324744667,
+            "direction": "command",
+            "text": "ucinewgame"
+          },
+          {
+            "at_ns": 324746209,
+            "direction": "command",
+            "text": "isready"
+          },
+          {
+            "at_ns": 328657709,
+            "direction": "response",
+            "text": "readyok"
+          },
+          {
+            "at_ns": 328760834,
+            "direction": "command",
+            "text": "position fen 5k3/9/4R4/9/9/9/9/9/9/3K5 w - - 0 1"
+          },
+          {
+            "at_ns": 328764042,
+            "direction": "command",
+            "text": "go depth 1 nodes 128"
+          },
+          {
+            "at_ns": 328894834,
+            "direction": "response",
+            "text": "info string Available processors: 0-9"
+          },
+          {
+            "at_ns": 328899792,
+            "direction": "response",
+            "text": "info string Using 1 thread"
+          },
+          {
+            "at_ns": 328901334,
+            "direction": "response",
+            "text": "info string NNUE evaluation using /private/tmp/msh100-release-network/pikafish.nnue (64MiB, (62083, 1024, 32, 32, 1))"
+          },
+          {
+            "at_ns": 328902709,
+            "direction": "response",
+            "text": "info string Network replica 1: Shared memory."
+          },
+          {
+            "at_ns": 328964542,
+            "direction": "response",
+            "text": "info depth 1 seldepth 2 multipv 1 score cp 955 nodes 22 nps 22000 hashfull 0 tbhits 0 time 1 pv e7e1"
+          },
+          {
+            "at_ns": 328969000,
+            "direction": "response",
+            "text": "bestmove e7e1"
+          },
+          {
+            "at_ns": 334484209,
+            "direction": "command",
+            "text": "quit"
+          }
+        ],
+        "exit": 0,
+        "stderr": "",
+        "observed_stderr_bytes": 0
+      }
+    },
+    {
+      "id": "finite-work-explicit-stop",
+      "limits": {
+        "depth": 8,
+        "nodes": 1000000,
+        "ready_deadline_seconds": 5,
+        "stop_reply_deadline_seconds": 2
+      },
+      "observed_reply": "bestmove b2e2",
+      "meaning": "Admission-only external stop probe; not mShogi native search limits, not a claim that the full search completed.",
+      "process": {
+        "traffic": [
+          {
+            "at_ns": 212000,
+            "direction": "command",
+            "text": "uci"
+          },
+          {
+            "at_ns": 2959958,
+            "direction": "response",
+            "text": "Pikafish dev-20260906-4c17cee1 by the Pikafish developers (see AUTHORS file)"
+          },
+          {
+            "at_ns": 185010291,
+            "direction": "response",
+            "text": "id name Pikafish dev-20260906-4c17cee1"
+          },
+          {
+            "at_ns": 185017375,
+            "direction": "response",
+            "text": "id author the Pikafish developers (see AUTHORS file)"
+          },
+          {
+            "at_ns": 185018916,
+            "direction": "response",
+            "text": ""
+          },
+          {
+            "at_ns": 185020291,
+            "direction": "response",
+            "text": "option name Debug Log File type string default <empty>"
+          },
+          {
+            "at_ns": 185021416,
+            "direction": "response",
+            "text": "option name NumaPolicy type string default auto"
+          },
+          {
+            "at_ns": 185022458,
+            "direction": "response",
+            "text": "option name Threads type spin default 1 min 1 max 1024"
+          },
+          {
+            "at_ns": 185023416,
+            "direction": "response",
+            "text": "option name Hash type spin default 16 min 1 max 33554432"
+          },
+          {
+            "at_ns": 185025250,
+            "direction": "response",
+            "text": "option name Clear Hash type button"
+          },
+          {
+            "at_ns": 185026250,
+            "direction": "response",
+            "text": "option name Ponder type check default false"
+          },
+          {
+            "at_ns": 185027166,
+            "direction": "response",
+            "text": "option name MultiPV type spin default 1 min 1 max 128"
+          },
+          {
+            "at_ns": 185028208,
+            "direction": "response",
+            "text": "option name Move Overhead type spin default 10 min 0 max 5000"
+          },
+          {
+            "at_ns": 185029166,
+            "direction": "response",
+            "text": "option name nodestime type spin default 0 min 0 max 10000"
+          },
+          {
+            "at_ns": 185030041,
+            "direction": "response",
+            "text": "option name UCI_ShowWDL type check default false"
+          },
+          {
+            "at_ns": 185031000,
+            "direction": "response",
+            "text": "option name EvalFile type string default pikafish.nnue"
+          },
+          {
+            "at_ns": 185032083,
+            "direction": "response",
+            "text": "uciok"
+          },
+          {
+            "at_ns": 185157875,
+            "direction": "command",
+            "text": "setoption name Threads value 1"
+          },
+          {
+            "at_ns": 185160041,
+            "direction": "command",
+            "text": "setoption name Hash value 16"
+          },
+          {
+            "at_ns": 185163583,
+            "direction": "command",
+            "text": "setoption name Ponder value false"
+          },
+          {
+            "at_ns": 185164750,
+            "direction": "command",
+            "text": "setoption name MultiPV value 1"
+          },
+          {
+            "at_ns": 185165958,
+            "direction": "command",
+            "text": "setoption name EvalFile value /private/tmp/msh100-release-network/pikafish.nnue"
+          },
+          {
+            "at_ns": 185193250,
+            "direction": "command",
+            "text": "isready"
+          },
+          {
+            "at_ns": 194357041,
+            "direction": "response",
+            "text": "info string Using 1 thread"
+          },
+          {
+            "at_ns": 332168041,
+            "direction": "response",
+            "text": "readyok"
+          },
+          {
+            "at_ns": 332184375,
+            "direction": "command",
+            "text": "ucinewgame"
+          },
+          {
+            "at_ns": 332186000,
+            "direction": "command",
+            "text": "isready"
+          },
+          {
+            "at_ns": 336626875,
+            "direction": "response",
+            "text": "readyok"
+          },
+          {
+            "at_ns": 336728458,
+            "direction": "command",
+            "text": "position startpos"
+          },
+          {
+            "at_ns": 336730208,
+            "direction": "command",
+            "text": "go depth 8 nodes 1000000"
+          },
+          {
+            "at_ns": 336831458,
+            "direction": "response",
+            "text": "info string Available processors: 0-9"
+          },
+          {
+            "at_ns": 336835041,
+            "direction": "response",
+            "text": "info string Using 1 thread"
+          },
+          {
+            "at_ns": 336837125,
+            "direction": "response",
+            "text": "info string NNUE evaluation using /private/tmp/msh100-release-network/pikafish.nnue (64MiB, (62083, 1024, 32, 32, 1))"
+          },
+          {
+            "at_ns": 336838666,
+            "direction": "response",
+            "text": "info string Network replica 1: Shared memory."
+          },
+          {
+            "at_ns": 337172916,
+            "direction": "response",
+            "text": "info depth 1 seldepth 3 multipv 1 score cp 22 nodes 53 nps 53000 hashfull 0 tbhits 0 time 1 pv b2e2"
+          },
+          {
+            "at_ns": 337177541,
+            "direction": "command",
+            "text": "stop"
+          },
+          {
+            "at_ns": 337211916,
+            "direction": "response",
+            "text": "info depth 2 seldepth 3 multipv 1 score cp 83 lowerbound nodes 61 nps 61000 hashfull 0 tbhits 0 time 1 pv b2e2"
+          },
+          {
+            "at_ns": 337215875,
+            "direction": "response",
+            "text": "bestmove b2e2"
+          },
+          {
+            "at_ns": 337228375,
+            "direction": "command",
+            "text": "quit"
+          }
+        ],
+        "exit": 0,
+        "stderr": "",
+        "observed_stderr_bytes": 0
+      }
+    }
+  ],
+  "network": {
+    "sha256": "7d13d73569a9b571ba0eb20cf1596247bc2a42738967e61afef6482b231e900e"
+  },
+  "meaning": "Complete independent initial choices plus actual network-backed search/stop/quit and authoritative native admission, not WXF adjudication or strength evidence."
+}

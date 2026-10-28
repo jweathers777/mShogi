@@ -125,6 +125,65 @@ class LookupRetryTests(unittest.TestCase):
         self.web._request_once.assert_called_once()
 
 
+class ObservationRetryTests(unittest.TestCase):
+    def setUp(self):
+        self.web = object.__new__(module.Webview)
+        self.web.session = 'active-session'
+        self.web.record = Mock()
+        self.web._request_once = Mock()
+
+    def observe(self, kind):
+        if kind == 'dom':
+            return self.web.read('document.body.innerText')
+        output = Mock()
+        self.web.screenshot(output)
+        output.write_bytes.assert_called_once_with(b'image')
+
+    def test_wrappers_recover_once_and_record_transport_failure(self):
+        for kind, value in (('dom', 'visible text'), ('screenshot', 'aW1hZ2U=')):
+            for error in (http.client.RemoteDisconnected('closed'), ConnectionResetError('reset'),
+                          urllib.error.URLError(ConnectionResetError('wrapped reset'))):
+                with self.subTest(kind=kind, error=type(error).__name__):
+                    self.web._request_once = Mock(side_effect=[error, value])
+                    self.web.record.reset_mock()
+                    result = self.observe(kind)
+                    if kind == 'dom':
+                        self.assertEqual(result, value)
+                    self.assertEqual(self.web._request_once.call_count, 2)
+                    self.assertEqual(self.web._request_once.call_args_list[0], self.web._request_once.call_args_list[1])
+                    first = self.web.record.call_args_list[0].args[1]
+                    self.assertEqual((first['attempt'], first['retry']), (1, True))
+                    self.assertIn('error', first)
+                    self.assertEqual(self.web.record.call_args_list[-1].args[1]['attempt'], 2)
+
+    def test_wrappers_exhaust_after_one_retry(self):
+        for kind in ('dom', 'screenshot'):
+            with self.subTest(kind=kind):
+                self.web._request_once = Mock(side_effect=[ConnectionResetError('first'), ConnectionResetError('second')])
+                self.web.record.reset_mock()
+                with self.assertRaisesRegex(ConnectionResetError, 'second'):
+                    self.observe(kind)
+                self.assertEqual(self.web._request_once.call_count, 2)
+                self.assertFalse(self.web.record.call_args_list[-1].args[1]['retry'])
+
+    def test_semantic_errors_remain_fatal_without_retry(self):
+        for kind in ('dom', 'screenshot'):
+            with self.subTest(kind=kind):
+                self.web._request_once = Mock(side_effect=RuntimeError('driver semantic error'))
+                self.web.record.reset_mock()
+                with self.assertRaisesRegex(RuntimeError, 'driver semantic error'):
+                    self.observe(kind)
+                self.web._request_once.assert_called_once()
+                self.web.record.assert_not_called()
+
+    def test_observer_rejects_other_commands_before_transport(self):
+        for method, path in (('POST', '/actions'), ('DELETE', ''), ('POST', '/element/node/click')):
+            with self.subTest(method=method, path=path):
+                with self.assertRaises(ValueError):
+                    self.web._observe(method, path, {})
+        self.web._request_once.assert_not_called()
+
+
 class InspectionDiagnosticsTests(unittest.TestCase):
     def test_failure_retains_exact_before_and_after(self):
         journey = module.Journey(None, {})

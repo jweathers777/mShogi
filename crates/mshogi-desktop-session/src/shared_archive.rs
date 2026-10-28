@@ -33,10 +33,12 @@ impl ShogiSettings {
 #[derive(Clone, Debug, Serialize)]
 #[serde(tag = "game_kind", rename_all = "snake_case")]
 pub enum NativeDesktopSettings {
-    /// Native consumer contract only; desktop archive admission belongs to MSH-99.
+    /// Native Xiangqi document preferences.
     Xiangqi {
         /// Explicit native board orientation.
         orientation: mshogi_core::xiangqi::Side,
+        /// Supported ordinary sound-fast-only analysis defaults.
+        analysis_defaults: WorkLimits,
     },
     /// Unchanged native chess settings, including explicit Full defaults.
     Chess {
@@ -111,6 +113,7 @@ struct ShogiArchive {
     retired_execution_floor: u64,
 }
 pub(crate) enum NativeWork {
+    Xiangqi(xiangqi::archive::XiangqiWork),
     Admit {
         candidate: Box<ShogiSession>,
         command: Option<SessionOperation>,
@@ -128,9 +131,14 @@ pub(crate) enum NativeWork {
     Open {
         path: PathBuf,
         token: SharedOpenToken,
+        allow_xiangqi: bool,
     },
 }
 pub(crate) enum OpenedNative {
+    Xiangqi {
+        state: Box<xiangqi::XiangqiSession>,
+        floor: u64,
+    },
     Chess(Box<persistence::Opened>),
     Shogi {
         state: Box<ShogiSession>,
@@ -138,6 +146,7 @@ pub(crate) enum OpenedNative {
     },
 }
 pub(crate) enum NativeCompleted {
+    Xiangqi(xiangqi::archive::XiangqiCompleted),
     Admitted {
         state: Box<ShogiSession>,
         analysis: Option<WorkLimits>,
@@ -154,7 +163,7 @@ pub(crate) enum NativeCompleted {
         token: SharedOpenToken,
     },
 }
-fn bounded(error: impl ToString) -> String {
+pub(super) fn bounded(error: impl ToString) -> String {
     let mut message = error.to_string();
     let mut end = message.len().min(mshogi_engine::MAX_STDERR_BYTES);
     while !message.is_char_boundary(end) {
@@ -779,6 +788,7 @@ fn envelope(bytes: &[u8]) -> Result<ArchiveV2, String> {
     let profile = match value.game_kind.as_str() {
         "chess" => RulesProfile::ChessMatchV1,
         "shogi" => RulesProfile::ShogiCsa36V1,
+        "xiangqi" => RulesProfile::XiangqiWxf2018V1,
         other => return Err(format!("Unsupported archive game: {}.", bounded(other))),
     };
     if value.rules_profile != profile.id() || value.profile_edition != profile.edition() {
@@ -835,6 +845,7 @@ pub(crate) fn execute(
     stopped: &mut impl FnMut() -> bool,
 ) -> Result<NativeCompleted, String> {
     let result = (|| match work {
+        NativeWork::Xiangqi(work) => xiangqi::archive::execute(work, stopped),
         NativeWork::Admit {
             mut candidate,
             command,
@@ -882,7 +893,11 @@ pub(crate) fn execute(
                 identity,
             })
         }
-        NativeWork::Open { path, token } => {
+        NativeWork::Open {
+            path,
+            token,
+            allow_xiangqi,
+        } => {
             let bytes = read(&path, stopped)?;
             let game = match version(&bytes)? {
                 1 => OpenedNative::Chess(Box::new(persistence::decode_chess_v1(&bytes, stopped)?)),
@@ -896,6 +911,17 @@ pub(crate) fn execute(
                         "shogi" => {
                             let (state, floor) = decode_shogi(value.payload.get(), stopped)?;
                             OpenedNative::Shogi {
+                                state: Box::new(state),
+                                floor,
+                            }
+                        }
+                        "xiangqi" => {
+                            if !allow_xiangqi {
+                                return Err("Xiangqi product UI is not available yet; current document preserved. Use the native archive consumer.".into());
+                            }
+                            let (state, floor) =
+                                xiangqi::archive::decode(value.payload.get(), stopped)?;
+                            OpenedNative::Xiangqi {
                                 state: Box::new(state),
                                 floor,
                             }
@@ -923,7 +949,8 @@ impl DesktopController {
     pub(crate) fn shared_document(&self) -> SharedDocumentState {
         let settings = if let Some(state) = &self.shared.xiangqi {
             NativeDesktopSettings::Xiangqi {
-                orientation: state.human,
+                orientation: state.settings.orientation,
+                analysis_defaults: state.settings.analysis_defaults,
             }
         } else if let Some(state) = &self.shared.shogi {
             NativeDesktopSettings::Shogi {
@@ -947,8 +974,18 @@ impl DesktopController {
     }
     /// Queue a complete native document. Legacy chess continues to write strict v1.
     pub fn queue_shared_save(&mut self, path: PathBuf) -> Result<u64, String> {
-        if self.shared.xiangqi.is_some() {
-            return Err("Xiangqi desktop archives are not supported yet (MSH-99); native consumer contract preserved.".into());
+        if let Some(state) = &self.shared.xiangqi {
+            let work = xiangqi::archive::XiangqiWork::Save {
+                draft: Box::new(xiangqi::archive::XiangqiDraft::capture(state)),
+                path,
+                revision: self.session.document_revision,
+                identity: self.session.document_identity,
+                floor: state.execution_floor.max(self.runtime_floor()),
+            };
+            let id = self.next_native_io(IoPhase::Saving)?;
+            self.files
+                .submit(id, Work::Native(Box::new(NativeWork::Xiangqi(work))));
+            return Ok(id);
         }
         let Some(state) = &self.shared.shogi else {
             return self.queue_save(path);
@@ -976,15 +1013,34 @@ impl DesktopController {
         path: PathBuf,
         token: SharedOpenToken,
     ) -> Result<u64, String> {
-        if self.shared.xiangqi.is_some() {
-            return Err("Xiangqi desktop document replacement through Open awaits MSH-99.".into());
-        }
+        self.queue_open_admission(path, token, true)
+    }
+    /// Product frontend admission remains gated until the Xiangqi UI is delivered.
+    pub fn queue_product_open(
+        &mut self,
+        path: PathBuf,
+        token: SharedOpenToken,
+    ) -> Result<u64, String> {
+        self.queue_open_admission(path, token, false)
+    }
+    fn queue_open_admission(
+        &mut self,
+        path: PathBuf,
+        token: SharedOpenToken,
+        allow_xiangqi: bool,
+    ) -> Result<u64, String> {
         if token != self.shared_open_token() {
             return Err("Stale Open: review the current document again.".into());
         }
         let id = self.next_native_io(IoPhase::Opening)?;
-        self.files
-            .submit(id, Work::Native(Box::new(NativeWork::Open { path, token })));
+        self.files.submit(
+            id,
+            Work::Native(Box::new(NativeWork::Open {
+                path,
+                token,
+                allow_xiangqi,
+            })),
+        );
         Ok(id)
     }
     pub(crate) fn retire_native_files(&mut self) -> Result<(), String> {
@@ -1004,7 +1060,7 @@ impl DesktopController {
         self.session.revision += 1;
         Ok(self.io_state.id)
     }
-    fn runtime_floor(&self) -> u64 {
+    pub(super) fn runtime_floor(&self) -> u64 {
         [
             self.session.version,
             self.session.archive_revision,
@@ -1020,7 +1076,9 @@ impl DesktopController {
         completed: NativeCompleted,
     ) -> Result<String, String> {
         match completed {
-            NativeCompleted::Admitted { .. } => unreachable!("dedicated admission worker"),
+            NativeCompleted::Admitted { .. } | NativeCompleted::Xiangqi(_) => {
+                unreachable!("dedicated admission worker")
+            }
             NativeCompleted::Saved {
                 path,
                 revision,
@@ -1032,13 +1090,16 @@ impl DesktopController {
                         self.session.saved_revision = revision;
                     }
                 }
-                Ok("Saved complete tagged shogi desktop archivev2.".into())
+                Ok("Saved complete native desktop archive.".into())
             }
             NativeCompleted::Opened { game, path, token } => {
                 if token != self.shared_open_token() {
                     return Err("Stale Open: current native session preserved.".into());
                 }
                 match game {
+                    OpenedNative::Xiangqi { state, floor } => {
+                        self.install_xiangqi(state, floor, path)
+                    }
                     OpenedNative::Chess(opened) => self.install_chess_archive(*opened, path),
                     OpenedNative::Shogi { mut state, floor } => {
                         let next = self.runtime_floor().max(floor) + 1;
@@ -1156,6 +1217,7 @@ impl DesktopController {
         let Some((epoch, preferences)) = self.shared.admission.take() else {
             return;
         };
+        let consumes_response = std::mem::take(&mut self.shared.admission_consumes_response);
         let rollback = self.shared.rollback.take();
         let token = self.admission_token.take();
         let receipt = self.admission_receipt.take();
@@ -1167,6 +1229,9 @@ impl DesktopController {
         }
         match result {
             Ok(Completed::Native(value)) => match *value {
+                NativeCompleted::Xiangqi(completed) => {
+                    self.finish_xiangqi_admission(completed, id, receipt)
+                }
                 NativeCompleted::Admitted {
                     state,
                     analysis,
@@ -1229,7 +1294,7 @@ impl DesktopController {
                         ..CapacityState::default()
                     };
                     if let (Some(state), Some((paused, phase, diagnostic, analysis, had_work))) =
-                        (&mut self.shared.shogi, rollback)
+                        (&mut self.shared.shogi, rollback.clone())
                     {
                         if !had_work || preferences {
                             state.paused = paused;
@@ -1241,6 +1306,26 @@ impl DesktopController {
                                 "Command rejected; prior execution was retired. Resume explicitly."
                                     .into(),
                             );
+                        }
+                    }
+                    if let (Some(state), Some((paused, phase, diagnostic, analysis, _))) =
+                        (&mut self.shared.xiangqi, rollback)
+                    {
+                        if consumes_response {
+                            // The bridge has already delivered this result. Never
+                            // restore Thinking for execution that has ended.
+                            self.bridge.cancel();
+                            state.retire();
+                            state.paused = true;
+                            state.phase = EnginePhase::Failed;
+                            state.diagnostic = Some(bounded(format!(
+                                "Native result rejected by document admission: {error} Retry explicitly; the accepted game is preserved."
+                            )));
+                        } else {
+                            state.paused = paused;
+                            state.phase = phase;
+                            state.diagnostic = diagnostic;
+                            state.analysis = analysis;
                         }
                     }
                     self.session.revision += 1;
@@ -1255,6 +1340,10 @@ impl DesktopController {
     pub(crate) fn pause_native_capacity(&mut self, error: String) {
         self.bridge.cancel();
         if let Some(state) = &mut self.shared.shogi {
+            state.retire();
+            state.paused = true;
+        }
+        if let Some(state) = &mut self.shared.xiangqi {
             state.retire();
             state.paused = true;
         }

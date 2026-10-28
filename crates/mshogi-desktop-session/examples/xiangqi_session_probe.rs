@@ -10,18 +10,31 @@ use std::{
 };
 fn send(c: &mut DesktopController, op: SessionOperation) -> SharedSnapshot {
     let game = c.shared_snapshot().game;
-    c.shared_command(SharedDesktopCommand {
-        expected: c.shared_token(),
-        game,
-        operation: op,
-    })
-    .unwrap()
+    let (_, receipt) = c
+        .shared_command_with_receipt(SharedDesktopCommand {
+            expected: c.shared_token(),
+            game,
+            operation: op,
+        })
+        .unwrap();
+    let deadline = Instant::now() + Duration::from_secs(30);
+    loop {
+        let snapshot = c.shared_snapshot();
+        if let Some(result) = receipt.completion() {
+            result.unwrap();
+            return snapshot;
+        }
+        assert!(Instant::now() < deadline, "native archive admission");
+        std::thread::sleep(Duration::from_millis(1));
+    }
 }
 fn wait(c: &mut DesktopController) -> SharedSnapshot {
     let deadline = Instant::now() + Duration::from_secs(30);
     loop {
         let s = c.shared_snapshot();
-        if s.phase != EnginePhase::Thinking {
+        if s.phase != EnginePhase::Thinking
+            && s.capacity.status != mshogi_desktop_session::CapacityPhase::Checking
+        {
             return s;
         }
         assert!(Instant::now() < deadline, "actual child deadline");

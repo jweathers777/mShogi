@@ -1,11 +1,11 @@
 ---
 id: MSH-99
 title: Extend lossless desktop archives and admission for real xiangqi sessions
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-28T16:03:00Z'
+updated_date: '2026-10-28T16:21:00Z'
 labels:
   - m4
   - owner-msh-46
@@ -18,6 +18,8 @@ documentation:
   - docs/m4/xiangqi/profile-proposal.md
   - docs/m4/xiangqi/fixtures.md
   - docs/m4/xiangqi/handoff.md
+  - docs/m4/xiangqi/desktop-archive.md
+  - docs/m4/xiangqi/session-contract.md
 ordinal: 99000
 ---
 
@@ -29,18 +31,18 @@ Future bounded Xiangqi delivery work refined by MSH-80. Intent and acceptance on
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Persist complete native xiangqi semantics plus desktop policy/settings/observations with exact game/profile/schema/transport identity, root provenance and commands/events; strict duplicate-preserving dispatch and native replay own validation. Preserve old chess/shogi documents.
-- [ ] #2 Measure actual encoded bytes, native events, controls, observations and replay work; enforce native-owned admission before accepting any work that would destroy a complete save path, including reserved stop/close. Cover exact boundaries and observation256-to257; no silent discard or constant-only fix, preserving MSH-61.
-- [ ] #3 Atomic failed/interrupted saves preserve prior valid file and dirty state; corrupt/unsupported/resource-limited opens preserve the live game. Fresh execution identities on reopen, historical observations never pending work, untimed engine stopped until explicit Resume; protect unsaved replacement/quit.
-- [ ] #4 Run actual native payload roundtrips, malformed/resource/failure boundaries and historical-prefix provenance tests plus current archives regressions; record independent review. Common migration belongs to MSH-46 while native replay remains game-owned.
+- [x] #1 Persist complete native xiangqi semantics plus desktop policy/settings/observations with exact game/profile/schema/transport identity, root provenance and commands/events; strict duplicate-preserving dispatch and native replay own validation. Preserve old chess/shogi documents.
+- [x] #2 Measure actual encoded bytes, native events, controls, observations and replay work; enforce native-owned admission before accepting any work that would destroy a complete save path, including reserved stop/close. Cover exact boundaries and observation256-to257; no silent discard or constant-only fix, preserving MSH-61.
+- [x] #3 Atomic failed/interrupted saves preserve prior valid file and dirty state; corrupt/unsupported/resource-limited opens preserve the live game. Fresh execution identities on reopen, historical observations never pending work, untimed engine stopped until explicit Resume; protect unsaved replacement/quit.
+- [x] #4 Run actual native payload roundtrips, malformed/resource/failure boundaries and historical-prefix provenance tests plus current archives regressions; record independent review. Common migration belongs to MSH-46 while native replay remains game-owned.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -83,4 +85,18 @@ Final independent capacity review found a material accounting gap beyond repeate
 cb3d07e CI PASSED: Rust40717685375 all3systems including actual Windows ordinary+feature suite; Desktop40717685397 all3jobs (Linux/Windows actual Chess/Shogi GUI, macOS package smoke). Kept as valid cache-correction evidence, not sufficient for later accounting changes. Final accounting adds512/distinct fullcontext+PV plus16/action, and uncached exactpositive512+64/action; raw preflight charges matching work before expensive native replay. Witness validation checks cancellation eachaction and refuses individually oversized work before replay. Focused boundary PASSED:29distinct legal proposals/30threfused,128841bytes Open1067ms;24native2ply exactpositive/25threfused,74293bytes Open15ms. Both preserve accepted canonical state/observations, raw unsupported candidates reject, Save/Open passes. New test initially referenced nonexistent CapacityPhase::Refused and then wrong diagnostic field; corrected to existing Paused/capacity.message, no production behavior adjusted to fit them. Final125tests/strictlint and independent follow-up review pending.
 
 Final accounting source approved by separate reviewer after independent actual boundary execution: distinct29/30 with128841bytes Open1108ms, repeated scored2561110084bytes336ms, mixed256754794bytes465ms, exactpositive24/25 with74293bytes15ms including peractioncancellation/excessivepath refusal. No remaining material finding; strictoriginal parsing/fullhistory+completePV keys/identity+journal/native engine-turn submission intact. Root full125features PASSED74.20s, latest focused cancellation/oversize positive test PASSED, strictClippy/fmt/probe/diffcheck/doctor PASSED. Reviewer ran native/process tests and source review, not Xiangqi GUI; isolated test author is separate from reviewer. Final source commit and freshCI follow; completion remains pending.
+
+Final source integration dd510f3e9a89c934ef573b78d324478b336c3fa9 pushed normally after reviewed125tests/strictlint and exact-commit real-child archive probe PASSED. Final exact-source CI Rust40722182393 / Desktop40722182395 pending, not inherited from green predecessorcb3. Independent256 actual-child capacity probe command: cargo run --offline --manifest-path /private/tmp/msh99-controller-review/Cargo.toml --bin scored_capacity; cwd primary mShogi, Darwinarm64 rustc/cargo1.89.0, defaultdebughost path dependencies/no overrides. Probe source SHA256e88c2e5e5f373ced24ec822dd087eec1ac56dbc4ea1de8d8d04e07032e372f60; actual releaseengine SHA256808e1333fbecffdb667abd71fabbe771f3ef900d30e466776b7b9cce2e6993e4. Actual256 fresh depth1/128 requests at identical standard Explicit-policy root, all scored/PV,1110084bytes;8732ms beforePVreuse/337ms after, measured at reviewed cache tree committedcb3. This is not256distinctPVs and notGUI. Finaldd distinct-work accounting verified separately by native boundary tests/review; finalCI pending.
+
+FINAL exact-source evidence dd510f3e9a89c934ef573b78d324478b336c3fa9: Rust40722182393 SUCCESS on Windows2022/macOS15/Ubuntu24.04; final feature suite125/125 on each (Windows264.38s,macOS177.11s,Linux135.73s), full workspace regressions/lint/fmt/fixtures/build/smoke also passed. Desktop40722182395 SUCCESS on all3:161frontendtests/strictTS, nativehost5tests/checks, normalpackages/bundledengine smoke and normal instrumentation exclusion; separate actual installed/packaged Chess/Shogi GUI compatibility on Linux+Windows. macOS evidence is package/native, not new GUI. Links https://github.com/jweathers777/mShogi/actions/runs/40722182393 and https://github.com/jweathers777/mShogi/actions/runs/40722182395 . Local actual release-child archive probe passed atdd. No final check failed or unavailable within99scope. InitialWindows955a510 failure remains failed; cb3 corrected-cache CI success retained separately; all originalMSH111Linux failures preserved with its separate completed diagnosis. Independent reviewer approved final native losslessness/strict replay/admission/stale safety/compatibility changes after independently executing boundaries and actual child probes; no unresolved material findings. No new task worktree created. Source is integrated/pushed oncodex/rewrite; final record-only completion commit follows. MSH76 now has all7 prerequisites Done; remains ToDo/unstarted, as do101/102. MSH45/M4 stayopen.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Delivered lossless native Xiangqi desktop archive/admission under existing archivev2, explicit profile/edition/native schema1/canonical envelope1/engine transport3. Chessv1 writes and existing Chess/Shogiv2 reads remain compatible. Strict original RawValue parsing and authoritative native/journal replay preserve root provenance, full ordered actions/warnings/claims/claimants/conclusions, settings, exact historical selections and ordinary/exact observations. Saved exact reports remain historical, never current outcomes or resumable work; Open runs no exact graph search. Atomic failures preserve valid files/dirty state/current game. Successful reopening uses fresh runtime identities, stops work until explicit Resume and cannot accept old child responses.
+
+Measured admission retains16MiB/8192controls/256combined observations/native limits and16kweighted replay ceiling, with reserved close/stop. Actual wrapper bytes and uncached distinct PV/witness validation work are charged before commitment; no data trimming or ceiling/deadline increase. Repeated scored256 archives reopen, while costly distinct/witness cases refuse at the documented boundary and retain complete save paths. Native/process probe,125featuretests on allthreeplatforms, strictlint/fmt/full regressions and normalDesktopCI passed at final integrated sourcedd510f3e9a89c934ef573b78d324478b336c3fa9 (Rust40722182393/Desktop40722182395). Independent review resolved consumed-response and measured replay-cost findings; original failed Windows/Linux evidence remains preserved.
+
+Limitations: budget can bind before byte/observation caps; historical negative exact reports are not re-proven; Xiangqi normal product UI admission remains gated to its existing owners. This completes99only. MSH76 is dependency-ready but unstarted;101/102 and MSH45/M4 remain open. No future game/UI work began.
+<!-- SECTION:FINAL_SUMMARY:END -->

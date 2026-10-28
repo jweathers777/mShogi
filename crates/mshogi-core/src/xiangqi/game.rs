@@ -368,7 +368,7 @@ impl Game {
     pub fn from_root(root: PositionRoot, policy: ClaimPolicy) -> Result<Self, GameError> {
         root.position().validate_local().map_err(GameError::Root)?;
         let instance = NEXT_INSTANCE
-            .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |v| v.checked_add(1))
+            .try_update(Ordering::Relaxed, Ordering::Relaxed, |v| v.checked_add(1))
             .map_err(|_| GameError::Capacity)?;
         let position = root.position().clone();
         let mut ids = [None; 90];

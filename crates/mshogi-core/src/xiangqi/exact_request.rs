@@ -95,7 +95,7 @@ impl ExactAnalysis {
     /// Create fresh runtime execution identity; saved observations never resume work.
     pub fn new() -> Result<Self, GameError> {
         let session = NEXT_ANALYSIS
-            .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |v| v.checked_add(1))
+            .try_update(Ordering::Relaxed, Ordering::Relaxed, |v| v.checked_add(1))
             .map_err(|_| GameError::Capacity)?;
         Ok(Self {
             session,

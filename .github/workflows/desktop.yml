@@ -110,6 +110,7 @@ jobs:
         run: |
           python3 -m unittest discover -s desktop/scripts -p 'test_gui*.py'
           python3 desktop/scripts/prepare-linux-gui-driver.py --output "$RUNNER_TEMP/mshogi-gui-driver"
+          cp "$RUNNER_TEMP/mshogi-gui-driver/provenance.json" gui-driver-provenance.json
           python3 desktop/scripts/test_gui_proxy.py --original "$RUNNER_TEMP/mshogi-gui-driver/tauri-driver-original" --corrected "$RUNNER_TEMP/mshogi-gui-driver/tauri-driver" --output gui-driver-boundary
           echo "$RUNNER_TEMP/mshogi-gui-driver" >> "$GITHUB_PATH"
       - name: Pin external Windows GUI Python runtime
@@ -175,6 +176,6 @@ jobs:
             gui-packages/
             gui-evidence/
             gui-driver-boundary/
-            ${{ runner.temp }}/mshogi-gui-driver/provenance.json
+            gui-driver-provenance.json
             webview-driver.json
           retention-days: 14

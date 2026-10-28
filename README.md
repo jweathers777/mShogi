@@ -39,7 +39,7 @@ The aborted Rust prototype is no longer part of the active tree. Its manifest, l
 
 ## Build and check
 
-Install [Rust through rustup](https://rustup.rs/) and a native C/C++ linker toolchain (see [platform prerequisites](docs/development.md)). The repository pins stable Rust **1.89.0** with rustfmt and Clippy. From a clean checkout of `codex/rewrite`:
+Install [Rust through rustup](https://rustup.rs/) and a native C/C++ linker toolchain (see [platform prerequisites](docs/development.md)). The repository pins stable Rust **1.99.1** with rustfmt and Clippy. From a clean checkout of `codex/rewrite`:
 
 ```sh
 cargo build --workspace --locked

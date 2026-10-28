@@ -160,7 +160,7 @@ impl SearchCoordinator {
             return Err(SubmitError::Search(SearchError::InvalidDepth(limits.depth)));
         }
         let id = NEXT_ID
-            .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |id| id.checked_add(1))
+            .try_update(Ordering::Relaxed, Ordering::Relaxed, |id| id.checked_add(1))
             .map(RequestId)
             .map_err(|_| SubmitError::IdentityExhausted)?;
         let context = Arc::new(RequestContext {

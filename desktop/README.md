@@ -2,8 +2,8 @@
 
 The desktop uses Tauri 2.12.5, React 19.3.1, strict TypeScript 7.0.2 and
 Vite 8.3.5. npm and Cargo lockfiles are committed. Node 24.19.0 is pinned in
-`.node-version`. The desktop host has its own Rust 1.90.0 toolchain and lockfile;
-the existing native engine workspace keeps Rust 1.89.0.
+`.node-version`. The desktop host has its own lockfile and
+rust-toolchain.toml; both it and the native engine workspace pin Rust 1.99.1.
 
 Install the [native prerequisites](https://v2.tauri.app/start/prerequisites/):
 Xcode command line tools on macOS, Visual Studio C++ build tools and WebView2 on

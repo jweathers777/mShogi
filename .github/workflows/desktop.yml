@@ -44,7 +44,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev webkit2gtk-driver xvfb openbox xdotool scrot
       - name: Install desktop toolchain
-        run: rustup toolchain install 1.90.0 --profile minimal --component rustfmt,clippy
+        run: rustup toolchain install 1.99.1 --profile minimal --component rustfmt,clippy
       - name: Locked frontend and native checks
         working-directory: desktop
         run: |
@@ -104,7 +104,7 @@ jobs:
           PY
       - name: Prepare external native GUI driver
         if: runner.os == 'Windows'
-        run: cargo +1.90.0 install tauri-driver --version 2.0.6 --locked
+        run: cargo +1.99.1 install tauri-driver --version 2.0.6 --locked
       - name: Prepare bounded Linux verification proxy and test actual transport boundary
         if: runner.os == 'Linux'
         run: |

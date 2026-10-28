@@ -140,6 +140,12 @@ impl GameRecord {
         Self::from_game(&game)
     }
     fn replay(json: &str) -> Result<Game, RecordError> {
+        Self::replay_with_undo(json, false).map(|(game, _)| game)
+    }
+    fn replay_with_undo(
+        json: &str,
+        retain_undo: bool,
+    ) -> Result<(Game, Vec<super::GameUndo>), RecordError> {
         if json.len() > MAX_GAME_RECORD_BYTES {
             return Err(RecordError::Capacity);
         }
@@ -164,6 +170,7 @@ impl GameRecord {
         // cannot disappear when JSON object ordering/whitespace is normalized.
         PositionRoot::from_json(wire.current_position.get()).map_err(|_| RecordError::Derived)?;
         let mut game = Game::from_root(root, wire.claim_policy).map_err(|_| RecordError::Root)?;
+        let mut undo = Vec::with_capacity(if retain_undo { wire.commands.len() } else { 0 });
         for (i, entry) in wire.commands.iter().enumerate() {
             let submission = game
                 .submit(GameRequest {
@@ -182,6 +189,9 @@ impl GameRecord {
             if game.events != wire.events[..game.events.len().min(wire.events.len())] {
                 return Err(RecordError::Derived);
             }
+            if retain_undo {
+                undo.push(submission.undo);
+            }
         }
         // Strict typed and native parsers above have already rejected duplicates.
         // This final presence/equality check additionally rejects *missing* nullable
@@ -194,7 +204,13 @@ impl GameRecord {
         if actual != expected {
             return Err(RecordError::Derived);
         }
-        Ok(game)
+        Ok((game, undo))
+    }
+    /// Authoritative bounded replay with fresh runtime identity and LIFO command
+    /// undo handles. Consumers must not reconstruct commands from derived events.
+    /// Root automatic conclusions have no command handle; exact work is not run.
+    pub fn to_game_with_undo(&self) -> Result<(Game, Vec<super::GameUndo>), RecordError> {
+        Self::replay_with_undo(&self.json, true)
     }
     /// Reconstruct with fresh runtime identity; observations are never pending work.
     pub fn to_game(&self) -> Result<Game, RecordError> {

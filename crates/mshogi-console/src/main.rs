@@ -13,6 +13,7 @@ mod session;
 mod shogi_session;
 mod uci;
 mod usi;
+mod xiangqi_session;
 
 use session::{MAX_LINE_BYTES, Next, Session};
 
@@ -20,12 +21,14 @@ use session::{MAX_LINE_BYTES, Next, Session};
 enum Game {
     Chess,
     Shogi,
+    Xiangqi,
 }
 impl Game {
     fn name(self) -> &'static str {
         match self {
             Self::Chess => "chess",
             Self::Shogi => "shogi",
+            Self::Xiangqi => "xiangqi",
         }
     }
 }
@@ -43,11 +46,18 @@ fn arguments(args: impl Iterator<Item = std::ffi::OsString>) -> Result<Invocatio
             if selected.is_some() {
                 return Err("duplicate/conflicting --game selections".into());
             }
-            let value = args.next().ok_or("--game requires chess or shogi")?;
+            let value = args
+                .next()
+                .ok_or("--game requires chess, shogi or xiangqi")?;
             selected = Some(match value.to_str() {
                 Some("chess") => Game::Chess,
                 Some("shogi") => Game::Shogi,
-                _ => return Err("unknown or missing game; --game requires chess or shogi".into()),
+                Some("xiangqi") => Game::Xiangqi,
+                _ => {
+                    return Err(
+                        "unknown or missing game; --game requires chess, shogi or xiangqi".into(),
+                    );
+                }
             });
         } else if mode.replace(arg.to_owned()).is_some() {
             return Err("unsupported extra arguments".into());
@@ -58,13 +68,13 @@ fn arguments(args: impl Iterator<Item = std::ffi::OsString>) -> Result<Invocatio
         return Err("--game is incompatible with internal-search: its structured request supplies the game identity".into());
     }
     let game = if mode == "usi" {
-        if selected == Some(Game::Chess) {
-            return Err("USI supports shogi only; explicit chess selection conflicts".into());
+        if selected.is_some_and(|g| g != Game::Shogi) {
+            return Err("USI supports shogi only; explicit game selection conflicts".into());
         }
         Game::Shogi
     } else if mode == "shogi" {
-        if selected == Some(Game::Chess) {
-            return Err("shogi alias conflicts with --game chess".into());
+        if selected.is_some_and(|g| g != Game::Shogi) {
+            return Err("shogi alias conflicts with selected game".into());
         }
         mode = "shell".into();
         Game::Shogi
@@ -94,9 +104,9 @@ fn help(game: Game) {
     let game = game.name();
     println!("mShogi headless console — selected game: {game}
 
-Usage: mshogi [--game chess|shogi] [--help | --version | profile | shell | shogi | uci | usi | internal-search]
+Usage: mshogi [--game chess|shogi|xiangqi] [--help | --version | profile | shell | shogi | uci | usi | internal-search]
 
-  --game <game>  Select chess or shogi (default chess)
+  --game <game>  Select chess, shogi or xiangqi (default chess)
   --help, -h     Show selected-game help
   --version, -V  Show the application version
   profile        Show the selected native rules profile and actual coverage
@@ -113,7 +123,9 @@ Exit status: 0 success, 1 any shell failure, 2 invalid program arguments.
 Chess: FEN, position-only status, known move history, perft/divide depth 0..4.
 Shogi: SFEN, hands, complete native event history/conclusions, advisory eligibility,
 formal entering-king declaration and resignation; perft/divide depth 0..2.
-Both: position/show/legal/move/undo/history/status; canonical envelope record
+Xiangqi: native intersections/FEN, Red/Black history/warnings/claims/outcomes,
+canonical replay, local perft/divide0..3 and explicit bounded cancellable no-win diagnostics.
+All: position/show/legal/move/undo/history/status; canonical envelope record
 print/save/load-file/load-json. Saves require a new file. No shared board engine.");
 }
 fn main() -> ExitCode {
@@ -138,6 +150,13 @@ fn main() -> ExitCode {
                     "Coverage: untimed native SFEN/game/events, complete legal moves/drops/promotions, hands, advisory eligibility, formal declarations/resignation, conclusions, event undo and canonical envelope records; local perft/divide depth 0..2. Earlier imported history is unknown. USI is available in separate usi mode."
                 );
             }
+            Game::Xiangqi => {
+                println!("Target rules profile: {}", mshogi_core::xiangqi::PROFILE_ID);
+                println!("Edition: {}", mshogi_core::xiangqi::PROFILE_EDITION);
+                println!(
+                    "Coverage: untimed native intersection board, complete legal actions/undo, known history/WXF warnings/claims/conclusions, strict canonical envelopes, local perft/divide0..3, fast and explicit bounded exact no-win diagnostics; exact Unknown stays unresolved/unscored. No Xiangqi engine or external protocol in this console task."
+                );
+            }
         },
         "shell" => match game {
             Game::Chess => {
@@ -146,6 +165,16 @@ fn main() -> ExitCode {
             }
             Game::Shogi => {
                 let mut session = shogi_session::Session::new();
+                return shell(|line, out| session.execute(line, out));
+            }
+            Game::Xiangqi => {
+                let mut session = match xiangqi_session::Session::new() {
+                    Ok(session) => session,
+                    Err(error) => {
+                        eprintln!("error: {error}");
+                        return ExitCode::FAILURE;
+                    }
+                };
                 return shell(|line, out| session.execute(line, out));
             }
         },

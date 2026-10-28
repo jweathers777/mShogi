@@ -2,7 +2,7 @@
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { ShogiApp } from "./ShogiApp";
-import type { GameSnapshot, SearchView } from "./native";
+import type { ChessShogiSnapshot as GameSnapshot, SearchView } from "./native";
 import type { GameSession } from "./useGameSession";
 import standardJson from "../__fixtures__/shared-shogi-standard.json";
 afterEach(cleanup);

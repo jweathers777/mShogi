@@ -1,5 +1,11 @@
 # MSH-98: native Xiangqi session and semantic presentation
 
+Current product adaptation: [MSH-101](desktop-product.md) is implementing its
+early visual checkpoint through this native contract. Its New Game/play and
+inspection adapter supersedes the initial product gate described below; full
+Xiangqi product Open remains gated for MSH-102. The following MSH-98 delivery
+description preserves the original native boundary and its evidence.
+
 This delivers the native consumer boundary, not finished Xiangqi desktop UI. MSH-99 adds [lossless native desktop archives/admission](desktop-archive.md); MSH-101 owns the actual intersection-board product in the accepted shared shell. The normal Tauri command endpoint rejects Xiangqi product admission until that work exists. Normal Chess/Shogi new-game, archive and presentation contracts remain available. The Rust library's typed Replace operation admits actual canonical Xiangqi records for native consumers and the separately gated development probe.
 
 ## Authority and execution

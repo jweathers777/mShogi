@@ -3,7 +3,7 @@ import { afterEach, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ShogiBoard } from "./ShogiBoard";
-import type { GameSnapshot } from "./native";
+import type { ChessShogiSnapshot as GameSnapshot } from "./native";
 import standardJson from "../__fixtures__/shared-shogi-standard.json";
 import promotionJson from "../__fixtures__/shared-shogi-promotion.json";
 import forcedJson from "../__fixtures__/shared-shogi-forced.json";

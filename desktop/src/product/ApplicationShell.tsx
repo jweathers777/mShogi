@@ -57,10 +57,10 @@ export function GameArea({ upperPlayer, board, lowerPlayer, footer, className = 
   </div>;
 }
 
-export function InspectorSwitch({ value, onChange }: { value: "play" | "analysis"; onChange: (value: "play" | "analysis") => void }) {
+export function InspectorSwitch({ value, onChange, analysisDisabled = false }: { value: "play" | "analysis"; onChange: (value: "play" | "analysis") => void; analysisDisabled?: boolean }) {
   return <div className="inspector-switch" role="group" aria-label="Inspector view">
     <button aria-pressed={value === "play"} onClick={() => onChange("play")}>Play details</button>
-    <button aria-pressed={value === "analysis"} onClick={() => onChange("analysis")}>Analyze position</button>
+    <button aria-pressed={value === "analysis"} disabled={analysisDisabled} onClick={() => onChange("analysis")}>Analyze position</button>
   </div>;
 }
 
@@ -76,7 +76,7 @@ export function AnalysisActions({ children }: { children: ReactNode }) {
 }
 
 export function ApplicationShell({ game, runtime, document, actions, heading, board, positionNotice, notices, analysis, history, gameActions, technical, overlays, blocked, historical, attributes = {}, onFocusCapture }: {
-  game: "chess" | "shogi"; runtime: string; document: ReactNode; actions: ReactNode;
+  game: "chess" | "shogi" | "xiangqi"; runtime: string; document: ReactNode; actions: ReactNode;
   heading: ReactNode; board: ReactNode; positionNotice?: ReactNode; notices?: ReactNode; analysis: ReactNode;
   history: ReactNode; gameActions: ReactNode; technical: ReactNode; overlays?: ReactNode;
   blocked?: boolean; historical?: boolean; attributes?: Record<string, string | number | boolean>;
@@ -85,7 +85,7 @@ export function ApplicationShell({ game, runtime, document, actions, heading, bo
   return <main className={`game-shell shell-${game} ${game === "chess" ? "application" : "shogi-application"}`} data-theme="mshogi-dark" data-historical={historical} {...attributes} onFocusCapture={onFocusCapture}>
     <div className="shell-content" inert={blocked}>
       <header className="shell-header app-header shogi-header">
-        <div className="product-brand brand"><span className="brand-mark" aria-hidden="true">♜</span><div><h1>mShogi</h1><p>{game === "chess" ? "CHESS" : "SHOGI"} · UNTIMED</p><span className="shell-runtime" role="status">{runtime}</span></div></div>
+        <div className="product-brand brand"><span className="brand-mark" aria-hidden="true">♜</span><div><h1>mShogi</h1><p>{game.toUpperCase()} · UNTIMED</p><span className="shell-runtime" role="status">{runtime}</span></div></div>
         <div className="shell-document document-card" aria-label="Game file">{document}</div><div className="product-file-actions shell-file-actions">{actions}</div>
       </header>
       <div className="shell-workspace workspace shogi-workspace">

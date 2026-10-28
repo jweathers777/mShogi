@@ -1,0 +1,167 @@
+{
+  "token": {
+    "document": 5,
+    "version": 11,
+    "revision": 36,
+    "selection": 11
+  },
+  "game": "xiangqi",
+  "origin": "b7",
+  "side": {
+    "id": {
+      "game_kind": "xiangqi",
+      "side": "black"
+    },
+    "key": "mshogi.xiangqi.wxf2018.v1:black",
+    "label": "Black",
+    "first_mover": false
+  },
+  "label": "Black cannon",
+  "choices": [
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "b7"
+      },
+      "action": "b7b0",
+      "from": "b7",
+      "steps": [
+        "b0"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "b7"
+      },
+      "action": "b7b3",
+      "from": "b7",
+      "steps": [
+        "b3"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "b7"
+      },
+      "action": "b7b4",
+      "from": "b7",
+      "steps": [
+        "b4"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "b7"
+      },
+      "action": "b7b5",
+      "from": "b7",
+      "steps": [
+        "b5"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "b7"
+      },
+      "action": "b7b6",
+      "from": "b7",
+      "steps": [
+        "b6"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "b7"
+      },
+      "action": "b7a7",
+      "from": "b7",
+      "steps": [
+        "a7"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "b7"
+      },
+      "action": "b7c7",
+      "from": "b7",
+      "steps": [
+        "c7"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "b7"
+      },
+      "action": "b7d7",
+      "from": "b7",
+      "steps": [
+        "d7"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "b7"
+      },
+      "action": "b7e7",
+      "from": "b7",
+      "steps": [
+        "e7"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "b7"
+      },
+      "action": "b7f7",
+      "from": "b7",
+      "steps": [
+        "f7"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "b7"
+      },
+      "action": "b7g7",
+      "from": "b7",
+      "steps": [
+        "g7"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "b7"
+      },
+      "action": "b7b8",
+      "from": "b7",
+      "steps": [
+        "b8"
+      ],
+      "completion": null
+    }
+  ],
+  "read_only": true
+}

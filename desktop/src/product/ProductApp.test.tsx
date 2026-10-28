@@ -4,7 +4,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { ProductApp } from "./ProductApp";
 import { useGameSession } from "./useGameSession";
 import type { GameSession } from "./useGameSession";
-import type { GameSnapshot } from "./native";
+import type { ChessShogiSnapshot as GameSnapshot } from "./native";
 import standardJson from "../__fixtures__/shared-shogi-standard.json";
 import chessJson from "../__fixtures__/standard.json";
 import { mockSession } from "../__tests__/session";
@@ -20,7 +20,7 @@ beforeEach(() => {
   vi.mocked(useNativeSession).mockReturnValue(mockSession(chessJson as Snapshot));
 });
 afterEach(cleanup);
-it.each([["Shogi", "Sente", "shogi", "sente"], ["Shogi", "Gote", "shogi", "gote"], ["Chess", "White", "chess", "white"], ["Chess", "Black", "chess", "black"]])("chooses %s / %s with explicit native game and side identity", async (gameLabel, sideLabel, game, side) => {
+it.each([["Shogi", "Sente", "shogi", "sente"], ["Shogi", "Gote", "shogi", "gote"], ["Chess", "White", "chess", "white"], ["Chess", "Black", "chess", "black"], ["Xiangqi", "Red", "xiangqi", "red"], ["Xiangqi", "Black", "xiangqi", "black"]])("chooses %s / %s with explicit native game and side identity", async (gameLabel, sideLabel, game, side) => {
   render(<ProductApp />); fireEvent.click(screen.getByRole("button", { name: "New game" }));
   fireEvent.click(screen.getByRole("radio", { name: new RegExp(gameLabel) }));
   fireEvent.click(screen.getByRole("radio", { name: sideLabel }));

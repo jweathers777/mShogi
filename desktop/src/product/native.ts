@@ -1,7 +1,9 @@
 import type { NativeBoardSnapshot } from "../NativeBoard";
 import type { Snapshot } from "../native";
-export type GameKind = "chess" | "shogi";
-export interface NativeSide { game_kind: GameKind; side: "white" | "black" | "sente" | "gote" }
+export type GameKind = "chess" | "shogi" | "xiangqi";
+export type NativeSide = { game_kind: "chess"; side: "white" | "black" }
+  | { game_kind: "shogi"; side: "sente" | "gote" }
+  | { game_kind: "xiangqi"; side: "red" | "black" };
 export interface Side { id: NativeSide; key: string; label: string; first_mover: boolean }
 export interface OpenToken { document: number; version: number; document_revision: number }
 export interface SearchView {
@@ -9,11 +11,11 @@ export interface SearchView {
   perspective: string; engine: string; score: string | null; completed_depth: number | null;
   nodes: number | null; variation: string[]; status: string; historical: boolean;
 }
-export interface GameSnapshot extends Omit<NativeBoardSnapshot, "orientations" | "sides" | "capabilities"> {
+interface GameSnapshotBase extends Omit<NativeBoardSnapshot, "game" | "orientations" | "sides" | "capabilities"> {
   open_token: OpenToken;
   human: Side; turn: Side; sides: Side[];
   orientations: { side: Side; files: string[]; ranks: string[] }[];
-  document: { revision: number; dirty: boolean; path: string | null; settings: { game_kind: GameKind; settings: { orientation: string; analysis_defaults: { depth: number; nodes: number } } } };
+  document: { revision: number; dirty: boolean; path: string | null };
   io: { id: number; phase: string; message: string | null };
   capacity: { id: number; status: "available" | "checking" | "paused"; message: string | null };
   capabilities: { board_action: boolean; declaration: boolean; resign: boolean; undo: boolean; move_analysis: boolean; save: boolean };
@@ -30,12 +32,23 @@ export interface GameSnapshot extends Omit<NativeBoardSnapshot, "orientations" |
   search_observations: SearchView[];
   chess: Snapshot | null;
 }
+export type ChessShogiSnapshot = GameSnapshotBase & ({ game: "chess" } | { game: "shogi" }) & {
+  document: GameSnapshotBase["document"] & { settings: { game_kind: "chess" | "shogi"; settings: { orientation: string; analysis_defaults: { depth: number; nodes: number } } } };
+};
+// Preserve the authoritative flat Xiangqi settings encoding; no native/archive migration.
+export type XiangqiSnapshot = GameSnapshotBase & {
+  game: "xiangqi";
+  document: GameSnapshotBase["document"] & { settings: { game_kind: "xiangqi"; orientation: "red" | "black"; analysis_defaults: { depth: number; nodes: number } } };
+};
+export type GameSnapshot = ChessShogiSnapshot | XiangqiSnapshot;
 export interface Observation {
   historical: boolean; application_error: string | null;
   response: { context: { request_id: number; session_version: number; process_generation: number;
     purpose: { kind: string; target?: { selection_id: number; event_index: number; board_ply: number } }; limits: { depth: number; nodes: number } }; result: unknown };
 }
 export type Operation =
+  | { kind: "xiangqi"; command: { kind: "play"; action: string } }
+  | { kind: "xiangqi_preferences"; settings: { orientation: "red" | "black"; analysis_defaults: { depth: number; nodes: number } } }
   | { kind: "play"; action: string }
   | { kind: "resume" | "retry" | "cancel" | "undo" | "return_live" | "resign" | "declare" }
   | { kind: "inspect"; event_index: number }

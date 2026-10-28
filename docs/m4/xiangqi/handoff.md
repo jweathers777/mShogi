@@ -1,6 +1,16 @@
 # Xiangqi native/shared delivery handoff
 
-## Aggregate shared contract (MSH-76)
+## Product board checkpoint in progress (MSH-101)
+
+The [Xiangqi product design](desktop-product.md) applies the owner's approved
+board/disc direction inside the accepted common dark shell. MSH-101 is active
+only through its mandatory early actual packaged visual checkpoint; it remains
+unfinished pending explicit owner review. Native product New Game/play and
+inspection are being exercised, with full document/history/analysis/outcome
+journeys still MSH-102 ownership. No complete Xiangqi delivery or M4 closure is
+claimed. MSH-102/103/106 are unstarted. Earlier snapshots remain below.
+
+## Aggregate shared contract (MSH-76, preserved snapshot)
 
 The [aggregate handoff](shared-contract-handoff.md) reconciles the existing native
 rules, typed routing, session, engine context, semantic presentation and lossless

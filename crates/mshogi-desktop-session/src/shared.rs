@@ -785,16 +785,24 @@ impl DesktopController {
         if human.game() != game {
             return Err("The selected player side does not belong to this game.".into());
         }
-        if game == GameKind::Xiangqi {
-            return Err("Xiangqi desktop play is not available yet.".into());
-        }
         self.session.ensure_capacity()?;
         if self.shared.epoch >= MAX_SAFE_ID - 64 {
             return Err("Application capacity: document identity exhausted.".into());
         }
         let receipt = match human {
-            NativeSide::Xiangqi(_) => {
-                return Err("Xiangqi desktop play is not available yet.".into());
+            NativeSide::Xiangqi(human) => {
+                use mshogi_core::xiangqi as x;
+                let game =
+                    x::Game::standard(x::ClaimPolicy::Explicit).map_err(|e| e.to_string())?;
+                let record = x::GameRecord::from_game(&game).map_err(|e| e.to_string())?;
+                let candidate = xiangqi::archive::XiangqiDraft::replacement(&record, human);
+                self.queue_xiangqi_candidate(
+                    candidate,
+                    Some(SessionOperation::Resume {}),
+                    None,
+                    None,
+                    true,
+                )?
             }
             NativeSide::Shogi(human) => {
                 let record = s::GameRecord::from_game(&s::Game::new());

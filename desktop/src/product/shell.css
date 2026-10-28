@@ -55,7 +55,9 @@
 .game-shell .hand-piece.inspecting { outline-color:#f59ab0; }
 .game-shell .shell-sidebar { min-height:0; display:flex; flex-direction:column; gap:14px; overflow-y:auto; scrollbar-gutter:stable; padding-right:4px; }
 .game-shell .shell-sidebar>* { flex-shrink:0; }
-.shell-notices:empty { display:none; }
+/* Keep the common gap even without notices; whitespace-only adapter fragments
+   must not determine where another game's first card starts. */
+.shell-notices:empty { display:block; }
 .shell-notices>*+* { margin-top:10px; }
 .game-shell .shell-card { background:var(--shell-panel); border:1px solid var(--shell-border); border-radius:9px; padding:13px; }
 .game-shell .shell-analysis { min-height:218px; }
@@ -76,9 +78,10 @@
 .game-shell .shogi-search-observation { border-color:var(--shell-border); }
 .game-shell .shogi-analysis-fields input { color:var(--shell-text); background:#13252a; border-color:#56716f; }
 .game-shell .shogi-history ol { max-height:174px; }
-.game-shell .shogi-history li button { color:var(--shell-text); }
+.game-shell .shogi-history li button,.game-shell .native-history-row { color:var(--shell-text); }
 .game-shell .shogi-history li button:hover:enabled { background:#2a4247; }
-.game-shell .shogi-history li button[aria-current="step"] { color:#e5eddc; background:#344b41; }
+.game-shell .shogi-history li button[aria-current="step"],.game-shell .native-history-row[aria-current="step"] { color:#e5eddc; background:#344b41; }
+.native-history-row { display:flex; align-items:center; gap:10px; padding:7px 6px; font-size:11px; border-radius:4px; }
 .game-shell .shell-actions .resign-button { width:auto; margin:0; }
 .game-shell .shogi-game-actions button { margin:0 4px 0 0; }
 .game-shell .shell-technical { font-size:11px; padding:12px 0; border-top:1px solid var(--shell-border); color:var(--shell-muted); }
@@ -126,7 +129,8 @@
  .game-shell .shell-analysis { min-height:200px; }
 }
 
-.shell-position-notice:empty { display:none; }
+/* The empty notice slot retains its existing eight-pixel separation in every game. */
+.shell-position-notice:empty { display:block; }
 .shell-position-notice { flex-shrink:0; margin-bottom:8px; }
 .game-shell .shell-position-notice .historical-notice,.game-shell .shell-position-notice .shogi-history-banner { background:#383a2d; color:#e2d3a9; border:1px solid #837752; border-radius:6px; padding:8px 10px; margin:0; font-size:11px; }
 .game-shell .shell-position-notice .historical-notice p { font-size:10px; margin:3px 0; }

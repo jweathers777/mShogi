@@ -691,6 +691,8 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
         NativeSide::Shogi(s::Side::Gote),
         NativeSide::Chess(Color::Black),
         NativeSide::Chess(Color::White),
+        NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Red),
+        NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Black),
     ] {
         let current = new_product_game(&mut c, human.game(), human);
         assert_eq!(current.game, human.game());
@@ -703,7 +705,20 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
         assert!(current.document.dirty);
         assert_eq!(current.open_token, c.shared_open_token());
         match human {
-            NativeSide::Xiangqi(_) => unreachable!("not a supported product new-game choice"),
+            NativeSide::Xiangqi(side) => {
+                use mshogi_core::xiangqi as x;
+                assert_eq!(current.profile.id(), x::PROFILE_ID);
+                assert_eq!(current.pieces.len(), 32);
+                assert_eq!(current.choices.len(), 44);
+                assert_eq!(current.board.intersections.unwrap().points.len(), 90);
+                assert!(current.hands.is_empty());
+                assert!(!current.capabilities.promotion && !current.capabilities.declaration);
+                assert_eq!(current.turn.id, NativeSide::Xiangqi(x::Side::Red));
+                let state = c.shared.xiangqi.as_ref().unwrap();
+                assert_eq!(state.settings.orientation, side);
+                assert_eq!(current.capabilities.board_action, side == x::Side::Red);
+                assert_eq!(state.pending.is_some(), side == x::Side::Black);
+            }
             NativeSide::Shogi(side) => {
                 assert_eq!(current.pieces.len(), 40);
                 assert_eq!(current.choices.len(), 30);
@@ -856,53 +871,30 @@ fn native_search_presentation_preserves_target_purpose_and_real_terminal_distanc
 }
 
 #[test]
-fn xiangqi_product_creation_is_still_gated_but_native_replacement_is_admitted() {
+fn xiangqi_product_creation_retires_prior_work_and_keeps_archive_admission() {
     use mshogi_core::xiangqi as x;
     for shogi in [false, true] {
         let mut c = controller();
         if shogi {
             replace(&mut c, s::Game::new(), s::Side::Gote);
         }
-        let before = c.shared_snapshot();
+        c.shared_snapshot();
         let token = c.shared_token();
         let open = c.shared_open_token();
         let pending = c.shared.shogi.as_ref().and_then(|g| g.pending.clone());
-        let native = CanonicalRecord::xiangqi(
-            x::GameRecord::from_game(&x::Game::standard(x::ClaimPolicy::Explicit).unwrap())
-                .unwrap(),
-        );
-        let error = c
-            .shared_new_game(open, GameKind::Xiangqi, NativeSide::Xiangqi(x::Side::Red))
-            .unwrap_err();
-        assert!(error.contains("not available"));
-        let request = serde_json::json!({
-            "expected": token, "game": before.game,
-            "operation": { "kind": "replace", "record": native, "human": NativeSide::Xiangqi(x::Side::Red) }
-        });
-        let command = SharedDesktopCommand::from_json(&request.to_string()).unwrap();
-        assert_eq!(c.shared_token(), token);
-        assert_eq!(c.shared_open_token(), open);
-        assert_eq!(
-            c.shared.shogi.as_ref().and_then(|g| g.pending.clone()),
-            pending
-        );
-        let (_, receipt) = c.shared_command_with_receipt(command).unwrap();
-        let deadline = Instant::now() + std::time::Duration::from_secs(20);
-        let after = loop {
-            let snapshot = c.shared_snapshot();
-            if let Some(result) = receipt.completion() {
-                result.unwrap();
-                break snapshot;
-            }
-            assert!(
-                Instant::now() < deadline,
-                "native replacement archive admission"
-            );
-            std::thread::sleep(std::time::Duration::from_millis(1));
-        };
+        let after = new_product_game(&mut c, GameKind::Xiangqi, NativeSide::Xiangqi(x::Side::Red));
         assert_eq!(after.game, GameKind::Xiangqi);
         assert_ne!(after.token, token);
-        assert!(after.paused);
+        assert!(!after.paused);
+        assert!(after.capabilities.board_action);
+        assert!(c.shared.shogi.is_none());
+        if let Some(old) = pending {
+            assert_ne!(old.game, after.context);
+        }
+        assert!(
+            c.shared_new_game(open, GameKind::Xiangqi, NativeSide::Xiangqi(x::Side::Black))
+                .is_err()
+        );
         assert!(after.capabilities.save, "MSH-99 native archive support");
     }
 }

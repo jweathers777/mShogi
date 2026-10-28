@@ -33,3 +33,10 @@ name = "mshogi-usi-fixture"
 path = "tests/support/usi_fixture.rs"
 test = false
 doc = false
+
+# Explicitly named negative-protocol test child, never selected for packages.
+[[bin]]
+name = "mshogi-xiangqi-fixture"
+path = "tests/support/xiangqi_fixture.rs"
+test = false
+doc = false

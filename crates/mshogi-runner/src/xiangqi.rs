@@ -467,6 +467,112 @@ fn reply(text: &str) -> Result<GameCommand, String> {
         "0000" | "(none)" => Err("missing board action: native host owns terminal adjudication; null reply is not a draw or resignation".into()),
         token => token.parse::<Action>().map(|action| GameCommand::Play { action }).map_err(|e| e.to_string()), }
 }
+/// Validate the actual accepted-generation protocol, not merely the existence
+/// of a matching bestmove somewhere in a contradictory transcript.
+fn replay_traffic(
+    events: &[&Traffic],
+    turn: &Turn,
+    config: &EngineConfig,
+) -> Result<(), RunnerError> {
+    let invalid = || RunnerError("accepted generation protocol phase/order/reply mismatch".into());
+    let mut expected = vec![("handshake", "uci".to_owned())];
+    expected.extend(config.options.iter().map(|o| {
+        (
+            "options",
+            format!("setoption name {} value {}", o.name, o.value),
+        )
+    }));
+    expected.extend([
+        ("readiness", "isready".to_owned()),
+        ("newgame", "ucinewgame".to_owned()),
+        ("newgame_ready", "isready".to_owned()),
+        ("position", turn.position.clone()),
+        ("search", turn.go.clone()),
+        ("cleanup", "stop".to_owned()),
+        ("cleanup", "quit".to_owned()),
+    ]);
+    let mut written = 0;
+    let mut awaiting = "";
+    let mut handshake = false;
+    let mut ready = false;
+    let mut new_ready = false;
+    let mut replied = false;
+    for event in events {
+        match event.direction.as_str() {
+            "command" => {
+                let Some((phase, text)) = expected.get(written) else {
+                    return Err(invalid());
+                };
+                if event.phase != *phase || event.text != *text || event.written != Some(true) {
+                    return Err(invalid());
+                }
+                let admitted = match *phase {
+                    "handshake" => awaiting.is_empty() && !handshake,
+                    "options" | "readiness" => handshake && awaiting.is_empty(),
+                    "newgame" => ready && awaiting.is_empty(),
+                    "newgame_ready" => ready && awaiting.is_empty(),
+                    "position" => new_ready && awaiting.is_empty(),
+                    "search" => new_ready && awaiting.is_empty() && !replied,
+                    "cleanup" => replied && (awaiting.is_empty() || awaiting == "retired"),
+                    _ => false,
+                };
+                if !admitted {
+                    return Err(invalid());
+                }
+                awaiting = match *phase {
+                    "handshake" | "readiness" | "newgame_ready" | "search" => phase,
+                    "cleanup" => "retired",
+                    _ => "",
+                };
+                written += 1;
+            }
+            "response" => {
+                if event.written.is_some() || event.phase != awaiting || awaiting.is_empty() {
+                    return Err(invalid());
+                }
+                let text = event.text.as_str();
+                match awaiting {
+                    "handshake" if text == "uciok" => {
+                        handshake = true;
+                        awaiting = "";
+                    }
+                    "readiness" if text == "readyok" => {
+                        ready = true;
+                        awaiting = "";
+                    }
+                    "newgame_ready" if text == "readyok" => {
+                        new_ready = true;
+                        awaiting = "";
+                    }
+                    "search"
+                        if text == escaped(turn.reply.as_bytes())
+                            && text.starts_with("bestmove") =>
+                    {
+                        replied = true;
+                        awaiting = "";
+                    }
+                    "handshake"
+                        if text.is_empty()
+                            || text.starts_with("id ")
+                            || text.starts_with("option ")
+                            || text.starts_with("info ")
+                            || text.starts_with("Pikafish ") => {}
+                    "readiness" | "newgame_ready" | "search"
+                        if text.is_empty()
+                            || (text.starts_with("info ")
+                                && !text.starts_with("info string mshogi execution_failure ")) => {}
+                    "retired" if !text.starts_with("bestmove") => {}
+                    _ => return Err(invalid()),
+                }
+            }
+            _ => return Err(invalid()),
+        }
+    }
+    if written != expected.len() || !handshake || !ready || !new_ready || !replied {
+        return Err(invalid());
+    }
+    Ok(())
+}
 impl Report {
     /// Strict bounded report decoding followed by native replay.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
@@ -592,41 +698,7 @@ impl Report {
                         "accepted result lacks matching process/command/response evidence".into(),
                     ));
                 }
-                let writes: Vec<_> = traffic
-                    .iter()
-                    .filter(|e| e.direction == "command")
-                    .collect();
-                let mut expected = vec!["uci".to_owned()];
-                expected.extend(
-                    self.config.engines[engine]
-                        .options
-                        .iter()
-                        .map(|o| format!("setoption name {} value {}", o.name, o.value)),
-                );
-                expected.extend([
-                    "isready".to_owned(),
-                    "ucinewgame".to_owned(),
-                    "isready".to_owned(),
-                    turn.position.clone(),
-                    turn.go.clone(),
-                    "stop".to_owned(),
-                    "quit".to_owned(),
-                ]);
-                if writes.iter().any(|e| e.written != Some(true))
-                    || writes.iter().map(|e| &e.text).ne(expected.iter())
-                    || !traffic.iter().any(|e| {
-                        e.direction == "response" && e.phase == "handshake" && e.text == "uciok"
-                    })
-                    || !["readiness", "newgame_ready"].iter().all(|phase| {
-                        traffic.iter().any(|e| {
-                            e.direction == "response" && &e.phase == phase && e.text == "readyok"
-                        })
-                    })
-                {
-                    return Err(RunnerError(
-                        "accepted turn handshake/options/retirement transcript mismatch".into(),
-                    ));
-                }
+                replay_traffic(&traffic, turn, &self.config.engines[engine])?;
                 generation = turn.generation;
                 let command = reply(&turn.reply).map_err(RunnerError)?;
                 submit(&mut game, command).map_err(RunnerError)?;

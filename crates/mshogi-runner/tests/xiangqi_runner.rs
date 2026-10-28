@@ -328,3 +328,61 @@ fn options_retention_and_transcript_or_native_record_tampering_are_rejected() {
         && e.turns.is_empty()
         && !e.traffic_complete));
 }
+
+#[test]
+fn accepted_generation_replay_rejects_retired_duplicate_and_reordered_responses() {
+    let report = xiangqi::run(&config("resign")).unwrap();
+    for kind in 0..6 {
+        let mut bad = report.clone();
+        let game = &mut bad.games[0];
+        match kind {
+            0 => {
+                let mut late = game.traffic.last().unwrap().clone();
+                late.direction = "response".into();
+                late.phase = "retired".into();
+                late.text = "bestmove a3a4".into();
+                late.written = None;
+                game.traffic.push(late);
+            }
+            1 => {
+                let mut duplicate = game
+                    .traffic
+                    .iter()
+                    .find(|e| e.text == "bestmove resign")
+                    .unwrap()
+                    .clone();
+                duplicate.at_ns = game.traffic.last().unwrap().at_ns;
+                game.traffic.push(duplicate);
+            }
+            2 => {
+                game.traffic
+                    .iter_mut()
+                    .find(|e| e.text == "uciok")
+                    .unwrap()
+                    .phase = "search".into()
+            }
+            3 => {
+                game.traffic
+                    .iter_mut()
+                    .find(|e| e.text == "readyok")
+                    .unwrap()
+                    .text = "uciok".into()
+            }
+            4 => {
+                game.traffic
+                    .iter_mut()
+                    .find(|e| e.text == "uciok")
+                    .unwrap()
+                    .direction = "unknown".into()
+            }
+            _ => {
+                game.traffic
+                    .iter_mut()
+                    .find(|e| e.text == "uciok")
+                    .unwrap()
+                    .phase = "unknown".into()
+            }
+        }
+        assert!(bad.replay().is_err(), "contradictory transcript {kind}");
+    }
+}

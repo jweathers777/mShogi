@@ -1,11 +1,11 @@
 ---
 id: MSH-98
 title: Extend native session and semantic presentation for xiangqi consumers
-status: In Progress
+status: In Review
 assignee:
   - '@codex-session'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-28T12:09:00Z'
+updated_date: '2026-10-28T12:34:00Z'
 labels:
   - m4
   - owner-msh-46
@@ -58,4 +58,6 @@ Future bounded Xiangqi delivery work refined by MSH-80. Intent and acceptance on
 
 <!-- SECTION:NOTES:BEGIN -->
 Parallel ownership audit before source:98 deps84/95/97/72 allDone;100 deps96/97 allDone, no mutual edge.98 owns coreXQread-onlyinspection additions, desktop-session/shareddispatch/semanticcontract, tests/nativeexamples and docs/m4/xiangqi/session*.100 owns consoleexternalprotocol and runner modules/tests/docs/m4/xiangqi/protocol*. Both consume unchanged completed97engine/84nativecontracts; neither owns sharedengine redesign. Root sole integrator and98builder;100 isolatedworker. Primarye923cfd5712698d4a8b059ffb3b37b0e31de8f8b clean/refreshedorigin equal; baselineCLI1.55.1 pinned. Appmanagedworktree98 /Users/johnweathers/.codex/worktrees/xiangqi-session98/mShogi,100 /Users/johnweathers/.codex/worktrees/xiangqi-protocol100/mShogi. Globalhandoff/coverage, taskrecords/finalCI and any incidentaloverlap reconciled onlybyroot. No dependency changes; no laterUI/archive/architecturework.
+
+Native consumer implementation ready for independent review. macOS arm64: cargo test -p mshogi-desktop-session --all-features --locked passed103 tests; new focused10 include256 accepted observations then257 refusal. Core relevant44 tests passed (native envelope/board/exact/game-boundary/history/new inspection-prefix). Actual supervised engine probe passed engine turn, read-only live/history analysis, cancel, Return to live and acknowledged cleanup. Clippy all-targets/all-features passed; no normal product Xiangqi admission or archive/UI claim. docs/m4/xiangqi/session-contract.md records native dispatch, immutable intra-command history versus canonical committed prefix and exact-analysis boundary. Source revision and independent findings recorded after commit; CI pending.
 <!-- SECTION:NOTES:END -->

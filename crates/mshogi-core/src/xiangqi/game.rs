@@ -286,6 +286,9 @@ pub enum GameError {
     DrawOffer,
     /// A pre-commit native record/event/command/token limit was reached.
     Capacity,
+    /// Historical selection is not the end of a committed native command.
+    /// Automatic derived events remain viewable through `event_prefix`.
+    NotCommandBoundary,
     /// A native invariant failed; no result is invented.
     Invariant,
 }
@@ -867,6 +870,50 @@ impl Game {
         self.last_offer_ply = b.last_offer_ply;
         self.token.revision = revision;
         Ok(())
+    }
+    /// Reconstruct a complete committed command prefix with fresh runtime identity.
+    ///
+    /// Event selections inside an atomic command's derived events cannot be
+    /// resumed as a game and return `NotCommandBoundary`. Root admission may itself
+    /// emit automatic events; those are indivisible too. Use `event_prefix` for
+    /// arbitrary immutable historical views. Reconstruction preserves the root,
+    /// declared counters, known history and claim policy without future events,
+    /// and performs only the normal bounded native admission/replay path.
+    pub fn committed_prefix(&self, event_count: usize) -> Result<Self, GameError> {
+        if event_count > self.events.len() {
+            return Err(GameError::NotCommandBoundary);
+        }
+        let mut prefix = Self::from_root(self.root.clone(), self.policy)?;
+        if prefix.events.len() == event_count {
+            return Ok(prefix);
+        }
+        if !self
+            .commands
+            .iter()
+            .any(|entry| entry.event_end == event_count)
+        {
+            return Err(GameError::NotCommandBoundary);
+        }
+        for entry in &self.commands {
+            if entry.event_end > event_count {
+                break;
+            }
+            let submitted = prefix.submit(GameRequest {
+                expected: prefix.context(),
+                actor: entry.actor,
+                command: entry.command,
+            })?;
+            if submitted.result != entry.result || prefix.events.len() != entry.event_end {
+                return Err(GameError::Invariant);
+            }
+            if prefix.events.len() == event_count {
+                if prefix.events != self.events[..event_count] {
+                    return Err(GameError::Invariant);
+                }
+                return Ok(prefix);
+            }
+        }
+        Err(GameError::NotCommandBoundary)
     }
     /// Immutable exact event-prefix view. It cannot submit actions or revive work.
     /// Automatic warning/conclusion boundaries can share a board ply.

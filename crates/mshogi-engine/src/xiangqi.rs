@@ -7,6 +7,12 @@ use mshogi_core::{
 use mshogi_search::xiangqi as search;
 use serde::{Deserialize, Serialize};
 
+/// Measured default for ordinary interactive consumers; derived from the native search.
+pub const XIANGQI_PLAY_LIMITS: crate::WorkLimits = crate::WorkLimits {
+    depth: search::DEFAULT_LIMITS.depth,
+    nodes: search::DEFAULT_LIMITS.nodes,
+};
+
 /// Native complete board choice versus formal count claim.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]

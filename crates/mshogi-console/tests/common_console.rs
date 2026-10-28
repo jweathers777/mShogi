@@ -68,16 +68,16 @@ impl Drop for Dir {
         let _ = fs::remove_dir_all(&self.0);
     }
 }
-const BOARD: &str = "a g:L  g:N  g:S  g:G  g:K  g:G  g:S  g:N  g:L
-b  .   g:R   .    .    .    .    .   g:B   .
-c g:P  g:P  g:P  g:P  g:P  g:P   .   g:P  g:P
-d  .    .    .    .    .    .   g:P   .    .
-e  .    .    .    .    .    .    .    .    .
-f  .    .   s:P   .    .    .    .    .    .
-g s:P  s:P   .   s:P  s:P  s:P  s:P  s:P  s:P
-h  .   s:B   .    .    .    .    .   s:R   .
-i s:L  s:N  s:S  s:G  s:K  s:G  s:S  s:N  s:L
-   9    8    7    6    5    4    3    2    1\n";
+const BOARD: &str = "a  l  n  s  g  k  g  s  n  l
+b  .  r  .  .  .  .  .  b  .
+c  p  p  p  p  p  p  .  p  p
+d  .  .  .  .  .  .  p  .  .
+e  .  .  .  .  .  .  .  .  .
+f  .  .  P  .  .  .  .  .  .
+g  P  P  .  P  P  P  P  P  P
+h  .  B  .  .  .  .  .  R  .
+i  L  N  S  G  K  G  S  N  L
+   9  8  7  6  5  4  3  2  1\n";
 #[test]
 fn canonical_shells_route_native_commands_and_compatibility_aliases_match() {
     for (game, alias, moves, expected) in [
@@ -201,9 +201,9 @@ fn promotions_use_fixed_stride_without_changing_long_labels() {
         .lines()
         .filter(|l| l.starts_with("d ") || l.starts_with("e "))
         .collect();
-    assert_eq!(rows[0], "d  .    .   g:+R  .    .    .   s:+B  .    .");
-    assert_eq!(rows[1], "e  .    .    .    .   s:+P  .    .    .    .");
-    for (token, offset) in [("g:+R", 12), ("s:+B", 32)] {
+    assert_eq!(rows[0], "d  .  . +r  .  .  . +B  .  .");
+    assert_eq!(rows[1], "e  .  .  .  . +P  .  .  .  .");
+    for (token, offset) in [("+r", 8), ("+B", 20)] {
         assert_eq!(rows[0].find(token), Some(offset));
     }
     assert!(s.contains("S:+Pawn[") && s.contains("S:+Bishop["));

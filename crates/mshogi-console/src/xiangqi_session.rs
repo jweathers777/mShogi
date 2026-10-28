@@ -28,7 +28,7 @@ const HELP: &str = "Untimed Xiangqi diagnostic console (not UCCI/UCI protocol):
   nowin poll|wait|cancel             Observe or retire exact work
   help | quit
 Native coordinate dialect: files a-i from Red left, ranks0-9 from Red baseline;
-Red/Black, r/b owner tokens and K A B N R C P piece letters in show (B=Elephant).
+Show uses uppercase Red/lowercase Black, K A B N R C P (B=Elephant), dots for empty.
 FEN import starts known history; it never restores earlier warnings/claims.
 Use the canonical envelope for full restoration. Saves require a new path.
 Exact observations print their full source record, purpose, target, identity and
@@ -151,21 +151,25 @@ impl Session {
                             .game
                             .position()
                             .piece(Intersection::new(file, rank).unwrap())
-                            .map_or(" . ".into(), |p| {
-                                format!(
-                                    "{}{} ",
-                                    if p.side == Side::Red { 'r' } else { 'b' },
-                                    letter(p.kind)
-                                )
+                            .map_or('.', |p| {
+                                let code = letter(p.kind);
+                                if p.side == Side::Red {
+                                    code
+                                } else {
+                                    code.to_ascii_lowercase()
+                                }
                             });
+                        if file > 0 {
+                            write!(out, " ").unwrap();
+                        }
                         write!(out, "{token}").unwrap();
                     }
                     writeln!(out).unwrap();
                     if rank == 5 {
-                        writeln!(out, "  -------- river --------").unwrap();
+                        writeln!(out, "  ----- river -----").unwrap();
                     }
                 }
-                writeln!(out, "   a  b  c  d  e  f  g  h  i (intersections)").unwrap();
+                writeln!(out, "  a b c d e f g h i (intersections)").unwrap();
                 self.status(out)?;
             }
             "status" => {

@@ -26,7 +26,7 @@ do not prove historical reachability. Earlier checks and repetitions are unknown
 The counter is preserved, not expanded into invented events. Defaulted counter
 provenance from an existing canonical record is retained on load.
 
-`show` prints ranks a–i, files9–1, owner-qualified piece identities, both hands,
+`show` prints ranks a–i, files9–1, case-qualified piece identities, both hands,
 SFEN, current side, declared completed count, known event count and native
 conclusion. `hands`, `sfen` and `status` are shorter inspections. `history` prints
 the immutable profile edition, original root/category/counter provenance, full
@@ -62,25 +62,29 @@ Perft is local legality in both games, capped at chess4 and shogi2 (divide >=1).
 
 ## Compact board
 
-Only `show` uses short tokens: lowercase `s`/`g` for Sente/Gote, uppercase
-`K R B G S N L P` for piece kind, and `+` after the colon for promotion
-(`s:+P`, `g:+R`, `s:+B`). Cells have a five-character stride. Occupied tokens
-start at the same cell offset; empty dots and file labels align with colons.
-Ranks run a–i, files9–1. Hands and native status follow the diagram.
+Only `show` uses short tokens: uppercase `K R B G S N L P` for Sente,
+lowercase `k r b g s n l p` for Gote, and a leading `+` for promotion (`+P`,
+`+r`, `+B`). Two-character right-aligned cells reserve the promotion column
+throughout the game; piece letters, empty dots and file labels remain aligned
+at a three-character stride. Ranks run a–i, files9–1. Hands and native status
+follow the diagram. This owner-selected MSH-110 convention supersedes the
+MSH-90 owner-colon display; its completed evidence remains historical.
+See [common console presentation](../console-presentation.md) for the current
+three-game policy and future multi-character abbreviation convention.
 
 After `position startpos` and `move 7g7f 3c3d`, the actual `show` board is:
 
 ```text
-a g:L  g:N  g:S  g:G  g:K  g:G  g:S  g:N  g:L
-b  .   g:R   .    .    .    .    .   g:B   .
-c g:P  g:P  g:P  g:P  g:P  g:P   .   g:P  g:P
-d  .    .    .    .    .    .   g:P   .    .
-e  .    .    .    .    .    .    .    .    .
-f  .    .   s:P   .    .    .    .    .    .
-g s:P  s:P   .   s:P  s:P  s:P  s:P  s:P  s:P
-h  .   s:B   .    .    .    .    .   s:R   .
-i s:L  s:N  s:S  s:G  s:K  s:G  s:S  s:N  s:L
-   9    8    7    6    5    4    3    2    1
+a  l  n  s  g  k  g  s  n  l
+b  .  r  .  .  .  .  .  b  .
+c  p  p  p  p  p  p  .  p  p
+d  .  .  .  .  .  .  p  .  .
+e  .  .  .  .  .  .  .  .  .
+f  .  .  P  .  .  .  .  .  .
+g  P  P  .  P  P  P  P  P  P
+h  .  B  .  .  .  .  .  R  .
+i  L  N  S  G  K  G  S  N  L
+   9  8  7  6  5  4  3  2  1
 ```
 
 Inspection changes no native state, SFEN/FEN, history or record. The formatter

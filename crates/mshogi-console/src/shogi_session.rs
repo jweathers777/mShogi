@@ -28,8 +28,8 @@ const HELP: &str = "Untimed shogi diagnostic console (not USI protocol):
 USI actions: 7g7f, 5c5b+, P*5e. Readable long notation: S:Pawn[7g->7f;keep],
 S:Pawn[5c->5b;promote], S:Pawn[hand->5e;drop]. Always include source; keep
 retains existing promoted identity. Readable labels are output, USI is input.
-Compact board: s/g = Sente/Gote, K R B G S N L P; + after colon is promotion.
-Five-character cells; dots and file labels align with token colons.";
+Compact board: uppercase = Sente, lowercase = Gote; K R B G S N L P.
+Prefix + marks promotion (+P/+p); two-character cells keep piece/file alignment.";
 
 pub struct Session {
     game: Game,
@@ -415,7 +415,7 @@ fn compact_board(position: &Position, out: &mut String) {
             .map(|file| {
                 position
                     .piece(Square::new(file, rank).unwrap())
-                    .map_or(" .".into(), |piece| {
+                    .map_or(".".into(), |piece| {
                         let code = match piece.kind {
                             PieceKind::King => 'K',
                             PieceKind::Rook => 'R',
@@ -426,20 +426,21 @@ fn compact_board(position: &Position, out: &mut String) {
                             PieceKind::Lance => 'L',
                             PieceKind::Pawn => 'P',
                         };
-                        format!(
-                            "{}:{}{}",
-                            if piece.side == Side::Sente { 's' } else { 'g' },
-                            if piece.promoted { "+" } else { "" },
+                        let code = if piece.side == Side::Sente {
                             code
-                        )
+                        } else {
+                            code.to_ascii_lowercase()
+                        };
+                        format!("{}{code}", if piece.promoted { "+" } else { "" })
                     })
             })
             .collect();
         let row = cells
             .iter()
-            .map(|token| format!("{token:<5}"))
-            .collect::<String>();
+            .map(|token| format!("{token:>2}"))
+            .collect::<Vec<_>>()
+            .join(" ");
         writeln!(out, "{} {}", char::from(b'a' + rank - 1), row.trim_end()).unwrap();
     }
-    writeln!(out, "   9    8    7    6    5    4    3    2    1").unwrap();
+    writeln!(out, "   9  8  7  6  5  4  3  2  1").unwrap();
 }

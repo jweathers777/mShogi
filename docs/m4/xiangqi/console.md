@@ -36,7 +36,7 @@ quit
   by those external protocol modes rather than routed to another game's engine.
 - Native input is complete origin/destination `a0a1`: files a–i from Red's left,
   ranks0–9 from Red's baseline. It has no promotion/drop/declaration fields.
-  `show` prints rank9 first, Red/Black owner tokens, native piece letters and river;
+  `show` prints rank9 first, uppercase Red/lowercase Black piece letters and river;
   the board is90 intersections. Diagnostic B means Elephant, N Horse; it does not
   rename the native kinds or select an external dialect.
 - `position [explicit|auto_valid_claims] startpos|fen <FEN>|json <native-root-JSON>`
@@ -60,6 +60,11 @@ quit
   automatic conclusions have no command handle. Runtime identity never rewinds.
 - `perft <0..3>` / `divide <1..3>` are explicitly local legality diagnostics, ignoring
   match outcomes. Complete native actions/counts remain rules-owned.
+
+The compact board follows the [common console presentation](../../console-presentation.md)
+selected in MSH-110. It uses one-character cells separated by spaces; the river
+and files/ranks stay native. The earlier MSH-96 prefixed-board evidence remains
+historical. This presentation change does not alter FEN, action or record encoding.
 
 ## Canonical Save/Load and bounds
 

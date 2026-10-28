@@ -91,6 +91,9 @@ fn explicit_selection_profile_initial_choices_and_local_diagnostics() {
     );
     success(&out);
     let s = text(&out);
+    // Owner-selected compact case convention; native coordinates/river survive.
+    let board = "9 r n b a k a b n r\n8 . . . . . . . . .\n7 . c . . . . . c .\n6 p . p . p . p . p\n5 . . . . . . . . .\n  ----- river -----\n4 . . . . . . . . .\n3 P . P . P . P . P\n2 . C . . . . . C .\n1 . . . . . . . . .\n0 R N B A K A B N R\n  a b c d e f g h i (intersections)\n";
+    assert!(s.contains(board), "{s}");
     assert!(
         s.contains("legal-local 44"),
         "initial complete choices must be44\n{s}"

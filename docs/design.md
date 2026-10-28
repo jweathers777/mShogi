@@ -91,6 +91,13 @@ The desktop UI must eventually accommodate large boards, square and intersection
 
 Validate the real packaged application on all three target systems. Keep engine progress and expensive work off the UI event path. Test a large-board and compound-action interaction early in desktop development.
 
+Human console board diagrams follow the owner-selected
+[compact presentation convention](console-presentation.md): case-based ownership
+for Chess, Standard Shogi and Xiangqi, with aligned Shogi promotion markers.
+Future multi-character native abbreviations use lowercase native owner prefixes
+without colons and stable cells sized for their tokens. This display policy does
+not change native rules, notation, records or game-specific board geometry.
+
 ### A-08. Learning remains an independently measurable track
 
 Establish a correct rules implementation, a search baseline, and reproducible matches before substantial training. Training and deployed inference must agree on ruleset, feature encoding, and model identity.

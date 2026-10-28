@@ -5,7 +5,7 @@ status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-28T08:48:00Z'
+updated_date: '2026-10-28T09:03:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -59,6 +59,8 @@ Root@codex sole builder/integrator on primary codex/rewrite atfd5fe6f34bcff8299f
 Implemented native console, strict canonical Save/Load and native command undo, explicit bounded read-only exact diagnostics and retirement; documented docs/m4/xiangqi/console.md. macOS arm64: cargo fmt --all; cargo clippy --workspace --all-targets --locked -- -D warnings; cargo test --workspace --locked PASS. Separate reviewer console96_review reviewed final source/docs, executed48 focused tests PASS, no material findings; docs/m4/xiangqi/console-reviews/msh-96.md. Initial fixture corrections preserved native rule contract. Await source integration/native CI before completion;97 remains unstarted.
 
 Integrated/pushed source d7de50d1e0b931c4dd86e8fec0126fdedcc5c254 on codex/rewrite. Required Rust workspace CI40658621082 PASS on ubuntu-24.04, macos-15, windows-2022 (format, lint, workspace tests, QA constructors, snapshot regeneration, build and console smoke). https://github.com/jweathers777/mShogi/actions/runs/40658621082 . Supporting desktop package CI40658621076 still running at completion, not claimed passed. backlog doctor and git diff --check PASS. All3AC/4DoD supported; no remaining finding. No temporary worktree created.97 can now begin under authorized queue after dependency reread.
+
+Supporting desktop package CI40658621076 subsequently PASS all3 platforms (normal package/bundled engine plus packaged GUI compatibility journey infrastructure). https://github.com/jweathers777/mShogi/actions/runs/40658621076 . This supplements, rather than substitutes for, recorded native console verification.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

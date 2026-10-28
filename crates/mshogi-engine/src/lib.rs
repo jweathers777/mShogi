@@ -11,6 +11,7 @@ mod server;
 mod shared;
 mod shogi;
 mod wire;
+mod xiangqi;
 pub use bridge::{BridgeOptions, EngineBridge, SubmitError};
 use mshogi_core::chess::{Action, ChessOutcome, ClaimRequest, Color, DrawClaim, GameRecord};
 use mshogi_search::search::{SearchChoice, SearchDecision, SearchResult, SearchStatus};
@@ -18,6 +19,7 @@ use serde::{Deserialize, Serialize};
 pub use server::serve_once;
 pub use shared::*;
 pub use shogi::*;
+pub use xiangqi::*;
 
 /// Current internal protocol version.
 pub const PROTOCOL_VERSION: u32 = 2;

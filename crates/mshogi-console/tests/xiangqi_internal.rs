@@ -1,5 +1,5 @@
 //! Actual internal entrypoint and separately labeled cross-game process fixtures.
-//! These tests establish routing and supervision, never Xiangqi search capability.
+//! Actual child establishes ordinary native execution; separate fixtures establish supervision.
 use mshogi_core::{chess, native::*, xiangqi as xq};
 use mshogi_engine::*;
 use std::{
@@ -37,10 +37,10 @@ fn request(id: u64, game: &xq::Game) -> SharedRequest {
         session_version: 19,
         process_generation: id,
         game: CanonicalRecord::xiangqi(xq::GameRecord::from_game(game).unwrap()),
-        // Opaque unsupported-execution settings, not advertised Xiangqi limits.
+        // Measured native Xiangqi ordinary-search limits.
         limits: WorkLimits {
-            depth: 255,
-            nodes: u64::MAX,
+            depth: 1,
+            nodes: 128,
         },
     }
 }
@@ -118,8 +118,8 @@ fn assert_failure(response: &SharedResponse, expected: FailureKind) {
 }
 
 #[test]
-fn real_entrypoint_echoes_complete_xiangqi_context_but_never_executes_any_operation() {
-    assert!(execution_capabilities(GameKind::Xiangqi).is_empty());
+fn real_entrypoint_executes_native_play_and_readonly_analysis_with_full_context() {
+    assert_eq!(execution_capabilities(GameKind::Xiangqi).len(), 2);
     let bridge = bridge(env!("CARGO_BIN_EXE_mshogi"), Duration::from_secs(15));
     let mut game = game();
     for id in 1..=4 {
@@ -167,7 +167,40 @@ fn real_entrypoint_echoes_complete_xiangqi_context_but_never_executes_any_operat
         let response = wait(&bridge);
         assert!(response.matches(&context));
         assert_eq!(response.context, context);
-        assert_failure(&response, FailureKind::UnsupportedMode);
+        match id {
+            1 | 2 => {
+                let SharedResult::Xiangqi {
+                    result:
+                        XiangqiResult::Choice {
+                            choice,
+                            ref telemetry,
+                        },
+                } = response.result
+                else {
+                    panic!("{response:?}")
+                };
+                assert_eq!(telemetry.perspective, xq::Side::Red);
+                assert!(telemetry.nodes > 0 && telemetry.nodes <= context.limits.nodes);
+                let mut candidate = before.to_game().unwrap();
+                let command = match choice {
+                    XiangqiChoice::Move { action } => xq::GameCommand::Play { action },
+                    XiangqiChoice::Claim { .. } => xq::GameCommand::ClaimNaturalCount,
+                };
+                candidate
+                    .submit(xq::GameRequest {
+                        expected: candidate.context(),
+                        actor: candidate.position().side_to_move(),
+                        command,
+                    })
+                    .unwrap();
+            }
+            3 => assert_failure(&response, FailureKind::UnsupportedMode),
+            4 => assert!(
+                matches!(response.result, SharedResult::Xiangqi { result: XiangqiResult::Finished { conclusion, ref telemetry } }
+                if Some(conclusion) == game.conclusion() && telemetry.perspective == xq::Side::Red && telemetry.score.unwrap() > 0)
+            ),
+            _ => unreachable!(),
+        }
         assert_eq!(before, xq::GameRecord::from_game(&game).unwrap());
         assert!(serde_json::to_string(&response).unwrap().len() < MAX_RESPONSE_BYTES);
     }
@@ -291,5 +324,118 @@ fn timeout_is_a_bounded_process_failure_and_does_not_conclude_the_game() {
     assert_failure(&response, FailureKind::Timeout);
     assert_eq!(before, xq::GameRecord::from_game(&game).unwrap());
     assert!(game.conclusion().is_none());
+    stop(&bridge);
+}
+
+#[test]
+fn actual_child_zero_work_and_same_board_different_history_retain_native_meaning() {
+    let bridge = bridge(env!("CARGO_BIN_EXE_mshogi"), Duration::from_secs(15));
+    let mut historical = game();
+    for text in ["e9f9", "f8e8", "f9e9", "e8f8"] {
+        historical
+            .submit(xq::GameRequest {
+                expected: historical.context(),
+                actor: historical.position().side_to_move(),
+                command: xq::GameCommand::Play {
+                    action: text.parse().unwrap(),
+                },
+            })
+            .unwrap();
+    }
+    let expected = xq::Conclusion::Win {
+        winner: xq::Side::Black,
+        reason: xq::WinReason::Repetition {
+            fault: xq::FaultKind::PerpetualCheck,
+        },
+    };
+    assert_eq!(historical.conclusion(), Some(expected));
+    let fresh = xq::Game::from_root(
+        xq::PositionRoot::from_fen(&historical.position().to_fen().unwrap()).unwrap(),
+        xq::ClaimPolicy::Explicit,
+    )
+    .unwrap();
+    assert_eq!(fresh.position(), historical.position());
+    assert_eq!(fresh.conclusion(), None);
+    let historical_record = xq::GameRecord::from_game(&historical).unwrap();
+    let fresh_record = xq::GameRecord::from_game(&fresh).unwrap();
+    for (id, source) in [(40, &historical), (41, &fresh), (42, &fresh)] {
+        let mut context = request(id, source);
+        context.purpose = SharedPurpose::MoveAnalysis {
+            target: target(&context, id),
+        };
+        if id == 42 {
+            context.limits.nodes = 0;
+        }
+        bridge.submit_shared(context.clone()).unwrap();
+        let response = wait(&bridge);
+        assert!(response.matches(&context));
+        match id {
+            40 => assert!(
+                matches!(response.result, SharedResult::Xiangqi { result: XiangqiResult::Finished { conclusion, ref telemetry } }
+                if conclusion == expected && telemetry.score.unwrap() < 0 && telemetry.perspective == xq::Side::Red)
+            ),
+            41 => assert!(matches!(
+                response.result,
+                SharedResult::Xiangqi {
+                    result: XiangqiResult::Choice { .. }
+                }
+            )),
+            42 => assert!(
+                matches!(response.result, SharedResult::Xiangqi { result: XiangqiResult::Incomplete { ref telemetry } }
+                if telemetry.score.is_none() && telemetry.nodes == 0 && telemetry.completed_depth == 0 && telemetry.principal_variation.is_empty())
+            ),
+            _ => unreachable!(),
+        }
+    }
+    assert_eq!(
+        historical_record,
+        xq::GameRecord::from_game(&historical).unwrap()
+    );
+    assert_eq!(fresh_record, xq::GameRecord::from_game(&fresh).unwrap());
+    stop(&bridge);
+}
+
+#[test]
+fn real_child_cancellation_and_cross_game_replacement_retire_search_work() {
+    let bridge = bridge(env!("CARGO_BIN_EXE_mshogi"), Duration::from_secs(15));
+    let game = xq::Game::standard(xq::ClaimPolicy::Explicit).unwrap();
+    let before = xq::GameRecord::from_game(&game).unwrap();
+    // First complete an actual child handshake, then cancel maximal native work.
+    let warm = request(40, &game);
+    bridge.submit_shared(warm.clone()).unwrap();
+    assert!(wait(&bridge).matches(&warm));
+    let mut old = request(41, &game);
+    old.limits = WorkLimits {
+        depth: mshogi_search::xiangqi::MAX_DEPTH,
+        nodes: mshogi_search::xiangqi::MAX_NODES,
+    };
+    bridge.submit_shared(old.clone()).unwrap();
+    thread::sleep(Duration::from_millis(20));
+    bridge.cancel();
+    assert!(bridge.poll_shared().is_none());
+    assert_eq!(bridge.submit_shared(old), Err(SubmitError::IdentityReused));
+    let current = chess_request(42);
+    bridge.submit_shared(current.clone()).unwrap();
+    let response = wait(&bridge);
+    assert!(response.matches(&current));
+    assert!(matches!(response.result, SharedResult::Chess { .. }));
+    // Replace actual Chess work with native Xiangqi analysis; target remains exact.
+    let mut retired = chess_request(43);
+    retired.limits = WorkLimits {
+        depth: 6,
+        nodes: u64::MAX,
+    };
+    bridge.submit_shared(retired.clone()).unwrap();
+    let mut analysis = request(44, &game);
+    analysis.purpose = SharedPurpose::MoveAnalysis {
+        target: target(&analysis, 40),
+    };
+    bridge.submit_shared(analysis.clone()).unwrap();
+    let response = wait(&bridge);
+    assert!(response.matches(&analysis));
+    assert!(!response.matches(&retired));
+    assert!(matches!(response.result, SharedResult::Xiangqi { .. }));
+    assert_eq!(before, xq::GameRecord::from_game(&game).unwrap());
+    assert!(bridge.poll_shared().is_none());
     stop(&bridge);
 }

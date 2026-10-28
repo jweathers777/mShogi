@@ -11,7 +11,8 @@ the native history/game contract is now implemented in MSH-94 (see below).
 MSH-95 adds [typed record/context routing](shared-routing.md) with explicit
 unsupported execution. MSH-96 adds the [standalone native console](console.md),
 including bounded explicit exact diagnostics and lossless canonical restoration.
-There is still no Xiangqi engine or desktop consumer; MSH-97 owns engine delivery.
+MSH-97 adds the [functional native evaluator/search and structured child](engine.md).
+Desktop presentation/archive/protocol/product journeys remain with MSH-98 onward.
 All original MSH-45 requirements remain in M4. Profile selection is not delivery.
 
 | Required scope / clause | Independent expectations / evidence plan | Delivery owner and gate |

@@ -28,7 +28,10 @@ pub fn execution_capabilities(game: GameKind) -> &'static [ExecutionOperation] {
             ExecutionOperation::MoveAnalysis,
             ExecutionOperation::ChessFullReachability,
         ],
-        GameKind::Xiangqi => &[],
+        GameKind::Xiangqi => &[
+            ExecutionOperation::EngineTurn,
+            ExecutionOperation::MoveAnalysis,
+        ],
         GameKind::Shogi => &[
             ExecutionOperation::EngineTurn,
             ExecutionOperation::MoveAnalysis,
@@ -126,10 +129,11 @@ impl SharedRequest {
                 nodes: self.limits.nodes,
             }
             .valid(),
-            // No Xiangqi execution limits or capability exist yet. The wire's
-            // u16/u64 values are exact opaque settings for an unsupported response,
-            // never borrowed Chess/Shogi defaults or a native search policy.
-            GameKind::Xiangqi => true,
+            GameKind::Xiangqi => mshogi_search::xiangqi::Limits {
+                depth: self.limits.depth,
+                nodes: self.limits.nodes,
+            }
+            .valid(),
         };
         match &self.purpose {
             SharedPurpose::EngineTurn {} => ordinary_limits_valid(false),
@@ -201,6 +205,11 @@ pub enum SharedResult {
         /// Native board/declaration choice, conclusion or incomplete observation.
         result: crate::ShogiResult,
     },
+    /// Actual native Xiangqi choice, conclusion, incomplete work or unresolved history.
+    Xiangqi {
+        /// Native Red/Black observations, not Chess Full reachability.
+        result: crate::XiangqiResult,
+    },
     /// Unscored unsupported/invalid/process failure, independent of native game outcomes.
     Failure {
         /// Bounded categorized diagnostic.
@@ -239,6 +248,7 @@ impl SharedResponse {
         match &self.result {
             SharedResult::Failure { failure } => failure.message.len() <= MAX_STDERR_BYTES,
             SharedResult::Shogi { result } => result.matches(submitted),
+            SharedResult::Xiangqi { result } => result.matches(submitted),
             SharedResult::Chess { result } => {
                 if submitted.game.game_kind() != GameKind::Chess {
                     return false;

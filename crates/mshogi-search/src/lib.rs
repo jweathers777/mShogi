@@ -1,11 +1,12 @@
 //! Native search components, independent of UI, console I/O and Python.
 //!
-//! Transparent material evaluation and deterministic full-width chess search.
+//! Transparent native evaluation and bounded full-width Chess, Shogi and Xiangqi search.
 //! Search must consult rules-owned game adjudication and claim policy before
 //! evaluating a live leaf. Static scores never establish a game outcome.
 
 pub mod chess;
 pub mod shogi;
+pub mod xiangqi;
 
 pub mod search;
 

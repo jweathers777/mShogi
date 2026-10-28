@@ -1,4 +1,4 @@
-//! Xiangqi context transport is not evaluator/search/exact-verifier delivery.
+//! Native Xiangqi ordinary execution, strict context and bounded transport.
 use mshogi_core::{chess as c, native::*, xiangqi as x};
 use mshogi_engine::*;
 use serde_json::{Value, json};
@@ -41,10 +41,10 @@ fn request(g: &x::Game) -> SharedRequest {
         session_version: 11,
         process_generation: 7,
         game: CanonicalRecord::xiangqi(x::GameRecord::from_game(g).unwrap()),
-        // Opaque unsupported settings; these are NOT an advertised native search policy.
+        // Measured MSH-97 ordinary limits, independent of exact-proof work.
         limits: WorkLimits {
-            depth: u16::MAX,
-            nodes: u64::MAX,
+            depth: 1,
+            nodes: 128,
         },
     }
 }
@@ -77,35 +77,44 @@ fn failure(response: &SharedResponse, kind: FailureKind) {
 }
 
 #[test]
-fn no_xiangqi_execution_is_advertised_or_inferred_for_any_purpose_or_native_result() {
-    assert!(execution_capabilities(GameKind::Xiangqi).is_empty());
+fn actual_xiangqi_execution_is_advertised_and_full_remains_explicitly_unsupported() {
+    assert_eq!(
+        execution_capabilities(GameKind::Xiangqi),
+        &[
+            ExecutionOperation::EngineTurn,
+            ExecutionOperation::MoveAnalysis,
+        ]
+    );
     assert_eq!(execution_capabilities(GameKind::Chess).len(), 3);
     assert_eq!(execution_capabilities(GameKind::Shogi).len(), 2);
-    let mut context = request(&warned());
-    for limits in [
-        WorkLimits { depth: 0, nodes: 0 },
-        WorkLimits {
-            depth: u16::MAX,
-            nodes: u64::MAX,
-        },
-    ] {
-        context.limits = limits;
-        assert!(context.valid_limits());
+    let g = warned();
+    let before = x::GameRecord::from_game(&g).unwrap();
+    let mut context = request(&g);
+    for analysis in [false, true] {
+        if analysis {
+            context.purpose = SharedPurpose::MoveAnalysis {
+                target: target(&context),
+            };
+        }
         let response = run(&context);
         assert_eq!(response.context, context);
         assert!(response.matches(&context));
-        failure(&response, FailureKind::UnsupportedMode);
-        let wire = serde_json::to_value(response).unwrap();
-        for absent in ["score", "action", "telemetry", "conclusion"] {
-            assert!(wire["result"].get(absent).is_none());
-        }
-        context.purpose = SharedPurpose::MoveAnalysis {
-            target: target(&context),
+        let SharedResult::Xiangqi {
+            result: XiangqiResult::Choice { choice, telemetry },
+        } = response.result
+        else {
+            panic!("{response:?}")
         };
-        let response = run(&context);
-        failure(&response, FailureKind::UnsupportedMode);
-        assert!(response.matches(&context));
-        context.purpose = SharedPurpose::EngineTurn {};
+        assert_eq!(telemetry.perspective, x::Side::Red);
+        assert!(telemetry.completed_depth > 0);
+        assert!(telemetry.nodes <= context.limits.nodes);
+        let mut candidate = before.to_game().unwrap();
+        let command = match choice {
+            XiangqiChoice::Move { action } => x::GameCommand::Play { action },
+            XiangqiChoice::Claim { .. } => x::GameCommand::ClaimNaturalCount,
+        };
+        command_result(&mut candidate, command);
+        assert_eq!(before, x::GameRecord::from_game(&g).unwrap());
     }
     context.limits = FULL_SENTINEL;
     context.purpose = SharedPurpose::ChessFullReachability {
@@ -117,28 +126,62 @@ fn no_xiangqi_execution_is_advertised_or_inferred_for_any_purpose_or_native_resu
         },
     };
     assert!(context.valid_limits());
-    failure(&run(&context), FailureKind::UnsupportedMode);
-    // Even a native concluded/fast-proven game is preserved as data, not executed.
+    let unsupported = run(&context);
+    assert!(unsupported.matches(&context));
+    failure(&unsupported, FailureKind::UnsupportedMode);
     let proof = x::Game::from_root(
         x::PositionRoot::from_fen("5k3/9/9/9/9/9/9/9/9/3K5 w - - 0 1").unwrap(),
         x::ClaimPolicy::Explicit,
     )
     .unwrap();
-    assert_eq!(
-        proof.no_win_assessment(),
-        x::NoWinAssessment::ProvenNeitherCanWin
+    let response = run(&request(&proof));
+    assert!(
+        matches!(response.result, SharedResult::Xiangqi { result: XiangqiResult::Finished { conclusion, ref telemetry } }
+        if Some(conclusion) == proof.conclusion() && telemetry.score == Some(0))
     );
-    assert!(proof.conclusion().is_some());
-    let context = request(&proof);
-    let response = run(&context);
-    assert_eq!(response.context, context);
-    failure(&response, FailureKind::UnsupportedMode);
     let standard = x::Game::standard(x::ClaimPolicy::AutoValidClaims).unwrap();
     assert_eq!(
         standard.no_win_assessment(),
         x::NoWinAssessment::UnknownExactUnavailable
     );
-    failure(&run(&request(&standard)), FailureKind::UnsupportedMode);
+    let response = run(&request(&standard));
+    assert!(
+        matches!(response.result, SharedResult::Xiangqi { result: XiangqiResult::Choice { ref telemetry, .. } }
+        if telemetry.no_win_assessment == x::NoWinAssessment::UnknownExactUnavailable)
+    );
+}
+fn command_result(g: &mut x::Game, native: x::GameCommand) {
+    command(g, g.position().side_to_move(), native);
+}
+
+#[test]
+fn ordinary_limits_and_zero_work_remain_distinct_from_native_conclusions() {
+    let mut context = request(&warned());
+    context.limits.nodes = 0;
+    let response = run(&context);
+    assert!(response.matches(&context));
+    assert!(
+        matches!(response.result, SharedResult::Xiangqi { result: XiangqiResult::Incomplete { ref telemetry } }
+        if telemetry.nodes == 0 && telemetry.score.is_none() && telemetry.completed_depth == 0 && telemetry.principal_variation.is_empty())
+    );
+    for limits in [
+        WorkLimits {
+            depth: 0,
+            nodes: 128,
+        },
+        WorkLimits {
+            depth: 4,
+            nodes: 128,
+        },
+        WorkLimits {
+            depth: 1,
+            nodes: 513,
+        },
+    ] {
+        context.limits = limits;
+        assert!(!context.valid_limits());
+        failure(&run(&context), FailureKind::InvalidRequest);
+    }
 }
 
 #[test]
@@ -156,7 +199,7 @@ fn response_acceptance_requires_every_identity_setting_and_full_native_history()
         ("/request_id", json!(18)),
         ("/session_version", json!(12)),
         ("/process_generation", json!(8)),
-        ("/limits/depth", json!(1)),
+        ("/limits/depth", json!(2)),
         ("/limits/nodes", json!(0)),
         ("/purpose/target/selection_id", json!(4)),
         ("/purpose/target/session_version", json!(12)),
@@ -323,7 +366,12 @@ fn actual_maximum_native_audit_ledger_and_whole_encoded_transport_boundaries_fit
     let envelope = context.game.to_json().unwrap().len();
     let frame = serde_json::to_string(&context).unwrap();
     let response = run(&context);
-    failure(&response, FailureKind::UnsupportedMode);
+    assert!(matches!(
+        response.result,
+        SharedResult::Xiangqi {
+            result: XiangqiResult::Finished { .. }
+        }
+    ));
     assert!(response.matches(&context));
     let echoed = serde_json::to_vec(&response).unwrap().len();
     assert!(native_bytes < envelope && envelope < frame.len() && frame.len() < MAX_REQUEST_BYTES);
@@ -356,4 +404,46 @@ fn actual_maximum_native_audit_ledger_and_whole_encoded_transport_boundaries_fit
         CanonicalRecord::from_json(&format!(" {exact}")),
         Err(EnvelopeError::Capacity)
     );
+}
+
+#[test]
+fn native_telemetry_family_limits_perspective_and_required_fields_are_checked() {
+    let context = request(&warned());
+    let response = run(&context);
+    assert!(response.matches(&context));
+    let wire = serde_json::to_value(&response).unwrap();
+    for (pointer, value) in [
+        (
+            "/result/result/telemetry/evaluator_id",
+            json!("other.evaluator"),
+        ),
+        ("/result/result/telemetry/search_id", json!("other.search")),
+        ("/result/result/telemetry/perspective", json!("black")),
+        ("/result/result/telemetry/completed_depth", json!(2)),
+        ("/result/result/telemetry/nodes", json!(129)),
+        ("/result/result/telemetry/score", Value::Null),
+        ("/result/result/telemetry/principal_variation", json!([])),
+        ("/result/result/telemetry/status", json!("unresolved")),
+    ] {
+        let mut altered = wire.clone();
+        *altered.pointer_mut(pointer).unwrap() = value;
+        let altered: SharedResponse = serde_json::from_value(altered).unwrap();
+        assert!(!altered.matches(&context), "{pointer}");
+    }
+    let mut missing = wire;
+    missing["result"]["result"]["telemetry"]
+        .as_object_mut()
+        .unwrap()
+        .remove("score");
+    assert!(serde_json::from_value::<SharedResponse>(missing).is_err());
+    let text = serde_json::to_string(&response).unwrap();
+    let duplicate = text.replacen(
+        "\"completed_depth\":1",
+        "\"completed_depth\":1,\"completed_depth\":1",
+        1,
+    );
+    assert_ne!(duplicate, text);
+    assert!(serde_json::from_str::<SharedResponse>(&duplicate).is_err());
+    let unknown = text.replacen("\"telemetry\":{", "\"telemetry\":{\"unknown\":1,", 1);
+    assert!(serde_json::from_str::<SharedResponse>(&unknown).is_err());
 }

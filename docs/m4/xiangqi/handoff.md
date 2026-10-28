@@ -1,6 +1,14 @@
 # Xiangqi native/shared delivery handoff
 
-## Current console delivery boundary
+## Current functional engine boundary
+
+MSH-97 adds the [native evaluator/search and structured child](engine.md).
+Only ordinary engine-turn and read-only move-analysis are advertised; native
+explicit root-exact evidence retains its own bounded purpose and provenance.
+No external protocol, desktop integration, playing-strength or complete MSH-45
+delivery is implied. M4/45 remain open and review106 remains unstarted.
+
+## MSH-96 console delivery boundary (preserved snapshot)
 
 MSH-96 supplies the independently usable [native console](console.md), including
 complete command history/claims/outcomes, canonical Save/Load with native undo,

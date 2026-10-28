@@ -8,5 +8,8 @@ publish.workspace = true
 [dependencies]
 mshogi-core = { path = "../mshogi-core" }
 
+[dev-dependencies]
+serde_json = "=1.0.145"
+
 [lints]
 workspace = true

@@ -154,7 +154,7 @@ fn main() -> ExitCode {
                 println!("Target rules profile: {}", mshogi_core::xiangqi::PROFILE_ID);
                 println!("Edition: {}", mshogi_core::xiangqi::PROFILE_EDITION);
                 println!(
-                    "Coverage: untimed native intersection board, complete legal actions/undo, known history/WXF warnings/claims/conclusions, strict canonical envelopes, local perft/divide0..3, fast and explicit bounded exact no-win diagnostics; exact Unknown stays unresolved/unscored. No Xiangqi engine or external protocol in this console task."
+                    "Coverage: untimed native intersection board, complete legal actions/undo, known history/WXF warnings/claims/conclusions, strict canonical envelopes, local perft/divide0..3, fast and explicit bounded exact no-win diagnostics; exact Unknown stays unresolved/unscored. Bounded native engine-turn and read-only move-analysis execution are available through internal-search; external Xiangqi protocol is not yet available."
                 );
             }
         },

@@ -20,6 +20,8 @@ pub struct GameRecord {
     event_count: usize,
     known_board_actions: usize,
     side_to_move: Side,
+    conclusion: Option<Conclusion>,
+    assessment: NoWinAssessment,
 }
 /// Malformed, unsupported, resource-limited or forged data is never a game outcome.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -115,6 +117,8 @@ impl GameRecord {
                 .filter(|event| matches!(event.event, super::EventKind::BoardAction { .. }))
                 .count(),
             side_to_move: game.position().side_to_move(),
+            conclusion: game.conclusion(),
+            assessment: game.no_win_assessment(),
         })
     }
     /// Exact complete event count, including same-ply warnings and claim audits.
@@ -128,6 +132,14 @@ impl GameRecord {
     /// Native current turn, not a winner or an execution capability.
     pub const fn side_to_move(&self) -> Side {
         self.side_to_move
+    }
+    /// Already replay-validated native conclusion; no replay or exact work here.
+    pub const fn conclusion(&self) -> Option<Conclusion> {
+        self.conclusion
+    }
+    /// Already replay-validated fast-mode assessment, never an exact proof.
+    pub fn no_win_assessment(&self) -> &NoWinAssessment {
+        &self.assessment
     }
     /// Stable compact JSON, independent of runtime request identities.
     pub fn to_json(&self) -> &str {

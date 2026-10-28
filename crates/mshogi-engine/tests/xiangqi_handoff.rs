@@ -476,7 +476,7 @@ fn fast_exact_provenance_witness_unknown_cancel_failure_and_retirement_cross_nat
     );
 }
 #[test]
-fn strict_payload_context_and_transport_preserve_identity_without_advertising_execution() {
+fn strict_payload_context_and_transport_preserve_identity_through_real_execution() {
     let mut g = game(F002);
     for a in C.into_iter().cycle().take(8) {
         play(&mut g, a);
@@ -528,14 +528,17 @@ fn strict_payload_context_and_transport_preserve_identity_without_advertising_ex
     let encoded = serde_json::to_string(&context).unwrap();
     let parsed: SharedRequest = serde_json::from_str(&encoded).unwrap();
     assert_eq!(parsed, context);
-    assert!(execution_capabilities(GameKind::Xiangqi).is_empty());
+    assert_eq!(execution_capabilities(GameKind::Xiangqi).len(), 2);
     let mut response = vec![];
     serve_once(Cursor::new(format!("{encoded}\n")), &mut response).unwrap();
     let reply: SharedResponse = serde_json::from_slice(&response).unwrap();
     assert!(reply.matches(&context));
-    assert!(
-        matches!(reply.result,SharedResult::Failure{ref failure} if failure.kind==FailureKind::UnsupportedMode)
-    );
+    assert!(matches!(
+        reply.result,
+        SharedResult::Xiangqi {
+            result: XiangqiResult::Choice { .. }
+        }
+    ));
     let mut different = context.clone();
     different.request_id += 1;
     assert!(!reply.matches(&different));

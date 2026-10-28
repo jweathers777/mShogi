@@ -124,12 +124,7 @@ pub(crate) fn execute_shared(context: &SharedRequest) -> SharedResult {
         );
     }
     match context.game.game_kind() {
-        mshogi_core::native::GameKind::Xiangqi => {
-            return SharedResult::failure(
-                FailureKind::UnsupportedMode,
-                "Xiangqi execution is not implemented: no engine-turn, move-analysis or Chess Full capability is advertised. The complete native context is retained; no move, score or game result is inferred.",
-            );
-        }
+        mshogi_core::native::GameKind::Xiangqi => return execute_xiangqi(context),
         mshogi_core::native::GameKind::Shogi => return execute_shogi(context),
         mshogi_core::native::GameKind::Chess => {}
     }
@@ -177,6 +172,35 @@ fn execute_shogi(context: &SharedRequest) -> SharedResult {
     ) {
         Ok(result) => SharedResult::Shogi {
             result: ShogiResult::searched(result),
+        },
+        Err(error) => SharedResult::failure(FailureKind::Search, error),
+    }
+}
+
+fn execute_xiangqi(context: &SharedRequest) -> SharedResult {
+    if matches!(context.purpose, SharedPurpose::ChessFullReachability { .. }) {
+        return SharedResult::failure(
+            FailureKind::UnsupportedMode,
+            "Chess Full is not Xiangqi natural-board reachability. Exact Xiangqi work remains an explicit bounded native operation, not an advertised child capability.",
+        );
+    }
+    let mshogi_core::native::CanonicalRecord::Xiangqi(record) = &context.game else {
+        unreachable!()
+    };
+    let game = match record.to_game() {
+        Ok(game) => game,
+        Err(error) => return SharedResult::failure(FailureKind::InvalidRequest, error),
+    };
+    match mshogi_search::xiangqi::search(
+        &game,
+        mshogi_search::xiangqi::Limits {
+            depth: context.limits.depth,
+            nodes: context.limits.nodes,
+        },
+    ) {
+        Ok(result) => match XiangqiResult::searched(result) {
+            Ok(result) => SharedResult::Xiangqi { result },
+            Err(error) => SharedResult::failure(FailureKind::Search, error),
         },
         Err(error) => SharedResult::failure(FailureKind::Search, error),
     }

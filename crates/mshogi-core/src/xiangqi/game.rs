@@ -326,7 +326,7 @@ pub struct Submission {
     /// Exact native reversal token.
     pub undo: GameUndo,
 }
-/// Bounded native known game. Shared/engine/desktop capabilities remain unadvertised.
+/// Bounded native known game. Each concrete consumer advertises its own capabilities.
 #[derive(Debug)]
 pub struct Game {
     pub(super) root: PositionRoot,

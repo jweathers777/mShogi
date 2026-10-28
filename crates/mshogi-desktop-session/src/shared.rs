@@ -326,7 +326,9 @@ fn display_shogi_observation(
                 | ShogiResult::Incomplete { telemetry },
         } => Some(telemetry),
         SharedResult::Failure { .. } => None,
-        SharedResult::Chess { .. } => unreachable!("native shogi response admission"),
+        SharedResult::Chess { .. } | SharedResult::Xiangqi { .. } => {
+            unreachable!("native shogi response admission")
+        }
     };
     PresentedSearchObservation {
         observation_index: index,

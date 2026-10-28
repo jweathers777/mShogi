@@ -8,6 +8,12 @@ required exact/bounded no-win verification,97 owns evaluator/search/real child
 after native handoff84 including105. The superseded request and correction are
 preserved in MSH-95's notes; no ownership/dependency or acceptance criterion changed.
 
+Current execution update: MSH-97 implements the [functional native engine](engine.md)
+and ordinary turn/analysis capabilities. The MSH-95 routing-only scope and
+then-unsupported execution statements below are preserved historical evidence;
+they do not describe current capabilities. Native schema/envelope/transport
+identities, strict parsing and context ownership remain unchanged.
+
 ## Explicit identities and strict canonical bytes
 
 `GameKind::Xiangqi`, `RulesProfile::XiangqiWxf2018V1`,

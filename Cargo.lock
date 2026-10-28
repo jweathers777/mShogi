@@ -128,6 +128,7 @@ name = "mshogi-search"
 version = "0.1.0"
 dependencies = [
  "mshogi-core",
+ "serde_json",
 ]
 
 [[package]]

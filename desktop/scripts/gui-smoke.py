@@ -196,8 +196,29 @@ class Webview:
                         {"type": "keyUp", "value": key}]}]})
 
     def read(self, expression):
-        return self.command("POST", "/execute/sync", {
+        # Callers supply DOM observations only. Generic script execution through
+        # command() stays single-attempt, as do all input and native mutations.
+        return self._observe("POST", "/execute/sync", {
             "script": "return " + expression, "args": []})
+
+    def _observe(self, method, path, data=None):
+        if (method, path) not in {("POST", "/execute/sync"), ("GET", "/screenshot")}:
+            raise ValueError("Unsupported read-only observation")
+        for attempt in range(2):
+            try:
+                result = self.command(method, path, data)
+            except (http.client.RemoteDisconnected, ConnectionResetError, urllib.error.URLError) as error:
+                if self.record is not None:
+                    self.record("Read-only observation transport failure", {
+                        "method": method, "path": path, "attempt": attempt + 1,
+                        "error": repr(error), "retry": attempt == 0})
+                if attempt == 1:
+                    raise
+            else:
+                if attempt == 1 and self.record is not None:
+                    self.record("Read-only observation retry recovered", {
+                        "method": method, "path": path, "attempt": 2})
+                return result
 
     def text(self, selector="body"):
         return self.read(f"document.querySelector({json.dumps(selector)})?.innerText ?? ''")
@@ -206,7 +227,7 @@ class Webview:
         return self.read(f"document.querySelector({json.dumps(selector)}) !== null")
 
     def screenshot(self, path):
-        path.write_bytes(base64.b64decode(self.command("GET", "/screenshot")))
+        path.write_bytes(base64.b64decode(self._observe("GET", "/screenshot")))
 
     def close(self):
         if self.session is not None:

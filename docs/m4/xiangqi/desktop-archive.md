@@ -49,6 +49,9 @@ existing bounded worker. Invalid commands leave the accepted game and running
 request intact. Capacity refusals may pause execution, retain all accepted
 evidence and explain that Save/reopen cannot enlarge the structural limit.
 No retry-save advice is offered for an unchanged structural limit.
+The guard also checks each actual pretty-encoded canonical wrapper, including
+archive indentation, against its independent1MiB parser limit. A compact native
+payload fitting its own bound is insufficient by itself.
 
 The replay ceiling stays16,000 work units. Xiangqi charges4 per native event
 and an additional12 per board action, for both initial/current records and each
@@ -110,6 +113,11 @@ No exact attachment can conclude the live game, supply a forced-win score or
 enter the engine-turn action handler. Full source history and the selected
 prefix remain separate; future moves do not enter the target board.
 
+A native reply with an invalid variation is retained as rejected, unscored
+evidence without applying even its first move. If a consumed response cannot
+otherwise pass document admission, execution is retired with an explicit failure;
+the controller never restores Thinking for a reply that has already been consumed.
+
 ## Save, Open and execution ownership
 
 Save reuses same-directory temporary write/flush/sync and atomic replacement.
@@ -138,6 +146,9 @@ cargo test --locked -p mshogi-desktop-session shared::xiangqi::archive::tests --
 cargo test --locked -p mshogi-desktop-session --all-features
 cargo test --locked -p mshogi-core --test xiangqi_exact
 cargo clippy --locked -p mshogi-desktop-session --all-targets --all-features -- -D warnings
+cargo build --release --locked --bin mshogi
+cargo run --locked -p mshogi-desktop-session --features desktop-verification \
+  --example xiangqi_session_probe -- target/release/mshogi
 ```
 
 Tests reuse frozen WXF cycle/count fixtures and independently expected natural
@@ -148,3 +159,7 @@ interrupted/failed Save/Open, exact work/control/byte boundaries and observation
 256→257. Measurements are emitted by the native test; no benchmark, fixture or
 test instrumentation is added to normal distributables. Exact tested revisions,
 independent review and actual CI outcomes belong to the MSH-99 task record.
+The separately gated probe exercises actual child play/analysis/cancellation,
+Save at a historical event, fresh-controller stopped Open, Return to live,
+explicit Resume and continued child play/cleanup. It is native/process/archive
+evidence and is excluded from normal distributables.

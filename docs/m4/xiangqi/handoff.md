@@ -1,6 +1,35 @@
 # Xiangqi native/shared delivery handoff
 
-## Current functional engine boundary
+## Current native consumer boundary (MSH-98/MSH-100)
+
+The [native session contract](session-contract.md) adds authoritative Xiangqi
+session admission, complete semantic intersection/palace/river/Red/Black data,
+read-only native opponent inspection and protected live/history analysis through
+the existing supervisor. Immutable intra-command event views remain distinct
+from committed canonical analysis prefixes. This is native/process evidence;
+normal product admission stays gated until MSH-99 archives and MSH-101 UI.
+
+The [UCI0–9 adapter and bounded runner](protocol.md) add actual native self-play
+and independently built/admitted Pikafish matches with complete replayable
+records, [source/network admission](protocol/opponent-admission.md) and
+[independent review](protocol/review.md). Opponent outcomes never govern native
+WXF adjudication. Recorded replay is deterministic; reruns only compare semantic
+results under documented deterministic settings and finite work. Failed network
+probes remain labeled failures; these functional matches establish no strength.
+
+These boundaries were developed independently in separate worktrees, reviewed
+separately and integrated by one integrator without dependency changes. Exact
+source, integration, local and CI evidence are in the respective task records.
+MSH-96/97 contracts and measured ordinary work limits remain unchanged; ordinary
+paths do not invoke the separately bounded exact graph. Unknown is not a result.
+
+The next Xiangqi dependency-satisfied owner after MSH-98 completion is MSH-99
+(archives/admission), then MSH-76 shared reconciliation and MSH-101/102 product
+work under the existing graph. None starts in this batch. MSH-45 and M4 stay
+open; post-complete-Xiangqi architectural review MSH-106 remains future work.
+The previous boundary and planning snapshots below preserve historical evidence.
+
+## MSH-97 functional engine boundary (preserved snapshot)
 
 MSH-97 adds the [native evaluator/search and structured child](engine.md).
 Only ordinary engine-turn and read-only move-analysis are advertised; native

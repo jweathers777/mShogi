@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex-protocol'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-28T12:52:00Z'
+updated_date: '2026-10-28T12:55:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -63,4 +63,6 @@ Independent reviewer /root/xiangqi100_review found replay accepted contradictory
 Follow-up independent review reproduced missing option advertisements accepted on replay although runtime rejected them. Resolved with the same advertised-name/type/value validation as runtime and missing/invalid-advertisement regression. All9runner+2retained-recorded tests pass; seven actual UCI subprocess tests previously pass. Reviewer independently reran actual selfplay and compatible-source opponent4games, confirming canonical games/actions/context/position/go equality with retained reports. Verification helper finalverdict now requires every replay pass and no game failures, and admission script explicitly verifies native played acknowledgement plus canonical acceptedcommand/boardevent. No native rules/search changes; final docs/review/integration pending.
 
 Branch implementation/review complete, pending root integration+nativeCI and Done. Final production4d6481bffbb7c83ee9461e4036ccaff71057b6ee; actual main matches source8d6a0dd1851966ef1df3515155730f1abf4c74dd reused after replay-onlyadvertisement fix. Final macOS arm64 cargoClippy alltargets -Dwarnings PASS; cargo test console+runner153tests/25suites PASS incl7newactualUCI+9runner+3recorded suites; releaseproduction build/fmt/diffcheck PASS. docs/m4/xiangqi/protocol/review.md records independent reviewer method, two resolved material replay findings, independent own/opponent actual reruns and no remaining material findings. Exact source/network/license/provenance in protocol/opponent-source.json and opponent-admission.md; finalactualadmission5probes PASS. Twelve successful bounded own/opponent/repeat games33acceptedactions:5native stalematewins,7unscoredcutoffs; replayallPASS and own semanticrepeatPASS. Two actual ownzero-work games at4d6481b correctlyincomplete_work/noaction/noscore/replayPASS. Preserved initial incompatible-network3unscoredfailures+1nativeconclusion and prereviewselfplay/admission as exploratoryevidence. NativeCI/combinedintegration/push/ACDoD finalchecks are sole rootintegrator work; no100branch merge/push. No98/core/sharedengine/search/Cargo.lock production changes. All owned runtimeengine/testprocessesreaped, no neededignored worktreefiles beyond reproducibletargetcache; external admittedsource/network/archive retained outsideworktree under/private/tmp/msh100-* for reproduction.
+
+Root sole integration:2ae336819284ac24df8ec3a86c1c1b605ac73bd6 into codex/rewrite from reviewed clean98873ec5b8586b42500a4e5cf84deb73c853d674 after98 source16c6827; no conflict or dependency change. Reviewer independently approved final988 including third retained-record test3/3, with production unchanged4d6481bffbb7c83ee9461e4036ccaff71057b6ee. All current production work reviewed; final combined-source verification and native/desktop CI pending. Task remains In Review.
 <!-- SECTION:NOTES:END -->

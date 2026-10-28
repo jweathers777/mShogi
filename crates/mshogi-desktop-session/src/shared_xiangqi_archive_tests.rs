@@ -963,6 +963,205 @@ fn ordinary_and_exact_observations_share_capacity_without_discarding_either_kind
 }
 
 #[test]
+fn distinct_native_variations_pay_reconstruction_before_result_commit_and_still_reopen() {
+    let game = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
+    let mut c = controller();
+    replace(&mut c, &game, x::Side::Red);
+    let mut template = None;
+    let mut refused = None;
+    for action in game.position().legal_actions().unwrap() {
+        send(
+            &mut c,
+            SessionOperation::Analyze {
+                operation: AnalysisOperation::Moves {
+                    depth: 1,
+                    nodes: 128,
+                },
+            },
+        )
+        .unwrap();
+        let context = state(&c).pending.clone().unwrap();
+        let mut result = template
+            .get_or_insert_with(|| actual(&context).result)
+            .clone();
+        let SharedResult::Xiangqi {
+            result: XiangqiResult::Choice { choice, telemetry },
+        } = &mut result
+        else {
+            panic!("scored native template")
+        };
+        // Native legal-proposal stress fixtures, not claimed engine searches or
+        // evaluation facts for the substituted alternatives.
+        *choice = XiangqiChoice::Move { action };
+        telemetry.principal_variation = vec![*choice];
+        let response = SharedResponse { context, result };
+        assert!(response.matches(&response.context));
+        let count = state(&c).observations.len();
+        let before = canonical(&c);
+        assert!(c.accept_shared(response.clone()));
+        settle(&mut c);
+        assert_eq!(canonical(&c), before);
+        if state(&c).observations.len() == count {
+            assert_eq!(c.shared_snapshot().capacity.status, CapacityPhase::Paused);
+            assert!(
+                c.shared_snapshot()
+                    .capacity
+                    .message
+                    .unwrap()
+                    .contains("Application capacity:")
+            );
+            refused = Some(response);
+            break;
+        }
+        assert!(
+            state(&c)
+                .observations
+                .last()
+                .unwrap()
+                .application_error
+                .is_none()
+        );
+    }
+    // Independent policy arithmetic:29 * (512+16 native validation +8
+    // observation +2 controls)=15,602;30 costs16,140 before any stop reserve.
+    assert_eq!(state(&c).observations.len(), 29);
+    let refused = refused.expect("30th distinct variation exceeds replay capacity");
+    let expected: Vec<_> = state(&c)
+        .observations
+        .iter()
+        .map(|o| o.response.clone())
+        .collect();
+
+    // Test-only candidate bypass demonstrates that raw Open preflight rejects
+    // the exact same unsupported work, before native replay; live state is intact.
+    let mut beyond = XiangqiDraft::capture(state(&c)).materialize().unwrap();
+    beyond.analysis_intent = Some((refused.context.game.clone(), refused.context.limits));
+    let binding = ExecutionBinding::of(&refused.context);
+    let before = (beyond.game.events().len(), beyond.board_actions());
+    beyond.apply_response(refused).unwrap();
+    beyond.journal(before, None, Some(29), None, false);
+    beyond.controls.last_mut().unwrap().execution = Some(binding);
+    let unsupported = payload(&encode(&beyond, MAX_SAFE_ID - 128).unwrap());
+    assert!(
+        decode(&unsupported, &mut || false)
+            .err()
+            .unwrap()
+            .starts_with("Application capacity:")
+    );
+
+    let file = path("distinct-pvs");
+    save(&mut c, &file);
+    let began = Instant::now();
+    open(&mut c, &file).unwrap();
+    println!(
+        "29 distinct native variations: {} bytes, reopen {}ms",
+        std::fs::metadata(&file).unwrap().len(),
+        began.elapsed().as_millis()
+    );
+    assert_eq!(
+        state(&c)
+            .observations
+            .iter()
+            .map(|o| o.response.clone())
+            .collect::<Vec<_>>(),
+        expected
+    );
+    assert!(state(&c).pending.is_none() && state(&c).paused);
+    std::fs::remove_file(file).unwrap();
+}
+
+#[test]
+fn positive_exact_witness_replay_is_charged_before_attachment_and_raw_open() {
+    let game = root("5k3/R8/9/9/9/9/9/9/9/3K5 b - - 0 1");
+    let observation = exact(
+        &game,
+        None,
+        x::ExactLimits {
+            states: 5000,
+            transitions: 50_000,
+            millis: 60_000,
+            traversal: x::ExactTraversal::BreadthFirst,
+            ..x::ExactLimits::default()
+        },
+        false,
+    );
+    assert!(
+        matches!(&observation.report().verdict, x::ExactVerdict::NaturalWin { witness, .. } if witness.len()==2)
+    );
+    let mut c = controller();
+    replace(&mut c, &game, x::Side::Red);
+    let evidence = XiangqiExactEvidence::from_native(&observation);
+    let mut checks = 0;
+    let cancelled = evidence.validate(state(&c), &mut || {
+        checks += 1;
+        checks >= 2
+    });
+    assert!(cancelled.unwrap_err().contains("cancelled"));
+    let mut too_long = evidence.clone();
+    let x::ExactVerdict::NaturalWin { witness, .. } = &mut too_long.report.verdict else {
+        unreachable!()
+    };
+    // Structural resource guard before any attempt to replay a forged long path.
+    witness.resize(243, witness[0]);
+    assert!(
+        too_long
+            .validate(state(&c), &mut || false)
+            .unwrap_err()
+            .starts_with("Application capacity:")
+    );
+    for _ in 0..24 {
+        retain(&mut c, &observation).unwrap();
+    }
+    let before = canonical(&c);
+    let revision = c.session.document_revision;
+    //24*(512 reconstruction+64*2 witness actions+8 observation+1control)=15,576.
+    assert!(
+        retain(&mut c, &observation)
+            .unwrap_err()
+            .starts_with("Application capacity:")
+    );
+    assert_eq!(state(&c).exact_observations.len(), 24);
+    assert_eq!(c.session.document_revision, revision);
+    assert_eq!(canonical(&c), before);
+    let mut beyond = XiangqiDraft::capture(state(&c)).materialize().unwrap();
+    beyond
+        .exact_observations
+        .push(XiangqiExactEvidence::from_native(&observation));
+    beyond.journal(
+        (beyond.game.events().len(), beyond.board_actions()),
+        None,
+        None,
+        Some(24),
+        false,
+    );
+    let unsupported = payload(&encode(&beyond, MAX_SAFE_ID - 128).unwrap());
+    assert!(
+        decode(&unsupported, &mut || false)
+            .err()
+            .unwrap()
+            .starts_with("Application capacity:")
+    );
+    let file = path("positive-witness-capacity");
+    save(&mut c, &file);
+    let began = Instant::now();
+    open(&mut c, &file).unwrap();
+    println!(
+        "24 exact positive witnesses: {} bytes, reopen {}ms",
+        std::fs::metadata(&file).unwrap().len(),
+        began.elapsed().as_millis()
+    );
+    assert_eq!(state(&c).exact_observations.len(), 24);
+    assert_eq!(canonical(&c), before);
+    assert!(
+        state(&c)
+            .exact_observations
+            .iter()
+            .all(|e| e.report() == observation.report())
+    );
+    std::fs::remove_file(file).unwrap();
+}
+
+#[test]
 fn control_replay_and_native_count_boundaries_reserve_complete_stop_and_terminal_paths() {
     let mut s = XiangqiDraft::replacement(
         &x::GameRecord::from_game(&x::Game::standard(x::ClaimPolicy::Explicit).unwrap()).unwrap(),

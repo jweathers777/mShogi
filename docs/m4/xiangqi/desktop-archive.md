@@ -64,12 +64,21 @@ payload fitting its own bound is insufficient by itself.
 
 The replay ceiling stays16,000 work units. Xiangqi charges4 per native event
 and an additional12 per board action, for both initial/current records and each
-observation source history. Each observation adds8; an exact positive witness
-adds its bounded action count. Controls cost1, except Undo/Inspect charge their
+observation source history. Each observation adds8. Each distinct complete
+canonical context/nonempty PV adds512 for native reconstruction plus16 per action;
+identical validated PVs pay once within the Open. This fixed charge conservatively
+covers the measured34ms uncached root validation even when history is empty.
+Each exact positive witness pays512 plus64 per witness action, since its local
+terminal/legality replay is not cached. Cancellation is checked per witness action;
+an individually excessive witness is refused before replay. Controls cost1, except Undo/Inspect charge their
 actual pre-command history reconstruction at the same weights. Saved prehistory
 counts are checked before reconstruction. Raw probes charge the maximum of
 command-derived and event-derived counts, so omitted forged derived events
 cannot make expensive native command replay appear cheap.
+Raw Open preflight also charges distinct original-source/PV encodings and positive
+witnesses before native reconstruction. The writer produces consistent source
+encodings; externally reformatted duplicates may conservatively cost more. Every
+original encoding still undergoes strict parsing before use.
 
 An active or durably active journal reserves one control, one replay unit and
 1024 encoded bytes for stop/close. Close consumes that reservation once and is
@@ -95,6 +104,8 @@ boundaries and reopened losslessly:
 |100 board actions plus accepted Red natural-count claim |103|7|17|227,553|739ms|
 | Standard root, completed ordinary observations |0|256|512|1,110,084|335ms|
 | Standard root,1ordinary plus255exact Unknown observations |0|256|257|754,793|215ms|
+| Standard root,distinct legal-proposal PV fixtures |0|29|59|128,841|1,067ms|
+| Two-ply native exact positive-witness evidence |0|24|24|74,293|15ms|
 
 The ordinary256 test repeats one actual completed native result under fresh
 admitted request identities at the identical history; it does not claim256
@@ -105,6 +116,11 @@ locally (the template fixture measured8,550ms). The earlier Windows CI
 attempt failed the unchanged15-second Open budget for both256-observation
 fixtures. Those failures motivated validation reuse; neither budget nor criteria
 was relaxed. Exact-source corrected platform results are in the task record.
+The distinct-PV fixture substitutes native legal alternatives into a captured
+result solely to stress admission; its scores are not evaluation facts. The30th
+distinct one-action PV and25th two-action exact witness exceed the documented
+work budget and are refused before commitment. Tests also reject raw archives
+that bypassed admission, preserve all29/24 accepted observations and reopen them.
 
 Times are observations, not cross-platform or deadline guarantees. The worker
 remains independently cancellable and bounded. The work budget can bind before

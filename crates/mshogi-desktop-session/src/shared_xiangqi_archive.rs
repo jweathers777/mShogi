@@ -97,7 +97,12 @@ impl XiangqiExactEvidence {
     pub fn event_count(&self) -> usize {
         self.event_count
     }
-    fn validate(&self, state: &XiangqiSession) -> Result<(), String> {
+    fn validate(
+        &self,
+        state: &XiangqiSession,
+        stopped: &mut impl FnMut() -> bool,
+    ) -> Result<(), String> {
+        persistence::check(stopped)?;
         if self.format != "mshogi.xiangqi.exact-observation.v1"
             || self.executor != "native_in_process"
             || self.purpose != "natural_board_win"
@@ -153,6 +158,11 @@ impl XiangqiExactEvidence {
             if witness.len() > 4096 || witness.len() > self.limits.witness_plies as usize {
                 return Err(capacity("Exact witness output exceeds its recorded bound."));
             }
+            if witness_work(witness.len()) > MAX_REPLAY_WORK {
+                return Err(capacity(
+                    "Exact witness validation exceeds replay capacity.",
+                ));
+            }
             let p = state.selected_position();
             let mut p = x::Position::from_diagram(
                 &p.pieces().collect::<Vec<_>>(),
@@ -161,6 +171,7 @@ impl XiangqiExactEvidence {
             )
             .map_err(error)?;
             for &action in witness {
+                persistence::check(stopped)?;
                 if !matches!(p.local_status(), Ok(x::LocalStatus::Ongoing { .. })) {
                     return Err("Corrupt exact witness: action after a natural terminal.".into());
                 }
@@ -383,6 +394,38 @@ const EVENT_WORK: usize = 4;
 // Measured WXF replay is materially more costly for board actions than same-ply
 // claim audits. Keep the existing budget and charge actual board admissions too.
 const BOARD_WORK: usize = 12;
+// Uncached root/PV validation measured ~34ms on the local debug host. Charge
+// conservatively (32 ordinary board-action equivalents), even at zero history.
+const NATIVE_VALIDATION_WORK: usize = 512;
+const PV_ACTION_WORK: usize = 16;
+// Witness replay performs repeated local terminal/legality checks, not just
+// transitions. It is not cached; every saved positive report pays its full cost.
+const WITNESS_ACTION_WORK: usize = 64;
+fn witness_work(actions: usize) -> usize {
+    NATIVE_VALIDATION_WORK.saturating_add(actions.saturating_mul(WITNESS_ACTION_WORK))
+}
+fn variation(result: &SharedResult) -> &[XiangqiChoice] {
+    match result {
+        SharedResult::Xiangqi {
+            result:
+                XiangqiResult::Choice { telemetry, .. }
+                | XiangqiResult::Finished { telemetry, .. }
+                | XiangqiResult::Incomplete { telemetry }
+                | XiangqiResult::Unresolved { telemetry, .. },
+        } => &telemetry.principal_variation,
+        _ => &[],
+    }
+}
+fn charge_variation(
+    seen: &mut std::collections::HashSet<(String, String)>,
+    source: String,
+    pv: &[XiangqiChoice],
+) -> Result<usize, String> {
+    if pv.is_empty() || !seen.insert((source, serde_json::to_string(pv).map_err(error)?)) {
+        return Ok(0);
+    }
+    Ok(NATIVE_VALIDATION_WORK.saturating_add(pv.len().saturating_mul(PV_ACTION_WORK)))
+}
 fn record_work(events: usize, board_actions: usize) -> usize {
     events
         .saturating_mul(EVENT_WORK)
@@ -402,7 +445,7 @@ fn control_work(c: &XiangqiControl) -> usize {
 fn exact_work(e: &XiangqiExactEvidence) -> usize {
     canonical_work(&e.source)
         .saturating_add(match &e.report.verdict {
-            x::ExactVerdict::NaturalWin { witness, .. } => witness.len(),
+            x::ExactVerdict::NaturalWin { witness, .. } => witness_work(witness.len()),
             _ => 0,
         })
         .saturating_add(8)
@@ -431,8 +474,14 @@ pub(crate) fn check_capacity(
     for c in &state.controls {
         work = work.saturating_add(control_work(c));
     }
+    let mut variations = std::collections::HashSet::new();
     for o in &state.observations {
         work = work.saturating_add(canonical_work(&o.response.context.game) + 8);
+        work = work.saturating_add(charge_variation(
+            &mut variations,
+            o.response.context.game.to_json().map_err(error)?,
+            variation(&o.response.result),
+        )?);
     }
     for e in &state.exact_observations {
         work = work.saturating_add(exact_work(e));
@@ -835,7 +884,7 @@ pub(crate) fn execute(
                 state.controls.last_mut().unwrap().execution = Some(binding);
             }
             if let Some(exact) = exact {
-                exact.validate(&state)?;
+                exact.validate(&state, stopped)?;
                 let index = state.exact_observations.len();
                 state.exact_observations.push(*exact);
                 state.journal(before, None, None, Some(index), false);
@@ -1110,17 +1159,26 @@ pub(crate) fn decode(
     #[derive(Deserialize)]
     struct ResponseProbe {
         context: Box<RawValue>,
+        result: SharedResult,
     }
     #[derive(Deserialize)]
     struct ContextProbe {
         game: Box<RawValue>,
     }
+    let mut variations = std::collections::HashSet::new();
     for text in &raw.observations {
         persistence::check(stopped)?;
         let o: ObsProbe = serde_json::from_str(text.get()).map_err(error)?;
         let r: ResponseProbe = serde_json::from_str(o.response.get()).map_err(error)?;
         let c: ContextProbe = serde_json::from_str(r.context.get()).map_err(error)?;
         work = work.saturating_add(raw_work(c.game.get())? + 8);
+        // Original bytes are a conservative preflight identity. Native typed
+        // equality and original strict parsing still govern the actual replay.
+        work = work.saturating_add(charge_variation(
+            &mut variations,
+            c.game.get().to_owned(),
+            variation(&r.result),
+        )?);
     }
     #[derive(Deserialize)]
     struct ExactProbe {
@@ -1133,6 +1191,7 @@ pub(crate) fn decode(
     }
     #[derive(Deserialize)]
     struct VerdictProbe {
+        kind: String,
         #[serde(default)]
         witness: Vec<Box<RawValue>>,
     }
@@ -1144,7 +1203,10 @@ pub(crate) fn decode(
         if v.witness.len() > 4096 {
             return Err(capacity("Saved exact witness exceeds4096 actions."));
         }
-        work = work.saturating_add(raw_work(e.source.get())? + v.witness.len() + 8);
+        work = work.saturating_add(raw_work(e.source.get())? + 8);
+        if v.kind == "natural_win" {
+            work = work.saturating_add(witness_work(v.witness.len()));
+        }
     }
     let mut controls = Vec::with_capacity(raw.controls.len());
     for text in raw.controls {
@@ -1271,7 +1333,7 @@ pub(crate) fn decode(
             let e = exact
                 .get(index)
                 .ok_or("Missing exact historical evidence.")?;
-            e.validate(&state)?;
+            e.validate(&state, stopped)?;
             state.exact_observations.push(e.clone());
         } else {
             state.retire();

@@ -47,7 +47,9 @@ impl DesktopController {
         if query.expected != self.shared_token() {
             return Err("The position changed. Select the piece again.".into());
         }
-        let (game, owner, label, choices) = if let Some(state) = &self.shared.shogi {
+        let (game, owner, label, choices) = if let Some(state) = &self.shared.xiangqi {
+            xiangqi::inspect(state.selected_position(), &query.origin)?
+        } else if let Some(state) = &self.shared.shogi {
             inspect_shogi(state.selected().position(), &query.origin)?
         } else {
             inspect_chess(self.session.selected_game().position(), &query.origin)?
@@ -63,7 +65,7 @@ impl DesktopController {
         })
     }
 }
-type Inspected = (GameKind, NativeSide, String, Vec<PresentedChoice>);
+pub(super) type Inspected = (GameKind, NativeSide, String, Vec<PresentedChoice>);
 fn inspect_chess(position: &Position, origin: &str) -> Result<Inspected, String> {
     let bytes = origin.as_bytes();
     let square = if bytes.len() == 2

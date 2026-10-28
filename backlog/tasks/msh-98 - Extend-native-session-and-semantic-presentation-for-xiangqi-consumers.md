@@ -1,11 +1,11 @@
 ---
 id: MSH-98
 title: Extend native session and semantic presentation for xiangqi consumers
-status: In Progress
+status: In Review
 assignee:
   - '@codex-session'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-28T12:09:00Z'
+updated_date: '2026-10-28T12:48:00Z'
 labels:
   - m4
   - owner-msh-46
@@ -58,4 +58,10 @@ Future bounded Xiangqi delivery work refined by MSH-80. Intent and acceptance on
 
 <!-- SECTION:NOTES:BEGIN -->
 Parallel ownership audit before source:98 deps84/95/97/72 allDone;100 deps96/97 allDone, no mutual edge.98 owns coreXQread-onlyinspection additions, desktop-session/shareddispatch/semanticcontract, tests/nativeexamples and docs/m4/xiangqi/session*.100 owns consoleexternalprotocol and runner modules/tests/docs/m4/xiangqi/protocol*. Both consume unchanged completed97engine/84nativecontracts; neither owns sharedengine redesign. Root sole integrator and98builder;100 isolatedworker. Primarye923cfd5712698d4a8b059ffb3b37b0e31de8f8b clean/refreshedorigin equal; baselineCLI1.55.1 pinned. Appmanagedworktree98 /Users/johnweathers/.codex/worktrees/xiangqi-session98/mShogi,100 /Users/johnweathers/.codex/worktrees/xiangqi-protocol100/mShogi. Globalhandoff/coverage, taskrecords/finalCI and any incidentaloverlap reconciled onlybyroot. No dependency changes; no laterUI/archive/architecturework.
+
+Native consumer implementation ready for independent review. macOS arm64: cargo test -p mshogi-desktop-session --all-features --locked passed103 tests; new focused10 include256 accepted observations then257 refusal. Core relevant44 tests passed (native envelope/board/exact/game-boundary/history/new inspection-prefix). Actual supervised engine probe passed engine turn, read-only live/history analysis, cancel, Return to live and acknowledged cleanup. Clippy all-targets/all-features passed; no normal product Xiangqi admission or archive/UI claim. docs/m4/xiangqi/session-contract.md records native dispatch, immutable intra-command history versus canonical committed prefix and exact-analysis boundary. Source revision and independent findings recorded after commit; CI pending.
+
+Independent bounded source/requirements review by separate agent xiangqi98_review: e52f9c1..055ac634dcda52b6ceaf905a57645b0f1151bc73. Independently ran native10 then11session tests,4coreprefix/inspection tests,18existing Chess/Shogi shared tests and actual supervised-child probe; final paused-capability fixture1 passed. P2 resolved055ac63: currently-submittable claim/resign flags now requireResume, native eligibility remains separate. Author-found admission/receipt retirement correction38d6446 also independently reviewed/tested. No unresolved material finding. Local broad workspace fmt/clippy/test/build and native frontend fixture regeneration passed (base5d1e86e; two subsequent focused fixes passed separately). Final integrated CI pending. Initial local host command used wrong workspace Rust1.89 then corrected to pinned desktop1.90; required bundled resource prepared directly after unrelated Homebrew Node failed dyld startup. These failed attempts are not claimed passed; actual host check outcome recorded separately.
+
+Final local macOS host check passed at055ac63 with pinned desktop Rust1.90 and actual release native engine resource; upstream vendored Tao warnings unchanged. Pinned desktop rustfmt check passed. Added only documentation wording corrections after review (three native games/intersection metadata; remove obsolete unsupported-session comment); no behavioral difference. Native/probe evidence remains separate from product GUI evidence; applicable three-platform CI awaits the combined integration source.
 <!-- SECTION:NOTES:END -->

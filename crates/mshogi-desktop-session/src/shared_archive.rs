@@ -33,6 +33,11 @@ impl ShogiSettings {
 #[derive(Clone, Debug, Serialize)]
 #[serde(tag = "game_kind", rename_all = "snake_case")]
 pub enum NativeDesktopSettings {
+    /// Native consumer contract only; desktop archive admission belongs to MSH-99.
+    Xiangqi {
+        /// Explicit native board orientation.
+        orientation: mshogi_core::xiangqi::Side,
+    },
     /// Unchanged native chess settings, including explicit Full defaults.
     Chess {
         /// Existing persisted chess preferences.
@@ -916,7 +921,11 @@ impl DesktopController {
         }
     }
     pub(crate) fn shared_document(&self) -> SharedDocumentState {
-        let settings = if let Some(state) = &self.shared.shogi {
+        let settings = if let Some(state) = &self.shared.xiangqi {
+            NativeDesktopSettings::Xiangqi {
+                orientation: state.human,
+            }
+        } else if let Some(state) = &self.shared.shogi {
             NativeDesktopSettings::Shogi {
                 settings: state.settings.clone(),
             }
@@ -938,6 +947,9 @@ impl DesktopController {
     }
     /// Queue a complete native document. Legacy chess continues to write strict v1.
     pub fn queue_shared_save(&mut self, path: PathBuf) -> Result<u64, String> {
+        if self.shared.xiangqi.is_some() {
+            return Err("Xiangqi desktop archives are not supported yet (MSH-99); native consumer contract preserved.".into());
+        }
         let Some(state) = &self.shared.shogi else {
             return self.queue_save(path);
         };
@@ -964,6 +976,9 @@ impl DesktopController {
         path: PathBuf,
         token: SharedOpenToken,
     ) -> Result<u64, String> {
+        if self.shared.xiangqi.is_some() {
+            return Err("Xiangqi desktop document replacement through Open awaits MSH-99.".into());
+        }
         if token != self.shared_open_token() {
             return Err("Stale Open: review the current document again.".into());
         }
@@ -1045,6 +1060,7 @@ impl DesktopController {
                             o.historical = true;
                         }
                         state.diagnostic=Some("Document reopened with work stopped. Saved observations are historical; Resume explicitly.".into());
+                        self.shared.xiangqi = None;
                         self.shared.shogi = Some(*state);
                         self.shared.epoch += 1;
                         self.session.pending = None;
@@ -1091,6 +1107,10 @@ impl DesktopController {
             self.retire_native_files()?;
         }
         if !preferences {
+            if let Some(state) = &mut self.shared.xiangqi {
+                state.retire();
+                state.paused = true;
+            }
             self.bridge.cancel();
             if let Some(state) = &mut self.shared.shogi {
                 state.retire();
@@ -1152,6 +1172,7 @@ impl DesktopController {
                     analysis,
                     replacement,
                 } => {
+                    self.shared.xiangqi = None;
                     self.shared.shogi = Some(*state);
                     if preferences {
                         self.session.document_revision += 1;
@@ -1184,6 +1205,7 @@ impl DesktopController {
                 _ => unreachable!("dedicated admission worker"),
             },
             Ok(Completed::Admitted(mut candidate)) => {
+                self.shared.xiangqi = None;
                 self.shared.shogi = None;
                 self.shared.epoch += 1;
                 candidate.revision = candidate.revision.max(self.session.revision + 1);

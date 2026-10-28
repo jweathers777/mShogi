@@ -1,4 +1,4 @@
-//! Concrete chess/shogi desktop boundary. Native games remain authoritative.
+//! Concrete native desktop consumer boundary. Native games remain authoritative.
 //! The stable chess APIs/archive are a compatibility adapter, not a common rules model.
 use super::*;
 #[path = "shared_archive.rs"]
@@ -6,6 +6,8 @@ pub(super) mod archive;
 pub use archive::{NativeDesktopSettings, SharedDocumentState, SharedOpenToken, ShogiSettings};
 #[path = "shared_inspection.rs"]
 mod inspection;
+#[path = "shared_xiangqi.rs"]
+mod xiangqi;
 pub use inspection::{MovementInspection, MovementInspectionQuery};
 pub use mshogi_core::native::{GameKind, NativeSide};
 pub use mshogi_core::shogi::Side as ShogiSide;
@@ -17,6 +19,7 @@ use mshogi_engine::{
     SHARED_PROTOCOL_VERSION, SharedAnalysisTarget, SharedPurpose, SharedRequest, SharedResponse,
     SharedResult, ShogiChoice, ShogiResult,
 };
+pub use xiangqi::{IntersectionTopology, Palace, XiangqiPresentation};
 
 // The displayed play budget and submitted work use the same native value.
 const SHOGI_PLAY_LIMITS: WorkLimits = WorkLimits {
@@ -55,8 +58,6 @@ fn side(id: NativeSide) -> PresentedSide {
         NativeSide::Chess(Color::Black) => (RulesProfile::ChessMatchV1, "Black", false),
         NativeSide::Shogi(s::Side::Sente) => (RulesProfile::ShogiCsa36V1, "Sente", true),
         NativeSide::Shogi(s::Side::Gote) => (RulesProfile::ShogiCsa36V1, "Gote", false),
-        // Qualified labels are type compatibility only; desktop admission below
-        // rejects Xiangqi until its actual native session/presentation consumer.
         NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Red) => {
             (RulesProfile::XiangqiWxf2018V1, "Red", true)
         }
@@ -122,6 +123,11 @@ pub struct PresentedChoice {
 #[derive(Clone, Debug, Serialize)]
 #[serde(tag = "kind", rename_all = "snake_case")]
 pub enum ChoiceOrigin {
+    /// Native intersection occupied by the moving piece (not a square cell).
+    Intersection {
+        /// Native intersection coordinate.
+        point: String,
+    },
     /// Board square occupied by the moving piece.
     Board {
         /// Native board coordinate.
@@ -143,9 +149,12 @@ pub struct Completion {
     /// Optional decorative glyph; the label is always available.
     pub glyph: Option<String>,
 }
-/// Native square geometry; no rules or coordinate parsing in the webview.
+/// Native geometry metadata; no rules or coordinate parsing in the webview.
 #[derive(Clone, Debug, Serialize)]
 pub struct BoardDescriptor {
+    /// Explicit native intersection geometry where applicable; absent for existing square games.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub intersections: Option<IntersectionTopology>,
     /// File coordinates in display order.
     pub files: Vec<String>,
     /// Rank coordinates in display order.
@@ -364,6 +373,9 @@ fn display_shogi_observation(
 /// Typed shared desktop view with exact runtime identity and native context.
 #[derive(Clone, Debug, Serialize)]
 pub struct SharedSnapshot {
+    /// Native Xiangqi-only warnings, claims and assessment; no square-game inference.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub xiangqi: Option<XiangqiPresentation>,
     /// Exact native replacement precondition for New Game and Open.
     pub open_token: SharedOpenToken,
     /// Authoritative document metadata and game-native settings.
@@ -386,7 +398,7 @@ pub struct SharedSnapshot {
     pub turn: PresentedSide,
     /// Native side identities and labels in first-mover order.
     pub sides: Vec<PresentedSide>,
-    /// Native square geometry descriptor.
+    /// Native geometry descriptor; explicit intersection topology where applicable.
     pub board: BoardDescriptor,
     /// Native display ordering for each side at the bottom.
     pub orientations: Vec<Orientation>,
@@ -420,7 +432,8 @@ pub struct SharedSnapshot {
     pub diagnostic: Option<String>,
     /// Read-only eligibility evidence for each native side.
     pub declaration_advice: Vec<DeclarationAdvice>,
-    /// Authoritative native selected-prefix canonical record.
+    /// Authoritative native canonical record. Xiangqi additionally distinguishes an immutable
+    /// intra-command selection from a committed canonical prefix in its native presentation.
     pub context: CanonicalRecord,
     /// Read-only observation bound to its exact selected target.
     pub analysis: Option<PresentedObservation>,
@@ -464,7 +477,7 @@ impl SharedDesktopCommand {
         })
     }
 }
-/// Small concrete dispatch across two native desktop games.
+/// Small concrete dispatch across three native games; product admission is separate.
 #[derive(Clone, Debug, Serialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum SessionOperation {
@@ -480,6 +493,11 @@ pub enum SessionOperation {
     Chess {
         /// Existing native game-specific command.
         command: DesktopCommand,
+    },
+    /// Native Xiangqi command; actor is the assigned human, not inferred from turn.
+    Xiangqi {
+        /// Authoritative native command including board actions, claims and agreement.
+        command: mshogi_core::xiangqi::GameCommand,
     },
     /// Shogi complete action is admitted by Game::submit, never reconstructed in JS.
     Play {
@@ -536,6 +554,9 @@ enum OperationWire {
     Chess {
         // Existing native game-specific command.
         command: DesktopCommand,
+    },
+    Xiangqi {
+        command: mshogi_core::xiangqi::GameCommand,
     },
     // Shogi complete action is admitted by Game::submit, never reconstructed in JS.
     Play {
@@ -631,6 +652,7 @@ type ShogiRollback = (
 pub(super) struct SharedState {
     pub epoch: u64,
     pub shogi: Option<ShogiSession>,
+    pub xiangqi: Option<xiangqi::XiangqiSession>,
     pub admission: Option<(u64, bool)>,
     pub rollback: Option<ShogiRollback>,
     #[cfg(test)]
@@ -794,6 +816,10 @@ impl DesktopController {
                     state.retire();
                     state.paused = true;
                 }
+                if let Some(state) = &mut self.shared.xiangqi {
+                    state.retire();
+                    state.paused = true;
+                }
                 self.queue_admission(candidate)?;
                 self.shared.admission = Some((self.shared.epoch, false));
                 self.admission_receipt
@@ -812,8 +838,8 @@ impl DesktopController {
         self.session.archive_revision = self.session.revision.min(MAX_SAFE_ID - 65);
     }
     pub(super) fn require_chess(&self) -> Result<(), String> {
-        if self.shared.shogi.is_some() {
-            Err("Wrong game: this legacy chess endpoint cannot act on a shogi document; use the shared native endpoint.".into())
+        if self.shared.shogi.is_some() || self.shared.xiangqi.is_some() {
+            Err("Wrong game: this legacy chess endpoint cannot act on another native game; use the shared native endpoint.".into())
         } else {
             Ok(())
         }
@@ -829,20 +855,15 @@ impl DesktopController {
                 "The session or selected event changed; use its current native snapshot.".into(),
             );
         }
-        let active = if self.shared.shogi.is_some() {
+        let active = if self.shared.xiangqi.is_some() {
+            GameKind::Xiangqi
+        } else if self.shared.shogi.is_some() {
             GameKind::Shogi
         } else {
             GameKind::Chess
         };
         if command.game != active {
             return Err("Command game does not match the active native session.".into());
-        }
-        if let SessionOperation::Replace {
-            record: CanonicalRecord::Xiangqi(_),
-            ..
-        } = &command.operation
-        {
-            return Err("Xiangqi desktop documents are not supported yet; the current document was preserved.".into());
         }
         self.session.ensure_capacity()?;
         if self.shared.epoch >= MAX_SAFE_ID - 64 {
@@ -853,6 +874,12 @@ impl DesktopController {
                 return Err("Replacement side and game disagree.".into());
             }
             // Validate before retiring any current state or work.
+            if let CanonicalRecord::Xiangqi(record) = &record {
+                let NativeSide::Xiangqi(human) = human else {
+                    unreachable!()
+                };
+                return self.replace_xiangqi(record, human);
+            }
             if let CanonicalRecord::Shogi(record) = record {
                 let NativeSide::Shogi(human) = human else {
                     unreachable!()
@@ -879,6 +906,10 @@ impl DesktopController {
                     state.retire();
                     state.paused = true;
                 }
+                if let Some(state) = &mut self.shared.xiangqi {
+                    state.retire();
+                    state.paused = true;
+                }
                 self.queue_admission(candidate)?;
                 self.shared.admission = Some((self.shared.epoch, false));
                 self.last_command_receipt = self.admission_receipt.clone();
@@ -886,6 +917,18 @@ impl DesktopController {
                 return Err("Unsupported desktop game; the current document was preserved.".into());
             }
             return Ok(self.shared_snapshot());
+        }
+        if self.shared.xiangqi.is_some() {
+            if self.admission_token.is_some() {
+                if !matches!(command.operation, SessionOperation::Cancel {}) {
+                    return Err(
+                        "Wait for native replacement admission before another command.".into(),
+                    );
+                }
+                self.retire_admission();
+            }
+            self.last_command_receipt = None;
+            return self.xiangqi_command(command.operation);
         }
         if self.shared.shogi.is_none() {
             let legacy = match command.operation {
@@ -993,6 +1036,9 @@ impl DesktopController {
     }
     /// Exact acceptance, separate read-only observation path and native command admission.
     pub fn accept_shared(&mut self, response: SharedResponse) -> bool {
+        if self.shared.xiangqi.is_some() {
+            return self.accept_xiangqi(response);
+        }
         let Some(state) = self.shared.shogi.as_ref() else {
             return false;
         };
@@ -1015,6 +1061,13 @@ impl DesktopController {
     /// Poll only the active game and return its native presentation and provenance.
     pub fn shared_snapshot(&mut self) -> SharedSnapshot {
         self.poll_native_admission();
+        if self.shared.xiangqi.is_some() {
+            return if self.shared.admission.is_some() {
+                self.xiangqi_snapshot()
+            } else {
+                self.poll_xiangqi()
+            };
+        }
         if self.shared.shogi.is_some() {
             self.poll_files();
             if self.shared.shogi.is_none() {
@@ -1068,6 +1121,12 @@ impl DesktopController {
         self.chess_snapshot(snapshot)
     }
     pub(super) fn pause_shared_for_close(&mut self) {
+        if let Some(state) = &mut self.shared.xiangqi {
+            state.retire();
+            state.paused = true;
+            self.bridge.cancel();
+            self.shared_changed();
+        }
         self.retire_admission();
         if let Some(state) = self.shared.shogi.as_mut()
             && (state.pending.is_some() || !state.paused || state.analysis_intent.is_some())
@@ -1224,6 +1283,7 @@ impl DesktopController {
             .collect();
         let record = state.record();
         SharedSnapshot {
+            xiangqi: None,
             open_token: self.shared_open_token(),
             document: self.shared_document(),
             io: self.io_state.clone(),
@@ -1236,6 +1296,7 @@ impl DesktopController {
             turn: side(NativeSide::Shogi(position.side_to_move())),
             sides: sides.clone(),
             board: BoardDescriptor {
+                intersections: None,
                 files: files.clone(),
                 ranks: ranks.clone(),
                 label: "Shogi board".into(),
@@ -1376,6 +1437,7 @@ impl DesktopController {
         };
         let active = !snapshot.view.historical && snapshot.conclusion.is_none();
         SharedSnapshot {
+            xiangqi: None,
             open_token: self.shared_open_token(),
             document: self.shared_document(),
             io: self.io_state.clone(),
@@ -1388,6 +1450,7 @@ impl DesktopController {
             turn: side(NativeSide::Chess(snapshot.view.turn)),
             sides: sides.clone(),
             board: BoardDescriptor {
+                intersections: None,
                 files: files.clone(),
                 ranks: ranks.clone(),
                 label: "Chess board".into(),

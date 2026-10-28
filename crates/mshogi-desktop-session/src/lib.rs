@@ -951,6 +951,11 @@ impl DesktopController {
             snapshot.io = self.io_state.clone();
             return snapshot;
         }
+        if self.shared.xiangqi.is_some() {
+            let mut snapshot = self.session.snapshot();
+            snapshot.io = self.io_state.clone();
+            return snapshot;
+        }
         if self.shared.shogi.is_some() {
             self.poll_files();
             if self.shared.shogi.is_none() {

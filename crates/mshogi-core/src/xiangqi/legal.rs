@@ -209,6 +209,24 @@ impl Position {
             .filter(|action| self.safe_after(*action))
             .collect())
     }
+    /// Read-only complete movement inspection for either native participant.
+    ///
+    /// This is a hypothetical local movement query, not permission to submit an
+    /// out-of-turn action or bypass game history/adjudication. The actual diagram
+    /// must satisfy local admission first. Only then is the queried owner used
+    /// for movement and own-General safety filtering; the hypothetical opponent
+    /// may already be checked, which is not grounds to reject an inspection.
+    /// The position, counters and actual side to move remain unchanged.
+    pub fn inspection_actions(&self, side: Side) -> Result<Vec<Action>, LocalPositionError> {
+        self.validate_local()?;
+        let mut inspected = self.clone();
+        inspected.side = side;
+        Ok(inspected
+            .pseudo_unchecked()
+            .into_iter()
+            .filter(|action| inspected.safe_after(*action))
+            .collect())
+    }
     /// Local no-action reasons are preserved for the future game owner.
     pub fn local_status(&self) -> Result<LocalStatus, LocalPositionError> {
         let checked = self.is_in_check(self.side);

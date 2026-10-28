@@ -1,0 +1,776 @@
+//! Concrete MSH-98 native consumer. No product UI or desktop archive implementation.
+use super::*;
+use mshogi_core::xiangqi as x;
+use mshogi_engine::{XiangqiChoice, XiangqiResult, XiangqiStop};
+
+// Matches MSH-97's measured interactive default; requests also undergo native validation.
+const PLAY_LIMITS: WorkLimits = mshogi_engine::XIANGQI_PLAY_LIMITS;
+const MAX_OBSERVATION_BYTES: usize = 16 * 1024 * 1024;
+/// Xiangqi intersection topology; coordinates are native a0–i9, never square cells.
+#[derive(Clone, Debug, Serialize)]
+pub struct IntersectionTopology {
+    /// All ninety native intersections.
+    pub points: Vec<String>,
+    /// Native river separation in zero-based ranks.
+    pub river_between_ranks: (u8, u8),
+    /// Separate native Red and Black palace areas and diagonal geometry.
+    pub palaces: Vec<Palace>,
+}
+/// Native palace ownership and lines, independent of shell layout.
+#[derive(Clone, Debug, Serialize)]
+pub struct Palace {
+    /// Native owner with profile-qualified identity.
+    pub side: PresentedSide,
+    /// All nine palace intersections.
+    pub points: Vec<String>,
+    /// Two palace diagonal lines, including their center.
+    pub diagonals: Vec<Vec<String>>,
+}
+/// Native selected-prefix facts, not inferred from heuristic evaluation.
+#[derive(Clone, Debug, Serialize)]
+pub struct XiangqiPresentation {
+    /// Whether SharedSnapshot.context describes this committed selection or the live
+    /// game alongside an immutable selection inside an atomic native command.
+    pub canonical_context_scope: &'static str,
+    /// Exact selected canonical prefix, absent inside an atomic command.
+    pub selected_canonical: Option<CanonicalRecord>,
+    /// Exact selected native event prefix; never includes later warnings/outcomes.
+    pub selected_events: Vec<x::GameEvent>,
+    /// Native selected position document; diagram only, not invented game history.
+    pub selected_position: String,
+    /// Original native root and counter provenance, unchanged by historical selection.
+    pub root: String,
+    /// Current native claim policy, distinct from available claims.
+    pub claim_policy: x::ClaimPolicy,
+    /// Claimant-specific known-window evidence, including ineligible queries.
+    pub count_advice: Vec<x::NaturalCountEligibility>,
+    /// Exact native selected-prefix warnings.
+    pub warnings: Vec<x::Warning>,
+    /// Native current offer, separate from a draw conclusion.
+    pub offered_by: Option<x::Side>,
+    /// Exact native committed conclusion, never an engine guess.
+    pub conclusion: Option<x::Conclusion>,
+    /// Required unresolved classification, unscored.
+    pub pending: Option<x::PendingAdjudication>,
+    /// Sound-fast-only provenance; Unknown never means positive win capability.
+    pub no_win_assessment: x::NoWinAssessment,
+}
+pub(crate) struct XiangqiSession {
+    game: x::Game,
+    undo: Vec<x::GameUndo>,
+    pub(super) human: x::Side,
+    viewed: Option<x::HistorySnapshot>,
+    viewed_game: Option<x::Game>,
+    pub(super) paused: bool,
+    pending: Option<SharedRequest>,
+    submitted: bool,
+    phase: EnginePhase,
+    diagnostic: Option<String>,
+    analysis: Option<PresentedObservation>,
+    observations: Vec<PresentedObservation>,
+    observation_bytes: usize,
+}
+impl XiangqiSession {
+    pub(super) fn selected_position(&self) -> &x::Position {
+        self.viewed
+            .as_ref()
+            .map_or(self.game.position(), |v| &v.position)
+    }
+    fn record(&self) -> CanonicalRecord {
+        CanonicalRecord::xiangqi(
+            x::GameRecord::from_game(self.viewed_game.as_ref().unwrap_or(&self.game))
+                .expect("admitted native record capacity"),
+        )
+    }
+    pub(super) fn retire(&mut self) {
+        self.pending = None;
+        self.submitted = false;
+        self.analysis = None;
+        self.phase = EnginePhase::Paused;
+        self.diagnostic = None;
+    }
+    fn observation_capacity(&self) -> bool {
+        self.observations.len() < MAX_ARCHIVE_OBSERVATIONS
+            && self.observation_bytes + mshogi_engine::MAX_RESPONSE_BYTES <= MAX_OBSERVATION_BYTES
+    }
+}
+fn choice(a: x::Action) -> PresentedChoice {
+    PresentedChoice {
+        origin: ChoiceOrigin::Intersection {
+            point: a.from.to_string(),
+        },
+        action: a.to_string(),
+        from: a.from.to_string(),
+        steps: vec![a.to.to_string()],
+        completion: None,
+    }
+}
+pub(super) fn inspect(
+    position: &x::Position,
+    origin: &str,
+) -> Result<inspection::Inspected, String> {
+    let point = origin
+        .parse::<x::Intersection>()
+        .map_err(|_| "Unknown inspection intersection.")?;
+    let piece = position
+        .piece(point)
+        .ok_or("No piece at this intersection.")?;
+    let owner = NativeSide::Xiangqi(piece.side);
+    Ok((
+        GameKind::Xiangqi,
+        owner,
+        format!(
+            "{} {}",
+            side(owner).label,
+            format!("{:?}", piece.kind).to_lowercase()
+        ),
+        position
+            .inspection_actions(piece.side)
+            .map_err(|e| e.to_string())?
+            .into_iter()
+            .filter(|a| a.from == point)
+            .map(choice)
+            .collect(),
+    ))
+}
+impl DesktopController {
+    pub(super) fn replace_xiangqi(
+        &mut self,
+        record: &x::GameRecord,
+        human: x::Side,
+    ) -> Result<SharedSnapshot, String> {
+        // Strict native record admission is bounded by native bytes/commands/events;
+        // no exact graph analysis is performed by restoration or snapshots.
+        let (game, undo) = record.to_game_with_undo().map_err(|e| e.to_string())?;
+        self.retire_native_files()?;
+        self.retire_admission();
+        self.last_command_receipt = None;
+        self.bridge.cancel();
+        self.session.pending = None;
+        self.session.retire_analysis();
+        self.session.play_paused = true;
+        self.shared.shogi = None;
+        self.shared.xiangqi = Some(XiangqiSession {
+            game,
+            undo,
+            human,
+            viewed: None,
+            viewed_game: None,
+            paused: true,
+            pending: None,
+            submitted: false,
+            phase: EnginePhase::Paused,
+            diagnostic: None,
+            analysis: None,
+            observations: vec![],
+            observation_bytes: 0,
+        });
+        self.shared.epoch += 1;
+        self.shared_changed();
+        self.session.document_identity += 1;
+        self.session.document_path = None;
+        self.session.saved_revision = 0;
+        Ok(self.xiangqi_snapshot())
+    }
+    fn start_xiangqi(&mut self, limits: WorkLimits, analysis: bool) -> Result<(), String> {
+        self.session.ensure_capacity()?;
+        let state = self.shared.xiangqi.as_ref().unwrap();
+        if !state.observation_capacity() {
+            return Err("Application capacity: native consumer observation retention limit reached; accepted history and observations are preserved. No retry can enlarge this document.".into());
+        }
+        let game = state.record();
+        let request = SharedRequest {
+            protocol: SHARED_PROTOCOL_VERSION,
+            purpose: if analysis {
+                SharedPurpose::MoveAnalysis {
+                    target: SharedAnalysisTarget {
+                        selection_id: self.session.selection_id,
+                        event_index: game.event_count() as u64,
+                        board_ply: game.known_board_actions() as u64,
+                        session_version: self.session.version,
+                        turn: NativeSide::Xiangqi(state.selected_position().side_to_move()),
+                        label: format!(
+                            "Xiangqi event {} ({})",
+                            game.event_count(),
+                            if state.viewed.is_some() {
+                                "history"
+                            } else {
+                                "live"
+                            }
+                        ),
+                    },
+                }
+            } else {
+                SharedPurpose::EngineTurn {}
+            },
+            request_id: self.session.next_request + 1,
+            session_version: self.session.version,
+            process_generation: self.session.next_request + 1,
+            game,
+            limits,
+        };
+        if !request.valid_limits() {
+            return Err("Unsupported Xiangqi operation or work limits; maximum depth3 and512 visits, ordinary sound_fast_only analysis only.".into());
+        }
+        let encoded = serde_json::to_vec(&request).map_err(|e| e.to_string())?;
+        if encoded.len() > mshogi_engine::MAX_REQUEST_BYTES {
+            return Err(
+                "Application capacity: complete encoded engine request exceeds transport capacity."
+                    .into(),
+            );
+        }
+        self.session.next_request += 1;
+        let state = self.shared.xiangqi.as_mut().unwrap();
+        state.pending = Some(request);
+        state.submitted = false;
+        state.phase = EnginePhase::Thinking;
+        Ok(())
+    }
+    pub(super) fn xiangqi_command(
+        &mut self,
+        op: SessionOperation,
+    ) -> Result<SharedSnapshot, String> {
+        // Validate all fallible selections and operation limits before retiring work.
+        let mut viewed = None;
+        let mut viewed_game = None;
+        let mut analysis = None;
+        {
+            let state = self.shared.xiangqi.as_ref().unwrap();
+            match &op {
+                SessionOperation::Inspect { event_index } => {
+                    viewed = Some(state.game.event_prefix(*event_index).map_err(|e| format!("Unsupported history selection: {e}"))?);
+                    viewed_game = state.game.committed_prefix(*event_index).ok();
+                }
+                SessionOperation::Analyze { operation: AnalysisOperation::Moves { depth, nodes } } => {
+                    if state.viewed.is_some() && state.viewed_game.is_none() {
+                        return Err("This immutable event is inside an atomic native command. Analysis requires a committed command boundary; view and movement inspection remain available.".into());
+                    }
+                    let limits = WorkLimits { depth: *depth, nodes: *nodes };
+                    if !(1..=3).contains(depth) || !(1..=512).contains(nodes) { return Err("Xiangqi analysis requires depth1–3 and1–512 visits.".into()); }
+                    if !state.observation_capacity() { return Err("Application capacity: retained native observations are at their limit; current context preserved.".into()); }
+                    analysis = Some(limits);
+                }
+                SessionOperation::Analyze { .. } => return Err("Chess Full is not Xiangqi analysis. Native bounded exact no-win execution is a separate facility, not this ordinary operation.".into()),
+                SessionOperation::Xiangqi { .. } | SessionOperation::Resign {} => {
+                    if state.viewed.is_some() { return Err("Historical viewing is read-only. Return to live explicitly.".into()); }
+                    if state.paused { return Err("Resume live play before submitting a native command.".into()); }
+                }
+                SessionOperation::Undo {} if state.viewed.is_some() || state.undo.is_empty() => return Err("No live native command to undo.".into()),
+                SessionOperation::Resume {} | SessionOperation::Retry {} if state.viewed.is_some() => return Err("Return to live before resuming play.".into()),
+                SessionOperation::Cancel {} | SessionOperation::ReturnLive {} | SessionOperation::Undo {} | SessionOperation::Resume {} | SessionOperation::Retry {} => {},
+                _ => return Err("Unsupported operation for the native Xiangqi session.".into()),
+            }
+        }
+        let cancelled = matches!(op, SessionOperation::Cancel {});
+        let state = self.shared.xiangqi.as_mut().unwrap();
+        match op {
+            SessionOperation::Xiangqi { command } => {
+                let submitted = state
+                    .game
+                    .submit(x::GameRequest {
+                        expected: state.game.context(),
+                        actor: state.human,
+                        command,
+                    })
+                    .map_err(|e| e.to_string())?;
+                state.undo.push(submitted.undo);
+            }
+            SessionOperation::Resign {} => {
+                let submitted = state
+                    .game
+                    .submit(x::GameRequest {
+                        expected: state.game.context(),
+                        actor: state.human,
+                        command: x::GameCommand::Resign,
+                    })
+                    .map_err(|e| e.to_string())?;
+                state.undo.push(submitted.undo);
+            }
+            SessionOperation::Undo {} => {
+                state
+                    .game
+                    .undo(state.undo.pop().unwrap())
+                    .map_err(|e| e.to_string())?;
+                state.paused = true;
+            }
+            SessionOperation::Inspect { .. } => {
+                state.viewed = viewed;
+                state.viewed_game = viewed_game;
+                state.paused = true;
+            }
+            SessionOperation::ReturnLive {} => {
+                state.viewed = None;
+                state.viewed_game = None;
+                state.paused = true;
+            }
+            SessionOperation::Analyze { .. } | SessionOperation::Cancel {} => {
+                state.paused = true;
+            }
+            SessionOperation::Resume {} | SessionOperation::Retry {} => {
+                state.paused = false;
+            }
+            _ => unreachable!(),
+        }
+        state.retire();
+        if cancelled {
+            state.phase = EnginePhase::Cancelled;
+        }
+        self.bridge.cancel();
+        self.shared_changed();
+        if let Some(limits) = analysis {
+            self.start_xiangqi(limits, true)?;
+        }
+        Ok(self.poll_xiangqi())
+    }
+    pub(super) fn accept_xiangqi(&mut self, response: SharedResponse) -> bool {
+        let state = self.shared.xiangqi.as_mut().unwrap();
+        let Some(pending) = &state.pending else {
+            return false;
+        };
+        if self.session.ensure_capacity().is_err()
+            || !response.matches(pending)
+            || pending.session_version != self.session.version
+            || pending.game != state.record()
+            || !state.observation_capacity()
+        {
+            return false;
+        }
+        let Ok(bytes) = serde_json::to_vec(&response) else {
+            return false;
+        };
+        if bytes.len() > mshogi_engine::MAX_RESPONSE_BYTES {
+            return false;
+        }
+        let read_only = matches!(pending.purpose, SharedPurpose::MoveAnalysis { .. });
+        let mut application_error = None;
+        let mut phase = EnginePhase::Paused;
+        match &response.result {
+            SharedResult::Xiangqi {
+                result: XiangqiResult::Choice { choice, .. },
+            } if !read_only => {
+                let (actor, command) = match *choice {
+                    XiangqiChoice::Move { action } => (
+                        state.game.position().side_to_move(),
+                        x::GameCommand::Play { action },
+                    ),
+                    XiangqiChoice::Claim { actor } => (actor, x::GameCommand::ClaimNaturalCount),
+                };
+                if state.viewed.is_some() || actor == state.human {
+                    application_error =
+                        Some("Engine choice is not an owned live engine turn.".into());
+                    phase = EnginePhase::Failed;
+                } else {
+                    match state.game.submit(x::GameRequest {
+                        expected: state.game.context(),
+                        actor,
+                        command,
+                    }) {
+                        Ok(s) => {
+                            if s.result == x::CommandResult::RejectedNaturalCount {
+                                application_error = Some("Native engine count claim was rejected; its audit is retained without a chess result.".into());
+                                phase = EnginePhase::Failed;
+                            } else {
+                                phase = EnginePhase::Idle;
+                            }
+                            state.undo.push(s.undo);
+                        }
+                        Err(e) => {
+                            application_error = Some(e.to_string());
+                            phase = EnginePhase::Failed;
+                        }
+                    }
+                }
+            }
+            SharedResult::Xiangqi {
+                result: XiangqiResult::Incomplete { .. },
+            } => phase = EnginePhase::Incomplete,
+            SharedResult::Xiangqi {
+                result: XiangqiResult::Unresolved { .. },
+            } => phase = EnginePhase::Paused,
+            SharedResult::Failure { .. } => phase = EnginePhase::Failed,
+            SharedResult::Xiangqi { .. } => {}
+            _ => return false,
+        }
+        let observation = PresentedObservation {
+            response,
+            application_error,
+            historical: false,
+        };
+        state.pending = None;
+        state.submitted = false;
+        state.phase = phase;
+        state.paused = read_only || phase != EnginePhase::Idle;
+        state.diagnostic =
+            observation
+                .application_error
+                .clone()
+                .or_else(|| match &observation.response.result {
+                    SharedResult::Failure { failure } => Some(failure.message.clone()),
+                    SharedResult::Xiangqi {
+                        result: XiangqiResult::Unresolved { pending, .. },
+                    } => Some(format!("Unresolved, unscored: {}", pending.reason)),
+                    SharedResult::Xiangqi {
+                        result: XiangqiResult::Incomplete { .. },
+                    } => Some("Incomplete native work; no move or result was invented.".into()),
+                    _ => None,
+                });
+        if read_only {
+            state.analysis = Some(observation.clone());
+        }
+        state.observation_bytes += bytes.len();
+        state.observations.push(observation);
+        // Analysis keeps its selection and version; observations only advance revision.
+        if read_only {
+            self.session.revision += 1;
+            self.session.document_revision += 1;
+        } else {
+            self.shared_changed();
+        }
+        true
+    }
+    pub(super) fn poll_xiangqi(&mut self) -> SharedSnapshot {
+        if let Some(response) = self.bridge.poll_shared() {
+            self.accept_xiangqi(response);
+        }
+        let state = self.shared.xiangqi.as_ref().unwrap();
+        if state.pending.is_none()
+            && !state.paused
+            && state.viewed.is_none()
+            && state.game.conclusion().is_none()
+            && state.game.pending_adjudication().is_none()
+            && state.game.position().side_to_move() != state.human
+            && let Err(e) = self.start_xiangqi(PLAY_LIMITS, false)
+        {
+            let state = self.shared.xiangqi.as_mut().unwrap();
+            state.paused = true;
+            state.phase = EnginePhase::Paused;
+            state.diagnostic = Some(e);
+        }
+        let auto_submit = self.shared.auto_submit();
+        let state = self.shared.xiangqi.as_mut().unwrap();
+        if auto_submit
+            && !state.submitted
+            && let Some(request) = state.pending.clone()
+        {
+            state.submitted = true;
+            if let Err(e) = self.bridge.submit_shared(request.clone()) {
+                self.accept_xiangqi(SharedResponse {
+                    context: request,
+                    result: SharedResult::Failure {
+                        failure: mshogi_engine::EngineFailure {
+                            kind: mshogi_engine::FailureKind::Start,
+                            message: format!("Cannot start native work: {e:?}"),
+                        },
+                    },
+                });
+            }
+        }
+        self.xiangqi_snapshot()
+    }
+    pub(super) fn xiangqi_snapshot(&self) -> SharedSnapshot {
+        let state = self.shared.xiangqi.as_ref().unwrap();
+        let position = state.selected_position();
+        let record = state.record();
+        let history = state.viewed.clone().unwrap_or_else(|| {
+            state
+                .game
+                .event_prefix(state.game.events().len())
+                .expect("native current prefix")
+        });
+        let concluded = history.conclusion;
+        let pending = history.pending.as_ref();
+        let historical = state.viewed.is_some();
+        let active = !historical && concluded.is_none() && pending.is_none();
+        let sides = vec![
+            side(NativeSide::Xiangqi(x::Side::Red)),
+            side(NativeSide::Xiangqi(x::Side::Black)),
+        ];
+        let files: Vec<_> = (b'a'..=b'i').map(|f| char::from(f).to_string()).collect();
+        let ranks: Vec<_> = (0..10).rev().map(|r| r.to_string()).collect();
+        let count_advice: Vec<_> = if historical && state.viewed_game.is_none() {
+            vec![]
+        } else {
+            [x::Side::Red, x::Side::Black]
+                .into_iter()
+                .map(|s| {
+                    state
+                        .viewed_game
+                        .as_ref()
+                        .unwrap_or(&state.game)
+                        .natural_count_eligibility(s)
+                })
+                .collect()
+        };
+        let status = PresentedStatus {
+            concluded: concluded.is_some(),
+            score_half_points: concluded.map(|c| match c {
+                x::Conclusion::Win {
+                    winner: x::Side::Red,
+                    ..
+                } => [2, 0],
+                x::Conclusion::Win { .. } => [0, 2],
+                x::Conclusion::Draw { .. } => [1, 1],
+            }),
+            label: if let Some(c) = concluded {
+                format!("{c:?}")
+            } else if let Some(p) = pending {
+                format!("Unresolved, unscored: {}", p.reason)
+            } else {
+                format!(
+                    "{} to move{}",
+                    side(NativeSide::Xiangqi(position.side_to_move())).label,
+                    if position.is_in_check(position.side_to_move()) {
+                        " · check"
+                    } else {
+                        ""
+                    }
+                )
+            },
+        };
+        SharedSnapshot {
+            xiangqi: Some(XiangqiPresentation {
+                canonical_context_scope: if historical && state.viewed_game.is_none() {
+                    "live_with_immutable_selection"
+                } else {
+                    "selected_committed"
+                },
+                selected_canonical: if historical && state.viewed_game.is_none() {
+                    None
+                } else {
+                    Some(record.clone())
+                },
+                selected_events: state.game.events()[..history.event_count].to_vec(),
+                selected_position: x::PositionRoot::analysis(position.clone()).to_json(),
+                root: state.game.root().to_json(),
+                claim_policy: state.game.claim_policy(),
+                count_advice: count_advice.clone(),
+                warnings: history.warnings.clone(),
+                offered_by: history.offered_by,
+                conclusion: concluded,
+                pending: pending.cloned(),
+                no_win_assessment: history.no_win_assessment.clone(),
+            }),
+            open_token: self.shared_open_token(),
+            document: self.shared_document(),
+            io: self.io_state.clone(),
+            capacity: self.session.capacity.clone(),
+            token: self.shared_token(),
+            game: GameKind::Xiangqi,
+            profile: RulesProfile::XiangqiWxf2018V1,
+            edition: RulesProfile::XiangqiWxf2018V1.edition(),
+            human: side(NativeSide::Xiangqi(state.human)),
+            turn: side(NativeSide::Xiangqi(position.side_to_move())),
+            sides: sides.clone(),
+            board: BoardDescriptor {
+                files: files.clone(),
+                ranks: ranks.clone(),
+                label: "Xiangqi intersection board".into(),
+                initial_focus: "e3".into(),
+                intersections: Some(IntersectionTopology {
+                    points: x::Intersection::all().map(|p| p.to_string()).collect(),
+                    river_between_ranks: x::RIVER_BETWEEN_RANKS,
+                    palaces: [x::Side::Red, x::Side::Black]
+                        .into_iter()
+                        .map(|actor| {
+                            let base = if actor == x::Side::Red { 0 } else { 7 };
+                            Palace {
+                                side: side(NativeSide::Xiangqi(actor)),
+                                points: x::Intersection::all()
+                                    .filter(|p| actor.in_palace(*p))
+                                    .map(|p| p.to_string())
+                                    .collect(),
+                                diagonals: vec![
+                                    vec![
+                                        format!("d{base}"),
+                                        format!("e{}", base + 1),
+                                        format!("f{}", base + 2),
+                                    ],
+                                    vec![
+                                        format!("f{base}"),
+                                        format!("e{}", base + 1),
+                                        format!("d{}", base + 2),
+                                    ],
+                                ],
+                            }
+                        })
+                        .collect(),
+                }),
+            },
+            orientations: vec![
+                Orientation {
+                    side: sides[0].clone(),
+                    files: files.clone(),
+                    ranks: ranks.clone(),
+                },
+                Orientation {
+                    side: sides[1].clone(),
+                    files: files.into_iter().rev().collect(),
+                    ranks: ranks.into_iter().rev().collect(),
+                },
+            ],
+            pieces: x::Intersection::all()
+                .filter_map(|point| {
+                    position.piece(point).map(|p| {
+                        let owner = side(NativeSide::Xiangqi(p.side));
+                        PresentedPiece {
+                            square: point.to_string(),
+                            owner: owner.key,
+                            kind: format!("{:?}", p.kind).to_lowercase(),
+                            promoted: false,
+                            text: format!("{:?}", p.kind),
+                            label: format!("{point}, {} {:?}", owner.label, p.kind),
+                        }
+                    })
+                })
+                .collect(),
+            hands: vec![],
+            choices: if concluded.is_none() && pending.is_none() {
+                position
+                    .legal_actions()
+                    .expect("admitted native position")
+                    .into_iter()
+                    .map(choice)
+                    .collect()
+            } else {
+                vec![]
+            },
+            capabilities: CommandCapabilities {
+                board_action: active && !state.paused && position.side_to_move() == state.human,
+                drops: false,
+                promotion: false,
+                undo: !historical && !state.undo.is_empty(),
+                engine_turn: active && position.side_to_move() != state.human,
+                move_analysis: !historical || state.viewed_game.is_some(),
+                chess_full: false,
+                claims: active
+                    && !state.paused
+                    && count_advice
+                        .iter()
+                        .any(|e| e.claimant == state.human && e.eligible),
+                declaration: false,
+                resign: active && !state.paused,
+                hands: false,
+                history: true,
+                save: false,
+            },
+            status,
+            events: state
+                .game
+                .events()
+                .iter()
+                .map(|e| PresentedEvent {
+                    index: e.index + 1,
+                    board_ply: e.board_ply,
+                    label: format!("{:?}: {:?}", e.actor, e.event),
+                })
+                .collect(),
+            event_index: history.event_count,
+            board_ply: history.board_ply as u64,
+            play_limits: PLAY_LIMITS,
+            historical,
+            paused: state.paused,
+            phase: state.phase,
+            execution_purpose: state.pending.as_ref().map(|p| {
+                if matches!(p.purpose, SharedPurpose::EngineTurn {}) {
+                    "engine_turn"
+                } else {
+                    "move_analysis"
+                }
+            }),
+            diagnostic: state.diagnostic.clone(),
+            declaration_advice: vec![],
+            context: record,
+            analysis: state.analysis.clone(),
+            observations: state.observations.clone(),
+            search_observations: state
+                .observations
+                .iter()
+                .enumerate()
+                .map(|(index, o)| display_observation(index, o, state.analysis.as_ref()))
+                .collect(),
+            score_meaning: "Native Red/Black root-side hundredths of soldier. Terminal distances count command edges; heuristic evaluation and existential win witnesses never establish a forced win. Ordinary analysis uses sound_fast_only; Unknown is unscored evidence, not proof of win capability.",
+            chess: None,
+        }
+    }
+}
+fn display_observation(
+    index: usize,
+    o: &PresentedObservation,
+    current: Option<&PresentedObservation>,
+) -> PresentedSearchObservation {
+    let t = match &o.response.result {
+        SharedResult::Xiangqi {
+            result:
+                XiangqiResult::Choice { telemetry, .. }
+                | XiangqiResult::Finished { telemetry, .. }
+                | XiangqiResult::Incomplete { telemetry }
+                | XiangqiResult::Unresolved { telemetry, .. },
+        } => Some(telemetry),
+        _ => None,
+    };
+    let (purpose, event_index, board_ply) = match &o.response.context.purpose {
+        SharedPurpose::MoveAnalysis { target } => (
+            "move_analysis",
+            target.event_index as usize,
+            target.board_ply as usize,
+        ),
+        _ => (
+            "engine_turn",
+            o.response.context.game.event_count(),
+            o.response.context.game.known_board_actions(),
+        ),
+    };
+    let perspective = match &o.response.context.game {
+        CanonicalRecord::Xiangqi(r) => side(NativeSide::Xiangqi(r.side_to_move())).label,
+        _ => unreachable!(),
+    };
+    PresentedSearchObservation {
+        observation_index: index,
+        purpose,
+        event_index,
+        board_ply,
+        perspective,
+        engine: "mShogi",
+        score: t.and_then(|t| {
+            t.score.map(|s| {
+                if s.abs() >= 999_996 {
+                    format!(
+                        "{} in {} native command edges",
+                        if s >= 0 { "Win" } else { "Loss" },
+                        1_000_000 - s.abs()
+                    )
+                } else {
+                    format!("{:+.2} soldiers", f64::from(s) / 100.0)
+                }
+            })
+        }),
+        completed_depth: t.map(|t| t.completed_depth),
+        nodes: t.map(|t| t.nodes),
+        variation: t.map_or_else(Vec::new, |t| {
+            t.principal_variation
+                .iter()
+                .map(|c| match c {
+                    XiangqiChoice::Move { action } => action.to_string(),
+                    XiangqiChoice::Claim { actor } => format!("{actor:?} count claim"),
+                })
+                .collect()
+        }),
+        status: if o.application_error.is_some() {
+            "Rejected engine result"
+        } else {
+            match t.map(|t| t.status) {
+                Some(XiangqiStop::Complete) => "Complete",
+                Some(XiangqiStop::NodeLimit) => "Node limit reached",
+                Some(XiangqiStop::Stopped) => "Stopped",
+                Some(XiangqiStop::Unresolved) => "Unresolved, unscored",
+                None => "Engine failure",
+            }
+        },
+        historical: o.historical,
+        selected: current.is_some_and(|c| c.response == o.response) && !o.historical,
+    }
+}
+
+#[cfg(test)]
+#[path = "shared_xiangqi_tests.rs"]
+mod tests;

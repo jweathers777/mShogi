@@ -613,6 +613,105 @@ fn strict_duplicates_conflicts_derived_conclusions_and_journal_tampering_are_rej
 }
 
 #[test]
+fn reused_validation_never_hides_changed_history_or_malformed_later_observations() {
+    let game = cycle("F022-CC");
+    let mut c = controller();
+    replace(&mut c, &game, x::Side::Red);
+    for _ in 0..2 {
+        send(
+            &mut c,
+            SessionOperation::Analyze {
+                operation: AnalysisOperation::Moves {
+                    depth: 1,
+                    nodes: 128,
+                },
+            },
+        )
+        .unwrap();
+        let response = actual(state(&c).pending.as_ref().unwrap());
+        assert!(
+            matches!(&response.result, SharedResult::Xiangqi { result: XiangqiResult::Choice { telemetry, .. } } if !telemetry.principal_variation.is_empty())
+        );
+        assert!(c.accept_shared(response));
+        settle(&mut c);
+    }
+    let observation = exact(
+        &game,
+        None,
+        x::ExactLimits {
+            states: 0,
+            ..x::ExactLimits::default()
+        },
+        false,
+    );
+    retain(&mut c, &observation).unwrap();
+    let base: Value = serde_json::from_str(&payload(
+        &encode(state(&c), state(&c).execution_floor).unwrap(),
+    ))
+    .unwrap();
+    let text = base.to_string();
+    let (restored, _) = decode(&text, &mut || false).unwrap();
+    assert_eq!(restored.observations.len(), 2);
+    assert_eq!(restored.exact_observations, state(&c).exact_observations);
+    assert_eq!(
+        restored.observations[1].response,
+        state(&c).observations[1].response
+    );
+
+    // Earlier records and observations have populated validation reuse by now.
+    // Alter only a later source: duplicate native/wrapper fields must still reach
+    // the strict parser, and surrounding observation/request fields stay strict.
+    for (collection, index) in [("observations", 1), ("exact_observations", 0)] {
+        let original = base[collection][index].to_string();
+        for (needle, replacement) in [
+            (
+                "\"no_win_mode\":",
+                "\"no_win_mode\":\"sound_fast_only\",\"no_win_mode\":",
+            ),
+            (
+                "\"native_schema_version\":",
+                "\"native_schema_version\":1,\"native_schema_version\":",
+            ),
+        ] {
+            let changed = original.replacen(needle, replacement, 1);
+            assert_ne!(original, changed);
+            assert!(decode(&text.replacen(&original, &changed, 1), &mut || false).is_err());
+        }
+        let mut corrupt = base.clone();
+        corrupt[collection][index]["unexpected"] = json!(true);
+        assert!(decode(&corrupt.to_string(), &mut || false).is_err());
+    }
+    let mut missing = base.clone();
+    missing["observations"][1]
+        .as_object_mut()
+        .unwrap()
+        .remove("application_error");
+    assert!(decode(&missing.to_string(), &mut || false).is_err());
+    let mut duplicate = base.clone();
+    duplicate["observations"][1]["response"]["context"]["unexpected"] = json!(true);
+    assert!(decode(&duplicate.to_string(), &mut || false).is_err());
+
+    let prefix = game.committed_prefix(0).unwrap();
+    assert_eq!(
+        prefix.position().pieces().collect::<Vec<_>>(),
+        game.position().pieces().collect::<Vec<_>>()
+    );
+    let mut wrong_history = base.clone();
+    wrong_history["observations"][1]["response"]["context"]["game"] = serde_json::to_value(
+        CanonicalRecord::xiangqi(x::GameRecord::from_game(&prefix).unwrap()),
+    )
+    .unwrap();
+    assert!(decode(&wrong_history.to_string(), &mut || false).is_err());
+    let mut changed_variation = base.clone();
+    changed_variation["observations"][1]["response"]["result"]["result"]["telemetry"]["principal_variation"]
+        .as_array_mut().unwrap().push(serde_json::to_value(XiangqiChoice::Move { action: "a0a9".parse().unwrap() }).unwrap());
+    assert!(
+        decode(&changed_variation.to_string(), &mut || false).is_err(),
+        "a new illegal variation cannot reuse the earlier valid PV check"
+    );
+}
+
+#[test]
 fn failed_and_interrupted_save_open_preserve_file_dirty_state_and_live_document() {
     let mut c = controller();
     replace(
@@ -750,8 +849,30 @@ fn ordinary_observation_256_to_257_rejects_new_work_and_still_saves_reopens_all_
         &x::Game::standard(x::ClaimPolicy::Explicit).unwrap(),
         x::Side::Red,
     );
-    for _ in 0..MAX_ARCHIVE_OBSERVATIONS {
-        analyze(&mut c);
+    let mut template = None;
+    for index in 0..MAX_ARCHIVE_OBSERVATIONS {
+        send(
+            &mut c,
+            SessionOperation::Analyze {
+                operation: AnalysisOperation::Moves {
+                    depth: PLAY_LIMITS.depth,
+                    nodes: PLAY_LIMITS.nodes,
+                },
+            },
+        )
+        .unwrap();
+        let context = state(&c).pending.clone().unwrap();
+        // Repeat a real completed native result at the identical history under
+        // fresh transport identities. This is fixture replay, not256 searches.
+        let result = template
+            .get_or_insert_with(|| actual(&context).result)
+            .clone();
+        assert!(
+            matches!(&result, SharedResult::Xiangqi { result: XiangqiResult::Choice { telemetry, .. } } if !telemetry.principal_variation.is_empty())
+        );
+        assert!(c.accept_shared(SharedResponse { context, result }));
+        settle(&mut c);
+        assert_eq!(state(&c).observations.len(), index + 1);
     }
     assert_eq!(state(&c).observations.len(), 256);
     let before = canonical(&c);
@@ -770,7 +891,13 @@ fn ordinary_observation_256_to_257_rejects_new_work_and_still_saves_reopens_all_
     assert!(state(&c).pending.is_none());
     let file = path("obs256");
     save(&mut c, &file);
+    let began = Instant::now();
     open(&mut c, &file).unwrap();
+    println!(
+        "256 ordinary observations: {} encoded bytes, reopen {}ms",
+        std::fs::metadata(&file).unwrap().len(),
+        began.elapsed().as_millis()
+    );
     assert_eq!(state(&c).observations.len(), 256);
     assert!(state(&c).observations.iter().all(|o| o.historical));
     assert!(
@@ -823,7 +950,13 @@ fn ordinary_and_exact_observations_share_capacity_without_discarding_either_kind
     assert_eq!(c.session.document_revision, revision);
     let file = path("mixed256");
     save(&mut c, &file);
+    let began = Instant::now();
     open(&mut c, &file).unwrap();
+    println!(
+        "1 ordinary+255 exact observations: {} encoded bytes, reopen {}ms",
+        std::fs::metadata(&file).unwrap().len(),
+        began.elapsed().as_millis()
+    );
     assert_eq!(state(&c).observations.len(), 1);
     assert_eq!(state(&c).exact_observations.len(), 255);
     std::fs::remove_file(file).unwrap();

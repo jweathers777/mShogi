@@ -35,6 +35,15 @@ analysis intent, full target history, work and execution binding. An observation
 cannot change purpose or use a same-board context with different history.
 Malformed, duplicate, unknown, conflicting or unsupported fields reject.
 
+Within one Open, original byte-identical canonical envelopes reuse an immutable
+record only after its strict authoritative parser has succeeded. A changed byte
+is parsed afresh; no JSON map normalization is used. Pure native variation
+validation also reuses a result only for the same complete authoritative record
+and complete typed action/claim sequence. All observation identities, purpose,
+target, journal bindings and actual engine-turn application are checked every
+time. These temporary caches have at most the bounded archive's records and256
+variations; they retain no execution work across Opens.
+
 ## Admission and measured capacity
 
 The existing limits remain:16MiB actual encoded archive,8192 controls and256
@@ -82,8 +91,20 @@ boundaries and reopened losslessly:
 
 | Native ledger | Events | Observations | Controls | Encoded bytes | Debug reopen |
 |---|---:|---:|---:|---:|---:|
-| WXF warning plus40 rejected-claim audits |89|32|67|834,597|1,073ms|
-|100 board actions plus accepted Red natural-count claim |103|7|17|227,553|2,024ms|
+| WXF warning plus40 rejected-claim audits |89|32|67|834,597|317ms|
+|100 board actions plus accepted Red natural-count claim |103|7|17|227,553|739ms|
+| Standard root, completed ordinary observations |0|256|512|1,110,084|335ms|
+| Standard root,1ordinary plus255exact Unknown observations |0|256|257|754,793|215ms|
+
+The ordinary256 test repeats one actual completed native result under fresh
+admitted request identities at the identical history; it does not claim256
+engine executions. A separate independent probe executed256 actual supervised
+child analyses: after variation reuse, its same1,110,084byte archive reopened in
+337ms. Before variation reuse, those actual observations reopened in8,732ms
+locally (the template fixture measured8,550ms). The earlier Windows CI
+attempt failed the unchanged15-second Open budget for both256-observation
+fixtures. Those failures motivated validation reuse; neither budget nor criteria
+was relaxed. Exact-source corrected platform results are in the task record.
 
 Times are observations, not cross-platform or deadline guarantees. The worker
 remains independently cancellable and bounded. The work budget can bind before

@@ -60,7 +60,8 @@ class Handler(BaseHTTPRequestHandler):
                  or (self.server.mode == 'delivered' and self.path.endswith('/click')))
         event = {'connection': self.connection_id, 'on_connection': self.requests,
                  'method': self.command, 'path': self.path,
-                 'body': body.decode(), 'reset_after_receipt': reset}
+                 'body': body.decode(), 'connection_header': self.headers.get('Connection'),
+                 'reset_after_receipt': reset}
         with self.server.lock:
             self.server.events.append(event)
         if reset:
@@ -118,16 +119,36 @@ def experiment(binary, mode, output):
                         time.sleep(0.05)
                 web = object.__new__(gui.Webview)
                 web.endpoint, web.session, web.record = endpoint, 'boundary', lambda *e: events.append(e)
-                web.request('GET', '/status')
+                connection = None
+                if mode == 'reuse':
+                    # Explicit HTTP/1.1 keep-alive makes reuse deterministic.
+                    # urllib's Connection: close would make this stress case
+                    # depend on the native peer's close timing instead.
+                    connection = http.client.HTTPConnection('127.0.0.1', port, timeout=5)
+                    connection.request('GET', '/status', headers={'Connection': 'keep-alive'})
+                    response = connection.getresponse()
+                    assert response.status == 200
+                    response.read()
+                else:
+                    web.request('GET', '/status')
                 # Give Hyper time to return the completed connection to its pool.
                 time.sleep(0.1)
                 try:
-                    if mode == 'semantic':
+                    if mode == 'reuse':
+                        connection.request('POST', '/session/boundary/element/save/click', '{}',
+                                           {'Content-Type': 'application/json', 'Connection': 'keep-alive'})
+                        response = connection.getresponse()
+                        assert response.status == 200
+                        response.read()
+                    elif mode == 'semantic':
                         gui.wait(lambda: web.read('document.body.innerText'), 'semantic must be fatal')
                     else:
                         web.command('POST', '/element/save/click', {})
                 except (http.client.RemoteDisconnected, ConnectionResetError, urllib.error.URLError, RuntimeError) as error:
                     failure = repr(error)
+                finally:
+                    if connection is not None:
+                        connection.close()
                 # Let accidental internal replays arrive before inspecting counts.
                 time.sleep(0.15)
             finally:
@@ -137,6 +158,7 @@ def experiment(binary, mode, output):
                 peer.server_close()
                 thread.join(timeout=5)
     result = {'binary': str(binary), 'binary_sha256': gui.digest(binary), 'mode': mode,
+              'client': 'explicit HTTP/1.1 keep-alive' if mode == 'reuse' else 'actual Webview urllib transport',
               'requests': peer.events, 'client_events': events, 'failure': failure}
     (output / f'{binary.name}-{mode}.json').write_text(json.dumps(result, indent=2) + '\n')
     return result
@@ -154,6 +176,7 @@ def main():
         reuse = experiment(binary, 'reuse', args.output)
         results.append(reuse)
         assert len(reuse['requests']) == 2, reuse
+        assert all(e['connection_header'] == 'keep-alive' for e in reuse['requests']), reuse
         assert bool(reuse['failure']) == (binary == args.original.resolve()), reuse
         assert reuse['requests'][1]['on_connection'] == (2 if reuse['failure'] else 1), reuse
         delivered = experiment(binary, 'delivered', args.output)

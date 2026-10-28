@@ -3,9 +3,10 @@
 import { Board, type BoardChoice, type NativeHand, type NativePiece } from "./Board";
 export interface NativeBoardSnapshot {
   token: { document: number; version: number; revision: number; selection: number };
-  game: "chess" | "shogi";
+  game: "chess" | "shogi" | "xiangqi";
   profile: string;
-  board: { files: string[]; ranks: string[]; label: string; initial_focus: string };
+  board: { files: string[]; ranks: string[]; label: string; initial_focus: string;
+    intersections?: { points: string[]; river_between_ranks: [number, number]; palaces: { side: { key: string; label: string }; points: string[]; diagonals: string[][] }[] } | null };
   orientations: { side: { key: string; label: string }; files: string[]; ranks: string[] }[];
   sides: { key: string; first_mover: boolean }[];
   pieces: NativePiece[];
@@ -20,6 +21,7 @@ export function nativeSnapshotIsNewer(current: NativeBoardSnapshot | null, incom
 export function NativeBoard({ snapshot, bottomSide, onPlay }: {
   snapshot: NativeBoardSnapshot; bottomSide: string; onPlay: (action: string) => void;
 }) {
+  if (snapshot.board.intersections) return <p role="alert">This game requires its native intersection renderer.</p>;
   const orientation = snapshot.orientations.find((o) => o.side.key === bottomSide);
   if (!orientation) return <p role="alert">Unsupported native orientation.</p>;
   return <Board pieces={snapshot.pieces} choices={snapshot.choices} hands={snapshot.hands}

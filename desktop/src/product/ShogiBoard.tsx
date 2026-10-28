@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
 import type { BoardChoice, NativePiece } from "../Board";
-import type { GameSnapshot, Side } from "./native";
+import type { ChessShogiSnapshot as GameSnapshot, Side } from "./native";
 import type { InspectMovement, MovementInspection } from "./movementInspection";
 import { GameArea, GamePositionStatus, PlayerArea } from "./ApplicationShell";
 import "../movement-inspection.css";

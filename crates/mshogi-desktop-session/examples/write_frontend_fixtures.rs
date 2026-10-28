@@ -245,7 +245,7 @@ fn wait_document(controller: &mut DesktopController, id: u64) -> mshogi_desktop_
 fn write_shared_fixtures(directory: &std::path::Path) {
     use mshogi_core::{
         native::{CanonicalRecord, GameKind, NativeSide},
-        shogi as s,
+        shogi as s, xiangqi as x,
     };
     use mshogi_desktop_session::{SessionOperation, SharedDesktopCommand};
     let mut controller = DesktopController::new("/unused/fixture-engine".into()).unwrap();
@@ -302,6 +302,45 @@ fn write_shared_fixtures(directory: &std::path::Path) {
         )
         .unwrap();
     }
+    let game = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
+    let expected = controller.shared_token();
+    let snapshot = shared_command(
+        &mut controller,
+        SharedDesktopCommand {
+            expected,
+            game: GameKind::Shogi,
+            operation: SessionOperation::Replace {
+                record: CanonicalRecord::xiangqi(x::GameRecord::from_game(&game).unwrap()),
+                human: NativeSide::Xiangqi(x::Side::Red),
+            },
+        },
+    )
+    .unwrap();
+    let snapshot = shared_command(
+        &mut controller,
+        SharedDesktopCommand {
+            expected: snapshot.token,
+            game: GameKind::Xiangqi,
+            operation: SessionOperation::Resume {},
+        },
+    )
+    .unwrap();
+    std::fs::write(
+        directory.join("shared-xiangqi-standard.json"),
+        serde_json::to_string_pretty(&snapshot).unwrap() + "\n",
+    )
+    .unwrap();
+    let inspection = controller
+        .shared_inspection(mshogi_desktop_session::MovementInspectionQuery {
+            expected: snapshot.token,
+            origin: "b7".into(),
+        })
+        .unwrap();
+    std::fs::write(
+        directory.join("shared-xiangqi-inspection.json"),
+        serde_json::to_string_pretty(&inspection).unwrap() + "\n",
+    )
+    .unwrap();
 }
 
 fn shared_command(

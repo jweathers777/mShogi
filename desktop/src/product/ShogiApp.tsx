@@ -3,7 +3,7 @@ import { ShogiBoard } from "./ShogiBoard";
 import { AnalysisActions, ApplicationShell, DocumentState, HistoricalNotice, InspectorSwitch, LiveGameHeading, NativeEnginePanel } from "./ApplicationShell";
 import { useMovementInspection } from "./useMovementInspection";
 import { Dialog } from "./Dialog";
-import type { GameSnapshot, Operation, SearchView } from "./native";
+import type { ChessShogiSnapshot as GameSnapshot, Operation, SearchView } from "./native";
 import type { GameSession } from "./useGameSession";
 import licenseUrl from "../assets/fonts/OFL.txt?url";
 import fontLicense from "../assets/fonts/OFL.txt?raw";
@@ -15,7 +15,7 @@ function publicError(message: string) {
   if (/save|file|open|archive|corrupt|metadata/i.test(message)) return "The file operation could not complete. Your current game and unsaved changes have been kept.";
   return "The action could not complete. Your current game has been kept; details are available below.";
 }
-function Observation({ view }: { view: SearchView }) {
+export function Observation({ view }: { view: SearchView }) {
   return <div className="shogi-search-observation" data-search-purpose={view.purpose}>
     <p className="search-target">{view.historical ? "Saved observation" : view.purpose === "engine_turn" ? "Last engine turn" : "Move analysis"} · event {view.event_index}</p>
     <p className="shogi-evaluation">{view.score ?? "No completed evaluation"}</p>

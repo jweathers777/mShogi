@@ -201,15 +201,6 @@ async fn game_command(
 ) -> Result<mshogi_desktop_session::SharedSnapshot, String> {
     ensure_chess_mode(&app)?;
     let command = mshogi_desktop_session::SharedDesktopCommand::from_json(&command_json)?;
-    // MSH-98 exposes the native consumer contract; product document admission
-    // stays unavailable until MSH-99/MSH-101 supply archives and the actual UI.
-    if command.game == mshogi_desktop_session::GameKind::Xiangqi
-        || matches!(&command.operation,
-            mshogi_desktop_session::SessionOperation::Replace { record, .. }
-            if record.game_kind() == mshogi_desktop_session::GameKind::Xiangqi)
-    {
-        return Err("Xiangqi desktop product admission is not available yet.".into());
-    }
     let shutdown = app.state::<Arc<ShutdownState>>().inner().clone();
     let (initial, receipt, reservation) = with_controller(
         &app.state::<Mutex<DesktopController>>(),

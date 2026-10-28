@@ -5,11 +5,11 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { useGameSession } from "./useGameSession";
-import type { GameSnapshot } from "./native";
+import type { GameSnapshot, ChessShogiSnapshot } from "./native";
 import standardJson from "../__fixtures__/shared-shogi-standard.json";
 vi.mock("@tauri-apps/api/core", () => ({ invoke: vi.fn() }));
 vi.mock("@tauri-apps/api/event", () => ({ listen: vi.fn() }));
-const standard = standardJson as GameSnapshot;
+const standard = standardJson as ChessShogiSnapshot;
 function deferred<T>() { let resolve!: (value: T) => void; const promise = new Promise<T>((done) => { resolve = done; }); return { resolve, promise }; }
 beforeEach(() => { vi.useFakeTimers(); vi.mocked(invoke).mockReset(); vi.mocked(listen).mockReset().mockResolvedValue(() => {}); });
 afterEach(() => { cleanup(); vi.useRealTimers(); });

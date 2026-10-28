@@ -4,3 +4,13 @@ Licensed under the SIL Open Font License, Version 1.1; see OFL.txt.
 The subset is renamed mShogi Pieces and remains under the same license.
 Upstream: https://github.com/notofonts/noto-cjk
 Pinned source commit: 9b0f1436e455d902de067a2501422e5dc71ad16b
+
+mShogi Xiangqi Pieces Regular is a separate modified subset of Noto Serif CJK TC Regular 2.003.
+Original font copyright: © 2017-2024 Adobe (http://www.adobe.com/).
+Licensed under the same SIL Open Font License, Version 1.1 (OFL.txt).
+Renamed family: mShogi Xiangqi Pieces; primary Chinese glyphs use the bundled font.
+Pinned source: https://github.com/notofonts/noto-cjk/blob/9b0f1436e455d902de067a2501422e5dc71ad16b/Serif/OTF/TraditionalChinese/NotoSerifCJKtc-Regular.otf
+Source SHA256: 234301038e76e7c35c43113785024700c4e4fe7bdce1d1fbbc42fca7e6683798
+Subset SHA256: 96a14f12cc9365b39a5046a09288186d1cee075dea756f1a39c81fc4332a4cdf
+Rebuild: PYTHONPATH=/path/to/fonttools python3 subset-xiangqi.py NotoSerifCJKtc-Regular.otf mshogi-xiangqi-pieces.woff2
+Verified with Python3.11, fontTools4.47.2 and Brotli1.1.0: all18 codepoints,19 glyphs, nonempty outlines; repeat generation byte-identical.

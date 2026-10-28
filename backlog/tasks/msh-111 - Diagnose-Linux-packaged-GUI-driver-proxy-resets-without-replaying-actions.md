@@ -1,9 +1,11 @@
 ---
 id: MSH-111
 title: Diagnose Linux packaged GUI driver proxy resets without replaying actions
-status: To Do
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-10-28T13:58:00Z'
+updated_date: '2026-10-28T14:23:00Z'
 labels:
   - ci
   - verification
@@ -38,3 +40,15 @@ Linux tauri-driver2.0.6 intermittently loses the downstream connection with Hype
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Preserve failed Linux reports/logs and exact package, source, tauri-driver/WebKit/environment provenance; inspect proxy and verifier boundaries. 2. Reproduce the downstream reset with a controlled external-driver test; evaluate a bounded Linux-only correction outside all product packages, with no automatic mutation replay. 3. Add focused failure-after-delivery, semantic/exhaustion and compatibility checks; obtain independent review of the bounded change. 4. Run all current actual installed Linux Chess/Shogi GUI phases in CI; retain failures and package identities, integrate only supported results into codex/rewrite, and record exact revisions and remaining limits.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner: Codex root; isolated branch codex/msh111-gui-proxy, app-managed worktree /Users/johnweathers/.codex/worktrees/msh111-gui-proxy/mShogi at base 06f629f. MSH-99 and its files are outside this task. Pinned Backlog.md 1.55.1 used for mutations; PATH 1.55.0 used only for initial reads.
+<!-- SECTION:NOTES:END -->

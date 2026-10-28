@@ -103,8 +103,15 @@ jobs:
           assert hashlib.sha256(Path('/usr/bin/mshogi').read_bytes()).hexdigest() == report['sha256']
           PY
       - name: Prepare external native GUI driver
-        if: runner.os != 'macOS'
+        if: runner.os == 'Windows'
         run: cargo +1.90.0 install tauri-driver --version 2.0.6 --locked
+      - name: Prepare bounded Linux verification proxy and test actual transport boundary
+        if: runner.os == 'Linux'
+        run: |
+          python3 -m unittest discover -s desktop/scripts -p 'test_gui*.py'
+          python3 desktop/scripts/prepare-linux-gui-driver.py --output "$RUNNER_TEMP/mshogi-gui-driver"
+          python3 desktop/scripts/test_gui_proxy.py --original "$RUNNER_TEMP/mshogi-gui-driver/tauri-driver-original" --corrected "$RUNNER_TEMP/mshogi-gui-driver/tauri-driver" --output gui-driver-boundary
+          echo "$RUNNER_TEMP/mshogi-gui-driver" >> "$GITHUB_PATH"
       - name: Pin external Windows GUI Python runtime
         if: runner.os == 'Windows'
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
@@ -167,5 +174,7 @@ jobs:
             package-smoke.json
             gui-packages/
             gui-evidence/
+            gui-driver-boundary/
+            ${{ runner.temp }}/mshogi-gui-driver/provenance.json
             webview-driver.json
           retention-days: 14

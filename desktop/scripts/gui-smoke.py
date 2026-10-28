@@ -79,7 +79,7 @@ def wait(predicate, label, seconds=25):
             last = predicate()
             if last:
                 return last
-        except (AssertionError, RuntimeError, urllib.error.URLError) as error:
+        except AssertionError as error:
             last = str(error)
         time.sleep(0.1)
     raise AssertionError(f"Timed out: {label}; last observation: {last!r}")
@@ -1146,6 +1146,7 @@ def main():
                 ("GDK_BACKEND", "WEBKIT_DISABLE_COMPOSITING_MODE", "WEBKIT_DISABLE_DMABUF_RENDERER", "LIBGL_ALWAYS_SOFTWARE")}},
         "method": "Actual installed/packaged GUI via W3C pointer/keyboard and native OS dialogs/close, external to distributables. Read-only DOM inspection; no direct IPC or injected input events.",
         "driver_identity": {"path": shutil.which(args.driver) or args.driver,
+            "sha256": digest(shutil.which(args.driver) or args.driver),
             "version": subprocess.run([args.driver, "--version"], capture_output=True,
                 text=True, timeout=5, check=False).stdout.strip()},
         "phases": []}

@@ -1,0 +1,15 @@
+{
+  "productName": "mShogi Minimum Size Verification",
+  "identifier": "org.mshogi.desktop.msh101-minimum",
+  "app": {
+    "windows": [
+      {
+        "title": "mShogi \u2014 minimum window-size verification",
+        "width": 760,
+        "height": 650,
+        "minWidth": 760,
+        "minHeight": 650
+      }
+    ]
+  }
+}

@@ -1,0 +1,306 @@
+[
+  {
+    "file": "chess-minimum.jpg",
+    "sha256": "a52c686b268719811dc361f18e0ba610f26c0871571730b6e968a7eecf182db2",
+    "bytes": 245244,
+    "raw_pixels": [
+      1520,
+      1300
+    ],
+    "logical_window_frame": [
+      760.0,
+      650.0
+    ],
+    "package_variant": "minimum",
+    "source": "3a1aefc73c4b956a193059bb99f114af5b69ebe9",
+    "file_modified_utc": "2026-10-28T21:16:30.498205+00:00"
+  },
+  {
+    "file": "chess-normal.jpg",
+    "sha256": "b35bfd540eaf83afad2e0d219558cb71b01728afe0a9328aee9fdd378e960f79",
+    "bytes": 330760,
+    "raw_pixels": [
+      2360,
+      1640
+    ],
+    "logical_window_frame": [
+      1180.0,
+      820.0
+    ],
+    "package_variant": "normal",
+    "source": "3a1aefc73c4b956a193059bb99f114af5b69ebe9",
+    "file_modified_utc": "2026-10-28T18:51:06.347387+00:00"
+  },
+  {
+    "file": "first-pass/chess-normal.jpg",
+    "sha256": "b98fbfbec3b3004697bcc079135d4fd8b7b6caee45394b038830af16a990a272",
+    "bytes": 330757,
+    "raw_pixels": [
+      2360,
+      1640
+    ],
+    "logical_window_frame": [
+      1180.0,
+      820.0
+    ],
+    "package_variant": "diagnostic-first-pass",
+    "source": "pre-correction working tree based on f71e149; diagnostic only",
+    "file_modified_utc": "2026-10-28T18:37:55.486184+00:00"
+  },
+  {
+    "file": "first-pass/shogi-normal.jpg",
+    "sha256": "76b73ff335409f90f817a724c1452e53b8c699c2d338e8f44a06f6e9c8613602",
+    "bytes": 355661,
+    "raw_pixels": [
+      2360,
+      1640
+    ],
+    "logical_window_frame": [
+      1180.0,
+      820.0
+    ],
+    "package_variant": "diagnostic-first-pass",
+    "source": "pre-correction working tree based on f71e149; diagnostic only",
+    "file_modified_utc": "2026-10-28T18:37:55.493057+00:00"
+  },
+  {
+    "file": "shogi-minimum.jpg",
+    "sha256": "bdf2f355bd911ac66a7c08a9b9c332fafe1ee1306b276d7017ee2fa8b7c7e137",
+    "bytes": 246841,
+    "raw_pixels": [
+      1520,
+      1300
+    ],
+    "logical_window_frame": [
+      760.0,
+      650.0
+    ],
+    "package_variant": "minimum",
+    "source": "3a1aefc73c4b956a193059bb99f114af5b69ebe9",
+    "file_modified_utc": "2026-10-28T21:16:33.974398+00:00"
+  },
+  {
+    "file": "shogi-normal.jpg",
+    "sha256": "b07419f5021f8693e86811c6cb4e5e5fa84677f004eab9b9ca74413486221d9a",
+    "bytes": 355671,
+    "raw_pixels": [
+      2360,
+      1640
+    ],
+    "logical_window_frame": [
+      1180.0,
+      820.0
+    ],
+    "package_variant": "normal",
+    "source": "3a1aefc73c4b956a193059bb99f114af5b69ebe9",
+    "file_modified_utc": "2026-10-28T18:51:09.910362+00:00"
+  },
+  {
+    "file": "xiangqi-black-human-play-zoomed.jpg",
+    "sha256": "20c0455c4b15324751c1b3c556383685ca5c63613ba5eb5be343bca9f5cfc4e0",
+    "bytes": 548009,
+    "raw_pixels": [
+      3456,
+      2024
+    ],
+    "logical_window_frame": [
+      1728.0,
+      1012.0
+    ],
+    "package_variant": "normal",
+    "source": "3a1aefc73c4b956a193059bb99f114af5b69ebe9",
+    "file_modified_utc": "2026-10-28T18:54:54.920938+00:00"
+  },
+  {
+    "file": "xiangqi-black-minimum.jpg",
+    "sha256": "41462bef4aa13e65553dccd0f35321b014bbb94b87a1bf6ab415403480e987f5",
+    "bytes": 242354,
+    "raw_pixels": [
+      1520,
+      1300
+    ],
+    "logical_window_frame": [
+      760.0,
+      650.0
+    ],
+    "package_variant": "minimum",
+    "source": "3a1aefc73c4b956a193059bb99f114af5b69ebe9",
+    "file_modified_utc": "2026-10-28T21:16:53.005327+00:00"
+  },
+  {
+    "file": "xiangqi-black-normal.jpg",
+    "sha256": "cb1fd42e37b374f0c316fbe012bff12a2026b2a0c76515c7ae1be251e9be1948",
+    "bytes": 361094,
+    "raw_pixels": [
+      2360,
+      1640
+    ],
+    "logical_window_frame": [
+      1180.0,
+      820.0
+    ],
+    "package_variant": "normal",
+    "source": "3a1aefc73c4b956a193059bb99f114af5b69ebe9",
+    "file_modified_utc": "2026-10-28T18:51:29.995631+00:00"
+  },
+  {
+    "file": "xiangqi-capture-play-minimum.jpg",
+    "sha256": "f6b2ed1b1dac40bce78d3d548dd14fe59a12a0b51e66f248e225047fd1f1c5b2",
+    "bytes": 257164,
+    "raw_pixels": [
+      1520,
+      1300
+    ],
+    "logical_window_frame": [
+      760.0,
+      650.0
+    ],
+    "package_variant": "minimum",
+    "source": "3a1aefc73c4b956a193059bb99f114af5b69ebe9",
+    "file_modified_utc": "2026-10-28T21:17:37.493426+00:00"
+  },
+  {
+    "file": "xiangqi-inspection-minimum.jpg",
+    "sha256": "4687f8c135e5be85ec26a0b809e9a5142bcfa0263cf6572b226139c717ad89c5",
+    "bytes": 251395,
+    "raw_pixels": [
+      1520,
+      1300
+    ],
+    "logical_window_frame": [
+      760.0,
+      650.0
+    ],
+    "package_variant": "minimum",
+    "source": "3a1aefc73c4b956a193059bb99f114af5b69ebe9",
+    "file_modified_utc": "2026-10-28T21:16:51.325765+00:00"
+  },
+  {
+    "file": "xiangqi-inspection-normal.jpg",
+    "sha256": "a69ad659a540eaaf468bb2c30375ee25511254354b459b7c7ceb9448a7eca0fc",
+    "bytes": 375515,
+    "raw_pixels": [
+      2360,
+      1640
+    ],
+    "logical_window_frame": [
+      1180.0,
+      820.0
+    ],
+    "package_variant": "normal",
+    "source": "3a1aefc73c4b956a193059bb99f114af5b69ebe9",
+    "file_modified_utc": "2026-10-28T18:51:21.496192+00:00"
+  },
+  {
+    "file": "xiangqi-red-intermediate.jpg",
+    "sha256": "126a2570f70ec9a678f944ecc3af112cf71a11382d6d024b3ceb919efe8c0fd3",
+    "bytes": 295095,
+    "raw_pixels": [
+      1920,
+      1480
+    ],
+    "logical_window_frame": [
+      960.0,
+      740.0
+    ],
+    "package_variant": "intermediate",
+    "source": "3a1aefc73c4b956a193059bb99f114af5b69ebe9",
+    "file_modified_utc": "2026-10-28T22:04:02.149213+00:00"
+  },
+  {
+    "file": "xiangqi-red-minimum.jpg",
+    "sha256": "7359729f580897e662218affca22f0a73eb8df6c3b27b89cc4b199487a2f7eb4",
+    "bytes": 242970,
+    "raw_pixels": [
+      1520,
+      1300
+    ],
+    "logical_window_frame": [
+      760.0,
+      650.0
+    ],
+    "package_variant": "minimum",
+    "source": "3a1aefc73c4b956a193059bb99f114af5b69ebe9",
+    "file_modified_utc": "2026-10-28T21:16:38.375294+00:00"
+  },
+  {
+    "file": "xiangqi-red-normal-first-pass.jpg",
+    "sha256": "05210d140fa0623c1c545357a597bef7eae5fddddf99fcea33d0295a2b022e2e",
+    "bytes": 363589,
+    "raw_pixels": [
+      2360,
+      1640
+    ],
+    "logical_window_frame": [
+      1180.0,
+      820.0
+    ],
+    "package_variant": "diagnostic-first-pass",
+    "source": "pre-correction working tree based on f71e149; diagnostic only",
+    "file_modified_utc": "2026-10-28T18:34:45.495681+00:00"
+  },
+  {
+    "file": "xiangqi-red-normal.jpg",
+    "sha256": "6afbcbf152e02715c1824298dbe881975ea3dceb7d442f8fb797b43ae68eb458",
+    "bytes": 362379,
+    "raw_pixels": [
+      2360,
+      1640
+    ],
+    "logical_window_frame": [
+      1180.0,
+      820.0
+    ],
+    "package_variant": "normal",
+    "source": "3a1aefc73c4b956a193059bb99f114af5b69ebe9",
+    "file_modified_utc": "2026-10-28T18:51:13.785424+00:00"
+  },
+  {
+    "file": "xiangqi-red-play-zoomed.jpg",
+    "sha256": "24b42614843cf5987686008e6cdac4511236f2e87dacb8c68f0ef749091f426f",
+    "bytes": 570818,
+    "raw_pixels": [
+      3456,
+      2024
+    ],
+    "logical_window_frame": [
+      1728.0,
+      1012.0
+    ],
+    "package_variant": "normal",
+    "source": "3a1aefc73c4b956a193059bb99f114af5b69ebe9",
+    "file_modified_utc": "2026-10-28T18:54:42.429081+00:00"
+  },
+  {
+    "file": "xiangqi-selection-minimum.jpg",
+    "sha256": "4d2632113dc66e5c15d947ffa1666addc2c02b570e563652688931bffef9bf90",
+    "bytes": 244566,
+    "raw_pixels": [
+      1520,
+      1300
+    ],
+    "logical_window_frame": [
+      760.0,
+      650.0
+    ],
+    "package_variant": "minimum",
+    "source": "3a1aefc73c4b956a193059bb99f114af5b69ebe9",
+    "file_modified_utc": "2026-10-28T21:16:49.508440+00:00"
+  },
+  {
+    "file": "xiangqi-selection-normal.jpg",
+    "sha256": "10da7447b59988ca3e282a1006e48f106bfae2faad53b15f42f5b04f869b3194",
+    "bytes": 364913,
+    "raw_pixels": [
+      2360,
+      1640
+    ],
+    "logical_window_frame": [
+      1180.0,
+      820.0
+    ],
+    "package_variant": "normal",
+    "source": "3a1aefc73c4b956a193059bb99f114af5b69ebe9",
+    "file_modified_utc": "2026-10-28T18:51:19.863256+00:00"
+  }
+]

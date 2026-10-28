@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-28T18:38:00Z'
+updated_date: '2026-10-28T22:07:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -19,6 +19,7 @@ documentation:
   - docs/m4/xiangqi/fixtures.md
   - docs/m4/xiangqi/handoff.md
   - docs/m4/xiangqi/desktop-product.md
+  - docs/m4/evidence/msh101/visual-checkpoint-2026-10-28/README.md
 ordinal: 101000
 ---
 
@@ -62,4 +63,6 @@ Owner attachment2026-10-28 approves board/piece visual direction only and requir
 Early checkpoint source implemented (unfinished task): real product standard-Xiangqi creation goes through existing native archive admission and journaled Resume, human-bottom Red/Black, complete native Play wrapper and token-bound movement inspection. Dedicated SVG90-intersection renderer/river/nativepalaces, upright approved discs/glyphs and separate TC font subset; actual ApplicationShell/GameArea/theme retained. Native flat Xiangqi settings are represented explicitly in a TS discriminated union; no archive/schema normalization. Independent test author supplied18 UI tests using actual Rust-generated snapshots/query replies; caught and corrected flat-settings access and extra game_kind in strict Flip preferences. Root strictTS+182frontend tests,127all-feature native session tests, nativeproduct6tests, root/sessionclippy/fmt and normalmacOS build/package smoke passed (Rust1.99.1; Node24.19 runtime path, PATHnode26 broken dylib was bypassed without system mutation). Independent implementation reviewer read bounded source and ran18tests+TS, no unresolved finding.
 
 Actual normal app first-pass CUA comparison at1180x820 exposed coordinate occlusion under edge discs and XQ empty-slot spacing8/14px drift against Chess/Shogi. Independent visual review confirmed. Corrected art margin90/viewBox980x1080, equalpitch100 andratio49/54; explicit common empty notice-slot spacing preserves accepted existing adapter positions; native history row uses current shared treatment. Separate source re-review no finding; normal app rebuild and fresh actual comparison/selection/minimum captures pending. Initial test failures/setup mistakes remain notes, not product semantic changes. CUA actual drag reached exact760x650 (1520x1300 raw), full board/player/footer fit; no final corrected minimum evidence yet. Owner checkpoint approval remains REQUIRED before remaining101implementation/finalization; all AC/DoD remain unchecked, no102/103/106started.
+
+Early actual packaged visual checkpoint integrated/pushed at 3a1aefc73c4b956a193059bb99f114af5b69ebe9. Evidence: docs/m4/evidence/msh101/visual-checkpoint-2026-10-28/README.md, raw screenshots/AX, screenshot hashes/dimensions, exact three package identities, package smoke and native/desktop CI records. Normal1180x820 actual normal.app, initial Red/Black-bottom, native friendly selection and read-only inspection; measured760x650 and960x740 captures use separately labeled normal-feature product packages with initial window dimension/title/name/id overrides, no fixture/harness/desktop-verification feature. Runtime resize automation of the unchanged normal artifact was unreliable and is NOT established. All captured sizes show full board/player/footer, same Chess/Shogi shell. Native pointer occupied-capture precedence and keyboard a3a4 + real engine reply exercised; Black-human assignment and inspection non-action/Escape exercised. Separate implementation/screenshot reviewer independently ran31focusedtests+TS, confirmed original coordinate/spacing findings resolved and no remaining board/shell/sizing/marker finding. Found raw native Debug text in played-game history labels: preserve as unfinished101 presentation work after mandatory early visual approval, with native-readable labels/tests/refreshed played capture; do not transfer to102 or imply current raw labels approved. Root182frontend and127all-feature session tests, format/clippy, normal macOS build/smoke passed. Exact3a1 native CI40747229601 and desktop CI40747228852 all three systems passed; existing Windows/Linux GUI campaigns are Chess/Shogi compatibility, not Xiangqi GUI. Local Xiangqi GUI evidence is macOS only. MSH101 remains In Progress with original AC/DoD unchecked; STOP for explicit owner visual approval under attachment checkpoint. No102/103/106 started;45/M4 remain open.
 <!-- SECTION:NOTES:END -->

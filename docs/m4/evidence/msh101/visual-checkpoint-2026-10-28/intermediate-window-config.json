@@ -1,0 +1,15 @@
+{
+  "productName": "mShogi Intermediate Size Verification",
+  "identifier": "org.mshogi.desktop.msh101-intermediate",
+  "app": {
+    "windows": [
+      {
+        "title": "mShogi \u2014 intermediate window-size verification",
+        "width": 960,
+        "height": 740,
+        "minWidth": 760,
+        "minHeight": 650
+      }
+    ]
+  }
+}

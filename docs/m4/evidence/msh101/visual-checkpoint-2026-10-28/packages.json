@@ -1,0 +1,29 @@
+[
+  {
+    "variant": "normal",
+    "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+    "bundle_id": "org.mshogi.desktop",
+    "host_sha256": "d4f299e154786ceb81b612cc9e71a441a6c1143ac141cb2dcc9d09870ad94335",
+    "engine_sha256": "ed58d09b4c05d9d4cc8ca65db7fc7df4d9129608605ff02677484ff5c1266f5f",
+    "source": "3a1aefc73c4b956a193059bb99f114af5b69ebe9",
+    "features": "normal/default; desktop-verification NOT enabled"
+  },
+  {
+    "variant": "minimum",
+    "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi Minimum Size Verification.app",
+    "bundle_id": "org.mshogi.desktop.msh101-minimum",
+    "host_sha256": "fe27f41952d231762d5599bdf1041dbdae3b25906d95286f704e0f2820d03081",
+    "engine_sha256": "ed58d09b4c05d9d4cc8ca65db7fc7df4d9129608605ff02677484ff5c1266f5f",
+    "source": "3a1aefc73c4b956a193059bb99f114af5b69ebe9",
+    "features": "normal/default; desktop-verification NOT enabled"
+  },
+  {
+    "variant": "intermediate",
+    "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi Intermediate Size Verification.app",
+    "bundle_id": "org.mshogi.desktop.msh101-intermediate",
+    "host_sha256": "c6e588a5e7fd328b0034e684292be340672a9fc588a475028cb68a6d8a8c1938",
+    "engine_sha256": "ed58d09b4c05d9d4cc8ca65db7fc7df4d9129608605ff02677484ff5c1266f5f",
+    "source": "3a1aefc73c4b956a193059bb99f114af5b69ebe9",
+    "features": "normal/default; desktop-verification NOT enabled"
+  }
+]

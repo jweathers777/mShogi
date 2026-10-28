@@ -144,6 +144,7 @@ impl DesktopController {
         let (game, undo) = record.to_game_with_undo().map_err(|e| e.to_string())?;
         self.retire_native_files()?;
         self.retire_admission();
+        self.last_command_receipt = None;
         self.bridge.cancel();
         self.session.pending = None;
         self.session.retire_analysis();

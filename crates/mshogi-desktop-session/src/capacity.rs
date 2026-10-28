@@ -160,6 +160,7 @@ impl DesktopController {
     }
     pub(super) fn retire_admission(&mut self) {
         self.shared.admission = None;
+        self.shared.admission_consumes_response = false;
         self.shared.rollback = None;
         if let Some(receipt) = self.admission_receipt.take() {
             receipt.finish(Err(

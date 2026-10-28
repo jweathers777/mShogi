@@ -1,0 +1,150 @@
+# Xiangqi native desktop archives (MSH-99)
+
+This is lossless native document persistence and admission, not the Xiangqi
+product UI. MSH-76/101/102 retain shared reconciliation, visual play and complete
+product journeys. MSH-111 owns the recorded Linux WebDriver proxy failures;
+native archive tests do not relabel those campaigns successful.
+
+## Version and authority
+
+The existing `mshogi.desktop.archive.v2` envelope adds the explicit
+`game_kind:xiangqi` variant with `mshogi.xiangqi.wxf2018.v1` and its immutable
+edition. Chess still writes the unchanged strict v1 archive; shared reads of
+v1 Chess and v2 Chess/Shogi remain supported. Shogi payloads are unchanged.
+Older readers reject the new game identity rather than reinterpret it.
+
+The Xiangqi payload requires engine transport version3 and the actual native
+play limits (depth1/128 visits). Its initial/current canonical envelopes retain
+their independent envelope version1 and Xiangqi native schema1. Wrong versions,
+profiles, editions, native modes or unsupported play limits reject explicitly.
+No restoration silently substitutes another mode or limit.
+
+The payload retains the complete initial/current native ledgers, human side,
+initial/current native orientation and ordinary analysis defaults, accepted
+desktop controls and their exact order, ordinary observations, completed exact
+evidence and a retired execution high-water mark. Native ledgers own root/counter
+provenance, actions and their effects, claimant identity, claim audits, WXF
+warnings/obligations, offers/agreement, resignation and conclusions. There is no
+FEN-only or board-ply-only restoration path.
+
+`RawValue` carries original envelopes and nested native contexts into strict
+typed parsing. Resource probes never replace their bytes with a map. Native
+replay validates derived events/current positions/conclusions; ordered desktop
+replay additionally checks each control's actual event/board-action prehistory,
+analysis intent, full target history, work and execution binding. An observation
+cannot change purpose or use a same-board context with different history.
+Malformed, duplicate, unknown, conflicting or unsupported fields reject.
+
+## Admission and measured capacity
+
+The existing limits remain:16MiB actual encoded archive,8192 controls and256
+combined ordinary/exact observations. Xiangqi's independent native limits are
+512 commands,2048 events and1MiB record; canonical-envelope and request/response
+limits also apply to their actual encodings. These are distinct dimensions.
+
+Every command/result is checked on a private candidate before accepted state
+changes. The controller captures immutable admitted values; native restoration,
+transitions, historical reconstruction and encoded-capacity checks run on the
+existing bounded worker. Invalid commands leave the accepted game and running
+request intact. Capacity refusals may pause execution, retain all accepted
+evidence and explain that Save/reopen cannot enlarge the structural limit.
+No retry-save advice is offered for an unchanged structural limit.
+
+The replay ceiling stays16,000 work units. Xiangqi charges4 per native event
+and an additional12 per board action, for both initial/current records and each
+observation source history. Each observation adds8; an exact positive witness
+adds its bounded action count. Controls cost1, except Undo/Inspect charge their
+actual pre-command history reconstruction at the same weights. Saved prehistory
+counts are checked before reconstruction. Raw probes charge the maximum of
+command-derived and event-derived counts, so omitted forged derived events
+cannot make expensive native command replay appear cheap.
+
+An active or durably active journal reserves one control, one replay unit and
+1024 encoded bytes for stop/close. Close consumes that reservation once and is
+idempotent. Identity fields are budgeted at maximum supported width; historical
+observation flags use the longer encoding. Reopening pauses runtime work without
+releasing a journal's outstanding reservation. Saving/reopening does not reset
+observation count or discard observations.
+
+Actual debug measurements on macOS arm64 establish why event count alone was
+insufficient. The initial4/event-only policy admitted a100-ply natural-count
+claim document with35 observations; Save passed but Open exceeded the existing
+15-second worker deadline. That failed experiment motivated the board-action
+charge and removal of redundant native reconstruction for empty PVs. Neither
+the ceiling nor deadline was raised.
+
+With the corrected policy, actual pretty archives containing a historical-root
+observation and repeated real native search results reached these admission
+boundaries and reopened losslessly:
+
+| Native ledger | Events | Observations | Controls | Encoded bytes | Debug reopen |
+|---|---:|---:|---:|---:|---:|
+| WXF warning plus40 rejected-claim audits |89|32|67|834,597|1,073ms|
+|100 board actions plus accepted Red natural-count claim |103|7|17|227,553|2,024ms|
+
+Times are observations, not cross-platform or deadline guarantees. The worker
+remains independently cancellable and bounded. The work budget can bind before
+the byte limit; tests distinguish meaningful valid-record boundaries from
+isolated structural byte guards rather than manufacturing a valid16MiB history.
+
+## Historical exact reports
+
+`retain_xiangqi_exact_evidence` explicitly attaches **completed historical
+evidence** from the immutable native `ExactObservation`. It does not launch an
+exact request, accept pending execution or advertise a shared exact engine
+operation. The snapshot precondition and journal bind the attachment to its
+source record and exact selected event, including an intra-command prefix.
+
+`mshogi.xiangqi.exact-observation.v1` preserves the native in-process executor
+(there is no engine process generation), native session/generation, natural-board
+goal/purpose, full source/root provenance, exact target diagram/counters,
+limits and complete report/work observations. Fast evidence remains in the
+native canonical records and ordinary telemetry. Exact positive witness,
+reported proven no-win, Unknown/resource exhaustion, cancellation and failure
+remain distinct. Positive witnesses receive bounded native board replay;
+strict report/work metadata and target provenance are checked.
+
+Open performs **no exact graph search**. Negative reports remain historical
+reports with provenance, not newly certified graph proofs or current outcomes.
+No exact attachment can conclude the live game, supply a forced-win score or
+enter the engine-turn action handler. Full source history and the selected
+prefix remain separate; future moves do not enter the target board.
+
+## Save, Open and execution ownership
+
+Save reuses same-directory temporary write/flush/sync and atomic replacement.
+Failure/cancellation preserves the prior valid file and does not clear dirty
+state. An immutable accepted revision is saved; newer accepted changes remain
+dirty. Stale Save completion cannot claim a replacement document's path.
+
+Open validates entirely off the controller lock before token-checked installation.
+Corruption, unsupported identity/mode, resource refusal or cancellation preserves
+the current accepted document. Success creates fresh document/selection/session/
+request identities above current and saved high-water marks, retires old work,
+keeps all observations historical and preserves the exact selected event.
+Return to live is explicit; play stays stopped until Resume. Semantic Undo,
+selection and replacement never rewind execution ownership.
+
+Native callers use `queue_shared_save`/`queue_shared_open` and stable admission
+receipts. Tauri's existing product uses `queue_product_open`, which rejects
+Xiangqi before installation while its UI is unavailable. Existing Chess/Shogi
+file controls and unsaved replacement/quit guards remain in place. This prevents
+an archive feature from accidentally admitting an unrenderable product game.
+
+## Reproduction and evidence
+
+```sh
+cargo test --locked -p mshogi-desktop-session shared::xiangqi::archive::tests -- --nocapture
+cargo test --locked -p mshogi-desktop-session --all-features
+cargo test --locked -p mshogi-core --test xiangqi_exact
+cargo clippy --locked -p mshogi-desktop-session --all-targets --all-features -- -D warnings
+```
+
+Tests reuse frozen WXF cycle/count fixtures and independently expected natural
+board witnesses/closed palace cases. They cover actual engine payloads, all
+ordinary/exact evidence categories, same-board/different-history, saved selection,
+fresh stopped reopen/Resume, stale work, strict malformed/derived disagreements,
+interrupted/failed Save/Open, exact work/control/byte boundaries and observation
+256→257. Measurements are emitted by the native test; no benchmark, fixture or
+test instrumentation is added to normal distributables. Exact tested revisions,
+independent review and actual CI outcomes belong to the MSH-99 task record.

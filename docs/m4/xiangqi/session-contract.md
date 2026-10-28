@@ -1,6 +1,6 @@
 # MSH-98: native Xiangqi session and semantic presentation
 
-This delivers the native consumer boundary, not finished Xiangqi desktop UI or archives. MSH-99 owns lossless desktop archives/admission; MSH-101 owns the actual intersection-board product in the accepted shared shell. The normal Tauri command endpoint rejects Xiangqi product admission until that work exists. Normal Chess/Shogi new-game, archive and presentation contracts remain available. The Rust library's typed Replace operation admits actual canonical Xiangqi records for native consumers and the separately gated development probe.
+This delivers the native consumer boundary, not finished Xiangqi desktop UI. MSH-99 adds [lossless native desktop archives/admission](desktop-archive.md); MSH-101 owns the actual intersection-board product in the accepted shared shell. The normal Tauri command endpoint rejects Xiangqi product admission until that work exists. Normal Chess/Shogi new-game, archive and presentation contracts remain available. The Rust library's typed Replace operation admits actual canonical Xiangqi records for native consumers and the separately gated development probe.
 
 ## Authority and execution
 
@@ -22,7 +22,7 @@ Read-only opponent inspection takes the exact snapshot token and selected native
 
 ## Bounds and persistence boundary
 
-Native admission retains existing record byte/command/event bounds and exact parsing. Encoded complete requests and responses must fit the existing transport limits; no limit was raised. New native work reserves a maximum response before admission and stops at256 retained observations or the16MiB observation budget. Accepted observations/history are never silently dropped; a structural retention limit is not an illegal move, engine failure or chess outcome, and retry cannot enlarge it. This is a native contract bound, not Xiangqi archive delivery. The normal product cannot enter an unsaveable Xiangqi document: New Game, Save/Open and Tauri Replace remain explicitly gated until their existing archive/UI owners complete them. MSH-61 Chess/Shogi saveability evidence remains applicable and is regression-tested.
+Native admission retains existing record byte/command/event bounds and exact parsing. MSH-99 extends the original observation retention guard with [complete archive admission](desktop-archive.md) before every accepted native change: actual encoded bytes, controls, native history, combined ordinary/exact observation count and measured replay work, including reserved stop/close headroom. No limit or deadline was raised and no accepted history/observation is dropped. Save/reopen cannot enlarge a structural limit. The native archive consumer is available; normal Tauri New Game, game commands and product Open remain explicitly gated until the existing UI owners complete them. MSH-61 Chess/Shogi saveability evidence remains applicable and is regression-tested.
 
 ## Verification
 

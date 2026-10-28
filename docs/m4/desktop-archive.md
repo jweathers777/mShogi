@@ -149,3 +149,12 @@ must deliver full9x9 visibility, deliberate owner-oriented pieces/promotions,
 integrated hands/drop, coherent hierarchy and polished pointer/keyboard use with
 diagnostics separated. Future12x12/16x16 products must display full boards without
 requiring zoom/pan; no common renderer/layout imposes the harness's scrolling.
+
+## Xiangqi extension (MSH-99)
+
+The [Xiangqi native archive contract](xiangqi/desktop-archive.md) adds an explicit
+Xiangqi payload to the existing v2 dispatcher. It preserves the frozen Chessv1
+writer and existing Chess/Shogiv2 payloads. Its measured native replay admission,
+complete event prefixes and historical exact evidence remain game-specific;
+this addition does not claim finished Xiangqi product UI. The original MSH-73
+verification narrative above remains historical evidence.

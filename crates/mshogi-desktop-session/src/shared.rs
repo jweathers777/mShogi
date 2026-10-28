@@ -19,7 +19,9 @@ use mshogi_engine::{
     SHARED_PROTOCOL_VERSION, SharedAnalysisTarget, SharedPurpose, SharedRequest, SharedResponse,
     SharedResult, ShogiChoice, ShogiResult,
 };
-pub use xiangqi::{IntersectionTopology, Palace, XiangqiPresentation};
+pub use xiangqi::{
+    IntersectionTopology, Palace, XiangqiExactEvidence, XiangqiPresentation, XiangqiSettings,
+};
 
 // The displayed play budget and submitted work use the same native value.
 const SHOGI_PLAY_LIMITS: WorkLimits = WorkLimits {
@@ -499,6 +501,11 @@ pub enum SessionOperation {
         /// Authoritative native command including board actions, claims and agreement.
         command: mshogi_core::xiangqi::GameCommand,
     },
+    /// Native document preferences; does not change human ownership or execution.
+    XiangqiPreferences {
+        /// Persisted orientation and ordinary analysis defaults.
+        settings: XiangqiSettings,
+    },
     /// Shogi complete action is admitted by Game::submit, never reconstructed in JS.
     Play {
         /// Opaque complete native action identifier.
@@ -557,6 +564,9 @@ enum OperationWire {
     },
     Xiangqi {
         command: mshogi_core::xiangqi::GameCommand,
+    },
+    XiangqiPreferences {
+        settings: XiangqiSettings,
     },
     // Shogi complete action is admitted by Game::submit, never reconstructed in JS.
     Play {
@@ -654,6 +664,7 @@ pub(super) struct SharedState {
     pub shogi: Option<ShogiSession>,
     pub xiangqi: Option<xiangqi::XiangqiSession>,
     pub admission: Option<(u64, bool)>,
+    pub admission_consumes_response: bool,
     pub rollback: Option<ShogiRollback>,
     #[cfg(test)]
     pub manual_engine: bool,
@@ -1061,6 +1072,7 @@ impl DesktopController {
     /// Poll only the active game and return its native presentation and provenance.
     pub fn shared_snapshot(&mut self) -> SharedSnapshot {
         self.poll_native_admission();
+        self.poll_files();
         if self.shared.xiangqi.is_some() {
             return if self.shared.admission.is_some() {
                 self.xiangqi_snapshot()
@@ -1115,19 +1127,19 @@ impl DesktopController {
         // The legacy poll may commit a cross-game Open. Never publish its Chess
         // projection with the replacement Shogi epoch: equal-token freshness
         // rejection would then hide the correct Shogi view indefinitely.
-        if self.shared.shogi.is_some() {
+        if self.shared.shogi.is_some() || self.shared.xiangqi.is_some() {
             return self.shared_snapshot();
         }
         self.chess_snapshot(snapshot)
     }
     pub(super) fn pause_shared_for_close(&mut self) {
-        if let Some(state) = &mut self.shared.xiangqi {
-            state.retire();
-            state.paused = true;
+        self.retire_admission();
+        if let Some(state) = &mut self.shared.xiangqi
+            && state.close_pause()
+        {
             self.bridge.cancel();
             self.shared_changed();
         }
-        self.retire_admission();
         if let Some(state) = self.shared.shogi.as_mut()
             && (state.pending.is_some() || !state.paused || state.analysis_intent.is_some())
         {

@@ -47,6 +47,17 @@ impl Default for ExactLimits {
         }
     }
 }
+impl ExactLimits {
+    /// Validate resource configuration without allocating or running graph work.
+    /// Archive consumers use the same native bounds when reading historical reports.
+    pub const fn is_supported(self) -> bool {
+        self.states <= MAX_EXACT_STATES
+            && self.transitions <= 20_000_000
+            && self.millis <= MAX_EXACT_MILLIS
+            && self.memory_bytes <= 128 * 1024 * 1024
+            && self.witness_plies <= 4096
+    }
+}
 /// Incomplete work is neither a draw nor a positive capability proof.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -226,12 +237,7 @@ impl Position {
                 }
             };
         }
-        if limits.states > MAX_EXACT_STATES
-            || limits.transitions > 20_000_000
-            || limits.millis > MAX_EXACT_MILLIS
-            || limits.memory_bytes > 128 * 1024 * 1024
-            || limits.witness_plies > 4096
-        {
+        if !limits.is_supported() {
             failure!(ExactFailure::UnsupportedLimits);
         }
         poll!();

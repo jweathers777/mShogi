@@ -307,7 +307,7 @@ async fn game_file(
             &app.state::<Arc<ShutdownState>>(),
             |c| {
                 if action == "open" {
-                    c.queue_shared_open(path, expected)
+                    c.queue_product_open(path, expected)
                 } else {
                     c.queue_shared_save(path)
                 }
@@ -634,7 +634,7 @@ async fn desktop_open(
                 {
                     Err("Finish or cancel the close request before opening a game.".to_string())
                 } else {
-                    controller.queue_shared_open(path, actual)
+                    controller.queue_product_open(path, actual)
                 }
             },
         )??;

@@ -886,14 +886,23 @@ fn xiangqi_product_creation_is_still_gated_but_native_replacement_is_admitted() 
             c.shared.shogi.as_ref().and_then(|g| g.pending.clone()),
             pending
         );
-        let after = c.shared_command(command).unwrap();
+        let (_, receipt) = c.shared_command_with_receipt(command).unwrap();
+        let deadline = Instant::now() + std::time::Duration::from_secs(20);
+        let after = loop {
+            let snapshot = c.shared_snapshot();
+            if let Some(result) = receipt.completion() {
+                result.unwrap();
+                break snapshot;
+            }
+            assert!(
+                Instant::now() < deadline,
+                "native replacement archive admission"
+            );
+            std::thread::sleep(std::time::Duration::from_millis(1));
+        };
         assert_eq!(after.game, GameKind::Xiangqi);
         assert_ne!(after.token, token);
         assert!(after.paused);
-        assert!(!after.capabilities.save);
-        assert!(
-            c.queue_shared_save(PathBuf::from("/unused/xq-save"))
-                .is_err()
-        );
+        assert!(after.capabilities.save, "MSH-99 native archive support");
     }
 }

@@ -1,6 +1,22 @@
 # Xiangqi native/shared delivery handoff
 
-## Current native consumer boundary (MSH-98/MSH-100)
+## Native desktop archive boundary (MSH-99)
+
+[Native Xiangqi archives](desktop-archive.md) extend taggedv2 with complete
+native records, accepted command/observation history, exact event selection,
+settings and historical exact evidence. Candidate admission retains a complete
+save path with measured replay/encoded limits and reserved close/stop headroom.
+Fresh stopped reopening never resumes saved observations or old execution.
+Chessv1 and Shogiv2 compatibility remain explicit. Product UI admission stays
+gated; no finished Xiangqi desktop play or Save/Open UI journey is claimed.
+
+After99 completion, MSH-76 is dependency-ready for shared reconciliation, followed
+by101/102 product work under the existing graph. None starts in this batch.
+MSH-111 separately retains the failed Linux GUI driver campaigns; no result is
+relabeled passed. MSH-45/M4 remain open and106 remains future complete-delivery
+review. The earlier native consumer/planning snapshots below preserve history.
+
+## MSH-98/MSH-100 native consumer boundary (preserved snapshot)
 
 The [native session contract](session-contract.md) adds authoritative Xiangqi
 session admission, complete semantic intersection/palace/river/Red/Black data,

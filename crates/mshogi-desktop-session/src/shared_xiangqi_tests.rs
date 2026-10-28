@@ -67,6 +67,17 @@ fn execute(request: &SharedRequest) -> SharedResponse {
     assert!(response.matches(request));
     response
 }
+fn accept(c: &mut DesktopController, response: SharedResponse) -> bool {
+    let accepted = c.accept_shared(response);
+    if accepted {
+        let deadline = Instant::now() + std::time::Duration::from_secs(20);
+        while c.shared_snapshot().capacity.status == CapacityPhase::Checking {
+            assert!(Instant::now() < deadline, "result archive admission");
+            std::thread::sleep(std::time::Duration::from_millis(1));
+        }
+    }
+    accepted
+}
 fn native(c: &DesktopController) -> CanonicalRecord {
     CanonicalRecord::xiangqi(
         x::GameRecord::from_game(&c.shared.xiangqi.as_ref().unwrap().game).unwrap(),
@@ -154,7 +165,7 @@ fn native_identity_intersection_palaces_river_and_capability_scope() {
     assert!(!initial.capabilities.drops);
     assert!(!initial.capabilities.promotion);
     assert!(!initial.capabilities.declaration);
-    assert!(!initial.capabilities.save, "desktop archive is MSH-99");
+    assert!(initial.capabilities.save, "MSH-99 native archive admission");
     assert!(!initial.capabilities.chess_full);
     assert_eq!(
         initial.play_limits,
@@ -187,10 +198,7 @@ fn native_identity_intersection_palaces_river_and_capability_scope() {
         })
         .is_err()
     );
-    assert!(
-        c.queue_shared_save(PathBuf::from("/unused/msh98-save"))
-            .is_err()
-    );
+    // Save capability is now exercised through actual files by MSH-99 tests.
 }
 
 #[test]
@@ -246,7 +254,7 @@ fn native_claim_audit_and_nonmoving_resignation_preserve_board_ply_and_atomicity
     assert_eq!((ended.event_index, ended.board_ply), (5, 1));
     assert!(ended.status.concluded);
     assert_eq!(ended.status.score_half_points, Some([0, 2]));
-    assert!(!c.accept_shared(execute(&old)));
+    assert!(!accept(&mut c, execute(&old)));
     let undone = send(&mut c, SessionOperation::Undo {}).unwrap();
     assert_eq!((undone.event_index, undone.board_ply), (3, 1));
     assert!(!undone.status.concluded);
@@ -319,11 +327,11 @@ fn actual_read_only_analysis_rejects_every_context_mismatch_and_cannot_apply_cho
                 }
             }
         }
-        assert!(!c.accept_shared(wrong), "mismatch {mismatch}");
+        assert!(!accept(&mut c, wrong), "mismatch {mismatch}");
         assert_eq!(native(&c), before);
     }
-    assert!(!c.accept_shared(execute(&retired_turn)));
-    assert!(c.accept_shared(response));
+    assert!(!accept(&mut c, execute(&retired_turn)));
+    assert!(accept(&mut c, response));
     let snapshot = c.shared_snapshot();
     assert!(snapshot.analysis.is_some());
     assert_eq!(native(&c), before);
@@ -344,7 +352,7 @@ fn cancellation_replacement_undo_and_replay_never_revive_retired_engine_work() {
     human_play(&mut c, "a3a4");
     let old = pending(&c);
     send(&mut c, SessionOperation::Cancel {}).unwrap();
-    assert!(!c.accept_shared(execute(&old)));
+    assert!(!accept(&mut c, execute(&old)));
     send(&mut c, SessionOperation::Undo {}).unwrap();
     send(&mut c, SessionOperation::Resume {}).unwrap();
     human_play(&mut c, "a3a4");
@@ -352,8 +360,8 @@ fn cancellation_replacement_undo_and_replay_never_revive_retired_engine_work() {
     assert_eq!(old.game, fresh.game);
     assert_ne!(old.session_version, fresh.session_version);
     assert!(fresh.request_id > old.request_id);
-    assert!(!c.accept_shared(execute(&old)));
-    assert!(c.accept_shared(execute(&fresh)));
+    assert!(!accept(&mut c, execute(&old)));
+    assert!(accept(&mut c, execute(&fresh)));
     let current = c.shared_snapshot();
     assert_eq!(current.board_ply, 2);
     assert_eq!(current.turn.label, "Red");
@@ -367,10 +375,10 @@ fn cancellation_replacement_undo_and_replay_never_revive_retired_engine_work() {
         },
     )
     .unwrap();
-    assert!(!c.accept_shared(execute(&analysis)));
+    assert!(!accept(&mut c, execute(&analysis)));
     assert_eq!(c.shared_snapshot().game, GameKind::Shogi);
     replace(&mut c, &root, x::Side::Red);
-    assert!(!c.accept_shared(execute(&analysis)));
+    assert!(!accept(&mut c, execute(&analysis)));
     assert_eq!(c.shared_snapshot().board_ply, 0);
 }
 
@@ -450,7 +458,7 @@ fn all_event_prefixes_remain_read_only_with_no_future_warning_or_result_inferenc
     );
     let response = execute(&request);
     send(&mut c, SessionOperation::ReturnLive {}).unwrap();
-    assert!(!c.accept_shared(response));
+    assert!(!accept(&mut c, response));
     assert_eq!(c.shared_snapshot().event_index, 9);
 }
 
@@ -522,25 +530,28 @@ fn incomplete_failure_retry_and_limits_are_not_chess_outcomes() {
             result: XiangqiResult::Incomplete { .. }
         }
     ));
-    assert!(c.accept_shared(result));
+    assert!(accept(&mut c, result));
     let incomplete = c.shared_snapshot();
     assert_eq!(incomplete.phase, EnginePhase::Incomplete);
     assert_eq!(incomplete.status.score_half_points, None);
     assert_eq!(native(&c), before);
-    assert!(!c.accept_shared(execute(&turn)));
+    assert!(!accept(&mut c, execute(&turn)));
     send(&mut c, SessionOperation::Retry {}).unwrap();
     let retry = pending(&c);
     assert!(retry.request_id > low.request_id);
     assert!(matches!(retry.purpose, SharedPurpose::EngineTurn {}));
-    assert!(c.accept_shared(SharedResponse {
-        context: retry,
-        result: SharedResult::Failure {
-            failure: mshogi_engine::EngineFailure {
-                kind: mshogi_engine::FailureKind::Start,
-                message: "test-instrumented start failure".into()
+    assert!(accept(
+        &mut c,
+        SharedResponse {
+            context: retry,
+            result: SharedResult::Failure {
+                failure: mshogi_engine::EngineFailure {
+                    kind: mshogi_engine::FailureKind::Start,
+                    message: "test-instrumented start failure".into()
+                }
             }
         }
-    }));
+    ));
     let failed = c.shared_snapshot();
     assert_eq!(failed.phase, EnginePhase::Failed);
     assert!(!failed.status.concluded);
@@ -603,7 +614,7 @@ fn retained_observation_count_and_byte_limits_reject_new_work_before_mutation() 
     // accepted context. This exercises the 256 -> 257 admission boundary.
     for expected in 1..=MAX_ARCHIVE_OBSERVATIONS {
         let request = analyze(&mut c, 1);
-        assert!(c.accept_shared(execute(&request)));
+        assert!(accept(&mut c, execute(&request)));
         assert_eq!(
             c.shared.xiangqi.as_ref().unwrap().observations.len(),
             expected
@@ -642,7 +653,7 @@ fn retained_observation_count_and_byte_limits_reject_new_work_before_mutation() 
     c.shared.xiangqi.as_mut().unwrap().observation_bytes =
         MAX_OBSERVATION_BYTES - mshogi_engine::MAX_RESPONSE_BYTES;
     let request = analyze(&mut c, 1);
-    assert!(c.accept_shared(execute(&request)));
+    assert!(accept(&mut c, execute(&request)));
     let before = c.shared_token();
     assert!(
         send(
@@ -697,7 +708,7 @@ fn chess_full_and_historical_mutation_are_explicitly_unsupported_without_retirin
         .is_err()
     );
     assert_eq!(c.shared_token(), before);
-    assert!(!c.accept_shared(execute(&request)));
+    assert!(!accept(&mut c, execute(&request)));
 }
 
 #[test]

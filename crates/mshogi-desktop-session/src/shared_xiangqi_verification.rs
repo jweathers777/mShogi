@@ -60,8 +60,13 @@ impl DesktopController {
     }
     pub(crate) fn verification_xiangqi(&mut self, fixture: &str) -> Result<(), String> {
         let mut game = match fixture {
-            "xiangqi-standard" | "xiangqi-failure" | "xiangqi-capacity" | "xiangqi-offer"
-            | "xiangqi-agreed" | "xiangqi-resigned" => {
+            "xiangqi-standard"
+            | "xiangqi-failure"
+            | "xiangqi-capacity"
+            | "xiangqi-control-capacity"
+            | "xiangqi-offer"
+            | "xiangqi-agreed"
+            | "xiangqi-resigned" => {
                 x::Game::standard(x::ClaimPolicy::Explicit).map_err(|e| e.to_string())?
             }
             "xiangqi-warning" | "xiangqi-fourth" => corpus(
@@ -115,6 +120,13 @@ impl DesktopController {
             true,
         )?;
         self.finish_verification_admission(receipt)?;
+        if fixture == "xiangqi-control-capacity" {
+            self.shared
+                .xiangqi
+                .as_mut()
+                .unwrap()
+                .verification_control_capacity()?;
+        }
         if fixture == "xiangqi-capacity" {
             // Real native results, not a forged count or fabricated observations.
             // Poll only admission here so the supervised child is not also submitted.

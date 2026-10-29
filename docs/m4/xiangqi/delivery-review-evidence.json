@@ -147,5 +147,6 @@
     "evidence": "docs/desktop/evidence/msh114/README.md",
     "finding": "F01 corrected; original review and expected failure preserved",
     "MSH103": "In Review; remaining acceptance/finalization not performed in114"
-  }
+  },
+  "final_acceptance_record": "docs/m4/xiangqi/delivery-finalization-evidence.json"
 }

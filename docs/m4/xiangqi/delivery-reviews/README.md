@@ -1,3 +1,8 @@
+> Final current-source acceptance: all MSH-103 criteria are supported after
+> the independently verified MSH-114 correction. See the [final reconciliation](final-reconciliation.md)
+> and [current verdict](../delivery-review.md). The original blocked assessment
+> below remains historical evidence; MSH-45/M4 remain open.
+
 # MSH-103 independent review record
 
 All three fresh read-only Codex agent sessions audited production revision

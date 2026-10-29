@@ -1,3 +1,8 @@
+> Correction supplied by MSH-114 at `1c6b97e2bf7ecf560be1902e01b4e95038ee3482`:
+> [bounded independent review and actual packaged verification](../../../desktop/evidence/msh114/README.md).
+> The original finding/reproduction below is preserved. MSH-103 finalization
+> remains a separate resumed task; this addendum does not mark it Done.
+
 # F01 — control-only refusal reports nonexistent observations
 
 Disposition: P2, **MSH-114 Ready**, blocks final MSH-103 acceptance.

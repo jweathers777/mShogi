@@ -18,7 +18,7 @@ interface GameSnapshotBase extends Omit<NativeBoardSnapshot, "game" | "orientati
   document: { revision: number; dirty: boolean; path: string | null };
   io: { id: number; phase: string; message: string | null };
   capacity: { id: number; status: "available" | "checking" | "paused"; message: string | null };
-  capabilities: { board_action: boolean; declaration: boolean; claims: boolean; resign: boolean; undo: boolean; move_analysis: boolean; save: boolean };
+  capabilities: { board_action: boolean; declaration: boolean; claims: boolean; resign: boolean; undo: boolean; take_back: boolean; move_analysis: boolean; save: boolean };
   status: { concluded: boolean; label: string; score_half_points: number[] | null };
   events: { index: number; board_ply: number; label: string }[];
   event_index: number; board_ply: number; play_limits: { depth: number; nodes: number }; historical: boolean; paused: boolean;
@@ -62,7 +62,7 @@ export type Operation =
   | { kind: "xiangqi"; command: { kind: "play"; action: string } | { kind: "resign" | "offer_draw" | "accept_draw" | "decline_draw" | "claim_natural_count" } }
   | { kind: "xiangqi_preferences"; settings: { orientation: "red" | "black"; analysis_defaults: { depth: number; nodes: number } } }
   | { kind: "play"; action: string }
-  | { kind: "resume" | "retry" | "cancel" | "undo" | "return_live" | "resign" | "declare" }
+  | { kind: "resume" | "retry" | "cancel" | "take_back" | "undo" | "return_live" | "resign" | "declare" }
   | { kind: "inspect"; event_index: number }
   | { kind: "analyze"; operation: { kind: "moves"; depth: number; nodes: number } }
   | { kind: "shogi_preferences"; settings: { orientation: string; analysis_defaults: { depth: number; nodes: number } } };

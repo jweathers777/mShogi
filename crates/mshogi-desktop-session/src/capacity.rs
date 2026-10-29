@@ -88,7 +88,14 @@ impl DesktopController {
         Ok((snapshot, receipt))
     }
 
-    pub(super) fn queue_admission(&mut self, mut candidate: DesktopSession) -> Result<(), String> {
+    pub(super) fn queue_admission(&mut self, candidate: DesktopSession) -> Result<(), String> {
+        self.queue_admission_operation(candidate, None)
+    }
+    pub(super) fn queue_admission_operation(
+        &mut self,
+        mut candidate: DesktopSession,
+        take_back_at: Option<u64>,
+    ) -> Result<(), String> {
         if self.session.capacity.id >= MAX_SAFE_ID - 32 {
             return Err("Application capacity: admission identity space exhausted. Save the current document and restart.".into());
         }
@@ -104,8 +111,18 @@ impl DesktopController {
         self.session.revision += 1;
         candidate.capacity.id = self.session.capacity.id;
         self.admission_token = Some(self.open_token());
-        self.admissions
-            .submit_admission(self.session.capacity.id, candidate);
+        if let Some(at_ns) = take_back_at {
+            self.admissions.submit(
+                self.session.capacity.id,
+                persistence::Work::TakeBack {
+                    candidate: Box::new(candidate),
+                    at_ns,
+                },
+            );
+        } else {
+            self.admissions
+                .submit_admission(self.session.capacity.id, candidate);
+        }
         Ok(())
     }
     pub(super) fn poll_admission(&mut self) {

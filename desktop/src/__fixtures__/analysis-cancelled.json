@@ -611,6 +611,7 @@
     "message": "Analysis cancelled before final observations were received. Play remains paused."
   },
   "play_paused": true,
+  "can_take_back": false,
   "rules_mode": "m2",
   "limits": {
     "depth": 2,

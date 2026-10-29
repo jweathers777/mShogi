@@ -375,6 +375,15 @@ impl DesktopController {
                         .map_err(|e| e.to_string())?;
                 }
             }
+            SessionOperation::TakeBack {}
+                if state.viewed.is_some()
+                    || state
+                        .game
+                        .preceding_playable_decision(state.human)
+                        .is_none() =>
+            {
+                return Err("No live playable human decision is available for Take back.".into());
+            }
             SessionOperation::Undo {} if state.viewed.is_some() || state.undo.is_empty() => {
                 return Err("No live native command to undo.".into());
             }
@@ -388,6 +397,7 @@ impl DesktopController {
             }
             SessionOperation::Cancel {}
             | SessionOperation::ReturnLive {}
+            | SessionOperation::TakeBack {}
             | SessionOperation::Undo {}
             | SessionOperation::Inspect { .. }
             | SessionOperation::Resume {}
@@ -642,6 +652,11 @@ impl DesktopController {
                 board_action: active && !state.paused && position.side_to_move() == state.human,
                 drops: false,
                 promotion: false,
+                take_back: !historical
+                    && state
+                        .game
+                        .preceding_playable_decision(state.human)
+                        .is_some(),
                 undo: !historical && !state.undo.is_empty(),
                 engine_turn: active && position.side_to_move() != state.human,
                 move_analysis: !historical || state.viewed_game.is_some(),

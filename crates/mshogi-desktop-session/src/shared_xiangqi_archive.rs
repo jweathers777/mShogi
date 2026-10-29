@@ -436,9 +436,11 @@ fn canonical_work(record: &CanonicalRecord) -> usize {
 }
 fn control_work(c: &XiangqiControl) -> usize {
     match c.command {
-        Some(SessionOperation::Undo {} | SessionOperation::Inspect { .. }) => {
-            record_work(c.native_events_before, c.native_board_actions_before)
-        }
+        Some(
+            SessionOperation::Undo {}
+            | SessionOperation::TakeBack {}
+            | SessionOperation::Inspect { .. },
+        ) => record_work(c.native_events_before, c.native_board_actions_before),
         _ => 1,
     }
 }
@@ -619,6 +621,16 @@ impl XiangqiSession {
                 if self.paused { return Err("Resume live play before submitting a native command.".into()); }
                 let submission = self.game.submit(x::GameRequest { expected: self.game.context(), actor: self.human, command }).map_err(error)?;
                 self.undo.push(submission.undo); self.retire();
+            }
+            SessionOperation::TakeBack {} => {
+                if self.viewed.is_some() { return Err("Return to live before Take back.".into()); }
+                let target = self.game.preceding_playable_decision(self.human).ok_or("No earlier playable human decision is available.")?;
+                let prefix = self.game.committed_prefix(target).map_err(error)?;
+                let record = x::GameRecord::from_game(&prefix).map_err(error)?;
+                (self.game, self.undo) = record.to_game_with_undo().map_err(error)?;
+                self.retire(); self.paused = true;
+                self.diagnostic = Some("Position restored. Resume play when ready.".into());
+                for o in &mut self.observations { o.historical = true; }
             }
             SessionOperation::Undo {} => {
                 if self.viewed.is_some() || self.undo.is_empty() { return Err("No live native command to undo.".into()); }
@@ -1228,6 +1240,7 @@ pub(crate) fn decode(
                     | "xiangqi_preferences"
                     | "resign"
                     | "undo"
+                    | "take_back"
                     | "inspect"
                     | "return_live"
                     | "analyze"
@@ -1408,6 +1421,17 @@ impl DesktopController {
         if replacement {
             self.retire_native_files()?;
         }
+        if matches!(command, Some(SessionOperation::TakeBack {})) {
+            // Takeback owns execution immediately; the accepted native game is
+            // retained until candidate admission, but its abandoned work cannot
+            // race the reversal or become current again after a refusal.
+            self.bridge.cancel();
+            if let Some(state) = &mut self.shared.xiangqi {
+                state.retire();
+                state.paused = true;
+            }
+        }
+        // Other operations keep their running request until admission.
         // Keep the accepted game AND its running request untouched until admission.
         // The controller holds result acceptance while the candidate is checked.
         self.session.capacity.id += 1;

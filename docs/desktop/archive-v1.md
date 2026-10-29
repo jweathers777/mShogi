@@ -95,3 +95,23 @@ Analysis uses the selected prefix and selection identity; changing the selection
 retires old work, and late replies cannot describe the newly viewed position.
 Return to live is explicit and leaves play paused; Resume is separate. There is
 no branching or variation editing in MSH-35.
+
+## Chess Take back extension (MSH-113)
+
+Chess documents without Take back continue to write schema1/profile
+`mshogi.desktop.archive.v1`. A document retaining a taken-back Chess continuation
+writes schema3/profile `mshogi.desktop.archive.v3`. This is a narrow Chess lineage
+extension, not a replacement native record schema or a common game rules model.
+Older readers reject the new schema explicitly; the current reader accepts the
+existing schema1, shared schema2 dispatch, and this schema3. Shogi and Xiangqi
+continue to use their shared schema2 archive and native control replay.
+
+Schema3 retains the complete authoritative Chess match before each Take back,
+bound to the corresponding ordered desktop control. Native replay independently
+derives the restored human decision point. The next retained match and final
+match must extend that restored decision, with the same root and provenance.
+Every observation must target an exact prefix of the admitted current or retained
+native lineage. An unrelated parsed record is insufficient. These retained
+records count toward byte, event and replay admission; undo does not reclaim the
+observations or abandoned accepted history. Runtime identities and pending work
+are never resurrected from this evidence.

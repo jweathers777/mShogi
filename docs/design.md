@@ -164,6 +164,9 @@ The milestone names establish direction, not an obligation to serialize every in
 
 M2 is refined in MSH-15–25 against the actual M1 implementation. The [match/history profile](rules/chess-match-v1.md) records the approved 2026-10-24 policy; MSH-26 supplies an opt-in exact dead-position/side-specific reachability algorithm, with explicit resource uncertainty and unchanged M2 defaults. M2 is closed with its [integration evidence](review/m2-closure.md). M3 is delivered through MSH-27–39 and persistence follow-up MSH-61 against the [desktop contract](desktop/m3-design.md), including all eleven desktop work areas and the historical initial untimed play batch (MSH-27–32). Its [integration verdict](review/m3-closure.md) and MSH-39 record the independent review, actual three-platform application evidence and final closure checks. Next work is M4 scope refinement; all six games and strong engines remain the product target.
 
+The owner-approved [desktop Take back contract](desktop/take-back.md) restores native human decision points atomically across Chess, Shogi and Xiangqi, preserving complete archive evidence and retiring abandoned execution. The common Game Actions label is **Take back**; restored play requires explicit Resume.
+
+
 ### Remaining scope and closure policy (planning correction, 2026-10-25)
 
 Backlog.md's milestone percentage is **Done assigned tasks / currently assigned

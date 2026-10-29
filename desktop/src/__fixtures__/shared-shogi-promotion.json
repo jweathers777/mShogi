@@ -382,6 +382,7 @@
     "board_action": true,
     "drops": true,
     "promotion": true,
+    "take_back": false,
     "undo": false,
     "engine_turn": false,
     "move_analysis": true,

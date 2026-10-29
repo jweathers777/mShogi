@@ -1,3 +1,4 @@
+import { TakeBackControl } from "./TakeBackControl";
 import { useState } from "react";
 import { XiangqiBoard } from "./XiangqiBoard";
 import { ApplicationShell, DocumentState, HistoricalNotice, LiveGameHeading } from "./ApplicationShell";
@@ -57,7 +58,7 @@ export function XiangqiApp({ snapshot, session, onNewGame, onOpen, blocked }: {
     analysis={<NativeAnalysis snapshot={snapshot} defaults={snapshot.document.settings.analysis_defaults} disabled={disabled || capacity} command={command} maxDepth={3} maxNodes={512} minNodes={1}
       unavailable={nativePrefixIncomplete ? "Analysis is unavailable inside a recorded command. Select a completed event or return to live." : undefined} />}
     history={<NativeHistory snapshot={snapshot} disabled={disabled} command={command} />}
-    gameActions={<section className="shogi-game-actions">
+    gameActions={<section className="shogi-game-actions"><TakeBackControl available={snapshot.capabilities.take_back && !snapshot.historical} disabled={disabled || capacity} contextKey={JSON.stringify(snapshot.token)} restore={() => command({ kind: "take_back" })} />
       {snapshot.capabilities.claims && <><p>A natural-count draw claim is available to {snapshot.human.label}. It has not concluded the game.</p><button className="secondary" disabled={disabled || capacity} onClick={() => confirm("claim_natural_count")}>Claim natural-count draw…</button></>}
       {actions.offer_draw && <button className="quiet" disabled={disabled || capacity} onClick={() => confirm("offer_draw")}>Offer draw…</button>}
       {actions.accept_draw && <button className="secondary" disabled={disabled || capacity} onClick={() => confirm("accept_draw")}>Accept draw…</button>}

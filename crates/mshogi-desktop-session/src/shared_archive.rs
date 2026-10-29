@@ -264,7 +264,9 @@ fn replay_work(state: &ShogiSession) -> Result<(), String> {
         + usize::from(needs_stop(state) || state.durable_needs_stop);
     for c in &state.controls {
         work = work.saturating_add(match &c.command {
-            Some(SessionOperation::Undo {}) => s::MAX_RECORD_EVENTS * NATIVE_EVENT_WORK,
+            Some(SessionOperation::Undo {} | SessionOperation::TakeBack {}) => {
+                s::MAX_RECORD_EVENTS * NATIVE_EVENT_WORK
+            }
             Some(SessionOperation::Inspect { .. }) => s::MAX_RECORD_EVENTS * NATIVE_EVENT_WORK,
             _ => 1,
         });
@@ -347,6 +349,14 @@ impl ShogiSession {
                 let command=if matches!(operation,SessionOperation::Declare{}){s::GameCommand::DeclareEnteringKing}else{s::GameCommand::Resign};
                 self.game.submit(s::GameRequest{expected:self.game.context(),actor:self.human,command}).map_err(|e|format!("Native terminal command rejected: {e:?}"))?;
                 self.retire();self.paused=true;
+            }
+            SessionOperation::TakeBack{}=>{
+                if self.viewed.is_some(){return Err("Return to live before Take back.".into());}
+                let target=self.take_back_target().ok_or("No earlier playable human decision is available.")?;
+                self.game=self.game.prefix(target).map_err(|e|format!("Native Take back rejected: {e:?}"))?;
+                self.retire();self.paused=true;
+                self.diagnostic=Some("Position restored. Resume play when ready.".into());
+                for o in &mut self.observations{o.historical=true;}
             }
             SessionOperation::Undo{}=>{
                 if self.viewed.is_some()||self.game.events().is_empty(){return Err("Undo requires a live accepted event.".into());}
@@ -639,9 +649,11 @@ fn parse_shogi_archive(
         }
         let control: ShogiControl = serde_json::from_str(text.get()).map_err(bounded)?;
         work = work.saturating_add(match control.command {
-            Some(SessionOperation::Undo {} | SessionOperation::Inspect { .. }) => {
-                s::MAX_RECORD_EVENTS * NATIVE_EVENT_WORK
-            }
+            Some(
+                SessionOperation::Undo {}
+                | SessionOperation::TakeBack {}
+                | SessionOperation::Inspect { .. },
+            ) => s::MAX_RECORD_EVENTS * NATIVE_EVENT_WORK,
             _ => 1,
         });
         controls.push(control);
@@ -708,9 +720,9 @@ fn decode_shogi(
         }
         if let Some(operation) = &control.command {
             work = work.saturating_add(match operation {
-                SessionOperation::Undo {} | SessionOperation::Inspect { .. } => {
-                    state.game.events().len() * NATIVE_EVENT_WORK
-                }
+                SessionOperation::Undo {}
+                | SessionOperation::TakeBack {}
+                | SessionOperation::Inspect { .. } => state.game.events().len() * NATIVE_EVENT_WORK,
                 _ => 1,
             });
             if work > MAX_REPLAY_ACTIONS {
@@ -803,7 +815,7 @@ pub(crate) fn decode_chess_compatible(
     stopped: &mut impl FnMut() -> bool,
 ) -> Result<persistence::Opened, String> {
     match version(bytes)? {
-        1 => persistence::decode_chess_v1(bytes, stopped),
+        1 | 3 => persistence::decode_chess_v1(bytes, stopped),
         2 => {
             let value = envelope(bytes)?;
             if value.game_kind != "chess" {
@@ -900,7 +912,9 @@ pub(crate) fn execute(
         } => {
             let bytes = read(&path, stopped)?;
             let game = match version(&bytes)? {
-                1 => OpenedNative::Chess(Box::new(persistence::decode_chess_v1(&bytes, stopped)?)),
+                1 | 3 => {
+                    OpenedNative::Chess(Box::new(persistence::decode_chess_v1(&bytes, stopped)?))
+                }
                 2 => {
                     let value = envelope(&bytes)?;
                     match value.game_kind.as_str() {
@@ -1308,7 +1322,7 @@ impl DesktopController {
                             );
                         }
                     }
-                    if let (Some(state), Some((paused, phase, diagnostic, analysis, _))) =
+                    if let (Some(state), Some((paused, phase, diagnostic, analysis, had_work))) =
                         (&mut self.shared.xiangqi, rollback)
                     {
                         if consumes_response {
@@ -1321,6 +1335,12 @@ impl DesktopController {
                             state.diagnostic = Some(bounded(format!(
                                 "Native result rejected by document admission: {error} Retry explicitly; the accepted game is preserved."
                             )));
+                        } else if had_work && state.pending.is_none() {
+                            state.paused = true;
+                            state.diagnostic = Some(
+                                "Command rejected; prior execution was retired. Resume explicitly."
+                                    .into(),
+                            );
                         } else {
                             state.paused = paused;
                             state.phase = phase;

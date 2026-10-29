@@ -420,6 +420,40 @@ impl Game {
     pub fn root(&self) -> &PositionRoot {
         &self.root
     }
+    /// Committed prefix before the participant's latest playable decision.
+    /// A terminal command on their own playable turn can be reversed alone;
+    /// otherwise the latest ordinary board action and all following commands
+    /// are reversed together. Derived events never split an atomic command.
+    pub fn preceding_playable_decision(&self, actor: Side) -> Option<usize> {
+        let terminal = self.commands.last().filter(|entry| {
+            entry.actor == actor
+                && self.conclusion.is_some()
+                && self.position.side_to_move() == actor
+                && matches!(
+                    entry.command,
+                    GameCommand::Resign | GameCommand::AcceptDraw | GameCommand::ClaimNaturalCount
+                )
+                && self
+                    .position
+                    .legal_actions()
+                    .is_ok_and(|actions| !actions.is_empty())
+        });
+        let target = if terminal.is_some() {
+            self.commands.len().checked_sub(1)?
+        } else {
+            self.commands.iter().rposition(|entry| {
+                entry.actor == actor && matches!(entry.command, GameCommand::Play { .. })
+            })?
+        };
+        // Root admission emits events only when it concludes the game, which
+        // forbids every command. An accepted command therefore starts at zero;
+        // this advisory query must not reconstruct a game or allocate identities.
+        Some(if target == 0 {
+            0
+        } else {
+            self.commands[target - 1].event_end
+        })
+    }
     /// Canonical event history, distinct from board ply.
     pub fn events(&self) -> &[GameEvent] {
         &self.events

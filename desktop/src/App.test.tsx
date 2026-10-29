@@ -128,3 +128,22 @@ it("labels last real observations with their searched version and side, while pr
   expect(screen.getByRole("alert").textContent).toContain("No chess outcome");
   expect(screen.getByText("White to move")).toBeTruthy();
 });
+
+it("uses the native Chess Take back capability with a single versioned standalone command", () => {
+  const snapshot = { ...standard, can_take_back: true };
+  session(snapshot); const { rerender } = render(<App />);
+  const button = screen.getByRole("button", { name: "Take back" });
+  expect(button.closest("[data-shell-section]")?.getAttribute("data-shell-section")).toBe("actions");
+  fireEvent.click(button); expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "take_back", version: snapshot.version });
+  session({ ...snapshot, view: { ...snapshot.view, historical: true } }); rerender(<App />);
+  expect((button as HTMLButtonElement).disabled).toBe(true);
+  fireEvent.click(button); expect(command).toHaveBeenCalledTimes(1);
+  session({ ...snapshot, can_take_back: false }); rerender(<App />);
+  expect((button as HTMLButtonElement).disabled).toBe(true);
+});
+it("binds product Chess Take back to the full shared identity rather than the legacy move path", () => {
+  session({ ...standard, can_take_back: true }); const restore = vi.fn().mockResolvedValue({});
+  render(<App onTakeBack={restore} />);
+  fireEvent.click(screen.getByRole("button", { name: "Take back" }));
+  expect(restore).toHaveBeenCalledOnce(); expect(command).not.toHaveBeenCalled();
+});

@@ -1,0 +1,140 @@
+{
+  "task": "MSH-103",
+  "status": "In Review; F01 / MSH-114 unresolved",
+  "review_source": "541fc303fdeaf5017948d14ddf92bf5efee5ab3f",
+  "production_source": "bfe09cf4fed1827d868467a7cc475a3a175931ba",
+  "prior_ci_source": "79de582fb42cdd30f6bcfa6e15a1c5dd2263e4de",
+  "production_diff_empty_since_prior_ci": true,
+  "review_changes": "documentation and Backlog records only; no production correction",
+  "environment": {
+    "os": "macOS27.0.1(26A434)",
+    "architecture": "arm64",
+    "rust": "1.99.1",
+    "node": "24.19.0"
+  },
+  "checks": [
+    {
+      "owner": "/root/review103_rules",
+      "command": "cargo test --locked -p mshogi-core --test xiangqi_board --test xiangqi_history --test xiangqi_game_boundary --test xiangqi_exact --test xiangqi_inspection_prefix",
+      "passed": 40
+    },
+    {
+      "owner": "/root/review103_rules",
+      "command": "cargo test --locked -p mshogi-core --lib xiangqi::",
+      "passed": 24
+    },
+    {
+      "owner": "/root/review103_consumers",
+      "command": "cargo test --locked -p mshogi-search --test xiangqi -p mshogi-engine --test xiangqi_routing --test xiangqi_handoff -p mshogi-console --test xiangqi_cli --test xiangqi_uci --test xiangqi_internal -p mshogi-runner --test xiangqi_runner --test xiangqi_recorded",
+      "passed": 63
+    },
+    {
+      "owner": "/root/review103_archive",
+      "command": "cargo test --locked -p mshogi-desktop-session shared::xiangqi::archive::tests -- --test-threads=1",
+      "passed": 20,
+      "seconds": 112.42
+    },
+    {
+      "owner": "/root/review103_archive",
+      "command": "cargo test --locked -p mshogi-desktop-session takeback -- --test-threads=1",
+      "passed": 12,
+      "seconds": 22.91
+    },
+    {
+      "owner": "/root/review103_archive",
+      "command": "cargo test --locked -p mshogi-desktop-session shared::xiangqi::tests -- --test-threads=1",
+      "passed": 15,
+      "seconds": 70.38
+    },
+    {
+      "owner": "/root",
+      "command": "npm --prefix desktop test -- src/product/XiangqiApp.test.tsx src/product/XiangqiBoard.test.tsx src/product/ApplicationShell.test.tsx src/product/TakeBackControl.test.tsx src/product/ProductApp.test.tsx src/product/useGameSession.test.tsx",
+      "passed": 76,
+      "files": 6
+    },
+    {
+      "owner": "/root",
+      "command": "npm --prefix desktop run check",
+      "result": "passed"
+    },
+    {
+      "owner": "/root",
+      "command": "npm --prefix desktop test -- src/product/Capacity103.review.test.tsx",
+      "result": "failed as expected: truthful control-only explanation expectation demonstrates F01",
+      "failed": 1,
+      "exit_code": 1,
+      "temporary_probe_removed": true
+    }
+  ],
+  "new_passed_tests": 250,
+  "separate_expected_failing_probe": 1,
+  "requeried_historical_ci": [
+    {
+      "category": "native",
+      "headSha": "79de582fb42cdd30f6bcfa6e15a1c5dd2263e4de",
+      "conclusion": "success",
+      "status": "completed",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/40910846668",
+      "jobs": [
+        {
+          "name": "Rust (macos-15)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust (ubuntu-24.04)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Rust (windows-2022)",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "category": "desktop",
+      "headSha": "79de582fb42cdd30f6bcfa6e15a1c5dd2263e4de",
+      "conclusion": "success",
+      "status": "completed",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/40910846682",
+      "jobs": [
+        {
+          "name": "Desktop (macos-15)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Desktop (windows-2022)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Desktop (ubuntu-24.04)",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "artifact_integrity": {
+    "msh101_screenshot_manifest_hashes_matched": 19,
+    "msh113_current_normal_and_QA_package_file_hashes_matched": 8
+  },
+  "gui_scope": "Reused actual packaged macOS Xiangqi execution and independently inspected source/pixels/AX; no new GUI execution; no Windows/Linux Xiangqi GUI claim. MSH88 owns final all-game three-platform acceptance. MSH111 failure preserved.",
+  "validation": {
+    "backlog_version": "1.55.1 pinned; global1.55.0 not used for mutations",
+    "doctor": "passed; no duplicate IDs, self-dependencies or cycles",
+    "diff_check": "passed"
+  },
+  "finding": {
+    "id": "F01",
+    "priority": "P2",
+    "followup": "MSH-114",
+    "effect": "Control-only capacity refusal with zero observations falsely reports256 observations; native saveability remains correct"
+  },
+  "unchanged_gates": [
+    "MSH-45 open",
+    "M4 open",
+    "MSH-106 unstarted",
+    "MSH-46 shared integration",
+    "MSH-88 all-game GUI",
+    "MSH-89 independent shared review",
+    "MSH-47 M4 closure"
+  ]
+}

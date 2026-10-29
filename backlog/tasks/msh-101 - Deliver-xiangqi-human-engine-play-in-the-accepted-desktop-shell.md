@@ -1,11 +1,11 @@
 ---
 id: MSH-101
 title: Deliver xiangqi human-engine play in the accepted desktop shell
-status: In Progress
+status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-29T07:21:00Z'
+updated_date: '2026-10-29T07:34:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -71,4 +71,8 @@ Early actual packaged visual checkpoint integrated/pushed at 3a1aefc73c4b956a193
 Owner attachment bfc8a6e2 explicitly approves board/pieces/markers/sizing/shared-shell at3a1aefc; early visual gate is satisfied, not the remainingAC. Additional owner wording is exact common visible Inspecting {side} {piece} · Esc clears across Chess/Shogi/Xiangqi. No redesign or inspection-semantic change. PATHBacklog1.55.0 remains incompatible; pinned1.55.1 confirmed and used. Existing completed98/100/111 worktrees remain unrelated prior cleanup handoffs; no new worktree needed.
 
 Completion source ready for fresh packaged GUI evidence: native PresentedEvent.label now exhaustively uses existing native coordinates/derived capture/check/event facts; no canonical or rules schema changes. One shared inspectionStatus(nativeLabel) owns exact visible Inspecting {side} {piece} · Esc clears in Chess/Shogi/Xiangqi, with unchanged sr-only explanation and native non-actionable/freshness/key paths. Native generator adds actual capture/recapture frontend fixture; existing fixtures unchanged. Root183frontend/23files + strictTS passed; native2label tests and14focused session tests passed; sessionclippy alltargets/allfeatures -Dwarnings andfmt/diffchecks passed. An initial misnamed native filter selected0tests and is not counted; corrected14test suite passed. Separate read-only reviewer independently passed82focusedfrontend+TS and2+14native tests, no source findings. Actual final normal.app played-history/inspection capture and current CI remain required beforeDone.
+
+Exact reviewed/tested normal product sourcebe3055a1bc8d4b0d0fdf11f8509b97076d13fa43 integrated/pushed. Actual final macOS normal.app GUI: exact inspection language captured acrossChess/Shogi/Xiangqi; nativeXQinspectiondestinationstays0events andEscfocusreturnsb7. Redfriendlyb2b9capture+nativeBlacka9b9reply2plies shows readablehistory; a3UpReturn+engine4plies; Flipkeepsgame; BlackhumanassignmentRedengineopeningthenBlacka9LeftSpaceb9capture+Redreply3plies. Nine normal1180x820 actualJPEG/AX captures at docs/m4/evidence/msh101/completion-2026-10-29; no fixture/configoverride/instrumentation. Normalpackage-smoke passed. Separate reviewer independently inspectedall9, no sourceorvisualfindings; root183frontend+2label+14sessiontests passed, reviewer82frontend+2+14native+TS. Approvedunchangedboard/font/sizing evidence3a1 reused with separatelyconfiguredminimum/intermediate provenance and no runtime-resize claim. NativeCI40834914585/DesktopCI40834914598 pending; AC/DoD leftuncheckeduntilactualoutcomes. No102/103/106started.
+
+Initial final-source desktopCI40834914598 LinuxGUIjob123317331840 exposed a stale externalverifier assertion, still requiring read only in ordinary visible inspection status. This contradicts approved newcopy; Chess/Shogi normaljourneys abort and normal-shogi-reopened then lacks their savedinput. This failedcheck is preserved, not a claimedpass or MSH111transportfinding. Updated only external gui-smoke.py to observe status span(orChessparagraph) and require EXACT Inspecting nativeLabel · Esc clears; all destinationaria/hollowmarker/nativecontext/nonactionable route/Escape checks remain. Addedexternalcopyregressions; root and independentreviewer24driver tests passed. Independent source review nofindings, no weakenedchecks/retrybehavior. Productsource and normal.app unchangedfrombe3055a; freshCI at nextverification-scriptrevision required beforeDone.
 <!-- SECTION:NOTES:END -->

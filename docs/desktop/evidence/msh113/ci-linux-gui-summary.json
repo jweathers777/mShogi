@@ -1,0 +1,611 @@
+{
+  "source_revision": "79de582fb42cdd30f6bcfa6e15a1c5dd2263e4de",
+  "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/40910846682",
+  "environment": {
+    "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "runner_image": "20261026.354.1",
+    "runner_os": "Linux",
+    "renderer_environment": {
+      "GDK_BACKEND": "x11",
+      "WEBKIT_DISABLE_COMPOSITING_MODE": "1",
+      "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+      "LIBGL_ALWAYS_SOFTWARE": null
+    }
+  },
+  "method": "Actual installed/packaged GUI via W3C pointer/keyboard and native OS dialogs/close, external to distributables. Read-only DOM inspection; no direct IPC or injected input events.",
+  "driver_identity": {
+    "path": "/home/runner/work/_temp/mshogi-gui-driver/tauri-driver",
+    "sha256": "94e7345a51842e7a3f78bbd2194b1675cc02f86a9b7ae7ca986b0bf447b754ab",
+    "version": ""
+  },
+  "started_at_utc": "2026-10-29T16:31:04.547004+00:00",
+  "finished_at_utc": "2026-10-29T16:32:47.817913+00:00",
+  "status": "passed",
+  "scope": "Actual linux packaged/installed GUI; Take back specifically exercised in Shogi declaration/resignation fixtures, not all games.",
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "passed",
+      "fixture": null,
+      "host_sha256": "3bc45df1c15148738b1213e25b8966cc36ed85960df911dc0c47a9c532f6d522",
+      "engine_sha256": "b111f972e8ce0ad74b3d3cdea203ec5f2c93ffbd2133a67e5c76d8f1c36ad474",
+      "started_at_utc": "2026-10-29T16:31:04.578449+00:00",
+      "finished_at_utc": "2026-10-29T16:31:28.459656+00:00"
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "passed",
+      "fixture": null,
+      "host_sha256": "3bc45df1c15148738b1213e25b8966cc36ed85960df911dc0c47a9c532f6d522",
+      "engine_sha256": "b111f972e8ce0ad74b3d3cdea203ec5f2c93ffbd2133a67e5c76d8f1c36ad474",
+      "started_at_utc": "2026-10-29T16:31:28.502077+00:00",
+      "finished_at_utc": "2026-10-29T16:31:42.391347+00:00"
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "passed",
+      "fixture": null,
+      "host_sha256": "3bc45df1c15148738b1213e25b8966cc36ed85960df911dc0c47a9c532f6d522",
+      "engine_sha256": "b111f972e8ce0ad74b3d3cdea203ec5f2c93ffbd2133a67e5c76d8f1c36ad474",
+      "started_at_utc": "2026-10-29T16:31:42.427065+00:00",
+      "finished_at_utc": "2026-10-29T16:32:05.945847+00:00"
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "fixture": "standard",
+      "host_sha256": "70cec3af33330801b59ed4bf9eba715973ed780fb786286792b073f77279aa15",
+      "engine_sha256": "b111f972e8ce0ad74b3d3cdea203ec5f2c93ffbd2133a67e5c76d8f1c36ad474",
+      "started_at_utc": "2026-10-29T16:32:05.993956+00:00",
+      "finished_at_utc": "2026-10-29T16:32:08.955947+00:00"
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "fixture": "promotion",
+      "host_sha256": "70cec3af33330801b59ed4bf9eba715973ed780fb786286792b073f77279aa15",
+      "engine_sha256": "b111f972e8ce0ad74b3d3cdea203ec5f2c93ffbd2133a67e5c76d8f1c36ad474",
+      "started_at_utc": "2026-10-29T16:32:08.989063+00:00",
+      "finished_at_utc": "2026-10-29T16:32:11.134925+00:00"
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed",
+      "fixture": "claim",
+      "host_sha256": "70cec3af33330801b59ed4bf9eba715973ed780fb786286792b073f77279aa15",
+      "engine_sha256": "b111f972e8ce0ad74b3d3cdea203ec5f2c93ffbd2133a67e5c76d8f1c36ad474",
+      "started_at_utc": "2026-10-29T16:32:11.174714+00:00",
+      "finished_at_utc": "2026-10-29T16:32:13.097317+00:00"
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "fixture": "capacity",
+      "host_sha256": "70cec3af33330801b59ed4bf9eba715973ed780fb786286792b073f77279aa15",
+      "engine_sha256": "b111f972e8ce0ad74b3d3cdea203ec5f2c93ffbd2133a67e5c76d8f1c36ad474",
+      "started_at_utc": "2026-10-29T16:32:13.133749+00:00",
+      "finished_at_utc": "2026-10-29T16:32:18.462551+00:00"
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed",
+      "fixture": "synthetic",
+      "host_sha256": "70cec3af33330801b59ed4bf9eba715973ed780fb786286792b073f77279aa15",
+      "engine_sha256": "b111f972e8ce0ad74b3d3cdea203ec5f2c93ffbd2133a67e5c76d8f1c36ad474",
+      "started_at_utc": "2026-10-29T16:32:18.495546+00:00",
+      "finished_at_utc": "2026-10-29T16:32:21.542619+00:00"
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed",
+      "fixture": "shogi-hands",
+      "host_sha256": "70cec3af33330801b59ed4bf9eba715973ed780fb786286792b073f77279aa15",
+      "engine_sha256": "b111f972e8ce0ad74b3d3cdea203ec5f2c93ffbd2133a67e5c76d8f1c36ad474",
+      "started_at_utc": "2026-10-29T16:32:21.579213+00:00",
+      "finished_at_utc": "2026-10-29T16:32:26.041314+00:00"
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed",
+      "fixture": "shogi-promotion",
+      "host_sha256": "70cec3af33330801b59ed4bf9eba715973ed780fb786286792b073f77279aa15",
+      "engine_sha256": "b111f972e8ce0ad74b3d3cdea203ec5f2c93ffbd2133a67e5c76d8f1c36ad474",
+      "started_at_utc": "2026-10-29T16:32:26.074083+00:00",
+      "finished_at_utc": "2026-10-29T16:32:29.334060+00:00"
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed",
+      "fixture": "shogi-forced",
+      "host_sha256": "70cec3af33330801b59ed4bf9eba715973ed780fb786286792b073f77279aa15",
+      "engine_sha256": "b111f972e8ce0ad74b3d3cdea203ec5f2c93ffbd2133a67e5c76d8f1c36ad474",
+      "started_at_utc": "2026-10-29T16:32:29.366559+00:00",
+      "finished_at_utc": "2026-10-29T16:32:32.300011+00:00"
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed",
+      "fixture": "shogi-declaration",
+      "host_sha256": "70cec3af33330801b59ed4bf9eba715973ed780fb786286792b073f77279aa15",
+      "engine_sha256": "b111f972e8ce0ad74b3d3cdea203ec5f2c93ffbd2133a67e5c76d8f1c36ad474",
+      "started_at_utc": "2026-10-29T16:32:32.337341+00:00",
+      "finished_at_utc": "2026-10-29T16:32:35.820082+00:00"
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed",
+      "fixture": "shogi-concluded",
+      "host_sha256": "70cec3af33330801b59ed4bf9eba715973ed780fb786286792b073f77279aa15",
+      "engine_sha256": "b111f972e8ce0ad74b3d3cdea203ec5f2c93ffbd2133a67e5c76d8f1c36ad474",
+      "started_at_utc": "2026-10-29T16:32:35.856695+00:00",
+      "finished_at_utc": "2026-10-29T16:32:39.832252+00:00"
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed",
+      "fixture": "shogi-capacity",
+      "host_sha256": "70cec3af33330801b59ed4bf9eba715973ed780fb786286792b073f77279aa15",
+      "engine_sha256": "b111f972e8ce0ad74b3d3cdea203ec5f2c93ffbd2133a67e5c76d8f1c36ad474",
+      "started_at_utc": "2026-10-29T16:32:39.865682+00:00",
+      "finished_at_utc": "2026-10-29T16:32:47.797422+00:00"
+    }
+  ],
+  "takeback_phases": [
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed",
+      "fixture": "shogi-declaration",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "70cec3af33330801b59ed4bf9eba715973ed780fb786286792b073f77279aa15",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "b111f972e8ce0ad74b3d3cdea203ec5f2c93ffbd2133a67e5c76d8f1c36ad474",
+      "events": [
+        {
+          "at_utc": "2026-10-29T16:32:33.205447+00:00",
+          "operation": "Launch actual packaged application",
+          "observation": {
+            "process": {
+              "pid": 34552,
+              "parent_pid": 34550,
+              "start_ticks": "66074",
+              "state": "S",
+              "executable": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+              "command": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop"
+            },
+            "window": {
+              "id": 2097155,
+              "pid": 34552,
+              "title": "mShogi Verification \u2014 shogi-declaration (test state) \u2014 content 1180.0 \u00d7 820.0 logical",
+              "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+            },
+            "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+            "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi"
+          }
+        },
+        {
+          "at_utc": "2026-10-29T16:32:34.149165+00:00",
+          "operation": "Resize actual application content",
+          "observation": {
+            "target": {
+              "width": 1180,
+              "height": 820
+            },
+            "observations": [
+              {
+                "native": {
+                  "at": "2026-10-29T16:32:33.448893+00:00",
+                  "kind": "native_resize_requested",
+                  "window": 2097155,
+                  "requested": {
+                    "width": 1180,
+                    "height": 820
+                  },
+                  "observation": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+                },
+                "webview": {
+                  "dpr": 1,
+                  "height": 795,
+                  "width": 1180
+                }
+              },
+              {
+                "native": {
+                  "at": "2026-10-29T16:32:33.947409+00:00",
+                  "kind": "native_resize_requested",
+                  "window": 2097155,
+                  "requested": {
+                    "width": 1180,
+                    "height": 845
+                  },
+                  "observation": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=845\nSCREEN=0"
+                },
+                "webview": {
+                  "dpr": 1,
+                  "height": 820,
+                  "width": 1180
+                }
+              }
+            ]
+          }
+        },
+        {
+          "at_utc": "2026-10-29T16:32:34.154499+00:00",
+          "operation": "Observe complete 9x9 native product board without scrolling",
+          "observation": {
+            "fonts": "loaded",
+            "pieceFonts": [
+              "\"mShogi Pieces\", serif",
+              "system-ui, sans-serif"
+            ],
+            "viewport": {
+              "height": 820,
+              "width": 1180
+            },
+            "allSquaresVisible": true,
+            "essentialControlsVisible": true,
+            "pageWidth": 1180,
+            "board": {
+              "left": 211,
+              "width": 438,
+              "right": 649,
+              "top": 242,
+              "height": 438,
+              "bottom": 680
+            },
+            "bothPlayerAreasVisible": true,
+            "players": [
+              {
+                "left": 28,
+                "width": 804,
+                "right": 832,
+                "top": 192,
+                "height": 48,
+                "bottom": 240
+              },
+              {
+                "left": 28,
+                "width": 804,
+                "right": 832,
+                "top": 706,
+                "height": 48,
+                "bottom": 754
+              }
+            ],
+            "loadedFontFaces": [
+              {
+                "status": "unloaded",
+                "family": "mShogi Xiangqi Pieces"
+              },
+              {
+                "status": "loaded",
+                "family": "mShogi Pieces"
+              }
+            ],
+            "squares": 81
+          }
+        },
+        {
+          "at_utc": "2026-10-29T16:32:34.523995+00:00",
+          "operation": "Observe shared analysis and historical action slots",
+          "observation": []
+        },
+        {
+          "at_utc": "2026-10-29T16:32:35.088523+00:00",
+          "operation": "Observe shared analysis and historical action slots",
+          "observation": []
+        },
+        {
+          "at_utc": "2026-10-29T16:32:35.379380+00:00",
+          "operation": "Observe shared analysis and historical action slots",
+          "observation": []
+        },
+        {
+          "at_utc": "2026-10-29T16:32:35.645492+00:00",
+          "operation": "Native Quit request",
+          "observation": {
+            "at": "2026-10-29T16:32:35.645474+00:00",
+            "kind": "native_quit_requested",
+            "window": 2097155,
+            "method": "Focused Ctrl+Q native Quit menu accelerator",
+            "proof_of_exit": false
+          }
+        },
+        {
+          "at_utc": "2026-10-29T16:32:35.672804+00:00",
+          "operation": "Dispatch final native-close guard action",
+          "observation": {
+            "label": "Discard & continue",
+            "element": "node-54CC91F5-8CE9-4EFD-A56F-7E2B8F012910"
+          }
+        },
+        {
+          "at_utc": "2026-10-29T16:32:35.820039+00:00",
+          "operation": "Observe native shutdown before driver teardown",
+          "observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        }
+      ],
+      "started_at_utc": "2026-10-29T16:32:32.337341+00:00",
+      "driver_command": [
+        "tauri-driver",
+        "--port",
+        "4444",
+        "--native-port",
+        "4445"
+      ],
+      "driver_creation": {
+        "windows_no_console": false,
+        "stdout_stderr": "verification-shogi-declaration-driver.log"
+      },
+      "native_window": {
+        "process": {
+          "pid": 34552,
+          "parent_pid": 34550,
+          "start_ticks": "66074",
+          "state": "S",
+          "executable": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+          "command": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop"
+        },
+        "window": {
+          "id": 2097155,
+          "pid": 34552,
+          "title": "mShogi Verification \u2014 shogi-declaration (test state) \u2014 content 1180.0 \u00d7 820.0 logical",
+          "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+        },
+        "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+        "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi"
+      },
+      "finished_at_utc": "2026-10-29T16:32:35.820082+00:00",
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed",
+      "fixture": "shogi-concluded",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "70cec3af33330801b59ed4bf9eba715973ed780fb786286792b073f77279aa15",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "b111f972e8ce0ad74b3d3cdea203ec5f2c93ffbd2133a67e5c76d8f1c36ad474",
+      "events": [
+        {
+          "at_utc": "2026-10-29T16:32:36.729287+00:00",
+          "operation": "Launch actual packaged application",
+          "observation": {
+            "process": {
+              "pid": 34982,
+              "parent_pid": 34980,
+              "start_ticks": "66426",
+              "state": "S",
+              "executable": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+              "command": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop"
+            },
+            "window": {
+              "id": 2097155,
+              "pid": 34982,
+              "title": "mShogi Verification \u2014 shogi-concluded (test state) \u2014 content 1180.0 \u00d7 820.0 logical",
+              "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+            },
+            "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+            "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi"
+          }
+        },
+        {
+          "at_utc": "2026-10-29T16:32:37.676109+00:00",
+          "operation": "Resize actual application content",
+          "observation": {
+            "target": {
+              "width": 1180,
+              "height": 820
+            },
+            "observations": [
+              {
+                "native": {
+                  "at": "2026-10-29T16:32:36.971470+00:00",
+                  "kind": "native_resize_requested",
+                  "window": 2097155,
+                  "requested": {
+                    "width": 1180,
+                    "height": 820
+                  },
+                  "observation": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+                },
+                "webview": {
+                  "dpr": 1,
+                  "height": 795,
+                  "width": 1180
+                }
+              },
+              {
+                "native": {
+                  "at": "2026-10-29T16:32:37.474210+00:00",
+                  "kind": "native_resize_requested",
+                  "window": 2097155,
+                  "requested": {
+                    "width": 1180,
+                    "height": 845
+                  },
+                  "observation": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=845\nSCREEN=0"
+                },
+                "webview": {
+                  "dpr": 1,
+                  "height": 820,
+                  "width": 1180
+                }
+              }
+            ]
+          }
+        },
+        {
+          "at_utc": "2026-10-29T16:32:37.681576+00:00",
+          "operation": "Observe complete 9x9 native product board without scrolling",
+          "observation": {
+            "fonts": "loaded",
+            "pieceFonts": [
+              "\"mShogi Pieces\", serif",
+              "system-ui, sans-serif"
+            ],
+            "viewport": {
+              "height": 820,
+              "width": 1180
+            },
+            "allSquaresVisible": true,
+            "essentialControlsVisible": true,
+            "pageWidth": 1180,
+            "board": {
+              "left": 211,
+              "width": 438,
+              "right": 649,
+              "top": 242,
+              "height": 438,
+              "bottom": 680
+            },
+            "bothPlayerAreasVisible": true,
+            "players": [
+              {
+                "left": 28,
+                "width": 804,
+                "right": 832,
+                "top": 192,
+                "height": 48,
+                "bottom": 240
+              },
+              {
+                "left": 28,
+                "width": 804,
+                "right": 832,
+                "top": 706,
+                "height": 48,
+                "bottom": 754
+              }
+            ],
+            "loadedFontFaces": [
+              {
+                "status": "unloaded",
+                "family": "mShogi Xiangqi Pieces"
+              },
+              {
+                "status": "loaded",
+                "family": "mShogi Pieces"
+              }
+            ],
+            "squares": 81
+          }
+        },
+        {
+          "at_utc": "2026-10-29T16:32:37.983049+00:00",
+          "operation": "Observe shared analysis and historical action slots",
+          "observation": []
+        },
+        {
+          "at_utc": "2026-10-29T16:32:38.439596+00:00",
+          "operation": "Observe shared analysis and historical action slots",
+          "observation": [
+            {
+              "rightGap": 0,
+              "label": "Return to live",
+              "sameRowWithStart": null,
+              "section": null,
+              "analysisActionRow": false,
+              "historyHeading": true
+            }
+          ]
+        },
+        {
+          "at_utc": "2026-10-29T16:32:38.642122+00:00",
+          "operation": "Select distinct native terminal event at unchanged board ply",
+          "observation": "Game history\n1 event\n\n0\nStarting position\n\n1\nSente: Resignation\n"
+        },
+        {
+          "at_utc": "2026-10-29T16:32:39.073481+00:00",
+          "operation": "Observe shared analysis and historical action slots",
+          "observation": []
+        },
+        {
+          "at_utc": "2026-10-29T16:32:39.373430+00:00",
+          "operation": "Observe shared analysis and historical action slots",
+          "observation": []
+        },
+        {
+          "at_utc": "2026-10-29T16:32:39.649486+00:00",
+          "operation": "Native Quit request",
+          "observation": {
+            "at": "2026-10-29T16:32:39.649467+00:00",
+            "kind": "native_quit_requested",
+            "window": 2097155,
+            "method": "Focused Ctrl+Q native Quit menu accelerator",
+            "proof_of_exit": false
+          }
+        },
+        {
+          "at_utc": "2026-10-29T16:32:39.683001+00:00",
+          "operation": "Dispatch final native-close guard action",
+          "observation": {
+            "label": "Discard & continue",
+            "element": "node-5F38C570-6053-470D-9FE4-E1F61F898895"
+          }
+        },
+        {
+          "at_utc": "2026-10-29T16:32:39.832209+00:00",
+          "operation": "Observe native shutdown before driver teardown",
+          "observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        }
+      ],
+      "started_at_utc": "2026-10-29T16:32:35.856695+00:00",
+      "driver_command": [
+        "tauri-driver",
+        "--port",
+        "4444",
+        "--native-port",
+        "4445"
+      ],
+      "driver_creation": {
+        "windows_no_console": false,
+        "stdout_stderr": "verification-shogi-concluded-driver.log"
+      },
+      "native_window": {
+        "process": {
+          "pid": 34982,
+          "parent_pid": 34980,
+          "start_ticks": "66426",
+          "state": "S",
+          "executable": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+          "command": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop"
+        },
+        "window": {
+          "id": 2097155,
+          "pid": 34982,
+          "title": "mShogi Verification \u2014 shogi-concluded (test state) \u2014 content 1180.0 \u00d7 820.0 logical",
+          "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+        },
+        "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+        "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi"
+      },
+      "finished_at_utc": "2026-10-29T16:32:39.832252+00:00",
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    }
+  ],
+  "capture_sha256": {
+    "verification-shogi-concluded-takeback-resignation.desktop.png": "1e520aa5b60ae61c17f8bfeec88306a8ce2b1781c965c59d50ad440da4222c9a",
+    "verification-shogi-concluded-takeback-resignation.dom.json": "41c3ebef19f6c8ac8419808766854fee5616d178a00f90949a205897cb71f694",
+    "verification-shogi-concluded-takeback-resignation.webview.png": "eb2eef1f71452d3017c0e043637284286c035dfb10cb06dcf9e49363f0eeb79b",
+    "verification-shogi-declaration-takeback-declaration.desktop.png": "13f40e02fcd52cb8005a0ed0e988c114d446e6aa1ff2bae0ba288018c8184c60",
+    "verification-shogi-declaration-takeback-declaration.dom.json": "4d11d838dccd5ad5633374744b11291e2d3a1d52073203d9a792adafc4945110",
+    "verification-shogi-declaration-takeback-declaration.webview.png": "134b3c135a2c8dc9ec770339ff8c43615bc0c339c6d760d8e49681c9746929fc"
+  }
+}

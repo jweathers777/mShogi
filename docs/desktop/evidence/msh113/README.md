@@ -30,8 +30,9 @@ is not GUI evidence.
 ## Actual packaged macOS interaction
 
 The integrator used Cua native accessibility, pointer and keyboard actions. No
-IPC or JavaScript injection supplied moves or changed game state. Every capture
-has its corresponding full `.ax.txt`. All `final-*` and `qa-*` evidence below uses
+IPC or JavaScript injection supplied moves or changed game state. Every local Cua capture
+has its corresponding full `.ax.txt`; CI captures use their recorded `.dom.json`
+sidecars. All `final-*` and `qa-*` evidence below uses
 the final bfe09cf packages. The few `normal-chess-*` and `intermediate-*` files
 precede the presentation correction and are qualified below.
 
@@ -133,20 +134,44 @@ of the final bfe09cf runs; cancellation is not reported as a pass.
 The first bfe09cf Linux desktop run failed only two obsolete GUI assertions that
 concluded Shogi games contain no action buttons. The new approved Take back is
 correctly present. [Original failure](ci-bfe09cf-linux-failure.json) preserves
-tracebacks and artifact provenance; this was not attributed to the unrelated
+tracebacks and artifact provenance. The original Windows job also failed the same
+two named Shogi phases, independently confirmed in its job log. Neither was
+attributed to the unrelated
 MSH-111 driver issue. The external runner now requires exactly one enabled Take
 back action, retains all native conclusion/history assertions, and additionally
 executes declaration/resignation takeback to paused Sente0events. Independent
 review, Python compilation and24runner self-tests passed. Product code and local
-packages are unchanged from bfe09cf. Actual corrected GUI CI remains required.
+packages are unchanged from bfe09cf. Actual corrected GUI CI subsequently passed on Linux and Windows, including
+both new native Shogi Take back journeys (14 GUI phases per platform).
 
-Final CI results are recorded in `ci-results.json` when complete. MSH-113 remains
-In Review until required CI evidence and completion bookkeeping are satisfied.
+[Final CI](ci-results.json) at verification revision
+`79de582fb42cdd30f6bcfa6e15a1c5dd2263e4de` passed all six jobs:
+
+| Workflow | Windows2022 | macOS15 | Ubuntu24.04 |
+| --- | --- | --- | --- |
+| [Rust workspace40910846668](https://github.com/jweathers777/mShogi/actions/runs/40910846668) | PASS | PASS | PASS |
+| [Desktop40910846682](https://github.com/jweathers777/mShogi/actions/runs/40910846682) | PASS | PASS | PASS |
+
+The verification commit changes no product source from the locally packaged
+bfe09cf build (checked with an empty diff over crates, desktop/src and host
+sources). Final evidence/task bookkeeping does not change product or verifier.
+[Linux GUI report](ci-linux-gui-summary.json) and
+[Windows GUI report](ci-windows-gui-summary.json) preserve exact revision,
+environment, driver/package/engine hashes,14passed phases and the2actual Shogi
+Take back phase records. Their `ci-{linux,windows}-*takeback*` desktop/webview
+captures have matching DOM observations and hashes. This establishes additional
+Shogi terminal-takeback GUI evidence on those systems, not new three-game GUI
+campaigns. Windows desktop captures are clipped by the1024×768virtual desktop
+while the application content is1180×820; matching webview captures preserve the
+complete render. Those desktop images do not prove complete physical-window
+visibility. The earlier bfe09cf Rust workflow also passed; its desktop workflow
+failed the documented obsolete assertions before the verifier correction.
 
 ## Limits and launch
 
-Actual new Take back GUI evidence is macOS only. Windows/Linux native/package
-and existing Chess/Shogi GUI CI are separate claims; prior MSH-111 Linux driver
+All three new Take back GUI journeys were directly exercised on macOS. Corrected
+Windows/Linux CI additionally exercises Shogi terminal Take back; other native/
+package and existing Chess/Shogi GUI checks remain separate claims; prior MSH-111 Linux driver
 and MSH-112 runner failure records remain unmodified. No new all-platform
 Xiangqi closure or playing-strength claim is made.
 

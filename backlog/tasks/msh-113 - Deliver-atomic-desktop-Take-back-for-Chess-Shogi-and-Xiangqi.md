@@ -1,11 +1,11 @@
 ---
 id: MSH-113
 title: Deliver atomic desktop Take back for Chess Shogi and Xiangqi
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-29T15:39:00Z'
-updated_date: '2026-10-29T16:21:00Z'
+updated_date: '2026-10-29T16:42:00Z'
 labels:
   - desktop
   - m4
@@ -29,21 +29,21 @@ Owner-approved new product scope from attachment17dba816: human-versus-engine us
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Native command boundaries and actor identities own targets and reversal. Preserve game-specific repetition, claims, warnings, conclusions, counters, provenance, complete actions and canonical replay; no frontend reconstruction or two-request undo sequence.
-- [ ] #2 Retire outstanding turn/analysis execution and selection before committing restoration; advance runtime identities and prevent all abandoned or late results and stale markers from becoming current. Restored human position resumes through the native lifecycle without automatically replaying the engine response.
-- [ ] #3 Save/Open after takeback preserves complete accepted document evidence including historical observations with original targets and abandoned native continuation needed for replay. Preserve old Chess/Shogi/Xiangqi compatibility, strict parsing, atomic file failures and fresh stopped reopen. Admit actual byte/event/control/observation/replay work and close headroom before commit; resource refusal leaves a complete save path and never discards evidence.
-- [ ] #4 All three games expose Take back consistently in Game Actions using existing styles, focus/status/accessibility patterns; native eligibility disables it at beginning or unavailable/history states, selections and read-only inspection clear on restoration, no unnecessary confirmation or diagnostics.
-- [ ] #5 Focused native/frontend tests cover owner scenarios, terminal/history-dependent state, cancellation/late results, repetition, archive roundtrip/capacity/failure and cross-game compatibility. Exercise each game in actual packaged macOS application with genuine native engine/session, record source/package identities and distinguish QA instrumentation, obtain independent review, resolve findings and run applicable CI.
-- [ ] #6 Document delivered semantics, compatibility decisions, limitations and concrete future MSH-106 findings without broad refactoring; integrate and normally push, preserve closed milestones/history and stop at this task.
-- [ ] #7 One native atomic Take back restores the most recent playable human decision point: completed human/engine pairs reverse both moves; a pending response is retired before reversing the human move; engine-first opening is preserved; repeated operations and concluded native histories restore eligible preceding human choices. Historical selection and unavailable/beginning states refuse atomically.
+- [x] #1 Native command boundaries and actor identities own targets and reversal. Preserve game-specific repetition, claims, warnings, conclusions, counters, provenance, complete actions and canonical replay; no frontend reconstruction or two-request undo sequence.
+- [x] #2 Retire outstanding turn/analysis execution and selection before committing restoration; advance runtime identities and prevent all abandoned or late results and stale markers from becoming current. Restored human position resumes through the native lifecycle without automatically replaying the engine response.
+- [x] #3 Save/Open after takeback preserves complete accepted document evidence including historical observations with original targets and abandoned native continuation needed for replay. Preserve old Chess/Shogi/Xiangqi compatibility, strict parsing, atomic file failures and fresh stopped reopen. Admit actual byte/event/control/observation/replay work and close headroom before commit; resource refusal leaves a complete save path and never discards evidence.
+- [x] #4 All three games expose Take back consistently in Game Actions using existing styles, focus/status/accessibility patterns; native eligibility disables it at beginning or unavailable/history states, selections and read-only inspection clear on restoration, no unnecessary confirmation or diagnostics.
+- [x] #5 Focused native/frontend tests cover owner scenarios, terminal/history-dependent state, cancellation/late results, repetition, archive roundtrip/capacity/failure and cross-game compatibility. Exercise each game in actual packaged macOS application with genuine native engine/session, record source/package identities and distinguish QA instrumentation, obtain independent review, resolve findings and run applicable CI.
+- [x] #6 Document delivered semantics, compatibility decisions, limitations and concrete future MSH-106 findings without broad refactoring; integrate and normally push, preserve closed milestones/history and stop at this task.
+- [x] #7 One native atomic Take back restores the most recent playable human decision point: completed human/engine pairs reverse both moves; a pending response is retired before reversing the human move; engine-first opening is preserved; repeated operations and concluded native histories restore eligible preceding human choices. Historical selection and unavailable/beginning states refuse atomically.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -69,4 +69,20 @@ Implementation complete for independent assessment. Native review approved final
 Actual ff0b1ce packaged Chess human e2e4/bundled a7a5→TakeBack restored0plies/paused/1retainedobservation; nativeSaveAsv3succeeded. GUI exposed clipped Resume notice when sidebar remained scrolled to GameActions. Sharedcontrol now reveals existing .play-paused notice with nearest scrolling after accepted-context status focus; no layout redesign. Added4thcontroltest, independently reviewed approved. Rebuild/recheck final GUI source required; earlier clipped capture is finding evidence only.
 
 Final bfe09cf packagedMac3gamejourneys PASS withgenuineengines: Chess/Shogipairs→0, Shogihistorydisabled/nativeinspectioncleared, XqBlack3→1preservesRedopening, terminalresignation→playable1, keyboardTabReturn, eachSaveOpenstopped/historicalobsretained. QAexternal8slaunchdelay eachpending1→TakeBack0 stayspausedbeyonddeadline; nativeinjectedlate-response testsseparate. Finalartifactindependentreviewapproved. Nativeallfeatures144PASS91.62s, frontend208PASS, host5PASS, fmt/clippy/doctorPASS. LinuxDesktopCI40907948723 failedtwoobsoleteShogiconcluded-no-actionsassertions992/996, exactlyconfirmedbyartifact; notdriverreset. UpdatedexternalrunnerrequiressoleenabledTakebackandactuallyrestoresdeclaration/resignation0/Sente/paused, keepsoldhistory/conclusioncriteria. Independentverificationdiffreview+24Pythonselftests+compilePASS. Originalfailurepreserved; correctedplatformGUIrunstillrequired.
+
+Final corrected CI at79de582 passed all6jobs: Rust40910846668 and Desktop40910846682 on Windows2022/macOS15/Ubuntu24.04. Final Linux and Windows GUI reports each pass14phases, including both new terminal Take back journeys. All package/archive hashes, capture sidecars and source invariance were independently checked. Windows CI desktop images are clipped by1024×768virtual desktop; full webview renders are retained and no full physical-visibility claim is made. Evidence: docs/desktop/evidence/msh113/README.md, ci-results.json and platform GUI summaries. All acceptance criteria and DoD now have evidence; no feature blocker remains.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Delivered the owner-approved Take back action for Chess, Shogi and Xiangqi in one native admitted transaction. Native actors and complete command boundaries restore the latest playable human decision: completed human/engine pairs, pending turns, repeated decisions and eligible concluded games; engine-first openings remain. Historical/unavailable requests refuse before changing accepted state. Restoration retires turn/analysis work, advances identities, clears obsolete inspection/selection, pauses and requires explicit Resume. Product Chess uses the full shared source token; the existing legacy API remains available.
+
+Chess uses authoritative MatchRecord prefixes and a narrow archive v3 extension retaining abandoned canonical match lineage and historical observations; untouched documents remain v1. Shogi/Xiangqi keep v2 native journal replay. Strict identity/record validation, actual byte/event/control/observation/replay admission and reserved stop/close headroom preserve MSH-61 saveability. No accepted evidence is discarded and capacity is not reset. Native terminal claims, Shogi declarations/repetition and Xiangqi warning/fourth/count fixtures pass. The exact close boundary retains 1320 Observe entries, 123 Preferences, 128 controls and 333246 bytes and successfully closes/reopens.
+
+Implementation ff0b1ce5d2507d60bb28c0739c24fa0a49b2e69b, reviewed UI correction bfe09cf4fed1827d868467a7cc475a3a175931ba, and verification integration 79de582fb42cdd30f6bcfa6e15a1c5dd2263e4de were normally pushed to codex/rewrite. Final production source is bfe09cf; 79de582 changes only external verification/evidence. At 79de582, Rust workflow40910846668 and Desktop workflow40910846682 passed all Windows/macOS/Linux jobs. Corrected Linux/Windows GUI each passed14 phases, including actual Shogi declaration/resignation Take back. Superseded Linux/Windows obsolete no-actions assertion failures and cancelled earlier runs are preserved, not hidden or attributed to MSH-111.
+
+Actual normal packaged macOS application with genuine engine exercised all three games, Save/Open, history/Return to live, native inspection clearing, Xiangqi engine opening preservation, terminal restoration and keyboard Take back. Separate labeled QA launch-delay tests exercised pending retirement for all three; native tests inject late responses separately. Original user session was saved before testing and restored afterward. Exact package/engine hashes, captures/AX or CI DOM, archive measurements, commands, reviews and CI URLs are in docs/desktop/evidence/msh113/README.md and its manifests. Focused independent native12 tests passed; final all-feature native144 tests, frontend208 tests, host5 tests, Python24 verifier self-tests, TypeScript, formatting/linting, doctor and diff checks passed. Fresh independent native/frontend source, test and artifact reviews resolved all material findings. Final CI artifact review confirmed terminal restoration; Windows desktop captures are physically clipped, with full matching webview renders, and are not whole-window visibility evidence.
+
+Limitations: untimed play only; no variation editor or capacity reclamation. Low-level Chess imported pre-session GameRecord history remains an immutable root lacking match ownership; normal desktop New/Save/Open keeps full actor-qualified history. Old readers explicitly reject new v3 documents. No new three-game Windows/Linux GUI campaign is claimed. Concrete legacy/shared Chess dispatch duplication is recorded for future MSH-106 without starting it. MSH-103 is dependency-satisfied but remains To Do; the Ready queue is empty. MSH-103/MSH-106 and other subsequent work are unstarted, M4 remains open, and existing completed milestones/evidence are preserved. No new worktree was created; unrelated worktrees remain untouched.
+<!-- SECTION:FINAL_SUMMARY:END -->

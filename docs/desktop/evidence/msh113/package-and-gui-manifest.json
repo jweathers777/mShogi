@@ -80,5 +80,11 @@
     "sha256": "4110d59c4d945f25b761d304bc287f407d777d675ba50d45070e298c07d17f40",
     "normal_distributable": false
   },
-  "gui_scope": "Actual macOS packaged native interaction via Cua. No claims of Windows/Linux Take back GUI execution; final platform CI supplies separate native/package/existing GUI regressions."
+  "gui_scope": "Actual macOS packaged native interaction via Cua. No claims of Windows/Linux Take back GUI execution; final platform CI supplies separate native/package/existing GUI regressions.",
+  "final_tested_revision": "79de582fb42cdd30f6bcfa6e15a1c5dd2263e4de",
+  "production_unchanged_since_source": true,
+  "ci_workflows": {
+    "Rust workspace": 40910846668,
+    "Desktop packages": 40910846682
+  }
 }

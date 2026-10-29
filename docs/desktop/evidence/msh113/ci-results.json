@@ -1,0 +1,171 @@
+{
+  "final_tested_revision": "79de582fb42cdd30f6bcfa6e15a1c5dd2263e4de",
+  "production_source": "bfe09cf4fed1827d868467a7cc475a3a175931ba",
+  "production_diff_empty": true,
+  "runs": [
+    {
+      "conclusion": "success",
+      "databaseId": 40910846668,
+      "headSha": "79de582fb42cdd30f6bcfa6e15a1c5dd2263e4de",
+      "jobs": [
+        {
+          "completedAt": "2026-10-29T16:32:23Z",
+          "conclusion": "success",
+          "databaseId": 123578075032,
+          "name": "Rust (macos-15)",
+          "startedAt": "2026-10-29T16:22:40Z",
+          "status": "completed",
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40910846668/job/123578075032",
+          "failed_steps": []
+        },
+        {
+          "completedAt": "2026-10-29T16:31:06Z",
+          "conclusion": "success",
+          "databaseId": 123578075352,
+          "name": "Rust (ubuntu-24.04)",
+          "startedAt": "2026-10-29T16:22:02Z",
+          "status": "completed",
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40910846668/job/123578075352",
+          "failed_steps": []
+        },
+        {
+          "completedAt": "2026-10-29T16:35:42Z",
+          "conclusion": "success",
+          "databaseId": 123578075390,
+          "name": "Rust (windows-2022)",
+          "startedAt": "2026-10-29T16:22:02Z",
+          "status": "completed",
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40910846668/job/123578075390",
+          "failed_steps": []
+        }
+      ],
+      "status": "completed",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/40910846668"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40910846682,
+      "headSha": "79de582fb42cdd30f6bcfa6e15a1c5dd2263e4de",
+      "jobs": [
+        {
+          "completedAt": "2026-10-29T16:28:07Z",
+          "conclusion": "success",
+          "databaseId": 123578074934,
+          "name": "Desktop (macos-15)",
+          "startedAt": "2026-10-29T16:22:03Z",
+          "status": "completed",
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40910846682/job/123578074934",
+          "failed_steps": []
+        },
+        {
+          "completedAt": "2026-10-29T16:38:27Z",
+          "conclusion": "success",
+          "databaseId": 123578075455,
+          "name": "Desktop (windows-2022)",
+          "startedAt": "2026-10-29T16:22:02Z",
+          "status": "completed",
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40910846682/job/123578075455",
+          "failed_steps": []
+        },
+        {
+          "completedAt": "2026-10-29T16:32:56Z",
+          "conclusion": "success",
+          "databaseId": 123578075481,
+          "name": "Desktop (ubuntu-24.04)",
+          "startedAt": "2026-10-29T16:22:02Z",
+          "status": "completed",
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40910846682/job/123578075481",
+          "failed_steps": []
+        }
+      ],
+      "status": "completed",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/40910846682"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40907948841,
+      "headSha": "bfe09cf4fed1827d868467a7cc475a3a175931ba",
+      "jobs": [
+        {
+          "completedAt": "2026-10-29T16:18:59Z",
+          "conclusion": "success",
+          "databaseId": 123567764950,
+          "name": "Rust (macos-15)",
+          "startedAt": "2026-10-29T16:09:42Z",
+          "status": "completed",
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40907948841/job/123567764950",
+          "failed_steps": []
+        },
+        {
+          "completedAt": "2026-10-29T16:12:10Z",
+          "conclusion": "success",
+          "databaseId": 123567765232,
+          "name": "Rust (ubuntu-24.04)",
+          "startedAt": "2026-10-29T16:04:37Z",
+          "status": "completed",
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40907948841/job/123567765232",
+          "failed_steps": []
+        },
+        {
+          "completedAt": "2026-10-29T16:15:25Z",
+          "conclusion": "success",
+          "databaseId": 123567765355,
+          "name": "Rust (windows-2022)",
+          "startedAt": "2026-10-29T16:04:37Z",
+          "status": "completed",
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40907948841/job/123567765355",
+          "failed_steps": []
+        }
+      ],
+      "status": "completed",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/40907948841"
+    },
+    {
+      "conclusion": "failure",
+      "databaseId": 40907948723,
+      "headSha": "bfe09cf4fed1827d868467a7cc475a3a175931ba",
+      "jobs": [
+        {
+          "completedAt": "2026-10-29T16:15:45Z",
+          "conclusion": "failure",
+          "databaseId": 123567764563,
+          "name": "Desktop (ubuntu-24.04)",
+          "startedAt": "2026-10-29T16:04:37Z",
+          "status": "completed",
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40907948723/job/123567764563",
+          "failed_steps": [
+            "Interact with actual installed and packaged Chess and Shogi on Linux"
+          ]
+        },
+        {
+          "completedAt": "2026-10-29T16:16:18Z",
+          "conclusion": "success",
+          "databaseId": 123567764935,
+          "name": "Desktop (macos-15)",
+          "startedAt": "2026-10-29T16:09:38Z",
+          "status": "completed",
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40907948723/job/123567764935",
+          "failed_steps": []
+        },
+        {
+          "completedAt": "2026-10-29T16:20:28Z",
+          "conclusion": "failure",
+          "databaseId": 123567764941,
+          "name": "Desktop (windows-2022)",
+          "startedAt": "2026-10-29T16:04:37Z",
+          "status": "completed",
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40907948723/job/123567764941",
+          "failed_steps": [
+            "Install separate Windows verification package and interact with actual Chess and Shogi"
+          ]
+        }
+      ],
+      "status": "completed",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/40907948723"
+    }
+  ],
+  "superseded_cancelled_runs": [
+    40907547048,
+    40907546924
+  ]
+}

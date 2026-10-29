@@ -90,5 +90,12 @@
       "error": null,
       "traceback": null
     }
-  ]
+  ],
+  "related_windows_failure": {
+    "run": 40907948723,
+    "job": 123567764941,
+    "failed_step": "Install separate Windows verification package and interact with actual Chess and Shogi",
+    "observed_log": "AssertionError: Required GUI phases failed: verification-shogi-declaration: ; verification-shogi-concluded: ",
+    "scope": "Actual Windows job log independently retrieved; Linux artifact supplies exact obsolete-assertion line tracebacks. Both original platform failures retained rather than described as a driver reset."
+  }
 }

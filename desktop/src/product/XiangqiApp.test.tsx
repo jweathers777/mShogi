@@ -171,6 +171,7 @@ for (const [label, json] of [["fourth occurrence", fourthJson], ["agreement", ag
     expect(document.querySelector("[data-game-status]")?.textContent).toBe(native.status.label);
     expect(screen.queryByRole("button", { name: "Resume play" })).toBeNull();
     expect(screen.queryByRole("button", { name: "Resign game…" })).toBeNull();
+    expect(screen.queryByRole("heading", { name: "Repetition warning" })).toBeNull();
   });
 }
 it("separates unresolved assessment and process failure and retains retry and Save", () => {
@@ -190,4 +191,33 @@ it("reports asynchronous native file failures without clearing document state", 
   app({ ...standard, io: { id: 1, phase: "failed", message: "Corrupt archive" }, document: { ...standard.document, dirty: true } });
   expect(screen.getByRole("alert").textContent).toContain("unsaved changes have been kept");
   expect(screen.getByText("Unsaved")).toBeTruthy();
+});
+
+it("explains cheap atomic capacity refusals even when the native capacity worker did not run", () => {
+  // Native preflight refusals preserve the token and do not start an admission worker.
+  const { session } = app(standard, "Application capacity: retained observations are at their limit; accepted history is saveable. Saving/reopening cannot enlarge the limit.");
+  expect(screen.getByRole("heading", { name: "Application limit reached" })).toBeTruthy();
+  expect(screen.getByText(/256 recorded engine observations/)).toBeTruthy();
+  expect(screen.getByText(/Saving and reopening does not reset this limit/)).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
+  expect((screen.getByRole("button", { name: "Start move analysis" }) as HTMLButtonElement).disabled).toBe(true);
+  fireEvent.click(screen.getByRole("button", { name: "Save" }));
+  expect(session.file).toHaveBeenCalledExactlyOnceWith(standard, "save");
+});
+
+it("keeps failed Save visible alongside capacity and remembers structural refusal across successful Save", () => {
+  const error = "Application capacity: retained observations are at their limit; accepted history is saveable. Saving/reopening cannot enlarge the limit.";
+  const { props, rerender } = app(standard, error);
+  const saved = { ...standard, document: { ...standard.document, path: "/games/retained.mshogi", dirty: false } };
+  rerender(<XiangqiApp {...props} snapshot={saved} session={{ ...props.session, error: "" }} />);
+  expect(screen.getByRole("heading", { name: "Application limit reached" })).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
+  expect((screen.getByRole("button", { name: "Start move analysis" }) as HTMLButtonElement).disabled).toBe(true);
+  const failedSave = { ...saved, document: { ...saved.document, dirty: true }, capacity: { ...saved.capacity, status: "paused" as const, message: "256 observation limit" }, io: { id: 2, phase: "failed", message: "File write failed" } };
+  rerender(<XiangqiApp {...props} snapshot={failedSave} session={{ ...props.session, error: "Save failed" }} />);
+  expect(screen.getByText(/file operation could not complete/)).toBeTruthy();
+  expect(screen.getByRole("heading", { name: "Application limit reached" })).toBeTruthy();
+  // Reopening uses a new native identity; the old notice cannot leak into it.
+  rerender(<XiangqiApp {...props} snapshot={{ ...saved, token: { ...saved.token, document: saved.token.document + 1 } }} session={{ ...props.session, error: "" }} />);
+  expect(screen.queryByRole("heading", { name: "Application limit reached" })).toBeNull();
 });

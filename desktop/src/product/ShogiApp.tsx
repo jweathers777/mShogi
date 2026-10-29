@@ -8,12 +8,13 @@ import type { GameSession } from "./useGameSession";
 import licenseUrl from "../assets/fonts/OFL.txt?url";
 import fontLicense from "../assets/fonts/OFL.txt?raw";
 import fontNotice from "../assets/fonts/NOTICE.txt?raw";
-import { NativeAnalysis, NativeHistory, NativeRecovery, useNativeWorkCommand } from "./NativeSessionPanels";
+import { NativeAnalysis, NativeHistory, NativeRecovery, nativeCapacityReached, useNativeCapacityError, useNativeWorkCommand } from "./NativeSessionPanels";
 export function ShogiApp({ snapshot, session, onNewGame, onOpen, blocked }: { snapshot: GameSnapshot; session: GameSession; onNewGame: () => void; onOpen: () => void; blocked: boolean }) {
   const onInspect = useMovementInspection({ token: snapshot.token, game: snapshot.game });
   const busy = session.busy || snapshot.capacity.status === "checking" || ["saving", "opening"].includes(snapshot.io.phase);
   const disabled = busy || blocked;
-  const capacity = snapshot.capacity.status === "paused";
+  const capacityError = useNativeCapacityError(snapshot, session.error);
+  const capacity = nativeCapacityReached(snapshot, capacityError);
   const [confirmation, setConfirmation] = useState<{ source: GameSnapshot; kind: "resign" | "declare" } | null>(null);
   const { statusRef: boardStatus, command } = useNativeWorkCommand(snapshot, session);
   const analyzing = snapshot.phase === "thinking" && snapshot.execution_purpose === "move_analysis";
@@ -30,8 +31,8 @@ export function ShogiApp({ snapshot, session, onNewGame, onOpen, blocked }: { sn
     board={<>
         <ShogiBoard snapshot={snapshot} disabled={disabled || capacity || !snapshot.capabilities.board_action || confirmation !== null} onInspect={onInspect} inspectionDisabled={disabled || confirmation !== null} inspectionContextKey={JSON.stringify(snapshot.token)} onPlay={(action) => { void command({ kind: "play", action }); }} />
 </>}
-    notices={<NativeRecovery snapshot={snapshot} error={session.error} disabled={disabled} command={command} />}
-    analysis={<NativeAnalysis snapshot={snapshot} defaults={snapshot.document.settings.settings.analysis_defaults} disabled={disabled} command={command} maxDepth={4} maxNodes={20000} minNodes={0} />}
+    notices={<NativeRecovery snapshot={snapshot} error={session.error} capacityError={capacityError} disabled={disabled} command={command} />}
+    analysis={<NativeAnalysis snapshot={snapshot} defaults={snapshot.document.settings.settings.analysis_defaults} disabled={disabled || capacity} command={command} maxDepth={4} maxNodes={20000} minNodes={0} />}
     history={<NativeHistory snapshot={snapshot} disabled={disabled} command={command} />}
     gameActions={<>        <section className="shogi-game-actions">{snapshot.capabilities.declaration && <><p>Entering-king prerequisites are satisfied. Eligibility alone does not conclude the game.</p><button className="secondary" disabled={disabled || capacity} onClick={() => setConfirmation({ source: snapshot, kind: "declare" })}>Declare entering king…</button></>}{snapshot.capabilities.resign && <button className="quiet" disabled={disabled || capacity} onClick={() => setConfirmation({ source: snapshot, kind: "resign" })}>Resign game…</button>}</section>
 </>}

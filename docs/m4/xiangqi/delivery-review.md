@@ -1,3 +1,128 @@
+# Final current-source verdict — MSH-103
+
+Final reconciliation: 2026-10-29, resumed from integration
+`869bee3815750b44a80aa855cfc347e29724cd2e` on `codex/rewrite`.
+**All MSH-103 acceptance requirements are supported. No material game-specific
+Xiangqi finding remains unresolved.** MSH-45 and M4 remain open for their own
+reconciliation and closure; MSH-106 is not started.
+
+This is the authorized completion of the existing review, not a replacement
+assessment or implementation campaign. The original blocked assessment and its
+failing probe are preserved verbatim below and in the original review commits.
+Current production source is `1c6b97e2bf7ecf560be1902e01b4e95038ee3482`;
+869bee3 changes only the correction evidence/task records. This finalization
+adds documentation and task acceptance only.
+
+## Final MSH-45 AC1–8 findings
+
+These are the game-specific review findings, not checkmarks or closure of the
+MSH-45 task. Its original criteria, dependencies and status remain unchanged.
+
+| Criterion | Final verdict | Supporting evidence / reconciliation |
+| --- | --- | --- |
+| AC1 Named complete selected rules profile | Supported | Original clause-to-source/code/fixture matrix below and [native review](delivery-reviews/native.md). Profile, source interpretations and native rules are unchanged by MSH-114. |
+| AC2 Authoritative library, complete actions/history and distinct identities | Supported | Original native/session/Take back source assessments, exact reversal, strict rejection and context tests;114 does not change native product admission. |
+| AC3 Independent fixtures, reference and reproducible conformance | Supported | Original independent fixtures, frozen board/history expectations, perft/divide/reference provenance and executed checks remain valid. No comparator becomes rules authority. |
+| AC4 Standalone native console | Supported | Original console source review and actual subprocess evidence, unchanged by MSH-114. Human and machine contracts remain distinct. |
+| AC5 Own functional engine/search and interoperability | Supported as functional M4 delivery | Original native history-aware search/child/UCI and own/external recorded-match evidence remains valid. Competitive strength stays MSH-54/M5. |
+| AC6 Lossless canonical records and desktop persistence | Supported | Native/desktop replay, strict parsing, complete event prefixes, observations, archive admission and Take back evidence unchanged;114 adds verified real control-boundary Save/Open/Save As coverage. |
+| AC7 Actual game-specific desktop product | Supported; F01 resolved | Prior101/102/113 packaged macOS play/analysis/outcomes/recovery/history/Take back/document/accessibility/sizing evidence plus114's actual normal and labeled QA capacity correction. No new Windows/Linux Xiangqi GUI claim. |
+| AC8 Complete ledger and independent review | Supported for this review | Original independent complete-game assessment plus independent MSH-114 correction review and [final bounded reconciliation](delivery-reviews/final-reconciliation.md). No required behavior is relabeled optional, M5 or106 work. Shared integration/platform gates remain visible. |
+
+## Exact F01 resolution and unaffected contracts
+
+MSH-114 is Done. The original defect was an incorrect observation-count claim
+from a combined 256/8192 diagnostic. The correction removes numeric-substring
+inference. Ambiguous control/byte/event/replay reasons use truthful generic
+saveability language; only known native observation-retention reasons plus
+native ordinary/exact accounting produce the specific observation explanation.
+Technical diagnostics and independent failed-file feedback remain available.
+
+[MSH-114 evidence](../../desktop/evidence/msh114/README.md) pins source 1c6b97e,
+normal and separately labeled QA package hashes,9 actual PNG/AX captures,
+complete GUI-created saves,235 frontend checks (27 new), four focused native
+checks, independent source/test/artifact review and successful native/desktop
+CI on all three systems. Zero-observation Shogi/Xiangqi controls no longer
+claim 256 observations; the actual 256th result is retained and 257th refused,
+with the complete document still saveable. Reopen/Resume does not reset the
+structural limit. The normal package reproduces the corrected behavior after
+opening the complete native control journal and excludes QA instrumentation.
+
+Source comparison confirms that core rules, search, engine, console, runner,
+independent fixtures and selected profile/source decisions are unchanged from
+541fc303's original assessment. Native session/archive source additions are
+QA-gated constructors and tests; product admission, replay, limits, request
+identity and stop reservation are unchanged. The production frontend change
+is the independently verified recovery explanation/technical disclosure.
+There is no production diff from 1c6b97e to the current integration baseline.
+
+The selected `mshogi.xiangqi.wxf2018.v1` profile and G-CYCLE remain supported
+by the original sourced native history/fixture review. G-NOWIN remains the
+owner-selected existential natural board-win goal, not forced-win minimax or
+penalty-based capability. Sound fast assessment and the explicit bounded/
+terminable native exact path retain proof, positive witness, Unknown,
+cancellation and failure distinctions. Ordinary consumers remain
+`sound_fast_only`; exact evidence remains read-only, with honest unscored
+incompletion and explicit unsupported restoration. None of this was changed
+or waived by MSH-114 or this finalization.
+
+## Verification reuse, independent assessment and limitations
+
+Reused: the original 250 focused checks and three independent domain reviews;
+101/102/113 actual packaged evidence;114's independent correction review,
+235 frontend/four focused native checks, real macOS normal/QA GUI and exact
+source [Rust 40959072793](https://github.com/jweathers777/mShogi/actions/runs/40959072793)
+and [Desktop 40959072831](https://github.com/jweathers777/mShogi/actions/runs/40959072831),
+both successful on Windows 2022,macOS 15,Ubuntu 24.04 at 1c6b97e.
+
+Newly performed here: dependency/ownership and Git/source-delta inspection,
+F01-to-correction reconciliation, evidence JSON/hash/link validation, fresh CI
+metadata queries, Backlog doctor/diff checks, and a bounded fresh independent
+acceptance assessment. No rules/search/GUI campaign or expensive suite was
+rerun. The fresh reviewer inspected the existing source delta, records and
+actual retained pixels/AX; this is independent evidence assessment, not new
+GUI execution. [Finalization evidence](delivery-finalization-evidence.json)
+records exact revisions and checks.
+
+The later documentation-head 869bee3 [desktop run 40961719966](https://github.com/jweathers777/mShogi/actions/runs/40961719966)
+succeeded; its [native run 40961719798](https://github.com/jweathers777/mShogi/actions/runs/40961719798)
+failed Ubuntu's unchanged legacy runner test at `runner.rs:172`, observing
+handshake MissingResponse/Broken pipe instead of UnexpectedExit. This is the
+same explicitly scoped MSH-112 investigation, not a new Xiangqi correction or
+a green 869 native result. The failure is preserved alongside the source-
+identical passing1c6b97e CI; no rerun is represented as a fix. MSH-111's prior
+Linux driver-reset failure also remains open. These shared limitations stay
+visible for MSH-46/88/89/47; MSH-103 does not complete their acceptance.
+
+Actual Xiangqi packaged GUI evidence is macOS. Windows/Linux native/package
+and existing Chess/Shogi GUI results are distinct; final all-game packaged
+three-platform acceptance remains MSH-88/46. Untimed play, conservative measured
+search limits, bounded exact Unknown, bounded lossless archive admission and
+no competitive-strength claim remain documented limits of the accepted profile
+and functional baseline, not silently deferred required Xiangqi corrections.
+
+The concrete MSH-106 observations below remain: repeated interaction/selection/
+focus logic, archive/execution lifecycle and dispatch, native semantic ownership,
+and MSH-114's text-based versus structured resource-reason opportunity. They are
+future diagnostic questions, not a broad refactor requirement or a substitute
+for required behavior. No new product feature, rules decision or task starts.
+
+## Next boundary
+
+MSH-45 becomes dependency-satisfied for its separate reconciliation; it remains
+To Do and is not closed here. There is no newly eligible Ready task selected
+or started automatically. MSH-106 still depends on MSH-45 and remains unstarted.
+Stop after MSH-103; retain M2/M3, MSH-41/75, the MSH-61 persistence guarantee,
+the six-game roadmap and M4's open shared integration/closure gates.
+
+---
+
+## Preserved original assessment and correction handoff
+
+The following records describe their stated historical revisions. Their blocked
+verdicts and pending actions are superseded by the final verdict above, without
+altering the underlying evidence or claiming those historical failures passed.
+
 > MSH-114 correction addendum — 2026-10-29: F01 is corrected at
 > `1c6b97e2bf7ecf560be1902e01b4e95038ee3482`; see the independently reviewed
 > [native/frontend/actual packaged evidence](../../desktop/evidence/msh114/README.md).

@@ -1,8 +1,9 @@
 > Current delivery review — MSH-103 (2026-10-29): see the
 > [complete-delivery acceptance matrix](delivery-review.md) for current source,
 > independent review, executed checks and platform-qualified product evidence.
-> MSH-114 supplies the capacity-message correction; MSH-103 remains In Review
-> pending its separate resumed acceptance/finalization. See the review addendum.
+> MSH-103 final acceptance is supported after MSH-114 resolved F01 at
+> `1c6b97e2bf7ecf560be1902e01b4e95038ee3482`. See the final verdict and
+> [bounded independent reconciliation](delivery-reviews/final-reconciliation.md).
 > MSH-113 adds native Take back and retained-history Save/Open. MSH-45/M4 remain
 > open; MSH-106 is unstarted. Task-time gates below are historical evidence.
 

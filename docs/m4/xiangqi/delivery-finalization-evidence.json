@@ -1,0 +1,160 @@
+{
+  "task": "MSH-103",
+  "verdict": "All MSH-103 acceptance and Definition of Done requirements supported; independent final reconciliation approved",
+  "original_assessment_source": "541fc303fdeaf5017948d14ddf92bf5efee5ab3f",
+  "correction_source": "1c6b97e2bf7ecf560be1902e01b4e95038ee3482",
+  "reconciliation_base": "869bee3815750b44a80aa855cfc347e29724cd2e",
+  "integration_branch": "codex/rewrite",
+  "production_diff_from_correction_empty": true,
+  "native_rules_search_engine_console_runner_fixtures_profile_unchanged_since_original": true,
+  "dependencies_done": [
+    "MSH-76",
+    "MSH-84",
+    "MSH-96",
+    "MSH-97",
+    "MSH-100",
+    "MSH-102",
+    "MSH-105",
+    "MSH-114"
+  ],
+  "reused_checks": {
+    "original_review_focused_passed": 250,
+    "correction_frontend_passed": 235,
+    "correction_focused_native_passed": 4,
+    "new_executed_product_tests": 0,
+    "new_GUI_execution": false
+  },
+  "new_validation": {
+    "correction_screenshot_hashes_and_AX": 9,
+    "source_diffs": "passed; product boundaries unchanged except bounded reviewed UI correction",
+    "correction_source_platform_CI_requeried": {
+      "native": {
+        "conclusion": "success",
+        "headSha": "1c6b97e2bf7ecf560be1902e01b4e95038ee3482",
+        "jobs": [
+          {
+            "completedAt": "2026-10-29T21:48:24Z",
+            "conclusion": "success",
+            "databaseId": 123746768116,
+            "name": "Rust (ubuntu-24.04)",
+            "startedAt": "2026-10-29T21:35:31Z",
+            "status": "completed",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/40959072793/job/123746768116"
+          },
+          {
+            "completedAt": "2026-10-29T21:49:07Z",
+            "conclusion": "success",
+            "databaseId": 123746768376,
+            "name": "Rust (windows-2022)",
+            "startedAt": "2026-10-29T21:35:31Z",
+            "status": "completed",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/40959072793/job/123746768376"
+          },
+          {
+            "completedAt": "2026-10-29T21:44:09Z",
+            "conclusion": "success",
+            "databaseId": 123746768420,
+            "name": "Rust (macos-15)",
+            "startedAt": "2026-10-29T21:36:11Z",
+            "status": "completed",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/40959072793/job/123746768420"
+          }
+        ],
+        "status": "completed",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/40959072793"
+      },
+      "desktop": {
+        "conclusion": "success",
+        "headSha": "1c6b97e2bf7ecf560be1902e01b4e95038ee3482",
+        "jobs": [
+          {
+            "completedAt": "2026-10-29T21:46:49Z",
+            "conclusion": "success",
+            "databaseId": 123746767305,
+            "name": "Desktop (ubuntu-24.04)",
+            "startedAt": "2026-10-29T21:35:31Z",
+            "status": "completed",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/40959072831/job/123746767305"
+          },
+          {
+            "completedAt": "2026-10-29T21:42:41Z",
+            "conclusion": "success",
+            "databaseId": 123746767542,
+            "name": "Desktop (macos-15)",
+            "startedAt": "2026-10-29T21:35:33Z",
+            "status": "completed",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/40959072831/job/123746767542"
+          },
+          {
+            "completedAt": "2026-10-29T21:52:01Z",
+            "conclusion": "success",
+            "databaseId": 123746768361,
+            "name": "Desktop (windows-2022)",
+            "startedAt": "2026-10-29T21:35:31Z",
+            "status": "completed",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/40959072831/job/123746768361"
+          }
+        ],
+        "status": "completed",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/40959072831"
+      }
+    },
+    "backlog_doctor": "Passed: no duplicate IDs, self dependencies or cycles",
+    "git_diff_check": "Passed",
+    "local_documentation_links_resolved": 104,
+    "historical_delivery_review": "Entire previous file retained verbatim as suffix",
+    "ready_queue_before_finalization": "No tasks found; MSH-45 becomes dependency-satisfied after MSH-103, remains To Do"
+  },
+  "later_documentation_native_run": {
+    "conclusion": "failure",
+    "headSha": "869bee3815750b44a80aa855cfc347e29724cd2e",
+    "jobs": [
+      {
+        "completedAt": "2026-10-29T22:02:15Z",
+        "conclusion": "failure",
+        "databaseId": 123755918442,
+        "name": "Rust (ubuntu-24.04)",
+        "startedAt": "2026-10-29T21:55:02Z",
+        "status": "completed",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/40961719798/job/123755918442"
+      },
+      {
+        "completedAt": "2026-10-29T22:07:42Z",
+        "conclusion": "success",
+        "databaseId": 123755918742,
+        "name": "Rust (windows-2022)",
+        "startedAt": "2026-10-29T21:55:02Z",
+        "status": "completed",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/40961719798/job/123755918742"
+      },
+      {
+        "completedAt": "2026-10-29T22:04:24Z",
+        "conclusion": "success",
+        "databaseId": 123755918765,
+        "name": "Rust (macos-15)",
+        "startedAt": "2026-10-29T21:55:06Z",
+        "status": "completed",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/40961719798/job/123755918765"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/jweathers777/mShogi/actions/runs/40961719798"
+  },
+  "later_failure_disposition": "Same known MSH-112 legacy runner MissingResponse vs UnexpectedExit; real failure preserved; not a new Xiangqi gate or claimed fixed",
+  "F01": "resolved by Done MSH-114; original failed probe preserved",
+  "original_probe_sha256": "fd345d8f108e4c88481f9a6b1873bc380edc5b9b7c8c262ce321421c49d50d78",
+  "independent_final_reviewer": "/root/finalize103_review; bounded source/evidence/pixel/AX acceptance reconciliation only",
+  "scope_limits": [
+    "No MSH-45 or M4 closure",
+    "No MSH-106 start",
+    "No Windows/Linux Xiangqi GUI claim",
+    "No implementation or expensive campaign"
+  ],
+  "remaining_material_game_specific_findings": [],
+  "independent_final_review": {
+    "reviewer": "/root/finalize103_review",
+    "method": "Fresh read-only bounded source/evidence and retained PNG/AX review; no new test or GUI execution",
+    "result": "Approved all MSH-103 acceptance and completion requirements; no material game-specific finding",
+    "record": "docs/m4/xiangqi/delivery-reviews/final-reconciliation.md"
+  }
+}

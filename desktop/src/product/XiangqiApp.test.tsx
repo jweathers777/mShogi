@@ -197,7 +197,7 @@ it("explains cheap atomic capacity refusals even when the native capacity worker
   // Native preflight refusals preserve the token and do not start an admission worker.
   const { session } = app(standard, "Application capacity: retained observations are at their limit; accepted history is saveable. Saving/reopening cannot enlarge the limit.");
   expect(screen.getByRole("heading", { name: "Application limit reached" })).toBeTruthy();
-  expect(screen.getByText(/256 recorded engine observations/)).toBeTruthy();
+  expect(screen.getByText(/recorded-observation storage limit/)).toBeTruthy();
   expect(screen.getByText(/Saving and reopening does not reset this limit/)).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
   expect((screen.getByRole("button", { name: "Start move analysis" }) as HTMLButtonElement).disabled).toBe(true);

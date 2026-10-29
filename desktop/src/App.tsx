@@ -1,3 +1,4 @@
+import { TakeBackControl } from "./product/TakeBackControl";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { OutcomeCard, RecoveryNotice, ResignConfirmation } from "./Recovery";
 import { CapacityNotice } from "./Capacity";
@@ -92,15 +93,16 @@ function EngineObservations({ snapshot }: { snapshot: Snapshot }) {
     </>
   );
 }
-export function App({ onChooseGame, externalCloseGuard = false, sharedSnapshot }: { onChooseGame?: (human: Color) => void; externalCloseGuard?: boolean; sharedSnapshot?: GameSnapshot } = {}) {
+export function App({ onChooseGame, externalCloseGuard = false, sharedSnapshot, onTakeBack, takeBackBusy = false, sharedError = "" }: { onChooseGame?: (human: Color) => void; externalCloseGuard?: boolean; sharedSnapshot?: GameSnapshot; onTakeBack?: () => Promise<unknown>; takeBackBusy?: boolean; sharedError?: string } = {}) {
   const session = useNativeSession();
-  const { snapshot: legacySnapshot, error, connected, command } = session;
+  const { snapshot: legacySnapshot, error: legacyError, connected, command } = session;
   const snapshot = sharedSnapshot?.chess ?? legacySnapshot;
+  const error = sharedError || legacyError;
   const onInspect = useMovementInspection(sharedSnapshot ? { token: sharedSnapshot.token, game: sharedSnapshot.game } : null);
   const busy =
-    session.busy ||
+    session.busy || takeBackBusy ||
     (snapshot !== null &&
-      ["saving", "opening", "viewing"].includes(snapshot.io.phase));
+      (snapshot.capacity.status === "checking" || ["saving", "opening", "viewing"].includes(snapshot.io.phase)));
   const guard = useDocumentGuard(snapshot, externalCloseGuard ? null : session.closeRequest, session);
   const [newHuman, setNewHuman] = useState<Color>("white");
   const [claimIndex, setClaimIndex] = useState(0);
@@ -261,16 +263,17 @@ export function App({ onChooseGame, externalCloseGuard = false, sharedSnapshot }
           )}
 </>}
     notices={<>          <CapacityNotice capacity={snapshot.capacity} />
+          {/application capacity/i.test(sharedError) && !capacityPaused && <section className="notice capacity-notice" role="alert"><strong>Application limit reached</strong><p>Your complete current game and observations are preserved. Save this document before starting another game. Saving and reopening does not reset its limits.</p></section>}
           {snapshot.conclusion !== null && !historical && (
             <OutcomeCard conclusion={snapshot.conclusion} />
           )}
-          <RecoveryNotice snapshot={snapshot} error={error.startsWith("Application capacity:") ? "" : error} />
+          <RecoveryNotice snapshot={snapshot} error={(capacityPaused || /application capacity/i.test(sharedError)) && error.startsWith("Application capacity:") ? "" : error} />
           {snapshot.play_paused && !capacityPaused && (
             <section className="notice play-paused" role="status">
               <strong>Play paused</strong>
               <p>
                 {snapshot.conclusion === null
-                  ? "Board moves and draw claims are paused. Returning to live and resuming retires analysis and continues play."
+                  ? snapshot.engine.message === "Position restored. Resume play when ready." ? snapshot.engine.message : "Board moves and draw claims are paused. Returning to live and resuming retires analysis and continues play."
                   : "The game remains concluded. Finishing analysis does not reopen it."}
               </p>
               <button
@@ -349,6 +352,7 @@ export function App({ onChooseGame, externalCloseGuard = false, sharedSnapshot }
           />
 </>}
     gameActions={<>          <section className="card new-game">
+            <TakeBackControl available={(sharedSnapshot?.capabilities.take_back ?? snapshot.can_take_back) && !historical} disabled={!connected || busy || takeBackBusy || guard.pending !== null || capacityPaused} contextKey={JSON.stringify(sharedSnapshot?.token ?? { version: snapshot.version, selection: snapshot.view.selection_id })} restore={onTakeBack ?? (() => command({ kind: "take_back", version: snapshot.version }))} />
             {!onChooseGame && <><label htmlFor="human-color">Your color for a new game</label><select id="human-color" value={newHuman} onChange={(event) => setNewHuman(event.target.value as Color)}><option value="white">White</option><option value="black">Black</option></select></>}
             {snapshot.conclusion === null && !historical && (
               <button

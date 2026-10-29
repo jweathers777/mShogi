@@ -10,6 +10,7 @@ pub use capacity::*;
 mod persistence;
 pub use persistence::*;
 mod analysis;
+mod takeback;
 pub use analysis::*;
 use mshogi_core::chess::*;
 use mshogi_engine::{
@@ -88,6 +89,11 @@ pub enum DesktopCommand {
         /// Current session version.
         version: u64,
     },
+    /// Restore the preceding playable human decision atomically.
+    TakeBack {
+        /// Current live session version.
+        version: u64,
+    },
     /// Explicit human resignation, including while the engine is thinking.
     /// M2 proof limits can leave the concluded match unresolved and unscored.
     Resign {
@@ -114,6 +120,7 @@ impl DesktopCommand {
             | Self::NewGame { version, .. }
             | Self::Play { version, .. }
             | Self::Claim { version, .. }
+            | Self::TakeBack { version }
             | Self::Resign { version }
             | Self::Analyze { version, .. }
             | Self::CancelAnalysis { version }
@@ -230,6 +237,8 @@ pub struct Snapshot {
     pub analysis: AnalysisState,
     /// Analysis pauses play until explicit Resume; ended games stay ended.
     pub play_paused: bool,
+    /// Native eligibility for the complete human-versus-engine takeback transaction.
+    pub can_take_back: bool,
     /// Explicit supported interactive adjudication identity.
     pub rules_mode: &'static str,
     /// Deterministic interactive work limits.
@@ -259,6 +268,7 @@ pub struct DesktopSession {
     settings: DesktopSettings,
     observations: Vec<ArchivedObservation>,
     controls: Vec<persistence::ControlEntry>,
+    takebacks: Vec<persistence::TakeBackEvidence>,
     initial_record: GameRecord,
     viewed: Option<persistence::Viewed>,
     selection_id: u64,
@@ -294,6 +304,7 @@ impl DesktopSession {
             settings: DesktopSettings::default(),
             observations: Vec::new(),
             controls: Vec::new(),
+            takebacks: Vec::new(),
             initial_record: AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record(),
             viewed: None,
             selection_id: 1,
@@ -401,6 +412,7 @@ impl DesktopSession {
                 self.observations.clear();
                 self.validated_observations = 0;
                 self.controls.clear();
+                self.takebacks.clear();
                 self.document_path = None;
                 self.viewed = None;
                 self.selection_id += 1;
@@ -466,6 +478,7 @@ impl DesktopSession {
                 self.engine.message = None;
                 self.changed();
             }
+            DesktopCommand::TakeBack { .. } => self.take_back(at_ns)?,
             DesktopCommand::Analyze { operation, .. } => self.start_analysis(operation)?,
             DesktopCommand::CancelAnalysis { .. } => self.cancel_analysis()?,
             DesktopCommand::Resume { .. } => self.resume()?,
@@ -765,6 +778,7 @@ impl DesktopSession {
             observations: self.observations.clone(),
             analysis: self.analysis.clone(),
             play_paused: self.play_paused,
+            can_take_back: self.viewed.is_none() && self.take_back_target().is_some(),
             rules_mode: "m2",
             limits: self.play_limits,
         }
@@ -928,6 +942,24 @@ impl DesktopController {
             self.session.analysis.status = AnalysisPhase::Cancelled;
             self.session.analysis.message = Some("Pending analysis admission cancelled before any command or observation was accepted.".into());
             return Ok(self.session.snapshot());
+        }
+        if let DesktopCommand::TakeBack { version } = command {
+            if version != self.session.version
+                || self.session.viewed.is_some()
+                || self.session.take_back_target().is_none()
+            {
+                return Err("No current live human decision is available for Take back.".into());
+            }
+            self.session.ensure_capacity()?;
+            let candidate = self.session.clone();
+            self.bridge.cancel();
+            self.session.pending = None;
+            self.session.retire_analysis();
+            self.session.play_paused = true;
+            self.session.engine.status = EnginePhase::Paused;
+            self.queue_admission_operation(candidate, Some(self.at_ns()))?;
+            self.last_command_receipt = self.admission_receipt.clone();
+            return Ok(self.snapshot());
         }
         let preferences = matches!(command, DesktopCommand::Preferences { .. });
         let at_ns = self.at_ns();

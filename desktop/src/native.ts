@@ -162,6 +162,7 @@ export interface HistoricalView {
   timeline: { index: number; label: string; ply: number }[];
 }
 export interface Snapshot {
+  can_take_back: boolean;
   capacity: {
     id: number;
     status: "available" | "checking" | "paused";
@@ -205,7 +206,7 @@ export type DesktopCommand =
   | { kind: "play"; version: number; action: string }
   | { kind: "claim"; version: number; claim: Claim }
   | {
-      kind: "cancel" | "retry" | "resign" | "cancel_analysis" | "resume";
+      kind: "take_back" | "cancel" | "retry" | "resign" | "cancel_analysis" | "resume";
       version: number;
     }
   | { kind: "analyze"; version: number; operation: AnalysisOperation }

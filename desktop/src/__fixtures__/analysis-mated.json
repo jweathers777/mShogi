@@ -209,6 +209,7 @@
     "message": null
   },
   "play_paused": true,
+  "can_take_back": false,
   "rules_mode": "m2",
   "limits": {
     "depth": 2,

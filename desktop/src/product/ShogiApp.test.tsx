@@ -133,3 +133,18 @@ it("presents failures as recoverable execution problems, never as a chess result
   const alert = screen.getByRole("alert"); expect(alert.textContent).not.toContain("/private/machine/path");
   fireEvent.click(screen.getByRole("button", { name: "Retry engine turn" })); expect(session.command).toHaveBeenCalledExactlyOnceWith(snapshot, { kind: "retry" });
 });
+
+it("uses native Take back availability and one complete shared command, never raw Undo", () => {
+  const snapshot = { ...standard, capabilities: { ...standard.capabilities, take_back: true } };
+  const { session, props, rerender } = app(snapshot);
+  const control = screen.getByRole("button", { name: "Take back" });
+  expect(control.closest("[data-shell-section]")?.getAttribute("data-shell-section")).toBe("actions");
+  fireEvent.click(control);
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(snapshot, { kind: "take_back" });
+  const historical = { ...snapshot, historical: true };
+  rerender(<ShogiApp {...props} snapshot={historical} />);
+  expect((control as HTMLButtonElement).disabled).toBe(true);
+  fireEvent.click(control); expect(session.command).toHaveBeenCalledTimes(1);
+  rerender(<ShogiApp {...props} snapshot={{ ...snapshot, capabilities: { ...snapshot.capabilities, take_back: false } }} />);
+  expect((control as HTMLButtonElement).disabled).toBe(true);
+});

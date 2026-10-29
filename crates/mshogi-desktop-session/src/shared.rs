@@ -185,6 +185,8 @@ pub struct CommandCapabilities {
     pub drops: bool,
     /// Whether native choices support promotion completion.
     pub promotion: bool,
+    /// Whether an atomic playable human decision can be restored.
+    pub take_back: bool,
     /// Whether semantic undo is currently supported.
     pub undo: bool,
     /// Whether live engine-turn execution is available.
@@ -522,6 +524,8 @@ pub enum SessionOperation {
     Resign {},
     /// Undo the last accepted native event while retiring all execution work.
     Undo {},
+    /// Restore the preceding human decision while retiring all execution work.
+    TakeBack {},
     /// Select a read-only native event prefix.
     Inspect {
         /// Selected complete event prefix, not a board move number.
@@ -582,6 +586,8 @@ enum OperationWire {
     Resign {},
     // Undo the last accepted native event while retiring all execution work.
     Undo {},
+    /// Restore the preceding human decision while retiring all execution work.
+    TakeBack {},
     // Select a read-only native event prefix.
     Inspect {
         // Selected complete event prefix, not a board move number.
@@ -679,6 +685,24 @@ impl SharedState {
     }
 }
 impl ShogiSession {
+    fn take_back_target(&self) -> Option<usize> {
+        let events = self.game.events();
+        if let Some(last) = events.last()
+            && last.actor == self.human
+            && matches!(
+                last.command,
+                s::GameCommand::Resign | s::GameCommand::DeclareEnteringKing
+            )
+            && last.conclusion.is_some()
+            && self.game.position().side_to_move() == self.human
+            && !self.game.position().legal_actions().is_empty()
+        {
+            return Some(last.index);
+        }
+        events.iter().rposition(|event| {
+            event.actor == self.human && matches!(event.command, s::GameCommand::Play(_))
+        })
+    }
     fn selected(&self) -> &s::Game {
         self.viewed.as_ref().unwrap_or(&self.game)
     }
@@ -980,6 +1004,9 @@ impl DesktopController {
                 SessionOperation::Retry {} => DesktopCommand::Retry {
                     version: self.session.version,
                 },
+                SessionOperation::TakeBack {} => DesktopCommand::TakeBack {
+                    version: self.session.version,
+                },
                 SessionOperation::Resign {} => DesktopCommand::Resign {
                     version: self.session.version,
                 },
@@ -997,7 +1024,13 @@ impl DesktopController {
         {
             return Err("Wait for native persistence admission before another command.".into());
         }
-        let candidate = self.shared.shogi.as_ref().unwrap().clone();
+        let state = self.shared.shogi.as_ref().unwrap();
+        if matches!(command.operation, SessionOperation::TakeBack {})
+            && (state.viewed.is_some() || state.take_back_target().is_none())
+        {
+            return Err("No live playable human decision is available for Take back.".into());
+        }
+        let candidate = state.clone();
         let receipt =
             self.queue_native_candidate(candidate, Some(command.operation), None, false)?;
         self.last_command_receipt = Some(receipt);
@@ -1341,6 +1374,7 @@ impl DesktopController {
                 board_action: !historical && !ended && !state.paused && human_turn,
                 drops: true,
                 promotion: true,
+                take_back: !historical && state.take_back_target().is_some(),
                 undo: !historical && !state.game.events().is_empty(),
                 engine_turn: !historical && !ended && !human_turn,
                 move_analysis: true,
@@ -1495,6 +1529,7 @@ impl DesktopController {
                 board_action: active && !snapshot.play_paused && snapshot.turn == snapshot.human,
                 drops: false,
                 promotion: true,
+                take_back: snapshot.can_take_back,
                 undo: false,
                 engine_turn: active && snapshot.turn != snapshot.human,
                 move_analysis: true,
@@ -1648,3 +1683,7 @@ impl DesktopController {
 #[cfg(test)]
 #[path = "shared_tests.rs"]
 mod tests;
+
+#[cfg(test)]
+#[path = "shared_takeback_tests.rs"]
+mod takeback_tests;

@@ -103,3 +103,21 @@ it("protects the Xiangqi document during failed Save-and-open and native close",
   fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
   expect(session.cancelClose).toHaveBeenCalledOnce(); expect(session.finishClose).not.toHaveBeenCalled();
 });
+it("routes product Chess Take back through the full shared rendered token and common operation", () => {
+  const chess = { ...(chessJson as Snapshot), can_take_back: true };
+  const source = { ...standard, game: "chess" as const, chess, capabilities: { ...standard.capabilities, take_back: true } };
+  session = { ...session, snapshot: source };
+  render(<ProductApp />);
+  fireEvent.click(screen.getByRole("button", { name: "Take back" }));
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(source, { kind: "take_back" });
+  expect(vi.mocked(useNativeSession).mock.results.at(-1)?.value.command).not.toHaveBeenCalled();
+});
+
+it.each(["The game changed; stale request.", "Application capacity: retained lineage replay budget."])("shows native product Chess Take back refusal: %s", (error) => {
+  const chess = { ...(chessJson as Snapshot), can_take_back: true };
+  session = { ...session, snapshot: { ...standard, game: "chess", chess, capabilities: { ...standard.capabilities, take_back: true } }, error };
+  render(<ProductApp />);
+  const alert = screen.getByRole("alert");
+  expect(alert.textContent).toContain(error.startsWith("Application capacity:") ? "Application limit reached" : "Command or connection problem");
+  expect((screen.getByRole("button", { name: "Save" }) as HTMLButtonElement).disabled).toBe(false);
+});

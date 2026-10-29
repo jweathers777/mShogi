@@ -148,6 +148,13 @@ pub(super) struct ControlEntry {
     command: Option<DesktopCommand>,
     close_pause: bool,
 }
+/// Complete abandoned authoritative lineage, tied to its desktop transaction.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub(super) struct TakeBackEvidence {
+    pub(super) control_sequence: u64,
+    pub(super) match_record_json: String,
+}
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub(super) struct Archive {
@@ -160,6 +167,8 @@ pub(super) struct Archive {
     play_limits: WorkLimits,
     observations: Vec<ArchivedObservation>,
     controls: Vec<ControlEntry>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    takebacks: Vec<TakeBackEvidence>,
     version: u64,
     revision: u64,
     next_request: u64,
@@ -178,6 +187,10 @@ pub(super) struct Viewed {
 pub(super) enum Work {
     Native(Box<super::shared::archive::NativeWork>),
     Admit(Box<DesktopSession>),
+    TakeBack {
+        candidate: Box<DesktopSession>,
+        at_ns: u64,
+    },
     Save {
         archive: Box<Archive>,
         record: MatchRecord,
@@ -351,6 +364,21 @@ fn execute(work: Work, mut stopped: impl FnMut() -> bool) -> Result<Completed, S
     match work {
         Work::Native(work) => super::shared::archive::execute(*work, &mut stopped)
             .map(|value| Completed::Native(Box::new(value))),
+        Work::TakeBack {
+            mut candidate,
+            at_ns,
+        } => {
+            candidate.ensure_capacity()?;
+            candidate.take_back_with_stop(&mut stopped)?;
+            candidate.journal(
+                DesktopCommand::TakeBack {
+                    version: candidate.version - 1,
+                },
+                at_ns,
+            );
+            candidate.check_archive_capacity(&mut stopped)?;
+            Ok(Completed::Admitted(candidate))
+        }
         Work::Admit(candidate) => {
             candidate.check_archive_capacity(&mut stopped)?;
             Ok(Completed::Admitted(candidate))
@@ -452,14 +480,23 @@ pub(super) fn decode_chess_v1(
     if game.game().record() != final_record {
         return Err("Desktop final GameRecord disagrees with complete MatchRecord replay.".into());
     }
+    let lineage = validate_takebacks(&archive, &record, stopped)?;
     for observation in &archive.observations {
         check(stopped)?;
-        validate_observation(observation, &final_record, stopped)?;
+        validate_observation_lineage(observation, &final_record, &lineage, stopped)?;
     }
     Ok(Opened { archive, game })
 }
 fn preflight(archive: &Archive) -> Result<MatchRecord, String> {
-    if archive.schema_version != 1 || archive.profile != "mshogi.desktop.archive.v1" {
+    preflight_reserved(archive, 0)
+}
+fn preflight_reserved(archive: &Archive, reserve_controls: usize) -> Result<MatchRecord, String> {
+    if !matches!(
+        (archive.schema_version, archive.profile.as_str()),
+        (1, "mshogi.desktop.archive.v1") | (3, "mshogi.desktop.archive.v3")
+    ) || (archive.schema_version == 1 && !archive.takebacks.is_empty())
+        || (archive.schema_version == 3 && archive.takebacks.is_empty())
+    {
         return Err("Unsupported desktop archive schema/profile.".into());
     }
     archive.settings.analysis_defaults.validate()?;
@@ -502,6 +539,62 @@ fn preflight(archive: &Archive) -> Result<MatchRecord, String> {
         || final_record.events().len() > MAX_ARCHIVE_EVENTS
     {
         return Err("Archive exceeds 4096 game/match events.".into());
+    }
+    let mut retained_events = initial.events().len() + record.event_count();
+    let mut replay_work = retained_events
+        .saturating_mul(4)
+        .saturating_add(archive.controls.len())
+        .saturating_add(reserve_controls);
+    for entry in &archive.takebacks {
+        let prior = MatchRecord::from_json(&entry.match_record_json).map_err(|e| e.to_string())?;
+        let prior_initial = prior.initial_record().map_err(|e| e.to_string())?;
+        if prior.time_control() != TimeControl::Untimed || prior_initial != initial {
+            return Err("Unsupported or conflicting takeback root/mode/time control.".into());
+        }
+        if prior.events().any(|(request, _)| {
+            matches!(
+                request.command,
+                MatchCommand::Resign { witness: Some(_) }
+                    | MatchCommand::Observe { witness: Some(_) }
+            )
+        }) {
+            return Err("Desktop takeback archives do not support witnessed match commands; evidence was not replayed or discarded.".into());
+        }
+        let events = prior
+            .event_count()
+            .saturating_add(prior_initial.events().len());
+        retained_events = retained_events.saturating_add(events);
+        // Open validates the complete pre-takeback match, its target and the
+        // restored prefix. Charge all three native passes conservatively.
+        replay_work = replay_work.saturating_add(events.saturating_mul(12));
+    }
+    for observation in &archive.observations {
+        let continuation = match &observation.response.result {
+            EngineResult::Move { telemetry, .. }
+            | EngineResult::Claim { telemetry, .. }
+            | EngineResult::Finished { telemetry, .. }
+            | EngineResult::Incomplete { telemetry } => telemetry.principal_variation.len(),
+            EngineResult::Reachability {
+                result: MateReachability::Possible { witness, .. },
+            } => witness.len(),
+            _ => 0,
+        };
+        replay_work = replay_work.saturating_add(
+            observation
+                .response
+                .context
+                .game
+                .events()
+                .len()
+                .saturating_add(continuation)
+                .saturating_mul(4)
+                .saturating_add(8),
+        );
+    }
+    if retained_events > MAX_ARCHIVE_EVENTS
+        || (!archive.takebacks.is_empty() && replay_work > 16_000)
+    {
+        return Err("Application capacity: complete retained takeback lineage exceeds the 4096-event/16000 replay-work budget.".into());
     }
     let mut last_control_at = 0;
     for (i, control) in archive.controls.iter().enumerate() {
@@ -571,6 +664,72 @@ fn preflight(archive: &Archive) -> Result<MatchRecord, String> {
         }
     }
     Ok(record)
+}
+fn validate_takebacks(
+    archive: &Archive,
+    current: &MatchRecord,
+    stopped: &mut impl FnMut() -> bool,
+) -> Result<Vec<GameRecord>, String> {
+    let controls: Vec<_> = archive
+        .controls
+        .iter()
+        .filter(|c| matches!(c.command, Some(DesktopCommand::TakeBack { .. })))
+        .collect();
+    if controls.len() != archive.takebacks.len() {
+        return Err("Takeback evidence/control count disagrees.".into());
+    }
+    let mut lineage = Vec::new();
+    let mut previous: Option<MatchRecord> = None;
+    for (control, evidence) in controls.into_iter().zip(&archive.takebacks) {
+        check(stopped)?;
+        if control.sequence != evidence.control_sequence {
+            return Err("Takeback evidence is bound to another control.".into());
+        }
+        let before =
+            MatchRecord::from_json(&evidence.match_record_json).map_err(|e| e.to_string())?;
+        if before.initial_record().map_err(|e| e.to_string())?
+            != current.initial_record().map_err(|e| e.to_string())?
+        {
+            return Err("Takeback lineage changed native root/provenance.".into());
+        }
+        if let Some(prior) = &previous
+            && before.prefix(prior.event_count()).map(|p| p.to_json()) != Some(prior.to_json())
+        {
+            return Err(
+                "Takeback lineage is not an extension of its previous restored decision.".into(),
+            );
+        }
+        if before.timestamp_floor() > control.at_ns {
+            return Err("Takeback control precedes its authoritative history.".into());
+        }
+        let admitted = before
+            .replay_with_stop(&mut *stopped)
+            .map_err(|e| e.to_string())?;
+        lineage.push(admitted.game().record());
+        let restored = super::takeback::restore(&before, archive.human, stopped)?;
+        previous = Some(restored.record().clone());
+    }
+    if let Some(prior) = &previous
+        && current.prefix(prior.event_count()).map(|p| p.to_json()) != Some(prior.to_json())
+    {
+        return Err("Current match disagrees with the last restored native decision.".into());
+    }
+    Ok(lineage)
+}
+fn validate_observation_lineage(
+    observation: &ArchivedObservation,
+    final_record: &GameRecord,
+    lineage: &[GameRecord],
+    stopped: &mut impl FnMut() -> bool,
+) -> Result<(), String> {
+    let source = &observation.response.context.game;
+    let record = std::iter::once(final_record)
+        .chain(lineage)
+        .find(|record| record.prefix(source.events().len()).as_ref() == Some(source))
+        .ok_or(
+            "Observation target history is not an admitted current or abandoned native lineage.",
+        )?;
+    validate_observation(observation, record, stopped)
 }
 fn validate_observation(
     observation: &ArchivedObservation,
@@ -868,7 +1027,10 @@ impl DesktopSession {
         let mut archive = self.archive_snapshot();
         archive.match_record_json = self.game.record().to_json();
         archive.game_record_json = self.game.game().record().to_json();
-        preflight(&archive)?;
+        // Immutable accepted lineage was already admitted natively. Do not
+        // reconstruct every abandoned branch on each ordinary action; Open
+        // performs complete authoritative lineage replay before installation.
+        preflight_reserved(&archive, reserve_controls)?;
         // Budget each archive watermark at its maximum supported decimal width.
         // Reopening and runtime-only selection/work/I/O cannot grow this encoding.
         archive.version = MAX_SAFE_ID - 17;
@@ -891,8 +1053,13 @@ impl DesktopSession {
     }
     fn archive_snapshot(&self) -> Archive {
         Archive {
-            schema_version: 1,
-            profile: "mshogi.desktop.archive.v1".into(),
+            schema_version: if self.takebacks.is_empty() { 1 } else { 3 },
+            profile: if self.takebacks.is_empty() {
+                "mshogi.desktop.archive.v1"
+            } else {
+                "mshogi.desktop.archive.v3"
+            }
+            .into(),
             match_record_json: String::new(),
             game_record_json: String::new(),
             human: self.human,
@@ -900,6 +1067,7 @@ impl DesktopSession {
             play_limits: self.play_limits,
             observations: self.observations.clone(),
             controls: self.controls.clone(),
+            takebacks: self.takebacks.clone(),
             version: self.version,
             revision: self.archive_revision,
             next_request: self.next_request.max(self.selection_id),
@@ -1076,8 +1244,17 @@ impl DesktopController {
         }
         let id = self.next_io(IoPhase::Saving)?;
         let archive = Archive {
-            schema_version: 1,
-            profile: "mshogi.desktop.archive.v1".into(),
+            schema_version: if self.session.takebacks.is_empty() {
+                1
+            } else {
+                3
+            },
+            profile: if self.session.takebacks.is_empty() {
+                "mshogi.desktop.archive.v1"
+            } else {
+                "mshogi.desktop.archive.v3"
+            }
+            .into(),
             match_record_json: String::new(),
             game_record_json: String::new(),
             human: self.session.human,
@@ -1085,6 +1262,7 @@ impl DesktopController {
             play_limits: self.session.play_limits,
             observations: self.session.observations.clone(),
             controls: self.session.controls.clone(),
+            takebacks: self.session.takebacks.clone(),
             version: self.session.version,
             revision: self.session.archive_revision,
             next_request: self.session.next_request.max(self.session.selection_id),
@@ -1260,6 +1438,7 @@ impl DesktopController {
             observation.historical = true;
         }
         self.session.controls = saved.controls;
+        self.session.takebacks = saved.takebacks;
         self.session.validated_observations = self.session.observations.len();
         self.session.document_revision =
             self.session.document_revision.max(saved.document_revision) + 1;
@@ -1374,6 +1553,7 @@ mod tests {
             play_limits: session.play_limits,
             observations: session.observations.clone(),
             controls: session.controls.clone(),
+            takebacks: session.takebacks.clone(),
             version: session.version,
             revision: session.archive_revision,
             next_request: session.next_request.max(session.selection_id),
@@ -2446,5 +2626,299 @@ mod tests {
             source.session.game.record().to_json()
         );
         fs::remove_dir_all(directory).unwrap();
+    }
+}
+
+#[cfg(test)]
+mod takeback_tests {
+    use super::*;
+    fn tick(s: &DesktopSession) -> u64 {
+        s.controls
+            .last()
+            .map_or(0, |c| c.at_ns)
+            .max(s.game.record().timestamp_floor())
+            + 1
+    }
+    fn play(s: &mut DesktopSession, action: &str) {
+        s.command(
+            DesktopCommand::Play {
+                version: s.version,
+                action: action.parse().unwrap(),
+            },
+            tick(s),
+        )
+        .unwrap();
+    }
+    fn engine(s: &mut DesktopSession) -> EngineResponse {
+        let request = s.engine_request().unwrap();
+        let mut bytes = Vec::new();
+        mshogi_engine::serve_once(
+            std::io::Cursor::new(format!("{}\n", serde_json::to_string(&request).unwrap())),
+            &mut bytes,
+        )
+        .unwrap();
+        let response = serde_json::from_slice(&bytes).unwrap();
+        assert!(s.accept(response, tick(s)));
+        s.observations.last().unwrap().response.clone()
+    }
+    fn take(s: &mut DesktopSession) {
+        s.command(DesktopCommand::TakeBack { version: s.version }, tick(s))
+            .unwrap();
+    }
+    fn encoded(s: &DesktopSession) -> Vec<u8> {
+        let mut archive = s.archive_snapshot();
+        archive.match_record_json = s.game.record().to_json();
+        archive.game_record_json = s.game.game().record().to_json();
+        serde_json::to_vec_pretty(&archive).unwrap()
+    }
+    #[test]
+    fn takeback_chess_pairs_pending_cancelled_results_and_repeated_native_decisions() {
+        let mut s = DesktopSession::new();
+        assert!(!s.snapshot().can_take_back);
+        let before = encoded(&s);
+        assert!(
+            s.command(DesktopCommand::TakeBack { version: s.version }, 1)
+                .is_err()
+        );
+        assert_eq!(encoded(&s), before);
+        play(&mut s, "e2e4");
+        let abandoned = s.engine_request().unwrap();
+        let mut output = Vec::new();
+        mshogi_engine::serve_once(
+            std::io::Cursor::new(format!("{}\n", serde_json::to_string(&abandoned).unwrap())),
+            &mut output,
+        )
+        .unwrap();
+        let late: EngineResponse = serde_json::from_slice(&output).unwrap();
+        let old_version = s.version;
+        let old_selection = s.selection_id;
+        take(&mut s);
+        assert!(s.play_paused);
+        assert!(s.version > old_version);
+        assert!(s.selection_id > old_selection);
+        assert!(!s.accept(late, 5));
+        assert!(s.snapshot().history.is_empty());
+        assert!(s.engine_request().is_none());
+        s.command(DesktopCommand::Resume { version: s.version }, 6)
+            .unwrap();
+        play(&mut s, "e2e4");
+        engine(&mut s);
+        let paired = s.game.game().record();
+        assert_eq!(s.snapshot().history.len(), 2);
+        let action = s.snapshot().legal_choices[0].action;
+        s.command(
+            DesktopCommand::Play {
+                version: s.version,
+                action,
+            },
+            10,
+        )
+        .unwrap();
+        engine(&mut s);
+        take(&mut s);
+        assert_eq!(s.game.game().record(), paired);
+        take(&mut s);
+        assert!(s.snapshot().history.is_empty());
+        assert_eq!(s.observations.len(), 2);
+        assert!(s.observations.iter().all(|o| o.historical));
+        let bytes = encoded(&s);
+        let value: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
+        assert_eq!(value["schema_version"], 3);
+        assert_eq!(value["profile"], "mshogi.desktop.archive.v3");
+        let reopened = decode_chess_v1(&bytes, &mut || false).unwrap();
+        assert_eq!(reopened.game.game().record(), s.game.game().record());
+        assert_eq!(reopened.archive.observations.len(), 2);
+        assert_eq!(reopened.archive.takebacks.len(), 3);
+    }
+    #[test]
+    fn takeback_chess_engine_opening_survives_and_terminal_commands_restore_native_turn() {
+        let root = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record();
+        let mut s = DesktopSession::from_record(&root, Color::Black).unwrap();
+        engine(&mut s);
+        let opening = s.game.game().record();
+        assert!(!s.snapshot().can_take_back);
+        let action = s.snapshot().legal_choices[0].action;
+        s.command(
+            DesktopCommand::Play {
+                version: s.version,
+                action,
+            },
+            2,
+        )
+        .unwrap();
+        engine(&mut s);
+        take(&mut s);
+        assert_eq!(s.game.game().record(), opening);
+        assert_eq!(s.snapshot().history.len(), 1);
+        assert!(!s.snapshot().can_take_back);
+        let mut own = DesktopSession::new();
+        own.command(
+            DesktopCommand::Resign {
+                version: own.version,
+            },
+            1,
+        )
+        .unwrap();
+        assert!(own.snapshot().can_take_back);
+        take(&mut own);
+        assert!(own.game.conclusion().is_none());
+        assert!(own.snapshot().history.is_empty());
+        let mut off = DesktopSession::new();
+        play(&mut off, "e2e4");
+        off.command(
+            DesktopCommand::Resign {
+                version: off.version,
+            },
+            2,
+        )
+        .unwrap();
+        take(&mut off);
+        assert!(off.snapshot().history.is_empty());
+        assert!(off.game.conclusion().is_none());
+    }
+    #[test]
+    fn takeback_chess_claim_and_checkmate_preserve_correct_history_semantics() {
+        let mut game =
+            AdjudicatedGame::from_fen("7k/8/8/8/8/8/R7/K7 w - - 100 1", ClaimPolicy::ExplicitOnly)
+                .unwrap();
+        let mut s = DesktopSession::from_record(&game.record(), Color::White).unwrap();
+        let claim = s
+            .snapshot()
+            .claims
+            .into_iter()
+            .find(|c| c.intended.is_none())
+            .unwrap();
+        s.command(
+            DesktopCommand::Claim {
+                version: s.version,
+                claim,
+            },
+            1,
+        )
+        .unwrap();
+        assert!(s.game.conclusion().is_some());
+        take(&mut s);
+        assert!(s.game.conclusion().is_none());
+        assert!(!s.snapshot().claims.is_empty());
+        assert_eq!(s.game.game().record(), game.record());
+        game = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
+        let mut mate = DesktopSession::from_record(&game.record(), Color::White).unwrap();
+        for (i, action) in ["f2f3", "e7e5", "g2g4", "d8h4"].into_iter().enumerate() {
+            let actor = mate.game.game().position().side_to_move();
+            mate.apply_match(
+                actor,
+                MatchCommand::Move(action.parse().unwrap()),
+                i as u64 + 1,
+            )
+            .unwrap();
+        }
+        assert!(mate.game.conclusion().is_some());
+        take(&mut mate);
+        assert_eq!(mate.snapshot().history, ["f2f3", "e7e5"]);
+        assert!(mate.game.conclusion().is_none());
+        decode_chess_v1(&encoded(&mate), &mut || false).unwrap();
+    }
+    #[test]
+    fn takeback_chess_strict_lineage_conflicts_capacity_and_interruption_preserve_current() {
+        let mut s = DesktopSession::new();
+        play(&mut s, "e2e4");
+        engine(&mut s);
+        take(&mut s);
+        let good = encoded(&s);
+        let parsed: serde_json::Value = serde_json::from_slice(&good).unwrap();
+        for edit in 0..4 {
+            let mut bad = parsed.clone();
+            match edit {
+                0 => bad["takebacks"][0]["control_sequence"] = 0.into(),
+                1 => bad["schema_version"] = 1.into(),
+                2 => bad["takebacks"] = serde_json::json!([]),
+                _ => bad["takebacks"][0]["match_record_json"] = "{}".into(),
+            }
+            assert!(decode_chess_v1(&serde_json::to_vec(&bad).unwrap(), &mut || false).is_err());
+        }
+        let duplicate = String::from_utf8(good.clone()).unwrap().replacen(
+            "\"schema_version\": 3",
+            "\"schema_version\": 3, \"schema_version\": 3",
+            1,
+        );
+        assert!(decode_chess_v1(duplicate.as_bytes(), &mut || false).is_err());
+        assert!(decode_chess_v1(&good, &mut || true).is_err());
+        let mut full = DesktopSession::new();
+        play(&mut full, "e2e4");
+        let original = full.controls[0].clone();
+        full.controls = (0..MAX_ARCHIVE_CONTROLS)
+            .map(|i| ControlEntry {
+                sequence: i as u64 + 1,
+                command: Some(DesktopCommand::Preferences {
+                    orientation: Color::White,
+                    analysis_defaults: AnalysisOperation::Moves { depth: 1, nodes: 1 },
+                }),
+                ..original.clone()
+            })
+            .collect();
+        let record = full.game.record().to_json();
+        let observations = full.observations.len();
+        assert!(
+            full.command(
+                DesktopCommand::TakeBack {
+                    version: full.version
+                },
+                2
+            )
+            .unwrap_err()
+            .starts_with("Application capacity:")
+        );
+        assert_eq!(full.game.record().to_json(), record);
+        assert!(full.takebacks.is_empty());
+        assert_eq!(full.observations.len(), observations);
+    }
+    #[test]
+    fn takeback_chess_v3_replay_boundary_reserves_actual_close_control() {
+        let mut s = DesktopSession::new();
+        play(&mut s, "e2e4");
+        for at_ns in 2..1322 {
+            s.apply_match(Color::Black, MatchCommand::Observe { witness: None }, at_ns)
+                .unwrap();
+        }
+        take(&mut s);
+        s.command(DesktopCommand::Resume { version: s.version }, tick(&s))
+            .unwrap();
+        play(&mut s, "e2e4");
+        s.engine_request().unwrap();
+        let mut accepted = 0;
+        loop {
+            let prior = s.clone();
+            let result = s.command(
+                DesktopCommand::Preferences {
+                    orientation: Color::White,
+                    analysis_defaults: AnalysisOperation::Moves { depth: 1, nodes: 1 },
+                },
+                tick(&s),
+            );
+            if let Err(error) = result {
+                assert!(error.starts_with("Application capacity:"), "{error}");
+                s = prior;
+                break;
+            }
+            accepted += 1;
+            assert!(accepted < MAX_ARCHIVE_CONTROLS);
+        }
+        assert!(s.pending.is_some());
+        assert!(accepted > 10);
+        let mut c = DesktopController::new("/unused/msh113-close-engine".into()).unwrap();
+        c.session = s;
+        let before = c.session.controls.len();
+        c.pause_for_close();
+        assert_eq!(c.session.controls.len(), before + 1);
+        assert!(c.session.controls.last().unwrap().close_pause);
+        c.session.check_archive_capacity(&mut || false).unwrap();
+        let bytes = encoded(&c.session);
+        decode_chess_v1(&bytes, &mut || false).unwrap();
+        println!(
+            "MSH-113 v3 boundary: {} accepted preferences, {} controls, {} encoded bytes; mandatory close retained and reopened",
+            accepted,
+            c.session.controls.len(),
+            bytes.len()
+        );
     }
 }

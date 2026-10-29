@@ -221,3 +221,18 @@ it("keeps failed Save visible alongside capacity and remembers structural refusa
   rerender(<XiangqiApp {...props} snapshot={{ ...saved, token: { ...saved.token, document: saved.token.document + 1 } }} session={{ ...props.session, error: "" }} />);
   expect(screen.queryByRole("heading", { name: "Application limit reached" })).toBeNull();
 });
+
+it("uses native Take back availability and one complete shared command, never raw Undo", () => {
+  const snapshot = { ...standard, capabilities: { ...standard.capabilities, take_back: true } };
+  const { session, props, rerender } = app(snapshot);
+  const control = screen.getByRole("button", { name: "Take back" });
+  expect(control.closest("[data-shell-section]")?.getAttribute("data-shell-section")).toBe("actions");
+  fireEvent.click(control);
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(snapshot, { kind: "take_back" });
+  const historical = { ...snapshot, historical: true };
+  rerender(<XiangqiApp {...props} snapshot={historical} />);
+  expect((control as HTMLButtonElement).disabled).toBe(true);
+  fireEvent.click(control); expect(session.command).toHaveBeenCalledTimes(1);
+  rerender(<XiangqiApp {...props} snapshot={{ ...snapshot, capabilities: { ...snapshot.capabilities, take_back: false } }} />);
+  expect((control as HTMLButtonElement).disabled).toBe(true);
+});

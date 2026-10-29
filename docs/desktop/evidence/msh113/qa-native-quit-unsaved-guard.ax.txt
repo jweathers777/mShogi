@@ -1,0 +1,23 @@
+Window: "mShogi Verification — standard (test state) — content 1180.0 × 820.0 logical", App: mShogi Verification.
+0 standard window mShogi Verification — standard (test state) — content 1180.0 × 820.0 logical, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 container Save your changes?
+				4 heading Save your changes?, Value: 2
+					5 text Save your changes?
+				6 text Save this game before closing mShogi, or explicitly discard its unsaved changes.
+				7 button Save & continue
+				8 button Discard & continue
+				9 button Cancel
+	10 close button
+	11 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	12 minimize button
+	13 text mShogi Verification — standard (test state) — content 1180.0 × 820.0 logical
+14 menu bar
+	15 mShogi Verification
+	16 Edit
+	17 View
+	18 Window
+	19 Verification window size
+
+The focused UI element is 9 button Cancel

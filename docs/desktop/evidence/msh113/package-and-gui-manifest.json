@@ -1,0 +1,84 @@
+{
+  "source": "bfe09cf4fed1827d868467a7cc475a3a175931ba",
+  "environment": {
+    "macos": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0.1\nBuildVersion:\t\t26A434\n",
+    "architecture": "arm64"
+  },
+  "packages": {
+    "mShogi.app": {
+      "Contents/Info.plist": {
+        "sha256": "343be4b5b0ce533854424094072924e4695b92c95e1c220e1cd7ec09b5a8ce90",
+        "bytes": 1048
+      },
+      "Contents/MacOS/mshogi-desktop": {
+        "sha256": "a84b071d556581530986e527a092cf3795ef955b00513ad88cacdc4a6219b868",
+        "bytes": 16283472
+      },
+      "Contents/MacOS/mshogi": {
+        "sha256": "a31b22c8928112d1175d0f33540f8ba6e760ac3b3d3682353867ab8d63efd796",
+        "bytes": 2700080
+      },
+      "Contents/Resources/icon.icns": {
+        "sha256": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc",
+        "bytes": 39844
+      }
+    },
+    "mShogi Verification.app": {
+      "Contents/Info.plist": {
+        "sha256": "166a320e22c63d1fea58096a8b4e25432753d73fe439fe3797b738473f828172",
+        "bytes": 1087
+      },
+      "Contents/MacOS/mshogi-desktop": {
+        "sha256": "4a24b7a0113a4897a3d5e06e7388c4b8cfb39b9f892f5b7a447a86c8e634681c",
+        "bytes": 16738064
+      },
+      "Contents/MacOS/mshogi": {
+        "sha256": "a31b22c8928112d1175d0f33540f8ba6e760ac3b3d3682353867ab8d63efd796",
+        "bytes": 2700080
+      },
+      "Contents/Resources/icon.icns": {
+        "sha256": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc",
+        "bytes": 39844
+      }
+    }
+  },
+  "gui_archives": {
+    "chess": {
+      "path": "/private/tmp/msh113-final-chess.mshogi",
+      "sha256": "9bcf80072c4e98407f67ff9f923642c038294746428c920877003a8668efe5ef",
+      "bytes": 4072,
+      "archive_schema": 3,
+      "observations": 1,
+      "controls": 2,
+      "retained_chess_checkpoints": 1,
+      "current_native_events": 0
+    },
+    "shogi": {
+      "path": "/private/tmp/msh113-final-shogi.mshogi",
+      "sha256": "fa3520d409df5e2cdd784e839564637916d9d06c67357e373bb0f78924be3b42",
+      "bytes": 6053,
+      "archive_schema": 2,
+      "observations": 1,
+      "controls": 6,
+      "retained_chess_checkpoints": 0,
+      "current_native_events": 0
+    },
+    "xiangqi": {
+      "path": "/private/tmp/msh113-final-xiangqi.mshogi",
+      "sha256": "b07c8e76430cd6d762d57563b173093087ce7a95fccd42c86f8e1a71b304a5cf",
+      "bytes": 17102,
+      "archive_schema": 2,
+      "observations": 3,
+      "controls": 12,
+      "retained_chess_checkpoints": 0,
+      "current_native_events": 1
+    }
+  },
+  "verification_engine": {
+    "kind": "external 8-second launch delay, then exec genuine bundled engine in same supervised process",
+    "path": "/private/tmp/msh113-delay-engine",
+    "sha256": "4110d59c4d945f25b761d304bc287f407d777d675ba50d45070e298c07d17f40",
+    "normal_distributable": false
+  },
+  "gui_scope": "Actual macOS packaged native interaction via Cua. No claims of Windows/Linux Take back GUI execution; final platform CI supplies separate native/package/existing GUI regressions."
+}

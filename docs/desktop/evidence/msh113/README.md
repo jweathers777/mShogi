@@ -1,66 +1,169 @@
-# MSH-113 verification evidence
+# MSH-113 Take back evidence
 
-This record is in progress. No acceptance or platform success is inferred from
-implementation alone. The primary integrator works on `codex/rewrite` from
-`8f21eb212d1847d75a7d8580882ae4afeacf193b`.
+Take back is delivered for human-versus-engine Chess, Shogi and Xiangqi. Native
+command actors and complete boundaries select a playable human decision in one
+admitted transaction. The restored position pauses for explicit Resume. MSH-103,
+MSH-106 and other later work are unstarted; closed milestones and game evidence
+remain intact.
 
-## Ownership and review method
+## Revision and package provenance
 
-Root Codex owns frontend, host integration, documentation, verification and Git.
-An isolated native builder owns native session/core changes. A separate reviewer
-read the completed frontend boundary, owner specification and existing lifecycle
-and ran focused tests. That reviewer identified a P2 error-propagation finding:
-product Chess Take back used shared dispatch but its refusal error did not reach
-the legacy Chess notice. The correction routes shared errors to visible existing
-notices and adds stale/capacity refusal regressions; the corrected frontend was independently approved (59 tests/5 files and TypeScript).
-Packaged evidence and final CI will be recorded before finalization.
+- Base: `8f21eb212d1847d75a7d8580882ae4afeacf193b`.
+- Reviewed implementation: `ff0b1ce5d2507d60bb28c0739c24fa0a49b2e69b`.
+- Final production source: `bfe09cf4fed1827d868467a7cc475a3a175931ba`.
+- Integration branch: `codex/rewrite`; normal pushes, no rewritten history.
+- Environment: macOS27.0.1 (26A434), Apple arm64, Rust1.99.1, Node24.19.0,
+  native Tauri/WKWebView application.
+- Final normal host SHA256: `a84b071d556581530986e527a092cf3795ef955b00513ad88cacdc4a6219b868`.
+- Final verification host SHA256: `4a24b7a0113a4897a3d5e06e7388c4b8cfb39b9f892f5b7a447a86c8e634681c`.
+- Genuine bundled engine SHA256: `a31b22c8928112d1175d0f33540f8ba6e760ac3b3d3682353867ab8d63efd796`.
 
-The pre-existing user app was saved through the native Save As dialog at
-`/private/tmp/msh113-preserved-preverification.mshogi` before verification.
+[Manifest](package-and-gui-manifest.json) records every package file/hash/size,
+source, environment, real GUI-created archives and the external delay wrapper.
+Normal app: `desktop/src-tauri/target/release/bundle/macos/mShogi.app`;
+QA: sibling `mShogi Verification.app`, separate bundle identity and explicit test
+state/window title. [Normal package smoke](final-normal-package-smoke.json)
+passed inventory/instrumentation exclusion and actual UCI/internal Chess play,
+move analysis and bounded Full calls. Package construction/protocol smoke alone
+is not GUI evidence.
 
-## Review findings addressed during implementation
+## Actual packaged macOS interaction
 
-- Native retained Chess checkpoints originally bypassed the live record's
-  untimed/witness restoration restrictions. They now enforce the same root and
-  restoration restrictions before replay and bind to the native control timestamp.
-- An unavailable Shogi Take back could retire pending initial engine work before
-  asynchronous rejection. Synchronous eligibility now preserves the complete
-  accepted context and pending opening on refusal, matching Chess and Xiangqi.
-- The Chess lineage replay budget needs mandatory stop/close headroom in addition
-  to encoded byte/control reserves. The independent reviewer requested an exact
-  budget-boundary regression; the final exact-boundary regression passed independently.
+The integrator used Cua native accessibility, pointer and keyboard actions. No
+IPC or JavaScript injection supplied moves or changed game state. Every capture
+has its corresponding full `.ax.txt`. All `final-*` and `qa-*` evidence below uses
+the final bfe09cf packages. The few `normal-chess-*` and `intermediate-*` files
+precede the presentation correction and are qualified below.
 
-Intermediate checks: full frontend207 tests/24 files passed. An early workspace
-run passed587 tests (2 intentionally ignored) before the final review corrections.
-An overlapping workspace clippy run encountered a temporary type mismatch in the
-native test file while its builder was still adding cases; this is not final
-verification. Final source checks and exact revisions will supersede these runs.
+| Journey | Actual result and capture |
+| --- | --- |
+| Chess completed pair | Human `e2e4`, genuine bundled `a7a5` (depth2/642nodes). [Pair](final-chess-pair.png); Take back restores White at0plies, pauses, retains the engine observation, disables further Take back. [Restored with visible Resume](final-chess-restored-resume-visible.png). |
+| Chess Save/Open | Native Save As writes schema3 with complete retained match checkpoint and1historical observation. Reopen remains0plies, stopped, clean; explicit Resume is required. [Saved](final-chess-v3-saved.png), [reopened](final-chess-reopened-stopped.png). |
+| Shogi pair/history/inspection | Human `7g7f`, genuine `4c4d`; selecting event0 disables Take back. Return to live explicitly, then inspect Gote pawn3c using native movement inspection. Take back restores Sente0plies and clears old markers, with confirmation and Resume visible. [Pair](final-shogi-pair.png), [history](final-shogi-historical-disabled.png), [inspection](final-shogi-inspection-before.png), [restored](final-shogi-restored-clears-inspection.png). |
+| Shogi Save/Open | Native schema2 retains its ordered journal and1observation; actual Open restores clean/stopped0plies. [Saved](final-shogi-saved.png), [reopened](final-shogi-reopened-stopped.png). |
+| Xiangqi human second | Genuine Red opening `b2×b9` produces1ply and no eligible Take back. Human Black `a9×b9`, genuine Red `h2×h9` produces3plies. Take back restores Black at1ply and preserves the opening. [Opening](final-xiangqi-opening-preserved-unavailable.png), [pair](final-xiangqi-three-plies.png), [restored](final-xiangqi-restored-opening.png). |
+| Xiangqi Save/Open | Schema2 reopens clean, stopped and Black at1ply; no abandoned response is automatically reapplied. [Saved](final-xiangqi-saved.png), [reopened](final-xiangqi-reopened-stopped.png). |
+| Concluded decision | Explicit Resume, native confirmed Black resignation at1ply, then Take back restores the playable Black decision at1ply without erasing Red's opening. [Concluded](final-xiangqi-resigned.png), [restored](final-xiangqi-terminal-restored.png). |
+| Keyboard activation | Resume, another genuine Black/Red pair; Tab traversal reaches Take back, Return executes it, focus returns to live status and Resume is visible. [Keyboard result](final-xiangqi-keyboard-takeback.png). Final Save retains3observations and the complete terminal/takeback journal. [Saved](final-xiangqi-retained-journal-saved.png). |
+| Pending work, each game | Separate QA app delays actual engine process launch8seconds, then would exec the genuine hashed engine in the same supervised process. Human move→pending1ply→Take back retires it→paused0plies. Captures `qa-{chess,shogi,xiangqi}-pending`, `-pending-retired` and `-after-retired-deadline` establish the restored position stayed stopped beyond the8second launch window. These test pending-process ownership, not cancellation at a specific search instruction; native tests inject actual late responses separately. |
+| Native quit and compatibility | Disposable QA uses native Cmd-Q→unsaved guard→explicit Discard and exits (owned process exit0). [Guard](qa-native-quit-unsaved-guard.png). Normal app successfully opens the original preserved schema1 Chess document and is left there stopped. [Legacy/user session restored](final-legacy-v1-user-session-restored.png). |
 
-## Completed independent review
+The prior user session was first preserved with native Save As at
+`/private/tmp/msh113-preserved-preverification.mshogi`, then restored in the latest
+normal app after testing. Verification documents in `/private/tmp` are separate
+from this preserved document. No user work was discarded.
 
-Native/archive reviewer: independent read-only diff/source audit against8f21eb2,
-not the native builder. After the findings above were resolved, independently ran
-`cargo test --locked -p mshogi-desktop-session takeback -- --nocapture`:
-**12 passed,0failed,123filtered,4.74s**. The final efficient replay-limit fixture
-contains1320 genuine Observe entries,123 admitted Preferences and128controls;
-333246encoded bytes, actual mandatory close and strict Open passed. The same
-production boundary had also passed the older equivalent slower fixture
-(12tests/117.04s); this is superseded by the efficient test result. No remaining
-material frontend or native/archive review finding. Actual GUI and final CI are
-separate obligations.
+## Native/archive contract and capacity
 
-## Packaged interaction finding
+Chess uses actor-qualified MatchRecord prefixes; Shogi uses accepted command
+events; Xiangqi uses committed command boundaries, keeping derived warning and
+claim events indivisible. Terminal-only own-turn decisions may be reversed
+alone; off-turn resignation instead returns before the last human board move.
+Native history, provenance and rules profiles remain authoritative. New requests,
+selection and process generations retire execution even when the restored board
+or canonical history matches an older target.
 
-The first reviewed implementation package (`ff0b1ce`) genuinely played Chess
-`e2e4` / bundled `a7a5`, took both back to0plies, paused and retained its
-observation. The first capture `normal-chess-restored.png` exposed a visibility
-finding: the sidebar remained scrolled down to Game Actions, clipping the
-existing Resume notice above the viewport. It is intermediate finding evidence,
-not final visual acceptance. The tiny shared-control correction preserves status
-focus and reveals the existing paused notice with nearest scrolling, with no
-layout redesign. A fresh independent source review approved it after4 focused
-control tests; the final package must establish visible Resume.
+Chess writes existing schema1 until its first Take back, then explicitly writes
+`mshogi.desktop.archive.v3`/schema3. It retains each complete abandoned native
+match bound to its Take back control/timestamp, replay-derives the restored
+human decision and checks subsequent branch extensions. Observations must target
+exact admitted current or retained lineage prefixes. Old readers reject3;
+current readers preserve1/2/3 compatibility. Shogi/Xiangqi stay schema2 and replay
+their complete ordered journals. Native game record schemas are unchanged.
 
-The same first package saved `/private/tmp/msh113-chess-taken-back.mshogi` through
-native Save As (`intermediate-chess-v3-saved`); complete native v3 semantics are
-unchanged by this presentation-only correction.
+Limits were not raised:16MiB encoded bytes,256observations,8192controls,
+game-specific native event bounds and16000normalized replay-work units. Chess
+also retains the4096combined-event ceiling and charges all abandoned checkpoints,
+observation histories/variations/witnesses and mandatory stop/close reservation.
+Shogi/Xiangqi keep their existing conservative native replay and byte/headroom
+charges, extended to Take back. Ordinary admission validates before acceptance;
+resource refusal preserves the complete previous saveable document. No accepted
+observation or canonical continuation is silently deleted, and Take back does
+not replenish storage capacity.
+
+The exact new Chess boundary test uses1320real Observe entries and admits123
+additional Preferences:128controls,333246encoded bytes. A further candidate is
+refused before acceptance; actual mandatory close and authoritative Open succeed.
+The actual GUI archives measure4072bytes (Chess,1checkpoint/1observation),
+6053bytes (Shogi,1observation),17102bytes (final Xiangqi,3observations). Hashes,
+counts and paths are recorded in the manifest. Existing MSH-61/MSH-99 byte/event/
+control/observation256→257/replay/failure campaigns re-executed in the final
+144-test all-feature session suite; unchanged broader evidence is reused.
+
+## Executed verification and review
+
+- Final `npm --prefix desktop run check`:PASS.
+- Final `npm --prefix desktop test`:208passed/24files,11.65s.
+- `cargo test --locked -p mshogi-desktop-session --all-features`:144passed,
+  0failed,91.62s at the final source; includes all12new focused tests and existing
+  Chess/Shogi/Xiangqi archive/capacity/stale-result regressions.
+- Independent `cargo test --locked -p mshogi-desktop-session takeback -- --nocapture`:
+  12passed/0failed/123filtered,4.74s.
+- Workspace regression run before final review corrections:587passed,
+  2intentionally ignored. Final-source platform CI separately reruns the workspace.
+- Final workspace all-target Clippy, native session all-target/all-feature Clippy,
+  host Clippy, formatting and `git diff --check`:PASS. Existing vendored Tao
+  dependency warnings remain; patch/provenance and native quit behavior unchanged.
+- Host `cargo test --locked`:5passed; separately labeled QA package build succeeds.
+- Pinned Backlog1.55.1 `doctor`:no duplicate IDs, self-dependencies or cycles.
+  Installed1.55.0 was not used for mutations.
+
+Actual independent review method: fresh reviewer sessions, separate from the
+native builder and root integrator. Native reviewer audited the completed diff,
+actor/terminal boundaries, strict replay/lineage, capacity and stale safety, and
+independently ran the12tests. Frontend reviewer inspected routing, exact tokens,
+availability/focus/errors/marker invalidation, ran focused checks and approved.
+A final read-only artifact assessment examined all three restored screenshots,
+AX, keyboard/pending evidence and package provenance: Resume visible, complete
+boards/common theme preserved, correct human positions, Shogi markers cleared;
+no material remaining findings. That assessment is not independently performed
+GUI interaction.
+
+Resolved review findings: shared Chess refusal error was initially disconnected;
+abandoned Chess checkpoints needed live-record restoration restrictions;
+unavailable Shogi requests needed pre-retirement refusal; Chess replay admission
+needed reserved close work. Each has a focused regression. Actual GUI found the
+scrolled sidebar could clip Resume; the small shared-control correction reveals
+the existing notice while retaining status focus. `normal-chess-restored.png`
+records that intermediate finding; final captures supersede it. An overlapping
+pre-handoff Clippy encountered a transient test type mismatch; final Clippy and
+native tests passed. Superseded ff0b1ce CI runs were explicitly cancelled in favor
+of the final bfe09cf runs; cancellation is not reported as a pass.
+
+The first bfe09cf Linux desktop run failed only two obsolete GUI assertions that
+concluded Shogi games contain no action buttons. The new approved Take back is
+correctly present. [Original failure](ci-bfe09cf-linux-failure.json) preserves
+tracebacks and artifact provenance; this was not attributed to the unrelated
+MSH-111 driver issue. The external runner now requires exactly one enabled Take
+back action, retains all native conclusion/history assertions, and additionally
+executes declaration/resignation takeback to paused Sente0events. Independent
+review, Python compilation and24runner self-tests passed. Product code and local
+packages are unchanged from bfe09cf. Actual corrected GUI CI remains required.
+
+Final CI results are recorded in `ci-results.json` when complete. MSH-113 remains
+In Review until required CI evidence and completion bookkeeping are satisfied.
+
+## Limits and launch
+
+Actual new Take back GUI evidence is macOS only. Windows/Linux native/package
+and existing Chess/Shogi GUI CI are separate claims; prior MSH-111 Linux driver
+and MSH-112 runner failure records remain unmodified. No new all-platform
+Xiangqi closure or playing-strength claim is made.
+
+Low-level Chess `from_record` pre-session GameRecord history remains an immutable
+import root, because it lacks desktop match-request ownership. Normal desktop
+New/Save/Open retains full actor-qualified match history. No new import,
+variation editor, timed-play policy, search strength or generalized rules layer
+was introduced. Concrete legacy/shared Chess dispatch duplication is recorded
+for future MSH-106 without starting that task.
+
+Launch the normal app:
+
+```sh
+open "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi.app"
+```
+
+Use New game for Chess/Shogi/Xiangqi; Take back is in Game Actions. The current
+preserved Chess session is stopped after reopening; Resume play is explicit.
+From `desktop/`, rebuild with Node24.19.0 and pinned Rust using
+`npm run desktop:build -- --bundles app`. Use `npm run desktop:dev` for development.

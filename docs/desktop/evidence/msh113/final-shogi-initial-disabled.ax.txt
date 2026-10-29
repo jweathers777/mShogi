@@ -1,0 +1,150 @@
+Window: "mShogi", App: mShogi.
+0 standard window mShogi, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 container
+				4 heading mShogi, Value: 1
+					5 text mShogi
+				6 text SHOGI · UNTIMED
+				7 text Local engine
+				8 container Game file
+					9 text UNSAVED
+					10 heading Untitled shogi game, Value: 2
+						11 text Untitled shogi game
+				12 button New game
+				13 button Save
+				14 button Save as…
+				15 button Open…
+				16 container Live shogi game
+					17 text YOUR GAME
+					18 text Sente to move
+					19 text You play Sente against mShogi
+					20 button Flip board; currently Sente at bottom
+					21 text mShogiGote
+					22 text Your opponent
+					23 container Gote pieces in hand
+						24 text No pieces in hand
+					25 container Shogi board, Sente at bottom
+						26 image
+						27 toggle button Description: 9a, Gote lance, Value: off
+						28 toggle button Description: 8a, Gote knight, Value: off
+						29 toggle button Description: 7a, Gote silver, Value: off
+						30 toggle button Description: 6a, Gote gold, Value: off
+						31 toggle button Description: 5a, Gote king, Value: off
+						32 toggle button Description: 4a, Gote gold, Value: off
+						33 toggle button Description: 3a, Gote silver, Value: off
+						34 toggle button Description: 2a, Gote knight, Value: off
+						35 toggle button Description: 1a, Gote lance, Value: off
+						36 toggle button Description: 9b, empty, Value: off
+						37 toggle button Description: 8b, Gote rook, Value: off
+						38 toggle button Description: 7b, empty, Value: off
+						39 toggle button Description: 6b, empty, Value: off
+						40 toggle button Description: 5b, empty, Value: off
+						41 toggle button Description: 4b, empty, Value: off
+						42 toggle button Description: 3b, empty, Value: off
+						43 toggle button Description: 2b, Gote bishop, Value: off
+						44 toggle button Description: 1b, empty, Value: off
+						45 toggle button Description: 9c, Gote pawn, Value: off
+						46 toggle button Description: 8c, Gote pawn, Value: off
+						47 toggle button Description: 7c, Gote pawn, Value: off
+						48 toggle button Description: 6c, Gote pawn, Value: off
+						49 toggle button Description: 5c, Gote pawn, Value: off
+						50 toggle button Description: 4c, Gote pawn, Value: off
+						51 toggle button Description: 3c, Gote pawn, Value: off
+						52 toggle button Description: 2c, Gote pawn, Value: off
+						53 toggle button Description: 1c, Gote pawn, Value: off
+						54 toggle button Description: 9d, empty, Value: off
+						55 toggle button Description: 8d, empty, Value: off
+						56 toggle button Description: 7d, empty, Value: off
+						57 toggle button Description: 6d, empty, Value: off
+						58 toggle button Description: 5d, empty, Value: off
+						59 toggle button Description: 4d, empty, Value: off
+						60 toggle button Description: 3d, empty, Value: off
+						61 toggle button Description: 2d, empty, Value: off
+						62 toggle button Description: 1d, empty, Value: off
+						63 toggle button Description: 9e, empty, Value: off
+						64 toggle button Description: 8e, empty, Value: off
+						65 toggle button Description: 7e, empty, Value: off
+						66 toggle button Description: 6e, empty, Value: off
+						67 toggle button Description: 5e, empty, Value: off
+						68 toggle button Description: 4e, empty, Value: off
+						69 toggle button Description: 3e, empty, Value: off
+						70 toggle button Description: 2e, empty, Value: off
+						71 toggle button Description: 1e, empty, Value: off
+						72 toggle button Description: 9f, empty, Value: off
+						73 toggle button Description: 8f, empty, Value: off
+						74 toggle button Description: 7f, empty, Value: off
+						75 toggle button Description: 6f, empty, Value: off
+						76 toggle button Description: 5f, empty, Value: off
+						77 toggle button Description: 4f, empty, Value: off
+						78 toggle button Description: 3f, empty, Value: off
+						79 toggle button Description: 2f, empty, Value: off
+						80 toggle button Description: 1f, empty, Value: off
+						81 toggle button Description: 9g, Sente pawn, Value: off
+						82 toggle button Description: 8g, Sente pawn, Value: off
+						83 toggle button Description: 7g, Sente pawn, Value: off
+						84 toggle button Description: 6g, Sente pawn, Value: off
+						85 toggle button Description: 5g, Sente pawn, Value: off
+						86 toggle button Description: 4g, Sente pawn, Value: off
+						87 toggle button Description: 3g, Sente pawn, Value: off
+						88 toggle button Description: 2g, Sente pawn, Value: off
+						89 toggle button Description: 1g, Sente pawn, Value: off
+						90 toggle button Description: 9h, empty, Value: off
+						91 toggle button Description: 8h, Sente bishop, Value: off
+						92 toggle button Description: 7h, empty, Value: off
+						93 toggle button Description: 6h, empty, Value: off
+						94 toggle button Description: 5h, empty, Value: off
+						95 toggle button Description: 4h, empty, Value: off
+						96 toggle button Description: 3h, empty, Value: off
+						97 toggle button Description: 2h, Sente rook, Value: off
+						98 toggle button Description: 1h, empty, Value: off
+						99 toggle button Description: 9i, Sente lance, Value: off
+						100 toggle button Description: 8i, Sente knight, Value: off
+						101 toggle button Description: 7i, Sente silver, Value: off
+						102 toggle button Description: 6i, Sente gold, Value: off
+						103 toggle button Description: 5i, Sente king, Value: off
+						104 toggle button Description: 4i, Sente gold, Value: off
+						105 toggle button Description: 3i, Sente silver, Value: off
+						106 toggle button Description: 2i, Sente knight, Value: off
+						107 toggle button Description: 1i, Sente lance, Value: off
+					108 text YouSente
+					109 text Human player To move
+					110 container Sente pieces in hand
+						111 text No pieces in hand
+					112 text Select a piece or hand piece, then a marked square. Arrows · Enter · Esc Your turn Live position · 0 plies
+				113 container Game controls and inspection
+					114 heading Analysis, Value: 2
+						115 text Analysis
+					116 container Inspector view
+						117 toggle button Play details, Value: on
+						118 toggle button Analyze position, Value: off
+					119 container Engine analysis
+						120 heading Native engine, Value: 2
+							121 text Native engine
+						122 container Engine turn status
+							123 text Idle
+						124 text Play limit: depth 2 · 5,000 nodes
+						125 text No engine search has completed in this game.
+					126 container Game history
+						127 heading Game history, Value: 2
+							128 text Game history
+						129 text 0 events
+						130 button 0 Starting position
+					131 heading Game actions, Value: 2
+						132 text Game actions
+					133 container
+						134 button (disabled) Take back
+						135 button Resign game…
+					136 summary About & technical details, Value: off
+						137 text About & technical details
+	138 close button
+	139 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	140 minimize button
+	141 text mShogi
+142 menu bar
+	143 mShogi
+	144 Edit
+	145 View
+	146 Window
+
+The focused UI element is 2 HTML content Description: mShogi, URL: tauri://localhost

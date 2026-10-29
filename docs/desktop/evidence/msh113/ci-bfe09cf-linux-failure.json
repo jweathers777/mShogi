@@ -1,0 +1,94 @@
+{
+  "source": "bfe09cf4fed1827d868467a7cc475a3a175931ba",
+  "run": 40907948723,
+  "job": 123567764563,
+  "artifact": 12912548477,
+  "artifact_zip_sha256": "08911d9ec7b89a2a75ce15464a91a358fbefa78fac8545ac20250d0922d5a1e3",
+  "scope": "Initial final-source Linux GUI run failed the two obsolete no-actions-after-conclusion assertions; no driver-reset attribution. Original failure preserved before updating verification to require and exercise approved Take back.",
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "failed",
+      "error": "",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 1184, in main\n    journey.shogi_fixture(fixture)\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 992, in shogi_fixture\n    assert not w.has(\".shogi-game-actions button\")\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "failed",
+      "error": "",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 1184, in main\n    journey.shogi_fixture(fixture)\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 996, in shogi_fixture\n    assert not w.has(\".shogi-game-actions button\")\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    }
+  ]
+}

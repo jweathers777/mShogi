@@ -989,11 +989,18 @@ class Journey:
             w.button("Confirm declaration")
             self.shogi_events(1)
             wait(lambda: "Sente wins by entering-king declaration" in w.text("[data-game-status]"), "authoritative declaration conclusion")
-            assert not w.has(".shogi-game-actions button")
+            assert w.read("[...document.querySelectorAll('.shogi-game-actions button')].map(e=>({label:e.textContent.trim(),enabled:!e.disabled}))") == [{"label": "Take back", "enabled": True}], "A concluded game exposes only native Take back"
+            w.button("Take back")
+            self.shogi_events(0)
+            wait(lambda: "Sente to move" in w.text("[data-game-status]"), "declaration Take back restores native human decision")
+            assert w.read("document.querySelector('.shogi-application').dataset.paused") == "true"
+            assert w.read("document.querySelector('.take-back-button').disabled")
+            assert "Position restored" in w.text(".play-paused")
+            self.capture("takeback-declaration")
         elif name == "shogi-concluded":
             self.shogi_events(1)
             assert "Sente resigned" in w.text("[data-game-status]")
-            assert not w.has(".shogi-game-actions button")
+            assert w.read("[...document.querySelectorAll('.shogi-game-actions button')].map(e=>({label:e.textContent.trim(),enabled:!e.disabled}))") == [{"label": "Take back", "enabled": True}], "A concluded game exposes only native Take back"
             self.capture("concluded")
             w.click('.shogi-history [data-event="0"]')
             self.shogi_events(1, selected=0, historical=True)
@@ -1004,6 +1011,13 @@ class Journey:
             self.shogi_events(1, selected=1)
             assert "Sente resigned" in w.text("[data-game-status]")
             self.record("Select distinct native terminal event at unchanged board ply", w.text(".shogi-history"))
+            w.button("Take back")
+            self.shogi_events(0)
+            wait(lambda: "Sente to move" in w.text("[data-game-status]"), "resignation Take back restores native human decision")
+            assert w.read("document.querySelector('.shogi-application').dataset.paused") == "true"
+            assert w.read("document.querySelector('.take-back-button').disabled")
+            assert "Position restored" in w.text(".play-paused")
+            self.capture("takeback-resignation")
         elif name == "shogi-capacity":
             self.shogi_analysis_tab()
             assert "Recorded searches (255)" in w.text(".recorded-searches")

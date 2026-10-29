@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-29T15:39:00Z'
-updated_date: '2026-10-29T16:04:00Z'
+updated_date: '2026-10-29T16:21:00Z'
 labels:
   - desktop
   - m4
@@ -67,4 +67,6 @@ Independent read-only frontend review (/root/takeback_ui_review) approved correc
 Implementation complete for independent assessment. Native review approved final production after resolving3 boundary findings: retained Chess checkpoint restoration restrictions/control timestamp, unavailable Shogi atomic refusal, and reserved stop/close replay headroom. Independent native reviewer executed12 focused Take back tests PASS (117.04s on equivalent slower boundary fixture). Native builder final focused all-feature12/12 PASS6.56s after test-only efficiency change; all-target/all-feature clippy PASS. Concrete final boundary fixture1320 genuine Observe commands,123 accepted Preferences,128 controls,333246 encoded bytes, actual pause_for_close plus strict native Open PASS. Final API TakeBack shared/legacy and native capability, paused explicit Resume. Chess writes v1 until firsttakeback then v3 retained authoritative lineage; Shogi/Xiangqi stayv2. Actual packaged macOS GUI, final checks and CI remain required before Done.
 
 Actual ff0b1ce packaged Chess human e2e4/bundled a7a5→TakeBack restored0plies/paused/1retainedobservation; nativeSaveAsv3succeeded. GUI exposed clipped Resume notice when sidebar remained scrolled to GameActions. Sharedcontrol now reveals existing .play-paused notice with nearest scrolling after accepted-context status focus; no layout redesign. Added4thcontroltest, independently reviewed approved. Rebuild/recheck final GUI source required; earlier clipped capture is finding evidence only.
+
+Final bfe09cf packagedMac3gamejourneys PASS withgenuineengines: Chess/Shogipairs→0, Shogihistorydisabled/nativeinspectioncleared, XqBlack3→1preservesRedopening, terminalresignation→playable1, keyboardTabReturn, eachSaveOpenstopped/historicalobsretained. QAexternal8slaunchdelay eachpending1→TakeBack0 stayspausedbeyonddeadline; nativeinjectedlate-response testsseparate. Finalartifactindependentreviewapproved. Nativeallfeatures144PASS91.62s, frontend208PASS, host5PASS, fmt/clippy/doctorPASS. LinuxDesktopCI40907948723 failedtwoobsoleteShogiconcluded-no-actionsassertions992/996, exactlyconfirmedbyartifact; notdriverreset. UpdatedexternalrunnerrequiressoleenabledTakebackandactuallyrestoresdeclaration/resignation0/Sente/paused, keepsoldhistory/conclusioncriteria. Independentverificationdiffreview+24Pythonselftests+compilePASS. Originalfailurepreserved; correctedplatformGUIrunstillrequired.
 <!-- SECTION:NOTES:END -->

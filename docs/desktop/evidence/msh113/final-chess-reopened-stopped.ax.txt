@@ -1,0 +1,141 @@
+Window: "mShogi", App: mShogi.
+0 standard window mShogi, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 container
+				4 heading mShogi, Value: 1
+					5 text mShogi
+				6 text CHESS · UNTIMED
+				7 text Local engine
+				8 container Game file
+					9 text UNMODIFIED
+					10 heading msh113-final-chess.mshogi, Help: /private/tmp/msh113-final-chess.mshogi, Value: 2
+						11 text msh113-final-chess.mshogi
+					12 text Opened the complete document with work stopped.
+				13 button New game
+				14 button Save
+				15 button Save as…
+				16 button Open…
+				17 container Live game
+					18 text YOUR GAME
+					19 text White to move
+					20 text You play White against mShogi
+					21 button Flip board; currently white at bottom
+					22 text mShogiBlack
+					23 text Your opponent
+					24 container Chess board, white at bottom
+						25 image
+						26 toggle button Description: a8, Black rook, Value: off
+						27 toggle button Description: b8, Black knight, Value: off
+						28 toggle button Description: c8, Black bishop, Value: off
+						29 toggle button Description: d8, Black queen, Value: off
+						30 toggle button Description: e8, Black king, Value: off
+						31 toggle button Description: f8, Black bishop, Value: off
+						32 toggle button Description: g8, Black knight, Value: off
+						33 toggle button Description: h8, Black rook, Value: off
+						34 toggle button Description: a7, Black pawn, Value: off
+						35 toggle button Description: b7, Black pawn, Value: off
+						36 toggle button Description: c7, Black pawn, Value: off
+						37 toggle button Description: d7, Black pawn, Value: off
+						38 toggle button Description: e7, Black pawn, Value: off
+						39 toggle button Description: f7, Black pawn, Value: off
+						40 toggle button Description: g7, Black pawn, Value: off
+						41 toggle button Description: h7, Black pawn, Value: off
+						42 toggle button Description: a6, empty, Value: off
+						43 toggle button Description: b6, empty, Value: off
+						44 toggle button Description: c6, empty, Value: off
+						45 toggle button Description: d6, empty, Value: off
+						46 toggle button Description: e6, empty, Value: off
+						47 toggle button Description: f6, empty, Value: off
+						48 toggle button Description: g6, empty, Value: off
+						49 toggle button Description: h6, empty, Value: off
+						50 toggle button Description: a5, empty, Value: off
+						51 toggle button Description: b5, empty, Value: off
+						52 toggle button Description: c5, empty, Value: off
+						53 toggle button Description: d5, empty, Value: off
+						54 toggle button Description: e5, empty, Value: off
+						55 toggle button Description: f5, empty, Value: off
+						56 toggle button Description: g5, empty, Value: off
+						57 toggle button Description: h5, empty, Value: off
+						58 toggle button Description: a4, empty, Value: off
+						59 toggle button Description: b4, empty, Value: off
+						60 toggle button Description: c4, empty, Value: off
+						61 toggle button Description: d4, empty, Value: off
+						62 toggle button Description: e4, empty, Value: off
+						63 toggle button Description: f4, empty, Value: off
+						64 toggle button Description: g4, empty, Value: off
+						65 toggle button Description: h4, empty, Value: off
+						66 toggle button Description: a3, empty, Value: off
+						67 toggle button Description: b3, empty, Value: off
+						68 toggle button Description: c3, empty, Value: off
+						69 toggle button Description: d3, empty, Value: off
+						70 toggle button Description: e3, empty, Value: off
+						71 toggle button Description: f3, empty, Value: off
+						72 toggle button Description: g3, empty, Value: off
+						73 toggle button Description: h3, empty, Value: off
+						74 toggle button Description: a2, White pawn, Value: off
+						75 toggle button Description: b2, White pawn, Value: off
+						76 toggle button Description: c2, White pawn, Value: off
+						77 toggle button Description: d2, White pawn, Value: off
+						78 toggle button Description: e2, White pawn, Value: off
+						79 toggle button Description: f2, White pawn, Value: off
+						80 toggle button Description: g2, White pawn, Value: off
+						81 toggle button Description: h2, White pawn, Value: off
+						82 toggle button Description: a1, White rook, Value: off
+						83 toggle button Description: b1, White knight, Value: off
+						84 toggle button Description: c1, White bishop, Value: off
+						85 toggle button Description: d1, White queen, Value: off
+						86 toggle button Description: e1, White king, Value: off
+						87 toggle button Description: f1, White bishop, Value: off
+						88 toggle button Description: g1, White knight, Value: off
+						89 toggle button Description: h1, White rook, Value: off
+					90 text YouWhite
+					91 text Human player To move
+					92 text Select a piece, then a destination. Arrow keys move focus · Enter or Space selects · Escape cancels.
+					93 text Play paused · resume explicitly to continue Live position · 0 plies
+				94 container Game controls and inspection
+					95 container
+						96 text Play paused Board moves and draw claims are paused. Returning to live and resuming retires analysis and continues play.
+						97 button Resume play
+					98 heading Analysis, Value: 2
+						99 text Analysis
+					100 container Inspector view
+						101 toggle button Play details, Value: on
+						102 toggle button Analyze position, Value: off
+					103 heading Native engine, Value: 2
+						104 text Native engine
+					105 container Engine turn status
+						106 text Play Paused
+					107 text Play limit: depth 2 · 20,000 nodes
+					108 text No engine search has completed in this game.
+					109 container Recorded search observations
+						110 summary Recorded search observations (1), Value: off
+							111 text Recorded search observations (1)
+					112 container Game history
+						113 heading Game history, Value: 2
+							114 text Game history
+						115 text Native event timeline
+						116 text Inspect an event without changing the live game. Claims and conclusions remain separate events; there is no branching.
+						117 container Recorded game events
+							118 button Initial known position 0 plies
+							119 button Match started 0 plies
+						120 summary Played move identifiers, Value: off
+							121 text Played move identifiers
+					122 heading Game actions, Value: 2
+						123 text Game actions
+					124 container
+						125 button (disabled) Take back
+						126 button Resign game…
+					127 summary About & technical details, Value: off
+						128 text About & technical details
+	129 close button
+	130 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	131 minimize button
+	132 text mShogi
+133 menu bar
+	134 mShogi
+	135 Edit
+	136 View
+	137 Window
+
+The focused UI element is 2 HTML content Description: mShogi, URL: tauri://localhost

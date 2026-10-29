@@ -1,0 +1,860 @@
+Rust (ubuntu-24.04)	Test	﻿2026-10-29T12:32:33.0057369Z ##[group]Run cargo test --workspace --locked
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:33.0057767Z ^[[36;1mcargo test --workspace --locked^[[0m
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:33.0077585Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:33.0077966Z ##[endgroup]
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:33.0928428Z    Compiling serde_core v1.0.229
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:33.0929360Z    Compiling ryu v1.0.23
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:33.0929987Z    Compiling itoa v1.0.18
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:33.0948944Z    Compiling memchr v2.8.3
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:33.2228125Z    Compiling typenum v1.20.1
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:33.2264303Z    Compiling cpufeatures v0.2.17
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:33.2710313Z    Compiling cfg-if v1.0.5
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:33.7046519Z    Compiling generic-array v0.14.7
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:34.0681675Z    Compiling block-buffer v0.10.4
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:34.0682801Z    Compiling crypto-common v0.1.7
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:34.1219321Z    Compiling digest v0.10.7
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:34.2175716Z    Compiling sha2 v0.10.9
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:34.8037651Z    Compiling serde v1.0.229
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:34.8038537Z    Compiling serde_json v1.0.145
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:35.4049761Z    Compiling mshogi-core v0.1.0 (/home/runner/work/mShogi/mShogi/crates/mshogi-core)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:37.6754572Z    Compiling mshogi-search v0.1.0 (/home/runner/work/mShogi/mShogi/crates/mshogi-search)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:37.6786058Z    Compiling mshogi-runner v0.1.0 (/home/runner/work/mShogi/mShogi/crates/mshogi-runner)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:38.2396614Z    Compiling mshogi-engine v0.1.0 (/home/runner/work/mShogi/mShogi/crates/mshogi-engine)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:39.6577784Z    Compiling mshogi-desktop-session v0.1.0 (/home/runner/work/mShogi/mShogi/crates/mshogi-desktop-session)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:41.6796431Z    Compiling mshogi-console v0.1.0 (/home/runner/work/mShogi/mShogi/crates/mshogi-console)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.1259001Z     Finished `test` profile [unoptimized + debuginfo] target(s) in 25.08s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2588085Z      Running unittests src/main.rs (target/debug/deps/mshogi-050128d845f06794)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2599407Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2599608Z running 2 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2609551Z test uci::tests::independent_clock_allocations_and_numeric_limits ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2610164Z      Running tests/cli.rs (target/debug/deps/cli-576c17593edb2714)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2610744Z test uci::tests::cr_lf_and_oversized_input_are_bounded_and_recover ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2611094Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2611443Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2611874Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2614640Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2614776Z running 19 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2640417Z test diagnostic_depth_limit_is_inclusive ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2641430Z test diagnostic_import_cannot_silently_drop_full_adjudication_mode ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2659511Z test ascii_grammar_numeric_bounds_and_escaped_diagnostics ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2676245Z test help_lists_every_shell_command ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2685527Z test failed_commands_report_errors_and_preserve_session_state ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2698487Z test exported_record_restores_position_history_policy_and_undo_in_a_fresh_process ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2709331Z test history_is_rules_owned_and_import_resets_known_repetitions ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2710370Z test help_and_default_invocation_are_headless ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2711229Z test invalid_utf8_lines_are_reported_and_skipped ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2712370Z test invalid_or_observation_bearing_records_never_replace_the_diagnostic_game ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2713383Z test non_unicode_argument_is_a_usage_error_instead_of_a_panic ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2714243Z test legal_order_matches_library_divide_order_and_errors_are_clear ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2715366Z test profile_identifies_coverage_without_claiming_game_adjudication ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2761406Z test quit_ends_the_session_and_end_of_input_is_success ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2851414Z test streaming_line_bound_recovers_and_accepts_exact_limit ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2865529Z test unsupported_commands_and_extra_arguments_fail_without_stdout ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.2866477Z test version_is_available_without_resources ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.3304146Z test readme_console_example_reproduces ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.3337881Z test shell_runs_the_full_diagnostic_workflow ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.3338294Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.3338671Z test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.3339277Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.3340543Z      Running tests/common_console.rs (target/debug/deps/common_console-fa97c0e0f9d080c7)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.3350869Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.3351060Z running 9 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.3507728Z test common_shogi_restore_preserves_import_and_terminal_event_undo ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.3608830Z test canonical_shells_route_native_commands_and_compatibility_aliases_match ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.3643044Z test exact_compact_board_and_inspection_preserve_state_and_native_notation ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.4684693Z test common_chess_restore_refuses_observations_and_full_modes_without_losing_undo ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.4725281Z test promotions_use_fixed_stride_without_changing_long_labels ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.4761224Z test explicit_record_operations_never_guess_path_vs_json_and_recover_after_long_lines ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.4927688Z test selected_help_profiles_and_argument_admission_are_explicit ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.7646099Z test both_games_roundtrip_common_files_json_and_restored_undo ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.8064516Z test hostile_common_loads_are_atomic_including_undo_and_strict_nested_fields ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.8064971Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.8065493Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.8065865Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.8068568Z      Running tests/desktop_analysis.rs (target/debug/deps/desktop_analysis-15dfdffd34953ac7)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.8080020Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:32:58.8080233Z running 2 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:00.7888746Z test actual_full_budget_exhaustion_and_cancelled_replacement_leave_match_unchanged ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:04.1913584Z test actual_analysis_suggestions_never_commit_a_turn_and_resume_is_explicit ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:04.1914319Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:04.1914755Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.38s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:04.1915615Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:04.1920230Z      Running tests/desktop_persistence.rs (target/debug/deps/desktop_persistence-a1895de61d006c4c)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:04.1933946Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:04.1934209Z running 3 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:04.2240428Z test failed_save_and_corrupt_open_preserve_the_valid_file_and_live_document ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:04.2266158Z test reopening_retains_unscored_resignation_but_an_earlier_same_ply_view_does_not ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:06.6609616Z test complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:06.6610102Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:06.6610445Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.47s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:06.6610882Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:06.6615425Z      Running tests/desktop_play.rs (target/debug/deps/desktop_play-cda72dcbce0c0f3e)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:06.6627435Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:06.6627822Z running 4 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:06.7445951Z test actual_missing_response_and_failed_process_pause_without_a_chess_score ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:10.7312915Z test human_black_gets_an_automatic_native_opening_and_can_answer_it ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:12.5576155Z test cancel_new_game_stale_commands_and_retry_protect_the_live_game ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:13.6200918Z test human_white_plays_two_turns_against_actual_bounded_native_replies ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:13.6201498Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:13.6201933Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.96s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:13.6202513Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:13.6208468Z      Running tests/desktop_shared.rs (target/debug/deps/desktop_shared-e52043809f6a3fbf)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:13.6221795Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:13.6221984Z running 3 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:13.9266329Z test actual_engine_declaration_is_a_terminal_command_and_analysis_cannot_apply_it ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:14.7949064Z test real_chess_shogi_chess_execution_uses_one_supervisor_and_fresh_ids ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.4575821Z test product_new_gote_real_engine_play_analysis_archive_and_resume_use_native_paths ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.4576479Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.4576899Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.84s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.4577479Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.4583223Z      Running tests/internal.rs (target/debug/deps/internal-c2a11e5bb9051391)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.4594205Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.4594526Z running 5 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.4669127Z test real_entrypoint_preserves_incomplete_search_instead_of_fallback_move ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.4857162Z test cancellation_replacement_and_reused_identity_cannot_publish_old_work ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.4910789Z test shutdown_terminates_an_active_child_without_waiting_on_the_caller ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.5311212Z test real_bundled_entrypoint_echoes_context_and_plays_an_actual_legal_move ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.6088484Z test actual_process_failures_remain_explicit_unscored_and_bounded ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.6089030Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.6089363Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.6089836Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.6093243Z      Running tests/shared_internal.rs (target/debug/deps/shared_internal-8cbde821008ad316)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.6103319Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.6103496Z running 3 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.6382129Z test forged_purpose_history_limits_selection_and_identities_never_publish_as_valid_work ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.7155593Z test real_entrypoint_executes_both_native_games ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.8404602Z test one_owner_retires_work_across_versions_games_selection_and_semantic_undo ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.8405582Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.8405956Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.8406451Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.8408870Z      Running tests/shogi_cli.rs (target/debug/deps/shogi_cli-0e9f92efe6e4af2b)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.8418598Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.8418792Z running 8 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.8565845Z test complete_canonical_save_load_replay_and_restored_undo ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.8647253Z test drop_capture_hands_optional_forced_and_already_promoted_choices ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.8648837Z test actual_history_conclusions_are_not_reconstructed_from_sfen_counter ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.8656300Z test declarations_queries_and_resignation_preserve_native_terminal_semantics ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.8766398Z test same_piece_destinations_have_explicit_sources_and_illegal_batches_are_atomic ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.8909118Z test short_command_lines_and_complete_large_record_sizes_have_separate_limits ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.8939807Z test standard_diagnostics_remain_position_only_and_preserve_state ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.9188860Z test malformed_unsupported_tampered_oversized_loads_and_failed_saves_preserve_session ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.9189641Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.9189957Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.9190392Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.9192162Z      Running tests/shogi_engine.rs (target/debug/deps/shogi_engine-2fe62fae9a075d3e)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.9202829Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.9203063Z running 3 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:15.9712378Z test actual_analysis_declaration_incomplete_and_history_contexts_remain_distinct ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:16.0571332Z test actual_cross_game_cancel_replacement_and_historical_selection_retire_old_work ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.6680484Z test actual_child_plays_both_assignments_with_native_admission_and_recorded_observations ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.6681150Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.6681740Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.75s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.6682739Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.6686107Z      Running tests/uci.rs (target/debug/deps/uci-4626a76b7db3b3e7)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.6699344Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.6699564Z running 11 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.6828087Z test descendant_search_representation_failure_exits_without_fabricated_result ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.6869614Z test infinite_search_failure_exits_immediately_without_waiting_for_stop ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.6968394Z test handshake_readiness_and_live_stop_keep_stdout_protocol_only ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.7325358Z test infinite_terminal_waits_for_stop_and_new_position_suppresses_stale_output ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.7391167Z test movetime_and_increment_clock_budgets_stop_live_search ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.7583931Z test optional_claim_channel_limitation_and_recorded_auto_policy_are_explicit ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.7643178Z test quit_terminates_during_unbounded_search_without_waiting_for_join ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.7821289Z test same_fen_with_different_known_repetition_history_changes_search ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.7830570Z test deterministic_depth_and_node_limits_return_legal_bestmoves ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.7847896Z test invalid_input_and_unsupported_controls_recover_without_stdout_diagnostics ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.8222430Z test position_replays_history_and_invalid_sequence_is_atomic ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.8222970Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.8223387Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.8224031Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.8225881Z      Running tests/usi.rs (target/debug/deps/usi-cd95813efad0d8ff)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.8234682Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.8234851Z running 11 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.8308776Z test checked_native_no_action_root_has_the_protocol_mandated_resignation ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.8435945Z test native_terminal_handling_does_not_turn_draw_or_nonmate_into_resignation ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.8656458Z test malformed_positions_controls_and_options_are_atomic_and_explicit ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.8787443Z test promotion_drop_declaration_and_pv_mapping_are_native ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.9697775Z test stop_keeps_completed_result_and_readiness_stays_responsive ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.9850295Z test replacement_newgame_gameover_and_quit_retire_old_observations ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.9894831Z test supplied_history_changes_search_without_invented_pre_root_history ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:18.9963995Z test same_context_request_replacement_and_failed_position_retire_held_results ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:19.0191941Z test tsume_request_has_standard_notimplemented_reply_without_native_work ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:19.0566832Z test zero_or_insufficient_work_never_becomes_resignation_or_fallback ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:20.2459135Z test handshake_options_readiness_defaults_alias_and_incompatible_selection ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:20.2459764Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:20.2460105Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.42s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:20.2460531Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:20.2462048Z      Running tests/xiangqi_cli.rs (target/debug/deps/xiangqi_cli-faf77a37dee770bb)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:20.2472670Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:20.2472948Z running 11 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:20.3156388Z test cancellation_replacement_and_undo_never_publish_retired_exact_work ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:20.5305849Z test exact_positive_negative_and_resource_unknown_are_read_only_with_source_provenance ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:20.5936221Z test canonical_save_reopen_preserves_provenance_warning_and_restores_semantic_undo ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:20.8355791Z test explicit_selection_profile_initial_choices_and_local_diagnostics ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:21.4245792Z test agreement_and_off_turn_resignation_are_not_board_actions ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:21.5495848Z test failed_move_batch_and_malformed_position_are_atomic ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:21.8606264Z test oversized_input_is_drained_and_later_native_commands_still_work ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:22.0946150Z test offer_windows_and_decline_keep_native_admission_and_atomic_refusal ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:22.1502041Z test third_occurrence_warns_fourth_prohibited_check_loses_and_undo_restores ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:22.7064236Z test strict_outer_nested_identity_and_bounded_file_failures_preserve_live_session ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:26.8040940Z test advisory_count_claims_are_claimant_specific_and_terminal_commands_preserve_ply ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:26.8042086Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:26.8042682Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.56s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:26.8043762Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:26.8046838Z      Running tests/xiangqi_internal.rs (target/debug/deps/xiangqi_internal-9a79d075d9c7eb09)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:26.8059988Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:26.8060224Z running 7 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:26.9298112Z test native_undo_reopen_and_reselected_identical_history_cannot_revive_retired_work ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:26.9479917Z test one_supervisor_replaces_sleeping_work_in_both_game_directions ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:27.0328974Z test actual_child_zero_work_and_same_board_different_history_retain_native_meaning ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:27.1627354Z test timeout_is_a_bounded_process_failure_and_does_not_conclude_the_game ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:27.2264101Z test forged_xiangqi_identity_purpose_selection_limits_and_same_board_history_are_rejected ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:27.3183007Z test real_entrypoint_executes_native_play_and_readonly_analysis_with_full_context ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:29.6861048Z test real_child_cancellation_and_cross_game_replacement_retire_search_work ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:29.6861647Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:29.6861980Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.88s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:29.6862443Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:29.6866928Z      Running tests/xiangqi_uci.rs (target/debug/deps/xiangqi_uci-f1604cfe06325c2e)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:29.6877860Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:29.6878018Z running 7 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:29.7756741Z test infinite_is_still_bounded_and_stop_publishes_only_completed_work ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:29.8547103Z test independent_stalemate_tactic_and_atomic_invalid_position_for_both_sides ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:29.9126000Z test unsupported_controls_options_and_oversized_input_are_explicit_and_drained ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:29.9625993Z test position_replacement_retires_held_result_and_quit_cancels_work ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:30.0518374Z test zero_work_and_actual_terminal_never_invent_a_bestmove_or_score ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:30.0593609Z test same_board_history_warning_changes_real_engine_choice ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1530856Z test real_handshake_explicit_selection_and_measured_limits ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1531360Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1531779Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.47s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1532173Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1534408Z      Running unittests src/lib.rs (target/debug/deps/mshogi_core-44352c3e77b4676f)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1544068Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1544237Z running 44 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1550159Z test chess::legal::inspection_tests::hypothetical_promotion_contains_all_four_completions ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1551928Z test chess::legal::inspection_tests::hypothetical_castling_uses_existing_rights_without_mutation ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1554006Z test chess::legal::inspection_tests::hypothetical_knight_and_pin_are_local_and_immutable ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1556362Z test chess::legal::inspection_tests::inspection_preserves_actual_en_passant_without_transferring_it ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1586826Z test shogi::legal::inspection_tests::hypothetical_inspection_still_excludes_pawn_drop_mate ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1602664Z test shogi::legal::inspection_tests::opposite_side_movement_promotions_capture_and_pin_preserve_position ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1604410Z test shogi::game::invariant_tests::corrupted_command_prefix_preserves_replay_error_and_original_game ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1606604Z test shogi::tests::custom_sfen_preserves_hands_promotions_counter_and_unknown_prehistory ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1608399Z test shogi::legal::inspection_tests::hypothetical_drops_retain_nifu_dead_ranks_and_resources ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1609837Z test shogi::tests::drop_resources_nifu_and_dead_ranks_are_native_for_both_sides ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1611125Z test shogi::tests::every_promotable_base_capture_returns_its_own_kind_not_gold ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1612352Z test shogi::tests::forced_optional_and_leaving_zone_promotions_for_both_sides ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1613583Z test shogi::tests::initial_placement_sfen_and_declared_origin ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1614806Z test shogi::tests::geometry_matches_independent_center_movement_sets_and_ray_blocks ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1616526Z test shogi::tests::malformed_and_locally_invalid_imports_are_rejected_without_touching_existing_state ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1617943Z test shogi::tests::rejected_choices_are_atomic_and_undo_requires_exact_context ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1619193Z test shogi::tests::opening_capture_demotes_transfers_and_nested_undo_is_exact ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1620626Z test shogi::tests::sparse_diagrams_are_local_and_do_not_claim_king_safety_or_reachability ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1622167Z test shogi::tests::square_and_complete_usi_choices_roundtrip ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1631321Z test shogi::game::invariant_tests::corrupted_check_cache_retains_candidate_evidence_without_committing_or_scoring ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1632967Z test xiangqi::conduct::tests::check_and_idle_mixture_is_not_perpetual_chase_or_check ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1634428Z test xiangqi::conduct::tests::check_priority_and_contiguous_history_are_native ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1706461Z test xiangqi::conduct::tests::board_repetition_may_permute_identical_piece_identities ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1736435Z test xiangqi::conduct::tests::real_roots_require_actual_native_recapture ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1792660Z test xiangqi::conduct::tests::two_to_one_is_counter_chase_frequency_not_two_pursuing_pieces ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1806678Z test xiangqi::tests::analysis_root_counters_require_explicit_null_never_missing_field_defaults ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1878890Z test xiangqi::tests::complete_action_codec_has_no_drop_promotion_or_terminal_command ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1891105Z test xiangqi::conduct::tests::established_chase_retires_at_actual_break_not_only_at_anchor_return ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1916039Z test xiangqi::tests::exact_initial_inventory_and_scoped_fen_roundtrip ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1934924Z test xiangqi::tests::intersections_native_palaces_river_and_both_forward_directions ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1986328Z test xiangqi::conduct::tests::pending_general_attack_cannot_invent_a_combination_exemption ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1988013Z test xiangqi::tests::private_atomic_rejections_and_counter_limits_are_not_game_outcomes ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1989524Z test xiangqi::tests::private_transition_derives_capture_resets_count_and_restores_every_value ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.1991008Z test xiangqi::tests::private_transition_preserves_unknowns_and_increments_black_fullmove ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.2001374Z test xiangqi::tests::raw_counter_preserves_check_plies_and_root_provenance_through_reversal ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.2040118Z test xiangqi::tests::root_codec_direct_typed_parser_rejects_duplicate_unknown_missing_and_conflicting_fields ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.2041803Z test xiangqi::tests::root_codec_preserves_explicit_provenance_unknown_counters_and_no_history ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.2043205Z test xiangqi::tests::stale_preparation_and_out_of_order_undo_are_atomic ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.2044524Z test xiangqi::tests::strict_position_notation_rejects_aliases_width_spacing_and_counter_errors ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.2046349Z test xiangqi::tests::structural_diagram_domain_is_not_live_admission_or_reachability ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.2047763Z test xiangqi::tests::structural_geography_and_nonmoving_threats_are_not_false_empty_legal_sets ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.2083757Z test xiangqi::tests::local_sets_and_perft_ignore_counter_exhaustion_but_commit_is_atomic ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.2619462Z test xiangqi::conduct::tests::primary_rule_independent_cycles ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4076107Z test xiangqi::tests::complete_public_action_admission_is_atomic_for_all_coordinate_pairs_and_stale_values ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4077324Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4077832Z test result: ok. 44 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4078617Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4079020Z      Running tests/action_boundary.rs (target/debug/deps/action_boundary-ad6d9a605ddb99c5)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4089200Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4089391Z running 10 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4094234Z test an_invalid_later_step_rejects_the_whole_action_atomically ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4095890Z test equal_endpoints_with_distinct_routes_are_distinct_actions_with_distinct_effects ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4097479Z test multiple_rule_derived_effects_reverse_completely ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4098608Z test partial_selection_is_not_a_committed_turn ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4099785Z test production_rejection_is_atomic_and_needs_a_complete_choice ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4101711Z test production_multi_effect_actions_derive_every_effect_from_the_board ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4103163Z test production_square_is_intentionally_limited_to_the_chess_board ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4104491Z test serialized_identity_round_trips_and_carries_no_effects ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4105957Z test synthetic_squares_beyond_the_chess_range_are_addressable ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4153911Z test chess_action_identity_needs_no_route_field ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4154225Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4154497Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4154893Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4156727Z      Running tests/adjudication.rs (target/debug/deps/adjudication-dc3ab43f6bd3ca59)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4166271Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4166425Z running 8 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4178935Z test invalid_claims_and_wrong_actor_are_atomic ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4187847Z test intended_claim_legality_does_not_depend_on_fullmove_representability ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4236093Z test independent_automatic_results_and_bounded_dead_recognition ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4276274Z test live_path_refuses_continuation_after_automatic_result_and_undo_restores_it ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4279312Z test optional_claims_conclude_only_when_exercised_and_round_trip_without_playing_intention ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4322199Z test policy_returns_the_exact_profile_priority_and_square_order ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4373667Z test profile_claim_thresholds_and_intended_actions ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4435571Z test policy_selection_current_before_intended_and_intended_before_prospective_mate ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4436236Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4436567Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4437070Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4437977Z      Running tests/attacks.rs (target/debug/deps/attacks-fde6ca9cfad32447)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4447183Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4447379Z running 4 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4456384Z test attack_maps_follow_occupancy_changes_from_checked_actions ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4457311Z test attacks_ignore_whether_moving_the_attacker_would_expose_its_king ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4472398Z test original_corpus_attack_queries_are_satisfied ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4766019Z test independent_attack_fixtures_match_exact_attacker_sets_and_complete_maps ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4766510Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4766771Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4767142Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4769775Z      Running tests/completeness.rs (target/debug/deps/completeness-a37dc9b0fe1d197f)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4779141Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4779306Z running 8 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:31.4805949Z test forced_capture_dead_and_one_sided_impossibility_are_not_material_guesses ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.0116182Z test blocked_wall_exact_exhaustion_matches_independent_king_graph ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.0365772Z test budgets_and_cancellation_are_unknown_and_leave_input_unchanged ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.0395800Z test positive_witnesses_are_complete_legal_actions_and_counter_independent ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.0405919Z test zero_full_budget_does_not_erase_an_existing_sound_side_specific_proof ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.0464219Z test full_timeout_resignation_use_generated_proofs_and_replay_configuration ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.0473986Z test full_live_adjudication_records_mode_preserves_legacy_and_restores_undo ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4212182Z test a_committed_move_can_create_full_deadness_and_undo_restores_analysis ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4212761Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4213102Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.94s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4213497Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4218463Z      Running tests/fen_corpus.rs (target/debug/deps/fen_corpus-a6349efa48690a93)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4228505Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4228685Z running 9 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4235786Z test castling_flags_are_permissions_not_derived_from_current_paths ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4236549Z test every_specified_ascii_whitespace_and_leading_zeroes_normalize ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4246838Z test earliest_category_wins_across_fields_and_no_failure_mutates_state ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4247849Z test getters_expose_the_full_position_tuple ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4251238Z test local_king_safety_uses_geometric_attacks_including_pinned_pieces ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4252507Z test raw_ep_and_counters_belong_to_saved_identity_but_not_a_history_claim ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4253442Z test structural_reasons_are_machine_readable ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4314786Z test independent_corpus_fen_contracts_and_canonical_positions ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4506185Z test bounded_malformed_inputs_never_panic_or_partially_replace ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4506726Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4507137Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4507779Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4509189Z      Running tests/game_history.rs (target/debug/deps/game_history-06f9c668bacbc189)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4519901Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4520080Z running 5 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4539935Z test independently_specified_repetition_equivalences ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4551386Z test rejection_and_branch_undo_restore_all_history_fields ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4556038Z test independent_history_counts_and_identical_fen_different_histories ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.4614846Z test independent_special_transition_fixtures_restore_game_and_records ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.8238432Z test fixed_seed_games_restore_positions_history_and_occurrence_tables ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.8238869Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.8239182Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.8239595Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.8241071Z      Running tests/game_record.rs (target/debug/deps/game_record-6aac2fada5e78c3d)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.8250737Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.8250915Z running 5 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.8261160Z test ordered_same_ply_observations_and_intended_claim_are_preserved_without_execution ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.8262373Z test every_observation_variant_round_trips_and_preserves_context ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.8263241Z test canonical_record_has_an_independent_expected_encoding ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.8264104Z test strict_coordinate_identity_is_shared_without_legalizing_actions ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.8265868Z test invalid_versions_metadata_effects_contexts_and_actions_are_rejected ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.8266445Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.8266883Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.8267470Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.8268156Z      Running tests/legal_actions.rs (target/debug/deps/legal_actions-a25326f36ca9d67b)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.8277494Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.8277698Z running 9 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.8282964Z test empty_legal_sets_are_distinguished_by_check ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.8300170Z test counter_overflow_is_atomic_for_each_counter_side_and_action_kind ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.9765894Z test legal_sets_and_classification_are_identical_across_counter_values ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.9785843Z test legality_and_classification_ignore_the_counter_domain ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.9786900Z test overflow_never_turns_a_live_position_into_mate_or_stalemate ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:32.9805898Z test queries_do_not_mutate_and_are_deterministic ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.0355485Z test independent_classification_fixtures_match_exactly ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.2821728Z test legal_sets_match_the_special_and_candidate_fixture_families ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.4912773Z test corpus_legal_sets_and_classifications_match_exactly ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.4913602Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.4914300Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.4915380Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.4917597Z      Running tests/match_profile_preparation.rs (target/debug/deps/match_profile_preparation-0e6f98a073db83d2)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.4926976Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.4927165Z running 1 test
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.4947439Z test declared_profile_paths_are_valid_and_history_pair_is_identical ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.4948040Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.4948471Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.4948935Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.4949470Z      Running tests/matchplay.rs (target/debug/deps/matchplay-bc40c873e595e638)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.4959023Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.4959199Z running 10 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.4973742Z test expiry_precedes_move_and_invalid_witness_never_delays_it ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.4996065Z test bad_certificate_does_not_cancel_an_explicit_resignation ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.5035941Z test claims_stop_clock_and_intention_stays_unplayed ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.5052682Z test hypothetical_mate_is_article_three_reachability_not_counter_or_claim_policy ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.5053772Z test nested_outcomes_and_direct_serde_identity_cannot_bypass_record_checks ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.5054643Z test profile_resign_and_flag_possible_impossible_and_unresolved ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.5055578Z test offers_require_recorded_first_moves_persist_and_reject_atomically ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.5056125Z test records_reject_corrupted_observations_and_unknown_schema_fields ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.5077257Z test rejected_moves_stale_context_and_increment_overflow_charge_time_without_moving ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.5078303Z test execute_independent_clock_profile_fixtures ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.5078784Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.5079270Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.5079974Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.5080496Z      Running tests/native_envelope.rs (target/debug/deps/native_envelope-9c21a2ebdb650b84)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.5087969Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.5088411Z running 5 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.5095313Z test native_owners_admit_claims_declarations_and_resignation_without_shared_turn_rules ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.5136432Z test known_history_and_same_ply_terminal_events_do_not_collapse ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.5184094Z test outer_and_native_duplicates_unknown_missing_and_cross_identities_reject ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.5187253Z test actual_native_payloads_round_trip_with_derived_identity_and_provenance ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.7044246Z test record_byte_event_and_diagnostic_bounds_are_explicit ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.7044765Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.7045570Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.7046156Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.7047758Z      Running tests/native_xiangqi_envelope.rs (target/debug/deps/native_xiangqi_envelope-97de62bc0e4d3b9d)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.7059044Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.7059189Z running 5 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.7196224Z test shared_dispatch_preserves_audit_result_native_actor_admission_undo_and_atomic_refusal ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.7197788Z test side_qualification_does_not_conflate_black_or_admit_unknown_side_fields ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.7247386Z test raw_outer_and_nested_rejections_never_fall_through_to_another_game ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:33.8458969Z test real_records_keep_profiles_roots_counters_history_and_cached_target_metadata ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0510572Z test claimant_specific_full_history_and_same_ply_conclusions_survive_native_handoff ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0511109Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0511376Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.35s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0511740Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0514817Z      Running tests/ordinary_actions.rs (target/debug/deps/ordinary_actions-9715f291b3bbc3b2)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0525689Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0526024Z running 6 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0537578Z test counter_overflow_cannot_publish_any_piece_right_or_ep_effect ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0538830Z test the_ordinary_only_boundary_refuses_special_actions_without_effects ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0539799Z test undo_requires_the_complete_post_state_and_rejects_wrong_order_atomically ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0540756Z test unsafe_results_are_rejected_after_resolving_capture_and_movement ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0541562Z test rejected_ordinary_preconditions_are_atomic ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0572838Z test independently_expected_transitions_restore_every_saved_field_in_reverse ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0573487Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0573840Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0574213Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0575291Z      Running tests/ordinary_candidates.rs (target/debug/deps/ordinary_candidates-9f359eab3e6824ff)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0584215Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0584386Z running 5 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0590057Z test generation_is_deterministic_and_does_not_mutate_the_position ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0635983Z test every_promotion_choice_stays_a_distinct_action_through_transition ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.0741239Z test candidates_ignore_counter_bounds_which_the_checked_boundary_enforces ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.2368201Z test independent_candidate_fixtures_match_exact_sets_and_contract ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.4122953Z test original_corpus_ordinary_legal_moves_are_exactly_the_safe_candidates ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.4123500Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.4123845Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.4124511Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.4125649Z      Running tests/perft.rs (target/debug/deps/perft-bb506309b7be8c45)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.4134883Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.4135042Z running 6 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.4156466Z test deep_independent_divides_match_in_order ... ignored, deep perft: run in release with --ignored
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.4186332Z test depth_semantics_and_errors_are_explicit ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:35.4189954Z test the_disagreement_locator_names_the_first_differing_root_action ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:36.9616253Z test corpus_perft_totals_match_at_documented_depths ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:39.2474563Z test independent_divides_match_in_order ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:42.5336310Z test counters_never_limit_traversal ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:42.5336694Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:42.5337095Z test result: ok. 5 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 7.12s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:42.5337697Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:42.5342025Z      Running tests/sequences.rs (target/debug/deps/sequences-c05bb494983f707a)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:42.5352485Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:42.5352758Z running 4 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:42.5356138Z test deep_fixed_seed_sequences ... ignored, deep sequence run: use --release --ignored
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:42.5357413Z test the_checker_rejects_a_corrupted_transition ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:42.6113504Z test saved_regression_sequences_replay_deterministically ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.2215878Z test fixed_seed_sequences_restore_and_round_trip_every_ply ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.2216432Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.2216855Z test result: ok. 3 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 3.69s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.2217233Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.2219521Z      Running tests/shogi_history.rs (target/debug/deps/shogi_history-54bed1ff672d3ee6)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.2230439Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.2230601Z running 5 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.2265918Z test rejection_is_atomic_and_resignation_does_not_require_own_turn ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.2284718Z test root_provenance_is_not_a_bare_positions_origin ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.2306735Z test identical_saved_position_does_not_supply_repetition_history ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.2770125Z test independently_expected_declaration_boundaries_and_same_ply_prefixes ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.5383756Z test independent_history_and_import_ledgers_and_exact_reversal ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.5384221Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.5384482Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.5385415Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.5387440Z      Running tests/shogi_legal.rs (target/debug/deps/shogi_legal-2b18e462d236090b)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.5397008Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.5397158Z running 7 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.5435865Z test attacks_candidates_and_legal_choices_are_distinct ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.5456573Z test counter_domain_never_changes_local_legality_or_identity ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.5466991Z test pawn_drop_defense_keeps_compulsory_knight_promotion_and_preexisting_check_distinct ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.5506021Z test structural_diagrams_outside_reference_domain_still_use_native_king_safety ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.6970819Z test independently_reviewed_complete_movement_and_diagnostic_contract ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.7672383Z test independently_reviewed_board_fixture_contract ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.7715888Z test deterministic_sequences_restore_every_prefix_and_material ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.7716476Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.7717838Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.7718388Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.7720367Z      Running tests/shogi_record.rs (target/debug/deps/shogi_record-dc77d7b1256257d8)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.7730570Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.7730754Z running 10 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.7772830Z test declarations_retain_actor_and_evidence_and_reject_embedded_conflicting_actor ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.7787414Z test empty_command_and_conclusion_variants_reject_unknown_content ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.7895882Z test automatic_root_conclusions_and_all_post_terminal_commands_are_validated ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.7905875Z test byte_and_event_capacity_are_bounded_without_truncation ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.8036772Z test every_derived_effect_is_checked_even_if_final_state_is_unchanged ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.8045882Z test root_category_origin_and_counter_provenance_are_enforced ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.8156425Z test strict_decode_rejects_duplicate_unknown_missing_and_unsupported_fields ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:46.8808482Z test standard_round_trip_retains_every_prefix_and_same_ply_terminal_commands ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:48.3934208Z test independently_established_history_and_declaration_ledgers_round_trip ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:49.3918772Z test maximum_retained_board_ledger_and_terminal_command_always_fit ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:49.3919338Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:49.3919763Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.62s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:49.3920364Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:49.3924352Z      Running tests/special_actions.rs (target/debug/deps/special_actions-7427422fdd3dea92)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:49.3935367Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:49.3935691Z running 6 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:49.3941210Z test castling_effects_and_rights_are_exact_for_each_side_and_color ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:49.3986678Z test independent_rejections_report_the_expected_error_without_mutation ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:49.3990819Z test independent_sequences_reach_exact_states_and_undo_in_reverse ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:49.3991953Z test ordinary_only_boundary_still_refuses_specials_that_apply_executes ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:49.7871403Z test independent_positions_match_special_candidates_and_full_legal_sets ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:50.0417953Z test corpus_legal_sets_equal_candidates_accepted_by_apply ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:50.0418356Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:50.0418665Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.65s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:50.0419157Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:50.0420773Z      Running tests/xiangqi_board.rs (target/debug/deps/xiangqi_board-0cdcf653ded08932)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:50.0430678Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:50.0430837Z running 5 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:50.0456351Z test pinned_enemy_rook_still_geometrically_controls_general_destination ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:50.0519757Z test opening_and_pinned_geometry_are_not_game_outcomes ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:50.0544828Z test same_board_different_known_history_seeds_keep_identical_local_action_sets ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:50.1589742Z test frozen_independent_board_facts_and_every_generated_action_restore_exactly ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.0537926Z test deterministic_sequences_restore_every_choice_and_every_recorded_prefix ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.0538708Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.0539269Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.01s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.0539994Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.0541620Z      Running tests/xiangqi_exact.rs (target/debug/deps/xiangqi_exact-cf4e9ea7bb7c94a4)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.0551905Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.0552198Z running 6 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.0626042Z test every_resource_stop_is_unknown_and_failures_are_separate ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.0666389Z test exact_witness_native_sides_and_memory_boundary_are_preserved ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.0775960Z test exact_native_request_history_selection_replacement_undo_reopen_and_save_are_safe ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.0806007Z test independently_expected_stalemate_witness_beyond_fast_path_and_counter_quotient ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.1160921Z test actual_same_board_histories_do_not_create_intrinsic_win_or_revive_requests ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.3840614Z test exhaustive_independent_palace_universes_and_closed_graph_negative_proofs ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.3841244Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.3841702Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.3842297Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.3844175Z      Running tests/xiangqi_game_boundary.rs (target/debug/deps/xiangqi_game_boundary-fc6d0c01c2a6e2c8)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.3854866Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.3855017Z running 9 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.5355927Z test chase_warning_retires_on_proved_check_variation_not_on_unanswered_chase ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.5626539Z test bare_general_fast_proof_is_a_closed_board_invariant_not_a_penalty_or_forced_win_table ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.7085931Z test agreement_offer_admission_preserves_native_actor_order_without_tournament_penalties ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.7215881Z test a_proven_nonchase_retires_now_but_an_unanswered_real_chase_does_not ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.7926234Z test natural_win_witness_includes_stalemate_but_excludes_f002_penalty_award ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.8853545Z test multi_step_semantic_undo_does_not_reactivate_abandoned_branch_tokens ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:51.9788023Z test every_record_field_is_required_and_native_raw_payloads_reject_duplicates ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:33:52.0929416Z test unanswered_general_attack_cannot_invent_an_exemption_for_prohibited_cannon_chase ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:01.1749917Z test saveability_survives_audit_capacity_and_retains_reserved_native_close_path ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:01.1750599Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:01.1751006Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.79s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:01.1752010Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:01.1754876Z      Running tests/xiangqi_history.rs (target/debug/deps/xiangqi_history-d8c3a6ea56f4cc80)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:01.1767043Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:01.1767208Z running 16 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:01.3045857Z test actual_mutual_cannon_checks_are_equal_fault_at_the_fourth_occurrence ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:01.3356270Z test imported_counter_never_reconstructs_missing_prior_check_or_claim_history ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:01.3846029Z test canonical_records_reject_strict_parsing_forged_events_and_post_conclusion_commands ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:01.4835760Z test native_command_refusals_are_atomic_and_unknown_no_win_is_not_a_result ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:01.6935886Z test draw_advice_matches_native_admission_and_same_ply_reoffer_restriction ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:01.7095780Z test restoration_and_out_of_order_undo_cannot_revive_runtime_work ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:01.7536126Z test same_complete_position_with_check_or_noncheck_history_has_distinct_context ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:01.7826018Z test semantic_undo_restores_actions_warning_claim_audit_and_terminal_without_reviving_requests ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:02.3935860Z test terminal_commands_keep_actor_semantics_and_board_ply_separate ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:03.3475804Z test independently_expected_check_chase_and_overlapping_cycle_histories ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:03.3805902Z test undo_of_a_locally_legal_fourth_return_restores_live_warning_without_retiring_evidence ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:03.4525732Z test variation_retires_warning_without_erasing_its_authoritative_history ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:03.4806013Z test warning_and_conclusion_are_exact_event_prefixes_separate_from_board_plies ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:04.5853629Z test unattended_policy_claims_are_recorded_red_first_when_both_are_eligible ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.3950910Z test natural_count_boundaries_use_actual_known_history_and_only_claimant_checks ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.8654919Z test explicit_and_automatic_claims_obey_the_independently_established_100_102_order ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.8655768Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.8656055Z test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.69s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.8656422Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.8660788Z      Running tests/xiangqi_inspection_prefix.rs (target/debug/deps/xiangqi_inspection_prefix-0569825e196745a5)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.8671364Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.8671534Z running 4 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.8678706Z test checked_actual_player_does_not_prevent_read_only_opponent_inspection ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.8685611Z test root_automatic_conclusion_is_not_downgraded_to_a_resumable_ongoing_root ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.8949912Z test inspection_reuses_frozen_independent_board_facts_for_both_native_owners ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.9768637Z test committed_history_preserves_prefix_context_without_future_warnings_or_commands ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.9769276Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.9769649Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.9770480Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.9771363Z      Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-ae5d15242de8105f)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.9784155Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.9784326Z running 123 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.9814412Z test analysis::tests::analysis_has_a_read_only_acceptance_path_and_explicit_resume ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.9823120Z test analysis::tests::cancel_keeps_pause_and_has_no_fabricated_final_observations ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.9829369Z test analysis::tests::analysis_claims_and_failures_are_observations_only_with_exact_context_guards ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.9830889Z test persistence::tests::archive_capacity_exact_count_and_byte_boundaries_include_stop_reservations ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.9921233Z test analysis::tests::same_fen_different_history_and_wrong_purpose_are_rejected ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.9946650Z test analysis::tests::mixed_turn_analysis_replacement_and_resume_share_one_owner ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:13.9972658Z test persistence::tests::cancellation_retires_an_uncommitted_engine_result_candidate ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:14.0015722Z test analysis::tests::resignation_retires_analysis_and_concluded_positions_remain_analyzable ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:14.0056524Z test persistence::tests::concurrent_save_as_bookkeeping_survives_later_candidate_commit ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:14.0289949Z test persistence::tests::command_receipts_survive_following_work_and_close_supersedes_pending_admission ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:14.0396501Z test persistence::tests::claims_and_resignation_roundtrip_complete_match_not_just_moves ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:14.0477808Z test persistence::tests::historical_analysis_excludes_future_claim_and_survives_only_its_selection ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:14.0501359Z test persistence::tests::interrupted_atomic_write_keeps_prior_file_and_removes_temporary ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:14.2756405Z test persistence::tests::io_and_rejection_revisions_cannot_consume_the_persisted_save_watermark ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:14.6846072Z test persistence::tests::control_boundary_rejects_unchanged_and_reserved_close_is_saveable ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:14.7886650Z test persistence::tests::observation_corruption_and_future_control_timestamps_are_validated ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:14.8086440Z test persistence::tests::event_4096_commits_but_engine_event_4097_rejects_before_move_or_observation ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:14.8106872Z test persistence::tests::preflight_rejects_timed_full_identity_and_resource_limits_before_replay ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:15.8856207Z test persistence::tests::oversized_raw_engine_failure_is_rejected_before_observation_or_game_commit ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:15.8976778Z test persistence::tests::save_during_admission_keeps_new_contents_dirty_and_successful_open_retires_candidate ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:15.9460739Z test persistence::tests::shared_poll_that_commits_shogi_open_publishes_the_matching_game_family ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:15.9656106Z test persistence::tests::stale_save_and_stale_open_do_not_mark_or_replace_current_document ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:15.9686223Z test persistence::tests::stored_full_witnesses_require_legal_requested_mate_and_cooperative_budget ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:22.7276662Z test persistence::tests::observation_256_is_accepted_257_rejected_and_save_open_preserves_every_observation ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:22.7431122Z test persistence::tests::final_engine_observation_256_commits_once_then_further_engine_work_resource_pauses ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:22.7706109Z test shared::archive::capacity_tests::conservative_reconstruction_budget_is_enforced_before_accepting_a_journal ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:23.2096082Z test shared::archive::capacity_tests::control_boundary_reserves_the_last_slot_for_close_and_never_truncates ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:26.9706584Z test shared::archive::capacity_tests::real_maximum_native_ledger_has_bounded_record_context_response_and_archive_sizes ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:27.9677315Z test shared::archive::capacity_tests::reopened_active_journal_retains_stop_reservation_across_preferences ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:31.3638446Z test shared::archive::capacity_tests::replay_capacity_retains_one_exact_stop_action_of_headroom ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:31.4853591Z test shared::archive::capacity_tests::runtime_only_revision_exhaustion_preserves_save_and_fresh_reopen_path ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:32.2787698Z test shared::archive::tests::canonical_fixture_roundtrips_preserve_native_root_history_and_all_outcomes ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:32.3289416Z test shared::archive::tests::concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:32.4726374Z test shared::archive::tests::hostile_archives_reject_without_changing_the_current_document ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:32.5786180Z test shared::archive::tests::imported_capture_hand_and_drop_after_reopen_preserve_counter_provenance ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:32.6156493Z test shared::archive::tests::inability_to_start_native_execution_is_a_capacity_pause_not_engine_failure ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:32.6736188Z test shared::archive::tests::interrupted_and_failed_native_saves_preserve_file_and_dirty_state ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:33.8066397Z test shared::archive::tests::observations_keep_exact_retired_branch_targets_and_never_resume_on_open ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:34.7116931Z test shared::archive::tests::pending_runtime_is_not_archived_and_resume_allocates_fresh_identity ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:34.8046388Z test shared::archive::tests::persisted_preferences_keep_exact_pending_execution_and_original_limits ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:35.7526366Z test shared::archive::tests::product_new_game_archive_reopens_native_human_orientation_stopped_and_fresh ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:35.8326128Z test shared::archive::tests::raw_nested_observation_fields_remain_strict_and_identity_errors_are_explicit ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:36.1116211Z test shared::archive::tests::same_ply_terminal_history_and_saved_selection_remain_distinct ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:36.1864876Z test shared::archive::tests::stale_open_and_cross_game_save_completion_never_replace_current_state ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:36.2436480Z test shared::archive::tests::v1_chess_and_explicit_tagged_chess_preserve_existing_semantics ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:36.3884650Z test shared::archive::tests::wrong_native_game_and_semantic_journal_or_observation_tampering_reject ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:36.4066149Z test shared::inspection::tests::chess_pending_engine_work_and_historical_prefix_are_not_touched ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:36.4195908Z test shared::inspection::tests::exact_historical_selection_and_conclusion_are_read_only ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:36.4265908Z test shared::inspection::tests::exact_native_chess_query_is_not_a_snapshot_poll_or_mutation ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:36.4304599Z test shared::inspection::tests::selected_shogi_owner_promotions_hands_and_pending_work_stay_native ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:36.4326052Z test shared::inspection::tests::strict_query_rejects_duplicate_nested_unknown_missing_and_oversize ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:36.6057092Z test shared::tests::actual_complete_drop_promotion_capture_and_atomic_rejection ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:36.6636113Z test shared::tests::close_document_preconditions_advance_for_shogi_events_observations_and_replacement ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:36.6692051Z test shared::tests::command_diagnostics_are_bounded_without_splitting_utf8 ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:36.6695772Z test shared::tests::command_json_strict_native_payload_and_encoded_capacity ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:36.8456634Z test shared::tests::declaration_advice_terminal_history_and_native_wrong_turn_semantics ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:36.9235926Z test shared::tests::exact_analysis_context_retirement_and_same_board_history ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:36.9405876Z test shared::tests::identities_native_geometry_and_chess_compatibility ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:36.9932508Z test shared::tests::incomplete_failure_and_retry_preserve_native_history_without_fallback ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:37.1026430Z test shared::tests::native_search_presentation_preserves_target_purpose_and_real_terminal_distance ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:37.1605995Z test shared::tests::observation_capacity_refuses_new_work_before_changing_session ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:37.2366175Z test shared::tests::presented_budget_matches_submitted_play_and_board_ply_ignores_terminal_events ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:37.3047449Z test shared::tests::product_declaration_capability_is_advisory_eligibility_but_native_terminal_semantics_remain ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:37.7628330Z test shared::tests::product_new_games_are_native_qualified_oriented_and_live_with_fresh_identities ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:37.7812979Z test shared::tests::product_new_rejects_stale_or_conflicting_choices_before_retiring_live_work ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:37.9163079Z test shared::tests::replacement_retires_chess_files_and_pending_admission ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:38.1025826Z test shared::tests::semantic_undo_replay_does_not_revive_retired_work ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:38.4626185Z test shared::tests::xiangqi_product_creation_retires_prior_work_and_keeps_archive_admission ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:44.5787074Z test shared::xiangqi::archive::tests::actual_encoded_open_byte_boundary_and_structural_candidate_byte_guard_are_exact ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:48.5266897Z test shared::xiangqi::archive::tests::actual_native_ledgers_roundtrip_warning_fourth_claim_resignation_agreement_and_fast_proof ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:48.6806622Z test shared::xiangqi::archive::tests::actual_pretty_canonical_wrapper_overhead_is_bounded_before_acceptance ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:51.1947134Z test shared::xiangqi::archive::tests::completed_exact_proof_witness_unknown_cancel_failure_remain_read_only_historical_reports ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:51.8766335Z test shared::archive::capacity_tests::actual_256_observations_save_reopen_and_reject_257_without_changing_accepted_document ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:34:58.3927331Z test shared::xiangqi::archive::tests::consumed_invalid_pv_is_retained_unscored_without_applying_even_its_first_move ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:35:00.4596286Z test persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:35:01.2656497Z test shared::xiangqi::archive::tests::event_prefix_selection_and_same_board_histories_survive_open_without_future_facts ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:35:01.6856059Z test shared::xiangqi::archive::tests::exact_historical_event_target_and_stale_attachment_are_preserved ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:35:03.7176561Z test shared::archive::capacity_tests::long_history_observations_enforce_both_encoded_byte_and_replay_capacity_without_data_loss ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:35:05.3137189Z test shared::xiangqi::archive::tests::failed_and_interrupted_save_open_preserve_file_dirty_state_and_live_document ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:35:05.5606245Z test shared::xiangqi::archive::tests::exact_weighted_replay_threshold_reserves_one_real_close_control ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:35:21.6886828Z test shared::xiangqi::archive::tests::distinct_native_variations_pay_reconstruction_before_result_commit_and_still_reopen ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:35:26.0376443Z test shared::xiangqi::archive::tests::control_replay_and_native_count_boundaries_reserve_complete_stop_and_terminal_paths ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:35:26.5026343Z test shared::xiangqi::archive::tests::positive_exact_witness_replay_is_charged_before_attachment_and_raw_open ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:35:28.1426691Z test shared::xiangqi::archive::tests::product_open_restores_xiangqi_with_fresh_stopped_identity_and_keeps_stale_failures_atomic ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:35:29.2556311Z test shared::xiangqi::archive::tests::response_admission_refusal_cannot_restore_consumed_execution_as_thinking ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:35:30.5816734Z test shared::xiangqi::archive::tests::reused_validation_never_hides_changed_history_or_malformed_later_observations ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:35:37.3756854Z test shared::xiangqi::archive::tests::saved_actual_engine_and_analysis_observations_are_historical_and_old_work_stays_retired ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:35:38.2997157Z test shared::xiangqi::archive::tests::strict_duplicates_conflicts_derived_conclusions_and_journal_tampering_are_rejected ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:35:38.2999115Z test shared::xiangqi::label_tests::native_action_labels_distinguish_quiet_capture_and_check_without_debug_payloads ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:35:38.3026068Z test shared::xiangqi::label_tests::native_non_board_events_keep_claimant_warning_pending_and_conclusion_distinct ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:35:45.7656551Z test shared::xiangqi::tests::actual_read_only_analysis_rejects_every_context_mismatch_and_cannot_apply_choice ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:35:46.2386039Z test shared::xiangqi::tests::all_event_prefixes_remain_read_only_with_no_future_warning_or_result_inference ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:35:46.8846096Z test shared::xiangqi::tests::cancel_retires_pending_cross_game_admission_and_its_receipt_immediately ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:02.4247479Z test shared::xiangqi::tests::cancellation_replacement_undo_and_replay_never_revive_retired_engine_work ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:04.9817409Z test shared::xiangqi::tests::chess_full_and_historical_mutation_are_explicitly_unsupported_without_retiring_work ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:05.3146294Z test shared::xiangqi::archive::tests::measured_long_warning_claim_and_historical_observations_pause_before_replay_budget has been running for over 60 seconds
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:05.5636239Z test shared::xiangqi::archive::tests::ordinary_and_exact_observations_share_capacity_without_discarding_either_kind has been running for over 60 seconds
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:06.0256177Z test shared::xiangqi::tests::handoff::same_board_history_cancel_and_cross_game_replacement_cannot_revive_results ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:07.0936611Z test shared::xiangqi::tests::handoff::warning_inspection_archive_reopen_and_resume_preserve_one_native_context ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:10.6016182Z test shared::xiangqi::tests::incomplete_failure_retry_and_limits_are_not_chess_outcomes ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:14.2786171Z test shared::xiangqi::archive::tests::ordinary_and_exact_observations_share_capacity_without_discarding_either_kind ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:14.4982017Z test shared::xiangqi::tests::native_identity_intersection_palaces_river_and_capability_scope ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:14.5026801Z test shared::xiangqi::tests::native_claim_audit_and_nonmoving_resignation_preserve_board_ply_and_atomicity ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:14.5146424Z test shared::xiangqi::tests::native_opponent_inspection_is_immutable_nonactionable_and_selection_bound ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:20.1137485Z test shared::xiangqi::archive::tests::measured_long_warning_claim_and_historical_observations_pause_before_replay_budget ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:20.1316187Z test shared::xiangqi::tests::native_terminal_advice_tracks_human_actor_pause_history_and_pending_engine_retirement ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:20.1375946Z test shared::xiangqi::tests::typed_native_command_boundary_rejects_unknown_duplicate_and_conflicting_fields ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:20.1495683Z test tests::cancel_wins_even_if_a_complete_response_has_arrived ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:20.1555778Z test tests::cancellation_and_retry_reject_invalid_states_atomically ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:20.1735719Z test tests::engine_applies_once_and_keeps_actual_observations ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:20.1815617Z test tests::engine_claim_remains_a_claim ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:20.1995768Z test tests::exact_same_fen_with_different_known_history_cannot_accept ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:20.2026257Z test tests::full_mode_restoration_is_explicitly_rejected_before_solver_execution ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:20.2235677Z test tests::incomplete_search_never_falls_back_to_a_move ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:20.2355929Z test tests::intended_claim_is_an_opportunity_then_conclusion_without_a_move ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:20.2445712Z test tests::invalid_engine_choice_is_unscored_and_atomic ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:20.2985741Z test tests::native_snapshot_and_atomic_human_rejection ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:20.3136203Z test tests::new_game_aba_and_generation_changes_reject_old_results ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:20.3236477Z test tests::promotion_choices_and_automatic_checkmate_are_native ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:20.3686401Z test tests::recovery_preserves_exact_match_and_game_records_and_retires_old_results ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:20.3805894Z test tests::resignation_is_a_draw_only_when_opponents_mate_is_proven_impossible ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:20.4416014Z test tests::resignation_is_unresolved_with_no_proof_on_either_players_turn ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:21.6886478Z test shared::xiangqi::archive::tests::ordinary_observation_256_to_257_rejects_new_work_and_still_saves_reopens_all_evidence has been running for over 60 seconds
+Rust (ubuntu-24.04)	Test	2026-10-29T12:36:27.1165422Z test shared::xiangqi::tests::paused_terminal_capabilities_match_admission_without_erasing_claim_advice ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:37:20.1118662Z test shared::xiangqi::tests::retained_observation_count_and_byte_limits_reject_new_work_before_mutation has been running for over 60 seconds
+Rust (ubuntu-24.04)	Test	2026-10-29T12:37:42.5698061Z test shared::xiangqi::archive::tests::ordinary_observation_256_to_257_rejects_new_work_and_still_saves_reopens_all_evidence ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.1715518Z test shared::xiangqi::tests::retained_observation_count_and_byte_limits_reject_new_work_before_mutation ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.1716949Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.1717688Z test result: ok. 123 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 248.19s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.1719034Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2056666Z      Running unittests src/lib.rs (target/debug/deps/mshogi_engine-bf081e8a7cce1b5e)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2068588Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2068744Z running 3 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2073763Z test shogi::presentation_tests::score_labels_retain_native_root_units_and_terminal_command_edges ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2075028Z test bridge::tests::blocked_pipe_cleanup_is_explicit_bounded_and_does_not_join_unfinished_work ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2107769Z test bridge::tests::cancel_and_replace_discard_even_an_already_published_completion ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2108400Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2108866Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2109459Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2110219Z      Running tests/protocol.rs (target/debug/deps/protocol-cfa35adcbe5227c1)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2120833Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2121030Z running 8 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2146380Z test full_child_operation_reports_real_possible_impossible_and_unknown_work ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2147524Z test invalid_settings_and_search_failure_have_no_score ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2149203Z test malformed_oversized_unknown_and_unterminated_input_are_rejected ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2150491Z test native_record_duplicate_fields_are_not_collapsed_before_strict_validation ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2166452Z test rejects_full_before_replay_without_downgrading_context ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2287955Z test same_position_different_known_histories_preserve_different_claim_results ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2290023Z test moves_claims_conclusions_and_incomplete_work_are_distinct ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2811321Z test analysis_requires_exact_provenance_supported_mode_and_explicit_limits ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2812163Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2812763Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2813590Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2814724Z      Running tests/shared.rs (target/debug/deps/shared-0cbaa3481f3a3c24)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2825380Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2825616Z running 6 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.2995975Z test actual_shogi_records_have_only_implemented_native_operations ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.3166231Z test same_position_different_history_is_not_interchangeable ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.3184802Z test actual_chess_play_claim_terminal_incomplete_analysis_and_full_are_preserved ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.3196183Z test strict_outer_purpose_target_envelope_and_native_bytes_survive_routing ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:22.3664924Z test acceptance_checks_every_execution_and_selection_field ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.6422025Z test composed_size_evidence_counts_native_wrapper_request_and_echoed_response ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.6422453Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.6422714Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.36s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.6423103Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.6427469Z      Running tests/shogi_protocol.rs (target/debug/deps/shogi_protocol-77a0f936f414d82f)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.6439194Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.6439352Z running 6 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.6495936Z test raw_request_routing_keeps_native_duplicates_and_unknowns_visible ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.6676089Z test analysis_is_read_only_and_bound_to_native_side_and_same_ply_terminal_prefix ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.6786041Z test capabilities_and_result_families_do_not_make_chess_full_a_shogi_operation ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.7031570Z test strict_result_parsing_and_native_observation_acceptance ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.7152635Z test real_native_choices_conclusions_and_score_perspective_roundtrip ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.7247776Z test precise_limits_and_incomplete_work_do_not_invent_scores_or_moves ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.7248160Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.7248435Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.7249132Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.7250791Z      Running tests/xiangqi_handoff.rs (target/debug/deps/xiangqi_handoff-fd610475ee9ffc62)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.7262123Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.7262273Z running 6 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.7416320Z test admission_complete_capture_effects_local_and_game_undo_cross_canonical_boundary ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.7976503Z test fast_exact_provenance_witness_unknown_cancel_failure_and_retirement_cross_native_record ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.9474220Z test strict_payload_context_and_transport_preserve_identity_through_real_execution ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:24.9550840Z test warnings_same_board_different_history_undo_and_fourth_occurrence_are_native ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:25.1090021Z test check_terminal_reasons_agreement_resignation_and_command_admission_remain_distinct ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:27.0164403Z test claimant_specific_audit_conclusion_and_undo_preserve_full_record ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:27.0165004Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:27.0165707Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.29s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:27.0166346Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:27.0168240Z      Running tests/xiangqi_routing.rs (target/debug/deps/xiangqi_routing-9c8d3b92b28522e6)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:27.0180184Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:27.0180377Z running 7 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:27.3485898Z test native_telemetry_family_limits_perspective_and_required_fields_are_checked ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:27.5385847Z test ordinary_limits_and_zero_work_remain_distinct_from_native_conclusions ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:27.6185923Z test malformed_or_wrong_target_context_is_invalid_rather_than_an_unsupported_success ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:27.8746232Z test strict_raw_request_envelope_native_and_response_boundaries_preserve_duplicates ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:27.8844748Z test response_acceptance_requires_every_identity_setting_and_full_native_history ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:28.8009938Z test actual_xiangqi_execution_is_advertised_and_full_remains_explicitly_unsupported ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7452989Z test actual_maximum_native_audit_ledger_and_whole_encoded_transport_boundaries_fit ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7453898Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7454453Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 24.73s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7455599Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7461191Z      Running unittests src/lib.rs (target/debug/deps/mshogi_runner-d5fae1278da09d0f)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7472585Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7472893Z running 4 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7480172Z test run::tests::earliest_deadline_wins_even_if_controller_wakes_after_both ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7480937Z test run::tests::go_projects_elapsed_transport_without_mutating_or_double_charging_clock ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7481570Z test run::tests::fixed_reply_receipt_precedes_later_processing_and_status_collection ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7490803Z test run::tests::delayed_clock_detection_records_observation_time_in_all_paths ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7491408Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7491856Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7492463Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7492887Z      Running unittests src/main.rs (target/debug/deps/mshogi_match-ec97f890fa0a34b4)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7501955Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7502147Z running 0 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7503730Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7504181Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7504767Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7505448Z      Running tests/recorded_evidence.rs (target/debug/deps/recorded_evidence-0672b177d08ee036)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7514454Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7514623Z running 4 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7556510Z test runner_clock_expiry_shuts_down_outstanding_real_uci_search_unscored ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:51.7645905Z test actual_claim_and_engine_failure_have_distinct_meanings ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:52.0844528Z test documented_work_limited_reruns_repeat_commands_and_conclusions ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:52.2212683Z test all_twenty_one_recorded_games_replay_with_complete_diagnostics ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:52.2213507Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:52.2213869Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:52.2214537Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:52.2215815Z      Running tests/runner.rs (target/debug/deps/runner-b0e48b78a3c51880)
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:52.2226402Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:52.2226565Z running 10 tests
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:52.2267600Z test non_utf8_cli_arguments_fail_normally_without_panicking ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:52.4409698Z test nonregular_identity_paths_are_rejected_without_opening_a_fifo ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:52.6684249Z test explicit_auto_claim_uses_known_history_before_any_go ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:52.8656120Z test ply_limit_is_a_distinct_unscored_experiment_stop ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:53.0816847Z test process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored ... FAILED
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:53.0995799Z test complete_scripted_pair_records_commands_identity_colors_results_and_replays ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:53.5338205Z test strict_configuration_and_replay_reject_inconsistent_or_oversized_evidence ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.0973828Z test silent_and_blocked_stdin_children_cannot_block_cleanup ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.1549953Z test all_stream_and_metadata_buffers_are_bounded_with_truncation_markers ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.2379665Z test separate_watchdog_and_chess_clock_expiry_preserve_observations ... ok
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.2380293Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.2380440Z failures:
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.2380633Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.2380959Z ---- process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored stdout ----
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.2381381Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.2381835Z thread 'process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored' (6387) panicked at crates/mshogi-runner/tests/runner.rs:172:9:
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.2383120Z assertion `left == right` failed: exit: RunnerFailure { kind: MissingResponse, engine: 0, phase: "handshake", at_ns: 2688062, watchdog_ms: Some(100), deadline_ns: None, detail: "Broken pipe (os error 32)", exit: None, last_output: None }
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.2386139Z   left: MissingResponse
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.2386537Z  right: UnexpectedExit
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.2387101Z note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.2387619Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.2387630Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.2387777Z failures:
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.2388292Z     process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.2388821Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.2389281Z test result: FAILED. 9 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.02s
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.2389967Z 
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.2390302Z error: test failed, to rerun pass `-p mshogi-runner --test runner`
+Rust (ubuntu-24.04)	Test	2026-10-29T12:38:54.2421183Z ##[error]Process completed with exit code 101.

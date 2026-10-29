@@ -1,3 +1,13 @@
+> Current desktop adaptation — MSH-102 (2026-10-29):
+> [analysis, outcomes, recovery and document journeys](desktop-journeys.md) now
+> use this native contract in the normal product, including strict Xiangqi Open,
+> exact-event history, stopped reopen and explicit Resume. Final source is
+> `a1f8234e6d82add1c485e7e2537e414cffd4d49d`; see
+> [execution/review/CI evidence](../evidence/msh102/completion-2026-10-29/README.md).
+> Earlier unstarted/product-gate statements below are preserved historical
+> handoffs, superseded by these bounded deliveries. MSH-45/M4 remain open;
+> MSH-103 and MSH-106 are not started.
+
 # Xiangqi native/shared delivery handoff
 
 ## Current product play adaptation (MSH-101, 2026-10-29)

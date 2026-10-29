@@ -1,0 +1,176 @@
+Window: "mShogi Verification — xiangqi-warning (test state) — content 1180.0 × 820.0 logical", App: mShogi Verification.
+0 standard window mShogi Verification — xiangqi-warning (test state) — content 1180.0 × 820.0 logical, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 container
+				4 heading mShogi, Value: 1
+					5 text mShogi
+				6 text XIANGQI · UNTIMED
+				7 text Local engine
+				8 container Game file
+					9 text UNSAVED
+					10 heading Untitled xiangqi game, Value: 2
+						11 text Untitled xiangqi game
+				12 button New game
+				13 button Save
+				14 button Save as…
+				15 button Open…
+				16 container Historical position
+					17 text HISTORY · READ ONLY
+					18 text Viewing event 8
+					19 text You play Red against mShogi
+					20 button Flip board; currently Red at bottom
+					21 text Viewing history · read only
+					22 button Return to live
+					23 text Viewing event 8 · the live game is unchanged
+					24 text mShogiBlack
+					25 text Your opponent
+					26 container Xiangqi board, Red at bottom
+						27 image
+						28 image
+						29 image
+						30 toggle button Description: a0, empty, Value: off
+						31 toggle button Description: b0, empty, Value: off
+						32 toggle button Description: c0, empty, Value: off
+						33 toggle button Description: d0, Red general, Value: off
+						34 toggle button Description: e0, empty, Value: off
+						35 toggle button Description: f0, empty, Value: off
+						36 toggle button Description: g0, empty, Value: off
+						37 toggle button Description: h0, empty, Value: off
+						38 toggle button Description: i0, empty, Value: off
+						39 toggle button Description: a1, empty, Value: off
+						40 toggle button Description: b1, empty, Value: off
+						41 toggle button Description: c1, empty, Value: off
+						42 toggle button Description: d1, empty, Value: off
+						43 toggle button Description: e1, empty, Value: off
+						44 toggle button Description: f1, empty, Value: off
+						45 toggle button Description: g1, empty, Value: off
+						46 toggle button Description: h1, empty, Value: off
+						47 toggle button Description: i1, empty, Value: off
+						48 toggle button Description: a2, empty, Value: off
+						49 toggle button Description: b2, empty, Value: off
+						50 toggle button Description: c2, empty, Value: off
+						51 toggle button Description: d2, empty, Value: off
+						52 toggle button Description: e2, empty, Value: off
+						53 toggle button Description: f2, empty, Value: off
+						54 toggle button Description: g2, empty, Value: off
+						55 toggle button Description: h2, empty, Value: off
+						56 toggle button Description: i2, empty, Value: off
+						57 toggle button Description: a3, empty, Value: off
+						58 toggle button Description: b3, empty, Value: off
+						59 toggle button Description: c3, empty, Value: off
+						60 toggle button Description: d3, empty, Value: off
+						61 toggle button Description: e3, empty, Value: off
+						62 toggle button Description: f3, empty, Value: off
+						63 toggle button Description: g3, empty, Value: off
+						64 toggle button Description: h3, empty, Value: off
+						65 toggle button Description: i3, empty, Value: off
+						66 toggle button Description: a4, empty, Value: off
+						67 toggle button Description: b4, empty, Value: off
+						68 toggle button Description: c4, empty, Value: off
+						69 toggle button Description: d4, empty, Value: off
+						70 toggle button Description: e4, empty, Value: off
+						71 toggle button Description: f4, empty, Value: off
+						72 toggle button Description: g4, empty, Value: off
+						73 toggle button Description: h4, empty, Value: off
+						74 toggle button Description: i4, empty, Value: off
+						75 toggle button Description: a5, empty, Value: off
+						76 toggle button Description: b5, empty, Value: off
+						77 toggle button Description: c5, empty, Value: off
+						78 toggle button Description: d5, empty, Value: off
+						79 toggle button Description: e5, empty, Value: off
+						80 toggle button Description: f5, empty, Value: off
+						81 toggle button Description: g5, empty, Value: off
+						82 toggle button Description: h5, empty, Value: off
+						83 toggle button Description: i5, empty, Value: off
+						84 toggle button Description: a6, empty, Value: off
+						85 toggle button Description: b6, empty, Value: off
+						86 toggle button Description: c6, empty, Value: off
+						87 toggle button Description: d6, empty, Value: off
+						88 toggle button Description: e6, empty, Value: off
+						89 toggle button Description: f6, empty, Value: off
+						90 toggle button Description: g6, empty, Value: off
+						91 toggle button Description: h6, empty, Value: off
+						92 toggle button Description: i6, empty, Value: off
+						93 toggle button Description: a7, empty, Value: off
+						94 toggle button Description: b7, empty, Value: off
+						95 toggle button Description: c7, empty, Value: off
+						96 toggle button Description: d7, empty, Value: off
+						97 toggle button Description: e7, empty, Value: off
+						98 toggle button Description: f7, empty, Value: off
+						99 toggle button Description: g7, empty, Value: off
+						100 toggle button Description: h7, empty, Value: off
+						101 toggle button Description: i7, empty, Value: off
+						102 toggle button Description: a8, empty, Value: off
+						103 toggle button Description: b8, empty, Value: off
+						104 toggle button Description: c8, empty, Value: off
+						105 toggle button Description: d8, empty, Value: off
+						106 toggle button Description: e8, empty, Value: off
+						107 toggle button Description: f8, Black general, Value: off
+						108 toggle button Description: g8, empty, Value: off
+						109 toggle button Description: h8, empty, Value: off
+						110 toggle button Description: i8, empty, Value: off
+						111 toggle button Description: a9, empty, Value: off
+						112 toggle button Description: b9, empty, Value: off
+						113 toggle button Description: c9, empty, Value: off
+						114 toggle button Description: d9, empty, Value: off
+						115 toggle button Description: e9, Red rook, Value: off
+						116 toggle button Description: f9, empty, Value: off
+						117 toggle button Description: g9, empty, Value: off
+						118 toggle button Description: h9, empty, Value: off
+						119 toggle button Description: i9, empty, Value: off
+					120 text YouRed
+					121 text Human player To move Select a piece, then a marked intersection. Arrows · Enter · Esc Read-only history · return to live to play Selected position · 8 plies
+				122 container Game controls and inspection
+					123 heading Analysis, Value: 2
+						124 text Analysis
+					125 container Inspector view
+						126 toggle button Play details, Value: off
+						127 toggle button Analyze position, Value: on
+					128 container Engine analysis
+						129 text Read-only analysis
+						130 text Selected event 8 · Red perspective
+						131 container
+							132 text Depth
+							133 number field (settable) Depth, Value: 1
+								134 stepper 0
+									135 unknown
+									136 unknown
+							137 text Node limit
+							138 number field (settable) Node limit, Value: 128
+								139 stepper 0
+									140 unknown
+									141 unknown
+							142 button (disabled) Start move analysis
+						143 text Analysis is unavailable inside a recorded command. Select a completed event or return to live.
+					144 container Game history
+						145 heading Game history, Value: 2
+							146 text Game history
+						147 text 9 events
+						148 container
+							149 button 0 Starting position
+							150 button 1 Red: e9–f9 · check
+							151 button 2 Black: f8–e8
+							152 button 3 Red: f9–e9 · check
+							153 button 4 Black: e8–f8
+							154 button 5 Red: e9–f9 · check
+							155 button 6 Black: f8–e8
+							156 button 7 Red: f9–e9 · check
+							157 button 8 Black: e8–f8
+							158 button 9 Red: repetition warning · perpetual check
+					159 heading Game actions, Value: 2
+						160 text Game actions
+					161 summary About & technical details, Value: off
+						162 text About & technical details
+	163 close button
+	164 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	165 minimize button
+	166 text mShogi Verification — xiangqi-warning (test state) — content 1180.0 × 820.0 logical
+167 menu bar
+	168 mShogi Verification
+	169 Edit
+	170 View
+	171 Window
+	172 Verification window size
+
+The focused UI element is 2 HTML content Description: mShogi, URL: tauri://localhost

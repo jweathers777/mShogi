@@ -1,0 +1,22 @@
+Window: "mShogi Verification — xiangqi-count (test state) — content 1180.0 × 820.0 logical", App: mShogi Verification.
+0 standard window mShogi Verification — xiangqi-count (test state) — content 1180.0 × 820.0 logical, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 container Claim a natural-count draw?
+				4 heading Claim a natural-count draw?, Value: 2
+					5 text Claim a natural-count draw?
+				6 text Submit your native-verified natural-count claim. A valid claim ends the game as a draw.
+				7 button Cancel
+				8 button Claim draw
+	9 close button
+	10 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	11 minimize button
+	12 text mShogi Verification — xiangqi-count (test state) — content 1180.0 × 820.0 logical
+13 menu bar
+	14 mShogi Verification
+	15 Edit
+	16 View
+	17 Window
+	18 Verification window size
+
+The focused UI element is 7 button Cancel

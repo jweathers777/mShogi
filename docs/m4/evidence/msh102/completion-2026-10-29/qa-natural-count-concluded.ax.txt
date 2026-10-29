@@ -1,0 +1,254 @@
+Window: "mShogi Verification — xiangqi-count (test state) — content 1180.0 × 820.0 logical", App: mShogi Verification.
+0 standard window mShogi Verification — xiangqi-count (test state) — content 1180.0 × 820.0 logical, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 container
+				4 heading mShogi, Value: 1
+					5 text mShogi
+				6 text XIANGQI · UNTIMED
+				7 text Local engine
+				8 container Game file
+					9 text UNSAVED
+					10 heading Untitled xiangqi game, Value: 2
+						11 text Untitled xiangqi game
+				12 button New game
+				13 button Save
+				14 button Save as…
+				15 button Open…
+				16 container Live game
+					17 text GAME CONCLUDED
+					18 text Draw · natural-count claim
+					19 text You play Red against mShogi
+					20 button Flip board; currently Red at bottom
+					21 text mShogiBlack
+					22 text Your opponent
+					23 container Xiangqi board, Red at bottom
+						24 image
+						25 image
+						26 image
+						27 toggle button Description: a0, Black rook, Value: off
+						28 toggle button Description: b0, empty, Value: off
+						29 toggle button Description: c0, empty, Value: off
+						30 toggle button Description: d0, empty, Value: off
+						31 toggle button Description: e0, empty, Value: off
+						32 toggle button Description: f0, empty, Value: off
+						33 toggle button Description: g0, empty, Value: off
+						34 toggle button Description: h0, empty, Value: off
+						35 toggle button Description: i0, empty, Value: off
+						36 toggle button Description: a1, empty, Value: off
+						37 toggle button Description: b1, empty, Value: off
+						38 toggle button Description: c1, empty, Value: off
+						39 toggle button Description: d1, empty, Value: off
+						40 toggle button Description: e1, empty, Value: off
+						41 toggle button Description: f1, empty, Value: off
+						42 toggle button Description: g1, Red rook, Value: off
+						43 toggle button Description: h1, empty, Value: off
+						44 toggle button Description: i1, empty, Value: off
+						45 toggle button Description: a2, empty, Value: off
+						46 toggle button Description: b2, empty, Value: off
+						47 toggle button Description: c2, empty, Value: off
+						48 toggle button Description: d2, Red general, Value: off
+						49 toggle button Description: e2, empty, Value: off
+						50 toggle button Description: f2, empty, Value: off
+						51 toggle button Description: g2, empty, Value: off
+						52 toggle button Description: h2, empty, Value: off
+						53 toggle button Description: i2, empty, Value: off
+						54 toggle button Description: a3, empty, Value: off
+						55 toggle button Description: b3, empty, Value: off
+						56 toggle button Description: c3, empty, Value: off
+						57 toggle button Description: d3, empty, Value: off
+						58 toggle button Description: e3, empty, Value: off
+						59 toggle button Description: f3, empty, Value: off
+						60 toggle button Description: g3, empty, Value: off
+						61 toggle button Description: h3, empty, Value: off
+						62 toggle button Description: i3, empty, Value: off
+						63 toggle button Description: a4, empty, Value: off
+						64 toggle button Description: b4, empty, Value: off
+						65 toggle button Description: c4, empty, Value: off
+						66 toggle button Description: d4, empty, Value: off
+						67 toggle button Description: e4, empty, Value: off
+						68 toggle button Description: f4, empty, Value: off
+						69 toggle button Description: g4, empty, Value: off
+						70 toggle button Description: h4, empty, Value: off
+						71 toggle button Description: i4, empty, Value: off
+						72 toggle button Description: a5, empty, Value: off
+						73 toggle button Description: b5, empty, Value: off
+						74 toggle button Description: c5, empty, Value: off
+						75 toggle button Description: d5, empty, Value: off
+						76 toggle button Description: e5, empty, Value: off
+						77 toggle button Description: f5, empty, Value: off
+						78 toggle button Description: g5, empty, Value: off
+						79 toggle button Description: h5, empty, Value: off
+						80 toggle button Description: i5, empty, Value: off
+						81 toggle button Description: a6, empty, Value: off
+						82 toggle button Description: b6, empty, Value: off
+						83 toggle button Description: c6, empty, Value: off
+						84 toggle button Description: d6, empty, Value: off
+						85 toggle button Description: e6, empty, Value: off
+						86 toggle button Description: f6, empty, Value: off
+						87 toggle button Description: g6, empty, Value: off
+						88 toggle button Description: h6, empty, Value: off
+						89 toggle button Description: i6, empty, Value: off
+						90 toggle button Description: a7, empty, Value: off
+						91 toggle button Description: b7, empty, Value: off
+						92 toggle button Description: c7, empty, Value: off
+						93 toggle button Description: d7, empty, Value: off
+						94 toggle button Description: e7, empty, Value: off
+						95 toggle button Description: f7, empty, Value: off
+						96 toggle button Description: g7, empty, Value: off
+						97 toggle button Description: h7, empty, Value: off
+						98 toggle button Description: i7, empty, Value: off
+						99 toggle button Description: a8, empty, Value: off
+						100 toggle button Description: b8, empty, Value: off
+						101 toggle button Description: c8, empty, Value: off
+						102 toggle button Description: d8, empty, Value: off
+						103 toggle button Description: e8, Black general, Value: off
+						104 toggle button Description: f8, empty, Value: off
+						105 toggle button Description: g8, empty, Value: off
+						106 toggle button Description: h8, empty, Value: off
+						107 toggle button Description: i8, empty, Value: off
+						108 toggle button Description: a9, empty, Value: off
+						109 toggle button Description: b9, empty, Value: off
+						110 toggle button Description: c9, empty, Value: off
+						111 toggle button Description: d9, empty, Value: off
+						112 toggle button Description: e9, empty, Value: off
+						113 toggle button Description: f9, empty, Value: off
+						114 toggle button Description: g9, empty, Value: off
+						115 toggle button Description: h9, empty, Value: off
+						116 toggle button Description: i9, empty, Value: off
+					117 text YouRed
+					118 text Human player Select a piece, then a marked intersection. Arrows · Enter · Esc Game concluded Live position · 100 plies
+				119 container Game controls and inspection
+					120 heading Analysis, Value: 2
+						121 text Analysis
+					122 container Inspector view
+						123 toggle button Play details, Value: on
+						124 toggle button Analyze position, Value: off
+					125 container Engine analysis
+						126 heading Native engine, Value: 2
+							127 text Native engine
+						128 container Engine turn status
+							129 text Paused
+						130 text Play limit: depth 1 · 128 nodes
+						131 text No engine search has completed in this game.
+					132 container Game history
+						133 heading Game history, Value: 2
+							134 text Game history
+						135 text 103 events
+						136 container (showing 0-100 of 104 items)
+							137 button 0 Starting position
+							138 button 1 Red: a5–d5
+							139 button 2 Black: i9–i6
+							140 button 3 Red: d5–d6
+							141 button 4 Black: i6–i1
+							142 button 5 Red: d6–i6
+							143 button 6 Black: i1–b1
+							144 button 7 Red: i6–e6
+							145 button 8 Black: b1–i1
+							146 button 9 Red: e6–e9 · check
+							147 button 10 Black: f9–f8
+							148 button 11 Red: e9–e0
+							149 button 12 Black: i1–f1
+							150 button 13 Red: e0–f0
+							151 button 14 Black: f8–f9
+							152 button 15 Red: f0–i0
+							153 button 16 Black: f1–e1
+							154 button 17 Red: i0–f0 · check
+							155 button 18 Black: f9–e9
+							156 button 19 Red: f0–f4
+							157 button 20 Black: e1–e6
+							158 button 21 Red: f4–f9 · check
+							159 button 22 Black: e9–e8
+							160 button 23 Red: f9–f8 · check
+							161 button 24 Black: e8–e7
+							162 button 25 Red: f8–f7 · check
+							163 button 26 Black: e7–e8
+							164 button 27 Red: f7–d7
+							165 button 28 Black: e6–e7
+							166 button 29 Red: d7–d3
+							167 button 30 Black: e7–f7
+							168 button 31 Red: d3–d8 · check
+							169 button 32 Black: e8–e9
+							170 button 33 Red: d8–d5
+							171 button 34 Black: f7–g7
+							172 button 35 Red: d0–d1
+							173 button 36 Black: g7–g5
+							174 button 37 Red: d5–d4
+							175 button 38 Black: g5–g9
+							176 button 39 Red: d4–e4 · check
+							177 button 40 Black: e9–f9
+							178 button 41 Red: e4–e1
+							179 button 42 Black: g9–g5
+							180 button 43 Red: e1–e4
+							181 button 44 Black: g5–g6
+							182 button 45 Red: e4–e9 · check
+							183 button 46 Black: f9–f8
+							184 button 47 Red: e9–e1
+							185 button 48 Black: g6–g3
+							186 button 49 Red: d1–d0
+							187 button 50 Black: g3–g8
+							188 button 51 Red: e1–e9
+							189 button 52 Black: g8–g9
+							190 button 53 Red: e9–e8 · check
+							191 button 54 Black: f8–f7
+							192 button 55 Red: e8–f8 · check
+							193 button 56 Black: f7–e7
+							194 button 57 Red: f8–g8
+							195 button 58 Black: g9–a9
+							196 button 59 Red: g8–f8
+							197 button 60 Black: a9–a5
+							198 button 61 Red: f8–f3
+							199 button 62 Black: a5–a8
+							200 button 63 Red: f3–h3
+							201 button 64 Black: a8–a1
+							202 button 65 Red: h3–h5
+							203 button 66 Black: a1–a9
+							204 button 67 Red: h5–h4
+							205 button 68 Black: a9–a8
+							206 button 69 Red: h4–d4
+							207 button 70 Black: a8–g8
+							208 button 71 Red: d4–g4
+							209 button 72 Black: g8–h8
+							210 button 73 Red: g4–b4
+							211 button 74 Black: e7–e8
+							212 button 75 Red: b4–b0
+							213 button 76 Black: h8–h7
+							214 button 77 Red: b0–b4
+							215 button 78 Black: h7–f7
+							216 button 79 Red: b4–b0
+							217 button 80 Black: f7–f2
+							218 button 81 Red: b0–c0
+							219 button 82 Black: f2–f7
+							220 button 83 Red: c0–c4
+							221 button 84 Black: f7–f5
+							222 button 85 Red: c4–d4
+							223 button 86 Black: f5–e5
+							224 button 87 Red: d0–d1
+							225 button 88 Black: e5–f5
+							226 button 89 Red: d4–h4
+							227 button 90 Black: f5–i5
+							228 button 91 Red: d1–d0
+							229 button 92 Black: i5–e5
+							230 button 93 Red: d0–d1
+							231 button 94 Black: e5–e0
+							232 button 95 Red: h4–h1
+							233 button 96 Black: e8–f8
+							234 button 97 Red: h1–g1
+							235 button 98 Black: f8–e8
+							236 button 99 Red: d1–d2
+					237 heading Game actions, Value: 2
+						238 text Game actions
+					239 summary About & technical details, Value: off
+						240 text About & technical details
+	241 close button
+	242 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	243 minimize button
+	244 text mShogi Verification — xiangqi-count (test state) — content 1180.0 × 820.0 logical
+245 menu bar
+	246 mShogi Verification
+	247 Edit
+	248 View
+	249 Window
+	250 Verification window size
+
+The focused UI element is 2 HTML content Description: mShogi, URL: tauri://localhost

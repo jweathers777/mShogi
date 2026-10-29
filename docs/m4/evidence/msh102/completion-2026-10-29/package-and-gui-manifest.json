@@ -1,0 +1,238 @@
+{
+  "captured_utc": "2026-10-29T12:39:21.770292+00:00",
+  "environment": {
+    "sw_vers": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0.1\nBuildVersion:\t\t26A434\n",
+    "machine": "arm64",
+    "rust": "rustc 1.99.1 (58cf8f9c3 2026-10-13)"
+  },
+  "packages": {
+    "mShogi": {
+      "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+      "source": "a1f8234e6d82add1c485e7e2537e414cffd4d49d",
+      "files": {
+        "Contents/Info.plist": {
+          "bytes": 1048,
+          "sha256": "343be4b5b0ce533854424094072924e4695b92c95e1c220e1cd7ec09b5a8ce90"
+        },
+        "Contents/MacOS/mshogi": {
+          "bytes": 2700096,
+          "sha256": "b3d51b474f1eb552f1f7740d42b975cdc1efad3e814dc5a60771279383e3569a"
+        },
+        "Contents/MacOS/mshogi-desktop": {
+          "bytes": 16223072,
+          "sha256": "c1edb03921b366f5c439e09bee252fa09738ddd24ba998c0934b7dc8f4aef847"
+        },
+        "Contents/Resources/icon.icns": {
+          "bytes": 39844,
+          "sha256": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+        }
+      }
+    },
+    "mShogi Verification": {
+      "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi Verification.app",
+      "source": "a1f8234e6d82add1c485e7e2537e414cffd4d49d",
+      "files": {
+        "Contents/Info.plist": {
+          "bytes": 1087,
+          "sha256": "166a320e22c63d1fea58096a8b4e25432753d73fe439fe3797b738473f828172"
+        },
+        "Contents/MacOS/mshogi": {
+          "bytes": 2700096,
+          "sha256": "b3d51b474f1eb552f1f7740d42b975cdc1efad3e814dc5a60771279383e3569a"
+        },
+        "Contents/MacOS/mshogi-desktop": {
+          "bytes": 16644832,
+          "sha256": "3b25b3cd4f671373796635a83335bf0e59703ea5aaa1edc39844cd6bbbddd8a5"
+        },
+        "Contents/Resources/icon.icns": {
+          "bytes": 39844,
+          "sha256": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+        }
+      }
+    }
+  },
+  "actual_gui_saved_documents": {
+    "normal": {
+      "bytes": 13066,
+      "sha256": "427dc4d32b0f0a951ec91f86b8e766d712a8fbd74121fa88436ac05f5a934e05",
+      "schema_version": 2,
+      "game": "xiangqi",
+      "profile": "mshogi.xiangqi.wxf2018.v1",
+      "engine_protocol": 3,
+      "controls": 6,
+      "observations": 2,
+      "exact_observations": 0,
+      "native_events": 2,
+      "conclusion": null
+    },
+    "warning": {
+      "bytes": 7930,
+      "sha256": "ecb306f754e78a311c5098c23ffeb7769d8137cc86e2f04392a9631fe046abbe",
+      "schema_version": 2,
+      "game": "xiangqi",
+      "profile": "mshogi.xiangqi.wxf2018.v1",
+      "engine_protocol": 3,
+      "controls": 2,
+      "observations": 0,
+      "exact_observations": 0,
+      "native_events": 9,
+      "conclusion": null
+    },
+    "capacity": {
+      "bytes": 1049196,
+      "sha256": "7211cb01a198d99402064bf412e8303ebd535210f70e6fea5622ff58cf7e23c9",
+      "schema_version": 2,
+      "game": "xiangqi",
+      "profile": "mshogi.xiangqi.wxf2018.v1",
+      "engine_protocol": 3,
+      "controls": 513,
+      "observations": 256,
+      "exact_observations": 0,
+      "native_events": 0,
+      "conclusion": null
+    }
+  },
+  "failed_save_sha256_before_and_after": "cb054baa48a37e0ec172ba5290a89330619bb8f2f4f0f1862994b389be1b1f44",
+  "screenshots": {
+    "final-normal-capacity-reopened-refusal.png": {
+      "bytes": 410273,
+      "sha256": "ef2cd71a115abb98ddb33cb737d1571afc36ceee77953160e66faeeffc61700d"
+    },
+    "final-normal-capacity-save-keeps-feedback.png": {
+      "bytes": 409844,
+      "sha256": "bf49810e0ccf7c6b83c1605f39df1ff39083b08106bb93cc088ba91ea4a6c81a"
+    },
+    "final-normal-historical-analysis.png": {
+      "bytes": 339808,
+      "sha256": "7f75b19a8363f759268e6f1eeb1aad3050aac226bc108f67687be077a24fda48"
+    },
+    "final-normal-keyboard-guard-focus.png": {
+      "bytes": 344859,
+      "sha256": "582f995c47f6b4ab5bdc495ade66344da7d64c3bd040a870a3010e299dd00e73"
+    },
+    "final-normal-live-warning-resumed.png": {
+      "bytes": 342736,
+      "sha256": "01caf960bc138a70f4f0085947faa74449895f4b0824584111294546ba15ba16"
+    },
+    "final-normal-playable.png": {
+      "bytes": 371378,
+      "sha256": "d417c59150ee4e5cfa8978e58383e1532f514de6223b46087a3708f27f6328c1"
+    },
+    "final-normal-warning-reopen-partial-prefix.png": {
+      "bytes": 337938,
+      "sha256": "56655fd92f9cdb80ed9a85f64e55b451859cc1017b39304c3d8bb79c8ffd3eea"
+    },
+    "final-qa-cross-purpose-cancel-keeps-ply-one.png": {
+      "bytes": 412551,
+      "sha256": "436155b9c876bcbd39f71502d2e601d75e358f283c7843be0b80622175b865d6"
+    },
+    "final-qa-cross-purpose-retry-actual-engine.png": {
+      "bytes": 384918,
+      "sha256": "7b9ba440807042e44928678ba7a7e2b9a7fd905416578f05431a7ec96b81a3fe"
+    },
+    "final-qa-fourth-loss-no-live-obligation.png": {
+      "bytes": 333203,
+      "sha256": "d1aa43a5f5e8f57b28724dbf74065b0e73dca2071e021c795d5948c7f7ffb0d8"
+    },
+    "final-qa-sound-fast-no-win.png": {
+      "bytes": 342723,
+      "sha256": "b66b51fe24497799a66a814b99fad187cfd9a6fcee3e62a625947c7a80ff4078"
+    },
+    "normal-analysis.png": {
+      "bytes": 397804,
+      "sha256": "2cdce7b0e6e0d618e10eceebfd1dbc62b4440eb723d26e2b77758e8c726f1e57"
+    },
+    "normal-failed-open-retained.png": {
+      "bytes": 392859,
+      "sha256": "42d95689c3f615c6f3bd0c91fdc22665e175512cb5dd8bcdb0447a82ea5c4124"
+    },
+    "normal-failed-save-retained.png": {
+      "bytes": 396456,
+      "sha256": "405ebf31448bf691dbb301464302b4f9fcae923ffbc213003238956956578e55"
+    },
+    "normal-history.png": {
+      "bytes": 384107,
+      "sha256": "410b9bce2cc931fcd6b3b1c25cd5345d5a8f2cd48702a87f469b7a17508a31c1"
+    },
+    "normal-native-quit-unsaved-guard.png": {
+      "bytes": 251297,
+      "sha256": "907ec5bd3c393dc5fc17fb79bc02edce25ab324778844d7212251ec9870b69cf"
+    },
+    "normal-reopened-selected-history.png": {
+      "bytes": 378561,
+      "sha256": "8ca316aafae20e7963e842335611cea1a03ad3dd9c356cb6a50e8fe433497451"
+    },
+    "normal-unsaved-open-guard.png": {
+      "bytes": 245351,
+      "sha256": "d24300dcdd73c632b8ddef0125d43327d0b10f0ad54dfd831d1726af4186034a"
+    },
+    "qa-agreement-concluded.png": {
+      "bytes": 393481,
+      "sha256": "52b1f1385789901eb341a4069a8ffc85d0ee15a25448097cc004fac5a6d20b4b"
+    },
+    "qa-analysis-replaced-cancelled.png": {
+      "bytes": 404957,
+      "sha256": "9c45e18afa5530480e11a283d3a03632a7d0660157cfb73494456d9bde2a54c5"
+    },
+    "qa-capacity-256-accepted.png": {
+      "bytes": 426488,
+      "sha256": "17d72f89009b763d2367813b98001b242c283d72c4f4640680e71636fc8a64ee"
+    },
+    "qa-capacity-256-saved.png": {
+      "bytes": 427745,
+      "sha256": "06268d8c328a93f46c40e9e7edaaff33dfceb83b0dbe0b5ab41c496da3bd4b2f"
+    },
+    "qa-capacity-257-rejected-saveable.png": {
+      "bytes": 442727,
+      "sha256": "81a8c4bd753c190c13ea8b2da260f440be77b7c8de3c852f551342d79ba9a6be"
+    },
+    "qa-delayed-analysis-running.png": {
+      "bytes": 395422,
+      "sha256": "86d68557647e53275cf45ede46b9660b685fe46e78cfef9471f5eb1f8d9f1a23"
+    },
+    "qa-draw-declined.png": {
+      "bytes": 390868,
+      "sha256": "c6167e466dd06f4bad6e750dd54047e4458f115ead253642e5fcf34910e13b11"
+    },
+    "qa-draw-offer-opportunity.png": {
+      "bytes": 400908,
+      "sha256": "6fc01f6815066f648d9a526c5cec9183d1a59d2621c41a8a0f847e11c6e41cd5"
+    },
+    "qa-engine-failure.png": {
+      "bytes": 415673,
+      "sha256": "761efaf3a679620e2a4144195424228e7135e2397e97a0fba843fc85cba7b384"
+    },
+    "qa-engine-retry-recovered.png": {
+      "bytes": 381350,
+      "sha256": "f537be3dbe02a0d098be9634bce1eecd8523427e65e6f8390dd7a91a37d0f9ec"
+    },
+    "qa-fourth-occurrence-loss.png": {
+      "bytes": 382665,
+      "sha256": "4cb55e2a3b3435865a78668c8c9eca86e917bd23a316525d06fd07066d0ca6b1"
+    },
+    "qa-incomplete-unscored.png": {
+      "bytes": 426387,
+      "sha256": "6483fc287efa78610d64ece50a3d191b4a7b0c8f4d1ff9123407c1c6d421cc71"
+    },
+    "qa-natural-count-concluded.png": {
+      "bytes": 325755,
+      "sha256": "b17d34c765dee8e30e5c6168785caa412e0703ca665501672e636e81ee2569e9"
+    },
+    "qa-natural-count-confirmation.png": {
+      "bytes": 238403,
+      "sha256": "8f14993e565556febd680fac8e62903acb022be9c9c0539a9225dd6d778f6569"
+    },
+    "qa-partial-command-history.png": {
+      "bytes": 351871,
+      "sha256": "2497b73ddcd633270d8eecb92abe75b51ce42ac7bde29f2e622139be9c4068ca"
+    },
+    "qa-repetition-warning.png": {
+      "bytes": 338389,
+      "sha256": "98479da9ebcedb776e980186fb6dbd1edc950b53e26b9b4a8edec936f144b14a"
+    },
+    "qa-resignation-concluded.png": {
+      "bytes": 392572,
+      "sha256": "3bc720af6c6a079626699429c066b3e5798aad92774541d3c037757bbd7d0a0b"
+    }
+  }
+}

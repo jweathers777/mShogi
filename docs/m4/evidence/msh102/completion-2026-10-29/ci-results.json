@@ -1,0 +1,975 @@
+{
+  "recorded_utc": "2026-10-29T12:50:01.294299+00:00",
+  "source": "a1f8234e6d82add1c485e7e2537e414cffd4d49d",
+  "runs": [
+    {
+      "conclusion": "success",
+      "databaseId": 40874262186,
+      "headSha": "a1f8234e6d82add1c485e7e2537e414cffd4d49d",
+      "jobs": [
+        {
+          "completedAt": "2026-10-29T12:43:00Z",
+          "conclusion": "success",
+          "databaseId": 123448906013,
+          "name": "Rust (macos-15)",
+          "startedAt": "2026-10-29T12:33:42Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-29T12:33:43Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-29T12:33:42Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:33:51Z",
+              "conclusion": "success",
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "number": 2,
+              "startedAt": "2026-10-29T12:33:43Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:34:01Z",
+              "conclusion": "success",
+              "name": "Install and identify the pinned toolchain",
+              "number": 3,
+              "startedAt": "2026-10-29T12:33:51Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:34:03Z",
+              "conclusion": "success",
+              "name": "Format",
+              "number": 4,
+              "startedAt": "2026-10-29T12:34:01Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:34:21Z",
+              "conclusion": "success",
+              "name": "Lint",
+              "number": 5,
+              "startedAt": "2026-10-29T12:34:03Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:39:46Z",
+              "conclusion": "success",
+              "name": "Test",
+              "number": 6,
+              "startedAt": "2026-10-29T12:34:21Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:42:55Z",
+              "conclusion": "success",
+              "name": "Verify isolated desktop QA constructors",
+              "number": 7,
+              "startedAt": "2026-10-29T12:39:46Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:42:56Z",
+              "conclusion": "success",
+              "name": "Verify native desktop snapshot fixtures",
+              "number": 8,
+              "startedAt": "2026-10-29T12:42:55Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:42:57Z",
+              "conclusion": "success",
+              "name": "Build",
+              "number": 9,
+              "startedAt": "2026-10-29T12:42:56Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:42:57Z",
+              "conclusion": "success",
+              "name": "Console smoke",
+              "number": 10,
+              "startedAt": "2026-10-29T12:42:57Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:42:58Z",
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "number": 20,
+              "startedAt": "2026-10-29T12:42:57Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:42:59Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 21,
+              "startedAt": "2026-10-29T12:42:58Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40874262186/job/123448906013"
+        },
+        {
+          "completedAt": "2026-10-29T12:46:44Z",
+          "conclusion": "success",
+          "databaseId": 123448906404,
+          "name": "Rust (windows-2022)",
+          "startedAt": "2026-10-29T12:33:41Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-29T12:33:42Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-29T12:33:42Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:33:55Z",
+              "conclusion": "success",
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "number": 2,
+              "startedAt": "2026-10-29T12:33:42Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:34:08Z",
+              "conclusion": "success",
+              "name": "Install and identify the pinned toolchain",
+              "number": 3,
+              "startedAt": "2026-10-29T12:33:55Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:34:10Z",
+              "conclusion": "success",
+              "name": "Format",
+              "number": 4,
+              "startedAt": "2026-10-29T12:34:08Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:34:32Z",
+              "conclusion": "success",
+              "name": "Lint",
+              "number": 5,
+              "startedAt": "2026-10-29T12:34:10Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:42:10Z",
+              "conclusion": "success",
+              "name": "Test",
+              "number": 6,
+              "startedAt": "2026-10-29T12:34:32Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:46:37Z",
+              "conclusion": "success",
+              "name": "Verify isolated desktop QA constructors",
+              "number": 7,
+              "startedAt": "2026-10-29T12:42:10Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:46:39Z",
+              "conclusion": "success",
+              "name": "Verify native desktop snapshot fixtures",
+              "number": 8,
+              "startedAt": "2026-10-29T12:46:37Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:46:39Z",
+              "conclusion": "success",
+              "name": "Build",
+              "number": 9,
+              "startedAt": "2026-10-29T12:46:39Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:46:40Z",
+              "conclusion": "success",
+              "name": "Console smoke",
+              "number": 10,
+              "startedAt": "2026-10-29T12:46:39Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:46:42Z",
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "number": 20,
+              "startedAt": "2026-10-29T12:46:40Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:46:42Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 21,
+              "startedAt": "2026-10-29T12:46:42Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40874262186/job/123448906404"
+        },
+        {
+          "completedAt": "2026-10-29T12:40:43Z",
+          "conclusion": "success",
+          "databaseId": 123448906415,
+          "name": "Rust (ubuntu-24.04)",
+          "startedAt": "2026-10-29T12:33:41Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-29T12:33:42Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-29T12:33:42Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:33:48Z",
+              "conclusion": "success",
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "number": 2,
+              "startedAt": "2026-10-29T12:33:42Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:33:55Z",
+              "conclusion": "success",
+              "name": "Install and identify the pinned toolchain",
+              "number": 3,
+              "startedAt": "2026-10-29T12:33:48Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:33:56Z",
+              "conclusion": "success",
+              "name": "Format",
+              "number": 4,
+              "startedAt": "2026-10-29T12:33:55Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:34:04Z",
+              "conclusion": "success",
+              "name": "Lint",
+              "number": 5,
+              "startedAt": "2026-10-29T12:33:56Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:38:00Z",
+              "conclusion": "success",
+              "name": "Test",
+              "number": 6,
+              "startedAt": "2026-10-29T12:34:04Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:40:40Z",
+              "conclusion": "success",
+              "name": "Verify isolated desktop QA constructors",
+              "number": 7,
+              "startedAt": "2026-10-29T12:38:00Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:40:41Z",
+              "conclusion": "success",
+              "name": "Verify native desktop snapshot fixtures",
+              "number": 8,
+              "startedAt": "2026-10-29T12:40:40Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:40:41Z",
+              "conclusion": "success",
+              "name": "Build",
+              "number": 9,
+              "startedAt": "2026-10-29T12:40:41Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:40:41Z",
+              "conclusion": "success",
+              "name": "Console smoke",
+              "number": 10,
+              "startedAt": "2026-10-29T12:40:41Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:40:42Z",
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "number": 20,
+              "startedAt": "2026-10-29T12:40:41Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:40:42Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 21,
+              "startedAt": "2026-10-29T12:40:42Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40874262186/job/123448906415"
+        }
+      ],
+      "name": "Rust workspace",
+      "status": "completed",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/40874262186"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40874262241,
+      "headSha": "a1f8234e6d82add1c485e7e2537e414cffd4d49d",
+      "jobs": [
+        {
+          "completedAt": "2026-10-29T12:38:47Z",
+          "conclusion": "success",
+          "databaseId": 123448906704,
+          "name": "Desktop (macos-15)",
+          "startedAt": "2026-10-29T12:33:42Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-29T12:33:44Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-29T12:33:43Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:33:52Z",
+              "conclusion": "success",
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "number": 2,
+              "startedAt": "2026-10-29T12:33:44Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:33:58Z",
+              "conclusion": "success",
+              "name": "Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+              "number": 3,
+              "startedAt": "2026-10-29T12:33:52Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:33:58Z",
+              "conclusion": "skipped",
+              "name": "Linux native build dependencies",
+              "number": 4,
+              "startedAt": "2026-10-29T12:33:58Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:34:05Z",
+              "conclusion": "success",
+              "name": "Install desktop toolchain",
+              "number": 5,
+              "startedAt": "2026-10-29T12:33:58Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:36:32Z",
+              "conclusion": "success",
+              "name": "Locked frontend and native checks",
+              "number": 6,
+              "startedAt": "2026-10-29T12:34:05Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:38:40Z",
+              "conclusion": "success",
+              "name": "Build normal native package",
+              "number": 7,
+              "startedAt": "2026-10-29T12:36:32Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:38:40Z",
+              "conclusion": "success",
+              "name": "Inspect macOS application package and run bundled engine",
+              "number": 8,
+              "startedAt": "2026-10-29T12:38:40Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:38:40Z",
+              "conclusion": "skipped",
+              "name": "Inspect extracted Debian package and run bundled engine",
+              "number": 9,
+              "startedAt": "2026-10-29T12:38:40Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:38:40Z",
+              "conclusion": "skipped",
+              "name": "Install Windows package and run bundled engine",
+              "number": 10,
+              "startedAt": "2026-10-29T12:38:40Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:38:41Z",
+              "conclusion": "success",
+              "name": "Preserve normal package identity before separate verification build",
+              "number": 11,
+              "startedAt": "2026-10-29T12:38:40Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:38:41Z",
+              "conclusion": "skipped",
+              "name": "Install actual Linux application for GUI interaction",
+              "number": 12,
+              "startedAt": "2026-10-29T12:38:41Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:38:41Z",
+              "conclusion": "skipped",
+              "name": "Prepare external native GUI driver",
+              "number": 13,
+              "startedAt": "2026-10-29T12:38:41Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:38:41Z",
+              "conclusion": "skipped",
+              "name": "Prepare bounded Linux verification proxy and test actual transport boundary",
+              "number": 14,
+              "startedAt": "2026-10-29T12:38:41Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:38:41Z",
+              "conclusion": "skipped",
+              "name": "Pin external Windows GUI Python runtime",
+              "number": 15,
+              "startedAt": "2026-10-29T12:38:41Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:38:41Z",
+              "conclusion": "skipped",
+              "name": "Prepare matching Windows WebView2 driver and native UI tools",
+              "number": 16,
+              "startedAt": "2026-10-29T12:38:41Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:38:41Z",
+              "conclusion": "skipped",
+              "name": "Build separately labeled packaged verification application",
+              "number": 17,
+              "startedAt": "2026-10-29T12:38:41Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:38:41Z",
+              "conclusion": "skipped",
+              "name": "Extract Linux verification package with separate identity",
+              "number": 18,
+              "startedAt": "2026-10-29T12:38:41Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:38:41Z",
+              "conclusion": "skipped",
+              "name": "Interact with actual installed and packaged Chess and Shogi on Linux",
+              "number": 19,
+              "startedAt": "2026-10-29T12:38:41Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:38:41Z",
+              "conclusion": "skipped",
+              "name": "Install separate Windows verification package and interact with actual Chess and Shogi",
+              "number": 20,
+              "startedAt": "2026-10-29T12:38:41Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:38:43Z",
+              "conclusion": "success",
+              "name": "Upload native package and observations",
+              "number": 21,
+              "startedAt": "2026-10-29T12:38:41Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:38:43Z",
+              "conclusion": "success",
+              "name": "Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+              "number": 41,
+              "startedAt": "2026-10-29T12:38:43Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:38:44Z",
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "number": 42,
+              "startedAt": "2026-10-29T12:38:43Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:38:44Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 43,
+              "startedAt": "2026-10-29T12:38:44Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40874262241/job/123448906704"
+        },
+        {
+          "completedAt": "2026-10-29T12:48:26Z",
+          "conclusion": "success",
+          "databaseId": 123448906795,
+          "name": "Desktop (windows-2022)",
+          "startedAt": "2026-10-29T12:33:42Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-29T12:33:44Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-29T12:33:42Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:33:57Z",
+              "conclusion": "success",
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "number": 2,
+              "startedAt": "2026-10-29T12:33:44Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:34:08Z",
+              "conclusion": "success",
+              "name": "Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+              "number": 3,
+              "startedAt": "2026-10-29T12:33:57Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:34:08Z",
+              "conclusion": "skipped",
+              "name": "Linux native build dependencies",
+              "number": 4,
+              "startedAt": "2026-10-29T12:34:08Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:34:20Z",
+              "conclusion": "success",
+              "name": "Install desktop toolchain",
+              "number": 5,
+              "startedAt": "2026-10-29T12:34:08Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:39:39Z",
+              "conclusion": "success",
+              "name": "Locked frontend and native checks",
+              "number": 6,
+              "startedAt": "2026-10-29T12:34:20Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:44:01Z",
+              "conclusion": "success",
+              "name": "Build normal native package",
+              "number": 7,
+              "startedAt": "2026-10-29T12:39:39Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:44:01Z",
+              "conclusion": "skipped",
+              "name": "Inspect macOS application package and run bundled engine",
+              "number": 8,
+              "startedAt": "2026-10-29T12:44:01Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:44:01Z",
+              "conclusion": "skipped",
+              "name": "Inspect extracted Debian package and run bundled engine",
+              "number": 9,
+              "startedAt": "2026-10-29T12:44:01Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:44:04Z",
+              "conclusion": "success",
+              "name": "Install Windows package and run bundled engine",
+              "number": 10,
+              "startedAt": "2026-10-29T12:44:01Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:44:04Z",
+              "conclusion": "success",
+              "name": "Preserve normal package identity before separate verification build",
+              "number": 11,
+              "startedAt": "2026-10-29T12:44:04Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:44:04Z",
+              "conclusion": "skipped",
+              "name": "Install actual Linux application for GUI interaction",
+              "number": 12,
+              "startedAt": "2026-10-29T12:44:04Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:44:41Z",
+              "conclusion": "success",
+              "name": "Prepare external native GUI driver",
+              "number": 13,
+              "startedAt": "2026-10-29T12:44:04Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:44:41Z",
+              "conclusion": "skipped",
+              "name": "Prepare bounded Linux verification proxy and test actual transport boundary",
+              "number": 14,
+              "startedAt": "2026-10-29T12:44:41Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:44:41Z",
+              "conclusion": "success",
+              "name": "Pin external Windows GUI Python runtime",
+              "number": 15,
+              "startedAt": "2026-10-29T12:44:41Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:44:52Z",
+              "conclusion": "success",
+              "name": "Prepare matching Windows WebView2 driver and native UI tools",
+              "number": 16,
+              "startedAt": "2026-10-29T12:44:41Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:46:16Z",
+              "conclusion": "success",
+              "name": "Build separately labeled packaged verification application",
+              "number": 17,
+              "startedAt": "2026-10-29T12:44:52Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:46:16Z",
+              "conclusion": "skipped",
+              "name": "Extract Linux verification package with separate identity",
+              "number": 18,
+              "startedAt": "2026-10-29T12:46:16Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:46:16Z",
+              "conclusion": "skipped",
+              "name": "Interact with actual installed and packaged Chess and Shogi on Linux",
+              "number": 19,
+              "startedAt": "2026-10-29T12:46:16Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:48:18Z",
+              "conclusion": "success",
+              "name": "Install separate Windows verification package and interact with actual Chess and Shogi",
+              "number": 20,
+              "startedAt": "2026-10-29T12:46:16Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:48:22Z",
+              "conclusion": "success",
+              "name": "Upload native package and observations",
+              "number": 21,
+              "startedAt": "2026-10-29T12:48:18Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:48:22Z",
+              "conclusion": "success",
+              "name": "Post Pin external Windows GUI Python runtime",
+              "number": 40,
+              "startedAt": "2026-10-29T12:48:22Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:48:22Z",
+              "conclusion": "success",
+              "name": "Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+              "number": 41,
+              "startedAt": "2026-10-29T12:48:22Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:48:24Z",
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "number": 42,
+              "startedAt": "2026-10-29T12:48:22Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:48:24Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 43,
+              "startedAt": "2026-10-29T12:48:24Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40874262241/job/123448906795"
+        },
+        {
+          "completedAt": "2026-10-29T12:44:45Z",
+          "conclusion": "success",
+          "databaseId": 123448906892,
+          "name": "Desktop (ubuntu-24.04)",
+          "startedAt": "2026-10-29T12:33:41Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-29T12:33:43Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-29T12:33:42Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:33:49Z",
+              "conclusion": "success",
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "number": 2,
+              "startedAt": "2026-10-29T12:33:43Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:33:54Z",
+              "conclusion": "success",
+              "name": "Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+              "number": 3,
+              "startedAt": "2026-10-29T12:33:49Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:34:21Z",
+              "conclusion": "success",
+              "name": "Linux native build dependencies",
+              "number": 4,
+              "startedAt": "2026-10-29T12:33:54Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:34:31Z",
+              "conclusion": "success",
+              "name": "Install desktop toolchain",
+              "number": 5,
+              "startedAt": "2026-10-29T12:34:21Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:38:19Z",
+              "conclusion": "success",
+              "name": "Locked frontend and native checks",
+              "number": 6,
+              "startedAt": "2026-10-29T12:34:31Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:41:28Z",
+              "conclusion": "success",
+              "name": "Build normal native package",
+              "number": 7,
+              "startedAt": "2026-10-29T12:38:19Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:41:28Z",
+              "conclusion": "skipped",
+              "name": "Inspect macOS application package and run bundled engine",
+              "number": 8,
+              "startedAt": "2026-10-29T12:41:28Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:41:28Z",
+              "conclusion": "success",
+              "name": "Inspect extracted Debian package and run bundled engine",
+              "number": 9,
+              "startedAt": "2026-10-29T12:41:28Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:41:28Z",
+              "conclusion": "skipped",
+              "name": "Install Windows package and run bundled engine",
+              "number": 10,
+              "startedAt": "2026-10-29T12:41:28Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:41:28Z",
+              "conclusion": "success",
+              "name": "Preserve normal package identity before separate verification build",
+              "number": 11,
+              "startedAt": "2026-10-29T12:41:28Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:41:32Z",
+              "conclusion": "success",
+              "name": "Install actual Linux application for GUI interaction",
+              "number": 12,
+              "startedAt": "2026-10-29T12:41:28Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:41:32Z",
+              "conclusion": "skipped",
+              "name": "Prepare external native GUI driver",
+              "number": 13,
+              "startedAt": "2026-10-29T12:41:32Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:42:07Z",
+              "conclusion": "success",
+              "name": "Prepare bounded Linux verification proxy and test actual transport boundary",
+              "number": 14,
+              "startedAt": "2026-10-29T12:41:32Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:42:07Z",
+              "conclusion": "skipped",
+              "name": "Pin external Windows GUI Python runtime",
+              "number": 15,
+              "startedAt": "2026-10-29T12:42:07Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:42:07Z",
+              "conclusion": "skipped",
+              "name": "Prepare matching Windows WebView2 driver and native UI tools",
+              "number": 16,
+              "startedAt": "2026-10-29T12:42:07Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:42:54Z",
+              "conclusion": "success",
+              "name": "Build separately labeled packaged verification application",
+              "number": 17,
+              "startedAt": "2026-10-29T12:42:07Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:42:54Z",
+              "conclusion": "success",
+              "name": "Extract Linux verification package with separate identity",
+              "number": 18,
+              "startedAt": "2026-10-29T12:42:54Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:44:38Z",
+              "conclusion": "success",
+              "name": "Interact with actual installed and packaged Chess and Shogi on Linux",
+              "number": 19,
+              "startedAt": "2026-10-29T12:42:54Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:44:38Z",
+              "conclusion": "skipped",
+              "name": "Install separate Windows verification package and interact with actual Chess and Shogi",
+              "number": 20,
+              "startedAt": "2026-10-29T12:44:38Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:44:43Z",
+              "conclusion": "success",
+              "name": "Upload native package and observations",
+              "number": 21,
+              "startedAt": "2026-10-29T12:44:38Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:44:43Z",
+              "conclusion": "success",
+              "name": "Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+              "number": 41,
+              "startedAt": "2026-10-29T12:44:43Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:44:43Z",
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "number": 42,
+              "startedAt": "2026-10-29T12:44:43Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-29T12:44:43Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 43,
+              "startedAt": "2026-10-29T12:44:43Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/40874262241/job/123448906892"
+        }
+      ],
+      "name": "Desktop packages",
+      "status": "completed",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/40874262241"
+    }
+  ],
+  "scope": "Native all-platform tests; normal package/engine checks; actual Windows/Linux Chess/Shogi GUI regressions. Mac Xiangqi GUI is separately documented local packaged execution. No Windows/Linux Xiangqi GUI claimed.",
+  "historical_failure": {
+    "run_id": 40874033735,
+    "source": "6dec5abd2cc1c5da985ec9814029c6b2099831b5",
+    "platform": "ubuntu-24.04",
+    "test": "process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored",
+    "expected": "UnexpectedExit",
+    "observed": "MissingResponse; engine0 handshake Broken pipe (os error32); no exit status",
+    "scope": "Unchanged runner; final pass is not a claimed fix; separately tracked future investigation.",
+    "follow_up": "MSH-112"
+  }
+}

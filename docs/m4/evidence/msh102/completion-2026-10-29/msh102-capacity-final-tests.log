@@ -1,0 +1,13 @@
+
+> mshogi-desktop@0.1.0 test
+> vitest run src/product/ShogiApp.test.tsx src/product/XiangqiApp.test.tsx
+
+
+ RUN  v5.0.5 /Users/johnweathers/Development/Personal/mShogi/desktop
+
+
+ Test Files  2 passed (2)
+      Tests  29 passed (29)
+   Start at  13:32:23
+   Duration  6.91s (tests 90%, environment 7%, import 2%, transform 1%)
+

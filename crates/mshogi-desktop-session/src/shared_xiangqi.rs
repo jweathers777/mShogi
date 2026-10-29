@@ -8,6 +8,9 @@ pub use archive::{XiangqiExactEvidence, XiangqiSettings};
 #[cfg(test)]
 #[path = "shared_xiangqi_label_tests.rs"]
 mod label_tests;
+#[cfg(feature = "desktop-verification")]
+#[path = "shared_xiangqi_verification.rs"]
+mod verification;
 
 // Matches MSH-97's measured interactive default; requests also undergo native validation.
 const PLAY_LIMITS: WorkLimits = mshogi_engine::XIANGQI_PLAY_LIMITS;
@@ -35,6 +38,8 @@ pub struct Palace {
 /// Native selected-prefix facts, not inferred from heuristic evaluation.
 #[derive(Clone, Debug, Serialize)]
 pub struct XiangqiPresentation {
+    /// Native human-actor command advice, disabled while viewing or paused.
+    pub terminal_actions: XiangqiTerminalActions,
     /// Whether SharedSnapshot.context describes this committed selection or the live
     /// game alongside an immutable selection inside an atomic native command.
     pub canonical_context_scope: &'static str,
@@ -62,6 +67,16 @@ pub struct XiangqiPresentation {
     pub no_win_assessment: x::NoWinAssessment,
     /// Completed native exact reports retained only as historical evidence.
     pub exact_observations: Vec<XiangqiExactEvidence>,
+}
+/// Native terminal-command eligibility, independent of board-action turn ownership.
+#[derive(Clone, Debug, Serialize)]
+pub struct XiangqiTerminalActions {
+    /// Offer a draw after the human's own move under the native profile.
+    pub offer_draw: bool,
+    /// Accept the opponent's outstanding offer.
+    pub accept_draw: bool,
+    /// Decline the opponent's outstanding offer.
+    pub decline_draw: bool,
 }
 pub(crate) struct XiangqiSession {
     pub(super) initial_record: x::GameRecord,
@@ -176,33 +191,42 @@ fn event_label(event: &x::GameEvent) -> String {
         x::EventKind::Resigned => format!("{actor}: resigned"),
         x::EventKind::AgreementAccepted => format!("{actor}: draw agreement accepted"),
         x::EventKind::AdjudicationPending { .. } => "Adjudication unresolved · unscored".into(),
-        x::EventKind::Concluded { conclusion } => match conclusion {
-            x::Conclusion::Win { winner, reason } => format!(
-                "{} wins · {}",
-                name(*winner),
-                match reason {
-                    x::WinReason::NoLegalAction {
-                        reason: x::NoActionReason::Checkmate,
-                    } => "checkmate",
-                    x::WinReason::NoLegalAction {
-                        reason: x::NoActionReason::Stalemate,
-                    } => "no legal move (stalemate)",
-                    x::WinReason::Repetition { fault: f } => fault(*f),
-                    x::WinReason::Resignation => "resignation",
-                }
-            ),
-            x::Conclusion::Draw { reason } => format!(
-                "Draw · {}",
-                match reason {
-                    x::DrawReason::Repetition => "repetition",
-                    x::DrawReason::NaturalCount => "natural-count claim",
-                    x::DrawReason::Agreement => "agreement",
-                    x::DrawReason::NeitherCanWin => "neither side can win",
-                }
-            ),
-        },
+        x::EventKind::Concluded { conclusion } => conclusion_label(conclusion),
     }
 }
+fn conclusion_label(conclusion: &x::Conclusion) -> String {
+    let name = |s| side(NativeSide::Xiangqi(s)).label;
+    let fault = |f| match f {
+        x::FaultKind::PerpetualCheck => "perpetual check",
+        x::FaultKind::PerpetualChase => "perpetual chase",
+    };
+    match conclusion {
+        x::Conclusion::Win { winner, reason } => format!(
+            "{} wins · {}",
+            name(*winner),
+            match reason {
+                x::WinReason::NoLegalAction {
+                    reason: x::NoActionReason::Checkmate,
+                } => "checkmate",
+                x::WinReason::NoLegalAction {
+                    reason: x::NoActionReason::Stalemate,
+                } => "no legal move (stalemate)",
+                x::WinReason::Repetition { fault: f } => fault(*f),
+                x::WinReason::Resignation => "resignation",
+            }
+        ),
+        x::Conclusion::Draw { reason } => format!(
+            "Draw · {}",
+            match reason {
+                x::DrawReason::Repetition => "repetition",
+                x::DrawReason::NaturalCount => "natural-count claim",
+                x::DrawReason::Agreement => "agreement",
+                x::DrawReason::NeitherCanWin => "neither side can win",
+            }
+        ),
+    }
+}
+
 pub(super) fn inspect(
     position: &x::Position,
     origin: &str,
@@ -482,9 +506,9 @@ impl DesktopController {
                 x::Conclusion::Draw { .. } => [1, 1],
             }),
             label: if let Some(c) = concluded {
-                format!("{c:?}")
-            } else if let Some(p) = pending {
-                format!("Unresolved, unscored: {}", p.reason)
+                conclusion_label(&c)
+            } else if pending.is_some() {
+                "Adjudication unresolved · unscored".into()
             } else {
                 format!(
                     "{} to move{}",
@@ -499,6 +523,15 @@ impl DesktopController {
         };
         SharedSnapshot {
             xiangqi: Some(XiangqiPresentation {
+                terminal_actions: XiangqiTerminalActions {
+                    offer_draw: active && !state.paused && state.game.can_offer_draw(state.human),
+                    accept_draw: active
+                        && !state.paused
+                        && state.game.can_respond_to_draw(state.human),
+                    decline_draw: active
+                        && !state.paused
+                        && state.game.can_respond_to_draw(state.human),
+                },
                 canonical_context_scope: if historical && state.viewed_game.is_none() {
                     "live_with_immutable_selection"
                 } else {

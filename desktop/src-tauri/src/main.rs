@@ -138,7 +138,9 @@ fn desktop_verification_mode(verification: State<'_, VerificationState>) -> &'st
         "synthetic"
     } else if verification.fixture == "shared-contract" {
         "shared-contract"
-    } else if verification.fixture.starts_with("shogi-") {
+    } else if verification.fixture.starts_with("shogi-")
+        || verification.fixture.starts_with("xiangqi-")
+    {
         "product"
     } else {
         "chess"
@@ -714,7 +716,13 @@ fn initial_controller(fixture: &str) -> Result<DesktopController, Box<dyn std::e
         fixture
     };
     let engine = engine_path()?;
-    let engine = if fixture == "shogi-failure" {
+    // Only the separately labeled QA host can select an external delay/fault
+    // wrapper. The wrapper still execs the real bundled engine and supplies no
+    // telemetry or responses. Normal distributables have no override.
+    let engine = std::env::var_os("MSHOGI_VERIFICATION_ENGINE")
+        .map(std::path::PathBuf::from)
+        .unwrap_or(engine);
+    let engine = if matches!(fixture, "shogi-failure" | "xiangqi-failure") {
         // Deliberately absent child only in the separately labeled QA package.
         engine.with_file_name("mshogi-verification-missing-engine")
     } else {

@@ -1,0 +1,838 @@
+{
+  "xiangqi": {
+    "terminal_actions": {
+      "offer_draw": false,
+      "accept_draw": false,
+      "decline_draw": false
+    },
+    "canonical_context_scope": "selected_committed",
+    "selected_canonical": {
+      "envelope_version": 1,
+      "game_kind": "xiangqi",
+      "rules_profile": "mshogi.xiangqi.wxf2018.v1",
+      "profile_edition": "WXF-2018+XIANGQI-P1-2026-10-27",
+      "native_schema_version": 1,
+      "payload": {"format":"mshogi.xiangqi.game","schema_version":1,"game":"xiangqi","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","mode":"untimed","no_win_goal":"mshogi.xiangqi.natural-board-win.exists.v1","no_win_mode":"sound_fast_only","fast_witness_limit":1,"claim_policy":"explicit","root":{"schema":"mshogi.xiangqi.position.v1","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","history":"starts_at_this_position","origin":"imported_fen","board":"4R4/5k3/9/9/9/9/9/9/9/3K5","side":"red","no_capture_plies":0,"fullmove_number":1},"commands":[{"actor":"red","command":{"kind":"play","action":"e9f9"},"result":"accepted","event_end":1},{"actor":"black","command":{"kind":"play","action":"f8e8"},"result":"accepted","event_end":2},{"actor":"red","command":{"kind":"play","action":"f9e9"},"result":"accepted","event_end":3},{"actor":"black","command":{"kind":"play","action":"e8f8"},"result":"accepted","event_end":4},{"actor":"red","command":{"kind":"play","action":"e9f9"},"result":"accepted","event_end":5},{"actor":"black","command":{"kind":"play","action":"f8e8"},"result":"accepted","event_end":6},{"actor":"red","command":{"kind":"play","action":"f9e9"},"result":"accepted","event_end":7},{"actor":"black","command":{"kind":"play","action":"e8f8"},"result":"accepted","event_end":9},{"actor":"red","command":{"kind":"play","action":"e9f9"},"result":"accepted","event_end":11},{"actor":"black","command":{"kind":"play","action":"f8e8"},"result":"accepted","event_end":13},{"actor":"red","command":{"kind":"play","action":"f9e9"},"result":"accepted","event_end":15},{"actor":"black","command":{"kind":"play","action":"e8f8"},"result":"accepted","event_end":17}],"events":[{"index":0,"board_ply":1,"actor":"red","event":{"kind":"board_action","action":"e9f9","moving_id":2,"captured_id":null,"gave_check":true}},{"index":1,"board_ply":2,"actor":"black","event":{"kind":"board_action","action":"f8e8","moving_id":1,"captured_id":null,"gave_check":false}},{"index":2,"board_ply":3,"actor":"red","event":{"kind":"board_action","action":"f9e9","moving_id":2,"captured_id":null,"gave_check":true}},{"index":3,"board_ply":4,"actor":"black","event":{"kind":"board_action","action":"e8f8","moving_id":1,"captured_id":null,"gave_check":false}},{"index":4,"board_ply":5,"actor":"red","event":{"kind":"board_action","action":"e9f9","moving_id":2,"captured_id":null,"gave_check":true}},{"index":5,"board_ply":6,"actor":"black","event":{"kind":"board_action","action":"f8e8","moving_id":1,"captured_id":null,"gave_check":false}},{"index":6,"board_ply":7,"actor":"red","event":{"kind":"board_action","action":"f9e9","moving_id":2,"captured_id":null,"gave_check":true}},{"index":7,"board_ply":8,"actor":"black","event":{"kind":"board_action","action":"e8f8","moving_id":1,"captured_id":null,"gave_check":false}},{"index":8,"board_ply":8,"actor":null,"event":{"kind":"warning","warning":{"side":"red","fault":"perpetual_check","occurrences":[0,4,8],"event_index":8,"active":true}}},{"index":9,"board_ply":9,"actor":"red","event":{"kind":"board_action","action":"e9f9","moving_id":2,"captured_id":null,"gave_check":true}},{"index":10,"board_ply":9,"actor":null,"event":{"kind":"warning","warning":{"side":"red","fault":"perpetual_check","occurrences":[1,5,9],"event_index":10,"active":true}}},{"index":11,"board_ply":10,"actor":"black","event":{"kind":"board_action","action":"f8e8","moving_id":1,"captured_id":null,"gave_check":false}},{"index":12,"board_ply":10,"actor":null,"event":{"kind":"warning","warning":{"side":"red","fault":"perpetual_check","occurrences":[2,6,10],"event_index":12,"active":true}}},{"index":13,"board_ply":11,"actor":"red","event":{"kind":"board_action","action":"f9e9","moving_id":2,"captured_id":null,"gave_check":true}},{"index":14,"board_ply":11,"actor":null,"event":{"kind":"warning","warning":{"side":"red","fault":"perpetual_check","occurrences":[3,7,11],"event_index":14,"active":true}}},{"index":15,"board_ply":12,"actor":"black","event":{"kind":"board_action","action":"e8f8","moving_id":1,"captured_id":null,"gave_check":false}},{"index":16,"board_ply":12,"actor":null,"event":{"kind":"concluded","conclusion":{"kind":"win","winner":"black","reason":{"kind":"repetition","fault":"perpetual_check"}}}}],"current_position":{"schema":"mshogi.xiangqi.position.v1","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","history":"starts_at_this_position","origin":"analysis_diagram","board":"4R4/5k3/9/9/9/9/9/9/9/3K5","side":"red","no_capture_plies":12,"fullmove_number":7},"conclusion":{"kind":"win","winner":"black","reason":{"kind":"repetition","fault":"perpetual_check"}},"pending":null,"no_win_assessment":{"kind":"unknown_exact_unavailable"}}
+    },
+    "selected_events": [
+      {
+        "index": 0,
+        "board_ply": 1,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "e9f9",
+          "moving_id": 2,
+          "captured_id": null,
+          "gave_check": true
+        }
+      },
+      {
+        "index": 1,
+        "board_ply": 2,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "f8e8",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 2,
+        "board_ply": 3,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "f9e9",
+          "moving_id": 2,
+          "captured_id": null,
+          "gave_check": true
+        }
+      },
+      {
+        "index": 3,
+        "board_ply": 4,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "e8f8",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 4,
+        "board_ply": 5,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "e9f9",
+          "moving_id": 2,
+          "captured_id": null,
+          "gave_check": true
+        }
+      },
+      {
+        "index": 5,
+        "board_ply": 6,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "f8e8",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 6,
+        "board_ply": 7,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "f9e9",
+          "moving_id": 2,
+          "captured_id": null,
+          "gave_check": true
+        }
+      },
+      {
+        "index": 7,
+        "board_ply": 8,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "e8f8",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 8,
+        "board_ply": 8,
+        "actor": null,
+        "event": {
+          "kind": "warning",
+          "warning": {
+            "side": "red",
+            "fault": "perpetual_check",
+            "occurrences": [
+              0,
+              4,
+              8
+            ],
+            "event_index": 8,
+            "active": true
+          }
+        }
+      },
+      {
+        "index": 9,
+        "board_ply": 9,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "e9f9",
+          "moving_id": 2,
+          "captured_id": null,
+          "gave_check": true
+        }
+      },
+      {
+        "index": 10,
+        "board_ply": 9,
+        "actor": null,
+        "event": {
+          "kind": "warning",
+          "warning": {
+            "side": "red",
+            "fault": "perpetual_check",
+            "occurrences": [
+              1,
+              5,
+              9
+            ],
+            "event_index": 10,
+            "active": true
+          }
+        }
+      },
+      {
+        "index": 11,
+        "board_ply": 10,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "f8e8",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 12,
+        "board_ply": 10,
+        "actor": null,
+        "event": {
+          "kind": "warning",
+          "warning": {
+            "side": "red",
+            "fault": "perpetual_check",
+            "occurrences": [
+              2,
+              6,
+              10
+            ],
+            "event_index": 12,
+            "active": true
+          }
+        }
+      },
+      {
+        "index": 13,
+        "board_ply": 11,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "f9e9",
+          "moving_id": 2,
+          "captured_id": null,
+          "gave_check": true
+        }
+      },
+      {
+        "index": 14,
+        "board_ply": 11,
+        "actor": null,
+        "event": {
+          "kind": "warning",
+          "warning": {
+            "side": "red",
+            "fault": "perpetual_check",
+            "occurrences": [
+              3,
+              7,
+              11
+            ],
+            "event_index": 14,
+            "active": true
+          }
+        }
+      },
+      {
+        "index": 15,
+        "board_ply": 12,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "e8f8",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 16,
+        "board_ply": 12,
+        "actor": null,
+        "event": {
+          "kind": "concluded",
+          "conclusion": {
+            "kind": "win",
+            "winner": "black",
+            "reason": {
+              "kind": "repetition",
+              "fault": "perpetual_check"
+            }
+          }
+        }
+      }
+    ],
+    "selected_position": "{\"schema\":\"mshogi.xiangqi.position.v1\",\"profile\":\"mshogi.xiangqi.wxf2018.v1\",\"edition\":\"WXF-2018+XIANGQI-P1-2026-10-27\",\"history\":\"starts_at_this_position\",\"origin\":\"analysis_diagram\",\"board\":\"4R4/5k3/9/9/9/9/9/9/9/3K5\",\"side\":\"red\",\"no_capture_plies\":12,\"fullmove_number\":7}",
+    "root": "{\"schema\":\"mshogi.xiangqi.position.v1\",\"profile\":\"mshogi.xiangqi.wxf2018.v1\",\"edition\":\"WXF-2018+XIANGQI-P1-2026-10-27\",\"history\":\"starts_at_this_position\",\"origin\":\"imported_fen\",\"board\":\"4R4/5k3/9/9/9/9/9/9/9/3K5\",\"side\":\"red\",\"no_capture_plies\":0,\"fullmove_number\":1}",
+    "claim_policy": "explicit",
+    "count_advice": [
+      {
+        "claimant": "red",
+        "known_plies": 12,
+        "claimant_checks": 6,
+        "effective_plies": 12,
+        "eligible": false
+      },
+      {
+        "claimant": "black",
+        "known_plies": 12,
+        "claimant_checks": 0,
+        "effective_plies": 12,
+        "eligible": false
+      }
+    ],
+    "warnings": [
+      {
+        "side": "red",
+        "fault": "perpetual_check",
+        "occurrences": [
+          0,
+          4,
+          8
+        ],
+        "event_index": 8,
+        "active": true
+      },
+      {
+        "side": "red",
+        "fault": "perpetual_check",
+        "occurrences": [
+          1,
+          5,
+          9
+        ],
+        "event_index": 10,
+        "active": true
+      },
+      {
+        "side": "red",
+        "fault": "perpetual_check",
+        "occurrences": [
+          2,
+          6,
+          10
+        ],
+        "event_index": 12,
+        "active": true
+      },
+      {
+        "side": "red",
+        "fault": "perpetual_check",
+        "occurrences": [
+          3,
+          7,
+          11
+        ],
+        "event_index": 14,
+        "active": true
+      }
+    ],
+    "offered_by": null,
+    "conclusion": {
+      "kind": "win",
+      "winner": "black",
+      "reason": {
+        "kind": "repetition",
+        "fault": "perpetual_check"
+      }
+    },
+    "pending": null,
+    "no_win_assessment": {
+      "kind": "unknown_exact_unavailable"
+    },
+    "exact_observations": []
+  },
+  "open_token": {
+    "document": 1,
+    "version": 2,
+    "document_revision": 1
+  },
+  "document": {
+    "revision": 1,
+    "dirty": true,
+    "path": null,
+    "settings": {
+      "game_kind": "xiangqi",
+      "orientation": "red",
+      "analysis_defaults": {
+        "depth": 1,
+        "nodes": 128
+      }
+    }
+  },
+  "io": {
+    "id": 1,
+    "phase": "idle",
+    "message": null
+  },
+  "capacity": {
+    "id": 2,
+    "status": "available",
+    "message": null
+  },
+  "token": {
+    "document": 1,
+    "version": 2,
+    "revision": 5,
+    "selection": 2
+  },
+  "game": "xiangqi",
+  "profile": "mshogi.xiangqi.wxf2018.v1",
+  "edition": "WXF-2018+XIANGQI-P1-2026-10-27",
+  "human": {
+    "id": {
+      "game_kind": "xiangqi",
+      "side": "red"
+    },
+    "key": "mshogi.xiangqi.wxf2018.v1:red",
+    "label": "Red",
+    "first_mover": true
+  },
+  "turn": {
+    "id": {
+      "game_kind": "xiangqi",
+      "side": "red"
+    },
+    "key": "mshogi.xiangqi.wxf2018.v1:red",
+    "label": "Red",
+    "first_mover": true
+  },
+  "sides": [
+    {
+      "id": {
+        "game_kind": "xiangqi",
+        "side": "red"
+      },
+      "key": "mshogi.xiangqi.wxf2018.v1:red",
+      "label": "Red",
+      "first_mover": true
+    },
+    {
+      "id": {
+        "game_kind": "xiangqi",
+        "side": "black"
+      },
+      "key": "mshogi.xiangqi.wxf2018.v1:black",
+      "label": "Black",
+      "first_mover": false
+    }
+  ],
+  "board": {
+    "intersections": {
+      "points": [
+        "a0",
+        "b0",
+        "c0",
+        "d0",
+        "e0",
+        "f0",
+        "g0",
+        "h0",
+        "i0",
+        "a1",
+        "b1",
+        "c1",
+        "d1",
+        "e1",
+        "f1",
+        "g1",
+        "h1",
+        "i1",
+        "a2",
+        "b2",
+        "c2",
+        "d2",
+        "e2",
+        "f2",
+        "g2",
+        "h2",
+        "i2",
+        "a3",
+        "b3",
+        "c3",
+        "d3",
+        "e3",
+        "f3",
+        "g3",
+        "h3",
+        "i3",
+        "a4",
+        "b4",
+        "c4",
+        "d4",
+        "e4",
+        "f4",
+        "g4",
+        "h4",
+        "i4",
+        "a5",
+        "b5",
+        "c5",
+        "d5",
+        "e5",
+        "f5",
+        "g5",
+        "h5",
+        "i5",
+        "a6",
+        "b6",
+        "c6",
+        "d6",
+        "e6",
+        "f6",
+        "g6",
+        "h6",
+        "i6",
+        "a7",
+        "b7",
+        "c7",
+        "d7",
+        "e7",
+        "f7",
+        "g7",
+        "h7",
+        "i7",
+        "a8",
+        "b8",
+        "c8",
+        "d8",
+        "e8",
+        "f8",
+        "g8",
+        "h8",
+        "i8",
+        "a9",
+        "b9",
+        "c9",
+        "d9",
+        "e9",
+        "f9",
+        "g9",
+        "h9",
+        "i9"
+      ],
+      "river_between_ranks": [
+        4,
+        5
+      ],
+      "palaces": [
+        {
+          "side": {
+            "id": {
+              "game_kind": "xiangqi",
+              "side": "red"
+            },
+            "key": "mshogi.xiangqi.wxf2018.v1:red",
+            "label": "Red",
+            "first_mover": true
+          },
+          "points": [
+            "d0",
+            "e0",
+            "f0",
+            "d1",
+            "e1",
+            "f1",
+            "d2",
+            "e2",
+            "f2"
+          ],
+          "diagonals": [
+            [
+              "d0",
+              "e1",
+              "f2"
+            ],
+            [
+              "f0",
+              "e1",
+              "d2"
+            ]
+          ]
+        },
+        {
+          "side": {
+            "id": {
+              "game_kind": "xiangqi",
+              "side": "black"
+            },
+            "key": "mshogi.xiangqi.wxf2018.v1:black",
+            "label": "Black",
+            "first_mover": false
+          },
+          "points": [
+            "d7",
+            "e7",
+            "f7",
+            "d8",
+            "e8",
+            "f8",
+            "d9",
+            "e9",
+            "f9"
+          ],
+          "diagonals": [
+            [
+              "d7",
+              "e8",
+              "f9"
+            ],
+            [
+              "f7",
+              "e8",
+              "d9"
+            ]
+          ]
+        }
+      ]
+    },
+    "files": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g",
+      "h",
+      "i"
+    ],
+    "ranks": [
+      "9",
+      "8",
+      "7",
+      "6",
+      "5",
+      "4",
+      "3",
+      "2",
+      "1",
+      "0"
+    ],
+    "label": "Xiangqi intersection board",
+    "initial_focus": "e3"
+  },
+  "orientations": [
+    {
+      "side": {
+        "id": {
+          "game_kind": "xiangqi",
+          "side": "red"
+        },
+        "key": "mshogi.xiangqi.wxf2018.v1:red",
+        "label": "Red",
+        "first_mover": true
+      },
+      "files": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i"
+      ],
+      "ranks": [
+        "9",
+        "8",
+        "7",
+        "6",
+        "5",
+        "4",
+        "3",
+        "2",
+        "1",
+        "0"
+      ]
+    },
+    {
+      "side": {
+        "id": {
+          "game_kind": "xiangqi",
+          "side": "black"
+        },
+        "key": "mshogi.xiangqi.wxf2018.v1:black",
+        "label": "Black",
+        "first_mover": false
+      },
+      "files": [
+        "i",
+        "h",
+        "g",
+        "f",
+        "e",
+        "d",
+        "c",
+        "b",
+        "a"
+      ],
+      "ranks": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ]
+    }
+  ],
+  "pieces": [
+    {
+      "square": "d0",
+      "owner": "mshogi.xiangqi.wxf2018.v1:red",
+      "kind": "general",
+      "promoted": false,
+      "text": "General",
+      "label": "d0, Red General"
+    },
+    {
+      "square": "f8",
+      "owner": "mshogi.xiangqi.wxf2018.v1:black",
+      "kind": "general",
+      "promoted": false,
+      "text": "General",
+      "label": "f8, Black General"
+    },
+    {
+      "square": "e9",
+      "owner": "mshogi.xiangqi.wxf2018.v1:red",
+      "kind": "rook",
+      "promoted": false,
+      "text": "Rook",
+      "label": "e9, Red Rook"
+    }
+  ],
+  "hands": [],
+  "choices": [],
+  "capabilities": {
+    "board_action": false,
+    "drops": false,
+    "promotion": false,
+    "undo": true,
+    "engine_turn": false,
+    "move_analysis": true,
+    "chess_full": false,
+    "claims": false,
+    "declaration": false,
+    "resign": false,
+    "hands": false,
+    "history": true,
+    "save": true
+  },
+  "status": {
+    "concluded": true,
+    "label": "Black wins · perpetual check",
+    "score_half_points": [
+      0,
+      2
+    ]
+  },
+  "events": [
+    {
+      "index": 1,
+      "board_ply": 1,
+      "label": "Red: e9–f9 · check"
+    },
+    {
+      "index": 2,
+      "board_ply": 2,
+      "label": "Black: f8–e8"
+    },
+    {
+      "index": 3,
+      "board_ply": 3,
+      "label": "Red: f9–e9 · check"
+    },
+    {
+      "index": 4,
+      "board_ply": 4,
+      "label": "Black: e8–f8"
+    },
+    {
+      "index": 5,
+      "board_ply": 5,
+      "label": "Red: e9–f9 · check"
+    },
+    {
+      "index": 6,
+      "board_ply": 6,
+      "label": "Black: f8–e8"
+    },
+    {
+      "index": 7,
+      "board_ply": 7,
+      "label": "Red: f9–e9 · check"
+    },
+    {
+      "index": 8,
+      "board_ply": 8,
+      "label": "Black: e8–f8"
+    },
+    {
+      "index": 9,
+      "board_ply": 8,
+      "label": "Red: repetition warning · perpetual check"
+    },
+    {
+      "index": 10,
+      "board_ply": 9,
+      "label": "Red: e9–f9 · check"
+    },
+    {
+      "index": 11,
+      "board_ply": 9,
+      "label": "Red: repetition warning · perpetual check"
+    },
+    {
+      "index": 12,
+      "board_ply": 10,
+      "label": "Black: f8–e8"
+    },
+    {
+      "index": 13,
+      "board_ply": 10,
+      "label": "Red: repetition warning · perpetual check"
+    },
+    {
+      "index": 14,
+      "board_ply": 11,
+      "label": "Red: f9–e9 · check"
+    },
+    {
+      "index": 15,
+      "board_ply": 11,
+      "label": "Red: repetition warning · perpetual check"
+    },
+    {
+      "index": 16,
+      "board_ply": 12,
+      "label": "Black: e8–f8"
+    },
+    {
+      "index": 17,
+      "board_ply": 12,
+      "label": "Black wins · perpetual check"
+    }
+  ],
+  "event_index": 17,
+  "board_ply": 12,
+  "play_limits": {
+    "depth": 1,
+    "nodes": 128
+  },
+  "historical": false,
+  "paused": true,
+  "phase": "paused",
+  "execution_purpose": null,
+  "diagnostic": null,
+  "declaration_advice": [],
+  "context": {
+    "envelope_version": 1,
+    "game_kind": "xiangqi",
+    "rules_profile": "mshogi.xiangqi.wxf2018.v1",
+    "profile_edition": "WXF-2018+XIANGQI-P1-2026-10-27",
+    "native_schema_version": 1,
+    "payload": {"format":"mshogi.xiangqi.game","schema_version":1,"game":"xiangqi","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","mode":"untimed","no_win_goal":"mshogi.xiangqi.natural-board-win.exists.v1","no_win_mode":"sound_fast_only","fast_witness_limit":1,"claim_policy":"explicit","root":{"schema":"mshogi.xiangqi.position.v1","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","history":"starts_at_this_position","origin":"imported_fen","board":"4R4/5k3/9/9/9/9/9/9/9/3K5","side":"red","no_capture_plies":0,"fullmove_number":1},"commands":[{"actor":"red","command":{"kind":"play","action":"e9f9"},"result":"accepted","event_end":1},{"actor":"black","command":{"kind":"play","action":"f8e8"},"result":"accepted","event_end":2},{"actor":"red","command":{"kind":"play","action":"f9e9"},"result":"accepted","event_end":3},{"actor":"black","command":{"kind":"play","action":"e8f8"},"result":"accepted","event_end":4},{"actor":"red","command":{"kind":"play","action":"e9f9"},"result":"accepted","event_end":5},{"actor":"black","command":{"kind":"play","action":"f8e8"},"result":"accepted","event_end":6},{"actor":"red","command":{"kind":"play","action":"f9e9"},"result":"accepted","event_end":7},{"actor":"black","command":{"kind":"play","action":"e8f8"},"result":"accepted","event_end":9},{"actor":"red","command":{"kind":"play","action":"e9f9"},"result":"accepted","event_end":11},{"actor":"black","command":{"kind":"play","action":"f8e8"},"result":"accepted","event_end":13},{"actor":"red","command":{"kind":"play","action":"f9e9"},"result":"accepted","event_end":15},{"actor":"black","command":{"kind":"play","action":"e8f8"},"result":"accepted","event_end":17}],"events":[{"index":0,"board_ply":1,"actor":"red","event":{"kind":"board_action","action":"e9f9","moving_id":2,"captured_id":null,"gave_check":true}},{"index":1,"board_ply":2,"actor":"black","event":{"kind":"board_action","action":"f8e8","moving_id":1,"captured_id":null,"gave_check":false}},{"index":2,"board_ply":3,"actor":"red","event":{"kind":"board_action","action":"f9e9","moving_id":2,"captured_id":null,"gave_check":true}},{"index":3,"board_ply":4,"actor":"black","event":{"kind":"board_action","action":"e8f8","moving_id":1,"captured_id":null,"gave_check":false}},{"index":4,"board_ply":5,"actor":"red","event":{"kind":"board_action","action":"e9f9","moving_id":2,"captured_id":null,"gave_check":true}},{"index":5,"board_ply":6,"actor":"black","event":{"kind":"board_action","action":"f8e8","moving_id":1,"captured_id":null,"gave_check":false}},{"index":6,"board_ply":7,"actor":"red","event":{"kind":"board_action","action":"f9e9","moving_id":2,"captured_id":null,"gave_check":true}},{"index":7,"board_ply":8,"actor":"black","event":{"kind":"board_action","action":"e8f8","moving_id":1,"captured_id":null,"gave_check":false}},{"index":8,"board_ply":8,"actor":null,"event":{"kind":"warning","warning":{"side":"red","fault":"perpetual_check","occurrences":[0,4,8],"event_index":8,"active":true}}},{"index":9,"board_ply":9,"actor":"red","event":{"kind":"board_action","action":"e9f9","moving_id":2,"captured_id":null,"gave_check":true}},{"index":10,"board_ply":9,"actor":null,"event":{"kind":"warning","warning":{"side":"red","fault":"perpetual_check","occurrences":[1,5,9],"event_index":10,"active":true}}},{"index":11,"board_ply":10,"actor":"black","event":{"kind":"board_action","action":"f8e8","moving_id":1,"captured_id":null,"gave_check":false}},{"index":12,"board_ply":10,"actor":null,"event":{"kind":"warning","warning":{"side":"red","fault":"perpetual_check","occurrences":[2,6,10],"event_index":12,"active":true}}},{"index":13,"board_ply":11,"actor":"red","event":{"kind":"board_action","action":"f9e9","moving_id":2,"captured_id":null,"gave_check":true}},{"index":14,"board_ply":11,"actor":null,"event":{"kind":"warning","warning":{"side":"red","fault":"perpetual_check","occurrences":[3,7,11],"event_index":14,"active":true}}},{"index":15,"board_ply":12,"actor":"black","event":{"kind":"board_action","action":"e8f8","moving_id":1,"captured_id":null,"gave_check":false}},{"index":16,"board_ply":12,"actor":null,"event":{"kind":"concluded","conclusion":{"kind":"win","winner":"black","reason":{"kind":"repetition","fault":"perpetual_check"}}}}],"current_position":{"schema":"mshogi.xiangqi.position.v1","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","history":"starts_at_this_position","origin":"analysis_diagram","board":"4R4/5k3/9/9/9/9/9/9/9/3K5","side":"red","no_capture_plies":12,"fullmove_number":7},"conclusion":{"kind":"win","winner":"black","reason":{"kind":"repetition","fault":"perpetual_check"}},"pending":null,"no_win_assessment":{"kind":"unknown_exact_unavailable"}}
+  },
+  "analysis": null,
+  "observations": [],
+  "search_observations": [],
+  "score_meaning": "Native Red/Black root-side hundredths of soldier. Terminal distances count command edges; heuristic evaluation and existential win witnesses never establish a forced win. Ordinary analysis uses sound_fast_only; Unknown is unscored evidence, not proof of win capability.",
+  "chess": null
+}

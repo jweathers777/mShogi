@@ -472,6 +472,22 @@ impl Game {
             eligible: effective_plies >= 100,
         }
     }
+    /// Advisory offer admission for this actor. Querying never commits an offer;
+    /// the formal request still requires the complete current game context.
+    pub fn can_offer_draw(&self, actor: Side) -> bool {
+        self.conclusion.is_none()
+            && self.pending.is_none()
+            && self.steps.last().is_some_and(|step| step.actor == actor)
+            && self.offered_by.is_none()
+            && self.last_offer_ply[actor.index()] != Some(self.steps.len())
+    }
+    /// Whether this actor may accept or decline the opponent's current offer.
+    /// This is independent of board-action turn ownership.
+    pub fn can_respond_to_draw(&self, actor: Side) -> bool {
+        self.conclusion.is_none()
+            && self.pending.is_none()
+            && self.offered_by == Some(actor.opponent())
+    }
     fn transaction_copy(&self) -> Self {
         Self {
             root: self.root.clone(),
@@ -760,14 +776,7 @@ impl Game {
                 CommandResult::Accepted
             }
             GameCommand::OfferDraw => {
-                if candidate
-                    .steps
-                    .last()
-                    .is_none_or(|step| step.actor != request.actor)
-                    || candidate.offered_by.is_some()
-                    || candidate.last_offer_ply[request.actor.index()]
-                        == Some(candidate.steps.len())
-                {
+                if !candidate.can_offer_draw(request.actor) {
                     return Err(GameError::DrawOffer);
                 }
                 candidate.last_offer_ply[request.actor.index()] = Some(candidate.steps.len());
@@ -781,7 +790,7 @@ impl Game {
                 CommandResult::Accepted
             }
             GameCommand::DeclineDraw => {
-                if candidate.offered_by != Some(request.actor.opponent()) {
+                if !candidate.can_respond_to_draw(request.actor) {
                     return Err(GameError::DrawOffer);
                 }
                 candidate.offered_by = None;
@@ -792,7 +801,7 @@ impl Game {
                 CommandResult::Accepted
             }
             GameCommand::AcceptDraw => {
-                if candidate.offered_by != Some(request.actor.opponent()) {
+                if !candidate.can_respond_to_draw(request.actor) {
                     return Err(GameError::DrawOffer);
                 }
                 candidate.offered_by = None;

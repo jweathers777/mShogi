@@ -484,6 +484,45 @@ fn terminal_commands_keep_actor_semantics_and_board_ply_separate() {
 }
 
 #[test]
+fn draw_advice_matches_native_admission_and_same_ply_reoffer_restriction() {
+    let mut game = Game::standard(ClaimPolicy::Explicit).unwrap();
+    let before = canonical(&game);
+    assert!(!game.can_offer_draw(Side::Red));
+    assert!(!game.can_respond_to_draw(Side::Black));
+    assert_eq!(canonical(&game), before, "advice is read-only");
+    play(&mut game, "a3a4");
+    assert!(game.can_offer_draw(Side::Red));
+    assert!(!game.can_offer_draw(Side::Black));
+    command(&mut game, Side::Red, GameCommand::OfferDraw);
+    assert!(!game.can_offer_draw(Side::Red));
+    assert!(game.can_respond_to_draw(Side::Black));
+    assert!(!game.can_respond_to_draw(Side::Red));
+    command(&mut game, Side::Black, GameCommand::DeclineDraw);
+    assert!(!game.can_respond_to_draw(Side::Black));
+    assert!(!game.can_offer_draw(Side::Red));
+    let before = canonical(&game);
+    assert_eq!(
+        game.submit(GameRequest {
+            expected: game.context(),
+            actor: Side::Red,
+            command: GameCommand::OfferDraw
+        })
+        .unwrap_err(),
+        GameError::DrawOffer
+    );
+    assert_eq!(canonical(&game), before);
+    play(&mut game, "a6a5");
+    assert!(game.can_offer_draw(Side::Black));
+    command(&mut game, Side::Black, GameCommand::OfferDraw);
+    command(&mut game, Side::Red, GameCommand::AcceptDraw);
+    for side in [Side::Red, Side::Black] {
+        assert!(!game.can_offer_draw(side));
+        assert!(!game.can_respond_to_draw(side));
+    }
+    assert_record_roundtrip(&game);
+}
+
+#[test]
 fn native_command_refusals_are_atomic_and_unknown_no_win_is_not_a_result() {
     let mut game = Game::standard(ClaimPolicy::Explicit).unwrap();
     assert_eq!(

@@ -109,6 +109,64 @@ fn submit(game: &mut x::Game, action: &str) {
 }
 
 #[test]
+fn native_terminal_advice_tracks_human_actor_pause_history_and_pending_engine_retirement() {
+    let mut c = controller();
+    let game = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
+    replace(&mut c, &game, x::Side::Red);
+    send(&mut c, SessionOperation::Resume {}).unwrap();
+    let moved = human_play(&mut c, "a3a4");
+    assert_eq!(moved.turn.label, "Black");
+    assert!(moved.xiangqi.unwrap().terminal_actions.offer_draw);
+    let old = pending(&c);
+    let offered = send(
+        &mut c,
+        SessionOperation::Xiangqi {
+            command: x::GameCommand::OfferDraw,
+        },
+    )
+    .unwrap();
+    assert!(!offered.xiangqi.unwrap().terminal_actions.offer_draw);
+    assert_eq!(offered.board_ply, 1);
+    assert!(!accept(&mut c, execute(&old)));
+
+    let mut game = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
+    submit(&mut game, "a3a4");
+    submit(&mut game, "a6a5");
+    game.submit(x::GameRequest {
+        expected: game.context(),
+        actor: x::Side::Black,
+        command: x::GameCommand::OfferDraw,
+    })
+    .unwrap();
+    let paused = replace(&mut c, &game, x::Side::Red);
+    assert!(!paused.xiangqi.unwrap().terminal_actions.accept_draw);
+    let active = send(&mut c, SessionOperation::Resume {}).unwrap();
+    let advice = active.xiangqi.unwrap().terminal_actions;
+    assert!(advice.accept_draw && advice.decline_draw);
+    let viewed = send(
+        &mut c,
+        SessionOperation::Inspect {
+            event_index: active.event_index,
+        },
+    )
+    .unwrap();
+    assert!(!viewed.xiangqi.unwrap().terminal_actions.accept_draw);
+    send(&mut c, SessionOperation::ReturnLive {}).unwrap();
+    send(&mut c, SessionOperation::Resume {}).unwrap();
+    let accepted = send(
+        &mut c,
+        SessionOperation::Xiangqi {
+            command: x::GameCommand::AcceptDraw,
+        },
+    )
+    .unwrap();
+    assert_eq!(accepted.board_ply, 2);
+    assert_eq!(accepted.status.label, "Draw · agreement");
+    let advice = accepted.xiangqi.unwrap().terminal_actions;
+    assert!(!advice.offer_draw && !advice.accept_draw && !advice.decline_draw);
+}
+
+#[test]
 fn native_identity_intersection_palaces_river_and_capability_scope() {
     let mut c = controller();
     let chess = c.shared_snapshot();

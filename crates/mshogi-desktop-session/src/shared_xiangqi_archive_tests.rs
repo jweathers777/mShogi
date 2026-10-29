@@ -783,26 +783,30 @@ fn failed_and_interrupted_save_open_preserve_file_dirty_state_and_live_document(
 }
 
 #[test]
-fn product_open_gate_stale_open_token_and_unbounded_failure_keep_current_document() {
+fn product_open_restores_xiangqi_with_fresh_stopped_identity_and_keeps_stale_failures_atomic() {
     let mut xq = controller();
     replace(
         &mut xq,
         &x::Game::standard(x::ClaimPolicy::Explicit).unwrap(),
         x::Side::Red,
     );
-    let file = path("product-gate");
+    send(&mut xq, SessionOperation::Inspect { event_index: 0 }).unwrap();
+    let file = path("product-open");
     save(&mut xq, &file);
     let mut chess = controller();
-    let chess_context = chess.shared_snapshot().context;
+    let before = chess.shared_snapshot().token;
     let id = chess
         .queue_product_open(file.clone(), chess.shared_open_token())
         .unwrap();
-    assert!(
-        wait_file(&mut chess, id)
-            .unwrap_err()
-            .contains("product UI")
-    );
-    assert_eq!(chess.shared_snapshot().context, chess_context);
+    wait_file(&mut chess, id).unwrap();
+    let opened = chess.shared_snapshot();
+    assert_eq!(opened.context, xq.shared_snapshot().context);
+    assert_eq!(opened.game, GameKind::Xiangqi);
+    assert!(opened.paused && opened.historical);
+    assert!(opened.execution_purpose.is_none());
+    assert!(opened.token.version > before.version);
+    assert!(opened.token.document > before.document);
+    assert!(!opened.document.dirty);
     let stale = xq.shared_open_token();
     send(
         &mut xq,

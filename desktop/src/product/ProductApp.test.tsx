@@ -6,6 +6,8 @@ import { useGameSession } from "./useGameSession";
 import type { GameSession } from "./useGameSession";
 import type { ChessShogiSnapshot as GameSnapshot } from "./native";
 import standardJson from "../__fixtures__/shared-shogi-standard.json";
+import xiangqiJson from "../__fixtures__/shared-xiangqi-standard.json";
+import type { XiangqiSnapshot } from "./native";
 import chessJson from "../__fixtures__/standard.json";
 import { mockSession } from "../__tests__/session";
 import { useNativeSession } from "../useNativeSession";
@@ -85,4 +87,19 @@ it("provides keyboard radio navigation and restores focus on cancelling New Game
   const chess = screen.getByRole("radio", { name: /Chess/ }); expect(document.activeElement).toBe(chess); expect(chess.getAttribute("aria-checked")).toBe("true");
   fireEvent.keyDown(screen.getByRole("dialog", { name: "New game" }), { key: "Escape" });
   expect(screen.queryByRole("dialog")).toBeNull(); await waitFor(() => expect(document.activeElement).toBe(newGame));
+});
+
+it("protects the Xiangqi document during failed Save-and-open and native close", async () => {
+  const xiangqi = xiangqiJson as unknown as XiangqiSnapshot;
+  session.snapshot = xiangqi; vi.mocked(session.file).mockResolvedValue(xiangqi);
+  const { rerender } = render(<ProductApp />);
+  fireEvent.click(screen.getByRole("button", { name: "Open…" }));
+  fireEvent.click(screen.getByRole("button", { name: "Save & continue" }));
+  expect(await screen.findByRole("alert")).toHaveProperty("textContent", expect.stringContaining("not fully saved"));
+  expect(session.file).toHaveBeenCalledExactlyOnceWith(xiangqi, "save");
+  fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+  session = { ...session, closeRequested: true }; rerender(<ProductApp />);
+  expect(await screen.findByRole("dialog", { name: "Save your changes?" })).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+  expect(session.cancelClose).toHaveBeenCalledOnce(); expect(session.finishClose).not.toHaveBeenCalled();
 });

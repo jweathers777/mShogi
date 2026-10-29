@@ -1588,7 +1588,11 @@ impl DesktopController {
             Ok(s::Game::from_root(root))
         }
         let mut game = match fixture {
-            "shogi-standard" | "shogi-gote" | "shogi-failure" | "shogi-capacity" => s::Game::new(),
+            "shogi-standard"
+            | "shogi-gote"
+            | "shogi-failure"
+            | "shogi-capacity"
+            | "shogi-control-capacity" => s::Game::new(),
             "shogi-hands" => {
                 let mut game = imported("8k/9/4+p4/9/4Rr3/9/5P3/9/K8 b - 17")?;
                 for action in ["5e5c+", "4e4g+"] {
@@ -1637,6 +1641,13 @@ impl DesktopController {
             std::thread::sleep(std::time::Duration::from_millis(1));
         }
         receipt.completion().expect("completed fixture admission")?;
+        if fixture == "shogi-control-capacity" {
+            self.shared
+                .shogi
+                .as_mut()
+                .unwrap()
+                .verification_control_capacity()?;
+        }
         if fixture == "shogi-capacity" {
             for _ in 0..MAX_ARCHIVE_OBSERVATIONS - 1 {
                 let candidate = self.shared.shogi.as_ref().expect("shogi fixture").clone();

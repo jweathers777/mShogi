@@ -591,3 +591,57 @@ fn replay_capacity_retains_one_exact_stop_action_of_headroom() {
             .contains("replay")
     );
 }
+
+#[cfg(feature = "desktop-verification")]
+#[test]
+fn verification_control_limits_refuse_truthfully_and_keep_complete_save_open() {
+    for fixture in ["shogi-control-capacity", "xiangqi-control-capacity"] {
+        let mut c = DesktopController::verification("/unused/qa-engine".into(), fixture).unwrap();
+        c.shared.manual_engine = true;
+        let before = c.shared_snapshot();
+        assert!(before.observations.is_empty());
+        assert_eq!(before.board_ply, 0);
+        let operation = if fixture.starts_with("shogi") {
+            assert_eq!(
+                c.shared.shogi.as_ref().unwrap().controls.len(),
+                MAX_ARCHIVE_CONTROLS - 1
+            );
+            SessionOperation::ShogiPreferences {
+                settings: ShogiSettings::default(),
+            }
+        } else {
+            let state = c.shared.xiangqi.as_ref().unwrap();
+            assert_eq!(state.controls.len(), MAX_ARCHIVE_CONTROLS - 1);
+            assert!(state.exact_observations.is_empty());
+            SessionOperation::XiangqiPreferences {
+                settings: XiangqiSettings::default(),
+            }
+        };
+        let error = send(&mut c, operation).unwrap_err();
+        // This real diagnostic is ambiguous; the frontend must not guess from256.
+        assert!(error.contains("256") && error.contains("8192"), "{error}");
+        let after = c.shared_snapshot();
+        assert_eq!(after.capacity.status, CapacityPhase::Paused);
+        assert_eq!(after.capacity.message.as_deref(), Some(error.as_str()));
+        assert!(after.observations.is_empty());
+        assert_eq!(after.context, before.context);
+        let file = path(fixture);
+        let id = c.queue_shared_save(file.clone()).unwrap();
+        wait_file(&mut c, id).unwrap();
+        let bytes = fs::read(&file).unwrap();
+        let mut reopened = controller();
+        let token = reopened.shared_open_token();
+        let id = reopened.queue_shared_open(file.clone(), token).unwrap();
+        wait_file(&mut reopened, id).unwrap();
+        let opened = reopened.shared_snapshot();
+        assert!(opened.paused && opened.observations.is_empty());
+        assert_eq!(opened.context, after.context);
+        assert!(send(&mut reopened, SessionOperation::Resume {}).is_err());
+        let copy = path("control-save-as");
+        let id = reopened.queue_shared_save(copy.clone()).unwrap();
+        wait_file(&mut reopened, id).unwrap();
+        assert_eq!(fs::read(&file).unwrap(), bytes);
+        fs::remove_file(file).unwrap();
+        fs::remove_file(copy).unwrap();
+    }
+}

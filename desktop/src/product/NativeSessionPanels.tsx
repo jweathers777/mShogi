@@ -51,12 +51,16 @@ export function NativeHistory({ snapshot, disabled, command }: { snapshot: GameS
 export function NativeRecovery({ snapshot, error, disabled, command, pending = false, capacityError = "" }: { snapshot: GameSnapshot; error: string; disabled: boolean; command: (op: Operation) => unknown; pending?: boolean; capacityError?: string }) {
   const capacity = nativeCapacityReached(snapshot, capacityError || error), message = snapshot.capacity.message ?? (capacityError || error);
   const observationCount = snapshot.observations.length + (snapshot.game === "xiangqi" ? snapshot.xiangqi.exact_observations.length : 0);
-  const observationStorage = /retained observations|observation retention/i.test(message);
-  const explanation = /256/.test(message) || (observationStorage && observationCount === 256) ? "This game has reached the limit of 256 recorded engine observations."
+  // Only these native preflight reasons identify observation retention alone.
+  // Archive diagnostics may mention several bounds; their numbers cannot tell
+  // us which resource refused the candidate. Preserve those details below.
+  const observationStorage = message.startsWith("Application capacity: retained observations are at their limit;")
+    || message.startsWith("Application capacity: native consumer observation retention limit reached;")
+    || message.startsWith("Application capacity: All256 observation slots are retained;")
+    || message.startsWith("Application capacity: all256 observations are retained.");
+  const explanation = observationStorage && observationCount === 256 ? "This game has reached the limit of 256 recorded engine observations."
     : observationStorage ? "This game has reached its recorded-observation storage limit."
-    : /16MiB/.test(message) ? "This game's complete record has reached the 16 MiB storage limit."
-    : /replay/.test(message) ? "This game has reached the application's recorded-history work limit."
-    : /8192/.test(message) ? "This game has reached the recorded-operation limit." : "This session has reached an application resource limit.";
+    : "Your current game can still be saved.";
   const analyzing = snapshot.phase === "thinking" && snapshot.execution_purpose === "move_analysis";
   const thinking = snapshot.phase === "thinking" && snapshot.execution_purpose === "engine_turn";
   const failure = error || (snapshot.io.phase === "failed" ? snapshot.io.message ?? "File operation failed" : "");

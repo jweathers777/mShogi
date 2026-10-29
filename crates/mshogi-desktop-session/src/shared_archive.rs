@@ -283,6 +283,18 @@ fn replay_work(state: &ShogiSession) -> Result<(), String> {
     }
 }
 impl ShogiSession {
+    // Seed a complete cheap-control journal only in a separately labeled QA build.
+    #[cfg(feature = "desktop-verification")]
+    pub(crate) fn verification_control_capacity(&mut self) -> Result<(), String> {
+        while self.controls.len() < MAX_ARCHIVE_CONTROLS - 1 {
+            let operation = SessionOperation::ShogiPreferences {
+                settings: self.settings.clone(),
+            };
+            self.apply_command(operation.clone())?;
+            self.control(Some(operation), None, false);
+        }
+        check_capacity(self, &mut || false)
+    }
     pub(crate) fn restored(record: &s::GameRecord, human: s::Side) -> Result<Self, String> {
         let settings = ShogiSettings::default();
         Ok(Self {

@@ -574,6 +574,19 @@ fn encoded_native_bounds(bytes: &[u8]) -> Result<(), String> {
 }
 
 impl XiangqiSession {
+    // Every seeded control is an actual admitted preference with a replayable journal.
+    #[cfg(feature = "desktop-verification")]
+    pub(crate) fn verification_control_capacity(&mut self) -> Result<(), String> {
+        while self.controls.len() < MAX_ARCHIVE_CONTROLS - 1 {
+            let before = (self.game.events().len(), self.board_actions());
+            let operation = SessionOperation::XiangqiPreferences {
+                settings: self.settings.clone(),
+            };
+            self.apply_command(operation.clone())?;
+            self.journal(before, Some(operation), None, None, false);
+        }
+        check_capacity(self, &mut || false)
+    }
     fn board_actions(&self) -> usize {
         self.game
             .events()

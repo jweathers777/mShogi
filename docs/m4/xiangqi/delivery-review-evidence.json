@@ -120,7 +120,9 @@
   "validation": {
     "backlog_version": "1.55.1 pinned; global1.55.0 not used for mutations",
     "doctor": "passed; no duplicate IDs, self-dependencies or cycles",
-    "diff_check": "passed"
+    "diff_check": "passed",
+    "initial_staged_diff_check": "Reported four extra blank EOF lines in newly added review/log files; removed in final handoff correction. No production change.",
+    "final_diff_check": "git diff --check 541fc303fdeaf5017948d14ddf92bf5efee5ab3f passed after correction"
   },
   "finding": {
     "id": "F01",
@@ -136,5 +138,7 @@
     "MSH-88 all-game GUI",
     "MSH-89 independent shared review",
     "MSH-47 M4 closure"
-  ]
+  ],
+  "integration_commit": "afd20981a04e88833f214010689cf885ac6eef77",
+  "integration_branch": "codex/rewrite"
 }

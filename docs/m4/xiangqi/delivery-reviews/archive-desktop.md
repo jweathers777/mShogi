@@ -58,4 +58,3 @@ Future106: compare duplicated Shogi/Xiangqi journal/candidate/observation/
 lifecycle orchestration and board interaction focus/inspection lifetimes.
 WXF warning/claim boundaries, exact validation and native records remain
 intentionally distinct. No broad refactor is recommended by symmetry alone.
-

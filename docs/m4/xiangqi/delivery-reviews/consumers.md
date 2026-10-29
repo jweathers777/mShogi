@@ -59,4 +59,3 @@ reuse. Compare telemetry validation and runner protocol-phase/replay/cleanup
 policy for genuine shared semantics, preserving native scores/claims/adjudication
 and admitted dialects. Separate small rendering loops do not justify universal
 board or rules machinery.
-

@@ -5,6 +5,7 @@ import { XiangqiApp } from "./XiangqiApp";
 import type { XiangqiSnapshot as GameSnapshot } from "./native";
 import type { GameSession } from "./useGameSession";
 import standardJson from "../__fixtures__/shared-xiangqi-standard.json";
+import playedJson from "../__fixtures__/shared-xiangqi-played.json";
 
 vi.mock("@tauri-apps/api/core", () => ({ invoke: vi.fn() }));
 const standard = standardJson as unknown as GameSnapshot;
@@ -67,4 +68,14 @@ it("keeps resource-limit refusal distinct and retains a complete Save path", () 
   expect(screen.getByText(/saving and reopening does not reset this limit/)).toBeTruthy();
   fireEvent.click(point("e3")); fireEvent.click(point("e4")); expect(session.command).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole("button", { name: "Save" })); expect(session.file).toHaveBeenCalledExactlyOnceWith(snapshot, "save");
+});
+it("shows native readable capture history without exposing the canonical diagnostic payload", () => {
+  const snapshot = playedJson as unknown as GameSnapshot;
+  app(snapshot);
+  const history = screen.getByRole("region", { name: "Game history" });
+  expect(history.textContent).toContain("Red: b2×b9");
+  expect(history.textContent).toContain("Black: a9×b9");
+  expect(history.textContent).not.toMatch(/Some\(|BoardAction|captured_id|moving_id/);
+  expect(snapshot.events.map((e) => [e.index, e.board_ply])).toEqual([[1, 1], [2, 2]]);
+  expect(snapshot.context).toEqual(playedJson.context);
 });

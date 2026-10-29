@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
 import { createPortal } from "react-dom";
 import type { BoardPiece, Color, LegalChoice } from "./native";
-import type { InspectMovement, MovementInspection } from "./product/movementInspection";
+import { inspectionStatus, type InspectMovement, type MovementInspection } from "./product/movementInspection";
 import "./movement-inspection.css";
 
 export interface BoardGeometry {
@@ -191,7 +191,7 @@ export function Board({ pieces, choices: supplied, orientation, version, disable
   const displayFiles = nativeOrientation?.files ?? (orientation === "white" ? geometry.files : [...geometry.files].reverse());
   const displayRanks = nativeOrientation?.ranks ?? (orientation === "white" ? [...geometry.ranks].reverse() : geometry.ranks);
   const width = 40 + columns * 100, height = 40 + rows * 100;
-  const help = <p className={`board-help${inspection || inspectionPending ? " movement-inspection-status" : ""}`}>{inspection ? `Inspecting ${inspection.label} · Read-only · ${inspection.choices.length ? "Hollow rings show movement choices" : "No native movement choices"} · Esc clears` : inspectionPending ? "Loading read-only movement inspection…" : "Select a piece, then a destination. Arrow keys move focus · Enter or Space selects · Escape cancels."}</p>;
+  const help = <p className={`board-help${inspection || inspectionPending ? " movement-inspection-status" : ""}`}>{inspection ? inspectionStatus(inspection.label) : inspectionPending ? "Loading read-only movement inspection…" : "Select a piece, then a destination. Arrow keys move focus · Enter or Space selects · Escape cancels."}</p>;
   return (
     <div className={`board-wrap${large ? " large-board-wrap" : ""}`}>
       {hands.length > 0 && <div role="group" aria-label="Native hands">

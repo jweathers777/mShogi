@@ -1,6 +1,6 @@
 import { useId, useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
 import type { XiangqiSnapshot as GameSnapshot, Side } from "./native";
-import type { InspectMovement, MovementInspection } from "./movementInspection";
+import { inspectionStatus, type InspectMovement, type MovementInspection } from "./movementInspection";
 import { GameArea, GamePositionStatus, PlayerArea } from "./ApplicationShell";
 import "../movement-inspection.css";
 import "./xiangqi.css";
@@ -140,7 +140,7 @@ export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspection
   </div>;
   const footer = <>
     <div className="shell-board-help"><div className={`board-help xiangqi-help${inspection || loading ? " movement-inspection-status" : ""}`}>
-      <span>{inspection ? `Inspecting ${inspection.label} · Read-only · Hollow rings` : loading ? "Loading read-only movement inspection…" : "Select a piece, then a marked intersection."}</span><span>Arrows · Enter · Esc</span>
+      <span>{inspection ? inspectionStatus(inspection.label) : loading ? "Loading read-only movement inspection…" : "Select a piece, then a marked intersection."}</span><span>Arrows · Enter · Esc</span>
     </div></div>
     <GamePositionStatus historical={snapshot.historical} concluded={snapshot.status.concluded} paused={snapshot.paused}
       humanTurn={snapshot.turn.key === snapshot.human.key} thinking={snapshot.phase === "thinking" && snapshot.execution_purpose === "engine_turn"} ply={snapshot.board_ply} />

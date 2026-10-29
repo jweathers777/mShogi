@@ -96,7 +96,10 @@ it.each(["red", "black"])("supports keyboard navigation, focus and Escape withou
 it.each(["red", "black"])("presents native read-only inspection with hollow and occupied markers in %s orientation", async (orientation) => {
   const { props, container } = board(orientation === "black" ? flipped() : standard);
   fireEvent.click(point(inspection.origin));
-  await screen.findByText(/Inspecting Black cannon · Read-only · Hollow rings/);
+  const status = await screen.findByText("Inspecting Black cannon · Esc clears");
+  expect(status.textContent).toBe("Inspecting Black cannon · Esc clears");
+  expect(status.textContent).not.toMatch(/Read-only|Hollow rings/);
+  expect(screen.getByRole("status").textContent).toContain("Read-only movement choices; no action can be played.");
   expect(props.onInspect).toHaveBeenCalledExactlyOnceWith(inspection.origin);
   expect(container.querySelectorAll(".inspection-marker")).toHaveLength(inspection.choices.length);
   expect(point("b3").querySelector(".inspection-marker")?.getAttribute("r")).toBe("19");
@@ -123,7 +126,7 @@ it.each(["context", "orientation", "origin", "friendly", "cancel"])("retires a d
   else if (change === "friendly") fireEvent.click(point("e3"));
   else fireEvent.keyDown(point("b7"), { key: "Escape" });
   await act(async () => oldResolve(inspection));
-  expect(screen.queryByText(/Inspecting Black cannon · Read-only/)).toBeNull();
+  expect(screen.queryByText(/Inspecting Black cannon · Esc clears/)).toBeNull();
   expect(container.querySelectorAll(".inspection-marker")).toHaveLength(0);
   expect(props.onPlay).not.toHaveBeenCalled();
   if (change === "friendly") expect(point("e4").getAttribute("aria-label")).toContain("legal destination");
@@ -134,7 +137,7 @@ it("allows native inspection of a historical position while all game actions rem
   const snapshot = { ...standard, historical: true, capabilities: { ...standard.capabilities, board_action: false } };
   const onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue(inspection);
   render(<XiangqiBoard snapshot={snapshot} disabled onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
-  fireEvent.click(point("b7")); await screen.findByText(/Inspecting Black cannon · Read-only/);
+  fireEvent.click(point("b7")); await screen.findByText(/Inspecting Black cannon · Esc clears/);
   fireEvent.click(point("b0")); expect(onPlay).not.toHaveBeenCalled();
   expect(document.querySelector("[data-position-status]")?.textContent).toContain("Read-only history");
 });

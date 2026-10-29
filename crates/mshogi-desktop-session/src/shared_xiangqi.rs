@@ -5,6 +5,9 @@ use mshogi_engine::{XiangqiChoice, XiangqiResult, XiangqiStop};
 #[path = "shared_xiangqi_archive.rs"]
 pub(super) mod archive;
 pub use archive::{XiangqiExactEvidence, XiangqiSettings};
+#[cfg(test)]
+#[path = "shared_xiangqi_label_tests.rs"]
+mod label_tests;
 
 // Matches MSH-97's measured interactive default; requests also undergo native validation.
 const PLAY_LIMITS: WorkLimits = mshogi_engine::XIANGQI_PLAY_LIMITS;
@@ -117,6 +120,87 @@ fn choice(a: x::Action) -> PresentedChoice {
         from: a.from.to_string(),
         steps: vec![a.to.to_string()],
         completion: None,
+    }
+}
+// Presentation only. Native events, actor identity, indices and replay payloads
+// remain authoritative; no reconstruction or adjudication runs to make a label.
+fn event_label(event: &x::GameEvent) -> String {
+    let name = |s| side(NativeSide::Xiangqi(s)).label;
+    let actor = event.actor.map(name).unwrap_or_else(|| "Game".into());
+    let fault = |f| match f {
+        x::FaultKind::PerpetualCheck => "perpetual check",
+        x::FaultKind::PerpetualChase => "perpetual chase",
+    };
+    match &event.event {
+        x::EventKind::BoardAction {
+            action,
+            captured_id,
+            gave_check,
+            ..
+        } => format!(
+            "{actor}: {}{}{}{}",
+            action.from,
+            if captured_id.is_some() { "×" } else { "–" },
+            action.to,
+            if *gave_check { " · check" } else { "" }
+        ),
+        x::EventKind::Warning { warning } => format!(
+            "{}: repetition warning · {}",
+            name(warning.side),
+            fault(warning.fault)
+        ),
+        x::EventKind::WarningRetired {
+            warning_event_index,
+        } => format!(
+            "Repetition warning cleared · event {}",
+            warning_event_index + 1
+        ),
+        x::EventKind::ClaimSubmitted {
+            evidence,
+            automatic,
+        } => format!(
+            "{}: natural-count claim submitted{}",
+            name(evidence.claimant),
+            if *automatic { " (automatic)" } else { "" }
+        ),
+        x::EventKind::ClaimRejected { evidence } => {
+            format!("{}: natural-count claim rejected", name(evidence.claimant))
+        }
+        x::EventKind::ClaimAccepted { evidence } => {
+            format!("{}: natural-count claim accepted", name(evidence.claimant))
+        }
+        x::EventKind::DrawOffer {
+            offered_by: Some(s),
+        } => format!("{}: draw offered", name(*s)),
+        x::EventKind::DrawOffer { offered_by: None } => "Draw offer withdrawn".into(),
+        x::EventKind::Resigned => format!("{actor}: resigned"),
+        x::EventKind::AgreementAccepted => format!("{actor}: draw agreement accepted"),
+        x::EventKind::AdjudicationPending { .. } => "Adjudication unresolved · unscored".into(),
+        x::EventKind::Concluded { conclusion } => match conclusion {
+            x::Conclusion::Win { winner, reason } => format!(
+                "{} wins · {}",
+                name(*winner),
+                match reason {
+                    x::WinReason::NoLegalAction {
+                        reason: x::NoActionReason::Checkmate,
+                    } => "checkmate",
+                    x::WinReason::NoLegalAction {
+                        reason: x::NoActionReason::Stalemate,
+                    } => "no legal move (stalemate)",
+                    x::WinReason::Repetition { fault: f } => fault(*f),
+                    x::WinReason::Resignation => "resignation",
+                }
+            ),
+            x::Conclusion::Draw { reason } => format!(
+                "Draw · {}",
+                match reason {
+                    x::DrawReason::Repetition => "repetition",
+                    x::DrawReason::NaturalCount => "natural-count claim",
+                    x::DrawReason::Agreement => "agreement",
+                    x::DrawReason::NeitherCanWin => "neither side can win",
+                }
+            ),
+        },
     }
 }
 pub(super) fn inspect(
@@ -548,7 +632,7 @@ impl DesktopController {
                 .map(|e| PresentedEvent {
                     index: e.index + 1,
                     board_ply: e.board_ply,
-                    label: format!("{:?}: {:?}", e.actor, e.event),
+                    label: event_label(e),
                 })
                 .collect(),
             event_index: history.event_count,

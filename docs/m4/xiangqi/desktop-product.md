@@ -80,6 +80,27 @@ commands, tests, review and any clipping/contrast/interaction findings. Unit tes
 do not substitute for packaged visual inspection. No verification-only surface
 or generated mockup supplies this checkpoint evidence.
 
-The owner must approve those actual screenshots before the remaining MSH-101
-implementation/finalization. Do not mark Done or proceed into MSH-102. MSH-45/M4
-remain open; MSH-103 is the later complete-delivery review and106 follows45.
+The owner explicitly approved the actual3a1aefc checkpoint on2026-10-29. That
+satisfies its visual gate; the checkpoint evidence remains a historical record.
+Remaining MSH-101 criteria and independent verification still govern completion.
+MSH-102 stays unstarted; MSH-45/M4 remain open. MSH-103 is the later
+complete-delivery review and106 follows45.
+
+## Completion refinement — 2026-10-29
+
+The owner-approved shared visible inspection status is exactly
+`Inspecting {side} {piece} · Esc clears`, formatted once over the native label in
+`movementInspection.ts` for Chess/Shogi/Xiangqi. Native promotion/hand terminology
+remains native. Read-only explanations stay in accessible announcements; hollow
+markers, stale-token protection and keyboard/Escape behavior do not change.
+This is the durable all-game convention in design A-07, including future
+Tori/Chu/Tenjiku. No separate inspection framework or rules API is introduced.
+
+Native Xiangqi played-event labels use the existing intersection display
+notation: `Red: a3–a4`, `Red: b2×b9`, and an authoritative ` · check` suffix.
+The Rust presenter exhaustively labels warning/retirement, claimant-specific
+claim submission/acceptance/rejection, offers/agreement/resignation, unresolved
+unscored adjudication and native conclusions. Labels never replace the canonical
+record, exact event/board-ply indices or native action/diagnostic payloads. No
+replay, exact proof or frontend rules inference is needed to format them.
+Full interactive history/outcome/document journeys remain MSH-102.

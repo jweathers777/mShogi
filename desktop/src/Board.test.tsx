@@ -131,14 +131,17 @@ it.each(["white", "black"] as const)("inspects an opponent in %s orientation, sw
   const onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue(inspectedPawn);
   render(<Board pieces={standard.pieces} choices={standard.legal_choices} version={0} orientation={orientation} disabled={false} humanOwner="white" onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
   square("e7").focus(); fireEvent.keyDown(square("e7"), { key: "Enter" });
-  await screen.findByText(/Inspecting Black pawn · Read-only/);
+  const status = await screen.findByText("Inspecting Black pawn · Esc clears");
+  expect(status.textContent).toBe("Inspecting Black pawn · Esc clears");
+  expect(status.textContent).not.toMatch(/Read-only|Hollow rings/);
+  expect(screen.getByRole("status").textContent).toContain("Read-only movement choices; no action can be played.");
   expect(square("e7").getAttribute("aria-label")).toContain("Inspecting Black pawn");
   expect(square("e6").getAttribute("aria-label")).toContain("read-only inspection destination");
   expect(square("e6").querySelector(".inspection-marker")).toBeTruthy();
   expect(square("e6").querySelector(".move-marker")).toBeNull();
   fireEvent.click(square("e6")); expect(onPlay).not.toHaveBeenCalled();
   fireEvent.click(square("e2")); expect(square("e4").getAttribute("aria-label")).toContain("legal destination");
-  expect(screen.queryByText(/Inspecting Black pawn · Read-only/)).toBeNull();
+  expect(screen.queryByText(/Inspecting Black pawn · Esc clears/)).toBeNull();
   fireEvent.keyDown(square("e2"), { key: "Escape" }); expect(square("e2").getAttribute("aria-pressed")).toBe("false");
   fireEvent.click(square("e2")); fireEvent.click(square("e4")); expect(onPlay).toHaveBeenCalledExactlyOnceWith("e2e4");
 });
@@ -149,10 +152,10 @@ it("keeps historical/engine-turn inspection available when board actions are dis
   const { rerender } = render(<Board {...props} />);
   fireEvent.click(square("e7")); expect(onInspect).toHaveBeenCalledWith("e7");
   rerender(<Board {...props} inspectionContextKey="historical-2" />);
-  await act(async () => resolve(inspectedPawn)); expect(screen.queryByText(/Inspecting Black pawn · Read-only/)).toBeNull();
-  onInspect.mockResolvedValue(inspectedPawn); fireEvent.click(square("e7")); await screen.findByText(/Inspecting Black pawn · Read-only/);
+  await act(async () => resolve(inspectedPawn)); expect(screen.queryByText(/Inspecting Black pawn · Esc clears/)).toBeNull();
+  onInspect.mockResolvedValue(inspectedPawn); fireEvent.click(square("e7")); await screen.findByText(/Inspecting Black pawn · Esc clears/);
   fireEvent.click(square("e6")); expect(onPlay).not.toHaveBeenCalled();
-  fireEvent.keyDown(square("e6"), { key: "Escape" }); expect(screen.queryByText(/Inspecting Black pawn · Read-only/)).toBeNull();
+  fireEvent.keyDown(square("e6"), { key: "Escape" }); expect(screen.queryByText(/Inspecting Black pawn · Esc clears/)).toBeNull();
 });
 it("retains complete compound inspection routes and completion alternatives without executable controls", async () => {
   const onPlay = vi.fn();
@@ -162,7 +165,7 @@ it("retains complete compound inspection routes and completion alternatives with
     { action: "synthetic-route-stop", from: "e7", steps: ["e6"], completion: null },
   ] });
   render(<Board pieces={standard.pieces} choices={standard.legal_choices} version={0} orientation="white" disabled={false} humanOwner="white" onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
-  fireEvent.click(square("e7")); await screen.findByText(/Inspecting Black pawn · Read-only/); fireEvent.click(square("e6"));
+  fireEvent.click(square("e7")); await screen.findByText(/Inspecting Black pawn · Esc clears/); fireEvent.click(square("e6"));
   expect(square("d6").getAttribute("aria-label")).toContain("read-only inspection destination");
   expect(screen.queryByRole("button", { name: "Complete action here" })).toBeNull();
   fireEvent.click(square("d6")); expect(onPlay).not.toHaveBeenCalled();
@@ -177,7 +180,7 @@ it("preserves actionable capture destination precedence over enemy-origin inspec
 it("switches from an inspection capture marker to the friendly piece's actionable choices", async () => {
   const onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue({ ...inspectedPawn, choices: [{ action: "inspection-capture-contract", from: "e7", steps: ["e2"], completion: null }] });
   render(<Board pieces={standard.pieces} choices={standard.legal_choices} version={0} orientation="white" disabled={false} humanOwner="white" onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
-  fireEvent.click(square("e7")); await screen.findByText(/Inspecting Black pawn · Read-only/);
+  fireEvent.click(square("e7")); await screen.findByText(/Inspecting Black pawn · Esc clears/);
   fireEvent.click(square("e2")); expect(square("e2").getAttribute("aria-label")).toContain("selected"); expect(square("e4").getAttribute("aria-label")).toContain("legal destination"); expect(onPlay).not.toHaveBeenCalled();
 });
 it("keeps live inspection help in the shell footer without changing board selection or keyboard clearing", async () => {
@@ -188,7 +191,7 @@ it("keeps live inspection help in the shell footer without changing board select
   expect(helpTarget.textContent).toContain("Select a piece");
   expect(container.querySelector(".board-wrap .board-help")).toBeNull();
   fireEvent.click(square("e7"));
-  await screen.findByText(/Inspecting Black pawn · Read-only/);
+  await screen.findByText(/Inspecting Black pawn · Esc clears/);
   expect(helpTarget.querySelector(".movement-inspection-status")).not.toBeNull();
   expect(document.activeElement).toBe(square("e7"));
   fireEvent.keyDown(square("e7"), { key: "Escape" });

@@ -91,6 +91,16 @@ The desktop UI must eventually accommodate large boards, square and intersection
 
 Validate the real packaged application on all three target systems. Keep engine progress and expensive work off the UI event path. Test a large-board and compound-action interaction early in desktop development.
 
+Owner-approved shared movement-inspection wording (2026-10-29, MSH-101): the
+ordinary visible status is exactly **`Inspecting {side} {piece} · Esc clears`**.
+The native inspection label supplies game-specific side/piece terminology
+(including promotion or hand provenance where applicable); a small shared
+presentation formatter owns the surrounding interaction language. Chess, Shogi,
+Xiangqi and subsequent Tori/Chu/Tenjiku consumers follow this convention.
+Do not append Read-only/Hollow rings explanations to this visible status.
+Native non-actionable inspection, distinct hollow markers, accessible read-only
+announcements, token freshness and keyboard/Escape behavior remain required.
+
 Human console board diagrams follow the owner-selected
 [compact presentation convention](console-presentation.md): case-based ownership
 for Chess, Standard Shogi and Xiangqi, with aligned Shogi promotion markers.

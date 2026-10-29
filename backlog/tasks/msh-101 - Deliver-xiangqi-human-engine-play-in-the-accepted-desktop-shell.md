@@ -1,11 +1,11 @@
 ---
 id: MSH-101
 title: Deliver xiangqi human-engine play in the accepted desktop shell
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-29T07:34:00Z'
+updated_date: '2026-10-29T07:53:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -20,6 +20,7 @@ documentation:
   - docs/m4/xiangqi/handoff.md
   - docs/m4/xiangqi/desktop-product.md
   - docs/m4/evidence/msh101/visual-checkpoint-2026-10-28/README.md
+  - docs/m4/evidence/msh101/completion-2026-10-29/README.md
 ordinal: 101000
 ---
 
@@ -31,18 +32,18 @@ Future bounded Xiangqi delivery work refined by MSH-80. Intent and acceptance on
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Implement actual untimed human-versus-own-engine Xiangqi through the shared native session in the accepted MSH-74 dark shell. Application header/theme/document controls/live heading/board-sidebar grammar and identical analysis-history-actions-technical order remain stable across games.
-- [ ] #2 Provide a deliberate intersection board with river/palaces and Xiangqi-specific native pieces/Red/Black labels, complete board visible without scroll or zoom at supported normal and minimum desktop sizes. No generic square-board visual assumption, shogi hands or promotion UI leaks into this game.
-- [ ] #3 Complete click/keyboard/orientation/action confirmation and native read-only opponent inspection with non-actionable markers; retain common live/historical footer, engine state and actual play limits. Keep raw diagnostics in details and instrumentation out of normal packages.
-- [ ] #4 Focused frontend/native regressions and actual running packaged play/inspection at same sizes beside chess/shogi screenshots support independent interaction/visual review. No claim of final game delivery before remaining journeys and review.
+- [x] #1 Implement actual untimed human-versus-own-engine Xiangqi through the shared native session in the accepted MSH-74 dark shell. Application header/theme/document controls/live heading/board-sidebar grammar and identical analysis-history-actions-technical order remain stable across games.
+- [x] #2 Provide a deliberate intersection board with river/palaces and Xiangqi-specific native pieces/Red/Black labels, complete board visible without scroll or zoom at supported normal and minimum desktop sizes. No generic square-board visual assumption, shogi hands or promotion UI leaks into this game.
+- [x] #3 Complete click/keyboard/orientation/action confirmation and native read-only opponent inspection with non-actionable markers; retain common live/historical footer, engine state and actual play limits. Keep raw diagnostics in details and instrumentation out of normal packages.
+- [x] #4 Focused frontend/native regressions and actual running packaged play/inspection at same sizes beside chess/shogi screenshots support independent interaction/visual review. No claim of final game delivery before remaining journeys and review.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -75,4 +76,18 @@ Completion source ready for fresh packaged GUI evidence: native PresentedEvent.l
 Exact reviewed/tested normal product sourcebe3055a1bc8d4b0d0fdf11f8509b97076d13fa43 integrated/pushed. Actual final macOS normal.app GUI: exact inspection language captured acrossChess/Shogi/Xiangqi; nativeXQinspectiondestinationstays0events andEscfocusreturnsb7. Redfriendlyb2b9capture+nativeBlacka9b9reply2plies shows readablehistory; a3UpReturn+engine4plies; Flipkeepsgame; BlackhumanassignmentRedengineopeningthenBlacka9LeftSpaceb9capture+Redreply3plies. Nine normal1180x820 actualJPEG/AX captures at docs/m4/evidence/msh101/completion-2026-10-29; no fixture/configoverride/instrumentation. Normalpackage-smoke passed. Separate reviewer independently inspectedall9, no sourceorvisualfindings; root183frontend+2label+14sessiontests passed, reviewer82frontend+2+14native+TS. Approvedunchangedboard/font/sizing evidence3a1 reused with separatelyconfiguredminimum/intermediate provenance and no runtime-resize claim. NativeCI40834914585/DesktopCI40834914598 pending; AC/DoD leftuncheckeduntilactualoutcomes. No102/103/106started.
 
 Initial final-source desktopCI40834914598 LinuxGUIjob123317331840 exposed a stale externalverifier assertion, still requiring read only in ordinary visible inspection status. This contradicts approved newcopy; Chess/Shogi normaljourneys abort and normal-shogi-reopened then lacks their savedinput. This failedcheck is preserved, not a claimedpass or MSH111transportfinding. Updated only external gui-smoke.py to observe status span(orChessparagraph) and require EXACT Inspecting nativeLabel · Esc clears; all destinationaria/hollowmarker/nativecontext/nonactionable route/Escape checks remain. Addedexternalcopyregressions; root and independentreviewer24driver tests passed. Independent source review nofindings, no weakenedchecks/retrybehavior. Productsource and normal.app unchangedfrombe3055a; freshCI at nextverification-scriptrevision required beforeDone.
+
+Final independent evidence/AC review PASS: exact1c8a168 native and desktop matrices all3jobs success; relevant steps and screenshot/package hashes verified. OriginalAC1–4 supported, no remaining finding. Current handoff/session/shared-handoff docs reconcile the historical frontend gate without rewriting earlier evidence. Root finalizes101 only and records the normal evidence/status commit; source references above are actual integrated commits, not a fabricated future hash. No102/103/106 work started.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Delivered native untimed Xiangqi human-versus-mShogi play in the owner-approved shared desktop shell, with dedicated intersection geometry/traditional discs, Red/Black assignment/Flip, pointer and keyboard complete actions and native read-only inspection. Completion fixes visible Debug history using native coordinate/capture/check/event labels and standardizes all three games to exact visible Inspecting {side} {piece} · Esc clears; native semantics, accessible explanations and stale-result protections remain unchanged. Durable all-game wording is design A-07.
+
+Integrated/tested product source: be3055a1bc8d4b0d0fdf11f8509b97076d13fa43 on codex/rewrite; external-verifier-only follow-up 1c8a1682db5b98e765eb755b7978537c20a2ddd2. Actual normal macOS app verified Red/Black human play, engine replies, captures, keyboard/Flip/Escape and all-three inspection language. Nine refreshed raw GUI/AX captures and package hashes: docs/m4/evidence/msh101/completion-2026-10-29/README.md. Owner-approved unchanged3a1 normal/minimum/intermediate evidence retained with separate sizing-package and runtime-resize limitations explicit.
+
+Root183frontend tests/strictTS,2native label tests,14native session tests,24externaldriver tests, clippy/fmt/diffchecks and normalpackage smoke passed. Separate read-only agent independently passed82focusedfrontend+TS,2+14native and24driver tests, reviewed source/all9GUIimages/evidence, and found no remaining blocker. Final nativeCI40836312043 and desktopCI40836312034 passed Windows/macOS/Linux at exact1c8a168. Initial40834914598 Linux/Windows GUI failure due obsolete visible-read-only assertion is preserved; corrected verifier keeps semantic/marker/context/Escape checks and passes fresh actual compatibility journeys.
+
+All original AC/DoD supported; no remaining101finding. Xiangqi GUI here is macOS; Windows/Linux checks include actualChess/Shogi compatibility and do not establish Xiangqi GUI there. Depth1/128 ordinary limits and native profile/fast-exact semantics unchanged. MSH102 owns full analysis/outcome/recovery/document/history/live/resume journeys and remains unstarted, as do103/106. MSH45/M4 remain open. No new worktree; primary remains codex/rewrite. Stop after101.
+<!-- SECTION:FINAL_SUMMARY:END -->

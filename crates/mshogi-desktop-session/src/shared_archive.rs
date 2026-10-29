@@ -1015,13 +1015,13 @@ impl DesktopController {
     ) -> Result<u64, String> {
         self.queue_open_admission(path, token, true)
     }
-    /// Product frontend admission remains gated until the Xiangqi UI is delivered.
+    /// Product Open uses the same strict native dispatch and stopped restoration.
     pub fn queue_product_open(
         &mut self,
         path: PathBuf,
         token: SharedOpenToken,
     ) -> Result<u64, String> {
-        self.queue_open_admission(path, token, false)
+        self.queue_open_admission(path, token, true)
     }
     fn queue_open_admission(
         &mut self,

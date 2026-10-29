@@ -1,5 +1,10 @@
 {
   "xiangqi": {
+    "terminal_actions": {
+      "offer_draw": false,
+      "accept_draw": false,
+      "decline_draw": false
+    },
     "canonical_context_scope": "selected_committed",
     "selected_canonical": {
       "envelope_version": 1,

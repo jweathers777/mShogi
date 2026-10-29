@@ -25,11 +25,11 @@ assert len(engines) == 1, f'expected one packaged engine, got {engines}'
 hosts = [path for path in files if path.name in ('mshogi-desktop', 'mshogi-desktop.exe')]
 assert len(hosts) == 1, f'expected one packaged desktop host, got {hosts}'
 host_bytes = hosts[0].read_bytes()
-for marker in (b'MSHOGI_DESKTOP_FIXTURE', b'Native Cocoa Quit (verification)',
+for marker in (b'MSHOGI_DESKTOP_FIXTURE', b'MSHOGI_VERIFICATION_ENGINE', b'Native Cocoa Quit (verification)',
                b'synthetic_snapshot', b'synthetic_command', b'desktop_verification_mode',
                b'native_contract_snapshot', b'native_contract_command', b'native_contract_file',
                b'mshogi.synthetic.strider16.v1', b'mshogi-verification-window-size',
-               b'Verification window size'):
+               b'Verification window size', b'xiangqi-capacity', b'xiangqi-warning'):
     assert marker not in host_bytes, f'verification marker entered a normal host: {marker!r}'
 engine = engines[0].resolve()
 version = subprocess.run([str(engine), '--version'], check=True, capture_output=True, text=True, timeout=10)

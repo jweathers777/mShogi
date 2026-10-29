@@ -1,0 +1,2387 @@
+{
+  "xiangqi": {
+    "terminal_actions": {
+      "offer_draw": false,
+      "accept_draw": false,
+      "decline_draw": false
+    },
+    "canonical_context_scope": "selected_committed",
+    "selected_canonical": {
+      "envelope_version": 1,
+      "game_kind": "xiangqi",
+      "rules_profile": "mshogi.xiangqi.wxf2018.v1",
+      "profile_edition": "WXF-2018+XIANGQI-P1-2026-10-27",
+      "native_schema_version": 1,
+      "payload": {"format":"mshogi.xiangqi.game","schema_version":1,"game":"xiangqi","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","mode":"untimed","no_win_goal":"mshogi.xiangqi.natural-board-win.exists.v1","no_win_mode":"sound_fast_only","fast_witness_limit":1,"claim_policy":"explicit","root":{"schema":"mshogi.xiangqi.position.v1","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","history":"starts_at_this_position","origin":"imported_fen","board":"5k2r/9/9/9/R8/9/9/9/9/3K5","side":"red","no_capture_plies":0,"fullmove_number":1},"commands":[{"actor":"red","command":{"kind":"play","action":"a5d5"},"result":"accepted","event_end":1},{"actor":"black","command":{"kind":"play","action":"i9i6"},"result":"accepted","event_end":2},{"actor":"red","command":{"kind":"play","action":"d5d6"},"result":"accepted","event_end":3},{"actor":"black","command":{"kind":"play","action":"i6i1"},"result":"accepted","event_end":4},{"actor":"red","command":{"kind":"play","action":"d6i6"},"result":"accepted","event_end":5},{"actor":"black","command":{"kind":"play","action":"i1b1"},"result":"accepted","event_end":6},{"actor":"red","command":{"kind":"play","action":"i6e6"},"result":"accepted","event_end":7},{"actor":"black","command":{"kind":"play","action":"b1i1"},"result":"accepted","event_end":8},{"actor":"red","command":{"kind":"play","action":"e6e9"},"result":"accepted","event_end":9},{"actor":"black","command":{"kind":"play","action":"f9f8"},"result":"accepted","event_end":10},{"actor":"red","command":{"kind":"play","action":"e9e0"},"result":"accepted","event_end":11},{"actor":"black","command":{"kind":"play","action":"i1f1"},"result":"accepted","event_end":12},{"actor":"red","command":{"kind":"play","action":"e0f0"},"result":"accepted","event_end":13},{"actor":"black","command":{"kind":"play","action":"f8f9"},"result":"accepted","event_end":14},{"actor":"red","command":{"kind":"play","action":"f0i0"},"result":"accepted","event_end":15},{"actor":"black","command":{"kind":"play","action":"f1e1"},"result":"accepted","event_end":16},{"actor":"red","command":{"kind":"play","action":"i0f0"},"result":"accepted","event_end":17},{"actor":"black","command":{"kind":"play","action":"f9e9"},"result":"accepted","event_end":18},{"actor":"red","command":{"kind":"play","action":"f0f4"},"result":"accepted","event_end":19},{"actor":"black","command":{"kind":"play","action":"e1e6"},"result":"accepted","event_end":20},{"actor":"red","command":{"kind":"play","action":"f4f9"},"result":"accepted","event_end":21},{"actor":"black","command":{"kind":"play","action":"e9e8"},"result":"accepted","event_end":22},{"actor":"red","command":{"kind":"play","action":"f9f8"},"result":"accepted","event_end":23},{"actor":"black","command":{"kind":"play","action":"e8e7"},"result":"accepted","event_end":24},{"actor":"red","command":{"kind":"play","action":"f8f7"},"result":"accepted","event_end":25},{"actor":"black","command":{"kind":"play","action":"e7e8"},"result":"accepted","event_end":26},{"actor":"red","command":{"kind":"play","action":"f7d7"},"result":"accepted","event_end":27},{"actor":"black","command":{"kind":"play","action":"e6e7"},"result":"accepted","event_end":28},{"actor":"red","command":{"kind":"play","action":"d7d3"},"result":"accepted","event_end":29},{"actor":"black","command":{"kind":"play","action":"e7f7"},"result":"accepted","event_end":30},{"actor":"red","command":{"kind":"play","action":"d3d8"},"result":"accepted","event_end":31},{"actor":"black","command":{"kind":"play","action":"e8e9"},"result":"accepted","event_end":32},{"actor":"red","command":{"kind":"play","action":"d8d5"},"result":"accepted","event_end":33},{"actor":"black","command":{"kind":"play","action":"f7g7"},"result":"accepted","event_end":34},{"actor":"red","command":{"kind":"play","action":"d0d1"},"result":"accepted","event_end":35},{"actor":"black","command":{"kind":"play","action":"g7g5"},"result":"accepted","event_end":36},{"actor":"red","command":{"kind":"play","action":"d5d4"},"result":"accepted","event_end":37},{"actor":"black","command":{"kind":"play","action":"g5g9"},"result":"accepted","event_end":38},{"actor":"red","command":{"kind":"play","action":"d4e4"},"result":"accepted","event_end":39},{"actor":"black","command":{"kind":"play","action":"e9f9"},"result":"accepted","event_end":40},{"actor":"red","command":{"kind":"play","action":"e4e1"},"result":"accepted","event_end":41},{"actor":"black","command":{"kind":"play","action":"g9g5"},"result":"accepted","event_end":42},{"actor":"red","command":{"kind":"play","action":"e1e4"},"result":"accepted","event_end":43},{"actor":"black","command":{"kind":"play","action":"g5g6"},"result":"accepted","event_end":44},{"actor":"red","command":{"kind":"play","action":"e4e9"},"result":"accepted","event_end":45},{"actor":"black","command":{"kind":"play","action":"f9f8"},"result":"accepted","event_end":46},{"actor":"red","command":{"kind":"play","action":"e9e1"},"result":"accepted","event_end":47},{"actor":"black","command":{"kind":"play","action":"g6g3"},"result":"accepted","event_end":48},{"actor":"red","command":{"kind":"play","action":"d1d0"},"result":"accepted","event_end":49},{"actor":"black","command":{"kind":"play","action":"g3g8"},"result":"accepted","event_end":50},{"actor":"red","command":{"kind":"play","action":"e1e9"},"result":"accepted","event_end":51},{"actor":"black","command":{"kind":"play","action":"g8g9"},"result":"accepted","event_end":52},{"actor":"red","command":{"kind":"play","action":"e9e8"},"result":"accepted","event_end":53},{"actor":"black","command":{"kind":"play","action":"f8f7"},"result":"accepted","event_end":54},{"actor":"red","command":{"kind":"play","action":"e8f8"},"result":"accepted","event_end":55},{"actor":"black","command":{"kind":"play","action":"f7e7"},"result":"accepted","event_end":56},{"actor":"red","command":{"kind":"play","action":"f8g8"},"result":"accepted","event_end":57},{"actor":"black","command":{"kind":"play","action":"g9a9"},"result":"accepted","event_end":58},{"actor":"red","command":{"kind":"play","action":"g8f8"},"result":"accepted","event_end":59},{"actor":"black","command":{"kind":"play","action":"a9a5"},"result":"accepted","event_end":60},{"actor":"red","command":{"kind":"play","action":"f8f3"},"result":"accepted","event_end":61},{"actor":"black","command":{"kind":"play","action":"a5a8"},"result":"accepted","event_end":62},{"actor":"red","command":{"kind":"play","action":"f3h3"},"result":"accepted","event_end":63},{"actor":"black","command":{"kind":"play","action":"a8a1"},"result":"accepted","event_end":64},{"actor":"red","command":{"kind":"play","action":"h3h5"},"result":"accepted","event_end":65},{"actor":"black","command":{"kind":"play","action":"a1a9"},"result":"accepted","event_end":66},{"actor":"red","command":{"kind":"play","action":"h5h4"},"result":"accepted","event_end":67},{"actor":"black","command":{"kind":"play","action":"a9a8"},"result":"accepted","event_end":68},{"actor":"red","command":{"kind":"play","action":"h4d4"},"result":"accepted","event_end":69},{"actor":"black","command":{"kind":"play","action":"a8g8"},"result":"accepted","event_end":70},{"actor":"red","command":{"kind":"play","action":"d4g4"},"result":"accepted","event_end":71},{"actor":"black","command":{"kind":"play","action":"g8h8"},"result":"accepted","event_end":72},{"actor":"red","command":{"kind":"play","action":"g4b4"},"result":"accepted","event_end":73},{"actor":"black","command":{"kind":"play","action":"e7e8"},"result":"accepted","event_end":74},{"actor":"red","command":{"kind":"play","action":"b4b0"},"result":"accepted","event_end":75},{"actor":"black","command":{"kind":"play","action":"h8h7"},"result":"accepted","event_end":76},{"actor":"red","command":{"kind":"play","action":"b0b4"},"result":"accepted","event_end":77},{"actor":"black","command":{"kind":"play","action":"h7f7"},"result":"accepted","event_end":78},{"actor":"red","command":{"kind":"play","action":"b4b0"},"result":"accepted","event_end":79},{"actor":"black","command":{"kind":"play","action":"f7f2"},"result":"accepted","event_end":80},{"actor":"red","command":{"kind":"play","action":"b0c0"},"result":"accepted","event_end":81},{"actor":"black","command":{"kind":"play","action":"f2f7"},"result":"accepted","event_end":82},{"actor":"red","command":{"kind":"play","action":"c0c4"},"result":"accepted","event_end":83},{"actor":"black","command":{"kind":"play","action":"f7f5"},"result":"accepted","event_end":84},{"actor":"red","command":{"kind":"play","action":"c4d4"},"result":"accepted","event_end":85},{"actor":"black","command":{"kind":"play","action":"f5e5"},"result":"accepted","event_end":86},{"actor":"red","command":{"kind":"play","action":"d0d1"},"result":"accepted","event_end":87},{"actor":"black","command":{"kind":"play","action":"e5f5"},"result":"accepted","event_end":88},{"actor":"red","command":{"kind":"play","action":"d4h4"},"result":"accepted","event_end":89},{"actor":"black","command":{"kind":"play","action":"f5i5"},"result":"accepted","event_end":90},{"actor":"red","command":{"kind":"play","action":"d1d0"},"result":"accepted","event_end":91},{"actor":"black","command":{"kind":"play","action":"i5e5"},"result":"accepted","event_end":92},{"actor":"red","command":{"kind":"play","action":"d0d1"},"result":"accepted","event_end":93},{"actor":"black","command":{"kind":"play","action":"e5e0"},"result":"accepted","event_end":94},{"actor":"red","command":{"kind":"play","action":"h4h1"},"result":"accepted","event_end":95},{"actor":"black","command":{"kind":"play","action":"e8f8"},"result":"accepted","event_end":96},{"actor":"red","command":{"kind":"play","action":"h1g1"},"result":"accepted","event_end":97},{"actor":"black","command":{"kind":"play","action":"f8e8"},"result":"accepted","event_end":98},{"actor":"red","command":{"kind":"play","action":"d1d2"},"result":"accepted","event_end":99},{"actor":"black","command":{"kind":"play","action":"e0a0"},"result":"accepted","event_end":100}],"events":[{"index":0,"board_ply":1,"actor":"red","event":{"kind":"board_action","action":"a5d5","moving_id":1,"captured_id":null,"gave_check":false}},{"index":1,"board_ply":2,"actor":"black","event":{"kind":"board_action","action":"i9i6","moving_id":3,"captured_id":null,"gave_check":false}},{"index":2,"board_ply":3,"actor":"red","event":{"kind":"board_action","action":"d5d6","moving_id":1,"captured_id":null,"gave_check":false}},{"index":3,"board_ply":4,"actor":"black","event":{"kind":"board_action","action":"i6i1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":4,"board_ply":5,"actor":"red","event":{"kind":"board_action","action":"d6i6","moving_id":1,"captured_id":null,"gave_check":false}},{"index":5,"board_ply":6,"actor":"black","event":{"kind":"board_action","action":"i1b1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":6,"board_ply":7,"actor":"red","event":{"kind":"board_action","action":"i6e6","moving_id":1,"captured_id":null,"gave_check":false}},{"index":7,"board_ply":8,"actor":"black","event":{"kind":"board_action","action":"b1i1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":8,"board_ply":9,"actor":"red","event":{"kind":"board_action","action":"e6e9","moving_id":1,"captured_id":null,"gave_check":true}},{"index":9,"board_ply":10,"actor":"black","event":{"kind":"board_action","action":"f9f8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":10,"board_ply":11,"actor":"red","event":{"kind":"board_action","action":"e9e0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":11,"board_ply":12,"actor":"black","event":{"kind":"board_action","action":"i1f1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":12,"board_ply":13,"actor":"red","event":{"kind":"board_action","action":"e0f0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":13,"board_ply":14,"actor":"black","event":{"kind":"board_action","action":"f8f9","moving_id":2,"captured_id":null,"gave_check":false}},{"index":14,"board_ply":15,"actor":"red","event":{"kind":"board_action","action":"f0i0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":15,"board_ply":16,"actor":"black","event":{"kind":"board_action","action":"f1e1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":16,"board_ply":17,"actor":"red","event":{"kind":"board_action","action":"i0f0","moving_id":1,"captured_id":null,"gave_check":true}},{"index":17,"board_ply":18,"actor":"black","event":{"kind":"board_action","action":"f9e9","moving_id":2,"captured_id":null,"gave_check":false}},{"index":18,"board_ply":19,"actor":"red","event":{"kind":"board_action","action":"f0f4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":19,"board_ply":20,"actor":"black","event":{"kind":"board_action","action":"e1e6","moving_id":3,"captured_id":null,"gave_check":false}},{"index":20,"board_ply":21,"actor":"red","event":{"kind":"board_action","action":"f4f9","moving_id":1,"captured_id":null,"gave_check":true}},{"index":21,"board_ply":22,"actor":"black","event":{"kind":"board_action","action":"e9e8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":22,"board_ply":23,"actor":"red","event":{"kind":"board_action","action":"f9f8","moving_id":1,"captured_id":null,"gave_check":true}},{"index":23,"board_ply":24,"actor":"black","event":{"kind":"board_action","action":"e8e7","moving_id":2,"captured_id":null,"gave_check":false}},{"index":24,"board_ply":25,"actor":"red","event":{"kind":"board_action","action":"f8f7","moving_id":1,"captured_id":null,"gave_check":true}},{"index":25,"board_ply":26,"actor":"black","event":{"kind":"board_action","action":"e7e8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":26,"board_ply":27,"actor":"red","event":{"kind":"board_action","action":"f7d7","moving_id":1,"captured_id":null,"gave_check":false}},{"index":27,"board_ply":28,"actor":"black","event":{"kind":"board_action","action":"e6e7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":28,"board_ply":29,"actor":"red","event":{"kind":"board_action","action":"d7d3","moving_id":1,"captured_id":null,"gave_check":false}},{"index":29,"board_ply":30,"actor":"black","event":{"kind":"board_action","action":"e7f7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":30,"board_ply":31,"actor":"red","event":{"kind":"board_action","action":"d3d8","moving_id":1,"captured_id":null,"gave_check":true}},{"index":31,"board_ply":32,"actor":"black","event":{"kind":"board_action","action":"e8e9","moving_id":2,"captured_id":null,"gave_check":false}},{"index":32,"board_ply":33,"actor":"red","event":{"kind":"board_action","action":"d8d5","moving_id":1,"captured_id":null,"gave_check":false}},{"index":33,"board_ply":34,"actor":"black","event":{"kind":"board_action","action":"f7g7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":34,"board_ply":35,"actor":"red","event":{"kind":"board_action","action":"d0d1","moving_id":0,"captured_id":null,"gave_check":false}},{"index":35,"board_ply":36,"actor":"black","event":{"kind":"board_action","action":"g7g5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":36,"board_ply":37,"actor":"red","event":{"kind":"board_action","action":"d5d4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":37,"board_ply":38,"actor":"black","event":{"kind":"board_action","action":"g5g9","moving_id":3,"captured_id":null,"gave_check":false}},{"index":38,"board_ply":39,"actor":"red","event":{"kind":"board_action","action":"d4e4","moving_id":1,"captured_id":null,"gave_check":true}},{"index":39,"board_ply":40,"actor":"black","event":{"kind":"board_action","action":"e9f9","moving_id":2,"captured_id":null,"gave_check":false}},{"index":40,"board_ply":41,"actor":"red","event":{"kind":"board_action","action":"e4e1","moving_id":1,"captured_id":null,"gave_check":false}},{"index":41,"board_ply":42,"actor":"black","event":{"kind":"board_action","action":"g9g5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":42,"board_ply":43,"actor":"red","event":{"kind":"board_action","action":"e1e4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":43,"board_ply":44,"actor":"black","event":{"kind":"board_action","action":"g5g6","moving_id":3,"captured_id":null,"gave_check":false}},{"index":44,"board_ply":45,"actor":"red","event":{"kind":"board_action","action":"e4e9","moving_id":1,"captured_id":null,"gave_check":true}},{"index":45,"board_ply":46,"actor":"black","event":{"kind":"board_action","action":"f9f8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":46,"board_ply":47,"actor":"red","event":{"kind":"board_action","action":"e9e1","moving_id":1,"captured_id":null,"gave_check":false}},{"index":47,"board_ply":48,"actor":"black","event":{"kind":"board_action","action":"g6g3","moving_id":3,"captured_id":null,"gave_check":false}},{"index":48,"board_ply":49,"actor":"red","event":{"kind":"board_action","action":"d1d0","moving_id":0,"captured_id":null,"gave_check":false}},{"index":49,"board_ply":50,"actor":"black","event":{"kind":"board_action","action":"g3g8","moving_id":3,"captured_id":null,"gave_check":false}},{"index":50,"board_ply":51,"actor":"red","event":{"kind":"board_action","action":"e1e9","moving_id":1,"captured_id":null,"gave_check":false}},{"index":51,"board_ply":52,"actor":"black","event":{"kind":"board_action","action":"g8g9","moving_id":3,"captured_id":null,"gave_check":false}},{"index":52,"board_ply":53,"actor":"red","event":{"kind":"board_action","action":"e9e8","moving_id":1,"captured_id":null,"gave_check":true}},{"index":53,"board_ply":54,"actor":"black","event":{"kind":"board_action","action":"f8f7","moving_id":2,"captured_id":null,"gave_check":false}},{"index":54,"board_ply":55,"actor":"red","event":{"kind":"board_action","action":"e8f8","moving_id":1,"captured_id":null,"gave_check":true}},{"index":55,"board_ply":56,"actor":"black","event":{"kind":"board_action","action":"f7e7","moving_id":2,"captured_id":null,"gave_check":false}},{"index":56,"board_ply":57,"actor":"red","event":{"kind":"board_action","action":"f8g8","moving_id":1,"captured_id":null,"gave_check":false}},{"index":57,"board_ply":58,"actor":"black","event":{"kind":"board_action","action":"g9a9","moving_id":3,"captured_id":null,"gave_check":false}},{"index":58,"board_ply":59,"actor":"red","event":{"kind":"board_action","action":"g8f8","moving_id":1,"captured_id":null,"gave_check":false}},{"index":59,"board_ply":60,"actor":"black","event":{"kind":"board_action","action":"a9a5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":60,"board_ply":61,"actor":"red","event":{"kind":"board_action","action":"f8f3","moving_id":1,"captured_id":null,"gave_check":false}},{"index":61,"board_ply":62,"actor":"black","event":{"kind":"board_action","action":"a5a8","moving_id":3,"captured_id":null,"gave_check":false}},{"index":62,"board_ply":63,"actor":"red","event":{"kind":"board_action","action":"f3h3","moving_id":1,"captured_id":null,"gave_check":false}},{"index":63,"board_ply":64,"actor":"black","event":{"kind":"board_action","action":"a8a1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":64,"board_ply":65,"actor":"red","event":{"kind":"board_action","action":"h3h5","moving_id":1,"captured_id":null,"gave_check":false}},{"index":65,"board_ply":66,"actor":"black","event":{"kind":"board_action","action":"a1a9","moving_id":3,"captured_id":null,"gave_check":false}},{"index":66,"board_ply":67,"actor":"red","event":{"kind":"board_action","action":"h5h4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":67,"board_ply":68,"actor":"black","event":{"kind":"board_action","action":"a9a8","moving_id":3,"captured_id":null,"gave_check":false}},{"index":68,"board_ply":69,"actor":"red","event":{"kind":"board_action","action":"h4d4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":69,"board_ply":70,"actor":"black","event":{"kind":"board_action","action":"a8g8","moving_id":3,"captured_id":null,"gave_check":false}},{"index":70,"board_ply":71,"actor":"red","event":{"kind":"board_action","action":"d4g4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":71,"board_ply":72,"actor":"black","event":{"kind":"board_action","action":"g8h8","moving_id":3,"captured_id":null,"gave_check":false}},{"index":72,"board_ply":73,"actor":"red","event":{"kind":"board_action","action":"g4b4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":73,"board_ply":74,"actor":"black","event":{"kind":"board_action","action":"e7e8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":74,"board_ply":75,"actor":"red","event":{"kind":"board_action","action":"b4b0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":75,"board_ply":76,"actor":"black","event":{"kind":"board_action","action":"h8h7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":76,"board_ply":77,"actor":"red","event":{"kind":"board_action","action":"b0b4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":77,"board_ply":78,"actor":"black","event":{"kind":"board_action","action":"h7f7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":78,"board_ply":79,"actor":"red","event":{"kind":"board_action","action":"b4b0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":79,"board_ply":80,"actor":"black","event":{"kind":"board_action","action":"f7f2","moving_id":3,"captured_id":null,"gave_check":false}},{"index":80,"board_ply":81,"actor":"red","event":{"kind":"board_action","action":"b0c0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":81,"board_ply":82,"actor":"black","event":{"kind":"board_action","action":"f2f7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":82,"board_ply":83,"actor":"red","event":{"kind":"board_action","action":"c0c4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":83,"board_ply":84,"actor":"black","event":{"kind":"board_action","action":"f7f5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":84,"board_ply":85,"actor":"red","event":{"kind":"board_action","action":"c4d4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":85,"board_ply":86,"actor":"black","event":{"kind":"board_action","action":"f5e5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":86,"board_ply":87,"actor":"red","event":{"kind":"board_action","action":"d0d1","moving_id":0,"captured_id":null,"gave_check":false}},{"index":87,"board_ply":88,"actor":"black","event":{"kind":"board_action","action":"e5f5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":88,"board_ply":89,"actor":"red","event":{"kind":"board_action","action":"d4h4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":89,"board_ply":90,"actor":"black","event":{"kind":"board_action","action":"f5i5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":90,"board_ply":91,"actor":"red","event":{"kind":"board_action","action":"d1d0","moving_id":0,"captured_id":null,"gave_check":false}},{"index":91,"board_ply":92,"actor":"black","event":{"kind":"board_action","action":"i5e5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":92,"board_ply":93,"actor":"red","event":{"kind":"board_action","action":"d0d1","moving_id":0,"captured_id":null,"gave_check":false}},{"index":93,"board_ply":94,"actor":"black","event":{"kind":"board_action","action":"e5e0","moving_id":3,"captured_id":null,"gave_check":false}},{"index":94,"board_ply":95,"actor":"red","event":{"kind":"board_action","action":"h4h1","moving_id":1,"captured_id":null,"gave_check":false}},{"index":95,"board_ply":96,"actor":"black","event":{"kind":"board_action","action":"e8f8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":96,"board_ply":97,"actor":"red","event":{"kind":"board_action","action":"h1g1","moving_id":1,"captured_id":null,"gave_check":false}},{"index":97,"board_ply":98,"actor":"black","event":{"kind":"board_action","action":"f8e8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":98,"board_ply":99,"actor":"red","event":{"kind":"board_action","action":"d1d2","moving_id":0,"captured_id":null,"gave_check":false}},{"index":99,"board_ply":100,"actor":"black","event":{"kind":"board_action","action":"e0a0","moving_id":3,"captured_id":null,"gave_check":false}}],"current_position":{"schema":"mshogi.xiangqi.position.v1","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","history":"starts_at_this_position","origin":"analysis_diagram","board":"9/4k4/9/9/9/9/9/3K5/6R2/r8","side":"red","no_capture_plies":100,"fullmove_number":51},"conclusion":null,"pending":null,"no_win_assessment":{"kind":"unknown_exact_unavailable"}}
+    },
+    "selected_events": [
+      {
+        "index": 0,
+        "board_ply": 1,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "a5d5",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 1,
+        "board_ply": 2,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "i9i6",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 2,
+        "board_ply": 3,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "d5d6",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 3,
+        "board_ply": 4,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "i6i1",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 4,
+        "board_ply": 5,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "d6i6",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 5,
+        "board_ply": 6,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "i1b1",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 6,
+        "board_ply": 7,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "i6e6",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 7,
+        "board_ply": 8,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "b1i1",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 8,
+        "board_ply": 9,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "e6e9",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": true
+        }
+      },
+      {
+        "index": 9,
+        "board_ply": 10,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "f9f8",
+          "moving_id": 2,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 10,
+        "board_ply": 11,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "e9e0",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 11,
+        "board_ply": 12,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "i1f1",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 12,
+        "board_ply": 13,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "e0f0",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 13,
+        "board_ply": 14,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "f8f9",
+          "moving_id": 2,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 14,
+        "board_ply": 15,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "f0i0",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 15,
+        "board_ply": 16,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "f1e1",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 16,
+        "board_ply": 17,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "i0f0",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": true
+        }
+      },
+      {
+        "index": 17,
+        "board_ply": 18,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "f9e9",
+          "moving_id": 2,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 18,
+        "board_ply": 19,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "f0f4",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 19,
+        "board_ply": 20,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "e1e6",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 20,
+        "board_ply": 21,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "f4f9",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": true
+        }
+      },
+      {
+        "index": 21,
+        "board_ply": 22,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "e9e8",
+          "moving_id": 2,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 22,
+        "board_ply": 23,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "f9f8",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": true
+        }
+      },
+      {
+        "index": 23,
+        "board_ply": 24,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "e8e7",
+          "moving_id": 2,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 24,
+        "board_ply": 25,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "f8f7",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": true
+        }
+      },
+      {
+        "index": 25,
+        "board_ply": 26,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "e7e8",
+          "moving_id": 2,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 26,
+        "board_ply": 27,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "f7d7",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 27,
+        "board_ply": 28,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "e6e7",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 28,
+        "board_ply": 29,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "d7d3",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 29,
+        "board_ply": 30,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "e7f7",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 30,
+        "board_ply": 31,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "d3d8",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": true
+        }
+      },
+      {
+        "index": 31,
+        "board_ply": 32,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "e8e9",
+          "moving_id": 2,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 32,
+        "board_ply": 33,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "d8d5",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 33,
+        "board_ply": 34,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "f7g7",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 34,
+        "board_ply": 35,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "d0d1",
+          "moving_id": 0,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 35,
+        "board_ply": 36,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "g7g5",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 36,
+        "board_ply": 37,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "d5d4",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 37,
+        "board_ply": 38,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "g5g9",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 38,
+        "board_ply": 39,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "d4e4",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": true
+        }
+      },
+      {
+        "index": 39,
+        "board_ply": 40,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "e9f9",
+          "moving_id": 2,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 40,
+        "board_ply": 41,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "e4e1",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 41,
+        "board_ply": 42,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "g9g5",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 42,
+        "board_ply": 43,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "e1e4",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 43,
+        "board_ply": 44,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "g5g6",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 44,
+        "board_ply": 45,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "e4e9",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": true
+        }
+      },
+      {
+        "index": 45,
+        "board_ply": 46,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "f9f8",
+          "moving_id": 2,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 46,
+        "board_ply": 47,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "e9e1",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 47,
+        "board_ply": 48,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "g6g3",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 48,
+        "board_ply": 49,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "d1d0",
+          "moving_id": 0,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 49,
+        "board_ply": 50,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "g3g8",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 50,
+        "board_ply": 51,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "e1e9",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 51,
+        "board_ply": 52,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "g8g9",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 52,
+        "board_ply": 53,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "e9e8",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": true
+        }
+      },
+      {
+        "index": 53,
+        "board_ply": 54,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "f8f7",
+          "moving_id": 2,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 54,
+        "board_ply": 55,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "e8f8",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": true
+        }
+      },
+      {
+        "index": 55,
+        "board_ply": 56,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "f7e7",
+          "moving_id": 2,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 56,
+        "board_ply": 57,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "f8g8",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 57,
+        "board_ply": 58,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "g9a9",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 58,
+        "board_ply": 59,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "g8f8",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 59,
+        "board_ply": 60,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "a9a5",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 60,
+        "board_ply": 61,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "f8f3",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 61,
+        "board_ply": 62,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "a5a8",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 62,
+        "board_ply": 63,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "f3h3",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 63,
+        "board_ply": 64,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "a8a1",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 64,
+        "board_ply": 65,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "h3h5",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 65,
+        "board_ply": 66,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "a1a9",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 66,
+        "board_ply": 67,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "h5h4",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 67,
+        "board_ply": 68,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "a9a8",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 68,
+        "board_ply": 69,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "h4d4",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 69,
+        "board_ply": 70,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "a8g8",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 70,
+        "board_ply": 71,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "d4g4",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 71,
+        "board_ply": 72,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "g8h8",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 72,
+        "board_ply": 73,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "g4b4",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 73,
+        "board_ply": 74,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "e7e8",
+          "moving_id": 2,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 74,
+        "board_ply": 75,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "b4b0",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 75,
+        "board_ply": 76,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "h8h7",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 76,
+        "board_ply": 77,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "b0b4",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 77,
+        "board_ply": 78,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "h7f7",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 78,
+        "board_ply": 79,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "b4b0",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 79,
+        "board_ply": 80,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "f7f2",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 80,
+        "board_ply": 81,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "b0c0",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 81,
+        "board_ply": 82,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "f2f7",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 82,
+        "board_ply": 83,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "c0c4",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 83,
+        "board_ply": 84,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "f7f5",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 84,
+        "board_ply": 85,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "c4d4",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 85,
+        "board_ply": 86,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "f5e5",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 86,
+        "board_ply": 87,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "d0d1",
+          "moving_id": 0,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 87,
+        "board_ply": 88,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "e5f5",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 88,
+        "board_ply": 89,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "d4h4",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 89,
+        "board_ply": 90,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "f5i5",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 90,
+        "board_ply": 91,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "d1d0",
+          "moving_id": 0,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 91,
+        "board_ply": 92,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "i5e5",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 92,
+        "board_ply": 93,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "d0d1",
+          "moving_id": 0,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 93,
+        "board_ply": 94,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "e5e0",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 94,
+        "board_ply": 95,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "h4h1",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 95,
+        "board_ply": 96,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "e8f8",
+          "moving_id": 2,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 96,
+        "board_ply": 97,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "h1g1",
+          "moving_id": 1,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 97,
+        "board_ply": 98,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "f8e8",
+          "moving_id": 2,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 98,
+        "board_ply": 99,
+        "actor": "red",
+        "event": {
+          "kind": "board_action",
+          "action": "d1d2",
+          "moving_id": 0,
+          "captured_id": null,
+          "gave_check": false
+        }
+      },
+      {
+        "index": 99,
+        "board_ply": 100,
+        "actor": "black",
+        "event": {
+          "kind": "board_action",
+          "action": "e0a0",
+          "moving_id": 3,
+          "captured_id": null,
+          "gave_check": false
+        }
+      }
+    ],
+    "selected_position": "{\"schema\":\"mshogi.xiangqi.position.v1\",\"profile\":\"mshogi.xiangqi.wxf2018.v1\",\"edition\":\"WXF-2018+XIANGQI-P1-2026-10-27\",\"history\":\"starts_at_this_position\",\"origin\":\"analysis_diagram\",\"board\":\"9/4k4/9/9/9/9/9/3K5/6R2/r8\",\"side\":\"red\",\"no_capture_plies\":100,\"fullmove_number\":51}",
+    "root": "{\"schema\":\"mshogi.xiangqi.position.v1\",\"profile\":\"mshogi.xiangqi.wxf2018.v1\",\"edition\":\"WXF-2018+XIANGQI-P1-2026-10-27\",\"history\":\"starts_at_this_position\",\"origin\":\"imported_fen\",\"board\":\"5k2r/9/9/9/R8/9/9/9/9/3K5\",\"side\":\"red\",\"no_capture_plies\":0,\"fullmove_number\":1}",
+    "claim_policy": "explicit",
+    "count_advice": [
+      {
+        "claimant": "red",
+        "known_plies": 100,
+        "claimant_checks": 10,
+        "effective_plies": 100,
+        "eligible": true
+      },
+      {
+        "claimant": "black",
+        "known_plies": 100,
+        "claimant_checks": 0,
+        "effective_plies": 100,
+        "eligible": true
+      }
+    ],
+    "warnings": [],
+    "offered_by": null,
+    "conclusion": null,
+    "pending": null,
+    "no_win_assessment": {
+      "kind": "unknown_exact_unavailable"
+    },
+    "exact_observations": []
+  },
+  "open_token": {
+    "document": 1,
+    "version": 2,
+    "document_revision": 1
+  },
+  "document": {
+    "revision": 1,
+    "dirty": true,
+    "path": null,
+    "settings": {
+      "game_kind": "xiangqi",
+      "orientation": "red",
+      "analysis_defaults": {
+        "depth": 1,
+        "nodes": 128
+      }
+    }
+  },
+  "io": {
+    "id": 1,
+    "phase": "idle",
+    "message": null
+  },
+  "capacity": {
+    "id": 2,
+    "status": "available",
+    "message": null
+  },
+  "token": {
+    "document": 1,
+    "version": 2,
+    "revision": 5,
+    "selection": 2
+  },
+  "game": "xiangqi",
+  "profile": "mshogi.xiangqi.wxf2018.v1",
+  "edition": "WXF-2018+XIANGQI-P1-2026-10-27",
+  "human": {
+    "id": {
+      "game_kind": "xiangqi",
+      "side": "red"
+    },
+    "key": "mshogi.xiangqi.wxf2018.v1:red",
+    "label": "Red",
+    "first_mover": true
+  },
+  "turn": {
+    "id": {
+      "game_kind": "xiangqi",
+      "side": "red"
+    },
+    "key": "mshogi.xiangqi.wxf2018.v1:red",
+    "label": "Red",
+    "first_mover": true
+  },
+  "sides": [
+    {
+      "id": {
+        "game_kind": "xiangqi",
+        "side": "red"
+      },
+      "key": "mshogi.xiangqi.wxf2018.v1:red",
+      "label": "Red",
+      "first_mover": true
+    },
+    {
+      "id": {
+        "game_kind": "xiangqi",
+        "side": "black"
+      },
+      "key": "mshogi.xiangqi.wxf2018.v1:black",
+      "label": "Black",
+      "first_mover": false
+    }
+  ],
+  "board": {
+    "intersections": {
+      "points": [
+        "a0",
+        "b0",
+        "c0",
+        "d0",
+        "e0",
+        "f0",
+        "g0",
+        "h0",
+        "i0",
+        "a1",
+        "b1",
+        "c1",
+        "d1",
+        "e1",
+        "f1",
+        "g1",
+        "h1",
+        "i1",
+        "a2",
+        "b2",
+        "c2",
+        "d2",
+        "e2",
+        "f2",
+        "g2",
+        "h2",
+        "i2",
+        "a3",
+        "b3",
+        "c3",
+        "d3",
+        "e3",
+        "f3",
+        "g3",
+        "h3",
+        "i3",
+        "a4",
+        "b4",
+        "c4",
+        "d4",
+        "e4",
+        "f4",
+        "g4",
+        "h4",
+        "i4",
+        "a5",
+        "b5",
+        "c5",
+        "d5",
+        "e5",
+        "f5",
+        "g5",
+        "h5",
+        "i5",
+        "a6",
+        "b6",
+        "c6",
+        "d6",
+        "e6",
+        "f6",
+        "g6",
+        "h6",
+        "i6",
+        "a7",
+        "b7",
+        "c7",
+        "d7",
+        "e7",
+        "f7",
+        "g7",
+        "h7",
+        "i7",
+        "a8",
+        "b8",
+        "c8",
+        "d8",
+        "e8",
+        "f8",
+        "g8",
+        "h8",
+        "i8",
+        "a9",
+        "b9",
+        "c9",
+        "d9",
+        "e9",
+        "f9",
+        "g9",
+        "h9",
+        "i9"
+      ],
+      "river_between_ranks": [
+        4,
+        5
+      ],
+      "palaces": [
+        {
+          "side": {
+            "id": {
+              "game_kind": "xiangqi",
+              "side": "red"
+            },
+            "key": "mshogi.xiangqi.wxf2018.v1:red",
+            "label": "Red",
+            "first_mover": true
+          },
+          "points": [
+            "d0",
+            "e0",
+            "f0",
+            "d1",
+            "e1",
+            "f1",
+            "d2",
+            "e2",
+            "f2"
+          ],
+          "diagonals": [
+            [
+              "d0",
+              "e1",
+              "f2"
+            ],
+            [
+              "f0",
+              "e1",
+              "d2"
+            ]
+          ]
+        },
+        {
+          "side": {
+            "id": {
+              "game_kind": "xiangqi",
+              "side": "black"
+            },
+            "key": "mshogi.xiangqi.wxf2018.v1:black",
+            "label": "Black",
+            "first_mover": false
+          },
+          "points": [
+            "d7",
+            "e7",
+            "f7",
+            "d8",
+            "e8",
+            "f8",
+            "d9",
+            "e9",
+            "f9"
+          ],
+          "diagonals": [
+            [
+              "d7",
+              "e8",
+              "f9"
+            ],
+            [
+              "f7",
+              "e8",
+              "d9"
+            ]
+          ]
+        }
+      ]
+    },
+    "files": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g",
+      "h",
+      "i"
+    ],
+    "ranks": [
+      "9",
+      "8",
+      "7",
+      "6",
+      "5",
+      "4",
+      "3",
+      "2",
+      "1",
+      "0"
+    ],
+    "label": "Xiangqi intersection board",
+    "initial_focus": "e3"
+  },
+  "orientations": [
+    {
+      "side": {
+        "id": {
+          "game_kind": "xiangqi",
+          "side": "red"
+        },
+        "key": "mshogi.xiangqi.wxf2018.v1:red",
+        "label": "Red",
+        "first_mover": true
+      },
+      "files": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i"
+      ],
+      "ranks": [
+        "9",
+        "8",
+        "7",
+        "6",
+        "5",
+        "4",
+        "3",
+        "2",
+        "1",
+        "0"
+      ]
+    },
+    {
+      "side": {
+        "id": {
+          "game_kind": "xiangqi",
+          "side": "black"
+        },
+        "key": "mshogi.xiangqi.wxf2018.v1:black",
+        "label": "Black",
+        "first_mover": false
+      },
+      "files": [
+        "i",
+        "h",
+        "g",
+        "f",
+        "e",
+        "d",
+        "c",
+        "b",
+        "a"
+      ],
+      "ranks": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ]
+    }
+  ],
+  "pieces": [
+    {
+      "square": "a0",
+      "owner": "mshogi.xiangqi.wxf2018.v1:black",
+      "kind": "rook",
+      "promoted": false,
+      "text": "Rook",
+      "label": "a0, Black Rook"
+    },
+    {
+      "square": "g1",
+      "owner": "mshogi.xiangqi.wxf2018.v1:red",
+      "kind": "rook",
+      "promoted": false,
+      "text": "Rook",
+      "label": "g1, Red Rook"
+    },
+    {
+      "square": "d2",
+      "owner": "mshogi.xiangqi.wxf2018.v1:red",
+      "kind": "general",
+      "promoted": false,
+      "text": "General",
+      "label": "d2, Red General"
+    },
+    {
+      "square": "e8",
+      "owner": "mshogi.xiangqi.wxf2018.v1:black",
+      "kind": "general",
+      "promoted": false,
+      "text": "General",
+      "label": "e8, Black General"
+    }
+  ],
+  "hands": [],
+  "choices": [
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "g1"
+      },
+      "action": "g1g0",
+      "from": "g1",
+      "steps": [
+        "g0"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "g1"
+      },
+      "action": "g1a1",
+      "from": "g1",
+      "steps": [
+        "a1"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "g1"
+      },
+      "action": "g1b1",
+      "from": "g1",
+      "steps": [
+        "b1"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "g1"
+      },
+      "action": "g1c1",
+      "from": "g1",
+      "steps": [
+        "c1"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "g1"
+      },
+      "action": "g1d1",
+      "from": "g1",
+      "steps": [
+        "d1"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "g1"
+      },
+      "action": "g1e1",
+      "from": "g1",
+      "steps": [
+        "e1"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "g1"
+      },
+      "action": "g1f1",
+      "from": "g1",
+      "steps": [
+        "f1"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "g1"
+      },
+      "action": "g1h1",
+      "from": "g1",
+      "steps": [
+        "h1"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "g1"
+      },
+      "action": "g1i1",
+      "from": "g1",
+      "steps": [
+        "i1"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "g1"
+      },
+      "action": "g1g2",
+      "from": "g1",
+      "steps": [
+        "g2"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "g1"
+      },
+      "action": "g1g3",
+      "from": "g1",
+      "steps": [
+        "g3"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "g1"
+      },
+      "action": "g1g4",
+      "from": "g1",
+      "steps": [
+        "g4"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "g1"
+      },
+      "action": "g1g5",
+      "from": "g1",
+      "steps": [
+        "g5"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "g1"
+      },
+      "action": "g1g6",
+      "from": "g1",
+      "steps": [
+        "g6"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "g1"
+      },
+      "action": "g1g7",
+      "from": "g1",
+      "steps": [
+        "g7"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "g1"
+      },
+      "action": "g1g8",
+      "from": "g1",
+      "steps": [
+        "g8"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "g1"
+      },
+      "action": "g1g9",
+      "from": "g1",
+      "steps": [
+        "g9"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "intersection",
+        "point": "d2"
+      },
+      "action": "d2d1",
+      "from": "d2",
+      "steps": [
+        "d1"
+      ],
+      "completion": null
+    }
+  ],
+  "capabilities": {
+    "board_action": true,
+    "drops": false,
+    "promotion": false,
+    "undo": true,
+    "engine_turn": false,
+    "move_analysis": true,
+    "chess_full": false,
+    "claims": true,
+    "declaration": false,
+    "resign": true,
+    "hands": false,
+    "history": true,
+    "save": true
+  },
+  "status": {
+    "concluded": false,
+    "label": "Red to move",
+    "score_half_points": null
+  },
+  "events": [
+    {
+      "index": 1,
+      "board_ply": 1,
+      "label": "Red: a5–d5"
+    },
+    {
+      "index": 2,
+      "board_ply": 2,
+      "label": "Black: i9–i6"
+    },
+    {
+      "index": 3,
+      "board_ply": 3,
+      "label": "Red: d5–d6"
+    },
+    {
+      "index": 4,
+      "board_ply": 4,
+      "label": "Black: i6–i1"
+    },
+    {
+      "index": 5,
+      "board_ply": 5,
+      "label": "Red: d6–i6"
+    },
+    {
+      "index": 6,
+      "board_ply": 6,
+      "label": "Black: i1–b1"
+    },
+    {
+      "index": 7,
+      "board_ply": 7,
+      "label": "Red: i6–e6"
+    },
+    {
+      "index": 8,
+      "board_ply": 8,
+      "label": "Black: b1–i1"
+    },
+    {
+      "index": 9,
+      "board_ply": 9,
+      "label": "Red: e6–e9 · check"
+    },
+    {
+      "index": 10,
+      "board_ply": 10,
+      "label": "Black: f9–f8"
+    },
+    {
+      "index": 11,
+      "board_ply": 11,
+      "label": "Red: e9–e0"
+    },
+    {
+      "index": 12,
+      "board_ply": 12,
+      "label": "Black: i1–f1"
+    },
+    {
+      "index": 13,
+      "board_ply": 13,
+      "label": "Red: e0–f0"
+    },
+    {
+      "index": 14,
+      "board_ply": 14,
+      "label": "Black: f8–f9"
+    },
+    {
+      "index": 15,
+      "board_ply": 15,
+      "label": "Red: f0–i0"
+    },
+    {
+      "index": 16,
+      "board_ply": 16,
+      "label": "Black: f1–e1"
+    },
+    {
+      "index": 17,
+      "board_ply": 17,
+      "label": "Red: i0–f0 · check"
+    },
+    {
+      "index": 18,
+      "board_ply": 18,
+      "label": "Black: f9–e9"
+    },
+    {
+      "index": 19,
+      "board_ply": 19,
+      "label": "Red: f0–f4"
+    },
+    {
+      "index": 20,
+      "board_ply": 20,
+      "label": "Black: e1–e6"
+    },
+    {
+      "index": 21,
+      "board_ply": 21,
+      "label": "Red: f4–f9 · check"
+    },
+    {
+      "index": 22,
+      "board_ply": 22,
+      "label": "Black: e9–e8"
+    },
+    {
+      "index": 23,
+      "board_ply": 23,
+      "label": "Red: f9–f8 · check"
+    },
+    {
+      "index": 24,
+      "board_ply": 24,
+      "label": "Black: e8–e7"
+    },
+    {
+      "index": 25,
+      "board_ply": 25,
+      "label": "Red: f8–f7 · check"
+    },
+    {
+      "index": 26,
+      "board_ply": 26,
+      "label": "Black: e7–e8"
+    },
+    {
+      "index": 27,
+      "board_ply": 27,
+      "label": "Red: f7–d7"
+    },
+    {
+      "index": 28,
+      "board_ply": 28,
+      "label": "Black: e6–e7"
+    },
+    {
+      "index": 29,
+      "board_ply": 29,
+      "label": "Red: d7–d3"
+    },
+    {
+      "index": 30,
+      "board_ply": 30,
+      "label": "Black: e7–f7"
+    },
+    {
+      "index": 31,
+      "board_ply": 31,
+      "label": "Red: d3–d8 · check"
+    },
+    {
+      "index": 32,
+      "board_ply": 32,
+      "label": "Black: e8–e9"
+    },
+    {
+      "index": 33,
+      "board_ply": 33,
+      "label": "Red: d8–d5"
+    },
+    {
+      "index": 34,
+      "board_ply": 34,
+      "label": "Black: f7–g7"
+    },
+    {
+      "index": 35,
+      "board_ply": 35,
+      "label": "Red: d0–d1"
+    },
+    {
+      "index": 36,
+      "board_ply": 36,
+      "label": "Black: g7–g5"
+    },
+    {
+      "index": 37,
+      "board_ply": 37,
+      "label": "Red: d5–d4"
+    },
+    {
+      "index": 38,
+      "board_ply": 38,
+      "label": "Black: g5–g9"
+    },
+    {
+      "index": 39,
+      "board_ply": 39,
+      "label": "Red: d4–e4 · check"
+    },
+    {
+      "index": 40,
+      "board_ply": 40,
+      "label": "Black: e9–f9"
+    },
+    {
+      "index": 41,
+      "board_ply": 41,
+      "label": "Red: e4–e1"
+    },
+    {
+      "index": 42,
+      "board_ply": 42,
+      "label": "Black: g9–g5"
+    },
+    {
+      "index": 43,
+      "board_ply": 43,
+      "label": "Red: e1–e4"
+    },
+    {
+      "index": 44,
+      "board_ply": 44,
+      "label": "Black: g5–g6"
+    },
+    {
+      "index": 45,
+      "board_ply": 45,
+      "label": "Red: e4–e9 · check"
+    },
+    {
+      "index": 46,
+      "board_ply": 46,
+      "label": "Black: f9–f8"
+    },
+    {
+      "index": 47,
+      "board_ply": 47,
+      "label": "Red: e9–e1"
+    },
+    {
+      "index": 48,
+      "board_ply": 48,
+      "label": "Black: g6–g3"
+    },
+    {
+      "index": 49,
+      "board_ply": 49,
+      "label": "Red: d1–d0"
+    },
+    {
+      "index": 50,
+      "board_ply": 50,
+      "label": "Black: g3–g8"
+    },
+    {
+      "index": 51,
+      "board_ply": 51,
+      "label": "Red: e1–e9"
+    },
+    {
+      "index": 52,
+      "board_ply": 52,
+      "label": "Black: g8–g9"
+    },
+    {
+      "index": 53,
+      "board_ply": 53,
+      "label": "Red: e9–e8 · check"
+    },
+    {
+      "index": 54,
+      "board_ply": 54,
+      "label": "Black: f8–f7"
+    },
+    {
+      "index": 55,
+      "board_ply": 55,
+      "label": "Red: e8–f8 · check"
+    },
+    {
+      "index": 56,
+      "board_ply": 56,
+      "label": "Black: f7–e7"
+    },
+    {
+      "index": 57,
+      "board_ply": 57,
+      "label": "Red: f8–g8"
+    },
+    {
+      "index": 58,
+      "board_ply": 58,
+      "label": "Black: g9–a9"
+    },
+    {
+      "index": 59,
+      "board_ply": 59,
+      "label": "Red: g8–f8"
+    },
+    {
+      "index": 60,
+      "board_ply": 60,
+      "label": "Black: a9–a5"
+    },
+    {
+      "index": 61,
+      "board_ply": 61,
+      "label": "Red: f8–f3"
+    },
+    {
+      "index": 62,
+      "board_ply": 62,
+      "label": "Black: a5–a8"
+    },
+    {
+      "index": 63,
+      "board_ply": 63,
+      "label": "Red: f3–h3"
+    },
+    {
+      "index": 64,
+      "board_ply": 64,
+      "label": "Black: a8–a1"
+    },
+    {
+      "index": 65,
+      "board_ply": 65,
+      "label": "Red: h3–h5"
+    },
+    {
+      "index": 66,
+      "board_ply": 66,
+      "label": "Black: a1–a9"
+    },
+    {
+      "index": 67,
+      "board_ply": 67,
+      "label": "Red: h5–h4"
+    },
+    {
+      "index": 68,
+      "board_ply": 68,
+      "label": "Black: a9–a8"
+    },
+    {
+      "index": 69,
+      "board_ply": 69,
+      "label": "Red: h4–d4"
+    },
+    {
+      "index": 70,
+      "board_ply": 70,
+      "label": "Black: a8–g8"
+    },
+    {
+      "index": 71,
+      "board_ply": 71,
+      "label": "Red: d4–g4"
+    },
+    {
+      "index": 72,
+      "board_ply": 72,
+      "label": "Black: g8–h8"
+    },
+    {
+      "index": 73,
+      "board_ply": 73,
+      "label": "Red: g4–b4"
+    },
+    {
+      "index": 74,
+      "board_ply": 74,
+      "label": "Black: e7–e8"
+    },
+    {
+      "index": 75,
+      "board_ply": 75,
+      "label": "Red: b4–b0"
+    },
+    {
+      "index": 76,
+      "board_ply": 76,
+      "label": "Black: h8–h7"
+    },
+    {
+      "index": 77,
+      "board_ply": 77,
+      "label": "Red: b0–b4"
+    },
+    {
+      "index": 78,
+      "board_ply": 78,
+      "label": "Black: h7–f7"
+    },
+    {
+      "index": 79,
+      "board_ply": 79,
+      "label": "Red: b4–b0"
+    },
+    {
+      "index": 80,
+      "board_ply": 80,
+      "label": "Black: f7–f2"
+    },
+    {
+      "index": 81,
+      "board_ply": 81,
+      "label": "Red: b0–c0"
+    },
+    {
+      "index": 82,
+      "board_ply": 82,
+      "label": "Black: f2–f7"
+    },
+    {
+      "index": 83,
+      "board_ply": 83,
+      "label": "Red: c0–c4"
+    },
+    {
+      "index": 84,
+      "board_ply": 84,
+      "label": "Black: f7–f5"
+    },
+    {
+      "index": 85,
+      "board_ply": 85,
+      "label": "Red: c4–d4"
+    },
+    {
+      "index": 86,
+      "board_ply": 86,
+      "label": "Black: f5–e5"
+    },
+    {
+      "index": 87,
+      "board_ply": 87,
+      "label": "Red: d0–d1"
+    },
+    {
+      "index": 88,
+      "board_ply": 88,
+      "label": "Black: e5–f5"
+    },
+    {
+      "index": 89,
+      "board_ply": 89,
+      "label": "Red: d4–h4"
+    },
+    {
+      "index": 90,
+      "board_ply": 90,
+      "label": "Black: f5–i5"
+    },
+    {
+      "index": 91,
+      "board_ply": 91,
+      "label": "Red: d1–d0"
+    },
+    {
+      "index": 92,
+      "board_ply": 92,
+      "label": "Black: i5–e5"
+    },
+    {
+      "index": 93,
+      "board_ply": 93,
+      "label": "Red: d0–d1"
+    },
+    {
+      "index": 94,
+      "board_ply": 94,
+      "label": "Black: e5–e0"
+    },
+    {
+      "index": 95,
+      "board_ply": 95,
+      "label": "Red: h4–h1"
+    },
+    {
+      "index": 96,
+      "board_ply": 96,
+      "label": "Black: e8–f8"
+    },
+    {
+      "index": 97,
+      "board_ply": 97,
+      "label": "Red: h1–g1"
+    },
+    {
+      "index": 98,
+      "board_ply": 98,
+      "label": "Black: f8–e8"
+    },
+    {
+      "index": 99,
+      "board_ply": 99,
+      "label": "Red: d1–d2"
+    },
+    {
+      "index": 100,
+      "board_ply": 100,
+      "label": "Black: e0–a0"
+    }
+  ],
+  "event_index": 100,
+  "board_ply": 100,
+  "play_limits": {
+    "depth": 1,
+    "nodes": 128
+  },
+  "historical": false,
+  "paused": false,
+  "phase": "idle",
+  "execution_purpose": null,
+  "diagnostic": null,
+  "declaration_advice": [],
+  "context": {
+    "envelope_version": 1,
+    "game_kind": "xiangqi",
+    "rules_profile": "mshogi.xiangqi.wxf2018.v1",
+    "profile_edition": "WXF-2018+XIANGQI-P1-2026-10-27",
+    "native_schema_version": 1,
+    "payload": {"format":"mshogi.xiangqi.game","schema_version":1,"game":"xiangqi","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","mode":"untimed","no_win_goal":"mshogi.xiangqi.natural-board-win.exists.v1","no_win_mode":"sound_fast_only","fast_witness_limit":1,"claim_policy":"explicit","root":{"schema":"mshogi.xiangqi.position.v1","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","history":"starts_at_this_position","origin":"imported_fen","board":"5k2r/9/9/9/R8/9/9/9/9/3K5","side":"red","no_capture_plies":0,"fullmove_number":1},"commands":[{"actor":"red","command":{"kind":"play","action":"a5d5"},"result":"accepted","event_end":1},{"actor":"black","command":{"kind":"play","action":"i9i6"},"result":"accepted","event_end":2},{"actor":"red","command":{"kind":"play","action":"d5d6"},"result":"accepted","event_end":3},{"actor":"black","command":{"kind":"play","action":"i6i1"},"result":"accepted","event_end":4},{"actor":"red","command":{"kind":"play","action":"d6i6"},"result":"accepted","event_end":5},{"actor":"black","command":{"kind":"play","action":"i1b1"},"result":"accepted","event_end":6},{"actor":"red","command":{"kind":"play","action":"i6e6"},"result":"accepted","event_end":7},{"actor":"black","command":{"kind":"play","action":"b1i1"},"result":"accepted","event_end":8},{"actor":"red","command":{"kind":"play","action":"e6e9"},"result":"accepted","event_end":9},{"actor":"black","command":{"kind":"play","action":"f9f8"},"result":"accepted","event_end":10},{"actor":"red","command":{"kind":"play","action":"e9e0"},"result":"accepted","event_end":11},{"actor":"black","command":{"kind":"play","action":"i1f1"},"result":"accepted","event_end":12},{"actor":"red","command":{"kind":"play","action":"e0f0"},"result":"accepted","event_end":13},{"actor":"black","command":{"kind":"play","action":"f8f9"},"result":"accepted","event_end":14},{"actor":"red","command":{"kind":"play","action":"f0i0"},"result":"accepted","event_end":15},{"actor":"black","command":{"kind":"play","action":"f1e1"},"result":"accepted","event_end":16},{"actor":"red","command":{"kind":"play","action":"i0f0"},"result":"accepted","event_end":17},{"actor":"black","command":{"kind":"play","action":"f9e9"},"result":"accepted","event_end":18},{"actor":"red","command":{"kind":"play","action":"f0f4"},"result":"accepted","event_end":19},{"actor":"black","command":{"kind":"play","action":"e1e6"},"result":"accepted","event_end":20},{"actor":"red","command":{"kind":"play","action":"f4f9"},"result":"accepted","event_end":21},{"actor":"black","command":{"kind":"play","action":"e9e8"},"result":"accepted","event_end":22},{"actor":"red","command":{"kind":"play","action":"f9f8"},"result":"accepted","event_end":23},{"actor":"black","command":{"kind":"play","action":"e8e7"},"result":"accepted","event_end":24},{"actor":"red","command":{"kind":"play","action":"f8f7"},"result":"accepted","event_end":25},{"actor":"black","command":{"kind":"play","action":"e7e8"},"result":"accepted","event_end":26},{"actor":"red","command":{"kind":"play","action":"f7d7"},"result":"accepted","event_end":27},{"actor":"black","command":{"kind":"play","action":"e6e7"},"result":"accepted","event_end":28},{"actor":"red","command":{"kind":"play","action":"d7d3"},"result":"accepted","event_end":29},{"actor":"black","command":{"kind":"play","action":"e7f7"},"result":"accepted","event_end":30},{"actor":"red","command":{"kind":"play","action":"d3d8"},"result":"accepted","event_end":31},{"actor":"black","command":{"kind":"play","action":"e8e9"},"result":"accepted","event_end":32},{"actor":"red","command":{"kind":"play","action":"d8d5"},"result":"accepted","event_end":33},{"actor":"black","command":{"kind":"play","action":"f7g7"},"result":"accepted","event_end":34},{"actor":"red","command":{"kind":"play","action":"d0d1"},"result":"accepted","event_end":35},{"actor":"black","command":{"kind":"play","action":"g7g5"},"result":"accepted","event_end":36},{"actor":"red","command":{"kind":"play","action":"d5d4"},"result":"accepted","event_end":37},{"actor":"black","command":{"kind":"play","action":"g5g9"},"result":"accepted","event_end":38},{"actor":"red","command":{"kind":"play","action":"d4e4"},"result":"accepted","event_end":39},{"actor":"black","command":{"kind":"play","action":"e9f9"},"result":"accepted","event_end":40},{"actor":"red","command":{"kind":"play","action":"e4e1"},"result":"accepted","event_end":41},{"actor":"black","command":{"kind":"play","action":"g9g5"},"result":"accepted","event_end":42},{"actor":"red","command":{"kind":"play","action":"e1e4"},"result":"accepted","event_end":43},{"actor":"black","command":{"kind":"play","action":"g5g6"},"result":"accepted","event_end":44},{"actor":"red","command":{"kind":"play","action":"e4e9"},"result":"accepted","event_end":45},{"actor":"black","command":{"kind":"play","action":"f9f8"},"result":"accepted","event_end":46},{"actor":"red","command":{"kind":"play","action":"e9e1"},"result":"accepted","event_end":47},{"actor":"black","command":{"kind":"play","action":"g6g3"},"result":"accepted","event_end":48},{"actor":"red","command":{"kind":"play","action":"d1d0"},"result":"accepted","event_end":49},{"actor":"black","command":{"kind":"play","action":"g3g8"},"result":"accepted","event_end":50},{"actor":"red","command":{"kind":"play","action":"e1e9"},"result":"accepted","event_end":51},{"actor":"black","command":{"kind":"play","action":"g8g9"},"result":"accepted","event_end":52},{"actor":"red","command":{"kind":"play","action":"e9e8"},"result":"accepted","event_end":53},{"actor":"black","command":{"kind":"play","action":"f8f7"},"result":"accepted","event_end":54},{"actor":"red","command":{"kind":"play","action":"e8f8"},"result":"accepted","event_end":55},{"actor":"black","command":{"kind":"play","action":"f7e7"},"result":"accepted","event_end":56},{"actor":"red","command":{"kind":"play","action":"f8g8"},"result":"accepted","event_end":57},{"actor":"black","command":{"kind":"play","action":"g9a9"},"result":"accepted","event_end":58},{"actor":"red","command":{"kind":"play","action":"g8f8"},"result":"accepted","event_end":59},{"actor":"black","command":{"kind":"play","action":"a9a5"},"result":"accepted","event_end":60},{"actor":"red","command":{"kind":"play","action":"f8f3"},"result":"accepted","event_end":61},{"actor":"black","command":{"kind":"play","action":"a5a8"},"result":"accepted","event_end":62},{"actor":"red","command":{"kind":"play","action":"f3h3"},"result":"accepted","event_end":63},{"actor":"black","command":{"kind":"play","action":"a8a1"},"result":"accepted","event_end":64},{"actor":"red","command":{"kind":"play","action":"h3h5"},"result":"accepted","event_end":65},{"actor":"black","command":{"kind":"play","action":"a1a9"},"result":"accepted","event_end":66},{"actor":"red","command":{"kind":"play","action":"h5h4"},"result":"accepted","event_end":67},{"actor":"black","command":{"kind":"play","action":"a9a8"},"result":"accepted","event_end":68},{"actor":"red","command":{"kind":"play","action":"h4d4"},"result":"accepted","event_end":69},{"actor":"black","command":{"kind":"play","action":"a8g8"},"result":"accepted","event_end":70},{"actor":"red","command":{"kind":"play","action":"d4g4"},"result":"accepted","event_end":71},{"actor":"black","command":{"kind":"play","action":"g8h8"},"result":"accepted","event_end":72},{"actor":"red","command":{"kind":"play","action":"g4b4"},"result":"accepted","event_end":73},{"actor":"black","command":{"kind":"play","action":"e7e8"},"result":"accepted","event_end":74},{"actor":"red","command":{"kind":"play","action":"b4b0"},"result":"accepted","event_end":75},{"actor":"black","command":{"kind":"play","action":"h8h7"},"result":"accepted","event_end":76},{"actor":"red","command":{"kind":"play","action":"b0b4"},"result":"accepted","event_end":77},{"actor":"black","command":{"kind":"play","action":"h7f7"},"result":"accepted","event_end":78},{"actor":"red","command":{"kind":"play","action":"b4b0"},"result":"accepted","event_end":79},{"actor":"black","command":{"kind":"play","action":"f7f2"},"result":"accepted","event_end":80},{"actor":"red","command":{"kind":"play","action":"b0c0"},"result":"accepted","event_end":81},{"actor":"black","command":{"kind":"play","action":"f2f7"},"result":"accepted","event_end":82},{"actor":"red","command":{"kind":"play","action":"c0c4"},"result":"accepted","event_end":83},{"actor":"black","command":{"kind":"play","action":"f7f5"},"result":"accepted","event_end":84},{"actor":"red","command":{"kind":"play","action":"c4d4"},"result":"accepted","event_end":85},{"actor":"black","command":{"kind":"play","action":"f5e5"},"result":"accepted","event_end":86},{"actor":"red","command":{"kind":"play","action":"d0d1"},"result":"accepted","event_end":87},{"actor":"black","command":{"kind":"play","action":"e5f5"},"result":"accepted","event_end":88},{"actor":"red","command":{"kind":"play","action":"d4h4"},"result":"accepted","event_end":89},{"actor":"black","command":{"kind":"play","action":"f5i5"},"result":"accepted","event_end":90},{"actor":"red","command":{"kind":"play","action":"d1d0"},"result":"accepted","event_end":91},{"actor":"black","command":{"kind":"play","action":"i5e5"},"result":"accepted","event_end":92},{"actor":"red","command":{"kind":"play","action":"d0d1"},"result":"accepted","event_end":93},{"actor":"black","command":{"kind":"play","action":"e5e0"},"result":"accepted","event_end":94},{"actor":"red","command":{"kind":"play","action":"h4h1"},"result":"accepted","event_end":95},{"actor":"black","command":{"kind":"play","action":"e8f8"},"result":"accepted","event_end":96},{"actor":"red","command":{"kind":"play","action":"h1g1"},"result":"accepted","event_end":97},{"actor":"black","command":{"kind":"play","action":"f8e8"},"result":"accepted","event_end":98},{"actor":"red","command":{"kind":"play","action":"d1d2"},"result":"accepted","event_end":99},{"actor":"black","command":{"kind":"play","action":"e0a0"},"result":"accepted","event_end":100}],"events":[{"index":0,"board_ply":1,"actor":"red","event":{"kind":"board_action","action":"a5d5","moving_id":1,"captured_id":null,"gave_check":false}},{"index":1,"board_ply":2,"actor":"black","event":{"kind":"board_action","action":"i9i6","moving_id":3,"captured_id":null,"gave_check":false}},{"index":2,"board_ply":3,"actor":"red","event":{"kind":"board_action","action":"d5d6","moving_id":1,"captured_id":null,"gave_check":false}},{"index":3,"board_ply":4,"actor":"black","event":{"kind":"board_action","action":"i6i1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":4,"board_ply":5,"actor":"red","event":{"kind":"board_action","action":"d6i6","moving_id":1,"captured_id":null,"gave_check":false}},{"index":5,"board_ply":6,"actor":"black","event":{"kind":"board_action","action":"i1b1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":6,"board_ply":7,"actor":"red","event":{"kind":"board_action","action":"i6e6","moving_id":1,"captured_id":null,"gave_check":false}},{"index":7,"board_ply":8,"actor":"black","event":{"kind":"board_action","action":"b1i1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":8,"board_ply":9,"actor":"red","event":{"kind":"board_action","action":"e6e9","moving_id":1,"captured_id":null,"gave_check":true}},{"index":9,"board_ply":10,"actor":"black","event":{"kind":"board_action","action":"f9f8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":10,"board_ply":11,"actor":"red","event":{"kind":"board_action","action":"e9e0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":11,"board_ply":12,"actor":"black","event":{"kind":"board_action","action":"i1f1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":12,"board_ply":13,"actor":"red","event":{"kind":"board_action","action":"e0f0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":13,"board_ply":14,"actor":"black","event":{"kind":"board_action","action":"f8f9","moving_id":2,"captured_id":null,"gave_check":false}},{"index":14,"board_ply":15,"actor":"red","event":{"kind":"board_action","action":"f0i0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":15,"board_ply":16,"actor":"black","event":{"kind":"board_action","action":"f1e1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":16,"board_ply":17,"actor":"red","event":{"kind":"board_action","action":"i0f0","moving_id":1,"captured_id":null,"gave_check":true}},{"index":17,"board_ply":18,"actor":"black","event":{"kind":"board_action","action":"f9e9","moving_id":2,"captured_id":null,"gave_check":false}},{"index":18,"board_ply":19,"actor":"red","event":{"kind":"board_action","action":"f0f4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":19,"board_ply":20,"actor":"black","event":{"kind":"board_action","action":"e1e6","moving_id":3,"captured_id":null,"gave_check":false}},{"index":20,"board_ply":21,"actor":"red","event":{"kind":"board_action","action":"f4f9","moving_id":1,"captured_id":null,"gave_check":true}},{"index":21,"board_ply":22,"actor":"black","event":{"kind":"board_action","action":"e9e8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":22,"board_ply":23,"actor":"red","event":{"kind":"board_action","action":"f9f8","moving_id":1,"captured_id":null,"gave_check":true}},{"index":23,"board_ply":24,"actor":"black","event":{"kind":"board_action","action":"e8e7","moving_id":2,"captured_id":null,"gave_check":false}},{"index":24,"board_ply":25,"actor":"red","event":{"kind":"board_action","action":"f8f7","moving_id":1,"captured_id":null,"gave_check":true}},{"index":25,"board_ply":26,"actor":"black","event":{"kind":"board_action","action":"e7e8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":26,"board_ply":27,"actor":"red","event":{"kind":"board_action","action":"f7d7","moving_id":1,"captured_id":null,"gave_check":false}},{"index":27,"board_ply":28,"actor":"black","event":{"kind":"board_action","action":"e6e7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":28,"board_ply":29,"actor":"red","event":{"kind":"board_action","action":"d7d3","moving_id":1,"captured_id":null,"gave_check":false}},{"index":29,"board_ply":30,"actor":"black","event":{"kind":"board_action","action":"e7f7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":30,"board_ply":31,"actor":"red","event":{"kind":"board_action","action":"d3d8","moving_id":1,"captured_id":null,"gave_check":true}},{"index":31,"board_ply":32,"actor":"black","event":{"kind":"board_action","action":"e8e9","moving_id":2,"captured_id":null,"gave_check":false}},{"index":32,"board_ply":33,"actor":"red","event":{"kind":"board_action","action":"d8d5","moving_id":1,"captured_id":null,"gave_check":false}},{"index":33,"board_ply":34,"actor":"black","event":{"kind":"board_action","action":"f7g7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":34,"board_ply":35,"actor":"red","event":{"kind":"board_action","action":"d0d1","moving_id":0,"captured_id":null,"gave_check":false}},{"index":35,"board_ply":36,"actor":"black","event":{"kind":"board_action","action":"g7g5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":36,"board_ply":37,"actor":"red","event":{"kind":"board_action","action":"d5d4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":37,"board_ply":38,"actor":"black","event":{"kind":"board_action","action":"g5g9","moving_id":3,"captured_id":null,"gave_check":false}},{"index":38,"board_ply":39,"actor":"red","event":{"kind":"board_action","action":"d4e4","moving_id":1,"captured_id":null,"gave_check":true}},{"index":39,"board_ply":40,"actor":"black","event":{"kind":"board_action","action":"e9f9","moving_id":2,"captured_id":null,"gave_check":false}},{"index":40,"board_ply":41,"actor":"red","event":{"kind":"board_action","action":"e4e1","moving_id":1,"captured_id":null,"gave_check":false}},{"index":41,"board_ply":42,"actor":"black","event":{"kind":"board_action","action":"g9g5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":42,"board_ply":43,"actor":"red","event":{"kind":"board_action","action":"e1e4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":43,"board_ply":44,"actor":"black","event":{"kind":"board_action","action":"g5g6","moving_id":3,"captured_id":null,"gave_check":false}},{"index":44,"board_ply":45,"actor":"red","event":{"kind":"board_action","action":"e4e9","moving_id":1,"captured_id":null,"gave_check":true}},{"index":45,"board_ply":46,"actor":"black","event":{"kind":"board_action","action":"f9f8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":46,"board_ply":47,"actor":"red","event":{"kind":"board_action","action":"e9e1","moving_id":1,"captured_id":null,"gave_check":false}},{"index":47,"board_ply":48,"actor":"black","event":{"kind":"board_action","action":"g6g3","moving_id":3,"captured_id":null,"gave_check":false}},{"index":48,"board_ply":49,"actor":"red","event":{"kind":"board_action","action":"d1d0","moving_id":0,"captured_id":null,"gave_check":false}},{"index":49,"board_ply":50,"actor":"black","event":{"kind":"board_action","action":"g3g8","moving_id":3,"captured_id":null,"gave_check":false}},{"index":50,"board_ply":51,"actor":"red","event":{"kind":"board_action","action":"e1e9","moving_id":1,"captured_id":null,"gave_check":false}},{"index":51,"board_ply":52,"actor":"black","event":{"kind":"board_action","action":"g8g9","moving_id":3,"captured_id":null,"gave_check":false}},{"index":52,"board_ply":53,"actor":"red","event":{"kind":"board_action","action":"e9e8","moving_id":1,"captured_id":null,"gave_check":true}},{"index":53,"board_ply":54,"actor":"black","event":{"kind":"board_action","action":"f8f7","moving_id":2,"captured_id":null,"gave_check":false}},{"index":54,"board_ply":55,"actor":"red","event":{"kind":"board_action","action":"e8f8","moving_id":1,"captured_id":null,"gave_check":true}},{"index":55,"board_ply":56,"actor":"black","event":{"kind":"board_action","action":"f7e7","moving_id":2,"captured_id":null,"gave_check":false}},{"index":56,"board_ply":57,"actor":"red","event":{"kind":"board_action","action":"f8g8","moving_id":1,"captured_id":null,"gave_check":false}},{"index":57,"board_ply":58,"actor":"black","event":{"kind":"board_action","action":"g9a9","moving_id":3,"captured_id":null,"gave_check":false}},{"index":58,"board_ply":59,"actor":"red","event":{"kind":"board_action","action":"g8f8","moving_id":1,"captured_id":null,"gave_check":false}},{"index":59,"board_ply":60,"actor":"black","event":{"kind":"board_action","action":"a9a5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":60,"board_ply":61,"actor":"red","event":{"kind":"board_action","action":"f8f3","moving_id":1,"captured_id":null,"gave_check":false}},{"index":61,"board_ply":62,"actor":"black","event":{"kind":"board_action","action":"a5a8","moving_id":3,"captured_id":null,"gave_check":false}},{"index":62,"board_ply":63,"actor":"red","event":{"kind":"board_action","action":"f3h3","moving_id":1,"captured_id":null,"gave_check":false}},{"index":63,"board_ply":64,"actor":"black","event":{"kind":"board_action","action":"a8a1","moving_id":3,"captured_id":null,"gave_check":false}},{"index":64,"board_ply":65,"actor":"red","event":{"kind":"board_action","action":"h3h5","moving_id":1,"captured_id":null,"gave_check":false}},{"index":65,"board_ply":66,"actor":"black","event":{"kind":"board_action","action":"a1a9","moving_id":3,"captured_id":null,"gave_check":false}},{"index":66,"board_ply":67,"actor":"red","event":{"kind":"board_action","action":"h5h4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":67,"board_ply":68,"actor":"black","event":{"kind":"board_action","action":"a9a8","moving_id":3,"captured_id":null,"gave_check":false}},{"index":68,"board_ply":69,"actor":"red","event":{"kind":"board_action","action":"h4d4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":69,"board_ply":70,"actor":"black","event":{"kind":"board_action","action":"a8g8","moving_id":3,"captured_id":null,"gave_check":false}},{"index":70,"board_ply":71,"actor":"red","event":{"kind":"board_action","action":"d4g4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":71,"board_ply":72,"actor":"black","event":{"kind":"board_action","action":"g8h8","moving_id":3,"captured_id":null,"gave_check":false}},{"index":72,"board_ply":73,"actor":"red","event":{"kind":"board_action","action":"g4b4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":73,"board_ply":74,"actor":"black","event":{"kind":"board_action","action":"e7e8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":74,"board_ply":75,"actor":"red","event":{"kind":"board_action","action":"b4b0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":75,"board_ply":76,"actor":"black","event":{"kind":"board_action","action":"h8h7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":76,"board_ply":77,"actor":"red","event":{"kind":"board_action","action":"b0b4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":77,"board_ply":78,"actor":"black","event":{"kind":"board_action","action":"h7f7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":78,"board_ply":79,"actor":"red","event":{"kind":"board_action","action":"b4b0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":79,"board_ply":80,"actor":"black","event":{"kind":"board_action","action":"f7f2","moving_id":3,"captured_id":null,"gave_check":false}},{"index":80,"board_ply":81,"actor":"red","event":{"kind":"board_action","action":"b0c0","moving_id":1,"captured_id":null,"gave_check":false}},{"index":81,"board_ply":82,"actor":"black","event":{"kind":"board_action","action":"f2f7","moving_id":3,"captured_id":null,"gave_check":false}},{"index":82,"board_ply":83,"actor":"red","event":{"kind":"board_action","action":"c0c4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":83,"board_ply":84,"actor":"black","event":{"kind":"board_action","action":"f7f5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":84,"board_ply":85,"actor":"red","event":{"kind":"board_action","action":"c4d4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":85,"board_ply":86,"actor":"black","event":{"kind":"board_action","action":"f5e5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":86,"board_ply":87,"actor":"red","event":{"kind":"board_action","action":"d0d1","moving_id":0,"captured_id":null,"gave_check":false}},{"index":87,"board_ply":88,"actor":"black","event":{"kind":"board_action","action":"e5f5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":88,"board_ply":89,"actor":"red","event":{"kind":"board_action","action":"d4h4","moving_id":1,"captured_id":null,"gave_check":false}},{"index":89,"board_ply":90,"actor":"black","event":{"kind":"board_action","action":"f5i5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":90,"board_ply":91,"actor":"red","event":{"kind":"board_action","action":"d1d0","moving_id":0,"captured_id":null,"gave_check":false}},{"index":91,"board_ply":92,"actor":"black","event":{"kind":"board_action","action":"i5e5","moving_id":3,"captured_id":null,"gave_check":false}},{"index":92,"board_ply":93,"actor":"red","event":{"kind":"board_action","action":"d0d1","moving_id":0,"captured_id":null,"gave_check":false}},{"index":93,"board_ply":94,"actor":"black","event":{"kind":"board_action","action":"e5e0","moving_id":3,"captured_id":null,"gave_check":false}},{"index":94,"board_ply":95,"actor":"red","event":{"kind":"board_action","action":"h4h1","moving_id":1,"captured_id":null,"gave_check":false}},{"index":95,"board_ply":96,"actor":"black","event":{"kind":"board_action","action":"e8f8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":96,"board_ply":97,"actor":"red","event":{"kind":"board_action","action":"h1g1","moving_id":1,"captured_id":null,"gave_check":false}},{"index":97,"board_ply":98,"actor":"black","event":{"kind":"board_action","action":"f8e8","moving_id":2,"captured_id":null,"gave_check":false}},{"index":98,"board_ply":99,"actor":"red","event":{"kind":"board_action","action":"d1d2","moving_id":0,"captured_id":null,"gave_check":false}},{"index":99,"board_ply":100,"actor":"black","event":{"kind":"board_action","action":"e0a0","moving_id":3,"captured_id":null,"gave_check":false}}],"current_position":{"schema":"mshogi.xiangqi.position.v1","profile":"mshogi.xiangqi.wxf2018.v1","edition":"WXF-2018+XIANGQI-P1-2026-10-27","history":"starts_at_this_position","origin":"analysis_diagram","board":"9/4k4/9/9/9/9/9/3K5/6R2/r8","side":"red","no_capture_plies":100,"fullmove_number":51},"conclusion":null,"pending":null,"no_win_assessment":{"kind":"unknown_exact_unavailable"}}
+  },
+  "analysis": null,
+  "observations": [],
+  "search_observations": [],
+  "score_meaning": "Native Red/Black root-side hundredths of soldier. Terminal distances count command edges; heuristic evaluation and existential win witnesses never establish a forced win. Ordinary analysis uses sound_fast_only; Unknown is unscored evidence, not proof of win capability.",
+  "chess": null
+}

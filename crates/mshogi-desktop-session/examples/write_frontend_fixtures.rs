@@ -341,6 +341,24 @@ fn write_shared_fixtures(directory: &std::path::Path) {
         serde_json::to_string_pretty(&inspection).unwrap() + "\n",
     )
     .unwrap();
+    #[cfg(feature = "desktop-verification")]
+    for name in [
+        "xiangqi-warning",
+        "xiangqi-fourth",
+        "xiangqi-count",
+        "xiangqi-offer",
+        "xiangqi-agreed",
+        "xiangqi-resigned",
+        "xiangqi-fast-proof",
+    ] {
+        let mut fixture =
+            DesktopController::verification("/unused/fixture-engine".into(), name).unwrap();
+        std::fs::write(
+            directory.join(format!("shared-{name}.json")),
+            serde_json::to_string_pretty(&fixture.shared_snapshot()).unwrap() + "\n",
+        )
+        .unwrap();
+    }
     // Real native capture/recapture ledger, not fabricated frontend event labels.
     let mut game = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
     for action in ["b2b9", "a9b9"] {

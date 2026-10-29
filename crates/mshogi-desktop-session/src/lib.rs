@@ -826,7 +826,7 @@ impl DesktopController {
         let mut controller = Self::new(engine_path).map_err(|error| error.to_string())?;
         controller.session = match fixture {
             "standard" | "shared-contract" => DesktopSession::new(),
-            fixture if fixture.starts_with("shogi-") => DesktopSession::new(),
+            fixture if fixture.starts_with("shogi-") || fixture.starts_with("xiangqi-") => DesktopSession::new(),
             "capacity" => DesktopSession::verification_capacity()?,
             "promotion" => {
                 let game = AdjudicatedGame::from_fen("7k/P7/8/8/8/8/8/7K w - - 0 1", ClaimPolicy::ExplicitOnly).map_err(|error| error.to_string())?;
@@ -851,6 +851,9 @@ impl DesktopController {
         };
         if fixture.starts_with("shogi-") {
             controller.verification_shogi(fixture)?;
+        }
+        if fixture.starts_with("xiangqi-") {
+            controller.verification_xiangqi(fixture)?;
         }
         if fixture == "shared-contract" {
             use mshogi_core::{

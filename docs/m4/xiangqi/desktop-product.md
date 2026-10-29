@@ -1,3 +1,6 @@
+> Current MSH-102 implementation: [analysis, outcomes and document journeys](desktop-journeys.md).
+> The MSH-101 checkpoint/deferral statements below are preserved historical evidence.
+
 # Xiangqi desktop product — MSH-101
 
 Owner direction,2026-10-28; visual approval and completion continuation,2026-10-29. The selected native profile remains

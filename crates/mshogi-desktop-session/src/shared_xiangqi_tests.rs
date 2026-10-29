@@ -246,6 +246,17 @@ fn native_claim_audit_and_nonmoving_resignation_preserve_board_ply_and_atomicity
     )
     .unwrap();
     assert_eq!((claim.event_index, claim.board_ply), (2, 0));
+    assert_eq!(
+        claim
+            .events
+            .iter()
+            .map(|e| e.label.as_str())
+            .collect::<Vec<_>>(),
+        [
+            "Red: natural-count claim submitted",
+            "Red: natural-count claim rejected"
+        ]
+    );
     assert!(!claim.status.concluded);
     assert_eq!(claim.status.score_half_points, None);
     let moved = human_play(&mut c, "a3a4");
@@ -255,6 +266,8 @@ fn native_claim_audit_and_nonmoving_resignation_preserve_board_ply_and_atomicity
     // Black has the move. Red may still resign, through native terminal admission.
     let ended = send(&mut c, SessionOperation::Resign {}).unwrap();
     assert_eq!((ended.event_index, ended.board_ply), (5, 1));
+    assert_eq!(ended.events[3].label, "Red: resigned");
+    assert_eq!(ended.events[4].label, "Black wins · resignation");
     assert!(ended.status.concluded);
     assert_eq!(ended.status.score_half_points, Some([0, 2]));
     assert!(!accept(&mut c, execute(&old)));
@@ -399,6 +412,12 @@ fn all_event_prefixes_remain_read_only_with_no_future_warning_or_result_inferenc
     let mut c = controller();
     replace(&mut c, &game, x::Side::Red);
     let warning = send(&mut c, SessionOperation::Inspect { event_index: 9 }).unwrap();
+    assert_eq!(warning.events[0].label, "Red: e9–f9 · check");
+    assert_eq!(
+        warning.events[8].label,
+        "Red: repetition warning · perpetual check"
+    );
+    let canonical = native(&c);
     assert_eq!(warning.xiangqi.as_ref().unwrap().warnings.len(), 1);
     let partial = send(&mut c, SessionOperation::Inspect { event_index: 8 }).unwrap();
     assert_eq!(partial.board_ply, 8);
@@ -413,6 +432,12 @@ fn all_event_prefixes_remain_read_only_with_no_future_warning_or_result_inferenc
     );
     assert!(provenance.selected_canonical.is_none());
     assert_eq!(provenance.selected_events.len(), 8);
+    assert_eq!(
+        native(&c),
+        canonical,
+        "display labels must not rewrite the live ledger"
+    );
+    assert_eq!(provenance.selected_events, game.events()[..8]);
     assert!(
         provenance.count_advice.is_empty(),
         "partial command cannot imply canonical claim eligibility"

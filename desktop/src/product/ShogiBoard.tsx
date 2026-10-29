@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
 import type { BoardChoice, NativePiece } from "../Board";
 import type { ChessShogiSnapshot as GameSnapshot, Side } from "./native";
-import type { InspectMovement, MovementInspection } from "./movementInspection";
+import { inspectionStatus, type InspectMovement, type MovementInspection } from "./movementInspection";
 import { GameArea, GamePositionStatus, PlayerArea } from "./ApplicationShell";
 import "../movement-inspection.css";
 
@@ -158,7 +158,7 @@ export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDi
       }}><strong>Promotion</strong><p>Choose how this piece completes its move.</p><div>{completions.map((c) => <button key={c.action} className="primary" onClick={() => commit(c)}>{c.completion?.label ?? "Complete move"}</button>)}</div><button className="quiet" onClick={cancel}>Cancel promotion</button></div>}
     </div>;
   const footer = <>
-    <div className={`shogi-board-help${inspection || inspectionPending ? " movement-inspection-status" : ""}`}><span>{inspection ? `Inspecting ${inspection.label} · Read-only · ${inspection.choices.length ? "Hollow rings show movement choices" : "No native movement choices"}` : inspectionPending ? "Loading read-only movement inspection…" : "Select a piece or hand piece, then a marked square."}</span><span>Arrows · Enter · Esc</span></div>
+    <div className={`shogi-board-help${inspection || inspectionPending ? " movement-inspection-status" : ""}`}><span>{inspection ? inspectionStatus(inspection.label) : inspectionPending ? "Loading read-only movement inspection…" : "Select a piece or hand piece, then a marked square."}</span><span>Arrows · Enter · Esc</span></div>
     <GamePositionStatus historical={snapshot.historical} concluded={snapshot.status.concluded}
       paused={snapshot.paused} humanTurn={snapshot.turn.key === snapshot.human.key}
       thinking={snapshot.phase === "thinking" && snapshot.execution_purpose === "engine_turn"} ply={snapshot.board_ply} />

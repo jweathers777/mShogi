@@ -14,7 +14,7 @@ cargo run --locked -p mshogi-desktop-session --example write_frontend_fixtures -
 Only frontend tests import these JSON files. Vite production imports do not
 reference them, and the native fixture generator is never a bundled sidecar.
 
-The Xiangqi standard snapshot and read-only Black-cannon inspection are generated
+The Xiangqi standard snapshot, native capture/recapture played ledger and read-only Black-cannon inspection are generated
 by the same authoritative shared controller (`xiangqi::Game::standard`), including
 the native flat Xiangqi settings encoding,90 intersections and complete choices.
 They are interaction/serialization inputs, not a second rules oracle. The frozen

@@ -341,6 +341,35 @@ fn write_shared_fixtures(directory: &std::path::Path) {
         serde_json::to_string_pretty(&inspection).unwrap() + "\n",
     )
     .unwrap();
+    // Real native capture/recapture ledger, not fabricated frontend event labels.
+    let mut game = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
+    for action in ["b2b9", "a9b9"] {
+        game.submit(x::GameRequest {
+            expected: game.context(),
+            actor: game.position().side_to_move(),
+            command: x::GameCommand::Play {
+                action: action.parse().unwrap(),
+            },
+        })
+        .unwrap();
+    }
+    let snapshot = shared_command(
+        &mut controller,
+        SharedDesktopCommand {
+            expected: snapshot.token,
+            game: GameKind::Xiangqi,
+            operation: SessionOperation::Replace {
+                record: CanonicalRecord::xiangqi(x::GameRecord::from_game(&game).unwrap()),
+                human: NativeSide::Xiangqi(x::Side::Red),
+            },
+        },
+    )
+    .unwrap();
+    std::fs::write(
+        directory.join("shared-xiangqi-played.json"),
+        serde_json::to_string_pretty(&snapshot).unwrap() + "\n",
+    )
+    .unwrap();
 }
 
 fn shared_command(

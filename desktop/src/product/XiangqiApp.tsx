@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { XiangqiBoard } from "./XiangqiBoard";
 import { ApplicationShell, DocumentState, HistoricalNotice, LiveGameHeading } from "./ApplicationShell";
-import { NativeAnalysis, NativeHistory, NativeRecovery, useNativeWorkCommand } from "./NativeSessionPanels";
+import { NativeAnalysis, NativeHistory, NativeRecovery, nativeCapacityReached, useNativeCapacityError, useNativeWorkCommand } from "./NativeSessionPanels";
 import { Dialog } from "./Dialog";
 import { useMovementInspection } from "./useMovementInspection";
 import type { XiangqiSnapshot as GameSnapshot, Operation } from "./native";
@@ -24,7 +24,8 @@ export function XiangqiApp({ snapshot, session, onNewGame, onOpen, blocked }: {
   const onInspect = useMovementInspection({ token: snapshot.token, game: snapshot.game });
   const busy = session.busy || snapshot.capacity.status === "checking" || ["saving", "opening"].includes(snapshot.io.phase);
   const disabled = busy || blocked;
-  const capacity = snapshot.capacity.status === "paused";
+  const capacityError = useNativeCapacityError(snapshot, session.error);
+  const capacity = nativeCapacityReached(snapshot, capacityError);
   const [confirmation, setConfirmation] = useState<{ source: GameSnapshot; kind: Terminal } | null>(null);
   const { statusRef, command } = useNativeWorkCommand(snapshot, session);
   const thinking = snapshot.phase === "thinking" && snapshot.execution_purpose === "engine_turn";
@@ -48,12 +49,12 @@ export function XiangqiApp({ snapshot, session, onNewGame, onOpen, blocked }: {
     positionNotice={snapshot.historical && <HistoricalNotice action={<button disabled={disabled} onClick={() => { void command({ kind: "return_live" }); }}>Return to live</button>}><p>Viewing event {snapshot.event_index} · the live game is unchanged</p></HistoricalNotice>}
     board={<XiangqiBoard snapshot={snapshot} disabled={disabled || capacity || !snapshot.capabilities.board_action || confirmation !== null}
       inspectionDisabled={disabled || confirmation !== null} onInspect={onInspect} onPlay={(action) => { void command({ kind: "xiangqi", command: { kind: "play", action } }); }} />}
-    notices={<><NativeRecovery snapshot={snapshot} error={session.error} disabled={disabled} command={command} pending={facts.pending !== null} />
+    notices={<><NativeRecovery snapshot={snapshot} error={session.error} capacityError={capacityError} disabled={disabled} command={command} pending={facts.pending !== null} />
       {facts.pending && <section className="shogi-notice" role="status"><h3>Adjudication unresolved</h3><p>Play is stopped. This game is unscored; no win, loss or draw has been established.</p></section>}
-      {warning.length > 0 && <section className="shogi-notice" role="status"><h3>Repetition warning</h3>{warning.map((w) => <p key={w.event_index}>{sideName(w.side)} must vary {w.fault === "perpetual_check" ? "perpetual check" : "perpetual chase"}. Continuing the prohibited repetition can lose the game.</p>)}</section>}
+      {!snapshot.status.concluded && warning.length > 0 && <section className="shogi-notice" role="status"><h3>Repetition warning</h3>{warning.map((w) => <p key={w.event_index}>{sideName(w.side)} must vary {w.fault === "perpetual_check" ? "perpetual check" : "perpetual chase"}. Continuing the prohibited repetition can lose the game.</p>)}</section>}
       {facts.offered_by !== null && !snapshot.status.concluded && <section className="shogi-notice" role="status"><h3>Draw offered by {sideName(facts.offered_by)}</h3><p>The offer has not concluded the game.</p></section>}
     </>}
-    analysis={<NativeAnalysis snapshot={snapshot} defaults={snapshot.document.settings.analysis_defaults} disabled={disabled} command={command} maxDepth={3} maxNodes={512} minNodes={1}
+    analysis={<NativeAnalysis snapshot={snapshot} defaults={snapshot.document.settings.analysis_defaults} disabled={disabled || capacity} command={command} maxDepth={3} maxNodes={512} minNodes={1}
       unavailable={nativePrefixIncomplete ? "Analysis is unavailable inside a recorded command. Select a completed event or return to live." : undefined} />}
     history={<NativeHistory snapshot={snapshot} disabled={disabled} command={command} />}
     gameActions={<section className="shogi-game-actions">

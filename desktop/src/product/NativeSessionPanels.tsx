@@ -4,6 +4,19 @@ import type { GameSnapshot, Operation, SearchView } from "./native";
 import type { GameSession } from "./useGameSession";
 
 // Shared interaction language only. Scores, targets, choices and admission stay native.
+export function nativeCapacityReached(snapshot: GameSnapshot, error: string) {
+  return snapshot.capacity.status === "paused" || /application capacity/i.test(error);
+}
+// Retained observations never shrink in one document. Remember that native
+// structural refusal across Save; a fresh Open/New document gets a fresh key.
+export function useNativeCapacityError(snapshot: GameSnapshot, error: string) {
+  const [retained, setRetained] = useState<{ document: number; error: string } | null>(null);
+  useEffect(() => {
+    if (/application capacity:.*(?:retained observations|observation retention)/i.test(error))
+      setRetained({ document: snapshot.token.document, error });
+  }, [snapshot.token.document, error]);
+  return /application capacity/i.test(error) ? error : retained?.document === snapshot.token.document ? retained.error : "";
+}
 export function publicSessionError(message: string) {
   if (/capacity|limit/i.test(message)) return "An application limit was reached. Your current game is retained. Save it before starting another game.";
   if (/stale|changed|superseded/i.test(message)) return "The game changed. Review the current position and try the action again.";
@@ -35,9 +48,9 @@ export function useNativeWorkCommand(snapshot: GameSnapshot, session: GameSessio
 export function NativeHistory({ snapshot, disabled, command }: { snapshot: GameSnapshot; disabled: boolean; command: (op: Operation) => unknown }) {
   return <section className="shogi-history" data-current-event={snapshot.event_index} aria-label="Game history"><div className="shogi-section-heading"><h2>Game history</h2><span>{snapshot.events.length} {snapshot.events.length === 1 ? "event" : "events"}</span></div><ol>{[{ index: 0, label: "Starting position" }, ...snapshot.events].map((event) => <li key={event.index}><button data-event={event.index} aria-current={snapshot.event_index === event.index ? "step" : undefined} disabled={disabled} onClick={() => { void command({ kind: "inspect", event_index: event.index }); }}><span className="event-number">{event.index}</span><span>{event.label}</span></button></li>)}</ol></section>;
 }
-export function NativeRecovery({ snapshot, error, disabled, command, pending = false }: { snapshot: GameSnapshot; error: string; disabled: boolean; command: (op: Operation) => unknown; pending?: boolean }) {
-  const capacity = snapshot.capacity.status === "paused", message = snapshot.capacity.message ?? "";
-  const explanation = /256/.test(message) ? "This game has reached the limit of 256 recorded engine observations."
+export function NativeRecovery({ snapshot, error, disabled, command, pending = false, capacityError = "" }: { snapshot: GameSnapshot; error: string; disabled: boolean; command: (op: Operation) => unknown; pending?: boolean; capacityError?: string }) {
+  const capacity = nativeCapacityReached(snapshot, capacityError || error), message = snapshot.capacity.message ?? (capacityError || error);
+  const explanation = /256|retained observations|observation retention/i.test(message) ? "This game has reached the limit of 256 recorded engine observations."
     : /16MiB/.test(message) ? "This game's complete record has reached the 16 MiB storage limit."
     : /replay/.test(message) ? "This game has reached the application's recorded-history work limit."
     : /8192/.test(message) ? "This game has reached the recorded-operation limit." : "This session has reached an application resource limit.";
@@ -45,7 +58,7 @@ export function NativeRecovery({ snapshot, error, disabled, command, pending = f
   const thinking = snapshot.phase === "thinking" && snapshot.execution_purpose === "engine_turn";
   const failure = error || (snapshot.io.phase === "failed" ? snapshot.io.message ?? "File operation failed" : "");
   return <>
-    {failure && <section className="shogi-notice error" role="alert"><strong>{publicSessionError(failure)}</strong></section>}
+    {failure && !(capacity && /application capacity/i.test(failure)) && <section className="shogi-notice error" role="alert"><strong>{publicSessionError(failure)}</strong></section>}
     {capacity && <section className="shogi-notice capacity-notice" role="alert"><h3>Application limit reached</h3><p>{explanation} Save the complete current game, then start a new game. Saving and reopening does not reset this limit.</p></section>}
     {["failed", "incomplete", "cancelled"].includes(snapshot.phase) && !capacity && <section className="shogi-notice" role="status"><h3>{snapshot.phase === "failed" ? "Engine connection failed" : snapshot.phase === "incomplete" ? "Search incomplete" : "Search stopped"}</h3><p>{snapshot.phase === "failed" ? "The current game is intact. No game result is implied." : `No uncompleted move or ${snapshot.game === "xiangqi" ? "claim" : "declaration"} was played.`}</p>{!snapshot.historical && !snapshot.status.concluded && !pending && snapshot.turn.key !== snapshot.human.key && <button disabled={disabled} onClick={() => { void command({ kind: "retry" }); }}>Retry engine turn</button>}</section>}
     {snapshot.paused && !snapshot.historical && !snapshot.status.concluded && !analyzing && !capacity && !pending && <section className="shogi-resume play-paused"><p>Play is paused.</p><button className="primary" disabled={disabled} onClick={() => { void command({ kind: "resume" }); }}>Resume play</button></section>}

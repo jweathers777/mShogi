@@ -1,14 +1,20 @@
 # Xiangqi native/shared delivery handoff
 
-## Product board checkpoint in progress (MSH-101)
+## Current product play adaptation (MSH-101, 2026-10-29)
 
-The [Xiangqi product design](desktop-product.md) applies the owner's approved
-board/disc direction inside the accepted common dark shell. MSH-101 is active
-only through its mandatory early actual packaged visual checkpoint; it remains
-unfinished pending explicit owner review. Native product New Game/play and
-inspection are being exercised, with full document/history/analysis/outcome
-journeys still MSH-102 ownership. No complete Xiangqi delivery or M4 closure is
-claimed. MSH-102/103/106 are unstarted. Earlier snapshots remain below.
+The [Xiangqi product design](desktop-product.md) implements native untimed
+human/engine play, intersection/disc presentation and native read-only movement
+inspection inside the accepted common dark shell. The owner explicitly approved
+the early actual packaged board/piece/marker/sizing/shell checkpoint. Native
+readable history labels and the shared `Inspecting {side} {piece} · Esc clears`
+wording complete its bounded presentation refinement. See [completion evidence](../evidence/msh101/completion-2026-10-29/README.md)
+for exact tested source, actual GUI, independent review and CI outcomes.
+
+MSH-102 remains unstarted and owns full analysis/outcomes/recovery/document/
+history/Return to live/Resume journeys; product Xiangqi Open remains gated.
+MSH-45/M4 remain open and MSH-103/106 are not started. Earlier handoffs below
+are historical records; their then-current product gates are superseded only by
+this bounded adaptation, not a claim of complete Xiangqi delivery.
 
 ## Aggregate shared contract (MSH-76, preserved snapshot)
 

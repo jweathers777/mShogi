@@ -1,0 +1,146 @@
+[
+  {
+    "file": "chess-inspection-normal.jpg",
+    "sha256": "ec133f6b3c9cca592b04e9ddd5030761301675293f55385e9f327044f997a280",
+    "raw_pixels": [
+      2360,
+      1640
+    ],
+    "logical_frame": [
+      1180,
+      820
+    ],
+    "bytes": 332032,
+    "source": "be3055a1bc8d4b0d0fdf11f8509b97076d13fa43",
+    "variant": "normal packaged macOS product; no config override or instrumentation",
+    "file_modified_utc": "2026-10-29T07:22:59.108029+00:00"
+  },
+  {
+    "file": "shogi-inspection-normal.jpg",
+    "sha256": "c39875c304f44b5d13cc168b344d84d1a715cb21b3257395c9df64037fc26dfe",
+    "raw_pixels": [
+      2360,
+      1640
+    ],
+    "logical_frame": [
+      1180,
+      820
+    ],
+    "bytes": 359434,
+    "source": "be3055a1bc8d4b0d0fdf11f8509b97076d13fa43",
+    "variant": "normal packaged macOS product; no config override or instrumentation",
+    "file_modified_utc": "2026-10-29T07:23:03.831557+00:00"
+  },
+  {
+    "file": "xiangqi-black-human-normal.jpg",
+    "sha256": "6054d632512d022701036dec63acdb927129a45bae1ac8a224bfd9380ae89405",
+    "raw_pixels": [
+      2360,
+      1640
+    ],
+    "logical_frame": [
+      1180,
+      820
+    ],
+    "bytes": 367240,
+    "source": "be3055a1bc8d4b0d0fdf11f8509b97076d13fa43",
+    "variant": "normal packaged macOS product; no config override or instrumentation",
+    "file_modified_utc": "2026-10-29T07:23:40.024199+00:00"
+  },
+  {
+    "file": "xiangqi-black-human-play-normal.jpg",
+    "sha256": "0a1bc80df57d8fe8b000aa2ebbfe4439395c2875c5a107491e071277ede088c8",
+    "raw_pixels": [
+      2360,
+      1640
+    ],
+    "logical_frame": [
+      1180,
+      820
+    ],
+    "bytes": 369487,
+    "source": "be3055a1bc8d4b0d0fdf11f8509b97076d13fa43",
+    "variant": "normal packaged macOS product; no config override or instrumentation",
+    "file_modified_utc": "2026-10-29T07:23:52.980176+00:00"
+  },
+  {
+    "file": "xiangqi-flipped-play-normal.jpg",
+    "sha256": "e65edd70b07df198ec9d16d4cc1cc7fd09c558655772a103febf5632d8d2e069",
+    "raw_pixels": [
+      2360,
+      1640
+    ],
+    "logical_frame": [
+      1180,
+      820
+    ],
+    "bytes": 367923,
+    "source": "be3055a1bc8d4b0d0fdf11f8509b97076d13fa43",
+    "variant": "normal packaged macOS product; no config override or instrumentation",
+    "file_modified_utc": "2026-10-29T07:23:35.921976+00:00"
+  },
+  {
+    "file": "xiangqi-inspection-normal.jpg",
+    "sha256": "18e565418b31dd13f17a61109e80d83ede7e1fd44615d021d60508dac8349a59",
+    "raw_pixels": [
+      2360,
+      1640
+    ],
+    "logical_frame": [
+      1180,
+      820
+    ],
+    "bytes": 373718,
+    "source": "be3055a1bc8d4b0d0fdf11f8509b97076d13fa43",
+    "variant": "normal packaged macOS product; no config override or instrumentation",
+    "file_modified_utc": "2026-10-29T07:23:09.248155+00:00"
+  },
+  {
+    "file": "xiangqi-keyboard-play-normal.jpg",
+    "sha256": "f7199987718d00d834740f274910aa8797872d7ba15b597be11a7512da955d0b",
+    "raw_pixels": [
+      2360,
+      1640
+    ],
+    "logical_frame": [
+      1180,
+      820
+    ],
+    "bytes": 370031,
+    "source": "be3055a1bc8d4b0d0fdf11f8509b97076d13fa43",
+    "variant": "normal packaged macOS product; no config override or instrumentation",
+    "file_modified_utc": "2026-10-29T07:23:35.000935+00:00"
+  },
+  {
+    "file": "xiangqi-played-history-normal.jpg",
+    "sha256": "3bfc002f5310cba404584d4d3179f6e30c8cddffacb50315c8dedd78d9320af4",
+    "raw_pixels": [
+      2360,
+      1640
+    ],
+    "logical_frame": [
+      1180,
+      820
+    ],
+    "bytes": 366655,
+    "source": "be3055a1bc8d4b0d0fdf11f8509b97076d13fa43",
+    "variant": "normal packaged macOS product; no config override or instrumentation",
+    "file_modified_utc": "2026-10-29T07:23:21.473221+00:00"
+  },
+  {
+    "file": "xiangqi-selection-normal.jpg",
+    "sha256": "cfb00250746a20998161a9c288862470d06c7838651d3c1a379937bc56ccfca7",
+    "raw_pixels": [
+      2360,
+      1640
+    ],
+    "logical_frame": [
+      1180,
+      820
+    ],
+    "bytes": 364935,
+    "source": "be3055a1bc8d4b0d0fdf11f8509b97076d13fa43",
+    "variant": "normal packaged macOS product; no config override or instrumentation",
+    "file_modified_utc": "2026-10-29T07:23:20.639627+00:00"
+  }
+]

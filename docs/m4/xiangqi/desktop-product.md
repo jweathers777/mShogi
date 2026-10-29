@@ -1,6 +1,6 @@
 # Xiangqi desktop product — MSH-101
 
-Owner direction,2026-10-28. The selected native profile remains
+Owner direction,2026-10-28; visual approval and completion continuation,2026-10-29. The selected native profile remains
 `mshogi.xiangqi.wxf2018.v1`. Existing MSH-74 Chess/Shogi ApplicationShell,
 GameArea, common dark theme and stable controls are the product authority.
 The owner's board/piece direction does not approve an alternative application
@@ -104,3 +104,11 @@ unscored adjudication and native conclusions. Labels never replace the canonical
 record, exact event/board-ply indices or native action/diagnostic payloads. No
 replay, exact proof or frontend rules inference is needed to format them.
 Full interactive history/outcome/document journeys remain MSH-102.
+
+Completion source `be3055a1bc8d4b0d0fdf11f8509b97076d13fa43` is integrated on
+`codex/rewrite`; verifier-only follow-up `1c8a1682db5b98e765eb755b7978537c20a2ddd2`
+has passing native/desktop CI on all three systems. The [completion evidence](../evidence/msh101/completion-2026-10-29/README.md)
+records actual normal macOS played/inspection captures, independent review,
+resolved Debug labels, preserved initial CI failures and reused sizing provenance.
+MSH-101 is complete; MSH-102 remains unstarted and owns the explicitly deferred
+full journeys. This does not close MSH-45 or M4.

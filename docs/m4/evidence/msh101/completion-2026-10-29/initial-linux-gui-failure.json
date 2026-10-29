@@ -1,0 +1,10 @@
+{
+  "source": "be3055a1bc8d4b0d0fdf11f8509b97076d13fa43",
+  "run_url": "https://github.com/jweathers777/mShogi/actions/runs/40834914598",
+  "failed_linux_job": "https://github.com/jweathers777/mShogi/actions/runs/40834914598/job/123317331840",
+  "failed_step": "Interact with actual installed and packaged Chess and Shogi on Linux",
+  "artifact_url": "https://github.com/jweathers777/mShogi/actions/runs/40834914598/artifacts/12880193286",
+  "observed_final_assertion": "Required GUI phases failed: normal: ; normal-shogi: ; normal-shogi-reopened: Timed out: fresh normal Chess launch dispatches shogi archive; last observation: False",
+  "diagnosis": "External inspect_piece assertion still required read only in ordinary visible movement status. Owner-approved copy intentionally removes this. First two journeys abort at that assertion; missing saved input explains the later reopen timeout. This is not a rules or MSH-111 driver-reset change.",
+  "correction": "1c8a1682db5b98e765eb755b7978537c20a2ddd2 changes external gui-smoke.py/test_gui_smoke.py plus task evidence only; no product source changes. Exact visible copy now checked while all native context/aria/marker/Escape nonmutation checks remain. Root and independent reviewer24driver unit tests passed. Fresh actual CI required."
+}

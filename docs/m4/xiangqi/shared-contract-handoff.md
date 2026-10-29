@@ -1,5 +1,13 @@
 # MSH-76: aggregate shared Xiangqi handoff
 
+Current product adaptation (2026-10-29): [MSH-101](desktop-product.md) supplies
+its real Xiangqi product union/intersection renderer, native New Game/play and
+movement inspection in the accepted shell. The owner-approved checkpoint and
+[completion evidence](../evidence/msh101/completion-2026-10-29/README.md) supersede
+the then-closed frontend gate described in this historical MSH-76 handoff.
+Product Open and full analysis/outcome/document/history journeys remain MSH-102.
+No shared native semantic contract is reopened by presentation work.
+
 The existing MSH-84/95/98/99 production contracts form one coherent native
 consumer path. No production change or additional rules, engine, archive or
 board abstraction is required by this reconciliation. MSH-76 adds two combined

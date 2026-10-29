@@ -1,7 +1,8 @@
 # MSH-98: native Xiangqi session and semantic presentation
 
-Current product adaptation: [MSH-101](desktop-product.md) is implementing its
-early visual checkpoint through this native contract. Its New Game/play and
+Current product adaptation (2026-10-29): [MSH-101](desktop-product.md) implements
+untimed human/engine play through this native contract; its actual visual checkpoint
+has explicit owner approval. Its New Game/play and
 inspection adapter supersedes the initial product gate described below; full
 Xiangqi product Open remains gated for MSH-102. The following MSH-98 delivery
 description preserves the original native boundary and its evidence.

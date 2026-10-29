@@ -1,0 +1,37 @@
+
+> mshogi-desktop@0.1.0 test
+> vitest run src/product/Capacity103.review.test.tsx
+
+
+ RUN  v5.0.5 /Users/johnweathers/Development/Personal/mShogi/desktop
+
+stdout | src/product/Capacity103.review.test.tsx > control-only refusal must not invent 256 observations
+ACTUAL CONTROL-ONLY EXPLANATION: Application limit reachedThis game has reached the limit of 256 recorded engine observations. Save the complete current game, then start a new game. Saving and reopening does not reset this limit.
+
+ ❯ src/product/Capacity103.review.test.tsx (1 test | 1 failed) 76ms
+   × control-only refusal must not invent 256 observations 75ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/product/Capacity103.review.test.tsx > control-only refusal must not invent 256 observations
+AssertionError: expected 'Application limit reachedThis game ha…' not to contain '256 recorded engine observations'
+
+Expected: "256 recorded engine observations"
+Received: "Application limit reachedThis game has reached the limit of 256 recorded engine observations. Save the complete current game, then start a new game. Saving and reopening does not reset this limit."
+
+ ❯ src/product/Capacity103.review.test.tsx:14:19
+     12|  const text = screen.getByRole("alert").textContent!;
+     13|  console.log("ACTUAL CONTROL-ONLY EXPLANATION:", text);
+     14|  expect(text).not.toContain("256 recorded engine observations");
+       |                   ^
+     15| });
+     16|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  21:22:37
+   Duration  689ms (environment 69%, import 14%, tests 13%, transform 4%)
+

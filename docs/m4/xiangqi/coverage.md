@@ -1,3 +1,10 @@
+> Current delivery review — MSH-103 (2026-10-29): see the
+> [complete-delivery acceptance matrix](delivery-review.md) for current source,
+> independent review, executed checks and platform-qualified product evidence.
+> MSH-103 remains In Review for the capacity-message correction MSH-114.
+> MSH-113 adds native Take back and retained-history Save/Open. MSH-45/M4 remain
+> open; MSH-106 is unstarted. Task-time gates below are historical evidence.
+
 # Selected Xiangqi profile coverage and implementation gates
 
 Current profile: **`mshogi.xiangqi.wxf2018.v1`**, selected XIANGQI-P1 on

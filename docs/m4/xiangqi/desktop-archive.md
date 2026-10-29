@@ -1,3 +1,10 @@
+> Current delivery review — MSH-103 (2026-10-29): see the
+> [complete-delivery acceptance matrix](delivery-review.md) for current source,
+> independent review, executed checks and platform-qualified product evidence.
+> MSH-103 remains In Review for the capacity-message correction MSH-114.
+> MSH-113 adds native Take back and retained-history Save/Open. MSH-45/M4 remain
+> open; MSH-106 is unstarted. Task-time gates below are historical evidence.
+
 > Current desktop adaptation — MSH-102 (2026-10-29):
 > [analysis, outcomes, recovery and document journeys](desktop-journeys.md) now
 > use this native contract in the normal product, including strict Xiangqi Open,
@@ -14,6 +21,17 @@ This is lossless native document persistence and admission, not the Xiangqi
 product UI. MSH-76/101/102 retain shared reconciliation, visual play and complete
 product journeys. MSH-111 owns the recorded Linux WebDriver proxy failures;
 native archive tests do not relabel those campaigns successful.
+
+## Current compatibility after MSH-113
+
+Xiangqi remains desktop schema2 with its complete journal. TakeBack controls
+restore only native committed command prefixes and retain abandoned observations
+as historical evidence; their reconstruction is charged before admission. Chess
+continues writing schema1 until Take back requires schema3 retained match
+checkpoints; shared reads retain the established1/2/3 compatibility. Shogi stays
+schema2. See [MSH-113 contract/evidence](../../desktop/evidence/msh113/README.md).
+The following Version section preserves the MSH-99 baseline rather than claiming
+Chess still always writes schema1 after MSH-113.
 
 ## Version and authority
 

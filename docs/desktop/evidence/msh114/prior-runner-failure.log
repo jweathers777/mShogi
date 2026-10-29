@@ -1,0 +1,12 @@
+Rust (ubuntu-24.04)	UNKNOWN STEP	2026-10-29T20:34:57.2770548Z ---- process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored stdout ----
+Rust (ubuntu-24.04)	UNKNOWN STEP	2026-10-29T20:34:57.2771144Z
+Rust (ubuntu-24.04)	UNKNOWN STEP	2026-10-29T20:34:57.2771911Z thread 'process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored' (6438) panicked at crates/mshogi-runner/tests/runner.rs:172:9:
+Rust (ubuntu-24.04)	UNKNOWN STEP	2026-10-29T20:34:57.2773895Z assertion `left == right` failed: exit: RunnerFailure { kind: MissingResponse, engine: 0, phase: "handshake", at_ns: 1595773, watchdog_ms: Some(100), deadline_ns: None, detail: "Broken pipe (os error 32)", exit: None, last_output: None }
+Rust (ubuntu-24.04)	UNKNOWN STEP	2026-10-29T20:34:57.2777387Z   left: MissingResponse
+Rust (ubuntu-24.04)	UNKNOWN STEP	2026-10-29T20:34:57.2777768Z  right: UnexpectedExit
+Rust (ubuntu-24.04)	UNKNOWN STEP	2026-10-29T20:34:57.2778341Z note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+Rust (ubuntu-24.04)	UNKNOWN STEP	2026-10-29T20:34:57.2778858Z
+Rust (ubuntu-24.04)	UNKNOWN STEP	2026-10-29T20:34:57.2779599Z
+Rust (ubuntu-24.04)	UNKNOWN STEP	2026-10-29T20:34:57.2779772Z failures:
+Rust (ubuntu-24.04)	UNKNOWN STEP	2026-10-29T20:34:57.2780311Z     process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored
+Rust (ubuntu-24.04)	UNKNOWN STEP	2026-10-29T20:34:57.2780838Z

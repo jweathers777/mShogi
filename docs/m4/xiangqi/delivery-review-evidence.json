@@ -140,5 +140,12 @@
     "MSH-47 M4 closure"
   ],
   "integration_commit": "afd20981a04e88833f214010689cf885ac6eef77",
-  "integration_branch": "codex/rewrite"
+  "integration_branch": "codex/rewrite",
+  "subsequent_correction": {
+    "task": "MSH-114",
+    "source": "1c6b97e2bf7ecf560be1902e01b4e95038ee3482",
+    "evidence": "docs/desktop/evidence/msh114/README.md",
+    "finding": "F01 corrected; original review and expected failure preserved",
+    "MSH103": "In Review; remaining acceptance/finalization not performed in114"
+  }
 }

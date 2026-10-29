@@ -1,3 +1,16 @@
+> MSH-114 correction addendum — 2026-10-29: F01 is corrected at
+> `1c6b97e2bf7ecf560be1902e01b4e95038ee3482`; see the independently reviewed
+> [native/frontend/actual packaged evidence](../../desktop/evidence/msh114/README.md).
+> MSH-103 remains **In Review**. This correction does not finalize its remaining
+> acceptance, close MSH-45/M4, restart the complete review, or start MSH-106.
+> The original blocked verdict, matrix and failed probe below remain historical
+> evidence at541fc303, not a claim that the corrected application still has F01.
+
+| Current matrix delta | Corrective evidence | Remaining MSH-103 action |
+| --- | --- | --- |
+| AC7 capacity-explanation subcondition | Both real native control boundaries,27 new frontend cases, actual Shogi/Xiangqi QA and normal Xiangqi GUI; truthful generic feedback with0observations; genuine256-exhaustion wording preserved | F01 correction supplied; retain earlier other product evidence and resume103 acceptance/finalization separately |
+| AC8 complete-review finding disposition | Fresh independent bounded source/test/pixel/AX/manifest review of114, no material findings; original complete-game review unchanged |114 completion satisfies the corrective dependency;103 is not automatically Done |
+
 # Xiangqi complete-delivery review — MSH-103
 
 Review date: 2026-10-29. Audited integration source:

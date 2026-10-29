@@ -1,0 +1,61 @@
+Frontend full
+
+> mshogi-desktop@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.5 /Users/johnweathers/Development/Personal/mShogi/desktop
+
+
+ Test Files  25 passed (25)
+      Tests  235 passed (235)
+   Start at  22:35:05
+   Duration  11.42s (tests 83%, environment 12%, import 3%, transform 1%)
+
+    Isolate  25 workers spawned · ~542ms startup each (spawn + environment, per file)
+             at least ~963ms faster with isolate: false — reuses workers across files instead of one per file
+
+TypeScript
+
+> mshogi-desktop@0.1.0 check
+> tsc --noEmit
+
+Native control fixtures
+   Compiling mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.00s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-72dbb958aa69b860)
+
+running 1 test
+test shared::archive::capacity_tests::verification_control_limits_refuse_truthfully_and_keep_complete_save_open ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 144 filtered out; finished in 2.16s
+
+Xiangqi256/mixed
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.11s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-72dbb958aa69b860)
+
+running 1 test
+test shared::xiangqi::archive::tests::ordinary_observation_256_to_257_rejects_new_work_and_still_saves_reopens_all_evidence ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 144 filtered out; finished in 48.31s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-72dbb958aa69b860)
+
+running 1 test
+test shared::xiangqi::archive::tests::ordinary_and_exact_observations_share_capacity_without_discarding_either_kind ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 144 filtered out; finished in 19.51s
+
+Shogi256
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-72dbb958aa69b860)
+
+running 1 test
+test shared::archive::capacity_tests::actual_256_observations_save_reopen_and_reject_257_without_changing_accepted_document ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 144 filtered out; finished in 10.52s
+
+Clippy
+    Checking mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.62s

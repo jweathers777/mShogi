@@ -1,0 +1,141 @@
+{
+  "source": "1c6b97e2bf7ecf560be1902e01b4e95038ee3482",
+  "environment": {
+    "os": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0.1\nBuildVersion:\t\t26A434",
+    "architecture": "arm64",
+    "rust": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "node": "24.19.0",
+    "gui": "Tauri/WKWebView actual native macOS via Cua; no IPC/JS game mutation"
+  },
+  "packages": {
+    "mShogi.app": {
+      "Contents/Info.plist": {
+        "sha256": "343be4b5b0ce533854424094072924e4695b92c95e1c220e1cd7ec09b5a8ce90",
+        "bytes": 1048
+      },
+      "Contents/MacOS/mshogi-desktop": {
+        "sha256": "40ceb5f2e0c7164379921aca8f5af8b4cd0178f8e9091c4e7b2b02a440c0c998",
+        "bytes": 16283472
+      },
+      "Contents/MacOS/mshogi": {
+        "sha256": "a31b22c8928112d1175d0f33540f8ba6e760ac3b3d3682353867ab8d63efd796",
+        "bytes": 2700080
+      },
+      "Contents/Resources/icon.icns": {
+        "sha256": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc",
+        "bytes": 39844
+      }
+    },
+    "mShogi Verification.app": {
+      "Contents/Info.plist": {
+        "sha256": "166a320e22c63d1fea58096a8b4e25432753d73fe439fe3797b738473f828172",
+        "bytes": 1087
+      },
+      "Contents/MacOS/mshogi-desktop": {
+        "sha256": "e8651fb278cc823800fed15cbfd2ee17ba43c010399ecf123603f17362c4affb",
+        "bytes": 16737728
+      },
+      "Contents/MacOS/mshogi": {
+        "sha256": "a31b22c8928112d1175d0f33540f8ba6e760ac3b3d3682353867ab8d63efd796",
+        "bytes": 2700080
+      },
+      "Contents/Resources/icon.icns": {
+        "sha256": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc",
+        "bytes": 39844
+      }
+    }
+  },
+  "gui_archives": {
+    "xiangqi-controls": {
+      "path": "/private/tmp/msh114-xiangqi-controls.mshogi",
+      "sha256": "d0ff9ecd2350e447498f5390632d3428cc0eb67b48d065fb8710f1420131cf43",
+      "bytes": 3974990,
+      "archive_schema": 2,
+      "controls": 8192,
+      "ordinary_observations": 0,
+      "exact_observations": 0
+    },
+    "shogi-controls": {
+      "path": "/private/tmp/msh114-shogi-controls.mshogi",
+      "sha256": "c6cb91162f7a2de479d0488d0e3646b55a0d40fd380ae1b413f264de0a3718ce",
+      "bytes": 1443736,
+      "archive_schema": 2,
+      "controls": 8191,
+      "ordinary_observations": 0,
+      "exact_observations": 0
+    },
+    "xiangqi-observations": {
+      "path": "/private/tmp/msh114-xiangqi-observations.mshogi",
+      "sha256": "31e91b551984d4c0815357a0e391844196465a97a7df44513012f79b9d506ab9",
+      "bytes": 1049452,
+      "archive_schema": 2,
+      "controls": 513,
+      "ordinary_observations": 256,
+      "exact_observations": 0
+    },
+    "preserved-preverification": {
+      "path": "/private/tmp/msh114-preserved-preverification.mshogi",
+      "sha256": "020dea8a2b842d4c9e5d6614975e7a295d1c1cf2a8bc7067ef54084464c77bbe",
+      "bytes": 1293,
+      "archive_schema": 1,
+      "controls": 0,
+      "ordinary_observations": 0,
+      "exact_observations": 0
+    }
+  },
+  "screenshots": {
+    "xiangqi-control-reopened-refusal.png": {
+      "sha256": "009c065a4b8654232ed44f81e0b15113a2aec2288d8a859f85e5deb2109a6a2b",
+      "bytes": 408508,
+      "ax_sidecar": "xiangqi-control-reopened-refusal.ax.txt"
+    },
+    "normal-restored-preserved-document.png": {
+      "sha256": "40347d79c7fe51b1022bf5b8cd7f3e86f2b62e5d04ef2173ddcceb896ad5309d",
+      "bytes": 363472,
+      "ax_sidecar": "normal-restored-preserved-document.ax.txt"
+    },
+    "shogi-control-saved.png": {
+      "sha256": "339fc92703ed7af31ddf8d1042db9d21116e074092722ef92dce7c27580f1bd0",
+      "bytes": 400135,
+      "ax_sidecar": "shogi-control-saved.ax.txt"
+    },
+    "normal-xiangqi-control-refused.png": {
+      "sha256": "db9cdec8bcdc4cadcbd5c64801ef0be68ab184600dc7d4097c8e65c0cd7eb40a",
+      "bytes": 393888,
+      "ax_sidecar": "normal-xiangqi-control-refused.ax.txt"
+    },
+    "shogi-control-refused-saveable.png": {
+      "sha256": "47168491dee442719c28fc8fd1e119e9c6cd65471dcb363e4d31419a10a14563",
+      "bytes": 396869,
+      "ax_sidecar": "shogi-control-refused-saveable.ax.txt"
+    },
+    "xiangqi-control-refused-saveable.png": {
+      "sha256": "b72d000cce84105472dd27af9eefbda7374bcf7dd38e6c6b3fd2db30881104dd",
+      "bytes": 406038,
+      "ax_sidecar": "xiangqi-control-refused-saveable.ax.txt"
+    },
+    "xiangqi-observation-257-refused.png": {
+      "sha256": "bb9bfe4dc542498c8f4e463f29e9c447b112f884cd0db8ca9f104e1bd83b4ce1",
+      "bytes": 438815,
+      "ax_sidecar": "xiangqi-observation-257-refused.ax.txt"
+    },
+    "xiangqi-observation-256-saved.png": {
+      "sha256": "6617f2de8cb9542bb3663a9e798a434045ec009c72417b8b328affda26c996a4",
+      "bytes": 441389,
+      "ax_sidecar": "xiangqi-observation-256-saved.ax.txt"
+    },
+    "xiangqi-control-saved.png": {
+      "sha256": "385a0c3c38ed2ce29d1ce5d5679559055b059a6cc1953997f19cabe4299b8e51",
+      "bytes": 409242,
+      "ax_sidecar": "xiangqi-control-saved.ax.txt"
+    }
+  },
+  "qa_fixtures": [
+    "xiangqi-control-capacity",
+    "shogi-control-capacity",
+    "xiangqi-capacity"
+  ],
+  "normal_fixture_exclusion": "package-smoke passed including new control fixture markers; no positive contiguous-marker assertion for optimized QA host",
+  "native_product_semantics_unchanged": true,
+  "gui_platform_scope": "macOS actual interaction only; Windows/Linux results are distinct CI/native/package/existing GUI regressions, not new resource-limit GUI campaigns"
+}

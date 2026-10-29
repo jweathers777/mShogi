@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-29T20:27:00Z'
+updated_date: '2026-10-29T21:53:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -72,10 +72,16 @@ Fresh complete-game review at541fc303: three independent read-only reviewers ins
 Blocking P2 F01: shared NativeRecovery mistakes native combined256-observation/8192-control diagnostics for observation exhaustion. Zero-observation control-only refusal therefore reports256 recorded observations. Independently found and confirmed; root truthful-message frontend probe FAIL1 reproduced it (temporary probe removed; exact log retained). Native control admission/complete Save/stop reserve PASS. Owner-authorized corrective MSH-114 created Ready/unassigned with completed99/102/113 dependencies, focused shared Shogi/Xiangqi explanation/tests/packaged verification/review criteria.103 retains all old dependencies and adds114; AC1/AC3 and DoD1/DoD2 remain unchecked. No corrective implementation started. MSH45/M4 open;106 unstarted.
 
 Review and corrective ticket integrated into codex/rewrite at afd20981a04e88833f214010689cf885ac6eef77. Final independent whole-review assessment accepts the BLOCKED verdict: original45AC1–6 supported; AC7/8 and103AC1/AC3/DoD1/DoD2 blocked by114. No further report findings. Backlog doctor passes with unique IDs/no cycles,89 local documentation links resolve, JSON totals250 verified, temporary failure probe removed, production diff from79de582 remains empty. Initial staged diff check flagged four added EOF blank lines; removed in final handoff, full diff check against541fc30 passes.103 remains In Review;114 is the only dependency-ready Ready task. No temporary worktree created or unrelated checkout removed.
+
+2026-10-29 bounded MSH-114 correction supplied at1c6b97e2bf7ecf560be1902e01b4e95038ee3482. F01 product behavior is corrected: ambiguous count/control/byte/event/replay diagnostics use truthful generic saveability language; genuine observation retention uses native count including Xqexact.235frontend/4focusednative tests, actual normal+QA macOS GUI, package exclusion and fresh independent correction/artifact review support the fix. Three nativeCI jobs PASS; finalWindowsDesktopCI stillpending in114. See docs/desktop/evidence/msh114/README.md and additive delivery-review.md delta. Original complete-game assessment/matrix/failedprobe and source-qualifiedCI remain historical evidence.103 stays In Review with remainingAC/DoD unchecked;114 completion will satisfy its corrective dependency, then resume103 acceptance/finalization separately. No restart ofcomplete review,45closure or106work.
+
+MSH-114 completion reconciliation:114 Done at source1c6b97e after native40959072793 andDesktop40959072831 all6Windows/macOS/Linuxjobs PASS, actualpackagedmacOSGUI andindependentreview. F01 corrective blocker resolved;114dependency now satisfied. Original complete-game assessment and expectedfailure remain preserved.103 status stays In Review and its remaining acceptance/DoD checks are not changed here; next bounded assignment is resumed103 final acceptance/finalization. No other material correction finding from114 remains, and no45closure/106work is started.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary
 
 <!-- SECTION:FINAL_SUMMARY:BEGIN -->
 Review assessment recorded, but MSH-103 remains In Review, not Done: F01/MSH-114 blocks complete-game acceptance. MSH45 AC1–6 native/profile/fixtures/console/functional engine/records supported; AC7 truthful resource-limit recovery and AC8 full acceptance remain blocked.250 focused checks pass; one separate expected-failing probe proves the missing capacity explanation behavior. Current three-platform CI and actual Mac product evidence are reused with exact revisions and honest platform distinctions. Complete matrix, independent review records and future106diagnostic observations are in delivery-review.md. Next assignment is114, then resume103; do not close45 or start106. This batch changes only review/task documentation and stops without implementing114.
+
+MSH-114 correction addendum: F01 behavior corrected at1c6b97e with bounded independent tests/actual packaged verification. The original blocked verdict above describes the reviewed541fc30 source and is preserved.103 remains In Review; its remaining acceptance/finalization is explicitly deferred to the resumed103 assignment after114 completion.
 <!-- SECTION:FINAL_SUMMARY:END -->

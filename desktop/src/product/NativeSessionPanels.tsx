@@ -50,7 +50,10 @@ export function NativeHistory({ snapshot, disabled, command }: { snapshot: GameS
 }
 export function NativeRecovery({ snapshot, error, disabled, command, pending = false, capacityError = "" }: { snapshot: GameSnapshot; error: string; disabled: boolean; command: (op: Operation) => unknown; pending?: boolean; capacityError?: string }) {
   const capacity = nativeCapacityReached(snapshot, capacityError || error), message = snapshot.capacity.message ?? (capacityError || error);
-  const explanation = /256|retained observations|observation retention/i.test(message) ? "This game has reached the limit of 256 recorded engine observations."
+  const observationCount = snapshot.observations.length + (snapshot.game === "xiangqi" ? snapshot.xiangqi.exact_observations.length : 0);
+  const observationStorage = /retained observations|observation retention/i.test(message);
+  const explanation = /256/.test(message) || (observationStorage && observationCount === 256) ? "This game has reached the limit of 256 recorded engine observations."
+    : observationStorage ? "This game has reached its recorded-observation storage limit."
     : /16MiB/.test(message) ? "This game's complete record has reached the 16 MiB storage limit."
     : /replay/.test(message) ? "This game has reached the application's recorded-history work limit."
     : /8192/.test(message) ? "This game has reached the recorded-operation limit." : "This session has reached an application resource limit.";

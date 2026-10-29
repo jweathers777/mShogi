@@ -1,3 +1,13 @@
+> Current desktop adaptation — MSH-102 (2026-10-29):
+> [analysis, outcomes, recovery and document journeys](desktop-journeys.md) now
+> use this native contract in the normal product, including strict Xiangqi Open,
+> exact-event history, stopped reopen and explicit Resume. Final source is
+> `a1f8234e6d82add1c485e7e2537e414cffd4d49d`; see
+> [execution/review/CI evidence](../evidence/msh102/completion-2026-10-29/README.md).
+> Earlier unstarted/product-gate statements below are preserved historical
+> handoffs, superseded by these bounded deliveries. MSH-45/M4 remain open;
+> MSH-103 and MSH-106 are not started.
+
 # MSH-98: native Xiangqi session and semantic presentation
 
 Current product adaptation (2026-10-29): [MSH-101](desktop-product.md) implements
@@ -8,6 +18,14 @@ Xiangqi product Open remains gated for MSH-102. The following MSH-98 delivery
 description preserves the original native boundary and its evidence.
 
 This delivers the native consumer boundary, not finished Xiangqi desktop UI. MSH-99 adds [lossless native desktop archives/admission](desktop-archive.md); MSH-101 owns the actual intersection-board product in the accepted shared shell. The normal Tauri command endpoint rejects Xiangqi product admission until that work exists. Normal Chess/Shogi new-game, archive and presentation contracts remain available. The Rust library's typed Replace operation admits actual canonical Xiangqi records for native consumers and the separately gated development probe.
+
+## MSH-102 native terminal advice
+
+`xiangqi.terminal_actions` supplies offer/accept/decline eligibility for the human
+actor. Core `Game::can_offer_draw` and `can_respond_to_draw` are reused by formal
+admission, preserving private offer history and terminal actor semantics apart
+from board-action turn ownership. Advice itself never concludes a game. Native
+labels distinguish actual conclusions from pending unscored adjudication.
 
 ## Authority and execution
 

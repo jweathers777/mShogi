@@ -31,3 +31,15 @@ it("does not move focus after native refusal even when a later snapshot arrives"
   rerender(<><h2 data-game-status tabIndex={-1}>Your turn</h2><TakeBackControl available disabled={false} contextKey="b" restore={restore} /></>);
   expect(document.activeElement).toBe(button);
 });
+
+it("reveals the existing Resume notice after restoration from a scrolled action panel", async () => {
+  const restore = vi.fn().mockResolvedValue({});
+  const view = (contextKey: string) => <><h2 data-game-status tabIndex={-1}>Your turn</h2><section className="play-paused">Resume play</section><TakeBackControl available disabled={false} contextKey={contextKey} restore={restore} /></>;
+  const { rerender, container } = render(view("before"));
+  const notice = container.querySelector<HTMLElement>(".play-paused")!;
+  notice.scrollIntoView = vi.fn();
+  fireEvent.click(screen.getByRole("button", { name: "Take back" })); await Promise.resolve();
+  rerender(view("restored"));
+  expect(notice.scrollIntoView).toHaveBeenCalledExactlyOnceWith({ block: "nearest" });
+  expect(document.activeElement).toBe(screen.getByRole("heading"));
+});

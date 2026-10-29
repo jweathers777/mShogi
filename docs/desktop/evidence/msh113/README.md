@@ -48,3 +48,19 @@ production boundary had also passed the older equivalent slower fixture
 (12tests/117.04s); this is superseded by the efficient test result. No remaining
 material frontend or native/archive review finding. Actual GUI and final CI are
 separate obligations.
+
+## Packaged interaction finding
+
+The first reviewed implementation package (`ff0b1ce`) genuinely played Chess
+`e2e4` / bundled `a7a5`, took both back to0plies, paused and retained its
+observation. The first capture `normal-chess-restored.png` exposed a visibility
+finding: the sidebar remained scrolled down to Game Actions, clipping the
+existing Resume notice above the viewport. It is intermediate finding evidence,
+not final visual acceptance. The tiny shared-control correction preserves status
+focus and reveals the existing paused notice with nearest scrolling, with no
+layout redesign. A fresh independent source review approved it after4 focused
+control tests; the final package must establish visible Resume.
+
+The same first package saved `/private/tmp/msh113-chess-taken-back.mshogi` through
+native Save As (`intermediate-chess-v3-saved`); complete native v3 semantics are
+unchanged by this presentation-only correction.

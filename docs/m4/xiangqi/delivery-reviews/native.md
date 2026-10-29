@@ -58,4 +58,3 @@ independently confirmed F01's shared Shogi/Xiangqi mechanism and P2 severity.
 MSH-103 AC1/DoD2 cannot pass until correction. A misleading phrase suggesting
 shared structured exact execution was corrected to native API/console only.
 No new owner decision, rules change or broad architecture change is needed.
-

@@ -7,6 +7,10 @@ The independent delivery assessment is recorded, but complete-game acceptance
 is not granted while the control-limit message invents an observation count.
 No production correction or follow-up implementation was started in this task.
 
+Review integration commit: `afd20981a04e88833f214010689cf885ac6eef77`,
+`codex/rewrite`; subsequent handoff edits record this actual revision and
+remove review-file EOF whitespace. All changes remain documentation/Backlog only.
+
 This is a source, fixture, execution and product-evidence review, not a new
 rules implementation or a playing-strength assessment. MSH-45 remains its own
 reconciliation task; this review does not close it, M4 or any shared integration

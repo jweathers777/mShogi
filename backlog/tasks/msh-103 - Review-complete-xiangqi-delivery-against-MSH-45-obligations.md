@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-27T15:03:00Z'
-updated_date: '2026-10-29T20:25:00Z'
+updated_date: '2026-10-29T20:27:00Z'
 labels:
   - m4
   - owner-msh-45
@@ -47,7 +47,7 @@ Future bounded Xiangqi delivery work refined by MSH-80. Intent and acceptance on
 - [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [ ] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -70,6 +70,8 @@ Owner2026-10-27 requires105 before completeXiangi review; all originalcriteria/D
 Fresh complete-game review at541fc303: three independent read-only reviewers inspected native rules/sources/history/exact, engine/console/protocol/matches, archives/session/Take back and actual packaged desktop artifacts. New current-source checks:250 passed (64 core,63 consumers,47 native session/archive/Take back,76 frontend), strict TypeScript passed. Real source/context/referee semantics preserved. Reused current-production-identical79de582 native/desktop CI all six platform jobs PASS and actual Mac101/102/113GUI evidence, with original qualification/failures intact; no Windows/Linux Xiangqi GUI claim. Report and detailed method/commands:docs/m4/xiangqi/delivery-review.md and delivery-reviews/.
 
 Blocking P2 F01: shared NativeRecovery mistakes native combined256-observation/8192-control diagnostics for observation exhaustion. Zero-observation control-only refusal therefore reports256 recorded observations. Independently found and confirmed; root truthful-message frontend probe FAIL1 reproduced it (temporary probe removed; exact log retained). Native control admission/complete Save/stop reserve PASS. Owner-authorized corrective MSH-114 created Ready/unassigned with completed99/102/113 dependencies, focused shared Shogi/Xiangqi explanation/tests/packaged verification/review criteria.103 retains all old dependencies and adds114; AC1/AC3 and DoD1/DoD2 remain unchecked. No corrective implementation started. MSH45/M4 open;106 unstarted.
+
+Review and corrective ticket integrated into codex/rewrite at afd20981a04e88833f214010689cf885ac6eef77. Final independent whole-review assessment accepts the BLOCKED verdict: original45AC1–6 supported; AC7/8 and103AC1/AC3/DoD1/DoD2 blocked by114. No further report findings. Backlog doctor passes with unique IDs/no cycles,89 local documentation links resolve, JSON totals250 verified, temporary failure probe removed, production diff from79de582 remains empty. Initial staged diff check flagged four added EOF blank lines; removed in final handoff, full diff check against541fc30 passes.103 remains In Review;114 is the only dependency-ready Ready task. No temporary worktree created or unrelated checkout removed.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-29T15:39:00Z'
-updated_date: '2026-10-29T16:01:00Z'
+updated_date: '2026-10-29T16:04:00Z'
 labels:
   - desktop
   - m4
@@ -65,4 +65,6 @@ Implementation underway: root owns frontend/host/docs and integration; independe
 Independent read-only frontend review (/root/takeback_ui_review) approved corrected boundary after59 focused tests/5files +TypeScript. Resolved P2: product Chess shared dispatch refusal errors were disconnected from legacy notice; shared error/busy now reach Chess with stale and capacity refusal regressions. Fullfrontend207/24files PASS. Native independent review (/root/takeback_boundary_review) found retained abandoned Chess records needed current-record untimed/witness restrictions and control-timestamp binding (fixed), unavailable Shogi request must synchronously preserve pending initial engine work (fixed/test), and v3 replay budget must reserve mandatory stop/close control (fix/test in progress). Root source readback is integrator verification, not independent review. First normal package construction began before final review corrections; it is not GUI acceptance evidence and will be rebuilt.
 
 Implementation complete for independent assessment. Native review approved final production after resolving3 boundary findings: retained Chess checkpoint restoration restrictions/control timestamp, unavailable Shogi atomic refusal, and reserved stop/close replay headroom. Independent native reviewer executed12 focused Take back tests PASS (117.04s on equivalent slower boundary fixture). Native builder final focused all-feature12/12 PASS6.56s after test-only efficiency change; all-target/all-feature clippy PASS. Concrete final boundary fixture1320 genuine Observe commands,123 accepted Preferences,128 controls,333246 encoded bytes, actual pause_for_close plus strict native Open PASS. Final API TakeBack shared/legacy and native capability, paused explicit Resume. Chess writes v1 until firsttakeback then v3 retained authoritative lineage; Shogi/Xiangqi stayv2. Actual packaged macOS GUI, final checks and CI remain required before Done.
+
+Actual ff0b1ce packaged Chess human e2e4/bundled a7a5→TakeBack restored0plies/paused/1retainedobservation; nativeSaveAsv3succeeded. GUI exposed clipped Resume notice when sidebar remained scrolled to GameActions. Sharedcontrol now reveals existing .play-paused notice with nearest scrolling after accepted-context status focus; no layout redesign. Added4thcontroltest, independently reviewed approved. Rebuild/recheck final GUI source required; earlier clipped capture is finding evidence only.
 <!-- SECTION:NOTES:END -->

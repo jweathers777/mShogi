@@ -52,6 +52,11 @@ def play_limit_matches(text, depth, nodes):
                 and int(re.sub(r"[,. \u00a0\u202f]", "", match[2]) or "-1") == nodes)
 
 
+def inspection_status_matches(text, native_label):
+    """Exact owner-approved visible copy, independent of accessible explanations."""
+    return text == f"Inspecting {native_label} · Esc clears"
+
+
 def terminal_transport_closed(error):
     """Only meaningful after dispatching the known native-close guard action."""
     if isinstance(error, (http.client.RemoteDisconnected, ConnectionResetError, BrokenPipeError)):
@@ -524,7 +529,10 @@ class Journey:
         square=self.square if game=='chess' else self.shogi_square
         w.click(square(origin))
         wait(lambda: f'Inspecting {label}' in w.text('.movement-inspection-status'), 'native opponent movement inspection')
-        assert 'read only' in w.text('.movement-inspection-status').casefold().replace('-',' ')
+        # Shogi/Xiangqi have a separate keyboard-hint span in this row; Chess
+        # places the status directly in the paragraph. Observe the status itself.
+        status = w.read("(() => { const e=document.querySelector('.movement-inspection-status'); return e?.querySelector('span')?.textContent ?? e?.textContent; })()")
+        assert inspection_status_matches(status, label), ('inspection status', status, label)
         assert w.read(f"document.querySelector({json.dumps(square(destination))})?.getAttribute('aria-label')?.includes('read-only inspection destination')")
         assert w.read(f"document.querySelector({json.dumps(square(destination))})?.querySelector('.inspection-marker')!==null")
         assert not w.has('.square.target,.shogi-square.target')

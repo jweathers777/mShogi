@@ -13,6 +13,15 @@ spec.loader.exec_module(module)
 
 
 class SharedPresentationTests(unittest.TestCase):
+    def test_inspection_status_uses_exact_shared_copy_and_native_labels(self):
+        for label in ('Black pawn', 'Gote pawn', 'Gote pawn in hand', 'Black cannon'):
+            with self.subTest(label=label):
+                self.assertTrue(module.inspection_status_matches(f'Inspecting {label} · Esc clears', label))
+                for text in (f'Inspecting {label} · Read-only · Esc clears',
+                             f'Inspecting {label} · Hollow rings · Esc clears',
+                             f'Inspecting {label}', 'Inspecting Wrong piece · Esc clears', None):
+                    self.assertFalse(module.inspection_status_matches(text, label))
+
     def test_actual_numeric_budget_is_independent_of_locale_grouping(self):
         for value in ('5000', '5,000', '5.000', '5\u00a0000', '5\u202f000'):
             with self.subTest(value=value):

@@ -279,13 +279,11 @@ async fn game_file(
             } else {
                 picker
                     .set_title("Save mShogi game")
-                    .set_file_name(
-                        if snapshot.game == mshogi_desktop_session::GameKind::Shogi {
-                            "shogi.mshogi"
-                        } else {
-                            "chess.mshogi"
-                        },
-                    )
+                    .set_file_name(match snapshot.game {
+                        mshogi_desktop_session::GameKind::Chess => "chess.mshogi",
+                        mshogi_desktop_session::GameKind::Shogi => "shogi.mshogi",
+                        mshogi_desktop_session::GameKind::Xiangqi => "xiangqi.mshogi",
+                    })
                     .blocking_save_file()
             };
             selected

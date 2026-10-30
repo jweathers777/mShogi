@@ -1,3 +1,9 @@
+> Current checkpoint — MSH-106, 2026-10-30: the [three-game architecture report](review/architecture-health-106.md)
+> reviews exact accepted integration `2f17510e4c5b8c3b92a051adfa070b4d5d834b21`.
+> It records diagnostic findings and owner-prioritized follow-up proposals,
+> without authorizing refactors or changing variant/M5 gates. MSH-107–109
+> retain their existing future scope; the historical planning record follows.
+
 # Architectural health review checkpoints
 
 Owner-requested planning change, 2026-10-27. These are future diagnostic tasks,

@@ -1,0 +1,116 @@
+{
+  "reviewer": "/root/r4_independent",
+  "verdict": "PASS. No unresolved material MSH-119 source, semantic, visual or evidence finding.",
+  "source_revision": "eb027be7cec0f3206094c477a31f0cd9b9f73f6f",
+  "production_revision": "0487945b628314eed6d1be49d396dce41a362332",
+  "native_run_id": 41131548408,
+  "native_run_attempt": 2,
+  "native_status": "completed",
+  "native_conclusion": "success",
+  "desktop_run_id": 41131548392,
+  "desktop_status": "completed",
+  "desktop_conclusion": "success",
+  "native_jobs": [
+    {
+      "name": "Rust (ubuntu-24.04)",
+      "job_id": 124330346244,
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-30T21:47:11Z",
+      "completed_at": "2026-10-30T22:00:59Z",
+      "log": "/private/tmp/r4-independent-final-native-linux-attempt2.log",
+      "log_sha256": "ca625c924842170b860b507ab6f6af79a8a8da3857b0a137acc191fdacddd487",
+      "native_session_default_passed": 168,
+      "native_session_all_features_passed": 180,
+      "exact_count_log_lines": [
+        "2026-10-30T21:53:33.5410149Z test result: ok. 168 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 245.93s",
+        "2026-10-30T22:00:54.5863578Z test result: ok. 180 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 359.50s"
+      ],
+      "existing_runner_test_passed_line": "2026-10-30T21:54:06.5552119Z test process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored ... ok",
+      "generated_fixture_gate": "success",
+      "retry_disposition": "Only failed Linux job rerun on attempt2"
+    },
+    {
+      "name": "Rust (windows-2022)",
+      "job_id": 124330348343,
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-30T21:30:33Z",
+      "completed_at": "2026-10-30T21:40:08Z",
+      "log": "/private/tmp/r4-independent-final-native-windows.log",
+      "log_sha256": "b5d37f82ad29cdeaed8a39eaaf01d1206539d8a6d84d97c677f9824f65fdc45d",
+      "native_session_default_passed": 168,
+      "native_session_all_features_passed": 180,
+      "exact_count_log_lines": [
+        "2026-10-30T21:35:27.4131923Z test result: ok. 168 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 154.20s",
+        "2026-10-30T21:40:02.0353733Z test result: ok. 180 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 219.89s"
+      ],
+      "existing_runner_test_passed_line": "2026-10-30T21:35:47.0584131Z test process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored ... ok",
+      "generated_fixture_gate": "success",
+      "retry_disposition": "Successful original job reused; current attempts/2 API supplies this job identity"
+    },
+    {
+      "name": "Rust (macos-15)",
+      "job_id": 124330387458,
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-30T21:35:34Z",
+      "completed_at": "2026-10-30T21:46:07Z",
+      "log": "/private/tmp/r4-independent-final-native-macos.log",
+      "log_sha256": "f6d6a83b64847a78721b7efeaa881c40004141241ac348ad565d42e1f26cf8c2",
+      "native_session_default_passed": 168,
+      "native_session_all_features_passed": 180,
+      "exact_count_log_lines": [
+        "2026-10-30T21:40:36.0013160Z test result: ok. 168 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 165.04s",
+        "2026-10-30T21:46:01.0123340Z test result: ok. 180 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 249.97s"
+      ],
+      "existing_runner_test_passed_line": "2026-10-30T21:41:07.9470020Z test process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored ... ok",
+      "generated_fixture_gate": "success",
+      "retry_disposition": "Successful original job reused; current attempts/2 API supplies this job identity"
+    }
+  ],
+  "desktop_jobs": [
+    {
+      "name": "Desktop (macos-15)",
+      "id": 124323453276,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Desktop (ubuntu-24.04)",
+      "id": 124323453397,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Desktop (windows-2022)",
+      "id": 124323453456,
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "related_independent_artifact_audits": [
+    "/private/tmp/r4-independent-final-linux-audit.json",
+    "/private/tmp/r4-independent-final-windows-audit.json"
+  ],
+  "review_method": "Independent read-only source diff, actual tests (107 focused initial frontend,40 corrected frontend,8 native runtime,49 verifier,2 generator), actual downloaded Linux/Windows package/report/checksum/native-exit/keyboard audit and all six Linux plus six macOS same-size screenshots. Final macOS correction package identities and before/after Checkmate captures independently checked.",
+  "resolved_material_findings": [
+    "Restore native Chess in-check heading.",
+    "Restore Finish analysis for paused concluded Chess without reopening its native conclusion."
+  ],
+  "verification_only_corrections": [
+    "Real bounded keyboard navigation exposes clipped Take back before one actual click; no DOM input/IPC substitute.",
+    "Only untimed fixture MatchRecord copies receive deterministic schedules via checked authoritative replay; product clock/history untouched."
+  ],
+  "preserved_failure_disposition": {
+    "initial_native_run": 41128859801,
+    "initial_gui_run": 41128859968,
+    "runner_recurrence": "Final native attempt1 Linux failed unchanged early-exit classification (Broken pipe/MissingResponse vs UnexpectedExit). Both remain unscored. Existing MSH-112 retains ownership. Normal failed-job retry made no source/assertion/timeout change. This passing retry does not fix the race.",
+    "superseded_runs": "Canceled runs are not represented as passing; historical task evidence retained."
+  },
+  "remaining_scope": [
+    "MSH-120 owns existing specialized board selection/inspection/route/focus state copies; R4 did not implement the shared controller.",
+    "MSH-121 final integrated architecture/product acceptance remains unstarted.",
+    "No new native rules, competitive strength or macOS CI GUI claim."
+  ]
+}

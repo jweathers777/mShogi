@@ -1,0 +1,72 @@
+{
+  "environment": {
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "rust": "1.99.1",
+    "node": "24.19.0",
+    "python": "3.11.0",
+    "backlog": "pinned1.55.1"
+  },
+  "checks": [
+    {
+      "scope": "native session",
+      "command": "cargo test --locked -p mshogi-desktop-session",
+      "passed": 168,
+      "revision": "291821774e44b8bda04856773fd9781ae3327687",
+      "local_log": "/private/tmp/r4-native-tests.log",
+      "log_sha256": "0f681d54701f5177b08a12a8b725643546e8c303be037ecaf8ebbc0e149dbefc"
+    },
+    {
+      "scope": "current runtime",
+      "command": "cargo test --locked -p mshogi-desktop-session runtime_tests",
+      "passed": 8,
+      "revision": "291821774e44b8bda04856773fd9781ae3327687",
+      "local_log": "/private/tmp/r4-runtime-tests.log",
+      "log_sha256": "d3a5706ec9620d9770742d807387b8b10a53d16e2a4ded6cf16c5f9c1531e7a6"
+    },
+    {
+      "scope": "actual subprocess consumers",
+      "command": "cargo test --locked -p mshogi-console --test desktop_play --test desktop_analysis --test desktop_persistence --test desktop_shared",
+      "passed": 12,
+      "revision": "291821774e44b8bda04856773fd9781ae3327687",
+      "local_log": "/private/tmp/r4-console-tests.log",
+      "log_sha256": "b241823a547368605427e603532fc6aa741534c451ee94c116bd787ca3df7968"
+    },
+    {
+      "scope": "host",
+      "command": "cargo test --locked --manifest-path desktop/src-tauri/Cargo.toml --all-features",
+      "passed": 9,
+      "revision": "291821774e44b8bda04856773fd9781ae3327687",
+      "local_log": "/private/tmp/r4-host-tests.log",
+      "log_sha256": "a87c0a1f3d29b5b0a1a5ccb33e00518d10b94f3fc40819ed6b3a5cb4525ffa0e"
+    },
+    {
+      "scope": "frontend",
+      "command": "npm test --prefix desktop",
+      "passed": 225,
+      "revision": "eb027be7cec0f3206094c477a31f0cd9b9f73f6f",
+      "local_log": "/private/tmp/r4-final-eb-frontend.log",
+      "log_sha256": "cc319ade2f1408f35130f150847428708089fcbc3a5aa7ccc5e76602aa9fcf68"
+    },
+    {
+      "scope": "untimed fixture generator",
+      "command": "cargo test --locked -p mshogi-desktop-session --example write_frontend_fixtures",
+      "passed": 2,
+      "revision": "eb027be7cec0f3206094c477a31f0cd9b9f73f6f",
+      "local_log": "/private/tmp/r4-fixture-normalizer-tests.log",
+      "log_sha256": "7b71e2a712105d84b22abba06be8eb0acfa16878a419846278ca12dab6459947"
+    }
+  ],
+  "additional_passed": [
+    "Strict TypeScript npm run check at eb027be",
+    "Python GUI-driver62 tests at eb027be (python3 -m unittest discover -s desktop/scripts -p test_gui*.py)",
+    "Native/console/host Clippy -D warnings; example all-feature Clippy",
+    "Rust workspace and host formatting; git diff --check",
+    "backlog doctor: no duplicate IDs, self-dependencies or cycles"
+  ],
+  "qualification": [
+    "Native lib/host/console production sources and tests are unchanged after2918217;048 changes only frontend check/Finish analysis, subsequent changes only verifier/fixture generator/evidence.",
+    "20 existing vendored Tao warnings persist, no new host lint warning introduced.",
+    "No new native rules/search/engine conformance campaign is inferred; unchanged prior evidence reused.",
+    "Final normal CI and packaged GUI evidence recorded separately."
+  ]
+}

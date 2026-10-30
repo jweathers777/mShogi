@@ -1,0 +1,22 @@
+{
+  "source_revision": "eb027be7cec0f3206094c477a31f0cd9b9f73f6f",
+  "run_id": 41131548408,
+  "job_id": 124323454077,
+  "run_url": "https://github.com/jweathers777/mShogi/actions/runs/41131548408",
+  "attempt": 1,
+  "status": "failed",
+  "test": "process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored",
+  "failure": "runner.rs172: exit fixture expected UnexpectedExit; got MissingResponse, engine0 handshake, Brokenpipe32, exitNone, at_ns2229415",
+  "log_sha256": "1db1b62c2116526a8308e7025c063818a4db53836912c31cb22b55bd114d6000",
+  "existing_owner": "MSH-112 To Do; not activated or implemented",
+  "source_comparison": "No runner/core/engine/Cargo manifest/lock changes from82a8ae8 toeb027be; independently verified",
+  "baseline_evidence": "Initial291Linux job124314319521 ran same runner testPASS, fullrunner10/10PASS before separate fixture-generationdiff gate",
+  "local_focused": {
+    "command": "cargo test --locked -p mshogi-runner --test runner process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored -- --exact",
+    "platform": "macOS27.0.1 arm64",
+    "passed": 1,
+    "seconds": 0.59,
+    "log_sha256": "d610adac04e6a31e5deb1d3aa0b2aa508e5f7903e03524709b994d68a76662a1"
+  },
+  "qualification": "LocalPASS is notLinuxPASS or racefix. Both observed categories remain unscored without a Chess conclusion. No assertion/timeout/runnerchange; normalfailed-jobretry pending overallworkflowcompletion."
+}

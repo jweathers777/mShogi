@@ -1,0 +1,1813 @@
+{
+  "reviewer": "/root/r4_independent",
+  "method": "Independent downloaded actual package/report/checksum/native-exit/keyboard-precondition audit plus visual inspection of all six same-size screenshots. Not author-authored unit assertions or new local GUI execution.",
+  "run_id": 41131548392,
+  "artifact_id": 13014406130,
+  "artifact_name": "desktop-ubuntu-24.04",
+  "artifact_bytes": 80458296,
+  "source_revision": "eb027be7cec0f3206094c477a31f0cd9b9f73f6f",
+  "production_revision": "0487945b628314eed6d1be49d396dce41a362332",
+  "report_status": "passed",
+  "report_sha256": "ce228dde01719c2ae2f20dc0b1684c3ae11eea16459e2fa51a4d2fd8ac0255c3",
+  "environment": {
+    "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "runner_image": "20261026.354.1",
+    "runner_os": "Linux",
+    "renderer_environment": {
+      "GDK_BACKEND": "x11",
+      "WEBKIT_DISABLE_COMPOSITING_MODE": "1",
+      "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+      "LIBGL_ALWAYS_SOFTWARE": null
+    }
+  },
+  "normal_package": {
+    "manifest_sha256": "3842cf57bb598d08e91645e3af771e295233190841694be733cd5c94b2b0079b",
+    "source_revision": "eb027be7cec0f3206094c477a31f0cd9b9f73f6f",
+    "host_sha256": "aeefade23ca68f16fc33b5413ce420a7c987e806bee5d301b11d361fad46485d",
+    "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+    "manifest_checks": {
+      "package-smoke.json": true,
+      "bundle/deb/mShogi_0.1.0_amd64.deb": true,
+      "bundle/deb/mShogi_0.1.0_amd64/data.tar.gz": true,
+      "bundle/deb/mShogi_0.1.0_amd64/debian-binary": true,
+      "bundle/deb/mShogi_0.1.0_amd64/control.tar.gz": true,
+      "bundle/deb/mShogi_0.1.0_amd64/control/md5sums": true,
+      "bundle/deb/mShogi_0.1.0_amd64/control/control": true,
+      "bundle/deb/mShogi_0.1.0_amd64/data/usr/bin/mshogi": true,
+      "bundle/deb/mShogi_0.1.0_amd64/data/usr/bin/mshogi-desktop": true,
+      "bundle/deb/mShogi_0.1.0_amd64/data/usr/share/applications/mShogi.desktop": true,
+      "bundle/deb/mShogi_0.1.0_amd64/data/usr/share/icons/hicolor/32x32/apps/mshogi-desktop.png": true,
+      "bundle/deb/mShogi_0.1.0_amd64/data/usr/share/icons/hicolor/128x128/apps/mshogi-desktop.png": true,
+      "bundle/deb/mShogi_0.1.0_amd64/data/usr/share/icons/hicolor/256x256@2/apps/mshogi-desktop.png": true
+    },
+    "excluded_verification_markers": {
+      "MSHOGI_DESKTOP_FIXTURE": true,
+      "MSHOGI_VERIFICATION_ENGINE": true,
+      "Native Cocoa Quit (verification)": true,
+      "synthetic_snapshot": true,
+      "synthetic_command": true,
+      "desktop_verification_mode": true,
+      "native_contract_snapshot": true,
+      "native_contract_command": true,
+      "native_contract_file": true,
+      "mshogi.synthetic.strider16.v1": true,
+      "mshogi-verification-window-size": true,
+      "Verification window size": true,
+      "xiangqi-capacity": true,
+      "xiangqi-warning": true,
+      "xiangqi-control-capacity": true,
+      "shogi-control-capacity": true
+    }
+  },
+  "verification_package": {
+    "manifest": {
+      "source_revision": "eb027be7cec0f3206094c477a31f0cd9b9f73f6f",
+      "package": "desktop/src-tauri/target/release/bundle/deb/mShogi Verification_0.1.0_amd64.deb",
+      "sha256": "7f42a129b9c1208e353553348d637b827165997f87a3671ee48fd941edea8a15",
+      "installation": "Separately extracted verification package; normal package actually installed with apt."
+    },
+    "package_hash_matches": true,
+    "host_sha256": "e97b60249b3d7a6f5457ac450cb43a45ac570643ef1c5772270d9e11cb2bf495",
+    "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2"
+  },
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "passed",
+      "fixture": null,
+      "host_sha256": "aeefade23ca68f16fc33b5413ce420a7c987e806bee5d301b11d361fad46485d",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "passed",
+      "fixture": null,
+      "host_sha256": "aeefade23ca68f16fc33b5413ce420a7c987e806bee5d301b11d361fad46485d",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "passed",
+      "fixture": null,
+      "host_sha256": "aeefade23ca68f16fc33b5413ce420a7c987e806bee5d301b11d361fad46485d",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "normal-xiangqi",
+      "status": "passed",
+      "fixture": null,
+      "host_sha256": "aeefade23ca68f16fc33b5413ce420a7c987e806bee5d301b11d361fad46485d",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "fixture": "standard",
+      "host_sha256": "e97b60249b3d7a6f5457ac450cb43a45ac570643ef1c5772270d9e11cb2bf495",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "fixture": "promotion",
+      "host_sha256": "e97b60249b3d7a6f5457ac450cb43a45ac570643ef1c5772270d9e11cb2bf495",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed",
+      "fixture": "claim",
+      "host_sha256": "e97b60249b3d7a6f5457ac450cb43a45ac570643ef1c5772270d9e11cb2bf495",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "fixture": "capacity",
+      "host_sha256": "e97b60249b3d7a6f5457ac450cb43a45ac570643ef1c5772270d9e11cb2bf495",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed",
+      "fixture": "synthetic",
+      "host_sha256": "e97b60249b3d7a6f5457ac450cb43a45ac570643ef1c5772270d9e11cb2bf495",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed",
+      "fixture": "shogi-hands",
+      "host_sha256": "e97b60249b3d7a6f5457ac450cb43a45ac570643ef1c5772270d9e11cb2bf495",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed",
+      "fixture": "shogi-promotion",
+      "host_sha256": "e97b60249b3d7a6f5457ac450cb43a45ac570643ef1c5772270d9e11cb2bf495",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed",
+      "fixture": "shogi-forced",
+      "host_sha256": "e97b60249b3d7a6f5457ac450cb43a45ac570643ef1c5772270d9e11cb2bf495",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed",
+      "fixture": "shogi-declaration",
+      "host_sha256": "e97b60249b3d7a6f5457ac450cb43a45ac570643ef1c5772270d9e11cb2bf495",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed",
+      "fixture": "shogi-concluded",
+      "host_sha256": "e97b60249b3d7a6f5457ac450cb43a45ac570643ef1c5772270d9e11cb2bf495",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed",
+      "fixture": "shogi-capacity",
+      "host_sha256": "e97b60249b3d7a6f5457ac450cb43a45ac570643ef1c5772270d9e11cb2bf495",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    }
+  ],
+  "keyboard_take_back": [
+    {
+      "phase": "normal",
+      "at_utc": "2026-10-30T21:40:07.943272+00:00",
+      "operation": "Keyboard control focused and visible before one click",
+      "observation": {
+        "label": "Take back",
+        "tabs": 7,
+        "target": {
+          "activeLabel": "Take back",
+          "rect": {
+            "left": 874,
+            "bottom": 777,
+            "right": 970.140625,
+            "top": 741
+          },
+          "enabled": true,
+          "matches": 1,
+          "focused": true,
+          "visible": true,
+          "clip": {
+            "left": 860,
+            "bottom": 777,
+            "right": 1152,
+            "top": 102
+          }
+        }
+      }
+    },
+    {
+      "phase": "normal-shogi",
+      "at_utc": "2026-10-30T21:40:32.524111+00:00",
+      "operation": "Keyboard control focused and visible before one click",
+      "observation": {
+        "label": "Take back",
+        "tabs": 6,
+        "target": {
+          "activeLabel": "Take back",
+          "rect": {
+            "left": 874,
+            "bottom": 777,
+            "right": 970.140625,
+            "top": 741
+          },
+          "enabled": true,
+          "matches": 1,
+          "focused": true,
+          "visible": true,
+          "clip": {
+            "left": 860,
+            "bottom": 777,
+            "right": 1152,
+            "top": 102
+          }
+        }
+      }
+    },
+    {
+      "phase": "normal-xiangqi",
+      "at_utc": "2026-10-30T21:41:10.728666+00:00",
+      "operation": "Keyboard control focused and visible before one click",
+      "observation": {
+        "label": "Take back",
+        "tabs": 6,
+        "target": {
+          "activeLabel": "Take back",
+          "rect": {
+            "left": 874,
+            "bottom": 777,
+            "right": 970.140625,
+            "top": 741
+          },
+          "enabled": true,
+          "matches": 1,
+          "focused": true,
+          "visible": true,
+          "clip": {
+            "left": 860,
+            "bottom": 777,
+            "right": 1152,
+            "top": 102
+          }
+        }
+      }
+    }
+  ],
+  "same_size_layouts": [
+    {
+      "phase": "normal",
+      "observed_at": "2026-10-30T21:40:03.378413+00:00",
+      "layout": {
+        "boardPanel": {
+          "height": 702,
+          "left": 28,
+          "width": 804,
+          "top": 102
+        },
+        "flipInHeading": true,
+        "game": "chess",
+        "themeIdentity": "mshogi-dark",
+        "positionStatus": "Your turnLive position \u00b7 0 plies",
+        "allSquaresVisible": true,
+        "squareCount": 64,
+        "document": {
+          "height": 38,
+          "left": 218,
+          "width": 571,
+          "top": 21.5
+        },
+        "technicalCollapsed": true,
+        "documentState": "unsaved",
+        "viewport": {
+          "height": 820,
+          "width": 1180
+        },
+        "themes": {
+          ".inspector-switch button[aria-pressed=\"true\"]": {
+            "fontSize": "12px",
+            "color": "rgb(229, 239, 216)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgba(0, 0, 0, 0)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(56, 83, 73)"
+          },
+          ".shell-section-title": {
+            "fontSize": "13px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-file-actions .quiet": {
+            "fontSize": "12px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(86, 113, 111)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-header": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(20, 41, 46)"
+          },
+          ".shell-file-actions .primary": {
+            "fontSize": "12px",
+            "color": "rgb(25, 46, 41)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(213, 228, 189)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgb(213, 228, 189)"
+          },
+          ".shell-card": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(59, 82, 88)",
+            "colorScheme": "dark",
+            "borderRadius": "9px",
+            "backgroundColor": "rgb(27, 46, 53)"
+          },
+          ".game-shell": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(17, 30, 35)"
+          }
+        },
+        "heading": {
+          "height": 80,
+          "left": 28,
+          "width": 804,
+          "top": 102
+        },
+        "documentInHeader": true,
+        "cards": [
+          {
+            "name": "analysis",
+            "rect": {
+              "height": 218,
+              "left": 860,
+              "width": 288,
+              "top": 116
+            }
+          },
+          {
+            "name": "history",
+            "rect": {
+              "height": 236,
+              "left": 860,
+              "width": 288,
+              "top": 348
+            }
+          },
+          {
+            "name": "actions",
+            "rect": {
+              "height": 90,
+              "left": 860,
+              "width": 288,
+              "top": 598
+            }
+          }
+        ],
+        "helpVisible": true,
+        "headerButtons": [
+          "New game",
+          "Save",
+          "Save as\u2026",
+          "Open\u2026"
+        ],
+        "inspectorButtons": [
+          {
+            "label": "Play details",
+            "pressed": "true"
+          },
+          {
+            "label": "Analyze position",
+            "pressed": "false"
+          }
+        ],
+        "footnoteVisible": true,
+        "help": {
+          "height": 18,
+          "left": 28,
+          "width": 804,
+          "top": 756
+        },
+        "slots": [
+          {
+            "name": "upper-player",
+            "rect": {
+              "height": 52,
+              "left": 28,
+              "width": 804,
+              "top": 190
+            }
+          },
+          {
+            "name": "board",
+            "rect": {
+              "height": 462,
+              "left": 28,
+              "width": 804,
+              "top": 242
+            }
+          },
+          {
+            "name": "lower-player",
+            "rect": {
+              "height": 52,
+              "left": 28,
+              "width": 804,
+              "top": 704
+            }
+          },
+          {
+            "name": "footer",
+            "rect": {
+              "height": 48,
+              "left": 28,
+              "width": 804,
+              "top": 756
+            }
+          }
+        ],
+        "header": {
+          "height": 82,
+          "left": 0,
+          "width": 1180,
+          "top": 0
+        },
+        "gameArea": {
+          "height": 614,
+          "left": 28,
+          "width": 804,
+          "top": 190
+        },
+        "sections": [
+          "analysis",
+          "history",
+          "actions"
+        ],
+        "playLimits": "Play limit: depth 2 \u00b7 20000 nodes",
+        "pageWidth": 1180,
+        "sidebar": {
+          "height": 675,
+          "left": 860,
+          "width": 292,
+          "top": 102
+        },
+        "actions": {
+          "height": 34,
+          "left": 811,
+          "width": 341,
+          "top": 23.5
+        }
+      }
+    },
+    {
+      "phase": "normal",
+      "observed_at": "2026-10-30T21:40:04.756292+00:00",
+      "layout": {
+        "boardPanel": {
+          "height": 554,
+          "left": 18,
+          "width": 470,
+          "top": 88
+        },
+        "flipInHeading": true,
+        "game": "chess",
+        "themeIdentity": "mshogi-dark",
+        "positionStatus": "Your turnLive position \u00b7 0 plies",
+        "allSquaresVisible": true,
+        "squareCount": 64,
+        "document": {
+          "height": 38,
+          "left": 195,
+          "width": 227,
+          "top": 18.5
+        },
+        "technicalCollapsed": true,
+        "documentState": "unsaved",
+        "viewport": {
+          "height": 650,
+          "width": 760
+        },
+        "themes": {
+          ".inspector-switch button[aria-pressed=\"true\"]": {
+            "fontSize": "12px",
+            "color": "rgb(229, 239, 216)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgba(0, 0, 0, 0)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(56, 83, 73)"
+          },
+          ".shell-section-title": {
+            "fontSize": "13px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-file-actions .quiet": {
+            "fontSize": "11px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(86, 113, 111)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-header": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(20, 41, 46)"
+          },
+          ".shell-file-actions .primary": {
+            "fontSize": "11px",
+            "color": "rgb(25, 46, 41)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(213, 228, 189)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgb(213, 228, 189)"
+          },
+          ".shell-card": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(59, 82, 88)",
+            "colorScheme": "dark",
+            "borderRadius": "9px",
+            "backgroundColor": "rgb(27, 46, 53)"
+          },
+          ".game-shell": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(17, 30, 35)"
+          }
+        },
+        "heading": {
+          "height": 65,
+          "left": 18,
+          "width": 470,
+          "top": 88
+        },
+        "documentInHeader": true,
+        "cards": [
+          {
+            "name": "analysis",
+            "rect": {
+              "height": 200,
+              "left": 506,
+              "width": 232,
+              "top": 102
+            }
+          },
+          {
+            "name": "history",
+            "rect": {
+              "height": 220,
+              "left": 506,
+              "width": 232,
+              "top": 316
+            }
+          },
+          {
+            "name": "actions",
+            "rect": {
+              "height": 126,
+              "left": 506,
+              "width": 232,
+              "top": 550
+            }
+          }
+        ],
+        "helpVisible": true,
+        "headerButtons": [
+          "New game",
+          "Save",
+          "Save as\u2026",
+          "Open\u2026"
+        ],
+        "inspectorButtons": [
+          {
+            "label": "Play details",
+            "pressed": "true"
+          },
+          {
+            "label": "Analyze position",
+            "pressed": "false"
+          }
+        ],
+        "footnoteVisible": true,
+        "help": {
+          "height": 31,
+          "left": 18,
+          "width": 470,
+          "top": 594
+        },
+        "slots": [
+          {
+            "name": "upper-player",
+            "rect": {
+              "height": 45,
+              "left": 18,
+              "width": 470,
+              "top": 161
+            }
+          },
+          {
+            "name": "board",
+            "rect": {
+              "height": 343,
+              "left": 18,
+              "width": 470,
+              "top": 206
+            }
+          },
+          {
+            "name": "lower-player",
+            "rect": {
+              "height": 45,
+              "left": 18,
+              "width": 470,
+              "top": 549
+            }
+          },
+          {
+            "name": "footer",
+            "rect": {
+              "height": 48,
+              "left": 18,
+              "width": 470,
+              "top": 594
+            }
+          }
+        ],
+        "header": {
+          "height": 76,
+          "left": 0,
+          "width": 760,
+          "top": 0
+        },
+        "gameArea": {
+          "height": 481,
+          "left": 18,
+          "width": 470,
+          "top": 161
+        },
+        "sections": [
+          "analysis",
+          "history",
+          "actions"
+        ],
+        "playLimits": "Play limit: depth 2 \u00b7 20000 nodes",
+        "pageWidth": 760,
+        "sidebar": {
+          "height": 505,
+          "left": 506,
+          "width": 236,
+          "top": 88
+        },
+        "actions": {
+          "height": 31,
+          "left": 444,
+          "width": 288,
+          "top": 22
+        }
+      }
+    },
+    {
+      "phase": "normal-shogi",
+      "observed_at": "2026-10-30T21:40:25.405379+00:00",
+      "layout": {
+        "boardPanel": {
+          "height": 702,
+          "left": 28,
+          "width": 804,
+          "top": 102
+        },
+        "flipInHeading": true,
+        "game": "shogi",
+        "themeIdentity": "mshogi-dark",
+        "positionStatus": "Your turnLive position \u00b7 0 plies",
+        "allSquaresVisible": true,
+        "squareCount": 81,
+        "document": {
+          "height": 38,
+          "left": 218,
+          "width": 571,
+          "top": 21.5
+        },
+        "technicalCollapsed": true,
+        "documentState": "unsaved",
+        "viewport": {
+          "height": 820,
+          "width": 1180
+        },
+        "themes": {
+          ".inspector-switch button[aria-pressed=\"true\"]": {
+            "fontSize": "12px",
+            "color": "rgb(229, 239, 216)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgba(0, 0, 0, 0)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(56, 83, 73)"
+          },
+          ".shell-section-title": {
+            "fontSize": "13px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-file-actions .quiet": {
+            "fontSize": "12px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(86, 113, 111)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-header": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(20, 41, 46)"
+          },
+          ".shell-file-actions .primary": {
+            "fontSize": "12px",
+            "color": "rgb(25, 46, 41)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(213, 228, 189)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgb(213, 228, 189)"
+          },
+          ".shell-card": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(59, 82, 88)",
+            "colorScheme": "dark",
+            "borderRadius": "9px",
+            "backgroundColor": "rgb(27, 46, 53)"
+          },
+          ".game-shell": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(17, 30, 35)"
+          }
+        },
+        "heading": {
+          "height": 80,
+          "left": 28,
+          "width": 804,
+          "top": 102
+        },
+        "documentInHeader": true,
+        "cards": [
+          {
+            "name": "analysis",
+            "rect": {
+              "height": 218,
+              "left": 860,
+              "width": 288,
+              "top": 116
+            }
+          },
+          {
+            "name": "history",
+            "rect": {
+              "height": 236,
+              "left": 860,
+              "width": 288,
+              "top": 348
+            }
+          },
+          {
+            "name": "actions",
+            "rect": {
+              "height": 90,
+              "left": 860,
+              "width": 288,
+              "top": 598
+            }
+          }
+        ],
+        "helpVisible": true,
+        "headerButtons": [
+          "New game",
+          "Save",
+          "Save as\u2026",
+          "Open\u2026"
+        ],
+        "inspectorButtons": [
+          {
+            "label": "Play details",
+            "pressed": "true"
+          },
+          {
+            "label": "Analyze position",
+            "pressed": "false"
+          }
+        ],
+        "footnoteVisible": true,
+        "help": {
+          "height": 18,
+          "left": 28,
+          "width": 804,
+          "top": 756
+        },
+        "slots": [
+          {
+            "name": "upper-player",
+            "rect": {
+              "height": 52,
+              "left": 28,
+              "width": 804,
+              "top": 190
+            }
+          },
+          {
+            "name": "board",
+            "rect": {
+              "height": 462,
+              "left": 28,
+              "width": 804,
+              "top": 242
+            }
+          },
+          {
+            "name": "lower-player",
+            "rect": {
+              "height": 52,
+              "left": 28,
+              "width": 804,
+              "top": 704
+            }
+          },
+          {
+            "name": "footer",
+            "rect": {
+              "height": 48,
+              "left": 28,
+              "width": 804,
+              "top": 756
+            }
+          }
+        ],
+        "header": {
+          "height": 82,
+          "left": 0,
+          "width": 1180,
+          "top": 0
+        },
+        "gameArea": {
+          "height": 614,
+          "left": 28,
+          "width": 804,
+          "top": 190
+        },
+        "sections": [
+          "analysis",
+          "history",
+          "actions"
+        ],
+        "playLimits": "Play limit: depth 2 \u00b7 5000 nodes",
+        "pageWidth": 1180,
+        "sidebar": {
+          "height": 675,
+          "left": 860,
+          "width": 292,
+          "top": 102
+        },
+        "actions": {
+          "height": 34,
+          "left": 811,
+          "width": 341,
+          "top": 23.5
+        }
+      }
+    },
+    {
+      "phase": "normal-shogi",
+      "observed_at": "2026-10-30T21:40:27.656807+00:00",
+      "layout": {
+        "boardPanel": {
+          "height": 554,
+          "left": 18,
+          "width": 470,
+          "top": 88
+        },
+        "flipInHeading": true,
+        "game": "shogi",
+        "themeIdentity": "mshogi-dark",
+        "positionStatus": "Your turnLive position \u00b7 0 plies",
+        "allSquaresVisible": true,
+        "squareCount": 81,
+        "document": {
+          "height": 38,
+          "left": 195,
+          "width": 227,
+          "top": 18.5
+        },
+        "technicalCollapsed": true,
+        "documentState": "unsaved",
+        "viewport": {
+          "height": 650,
+          "width": 760
+        },
+        "themes": {
+          ".inspector-switch button[aria-pressed=\"true\"]": {
+            "fontSize": "12px",
+            "color": "rgb(229, 239, 216)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgba(0, 0, 0, 0)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(56, 83, 73)"
+          },
+          ".shell-section-title": {
+            "fontSize": "13px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-file-actions .quiet": {
+            "fontSize": "11px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(86, 113, 111)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-header": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(20, 41, 46)"
+          },
+          ".shell-file-actions .primary": {
+            "fontSize": "11px",
+            "color": "rgb(25, 46, 41)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(213, 228, 189)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgb(213, 228, 189)"
+          },
+          ".shell-card": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(59, 82, 88)",
+            "colorScheme": "dark",
+            "borderRadius": "9px",
+            "backgroundColor": "rgb(27, 46, 53)"
+          },
+          ".game-shell": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(17, 30, 35)"
+          }
+        },
+        "heading": {
+          "height": 65,
+          "left": 18,
+          "width": 470,
+          "top": 88
+        },
+        "documentInHeader": true,
+        "cards": [
+          {
+            "name": "analysis",
+            "rect": {
+              "height": 200,
+              "left": 506,
+              "width": 232,
+              "top": 102
+            }
+          },
+          {
+            "name": "history",
+            "rect": {
+              "height": 220,
+              "left": 506,
+              "width": 232,
+              "top": 316
+            }
+          },
+          {
+            "name": "actions",
+            "rect": {
+              "height": 126,
+              "left": 506,
+              "width": 232,
+              "top": 550
+            }
+          }
+        ],
+        "helpVisible": true,
+        "headerButtons": [
+          "New game",
+          "Save",
+          "Save as\u2026",
+          "Open\u2026"
+        ],
+        "inspectorButtons": [
+          {
+            "label": "Play details",
+            "pressed": "true"
+          },
+          {
+            "label": "Analyze position",
+            "pressed": "false"
+          }
+        ],
+        "footnoteVisible": true,
+        "help": {
+          "height": 18,
+          "left": 18,
+          "width": 470,
+          "top": 594
+        },
+        "slots": [
+          {
+            "name": "upper-player",
+            "rect": {
+              "height": 45,
+              "left": 18,
+              "width": 470,
+              "top": 161
+            }
+          },
+          {
+            "name": "board",
+            "rect": {
+              "height": 343,
+              "left": 18,
+              "width": 470,
+              "top": 206
+            }
+          },
+          {
+            "name": "lower-player",
+            "rect": {
+              "height": 45,
+              "left": 18,
+              "width": 470,
+              "top": 549
+            }
+          },
+          {
+            "name": "footer",
+            "rect": {
+              "height": 48,
+              "left": 18,
+              "width": 470,
+              "top": 594
+            }
+          }
+        ],
+        "header": {
+          "height": 76,
+          "left": 0,
+          "width": 760,
+          "top": 0
+        },
+        "gameArea": {
+          "height": 481,
+          "left": 18,
+          "width": 470,
+          "top": 161
+        },
+        "sections": [
+          "analysis",
+          "history",
+          "actions"
+        ],
+        "playLimits": "Play limit: depth 2 \u00b7 5000 nodes",
+        "pageWidth": 760,
+        "sidebar": {
+          "height": 505,
+          "left": 506,
+          "width": 236,
+          "top": 88
+        },
+        "actions": {
+          "height": 31,
+          "left": 444,
+          "width": 288,
+          "top": 22
+        }
+      }
+    },
+    {
+      "phase": "normal-xiangqi",
+      "observed_at": "2026-10-30T21:41:06.191842+00:00",
+      "layout": {
+        "boardPanel": {
+          "height": 702,
+          "left": 28,
+          "width": 804,
+          "top": 102
+        },
+        "flipInHeading": true,
+        "game": "xiangqi",
+        "themeIdentity": "mshogi-dark",
+        "positionStatus": "Your turnLive position \u00b7 0 plies",
+        "allSquaresVisible": true,
+        "squareCount": 90,
+        "document": {
+          "height": 38,
+          "left": 218,
+          "width": 571,
+          "top": 21.5
+        },
+        "technicalCollapsed": true,
+        "documentState": "unsaved",
+        "viewport": {
+          "height": 820,
+          "width": 1180
+        },
+        "themes": {
+          ".inspector-switch button[aria-pressed=\"true\"]": {
+            "fontSize": "12px",
+            "color": "rgb(229, 239, 216)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgba(0, 0, 0, 0)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(56, 83, 73)"
+          },
+          ".shell-section-title": {
+            "fontSize": "13px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-file-actions .quiet": {
+            "fontSize": "12px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(86, 113, 111)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-header": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(20, 41, 46)"
+          },
+          ".shell-file-actions .primary": {
+            "fontSize": "12px",
+            "color": "rgb(25, 46, 41)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(213, 228, 189)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgb(213, 228, 189)"
+          },
+          ".shell-card": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(59, 82, 88)",
+            "colorScheme": "dark",
+            "borderRadius": "9px",
+            "backgroundColor": "rgb(27, 46, 53)"
+          },
+          ".game-shell": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(17, 30, 35)"
+          }
+        },
+        "heading": {
+          "height": 80,
+          "left": 28,
+          "width": 804,
+          "top": 102
+        },
+        "documentInHeader": true,
+        "cards": [
+          {
+            "name": "analysis",
+            "rect": {
+              "height": 218,
+              "left": 860,
+              "width": 288,
+              "top": 116
+            }
+          },
+          {
+            "name": "history",
+            "rect": {
+              "height": 236,
+              "left": 860,
+              "width": 288,
+              "top": 348
+            }
+          },
+          {
+            "name": "actions",
+            "rect": {
+              "height": 90,
+              "left": 860,
+              "width": 288,
+              "top": 598
+            }
+          }
+        ],
+        "helpVisible": true,
+        "headerButtons": [
+          "New game",
+          "Save",
+          "Save as\u2026",
+          "Open\u2026"
+        ],
+        "inspectorButtons": [
+          {
+            "label": "Play details",
+            "pressed": "true"
+          },
+          {
+            "label": "Analyze position",
+            "pressed": "false"
+          }
+        ],
+        "footnoteVisible": true,
+        "help": {
+          "height": 18,
+          "left": 28,
+          "width": 804,
+          "top": 756
+        },
+        "slots": [
+          {
+            "name": "upper-player",
+            "rect": {
+              "height": 52,
+              "left": 28,
+              "width": 804,
+              "top": 190
+            }
+          },
+          {
+            "name": "board",
+            "rect": {
+              "height": 462,
+              "left": 28,
+              "width": 804,
+              "top": 242
+            }
+          },
+          {
+            "name": "lower-player",
+            "rect": {
+              "height": 52,
+              "left": 28,
+              "width": 804,
+              "top": 704
+            }
+          },
+          {
+            "name": "footer",
+            "rect": {
+              "height": 48,
+              "left": 28,
+              "width": 804,
+              "top": 756
+            }
+          }
+        ],
+        "header": {
+          "height": 82,
+          "left": 0,
+          "width": 1180,
+          "top": 0
+        },
+        "gameArea": {
+          "height": 614,
+          "left": 28,
+          "width": 804,
+          "top": 190
+        },
+        "sections": [
+          "analysis",
+          "history",
+          "actions"
+        ],
+        "playLimits": "Play limit: depth 1 \u00b7 128 nodes",
+        "pageWidth": 1180,
+        "sidebar": {
+          "height": 675,
+          "left": 860,
+          "width": 292,
+          "top": 102
+        },
+        "actions": {
+          "height": 34,
+          "left": 811,
+          "width": 341,
+          "top": 23.5
+        }
+      }
+    },
+    {
+      "phase": "normal-xiangqi",
+      "observed_at": "2026-10-30T21:41:07.623956+00:00",
+      "layout": {
+        "boardPanel": {
+          "height": 554,
+          "left": 18,
+          "width": 470,
+          "top": 88
+        },
+        "flipInHeading": true,
+        "game": "xiangqi",
+        "themeIdentity": "mshogi-dark",
+        "positionStatus": "Your turnLive position \u00b7 0 plies",
+        "allSquaresVisible": true,
+        "squareCount": 90,
+        "document": {
+          "height": 38,
+          "left": 195,
+          "width": 227,
+          "top": 18.5
+        },
+        "technicalCollapsed": true,
+        "documentState": "unsaved",
+        "viewport": {
+          "height": 650,
+          "width": 760
+        },
+        "themes": {
+          ".inspector-switch button[aria-pressed=\"true\"]": {
+            "fontSize": "12px",
+            "color": "rgb(229, 239, 216)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgba(0, 0, 0, 0)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(56, 83, 73)"
+          },
+          ".shell-section-title": {
+            "fontSize": "13px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-file-actions .quiet": {
+            "fontSize": "11px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(86, 113, 111)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-header": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(20, 41, 46)"
+          },
+          ".shell-file-actions .primary": {
+            "fontSize": "11px",
+            "color": "rgb(25, 46, 41)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(213, 228, 189)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgb(213, 228, 189)"
+          },
+          ".shell-card": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(59, 82, 88)",
+            "colorScheme": "dark",
+            "borderRadius": "9px",
+            "backgroundColor": "rgb(27, 46, 53)"
+          },
+          ".game-shell": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(17, 30, 35)"
+          }
+        },
+        "heading": {
+          "height": 65,
+          "left": 18,
+          "width": 470,
+          "top": 88
+        },
+        "documentInHeader": true,
+        "cards": [
+          {
+            "name": "analysis",
+            "rect": {
+              "height": 200,
+              "left": 506,
+              "width": 232,
+              "top": 102
+            }
+          },
+          {
+            "name": "history",
+            "rect": {
+              "height": 220,
+              "left": 506,
+              "width": 232,
+              "top": 316
+            }
+          },
+          {
+            "name": "actions",
+            "rect": {
+              "height": 126,
+              "left": 506,
+              "width": 232,
+              "top": 550
+            }
+          }
+        ],
+        "helpVisible": true,
+        "headerButtons": [
+          "New game",
+          "Save",
+          "Save as\u2026",
+          "Open\u2026"
+        ],
+        "inspectorButtons": [
+          {
+            "label": "Play details",
+            "pressed": "true"
+          },
+          {
+            "label": "Analyze position",
+            "pressed": "false"
+          }
+        ],
+        "footnoteVisible": true,
+        "help": {
+          "height": 18,
+          "left": 18,
+          "width": 470,
+          "top": 594
+        },
+        "slots": [
+          {
+            "name": "upper-player",
+            "rect": {
+              "height": 45,
+              "left": 18,
+              "width": 470,
+              "top": 161
+            }
+          },
+          {
+            "name": "board",
+            "rect": {
+              "height": 343,
+              "left": 18,
+              "width": 470,
+              "top": 206
+            }
+          },
+          {
+            "name": "lower-player",
+            "rect": {
+              "height": 45,
+              "left": 18,
+              "width": 470,
+              "top": 549
+            }
+          },
+          {
+            "name": "footer",
+            "rect": {
+              "height": 48,
+              "left": 18,
+              "width": 470,
+              "top": 594
+            }
+          }
+        ],
+        "header": {
+          "height": 76,
+          "left": 0,
+          "width": 760,
+          "top": 0
+        },
+        "gameArea": {
+          "height": 481,
+          "left": 18,
+          "width": 470,
+          "top": 161
+        },
+        "sections": [
+          "analysis",
+          "history",
+          "actions"
+        ],
+        "playLimits": "Play limit: depth 1 \u00b7 128 nodes",
+        "pageWidth": 760,
+        "sidebar": {
+          "height": 505,
+          "left": 506,
+          "width": 236,
+          "top": 88
+        },
+        "actions": {
+          "height": 31,
+          "left": 444,
+          "width": 288,
+          "top": 22
+        }
+      }
+    }
+  ],
+  "comparison_captures": [
+    {
+      "path": "/private/tmp/r4-independent-final-linux/gui-evidence/normal-initial-chess-normal-size.webview.png",
+      "sha256": "ec0a8cee25496e88a3eb39ba006acb19a0f24a3638ca423c4fbed993febd7ad2",
+      "repository_copy": "docs/review/evidence/msh119/linux/normal-initial-chess-normal-size.webview.png"
+    },
+    {
+      "path": "/private/tmp/r4-independent-final-linux/gui-evidence/normal-shogi-initial-sente.webview.png",
+      "sha256": "fd74c20b587163be7f7fcdd67caf86a0a09aac56483fca0745c35cdda2b10c2e",
+      "repository_copy": "docs/review/evidence/msh119/linux/normal-shogi-initial-sente.webview.png"
+    },
+    {
+      "path": "/private/tmp/r4-independent-final-linux/gui-evidence/normal-xiangqi-initial-red-normal-size.webview.png",
+      "sha256": "8eabf6120f0eba31523211d0df69726a47e47c84463346d391c6cc9aff8148cb",
+      "repository_copy": "docs/review/evidence/msh119/linux/normal-xiangqi-initial-red-normal-size.webview.png"
+    },
+    {
+      "path": "/private/tmp/r4-independent-final-linux/gui-evidence/normal-initial-chess-minimum-size.webview.png",
+      "sha256": "5a1032fed737587e872ed4f4e378d7bbeae9efb461c64587fa828cd3f6993579",
+      "repository_copy": "docs/review/evidence/msh119/linux/normal-initial-chess-minimum-size.webview.png"
+    },
+    {
+      "path": "/private/tmp/r4-independent-final-linux/gui-evidence/normal-shogi-minimum-size.webview.png",
+      "sha256": "3afa739c5f2eddb705a64e3f68cf2ad32bc8a8b7b88461b04e7f901234ac4d8b",
+      "repository_copy": "docs/review/evidence/msh119/linux/normal-shogi-minimum-size.webview.png"
+    },
+    {
+      "path": "/private/tmp/r4-independent-final-linux/gui-evidence/normal-xiangqi-initial-red-minimum-size.webview.png",
+      "sha256": "6080d62f627f086489269eb19b3e43645007c0adebc788cce7f72d57cff796a0",
+      "repository_copy": "docs/review/evidence/msh119/linux/normal-xiangqi-initial-red-minimum-size.webview.png"
+    }
+  ],
+  "visual_verdict": "PASS. Same header/document controls/theme, stable sidebar section order and board/player/footer regions across Chess/Shogi/Xiangqi; full native boards/art/hands/intersections visible at1180x820 and760x650. Sidebar scroll remains deliberate; actual real keyboard access to Take back is now proven.",
+  "limitations": [
+    "Native X11/WebKit actual process/window/DOM evidence; no Linux screen-reader accessibility tree claim.",
+    "Final Rust CI rerun remains separate from this passing Desktop artifact.",
+    "Exact comparison captures use actual normal installed package. macOS separately labeled QA comparison provenance remains distinct."
+  ]
+}

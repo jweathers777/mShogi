@@ -117,7 +117,7 @@ pub(crate) enum NativeWork {
     Admit {
         candidate: Box<ShogiSession>,
         command: Option<SessionOperation>,
-        response: Option<Box<SharedResponse>>,
+        response: Option<Box<ExecutionObservation>>,
         replacement: bool,
         floor: u64,
     },
@@ -272,7 +272,8 @@ fn replay_work(state: &ShogiSession) -> Result<(), String> {
         });
     }
     for o in &state.observations {
-        work = work.saturating_add(o.response.context.game.event_count() * NATIVE_EVENT_WORK + 8);
+        work =
+            work.saturating_add(o.observation.context.game.event_count() * NATIVE_EVENT_WORK + 8);
     }
     if work > MAX_REPLAY_ACTIONS {
         Err(capacity(
@@ -392,12 +393,17 @@ impl ShogiSession {
         }
         Ok(analysis)
     }
-    fn apply_response(&mut self, response: SharedResponse) -> Result<(), String> {
-        if serde_json::to_vec(&response.context)
+    fn apply_response(&mut self, response: ExecutionObservation) -> Result<(), String> {
+        if serde_json::to_vec(&execution_request(response.context.clone()))
             .map_err(bounded)?
             .len()
             > mshogi_engine::MAX_REQUEST_BYTES
-            || serde_json::to_vec(&response).map_err(bounded)?.len()
+            || serde_json::to_vec(&ExecutionResponse {
+                protocol: mshogi_engine::PROTOCOL_VERSION,
+                observation: response.clone(),
+            })
+            .map_err(bounded)?
+            .len()
                 > mshogi_engine::MAX_RESPONSE_BYTES
         {
             return Err(capacity(
@@ -410,7 +416,10 @@ impl ShogiSession {
         if self.observations.len() >= MAX_ARCHIVE_OBSERVATIONS {
             return Err(capacity("No observation slot remains."));
         }
-        let analysis = matches!(response.context.purpose, SharedPurpose::MoveAnalysis { .. });
+        let analysis = matches!(
+            response.context.purpose,
+            ExecutionPurpose::MoveAnalysis { .. }
+        );
         let expected = if analysis {
             let (game, limits) = self
                 .analysis_intent
@@ -423,7 +432,7 @@ impl ShogiSession {
             }
             game.clone()
         } else {
-            if !matches!(response.context.purpose, SharedPurpose::EngineTurn {})
+            if !matches!(response.context.purpose, ExecutionPurpose::EngineTurn {})
                 || self.paused
                 || self.viewed.is_some()
                 || self.game.conclusion().is_some()
@@ -446,7 +455,7 @@ impl ShogiSession {
             );
         }
         let mut probe = self.selected().clone();
-        if let SharedPurpose::MoveAnalysis { target } = &response.context.purpose {
+        if let ExecutionPurpose::MoveAnalysis { target } = &response.context.purpose {
             if target.turn != NativeSide::Shogi(probe.position().side_to_move()) {
                 return Err(
                     "Corrupt observation: analysis side disagrees with the exact native target."
@@ -464,8 +473,8 @@ impl ShogiSession {
             );
         }
         let result = match &response.result {
-            SharedResult::Shogi { result } => Some(result),
-            SharedResult::Failure { .. } => None,
+            ExecutionResult::Shogi { result } => Some(result),
+            ExecutionResult::Failure { .. } => None,
             _ => return Err("Wrong game: chess observation in a shogi document.".into()),
         };
         let mut pv_error = None;
@@ -495,17 +504,17 @@ impl ShogiSession {
         }
         let mut error = None;
         self.phase = match &response.result {
-            SharedResult::Failure { failure } => {
+            ExecutionResult::Failure { failure } => {
                 self.diagnostic = Some(failure.message.clone());
                 EnginePhase::Failed
             }
-            SharedResult::Shogi {
+            ExecutionResult::Shogi {
                 result: ShogiResult::Incomplete { .. },
             } => EnginePhase::Incomplete,
-            SharedResult::Shogi {
+            ExecutionResult::Shogi {
                 result: ShogiResult::Finished { .. },
             } => EnginePhase::Idle,
-            SharedResult::Shogi {
+            ExecutionResult::Shogi {
                 result: ShogiResult::Choice { choice, .. },
             } => {
                 if !analysis {
@@ -544,7 +553,7 @@ impl ShogiSession {
             self.diagnostic = Some(e.clone());
         }
         let observation = PresentedObservation {
-            response,
+            observation: response,
             application_error: error,
             historical: false,
         };
@@ -620,7 +629,7 @@ fn parse_shogi_archive(
         * NATIVE_EVENT_WORK;
     #[derive(Deserialize)]
     struct ObservationProbe {
-        response: Box<RawValue>,
+        observation: Box<RawValue>,
     }
     #[derive(Deserialize)]
     struct ResponseProbe {
@@ -634,7 +643,7 @@ fn parse_shogi_archive(
         persistence::check(stopped)?;
         let observation: ObservationProbe = serde_json::from_str(text.get()).map_err(bounded)?;
         let response: ResponseProbe =
-            serde_json::from_str(observation.response.get()).map_err(bounded)?;
+            serde_json::from_str(observation.observation.get()).map_err(bounded)?;
         let context: ContextProbe =
             serde_json::from_str(response.context.get()).map_err(bounded)?;
         work = work.saturating_add(raw_event_count(context.game.get())? * NATIVE_EVENT_WORK + 8);
@@ -750,27 +759,27 @@ fn decode_shogi(
                 .get(observation)
                 .ok_or("Corrupt missing observation.")?;
             work = work.saturating_add(
-                archived.response.context.game.event_count() * NATIVE_EVENT_WORK + 8,
+                archived.observation.context.game.event_count() * NATIVE_EVENT_WORK + 8,
             );
             if work > MAX_REPLAY_ACTIONS {
                 return Err(capacity("Saved observations exceed16,000 replay actions."));
             }
             if [
-                archived.response.context.request_id,
-                archived.response.context.session_version,
-                archived.response.context.process_generation,
+                archived.observation.context.request_id,
+                archived.observation.context.session_version,
+                archived.observation.context.process_generation,
             ]
             .iter()
             .any(|id| *id > saved.retired_execution_floor)
             {
                 return Err("Corrupt observation: identity exceeds retired evidence floor.".into());
             }
-            if let SharedPurpose::MoveAnalysis { target } = &archived.response.context.purpose
+            if let ExecutionPurpose::MoveAnalysis { target } = &archived.observation.context.purpose
                 && target.selection_id > saved.retired_execution_floor
             {
                 return Err("Corrupt observation selection exceeds retired floor.".into());
             }
-            state.apply_response(archived.response.clone())?;
+            state.apply_response(archived.observation.clone())?;
             let admitted = state.observations.last_mut().unwrap();
             if admitted.application_error != archived.application_error {
                 return Err("Corrupt observation application-admission evidence.".into());
@@ -1171,7 +1180,7 @@ impl DesktopController {
         &mut self,
         candidate: ShogiSession,
         command: Option<SessionOperation>,
-        response: Option<SharedResponse>,
+        response: Option<ExecutionObservation>,
         replacement: bool,
     ) -> Result<AdmissionReceipt, String> {
         self.session.ensure_capacity()?;

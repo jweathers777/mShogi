@@ -3,7 +3,7 @@ use mshogi_core::chess::*;
 use mshogi_desktop_session::{
     AnalysisOperation, DesktopCommand, DesktopController, DesktopSession, IoPhase,
 };
-use mshogi_engine::{EngineResponse, ReachabilityTarget};
+use mshogi_engine::{ExecutionResponse, ReachabilityTarget};
 fn main() {
     let directory = std::path::PathBuf::from(
         std::env::args_os()
@@ -129,7 +129,7 @@ fn main() {
         input.push(b'\n');
         let mut output = Vec::new();
         mshogi_engine::serve_once(std::io::Cursor::new(input), &mut output).unwrap();
-        let response: EngineResponse = serde_json::from_slice(&output).unwrap();
+        let response: ExecutionResponse = serde_json::from_slice(&output).unwrap();
         assert!(session.accept_analysis(response));
         std::fs::write(
             directory.join(format!("{name}.json")),

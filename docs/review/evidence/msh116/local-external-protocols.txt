@@ -1,0 +1,50 @@
+   Compiling mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
+   Compiling mshogi-console v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-console)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.56s
+     Running tests/uci.rs (target/debug/deps/uci-ef193db622803648)
+
+running 11 tests
+test infinite_search_failure_exits_immediately_without_waiting_for_stop ... ok
+test quit_terminates_during_unbounded_search_without_waiting_for_join ... ok
+test descendant_search_representation_failure_exits_without_fabricated_result ... ok
+test same_fen_with_different_known_repetition_history_changes_search ... ok
+test handshake_readiness_and_live_stop_keep_stdout_protocol_only ... ok
+test invalid_input_and_unsupported_controls_recover_without_stdout_diagnostics ... ok
+test movetime_and_increment_clock_budgets_stop_live_search ... ok
+test optional_claim_channel_limitation_and_recorded_auto_policy_are_explicit ... ok
+test deterministic_depth_and_node_limits_return_legal_bestmoves ... ok
+test infinite_terminal_waits_for_stop_and_new_position_suppresses_stale_output ... ok
+test position_replays_history_and_invalid_sequence_is_atomic ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+
+     Running tests/usi.rs (target/debug/deps/usi-86888aa98ef252c7)
+
+running 11 tests
+test checked_native_no_action_root_has_the_protocol_mandated_resignation ... ok
+test supplied_history_changes_search_without_invented_pre_root_history ... ok
+test tsume_request_has_standard_notimplemented_reply_without_native_work ... ok
+test malformed_positions_controls_and_options_are_atomic_and_explicit ... ok
+test native_terminal_handling_does_not_turn_draw_or_nonmate_into_resignation ... ok
+test promotion_drop_declaration_and_pv_mapping_are_native ... ok
+test same_context_request_replacement_and_failed_position_retire_held_results ... ok
+test zero_or_insufficient_work_never_becomes_resignation_or_fallback ... ok
+test stop_keeps_completed_result_and_readiness_stays_responsive ... ok
+test replacement_newgame_gameover_and_quit_retire_old_observations ... ok
+test handshake_options_readiness_defaults_alias_and_incompatible_selection ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.63s
+
+     Running tests/xiangqi_uci.rs (target/debug/deps/xiangqi_uci-47913240f6e0d521)
+
+running 7 tests
+test unsupported_controls_options_and_oversized_input_are_explicit_and_drained ... ok
+test infinite_is_still_bounded_and_stop_publishes_only_completed_work ... ok
+test independent_stalemate_tactic_and_atomic_invalid_position_for_both_sides ... ok
+test zero_work_and_actual_terminal_never_invent_a_bestmove_or_score ... ok
+test same_board_history_warning_changes_real_engine_choice ... ok
+test position_replacement_retires_held_result_and_quit_cancels_work ... ok
+test real_handshake_explicit_selection_and_measured_limits ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.76s
+

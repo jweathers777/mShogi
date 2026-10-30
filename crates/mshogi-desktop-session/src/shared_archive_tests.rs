@@ -104,16 +104,19 @@ fn open(c: &mut DesktopController, p: &std::path::Path) -> Result<SharedSnapshot
 fn record(c: &DesktopController) -> s::GameRecord {
     s::GameRecord::from_game(&c.shared.shogi.as_ref().unwrap().game)
 }
-fn run(context: SharedRequest) -> SharedResponse {
+fn run(context: ExecutionContext) -> ExecutionObservation {
     let mut bytes = vec![];
     mshogi_engine::serve_once(
-        std::io::Cursor::new(format!("{}\n", serde_json::to_string(&context).unwrap())),
+        std::io::Cursor::new(format!(
+            "{}\n",
+            serde_json::to_string(&execution_request(context.clone())).unwrap()
+        )),
         &mut bytes,
     )
     .unwrap();
-    serde_json::from_slice(&bytes).unwrap()
+    decode_execution_observation(&bytes)
 }
-fn analyze(c: &mut DesktopController) -> SharedResponse {
+fn analyze(c: &mut DesktopController) -> ExecutionObservation {
     send(
         c,
         SessionOperation::Analyze {
@@ -126,7 +129,7 @@ fn analyze(c: &mut DesktopController) -> SharedResponse {
     .unwrap();
     let context = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
     let response = run(context);
-    assert!(c.accept_shared(response.clone()));
+    assert!(c.accept_observation(response.clone()));
     settle(c);
     response
 }
@@ -292,7 +295,7 @@ fn observations_keep_exact_retired_branch_targets_and_never_resume_on_open() {
     .unwrap();
     let engine_request = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
     let engine = run(engine_request);
-    assert!(c.accept_shared(engine));
+    assert!(c.accept_observation(engine));
     settle(&mut c);
     let analysis = analyze(&mut c);
     send(&mut c, SessionOperation::Undo {}).unwrap();
@@ -314,7 +317,7 @@ fn observations_keep_exact_retired_branch_targets_and_never_resume_on_open() {
         .unwrap()
         .observations
         .iter()
-        .map(|o| o.response.clone())
+        .map(|o| o.observation.clone())
         .collect();
     let file = path("branches");
     save(&mut c, &file);
@@ -324,17 +327,17 @@ fn observations_keep_exact_retired_branch_targets_and_never_resume_on_open() {
     assert!(opened.paused);
     assert!(opened.analysis.is_none());
     assert!(c.runtime_floor() > runtime);
-    assert!(!c.accept_shared(analysis));
+    assert!(!c.accept_observation(analysis));
     let restored = &c.shared.shogi.as_ref().unwrap().observations;
     assert_eq!(
         restored
             .iter()
-            .map(|o| o.response.clone())
+            .map(|o| o.observation.clone())
             .collect::<Vec<_>>(),
         responses
     );
     assert!(restored.iter().all(|o| o.historical));
-    assert!(restored[1].response.context.game.event_count() > expected.event_count());
+    assert!(restored[1].observation.context.game.event_count() > expected.event_count());
     fs::remove_file(file).unwrap();
 }
 #[test]
@@ -349,7 +352,7 @@ fn pending_runtime_is_not_archived_and_resume_allocates_fresh_identity() {
     assert!(!bytes.contains("\"pending\""));
     open(&mut c, &file).unwrap();
     assert!(c.shared.shogi.as_ref().unwrap().pending.is_none());
-    assert!(!c.accept_shared(run(old.clone())));
+    assert!(!c.accept_observation(run(old.clone())));
     send(&mut c, SessionOperation::Resume {}).unwrap();
     let fresh = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
     assert!(fresh.request_id > old.request_id);
@@ -442,14 +445,14 @@ fn wrong_native_game_and_semantic_journal_or_observation_tampering_reject() {
     });
     assert!(decode_shogi(&serialize(&wrong), &mut || false).is_err());
     let mut wrong: ShogiArchive = serde_json::from_str(&serialize(&payload)).unwrap();
-    if let SharedPurpose::MoveAnalysis { target } =
-        &mut wrong.observations[0].response.context.purpose
+    if let ExecutionPurpose::MoveAnalysis { target } =
+        &mut wrong.observations[0].observation.context.purpose
     {
         target.turn = NativeSide::Shogi(s::Side::Gote);
     }
     assert!(decode_shogi(&serialize(&wrong), &mut || false).is_err());
     let mut wrong: ShogiArchive = serde_json::from_str(&serialize(&payload)).unwrap();
-    wrong.observations[0].response.context.limits.nodes += 1;
+    wrong.observations[0].observation.context.limits.nodes += 1;
     assert!(decode_shogi(&serialize(&wrong), &mut || false).is_err());
     let mut wrong: ShogiArchive = serde_json::from_str(&serialize(&payload)).unwrap();
     wrong.settings.orientation = s::Side::Gote;
@@ -669,7 +672,7 @@ fn persisted_preferences_keep_exact_pending_execution_and_original_limits() {
         c.shared.shogi.as_ref().unwrap().pending.as_ref(),
         Some(&request)
     );
-    assert!(c.accept_shared(run(request)));
+    assert!(c.accept_observation(run(request)));
     settle(&mut c);
     let file = path("settings");
     save(&mut c, &file);
@@ -677,7 +680,7 @@ fn persisted_preferences_keep_exact_pending_execution_and_original_limits() {
     let state = c.shared.shogi.as_ref().unwrap();
     assert_eq!(state.settings, settings);
     assert_eq!(
-        state.observations[0].response.context.limits,
+        state.observations[0].observation.context.limits,
         WorkLimits { depth: 1, nodes: 0 }
     );
     assert!(state.observations[0].historical);
@@ -700,7 +703,10 @@ fn raw_nested_observation_fields_remain_strict_and_identity_errors_are_explicit(
             "\"application_error\":null",
             "\"application_error\":null,\"application_error\":null",
         ),
-        ("\"protocol\":3", "\"protocol\":3,\"protocol\":3"),
+        (
+            "\"schema_version\":1",
+            "\"schema_version\":1,\"schema_version\":1",
+        ),
         ("\"nodes\":1000", "\"nodes\":1000,\"unknown\":true"),
         ("\"request_id\":", "\"surprise\":null,\"request_id\":"),
     ] {
@@ -776,7 +782,7 @@ fn product_new_game_archive_reopens_native_human_orientation_stopped_and_fresh()
     }
     assert!(c.shared.shogi.as_ref().unwrap().pending.is_none());
     let old_response = run(pending);
-    assert!(!c.accept_shared(old_response));
+    assert!(!c.accept_observation(old_response));
     send(&mut c, SessionOperation::Resume {}).unwrap();
     assert!(
         c.shared
@@ -790,4 +796,29 @@ fn product_new_game_archive_reopens_native_human_orientation_stopped_and_fresh()
             > before.token.version
     );
     std::fs::remove_file(file).unwrap();
+}
+
+#[test]
+fn durable_observations_have_a_semantic_schema_without_transport_framing() {
+    let mut c = controller();
+    replace(&mut c, &s::Game::new(), s::Side::Sente);
+    let accepted = analyze(&mut c);
+    let payload = archive(c.shared.shogi.as_ref().unwrap(), c.runtime_floor());
+    let encoded = serde_json::to_value(&payload).unwrap();
+    let observation = &encoded["observations"][0]["observation"];
+    assert_eq!(observation["schema_version"], OBSERVATION_SCHEMA_VERSION);
+    assert!(observation.get("protocol").is_none());
+    assert!(observation["context"].get("protocol").is_none());
+    assert_eq!(
+        observation["context"],
+        serde_json::to_value(&accepted.context).unwrap()
+    );
+    for schema in [0, OBSERVATION_SCHEMA_VERSION + 1] {
+        let mut wrong = encoded.clone();
+        wrong["observations"][0]["observation"]["schema_version"] = schema.into();
+        assert!(decode_shogi(&wrong.to_string(), &mut || false).is_err());
+    }
+    let mut framed = encoded;
+    framed["observations"][0]["observation"]["protocol"] = mshogi_engine::PROTOCOL_VERSION.into();
+    assert!(decode_shogi(&framed.to_string(), &mut || false).is_err());
 }

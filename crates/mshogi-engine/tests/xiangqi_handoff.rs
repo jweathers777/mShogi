@@ -513,9 +513,8 @@ fn strict_payload_context_and_transport_preserve_identity_through_real_execution
         resource.accept(&reopened, &prior),
         Err(x::GameError::StaleContext)
     );
-    let context = SharedRequest {
-        protocol: SHARED_PROTOCOL_VERSION,
-        purpose: SharedPurpose::EngineTurn {},
+    let context = ExecutionContext {
+        purpose: ExecutionPurpose::EngineTurn {},
         request_id: 41,
         session_version: 7,
         process_generation: 3,
@@ -526,16 +525,26 @@ fn strict_payload_context_and_transport_preserve_identity_through_real_execution
         },
     };
     let encoded = serde_json::to_string(&context).unwrap();
-    let parsed: SharedRequest = serde_json::from_str(&encoded).unwrap();
+    let parsed: ExecutionContext = serde_json::from_str(&encoded).unwrap();
     assert_eq!(parsed, context);
     assert_eq!(execution_capabilities(GameKind::Xiangqi).len(), 2);
     let mut response = vec![];
-    serve_once(Cursor::new(format!("{encoded}\n")), &mut response).unwrap();
-    let reply: SharedResponse = serde_json::from_slice(&response).unwrap();
+    let submitted = ExecutionRequest {
+        protocol: PROTOCOL_VERSION,
+        context: context.clone(),
+    };
+    serve_once(
+        Cursor::new(format!("{}\n", serde_json::to_string(&submitted).unwrap())),
+        &mut response,
+    )
+    .unwrap();
+    let reply = serde_json::from_slice::<ExecutionResponse>(&response)
+        .unwrap()
+        .observation;
     assert!(reply.matches(&context));
     assert!(matches!(
         reply.result,
-        SharedResult::Xiangqi {
+        ExecutionResult::Xiangqi {
             result: XiangqiResult::Choice { .. }
         }
     ));

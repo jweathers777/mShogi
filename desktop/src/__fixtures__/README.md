@@ -11,6 +11,16 @@ Regenerate from the repository root:
 cargo run --locked -p mshogi-desktop-session --example write_frontend_fixtures -- desktop/src/__fixtures__
 ```
 
+Verification-only capacity and terminal-state fixtures also use the actual generator:
+
+```sh
+cargo run --locked -p mshogi-desktop-session --features desktop-verification --example write_frontend_fixtures -- desktop/src/__fixtures__
+```
+
+MSH-116 regenerates durable observations under schema1 without a transport wrapper.
+The verification generator also refreshes native Take back capabilities; those
+are existing native behavior, not a new frontend rule or feature.
+
 Only frontend tests import these JSON files. Vite production imports do not
 reference them, and the native fixture generator is never a bundled sidecar.
 

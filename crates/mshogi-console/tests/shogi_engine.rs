@@ -17,24 +17,26 @@ fn bridge() -> EngineBridge {
     )
     .unwrap()
 }
-fn request(game: &Game, id: u64) -> SharedRequest {
-    SharedRequest {
-        protocol: SHARED_PROTOCOL_VERSION,
-        purpose: SharedPurpose::EngineTurn {},
-        request_id: id,
-        session_version: id,
-        process_generation: id,
-        game: CanonicalRecord::shogi(GameRecord::from_game(game)),
-        limits: WorkLimits {
-            depth: search::DEFAULT_LIMITS.depth,
-            nodes: search::DEFAULT_LIMITS.nodes,
+fn request(game: &Game, id: u64) -> ExecutionRequest {
+    ExecutionRequest {
+        protocol: PROTOCOL_VERSION,
+        context: ExecutionContext {
+            purpose: ExecutionPurpose::EngineTurn {},
+            request_id: id,
+            session_version: id,
+            process_generation: id,
+            game: CanonicalRecord::shogi(GameRecord::from_game(game)),
+            limits: WorkLimits {
+                depth: search::DEFAULT_LIMITS.depth,
+                nodes: search::DEFAULT_LIMITS.nodes,
+            },
         },
     }
 }
-fn wait(bridge: &EngineBridge) -> SharedResponse {
+fn wait(bridge: &EngineBridge) -> ExecutionResponse {
     let deadline = Instant::now() + Duration::from_secs(35);
     loop {
-        if let Some(response) = bridge.poll_shared() {
+        if let Some(response) = bridge.poll() {
             return response;
         }
         assert!(Instant::now() < deadline, "actual shogi child deadline");
@@ -68,18 +70,18 @@ fn actual_child_plays_both_assignments_with_native_admission_and_recorded_observ
                 .unwrap();
             } else {
                 let c = request(&game, observations.len() as u64 + 1);
-                bridge.submit_shared(c.clone()).unwrap();
+                bridge.submit(c.clone()).unwrap();
                 let response = wait(&bridge);
                 assert!(response.matches(&c));
-                let SharedResult::Shogi {
+                let ExecutionResult::Shogi {
                     result: ShogiResult::Choice { choice, telemetry },
-                } = &response.result
+                } = &response.observation.result
                 else {
                     panic!("{response:?}")
                 };
                 assert_eq!(telemetry.perspective, engine);
                 assert!(telemetry.completed_depth > 0);
-                assert!(telemetry.nodes <= c.limits.nodes);
+                assert!(telemetry.nodes <= c.context.limits.nodes);
                 let selected: search::Choice = (*choice).into();
                 let actor = match selected {
                     search::Choice::Move(_) => engine,
@@ -116,8 +118,8 @@ fn actual_analysis_declaration_incomplete_and_history_contexts_remain_distinct()
     let mut game = Game::from_root(root);
     let before = game.clone();
     let mut c = request(&game, 1);
-    c.purpose = SharedPurpose::MoveAnalysis {
-        target: SharedAnalysisTarget {
+    c.context.purpose = ExecutionPurpose::MoveAnalysis {
+        target: ExecutionTarget {
             selection_id: 1,
             event_index: 0,
             board_ply: 0,
@@ -126,13 +128,13 @@ fn actual_analysis_declaration_incomplete_and_history_contexts_remain_distinct()
             turn: NativeSide::Shogi(Side::Sente),
         },
     };
-    bridge.submit_shared(c.clone()).unwrap();
+    bridge.submit(c.clone()).unwrap();
     let analysis = wait(&bridge);
     assert!(analysis.matches(&c));
     assert_eq!(game, before, "analysis proposal is not applied");
     assert!(matches!(
-        analysis.result,
-        SharedResult::Shogi {
+        analysis.observation.result,
+        ExecutionResult::Shogi {
             result: ShogiResult::Choice {
                 choice: ShogiChoice::Declare { actor: Side::Sente },
                 ..
@@ -140,14 +142,14 @@ fn actual_analysis_declaration_incomplete_and_history_contexts_remain_distinct()
         }
     ));
     let mut play = request(&game, 2);
-    play.limits.depth = 1;
+    play.context.limits.depth = 1;
     assert!(!analysis.matches(&play));
-    bridge.submit_shared(play.clone()).unwrap();
+    bridge.submit(play.clone()).unwrap();
     let response = wait(&bridge);
     assert!(response.matches(&play));
-    let SharedResult::Shogi {
+    let ExecutionResult::Shogi {
         result: ShogiResult::Choice { choice, .. },
-    } = response.result
+    } = response.observation.result
     else {
         panic!()
     };
@@ -161,13 +163,13 @@ fn actual_analysis_declaration_incomplete_and_history_contexts_remain_distinct()
     assert_eq!(game.position(), before.position());
     assert_eq!(game.events().len(), 1);
     let mut zero = request(&game, 3);
-    zero.limits.nodes = 0;
-    bridge.submit_shared(zero.clone()).unwrap();
+    zero.context.limits.nodes = 0;
+    bridge.submit(zero.clone()).unwrap();
     let response = wait(&bridge);
     assert!(response.matches(&zero));
     assert!(matches!(
-        response.result,
-        SharedResult::Shogi {
+        response.observation.result,
+        ExecutionResult::Shogi {
             result: ShogiResult::Incomplete {
                 telemetry: ShogiTelemetry {
                     score: None,
@@ -190,19 +192,19 @@ fn actual_cross_game_cancel_replacement_and_historical_selection_retire_old_work
     .unwrap();
     let game = Game::from_root(root);
     let mut old = request(&game, 1);
-    old.limits = WorkLimits {
+    old.context.limits = WorkLimits {
         depth: search::MAX_DEPTH,
         nodes: search::MAX_NODES,
     };
-    bridge.submit_shared(old.clone()).unwrap();
+    bridge.submit(old.clone()).unwrap();
     thread::sleep(Duration::from_millis(20));
     bridge.cancel();
-    assert!(bridge.poll_shared().is_none());
-    assert_eq!(bridge.submit_shared(old), Err(SubmitError::IdentityReused));
+    assert!(bridge.poll().is_none());
+    assert_eq!(bridge.submit(old), Err(SubmitError::IdentityReused));
     let live = Game::new();
     let mut analysis = request(&live, 2);
-    analysis.purpose = SharedPurpose::MoveAnalysis {
-        target: SharedAnalysisTarget {
+    analysis.context.purpose = ExecutionPurpose::MoveAnalysis {
+        target: ExecutionTarget {
             selection_id: 2,
             event_index: 0,
             board_ply: 0,
@@ -211,46 +213,47 @@ fn actual_cross_game_cancel_replacement_and_historical_selection_retire_old_work
             turn: NativeSide::Shogi(Side::Sente),
         },
     };
-    analysis.limits = WorkLimits {
+    analysis.context.limits = WorkLimits {
         depth: 1,
         nodes: 1000,
     };
-    bridge.submit_shared(analysis.clone()).unwrap();
+    bridge.submit(analysis.clone()).unwrap();
     let response = wait(&bridge);
     assert!(response.matches(&analysis));
     let mut changed = analysis.clone();
-    if let SharedPurpose::MoveAnalysis { target } = &mut changed.purpose {
+    if let ExecutionPurpose::MoveAnalysis { target } = &mut changed.context.purpose {
         target.selection_id = 3;
     }
     assert!(!response.matches(&changed));
     bridge.cancel();
-    assert!(bridge.poll_shared().is_none());
-    let chess = EngineRequest {
+    assert!(bridge.poll().is_none());
+    let chess = ExecutionRequest {
         protocol: PROTOCOL_VERSION,
-        purpose: RequestPurpose::EngineTurn,
-        request_id: 3,
-        session_version: 3,
-        process_generation: 3,
-        game: mshogi_core::chess::AdjudicatedGame::new(
-            mshogi_core::chess::ClaimPolicy::ExplicitOnly,
-        )
-        .record(),
-        limits: WorkLimits {
-            depth: 1,
-            nodes: 1000,
+        context: ExecutionContext {
+            purpose: ExecutionPurpose::EngineTurn {},
+            request_id: 3,
+            session_version: 3,
+            process_generation: 3,
+            game: CanonicalRecord::chess(
+                mshogi_core::chess::AdjudicatedGame::new(
+                    mshogi_core::chess::ClaimPolicy::ExplicitOnly,
+                )
+                .record(),
+            ),
+            limits: WorkLimits {
+                depth: 1,
+                nodes: 1000,
+            },
         },
     };
     bridge.submit(chess.clone()).unwrap();
-    let deadline = Instant::now() + Duration::from_secs(35);
-    loop {
-        assert!(bridge.poll_shared().is_none());
-        if let Some(response) = bridge.poll() {
-            assert_eq!(response.context, chess);
-            assert!(matches!(response.result, EngineResult::Move { .. }));
-            break;
+    let response = wait(&bridge);
+    assert!(response.matches(&chess));
+    assert!(matches!(
+        response.observation.result,
+        ExecutionResult::Chess {
+            result: ChessResult::Move { .. }
         }
-        assert!(Instant::now() < deadline);
-        thread::sleep(Duration::from_millis(1));
-    }
+    ));
     stop(&bridge);
 }

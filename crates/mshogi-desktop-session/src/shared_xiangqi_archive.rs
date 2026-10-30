@@ -212,14 +212,14 @@ pub(crate) struct XiangqiControl {
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct ExecutionBinding {
-    purpose: SharedPurpose,
+    purpose: ExecutionPurpose,
     request_id: u64,
     session_version: u64,
     process_generation: u64,
     limits: WorkLimits,
 }
 impl ExecutionBinding {
-    fn of(r: &SharedRequest) -> Self {
+    fn of(r: &ExecutionContext) -> Self {
         Self {
             purpose: r.purpose.clone(),
             request_id: r.request_id,
@@ -232,7 +232,7 @@ impl ExecutionBinding {
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct XiangqiArchive {
-    engine_protocol: u32,
+    observation_schema_version: u32,
     play_limits: WorkLimits,
     initial: CanonicalRecord,
     current: CanonicalRecord,
@@ -254,7 +254,7 @@ pub(crate) struct XiangqiDraft {
     diagnostic: Option<String>,
     analysis: Option<PresentedObservation>,
     analysis_intent: Option<(CanonicalRecord, WorkLimits)>,
-    pending: Option<SharedRequest>,
+    pending: Option<ExecutionContext>,
     submitted: bool,
     durable_needs_stop: bool,
     observation_bytes: usize,
@@ -267,7 +267,7 @@ impl XiangqiDraft {
         };
         Self {
             saved: XiangqiArchive {
-                engine_protocol: SHARED_PROTOCOL_VERSION,
+                observation_schema_version: OBSERVATION_SCHEMA_VERSION,
                 play_limits: PLAY_LIMITS,
                 initial: CanonicalRecord::xiangqi(record.clone()),
                 current: CanonicalRecord::xiangqi(record.clone()),
@@ -348,7 +348,7 @@ impl XiangqiDraft {
 }
 fn archive(state: &XiangqiSession, floor: u64) -> XiangqiArchive {
     XiangqiArchive {
-        engine_protocol: SHARED_PROTOCOL_VERSION,
+        observation_schema_version: OBSERVATION_SCHEMA_VERSION,
         play_limits: PLAY_LIMITS,
         initial: CanonicalRecord::xiangqi(state.initial_record.clone()),
         current: CanonicalRecord::xiangqi(
@@ -404,9 +404,9 @@ const WITNESS_ACTION_WORK: usize = 64;
 fn witness_work(actions: usize) -> usize {
     NATIVE_VALIDATION_WORK.saturating_add(actions.saturating_mul(WITNESS_ACTION_WORK))
 }
-fn variation(result: &SharedResult) -> &[XiangqiChoice] {
+fn variation(result: &ExecutionResult) -> &[XiangqiChoice] {
     match result {
-        SharedResult::Xiangqi {
+        ExecutionResult::Xiangqi {
             result:
                 XiangqiResult::Choice { telemetry, .. }
                 | XiangqiResult::Finished { telemetry, .. }
@@ -478,11 +478,11 @@ pub(crate) fn check_capacity(
     }
     let mut variations = std::collections::HashSet::new();
     for o in &state.observations {
-        work = work.saturating_add(canonical_work(&o.response.context.game) + 8);
+        work = work.saturating_add(canonical_work(&o.observation.context.game) + 8);
         work = work.saturating_add(charge_variation(
             &mut variations,
-            o.response.context.game.to_json().map_err(error)?,
-            variation(&o.response.result),
+            o.observation.context.game.to_json().map_err(error)?,
+            variation(&o.observation.result),
         )?);
     }
     for e in &state.exact_observations {
@@ -534,7 +534,7 @@ fn encoded_native_bounds(bytes: &[u8]) -> Result<(), String> {
     #[derive(Deserialize)]
     struct Observation<'a> {
         #[serde(borrow)]
-        response: Response<'a>,
+        observation: Response<'a>,
     }
     #[derive(Deserialize)]
     struct Response<'a> {
@@ -564,7 +564,7 @@ fn encoded_native_bounds(bytes: &[u8]) -> Result<(), String> {
     fits(envelope.payload.current)?;
     for raw in envelope.payload.observations {
         let observation: Observation<'_> = serde_json::from_str(raw.get()).map_err(error)?;
-        fits(observation.response.context.game)?;
+        fits(observation.observation.context.game)?;
     }
     for raw in envelope.payload.exact_observations {
         let evidence: Exact<'_> = serde_json::from_str(raw.get()).map_err(error)?;
@@ -678,17 +678,24 @@ impl XiangqiSession {
         }
         Ok(analysis)
     }
-    fn apply_response(&mut self, response: SharedResponse) -> Result<(), String> {
+    fn apply_response(&mut self, response: ExecutionObservation) -> Result<(), String> {
         self.apply_response_reusing(response, &mut ValidatedVariations::default())
     }
     fn apply_response_reusing(
         &mut self,
-        response: SharedResponse,
+        response: ExecutionObservation,
         variations: &mut ValidatedVariations,
     ) -> Result<(), String> {
-        if serde_json::to_vec(&response.context).map_err(error)?.len()
+        if serde_json::to_vec(&execution_request(response.context.clone()))
+            .map_err(error)?
+            .len()
             > mshogi_engine::MAX_REQUEST_BYTES
-            || serde_json::to_vec(&response).map_err(error)?.len()
+            || serde_json::to_vec(&ExecutionResponse {
+                protocol: mshogi_engine::PROTOCOL_VERSION,
+                observation: response.clone(),
+            })
+            .map_err(error)?
+            .len()
                 > mshogi_engine::MAX_RESPONSE_BYTES
         {
             return Err(capacity(
@@ -701,7 +708,10 @@ impl XiangqiSession {
         if self.observations.len() + self.exact_observations.len() >= MAX_ARCHIVE_OBSERVATIONS {
             return Err(capacity("No retained observation slot remains."));
         }
-        let read_only = matches!(response.context.purpose, SharedPurpose::MoveAnalysis { .. });
+        let read_only = matches!(
+            response.context.purpose,
+            ExecutionPurpose::MoveAnalysis { .. }
+        );
         let expected = if read_only {
             let (record, limits) = self
                 .analysis_intent
@@ -712,7 +722,7 @@ impl XiangqiSession {
             }
             record.clone()
         } else {
-            if !matches!(response.context.purpose, SharedPurpose::EngineTurn {})
+            if !matches!(response.context.purpose, ExecutionPurpose::EngineTurn {})
                 || self.paused
                 || self.viewed.is_some()
                 || self.game.conclusion().is_some()
@@ -731,20 +741,20 @@ impl XiangqiSession {
                 "Corrupt observation: exact target history differs from its journal intent.".into(),
             );
         }
-        if let SharedPurpose::MoveAnalysis { target } = &response.context.purpose
+        if let ExecutionPurpose::MoveAnalysis { target } = &response.context.purpose
             && target.turn != NativeSide::Xiangqi(self.selected_position().side_to_move())
         {
             return Err("Corrupt observation target side.".into());
         }
         let telemetry = match &response.result {
-            SharedResult::Xiangqi {
+            ExecutionResult::Xiangqi {
                 result:
                     XiangqiResult::Choice { telemetry, .. }
                     | XiangqiResult::Finished { telemetry, .. }
                     | XiangqiResult::Incomplete { telemetry }
                     | XiangqiResult::Unresolved { telemetry, .. },
             } => Some(telemetry),
-            SharedResult::Failure { .. } => None,
+            ExecutionResult::Failure { .. } => None,
             _ => return Err("Wrong game result in Xiangqi archive.".into()),
         };
         let mut application_error = None;
@@ -758,7 +768,7 @@ impl XiangqiSession {
             pv_error = variations.check(&expected, &t.principal_variation)?;
         }
         match &response.result {
-            SharedResult::Xiangqi {
+            ExecutionResult::Xiangqi {
                 result: XiangqiResult::Choice { choice, .. },
             } if !read_only && pv_error.is_none() => {
                 let (actor, command) = native_choice(*choice, self.game.position().side_to_move());
@@ -788,11 +798,11 @@ impl XiangqiSession {
                     }
                 }
             }
-            SharedResult::Xiangqi {
+            ExecutionResult::Xiangqi {
                 result: XiangqiResult::Incomplete { .. },
             } => phase = EnginePhase::Incomplete,
-            SharedResult::Failure { .. } => phase = EnginePhase::Failed,
-            SharedResult::Xiangqi { .. } => {}
+            ExecutionResult::Failure { .. } => phase = EnginePhase::Failed,
+            ExecutionResult::Xiangqi { .. } => {}
             _ => unreachable!(),
         }
         if let Some(error) = pv_error {
@@ -800,7 +810,7 @@ impl XiangqiSession {
             phase = EnginePhase::Failed;
         }
         let observation = PresentedObservation {
-            response,
+            observation: response,
             application_error,
             historical: false,
         };
@@ -809,26 +819,24 @@ impl XiangqiSession {
         self.analysis_intent = None;
         self.phase = phase;
         self.paused = read_only || phase != EnginePhase::Idle;
-        self.diagnostic =
-            observation
-                .application_error
-                .clone()
-                .or_else(|| match &observation.response.result {
-                    SharedResult::Failure { failure } => Some(failure.message.clone()),
-                    SharedResult::Xiangqi {
-                        result: XiangqiResult::Unresolved { pending, .. },
-                    } => Some(format!("Unresolved, unscored: {}", pending.reason)),
-                    SharedResult::Xiangqi {
-                        result: XiangqiResult::Incomplete { .. },
-                    } => Some("Incomplete native work; no move or result was invented.".into()),
-                    _ => None,
-                });
+        self.diagnostic = observation.application_error.clone().or_else(|| {
+            match &observation.observation.result {
+                ExecutionResult::Failure { failure } => Some(failure.message.clone()),
+                ExecutionResult::Xiangqi {
+                    result: XiangqiResult::Unresolved { pending, .. },
+                } => Some(format!("Unresolved, unscored: {}", pending.reason)),
+                ExecutionResult::Xiangqi {
+                    result: XiangqiResult::Incomplete { .. },
+                } => Some("Incomplete native work; no move or result was invented.".into()),
+                _ => None,
+            }
+        });
         if read_only && observation.application_error.is_none() {
             self.analysis = Some(observation.clone());
         } else {
             self.analysis = None;
         }
-        self.observation_bytes += serde_json::to_vec(&observation.response)
+        self.observation_bytes += serde_json::to_vec(&observation.observation)
             .map_err(error)?
             .len();
         self.observations.push(observation);
@@ -847,7 +855,7 @@ pub(crate) enum XiangqiWork {
     Admit {
         draft: Box<XiangqiDraft>,
         command: Option<SessionOperation>,
-        response: Option<Box<SharedResponse>>,
+        response: Option<Box<ExecutionObservation>>,
         exact: Option<Box<XiangqiExactEvidence>>,
         replacement: bool,
         floor: u64,
@@ -887,7 +895,7 @@ pub(crate) fn execute(
             let changed = exact.is_none()
                 && !matches!(command, Some(SessionOperation::XiangqiPreferences { .. }))
                 && !response.as_ref().is_some_and(|r| {
-                    matches!(r.context.purpose, SharedPurpose::MoveAnalysis { .. })
+                    matches!(r.context.purpose, ExecutionPurpose::MoveAnalysis { .. })
                 });
             let mut analysis = None;
             if let Some(command) = command {
@@ -950,7 +958,7 @@ pub(crate) fn execute(
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct RawArchive {
-    engine_protocol: u32,
+    observation_schema_version: u32,
     play_limits: WorkLimits,
     initial: Box<RawValue>,
     current: Box<RawValue>,
@@ -1020,8 +1028,7 @@ impl ValidatedVariations {
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct RawRequest {
-    protocol: u32,
-    purpose: SharedPurpose,
+    purpose: ExecutionPurpose,
     request_id: u64,
     session_version: u64,
     process_generation: u64,
@@ -1031,24 +1038,25 @@ struct RawRequest {
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct RawResponse {
+    schema_version: u32,
     context: RawRequest,
-    result: SharedResult,
+    result: ExecutionResult,
 }
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct RawObservation {
-    response: RawResponse,
+    observation: RawResponse,
     #[serde(deserialize_with = "super::super::archive::required_option")]
     application_error: Option<String>,
     historical: bool,
 }
 impl RawObservation {
     fn validated(self, records: &mut ValidatedRecords) -> Result<PresentedObservation, String> {
-        let r = self.response.context;
+        let r = self.observation.context;
         Ok(PresentedObservation {
-            response: SharedResponse {
-                context: SharedRequest {
-                    protocol: r.protocol,
+            observation: ExecutionObservation {
+                schema_version: self.observation.schema_version,
+                context: ExecutionContext {
                     purpose: r.purpose,
                     request_id: r.request_id,
                     session_version: r.session_version,
@@ -1056,7 +1064,7 @@ impl RawObservation {
                     game: records.parse(&r.game)?,
                     limits: r.limits,
                 },
-                result: self.response.result,
+                result: self.observation.result,
             },
             application_error: self.application_error,
             historical: self.historical,
@@ -1161,8 +1169,8 @@ pub(crate) fn decode(
     if raw.play_limits != PLAY_LIMITS {
         return Err("Unsupported Xiangqi saved play limits; no downgrade was applied.".into());
     }
-    if raw.engine_protocol != SHARED_PROTOCOL_VERSION {
-        return Err("Unsupported Xiangqi archive execution transport version.".into());
+    if raw.observation_schema_version != OBSERVATION_SCHEMA_VERSION {
+        return Err("Unsupported Xiangqi archive observation schema version.".into());
     }
     if raw.controls.len() > MAX_ARCHIVE_CONTROLS
         || raw
@@ -1179,12 +1187,12 @@ pub(crate) fn decode(
     let mut work = raw_work(raw.initial.get())?.saturating_add(raw_work(raw.current.get())?);
     #[derive(Deserialize)]
     struct ObsProbe {
-        response: Box<RawValue>,
+        observation: Box<RawValue>,
     }
     #[derive(Deserialize)]
     struct ResponseProbe {
         context: Box<RawValue>,
-        result: SharedResult,
+        result: ExecutionResult,
     }
     #[derive(Deserialize)]
     struct ContextProbe {
@@ -1194,7 +1202,7 @@ pub(crate) fn decode(
     for text in &raw.observations {
         persistence::check(stopped)?;
         let o: ObsProbe = serde_json::from_str(text.get()).map_err(error)?;
-        let r: ResponseProbe = serde_json::from_str(o.response.get()).map_err(error)?;
+        let r: ResponseProbe = serde_json::from_str(o.observation.get()).map_err(error)?;
         let c: ContextProbe = serde_json::from_str(r.context.get()).map_err(error)?;
         work = work.saturating_add(raw_work(c.game.get())? + 8);
         // Original bytes are a conservative preflight identity. Native typed
@@ -1331,7 +1339,7 @@ pub(crate) fn decode(
             let o = observations
                 .get(index)
                 .ok_or("Missing journal observation.")?;
-            let r = &o.response.context;
+            let r = &o.observation.context;
             if c.execution.as_ref() != Some(&ExecutionBinding::of(r))
                 || r.request_id <= last_request
                 || [r.request_id, r.session_version, r.process_generation]
@@ -1340,13 +1348,13 @@ pub(crate) fn decode(
             {
                 return Err("Corrupt observation execution identity/purpose/limits.".into());
             }
-            if let SharedPurpose::MoveAnalysis { target } = &r.purpose
+            if let ExecutionPurpose::MoveAnalysis { target } = &r.purpose
                 && target.selection_id > raw.retired_execution_floor
             {
                 return Err("Corrupt historical selection identity.".into());
             }
             last_request = r.request_id;
-            state.apply_response_reusing(o.response.clone(), &mut variations)?;
+            state.apply_response_reusing(o.observation.clone(), &mut variations)?;
             let admitted = state.observations.last_mut().unwrap();
             if admitted.application_error != o.application_error {
                 return Err("Corrupt observation application-admission evidence.".into());
@@ -1409,7 +1417,7 @@ impl DesktopController {
         &mut self,
         draft: XiangqiDraft,
         command: Option<SessionOperation>,
-        response: Option<SharedResponse>,
+        response: Option<ExecutionObservation>,
         exact: Option<XiangqiExactEvidence>,
         replacement: bool,
     ) -> Result<AdmissionReceipt, String> {

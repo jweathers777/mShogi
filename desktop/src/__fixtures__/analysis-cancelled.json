@@ -576,10 +576,14 @@
     "status": "cancelled",
     "target": {
       "selection_id": 1,
-      "ply": 0,
+      "event_index": 0,
+      "board_ply": 0,
       "session_version": 2,
       "label": "Live position after 0 plies",
-      "turn": "white"
+      "turn": {
+        "game_kind": "chess",
+        "side": "white"
+      }
     },
     "operation": {
       "kind": "moves",
@@ -587,21 +591,31 @@
       "nodes": 5000000
     },
     "context": {
-      "protocol": 2,
       "purpose": {
         "kind": "move_analysis",
         "target": {
           "selection_id": 1,
-          "ply": 0,
+          "event_index": 0,
+          "board_ply": 0,
           "session_version": 2,
           "label": "Live position after 0 plies",
-          "turn": "white"
+          "turn": {
+            "game_kind": "chess",
+            "side": "white"
+          }
         }
       },
       "request_id": 1,
       "session_version": 2,
       "process_generation": 1,
-      "game": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1","history_origin":"standard_start","claim_policy":"explicit_only","events":[]},
+      "game": {
+        "envelope_version": 1,
+        "game_kind": "chess",
+        "rules_profile": "mshogi.chess.match.v1",
+        "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+        "native_schema_version": 1,
+        "payload": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1","history_origin":"standard_start","claim_policy":"explicit_only","events":[]}
+      },
       "limits": {
         "depth": 8,
         "nodes": 5000000

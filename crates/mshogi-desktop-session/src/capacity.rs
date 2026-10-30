@@ -217,14 +217,35 @@ impl DesktopSession {
             let mut response_bytes = Vec::new();
             mshogi_engine::serve_once(std::io::Cursor::new(request_bytes), &mut response_bytes)
                 .map_err(|e| e.to_string())?;
-            if !session.accept_analysis_unchecked(
-                serde_json::from_slice(&response_bytes).map_err(|e| e.to_string())?,
-            ) {
+            let response: ExecutionResponse =
+                serde_json::from_slice(&response_bytes).map_err(|e| e.to_string())?;
+            if !response.matches(&request)
+                || !session.accept_analysis_unchecked(response.observation)
+            {
                 return Err("Verification observation was not accepted.".into());
             }
         }
         session.check_archive_capacity(&mut || false)?;
         session.validated_observations = session.observations.len();
         Ok(session)
+    }
+}
+
+#[cfg(all(test, feature = "desktop-verification"))]
+mod verification_tests {
+    use super::*;
+    #[test]
+    fn chess_capacity_fixture_retains_current_semantic_observations_from_real_executor() {
+        let session = DesktopSession::verification_capacity().unwrap();
+        assert_eq!(session.observations.len(), MAX_ARCHIVE_OBSERVATIONS - 1);
+        assert!(
+            session
+                .observations
+                .iter()
+                .all(|entry| entry.observation.matches(&entry.observation.context))
+        );
+        assert!(session.check_archive_capacity(&mut || false).is_ok());
+        assert!(session.analysis_pending.is_none());
+        assert!(session.pending.is_none());
     }
 }

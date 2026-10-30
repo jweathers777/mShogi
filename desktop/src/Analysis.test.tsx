@@ -289,3 +289,16 @@ it("withholds a completed score and suggestion when the response request targets
   expect(screen.queryByText(/pawns from|Suggested move:/)).toBeNull();
   expect(command).not.toHaveBeenCalled();
 });
+
+it.each(["event", "board", "side"])("withholds a result when the exact native target %s differs", (field) => {
+  const mismatch = structuredClone(moves);
+  const purpose = mismatch.analysis.context!.purpose;
+  if (purpose.kind === "engine_turn") throw new Error("Expected an analysis fixture");
+  if (field === "event") purpose.target.event_index += 1;
+  if (field === "board") purpose.target.board_ply += 1;
+  if (field === "side") purpose.target.turn = { game_kind: "shogi", side: "sente" };
+  render(<AnalysisPanel snapshot={mismatch} busy={false} connected command={command} />);
+  expect(screen.queryByText(/pawns from|Suggested move:/)).toBeNull();
+  expect(screen.getByRole("status", { name: "Analysis status" }).textContent).toContain("does not describe the current position");
+  expect(command).not.toHaveBeenCalled();
+});

@@ -1,5 +1,5 @@
 //! Actual shogi results, distinct from chess scores and cooperative Full proofs.
-use crate::{SharedPurpose, SharedRequest, StopReason};
+use crate::{ExecutionContext, ExecutionPurpose, StopReason};
 use mshogi_core::{
     native::CanonicalRecord,
     shogi::{Action, Conclusion, Side},
@@ -149,11 +149,14 @@ impl ShogiResult {
             None => Self::Incomplete { telemetry },
         }
     }
-    pub(crate) fn matches(&self, context: &SharedRequest) -> bool {
+    pub(crate) fn matches(&self, context: &ExecutionContext) -> bool {
         let CanonicalRecord::Shogi(record) = &context.game else {
             return false;
         };
-        if matches!(context.purpose, SharedPurpose::ChessFullReachability { .. }) {
+        if matches!(
+            context.purpose,
+            ExecutionPurpose::ChessFullReachability { .. }
+        ) {
             return false;
         }
         let telemetry = match self {

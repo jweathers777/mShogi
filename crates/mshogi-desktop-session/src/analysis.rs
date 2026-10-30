@@ -1,8 +1,8 @@
 //! Read-only analysis acceptance and single-resource play ownership.
 use super::*;
 use mshogi_engine::{
-    AnalysisTarget, FULL_SENTINEL, FullLimits, MAX_ANALYSIS_DEPTH, MAX_ANALYSIS_NODES,
-    MAX_FULL_POSITIONS, MAX_FULL_TRANSITIONS, ReachabilityTarget, RequestPurpose,
+    ExecutionPurpose, ExecutionTarget, FULL_SENTINEL, FullLimits, MAX_ANALYSIS_DEPTH,
+    MAX_ANALYSIS_NODES, MAX_FULL_POSITIONS, MAX_FULL_TRANSITIONS, ReachabilityTarget,
 };
 /// Explicit user-selected deterministic analysis budgets.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -68,13 +68,13 @@ pub struct AnalysisState {
     /// Analysis lifecycle, independent of chess conclusion.
     pub status: AnalysisPhase,
     /// Native target provenance, currently live position only.
-    pub target: Option<AnalysisTarget>,
+    pub target: Option<ExecutionTarget>,
     /// Explicit requested operation and budgets.
     pub operation: Option<AnalysisOperation>,
     /// Exact context retained for technical details and later historical saving.
-    pub context: Option<EngineRequest>,
+    pub context: Option<ExecutionContext>,
     /// Actual final child observations; absent on cancelled/unobserved work.
-    pub result: Option<EngineResult>,
+    pub result: Option<ChessResult>,
     /// Plain execution diagnostic, never a chess result.
     pub message: Option<String>,
 }
@@ -89,9 +89,10 @@ impl DesktopSession {
             Some("Play paused for analysis. Resume play explicitly to continue.".into());
         self.changed();
         self.next_request += 1;
-        let target = AnalysisTarget {
+        let target = ExecutionTarget {
             selection_id: self.selection_id,
-            ply: self.selected_game().history().ply_count() as u64,
+            board_ply: self.selected_game().history().ply_count() as u64,
+            event_index: self.selected_game().record().events().len() as u64,
             session_version: self.version,
             label: format!(
                 "{} after {} plies",
@@ -102,11 +103,11 @@ impl DesktopSession {
                 },
                 self.selected_game().history().ply_count()
             ),
-            turn: self.selected_game().position().side_to_move(),
+            turn: NativeSide::Chess(self.selected_game().position().side_to_move()),
         };
         let (purpose, limits) = match operation {
             AnalysisOperation::Moves { depth, nodes } => (
-                RequestPurpose::MoveAnalysis {
+                ExecutionPurpose::MoveAnalysis {
                     target: target.clone(),
                 },
                 WorkLimits { depth, nodes },
@@ -116,7 +117,7 @@ impl DesktopSession {
                 max_positions,
                 max_transitions,
             } => (
-                RequestPurpose::FullReachability {
+                ExecutionPurpose::ChessFullReachability {
                     target: target.clone(),
                     mate,
                     limits: FullLimits {
@@ -127,13 +128,12 @@ impl DesktopSession {
                 FULL_SENTINEL,
             ),
         };
-        let request = EngineRequest {
-            protocol: mshogi_engine::PROTOCOL_VERSION,
+        let request = ExecutionContext {
             purpose,
             request_id: self.next_request,
             session_version: self.version,
             process_generation: self.next_request,
-            game: self.selected_game().record(),
+            game: CanonicalRecord::chess(self.selected_game().record()),
             limits,
         };
         self.analysis = AnalysisState {
@@ -149,16 +149,29 @@ impl DesktopSession {
         Ok(())
     }
     /// Retrieve one analysis submission; subsequent calls cannot duplicate it.
-    pub fn analysis_request(&mut self) -> Option<EngineRequest> {
+    pub fn analysis_request(&mut self) -> Option<ExecutionRequest> {
         if self.analysis_submitted {
             return None;
         }
         let request = self.analysis_pending.clone()?;
         self.analysis_submitted = true;
-        Some(request)
+        Some(ExecutionRequest {
+            protocol: mshogi_engine::PROTOCOL_VERSION,
+            context: request,
+        })
     }
     /// Accept read-only observations. This never applies a board move or claim.
-    pub fn accept_analysis(&mut self, response: EngineResponse) -> bool {
+    pub fn accept_analysis(&mut self, response: ExecutionResponse) -> bool {
+        let Some(pending) = &self.analysis_pending else {
+            return false;
+        };
+        if !response.matches(&ExecutionRequest {
+            protocol: mshogi_engine::PROTOCOL_VERSION,
+            context: pending.clone(),
+        }) {
+            return false;
+        }
+        let response = response.observation;
         if self.analysis_pending.as_ref() == Some(&response.context)
             && let Err(error) = self.ensure_capacity()
         {
@@ -177,12 +190,16 @@ impl DesktopSession {
         *self = candidate;
         true
     }
-    pub(super) fn accept_analysis_unchecked(&mut self, response: EngineResponse) -> bool {
-        if self.analysis_pending.as_ref() != Some(&response.context)
+    pub(super) fn accept_analysis_unchecked(&mut self, response: ExecutionObservation) -> bool {
+        if !self
+            .analysis_pending
+            .as_ref()
+            .is_some_and(|pending| response.matches(pending))
+            || self.analysis_pending.as_ref() != Some(&response.context)
             || !self.play_paused
             || response.context.session_version != self.version
-            || response.context.game != self.selected_game().record()
-            || matches!(response.context.purpose, RequestPurpose::EngineTurn)
+            || response.context.game != CanonicalRecord::chess(self.selected_game().record())
+            || matches!(response.context.purpose, ExecutionPurpose::EngineTurn {})
         {
             return false;
         }
@@ -193,24 +210,27 @@ impl DesktopSession {
         self.analysis_pending = None;
         let full = matches!(
             response.context.purpose,
-            RequestPurpose::FullReachability { .. }
+            ExecutionPurpose::ChessFullReachability { .. }
         );
-        let (status, message) = match &response.result {
-            EngineResult::Failure { failure } => (AnalysisPhase::Failed, Some(format!("Analysis failure ({:?}): {}", failure.kind, failure.message))),
-            EngineResult::Reachability { result } if full => (if matches!(result, MateReachability::Unknown { .. }) { AnalysisPhase::Incomplete } else { AnalysisPhase::Complete }, None),
-            EngineResult::Incomplete { .. } if !full => (AnalysisPhase::Incomplete, None),
-            EngineResult::Move { telemetry, .. } | EngineResult::Claim { telemetry, .. } | EngineResult::Finished { telemetry, .. } if !full => (if telemetry.status == mshogi_engine::StopReason::Complete { AnalysisPhase::Complete } else { AnalysisPhase::Incomplete }, None),
+        let Some(result) = chess_observation_result(&response) else {
+            return false;
+        };
+        let (status, message) = match &result {
+            ChessResult::Failure { failure } => (AnalysisPhase::Failed, Some(format!("Analysis failure ({:?}): {}", failure.kind, failure.message))),
+            ChessResult::Reachability { result } if full => (if matches!(result, MateReachability::Unknown { .. }) { AnalysisPhase::Incomplete } else { AnalysisPhase::Complete }, None),
+            ChessResult::Incomplete { .. } if !full => (AnalysisPhase::Incomplete, None),
+            ChessResult::Move { telemetry, .. } | ChessResult::Claim { telemetry, .. } | ChessResult::Finished { telemetry, .. } if !full => (if telemetry.status == mshogi_engine::StopReason::Complete { AnalysisPhase::Complete } else { AnalysisPhase::Incomplete }, None),
             _ => (AnalysisPhase::Failed, Some("Analysis returned a result for the wrong operation. No game action was applied.".into())),
         };
         if status == AnalysisPhase::Failed
-            && !matches!(response.result, EngineResult::Failure { .. })
+            && !matches!(result, ChessResult::Failure { .. })
             && let Some(observation) = self.observations.last_mut()
         {
             observation.application_error = message.clone();
         }
         self.analysis.status = status;
         self.analysis.message = message;
-        self.analysis.result = Some(response.result);
+        self.analysis.result = Some(result);
         self.revision += 1;
         self.archive_revision = self.revision.min(MAX_SAFE_ID - 65);
         true
@@ -252,11 +272,11 @@ impl DesktopSession {
 mod tests {
     use super::*;
     use mshogi_engine::{EngineChoice, StopReason, Telemetry};
-    fn move_result(context: EngineRequest) -> EngineResponse {
+    fn move_result(context: ExecutionContext) -> ExecutionResponse {
         let action = "e2e4".parse().unwrap();
-        EngineResponse {
+        test_response(
             context,
-            result: EngineResult::Move {
+            ChessResult::Move {
                 action,
                 telemetry: Telemetry {
                     score: Some(0),
@@ -266,9 +286,9 @@ mod tests {
                     status: StopReason::Complete,
                 },
             },
-        }
+        )
     }
-    fn analyze(session: &mut DesktopSession) -> EngineRequest {
+    fn analyze(session: &mut DesktopSession) -> ExecutionContext {
         session
             .command(
                 DesktopCommand::Analyze {
@@ -281,7 +301,7 @@ mod tests {
                 session.version,
             )
             .unwrap();
-        session.analysis_request().unwrap()
+        session.analysis_request().unwrap().context
     }
     #[test]
     fn analysis_has_a_read_only_acceptance_path_and_explicit_resume() {
@@ -327,8 +347,8 @@ mod tests {
             )
             .unwrap();
         assert!(matches!(
-            session.engine_request().unwrap().purpose,
-            RequestPurpose::EngineTurn
+            session.engine_request().unwrap().context.purpose,
+            ExecutionPurpose::EngineTurn {}
         ));
     }
     #[test]
@@ -344,7 +364,7 @@ mod tests {
                 0,
             )
             .unwrap();
-        let turn = session.engine_request().unwrap();
+        let turn = session.engine_request().unwrap().context;
         let old_analysis = analyze(&mut session);
         assert!(!session.accept(move_result(turn.clone()), 2));
         session
@@ -360,19 +380,19 @@ mod tests {
                 3,
             )
             .unwrap();
-        let full = session.analysis_request().unwrap();
+        let full = session.analysis_request().unwrap().context;
         assert!(full.process_generation > old_analysis.process_generation);
         assert!(!session.accept_analysis(move_result(old_analysis)));
         let before = session.game.record().to_json();
-        assert!(session.accept_analysis(EngineResponse {
-            context: full.clone(),
-            result: EngineResult::Reachability {
+        assert!(session.accept_analysis(test_response(
+            full.clone(),
+            ChessResult::Reachability {
                 result: MateReachability::Unknown {
                     reason: ReachabilityStop::PositionLimit,
                     work: ReachabilityWork::default()
                 }
             }
-        }));
+        )));
         assert_eq!(session.analysis.status, AnalysisPhase::Incomplete);
         assert_eq!(session.game.record().to_json(), before);
         session
@@ -383,7 +403,7 @@ mod tests {
                 4,
             )
             .unwrap();
-        let resumed = session.engine_request().unwrap();
+        let resumed = session.engine_request().unwrap().context;
         assert!(resumed.request_id > full.request_id);
         assert!(!session.accept_analysis(move_result(resumed.clone())));
         assert!(!session.accept(move_result(turn), 5));
@@ -445,10 +465,10 @@ mod tests {
         let mut session = DesktopSession::from_record(&live.record(), Color::White).unwrap();
         let request = analyze(&mut session);
         let mut wrong = request.clone();
-        wrong.game = imported.record();
+        wrong.game = CanonicalRecord::chess(imported.record());
         assert!(!session.accept_analysis(move_result(wrong)));
         let mut wrong = request.clone();
-        wrong.purpose = RequestPurpose::EngineTurn;
+        wrong.purpose = ExecutionPurpose::EngineTurn {};
         assert!(!session.accept_analysis(move_result(wrong)));
         assert!(session.accept_analysis(move_result(request)));
         assert_eq!(session.snapshot().history.len(), 4);
@@ -514,16 +534,16 @@ mod tests {
                 1 => wrong.process_generation += 1,
                 2 => wrong.limits.nodes += 1,
                 _ => {
-                    if let RequestPurpose::MoveAnalysis { target } = &mut wrong.purpose {
+                    if let ExecutionPurpose::MoveAnalysis { target } = &mut wrong.purpose {
                         target.selection_id += 1;
                     }
                 }
             }
             assert!(!session.accept_analysis(move_result(wrong)));
         }
-        assert!(session.accept_analysis(EngineResponse {
-            context: request,
-            result: EngineResult::Claim {
+        assert!(session.accept_analysis(test_response(
+            request,
+            ChessResult::Claim {
                 claim,
                 telemetry: Telemetry {
                     score: Some(0),
@@ -533,26 +553,26 @@ mod tests {
                     status: StopReason::Complete
                 }
             }
-        }));
+        )));
         assert!(session.snapshot().conclusion.is_none());
         assert!(session.snapshot().history.is_empty());
         assert_eq!(session.game.record().to_json(), before);
         let request = analyze(&mut session);
-        assert!(session.accept_analysis(EngineResponse {
-            context: request,
-            result: EngineResult::Failure {
+        assert!(session.accept_analysis(test_response(
+            request,
+            ChessResult::Failure {
                 failure: mshogi_engine::EngineFailure {
                     kind: mshogi_engine::FailureKind::Timeout,
                     message: "test process watchdog; no final observations".into()
                 }
             }
-        }));
+        )));
         assert_eq!(session.analysis.status, AnalysisPhase::Failed);
         assert!(session.play_paused);
         assert_eq!(session.game.record().to_json(), before);
         assert!(matches!(
             session.analysis.result,
-            Some(EngineResult::Failure { .. })
+            Some(ChessResult::Failure { .. })
         ));
     }
 }

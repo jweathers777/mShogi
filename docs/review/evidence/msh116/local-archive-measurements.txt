@@ -1,0 +1,16 @@
+    Blocking waiting for file lock on build directory
+   Compiling mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.69s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-72dbb958aa69b860)
+
+running 1 test
+MSH99 warning-and-audits: saving32 observations,67 controls,834832 bytes
+MSH99 warning-and-audits: opening accepted complete archive
+MSH99 measured warning-and-audits native-events=89 controls=67 observations=32 encoded-bytes=834832 reopen-millis=323
+MSH99 accepted-natural-count: saving7 observations,17 controls,227613 bytes
+MSH99 accepted-natural-count: opening accepted complete archive
+MSH99 measured accepted-natural-count native-events=103 controls=17 observations=7 encoded-bytes=227613 reopen-millis=709
+test shared::xiangqi::archive::tests::measured_long_warning_claim_and_historical_observations_pause_before_replay_budget ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 147 filtered out; finished in 19.88s
+

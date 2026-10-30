@@ -98,17 +98,21 @@
     {
       "sequence": 1,
       "label": "Live position after 0 plies",
-      "response": {
+      "observation": {
+        "schema_version": 1,
         "context": {
-          "protocol": 2,
           "purpose": {
-            "kind": "full_reachability",
+            "kind": "chess_full_reachability",
             "target": {
               "selection_id": 1,
-              "ply": 0,
+              "event_index": 0,
+              "board_ply": 0,
               "session_version": 2,
               "label": "Live position after 0 plies",
-              "turn": "white"
+              "turn": {
+                "game_kind": "chess",
+                "side": "white"
+              }
             },
             "mate": "either",
             "limits": {
@@ -119,21 +123,31 @@
           "request_id": 1,
           "session_version": 2,
           "process_generation": 1,
-          "game": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"7k/8/8/8/8/8/8/K7 w - - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]},
+          "game": {
+            "envelope_version": 1,
+            "game_kind": "chess",
+            "rules_profile": "mshogi.chess.match.v1",
+            "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+            "native_schema_version": 1,
+            "payload": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"7k/8/8/8/8/8/8/K7 w - - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]}
+          },
           "limits": {
             "depth": 1,
             "nodes": 0
           }
         },
         "result": {
-          "kind": "reachability",
+          "kind": "chess",
           "result": {
-            "impossible": {
-              "work": {
-                "positions": 1,
-                "expanded": 1,
-                "transitions": 0,
-                "static_leaves": 1
+            "kind": "reachability",
+            "result": {
+              "impossible": {
+                "work": {
+                  "positions": 1,
+                  "expanded": 1,
+                  "transitions": 0,
+                  "static_leaves": 1
+                }
               }
             }
           }
@@ -148,10 +162,14 @@
     "status": "complete",
     "target": {
       "selection_id": 1,
-      "ply": 0,
+      "event_index": 0,
+      "board_ply": 0,
       "session_version": 2,
       "label": "Live position after 0 plies",
-      "turn": "white"
+      "turn": {
+        "game_kind": "chess",
+        "side": "white"
+      }
     },
     "operation": {
       "kind": "full_reachability",
@@ -160,15 +178,18 @@
       "max_transitions": 10
     },
     "context": {
-      "protocol": 2,
       "purpose": {
-        "kind": "full_reachability",
+        "kind": "chess_full_reachability",
         "target": {
           "selection_id": 1,
-          "ply": 0,
+          "event_index": 0,
+          "board_ply": 0,
           "session_version": 2,
           "label": "Live position after 0 plies",
-          "turn": "white"
+          "turn": {
+            "game_kind": "chess",
+            "side": "white"
+          }
         },
         "mate": "either",
         "limits": {
@@ -179,7 +200,14 @@
       "request_id": 1,
       "session_version": 2,
       "process_generation": 1,
-      "game": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"7k/8/8/8/8/8/8/K7 w - - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]},
+      "game": {
+        "envelope_version": 1,
+        "game_kind": "chess",
+        "rules_profile": "mshogi.chess.match.v1",
+        "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+        "native_schema_version": 1,
+        "payload": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"7k/8/8/8/8/8/8/K7 w - - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]}
+      },
       "limits": {
         "depth": 1,
         "nodes": 0

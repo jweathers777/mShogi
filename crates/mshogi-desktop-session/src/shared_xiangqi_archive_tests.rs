@@ -140,18 +140,21 @@ fn count_game() -> x::Game {
     }
     g
 }
-fn actual(request: &SharedRequest) -> SharedResponse {
+fn actual(request: &ExecutionContext) -> ExecutionObservation {
     let mut bytes = vec![];
     mshogi_engine::serve_once(
-        std::io::Cursor::new(format!("{}\n", serde_json::to_string(request).unwrap())),
+        std::io::Cursor::new(format!(
+            "{}\n",
+            serde_json::to_string(&execution_request(request.clone())).unwrap()
+        )),
         &mut bytes,
     )
     .unwrap();
-    let response: SharedResponse = serde_json::from_slice(&bytes).unwrap();
+    let response = decode_execution_observation(&bytes);
     assert!(response.matches(request));
     response
 }
-fn analyze(c: &mut DesktopController) -> SharedResponse {
+fn analyze(c: &mut DesktopController) -> ExecutionObservation {
     send(
         c,
         SessionOperation::Analyze {
@@ -160,7 +163,7 @@ fn analyze(c: &mut DesktopController) -> SharedResponse {
     )
     .unwrap();
     let response = actual(state(c).pending.as_ref().unwrap());
-    assert!(c.accept_shared(response.clone()));
+    assert!(c.accept_observation(response.clone()));
     settle(c);
     assert_eq!(
         c.shared_snapshot().capacity.status,
@@ -334,7 +337,7 @@ fn saved_actual_engine_and_analysis_observations_are_historical_and_old_work_sta
     replace(&mut c, &game, x::Side::Red);
     send(&mut c, SessionOperation::Resume {}).unwrap();
     let engine = actual(state(&c).pending.as_ref().unwrap());
-    assert!(c.accept_shared(engine.clone()));
+    assert!(c.accept_observation(engine.clone()));
     settle(&mut c);
     let live = canonical(&c);
     let analysis = analyze(&mut c);
@@ -372,16 +375,16 @@ fn saved_actual_engine_and_analysis_observations_are_historical_and_old_work_sta
     assert_eq!(state(&c).settings, settings);
     assert_eq!(state(&c).observations.len(), 2);
     assert!(state(&c).observations.iter().all(|o| o.historical));
-    assert_eq!(state(&c).observations[0].response, engine);
-    assert_eq!(state(&c).observations[1].response, analysis);
+    assert_eq!(state(&c).observations[0].observation, engine);
+    assert_eq!(state(&c).observations[1].observation, analysis);
     assert!(state(&c).paused && state(&c).pending.is_none() && state(&c).analysis.is_none());
     let reopened = canonical(&c);
     assert!(
-        !c.accept_shared(unaccepted),
+        !c.accept_observation(unaccepted),
         "work pending before Open must stay retired"
     );
-    assert!(!c.accept_shared(engine));
-    assert!(!c.accept_shared(analysis));
+    assert!(!c.accept_observation(engine));
+    assert!(!c.accept_observation(analysis));
     assert_eq!(canonical(&c), reopened);
     send(&mut c, SessionOperation::Resume {}).unwrap();
     assert!(!state(&c).paused);
@@ -540,27 +543,47 @@ fn strict_duplicates_conflicts_derived_conclusions_and_journal_tampering_are_rej
             "accepted{key}"
         );
     }
-    for engine_protocol in [json!(0), json!(2), json!(999)] {
+    let durable = &base["observations"][0]["observation"];
+    assert_eq!(durable["schema_version"], OBSERVATION_SCHEMA_VERSION);
+    assert!(durable.get("protocol").is_none());
+    assert!(durable["context"].get("protocol").is_none());
+    assert!(base.get("engine_protocol").is_none());
+    for schema in [json!(0), json!(2), json!(999)] {
         let mut corrupt = base.clone();
-        corrupt["engine_protocol"] = engine_protocol;
+        corrupt["observations"][0]["observation"]["schema_version"] = schema;
+        assert!(decode(&corrupt.to_string(), &mut || false).is_err());
+    }
+    for place in ["observation", "context"] {
+        let mut corrupt = base.clone();
+        let o = &mut corrupt["observations"][0]["observation"];
+        if place == "observation" {
+            o["protocol"] = json!(mshogi_engine::PROTOCOL_VERSION);
+        } else {
+            o["context"]["protocol"] = json!(mshogi_engine::PROTOCOL_VERSION);
+        }
+        assert!(decode(&corrupt.to_string(), &mut || false).is_err());
+    }
+    for observation_schema_version in [json!(0), json!(2), json!(999)] {
+        let mut corrupt = base.clone();
+        corrupt["observation_schema_version"] = observation_schema_version;
         assert!(decode(&corrupt.to_string(), &mut || false).is_err());
     }
     for field in ["request_id", "session_version", "process_generation"] {
         let mut corrupt = base.clone();
-        let current = corrupt["observations"][0]["response"]["context"][field]
+        let current = corrupt["observations"][0]["observation"]["context"][field]
             .as_u64()
             .unwrap();
-        corrupt["observations"][0]["response"]["context"][field] = json!(current + 1);
+        corrupt["observations"][0]["observation"]["context"][field] = json!(current + 1);
         assert!(
             decode(&corrupt.to_string(), &mut || false).is_err(),
             "{field}"
         );
     }
     let mut corrupt = base.clone();
-    corrupt["observations"][0]["response"]["context"]["purpose"] = json!({"kind":"engine_turn"});
+    corrupt["observations"][0]["observation"]["context"]["purpose"] = json!({"kind":"engine_turn"});
     assert!(decode(&corrupt.to_string(), &mut || false).is_err());
     let mut corrupt = base.clone();
-    corrupt["observations"][0]["response"]["context"]["limits"]["nodes"] = json!(2);
+    corrupt["observations"][0]["observation"]["context"]["limits"]["nodes"] = json!(2);
     assert!(decode(&corrupt.to_string(), &mut || false).is_err());
     let mut corrupt = base.clone();
     corrupt["current"]["payload"]["conclusion"] = json!({"kind":"draw","reason":"agreement"});
@@ -569,7 +592,7 @@ fn strict_duplicates_conflicts_derived_conclusions_and_journal_tampering_are_rej
     corrupt["current"]["rules_profile"] = json!("mshogi.shogi.csa36.v1");
     assert!(decode(&corrupt.to_string(), &mut || false).is_err());
     let mut corrupt = base.clone();
-    corrupt["observations"][0]["response"]["context"]["purpose"]["target"]["event_index"] =
+    corrupt["observations"][0]["observation"]["context"]["purpose"]["target"]["event_index"] =
         json!(0);
     assert!(decode(&corrupt.to_string(), &mut || false).is_err());
     let mut corrupt = base.clone();
@@ -630,9 +653,9 @@ fn reused_validation_never_hides_changed_history_or_malformed_later_observations
         .unwrap();
         let response = actual(state(&c).pending.as_ref().unwrap());
         assert!(
-            matches!(&response.result, SharedResult::Xiangqi { result: XiangqiResult::Choice { telemetry, .. } } if !telemetry.principal_variation.is_empty())
+            matches!(&response.result, ExecutionResult::Xiangqi { result: XiangqiResult::Choice { telemetry, .. } } if !telemetry.principal_variation.is_empty())
         );
-        assert!(c.accept_shared(response));
+        assert!(c.accept_observation(response));
         settle(&mut c);
     }
     let observation = exact(
@@ -654,8 +677,8 @@ fn reused_validation_never_hides_changed_history_or_malformed_later_observations
     assert_eq!(restored.observations.len(), 2);
     assert_eq!(restored.exact_observations, state(&c).exact_observations);
     assert_eq!(
-        restored.observations[1].response,
-        state(&c).observations[1].response
+        restored.observations[1].observation,
+        state(&c).observations[1].observation
     );
 
     // Earlier records and observations have populated validation reuse by now.
@@ -688,7 +711,7 @@ fn reused_validation_never_hides_changed_history_or_malformed_later_observations
         .remove("application_error");
     assert!(decode(&missing.to_string(), &mut || false).is_err());
     let mut duplicate = base.clone();
-    duplicate["observations"][1]["response"]["context"]["unexpected"] = json!(true);
+    duplicate["observations"][1]["observation"]["context"]["unexpected"] = json!(true);
     assert!(decode(&duplicate.to_string(), &mut || false).is_err());
 
     let prefix = game.committed_prefix(0).unwrap();
@@ -697,13 +720,13 @@ fn reused_validation_never_hides_changed_history_or_malformed_later_observations
         game.position().pieces().collect::<Vec<_>>()
     );
     let mut wrong_history = base.clone();
-    wrong_history["observations"][1]["response"]["context"]["game"] = serde_json::to_value(
+    wrong_history["observations"][1]["observation"]["context"]["game"] = serde_json::to_value(
         CanonicalRecord::xiangqi(x::GameRecord::from_game(&prefix).unwrap()),
     )
     .unwrap();
     assert!(decode(&wrong_history.to_string(), &mut || false).is_err());
     let mut changed_variation = base.clone();
-    changed_variation["observations"][1]["response"]["result"]["result"]["telemetry"]["principal_variation"]
+    changed_variation["observations"][1]["observation"]["result"]["result"]["telemetry"]["principal_variation"]
         .as_array_mut().unwrap().push(serde_json::to_value(XiangqiChoice::Move { action: "a0a9".parse().unwrap() }).unwrap());
     assert!(
         decode(&changed_variation.to_string(), &mut || false).is_err(),
@@ -829,16 +852,17 @@ fn product_open_restores_xiangqi_with_fresh_stopped_identity_and_keeps_stale_fai
     )
     .unwrap();
     let request = state(&xq).pending.as_ref().unwrap().clone();
-    let response = SharedResponse {
+    let response = ExecutionObservation {
+        schema_version: OBSERVATION_SCHEMA_VERSION,
         context: request,
-        result: SharedResult::Failure {
+        result: ExecutionResult::Failure {
             failure: mshogi_engine::EngineFailure {
                 kind: mshogi_engine::FailureKind::MalformedResponse,
                 message: "x".repeat(mshogi_engine::MAX_RESPONSE_BYTES + 1),
             },
         },
     };
-    assert!(!xq.accept_shared(response));
+    assert!(!xq.accept_observation(response));
     assert_eq!(canonical(&xq), before);
     assert_eq!(state(&xq).observations.len(), count);
     save(&mut xq, &file);
@@ -872,9 +896,13 @@ fn ordinary_observation_256_to_257_rejects_new_work_and_still_saves_reopens_all_
             .get_or_insert_with(|| actual(&context).result)
             .clone();
         assert!(
-            matches!(&result, SharedResult::Xiangqi { result: XiangqiResult::Choice { telemetry, .. } } if !telemetry.principal_variation.is_empty())
+            matches!(&result, ExecutionResult::Xiangqi { result: XiangqiResult::Choice { telemetry, .. } } if !telemetry.principal_variation.is_empty())
         );
-        assert!(c.accept_shared(SharedResponse { context, result }));
+        assert!(c.accept_observation(ExecutionObservation {
+            schema_version: OBSERVATION_SCHEMA_VERSION,
+            context,
+            result
+        }));
         settle(&mut c);
         assert_eq!(state(&c).observations.len(), index + 1);
     }
@@ -988,7 +1016,7 @@ fn distinct_native_variations_pay_reconstruction_before_result_commit_and_still_
         let mut result = template
             .get_or_insert_with(|| actual(&context).result)
             .clone();
-        let SharedResult::Xiangqi {
+        let ExecutionResult::Xiangqi {
             result: XiangqiResult::Choice { choice, telemetry },
         } = &mut result
         else {
@@ -998,11 +1026,15 @@ fn distinct_native_variations_pay_reconstruction_before_result_commit_and_still_
         // evaluation facts for the substituted alternatives.
         *choice = XiangqiChoice::Move { action };
         telemetry.principal_variation = vec![*choice];
-        let response = SharedResponse { context, result };
+        let response = ExecutionObservation {
+            schema_version: OBSERVATION_SCHEMA_VERSION,
+            context,
+            result,
+        };
         assert!(response.matches(&response.context));
         let count = state(&c).observations.len();
         let before = canonical(&c);
-        assert!(c.accept_shared(response.clone()));
+        assert!(c.accept_observation(response.clone()));
         settle(&mut c);
         assert_eq!(canonical(&c), before);
         if state(&c).observations.len() == count {
@@ -1033,7 +1065,7 @@ fn distinct_native_variations_pay_reconstruction_before_result_commit_and_still_
     let expected: Vec<_> = state(&c)
         .observations
         .iter()
-        .map(|o| o.response.clone())
+        .map(|o| o.observation.clone())
         .collect();
 
     // Test-only candidate bypass demonstrates that raw Open preflight rejects
@@ -1066,7 +1098,7 @@ fn distinct_native_variations_pay_reconstruction_before_result_commit_and_still_
         state(&c)
             .observations
             .iter()
-            .map(|o| o.response.clone())
+            .map(|o| o.observation.clone())
             .collect::<Vec<_>>(),
         expected
     );
@@ -1306,9 +1338,8 @@ fn actual_encoded_open_byte_boundary_and_structural_candidate_byte_guard_are_exa
     let mut s = XiangqiDraft::replacement(&x::GameRecord::from_game(&game).unwrap(), x::Side::Red)
         .materialize()
         .unwrap();
-    let context = SharedRequest {
-        protocol: SHARED_PROTOCOL_VERSION,
-        purpose: SharedPurpose::EngineTurn {},
+    let context = ExecutionContext {
+        purpose: ExecutionPurpose::EngineTurn {},
         request_id: 1,
         session_version: 1,
         process_generation: 1,
@@ -1316,9 +1347,10 @@ fn actual_encoded_open_byte_boundary_and_structural_candidate_byte_guard_are_exa
         limits: PLAY_LIMITS,
     };
     s.observations.push(PresentedObservation {
-        response: SharedResponse {
+        observation: ExecutionObservation {
+            schema_version: OBSERVATION_SCHEMA_VERSION,
             context,
-            result: SharedResult::Failure {
+            result: ExecutionResult::Failure {
                 failure: mshogi_engine::EngineFailure {
                     kind: mshogi_engine::FailureKind::Start,
                     message: String::new(),
@@ -1329,7 +1361,7 @@ fn actual_encoded_open_byte_boundary_and_structural_candidate_byte_guard_are_exa
         historical: false,
     });
     let base_size = encode(&s, MAX_SAFE_ID - 17).unwrap().len();
-    let SharedResult::Failure { failure } = &mut s.observations[0].response.result else {
+    let ExecutionResult::Failure { failure } = &mut s.observations[0].observation.result else {
         unreachable!()
     };
     failure.message = "x".repeat(MAX_ARCHIVE_BYTES - base_size);
@@ -1338,7 +1370,7 @@ fn actual_encoded_open_byte_boundary_and_structural_candidate_byte_guard_are_exa
         MAX_ARCHIVE_BYTES
     );
     check_capacity(&s, &mut || false).unwrap();
-    let SharedResult::Failure { failure } = &mut s.observations[0].response.result else {
+    let ExecutionResult::Failure { failure } = &mut s.observations[0].observation.result else {
         unreachable!()
     };
     failure.message.push('x');
@@ -1385,7 +1417,7 @@ fn measured_long_warning_claim_and_historical_observations_pause_before_replay_b
             match send(&mut c, command) {
                 Ok(()) => {
                     let response = actual(state(&c).pending.as_ref().unwrap());
-                    assert!(c.accept_shared(response));
+                    assert!(c.accept_observation(response));
                     settle(&mut c);
                     if c.shared_snapshot().capacity.status == CapacityPhase::Paused {
                         break;
@@ -1417,7 +1449,7 @@ fn measured_long_warning_claim_and_historical_observations_pause_before_replay_b
         let elapsed = started.elapsed();
         assert_eq!(canonical(&c), before);
         assert_eq!(state(&c).observations.len(), accepted);
-        assert_eq!(state(&c).observations[0].response, historical);
+        assert_eq!(state(&c).observations[0].observation, historical);
         assert_eq!(state(&c).game.warnings(), game.warnings());
         eprintln!(
             "MSH99 measured {label} native-events={} controls={} observations={} encoded-bytes={bytes} reopen-millis={}",
@@ -1460,7 +1492,7 @@ fn consumed_invalid_pv_is_retained_unscored_without_applying_even_its_first_move
         }
         let request = state(&c).pending.clone().unwrap();
         let mut response = actual(&request);
-        let SharedResult::Xiangqi {
+        let ExecutionResult::Xiangqi {
             result: XiangqiResult::Choice { telemetry, .. },
         } = &mut response.result
         else {
@@ -1474,7 +1506,7 @@ fn consumed_invalid_pv_is_retained_unscored_without_applying_even_its_first_move
             "metadata validity alone cannot establish native PV legality"
         );
         let before = canonical(&c);
-        assert!(c.accept_shared(response.clone()));
+        assert!(c.accept_observation(response.clone()));
         settle(&mut c);
         let snapshot = c.shared_snapshot();
         assert_eq!(snapshot.phase, EnginePhase::Failed);
@@ -1483,14 +1515,14 @@ fn consumed_invalid_pv_is_retained_unscored_without_applying_even_its_first_move
         assert!(snapshot.analysis.is_none());
         assert_eq!(snapshot.search_observations[0].score, None);
         assert!(snapshot.observations[0].application_error.is_some());
-        assert_eq!(snapshot.observations[0].response, response);
+        assert_eq!(snapshot.observations[0].observation, response);
         assert_eq!(canonical(&c), before);
         assert_eq!(c.shared_snapshot().phase, EnginePhase::Failed);
         let file = path("rejected-pv");
         save(&mut c, &file);
         open(&mut c, &file).unwrap();
         assert_eq!(canonical(&c), before);
-        assert_eq!(state(&c).observations[0].response, response);
+        assert_eq!(state(&c).observations[0].observation, response);
         assert!(state(&c).observations[0].application_error.is_some());
         assert!(state(&c).observations[0].historical);
         std::fs::remove_file(file).unwrap();
@@ -1517,7 +1549,7 @@ fn response_admission_refusal_cannot_restore_consumed_execution_as_thinking() {
     // after the bridge's response has already been delivered.
     c.shared.xiangqi.as_mut().unwrap().analysis_intent = None;
     let before = canonical(&c);
-    assert!(c.accept_shared(response));
+    assert!(c.accept_observation(response));
     settle(&mut c);
     let snapshot = c.shared_snapshot();
     assert_eq!(snapshot.phase, EnginePhase::Failed);

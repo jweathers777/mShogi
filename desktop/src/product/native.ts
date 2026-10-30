@@ -1,3 +1,4 @@
+import type { ExecutionObservation } from "../native";
 import type { NativeBoardSnapshot } from "../NativeBoard";
 import type { Snapshot } from "../native";
 export type GameKind = "chess" | "shogi" | "xiangqi";
@@ -55,8 +56,7 @@ export type XiangqiSnapshot = GameSnapshotBase & {
 export type GameSnapshot = ChessShogiSnapshot | XiangqiSnapshot;
 export interface Observation {
   historical: boolean; application_error: string | null;
-  response: { context: { request_id: number; session_version: number; process_generation: number;
-    purpose: { kind: string; target?: { selection_id: number; event_index: number; board_ply: number } }; limits: { depth: number; nodes: number } }; result: unknown };
+  observation: ExecutionObservation;
 }
 export type Operation =
   | { kind: "xiangqi"; command: { kind: "play"; action: string } | { kind: "resign" | "offer_draw" | "accept_draw" | "decline_draw" | "claim_natural_count" } }

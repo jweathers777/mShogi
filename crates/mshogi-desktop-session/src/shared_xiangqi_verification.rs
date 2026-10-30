@@ -149,13 +149,14 @@ impl DesktopController {
                     .pending
                     .as_ref()
                     .ok_or("Missing verification analysis request.")?;
-                let mut bytes = serde_json::to_vec(request).map_err(|e| e.to_string())?;
+                let mut bytes = serde_json::to_vec(&execution_request(request.clone()))
+                    .map_err(|e| e.to_string())?;
                 bytes.push(b'\n');
                 let mut response = Vec::new();
                 mshogi_engine::serve_once(std::io::Cursor::new(bytes), &mut response)
                     .map_err(|e| e.to_string())?;
                 let response = serde_json::from_slice(&response).map_err(|e| e.to_string())?;
-                if !self.accept_xiangqi(response) {
+                if !self.accept_shared(response) {
                     return Err("Verification observation failed native context admission.".into());
                 }
                 self.finish_verification_admission(
@@ -183,8 +184,8 @@ mod tests {
         let state = controller.shared.xiangqi.as_ref().unwrap();
         assert_eq!(state.observations.len(), MAX_ARCHIVE_OBSERVATIONS - 1);
         assert!(state.observations.iter().all(|o| matches!(
-            &o.response.result,
-            SharedResult::Xiangqi {
+            &o.observation.result,
+            ExecutionResult::Xiangqi {
                 result: XiangqiResult::Incomplete { .. }
             }
         )));

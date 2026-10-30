@@ -70,25 +70,28 @@ fn play(c: &mut DesktopController, action: &str) {
     };
     send(c, op).unwrap();
 }
-fn pending(c: &DesktopController) -> SharedRequest {
+fn pending(c: &DesktopController) -> ExecutionContext {
     if let Some(s) = &c.shared.shogi {
         s.pending.clone().unwrap()
     } else {
         c.shared.xiangqi.as_ref().unwrap().pending.clone().unwrap()
     }
 }
-fn execute(request: &SharedRequest) -> SharedResponse {
+fn execute(request: &ExecutionContext) -> ExecutionObservation {
     let mut bytes = Vec::new();
     mshogi_engine::serve_once(
-        std::io::Cursor::new(format!("{}\n", serde_json::to_string(request).unwrap())),
+        std::io::Cursor::new(format!(
+            "{}\n",
+            serde_json::to_string(&execution_request(request.clone())).unwrap()
+        )),
         &mut bytes,
     )
     .unwrap();
-    serde_json::from_slice(&bytes).unwrap()
+    decode_execution_observation(&bytes)
 }
-fn engine(c: &mut DesktopController) -> SharedResponse {
+fn engine(c: &mut DesktopController) -> ExecutionObservation {
     let response = execute(&pending(c));
-    assert!(c.accept_shared(response.clone()));
+    assert!(c.accept_observation(response.clone()));
     settle(c);
     response
 }
@@ -154,7 +157,7 @@ fn takeback_native_shogi_and_xiangqi_pairs_pending_repeated_and_fresh_contexts()
         assert_eq!(undone.board_ply, 0);
         assert_ne!(undone.token.version, before.token.version);
         assert_ne!(undone.token.selection, before.token.selection);
-        assert!(!c.accept_shared(late));
+        assert!(!c.accept_observation(late));
         assert!(
             c.shared_command(SharedDesktopCommand {
                 expected: before.token,

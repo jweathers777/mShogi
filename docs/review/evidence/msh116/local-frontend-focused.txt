@@ -1,0 +1,9 @@
+
+ RUN  v5.0.5 /Users/johnweathers/Development/Personal/mShogi/desktop
+
+
+ Test Files  2 passed (2)
+      Tests  26 passed (26)
+   Start at  15:36:18
+   Duration  3.42s (tests 77%, environment 17%, import 4%, transform 2%)
+

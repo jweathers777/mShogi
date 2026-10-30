@@ -1,3 +1,7 @@
+> Historical interface evidence. MSH-116 retired this internal wire version; the
+> sole current contract is [internal execution v4](internal-execution-v4.md).
+> Native behavior described below remains relevant where unchanged.
+
 # Bundled engine interface v1
 
 Historical first-batch contract. MSH-33 introduces the required-purpose

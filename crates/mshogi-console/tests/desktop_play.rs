@@ -4,7 +4,7 @@ use mshogi_core::chess::{AdjudicatedGame, ClaimPolicy, Color};
 use mshogi_desktop_session::{
     DesktopCommand, DesktopController, EnginePhase, PLAY_LIMITS, Snapshot,
 };
-use mshogi_engine::{EngineChoice, EngineResult, FailureKind, StopReason};
+use mshogi_engine::{ChessResult, EngineChoice, FailureKind, StopReason};
 use std::{
     path::PathBuf,
     thread,
@@ -55,7 +55,7 @@ fn replay(snapshot: &Snapshot) -> AdjudicatedGame {
     game
 }
 fn real_observations(snapshot: &Snapshot, perspective: Color, searched_version: u64) {
-    let Some(EngineResult::Move { action, telemetry }) = &snapshot.engine.last else {
+    let Some(ChessResult::Move { action, telemetry }) = &snapshot.engine.last else {
         panic!(
             "expected an actual engine move, got {:?}",
             snapshot.engine.last
@@ -279,7 +279,7 @@ fn actual_missing_response_and_failed_process_pause_without_a_chess_score() {
         snapshot.engine.status == EnginePhase::Failed
     });
     assert!(
-        matches!(&failed.engine.last, Some(EngineResult::Failure { failure }) if failure.kind == FailureKind::MissingResponse)
+        matches!(&failed.engine.last, Some(ChessResult::Failure { failure }) if failure.kind == FailureKind::MissingResponse)
     );
     assert!(failed.history.is_empty());
     assert!(failed.conclusion.is_none());
@@ -300,7 +300,7 @@ fn actual_missing_response_and_failed_process_pause_without_a_chess_score() {
         snapshot.engine.status == EnginePhase::Failed
     });
     assert!(
-        matches!(&failed.engine.last, Some(EngineResult::Failure { failure }) if failure.kind == FailureKind::UnexpectedExit)
+        matches!(&failed.engine.last, Some(ChessResult::Failure { failure }) if failure.kind == FailureKind::UnexpectedExit)
     );
     assert!(failed.history.is_empty());
     assert!(failed.conclusion.is_none());

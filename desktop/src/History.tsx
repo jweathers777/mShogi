@@ -71,11 +71,13 @@ export function HistoryPanel({
   );
 }
 function Observation({ observation }: { observation: ArchivedObservation }) {
-  const { result, context } = observation.response;
+  const { result: nativeResult, context } = observation.observation;
+  const result = nativeResult.kind === "chess" ? nativeResult.result : nativeResult.kind === "failure" ? nativeResult : null;
+  if (result === null) return <article className="archived-observation"><h3>{observation.label}</h3><p>Observation belongs to another native game. No Chess score or outcome is presented.</p><details><summary>Recorded context, modes and limits</summary><pre>{JSON.stringify(observation.observation, null, 2)}</pre></details></article>;
   const telemetry = resultTelemetry(result);
   const turn = observation.analyzed_turn;
   const full =
-    context.purpose.kind === "full_reachability" ? context.purpose : null;
+    context.purpose.kind === "chess_full_reachability" ? context.purpose : null;
   return (
     <article className="archived-observation">
       <h3>{observation.label}</h3>
@@ -148,7 +150,7 @@ function Observation({ observation }: { observation: ArchivedObservation }) {
       )}
       <details className="technical-analysis">
         <summary>Recorded context, modes and limits</summary>
-        <pre>{JSON.stringify(observation.response, null, 2)}</pre>
+        <pre>{JSON.stringify(observation.observation, null, 2)}</pre>
       </details>
     </article>
   );

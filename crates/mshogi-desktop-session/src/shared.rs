@@ -16,8 +16,8 @@ use mshogi_core::{
     shogi as s,
 };
 use mshogi_engine::{
-    SHARED_PROTOCOL_VERSION, SharedAnalysisTarget, SharedPurpose, SharedRequest, SharedResponse,
-    SharedResult, ShogiChoice, ShogiResult,
+    ExecutionContext, ExecutionObservation, ExecutionPurpose, ExecutionRequest, ExecutionResponse,
+    ExecutionResult, ExecutionTarget, OBSERVATION_SCHEMA_VERSION, ShogiChoice, ShogiResult,
 };
 pub use xiangqi::{
     IntersectionTopology, Palace, XiangqiExactEvidence, XiangqiPresentation, XiangqiSettings,
@@ -254,7 +254,7 @@ pub struct PresentedStatus {
 #[serde(deny_unknown_fields)]
 pub struct PresentedObservation {
     /// Exact submitted context and actual native result.
-    pub response: SharedResponse,
+    pub observation: ExecutionObservation,
     /// Native command admission diagnostic, separate from a game outcome.
     #[serde(deserialize_with = "archive::required_option")]
     pub application_error: Option<String>,
@@ -311,19 +311,19 @@ fn display_shogi_observation(
     observation: &PresentedObservation,
     current: Option<&PresentedObservation>,
 ) -> PresentedSearchObservation {
-    let context = &observation.response.context;
+    let context = &observation.observation.context;
     let (purpose, event_index, board_ply) = match &context.purpose {
-        SharedPurpose::EngineTurn {} => (
+        ExecutionPurpose::EngineTurn {} => (
             "engine_turn",
             context.game.event_count(),
             context.game.known_board_actions(),
         ),
-        SharedPurpose::MoveAnalysis { target } => (
+        ExecutionPurpose::MoveAnalysis { target } => (
             "move_analysis",
             target.event_index as usize,
             target.board_ply as usize,
         ),
-        SharedPurpose::ChessFullReachability { .. } => {
+        ExecutionPurpose::ChessFullReachability { .. } => {
             unreachable!("native shogi admission rejects chess Full")
         }
     };
@@ -331,15 +331,15 @@ fn display_shogi_observation(
         CanonicalRecord::Shogi(record) => record.side_to_move(),
         _ => unreachable!("shogi observation context"),
     };
-    let telemetry = match &observation.response.result {
-        SharedResult::Shogi {
+    let telemetry = match &observation.observation.result {
+        ExecutionResult::Shogi {
             result:
                 ShogiResult::Choice { telemetry, .. }
                 | ShogiResult::Finished { telemetry, .. }
                 | ShogiResult::Incomplete { telemetry },
         } => Some(telemetry),
-        SharedResult::Failure { .. } => None,
-        SharedResult::Chess { .. } | SharedResult::Xiangqi { .. } => {
+        ExecutionResult::Failure { .. } => None,
+        ExecutionResult::Chess { .. } | ExecutionResult::Xiangqi { .. } => {
             unreachable!("native shogi response admission")
         }
     };
@@ -371,7 +371,7 @@ fn display_shogi_observation(
         },
         historical: observation.historical,
         selected: !observation.historical
-            && current.is_some_and(|c| c.response == observation.response),
+            && current.is_some_and(|c| c.observation == observation.observation),
     }
 }
 /// Typed shared desktop view with exact runtime identity and native context.
@@ -650,7 +650,7 @@ pub(super) struct ShogiSession {
     human: s::Side,
     viewed: Option<s::Game>,
     paused: bool,
-    pending: Option<SharedRequest>,
+    pending: Option<ExecutionContext>,
     submitted: bool,
     phase: EnginePhase,
     diagnostic: Option<String>,
@@ -1045,8 +1045,8 @@ impl DesktopController {
         self.session.next_request += 1;
         let game = state.record();
         let purpose = if analysis {
-            SharedPurpose::MoveAnalysis {
-                target: SharedAnalysisTarget {
+            ExecutionPurpose::MoveAnalysis {
+                target: ExecutionTarget {
                     selection_id: self.session.selection_id,
                     event_index: game.event_count() as u64,
                     board_ply: game.known_board_actions() as u64,
@@ -1064,10 +1064,9 @@ impl DesktopController {
                 },
             }
         } else {
-            SharedPurpose::EngineTurn {}
+            ExecutionPurpose::EngineTurn {}
         };
-        let request = SharedRequest {
-            protocol: SHARED_PROTOCOL_VERSION,
+        let request = ExecutionContext {
             purpose,
             request_id: self.session.next_request,
             session_version: self.session.version,
@@ -1087,9 +1086,15 @@ impl DesktopController {
         Ok(())
     }
     /// Exact acceptance, separate read-only observation path and native command admission.
-    pub fn accept_shared(&mut self, response: SharedResponse) -> bool {
+    pub fn accept_shared(&mut self, response: ExecutionResponse) -> bool {
+        if response.protocol != mshogi_engine::PROTOCOL_VERSION {
+            return false;
+        }
+        self.accept_observation(response.observation)
+    }
+    pub(crate) fn accept_observation(&mut self, response: ExecutionObservation) -> bool {
         if self.shared.xiangqi.is_some() {
-            return self.accept_xiangqi(response);
+            return self.accept_xiangqi_observation(response);
         }
         let Some(state) = self.shared.shogi.as_ref() else {
             return false;
@@ -1127,7 +1132,7 @@ impl DesktopController {
                 return self.shared_snapshot();
             }
             if self.admission_token.is_none()
-                && let Some(response) = self.bridge.poll_shared()
+                && let Some(response) = self.bridge.poll()
             {
                 self.accept_shared(response);
             }
@@ -1150,10 +1155,11 @@ impl DesktopController {
                 && !state.submitted
             {
                 state.submitted = true;
-                if let Err(e) = self.bridge.submit_shared(request.clone()) {
-                    self.accept_shared(SharedResponse {
+                if let Err(e) = self.bridge.submit(execution_request(request.clone())) {
+                    self.accept_observation(ExecutionObservation {
+                        schema_version: OBSERVATION_SCHEMA_VERSION,
                         context: request,
-                        result: SharedResult::Failure {
+                        result: ExecutionResult::Failure {
                             failure: mshogi_engine::EngineFailure {
                                 kind: mshogi_engine::FailureKind::Start,
                                 message: format!("Cannot start native work: {e:?}"),
@@ -1397,9 +1403,9 @@ impl DesktopController {
             paused: state.paused,
             phase: state.phase,
             execution_purpose: state.pending.as_ref().map(|request| match request.purpose {
-                SharedPurpose::EngineTurn {} => "engine_turn",
-                SharedPurpose::MoveAnalysis { .. } => "move_analysis",
-                SharedPurpose::ChessFullReachability { .. } => "chess_full_reachability",
+                ExecutionPurpose::EngineTurn {} => "engine_turn",
+                ExecutionPurpose::MoveAnalysis { .. } => "move_analysis",
+                ExecutionPurpose::ChessFullReachability { .. } => "chess_full_reachability",
             }),
             diagnostic: state.diagnostic.clone(),
             declaration_advice,
@@ -1555,9 +1561,9 @@ impl DesktopController {
                 .as_ref()
                 .or(self.session.pending.as_ref())
                 .map(|request| match request.purpose {
-                    mshogi_engine::RequestPurpose::EngineTurn => "engine_turn",
-                    mshogi_engine::RequestPurpose::MoveAnalysis { .. } => "move_analysis",
-                    mshogi_engine::RequestPurpose::FullReachability { .. } => {
+                    mshogi_engine::ExecutionPurpose::EngineTurn {} => "engine_turn",
+                    mshogi_engine::ExecutionPurpose::MoveAnalysis { .. } => "move_analysis",
+                    mshogi_engine::ExecutionPurpose::ChessFullReachability { .. } => {
                         "chess_full_reachability"
                     }
                 }),
@@ -1670,12 +1676,15 @@ impl DesktopController {
                     .as_ref()
                     .and_then(|s| s.pending.clone())
                     .expect("fixture request");
-                let mut bytes = serde_json::to_vec(&request).map_err(|e| e.to_string())?;
+                let mut bytes = serde_json::to_vec(&execution_request(request.clone()))
+                    .map_err(|e| e.to_string())?;
                 bytes.push(b'\n');
                 let mut response = vec![];
                 mshogi_engine::serve_once(std::io::Cursor::new(bytes), &mut response)
                     .map_err(|e| e.to_string())?;
-                let response = serde_json::from_slice(&response).map_err(|e| e.to_string())?;
+                let response = serde_json::from_slice::<ExecutionResponse>(&response)
+                    .map_err(|e| e.to_string())?
+                    .observation;
                 let candidate = self.shared.shogi.as_ref().expect("shogi fixture").clone();
                 let receipt =
                     self.queue_native_candidate(candidate, None, Some(response), false)?;
@@ -1698,3 +1707,16 @@ mod tests;
 #[cfg(test)]
 #[path = "shared_takeback_tests.rs"]
 mod takeback_tests;
+
+fn execution_request(context: ExecutionContext) -> ExecutionRequest {
+    ExecutionRequest {
+        protocol: mshogi_engine::PROTOCOL_VERSION,
+        context,
+    }
+}
+#[cfg(test)]
+fn decode_execution_observation(bytes: &[u8]) -> ExecutionObservation {
+    let response: ExecutionResponse = serde_json::from_slice(bytes).unwrap();
+    assert_eq!(response.protocol, mshogi_engine::PROTOCOL_VERSION);
+    response.observation
+}

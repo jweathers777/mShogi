@@ -134,10 +134,10 @@ fn main() {
     let old_floor = observations
         .iter()
         .map(|o| {
-            o.response
+            o.observation
                 .context
                 .request_id
-                .max(o.response.context.session_version)
+                .max(o.observation.context.session_version)
         })
         .max()
         .unwrap();
@@ -169,7 +169,7 @@ fn main() {
     assert_eq!(reopened.observations.len(), observations.len());
     for (actual, saved) in reopened.observations.iter().zip(&observations) {
         assert!(actual.historical);
-        assert_eq!(actual.response, saved.response);
+        assert_eq!(actual.observation, saved.observation);
     }
     let restored = send(&mut c, SessionOperation::ReturnLive {});
     assert_eq!(restored.context, live);
@@ -189,7 +189,7 @@ fn main() {
             .observations
             .last()
             .unwrap()
-            .response
+            .observation
             .context
             .request_id
             > old_floor

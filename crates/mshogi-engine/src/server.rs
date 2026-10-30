@@ -25,9 +25,9 @@ pub fn serve_once(mut input: impl BufRead, mut output: impl Write) -> io::Result
             "missing newline or oversized internal request",
         ));
     }
-    let context: crate::wire::WireRequest = serde_json::from_slice(&bytes).map_err(|error| {
-        let EngineResult::Failure { failure } =
-            EngineResult::failure(FailureKind::InvalidRequest, error)
+    let context: ExecutionRequest = serde_json::from_slice(&bytes).map_err(|error| {
+        let ChessResult::Failure { failure } =
+            ChessResult::failure(FailureKind::InvalidRequest, error)
         else {
             unreachable!()
         };
@@ -44,39 +44,33 @@ pub fn serve_once(mut input: impl BufRead, mut output: impl Write) -> io::Result
     output.write_all(b"\n")?;
     output.flush()
 }
-pub(crate) fn execute(context: &EngineRequest) -> EngineResult {
-    if context.protocol != PROTOCOL_VERSION
-        || context.request_id == 0
-        || context.process_generation == 0
-        || !context.valid_limits()
-    {
-        return EngineResult::failure(
-            FailureKind::InvalidRequest,
-            "invalid internal version, identity, generation or depth",
-        );
-    }
-    if context.game.adjudication_mode() != AdjudicationMode::M2 {
-        return EngineResult::failure(
+fn execute_chess(context: &ExecutionContext) -> ChessResult {
+    let mshogi_core::native::CanonicalRecord::Chess(record) = &context.game else {
+        unreachable!()
+    };
+    if record.adjudication_mode() != AdjudicationMode::M2 {
+        return ChessResult::failure(
             FailureKind::UnsupportedMode,
             "Live record reconstruction supports M2 only; Full records were not replayed or downgraded. Advanced Full reachability is a separate analysis operation.",
         );
     }
-    let game = match AdjudicatedGame::replay_record(&context.game) {
+    let game = match AdjudicatedGame::replay_record(record) {
         Ok(game) => game,
-        Err(error) => return EngineResult::failure(FailureKind::InvalidRequest, error),
+        Err(error) => return ChessResult::failure(FailureKind::InvalidRequest, error),
     };
-    if let RequestPurpose::MoveAnalysis { target } | RequestPurpose::FullReachability { target, .. } =
-        &context.purpose
-        && (target.ply != game.history().ply_count() as u64
-            || target.turn != game.position().side_to_move())
+    if let ExecutionPurpose::MoveAnalysis { target }
+    | ExecutionPurpose::ChessFullReachability { target, .. } = &context.purpose
+        && (target.board_ply != game.history().ply_count() as u64
+            || target.turn
+                != mshogi_core::native::NativeSide::Chess(game.position().side_to_move()))
     {
-        return EngineResult::failure(
+        return ChessResult::failure(
             FailureKind::InvalidRequest,
             "analysis target provenance disagrees with its exact history",
         );
     }
-    if let RequestPurpose::FullReachability { mate, limits, .. } = context.purpose {
-        return EngineResult::Reachability {
+    if let ExecutionPurpose::ChessFullReachability { mate, limits, .. } = context.purpose {
+        return ChessResult::Reachability {
             result: game.position().mate_reachability(
                 mate.into(),
                 mshogi_core::chess::ReachabilityLimits {
@@ -89,7 +83,7 @@ pub(crate) fn execute(context: &EngineRequest) -> EngineResult {
     }
     let coordinator = match SearchCoordinator::new() {
         Ok(coordinator) => coordinator,
-        Err(error) => return EngineResult::failure(FailureKind::Search, error),
+        Err(error) => return ChessResult::failure(FailureKind::Search, error),
     };
     if let Err(error) = coordinator.submit(
         &game,
@@ -99,49 +93,35 @@ pub(crate) fn execute(context: &EngineRequest) -> EngineResult {
             nodes: Some(context.limits.nodes),
         },
     ) {
-        return EngineResult::failure(FailureKind::Search, error);
+        return ChessResult::failure(FailureKind::Search, error);
     }
     loop {
         if let Some(completion) = coordinator.poll() {
             return match completion.result() {
-                Ok(result) => EngineResult::searched(result.clone()),
-                Err(error) => EngineResult::failure(FailureKind::Search, error),
+                Ok(result) => ChessResult::searched(result.clone()),
+                Err(error) => ChessResult::failure(FailureKind::Search, error),
             };
         }
         thread::sleep(Duration::from_millis(1));
     }
 }
 
-pub(crate) fn execute_shared(context: &SharedRequest) -> SharedResult {
-    if context.protocol != SHARED_PROTOCOL_VERSION
-        || context.request_id == 0
-        || context.process_generation == 0
-        || !context.valid_limits()
-    {
-        return SharedResult::failure(
-            FailureKind::InvalidRequest,
-            "invalid shared identity, purpose, selection or limits",
-        );
-    }
+pub(crate) fn execute(context: &ExecutionContext) -> ExecutionResult {
     match context.game.game_kind() {
-        mshogi_core::native::GameKind::Xiangqi => return execute_xiangqi(context),
-        mshogi_core::native::GameKind::Shogi => return execute_shogi(context),
-        mshogi_core::native::GameKind::Chess => {}
-    }
-    let Some(chess) = context.chess_adapter() else {
-        return SharedResult::failure(
-            FailureKind::InvalidRequest,
-            "purpose target does not belong to chess",
-        );
-    };
-    SharedResult::Chess {
-        result: execute(&chess),
+        mshogi_core::native::GameKind::Xiangqi => execute_xiangqi(context),
+        mshogi_core::native::GameKind::Shogi => execute_shogi(context),
+        mshogi_core::native::GameKind::Chess => ExecutionResult::Chess {
+            result: execute_chess(context),
+        },
     }
 }
 
-fn execute_shogi(context: &SharedRequest) -> SharedResult {
-    if matches!(context.purpose, SharedPurpose::ChessFullReachability { .. }) {
-        return SharedResult::failure(
+fn execute_shogi(context: &ExecutionContext) -> ExecutionResult {
+    if matches!(
+        context.purpose,
+        ExecutionPurpose::ChessFullReachability { .. }
+    ) {
+        return ExecutionResult::failure(
             FailureKind::UnsupportedMode,
             "Chess Full reachability is not a shogi operation; no shogi Full or tsume capability is advertised.",
         );
@@ -151,14 +131,14 @@ fn execute_shogi(context: &SharedRequest) -> SharedResult {
     };
     let game = match record.to_game() {
         Ok(game) => game,
-        Err(error) => return SharedResult::failure(FailureKind::InvalidRequest, error),
+        Err(error) => return ExecutionResult::failure(FailureKind::InvalidRequest, error),
     };
-    if let SharedPurpose::MoveAnalysis { target } = &context.purpose
+    if let ExecutionPurpose::MoveAnalysis { target } = &context.purpose
         && (target.turn != mshogi_core::native::NativeSide::Shogi(game.position().side_to_move())
             || target.event_index != game.events().len() as u64
             || target.board_ply != record.known_board_actions() as u64)
     {
-        return SharedResult::failure(
+        return ExecutionResult::failure(
             FailureKind::InvalidRequest,
             "shogi analysis target disagrees with exact native history and side",
         );
@@ -170,16 +150,19 @@ fn execute_shogi(context: &SharedRequest) -> SharedResult {
             nodes: context.limits.nodes,
         },
     ) {
-        Ok(result) => SharedResult::Shogi {
+        Ok(result) => ExecutionResult::Shogi {
             result: ShogiResult::searched(result),
         },
-        Err(error) => SharedResult::failure(FailureKind::Search, error),
+        Err(error) => ExecutionResult::failure(FailureKind::Search, error),
     }
 }
 
-fn execute_xiangqi(context: &SharedRequest) -> SharedResult {
-    if matches!(context.purpose, SharedPurpose::ChessFullReachability { .. }) {
-        return SharedResult::failure(
+fn execute_xiangqi(context: &ExecutionContext) -> ExecutionResult {
+    if matches!(
+        context.purpose,
+        ExecutionPurpose::ChessFullReachability { .. }
+    ) {
+        return ExecutionResult::failure(
             FailureKind::UnsupportedMode,
             "Chess Full is not Xiangqi natural-board reachability. Exact Xiangqi work remains an explicit bounded native operation, not an advertised child capability.",
         );
@@ -189,7 +172,7 @@ fn execute_xiangqi(context: &SharedRequest) -> SharedResult {
     };
     let game = match record.to_game() {
         Ok(game) => game,
-        Err(error) => return SharedResult::failure(FailureKind::InvalidRequest, error),
+        Err(error) => return ExecutionResult::failure(FailureKind::InvalidRequest, error),
     };
     match mshogi_search::xiangqi::search(
         &game,
@@ -199,9 +182,9 @@ fn execute_xiangqi(context: &SharedRequest) -> SharedResult {
         },
     ) {
         Ok(result) => match XiangqiResult::searched(result) {
-            Ok(result) => SharedResult::Xiangqi { result },
-            Err(error) => SharedResult::failure(FailureKind::Search, error),
+            Ok(result) => ExecutionResult::Xiangqi { result },
+            Err(error) => ExecutionResult::failure(FailureKind::Search, error),
         },
-        Err(error) => SharedResult::failure(FailureKind::Search, error),
+        Err(error) => ExecutionResult::failure(FailureKind::Search, error),
     }
 }

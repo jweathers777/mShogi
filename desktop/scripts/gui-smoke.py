@@ -769,9 +769,9 @@ class Journey:
         w.button("Save")
         self.wait_saved(path)
         archive = json.loads(path.read_text(encoding="utf-8"))
-        observation = archive["observations"][-1]["response"]["context"]
+        observation = archive["observations"][-1]["observation"]["context"]
         assert observation["purpose"]["kind"] == "move_analysis"
-        assert len(observation["game"]["events"]) == 1
+        assert len(observation["game"]["payload"]["events"]) == 1
         self.record("History prefix provenance / Return live / Resume", {
             "historical_request": observation, "live_game_events":
                 len(json.loads(archive["game_record_json"])["events"])})
@@ -887,7 +887,7 @@ class Journey:
         self.capture("historical-analysis")
         archive = self.shogi_save(self.args.output / "normal-shogi-history.mshogi")
         body = archive["payload"]
-        context = body["observations"][-1]["response"]["context"]
+        context = body["observations"][-1]["observation"]["context"]
         assert context["purpose"]["kind"] == "move_analysis"
         assert len(context["game"]["payload"]["events"]) == 1
         assert len(body["current"]["payload"]["events"]) == 2

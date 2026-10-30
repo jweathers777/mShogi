@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { AnalysisActions } from "./product/ApplicationShell";
-import type { DesktopCommand, ReachabilityTarget, Snapshot } from "./native";
+import type { DesktopCommand, ExecutionTarget, ReachabilityTarget, Snapshot } from "./native";
 import {
   choiceDescription,
   readableAction,
@@ -10,6 +10,13 @@ import {
 } from "./analysisPresentation";
 import { colorName, conclusionName } from "./presentation";
 
+function targetColor(target: ExecutionTarget) {
+  return target.turn.game_kind === "chess" ? target.turn.side : null;
+}
+function targetTurnLabel(target: ExecutionTarget): string {
+  const color = targetColor(target);
+  return color === null ? "Unknown Chess side" : colorName(color);
+}
 function budget(value: string, max: number, allowZero: boolean): number | null {
   if (!/^\d+$/.test(value)) return null;
   const parsed = Number(value);
@@ -25,7 +32,7 @@ function analysisSummary(snapshot: Snapshot, current: boolean, accepted: boolean
   if (analysis.status === "cancelled")
     return "Analysis cancelled. No conclusion was established; play remains paused until you explicitly resume.";
   if (analysis.target === null) return "Waiting for an identified native analysis target.";
-  const position = `${analysis.target.label}, ${colorName(analysis.target.turn)} to move`;
+  const position = `${analysis.target.label}, ${targetTurnLabel(analysis.target)} to move`;
   if (!current)
     return `Analysis for recorded target ${position} belongs to an earlier position or request. It does not describe the current position.`;
   const full = analysis.operation?.kind === "full_reachability";
@@ -129,11 +136,13 @@ export function AnalysisPanel({
     analysis.context?.session_version === analysis.target.session_version &&
     requestTarget.session_version === analysis.target.session_version &&
     requestTarget.selection_id === analysis.target.selection_id &&
-    requestTarget.ply === analysis.target.ply &&
-    requestTarget.turn === analysis.target.turn &&
+    requestTarget.board_ply === analysis.target.board_ply &&
+    requestTarget.event_index === analysis.target.event_index &&
+    requestTarget.turn.game_kind === "chess" && analysis.target.turn.game_kind === "chess" &&
+    requestTarget.turn.side === analysis.target.turn.side &&
     requestTarget.label === analysis.target.label &&
     (analysis.operation?.kind === "moves" ? purpose?.kind === "move_analysis"
-      : analysis.operation?.kind === "full_reachability" && purpose?.kind === "full_reachability");
+      : analysis.operation?.kind === "full_reachability" && purpose?.kind === "chess_full_reachability");
   const provenanceCurrent = requestMatchesTarget &&
     analysis.target !== null &&
     analysis.target.session_version === snapshot.version &&
@@ -288,7 +297,7 @@ export function AnalysisPanel({
         <div className="analysis-result" aria-label="Analysis result">
           <h3>{targetLabel}</h3>
           <p className="caption">
-            {colorName(analysis.target.turn)} to move ·{" "}
+            {targetTurnLabel(analysis.target)} to move ·{" "}
             {analysis.operation?.kind === "full_reachability"
               ? "Full cooperative reachability"
               : "Bounded move search"}
@@ -339,7 +348,7 @@ export function AnalysisPanel({
               {telemetry !== null && (
                 <>
                   <p className="analysis-score">
-                    {scoreDescription(telemetry.score, analysis.target.turn)}
+                    {scoreDescription(telemetry.score, targetColor(analysis.target))}
                   </p>
                   <dl className="telemetry">
                     <div>

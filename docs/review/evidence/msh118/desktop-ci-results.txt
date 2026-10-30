@@ -1,0 +1,8 @@
+Selected original job log lines, source6e9b2e20a0315bbe902189376a6c0241dfd810f1; Desktop41106568074. GUI outcomes and process proof are in actual platform reports.
+Desktop (macos-15)	UNKNOWN STEP	2026-10-30T18:25:01.1929550Z ^[[2m      Tests ^[[22m ^[[1m^[[32m243 passed^[[39m^[[22m^[[90m (243)^[[39m
+Desktop (macos-15)	UNKNOWN STEP	2026-10-30T18:26:46.0316970Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+Desktop (windows-2022)	UNKNOWN STEP	2026-10-30T18:25:38.2926431Z ^[[2m      Tests ^[[22m ^[[1m^[[32m243 passed^[[39m^[[22m^[[90m (243)^[[39m
+Desktop (windows-2022)	UNKNOWN STEP	2026-10-30T18:29:58.2444326Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+Desktop (ubuntu-24.04)	UNKNOWN STEP	2026-10-30T18:26:40.0854199Z ^[[2m      Tests ^[[22m ^[[1m^[[32m243 passed^[[39m^[[22m^[[90m (243)^[[39m
+Desktop (ubuntu-24.04)	UNKNOWN STEP	2026-10-30T18:29:41.0701750Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+Desktop (ubuntu-24.04)	UNKNOWN STEP	2026-10-30T18:32:59.1047447Z Ran 52 tests in 0.023s

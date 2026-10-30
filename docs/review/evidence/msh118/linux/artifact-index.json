@@ -1,0 +1,175 @@
+{
+  "source_revision": "6e9b2e20a0315bbe902189376a6c0241dfd810f1",
+  "run": 41106568074,
+  "artifact_id": 13001911957,
+  "artifact_name": "desktop-ubuntu-24.04",
+  "artifact_bytes": 80257466,
+  "reported_artifact_digest": "sha256:c35ba31cf8e8b9b284c8fdfde47f89c7d6c59b5fac4781793ccb7768cfab975d",
+  "retained_files": [
+    {
+      "path": "gui-evidence/gui-report.json",
+      "sha256": "f64deba4713c8837abd742b76e09270e3d23f1a4ce068ed52b57543ffd39a35e",
+      "bytes": 669844
+    },
+    {
+      "path": "package-smoke.json",
+      "sha256": "21fbfc7201a926576fb57bae5e567b0e75b872c9d607df3b82b27bf9cf23e3c1",
+      "bytes": 5896
+    },
+    {
+      "path": "gui-packages/normal/manifest.json",
+      "sha256": "5e24710d9c46327ba885534c611a7cf9028d4344670a85ccc3f794b1deef7a55",
+      "bytes": 1789
+    },
+    {
+      "path": "gui-packages/verification/manifest.json",
+      "sha256": "100a04a3bf928bba34cd03ade7ba1c2197f82e2d2c2d64f46009504bd9e0c1a9",
+      "bytes": 351
+    },
+    {
+      "path": "gui-evidence/normal-complete.mshogi",
+      "sha256": "aeb1206c87dfdccbb02c63b16eab80f92417515521905b68f333ce3f84ee8da4",
+      "bytes": 6163
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-complete.mshogi",
+      "sha256": "41d18e06cefb2ee8c590edacde73016c203f9c85c62b1956ddf97b1715055228",
+      "bytes": 9943
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-history.mshogi",
+      "sha256": "f63d38388b306bb5707b406bb3b7d1aa9108aebe7dfa7d82a5297fb37ddd7a4d",
+      "bytes": 13464
+    },
+    {
+      "path": "gui-driver-provenance.json",
+      "sha256": "ed11a8c2a2617387f6ef757a27c6d4e307896922574c8c1032cb8c274dea0ef5",
+      "bytes": 1381
+    },
+    {
+      "path": "gui-driver-boundary/summary.json",
+      "sha256": "4bbb185e2708a94541602e7b35e79ec9e3fa4204e4f5f4a5e4b577764e9a55d0",
+      "bytes": 5577
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-initial-red.dom.json",
+      "sha256": "66474c2aec4e6e69d34138e259d3d548fc8ae035173c0cebcea74c362856d17a",
+      "bytes": 14401
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-initial-red.webview.png",
+      "sha256": "fecc4f6f77aefaf85a7476782c7bc44415ec47420ff8400fc00a79c74b9fc27c",
+      "bytes": 255219
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-initial-red.desktop.png",
+      "sha256": "da682f5a90e8cda48387f872ae3f95e447afccfcfed49ebe8ce484c294f20e09",
+      "bytes": 262040
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-analysis.dom.json",
+      "sha256": "4fc8ace775b5bbce46a328784fef47d7d505258222f8f3eae0b67af88a91c6d1",
+      "bytes": 28227
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-analysis.webview.png",
+      "sha256": "8b0ed1b69445decdea66dd25d023ef310ecd1624e6993ece15cbeb964504c4bc",
+      "bytes": 267285
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-analysis.desktop.png",
+      "sha256": "be0c703d5746062f9f40d0b732b817d408b8ec3c53f6f35ebd0e808e8d961045",
+      "bytes": 274742
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-reopened-stopped.dom.json",
+      "sha256": "aa8c2489531a1605a865a804156beeeac6b16b6a79a8b324a1ae88163cb5b180",
+      "bytes": 28209
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-reopened-stopped.webview.png",
+      "sha256": "224dc4f82cf467d7dcbb227294224b29906c6051db9aaa446915c0e7860ff7fe",
+      "bytes": 262608
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-reopened-stopped.desktop.png",
+      "sha256": "4c70c33891407288fe88ba8cc3c4dafa5b88455bc266ceb1275b340a1d4bc014",
+      "bytes": 270443
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-historical-analysis.dom.json",
+      "sha256": "a461d61b23822fa08e084879ebb24cca200fae9e60092b53d552ab4fe6bde0fa",
+      "bytes": 32203
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-historical-analysis.webview.png",
+      "sha256": "99d51d8517043aff198cfa9bae713716208ff9820c7c64c2af0aa62a205aac21",
+      "bytes": 232483
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-historical-analysis.desktop.png",
+      "sha256": "575930a19b75021eb6f18cb7753145903aeb0943b29a215dc71be1810160ed7f",
+      "bytes": 241465
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-reopened-history.dom.json",
+      "sha256": "330a59dbd33066b903b382d48d00312d4fd289c730c8055d8a0695b7764f2517",
+      "bytes": 32038
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-reopened-history.webview.png",
+      "sha256": "f9b1f2adf16e66f306f11fedd00985fa2b01892fbee1dd46fd0a5c2ba1adcf31",
+      "bytes": 225725
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-reopened-history.desktop.png",
+      "sha256": "40365a65a3033399c4ac7e1cd59e37680ca89586251b9c505a221f8047bec8ba",
+      "bytes": 234423
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-return-live-resumed.dom.json",
+      "sha256": "aeed17d9c08b287babb6d5fc63c0414e1d2e051938d3533274c3c2812e995b49",
+      "bytes": 1607
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-return-live-resumed.webview.png",
+      "sha256": "d8122296456122b8b996a93839dccac96e28ab3c2b0ebc3b9d1c4d6e4c42d48d",
+      "bytes": 261062
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-return-live-resumed.desktop.png",
+      "sha256": "458b9b02a53288b79bae1f838b15338cce5c6a7b80c54f9027610ad2a0ff1d25",
+      "bytes": 268449
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-corrupt-open-preserved.dom.json",
+      "sha256": "5a2bd75d0f7ce48cf1c6366b068970933172d98c8e25cac845c4977c1cc234f5",
+      "bytes": 33142
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-corrupt-open-preserved.webview.png",
+      "sha256": "0810e252635e57e388d6306285115c2434512472e718d6dbabe05c307d20762f",
+      "bytes": 263186
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-corrupt-open-preserved.desktop.png",
+      "sha256": "36810f1c4a4f8485d6594e1f0613dd46331a2622dbb5415839ce99c3fbdb2831",
+      "bytes": 270852
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-native-close-guard.dom.json",
+      "sha256": "6635005bba717a1db40fa6a9e73689201d44dff757993240d75944ab19ed1ee7",
+      "bytes": 1897
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-native-close-guard.webview.png",
+      "sha256": "0b2c9c569a1fc87b68d2485073154b85dacd0f42571274de3b78ed0c3444eb98",
+      "bytes": 168748
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-native-close-guard.desktop.png",
+      "sha256": "c7c1e5f8e67bff83004aab67ed4e6b697886a79816ba357bde7c9c98e90ea6f0",
+      "bytes": 177223
+    }
+  ]
+}

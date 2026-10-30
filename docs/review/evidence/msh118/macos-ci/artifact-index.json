@@ -1,0 +1,20 @@
+{
+  "source_revision": "6e9b2e20a0315bbe902189376a6c0241dfd810f1",
+  "run": 41106568074,
+  "job": 124237840408,
+  "artifact_id": 13001288163,
+  "artifact_name": "desktop-macos-15",
+  "scope": "CI package construction/smoke only; local macOS actual GUI evidence separate",
+  "files": [
+    {
+      "path": "gui-packages/normal/manifest.json",
+      "sha256": "97067ab7f22b6968b88108416a19668e28462553cd0553a1bcb6a4d3b3ca9f9e",
+      "bytes": 675
+    },
+    {
+      "path": "package-smoke.json",
+      "sha256": "cc509658a91ace22dcbfc581fb1db2b966ddf49f3689f705beb153677012286d",
+      "bytes": 5786
+    }
+  ]
+}

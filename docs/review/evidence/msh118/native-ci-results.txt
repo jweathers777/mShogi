@@ -1,0 +1,13 @@
+Selected original job log lines, source6e9b2e20a0315bbe902189376a6c0241dfd810f1; Rust41106568111.
+Rust (ubuntu-24.04)	UNKNOWN STEP	2026-10-30T18:30:10.1796404Z test result: ok. 166 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 245.97s
+Rust (ubuntu-24.04)	UNKNOWN STEP	2026-10-30T18:37:27.6288866Z test persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable ... ok
+Rust (ubuntu-24.04)	UNKNOWN STEP	2026-10-30T18:37:27.6290137Z test result: ok. 178 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 357.76s
+Rust (ubuntu-24.04)	UNKNOWN STEP	2026-10-30T18:37:28.0044448Z ^[[36;1mgit diff --exit-code -- desktop/src/__fixtures__^[[0m
+Rust (windows-2022)	UNKNOWN STEP	2026-10-30T18:29:40.7788437Z test result: ok. 166 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 195.81s
+Rust (windows-2022)	UNKNOWN STEP	2026-10-30T18:35:57.1105461Z test persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable ... ok
+Rust (windows-2022)	UNKNOWN STEP	2026-10-30T18:35:57.1106433Z test result: ok. 178 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 302.08s
+Rust (windows-2022)	UNKNOWN STEP	2026-10-30T18:35:57.5410790Z ^[[36;1mgit diff --exit-code -- desktop/src/__fixtures__^[[0m
+Rust (macos-15)	UNKNOWN STEP	2026-10-30T18:28:37.3569200Z test result: ok. 166 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 165.75s
+Rust (macos-15)	UNKNOWN STEP	2026-10-30T18:34:03.6599970Z test persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable ... ok
+Rust (macos-15)	UNKNOWN STEP	2026-10-30T18:34:03.6601890Z test result: ok. 178 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 253.34s
+Rust (macos-15)	UNKNOWN STEP	2026-10-30T18:34:04.4118450Z ^[[36;1mgit diff --exit-code -- desktop/src/__fixtures__^[[0m

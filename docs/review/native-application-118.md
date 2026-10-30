@@ -53,7 +53,7 @@ Fresh read-only reviewer `/root/r3_boundary_audit`, not a builder, inspected
 the full source/deletion diff and independently ran native runtime/resource/
 lifecycle, byte/control/replay/budget, frontend20 and GUI-verifier37 focused
 checks. It did not repeat the expensive Full byte stress locally; mandatory CI
-will establish that at the committed revision.
+establishes that at the committed revision in the final results below.
 
 | Finding | Correction and evidence |
 | --- | --- |
@@ -94,12 +94,14 @@ without weakening driver error handling.52 external verifier tests pass.
 Original [failed reports and captures](evidence/msh118/initial-ci) are retained.
 No production behavior or limits changed in these verification corrections.
 Transient GitHub jobs-list502/empty steps were observation failures, not passes.
-Corrected committed-source CI and the new complete Xiangqi phase remain required;
-MSH-118 stays In Review until reconciliation. The normal-Xiangqi GUI phase adds
+Corrected verification-only integration `6e9b2e20a0315bbe902189376a6c0241dfd810f1`
+keeps production code identical to `b568ea7`. Rust41106568111 and
+Desktop41106568074 both pass all three target systems. The corrected complete
+GUI campaigns below resolve the remaining acceptance gate. The normal-Xiangqi GUI phase adds
 file/history/close coverage to the existing14 phases using real pointer/keyboard
 and native dialog input, read-only DOM observation and native record assertions.
 It records actual completion versus cancellation at the small native budget;
-completion is never called cancellation. Its corrected complete CI GUI execution is still pending.
+completion is never called cancellation. Its corrected complete CI GUI execution passes on Linux and Windows as recorded below.
 
 Separately, the normal locally built macOS27.0.1 arm64 `.app` at the committed
 source passed [actual native interaction](evidence/msh118/macos/interaction.json).
@@ -123,3 +125,75 @@ small-budget analysis completed, so no local cancellation success is claimed.
 R6 retains final integrated all-game/all-platform acceptance. No R4, R5, R6,
 variant or M5 task starts automatically. Historical MSH-111/112 findings and
 M1/M2/M3/profile evidence remain unchanged.
+
+
+## Acceptance reconciliation
+
+| MSH-118 criterion | Current evidence |
+| --- | --- |
+| AC1 active native ownership | `ActiveDocument`/`RuntimeMetadata` source deletion and runtime6; exact one-variant cross-game checks, no dormant Chess payload. |
+| AC2 bounded admission and file lifecycle | Worker-native Chess/Shogi/Xiangqi mutations/replay; receipt/rollback/stale/capacity tests; host reservations; deterministic budget and committed-Save tests. |
+| AC3 atomic installation/fresh authority | Single `install_document`; all-three-game Save/Open/runtime identity regression, exact stale/history/Take back tests; actual macOS stopped reopen/Resume. |
+| AC4 complete current native contract | Runtime actual Chess claims/MatchRecord/observations; unchanged independent rules/search fixtures; native claim/Full/history/preferences/inspection/outcome/Take back suites; actual console subprocess12; frontend243/host9. |
+| AC5 deleted old ownership and bridge | Optional overlays/Chess metadata ownership and three-install bridge deleted; only named R4 frontend forwarder remains, with no old-file reader/session. |
+| AC6 native close and instrumentation | Native ApplicationLifecycle/host9, unchanged Tao patch, real normal macOS window-close Cancel and Cmd-Q Save & continue, process absence and marker exclusion. |
+| AC7 semantic and packaged integration | Cross-game native tests and actual identified-platform macOS Chess/Xiangqi file/history/close journeys, independently audited saved payloads and screenshots. Final R6 platform campaign remains separate. |
+| AC8 review/CI/integration | Independent source approval at b568ea7; verifier correction review; actual artifact audit. Corrected native/Desktop CI both pass all three systems at6e9b2e2; final independent source, package and acceptance audits approve all criteria. |
+| AC9 typed resources | Resource bounded serialization/category tests, actual zero-observation Shogi/Xiangqi controls; actual combined ordinary/exact256→257; byte/event/replay/identity/reserve checks; stronger full16MiB stress Save/Open passed. R4 owns shared frontend fact consumption. |
+
+The independent reviewer reran52 external tests after the corrections and
+confirmed the original failure indexes. Final acceptance review supports all
+nine criteria and the applicable completion checklist. No material finding remains.
+
+## Final verdict and platform provenance
+
+**MSH-118/R3 accepted.** Production source is
+`b568ea7103e283155a851df16d3b382b3842eebc`; tested verification integration is
+`6e9b2e20a0315bbe902189376a6c0241dfd810f1`, with no production changes between
+them. The corrected macOS CI host and engine binaries are byte-identical to the
+initial CI package. The final completion commit changes documentation/evidence
+and task bookkeeping only.
+
+[Rust41106568111](https://github.com/jweathers777/mShogi/actions/runs/41106568111)
+and [Desktop41106568074](https://github.com/jweathers777/mShogi/actions/runs/41106568074)
+pass Windows2022, macOS15 and Ubuntu24.04. Native166 default and178 all-feature
+checks pass on each system, including the real Full byte-capacity Save/Open
+stress and golden fixture comparison. Workspace formatting/Clippy/build/console
+checks pass. Desktop frontend243/243 and host6 default tests pass on each;
+local host9 includes verification-feature coverage. TypeScript, feature check,
+normal package smoke/marker exclusion and separate verification packaging pass.
+External GUI verifier52/52 passes on Linux (also independently rerun locally).
+Exact [native](evidence/msh118/native-ci-final.json) and
+[desktop](evidence/msh118/desktop-ci-final.json) job metadata and selected original
+result lines are retained. CI annotations concern the upstream upload action's
+Node20 deprecation and runner capacity; neither is a failed product check.
+
+| Actual application evidence | Identity and established behavior |
+| --- | --- |
+| Local normal macOS27.0.1 arm64 | Sourceb568ea7, host3a1bf3ea…/engine57d09b1a…; actual AX/OS-dialog Chess/Xiangqi file/history/Resume/window-close/Save-and-Quit, separately indexed above. |
+| Linux normal installed + separate QA packages | Source6e9b2e2, artifact13001911957; normal host3cc9e3b0…/engine1e22e132…; [exact manifests/report/captures](evidence/msh118/linux/artifact-index.json).15/15 actual GUI phases pass. |
+| Windows normal installed + separate QA installers | Source6e9b2e2; [exact artifact/installer/report identities](evidence/msh118/windows/artifact-index.json), normal host0fcd149f…/engine417ba5ff…;15/15 actual GUI phases pass. |
+| macOS15 CI | [Normal package identity/smoke](evidence/msh118/macos-ci/artifact-index.json); build/engine evidence, separate from the local actual GUI journey. |
+
+The fresh read-only reviewer audited all33 retained Linux originals, all294 GUI
+report files and13 normal manifest entries, plus all8 retained Windows originals,
+all255 GUI report files and2 installer manifest entries. Both verification-package
+digests and normal-host instrumentation exclusions match. All15 native exit proofs
+per platform show host absent and empty immediate/final process matches before
+driver teardown. Recorded Linux bounded-proxy provenance and signed matching
+Windows WebView2/driver131.0.2903.86 remain explicit; no new driver fix is claimed.
+
+Both new Xiangqi phases actually dispatch cancellation and observe `Search stopped`.
+They prove native play, bounded analysis after cancellation, fresh document/session/
+selection authority on stopped reopen, saved observations historical, exact event1
+analysis while live history stays2, Return to live/Resume, corrupt Open preserving
+the complete accepted document, native window-close Cancel and Quit. Native rules
+fixtures remain the semantic oracle; these are real consumer/lifecycle journeys.
+
+The [independent review record](evidence/msh118/independent-review.json) identifies
+the actual separate reviewer method and resolved findings. Original failed probes
+remain historical evidence. No new rules interpretation, product limit increase,
+frontend redesign, variant delivery, M5 result or MSH-111/112 resolution is implied.
+R4 deletes the finite frontend forwarder and consumes native resource facts;
+R5 owns board interaction consolidation and R6 final integrated three-game/
+three-system acceptance after those stages. Stop at MSH-118; MSH-119 is next.

@@ -124,6 +124,6 @@ board interaction controllers.
 ## Evidence
 
 Source, tests, independent review, exact package identities and actual platform
-results are recorded in the MSH-118 task and its completion evidence. R6 owns
+results are recorded in the MSH-118 task and [completion evidence](../review/native-application-118.md). R6 owns
 final integrated Chess/Shogi/Xiangqi packaged GUI acceptance on all three systems;
 native tests or package construction do not establish that later criterion.

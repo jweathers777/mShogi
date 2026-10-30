@@ -1,0 +1,68 @@
+{
+  "method": "Fresh read-only subagent /root/r3_boundary_audit, separate from native/host/resource/GUI builders; source diff, requirement and artifact audit, independently executed focused checks. Not a human review or author-only reread.",
+  "source_approved": "b568ea7103e283155a851df16d3b382b3842eebc",
+  "verification_correction": "6e9b2e20a0315bbe902189376a6c0241dfd810f1",
+  "production_unchanged_after_source": true,
+  "source_findings_resolved": [
+    "post-picker Open / same-token close race",
+    "Xiangqi byte reserve misreported as combined256 count",
+    "validation deadline and native identity typed facts",
+    "legacy public Chess close guard and cross-game snapshot safety",
+    "Open monotonic runtime revision separate from saved archive watermark",
+    "actual replay usage versus mandatory close reserve",
+    "committed atomic Save success observed after deadline"
+  ],
+  "verification_findings_resolved": [
+    "obsolete Full-byte diagnostic-spacing assertion replaced with stronger typed actual-byte facts",
+    "successful Chess Open receipt wording in GUI verifier",
+    "normal Xiangqi application error field mistaken for W3C error"
+  ],
+  "independently_executed_checks": [
+    "native runtime/resource/lifecycle/budget/control/byte/replay focused filters (see review narrative; repeated runs are not summed)",
+    "frontend20 hook/harness checks",
+    "GUI verifier52 tests after corrections"
+  ],
+  "independently_audited_logs": [
+    "all16 local-index SHA256/lengths",
+    "full byte-capacity corrected162.70-second Save/Open pass",
+    "both initial GUI failure artifact indexes and actual DOM/screenshots",
+    "normal local macOS17artifact hashes, package instrumentation exclusion, native documents, historical target, native close and process absence",
+    "corrected Linux all33retained originals,294report files,13normalmanifest entries,QApackage digest,15native exit proofs and complete Xiangqi journey",
+    "corrected Windows8retained originals,255GUI report files,2normalinstaller manifest entries,QAinstaller digest,15native exit proofs and complete Xiangqi journey"
+  ],
+  "source_verdict": "no unresolved material source finding",
+  "package_identified_platform": "macOS27.0.1 arm64 normal source-pinned .app accepted for AC6/7",
+  "pending": [],
+  "limitations": [
+    "No new all-game/all-platform R6 acceptance inferred from these local checks",
+    "No local forced Xiangqi cancellation claim; bounded analysis completed"
+  ],
+  "native_ci": {
+    "run": 41106568111,
+    "source_revision": "6e9b2e20a0315bbe902189376a6c0241dfd810f1",
+    "conclusion": "success",
+    "platforms": [
+      "ubuntu-24.04",
+      "windows-2022",
+      "macos-15"
+    ],
+    "native_default_each": 166,
+    "native_all_features_each": 178
+  },
+  "desktop_ci": {
+    "run": 41106568074,
+    "source_revision": "6e9b2e20a0315bbe902189376a6c0241dfd810f1",
+    "conclusion": "success",
+    "platforms": [
+      "ubuntu-24.04",
+      "windows-2022",
+      "macos-15"
+    ],
+    "actual_gui_phases_each": {
+      "Linux": 15,
+      "Windows": 15
+    },
+    "macos_gui": "separate normal local package evidence"
+  },
+  "final_acceptance": "AllAC1\u20139 supported; no unresolved material finding. Final documentation/task completion and normal push authorized by existing task. R4\u2013R6 remain unstarted."
+}

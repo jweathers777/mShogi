@@ -1,0 +1,50 @@
+{
+  "source_revision": "6e9b2e20a0315bbe902189376a6c0241dfd810f1",
+  "run": 41106568074,
+  "artifact_id": 13001329447,
+  "artifact_name": "desktop-windows-2022",
+  "artifact_bytes": 37923378,
+  "reported_artifact_digest": "sha256:41d97a34efbade05595c6097cbf02d5b2390a14adaf22e1c7ce9b128dc34aac0",
+  "retained_files": [
+    {
+      "path": "gui-evidence/gui-report.json",
+      "sha256": "1a109c81654ac5a7f260610f67cc9fa3f0907336897ae8eca1a08a0e1db4f45c",
+      "bytes": 883569
+    },
+    {
+      "path": "package-smoke.json",
+      "sha256": "db6f4f1ef60b2ca0330bf96babd88cf1794e236a8af6ba21d37a868ef46eeeae",
+      "bytes": 5892
+    },
+    {
+      "path": "gui-packages/normal/manifest.json",
+      "sha256": "385742aa0ce7c47186e2e2891d7a71a406bc817cbe8292b5647dc983326fde51",
+      "bytes": 300
+    },
+    {
+      "path": "gui-packages/verification/manifest.json",
+      "sha256": "3c874d736bfeae928ea2f9a0be7258e79575de71e7b29bb363fea2a8c21dc0f3",
+      "bytes": 345
+    },
+    {
+      "path": "gui-evidence/normal-complete.mshogi",
+      "sha256": "34e050b5794acda5fec90b19bdb1fe179f42f11687b9446b57e9116c2d8d0b65",
+      "bytes": 6163
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-complete.mshogi",
+      "sha256": "41d18e06cefb2ee8c590edacde73016c203f9c85c62b1956ddf97b1715055228",
+      "bytes": 9943
+    },
+    {
+      "path": "gui-evidence/normal-xiangqi-history.mshogi",
+      "sha256": "f63d38388b306bb5707b406bb3b7d1aa9108aebe7dfa7d82a5297fb37ddd7a4d",
+      "bytes": 13464
+    },
+    {
+      "path": "webview-driver.json",
+      "sha256": "8124dae4fa2a4fcf4b27f3b6e4001222052a16e096e69543ab00e37b7942d196",
+      "bytes": 1384
+    }
+  ]
+}

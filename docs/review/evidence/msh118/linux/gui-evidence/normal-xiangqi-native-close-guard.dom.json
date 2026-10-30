@@ -1,0 +1,32 @@
+{
+  "text": "\u265c\nmShogi\nXIANGQI \u00b7 UNTIMED\nLocal engine\nUNSAVED CHANGES\nnormal-xiangqi-history.mshogi\nNew game\nSave\nSave as\u2026\nOpen\u2026\nYOUR GAME\n\nRed to move\nYou play Red against mShogi\n\u2195\nFlip board\nY\nYouRed\nHuman player\nTo move\n\u695a\u6cb3\n\u6f22\u754c\ni\nh\ng\nf\ne\nd\nc\nb\na\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n\u4fe5\n\u7832\n\u76f8\n\u4ed5\n\u5e25\n\u4ed5\n\u76f8\n\u508c\n\u4fe5\n\u70ae\n\u70ae\n\u5175\n\u5175\n\u5175\n\u5175\n\u5175\n\u5352\n\u5352\n\u5352\n\u5352\n\u5352\n\u7832\n\u8eca\n\u99ac\n\u8c61\n\u58eb\n\u5c07\n\u58eb\n\u8c61\n\u99ac\n\u8eca\nm\nmShogiBlack\nYour opponent\nSelect a piece, then a marked intersection.\nArrows \u00b7 Enter \u00b7 Esc\nPlay paused \u00b7 resume explicitly to continue\nLive position \u00b7 2 plies\nThe action could not complete. Your current game has been kept; details are available below.\nPlay is paused.\nResume play\nAnalysis\n\nPlay details\nAnalyze position\nRead-only analysis\nSelected event 2 \u00b7 Red perspective\n\nDepth\nNode limit\nStart move analysis\nChoose Analyze to inspect this position.\nRecorded searches (3)\nGame history\n2 events\n\n0\nStarting position\n\n1\nRed: a3\u2013a4\n\n2\nBlack: b7\u00d7b0\nGame actions\n\nTake back\nAbout & technical details\nSave your changes?\nSave this game before closing mShogi, or explicitly discard its unsaved changes.\nSave & continue\nDiscard & continue\nCancel",
+  "focus": {
+    "label": null,
+    "text": "Cancel",
+    "tag": "BUTTON"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 820,
+    "width": 1180
+  },
+  "common_actions": [],
+  "inputs": [
+    {
+      "min": "1",
+      "disabled": false,
+      "type": "number",
+      "value": "1",
+      "max": "3",
+      "tag": "INPUT"
+    },
+    {
+      "min": "1",
+      "disabled": false,
+      "type": "number",
+      "value": "128",
+      "max": "512",
+      "tag": "INPUT"
+    }
+  ]
+}

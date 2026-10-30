@@ -248,3 +248,27 @@ delete it** while establishing application/runtime/document ownership; that task
 is next dependency-ready and remains unstarted. R3–R6, variants and M5 have not
 been activated. No new macOS or Xiangqi GUI campaign or MSH-112 resolution is
 claimed; final integrated three-game/three-system GUI acceptance remains R6.
+
+
+## R3 completion handoff — 2026-10-30
+
+MSH-118/R3 replaces the always-present Chess runtime/optional overlays with one
+native `ActiveDocument` and common `RuntimeMetadata`. One worker admission and
+current-document installation path owns accepted changes, fresh stopped identity
+and historical observations. Native ApplicationLifecycle owns reservations and
+exact close approval; native menu/window/Quit/Tao behavior remains. Typed bounded
+resource facts preserve actual category/measurement/count/reserve/limit instead
+of requiring diagnostic parsing. Current document.v1, native semantics and limits
+are unchanged. The R2 three-install bridge and obsolete native ownership are deleted.
+
+Production source `b568ea7103e283155a851df16d3b382b3842eebc` and verification-only
+integration `6e9b2e20a0315bbe902189376a6c0241dfd810f1` have separate source/artifact
+review, green three-platform Rust/Desktop CI (166default/178all-feature native
+checks each), normal local macOS lifecycle interaction and15-phase actual
+Linux/Windows installed/QA GUI campaigns. Original test/verifier failures and
+corrective evidence remain in the [R3 acceptance review](review/native-application-118.md).
+The existing Chess frontend DTO/IPC is the sole finite forwarder; it owns no native
+state or old-file reader. **MSH-119/R4 deletes that forwarder and its actual callers**,
+consumes resource facts and consolidates application frontend ownership. It is
+next dependency-ready and remains unstarted. R5/R6, future variants and M5 also
+remain unstarted; this does not close M4 or final integrated R6 acceptance.

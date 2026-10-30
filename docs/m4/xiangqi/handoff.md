@@ -1,3 +1,9 @@
+> Current game-delivery acceptance — MSH-45 (2026-10-30): all eight original
+> criteria are supported by the completed MSH-103 assessment and verified
+> MSH-114 correction. See [acceptance, exact revisions and downstream ownership](delivery-acceptance.md).
+> M4 remains open; MSH-106 becomes dependency-ready but is not started.
+> Earlier task-time status/gate statements below are preserved historical handoffs.
+
 > Current desktop adaptation — MSH-102 (2026-10-29):
 > [analysis, outcomes, recovery and document journeys](desktop-journeys.md) now
 > use this native contract in the normal product, including strict Xiangqi Open,

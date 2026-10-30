@@ -1,0 +1,77 @@
+{
+  "native": {
+    "headSha": "2f17510e4c5b8c3b92a051adfa070b4d5d834b21",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/jweathers777/mShogi/actions/runs/40994147428",
+    "jobs": [
+      {
+        "name": "Rust (ubuntu-24.04)",
+        "status": "completed",
+        "conclusion": "success",
+        "databaseId": 123863236175,
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/40994147428/job/123863236175",
+        "failed_steps": []
+      },
+      {
+        "name": "Rust (macos-15)",
+        "status": "completed",
+        "conclusion": "success",
+        "databaseId": 123863236449,
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/40994147428/job/123863236449",
+        "failed_steps": []
+      },
+      {
+        "name": "Rust (windows-2022)",
+        "status": "completed",
+        "conclusion": "success",
+        "databaseId": 123863236455,
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/40994147428/job/123863236455",
+        "failed_steps": []
+      }
+    ]
+  },
+  "desktop": {
+    "headSha": "2f17510e4c5b8c3b92a051adfa070b4d5d834b21",
+    "status": "completed",
+    "conclusion": "failure",
+    "url": "https://github.com/jweathers777/mShogi/actions/runs/40994147366",
+    "jobs": [
+      {
+        "name": "Desktop (macos-15)",
+        "status": "completed",
+        "conclusion": "success",
+        "databaseId": 123863236317,
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/40994147366/job/123863236317",
+        "failed_steps": []
+      },
+      {
+        "name": "Desktop (windows-2022)",
+        "status": "completed",
+        "conclusion": "success",
+        "databaseId": 123863236471,
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/40994147366/job/123863236471",
+        "failed_steps": []
+      },
+      {
+        "name": "Desktop (ubuntu-24.04)",
+        "status": "completed",
+        "conclusion": "failure",
+        "databaseId": 123863236532,
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/40994147366/job/123863236532",
+        "failed_steps": [
+          "Interact with actual installed and packaged Chess and Shogi on Linux"
+        ]
+      }
+    ]
+  },
+  "failure": {
+    "classification": "Untriaged verification-standard selector failure; cause not established",
+    "log_sha256": "f6a04a0849b61bc64a43ce8eb90b9c1a0638615695ba25c268415b3ab982642e",
+    "phase": "verification-standard",
+    "assertion": "Required GUI phases failed: verification-standard: ('.square[aria-label^=\"e2,\"]', None)",
+    "source": "desktop/scripts/gui-smoke.py:1221",
+    "step": "Interact with actual installed and packaged Chess and Shogi on Linux",
+    "scope": "Existing automated Chess/Shogi campaign; no new local GUI execution; do not infer a Xiangqi failure or equate with MSH-111/MSH-112"
+  }
+}

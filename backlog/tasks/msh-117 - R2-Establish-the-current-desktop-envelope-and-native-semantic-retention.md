@@ -1,11 +1,11 @@
 ---
 id: MSH-117
 title: 'R2: Establish the current desktop envelope and native semantic retention'
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-30T12:06:00Z'
-updated_date: '2026-10-30T16:19:00Z'
+updated_date: '2026-10-30T16:37:00Z'
 labels:
   - architecture-migration
   - planning
@@ -31,22 +31,22 @@ Owner-approved MSH-115 migration stage; shared integration ownership supports MS
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 One explicitly identified supported current desktop envelope carries game/profile/edition/native schema plus authoritative game-native payloads. Remove old desktop v1/v2/v3 acceptance/read/write switches and compatibility readers; old/unknown/conflicting formats reject explicitly and atomically, without converters required solely for development saves.
-- [ ] #2 Native replay validates complete Chess MatchRecord commands/policies/timestamps, Shogi actions/declarations and Xiangqi warning/obligation/claimant/offer/conclusion/event histories. Preserve root/provenance, exact same-board/different-history prefixes, settings, controls and retained Take back branch/observation lineage; no FEN/move-list-only reconstruction.
-- [ ] #3 Ordinary and exact saved observations preserve exact target history, purpose, original identities, modes/limits, work/proof/witness/Unknown/cancel/failure as historical evidence. Open does not rerun expensive proof work, invent a conclusion or resume pending execution; native unsupported restoration modes still reject.
-- [ ] #4 Actual new encoded envelope/lineage sizes and native event/control/combined ordinary-exact observation/replay costs are measured on realistic long records. Admission precedes acceptance with stop/close/identity headroom, exact 256-to-257 and other relevant boundary tests; no truncation or constant-only remedy.
-- [ ] #5 Failed/interrupted Save preserves the previous valid file and dirty state; malformed/corrupt/oversized/resource-limited/stale Open preserves live state and unsaved guards. Current-format roundtrips establish fresh stopped runtime with explicit Resume and stale old-result rejection.
-- [ ] #6 The only permitted temporary codec bridge maps existing runtime state to the new writer and validated new-format data to existing installation; it reads only the new format, owns no separate live state, and is explicitly deleted by R3. Coordinate observation cutover with R1 as documented; no perpetual old reader.
-- [ ] #7 Native current-format/duplicate/replay/capacity/atomic-file tests and actual packaged Save/Open/history/Take back/failure journeys on an identified platform establish this boundary; final integrated three-platform GUI acceptance belongs to R6, not inferred here.
-- [ ] #8 Focused native/consumer regressions and proportionate independent review support all acceptance criteria at exact revisions; applicable CI and normal integration/push are recorded with passed/failed/not-run/platform distinctions. Historical evidence remains unchanged; obsolete interface-only tests are replaced by semantic tests rather than preserving removed APIs. No next stage starts automatically.
+- [x] #1 One explicitly identified supported current desktop envelope carries game/profile/edition/native schema plus authoritative game-native payloads. Remove old desktop v1/v2/v3 acceptance/read/write switches and compatibility readers; old/unknown/conflicting formats reject explicitly and atomically, without converters required solely for development saves.
+- [x] #2 Native replay validates complete Chess MatchRecord commands/policies/timestamps, Shogi actions/declarations and Xiangqi warning/obligation/claimant/offer/conclusion/event histories. Preserve root/provenance, exact same-board/different-history prefixes, settings, controls and retained Take back branch/observation lineage; no FEN/move-list-only reconstruction.
+- [x] #3 Ordinary and exact saved observations preserve exact target history, purpose, original identities, modes/limits, work/proof/witness/Unknown/cancel/failure as historical evidence. Open does not rerun expensive proof work, invent a conclusion or resume pending execution; native unsupported restoration modes still reject.
+- [x] #4 Actual new encoded envelope/lineage sizes and native event/control/combined ordinary-exact observation/replay costs are measured on realistic long records. Admission precedes acceptance with stop/close/identity headroom, exact 256-to-257 and other relevant boundary tests; no truncation or constant-only remedy.
+- [x] #5 Failed/interrupted Save preserves the previous valid file and dirty state; malformed/corrupt/oversized/resource-limited/stale Open preserves live state and unsaved guards. Current-format roundtrips establish fresh stopped runtime with explicit Resume and stale old-result rejection.
+- [x] #6 The only permitted temporary codec bridge maps existing runtime state to the new writer and validated new-format data to existing installation; it reads only the new format, owns no separate live state, and is explicitly deleted by R3. Coordinate observation cutover with R1 as documented; no perpetual old reader.
+- [x] #7 Native current-format/duplicate/replay/capacity/atomic-file tests and actual packaged Save/Open/history/Take back/failure journeys on an identified platform establish this boundary; final integrated three-platform GUI acceptance belongs to R6, not inferred here.
+- [x] #8 Focused native/consumer regressions and proportionate independent review support all acceptance criteria at exact revisions; applicable CI and normal integration/push are recorded with passed/failed/not-run/platform distinctions. Historical evidence remains unchanged; obsolete interface-only tests are replaced by semantic tests rather than preserving removed APIs. No next stage starts automatically.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -71,4 +71,12 @@ Initial8f41369 DesktopCI3/3PASS; RustLinux/macOSPASS butWindowsallfeatures155/15
 Reviewedcorrectionintegrated/pushednormallyon codex/rewrite ateea8ce1c0e7b51bf02b42aa62f69d9c833c5735e. ExactnewRustCI41086132999/DesktopCI41086133015 queued/running. Initial8fWindowsnativefailureandpassinginitialGUIretained, notoverwritten. Newproofvalidationregressions5PASS/independentPASS; default+allfeatureClippyPASS. WholeFullcandidatecheckgatesonnewobs; nofailedadmissionadvanceswatermark. RequiredallfeatureCIstillrunsfullbytecapacitystressbodyonceeveryOS; no testthreshold/constants changed.117staysInReviewpendingnewCI/currentpackageevidence;118notactivated.
 
 CorrectedeeaDesktopCI41086133015all3PASS(includingactualLinux/WindowsGUI). Rust41086132999macOS/UbuntuPASS; Windowsdefaultworkspace149desktopPASS,butoverall15minutejobtimeoutcancelledallfeatureswithonlyexpensiveFullbytebodyunfinished,noassertionfailure. Exactlogretained. MinimalCI-onlybudget15->25minpreservesalltestbodies/product15svalidation/limits;reviewrequested. NoDoneuntilrequiredWindowstestcompletes.
+
+Final acceptance: corrected production eea8ce1c0e7b51bf02b42aa62f69d9c833c5735e is byte-identical to product code at CI-only integration ad14caed788f105e27a95868646db8d60cebd310. Rust 41088858739 and Desktop 41088858764 PASS all three OS. Each native job: 149 default desktop +161 all-feature checks, full byte stress included. Windows finished 15m27s; CI-only budget is 25min, product limits unchanged. Corrected-source Linux artifact12991683842 independently audited: 243 GUI hashes,13 normal-package hashes,14 passed phases/native shutdown proofs, stopped reopen/Resume and retained Take back. Final independent reviewer supports all8 AC with no unresolved material finding. Original Open failure and later timeout preserved separately. Final documentation links/hashes/doctor/diff checks and normal evidence-only integration follow; no production code changes after eea. No new Xiangqi/macOS GUI claim. No new worktree; unrelated worktrees preserved. MSH-118 remains unstarted.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Established one current mshogi.desktop.document.v1 envelope with strict explicit native identity, raw duplicate-preserving payload dispatch and authoritative specialized replay. Removed development desktop1/2/3 readers, writer switches and compatibility fallback. Retained complete Chess MatchRecord, Shogi and Xiangqi semantics, schema1 historical observations, selected history and Take back branches. Actual encoded admission/reserves and atomic Save/Open preserve complete saveability; bounded operation-local Full-certificate verification and whole-candidate admission resolve the proof-retention risk without raising product limits. Source eea8ce1; final CI integration ad14cae; normal codex/rewrite integration/push. Final three-platform native/Desktop CI green; 161 all-feature checks per OS and independently audited actual Linux packaged file/history/Take back/failure journeys. Separate read-only reviewer supports all eight criteria. Exact revisions, measurements, failures, package identities and limitations: docs/review/desktop-envelope-117.md. Only temporary current capture/install bridge remains, explicitly deleted by MSH-118/R3. Old development saves and unsupported Chess restoration modes reject; final all-game/all-OS GUI acceptance remains R6. MSH-118 is next dependency-ready; no next stage activated.
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -35,3 +35,13 @@ They are interaction/serialization inputs, not a second rules oracle. The frozen
 XQ-B01 opening expectations and independently reviewed native fixtures own rules
 correctness. No fixture, verification controller or fake result enters a normal
 product package.
+
+The generator normalizes only the frontend fixture copy of an **untimed** Chess
+MatchRecord to event-index nanosecond timestamps. The controller's real runtime
+timestamps, product records and saved documents are unchanged. Each fixture
+record is rebuilt by native replay: commands, actors, versions and every native
+reply must remain identical, as must canonical game history, conclusion and
+active/clock state. Timed matches reject normalization. This keeps native match
+history visible while making snapshot fixtures reproducible across runs and OSes.
+The generator example's two unit tests cover preservation, idempotence and timed
+rejection; two consecutive generation runs should produce identical JSON bytes.

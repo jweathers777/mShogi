@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-30T12:06:00Z'
-updated_date: '2026-10-30T21:25:00Z'
+updated_date: '2026-10-30T21:30:00Z'
 labels:
   - architecture-migration
   - planning
@@ -68,4 +68,8 @@ Independent fresh read-only completed diff + six-image comparison review found t
 Initial291 Desktop CI41128859968: macOSbuild/smoke PASS; Windows15/15 actualGUI PASS; Linux11QA phasesPASS but normalChess/Shogi/Xq failed newTakeback input (elementnotinteractable; clippedsidebarcontrol), then dependentShogiOpen failed absent prior save. Independent reviewer identified actualtrace/geometry; bounded externaldriver keyboard-visibility correction in progress. Failure preserved under docs/review/evidence/msh119/initial-linux; no claim LinuxnormaljourneysPASS. Productsource0487945 fixesreviewfindings;225frontendPASS, finalnative CI/package evidence pending. Actual048 macconcludedFinishanalysis preservesCheckmate and nativeQuit exits0; exactreport under macos/reviewed-correction.json.
 
 Independent reviewer approved bounded external-driver Takeback visibility correction: readonlynativeDOM facts + realboundedTabfocus, oneclick, noDOMmutation/IPC/actionreplay;62 driverchecksPASS (independent49PASS). Production unchanged from0487945. Corrected actualGUIcampaign and finalCI stillrequired. Exact291Windows15PASS audit and initialLinux11PASS/4FAIL retained; final048macFinishanalysis/regression capture verified independently. No unresolved material product/source/visual finding; task remainsInReview.
+
+Native CI41128859801 all3OS passed behavior suites but failed generated snapshotdiff: newly exposedchess_match includes real request.at_ns timestamps in four fixtures. Independent reviewer identified generator determinism issue; nativebuilder owns fixture-only deterministic-time correction with repeated writer comparison. Production matchclock/history must remain unchanged. Corrected GUI verifier commitb3c2b57 pushed; finalCI remains pending, no readinesscriterion weakened.
+
+Fixture-only correction reviewed independently: normalize copied UntimedMatchRecord output via authoritative native replay at event-index timestamps, assert every reply and nativehistory/conclusion/active/clock equality; timedrecordsreject.2exampletestsPASS independentlyrepeated; Clippy/fmtPASS; two completegenerationsall32JSONbyte-identical (evidenceindexretained). No productclock/history/archive change. Ready finalnormalCI;119remainsInReview until actualevidencegreen.
 <!-- SECTION:NOTES:END -->

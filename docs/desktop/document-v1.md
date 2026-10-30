@@ -80,6 +80,28 @@ accepted document. Unsaved replacement and native close guards remain active.
 Successful reopen assigns fresh runtime request/session/selection/process
 identities with work stopped. Return to live and explicit Resume remain separate.
 
+## Full certificate validation within file operations
+
+Successful Chess Full mating certificates may be reused **only within one native
+validation operation**, after full native witness verification. The bounded list
+borrows at most256 retained observations and owns no independent live state.
+The key includes complete canonical native history, perspective, ordinary limits,
+Full goal/limits and the entire typed result/work/witness. Every observation still
+passes its own native lineage, target/context, perspective, identity and work
+checks; cancellation is checked on hits. Changed history or evidence cannot reuse
+an earlier proof. Another Open starts with no trusted certificates.
+
+Before accepting a new observation into a document containing successful Full
+proofs, admission runs the complete encoded candidate through the same current
+Open parser/replay under the existing15-second cancellable budget. Prior distinct
+proofs are included even beyond the observation high-water mark. This prevents
+only checking the newest proof while accumulating unbounded restoration work.
+Ordinary commands cannot mutate admitted immutable certificates and retain their
+count/byte/history/lineage/headroom checks without repeating unchanged proof work.
+No evidence is deduplicated in storage, no native proof is trusted from a saved
+flag, and no resource constant is raised. Repeated proof validation is avoided;
+required validation is preserved.
+
 ## Finite runtime installation bridge
 
 R2 owns the single current codec, not the R3 application-owner rewrite. The

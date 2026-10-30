@@ -19,7 +19,10 @@ jobs:
       matrix:
         os: [ubuntu-24.04, macos-15, windows-2022]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 15
+    # Windows debug validation of the complete 16 MiB Full-proof document runs
+    # after the workspace suite. Preserve that test and its product work limits;
+    # allow the CI job enough time to finish both suites on hosted runners.
+    timeout-minutes: 25
     defaults:
       run:
         shell: bash

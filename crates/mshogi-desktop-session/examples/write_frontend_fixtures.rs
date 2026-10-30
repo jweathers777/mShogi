@@ -33,7 +33,7 @@ fn main() {
     ] {
         let mut c = chess_controller(fen);
         send(&mut c, SessionOperation::Resume {});
-        write(
+        write_snapshot(
             &directory,
             &format!("shared-chess-{name}"),
             &c.shared_snapshot(),
@@ -41,7 +41,7 @@ fn main() {
     }
     let mut c = chess_controller(STANDARD_START_FEN);
     let unresolved = send(&mut c, SessionOperation::Resign {});
-    write(&directory, "shared-chess-unresolved", &unresolved);
+    write_snapshot(&directory, "shared-chess-unresolved", &unresolved);
     let mut c = chess_controller("7k/8/8/8/8/8/R7/K7 w - - 99 1");
     send(&mut c, SessionOperation::Resume {});
     let claim = c
@@ -53,7 +53,7 @@ fn main() {
         .find(|v| v.intended.is_some())
         .unwrap();
     let claimed = send(&mut c, SessionOperation::ChessClaim { claim });
-    write(&directory, "shared-chess-claimed", &claimed);
+    write_snapshot(&directory, "shared-chess-claimed", &claimed);
     for (name, fen, operation) in [
         (
             "moves",
@@ -120,7 +120,7 @@ fn main() {
             std::thread::sleep(std::time::Duration::from_millis(1));
         };
         assert!(snapshot.chess.as_ref().unwrap().analysis.result.is_some());
-        write(
+        write_snapshot(
             &directory,
             &format!("shared-chess-analysis-{name}"),
             &snapshot,
@@ -137,7 +137,7 @@ fn main() {
         },
     );
     let cancelled = send(&mut c, SessionOperation::Cancel {});
-    write(&directory, "shared-chess-analysis-cancelled", &cancelled);
+    write_snapshot(&directory, "shared-chess-analysis-cancelled", &cancelled);
     let mut c = chess_controller(STANDARD_START_FEN);
     send(&mut c, SessionOperation::Resign {});
     let temporary =
@@ -149,10 +149,10 @@ fn main() {
         .unwrap();
     let mut reopened = wait_document(&mut c, id);
     reopened.document.path = Some("fixture.mshogi".into());
-    write(&directory, "shared-chess-reopened", &reopened);
+    write_snapshot(&directory, "shared-chess-reopened", &reopened);
     let mut history = send(&mut c, SessionOperation::Inspect { event_index: 1 });
     history.document.path = Some("fixture.mshogi".into());
-    write(&directory, "shared-chess-history", &history);
+    write_snapshot(&directory, "shared-chess-history", &history);
     std::fs::remove_file(temporary).unwrap();
     #[cfg(feature = "desktop-verification")]
     {
@@ -163,12 +163,50 @@ fn main() {
         );
         let mut capacity =
             DesktopController::verification(std::env::current_exe().unwrap(), "capacity").unwrap();
-        write(
+        write_snapshot(
             &directory,
             "shared-chess-capacity",
             &capacity.shared_snapshot(),
         );
     }
+}
+// Only frontend fixture output receives a deterministic untimed schedule.
+// The product/controller retains its real monotonic timestamps. Native replay
+// checks that changing these fixture timestamps changes no accepted command,
+// derived reply, canonical history or outcome; timed records are never normalized.
+fn normalized_untimed_fixture_match(record: &MatchRecord) -> Result<MatchRecord, String> {
+    if record.time_control() != TimeControl::Untimed {
+        return Err("Only untimed frontend fixtures may normalize match timestamps.".into());
+    }
+    let original = record.replay().map_err(|error| error.to_string())?;
+    let initial = record.initial_record().map_err(|error| error.to_string())?;
+    let game = AdjudicatedGame::replay_record(&initial).map_err(|error| error.to_string())?;
+    let mut normalized =
+        ChessMatch::new(game, TimeControl::Untimed).map_err(|error| error.to_string())?;
+    for (index, (request, expected)) in record.events().enumerate() {
+        let mut request = request.clone();
+        request.at_ns = u64::try_from(index).map_err(|_| "Fixture event index exceeds u64")?;
+        if normalized.submit(request) != *expected {
+            return Err(format!(
+                "Untimed fixture normalization changed event {index}'s native reply."
+            ));
+        }
+    }
+    if normalized.game().record() != original.game().record()
+        || normalized.conclusion() != original.conclusion()
+        || normalized.active() != original.active()
+        || normalized.remaining_ns() != original.remaining_ns()
+    {
+        return Err("Untimed fixture normalization changed native game semantics.".into());
+    }
+    Ok(normalized.record().clone())
+}
+fn write_snapshot(directory: &std::path::Path, name: &str, snapshot: &SharedSnapshot) {
+    let mut fixture = snapshot.clone();
+    if let Some(record) = &snapshot.chess_match {
+        fixture.chess_match = Some(normalized_untimed_fixture_match(record).unwrap());
+    }
+    write(directory, name, &fixture);
 }
 fn write(directory: &std::path::Path, name: &str, value: &impl serde::Serialize) {
     std::fs::write(
@@ -376,5 +414,76 @@ fn shared_command(
         }
         assert!(std::time::Instant::now() < deadline);
         std::thread::sleep(std::time::Duration::from_millis(1));
+    }
+}
+
+#[cfg(test)]
+mod fixture_tests {
+    use super::*;
+    #[test]
+    fn untimed_fixture_schedule_preserves_native_claim_resignation_and_complete_context() {
+        for (fen, command) in [
+            (
+                "7k/8/8/8/8/8/R7/K7 w - - 99 1",
+                MatchCommand::Claim {
+                    reason: DrawClaim::FiftyMove,
+                    intended: Some("a1b1".parse().unwrap()),
+                },
+            ),
+            (STANDARD_START_FEN, MatchCommand::Resign { witness: None }),
+        ] {
+            let game = AdjudicatedGame::from_fen(fen, ClaimPolicy::ExplicitOnly).unwrap();
+            let mut original = ChessMatch::new(game, TimeControl::Untimed).unwrap();
+            for (at_ns, command) in [(123_456, MatchCommand::Start), (987_654, command)] {
+                let reply = original.submit(MatchRequest {
+                    at_ns,
+                    version: original.version(),
+                    actor: Color::White,
+                    command,
+                });
+                assert!(reply.rejection.is_none());
+            }
+            let normalized = normalized_untimed_fixture_match(original.record()).unwrap();
+            assert_ne!(&normalized, original.record());
+            assert_eq!(
+                normalized.initial_record().unwrap(),
+                original.record().initial_record().unwrap()
+            );
+            assert_eq!(
+                normalized
+                    .events()
+                    .map(|(request, _)| request.at_ns)
+                    .collect::<Vec<_>>(),
+                [0, 1]
+            );
+            for ((actual, reply), (expected, original_reply)) in
+                normalized.events().zip(original.record().events())
+            {
+                assert_eq!(actual.actor, expected.actor);
+                assert_eq!(actual.version, expected.version);
+                assert_eq!(actual.command, expected.command);
+                assert_eq!(reply, original_reply);
+            }
+            let replayed = normalized.replay().unwrap();
+            assert_eq!(replayed.game().record(), original.game().record());
+            assert_eq!(replayed.conclusion(), original.conclusion());
+            assert_eq!(
+                normalized_untimed_fixture_match(&normalized).unwrap(),
+                normalized
+            );
+        }
+    }
+    #[test]
+    fn fixture_timestamp_normalization_rejects_timed_matches() {
+        let game = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
+        let original = ChessMatch::new(
+            game,
+            TimeControl::Increment {
+                initial_ns: [1000, 1000],
+                increment_ns: 5,
+            },
+        )
+        .unwrap();
+        assert!(normalized_untimed_fixture_match(original.record()).is_err());
     }
 }

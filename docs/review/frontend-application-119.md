@@ -147,3 +147,18 @@ no Resume play/reopened game is offered. Native Quit exits0 after the shared
 guard. Initial sandboxed direct fixture launch aborted134; the ordinary approved
 native launch succeeds. The capture/manifest separates both revisions and QA
 from normal distributables.
+
+## Generated-fixture CI correction
+
+Initial Rust41128859801 fails only the generated-snapshot diff on all three
+systems: newly exposed `chess_match.events[].request.at_ns` contains actual
+wall-clock command timestamps in four Chess fixtures. Production behavior suites
+pass before that gate. The generator now clones its output snapshot, rebuilds
+only untimed fixture MatchRecords through native replay with event-index
+nanoseconds, and requires identical submitted commands/replies, canonical game
+history, conclusion, active state and remaining clocks. Timed records reject
+normalization. Production clocks, MatchRecords, archives and history are untouched.
+Two example regressions and Clippy/formatting pass. Two complete generations
+produce [32 byte-identical fixture files](evidence/msh119/fixture-repeatability.json).
+The independent reviewer approves and separately runs both regressions. This is
+verification-only; a green generated-fixture CI gate is still required.

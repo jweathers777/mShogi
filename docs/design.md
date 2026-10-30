@@ -116,6 +116,36 @@ Start with separate game-specific evaluators and shared experiment infrastructur
 
 Keep Python outside the shipped application unless a later explicit requirement justifies it. Rust bindings and native data generation must reuse the product rules.
 
+### A-09. Pre-release internal compatibility policy
+
+Owner decision, 2026-10-30 (MSH-115): mShogi is an **unreleased greenfield
+rewrite**. There are no external consumers of its internal APIs and no
+obligation to reopen development-era saved documents. Internal Rust APIs,
+IPC, hooks, controllers, adapters, document schemas and their interface tests
+are project-controlled. Breaking or deleting obsolete development interfaces,
+archive readers and compatibility layers is acceptable when it produces a
+cleaner final architecture. Their earlier existence or passing tests alone is
+not a reason to retain them.
+
+Preserve the functional requirements: correct complete native game semantics;
+authoritative histories/adjudication and atomic operations; safe execution,
+cancellation and stale-result rejection; lossless save/reopen for the selected
+current format; cross-game product consistency; required external protocol
+interoperability; independent rules conformance and meaningful verification.
+Changing a development encoding does not authorize changing the selected rules
+profile, silently losing accepted history/observations/Take back lineage, or
+weakening current-format persistence/admission and failure guarantees.
+
+Preserve historical Git, task and verification evidence. Re-express behavioral
+and independently expected fixtures against replacement boundaries; retire tests
+whose only purpose is preserving a removed development interface. Historical
+evidence is not a mandate to keep obsolete production code. External UCI/USI
+and other actually required standard interoperability remain functional contracts.
+This policy supersedes contrary compatibility assumptions in earlier internal
+plans/reviews, including MSH-106, without rewriting their historical records.
+The [MSH-115 reassessment](review/architecture-target-115.md) is a proposal;
+recording this policy does not authorize its production refactors.
+
 ## 4. First milestones
 
 ### M0. Repository workflow bootstrap
@@ -371,6 +401,7 @@ When code reveals a design problem, report the specific conflict and a proposed 
 | D-14 | Accepted delivery/shell boundary, 2026-10-27 | John accepts Standard Shogi under MSH-41/75 and requires the MSH-74 common shell for future games. MSH-80 is next planning/refinement;81–83 may research independently. No Xiangqi rules profile is selected by this instruction; resolve material sourced decisions before native implementation. See [current dossier](m4/xiangqi/README.md). |
 | D-15 | Accepted XIANGQI-P1, 2026-10-27 | John selects `mshogi.xiangqi.wxf2018.v1`, official bilingual WXF2018 with individual discrepancy reconciliation and no blanket language precedence; third-occurrence warning/fourth continued unilateral loss or applicable WXF draw; untimed native claims and scoped AXF/CXA research; required sound fast plus bounded/terminable exact3.2A path. G-CYCLE/G-NOWIN gate affected work, not settled91/92. MSH-80 closes planning only; stop before implementation. See [owner decisions](m4/xiangqi/owner-decisions.md). |
 | D-16 | Accepted future M5 experiment, 2026-10-27 | John adds MSH-104 per-game opening knowledge to56 closure while adoption remains optional. Dedicated compact teacher-distilled opening policy, learned evaluator55 and optional full policy/value59 are distinct. Compare practical direct/order/book-hybrid/no-prior uses, sparse Chu/Tenjiku generation, provenance/regeneration and total benefit/cost; no product Python or mandatory opening mechanism. See [scope](m5/opening-knowledge.md). |
+| D-17 | Accepted pre-release compatibility policy, 2026-10-30 | John: unreleased greenfield rewrite; no external internal-API consumers or development-save compatibility obligation. Obsolete APIs/IPC/adapters/readers and interface-only tests may be replaced/deleted; preserve native semantics/history/atomicity, execution safety, current-format losslessness, shared product consistency, external interoperability and independent conformance. See A-09 and MSH-115. No refactor implementation authorized by this review. |
 
 Accepted records reflect actual owner direction. Working defaults are implementation proposals consistent with it, not fabricated owner decisions. Deferred questions only block work that depends on their resolution. A routine choice within accepted requirements does not need a new approval ceremony.
 

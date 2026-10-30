@@ -1,0 +1,18 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-72dbb958aa69b860)
+
+running 12 tests
+test persistence::takeback_tests::takeback_chess_claim_and_checkmate_preserve_correct_history_semantics ... ok
+test shared::takeback_tests::takeback_native_shogi_declaration_and_fourfold_restore_native_history ... ok
+test shared::takeback_tests::takeback_native_terminal_only_human_turn_and_off_turn_resignations ... ok
+test persistence::takeback_tests::takeback_chess_engine_opening_survives_and_terminal_commands_restore_native_turn ... ok
+test shared::takeback_tests::takeback_native_unavailable_engine_first_refusal_keeps_pending_work_atomic ... ok
+test persistence::takeback_tests::takeback_chess_strict_lineage_conflicts_capacity_and_interruption_preserve_current ... ok
+test shared::takeback_tests::takeback_native_history_requires_return_to_live_and_disables_stale_inspection ... ok
+test persistence::takeback_tests::takeback_chess_current_replay_boundary_reserves_actual_close_control ... ok
+test shared::takeback_tests::takeback_native_xiangqi_warning_fourth_and_claim_use_committed_command_boundaries ... ok
+test shared::takeback_tests::takeback_native_shogi_and_xiangqi_pairs_pending_repeated_and_fresh_contexts ... ok
+test persistence::takeback_tests::takeback_chess_pairs_pending_cancelled_results_and_repeated_native_decisions ... ok
+test shared::takeback_tests::takeback_native_preserves_engine_opening_and_repeated_human_decisions ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 143 filtered out; finished in 5.52s

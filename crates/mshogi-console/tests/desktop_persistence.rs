@@ -106,14 +106,31 @@ fn complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix(
     assert!(!before.document.dirty);
     let bytes = fs::read(&path).unwrap();
     let archive: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
+    assert_eq!(archive["envelope_version"], 1);
+    assert_eq!(archive["format"], "mshogi.desktop.document.v1");
+    assert_eq!(archive["game_kind"], "chess");
+    assert_eq!(
+        archive["rules_profile"],
+        mshogi_core::CHESS_MATCH_PROFILE_ID
+    );
+    assert_eq!(
+        archive["profile_edition"],
+        mshogi_core::native::CHESS_PROFILE_EDITION
+    );
+    assert_eq!(archive["native_schema_version"], 1);
+    assert!(archive.get("profile").is_none());
+    assert!(archive.get("schema_version").is_none());
+    let payload = &archive["payload"];
+    assert!(payload.get("profile").is_none());
+    assert!(payload.get("schema_version").is_none());
     assert!(
-        archive["match_record_json"]
+        payload["match_record_json"]
             .as_str()
             .unwrap()
             .contains("e2e4")
     );
-    assert!(archive["controls"].as_array().unwrap().len() >= 3);
-    assert_eq!(archive["observations"].as_array().unwrap().len(), 2);
+    assert!(payload["controls"].as_array().unwrap().len() >= 3);
+    assert_eq!(payload["observations"].as_array().unwrap().len(), 2);
     controller
         .settled(DesktopCommand::NewGame {
             version: before.version,
@@ -138,12 +155,12 @@ fn complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix(
     let archive_again: serde_json::Value =
         serde_json::from_slice(&fs::read(second_path).unwrap()).unwrap();
     assert_eq!(
-        archive_again["match_record_json"],
-        archive["match_record_json"]
+        archive_again["payload"]["match_record_json"],
+        payload["match_record_json"]
     );
     assert_eq!(
-        archive_again["game_record_json"],
-        archive["game_record_json"]
+        archive_again["payload"]["game_record_json"],
+        payload["game_record_json"]
     );
     // Event zero is the known initial position, with neither played move nor
     // future repetition information. Analysis must remain read-only there.

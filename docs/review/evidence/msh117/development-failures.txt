@@ -1,0 +1,38 @@
+Working-source initial full all-feature run; resolved fixture assumptions, not final CI.
+failures:
+
+---- document::tests::duplicate_native_schema_fields_reject_atomically_after_raw_outer_dispatch stdout ----
+
+thread 'document::tests::duplicate_native_schema_fields_reject_atomically_after_raw_outer_dispatch' (33535767) panicked at crates/mshogi-desktop-session/src/document_tests.rs:311:9:
+assertion `left == right` failed
+  left: SessionToken { document: 1, version: 2, revision: 9, selection: 2 }
+ right: SessionToken { document: 1, version: 2, revision: 7, selection: 2 }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- document::tests::real_native_transcripts_roundtrip_current_documents_with_fresh_stopped_runtime stdout ----
+
+thread 'document::tests::real_native_transcripts_roundtrip_current_documents_with_fresh_stopped_runtime' (33535771) panicked at crates/mshogi-desktop-session/src/document_tests.rs:264:5:
+assertion `left == right` failed
+  left: 2
+ right: 1
+
+---- persistence::takeback_tests::takeback_chess_strict_lineage_conflicts_capacity_and_interruption_preserve_current stdout ----
+
+thread 'persistence::takeback_tests::takeback_chess_strict_lineage_conflicts_capacity_and_interruption_preserve_current' (33535779) panicked at crates/mshogi-desktop-session/src/persistence.rs:2893:13:
+duplicate fixture must edit a real field
+
+---- shared::xiangqi::archive::tests::actual_pretty_canonical_wrapper_overhead_is_bounded_before_acceptance stdout ----
+
+thread 'shared::xiangqi::archive::tests::actual_pretty_canonical_wrapper_overhead_is_bounded_before_acceptance' (33536908) panicked at crates/mshogi-desktop-session/src/shared_xiangqi_archive_tests.rs:1586:14:
+called `Result::unwrap_err()` on an `Ok` value: ()
+
+
+failures:
+    document::tests::duplicate_native_schema_fields_reject_atomically_after_raw_outer_dispatch
+    document::tests::real_native_transcripts_roundtrip_current_documents_with_fresh_stopped_runtime
+    persistence::takeback_tests::takeback_chess_strict_lineage_conflicts_capacity_and_interruption_preserve_current
+    shared::xiangqi::archive::tests::actual_pretty_canonical_wrapper_overhead_is_bounded_before_acceptance
+
+test result: FAILED. 150 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 109.33s
+
+error: test failed, to rerun pass `-p mshogi-desktop-session --lib`

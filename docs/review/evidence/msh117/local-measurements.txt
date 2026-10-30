@@ -1,0 +1,107 @@
+$ git rev-parse HEAD
+d6250cb71b7c498ddcdf0b82bb1041a4365c2c33
+$ rustc --version
+rustc 1.99.1 (58cf8f9c3 2026-10-13)
+$ cargo --version
+cargo 1.99.1 (5f94df478 2026-08-27)
+$ uname -ms
+Darwin arm64
+$ sw_vers
+ProductName:		macOS
+ProductVersion:		27.0.1
+BuildVersion:		26A434
+$ git status --short
+ M "backlog/tasks/msh-117 - R2-Establish-the-current-desktop-envelope-and-native-semantic-retention.md"
+ M crates/mshogi-console/tests/desktop_persistence.rs
+ M crates/mshogi-desktop-session/src/lib.rs
+ M crates/mshogi-desktop-session/src/persistence.rs
+ M crates/mshogi-desktop-session/src/shared_archive.rs
+ M crates/mshogi-desktop-session/src/shared_archive_tests.rs
+ M crates/mshogi-desktop-session/src/shared_capacity_tests.rs
+ M crates/mshogi-desktop-session/src/shared_xiangqi_archive.rs
+ M crates/mshogi-desktop-session/src/shared_xiangqi_archive_tests.rs
+ M desktop/scripts/gui-smoke.py
+ M desktop/scripts/test_gui_smoke.py
+?? crates/mshogi-desktop-session/examples/write_document_fixtures.rs
+?? crates/mshogi-desktop-session/src/document.rs
+?? crates/mshogi-desktop-session/src/document_tests.rs
+?? desktop/scripts/fixtures/
+Tracked working diff SHA256: 25a2a100e26cb787469cd1443611f281d6cdcc0a70d341f988e83c8e0020c2ea
+
+$ cargo test --locked -p mshogi-desktop-session real_maximum_native_ledger_has_bounded_record_context_response_and_archive_sizes -- --nocapture
+   Compiling mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.81s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-58e2c610622b01d4)
+
+running 1 test
+MSH73 sizes320-action native=79733 request=80231 response=80532 archive=241130 bytes
+test shared::archive::capacity_tests::real_maximum_native_ledger_has_bounded_record_context_response_and_archive_sizes ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 143 filtered out; finished in 1.32s
+
+real_maximum_native_ledger_has_bounded_record_context_response_and_archive_sizes: exit=0, elapsed=3.549s
+
+$ cargo test --locked -p mshogi-desktop-session control_boundary_reserves_the_last_slot_for_close_and_never_truncates -- --nocapture
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-58e2c610622b01d4)
+
+running 1 test
+MSH73 sizes8192-control archive=698599 bytes
+test shared::archive::capacity_tests::control_boundary_reserves_the_last_slot_for_close_and_never_truncates ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 143 filtered out; finished in 0.16s
+
+control_boundary_reserves_the_last_slot_for_close_and_never_truncates: exit=0, elapsed=0.222s
+
+$ cargo test --locked -p mshogi-desktop-session actual_256_observations_save_reopen_and_reject_257_without_changing_accepted_document -- --nocapture
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-58e2c610622b01d4)
+
+running 1 test
+MSH73 sizes standard256-observation archive=581828 bytes; reopened save-as=581572 bytes
+test shared::archive::capacity_tests::actual_256_observations_save_reopen_and_reject_257_without_changing_accepted_document ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 143 filtered out; finished in 12.14s
+
+actual_256_observations_save_reopen_and_reject_257_without_changing_accepted_document: exit=0, elapsed=12.202s
+
+$ cargo test --locked -p mshogi-desktop-session measured_long_warning_claim_and_historical_observations_pause_before_replay_budget -- --nocapture
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-58e2c610622b01d4)
+
+running 1 test
+MSH99 warning-and-audits: saving32 observations,67 controls,787976 bytes
+MSH99 warning-and-audits: opening accepted complete archive
+MSH99 measured warning-and-audits native-events=89 controls=67 observations=32 encoded-bytes=787976 reopen-millis=286
+MSH99 accepted-natural-count: saving7 observations,17 controls,216405 bytes
+MSH99 accepted-natural-count: opening accepted complete archive
+MSH99 measured accepted-natural-count native-events=103 controls=17 observations=7 encoded-bytes=216405 reopen-millis=501
+test shared::xiangqi::archive::tests::measured_long_warning_claim_and_historical_observations_pause_before_replay_budget ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 143 filtered out; finished in 19.57s
+
+measured_long_warning_claim_and_historical_observations_pause_before_replay_budget: exit=0, elapsed=19.659s
+
+$ cargo test --locked -p mshogi-desktop-session ordinary_and_exact_observations_share_capacity_without_discarding_either_kind -- --nocapture
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-58e2c610622b01d4)
+
+running 1 test
+1 ordinary+255 exact observations: 603899 encoded bytes, reopen 138ms
+test shared::xiangqi::archive::tests::ordinary_and_exact_observations_share_capacity_without_discarding_either_kind ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 143 filtered out; finished in 16.34s
+
+ordinary_and_exact_observations_share_capacity_without_discarding_either_kind: exit=0, elapsed=16.409s
+
+$ cargo test --locked -p mshogi-desktop-session ordinary_observation_256_to_257_rejects_new_work_and_still_saves_reopens_all_evidence -- --nocapture
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-58e2c610622b01d4)
+
+running 1 test
+256 ordinary observations: 699949 encoded bytes, reopen 261ms
+test shared::xiangqi::archive::tests::ordinary_observation_256_to_257_rejects_new_work_and_still_saves_reopens_all_evidence ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 143 filtered out; finished in 43.27s
+
+ordinary_observation_256_to_257_rejects_new_work_and_still_saves_reopens_all_evidence: exit=0, elapsed=43.332s

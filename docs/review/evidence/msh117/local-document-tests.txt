@@ -1,0 +1,15 @@
+   Compiling mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.29s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-72dbb958aa69b860)
+
+running 8 tests
+test document::tests::raw_payload_bytes_reach_the_native_boundary_without_map_normalization ... ok
+test document::tests::current_outer_identity_is_explicit_for_every_native_game ... ok
+test document::tests::every_outer_field_is_required_and_duplicate_fields_reject ... ok
+test document::tests::unsupported_conflicting_malformed_and_old_outer_formats_reject ... ok
+test document::tests::hostile_identity_diagnostics_are_bounded_and_utf8_safe ... ok
+test document::tests::native_payload_failure_diagnostics_stay_bounded_and_open_is_atomic ... ok
+test document::tests::duplicate_native_schema_fields_reject_atomically_after_raw_outer_dispatch ... ok
+test document::tests::real_native_transcripts_roundtrip_current_documents_with_fresh_stopped_runtime ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 148 filtered out; finished in 0.44s

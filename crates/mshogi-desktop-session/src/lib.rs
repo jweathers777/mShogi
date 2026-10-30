@@ -7,6 +7,7 @@ mod shared;
 pub use shared::*;
 mod capacity;
 pub use capacity::*;
+mod document;
 mod persistence;
 pub use persistence::*;
 mod analysis;

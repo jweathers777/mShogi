@@ -3,7 +3,6 @@ import type {
   Claim,
   DrawReason,
   MatchConclusion,
-  Snapshot,
 } from "./native";
 export const colorName = (color: string) =>
   color === "white" ? "White" : "Black";
@@ -36,7 +35,7 @@ export function conclusionName(conclusion: MatchConclusion): string {
     return `${colorName(conclusion.win.winner)} wins — ${conclusion.win.trigger === "flag_fall" ? "time expired" : "resignation"}`;
   return `Draw — ${conclusion.draw.trigger === null ? "agreement" : "opponent cannot mate"}`;
 }
-export function gameStatus(snapshot: Snapshot): string {
+export function gameStatus(snapshot: { conclusion: MatchConclusion | null; turn: string; in_check: boolean }): string {
   if (snapshot.conclusion !== null) return conclusionName(snapshot.conclusion);
   return `${colorName(snapshot.turn)} to move${snapshot.in_check ? " · check" : ""}`;
 }

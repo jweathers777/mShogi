@@ -1,10 +1,19 @@
-//! Regenerate native-shaped frontend test fixtures; never bundled with the app.
-use mshogi_core::chess::*;
-use mshogi_desktop_session::{
-    AnalysisOperation, DesktopCommand, DesktopController, DesktopSession, IoPhase,
+//! Native current-contract fixtures; the example's child mode invokes the real engine.
+//! Neither this example nor its fixture initializer is bundled with the application.
+use mshogi_core::{
+    chess::*,
+    native::{CanonicalRecord, NativeSide},
 };
-use mshogi_engine::{ExecutionResponse, ReachabilityTarget};
+use mshogi_desktop_session::{
+    AnalysisOperation, AnalysisPhase, DesktopController, IoPhase, SessionOperation,
+    SharedDesktopCommand, SharedSnapshot,
+};
+use mshogi_engine::ReachabilityTarget;
 fn main() {
+    if std::env::args().nth(1).as_deref() == Some("internal-search") {
+        mshogi_engine::serve_once(std::io::stdin().lock(), std::io::stdout().lock()).unwrap();
+        return;
+    }
     let directory = std::path::PathBuf::from(
         std::env::args_os()
             .nth(1)
@@ -22,47 +31,32 @@ fn main() {
             "rnb1kbnr/pppp1ppp/8/4p3/6Pq/5P2/PPPPP2P/RNBQKBNR w KQkq - 1 3",
         ),
     ] {
-        let game = AdjudicatedGame::from_fen(fen, ClaimPolicy::ExplicitOnly).unwrap();
-        let session = DesktopSession::from_record(&game.record(), Color::White).unwrap();
-        std::fs::write(
-            directory.join(format!("{name}.json")),
-            serde_json::to_string_pretty(&session.snapshot()).unwrap() + "\n",
-        )
-        .unwrap();
+        let mut c = chess_controller(fen);
+        send(&mut c, SessionOperation::Resume {});
+        write(
+            &directory,
+            &format!("shared-chess-{name}"),
+            &c.shared_snapshot(),
+        );
     }
-    let mut unresolved = DesktopSession::new();
-    unresolved
-        .command(DesktopCommand::Resign { version: 1 }, 0)
-        .unwrap();
-    let game =
-        AdjudicatedGame::from_fen("7k/8/8/8/8/8/R7/K7 w - - 99 1", ClaimPolicy::ExplicitOnly)
-            .unwrap();
-    let mut claimed = DesktopSession::from_record(&game.record(), Color::White).unwrap();
-    let claim = claimed
-        .snapshot()
+    let mut c = chess_controller(STANDARD_START_FEN);
+    let unresolved = send(&mut c, SessionOperation::Resign {});
+    write(&directory, "shared-chess-unresolved", &unresolved);
+    let mut c = chess_controller("7k/8/8/8/8/8/R7/K7 w - - 99 1");
+    send(&mut c, SessionOperation::Resume {});
+    let claim = c
+        .shared_snapshot()
+        .chess
+        .unwrap()
         .claims
         .into_iter()
-        .find(|claim| claim.intended.is_some())
+        .find(|v| v.intended.is_some())
         .unwrap();
-    claimed
-        .command(
-            DesktopCommand::Claim {
-                version: claimed.snapshot().version,
-                claim,
-            },
-            0,
-        )
-        .unwrap();
-    for (name, session) in [("unresolved", unresolved), ("claimed", claimed)] {
-        std::fs::write(
-            directory.join(format!("{name}.json")),
-            serde_json::to_string_pretty(&session.snapshot()).unwrap() + "\n",
-        )
-        .unwrap();
-    }
+    let claimed = send(&mut c, SessionOperation::ChessClaim { claim });
+    write(&directory, "shared-chess-claimed", &claimed);
     for (name, fen, operation) in [
         (
-            "analysis-moves",
+            "moves",
             STANDARD_START_FEN,
             AnalysisOperation::Moves {
                 depth: 1,
@@ -70,7 +64,7 @@ fn main() {
             },
         ),
         (
-            "analysis-mate",
+            "mate",
             "7k/8/5KQ1/8/8/8/8/8 w - - 0 1",
             AnalysisOperation::Moves {
                 depth: 1,
@@ -78,7 +72,7 @@ fn main() {
             },
         ),
         (
-            "analysis-mated",
+            "mated",
             "7k/6Q1/5K2/8/8/8/8/8 b - - 0 1",
             AnalysisOperation::Moves {
                 depth: 1,
@@ -86,7 +80,7 @@ fn main() {
             },
         ),
         (
-            "analysis-possible",
+            "possible",
             "7k/6Q1/5K2/8/8/8/8/8 b - - 0 1",
             AnalysisOperation::FullReachability {
                 target: ReachabilityTarget::Either,
@@ -95,7 +89,7 @@ fn main() {
             },
         ),
         (
-            "analysis-impossible",
+            "impossible",
             "7k/8/8/8/8/8/8/K7 w - - 0 1",
             AnalysisOperation::FullReachability {
                 target: ReachabilityTarget::Either,
@@ -104,7 +98,7 @@ fn main() {
             },
         ),
         (
-            "analysis-unknown",
+            "unknown",
             STANDARD_START_FEN,
             AnalysisOperation::FullReachability {
                 target: ReachabilityTarget::Either,
@@ -113,139 +107,107 @@ fn main() {
             },
         ),
     ] {
-        let game = AdjudicatedGame::from_fen(fen, ClaimPolicy::ExplicitOnly).unwrap();
-        let mut session = DesktopSession::from_record(&game.record(), Color::White).unwrap();
-        session
-            .command(
-                DesktopCommand::Analyze {
-                    version: session.snapshot().version,
-                    operation,
-                },
-                0,
-            )
-            .unwrap();
-        let request = session.analysis_request().unwrap();
-        let mut input = serde_json::to_vec(&request).unwrap();
-        input.push(b'\n');
-        let mut output = Vec::new();
-        mshogi_engine::serve_once(std::io::Cursor::new(input), &mut output).unwrap();
-        let response: ExecutionResponse = serde_json::from_slice(&output).unwrap();
-        assert!(session.accept_analysis(response));
-        std::fs::write(
-            directory.join(format!("{name}.json")),
-            serde_json::to_string_pretty(&session.snapshot()).unwrap() + "\n",
-        )
-        .unwrap();
+        let mut c = chess_controller(fen);
+        send(&mut c, SessionOperation::Analyze { operation });
+        let deadline = std::time::Instant::now() + std::time::Duration::from_secs(20);
+        let snapshot = loop {
+            let snapshot = c.shared_snapshot();
+            let phase = snapshot.chess.as_ref().unwrap().analysis.status;
+            if phase != AnalysisPhase::Thinking {
+                break snapshot;
+            }
+            assert!(std::time::Instant::now() < deadline);
+            std::thread::sleep(std::time::Duration::from_millis(1));
+        };
+        assert!(snapshot.chess.as_ref().unwrap().analysis.result.is_some());
+        write(
+            &directory,
+            &format!("shared-chess-analysis-{name}"),
+            &snapshot,
+        );
     }
-    let mut cancelled = DesktopSession::new();
-    cancelled
-        .command(
-            DesktopCommand::Analyze {
-                version: 1,
-                operation: AnalysisOperation::Moves {
-                    depth: 8,
-                    nodes: 5_000_000,
-                },
+    let mut c = chess_controller(STANDARD_START_FEN);
+    send(
+        &mut c,
+        SessionOperation::Analyze {
+            operation: AnalysisOperation::Moves {
+                depth: 8,
+                nodes: 5_000_000,
             },
-            0,
-        )
-        .unwrap();
-    cancelled
-        .command(
-            DesktopCommand::CancelAnalysis {
-                version: cancelled.snapshot().version,
-            },
-            0,
-        )
-        .unwrap();
-    std::fs::write(
-        directory.join("analysis-cancelled.json"),
-        serde_json::to_string_pretty(&cancelled.snapshot()).unwrap() + "\n",
-    )
-    .unwrap();
-    // Exercise the public file worker so restored/history fixtures are native,
-    // including the same-ply distinction before an unresolved resignation.
+        },
+    );
+    let cancelled = send(&mut c, SessionOperation::Cancel {});
+    write(&directory, "shared-chess-analysis-cancelled", &cancelled);
+    let mut c = chess_controller(STANDARD_START_FEN);
+    send(&mut c, SessionOperation::Resign {});
     let temporary =
         std::env::temp_dir().join(format!("mshogi-fixture-{}.mshogi", std::process::id()));
-    let mut controller =
-        DesktopController::new(std::path::PathBuf::from("/unused/fixture-engine")).unwrap();
-    let (_, receipt) = controller
-        .command_with_receipt(DesktopCommand::Resign { version: 1 })
+    let id = c.queue_shared_save(temporary.clone()).unwrap();
+    wait_document(&mut c, id);
+    let id = c
+        .queue_product_open(temporary.clone(), c.shared_open_token())
         .unwrap();
-    while receipt.completion().is_none() {
-        controller.shared_snapshot();
-        std::thread::sleep(std::time::Duration::from_millis(1));
-    }
-    receipt.completion().unwrap().unwrap();
-    let save = controller.queue_save(temporary.clone()).unwrap();
-    wait_document(&mut controller, save);
-    let token = controller.open_token();
-    let open = controller.queue_open(temporary.clone(), token).unwrap();
-    let mut reopened = wait_document(&mut controller, open);
+    let mut reopened = wait_document(&mut c, id);
     reopened.document.path = Some("fixture.mshogi".into());
-    std::fs::write(
-        directory.join("reopened.json"),
-        serde_json::to_string_pretty(&reopened).unwrap() + "\n",
-    )
-    .unwrap();
-    let pending = controller
-        .command(DesktopCommand::Inspect {
-            version: reopened.version,
-            event_index: 1,
-        })
-        .unwrap();
-    let mut history = wait_document(&mut controller, pending.io.id);
+    write(&directory, "shared-chess-reopened", &reopened);
+    let mut history = send(&mut c, SessionOperation::Inspect { event_index: 1 });
     history.document.path = Some("fixture.mshogi".into());
-    std::fs::write(
-        directory.join("history.json"),
-        serde_json::to_string_pretty(&history).unwrap() + "\n",
-    )
-    .unwrap();
+    write(&directory, "shared-chess-history", &history);
     std::fs::remove_file(temporary).unwrap();
     #[cfg(feature = "desktop-verification")]
     {
-        let synthetic = mshogi_desktop_session::SyntheticController::new();
-        std::fs::write(
-            directory.join("synthetic.json"),
-            serde_json::to_string_pretty(&synthetic.snapshot()).unwrap() + "\n",
-        )
-        .unwrap();
-        let mut capacity = DesktopController::verification(
-            std::path::PathBuf::from("/unused/fixture-engine"),
-            "capacity",
-        )
-        .unwrap();
-        std::fs::write(
-            directory.join("capacity.json"),
-            serde_json::to_string_pretty(
-                &capacity
-                    .shared_snapshot()
-                    .chess
-                    .expect("native Chess fixture"),
-            )
-            .unwrap()
-                + "\n",
-        )
-        .unwrap();
+        write(
+            &directory,
+            "synthetic",
+            &mshogi_desktop_session::SyntheticController::new().snapshot(),
+        );
+        let mut capacity =
+            DesktopController::verification(std::env::current_exe().unwrap(), "capacity").unwrap();
+        write(
+            &directory,
+            "shared-chess-capacity",
+            &capacity.shared_snapshot(),
+        );
     }
 }
-
-fn wait_document(controller: &mut DesktopController, id: u64) -> mshogi_desktop_session::Snapshot {
+fn write(directory: &std::path::Path, name: &str, value: &impl serde::Serialize) {
+    std::fs::write(
+        directory.join(format!("{name}.json")),
+        serde_json::to_string_pretty(value).unwrap() + "\n",
+    )
+    .unwrap();
+}
+fn chess_controller(fen: &str) -> DesktopController {
+    let mut c = DesktopController::new(std::env::current_exe().unwrap()).unwrap();
+    let game = AdjudicatedGame::from_fen(fen, ClaimPolicy::ExplicitOnly).unwrap();
+    send(
+        &mut c,
+        SessionOperation::Replace {
+            record: CanonicalRecord::chess(game.record()),
+            human: NativeSide::Chess(Color::White),
+        },
+    );
+    c
+}
+fn send(c: &mut DesktopController, operation: SessionOperation) -> SharedSnapshot {
+    let snapshot = c.shared_snapshot();
+    shared_command(
+        c,
+        SharedDesktopCommand {
+            expected: snapshot.token,
+            game: snapshot.game,
+            operation,
+        },
+    )
+    .unwrap()
+}
+fn wait_document(c: &mut DesktopController, id: u64) -> SharedSnapshot {
     let deadline = std::time::Instant::now() + std::time::Duration::from_secs(20);
     loop {
-        let snapshot = controller
-            .shared_snapshot()
-            .chess
-            .expect("native Chess fixture");
-        if snapshot.io.id == id && matches!(snapshot.io.phase, IoPhase::Complete | IoPhase::Failed)
-        {
-            assert_eq!(
-                snapshot.io.phase,
-                IoPhase::Complete,
-                "{:?}",
-                snapshot.io.message
-            );
-            return snapshot;
+        let s = c.shared_snapshot();
+        if s.io.id == id && matches!(s.io.phase, IoPhase::Complete | IoPhase::Failed) {
+            assert_eq!(s.io.phase, IoPhase::Complete, "{:?}", s.io);
+            return s;
         }
         assert!(std::time::Instant::now() < deadline);
         std::thread::sleep(std::time::Duration::from_millis(1));

@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
 import { createPortal } from "react-dom";
-import type { BoardPiece, Color, LegalChoice } from "./native";
+import type { BoardPiece, Color } from "./native";
 import { inspectionStatus, type InspectMovement, type MovementInspection } from "./product/movementInspection";
 import "./movement-inspection.css";
 
@@ -21,7 +21,7 @@ export interface NativeHand { origin: string; owner: string; kind: string; count
 interface SelectionChoice extends BoardChoice { promotion: boolean }
 interface Props {
   pieces: (BoardPiece | NativePiece)[];
-  choices: LegalChoice[] | BoardChoice[];
+  choices: BoardChoice[];
   orientation: Color;
   version: number;
   disabled: boolean;
@@ -59,12 +59,9 @@ export function Board({ pieces, choices: supplied, orientation, version, disable
   // Standard 8x8/9x9 boards fit the normal panel; the 16x16 fixture scrolls.
   const large = columns > 9 || rows > 9;
   const geometryKey = `${geometry.label}|${geometry.files.join(",")}|${geometry.ranks.join(",")}`;
-  const choices: SelectionChoice[] = supplied.map((choice) => "steps" in choice
-    ? { ...choice, promotion: false }
-    : { action: choice.action, from: choice.from, steps: [choice.to],
-        completion: choice.promotion === null ? null
-          : { label: choice.promotion, glyph: chessGlyphs[choice.promotion] ?? null },
-        promotion: choice.promotion !== null });
+  const choices: SelectionChoice[] = supplied.map(choice => ({
+    ...choice, promotion: profile === "chess" && choice.completion !== null,
+  }));
   const [selected, setSelected] = useState<string | null>(null);
   const [prefix, setPrefix] = useState<string[]>([]);
   const [focused, setFocused] = useState(geometry.initialFocus);

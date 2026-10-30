@@ -89,7 +89,7 @@ fn identities_native_geometry_and_chess_compatibility() {
     assert_eq!(chess.game, GameKind::Chess);
     assert_eq!(chess.sides[0].label, "White");
     assert_eq!(chess.choices.len(), 20);
-    assert_eq!(chess.play_limits, chess.chess.as_ref().unwrap().limits);
+    assert_eq!(chess.play_limits, PLAY_LIMITS);
     assert_eq!(chess.board_ply, 0);
     assert!(chess.capabilities.chess_full);
     assert!(!chess.capabilities.hands);
@@ -138,7 +138,7 @@ fn identities_native_geometry_and_chess_compatibility() {
         .is_err()
     );
     assert!(
-        c.command(DesktopCommand::Resign {
+        c.command(ChessMutationCommand::Resign {
             version: c.session.version
         })
         .is_err()
@@ -433,7 +433,7 @@ fn replacement_retires_chess_files_and_pending_admission() {
     let mut candidate = c.session.chess().clone();
     candidate
         .command_unchecked(
-            DesktopCommand::Play {
+            ChessMutationCommand::Play {
                 version: c.session.version,
                 action: "e2e4".parse().unwrap(),
             },
@@ -732,7 +732,7 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
                 );
             }
             NativeSide::Chess(side) => {
-                assert_eq!(current.chess.unwrap().document.settings.orientation, side)
+                assert_eq!(c.session.chess().settings.orientation, side)
             }
         }
         previous = current.token;

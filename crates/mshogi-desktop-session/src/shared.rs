@@ -1,5 +1,5 @@
 //! Concrete native desktop consumer boundary. Native games remain authoritative.
-//! The stable chess APIs/archive are a compatibility adapter, not a common rules model.
+//! Native-specific capability data composes into the one application contract.
 use super::*;
 #[path = "shared_archive.rs"]
 pub(super) mod archive;
@@ -545,11 +545,33 @@ pub struct SharedSnapshot {
     pub search_observations: Vec<PresentedSearchObservation>,
     /// Native evaluation perspective and terminal-distance interpretation.
     pub score_meaning: &'static str,
-    /// Existing chess view/archive/claims/observations remain natively typed and unchanged.
-    pub chess: Option<Snapshot>,
+    /// Native Chess capability details; common application state lives above.
+    pub chess: Option<ChessPresentation>,
     /// Complete authoritative Chess match record, including clock/policy/events.
     /// Native GameRecord context above remains separately authoritative for rules/search.
     pub chess_match: Option<MatchRecord>,
+}
+/// Native Chess capability information, without a second application snapshot.
+#[derive(Clone, Debug, Serialize)]
+pub struct ChessPresentation {
+    /// Current optional claims. An intended action is not played by claiming.
+    pub claims: Vec<EngineClaim>,
+    /// Current authoritative live conclusion, including unresolved outcomes.
+    pub live_conclusion: Option<MatchConclusion>,
+    /// Conclusion at the selected exact event prefix.
+    pub selected_conclusion: Option<MatchConclusion>,
+    /// Native check status at the selected position.
+    pub in_check: bool,
+    /// Actual read-only analysis, including Full proof/Unknown and exact context.
+    pub analysis: AnalysisState,
+    /// Latest actual engine result, with native score meaning.
+    pub last_engine_result: Option<ChessResult>,
+    /// Side whose position was searched for the latest engine result.
+    pub last_engine_turn: Option<Color>,
+    /// Exact live version searched by that result.
+    pub searched_version: Option<u64>,
+    /// Explicit interactive adjudication mode.
+    pub rules_mode: &'static str,
 }
 /// The request still carries a mandatory game tag, even for common operations.
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -594,10 +616,22 @@ pub enum SessionOperation {
         /// Native side controlled by the human.
         human: NativeSide,
     },
-    /// Existing chess operation, with its original additional document preconditions.
-    Chess {
-        /// Existing native game-specific command.
-        command: DesktopCommand,
+    /// Complete native Chess board action, admitted under the outer token.
+    ChessPlay {
+        /// Complete authoritative action.
+        action: Action,
+    },
+    /// Native optional claim; intended actions are claimed without being played.
+    ChessClaim {
+        /// Native claimant, reason and optional intended action.
+        claim: EngineClaim,
+    },
+    /// Native Chess document preferences, retaining Full analysis defaults.
+    ChessPreferences {
+        /// Native orientation.
+        orientation: Color,
+        /// Purpose-specific analysis defaults.
+        analysis_defaults: AnalysisOperation,
     },
     /// Native Xiangqi command; actor is the assigned human, not inferred from turn.
     Xiangqi {
@@ -662,10 +696,15 @@ enum OperationWire {
         // Native side controlled by the human.
         human: NativeSide,
     },
-    // Existing chess operation, with its original additional document preconditions.
-    Chess {
-        // Existing native game-specific command.
-        command: DesktopCommand,
+    ChessPlay {
+        action: Action,
+    },
+    ChessClaim {
+        claim: EngineClaim,
+    },
+    ChessPreferences {
+        orientation: Color,
+        analysis_defaults: AnalysisOperation,
     },
     Xiangqi {
         command: mshogi_core::xiangqi::GameCommand,
@@ -996,7 +1035,7 @@ impl DesktopController {
     }
     pub(super) fn require_chess(&self) -> Result<(), String> {
         if self.session.shogi().is_some() || self.session.xiangqi().is_some() {
-            Err("Wrong game: this legacy chess endpoint cannot act on another native game; use the shared native endpoint.".into())
+            Err("Wrong game: a Chess mutation cannot act on another active native game.".into())
         } else {
             Ok(())
         }
@@ -1081,40 +1120,54 @@ impl DesktopController {
             return self.xiangqi_command(command.operation);
         }
         if self.session.shogi().is_none() {
-            let legacy = match command.operation {
-                SessionOperation::Chess { command } => command,
-                SessionOperation::Analyze { operation } => DesktopCommand::Analyze {
+            let native = match command.operation {
+                SessionOperation::ChessPlay { action } => ChessMutationCommand::Play {
+                    version: self.session.version,
+                    action,
+                },
+                SessionOperation::ChessClaim { claim } => ChessMutationCommand::Claim {
+                    version: self.session.version,
+                    claim,
+                },
+                SessionOperation::ChessPreferences {
+                    orientation,
+                    analysis_defaults,
+                } => ChessMutationCommand::Preferences {
+                    orientation,
+                    analysis_defaults,
+                },
+                SessionOperation::Analyze { operation } => ChessMutationCommand::Analyze {
                     version: self.session.version,
                     operation,
                 },
-                SessionOperation::Inspect { event_index } => DesktopCommand::Inspect {
+                SessionOperation::Inspect { event_index } => ChessMutationCommand::Inspect {
                     version: self.session.version,
                     event_index,
                 },
-                SessionOperation::ReturnLive {} => DesktopCommand::ReturnLive {
+                SessionOperation::ReturnLive {} => ChessMutationCommand::ReturnLive {
                     version: self.session.version,
                 },
                 SessionOperation::Cancel {} => {
                     if self.session.chess_mut().analysis_pending.is_some() {
-                        DesktopCommand::CancelAnalysis {
+                        ChessMutationCommand::CancelAnalysis {
                             version: self.session.version,
                         }
                     } else {
-                        DesktopCommand::Cancel {
+                        ChessMutationCommand::Cancel {
                             version: self.session.version,
                         }
                     }
                 }
-                SessionOperation::Resume {} => DesktopCommand::Resume {
+                SessionOperation::Resume {} => ChessMutationCommand::Resume {
                     version: self.session.version,
                 },
-                SessionOperation::Retry {} => DesktopCommand::Retry {
+                SessionOperation::Retry {} => ChessMutationCommand::Retry {
                     version: self.session.version,
                 },
-                SessionOperation::TakeBack {} => DesktopCommand::TakeBack {
+                SessionOperation::TakeBack {} => ChessMutationCommand::TakeBack {
                     version: self.session.version,
                 },
-                SessionOperation::Resign {} => DesktopCommand::Resign {
+                SessionOperation::Resign {} => ChessMutationCommand::Resign {
                     version: self.session.version,
                 },
                 _ => {
@@ -1123,7 +1176,7 @@ impl DesktopController {
                     );
                 }
             };
-            self.command(legacy)?;
+            self.command(native)?;
             return Ok(self.shared_snapshot());
         }
         if self.admission_token.is_some()
@@ -1548,7 +1601,7 @@ impl DesktopController {
             chess_match: None,
         }
     }
-    fn chess_snapshot(&self, snapshot: Snapshot) -> SharedSnapshot {
+    fn chess_snapshot(&self, snapshot: ChessSnapshot) -> SharedSnapshot {
         let sides = vec![
             side(NativeSide::Chess(Color::White)),
             side(NativeSide::Chess(Color::Black)),
@@ -1729,7 +1782,17 @@ impl DesktopController {
             search_observations,
             score_meaning: "Chess root-side centipawns; native mate distance and bounded cooperative Full proof remain distinct (see chess analysis).",
             chess_match: Some(self.session.chess().game.record().clone()),
-            chess: Some(snapshot),
+            chess: Some(ChessPresentation {
+                claims: snapshot.claims,
+                live_conclusion: snapshot.conclusion,
+                selected_conclusion: snapshot.view.conclusion,
+                in_check: self.session.selected_game().position().in_check(),
+                analysis: snapshot.analysis,
+                last_engine_result: snapshot.engine.last,
+                last_engine_turn: snapshot.engine.last_turn,
+                searched_version: snapshot.engine.searched_version,
+                rules_mode: snapshot.rules_mode,
+            }),
         }
     }
 }

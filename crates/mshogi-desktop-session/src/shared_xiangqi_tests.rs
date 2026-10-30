@@ -257,7 +257,7 @@ fn native_identity_intersection_palaces_river_and_capability_scope() {
         .is_err()
     );
     assert!(
-        c.command(DesktopCommand::Resign {
+        c.command(ChessMutationCommand::Resign {
             version: c.session.version
         })
         .is_err()

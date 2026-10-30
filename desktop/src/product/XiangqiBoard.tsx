@@ -1,7 +1,7 @@
 import { useId, useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
-import type { XiangqiSnapshot as GameSnapshot, Side } from "./native";
+import type { XiangqiSnapshot as GameSnapshot } from "./native";
 import { inspectionStatus, type InspectMovement, type MovementInspection } from "./movementInspection";
-import { GameArea, GamePositionStatus, PlayerArea } from "./ApplicationShell";
+import { GameFrame } from "./GameFrame";
 import "../movement-inspection.css";
 import "./xiangqi.css";
 
@@ -22,7 +22,6 @@ export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspection
   const topology = snapshot.board.intersections;
   const bottom = snapshot.document.settings.orientation;
   const orientation = snapshot.orientations.find((o) => o.side.id.side === bottom) ?? snapshot.orientations[0]!;
-  const top = snapshot.sides.find((s) => s.key !== orientation.side.key)!;
   const points = orientation.ranks.flatMap((rank) => orientation.files.map((file) => `${file}${rank}`));
   const columns = orientation.files.length;
   const [selected, setSelected] = useState<string | null>(null);
@@ -87,10 +86,6 @@ export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspection
     } else if (event.key === "Enter" || event.key === " ") { event.preventDefault(); select(point); }
     else if (event.key === "Escape") { event.preventDefault(); cancel(); }
   }
-  function player(side: Side) {
-    return <PlayerArea side={side.label} human={side.key === snapshot.human.key} playerKey={side.id.side}
-      toMove={!snapshot.status.concluded && snapshot.turn.key === side.key} />;
-  }
   const riverYs = topology.river_between_ranks.map((rank) => 90 + orientation.ranks.indexOf(String(rank)) * 100).sort((a, b) => a - b);
   const riverMiddle = (riverYs[0]! + riverYs[1]!) / 2;
   const board = <div className="xiangqi-board-frame">
@@ -142,11 +137,9 @@ export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspection
     <div className="shell-board-help"><div className={`board-help xiangqi-help${inspection || loading ? " movement-inspection-status" : ""}`}>
       <span>{inspection ? inspectionStatus(inspection.label) : loading ? "Loading read-only movement inspection…" : "Select a piece, then a marked intersection."}</span><span>Arrows · Enter · Esc</span>
     </div></div>
-    <GamePositionStatus historical={snapshot.historical} concluded={snapshot.status.concluded} paused={snapshot.paused}
-      humanTurn={snapshot.turn.key === snapshot.human.key} thinking={snapshot.phase === "thinking" && snapshot.execution_purpose === "engine_turn"} ply={snapshot.board_ply} />
     <span className="sr-only" role="status" aria-live="polite">{announcement}</span>
   </>;
-  return <GameArea className="xiangqi-stage" upperPlayer={player(top)} board={board} lowerPlayer={player(orientation.side)} footer={footer}
+  return <GameFrame className="xiangqi-stage" snapshot={snapshot} bottom={orientation.side} board={board} help={footer}
     onFocusCapture={() => { hadFocus.current = true; }}
     onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) hadFocus.current = false; }} />;
 }

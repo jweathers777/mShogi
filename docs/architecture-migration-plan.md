@@ -272,3 +272,15 @@ state or old-file reader. **MSH-119/R4 deletes that forwarder and its actual cal
 consumes resource facts and consolidates application frontend ownership. It is
 next dependency-ready and remains unstarted. R5/R6, future variants and M5 also
 remain unstarted; this does not close M4 or final integrated R6 acceptance.
+
+## R4 implementation handoff — 2026-10-30
+
+MSH-119 replaces the finite R3 frontend/IPC forwarder with one ProductApp /
+useGameSession / ApplicationView owner and common GameFrame/panels/capability
+slots. Chess now supplies native capability details through the current tagged
+snapshot and direct native operations. Parallel product pages, legacy owner/DTOs,
+duplicate guards and old host endpoints are removed with actual consumers
+migrated. The [R4 review](review/frontend-application-119.md) records the current
+functionality/deletion matrix and verification. R5 retains the existing board
+selection/inspection/route controller copies and consumes these shared slots;
+this migration does not authorize or start that task or R6.

@@ -1,0 +1,764 @@
+{
+  "open_token": {
+    "document": 1,
+    "version": 3,
+    "document_revision": 3
+  },
+  "document": {
+    "revision": 3,
+    "dirty": true,
+    "path": null,
+    "settings": {
+      "game_kind": "chess",
+      "settings": {
+        "orientation": "white",
+        "analysis_defaults": {
+          "kind": "moves",
+          "depth": 1,
+          "nodes": 1000
+        }
+      }
+    }
+  },
+  "io": {
+    "id": 1,
+    "phase": "idle",
+    "message": null,
+    "resource": null
+  },
+  "capacity": {
+    "id": 4,
+    "status": "available",
+    "message": null,
+    "resource": null
+  },
+  "token": {
+    "document": 1,
+    "version": 3,
+    "revision": 9,
+    "selection": 2
+  },
+  "game": "chess",
+  "profile": "mshogi.chess.match.v1",
+  "edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+  "human": {
+    "id": {
+      "game_kind": "chess",
+      "side": "white"
+    },
+    "key": "mshogi.chess.match.v1:white",
+    "label": "White",
+    "first_mover": true
+  },
+  "turn": {
+    "id": {
+      "game_kind": "chess",
+      "side": "white"
+    },
+    "key": "mshogi.chess.match.v1:white",
+    "label": "White",
+    "first_mover": true
+  },
+  "sides": [
+    {
+      "id": {
+        "game_kind": "chess",
+        "side": "white"
+      },
+      "key": "mshogi.chess.match.v1:white",
+      "label": "White",
+      "first_mover": true
+    },
+    {
+      "id": {
+        "game_kind": "chess",
+        "side": "black"
+      },
+      "key": "mshogi.chess.match.v1:black",
+      "label": "Black",
+      "first_mover": false
+    }
+  ],
+  "board": {
+    "files": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g",
+      "h"
+    ],
+    "ranks": [
+      "8",
+      "7",
+      "6",
+      "5",
+      "4",
+      "3",
+      "2",
+      "1"
+    ],
+    "label": "Chess board",
+    "initial_focus": "e2"
+  },
+  "orientations": [
+    {
+      "side": {
+        "id": {
+          "game_kind": "chess",
+          "side": "white"
+        },
+        "key": "mshogi.chess.match.v1:white",
+        "label": "White",
+        "first_mover": true
+      },
+      "files": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h"
+      ],
+      "ranks": [
+        "8",
+        "7",
+        "6",
+        "5",
+        "4",
+        "3",
+        "2",
+        "1"
+      ]
+    },
+    {
+      "side": {
+        "id": {
+          "game_kind": "chess",
+          "side": "black"
+        },
+        "key": "mshogi.chess.match.v1:black",
+        "label": "Black",
+        "first_mover": false
+      },
+      "files": [
+        "h",
+        "g",
+        "f",
+        "e",
+        "d",
+        "c",
+        "b",
+        "a"
+      ],
+      "ranks": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ]
+    }
+  ],
+  "pieces": [
+    {
+      "square": "f6",
+      "owner": "mshogi.chess.match.v1:white",
+      "kind": "king",
+      "promoted": false,
+      "text": "K",
+      "label": "f6, White king"
+    },
+    {
+      "square": "g6",
+      "owner": "mshogi.chess.match.v1:white",
+      "kind": "queen",
+      "promoted": false,
+      "text": "Q",
+      "label": "g6, White queen"
+    },
+    {
+      "square": "h8",
+      "owner": "mshogi.chess.match.v1:black",
+      "kind": "king",
+      "promoted": false,
+      "text": "K",
+      "label": "h8, Black king"
+    }
+  ],
+  "hands": [],
+  "choices": [
+    {
+      "origin": {
+        "kind": "board",
+        "square": "f6"
+      },
+      "action": "f6f7",
+      "from": "f6",
+      "steps": [
+        "f7"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "f6"
+      },
+      "action": "f6g5",
+      "from": "f6",
+      "steps": [
+        "g5"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "f6"
+      },
+      "action": "f6f5",
+      "from": "f6",
+      "steps": [
+        "f5"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "f6"
+      },
+      "action": "f6e5",
+      "from": "f6",
+      "steps": [
+        "e5"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "f6"
+      },
+      "action": "f6e6",
+      "from": "f6",
+      "steps": [
+        "e6"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "f6"
+      },
+      "action": "f6e7",
+      "from": "f6",
+      "steps": [
+        "e7"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "g6"
+      },
+      "action": "g6h7",
+      "from": "g6",
+      "steps": [
+        "h7"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "g6"
+      },
+      "action": "g6h5",
+      "from": "g6",
+      "steps": [
+        "h5"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "g6"
+      },
+      "action": "g6f5",
+      "from": "g6",
+      "steps": [
+        "f5"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "g6"
+      },
+      "action": "g6e4",
+      "from": "g6",
+      "steps": [
+        "e4"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "g6"
+      },
+      "action": "g6d3",
+      "from": "g6",
+      "steps": [
+        "d3"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "g6"
+      },
+      "action": "g6c2",
+      "from": "g6",
+      "steps": [
+        "c2"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "g6"
+      },
+      "action": "g6b1",
+      "from": "g6",
+      "steps": [
+        "b1"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "g6"
+      },
+      "action": "g6f7",
+      "from": "g6",
+      "steps": [
+        "f7"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "g6"
+      },
+      "action": "g6e8",
+      "from": "g6",
+      "steps": [
+        "e8"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "g6"
+      },
+      "action": "g6g7",
+      "from": "g6",
+      "steps": [
+        "g7"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "g6"
+      },
+      "action": "g6g8",
+      "from": "g6",
+      "steps": [
+        "g8"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "g6"
+      },
+      "action": "g6h6",
+      "from": "g6",
+      "steps": [
+        "h6"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "g6"
+      },
+      "action": "g6g5",
+      "from": "g6",
+      "steps": [
+        "g5"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "g6"
+      },
+      "action": "g6g4",
+      "from": "g6",
+      "steps": [
+        "g4"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "g6"
+      },
+      "action": "g6g3",
+      "from": "g6",
+      "steps": [
+        "g3"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "g6"
+      },
+      "action": "g6g2",
+      "from": "g6",
+      "steps": [
+        "g2"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "g6"
+      },
+      "action": "g6g1",
+      "from": "g6",
+      "steps": [
+        "g1"
+      ],
+      "completion": null
+    }
+  ],
+  "capabilities": {
+    "board_action": false,
+    "drops": false,
+    "promotion": true,
+    "take_back": false,
+    "undo": false,
+    "engine_turn": false,
+    "move_analysis": true,
+    "chess_full": true,
+    "claims": false,
+    "declaration": false,
+    "resign": true,
+    "hands": false,
+    "history": true,
+    "save": true
+  },
+  "status": {
+    "concluded": false,
+    "label": "White to move",
+    "score_half_points": null
+  },
+  "events": [
+    {
+      "index": 0,
+      "board_ply": 0,
+      "label": "Initial known position"
+    },
+    {
+      "index": 1,
+      "board_ply": 0,
+      "label": "Match started"
+    }
+  ],
+  "event_index": 1,
+  "board_ply": 0,
+  "play_limits": {
+    "depth": 2,
+    "nodes": 20000
+  },
+  "historical": false,
+  "paused": true,
+  "phase": "paused",
+  "execution_purpose": null,
+  "diagnostic": "Play paused for analysis. Resume play explicitly to continue.",
+  "declaration_advice": [],
+  "context": {
+    "envelope_version": 1,
+    "game_kind": "chess",
+    "rules_profile": "mshogi.chess.match.v1",
+    "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+    "native_schema_version": 1,
+    "payload": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"7k/8/5KQ1/8/8/8/8/8 w - - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]}
+  },
+  "analysis": {
+    "observation": {
+      "schema_version": 1,
+      "context": {
+        "purpose": {
+          "kind": "move_analysis",
+          "target": {
+            "selection_id": 2,
+            "event_index": 0,
+            "board_ply": 0,
+            "session_version": 3,
+            "label": "Live position after 0 plies",
+            "turn": {
+              "game_kind": "chess",
+              "side": "white"
+            }
+          }
+        },
+        "request_id": 1,
+        "session_version": 3,
+        "process_generation": 1,
+        "game": {
+          "envelope_version": 1,
+          "game_kind": "chess",
+          "rules_profile": "mshogi.chess.match.v1",
+          "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+          "native_schema_version": 1,
+          "payload": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"7k/8/5KQ1/8/8/8/8/8 w - - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]}
+        },
+        "limits": {
+          "depth": 1,
+          "nodes": 1000
+        }
+      },
+      "result": {
+        "kind": "chess",
+        "result": {
+          "kind": "move",
+          "action": "g6g7",
+          "telemetry": {
+            "score": 999999,
+            "completed_depth": 1,
+            "nodes": 24,
+            "principal_variation": [
+              {
+                "kind": "move",
+                "action": "g6g7"
+              }
+            ],
+            "status": "complete"
+          }
+        }
+      }
+    },
+    "application_error": null,
+    "historical": false
+  },
+  "observations": [
+    {
+      "observation": {
+        "schema_version": 1,
+        "context": {
+          "purpose": {
+            "kind": "move_analysis",
+            "target": {
+              "selection_id": 2,
+              "event_index": 0,
+              "board_ply": 0,
+              "session_version": 3,
+              "label": "Live position after 0 plies",
+              "turn": {
+                "game_kind": "chess",
+                "side": "white"
+              }
+            }
+          },
+          "request_id": 1,
+          "session_version": 3,
+          "process_generation": 1,
+          "game": {
+            "envelope_version": 1,
+            "game_kind": "chess",
+            "rules_profile": "mshogi.chess.match.v1",
+            "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+            "native_schema_version": 1,
+            "payload": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"7k/8/5KQ1/8/8/8/8/8 w - - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]}
+          },
+          "limits": {
+            "depth": 1,
+            "nodes": 1000
+          }
+        },
+        "result": {
+          "kind": "chess",
+          "result": {
+            "kind": "move",
+            "action": "g6g7",
+            "telemetry": {
+              "score": 999999,
+              "completed_depth": 1,
+              "nodes": 24,
+              "principal_variation": [
+                {
+                  "kind": "move",
+                  "action": "g6g7"
+                }
+              ],
+              "status": "complete"
+            }
+          }
+        }
+      },
+      "application_error": null,
+      "historical": false
+    }
+  ],
+  "search_observations": [
+    {
+      "observation_index": 0,
+      "purpose": "move_analysis",
+      "event_index": 0,
+      "board_ply": 0,
+      "perspective": "White",
+      "engine": "mShogi",
+      "score": "mate in 1 plies",
+      "completed_depth": 1,
+      "nodes": 24,
+      "variation": [
+        "g6g7"
+      ],
+      "status": "Complete",
+      "historical": false,
+      "selected": true
+    }
+  ],
+  "score_meaning": "Chess root-side centipawns; native mate distance and bounded cooperative Full proof remain distinct (see chess analysis).",
+  "chess": {
+    "claims": [],
+    "live_conclusion": null,
+    "selected_conclusion": null,
+    "in_check": false,
+    "analysis": {
+      "status": "complete",
+      "target": {
+        "selection_id": 2,
+        "event_index": 0,
+        "board_ply": 0,
+        "session_version": 3,
+        "label": "Live position after 0 plies",
+        "turn": {
+          "game_kind": "chess",
+          "side": "white"
+        }
+      },
+      "operation": {
+        "kind": "moves",
+        "depth": 1,
+        "nodes": 1000
+      },
+      "context": {
+        "purpose": {
+          "kind": "move_analysis",
+          "target": {
+            "selection_id": 2,
+            "event_index": 0,
+            "board_ply": 0,
+            "session_version": 3,
+            "label": "Live position after 0 plies",
+            "turn": {
+              "game_kind": "chess",
+              "side": "white"
+            }
+          }
+        },
+        "request_id": 1,
+        "session_version": 3,
+        "process_generation": 1,
+        "game": {
+          "envelope_version": 1,
+          "game_kind": "chess",
+          "rules_profile": "mshogi.chess.match.v1",
+          "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+          "native_schema_version": 1,
+          "payload": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"7k/8/5KQ1/8/8/8/8/8 w - - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]}
+        },
+        "limits": {
+          "depth": 1,
+          "nodes": 1000
+        }
+      },
+      "result": {
+        "kind": "move",
+        "action": "g6g7",
+        "telemetry": {
+          "score": 999999,
+          "completed_depth": 1,
+          "nodes": 24,
+          "principal_variation": [
+            {
+              "kind": "move",
+              "action": "g6g7"
+            }
+          ],
+          "status": "complete"
+        }
+      },
+      "message": null
+    },
+    "last_engine_result": null,
+    "last_engine_turn": null,
+    "searched_version": null,
+    "rules_mode": "m2"
+  },
+  "chess_match": {
+    "schema_version": 1,
+    "rules_profile": "mshogi.chess.match.v1",
+    "initial_record_json": "{\"schema_version\":1,\"rules_profile\":\"mshogi.chess.match.v1\",\"initial_fen\":\"7k/8/5KQ1/8/8/8/8/8 w - - 0 1\",\"history_origin\":\"imported_fen\",\"claim_policy\":\"explicit_only\",\"events\":[]}",
+    "time_control": "untimed",
+    "events": [
+      {
+        "request": {
+          "at_ns": 0,
+          "version": 0,
+          "actor": "white",
+          "command": "start"
+        },
+        "reply": {
+          "version": 1,
+          "remaining_ns": null,
+          "active": "white",
+          "conclusion": null,
+          "rejection": null
+        }
+      }
+    ]
+  }
+}

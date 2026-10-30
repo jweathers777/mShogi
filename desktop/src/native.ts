@@ -1,4 +1,3 @@
-import type { ResourceFailure } from "./resources";
 import type { NativeSide } from "./product/native";
 // Presentation DTOs mirror mshogi-desktop-session and mshogi-engine serde output.
 // Actions are opaque native identifiers; legality and adjudication stay in Rust.
@@ -14,12 +13,6 @@ export interface BoardPiece {
   color: Color;
   kind: string;
   label: string;
-}
-export interface LegalChoice {
-  action: string;
-  from: string;
-  to: string;
-  promotion: string | null;
 }
 export type DrawReason =
   | "stalemate"
@@ -143,95 +136,4 @@ export interface ArchivedObservation {
   historical: boolean;
   analyzed_turn: Color;
   application_error: string | null;
-}
-export interface DocumentState {
-  revision: number;
-  dirty: boolean;
-  path: string | null;
-  settings: { orientation: Color; analysis_defaults: AnalysisOperation };
-}
-export interface DocumentIo {
-  resource?: ResourceFailure | null;
-  id: number;
-  phase: "idle" | "saving" | "opening" | "viewing" | "complete" | "failed";
-  message: string | null;
-}
-export interface HistoricalView {
-  historical: boolean;
-  event_index: number;
-  event_count: number;
-  label: string;
-  fen: string;
-  pieces: BoardPiece[];
-  turn: Color;
-  conclusion: MatchConclusion | null;
-  ply: number;
-  selection_id: number;
-  timeline: { index: number; label: string; ply: number }[];
-}
-export interface Snapshot {
-  can_take_back: boolean;
-  capacity: {
-    resource?: ResourceFailure | null;
-    id: number;
-    status: "available" | "checking" | "paused";
-    message: string | null;
-  };
-  revision: number;
-  version: number;
-  document: DocumentState;
-  io: DocumentIo;
-  view: HistoricalView;
-  observations: ArchivedObservation[];
-  human: Color;
-  turn: Color;
-  fen: string;
-  pieces: BoardPiece[];
-  legal_choices: LegalChoice[];
-  claims: Claim[];
-  history: string[];
-  conclusion: MatchConclusion | null;
-  in_check: boolean;
-  engine: {
-    status:
-      "idle" | "thinking" | "cancelled" | "failed" | "incomplete" | "paused";
-    last: ChessResult | null;
-    last_turn: Color | null;
-    searched_version: number | null;
-    message: string | null;
-  };
-  play_paused: boolean;
-  analysis: AnalysisState;
-  rules_mode: "m2";
-  limits: { depth: number; nodes: number };
-}
-export type DesktopCommand =
-  | {
-      kind: "new_game";
-      version: number;
-      document_revision: number;
-      human: Color;
-    }
-  | { kind: "play"; version: number; action: string }
-  | { kind: "claim"; version: number; claim: Claim }
-  | {
-      kind: "take_back" | "cancel" | "retry" | "resign" | "cancel_analysis" | "resume";
-      version: number;
-    }
-  | { kind: "analyze"; version: number; operation: AnalysisOperation }
-  | {
-      kind: "preferences";
-      orientation: Color;
-      analysis_defaults: AnalysisOperation;
-    }
-  | { kind: "inspect"; version: number; event_index: number }
-  | { kind: "return_live"; version: number };
-
-export function newestSnapshot(
-  current: Snapshot | null,
-  incoming: Snapshot,
-): Snapshot {
-  return current === null || incoming.revision >= current.revision
-    ? incoming
-    : current;
 }

@@ -1,8 +1,12 @@
 //! Real files and bundled-engine processes through the public desktop controller.
 use mshogi_core::chess::Color;
+use mshogi_core::native::{CanonicalRecord, NativeSide};
 use mshogi_desktop_session::{
-    AnalysisOperation, AnalysisPhase, DesktopCommand, DesktopController, EnginePhase, IoPhase,
-    Snapshot,
+    AnalysisOperation, AnalysisPhase, DesktopController, EnginePhase, IoPhase, SharedSnapshot,
+};
+use mshogi_desktop_session::{
+    ChessPresentation, NativeDesktopSettings, SessionOperation, SessionToken, SharedDesktopCommand,
+    SharedOpenToken,
 };
 use std::{
     fs,
@@ -33,13 +37,13 @@ impl Drop for Directory {
 fn controller() -> DesktopController {
     DesktopController::new(PathBuf::from(env!("CARGO_BIN_EXE_mshogi"))).unwrap()
 }
-fn until(controller: &mut DesktopController, ready: impl Fn(&Snapshot) -> bool) -> Snapshot {
+fn until(
+    controller: &mut DesktopController,
+    ready: impl Fn(&SharedSnapshot) -> bool,
+) -> SharedSnapshot {
     let deadline = Instant::now() + Duration::from_secs(30);
     loop {
-        let snapshot = controller
-            .shared_snapshot()
-            .chess
-            .expect("native Chess fixture");
+        let snapshot = controller.shared_snapshot();
         if ready(&snapshot) {
             return snapshot;
         }
@@ -50,8 +54,8 @@ fn until(controller: &mut DesktopController, ready: impl Fn(&Snapshot) -> bool) 
         thread::sleep(Duration::from_millis(1));
     }
 }
-fn saved(controller: &mut DesktopController, path: PathBuf) -> Snapshot {
-    let id = controller.queue_save(path).unwrap();
+fn saved(controller: &mut DesktopController, path: PathBuf) -> SharedSnapshot {
+    let id = controller.queue_shared_save(path).unwrap();
     let snapshot = until(controller, |s| {
         s.io.id == id && matches!(s.io.phase, IoPhase::Complete | IoPhase::Failed)
     });
@@ -73,40 +77,44 @@ fn complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix(
     let path = directory.0.join("game.mshogi");
     let second_path = directory.0.join("reopened.mshogi");
     let mut controller = controller();
-    let initial = controller
-        .shared_snapshot()
-        .chess
-        .expect("native Chess fixture");
+    let initial = controller.shared_snapshot();
     controller
-        .settled(DesktopCommand::Play {
-            version: initial.version,
-            action: "e2e4".parse().unwrap(),
-        })
+        .settled(
+            initial.token,
+            SessionOperation::ChessPlay {
+                action: "e2e4".parse().unwrap(),
+            },
+        )
         .unwrap();
     let played = until(&mut controller, |s| {
-        s.history.len() == 2 && s.engine.status == EnginePhase::Idle
+        history(s).len() == 2 && s.phase == EnginePhase::Idle
     });
     controller
-        .settled(DesktopCommand::Analyze {
-            version: played.version,
-            operation: AnalysisOperation::Moves {
-                depth: 1,
-                nodes: 1000,
+        .settled(
+            played.token,
+            SessionOperation::Analyze {
+                operation: AnalysisOperation::Moves {
+                    depth: 1,
+                    nodes: 1000,
+                },
             },
-        })
+        )
         .unwrap();
     let analyzed = until(&mut controller, |s| {
-        s.analysis.status == AnalysisPhase::Complete
+        chess(s).analysis.status == AnalysisPhase::Complete
     });
     assert_eq!(analyzed.observations.len(), 2);
     controller
-        .settled(DesktopCommand::Preferences {
-            orientation: Color::Black,
-            analysis_defaults: AnalysisOperation::Moves {
-                depth: 3,
-                nodes: 12_345,
+        .settled(
+            controller.shared_token(),
+            SessionOperation::ChessPreferences {
+                orientation: Color::Black,
+                analysis_defaults: AnalysisOperation::Moves {
+                    depth: 3,
+                    nodes: 12_345,
+                },
             },
-        })
+        )
         .unwrap();
     let before = saved(&mut controller, path.clone());
     assert!(!before.document.dirty);
@@ -138,24 +146,30 @@ fn complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix(
     assert!(payload["controls"].as_array().unwrap().len() >= 3);
     assert_eq!(payload["observations"].as_array().unwrap().len(), 2);
     controller
-        .settled(DesktopCommand::NewGame {
-            version: before.version,
-            document_revision: before.document.revision,
-            human: Color::Black,
-        })
+        .fresh(
+            SharedOpenToken {
+                document: before.token.document,
+                version: before.token.version,
+                document_revision: before.document.revision,
+            },
+            Color::Black,
+        )
         .unwrap();
-    let token = controller.open_token();
-    let id = controller.queue_open(path, token).unwrap();
+    let token = controller.shared_open_token();
+    let id = controller.queue_product_open(path, token).unwrap();
     let reopened = until(&mut controller, |s| {
         s.io.id == id && s.io.phase == IoPhase::Complete
     });
-    assert_eq!(reopened.history, before.history);
-    assert_eq!(reopened.fen, before.fen);
-    assert!(reopened.version > before.version && reopened.revision > before.revision);
-    assert!(reopened.play_paused && !reopened.document.dirty);
-    assert_eq!(reopened.engine.status, EnginePhase::Paused);
-    assert!(reopened.analysis.context.is_none());
-    assert_eq!(reopened.document.settings.orientation, Color::Black);
+    assert_eq!(history(&reopened), history(&before));
+    assert_eq!(fen(&reopened), fen(&before));
+    assert!(
+        reopened.token.version > before.token.version
+            && reopened.token.revision > before.token.revision
+    );
+    assert!(reopened.paused && !reopened.document.dirty);
+    assert_eq!(reopened.phase, EnginePhase::Paused);
+    assert!(chess(&reopened).analysis.context.is_none());
+    assert_eq!(orientation(&reopened), Color::Black);
     assert!(reopened.observations.iter().all(|o| o.historical));
     let again = saved(&mut controller, second_path.clone());
     let archive_again: serde_json::Value =
@@ -171,46 +185,41 @@ fn complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix(
     // Event zero is the known initial position, with neither played move nor
     // future repetition information. Analysis must remain read-only there.
     controller
-        .settled(DesktopCommand::Inspect {
-            version: again.version,
-            event_index: 0,
-        })
+        .settled(again.token, SessionOperation::Inspect { event_index: 0 })
         .unwrap();
-    let viewed = until(&mut controller, |s| {
-        s.view.historical && s.view.event_index == 0
-    });
-    assert_eq!(viewed.view.fen, initial.fen);
-    assert_eq!(viewed.history, before.history);
+    let viewed = until(&mut controller, |s| s.historical && s.event_index == 0);
+    assert_eq!(selected_fen(&viewed), fen(&initial));
+    assert_eq!(history(&viewed), history(&before));
     controller
-        .settled(DesktopCommand::Analyze {
-            version: viewed.version,
-            operation: AnalysisOperation::Moves {
-                depth: 1,
-                nodes: 1000,
+        .settled(
+            viewed.token,
+            SessionOperation::Analyze {
+                operation: AnalysisOperation::Moves {
+                    depth: 1,
+                    nodes: 1000,
+                },
             },
-        })
+        )
         .unwrap();
     let historical = until(&mut controller, |s| {
-        s.analysis.status == AnalysisPhase::Complete
+        chess(s).analysis.status == AnalysisPhase::Complete
     });
-    let context = historical.analysis.context.as_ref().unwrap();
+    let context = chess(&historical).analysis.context.as_ref().unwrap();
     let mshogi_core::native::CanonicalRecord::Chess(record) = &context.game else {
         panic!("chess analysis context");
     };
     assert!(record.events().is_empty());
     assert_eq!(
         record.replay_history().unwrap().game.position().to_fen(),
-        initial.fen
+        fen(&initial)
     );
-    assert_eq!(historical.history, before.history);
+    assert_eq!(history(&historical), history(&before));
     let live = controller
-        .settled(DesktopCommand::ReturnLive {
-            version: historical.version,
-        })
+        .settled(historical.token, SessionOperation::ReturnLive {})
         .unwrap();
-    assert!(!live.view.historical && live.play_paused);
-    assert_eq!(live.fen, before.fen);
-    assert!(live.analysis.result.is_none());
+    assert!(!live.historical && live.paused);
+    assert_eq!(fen(&live), fen(&before));
+    assert!(chess(&live).analysis.result.is_none());
     shutdown(&mut controller);
 }
 
@@ -223,27 +232,33 @@ fn failed_save_and_corrupt_open_preserve_the_valid_file_and_live_document() {
     let initial = saved(&mut controller, path.clone());
     let bytes = fs::read(&path).unwrap();
     let changed = controller
-        .settled(DesktopCommand::Preferences {
-            orientation: Color::Black,
-            analysis_defaults: AnalysisOperation::Moves {
-                depth: 2,
-                nodes: 2000,
+        .settled(
+            controller.shared_token(),
+            SessionOperation::ChessPreferences {
+                orientation: Color::Black,
+                analysis_defaults: AnalysisOperation::Moves {
+                    depth: 2,
+                    nodes: 2000,
+                },
             },
-        })
+        )
         .unwrap();
     assert!(changed.document.dirty);
     assert!(
         controller
-            .settled(DesktopCommand::NewGame {
-                version: changed.version,
-                document_revision: initial.document.revision,
-                human: Color::Black,
-            })
+            .fresh(
+                SharedOpenToken {
+                    document: changed.token.document,
+                    version: changed.token.version,
+                    document_revision: initial.document.revision
+                },
+                Color::Black
+            )
             .is_err(),
         "same game version cannot authorize discarding newer settings"
     );
     let id = controller
-        .queue_save(directory.0.join("missing").join("game.mshogi"))
+        .queue_shared_save(directory.0.join("missing").join("game.mshogi"))
         .unwrap();
     let failed = until(&mut controller, |s| {
         s.io.id == id && s.io.phase == IoPhase::Failed
@@ -253,16 +268,16 @@ fn failed_save_and_corrupt_open_preserve_the_valid_file_and_live_document() {
     assert_eq!(failed.document.path, initial.document.path);
     fs::write(&corrupt, b"{broken archive").unwrap();
     let id = controller
-        .queue_open(corrupt, controller.open_token())
+        .queue_product_open(corrupt, controller.shared_open_token())
         .unwrap();
     let rejected = until(&mut controller, |s| {
         s.io.id == id && s.io.phase == IoPhase::Failed
     });
-    assert_eq!(rejected.version, failed.version);
-    assert_eq!(rejected.fen, failed.fen);
-    assert_eq!(rejected.history, failed.history);
+    assert_eq!(rejected.token.version, failed.token.version);
+    assert_eq!(fen(&rejected), fen(&failed));
+    assert_eq!(history(&rejected), history(&failed));
     assert_eq!(rejected.document.revision, failed.document.revision);
-    assert_eq!(rejected.document.settings.orientation, Color::Black);
+    assert_eq!(orientation(&rejected), Color::Black);
     assert!(rejected.document.dirty);
     shutdown(&mut controller);
 }
@@ -272,74 +287,129 @@ fn reopening_retains_unscored_resignation_but_an_earlier_same_ply_view_does_not(
     let directory = Directory::new();
     let path = directory.0.join("resigned.mshogi");
     let mut controller = controller();
-    let initial = controller
-        .shared_snapshot()
-        .chess
-        .expect("native Chess fixture");
+    let initial = controller.shared_snapshot();
     let resigned = controller
-        .settled(DesktopCommand::Resign {
-            version: initial.version,
-        })
+        .settled(initial.token, SessionOperation::Resign {})
         .unwrap();
     assert!(matches!(
-        resigned.conclusion,
+        chess(&resigned).live_conclusion,
         Some(mshogi_core::chess::MatchConclusion::Unresolved { .. })
     ));
-    assert!(resigned.history.is_empty());
+    assert!(history(&resigned).is_empty());
     let before = saved(&mut controller, path.clone());
     let id = controller
-        .queue_open(path, controller.open_token())
+        .queue_product_open(path, controller.shared_open_token())
         .unwrap();
     let reopened = until(&mut controller, |s| {
         s.io.id == id && s.io.phase == IoPhase::Complete
     });
-    assert_eq!(reopened.conclusion, before.conclusion);
-    let previous_event = reopened.view.event_count - 1;
+    assert_eq!(
+        chess(&reopened).live_conclusion,
+        chess(&before).live_conclusion
+    );
+    let previous_event = reopened.event_index - 1;
     controller
-        .settled(DesktopCommand::Inspect {
-            version: reopened.version,
-            event_index: previous_event,
-        })
+        .settled(
+            reopened.token,
+            SessionOperation::Inspect {
+                event_index: previous_event,
+            },
+        )
         .unwrap();
-    let earlier = until(&mut controller, |s| s.view.historical);
-    assert_eq!(earlier.view.ply, 0);
+    let earlier = until(&mut controller, |s| s.historical);
+    assert_eq!(earlier.board_ply, 0);
     assert!(
-        earlier.view.conclusion.is_none(),
+        chess(&earlier).selected_conclusion.is_none(),
         "future resignation cannot leak into a same-ply prefix"
     );
     assert_eq!(
-        earlier.conclusion, reopened.conclusion,
+        chess(&earlier).live_conclusion,
+        chess(&reopened).live_conclusion,
         "live conclusion remains authoritative"
     );
     shutdown(&mut controller);
 }
 
-// Match the host command promise: completion means native admission settled.
+fn chess(snapshot: &SharedSnapshot) -> &ChessPresentation {
+    snapshot.chess.as_ref().expect("native Chess capabilities")
+}
+fn history(snapshot: &SharedSnapshot) -> Vec<String> {
+    live_game(snapshot)
+        .history()
+        .actions()
+        .map(|a| a.to_string())
+        .collect()
+}
+fn fen(snapshot: &SharedSnapshot) -> String {
+    live_game(snapshot).position().to_fen()
+}
+fn orientation(snapshot: &SharedSnapshot) -> Color {
+    let NativeDesktopSettings::Chess { settings } = &snapshot.document.settings else {
+        panic!("Chess settings")
+    };
+    settings.orientation
+}
 trait SettledCommand {
-    fn settled(&mut self, command: DesktopCommand) -> Result<Snapshot, String>;
+    fn settled(
+        &mut self,
+        expected: SessionToken,
+        operation: SessionOperation,
+    ) -> Result<SharedSnapshot, String>;
+    fn fresh(&mut self, expected: SharedOpenToken, human: Color) -> Result<SharedSnapshot, String>;
+}
+fn complete(
+    controller: &mut DesktopController,
+    mut snapshot: SharedSnapshot,
+    receipt: mshogi_desktop_session::AdmissionReceipt,
+) -> Result<SharedSnapshot, String> {
+    let deadline = Instant::now() + Duration::from_secs(20);
+    loop {
+        if let Some(result) = receipt.completion() {
+            result?;
+            return Ok(snapshot);
+        }
+        assert!(Instant::now() < deadline);
+        thread::sleep(Duration::from_millis(1));
+        snapshot = controller.shared_snapshot();
+    }
 }
 impl SettledCommand for DesktopController {
-    fn settled(&mut self, command: DesktopCommand) -> Result<Snapshot, String> {
-        let expected = self.shared_token();
-        let (initial, receipt) =
-            self.shared_command_with_receipt(mshogi_desktop_session::SharedDesktopCommand {
-                expected,
-                game: mshogi_desktop_session::GameKind::Chess,
-                operation: mshogi_desktop_session::SessionOperation::Chess { command },
-            })?;
-        let mut snapshot = initial.chess.expect("native Chess fixture");
-        let deadline = Instant::now() + Duration::from_secs(20);
-        loop {
-            if let Some(result) = receipt.completion() {
-                result?;
-                return Ok(snapshot);
-            }
-            assert!(
-                Instant::now() < deadline,
-                "native capacity admission deadline"
-            );
-            thread::sleep(Duration::from_millis(1));
-            snapshot = self.shared_snapshot().chess.expect("native Chess fixture");
-        }
+    fn settled(
+        &mut self,
+        expected: SessionToken,
+        operation: SessionOperation,
+    ) -> Result<SharedSnapshot, String> {
+        let (snapshot, receipt) = self.shared_command_with_receipt(SharedDesktopCommand {
+            expected,
+            game: mshogi_desktop_session::GameKind::Chess,
+            operation,
+        })?;
+        complete(self, snapshot, receipt)
     }
+    fn fresh(&mut self, expected: SharedOpenToken, human: Color) -> Result<SharedSnapshot, String> {
+        let (snapshot, receipt) = self.shared_new_game(
+            expected,
+            mshogi_desktop_session::GameKind::Chess,
+            NativeSide::Chess(human),
+        )?;
+        complete(self, snapshot, receipt)
+    }
+}
+
+fn live_game(snapshot: &SharedSnapshot) -> mshogi_core::chess::AdjudicatedGame {
+    snapshot
+        .chess_match
+        .as_ref()
+        .unwrap()
+        .replay()
+        .unwrap()
+        .game()
+        .clone()
+}
+
+fn selected_fen(snapshot: &SharedSnapshot) -> String {
+    let CanonicalRecord::Chess(record) = &snapshot.context else {
+        panic!("Chess context")
+    };
+    record.replay_history().unwrap().game.position().to_fen()
 }

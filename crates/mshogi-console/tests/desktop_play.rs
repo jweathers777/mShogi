@@ -1,9 +1,11 @@
 //! The public desktop controller driving actual native engine subprocesses.
 //! GUI/package interaction evidence is separate; these tests use no Tauri hooks.
 use mshogi_core::chess::{AdjudicatedGame, ClaimPolicy, Color};
+use mshogi_core::native::NativeSide;
 use mshogi_desktop_session::{
-    DesktopCommand, DesktopController, EnginePhase, PLAY_LIMITS, Snapshot,
+    ChessPresentation, SessionOperation, SessionToken, SharedDesktopCommand, SharedOpenToken,
 };
+use mshogi_desktop_session::{DesktopController, EnginePhase, PLAY_LIMITS, SharedSnapshot};
 use mshogi_engine::{ChessResult, EngineChoice, FailureKind, StopReason};
 use std::{
     path::PathBuf,
@@ -14,59 +16,59 @@ use std::{
 fn controller(executable: &str) -> DesktopController {
     DesktopController::new(PathBuf::from(executable)).unwrap()
 }
-fn until(controller: &mut DesktopController, ready: impl Fn(&Snapshot) -> bool) -> Snapshot {
+fn until(
+    controller: &mut DesktopController,
+    ready: impl Fn(&SharedSnapshot) -> bool,
+) -> SharedSnapshot {
     let deadline = Instant::now() + Duration::from_secs(20);
     loop {
-        let snapshot = controller
-            .shared_snapshot()
-            .chess
-            .expect("native Chess fixture");
+        let snapshot = controller.shared_snapshot();
         if ready(&snapshot) {
             return snapshot;
         }
         assert!(
             Instant::now() < deadline,
             "desktop completion deadline: phase {:?}, message {:?}",
-            snapshot.engine.status,
-            snapshot.engine.message
+            snapshot.phase,
+            snapshot.diagnostic
         );
         thread::sleep(Duration::from_millis(1));
     }
 }
-fn human_turn(controller: &mut DesktopController) -> Snapshot {
+fn human_turn(controller: &mut DesktopController) -> SharedSnapshot {
     until(controller, |snapshot| {
         assert_ne!(
-            snapshot.engine.status,
+            snapshot.phase,
             EnginePhase::Failed,
             "{:?}",
-            snapshot.engine.message
+            snapshot.diagnostic
         );
-        snapshot.turn == snapshot.human && snapshot.engine.status == EnginePhase::Idle
+        side_to_move(snapshot) == human(snapshot) && snapshot.phase == EnginePhase::Idle
     })
 }
-fn replay(snapshot: &Snapshot) -> AdjudicatedGame {
+fn replay(snapshot: &SharedSnapshot) -> AdjudicatedGame {
     let mut game = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
-    for text in &snapshot.history {
+    for text in &history(snapshot) {
         let action = text.parse().unwrap();
         assert!(game.position().legal_actions().contains(&action));
         game.apply(action).unwrap();
     }
-    assert_eq!(game.position().to_fen(), snapshot.fen);
-    assert_eq!(snapshot.rules_mode, "m2");
-    assert_eq!(snapshot.limits, PLAY_LIMITS);
-    assert!(snapshot.conclusion.is_none());
+    assert_eq!(game.position().to_fen(), fen(snapshot));
+    assert_eq!(chess(snapshot).rules_mode, "m2");
+    assert_eq!(snapshot.play_limits, PLAY_LIMITS);
+    assert!(chess(snapshot).live_conclusion.is_none());
     game
 }
-fn real_observations(snapshot: &Snapshot, perspective: Color, searched_version: u64) {
-    let Some(ChessResult::Move { action, telemetry }) = &snapshot.engine.last else {
+fn real_observations(snapshot: &SharedSnapshot, perspective: Color, searched_version: u64) {
+    let Some(ChessResult::Move { action, telemetry }) = &chess(snapshot).last_engine_result else {
         panic!(
             "expected an actual engine move, got {:?}",
-            snapshot.engine.last
+            chess(snapshot).last_engine_result
         )
     };
-    assert_eq!(snapshot.engine.last_turn, Some(perspective));
-    assert_eq!(snapshot.engine.searched_version, Some(searched_version));
-    assert_eq!(snapshot.history.last().unwrap(), &action.to_string());
+    assert_eq!(chess(snapshot).last_engine_turn, Some(perspective));
+    assert_eq!(chess(snapshot).searched_version, Some(searched_version));
+    assert_eq!(history(snapshot).last().unwrap(), &action.to_string());
     assert_eq!(telemetry.completed_depth, PLAY_LIMITS.depth);
     assert!(telemetry.nodes > 0 && telemetry.nodes <= PLAY_LIMITS.nodes);
     assert!(telemetry.score.is_some());
@@ -82,7 +84,7 @@ fn real_observations(snapshot: &Snapshot, perspective: Color, searched_version: 
     // The continuation belongs to the position searched before the reply, not
     // to the newer displayed board. Every returned complete choice must replay.
     let mut before_reply = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
-    for text in &snapshot.history[..snapshot.history.len() - 1] {
+    for text in &history(snapshot)[..history(snapshot).len() - 1] {
         before_reply.apply(text.parse().unwrap()).unwrap();
     }
     for choice in &telemetry.principal_variation {
@@ -107,87 +109,78 @@ fn shutdown(controller: &mut DesktopController) {
 #[test]
 fn human_white_plays_two_turns_against_actual_bounded_native_replies() {
     let mut controller = controller(env!("CARGO_BIN_EXE_mshogi"));
-    let initial = controller
-        .shared_snapshot()
-        .chess
-        .expect("native Chess fixture");
-    assert_eq!(initial.human, Color::White);
-    assert_eq!(initial.turn, Color::White);
-    assert_eq!(initial.engine.status, EnginePhase::Idle);
-    assert_eq!(initial.legal_choices.len(), 20);
+    let initial = controller.shared_snapshot();
+    assert_eq!(human(&initial), Color::White);
+    assert_eq!(side_to_move(&initial), Color::White);
+    assert_eq!(initial.phase, EnginePhase::Idle);
+    assert_eq!(initial.choices.len(), 20);
     let thinking = controller
-        .settled(DesktopCommand::Play {
-            version: initial.version,
-            action: "e2e4".parse().unwrap(),
-        })
+        .settled(
+            initial.token,
+            SessionOperation::ChessPlay {
+                action: "e2e4".parse().unwrap(),
+            },
+        )
         .unwrap();
-    assert_eq!(thinking.engine.status, EnginePhase::Thinking);
-    assert_eq!(thinking.history, ["e2e4"]);
-    assert_eq!(thinking.turn, Color::Black);
+    assert_eq!(thinking.phase, EnginePhase::Thinking);
+    assert_eq!(history(&thinking), ["e2e4"]);
+    assert_eq!(side_to_move(&thinking), Color::Black);
     let replied = human_turn(&mut controller);
-    assert_eq!(replied.history.len(), 2);
-    assert!(replied.version > thinking.version);
-    real_observations(&replied, Color::Black, thinking.version);
+    assert_eq!(history(&replied).len(), 2);
+    assert!(replied.token.version > thinking.token.version);
+    real_observations(&replied, Color::Black, thinking.token.version);
     replay(&replied);
-    let next = replied.legal_choices.first().unwrap().action;
+    let next = replied.choices.first().unwrap().action.parse().unwrap();
     let thinking = controller
-        .settled(DesktopCommand::Play {
-            version: replied.version,
-            action: next,
-        })
+        .settled(replied.token, SessionOperation::ChessPlay { action: next })
         .unwrap();
-    assert_eq!(thinking.history.len(), 3);
-    assert_eq!(&thinking.history[..2], &replied.history);
+    assert_eq!(history(&thinking).len(), 3);
+    assert_eq!(&history(&thinking)[..2], &history(&replied));
     let replied = human_turn(&mut controller);
-    assert_eq!(replied.history.len(), 4);
-    real_observations(&replied, Color::Black, thinking.version);
+    assert_eq!(history(&replied).len(), 4);
+    real_observations(&replied, Color::Black, thinking.token.version);
     replay(&replied);
-    let settled = controller
-        .shared_snapshot()
-        .chess
-        .expect("native Chess fixture");
+    let settled = controller.shared_snapshot();
     assert_eq!(
-        settled.history, replied.history,
+        history(&settled),
+        history(&replied),
         "completion is applied once"
     );
-    assert_eq!(settled.version, replied.version);
+    assert_eq!(settled.token.version, replied.token.version);
     shutdown(&mut controller);
 }
 
 #[test]
 fn human_black_gets_an_automatic_native_opening_and_can_answer_it() {
     let mut controller = controller(env!("CARGO_BIN_EXE_mshogi"));
-    let initial = controller
-        .shared_snapshot()
-        .chess
-        .expect("native Chess fixture");
+    let initial = controller.shared_snapshot();
     let thinking = controller
-        .settled(DesktopCommand::NewGame {
-            version: initial.version,
-            document_revision: initial.document.revision,
-            human: Color::Black,
-        })
+        .fresh(
+            SharedOpenToken {
+                document: initial.token.document,
+                version: initial.token.version,
+                document_revision: initial.document.revision,
+            },
+            Color::Black,
+        )
         .unwrap();
-    assert_eq!(thinking.engine.status, EnginePhase::Thinking);
-    assert_eq!(thinking.turn, Color::White);
-    assert!(thinking.history.is_empty());
+    assert_eq!(thinking.phase, EnginePhase::Thinking);
+    assert_eq!(side_to_move(&thinking), Color::White);
+    assert!(history(&thinking).is_empty());
     let replied = human_turn(&mut controller);
-    assert_eq!(replied.human, Color::Black);
-    assert_eq!(replied.turn, Color::Black);
-    assert_eq!(replied.history.len(), 1);
-    real_observations(&replied, Color::White, thinking.version);
+    assert_eq!(human(&replied), Color::Black);
+    assert_eq!(side_to_move(&replied), Color::Black);
+    assert_eq!(history(&replied).len(), 1);
+    real_observations(&replied, Color::White, thinking.token.version);
     replay(&replied);
-    let next = replied.legal_choices.first().unwrap().action;
+    let next = replied.choices.first().unwrap().action.parse().unwrap();
     let thinking = controller
-        .settled(DesktopCommand::Play {
-            version: replied.version,
-            action: next,
-        })
+        .settled(replied.token, SessionOperation::ChessPlay { action: next })
         .unwrap();
-    assert_eq!(thinking.history.len(), 2);
+    assert_eq!(history(&thinking).len(), 2);
     let replied = human_turn(&mut controller);
-    assert_eq!(replied.history.len(), 3);
-    real_observations(&replied, Color::White, thinking.version);
+    assert_eq!(history(&replied).len(), 3);
+    real_observations(&replied, Color::White, thinking.token.version);
     replay(&replied);
     shutdown(&mut controller);
 }
@@ -195,90 +188,90 @@ fn human_black_gets_an_automatic_native_opening_and_can_answer_it() {
 #[test]
 fn cancel_new_game_stale_commands_and_retry_protect_the_live_game() {
     let mut controller = controller(env!("CARGO_BIN_EXE_mshogi"));
-    let initial = controller
-        .shared_snapshot()
-        .chess
-        .expect("native Chess fixture");
+    let initial = controller.shared_snapshot();
     let thinking = controller
-        .settled(DesktopCommand::NewGame {
-            version: initial.version,
-            document_revision: initial.document.revision,
-            human: Color::Black,
-        })
+        .fresh(
+            SharedOpenToken {
+                document: initial.token.document,
+                version: initial.token.version,
+                document_revision: initial.document.revision,
+            },
+            Color::Black,
+        )
         .unwrap();
     // Do not poll/accept a result before cancellation. Whether the real child
     // is queued, running, or already finished, the serialized command must win.
     thread::sleep(Duration::from_millis(20));
     let cancelled = controller
-        .settled(DesktopCommand::Cancel {
-            version: thinking.version,
-        })
+        .settled(thinking.token, SessionOperation::Cancel {})
         .unwrap();
-    assert_eq!(cancelled.engine.status, EnginePhase::Cancelled);
+    assert_eq!(cancelled.phase, EnginePhase::Cancelled);
     for _ in 0..10 {
-        let snapshot = controller
-            .shared_snapshot()
-            .chess
-            .expect("native Chess fixture");
-        assert_eq!(snapshot.engine.status, EnginePhase::Cancelled);
-        assert!(snapshot.history.is_empty());
-        assert!(snapshot.conclusion.is_none());
+        let snapshot = controller.shared_snapshot();
+        assert_eq!(snapshot.phase, EnginePhase::Cancelled);
+        assert!(history(&snapshot).is_empty());
+        assert!(chess(&snapshot).live_conclusion.is_none());
         thread::sleep(Duration::from_millis(2));
     }
     let retried = controller
-        .settled(DesktopCommand::Retry {
-            version: cancelled.version,
-        })
+        .settled(cancelled.token, SessionOperation::Retry {})
         .unwrap();
-    assert_eq!(retried.engine.status, EnginePhase::Thinking);
+    assert_eq!(retried.phase, EnginePhase::Thinking);
     let after_retry = human_turn(&mut controller);
-    assert_eq!(after_retry.history.len(), 1);
-    real_observations(&after_retry, Color::White, retried.version);
+    assert_eq!(history(&after_retry).len(), 1);
+    real_observations(&after_retry, Color::White, retried.token.version);
     replay(&after_retry);
     let superseded = controller
-        .settled(DesktopCommand::NewGame {
-            version: after_retry.version,
-            document_revision: after_retry.document.revision,
-            human: Color::Black,
-        })
+        .fresh(
+            SharedOpenToken {
+                document: after_retry.token.document,
+                version: after_retry.token.version,
+                document_revision: after_retry.document.revision,
+            },
+            Color::Black,
+        )
         .unwrap();
-    assert_eq!(superseded.engine.status, EnginePhase::Thinking);
+    assert_eq!(superseded.phase, EnginePhase::Thinking);
     let fresh = controller
-        .settled(DesktopCommand::NewGame {
-            version: superseded.version,
-            document_revision: superseded.document.revision,
-            human: Color::White,
-        })
+        .fresh(
+            SharedOpenToken {
+                document: superseded.token.document,
+                version: superseded.token.version,
+                document_revision: superseded.document.revision,
+            },
+            Color::White,
+        )
         .unwrap();
     assert!(
         controller
-            .settled(DesktopCommand::Play {
-                version: superseded.version,
-                action: "e2e4".parse().unwrap(),
-            })
+            .settled(
+                superseded.token,
+                SessionOperation::ChessPlay {
+                    action: "e2e4".parse().unwrap(),
+                }
+            )
             .is_err()
     );
     for _ in 0..10 {
-        let snapshot = controller
-            .shared_snapshot()
-            .chess
-            .expect("native Chess fixture");
-        assert_eq!(snapshot.version, fresh.version);
-        assert_eq!(snapshot.turn, Color::White);
-        assert_eq!(snapshot.engine.status, EnginePhase::Idle);
-        assert!(snapshot.history.is_empty());
-        assert!(snapshot.conclusion.is_none());
+        let snapshot = controller.shared_snapshot();
+        assert_eq!(snapshot.token.version, fresh.token.version);
+        assert_eq!(side_to_move(&snapshot), Color::White);
+        assert_eq!(snapshot.phase, EnginePhase::Idle);
+        assert!(history(&snapshot).is_empty());
+        assert!(chess(&snapshot).live_conclusion.is_none());
         thread::sleep(Duration::from_millis(2));
     }
     let thinking = controller
-        .settled(DesktopCommand::Play {
-            version: fresh.version,
-            action: "e2e4".parse().unwrap(),
-        })
+        .settled(
+            fresh.token,
+            SessionOperation::ChessPlay {
+                action: "e2e4".parse().unwrap(),
+            },
+        )
         .unwrap();
     let replied = human_turn(&mut controller);
-    assert_eq!(replied.history.len(), 2);
-    real_observations(&replied, Color::Black, thinking.version);
+    assert_eq!(history(&replied).len(), 2);
+    real_observations(&replied, Color::Black, thinking.token.version);
     replay(&replied);
     shutdown(&mut controller);
 }
@@ -288,53 +281,47 @@ fn actual_missing_response_and_failed_process_pause_without_a_chess_score() {
     // Separate fixture helper, excluded from packaged normal applications:
     // request1 exits successfully without output; request2 exits nonzero.
     let mut controller = controller(env!("CARGO_BIN_EXE_mshogi-internal-fixture"));
-    let initial = controller
-        .shared_snapshot()
-        .chess
-        .expect("native Chess fixture");
+    let initial = controller.shared_snapshot();
     controller
-        .settled(DesktopCommand::NewGame {
-            version: initial.version,
-            document_revision: initial.document.revision,
-            human: Color::Black,
-        })
+        .fresh(
+            SharedOpenToken {
+                document: initial.token.document,
+                version: initial.token.version,
+                document_revision: initial.document.revision,
+            },
+            Color::Black,
+        )
         .unwrap();
     let failed = until(&mut controller, |snapshot| {
-        snapshot.engine.status == EnginePhase::Failed
+        snapshot.phase == EnginePhase::Failed
     });
     assert!(
-        matches!(&failed.engine.last, Some(ChessResult::Failure { failure }) if failure.kind == FailureKind::MissingResponse)
+        matches!(&chess(&failed).last_engine_result, Some(ChessResult::Failure { failure }) if failure.kind == FailureKind::MissingResponse)
     );
-    assert!(failed.history.is_empty());
-    assert!(failed.conclusion.is_none());
-    assert_eq!(failed.turn, Color::White);
-    let stable = controller
-        .shared_snapshot()
-        .chess
-        .expect("native Chess fixture");
+    assert!(history(&failed).is_empty());
+    assert!(chess(&failed).live_conclusion.is_none());
+    assert_eq!(side_to_move(&failed), Color::White);
+    let stable = controller.shared_snapshot();
     assert_eq!(
-        stable.version, failed.version,
+        stable.token.version, failed.token.version,
         "failure does not silently retry"
     );
-    assert_eq!(stable.engine.status, EnginePhase::Failed);
+    assert_eq!(stable.phase, EnginePhase::Failed);
     let retry = controller
-        .settled(DesktopCommand::Retry {
-            version: failed.version,
-        })
+        .settled(failed.token, SessionOperation::Retry {})
         .unwrap();
-    assert_eq!(retry.engine.status, EnginePhase::Thinking);
+    assert_eq!(retry.phase, EnginePhase::Thinking);
     let failed = until(&mut controller, |snapshot| {
-        snapshot.engine.status == EnginePhase::Failed
+        snapshot.phase == EnginePhase::Failed
     });
     assert!(
-        matches!(&failed.engine.last, Some(ChessResult::Failure { failure }) if failure.kind == FailureKind::UnexpectedExit)
+        matches!(&chess(&failed).last_engine_result, Some(ChessResult::Failure { failure }) if failure.kind == FailureKind::UnexpectedExit)
     );
-    assert!(failed.history.is_empty());
-    assert!(failed.conclusion.is_none());
+    assert!(history(&failed).is_empty());
+    assert!(chess(&failed).live_conclusion.is_none());
     assert!(
         failed
-            .engine
-            .message
+            .diagnostic
             .as_ref()
             .unwrap()
             .contains("Engine failure")
@@ -342,32 +329,85 @@ fn actual_missing_response_and_failed_process_pause_without_a_chess_score() {
     shutdown(&mut controller);
 }
 
-// Match the host command promise: completion means native admission settled.
+fn chess(snapshot: &SharedSnapshot) -> &ChessPresentation {
+    snapshot.chess.as_ref().expect("native Chess capabilities")
+}
+fn history(snapshot: &SharedSnapshot) -> Vec<String> {
+    live_game(snapshot)
+        .history()
+        .actions()
+        .map(|a| a.to_string())
+        .collect()
+}
+fn fen(snapshot: &SharedSnapshot) -> String {
+    live_game(snapshot).position().to_fen()
+}
+fn side_to_move(snapshot: &SharedSnapshot) -> Color {
+    let NativeSide::Chess(side) = snapshot.turn.id else {
+        panic!("Chess turn")
+    };
+    side
+}
+fn human(snapshot: &SharedSnapshot) -> Color {
+    let NativeSide::Chess(side) = snapshot.human.id else {
+        panic!("Chess human")
+    };
+    side
+}
 trait SettledCommand {
-    fn settled(&mut self, command: DesktopCommand) -> Result<Snapshot, String>;
+    fn settled(
+        &mut self,
+        expected: SessionToken,
+        operation: SessionOperation,
+    ) -> Result<SharedSnapshot, String>;
+    fn fresh(&mut self, expected: SharedOpenToken, human: Color) -> Result<SharedSnapshot, String>;
+}
+fn complete(
+    controller: &mut DesktopController,
+    mut snapshot: SharedSnapshot,
+    receipt: mshogi_desktop_session::AdmissionReceipt,
+) -> Result<SharedSnapshot, String> {
+    let deadline = Instant::now() + Duration::from_secs(20);
+    loop {
+        if let Some(result) = receipt.completion() {
+            result?;
+            return Ok(snapshot);
+        }
+        assert!(Instant::now() < deadline);
+        thread::sleep(Duration::from_millis(1));
+        snapshot = controller.shared_snapshot();
+    }
 }
 impl SettledCommand for DesktopController {
-    fn settled(&mut self, command: DesktopCommand) -> Result<Snapshot, String> {
-        let expected = self.shared_token();
-        let (initial, receipt) =
-            self.shared_command_with_receipt(mshogi_desktop_session::SharedDesktopCommand {
-                expected,
-                game: mshogi_desktop_session::GameKind::Chess,
-                operation: mshogi_desktop_session::SessionOperation::Chess { command },
-            })?;
-        let mut snapshot = initial.chess.expect("native Chess fixture");
-        let deadline = Instant::now() + Duration::from_secs(20);
-        loop {
-            if let Some(result) = receipt.completion() {
-                result?;
-                return Ok(snapshot);
-            }
-            assert!(
-                Instant::now() < deadline,
-                "native capacity admission deadline"
-            );
-            thread::sleep(Duration::from_millis(1));
-            snapshot = self.shared_snapshot().chess.expect("native Chess fixture");
-        }
+    fn settled(
+        &mut self,
+        expected: SessionToken,
+        operation: SessionOperation,
+    ) -> Result<SharedSnapshot, String> {
+        let (snapshot, receipt) = self.shared_command_with_receipt(SharedDesktopCommand {
+            expected,
+            game: mshogi_desktop_session::GameKind::Chess,
+            operation,
+        })?;
+        complete(self, snapshot, receipt)
     }
+    fn fresh(&mut self, expected: SharedOpenToken, human: Color) -> Result<SharedSnapshot, String> {
+        let (snapshot, receipt) = self.shared_new_game(
+            expected,
+            mshogi_desktop_session::GameKind::Chess,
+            NativeSide::Chess(human),
+        )?;
+        complete(self, snapshot, receipt)
+    }
+}
+
+fn live_game(snapshot: &SharedSnapshot) -> mshogi_core::chess::AdjudicatedGame {
+    snapshot
+        .chess_match
+        .as_ref()
+        .unwrap()
+        .replay()
+        .unwrap()
+        .game()
+        .clone()
 }

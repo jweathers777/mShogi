@@ -249,7 +249,7 @@ mod tests {
         c.session
             .chess_mut()
             .command_unchecked(
-                DesktopCommand::Play {
+                ChessMutationCommand::Play {
                     version,
                     action: "e2e4".parse().unwrap(),
                 },
@@ -268,7 +268,7 @@ mod tests {
             before
         );
         let previous = c.shared_token();
-        c.command(DesktopCommand::Inspect {
+        c.command(ChessMutationCommand::Inspect {
             version: c.session.version,
             event_index: 0,
         })

@@ -70,7 +70,7 @@ pub struct DocumentState {
 /// A stable open precondition, unaffected by I/O progress snapshots.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct OpenToken {
+pub(super) struct AdmissionToken {
     /// Expected live command version.
     pub version: u64,
     /// Expected document contents revision.
@@ -148,7 +148,7 @@ pub(super) struct ControlEntry {
     sequence: u64,
     at_ns: u64,
     version: u64,
-    command: Option<DesktopCommand>,
+    command: Option<ChessMutationCommand>,
     close_pause: bool,
 }
 /// Complete abandoned authoritative lineage, tied to its desktop transaction.
@@ -194,7 +194,7 @@ pub(super) enum ChessMutation {
         paused: bool,
     },
     Command {
-        command: DesktopCommand,
+        command: ChessMutationCommand,
         at_ns: u64,
     },
     Observation {
@@ -223,7 +223,7 @@ pub(super) enum Work {
     View {
         record: MatchRecord,
         index: usize,
-        token: OpenToken,
+        token: AdmissionToken,
     },
 }
 pub(super) enum Completed {
@@ -236,7 +236,7 @@ pub(super) enum Completed {
     },
     Viewed {
         view: Box<Viewed>,
-        token: OpenToken,
+        token: AdmissionToken,
     },
 }
 struct Job {
@@ -445,7 +445,7 @@ fn execute(work: Work, mut stopped: impl FnMut() -> bool) -> Result<Completed, O
                     ChessMutation::TakeBack { at_ns } => {
                         candidate.take_back_with_stop(&mut stopped)?;
                         candidate.journal(
-                            DesktopCommand::TakeBack {
+                            ChessMutationCommand::TakeBack {
                                 version: candidate.version - 1,
                             },
                             at_ns,
@@ -732,18 +732,18 @@ fn preflight_reserved(
         last_control_at = control.at_ns;
         if let Some(command) = &control.command {
             match command {
-                DesktopCommand::Analyze { operation, .. } => operation.validate()?,
-                DesktopCommand::Preferences {
+                ChessMutationCommand::Analyze { operation, .. } => operation.validate()?,
+                ChessMutationCommand::Preferences {
                     analysis_defaults, ..
                 } => analysis_defaults.validate()?,
-                DesktopCommand::NewGame {
+                ChessMutationCommand::NewGame {
                     document_revision, ..
                 } if *document_revision > archive.document_revision => {
                     return Err(
                         "New-game journal precondition exceeds saved document revision.".into(),
                     );
                 }
-                DesktopCommand::Inspect { .. } | DesktopCommand::ReturnLive { .. } => {
+                ChessMutationCommand::Inspect { .. } | ChessMutationCommand::ReturnLive { .. } => {
                     return Err("Read-only selection is not a mutating document control.".into());
                 }
                 _ => {}
@@ -801,7 +801,7 @@ fn validate_takebacks(
     let controls: Vec<_> = archive
         .controls
         .iter()
-        .filter(|c| matches!(c.command, Some(DesktopCommand::TakeBack { .. })))
+        .filter(|c| matches!(c.command, Some(ChessMutationCommand::TakeBack { .. })))
         .collect();
     if controls.len() != archive.takebacks.len() {
         return Err("Takeback evidence/control count disagrees.".into());
@@ -1383,7 +1383,7 @@ impl DesktopSession {
         });
         self.document_revision += 1;
     }
-    pub(super) fn journal(&mut self, command: DesktopCommand, at_ns: u64) {
+    pub(super) fn journal(&mut self, command: ChessMutationCommand, at_ns: u64) {
         self.controls.push(ControlEntry {
             sequence: self.controls.len() as u64 + 1,
             at_ns,
@@ -1479,8 +1479,8 @@ impl DesktopSession {
 }
 impl DesktopController {
     /// Capture a current replacement precondition without doing filesystem work.
-    pub fn open_token(&self) -> OpenToken {
-        OpenToken {
+    pub(super) fn open_token(&self) -> AdmissionToken {
+        AdmissionToken {
             version: self.session.version,
             document_revision: self.session.document_revision,
         }
@@ -1489,7 +1489,7 @@ impl DesktopController {
         self.next_native_io(phase)
     }
     /// Queue a complete save snapshot; serialization and all file I/O run off-path.
-    pub fn queue_save(&mut self, path: PathBuf) -> Result<u64, String> {
+    pub(super) fn queue_save(&mut self, path: PathBuf) -> Result<u64, String> {
         self.require_chess()?;
         if self.session.chess_mut().controls.len() > MAX_ARCHIVE_CONTROLS
             || self.session.chess_mut().observations.len() > MAX_ARCHIVE_OBSERVATIONS
@@ -1529,7 +1529,12 @@ impl DesktopController {
         Ok(id)
     }
     /// Queue strict bounded validation. A stale token cannot replace any state.
-    pub fn queue_open(&mut self, path: PathBuf, token: OpenToken) -> Result<u64, String> {
+    #[cfg(test)]
+    pub(super) fn queue_open(
+        &mut self,
+        path: PathBuf,
+        token: AdmissionToken,
+    ) -> Result<u64, String> {
         self.require_chess()?;
         if token != self.open_token() {
             return Err(
@@ -1538,7 +1543,11 @@ impl DesktopController {
         }
         self.queue_shared_open(path, self.shared_open_token())
     }
-    pub(super) fn queue_view(&mut self, version: u64, index: usize) -> Result<Snapshot, String> {
+    pub(super) fn queue_view(
+        &mut self,
+        version: u64,
+        index: usize,
+    ) -> Result<ChessSnapshot, String> {
         if version != self.session.version {
             return Err("The game changed before history selection.".into());
         }
@@ -1567,9 +1576,9 @@ impl DesktopController {
                 token,
             },
         );
-        self.chess_snapshot_if_active().ok_or_else(|| {
-            "The active native game changed during the requested Chess operation.".into()
-        })
+        let mut snapshot = self.session.snapshot();
+        snapshot.io = self.io_state.clone();
+        Ok(snapshot)
     }
     pub(super) fn poll_files(&mut self) {
         let Some((id, result)) = self.files.poll() else {
@@ -1726,7 +1735,7 @@ impl DesktopController {
     /// Stabilize a close decision by retiring work without inventing results.
     /// Repeated preflight is idempotent; an untouched initial game stays clean.
     #[cfg(test)]
-    fn pause_for_close(&mut self) -> Snapshot {
+    fn pause_for_close(&mut self) -> ChessSnapshot {
         self.require_chess()
             .expect("legacy Chess close endpoint requires Chess");
         self.pause_application();
@@ -1795,7 +1804,7 @@ mod tests {
     fn controller() -> DesktopController {
         DesktopController::new(PathBuf::from("/missing/test-engine")).unwrap()
     }
-    fn wait(controller: &mut DesktopController, id: u64) -> Snapshot {
+    fn wait(controller: &mut DesktopController, id: u64) -> ChessSnapshot {
         let deadline = Instant::now() + std::time::Duration::from_secs(20);
         loop {
             let snapshot = controller.snapshot();
@@ -1808,7 +1817,7 @@ mod tests {
             thread::sleep(std::time::Duration::from_millis(1));
         }
     }
-    fn settled(controller: &mut DesktopController, command: DesktopCommand) -> Snapshot {
+    fn settled(controller: &mut DesktopController, command: ChessMutationCommand) -> ChessSnapshot {
         let (mut snapshot, receipt) = controller.command_with_receipt(command).unwrap();
         let deadline = Instant::now() + std::time::Duration::from_secs(5);
         loop {
@@ -1934,14 +1943,14 @@ mod tests {
                 let version = source.session.version;
                 settled(
                     &mut source,
-                    DesktopCommand::Claim {
+                    ChessMutationCommand::Claim {
                         version,
                         claim: choice,
                     },
                 );
             } else {
                 let version = source.session.version;
-                settled(&mut source, DesktopCommand::Resign { version });
+                settled(&mut source, ChessMutationCommand::Resign { version });
             }
             let core_record = source.session.chess_mut().game.record().to_json();
             let conclusion = source.session.chess_mut().game.conclusion();
@@ -1974,7 +1983,7 @@ mod tests {
             // The preceding event has the same board/ply, but no future claim or resignation.
             let final_index = snapshot.view.event_count;
             let before = restored
-                .command(DesktopCommand::Inspect {
+                .command(ChessMutationCommand::Inspect {
                     version: snapshot.version,
                     event_index: final_index - 1,
                 })
@@ -2011,7 +2020,7 @@ mod tests {
             assert!(selected_view.version > viewed.version);
             let live = settled(
                 &mut selected,
-                DesktopCommand::ReturnLive {
+                ChessMutationCommand::ReturnLive {
                     version: selected_view.version,
                 },
             );
@@ -2047,7 +2056,7 @@ mod tests {
             .session
             .chess_mut()
             .command(
-                DesktopCommand::Preferences {
+                ChessMutationCommand::Preferences {
                     orientation: Color::Black,
                     analysis_defaults: AnalysisOperation::Moves {
                         depth: 2,
@@ -2070,7 +2079,7 @@ mod tests {
             .session
             .chess_mut()
             .command(
-                DesktopCommand::Preferences {
+                ChessMutationCommand::Preferences {
                     orientation: Color::White,
                     analysis_defaults: AnalysisOperation::Moves {
                         depth: 3,
@@ -2146,7 +2155,7 @@ mod tests {
         let mut session = DesktopSession::new();
         session
             .command(
-                DesktopCommand::Analyze {
+                ChessMutationCommand::Analyze {
                     version: 1,
                     operation: AnalysisOperation::Moves {
                         depth: 1,
@@ -2191,7 +2200,7 @@ mod tests {
         assert_eq!(wait(&mut restored, id).io.phase, IoPhase::Complete);
         assert!(restored.at_ns() >= 100_000_000_000);
         let version = restored.session.version;
-        settled(&mut restored, DesktopCommand::Resume { version });
+        settled(&mut restored, ChessMutationCommand::Resume { version });
         assert!(matches!(
             restored
                 .session
@@ -2200,7 +2209,7 @@ mod tests {
                 .last()
                 .unwrap()
                 .command,
-            Some(DesktopCommand::Resume { .. })
+            Some(ChessMutationCommand::Resume { .. })
         ));
         assert!(restored.session.chess_mut().controls.last().unwrap().at_ns >= 100_000_000_000);
         assert!(preflight(&archive(restored.session.chess())).is_ok());
@@ -2214,7 +2223,7 @@ mod tests {
         let mut session = DesktopSession::from_record(&live.record(), Color::White).unwrap();
         session
             .command(
-                DesktopCommand::Analyze {
+                ChessMutationCommand::Analyze {
                     version: 1,
                     operation: AnalysisOperation::FullReachability {
                         target: mshogi_engine::ReachabilityTarget::White,
@@ -2305,7 +2314,10 @@ mod tests {
         // with this real clock would fail deterministically.
         controller.clock_floor = 100_000_000_000;
         let claim = controller.session.snapshot().claims[0];
-        let concluded = settled(&mut controller, DesktopCommand::Claim { version: 1, claim });
+        let concluded = settled(
+            &mut controller,
+            ChessMutationCommand::Claim { version: 1, claim },
+        );
         assert!(concluded.conclusion.is_some());
         assert_eq!(
             controller.session.chess_mut().game.record().event_count(),
@@ -2313,7 +2325,7 @@ mod tests {
         );
         let before = controller.session.chess_mut().game.record().to_json();
         let inspected = controller
-            .command(DesktopCommand::Inspect {
+            .command(ChessMutationCommand::Inspect {
                 version: controller.session.version,
                 event_index: 0,
             })
@@ -2325,7 +2337,7 @@ mod tests {
             .session
             .chess_mut()
             .command(
-                DesktopCommand::Analyze {
+                ChessMutationCommand::Analyze {
                     version,
                     operation: AnalysisOperation::Moves {
                         depth: 1,
@@ -2353,7 +2365,7 @@ mod tests {
         controller
             .session
             .chess_mut()
-            .command(DesktopCommand::ReturnLive { version }, at_ns)
+            .command(ChessMutationCommand::ReturnLive { version }, at_ns)
             .unwrap();
         assert!(controller.session.chess_mut().analysis_pending.is_none());
         assert_eq!(
@@ -2367,7 +2379,7 @@ mod tests {
         for i in 0..count {
             session
                 .command(
-                    DesktopCommand::Analyze {
+                    ChessMutationCommand::Analyze {
                         version: session.version,
                         operation: AnalysisOperation::Moves { depth: 1, nodes: 0 },
                     },
@@ -2412,7 +2424,7 @@ mod tests {
         let document_before = source.session.document_revision;
         let version = source.session.version;
         let error = source
-            .command(DesktopCommand::Analyze {
+            .command(ChessMutationCommand::Analyze {
                 version,
                 operation: AnalysisOperation::Moves { depth: 1, nodes: 0 },
             })
@@ -2437,7 +2449,7 @@ mod tests {
         assert!(snapshot.observations.iter().all(|entry| entry.historical));
         assert!(
             reopened
-                .command(DesktopCommand::Analyze {
+                .command(ChessMutationCommand::Analyze {
                     version: snapshot.version,
                     operation: AnalysisOperation::Moves { depth: 1, nodes: 0 }
                 })
@@ -2457,7 +2469,7 @@ mod tests {
         source.session.chess_mut().human = Color::Black;
         for i in 0..8191 {
             source.session.chess_mut().journal(
-                DesktopCommand::Preferences {
+                ChessMutationCommand::Preferences {
                     orientation: Color::White,
                     analysis_defaults: AnalysisOperation::Moves { depth: 1, nodes: 0 },
                 },
@@ -2493,7 +2505,7 @@ mod tests {
             .session
             .chess_mut()
             .command(
-                DesktopCommand::Preferences {
+                ChessMutationCommand::Preferences {
                     orientation: Color::Black,
                     analysis_defaults: AnalysisOperation::Moves { depth: 1, nodes: 0 },
                 },
@@ -2571,7 +2583,7 @@ mod tests {
     fn command_receipts_survive_following_work_and_close_supersedes_pending_admission() {
         let mut source = controller();
         let (_, receipt) = source
-            .command_with_receipt(DesktopCommand::Play {
+            .command_with_receipt(ChessMutationCommand::Play {
                 version: 1,
                 action: "e2e4".parse().unwrap(),
             })
@@ -2589,7 +2601,7 @@ mod tests {
         let mut candidate = source.session.chess().clone();
         candidate
             .command_unchecked(
-                DesktopCommand::Analyze {
+                ChessMutationCommand::Analyze {
                     version: source.session.version,
                     operation: AnalysisOperation::Moves { depth: 1, nodes: 0 },
                 },
@@ -2637,7 +2649,7 @@ mod tests {
         let mut candidate = source.session.chess().clone();
         candidate
             .command_unchecked(
-                DesktopCommand::Preferences {
+                ChessMutationCommand::Preferences {
                     orientation: Color::Black,
                     analysis_defaults: AnalysisOperation::Moves { depth: 1, nodes: 0 },
                 },
@@ -2673,7 +2685,7 @@ mod tests {
         let mut candidate = opened.session.chess().clone();
         candidate
             .command_unchecked(
-                DesktopCommand::Preferences {
+                ChessMutationCommand::Preferences {
                     orientation: Color::Black,
                     analysis_defaults: AnalysisOperation::Moves {
                         depth: 2,
@@ -2743,7 +2755,7 @@ mod tests {
         assert_eq!(session.snapshot().history, ["e2e4"]);
         session
             .command(
-                DesktopCommand::Play {
+                ChessMutationCommand::Play {
                     version: session.version,
                     action: "e7e5".parse().unwrap(),
                 },
@@ -2787,7 +2799,7 @@ mod tests {
         source.queue_admission(candidate).unwrap();
         let result_receipt = source.admission_receipt.clone().unwrap();
         let (_, cancel_receipt) = source
-            .command_with_receipt(DesktopCommand::Cancel {
+            .command_with_receipt(ChessMutationCommand::Cancel {
                 version: source.session.version,
             })
             .unwrap();
@@ -2821,7 +2833,7 @@ mod tests {
         let mut candidate = source.session.chess().clone();
         candidate
             .command_unchecked(
-                DesktopCommand::Preferences {
+                ChessMutationCommand::Preferences {
                     orientation: Color::Black,
                     analysis_defaults: AnalysisOperation::Moves { depth: 1, nodes: 0 },
                 },
@@ -2875,7 +2887,7 @@ mod tests {
             .session
             .chess_mut()
             .command(
-                DesktopCommand::Play {
+                ChessMutationCommand::Play {
                     version: 1,
                     action: "e2e4".parse().unwrap(),
                 },
@@ -3000,7 +3012,7 @@ mod tests {
                 .session
                 .chess_mut()
                 .command(
-                    DesktopCommand::Analyze {
+                    ChessMutationCommand::Analyze {
                         version,
                         operation: AnalysisOperation::FullReachability {
                             target: mshogi_engine::ReachabilityTarget::White,
@@ -3098,7 +3110,7 @@ mod takeback_tests {
     }
     fn play(s: &mut DesktopSession, action: &str) {
         s.command(
-            DesktopCommand::Play {
+            ChessMutationCommand::Play {
                 version: s.version,
                 action: action.parse().unwrap(),
             },
@@ -3122,8 +3134,11 @@ mod takeback_tests {
         s.observations.last().unwrap().observation.clone()
     }
     fn take(s: &mut DesktopSession) {
-        s.command(DesktopCommand::TakeBack { version: s.version }, tick(s))
-            .unwrap();
+        s.command(
+            ChessMutationCommand::TakeBack { version: s.version },
+            tick(s),
+        )
+        .unwrap();
     }
     fn encoded(s: &DesktopSession) -> Vec<u8> {
         let mut archive = s.archive_snapshot();
@@ -3137,7 +3152,7 @@ mod takeback_tests {
         assert!(!s.snapshot().can_take_back);
         let before = encoded(&s);
         assert!(
-            s.command(DesktopCommand::TakeBack { version: s.version }, 1)
+            s.command(ChessMutationCommand::TakeBack { version: s.version }, 1)
                 .is_err()
         );
         assert_eq!(encoded(&s), before);
@@ -3162,7 +3177,7 @@ mod takeback_tests {
         assert!(!s.accept(late, 5));
         assert!(s.snapshot().history.is_empty());
         assert!(s.engine_request().is_none());
-        s.command(DesktopCommand::Resume { version: s.version }, 6)
+        s.command(ChessMutationCommand::Resume { version: s.version }, 6)
             .unwrap();
         play(&mut s, "e2e4");
         engine(&mut s);
@@ -3170,7 +3185,7 @@ mod takeback_tests {
         assert_eq!(s.snapshot().history.len(), 2);
         let action = s.snapshot().legal_choices[0].action;
         s.command(
-            DesktopCommand::Play {
+            ChessMutationCommand::Play {
                 version: s.version,
                 action,
             },
@@ -3207,7 +3222,7 @@ mod takeback_tests {
         assert!(!s.snapshot().can_take_back);
         let action = s.snapshot().legal_choices[0].action;
         s.command(
-            DesktopCommand::Play {
+            ChessMutationCommand::Play {
                 version: s.version,
                 action,
             },
@@ -3221,7 +3236,7 @@ mod takeback_tests {
         assert!(!s.snapshot().can_take_back);
         let mut own = DesktopSession::new();
         own.command(
-            DesktopCommand::Resign {
+            ChessMutationCommand::Resign {
                 version: own.version,
             },
             1,
@@ -3234,7 +3249,7 @@ mod takeback_tests {
         let mut off = DesktopSession::new();
         play(&mut off, "e2e4");
         off.command(
-            DesktopCommand::Resign {
+            ChessMutationCommand::Resign {
                 version: off.version,
             },
             2,
@@ -3257,7 +3272,7 @@ mod takeback_tests {
             .find(|c| c.intended.is_none())
             .unwrap();
         s.command(
-            DesktopCommand::Claim {
+            ChessMutationCommand::Claim {
                 version: s.version,
                 claim,
             },
@@ -3368,7 +3383,7 @@ mod takeback_tests {
         full.controls = (0..MAX_ARCHIVE_CONTROLS)
             .map(|i| ControlEntry {
                 sequence: i as u64 + 1,
-                command: Some(DesktopCommand::Preferences {
+                command: Some(ChessMutationCommand::Preferences {
                     orientation: Color::White,
                     analysis_defaults: AnalysisOperation::Moves { depth: 1, nodes: 1 },
                 }),
@@ -3379,7 +3394,7 @@ mod takeback_tests {
         let observations = full.observations.len();
         assert!(
             full.command(
-                DesktopCommand::TakeBack {
+                ChessMutationCommand::TakeBack {
                     version: full.version
                 },
                 2
@@ -3400,15 +3415,18 @@ mod takeback_tests {
                 .unwrap();
         }
         take(&mut s);
-        s.command(DesktopCommand::Resume { version: s.version }, tick(&s))
-            .unwrap();
+        s.command(
+            ChessMutationCommand::Resume { version: s.version },
+            tick(&s),
+        )
+        .unwrap();
         play(&mut s, "e2e4");
         s.engine_request().unwrap();
         let mut accepted = 0;
         loop {
             let prior = s.clone();
             let result = s.command(
-                DesktopCommand::Preferences {
+                ChessMutationCommand::Preferences {
                     orientation: Color::White,
                     analysis_defaults: AnalysisOperation::Moves { depth: 1, nodes: 1 },
                 },

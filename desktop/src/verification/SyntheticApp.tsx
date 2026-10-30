@@ -2,7 +2,8 @@ import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { Board } from "../Board";
-import type { Color, Snapshot } from "../native";
+import type { Color } from "../native";
+import type { GameSnapshot } from "../product/native";
 import type { SyntheticCommand, SyntheticSnapshot } from "./native";
 import "./synthetic.css";
 
@@ -37,9 +38,9 @@ export function SyntheticApp() {
   const [orientation, setOrientation] = useState<Color>("white");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const [closeRequest, setCloseRequest] = useState<Snapshot | null>(null);
+  const [closeRequest, setCloseRequest] = useState<GameSnapshot | null>(null);
   const latest = useRef<SyntheticSnapshot | null>(null);
-  const closing = useRef<Snapshot | null>(null);
+  const closing = useRef<GameSnapshot | null>(null);
   const performing = useRef(false);
   const alive = useRef(false);
   function accept(incoming: SyntheticSnapshot) {
@@ -53,7 +54,7 @@ export function SyntheticApp() {
     alive.current = true;
     let stopped = false;
     let unlisten: (() => void) | undefined;
-    void listen<Snapshot>("desktop-close-requested", (event) => {
+    void listen<GameSnapshot>("game-close-requested", (event) => {
       if (stopped) return;
       closing.current = event.payload;
       setCloseRequest(event.payload);
@@ -88,12 +89,12 @@ export function SyntheticApp() {
     setError("");
     try {
       if (cancel) {
-        await invoke("desktop_cancel_close");
+        await invoke("game_cancel_close");
         closing.current = null;
         if (alive.current) setCloseRequest(null);
         accept(await invoke<SyntheticSnapshot>("synthetic_snapshot"));
       } else {
-        await invoke("desktop_finish_close", { expectedDocumentRevision: request.document.revision });
+        await invoke("game_finish_close", { expected: request.open_token });
       }
     } catch (reason: unknown) { if (alive.current) setError(String(reason)); }
     finally { performing.current = false; if (alive.current) setBusy(false); }

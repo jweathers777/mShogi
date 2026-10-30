@@ -58,7 +58,7 @@ fn current_chess_contract_contains_actual_claims_match_and_search_observations()
     let mut native = DesktopSession::from_record(&game.record(), Color::White).unwrap();
     native
         .command(
-            DesktopCommand::Analyze {
+            ChessMutationCommand::Analyze {
                 version: native.version,
                 operation: AnalysisOperation::Moves {
                     depth: 1,
@@ -90,7 +90,7 @@ fn current_chess_contract_contains_actual_claims_match_and_search_observations()
     assert!(snapshot.search_observations[0].selected);
     assert_eq!(snapshot.search_observations[0].perspective, "White");
     assert!(snapshot.search_observations[0].nodes.is_some());
-    assert!(snapshot.chess.as_ref().unwrap().conclusion.is_none());
+    assert!(snapshot.chess.as_ref().unwrap().live_conclusion.is_none());
 }
 #[test]
 fn rejected_chess_worker_command_is_not_capacity_engine_failure_or_outcome() {
@@ -100,11 +100,8 @@ fn rejected_chess_worker_command_is_not_capacity_engine_failure_or_outcome() {
         .shared_command_with_receipt(SharedDesktopCommand {
             expected: c.shared_token(),
             game: GameKind::Chess,
-            operation: SessionOperation::Chess {
-                command: DesktopCommand::Play {
-                    version: c.session.version,
-                    action: "e2e5".parse().unwrap(),
-                },
+            operation: SessionOperation::ChessPlay {
+                action: "e2e5".parse().unwrap(),
             },
         })
         .unwrap();
@@ -119,7 +116,7 @@ fn rejected_chess_worker_command_is_not_capacity_engine_failure_or_outcome() {
     assert_eq!(after.context, before.context);
     assert_eq!(after.capacity.status, CapacityPhase::Available);
     assert!(after.capacity.resource.is_none());
-    assert!(after.chess.as_ref().unwrap().conclusion.is_none());
+    assert!(after.chess.as_ref().unwrap().live_conclusion.is_none());
     assert_ne!(after.phase, EnginePhase::Failed);
 }
 #[test]
@@ -128,7 +125,7 @@ fn close_authority_rejects_all_native_replacement_commands_and_open_but_keeps_sa
     let expected = c.shared_open_token();
     c.lifecycle.request_close().unwrap();
     assert!(
-        c.command(DesktopCommand::Resign {
+        c.command(ChessMutationCommand::Resign {
             version: c.session.version
         })
         .is_err()
@@ -172,7 +169,7 @@ fn direct_identity_refusals_publish_native_facts_without_mutating_the_game() {
     c.io_state.id = 0;
     c.session.capacity.id = MAX_SAFE_ID - 32;
     assert!(
-        c.command(DesktopCommand::Preferences {
+        c.command(ChessMutationCommand::Preferences {
             orientation: Color::Black,
             analysis_defaults: AnalysisOperation::Moves { depth: 1, nodes: 1 }
         })
@@ -236,5 +233,112 @@ fn reopened_all_game_identities_exceed_runtime_only_revisions_without_spending_s
         assert!(opened.token.revision > old_revision);
         assert!(opened.token.version > old_revision);
         std::fs::remove_file(path).unwrap();
+    }
+}
+
+#[test]
+fn current_flat_chess_claim_keeps_the_intended_action_unplayed_and_rejects_old_transport() {
+    let game =
+        AdjudicatedGame::from_fen("7k/8/8/8/8/8/R7/K7 w - - 99 1", ClaimPolicy::ExplicitOnly)
+            .unwrap();
+    let mut c = controller();
+    c.session = ActiveDocument::Chess(Box::new(
+        DesktopSession::from_record(&game.record(), Color::White).unwrap(),
+    ));
+    let before = c.shared_snapshot();
+    let claim = before
+        .chess
+        .as_ref()
+        .unwrap()
+        .claims
+        .iter()
+        .find(|claim| claim.intended.is_some())
+        .copied()
+        .unwrap();
+    let command = SharedDesktopCommand {
+        expected: before.token,
+        game: GameKind::Chess,
+        operation: SessionOperation::ChessClaim { claim },
+    };
+    let json = serde_json::to_string(&command).unwrap();
+    assert!(json.contains("\"kind\":\"chess_claim\""));
+    assert!(!json.contains("\"command\""));
+    let (_, receipt) = c
+        .shared_command_with_receipt(SharedDesktopCommand::from_json(&json).unwrap())
+        .unwrap();
+    settle(&mut c, &receipt);
+    let after = c.shared_snapshot();
+    assert_eq!(after.board_ply, 0);
+    assert_eq!(
+        c.session.chess().game.game().position().to_fen(),
+        game.position().to_fen()
+    );
+    assert!(matches!(
+        after.chess.unwrap().live_conclusion,
+        Some(MatchConclusion::Chess(ChessOutcome::Draw(
+            DrawReason::Claimed(_)
+        )))
+    ));
+    assert!(
+        c.shared_command(SharedDesktopCommand::from_json(&json).unwrap())
+            .is_err(),
+        "the exact old outer token cannot be reused"
+    );
+    let old = serde_json::json!({"expected":before.token,"game":"chess","operation":{"kind":"chess","command":{"kind":"claim","version":before.token.version,"claim":claim}}});
+    assert!(
+        SharedDesktopCommand::from_json(&old.to_string()).is_err(),
+        "retired nested command is not a compatibility transport"
+    );
+    let duplicate = json.replace(
+        "\"claim\":",
+        &format!(
+            "\"claim\":{},\"claim\":",
+            serde_json::to_string(&claim).unwrap()
+        ),
+    );
+    assert!(SharedDesktopCommand::from_json(&duplicate).is_err());
+    let duplicate_action = format!(
+        "{{\"expected\":{},\"game\":\"chess\",\"operation\":{{\"kind\":\"chess_play\",\"action\":\"e2e4\",\"action\":\"d2d4\"}}}}",
+        serde_json::to_string(&before.token).unwrap()
+    );
+    assert!(SharedDesktopCommand::from_json(&duplicate_action).is_err());
+}
+
+#[test]
+fn current_chess_presentation_has_native_capabilities_without_a_second_application_snapshot() {
+    let mut c = controller();
+    let value = serde_json::to_value(c.shared_snapshot()).unwrap();
+    for field in [
+        "version",
+        "revision",
+        "document",
+        "io",
+        "capacity",
+        "view",
+        "pieces",
+        "legal_choices",
+        "human",
+        "turn",
+    ] {
+        assert!(
+            value["chess"].get(field).is_none(),
+            "{field} belongs only to the common application snapshot"
+        );
+    }
+    for field in [
+        "claims",
+        "live_conclusion",
+        "selected_conclusion",
+        "in_check",
+        "analysis",
+        "last_engine_result",
+        "last_engine_turn",
+        "searched_version",
+        "rules_mode",
+    ] {
+        assert!(
+            value["chess"].get(field).is_some(),
+            "native Chess capability {field} remains available"
+        );
     }
 }

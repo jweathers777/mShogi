@@ -47,3 +47,8 @@ it.each([standardJson, shogiJson, xiangqiJson])("uses the same actual common sec
   expect(container.querySelector("[data-document-state]")?.textContent).toBe("Unsaved");
   expect(container.querySelector("[data-position-status]")?.textContent).toBe("Your turnLive position · 0 plies");
 });
+
+it("uses the native Chess check fact in the live status without inferring attacks", () => {
+  app({ ...standard, chess: { ...standard.chess, in_check: true } });
+  expect(document.querySelector("[data-game-status]")?.textContent).toBe("White to move · check");
+});

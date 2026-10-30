@@ -98,3 +98,25 @@ They were corrected before the passing run. The host removal does not change
 native close/termination/Tao behavior. Exact source, independent review, actual
 packaged GUI, platform CI and final acceptance are recorded below after execution;
 pending checks are not acceptance evidence.
+
+## Independent source and visual review
+
+A separate read-only agent reviewed baseline82a8ae8 through2918217 and all six
+same-size actual macOS QA captures. It found two material migration omissions:
+Chess's supplied in-check indication and explicit Finish analysis for a paused
+concluded Chess game. Both are restored using existing native facts and common
+resume; the game remains concluded. New semantic regressions cover both. The
+reviewer independently reran40 affected application/panel tests after correction,
+in addition to107 focused frontend and8 native runtime checks before correction;
+all pass. Current full frontend225 and strict TypeScript pass. Two stale living
+host/quit documents were corrected; historical R3 evidence is untouched.
+
+The reviewer confirms one actual composition/session owner, removal of public
+legacy DTO/IPC/callers, native-specific content, typed resource messages, exact
+source-token/file/close safety and R5 scope. All six1180×820/760×650 captures
+retain the same shell/theme/control and section positions, complete boards,
+Shogi hands and Xiangqi intersection/river/palace art. No material visual finding.
+Original JPEG capture bytes, package identities and actual native interactions
+are retained in [the macOS evidence](evidence/msh119/macos/interaction.json).
+Those captures are at2918217; the two bounded fixes do not affect their initial
+positions or geometry. Final current-source CI and package results remain pending.

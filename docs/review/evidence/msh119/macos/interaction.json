@@ -1,0 +1,77 @@
+{
+  "source_revision": "291821774e44b8bda04856773fd9781ae3327687",
+  "environment": {
+    "system": "macOS-27.0.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "macOS": "27.0.1"
+  },
+  "method": "Actual native CUA accessibility/pointer/keyboard and native file dialogs; no browser rendering or injected IPC",
+  "packages": {
+    "normal": {
+      "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+      "host_sha256": "dda7f59888cf57bada3cd31723d04257bece07bcaff2be84002ae31b249dce40",
+      "engine_sha256": "57d09b1a22f96a7a9b89a9c6c2550b233ed8213f591580ad8e66106900b7ac3a",
+      "scope": "normal distributable"
+    },
+    "verification": {
+      "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi Verification.app",
+      "host_sha256": "02738f62ab8bf90ac4aec4a9aa5a862fd24139e1d45df873daf63ba8cc9ea3fe",
+      "engine_sha256": "57d09b1a22f96a7a9b89a9c6c2550b233ed8213f591580ad8e66106900b7ac3a",
+      "scope": "separate desktop-verification package; native size menu, production ProductApp"
+    }
+  },
+  "captures": {
+    "qa-chess-normal.jpg": {
+      "sha256": "85e5fcbbf3b72571de3a2af6af4fd1b66af9877bd293f56fff7d1a08b7eaba6d",
+      "scope": "QA native menu verified exact 1180x820 or760x650 logical content"
+    },
+    "qa-chess-minimum.jpg": {
+      "sha256": "89902d6dc69b119405162fb416168162c362488afca85109279426110f713260",
+      "scope": "QA native menu verified exact 1180x820 or760x650 logical content"
+    },
+    "qa-shogi-normal.jpg": {
+      "sha256": "af396d66aa3b065c5145cf86985ceabc0990d321a80c556330cae0cb5a9a7635",
+      "scope": "QA native menu verified exact 1180x820 or760x650 logical content"
+    },
+    "qa-shogi-minimum.jpg": {
+      "sha256": "8ba27ac4cb30b1321487311fa327a573383d2084a7f50c3681e82823ddc54798",
+      "scope": "QA native menu verified exact 1180x820 or760x650 logical content"
+    },
+    "qa-xiangqi-normal.jpg": {
+      "sha256": "c1f2c496c982fb1169b0b1f75180f7caf88d5a42c6fbb697f8711434853b5a7d",
+      "scope": "QA native menu verified exact 1180x820 or760x650 logical content"
+    },
+    "qa-xiangqi-minimum.jpg": {
+      "sha256": "49dcd8e728c37495e01201b576c6fbc8610e8cdde4c527ec5bfb52bdf6aab35e",
+      "scope": "QA native menu verified exact 1180x820 or760x650 logical content"
+    },
+    "chess-full-unknown.jpg": {
+      "sha256": "82a8966dbd72ced6dd6e2656b1c4436b5e883c77bbbaac1530464decd5a6621b",
+      "scope": "normal packaged application journey"
+    },
+    "reopened-stopped.jpg": {
+      "sha256": "8913883494eed32989aca305cda015c109bff7ea15dd17362a4803d6bdc575cf",
+      "scope": "normal packaged application journey"
+    },
+    "shogi-history.jpg": {
+      "sha256": "752e601474b2917e5b9ad2816050e9966dc65a4d0be761b7f123addd580107df",
+      "scope": "normal packaged application journey"
+    }
+  },
+  "journeys": [
+    "Normal Chess e2e4 + actual engine reply; Take back\u2192stopped\u2192Resume; native Save As",
+    "Normal Shogi New game; keyboard7g7f\u2192actual engine reply; bounded read-only analysis; exact historical event0\u2192Return to live",
+    "Normal Xiangqi New with dirty Shogi discard guard; e3e4\u2192actual engine reply; Save & continue through Save As to Open picker",
+    "Native Open replaces Xiangqi with saved Chess; UNMODIFIED, fresh stopped runtime, explicit Resume available",
+    "Normal Chess explicit bounded Full1position/1transition\u2192Unknown with no live outcome; native window-close Cancel and Cmd-Q Save&continue\u2192process exits",
+    "QA current ProductApp game switching, exactnormal/minimum native menu and allthree complete boards visible"
+  ],
+  "limitations": [
+    "Normal native manual resize attempt did not change window size; those attempted captures are excluded. All minimum-size captures use the separately labeled QA package and native exact-size menu.",
+    "No new macOS hard-capacity/declaration fixture interaction is claimed here; focused tests and separate Linux/Windows QA campaigns cover difficult states."
+  ],
+  "notes": [
+    "Captures are original CUA JPEG bytes with matching .jpg extension. No image pixels altered.",
+    "All captures/packages in this manifest are source2918217. Later two bounded Chess review fixes preserve these initial-position layouts; later CI/source evidence is recorded separately."
+  ]
+}

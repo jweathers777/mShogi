@@ -98,28 +98,29 @@ identity headroom, validation budget and unknown causes. Illegal commands,
 engine failures and game outcomes remain separate. The16MiB/256-observation/
 8192-control limits, native costs and stop/close reserves are unchanged.
 
-R4 consumes these facts in one shared notice/recovery implementation. Until
-then the accepted truthful generic fallback remains appropriate whenever the
-exact cause cannot be established. Technical Details retain native facts and
+R4 consumes these facts in one shared notice/recovery implementation. The
+truthful generic fallback remains appropriate whenever the exact cause cannot
+be established. Technical Details retain native facts and
 diagnostics. Reopening is not presented as a structural-capacity reset.
 
-## Finite frontend forwarder
+## Current frontend and host contract
 
-The existing Chess `App`/`useNativeSession` still consumes the Chess snapshot and
-`desktop_snapshot`, `desktop_command`, `desktop_save`, `desktop_save_as`,
-`desktop_open`, `desktop_request_close`, `desktop_cancel_close` and
-`desktop_finish_close` routes plus `desktop-close-requested`. These are a narrow
-current-controller-to-existing-frontend forwarder; they own no second native
-session and read no obsolete file format. After successful cross-game Open the
-old Chess file response is `null`; the product's native game owner remounts the
-new game rather than receiving an invented Chess projection.
+MSH-119/R4 deletes the finite R3 frontend forwarder and its consumers.
+`ProductApp` mounts one `useGameSession` and renders all games through the same
+`ApplicationView`, common sections and `GameFrame` player/board/footer slots.
+Chess supplies `ChessPresentation` native capability details rather than a second
+application snapshot; `chess_play`, `chess_claim` and `chess_preferences` are
+direct current operations under the complete outer token.
 
-Current product close uses `game-close-requested` and the exact-token current
-close operations. Development-only verification views use current close authority
-too. **MSH-119/R4 deletes the old frontend owner, forwarding endpoints/event and
-obsolete Chess frontend DTO together.** Game-native Chess types and genuine
-semantic capabilities remain. R3 does not consolidate application layouts or
-board interaction controllers.
+Only `game_snapshot`, `game_command`, `game_file`, `game_new` and the current
+inspection/close routes are product IPC. Old `desktop_*` snapshot/command/file/
+close routes, `desktop-close-requested`, the embedded Chess Snapshot, nested old
+command DTO and QA `native_contract_*` aliases are removed. The synthetic QA
+harness also uses the current native close authority. The one product guard
+subscribes to `game-close-requested` and approves `game_finish_close` with the
+exact native Open token. Native reservations, dirty receipts, replay and stopped
+installation are unchanged. See the [R4 contract/evidence](../review/frontend-application-119.md).
+Board selection/inspection-state consolidation remains separately owned by R5.
 
 ## Evidence
 

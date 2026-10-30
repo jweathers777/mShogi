@@ -120,3 +120,30 @@ Original JPEG capture bytes, package identities and actual native interactions
 are retained in [the macOS evidence](evidence/msh119/macos/interaction.json).
 Those captures are at2918217; the two bounded fixes do not affect their initial
 positions or geometry. Final current-source CI and package results remain pending.
+
+## Initial platform findings and bounded verifier correction
+
+Initial Desktop41128859968 at2918217 passes macOS package checks and all15
+actual Windows GUI phases, each with observed native shutdown. Linux passes11
+QA phases, including promotion, claims, Full, failure, declarations, capacity and
+Save/Open. Its three normal-game journeys fail their newly added Take back
+click because the control lies below the clipped, scrollable sidebar viewport;
+the subsequent Shogi reopen also fails because its prior normal save never ran.
+The [original failures](evidence/msh119/initial-linux/failed-campaign.json) and
+[Windows audit](evidence/msh119/initial-windows-audit.json) are retained.
+
+The verifier now reaches Take back by real bounded Tab navigation, observing
+unique/enabled/focused/full-ancestor visibility and hit testing before one click.
+It does not mutate DOM scroll/focus, invoke IPC, repeat the action or accept a
+failure as success. Missing/disabled/unreachable controls and delivery failures
+remain failures.62 external-driver tests pass; the independent reviewer approves
+the correction and separately runs49 driver checks. This changes verification
+only; production remains0487945. A corrected actual campaign is still required.
+
+Final-source macOS normal/QA packages build and normal package smoke passes at
+0487945. [Actual concluded analysis recovery](evidence/msh119/macos/reviewed-correction.json)
+shows Checkmate throughout analysis and after Finish analysis retires the work;
+no Resume play/reopened game is offered. Native Quit exits0 after the shared
+guard. Initial sandboxed direct fixture launch aborted134; the ordinary approved
+native launch succeeds. The capture/manifest separates both revisions and QA
+from normal distributables.

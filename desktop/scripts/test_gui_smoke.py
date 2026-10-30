@@ -278,6 +278,76 @@ class SaveAcceptanceTests(unittest.TestCase):
             self.assertFalse(module.opened_document_accepted(state, self.expected))
 
 
+class KeyboardControlReadinessTests(unittest.TestCase):
+    def setUp(self):
+        self.web = object.__new__(module.Webview)
+        self.web.record, self.web.read = Mock(), Mock()
+        self.web.key, self.web.button = Mock(), Mock()
+        self.hidden = {"matches": 1, "enabled": True, "focused": False, "visible": False}
+        self.ready = {"matches": 1, "enabled": True, "focused": True, "visible": True}
+
+    def test_clipped_control_is_reached_by_bounded_actual_tabs_before_one_click(self):
+        self.web.read.side_effect = [self.hidden, self.hidden, self.ready]
+        self.web.focused_button("Take back", max_tabs=3)
+        self.assertEqual(self.web.key.call_args_list, [unittest.mock.call("\ue004"), unittest.mock.call("\ue004")])
+        self.web.button.assert_called_once_with("Take back")
+        self.assertEqual(self.web.read.call_count, 3)
+        expression = self.web.read.call_args.args[0]
+        self.assertIn("document.activeElement===e", expression)
+        self.assertIn("getBoundingClientRect", expression)
+        self.assertNotIn("scrollIntoView", expression)
+        self.assertNotIn(".focus(", expression)
+        self.assertNotIn(".click(", expression)
+        self.assertNotIn("invoke(", expression)
+        self.assertEqual(self.web.record.call_args.args[0], "Keyboard control focused and visible before one click")
+
+    def test_already_focused_visible_control_needs_no_extra_input_before_one_click(self):
+        self.web.read.return_value = self.ready
+        self.web.focused_button("Take back", max_tabs=0)
+        self.web.key.assert_not_called()
+        self.web.button.assert_called_once_with("Take back")
+
+    def test_disabled_missing_and_ambiguous_controls_fail_without_any_input(self):
+        for state in ({**self.hidden, "enabled": False},
+                      {**self.hidden, "matches": 0}, {**self.hidden, "matches": 2}):
+            with self.subTest(state=state):
+                self.web.read.return_value = state
+                with self.assertRaises(AssertionError):
+                    self.web.focused_button("Take back", max_tabs=3)
+                self.web.key.assert_not_called()
+                self.web.button.assert_not_called()
+
+    def test_unreachable_control_exhausts_exact_tab_bound_and_never_clicks(self):
+        self.web.read.return_value = self.hidden
+        with self.assertRaisesRegex(AssertionError, "unreachable within 3 actual Tab inputs"):
+            self.web.focused_button("Take back", max_tabs=3)
+        self.assertEqual(self.web.read.call_count, 4)
+        self.assertEqual(self.web.key.call_count, 3)
+        self.web.button.assert_not_called()
+
+    def test_focused_control_waits_only_for_read_only_paint_observations(self):
+        self.web.read.side_effect = [self.hidden, {**self.ready, "visible": False}, self.ready]
+        self.web.focused_button("Take back", max_tabs=3)
+        self.web.key.assert_called_once_with("\ue004")
+        self.web.button.assert_called_once_with("Take back")
+
+    def test_failed_final_click_is_not_repeated_or_recovered_as_a_pass(self):
+        self.web.read.side_effect = [self.hidden, self.ready]
+        self.web.button.side_effect = http.client.RemoteDisconnected("after delivery")
+        with self.assertRaises(http.client.RemoteDisconnected):
+            self.web.focused_button("Take back", max_tabs=3)
+        self.web.key.assert_called_once_with("\ue004")
+        self.web.button.assert_called_once_with("Take back")
+
+    def test_failed_keyboard_delivery_is_not_repeated(self):
+        self.web.read.return_value = self.hidden
+        self.web.key.side_effect = http.client.RemoteDisconnected("Tab delivery unknown")
+        with self.assertRaises(http.client.RemoteDisconnected):
+            self.web.focused_button("Take back", max_tabs=3)
+        self.web.key.assert_called_once_with("\ue004")
+        self.web.button.assert_not_called()
+
+
 class BoardPointerReadinessTests(unittest.TestCase):
     def setUp(self):
         self.web = object.__new__(module.Webview)

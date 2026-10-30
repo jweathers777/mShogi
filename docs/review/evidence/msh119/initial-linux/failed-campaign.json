@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "source_revision": "291821774e44b8bda04856773fd9781ae3327687",
+  "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/41128859968",
+  "status": "failed",
+  "environment": {
+    "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "runner_image": "20261026.354.1",
+    "runner_os": "Linux",
+    "renderer_environment": {
+      "GDK_BACKEND": "x11",
+      "WEBKIT_DISABLE_COMPOSITING_MODE": "1",
+      "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+      "LIBGL_ALWAYS_SOFTWARE": null
+    }
+  },
+  "method": "Actual installed/packaged GUI via W3C pointer/keyboard and native OS dialogs/close, external to distributables. Read-only DOM inspection; no direct IPC or injected input events.",
+  "phase_failures": [
+    {
+      "phase": "normal",
+      "error": "{\"value\":{\"error\":\"element not interactable\",\"message\":\"\",\"stacktrace\":\"\"}}",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 186, in _request_once\n    with urllib.request.urlopen(request, timeout=45) as response:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 215, in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 521, in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 630, in http_response\n    response = self.parent.error(\n               ^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 559, in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 400: Bad Request\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 1551, in main\n    journey.normal()\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 773, in normal\n    w.button(\"Take back\")\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 252, in button\n    self.command(\"POST\", f\"/element/{element}/click\", {})\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 196, in command\n    return self.request(method, f\"/session/{self.session}{path}\", data)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 167, in request\n    result = self._request_once(method, path, data)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 189, in _request_once\n    raise RuntimeError(error.read().decode(errors=\"replace\")) from error\nRuntimeError: {\"value\":{\"error\":\"element not interactable\",\"message\":\"\",\"stacktrace\":\"\"}}\n"
+    },
+    {
+      "phase": "normal-shogi",
+      "error": "{\"value\":{\"error\":\"element not interactable\",\"message\":\"\",\"stacktrace\":\"\"}}",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 186, in _request_once\n    with urllib.request.urlopen(request, timeout=45) as response:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 215, in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 521, in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 630, in http_response\n    response = self.parent.error(\n               ^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 559, in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 400: Bad Request\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 1553, in main\n    journey.normal_shogi()\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 1146, in normal_shogi\n    w.button(\"Take back\")\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 252, in button\n    self.command(\"POST\", f\"/element/{element}/click\", {})\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 196, in command\n    return self.request(method, f\"/session/{self.session}{path}\", data)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 167, in request\n    result = self._request_once(method, path, data)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 189, in _request_once\n    raise RuntimeError(error.read().decode(errors=\"replace\")) from error\nRuntimeError: {\"value\":{\"error\":\"element not interactable\",\"message\":\"\",\"stacktrace\":\"\"}}\n"
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "error": "Timed out: fresh normal Chess launch dispatches shogi archive; last observation: False",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 1555, in main\n    journey.normal_shogi_reopened()\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 1187, in normal_shogi_reopened\n    wait(lambda: w.has(\".shogi-application\"), \"fresh normal Chess launch dispatches shogi archive\")\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 148, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: fresh normal Chess launch dispatches shogi archive; last observation: False\n"
+    },
+    {
+      "phase": "normal-xiangqi",
+      "error": "{\"value\":{\"error\":\"element not interactable\",\"message\":\"\",\"stacktrace\":\"\"}}",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 186, in _request_once\n    with urllib.request.urlopen(request, timeout=45) as response:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 215, in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 521, in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 630, in http_response\n    response = self.parent.error(\n               ^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 559, in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 400: Bad Request\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 1557, in main\n    journey.normal_xiangqi()\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 1004, in normal_xiangqi\n    w.button(\"Take back\")\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 252, in button\n    self.command(\"POST\", f\"/element/{element}/click\", {})\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 196, in command\n    return self.request(method, f\"/session/{self.session}{path}\", data)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 167, in request\n    result = self._request_once(method, path, data)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 189, in _request_once\n    raise RuntimeError(error.read().decode(errors=\"replace\")) from error\nRuntimeError: {\"value\":{\"error\":\"element not interactable\",\"message\":\"\",\"stacktrace\":\"\"}}\n"
+    }
+  ],
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "failed",
+      "fixture": null,
+      "host_sha256": "ffe108fee0e5d044b0b180a8ee1bf530b8522ea151f913f3107edd05204c0151",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2"
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "failed",
+      "fixture": null,
+      "host_sha256": "ffe108fee0e5d044b0b180a8ee1bf530b8522ea151f913f3107edd05204c0151",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2"
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "failed",
+      "fixture": null,
+      "host_sha256": "ffe108fee0e5d044b0b180a8ee1bf530b8522ea151f913f3107edd05204c0151",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2"
+    },
+    {
+      "phase": "normal-xiangqi",
+      "status": "failed",
+      "fixture": null,
+      "host_sha256": "ffe108fee0e5d044b0b180a8ee1bf530b8522ea151f913f3107edd05204c0151",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2"
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "fixture": "standard",
+      "host_sha256": "964a254f42a6d7c482e62dbee2f592b673cfdecba2478c132e06697553e4a792",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2"
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "fixture": "promotion",
+      "host_sha256": "964a254f42a6d7c482e62dbee2f592b673cfdecba2478c132e06697553e4a792",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2"
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed",
+      "fixture": "claim",
+      "host_sha256": "964a254f42a6d7c482e62dbee2f592b673cfdecba2478c132e06697553e4a792",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2"
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "fixture": "capacity",
+      "host_sha256": "964a254f42a6d7c482e62dbee2f592b673cfdecba2478c132e06697553e4a792",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2"
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed",
+      "fixture": "synthetic",
+      "host_sha256": "964a254f42a6d7c482e62dbee2f592b673cfdecba2478c132e06697553e4a792",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2"
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed",
+      "fixture": "shogi-hands",
+      "host_sha256": "964a254f42a6d7c482e62dbee2f592b673cfdecba2478c132e06697553e4a792",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2"
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed",
+      "fixture": "shogi-promotion",
+      "host_sha256": "964a254f42a6d7c482e62dbee2f592b673cfdecba2478c132e06697553e4a792",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2"
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed",
+      "fixture": "shogi-forced",
+      "host_sha256": "964a254f42a6d7c482e62dbee2f592b673cfdecba2478c132e06697553e4a792",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2"
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed",
+      "fixture": "shogi-declaration",
+      "host_sha256": "964a254f42a6d7c482e62dbee2f592b673cfdecba2478c132e06697553e4a792",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2"
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed",
+      "fixture": "shogi-concluded",
+      "host_sha256": "964a254f42a6d7c482e62dbee2f592b673cfdecba2478c132e06697553e4a792",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2"
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed",
+      "fixture": "shogi-capacity",
+      "host_sha256": "964a254f42a6d7c482e62dbee2f592b673cfdecba2478c132e06697553e4a792",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2"
+    }
+  ],
+  "original_report_sha256": "e13efe2b9925fba92873f547a44c230b663844c8e60b2c0157df4749855f33a4",
+  "scope": "Historical initial291 GUIcampaign: WindowsPASS15; Linux11QApass, normal3Takebackvisibility failures and dependentnormalShogiOpenfailure. This is preserved failure evidence; later correction must establish actual full journeys."
+}

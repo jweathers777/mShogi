@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-30T12:06:00Z'
-updated_date: '2026-10-30T21:17:00Z'
+updated_date: '2026-10-30T21:25:00Z'
 labels:
   - architecture-migration
   - planning
@@ -64,4 +64,8 @@ R4 cutover implemented in primary working tree: one ProductApp/useGameSession/Ap
 Implementation ready for bounded independent source/visual review; current frontend223/223 and strict tsc PASS. GUI verifier55/55 PASS. Current normal macOS package built and package-smoke passes (host19a33348… engine57d09b1a…); actual native AX play/reply/Take back/Resume/Save As accepted. Full current-source captures, lifecycle checks and CI remain pending; no criteria checked yet.
 
 Independent fresh read-only completed diff + six-image comparison review found two material Chess omissions: native in-check heading and Finish analysis on a concluded paused game. Both corrected using existing facts/common resume; added semantic regressions. Reviewer independently40 affected frontend PASS, earlier107 frontend+8 native PASS; current full225 and strict tsc PASS. No material visual finding at1180x820/760x650, all3 completeboards. Living contract/quit docs updated; historical evidence preserved. Source2918217 already pushed; final correction CI/package verification pending.
+
+Initial291 Desktop CI41128859968: macOSbuild/smoke PASS; Windows15/15 actualGUI PASS; Linux11QA phasesPASS but normalChess/Shogi/Xq failed newTakeback input (elementnotinteractable; clippedsidebarcontrol), then dependentShogiOpen failed absent prior save. Independent reviewer identified actualtrace/geometry; bounded externaldriver keyboard-visibility correction in progress. Failure preserved under docs/review/evidence/msh119/initial-linux; no claim LinuxnormaljourneysPASS. Productsource0487945 fixesreviewfindings;225frontendPASS, finalnative CI/package evidence pending. Actual048 macconcludedFinishanalysis preservesCheckmate and nativeQuit exits0; exactreport under macos/reviewed-correction.json.
+
+Independent reviewer approved bounded external-driver Takeback visibility correction: readonlynativeDOM facts + realboundedTabfocus, oneclick, noDOMmutation/IPC/actionreplay;62 driverchecksPASS (independent49PASS). Production unchanged from0487945. Corrected actualGUIcampaign and finalCI stillrequired. Exact291Windows15PASS audit and initialLinux11PASS/4FAIL retained; final048macFinishanalysis/regression capture verified independently. No unresolved material product/source/visual finding; task remainsInReview.
 <!-- SECTION:NOTES:END -->

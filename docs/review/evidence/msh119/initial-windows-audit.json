@@ -1,0 +1,294 @@
+{
+  "reviewer": "/root/r4_independent",
+  "method": "Independent read-only artifact review, not author test repetition; direct report, native exit observations and actual downloaded file checksums inspected.",
+  "run_id": 41128859968,
+  "artifact_id": 13012064256,
+  "artifact_name": "desktop-windows-2022",
+  "source_revision": "291821774e44b8bda04856773fd9781ae3327687",
+  "report_status": "passed",
+  "report_sha256": "940c5d4c9a5621c66d2437762d94353cca5193bfb37c68736e18d429aa2a7809",
+  "environment": {
+    "platform": "Windows-2022Server-10.0.20348-SP0",
+    "python": "3.12.10",
+    "runner_image": "20261026.347.1",
+    "runner_os": "Windows",
+    "renderer_environment": {
+      "GDK_BACKEND": null,
+      "WEBKIT_DISABLE_COMPOSITING_MODE": null,
+      "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+      "LIBGL_ALWAYS_SOFTWARE": null
+    }
+  },
+  "normal_manifest_sha256": "fb47fd4c135c74429cc0a292a3a2852d4ac635fe98a3db5ddc56ec2ff53fb606",
+  "normal_manifest_file_checks": {
+    "package-smoke.json": {
+      "sha256": "90b95b5d572635aef756c395eb7a048b02990b0e645c1ce551e0a85e139cac4f",
+      "matches": true
+    },
+    "bundle\\nsis\\mShogi_0.1.0_x64-setup.exe": {
+      "sha256": "c9fd00316379d534194e2e0084c1fb650a04b2f4450a0c372dcfa29f9a6ec14f",
+      "matches": true
+    }
+  },
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "passed",
+      "fixture": null,
+      "host": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+      "host_sha256": "6600f6a6e5db6e29973f9edac18b61570a5dc79401190eaf8cff92c06a5d4069",
+      "engine": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi.exe",
+      "engine_sha256": "d230271f872542bab298eccc562429eeca95de9d756bfcb4b2e885dba87a9cc2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "passed",
+      "fixture": null,
+      "host": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+      "host_sha256": "6600f6a6e5db6e29973f9edac18b61570a5dc79401190eaf8cff92c06a5d4069",
+      "engine": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi.exe",
+      "engine_sha256": "d230271f872542bab298eccc562429eeca95de9d756bfcb4b2e885dba87a9cc2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "passed",
+      "fixture": null,
+      "host": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+      "host_sha256": "6600f6a6e5db6e29973f9edac18b61570a5dc79401190eaf8cff92c06a5d4069",
+      "engine": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi.exe",
+      "engine_sha256": "d230271f872542bab298eccc562429eeca95de9d756bfcb4b2e885dba87a9cc2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "normal-xiangqi",
+      "status": "passed",
+      "fixture": null,
+      "host": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+      "host_sha256": "6600f6a6e5db6e29973f9edac18b61570a5dc79401190eaf8cff92c06a5d4069",
+      "engine": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi.exe",
+      "engine_sha256": "d230271f872542bab298eccc562429eeca95de9d756bfcb4b2e885dba87a9cc2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "fixture": "standard",
+      "host": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "host_sha256": "fe5f9f685c081b07c74aebde7c98766fcb84f1374c164edc9201fe735b886c8d",
+      "engine": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+      "engine_sha256": "d230271f872542bab298eccc562429eeca95de9d756bfcb4b2e885dba87a9cc2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "fixture": "promotion",
+      "host": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "host_sha256": "fe5f9f685c081b07c74aebde7c98766fcb84f1374c164edc9201fe735b886c8d",
+      "engine": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+      "engine_sha256": "d230271f872542bab298eccc562429eeca95de9d756bfcb4b2e885dba87a9cc2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed",
+      "fixture": "claim",
+      "host": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "host_sha256": "fe5f9f685c081b07c74aebde7c98766fcb84f1374c164edc9201fe735b886c8d",
+      "engine": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+      "engine_sha256": "d230271f872542bab298eccc562429eeca95de9d756bfcb4b2e885dba87a9cc2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "fixture": "capacity",
+      "host": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "host_sha256": "fe5f9f685c081b07c74aebde7c98766fcb84f1374c164edc9201fe735b886c8d",
+      "engine": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+      "engine_sha256": "d230271f872542bab298eccc562429eeca95de9d756bfcb4b2e885dba87a9cc2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed",
+      "fixture": "synthetic",
+      "host": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "host_sha256": "fe5f9f685c081b07c74aebde7c98766fcb84f1374c164edc9201fe735b886c8d",
+      "engine": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+      "engine_sha256": "d230271f872542bab298eccc562429eeca95de9d756bfcb4b2e885dba87a9cc2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed",
+      "fixture": "shogi-hands",
+      "host": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "host_sha256": "fe5f9f685c081b07c74aebde7c98766fcb84f1374c164edc9201fe735b886c8d",
+      "engine": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+      "engine_sha256": "d230271f872542bab298eccc562429eeca95de9d756bfcb4b2e885dba87a9cc2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed",
+      "fixture": "shogi-promotion",
+      "host": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "host_sha256": "fe5f9f685c081b07c74aebde7c98766fcb84f1374c164edc9201fe735b886c8d",
+      "engine": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+      "engine_sha256": "d230271f872542bab298eccc562429eeca95de9d756bfcb4b2e885dba87a9cc2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed",
+      "fixture": "shogi-forced",
+      "host": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "host_sha256": "fe5f9f685c081b07c74aebde7c98766fcb84f1374c164edc9201fe735b886c8d",
+      "engine": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+      "engine_sha256": "d230271f872542bab298eccc562429eeca95de9d756bfcb4b2e885dba87a9cc2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed",
+      "fixture": "shogi-declaration",
+      "host": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "host_sha256": "fe5f9f685c081b07c74aebde7c98766fcb84f1374c164edc9201fe735b886c8d",
+      "engine": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+      "engine_sha256": "d230271f872542bab298eccc562429eeca95de9d756bfcb4b2e885dba87a9cc2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed",
+      "fixture": "shogi-concluded",
+      "host": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "host_sha256": "fe5f9f685c081b07c74aebde7c98766fcb84f1374c164edc9201fe735b886c8d",
+      "engine": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+      "engine_sha256": "d230271f872542bab298eccc562429eeca95de9d756bfcb4b2e885dba87a9cc2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed",
+      "fixture": "shogi-capacity",
+      "host": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi-desktop.exe",
+      "host_sha256": "fe5f9f685c081b07c74aebde7c98766fcb84f1374c164edc9201fe735b886c8d",
+      "engine": "D:\\a\\_temp\\mshogi-gui-verification\\mshogi.exe",
+      "engine_sha256": "d230271f872542bab298eccc562429eeca95de9d756bfcb4b2e885dba87a9cc2",
+      "native_exit": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "native_exit_passed": true
+    }
+  ],
+  "limitations": [
+    "Initial production revision2918217 precedes independently reviewed Chess check/Finish-analysis correction0487945. This report does not establish final-source CI.",
+    "Observed native shutdown is host/sidecar absence before driver teardown, distinct from failure-containment cleanup."
+  ]
+}

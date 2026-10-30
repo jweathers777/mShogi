@@ -1,0 +1,30 @@
+{
+  "source_revision": "0487945b628314eed6d1be49d396dce41a362332",
+  "normal_package": {
+    "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+    "sha256": {
+      "mshogi-desktop": "9af02ad5535ccee8071bc7bd8c6fa93c051ab666cd14bc57c1a40f48e95bca22",
+      "mshogi": "57d09b1a22f96a7a9b89a9c6c2550b233ed8213f591580ad8e66106900b7ac3a"
+    }
+  },
+  "verification_package": {
+    "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi Verification.app",
+    "sha256": {
+      "mshogi-desktop": "0de5545af64aa67bfff886d160ac1ba7e3921cfa4efa2903a6927f4fc9545d50",
+      "mshogi": "57d09b1a22f96a7a9b89a9c6c2550b233ed8213f591580ad8e66106900b7ac3a"
+    },
+    "fixture": "concluded",
+    "feature": "desktop-verification"
+  },
+  "method": "Actual native CUA, separately labeled packaged application; real bundled engine analysis.",
+  "result": "PASS: native Checkmate retained before/during/after bounded ordinary analysis. Finish analysis sends current shared resume, removes active analysis/pause control, never shows Resume play or reopens the concluded board. Quit via shared dirty guard exits process.",
+  "files": {
+    "finished-analysis-before.jpg": "fe28e980e868b804bcd76d3e601ac32c09062ced333a32d3a74367f62c96c38e",
+    "finished-analysis-after.jpg": "edde362fcbae93f6ff4819b6297dbb04fe1739672efe086210668e43b4c752d1",
+    "finished-analysis-after.ax.txt": "3295a26fcbfab683f95c4a81d42ce1f18ecd977f9c42b15fa29f00937a04eacd"
+  },
+  "limitations": [
+    "Initial sandboxed direct launch aborted134; ordinary escalated packaged launch succeeds. No application source change required.",
+    "Live in-check formatting separately verified from native fact by frontend regression; this checkmate fixture exercises concluded recovery."
+  ]
+}

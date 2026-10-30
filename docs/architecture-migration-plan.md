@@ -284,3 +284,23 @@ migrated. The [R4 review](review/frontend-application-119.md) records the curren
 functionality/deletion matrix and verification. R5 retains the existing board
 selection/inspection/route controller copies and consumes these shared slots;
 this migration does not authorize or start that task or R6.
+
+### R4 completed acceptance
+
+Production `0487945b628314eed6d1be49d396dce41a362332` and verification revision
+`eb027be7cec0f3206094c477a31f0cd9b9f73f6f` pass independent source/visual review,
+225 frontend checks and the focused native/host/consumer regressions. Rust
+CI41131548408 and Desktop CI41131548392 pass on all three systems. Linux native
+attempt1 exposed the existing MSH-112 early-exit race; unchanged attempt2 passes.
+The failure is preserved and MSH-112 remains open, not fixed by R4.
+
+Actual Linux/Windows installed-normal/separate-QA campaigns each pass15 phases,
+including native exit; normal/minimum comparison evidence covers all three
+games. Local actual macOS package interaction and six same-size captures are
+separately identified from CI construction/smoke. Full GUI Unknown evidence is
+local macOS, not claimed Linux/Windows Full interaction. Exact package hashes,
+review methods, original failures and bounded verification-only corrections are
+in the [R4 review](review/frontend-application-119.md). Normal packages exclude
+QA instrumentation. The completion commit changes documentation/evidence/task
+records only. MSH-120/R5 is now next dependency-ready and remains unstarted;
+R6, variants and M5 remain unstarted and M4 remains open.

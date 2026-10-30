@@ -4,6 +4,7 @@ title: Investigate early-exit runner failure classification race
 status: To Do
 assignee: []
 created_date: '2026-10-29T12:53:00Z'
+updated_date: '2026-10-30T21:40:00Z'
 labels:
   - native-ci
   - runner
@@ -38,3 +39,9 @@ Intermediate MSH-102 Linux CI40874033735 at6dec5ab failed process_start_nonzero_
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Recurrence observed during MSH-119 final verification at eb027be7cec0f3206094c477a31f0cd9b9f73f6f: Linux Rust CI41131548408 job124323454077 workspaceTest runner.rs172 expectedUnexpectedExit but observedMissingResponse(engine0 handshake, Brokenpipe32, exitNone, at_ns2229415). Runner/engine/config sources unchanged from82a8ae8; initial291Linux behavior suite passed before separate fixture-diff gate. Focused unchanged test passes once on local macOS (cargo test --locked -p mshogi-runner --test runner process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored -- --exact;1PASS,0.59s). This does not establish a fix or Linux success. Original failure retained in MSH-119 evidence; normal focusedCI retry pending workflow completion. No assertion, timeout, productionrunner or ownership/status change; MSH-112 remains To Do/unstarted.
+<!-- SECTION:NOTES:END -->

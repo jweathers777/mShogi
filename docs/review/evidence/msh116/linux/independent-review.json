@@ -1,0 +1,32 @@
+{
+  "source_revision": "900544cf813ebb6b11428ac0fc9d5d45399dee1f",
+  "reviewer": "/root/r1_independent_review",
+  "method": "Separate read-only agent reviewed downloaded actual artifacts and independently executed hash/semantic checks; recorded by integrator from reviewer findings. This is not a separate GUI campaign or human review.",
+  "material_findings": [],
+  "verified": {
+    "gui_file_hashes": 229,
+    "normal_manifest_file_hashes": 13,
+    "qa_package_hash": true,
+    "passed_phases": 14,
+    "native_pre_teardown_shutdown_proofs": 14,
+    "normal_host_qa_markers_absent": 16,
+    "actual_current_protocol_packaged_queries": [
+      "engine_turn",
+      "move_analysis",
+      "chess_full_reachability"
+    ],
+    "actual_saved_durable_schema": 1,
+    "saved_document_cases": [
+      "ordinary Chess and Shogi observations",
+      "Chess historical1-event versus2live-gameevents",
+      "Shogi exact historical1-eventprefix",
+      "Chess256observations",
+      "Shogi256observations"
+    ],
+    "running_gui_captures_viewed": [
+      "Chess analysis",
+      "Shogi capacity"
+    ]
+  },
+  "limits": "Actual Linux Chess/Shogi installed normal/extracted QA GUI only. No new Xiangqi or macOS GUI claim. Final three-platform CI and Windows artifact reconciliation are recorded separately."
+}

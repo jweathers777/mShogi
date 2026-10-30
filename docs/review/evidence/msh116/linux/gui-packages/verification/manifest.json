@@ -1,0 +1,6 @@
+{
+  "source_revision": "900544cf813ebb6b11428ac0fc9d5d45399dee1f",
+  "package": "desktop/src-tauri/target/release/bundle/deb/mShogi Verification_0.1.0_amd64.deb",
+  "sha256": "f00e00cd8060448d6509f788db062cf3a0698cb60af10f5972581c85af8fef9c",
+  "installation": "Separately extracted verification package; normal package actually installed with apt."
+}

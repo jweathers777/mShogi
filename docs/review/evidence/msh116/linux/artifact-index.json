@@ -1,0 +1,127 @@
+{
+  "source_revision": "900544cf813ebb6b11428ac0fc9d5d45399dee1f",
+  "run": 41073291104,
+  "job": 124122703356,
+  "artifact_id": 12986746658,
+  "artifact_name": "desktop-ubuntu-24.04",
+  "artifact_bytes": 72344196,
+  "reported_artifact_digest": "sha256:df89bd78b0cf928023d21d8df9759e67c7595b9deee566db3bd30ac6beb357e1",
+  "retained_files": [
+    {
+      "path": "gui-evidence/gui-report.json",
+      "bytes": 476910,
+      "sha256": "6d7c79bc85ab40875032f12013348392466e604df63a75462f6ef5492f002c51"
+    },
+    {
+      "path": "gui-driver-provenance.json",
+      "bytes": 1381,
+      "sha256": "b47b709d838edf123606030efe5d828172966de5c82478999bb49a0e91f30dfd"
+    },
+    {
+      "path": "gui-driver-boundary/summary.json",
+      "bytes": 5577,
+      "sha256": "4bbb185e2708a94541602e7b35e79ec9e3fa4204e4f5f4a5e4b577764e9a55d0"
+    },
+    {
+      "path": "gui-packages/normal/manifest.json",
+      "bytes": 1789,
+      "sha256": "1f43b4ba497a6f6b61672defd8f67886b3ec9307494df4e80264f495b3bdb847"
+    },
+    {
+      "path": "gui-packages/verification/manifest.json",
+      "bytes": 351,
+      "sha256": "1b3c7cba59e8b4a28126a4f0ca16e68e76637d6431915b7e16246767adcca089"
+    },
+    {
+      "path": "package-smoke.json",
+      "bytes": 5896,
+      "sha256": "bfbc8d8a365b8ff8fc30c02582bdaef8422be9ec22843608753989e27ccf9cc2"
+    },
+    {
+      "path": "gui-evidence/normal-complete.mshogi",
+      "bytes": 9057,
+      "sha256": "9c714feeae52b18d10245fdc73bf3eebe8ba61a0d3f5f18dd10d032bc757d4a4"
+    },
+    {
+      "path": "gui-evidence/normal-shogi-history.mshogi",
+      "bytes": 12044,
+      "sha256": "25de7545a10dcd1072badcf77d22097d99ce0446541a857f3e25d6992821c9f9"
+    },
+    {
+      "path": "gui-evidence/normal-replacement-complete.webview.png",
+      "bytes": 116184,
+      "sha256": "7888ff778e582e4bf761ade42d09028ba82f8a47d464e8bafa4b3698ab232ba2"
+    },
+    {
+      "path": "gui-evidence/normal-replacement-complete.desktop.png",
+      "bytes": 124037,
+      "sha256": "39841317b0c6a6be82a7f605eb15935de4995c32778eecf1f618478cd363a433"
+    },
+    {
+      "path": "gui-evidence/normal-replacement-complete.dom.json",
+      "bytes": 3153,
+      "sha256": "00db33f41d3c78863785b4b66868bfa297142f4b122f50c69924e539f540feef"
+    },
+    {
+      "path": "gui-evidence/normal-historical-analysis.webview.png",
+      "bytes": 124312,
+      "sha256": "5210e54a43f7e282ada629d9fa43b53a5e908d87b6c1fec03d4c9ef217ffa95e"
+    },
+    {
+      "path": "gui-evidence/normal-historical-analysis.desktop.png",
+      "bytes": 131809,
+      "sha256": "48cb625785368697fb0fb47215ee6e8f25cc682deb416ee44f4aafd1261a8b91"
+    },
+    {
+      "path": "gui-evidence/normal-historical-analysis.dom.json",
+      "bytes": 3652,
+      "sha256": "71373e0fb5c00c2cfeea088df8e306f572fcc9f7671168fc58d6e86d2866cbd2"
+    },
+    {
+      "path": "gui-evidence/normal-shogi-reopened-historical-analysis.webview.png",
+      "bytes": 135007,
+      "sha256": "e1c1466474a7f5601160c8e0f625ed5c2331b25fd9a95031442d485d60d9fce1"
+    },
+    {
+      "path": "gui-evidence/normal-shogi-reopened-historical-analysis.desktop.png",
+      "bytes": 142701,
+      "sha256": "a9ae5cdef9af870efcc0a3b13cbf0938cd8013624fe9324f9d3e9c51f01641ba"
+    },
+    {
+      "path": "gui-evidence/normal-shogi-reopened-historical-analysis.dom.json",
+      "bytes": 29326,
+      "sha256": "339bcbf504f640fb6a1841213d94e30d318487559e2c6267aedadc0aaadf54c7"
+    },
+    {
+      "path": "gui-evidence/verification-standard-result.webview.png",
+      "bytes": 104166,
+      "sha256": "4c91a7269ff04864827db8dccd23252aadb99b15f2267540cc54753391ce679a"
+    },
+    {
+      "path": "gui-evidence/verification-standard-result.desktop.png",
+      "bytes": 117136,
+      "sha256": "09b006d40c86b09e5081e05ab41527c9196bf3d90f701a851b633305fdfb0e59"
+    },
+    {
+      "path": "gui-evidence/verification-standard-result.dom.json",
+      "bytes": 1656,
+      "sha256": "562c29723344803420716637e69a3057d3b84559b3a0b23aa09e0a31f5a76da0"
+    },
+    {
+      "path": "gui-evidence/verification-shogi-capacity-capacity-pause.webview.png",
+      "bytes": 140405,
+      "sha256": "5541798868912ed17d638d0c075ab5486379aa2acf36b334b1932c29a514218b"
+    },
+    {
+      "path": "gui-evidence/verification-shogi-capacity-capacity-pause.desktop.png",
+      "bytes": 154493,
+      "sha256": "37fdda979d42440b25b7a5130a9c3335e31802797b2ee3991e6d31c57b72e948"
+    },
+    {
+      "path": "gui-evidence/verification-shogi-capacity-capacity-pause.dom.json",
+      "bytes": 1011438,
+      "sha256": "d4b2027e4e4d3c20e58606132d057936b029dffc539682703a2173a9a36c30d7"
+    }
+  ],
+  "scope": "Actual Linux Chess/Shogi installed normal and extracted labeled verification packages; no Xiangqi GUI or cross-platform inference. Complete229-fileGUI and package binaries remain in original artifact."
+}

@@ -1,0 +1,173 @@
+{
+  "status": "passed",
+  "experiments": [
+    {
+      "binary": "/home/runner/work/_temp/mshogi-gui-driver/tauri-driver-original",
+      "binary_sha256": "f2673b1e3f50b44cf8bd5a083b9eef56cf573c148a79eddf51d54b812338b1cc",
+      "mode": "reuse",
+      "client": "explicit HTTP/1.1 keep-alive",
+      "requests": [
+        {
+          "connection": 1,
+          "on_connection": 1,
+          "method": "GET",
+          "path": "/status",
+          "body": "",
+          "connection_header": "keep-alive",
+          "reset_after_receipt": false
+        },
+        {
+          "connection": 1,
+          "on_connection": 2,
+          "method": "POST",
+          "path": "/session/boundary/element/save/click",
+          "body": "{}",
+          "connection_header": "keep-alive",
+          "reset_after_receipt": true
+        }
+      ],
+      "client_events": [],
+      "failure": "RemoteDisconnected('Remote end closed connection without response')"
+    },
+    {
+      "binary": "/home/runner/work/_temp/mshogi-gui-driver/tauri-driver-original",
+      "binary_sha256": "f2673b1e3f50b44cf8bd5a083b9eef56cf573c148a79eddf51d54b812338b1cc",
+      "mode": "delivered",
+      "client": "actual Webview urllib transport",
+      "requests": [
+        {
+          "connection": 1,
+          "on_connection": 1,
+          "method": "GET",
+          "path": "/status",
+          "body": "",
+          "connection_header": "close",
+          "reset_after_receipt": false
+        },
+        {
+          "connection": 2,
+          "on_connection": 1,
+          "method": "POST",
+          "path": "/session/boundary/element/save/click",
+          "body": "{}",
+          "connection_header": "close",
+          "reset_after_receipt": true
+        }
+      ],
+      "client_events": [],
+      "failure": "RemoteDisconnected('Remote end closed connection without response')"
+    },
+    {
+      "binary": "/home/runner/work/_temp/mshogi-gui-driver/tauri-driver-original",
+      "binary_sha256": "f2673b1e3f50b44cf8bd5a083b9eef56cf573c148a79eddf51d54b812338b1cc",
+      "mode": "semantic",
+      "client": "actual Webview urllib transport",
+      "requests": [
+        {
+          "connection": 1,
+          "on_connection": 1,
+          "method": "GET",
+          "path": "/status",
+          "body": "",
+          "connection_header": "close",
+          "reset_after_receipt": false
+        },
+        {
+          "connection": 2,
+          "on_connection": 1,
+          "method": "POST",
+          "path": "/session/boundary/execute/sync",
+          "body": "{\"script\": \"return document.body.innerText\", \"args\": []}",
+          "connection_header": "close",
+          "reset_after_receipt": false
+        }
+      ],
+      "client_events": [],
+      "failure": "RuntimeError('{\"error\": \"no such element\", \"message\": \"deliberate semantic rejection\"}')"
+    },
+    {
+      "binary": "/home/runner/work/_temp/mshogi-gui-driver/tauri-driver",
+      "binary_sha256": "94e7345a51842e7a3f78bbd2194b1675cc02f86a9b7ae7ca986b0bf447b754ab",
+      "mode": "reuse",
+      "client": "explicit HTTP/1.1 keep-alive",
+      "requests": [
+        {
+          "connection": 1,
+          "on_connection": 1,
+          "method": "GET",
+          "path": "/status",
+          "body": "",
+          "connection_header": "keep-alive",
+          "reset_after_receipt": false
+        },
+        {
+          "connection": 2,
+          "on_connection": 1,
+          "method": "POST",
+          "path": "/session/boundary/element/save/click",
+          "body": "{}",
+          "connection_header": "keep-alive",
+          "reset_after_receipt": false
+        }
+      ],
+      "client_events": [],
+      "failure": null
+    },
+    {
+      "binary": "/home/runner/work/_temp/mshogi-gui-driver/tauri-driver",
+      "binary_sha256": "94e7345a51842e7a3f78bbd2194b1675cc02f86a9b7ae7ca986b0bf447b754ab",
+      "mode": "delivered",
+      "client": "actual Webview urllib transport",
+      "requests": [
+        {
+          "connection": 1,
+          "on_connection": 1,
+          "method": "GET",
+          "path": "/status",
+          "body": "",
+          "connection_header": "close",
+          "reset_after_receipt": false
+        },
+        {
+          "connection": 2,
+          "on_connection": 1,
+          "method": "POST",
+          "path": "/session/boundary/element/save/click",
+          "body": "{}",
+          "connection_header": "close",
+          "reset_after_receipt": true
+        }
+      ],
+      "client_events": [],
+      "failure": "RemoteDisconnected('Remote end closed connection without response')"
+    },
+    {
+      "binary": "/home/runner/work/_temp/mshogi-gui-driver/tauri-driver",
+      "binary_sha256": "94e7345a51842e7a3f78bbd2194b1675cc02f86a9b7ae7ca986b0bf447b754ab",
+      "mode": "semantic",
+      "client": "actual Webview urllib transport",
+      "requests": [
+        {
+          "connection": 1,
+          "on_connection": 1,
+          "method": "GET",
+          "path": "/status",
+          "body": "",
+          "connection_header": "close",
+          "reset_after_receipt": false
+        },
+        {
+          "connection": 2,
+          "on_connection": 1,
+          "method": "POST",
+          "path": "/session/boundary/execute/sync",
+          "body": "{\"script\": \"return document.body.innerText\", \"args\": []}",
+          "connection_header": "close",
+          "reset_after_receipt": false
+        }
+      ],
+      "client_events": [],
+      "failure": "RuntimeError('{\"error\": \"no such element\", \"message\": \"deliberate semantic rejection\"}')"
+    }
+  ]
+}

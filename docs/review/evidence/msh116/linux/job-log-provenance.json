@@ -1,0 +1,8 @@
+{
+  "run": 41073291104,
+  "job": 124122703356,
+  "source_revision": "900544cf813ebb6b11428ac0fc9d5d45399dee1f",
+  "full_log_bytes": 521079,
+  "full_log_sha256": "35a1b28ae4ec9ecbeb9ed25d28859b977b24dee2b03f8ac1ddd812b2d52c1fb4",
+  "method": "gh api actions/jobs/124122703356/logs --allow-escape-sequences; retain selected numbered lines with ANSI escapes removed for readability. Full log remains at referenced job."
+}

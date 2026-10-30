@@ -1,0 +1,18 @@
+{
+  "source_revision": "900544cf813ebb6b11428ac0fc9d5d45399dee1f",
+  "files": {
+    "package-smoke.json": "bfbc8d8a365b8ff8fc30c02582bdaef8422be9ec22843608753989e27ccf9cc2",
+    "bundle/deb/mShogi_0.1.0_amd64.deb": "c6c7d7e77fedb2be2616f4e7b0365a08a78c6b2a2d2f17fa16c2a8880de7b17c",
+    "bundle/deb/mShogi_0.1.0_amd64/data.tar.gz": "01ff9e1dc56e5bfe947e73af608b3a0170875fbbc86e3f179f371d12070f5825",
+    "bundle/deb/mShogi_0.1.0_amd64/debian-binary": "d526eb4e878a23ef26ae190031b4efd2d58ed66789ac049ea3dbaf74c9df7402",
+    "bundle/deb/mShogi_0.1.0_amd64/control.tar.gz": "3c8dab5a0eab2c0c6aaf97214edb1164ca0405d6f119b541f2de06ef51e8aab1",
+    "bundle/deb/mShogi_0.1.0_amd64/control/md5sums": "f853e358b7d1cf128daa8ae1595ad9dcba4c299a6af7b6345a3d66edd8abf975",
+    "bundle/deb/mShogi_0.1.0_amd64/control/control": "97a1d54c96ab78b934453e865aaf9b0bda4ca71adc274ffc4b5ac7c74b6f837a",
+    "bundle/deb/mShogi_0.1.0_amd64/data/usr/bin/mshogi": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+    "bundle/deb/mShogi_0.1.0_amd64/data/usr/bin/mshogi-desktop": "6cebc61fa4854ed4bdadab3d400eae6e038da584c34be9db1ec9f3c30b72bc39",
+    "bundle/deb/mShogi_0.1.0_amd64/data/usr/share/applications/mShogi.desktop": "3bbb72ff33ca53e3f505862eee0d4fdf7e73d282274d9f026fd82712365104da",
+    "bundle/deb/mShogi_0.1.0_amd64/data/usr/share/icons/hicolor/32x32/apps/mshogi-desktop.png": "cbe4bdfe7a49366fdf91392bbccd296f012831f6e7d1ff0f8e83b28b6d558fca",
+    "bundle/deb/mShogi_0.1.0_amd64/data/usr/share/icons/hicolor/128x128/apps/mshogi-desktop.png": "49559e4adeb153dbccce254d0ed969436df336186d3285b937a259745de30ada",
+    "bundle/deb/mShogi_0.1.0_amd64/data/usr/share/icons/hicolor/256x256@2/apps/mshogi-desktop.png": "8e518055e3e3e38996922dbe04d7e70a9a91bb3d7cd051c8e6cbf1c6f03da120"
+  }
+}

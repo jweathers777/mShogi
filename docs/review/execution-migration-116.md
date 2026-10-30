@@ -137,11 +137,70 @@ the capacity regression: pass. No findings. No historical evidence was rewritten
 
 ## Current-source CI and acceptance
 
-Pending the reviewed source commit's normal CI. No new packaged GUI or
-cross-platform success is claimed yet. MSH-122's existing baseline remains valid
-historical evidence, not verification of this changed execution boundary.
-MSH-111 stays Done; MSH-112's separate runner race is not changed or masked.
+Reviewed production source **`900544cf813ebb6b11428ac0fc9d5d45399dee1f`** is
+integrated and pushed on `codex/rewrite`. All three jobs in each workflow passed:
 
-MSH-116 remains In Review until applicable CI, current-stage package checks,
-independent evidence reconciliation and normal integration/push are recorded.
-MSH-117 is the next task under the existing graph once116 is Done; it is unstarted.
+- [Rust CI41073291155](https://github.com/jweathers777/mShogi/actions/runs/41073291155):
+  Ubuntu24.04, macOS15 and Windows2022.
+- [Desktop CI41073291104](https://github.com/jweathers777/mShogi/actions/runs/41073291104):
+  package, bundled-engine and relevant native/frontend/verifier checks on all
+  three systems. The Linux log records the complete **241 frontend tests** and
+  **41 GUI-verifier Python tests** passing.
+
+Exact job metadata is retained in [native-ci.json](evidence/msh116/native-ci.json)
+and [desktop-ci.json](evidence/msh116/desktop-ci.json). Final acceptance changes
+only task/document/evidence files; production source remains900544c.
+
+Actual installed/packaged GUI checks passed **14 phases on Linux and14 on
+Windows**, including ordinary play, analysis cancellation/replacement, recovery,
+Save/Open, exact historical selection, Return to live, stopped reopen/Resume,
+capacity and native quit/window-close guards. Separately labeled verification
+packages exercise difficult states; normal packages exclude QA markers. Actual
+saved Chess/Shogi observations use durable schema1, including both256-observation
+capacity archives. This is current-stage persistence evidence, not an R2 redesign.
+
+The root integrator and fresh independent reviewer audited all **229 Linux** and
+**202 Windows** GUI evidence hashes, package identities,14 native pre-teardown
+shutdown proofs per platform and retained archive semantics. Native host death
+and empty immediate/final matching-process lists establish shutdown before test
+cleanup; cleanup success is not substituted for native exit evidence. Selected
+original reports, manifests, saved documents and captures are retained locally:
+
+- [Linux artifact index](evidence/msh116/linux/artifact-index.json), artifact
+  **12986746658**, job124122703356, reported artifact digest
+  `sha256:df89bd78b0cf928023d21d8df9759e67c7595b9deee566db3bd30ac6beb357e1`.
+  Ubuntu24.04.5/X11, WebKitGTK2.52.6, recorded MSH-111 no-pool driver provenance.
+- [Windows artifact index](evidence/msh116/windows/artifact-index.json), artifact
+  **12987251774**, job124122703284, reported artifact digest
+  `sha256:a28416b65eeadce64ee8b6cb1a9a663e2a332534b677365171565d442482bf5e`.
+  Windows2022Server10.0.20348, WebView2 runtime131.0.2903.86; exact driver and
+  normal/verification package identities are retained in the report/manifests.
+
+Large packages/full artifact bundles stay in the referenced CI artifacts rather
+than Git. Retained file hashes identify the selected original evidence. Windows JSON keeps
+its original CRLF bytes under scoped evidence attributes; the initial staged
+diff check flagged those line endings, and the CR-at-EOL declaration preserves
+the audited bytes without normalizing the source evidence.
+Mac evidence establishes package/bundled-engine checks and native CI, **not new
+macOS GUI interaction**. No new Xiangqi GUI campaign is claimed; actual native
+Xiangqi subprocess, controller, archive and frontend tests establish this bounded
+contract migration. All-game/platform GUI integration remains later-stage work.
+MSH-111 stays Done; MSH-112's separate runner race is not fixed or masked by the
+passing current run. Historical failed checks remain recorded.
+
+Final independent review used a separate read-only agent, not a builder. Its
+source, semantic persistence and artifact audits support all six criteria with
+**no unresolved material finding**. Actual per-platform review scope is retained
+in the Linux/Windows independent-review JSON files.
+
+| Criterion | Final supporting evidence |
+| --- | --- |
+| AC1 | One protocol4 family/bridge path; removed wire wrappers, adapter and fallback; actual child and external protocol checks. |
+| AC2 | Native tagged records/results, exact context binding and semantic fixtures; wrong purpose/selection/history/identity/limits and retired-work regressions. |
+| AC3 | Durable schema1 semantic observations; actual native archives and installed Chess/Shogi Save/Open/history/capacity journeys. |
+| AC4 | Unchanged measured encoded caps, actual child cancellation/replacement/watchdog/diagnostic tests and native package shutdown proofs. |
+| AC5 | Current-stage complete persistence works without activating R2, a throwaway format or permanent execution adapter; outer archive consolidation stays MSH-117. |
+| AC6 | Independent source/test/artifact review, exact-source six green CI jobs, normal source integration/push and this final evidence reconciliation. |
+
+MSH-116 is complete. MSH-117 is next dependency-ready under the existing graph
+and remains unstarted. No R2–R6 implementation was authorized by this completion.

@@ -1,0 +1,15 @@
+{
+  "source_revision": "900544cf813ebb6b11428ac0fc9d5d45399dee1f",
+  "reviewer": "/root/r1_independent_review",
+  "method": "Fresh read-only agent independently audited downloaded actual CI artifacts, hashes, native shutdown proofs and saved observation semantics; recorded by integrator from final reviewer findings. No separate GUI campaign or human review.",
+  "material_findings": [],
+  "verified": {
+    "gui_file_hashes": 202,
+    "passed_phases": 14,
+    "native_pre_teardown_shutdown_proofs": 14,
+    "saved_observation_schema": 1,
+    "both_256_observation_archives": true,
+    "normal_manifest_source_matches": true
+  },
+  "limits": "Windows Chess/Shogi packaged GUI only; no Xiangqi or macOS GUI inference."
+}

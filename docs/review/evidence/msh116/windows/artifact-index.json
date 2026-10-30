@@ -1,0 +1,57 @@
+{
+  "source_revision": "900544cf813ebb6b11428ac0fc9d5d45399dee1f",
+  "run": 41073291104,
+  "job": 124122703284,
+  "artifact_id": 12987251774,
+  "artifact_name": "desktop-windows-2022",
+  "artifact_bytes": 29625774,
+  "reported_artifact_digest": "sha256:a28416b65eeadce64ee8b6cb1a9a663e2a332534b677365171565d442482bf5e",
+  "retained_files": [
+    {
+      "path": "gui-evidence/gui-report.json",
+      "bytes": 650799,
+      "sha256": "e0e2a12a5538ddcdecb847e2de857c90c76a2884a072f25854d99fa72fd3d255"
+    },
+    {
+      "path": "gui-packages/normal/manifest.json",
+      "bytes": 300,
+      "sha256": "7ed4d598b694d6f27bce44369fa2b44e21a4fa2b8df77c9fcfdcd3946dfbfc7a"
+    },
+    {
+      "path": "gui-packages/verification/manifest.json",
+      "bytes": 345,
+      "sha256": "963aae8fa06cea77989c192bdd55c987f8d13f5f0f2a2cdbce900a3cca015e7d"
+    },
+    {
+      "path": "package-smoke.json",
+      "bytes": 5891,
+      "sha256": "54896cc069f3fd8699f687302de1373052b8c2c59479cb8d1e5cfd1d2876cced"
+    },
+    {
+      "path": "webview-driver.json",
+      "bytes": 1384,
+      "sha256": "1c3740ddbdb26e95053869532206fe39059c1b842a3fcba97d58e1d0458d1778"
+    },
+    {
+      "path": "gui-evidence/normal-complete.mshogi",
+      "bytes": 9058,
+      "sha256": "b52fac531555d3022ee79074c99721c81221aabf3004d02caf7140649e816652"
+    },
+    {
+      "path": "gui-evidence/normal-shogi-history.mshogi",
+      "bytes": 12044,
+      "sha256": "25de7545a10dcd1072badcf77d22097d99ce0446541a857f3e25d6992821c9f9"
+    },
+    {
+      "path": "gui-evidence/normal-historical-analysis.webview.png",
+      "bytes": 119462,
+      "sha256": "dad3c985808551c1624aa418721b3e1d7432fded0f5483b9ec7a24ab24d790e0"
+    },
+    {
+      "path": "gui-evidence/normal-shogi-reopened-historical-analysis.webview.png",
+      "bytes": 157329,
+      "sha256": "8c891f24bb51b81b1f2f1c18b48100929d69ef661e4185a3fe5e19323c57e9a4"
+    }
+  ],
+  "scope": "Actual Windows Chess/Shogi installed normal and labeled verification package GUI. Full 202-file evidence and package binaries remain in original artifact. No Xiangqi GUI claim."
+}

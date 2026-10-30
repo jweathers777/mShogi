@@ -1,5 +1,5 @@
 //! Actual native Xiangqi ordinary-search results, distinct from exact proof operations.
-use crate::{SharedPurpose, SharedRequest};
+use crate::{ExecutionContext, ExecutionPurpose};
 use mshogi_core::{
     native::CanonicalRecord,
     xiangqi::{Action, Conclusion, NoWinAssessment, PendingAdjudication, Side},
@@ -156,11 +156,14 @@ impl XiangqiResult {
             _ => Err("unexpected exact proof in ordinary search"),
         }
     }
-    pub(crate) fn matches(&self, context: &SharedRequest) -> bool {
+    pub(crate) fn matches(&self, context: &ExecutionContext) -> bool {
         let CanonicalRecord::Xiangqi(record) = &context.game else {
             return false;
         };
-        if matches!(context.purpose, SharedPurpose::ChessFullReachability { .. }) {
+        if matches!(
+            context.purpose,
+            ExecutionPurpose::ChessFullReachability { .. }
+        ) {
             return false;
         }
         let t = match self {

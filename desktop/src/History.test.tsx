@@ -1,3 +1,4 @@
+import capacityJson from "./__fixtures__/capacity.json";
 // @vitest-environment jsdom
 import {
   act,
@@ -230,4 +231,26 @@ it("returns keyboard focus to its SVG square after cancelling a native Quit prom
   expect(session.cancelClose).toHaveBeenCalledExactlyOnceWith();
   expect(screen.queryByRole("dialog")).toBeNull();
   expect(document.activeElement).toBe(square);
+});
+
+it("does not interpret another native result family as historical Chess telemetry", () => {
+  const accepted = structuredClone(moves.observations.at(-1)!);
+  accepted.observation.result = { kind: "shogi", result: { kind: "incomplete" } };
+  render(<SavedObservations observations={[accepted]} />);
+  fireEvent.click(screen.getByText(/Recorded search observations \(/));
+  expect(screen.getByText(/Observation belongs to another native game/)).toBeTruthy();
+  expect(screen.queryByText(/pawns from|Read-only suggestion:/)).toBeNull();
+});
+
+it("renders the current native capacity observation as incomplete historical evidence", () => {
+  const capacity = capacityJson as Snapshot;
+  const last = capacity.observations.at(-1)!;
+  expect(capacity.observations).toHaveLength(255);
+  expect(last.observation.schema_version).toBe(1);
+  expect(last.observation).not.toHaveProperty("protocol");
+  expect(last.observation.context).not.toHaveProperty("protocol");
+  render(<SavedObservations observations={[last]} />);
+  fireEvent.click(screen.getByText(/Recorded search observations \(/));
+  expect(screen.getByText(/Incomplete search · no completed action/)).toBeTruthy();
+  expect(screen.queryByText(/pawns from|Read-only suggestion:/)).toBeNull();
 });

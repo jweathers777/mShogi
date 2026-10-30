@@ -10,10 +10,9 @@ mod bridge;
 mod server;
 mod shared;
 mod shogi;
-mod wire;
 mod xiangqi;
 pub use bridge::{BridgeOptions, EngineBridge, SubmitError};
-use mshogi_core::chess::{Action, ChessOutcome, ClaimRequest, Color, DrawClaim, GameRecord};
+use mshogi_core::chess::{Action, ChessOutcome, ClaimRequest, Color, DrawClaim};
 use mshogi_search::search::{SearchChoice, SearchDecision, SearchResult, SearchStatus};
 use serde::{Deserialize, Serialize};
 pub use server::serve_once;
@@ -22,7 +21,7 @@ pub use shogi::*;
 pub use xiangqi::*;
 
 /// Current internal protocol version.
-pub const PROTOCOL_VERSION: u32 = 2;
+pub const PROTOCOL_VERSION: u32 = 4;
 /// Maximum encoded request line, excluding its newline.
 pub const MAX_REQUEST_BYTES: usize = 1024 * 1024;
 /// Maximum encoded response line, excluding its newline.
@@ -38,26 +37,6 @@ pub struct WorkLimits {
     pub depth: u16,
     /// Maximum attempted node visits, including discarded iterations.
     pub nodes: u64,
-}
-/// Exact context carried in both directions, including known history and modes.
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct EngineRequest {
-    /// Protocol version, currently two.
-    pub protocol: u32,
-    /// Explicit execution purpose; never defaulted from a missing field.
-    pub purpose: RequestPurpose,
-    /// Host-issued unique, increasing request identity.
-    pub request_id: u64,
-    /// Host session revision, independent of ply count.
-    pub session_version: u64,
-    /// Unique, increasing child process generation.
-    pub process_generation: u64,
-    /// Canonical full native game context, not just a FEN.
-    #[serde(with = "record_json")]
-    pub game: GameRecord,
-    /// Recorded deterministic work limits.
-    pub limits: WorkLimits,
 }
 /// Serializable native draw claim, including an optional unplayed intended move.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -181,7 +160,7 @@ pub struct EngineFailure {
 /// Lossless native decision or explicit lack of a usable decision.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
-pub enum EngineResult {
+pub enum ChessResult {
     /// Actual bounded cooperative proof observations, never a live chess result.
     Reachability {
         /// Exact native result including real work and incomplete-stop reason.
@@ -219,7 +198,7 @@ pub enum EngineResult {
         failure: EngineFailure,
     },
 }
-impl EngineResult {
+impl ChessResult {
     pub(crate) fn failure(kind: FailureKind, message: impl ToString) -> Self {
         let mut message = message.to_string();
         if message.len() > MAX_STDERR_BYTES {
@@ -260,32 +239,5 @@ impl EngineResult {
             Some(SearchDecision::Finished(outcome)) => Self::Finished { outcome, telemetry },
             None => Self::Incomplete { telemetry },
         }
-    }
-}
-/// One final result, permanently tied to its full submitted context.
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct EngineResponse {
-    /// Exact submitted context echoed without downgrade.
-    pub context: EngineRequest,
-    /// Distinct native result.
-    pub result: EngineResult,
-}
-mod record_json {
-    use super::*;
-    pub fn serialize<S: serde::Serializer>(
-        record: &GameRecord,
-        serializer: S,
-    ) -> Result<S::Ok, S::Error> {
-        let raw = serde_json::value::RawValue::from_string(record.to_json())
-            .map_err(serde::ser::Error::custom)?;
-        raw.serialize(serializer)
-    }
-    pub fn deserialize<'de, D: serde::Deserializer<'de>>(
-        deserializer: D,
-    ) -> Result<GameRecord, D::Error> {
-        // Preserve duplicate fields for the strict native parser to reject.
-        let raw = Box::<serde_json::value::RawValue>::deserialize(deserializer)?;
-        GameRecord::from_json(raw.get()).map_err(serde::de::Error::custom)
     }
 }

@@ -3,7 +3,7 @@ use mshogi_core::chess::{Color, MateReachability};
 use mshogi_desktop_session::{
     AnalysisOperation, AnalysisPhase, DesktopCommand, DesktopController, EnginePhase, Snapshot,
 };
-use mshogi_engine::{EngineResult, RequestPurpose};
+use mshogi_engine::{ChessResult, ExecutionPurpose};
 use std::{
     path::PathBuf,
     thread,
@@ -67,28 +67,24 @@ fn actual_analysis_suggestions_never_commit_a_turn_and_resume_is_explicit() {
     assert_eq!(result.turn, Color::Black);
     assert!(result.play_paused);
     let context = result.analysis.context.as_ref().unwrap();
+    let mshogi_core::native::CanonicalRecord::Chess(record) = &context.game else {
+        panic!("chess analysis context");
+    };
     assert!(matches!(
         context.purpose,
-        RequestPurpose::MoveAnalysis { .. }
+        ExecutionPurpose::MoveAnalysis { .. }
     ));
     assert_eq!(
-        context
-            .game
-            .replay_history()
-            .unwrap()
-            .game
-            .position()
-            .to_fen(),
+        record.replay_history().unwrap().game.position().to_fen(),
         result.fen
     );
-    let Some(EngineResult::Move { action, telemetry }) = &result.analysis.result else {
+    let Some(ChessResult::Move { action, telemetry }) = &result.analysis.result else {
         panic!("expected a real move suggestion: {:?}", result.analysis)
     };
     assert_eq!(telemetry.completed_depth, 2);
     assert!(telemetry.nodes > 0 && telemetry.nodes <= 20_000);
     assert!(
-        context
-            .game
+        record
             .replay_history()
             .unwrap()
             .game
@@ -136,7 +132,7 @@ fn actual_full_budget_exhaustion_and_cancelled_replacement_leave_match_unchanged
     });
     assert_eq!(full.fen, initial.fen);
     assert!(full.history.is_empty() && full.conclusion.is_none());
-    let Some(EngineResult::Reachability {
+    let Some(ChessResult::Reachability {
         result: MateReachability::Unknown { work, .. },
     }) = &full.analysis.result
     else {

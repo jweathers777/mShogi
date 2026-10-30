@@ -1,3 +1,7 @@
+> MSH-116 update: native engine behavior below is preserved. Older internal
+> wire/API descriptions are historical; actual consumers now use the sole
+> [current execution contract](../desktop/internal-execution-v4.md), with durable semantic observations.
+
 # Native shogi evaluation, search and execution (MSH-70)
 
 This is a bounded functional baseline for the approved

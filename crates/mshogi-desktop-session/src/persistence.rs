@@ -46,7 +46,7 @@ pub struct ArchivedObservation {
     /// Native target description.
     pub label: String,
     /// Exact immutable request and actual final result.
-    pub response: EngineResponse,
+    pub observation: ExecutionObservation,
     /// True after restore; never resumes old work.
     pub historical: bool,
     /// Root perspective supplied natively, never inferred by the frontend.
@@ -569,23 +569,22 @@ fn preflight_reserved(archive: &Archive, reserve_controls: usize) -> Result<Matc
         replay_work = replay_work.saturating_add(events.saturating_mul(12));
     }
     for observation in &archive.observations {
-        let continuation = match &observation.response.result {
-            EngineResult::Move { telemetry, .. }
-            | EngineResult::Claim { telemetry, .. }
-            | EngineResult::Finished { telemetry, .. }
-            | EngineResult::Incomplete { telemetry } => telemetry.principal_variation.len(),
-            EngineResult::Reachability {
+        let continuation = match chess_observation_result(&observation.observation).as_ref() {
+            Some(ChessResult::Move { telemetry, .. })
+            | Some(ChessResult::Claim { telemetry, .. })
+            | Some(ChessResult::Finished { telemetry, .. })
+            | Some(ChessResult::Incomplete { telemetry }) => telemetry.principal_variation.len(),
+            Some(ChessResult::Reachability {
                 result: MateReachability::Possible { witness, .. },
-            } => witness.len(),
+            }) => witness.len(),
             _ => 0,
         };
         replay_work = replay_work.saturating_add(
             observation
-                .response
+                .observation
                 .context
                 .game
-                .events()
-                .len()
+                .event_count()
                 .saturating_add(continuation)
                 .saturating_mul(4)
                 .saturating_add(8),
@@ -637,16 +636,16 @@ fn preflight_reserved(archive: &Archive, reserve_controls: usize) -> Result<Matc
         }
     }
     for (i, observation) in archive.observations.iter().enumerate() {
-        if let mshogi_engine::RequestPurpose::MoveAnalysis { target }
-        | mshogi_engine::RequestPurpose::FullReachability { target, .. } =
-            &observation.response.context.purpose
+        if let mshogi_engine::ExecutionPurpose::MoveAnalysis { target }
+        | mshogi_engine::ExecutionPurpose::ChessFullReachability { target, .. } =
+            &observation.observation.context.purpose
             && (target.selection_id == 0
                 || target.selection_id > archive.next_request
                 || target.selection_id >= MAX_SAFE_ID)
         {
             return Err("Observation selection identity exceeds its saved watermark.".into());
         }
-        let context = &observation.response.context;
+        let context = &observation.observation.context;
         if observation.sequence != (i + 1) as u64
             || context.request_id > archive.next_request
             || context.process_generation > archive.next_request
@@ -656,9 +655,9 @@ fn preflight_reserved(archive: &Archive, reserve_controls: usize) -> Result<Matc
             || context.request_id == 0
             || context.process_generation == 0
             || !context.valid_limits()
-            || context.protocol != mshogi_engine::PROTOCOL_VERSION
-            || context.game.adjudication_mode() != AdjudicationMode::M2
-            || context.game.events().len() > MAX_ARCHIVE_EVENTS
+            || !observation.observation.matches(context)
+            || chess_record(&context.game)?.adjudication_mode() != AdjudicationMode::M2
+            || context.game.event_count() > MAX_ARCHIVE_EVENTS
         {
             return Err("Invalid observation ordering, identity or live-mode context.".into());
         }
@@ -722,7 +721,7 @@ fn validate_observation_lineage(
     lineage: &[GameRecord],
     stopped: &mut impl FnMut() -> bool,
 ) -> Result<(), String> {
-    let source = &observation.response.context.game;
+    let source = chess_record(&observation.observation.context.game)?;
     let record = std::iter::once(final_record)
         .chain(lineage)
         .find(|record| record.prefix(source.events().len()).as_ref() == Some(source))
@@ -736,16 +735,19 @@ fn validate_observation(
     final_record: &GameRecord,
     stopped: &mut impl FnMut() -> bool,
 ) -> Result<(), String> {
-    let context = &observation.response.context;
-    let replay = AdjudicatedGame::replay_record_with_stop(&context.game, &mut *stopped)
-        .map_err(|e| e.to_string())?;
-    if final_record.prefix(context.game.events().len()).as_ref() != Some(&context.game) {
+    let context = &observation.observation.context;
+    let replay =
+        AdjudicatedGame::replay_record_with_stop(chess_record(&context.game)?, &mut *stopped)
+            .map_err(|e| e.to_string())?;
+    if final_record.prefix(context.game.event_count()).as_ref()
+        != Some(chess_record(&context.game)?)
+    {
         return Err("Observation target history is not a prefix of this match.".into());
     }
-    if let mshogi_engine::RequestPurpose::MoveAnalysis { target }
-    | mshogi_engine::RequestPurpose::FullReachability { target, .. } = &context.purpose
-        && (target.turn != replay.position().side_to_move()
-            || target.ply != replay.history().ply_count() as u64
+    if let mshogi_engine::ExecutionPurpose::MoveAnalysis { target }
+    | mshogi_engine::ExecutionPurpose::ChessFullReachability { target, .. } = &context.purpose
+        && (target.turn != NativeSide::Chess(replay.position().side_to_move())
+            || target.board_ply != replay.history().ply_count() as u64
             || target.session_version != context.session_version)
     {
         return Err("Observation target provenance disagrees with its game context.".into());
@@ -761,22 +763,27 @@ fn validate_result(
     game: &AdjudicatedGame,
     stopped: &mut impl FnMut() -> bool,
 ) -> Result<(), String> {
-    use mshogi_engine::{EngineChoice, RequestPurpose, StopReason};
-    let context = &observation.response.context;
-    let result = &observation.response.result;
-    let full = matches!(context.purpose, RequestPurpose::FullReachability { .. });
+    use mshogi_engine::{EngineChoice, ExecutionPurpose, StopReason};
+    let context = &observation.observation.context;
+    let native_result = chess_observation_result(&observation.observation)
+        .ok_or("Wrong native observation result family.")?;
+    let result = &native_result;
+    let full = matches!(
+        context.purpose,
+        ExecutionPurpose::ChessFullReachability { .. }
+    );
     // Rejected native choices remain explicit historical failure evidence.
     if let Some(message) = &observation.application_error {
         if message.is_empty() || message.len() > mshogi_engine::MAX_STDERR_BYTES {
             return Err("Invalid observation application diagnostic.".into());
         }
         let invalid = match result {
-            EngineResult::Move { action, .. } if !full => game.clone().apply(*action).is_err(),
-            EngineResult::Claim { claim, .. } if !full => {
+            ChessResult::Move { action, .. } if !full => game.clone().apply(*action).is_err(),
+            ChessResult::Claim { claim, .. } if !full => {
                 game.clone().claim((*claim).into()).is_err()
             }
-            EngineResult::Finished { outcome, .. } if !full => game.outcome() != Some(*outcome),
-            EngineResult::Reachability { .. } => !full,
+            ChessResult::Finished { outcome, .. } if !full => game.outcome() != Some(*outcome),
+            ChessResult::Reachability { .. } => !full,
             _ => full,
         };
         return if invalid {
@@ -785,15 +792,15 @@ fn validate_result(
             Err("Observation marks a valid choice as an application failure.".into())
         };
     }
-    if let EngineResult::Failure { failure } = result {
+    if let ChessResult::Failure { failure } = result {
         return if failure.message.len() <= mshogi_engine::MAX_STDERR_BYTES {
             Ok(())
         } else {
             Err("Failure diagnostic exceeds its byte limit.".into())
         };
     }
-    if let EngineResult::Reachability { result } = result {
-        let RequestPurpose::FullReachability { limits, .. } = context.purpose else {
+    if let ChessResult::Reachability { result } = result {
+        let ExecutionPurpose::ChessFullReachability { limits, .. } = context.purpose else {
             return Err("Reachability observations require the Full purpose.".into());
         };
         let work = match result {
@@ -806,7 +813,7 @@ fn validate_result(
                 {
                     return Err("Reachability witness exceeds recorded work evidence.".into());
                 }
-                let RequestPurpose::FullReachability { mate, .. } = context.purpose else {
+                let ExecutionPurpose::ChessFullReachability { mate, .. } = context.purpose else {
                     unreachable!()
                 };
                 let targets: &[Color] = match mate {
@@ -847,10 +854,10 @@ fn validate_result(
         return Err("Full purpose has minimax observations.".into());
     }
     let telemetry = match result {
-        EngineResult::Move { telemetry, .. }
-        | EngineResult::Claim { telemetry, .. }
-        | EngineResult::Finished { telemetry, .. }
-        | EngineResult::Incomplete { telemetry } => telemetry,
+        ChessResult::Move { telemetry, .. }
+        | ChessResult::Claim { telemetry, .. }
+        | ChessResult::Finished { telemetry, .. }
+        | ChessResult::Incomplete { telemetry } => telemetry,
         _ => unreachable!(),
     };
     if telemetry.completed_depth > context.limits.depth
@@ -864,24 +871,24 @@ fn validate_result(
         return Err("Minimax observations disagree with recorded limits/iteration shape.".into());
     }
     match result {
-        EngineResult::Incomplete { .. }
+        ChessResult::Incomplete { .. }
             if telemetry.completed_depth != 0 || telemetry.status == StopReason::Complete =>
         {
             return Err("Incomplete result contains a completed iteration.".into());
         }
-        EngineResult::Move { action, .. }
+        ChessResult::Move { action, .. }
             if telemetry.principal_variation.first()
                 != Some(&EngineChoice::Move { action: *action }) =>
         {
             return Err("Move decision disagrees with its continuation.".into());
         }
-        EngineResult::Claim { claim, .. }
+        ChessResult::Claim { claim, .. }
             if telemetry.principal_variation.first()
                 != Some(&EngineChoice::Claim { claim: *claim }) =>
         {
             return Err("Claim decision disagrees with its continuation.".into());
         }
-        EngineResult::Finished { outcome, .. }
+        ChessResult::Finished { outcome, .. }
             if game.outcome() != Some(*outcome) || !telemetry.principal_variation.is_empty() =>
         {
             return Err("Finished observation disagrees with native root outcome.".into());
@@ -1085,20 +1092,14 @@ impl DesktopSession {
             settings: self.settings.clone(),
         }
     }
-    pub(super) fn remember(&mut self, response: EngineResponse) {
+    pub(super) fn remember(&mut self, response: ExecutionObservation) {
         let label = match &response.context.purpose {
-            mshogi_engine::RequestPurpose::EngineTurn => format!(
+            mshogi_engine::ExecutionPurpose::EngineTurn {} => format!(
                 "Engine turn after {} plies",
-                response
-                    .context
-                    .game
-                    .events()
-                    .iter()
-                    .filter(|event| matches!(event.kind, RecordEventKind::Move(_)))
-                    .count()
+                response.context.game.known_board_actions()
             ),
-            mshogi_engine::RequestPurpose::MoveAnalysis { target }
-            | mshogi_engine::RequestPurpose::FullReachability { target, .. } => {
+            mshogi_engine::ExecutionPurpose::MoveAnalysis { target }
+            | mshogi_engine::ExecutionPurpose::ChessFullReachability { target, .. } => {
                 target.label.clone()
             }
         };
@@ -1106,13 +1107,18 @@ impl DesktopSession {
             sequence: self.observations.len() as u64 + 1,
             label,
             analyzed_turn: match &response.context.purpose {
-                mshogi_engine::RequestPurpose::EngineTurn => {
+                mshogi_engine::ExecutionPurpose::EngineTurn {} => {
                     self.game.game().position().side_to_move()
                 }
-                mshogi_engine::RequestPurpose::MoveAnalysis { target }
-                | mshogi_engine::RequestPurpose::FullReachability { target, .. } => target.turn,
+                mshogi_engine::ExecutionPurpose::MoveAnalysis { target }
+                | mshogi_engine::ExecutionPurpose::ChessFullReachability { target, .. } => {
+                    match target.turn {
+                        NativeSide::Chess(turn) => turn,
+                        _ => unreachable!("Chess observation checked before retention"),
+                    }
+                }
             },
-            response,
+            observation: response,
             historical: false,
             application_error: None,
         });
@@ -1830,8 +1836,8 @@ mod tests {
                 100_000_000_000,
             )
             .unwrap();
-        let request = session.analysis_request().unwrap();
-        let mut input = serde_json::to_vec(&request).unwrap();
+        let request = session.analysis_request().unwrap().context;
+        let mut input = serde_json::to_vec(&test_request(request.clone())).unwrap();
         input.push(b'\n');
         let mut output = Vec::new();
         mshogi_engine::serve_once(std::io::Cursor::new(input), &mut output).unwrap();
@@ -1840,18 +1846,21 @@ mod tests {
         let final_record = session.game.game().record();
         assert!(validate_observation(&good.observations[0], &final_record, &mut || false).is_ok());
         let mut bad = good.clone();
-        bad.observations[0].response.context.limits.depth = 9;
+        bad.observations[0].observation.context.limits.depth = 9;
         assert!(preflight(&bad).is_err());
         let mut bad = good.observations[0].clone();
-        if let EngineResult::Move { telemetry, .. } = &mut bad.response.result {
+        if let ExecutionResult::Chess {
+            result: ChessResult::Move { telemetry, .. },
+        } = &mut bad.observation.result
+        {
             telemetry.score = Some(i32::MIN);
         }
         assert!(validate_observation(&bad, &final_record, &mut || false).is_err());
         let mut bad = good.observations[0].clone();
         let mut wire: serde_json::Value =
-            serde_json::from_str(&bad.response.context.game.to_json()).unwrap();
-        wire["claim_policy"] = "auto_claim".into();
-        bad.response.context.game = GameRecord::from_json(&wire.to_string()).unwrap();
+            serde_json::to_value(&bad.observation.context.game).unwrap();
+        wire["payload"]["claim_policy"] = "auto_claim".into();
+        bad.observation.context.game = CanonicalRecord::from_json(&wire.to_string()).unwrap();
         assert!(validate_observation(&bad, &final_record, &mut || false).is_err());
         let directory = directory();
         let path = directory.join("timestamps.mshogi");
@@ -1890,25 +1899,30 @@ mod tests {
                 1,
             )
             .unwrap();
-        let request = session.analysis_request().unwrap();
-        let mut bytes = serde_json::to_vec(&request).unwrap();
+        let request = session.analysis_request().unwrap().context;
+        let mut bytes = serde_json::to_vec(&test_request(request.clone())).unwrap();
         bytes.push(b'\n');
         let mut output = Vec::new();
         mshogi_engine::serve_once(std::io::Cursor::new(bytes), &mut output).unwrap();
         assert!(session.accept_analysis(serde_json::from_slice(&output).unwrap()));
         let good = session.observations[0].clone();
         assert!(matches!(
-            good.response.result,
-            EngineResult::Reachability {
-                result: MateReachability::Possible { .. }
+            good.observation.result,
+            ExecutionResult::Chess {
+                result: ChessResult::Reachability {
+                    result: MateReachability::Possible { .. }
+                }
             }
         ));
         assert!(validate_observation(&good, &live.record(), &mut || false).is_ok());
         for action in ["g6g5", "g6f6"] {
             let mut bad = good.clone();
-            if let EngineResult::Reachability {
-                result: MateReachability::Possible { witness, .. },
-            } = &mut bad.response.result
+            if let ExecutionResult::Chess {
+                result:
+                    ChessResult::Reachability {
+                        result: MateReachability::Possible { witness, .. },
+                    },
+            } = &mut bad.observation.result
             {
                 *witness = vec![action.parse().unwrap()];
             }
@@ -1918,15 +1932,15 @@ mod tests {
             );
         }
         let mut wrong_side = good.clone();
-        if let mshogi_engine::RequestPurpose::FullReachability { mate, .. } =
-            &mut wrong_side.response.context.purpose
+        if let mshogi_engine::ExecutionPurpose::ChessFullReachability { mate, .. } =
+            &mut wrong_side.observation.context.purpose
         {
             *mate = mshogi_engine::ReachabilityTarget::Black;
         }
         assert!(validate_observation(&wrong_side, &live.record(), &mut || false).is_err());
         let mut either = good.clone();
-        if let mshogi_engine::RequestPurpose::FullReachability { mate, .. } =
-            &mut either.response.context.purpose
+        if let mshogi_engine::ExecutionPurpose::ChessFullReachability { mate, .. } =
+            &mut either.observation.context.purpose
         {
             *mate = mshogi_engine::ReachabilityTarget::Either;
         }
@@ -1938,8 +1952,8 @@ mod tests {
         });
         assert!(interrupted.unwrap_err().contains("interrupt"));
         let mut overflow = archive(&session);
-        if let mshogi_engine::RequestPurpose::FullReachability { target, .. } =
-            &mut overflow.observations[0].response.context.purpose
+        if let mshogi_engine::ExecutionPurpose::ChessFullReachability { target, .. } =
+            &mut overflow.observations[0].observation.context.purpose
         {
             target.selection_id = u64::MAX;
         }
@@ -1987,11 +2001,11 @@ mod tests {
                 controller.at_ns(),
             )
             .unwrap();
-        let request = controller.session.analysis_request().unwrap();
-        assert!(request.game.events().is_empty());
-        assert_eq!(request.game, game.record());
+        let request = controller.session.analysis_request().unwrap().context;
+        assert_eq!(request.game.event_count(), 0);
+        assert_eq!(request.game, CanonicalRecord::chess(game.record()));
         let target = match &request.purpose {
-            mshogi_engine::RequestPurpose::MoveAnalysis { target } => target,
+            mshogi_engine::ExecutionPurpose::MoveAnalysis { target } => target,
             _ => panic!(),
         };
         assert_eq!(target.selection_id, controller.session.selection_id);
@@ -2020,10 +2034,10 @@ mod tests {
                     i as u64,
                 )
                 .unwrap();
-            let context = session.analysis_request().unwrap();
-            assert!(session.accept_analysis(EngineResponse {
+            let context = session.analysis_request().unwrap().context;
+            assert!(session.accept_analysis(test_response(
                 context,
-                result: EngineResult::Incomplete {
+                ChessResult::Incomplete {
                     telemetry: mshogi_engine::Telemetry {
                         score: None,
                         completed_depth: 0,
@@ -2032,7 +2046,7 @@ mod tests {
                         status: mshogi_engine::StopReason::NodeLimit
                     },
                 }
-            }));
+            )));
         }
         session
     }
@@ -2108,21 +2122,21 @@ mod tests {
             );
         }
         assert!(source.session.check_archive_capacity(&mut || false).is_ok());
-        let request = source.session.engine_request().unwrap();
+        let request = source.session.engine_request().unwrap().context;
         let closed = source.pause_for_close();
         assert!(closed.play_paused);
         assert_eq!(source.session.controls.len(), 8192);
         assert!(source.session.pending.is_none());
         assert!(!source.session.accept(
-            EngineResponse {
-                context: request,
-                result: EngineResult::Failure {
+            test_response(
+                request,
+                ChessResult::Failure {
                     failure: mshogi_engine::EngineFailure {
                         kind: mshogi_engine::FailureKind::Timeout,
                         message: "obsolete".into()
                     }
                 }
-            },
+            ),
             8192
         ));
         let before = archive(&source.session);
@@ -2150,26 +2164,49 @@ mod tests {
     fn oversized_raw_engine_failure_is_rejected_before_observation_or_game_commit() {
         let mut session = DesktopSession::new();
         session.human = Color::Black;
-        let context = session.engine_request().unwrap();
+        let context = session.engine_request().unwrap().context;
         let before = session.game.record().to_json();
         let revision = session.document_revision;
+        let capacity = session.capacity.clone();
+        let pending = session.pending.clone();
         assert!(!session.accept(
-            EngineResponse {
-                context,
-                result: EngineResult::Failure {
+            test_response(
+                context.clone(),
+                ChessResult::Failure {
                     failure: mshogi_engine::EngineFailure {
                         kind: mshogi_engine::FailureKind::Timeout,
                         message: "x".repeat(MAX_ARCHIVE_BYTES)
                     }
                 }
-            },
+            ),
             1
         ));
-        assert_eq!(session.capacity.status, CapacityPhase::Paused);
+        // Invalid wire diagnostics are rejected before resource admission.
+        assert_eq!(
+            serde_json::to_value(&session.capacity).unwrap(),
+            serde_json::to_value(&capacity).unwrap()
+        );
+        assert_eq!(session.pending, pending);
         assert_eq!(session.game.record().to_json(), before);
         assert_eq!(session.document_revision, revision);
         assert!(session.observations.is_empty());
         assert!(session.check_archive_capacity(&mut || false).is_ok());
+        // The malformed response did not retire the legitimate outstanding work.
+        assert!(session.accept(
+            test_response(
+                context,
+                ChessResult::Failure {
+                    failure: mshogi_engine::EngineFailure {
+                        kind: mshogi_engine::FailureKind::Timeout,
+                        message: "bounded watchdog diagnostic".into()
+                    }
+                }
+            ),
+            2
+        ));
+        assert_eq!(session.observations.len(), 1);
+        assert_eq!(session.engine.status, EnginePhase::Failed);
+        assert_eq!(session.game.record().to_json(), before);
     }
     #[test]
     fn command_receipts_survive_following_work_and_close_supersedes_pending_admission() {
@@ -2306,11 +2343,11 @@ mod tests {
         session.human = Color::Black;
         session.play_paused = false;
         session.engine = EngineState::default();
-        let context = session.engine_request().unwrap();
+        let context = session.engine_request().unwrap().context;
         let action = "e2e4".parse().unwrap();
-        let response = EngineResponse {
+        let response = test_response(
             context,
-            result: EngineResult::Move {
+            ChessResult::Move {
                 action,
                 telemetry: mshogi_engine::Telemetry {
                     score: Some(0),
@@ -2320,7 +2357,7 @@ mod tests {
                     status: mshogi_engine::StopReason::Complete,
                 },
             },
-        };
+        );
         assert!(session.accept(response.clone(), 256));
         assert!(!session.accept(response, 256));
         assert_eq!(session.observations.len(), 256);
@@ -2346,25 +2383,28 @@ mod tests {
     fn cancellation_retires_an_uncommitted_engine_result_candidate() {
         let mut source = controller();
         source.session.human = Color::Black;
-        let context = source.session.engine_request().unwrap();
+        let context = source.session.engine_request().unwrap().context;
         let action = "e2e4".parse().unwrap();
         let mut candidate = source.session.clone();
-        assert!(candidate.accept_unchecked(
-            EngineResponse {
-                context,
-                result: EngineResult::Move {
-                    action,
-                    telemetry: mshogi_engine::Telemetry {
-                        score: Some(0),
-                        completed_depth: 1,
-                        nodes: 21,
-                        principal_variation: vec![mshogi_engine::EngineChoice::Move { action }],
-                        status: mshogi_engine::StopReason::Complete
+        assert!(
+            candidate.accept_unchecked(
+                test_response(
+                    context,
+                    ChessResult::Move {
+                        action,
+                        telemetry: mshogi_engine::Telemetry {
+                            score: Some(0),
+                            completed_depth: 1,
+                            nodes: 21,
+                            principal_variation: vec![mshogi_engine::EngineChoice::Move { action }],
+                            status: mshogi_engine::StopReason::Complete
+                        }
                     }
-                }
-            },
-            1
-        ));
+                )
+                .observation,
+                1
+            )
+        );
         source.queue_admission(candidate).unwrap();
         let result_receipt = source.admission_receipt.clone().unwrap();
         let (_, cancel_receipt) = source
@@ -2450,14 +2490,14 @@ mod tests {
             )
             .unwrap();
         assert_eq!(source.session.game.record().event_count(), 4096);
-        let context = source.session.engine_request().unwrap();
+        let context = source.session.engine_request().unwrap().context;
         let action = "e7e5".parse().unwrap();
         let before = source.session.game.record().to_json();
         let revision = source.session.document_revision;
         assert!(!source.session.accept(
-            EngineResponse {
+            test_response(
                 context,
-                result: EngineResult::Move {
+                ChessResult::Move {
                     action,
                     telemetry: mshogi_engine::Telemetry {
                         score: Some(0),
@@ -2467,7 +2507,7 @@ mod tests {
                         status: mshogi_engine::StopReason::Complete
                     }
                 }
-            },
+            ),
             4096
         ));
         assert_eq!(source.session.game.record().to_json(), before);
@@ -2566,16 +2606,16 @@ mod tests {
                     accepted as u64,
                 )
                 .unwrap();
-            let context = source.session.analysis_request().unwrap();
-            let response = EngineResponse {
+            let context = source.session.analysis_request().unwrap().context;
+            let response = test_response(
                 context,
-                result: EngineResult::Reachability {
+                ChessResult::Reachability {
                     result: MateReachability::Possible {
                         witness: witness.clone(),
                         work,
                     },
                 },
-            };
+            );
             assert!(
                 serde_json::to_vec(&response).unwrap().len() < mshogi_engine::MAX_RESPONSE_BYTES
             );
@@ -2649,17 +2689,20 @@ mod takeback_tests {
         )
         .unwrap();
     }
-    fn engine(s: &mut DesktopSession) -> EngineResponse {
-        let request = s.engine_request().unwrap();
+    fn engine(s: &mut DesktopSession) -> ExecutionObservation {
+        let request = s.engine_request().unwrap().context;
         let mut bytes = Vec::new();
         mshogi_engine::serve_once(
-            std::io::Cursor::new(format!("{}\n", serde_json::to_string(&request).unwrap())),
+            std::io::Cursor::new(format!(
+                "{}\n",
+                serde_json::to_string(&test_request(request.clone())).unwrap()
+            )),
             &mut bytes,
         )
         .unwrap();
         let response = serde_json::from_slice(&bytes).unwrap();
         assert!(s.accept(response, tick(s)));
-        s.observations.last().unwrap().response.clone()
+        s.observations.last().unwrap().observation.clone()
     }
     fn take(s: &mut DesktopSession) {
         s.command(DesktopCommand::TakeBack { version: s.version }, tick(s))
@@ -2682,14 +2725,17 @@ mod takeback_tests {
         );
         assert_eq!(encoded(&s), before);
         play(&mut s, "e2e4");
-        let abandoned = s.engine_request().unwrap();
+        let abandoned = s.engine_request().unwrap().context;
         let mut output = Vec::new();
         mshogi_engine::serve_once(
-            std::io::Cursor::new(format!("{}\n", serde_json::to_string(&abandoned).unwrap())),
+            std::io::Cursor::new(format!(
+                "{}\n",
+                serde_json::to_string(&test_request(abandoned.clone())).unwrap()
+            )),
             &mut output,
         )
         .unwrap();
-        let late: EngineResponse = serde_json::from_slice(&output).unwrap();
+        let late: ExecutionResponse = serde_json::from_slice(&output).unwrap();
         let old_version = s.version;
         let old_selection = s.selection_id;
         take(&mut s);

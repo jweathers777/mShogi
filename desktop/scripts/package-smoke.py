@@ -64,23 +64,34 @@ finally:
         child.wait(timeout=5)
 # Exercise the same lossless interface used by the desktop, independently of
 # UCI's compatibility mapping. This verifier is external to normal packages.
-request = {
-    'protocol': 2, 'purpose': {'kind': 'engine_turn'}, 'request_id': 1, 'session_version': 1,
+context = {
+    'purpose': {'kind': 'engine_turn'}, 'request_id': 1, 'session_version': 1,
     'process_generation': 1,
     'game': {
-        'schema_version': 1, 'rules_profile': 'mshogi.chess.match.v1',
-        'initial_fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
-        'history_origin': 'standard_start', 'claim_policy': 'explicit_only',
-        'events': [],
+        'envelope_version': 1, 'game_kind': 'chess',
+        'rules_profile': 'mshogi.chess.match.v1',
+        'profile_edition': 'FIDE-2023-01-01+mshogi.chess.match.v1',
+        'native_schema_version': 1,
+        'payload': {
+            'schema_version': 1, 'rules_profile': 'mshogi.chess.match.v1',
+            'initial_fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+            'history_origin': 'standard_start', 'claim_policy': 'explicit_only',
+            'events': [],
+        },
     },
     'limits': {'depth': 1, 'nodes': 1000},
 }
+request = {'protocol': 4, 'context': context}
 internal = subprocess.run([str(engine), 'internal-search'],
     input=json.dumps(request) + '\n', check=True, capture_output=True,
     text=True, timeout=15)
 response = json.loads(internal.stdout)
-assert response['context'] == request, 'internal response changed exact request context'
-result = response['result']
+assert response['protocol'] == request['protocol'], 'internal response transport mismatch'
+observation = response['observation']
+assert observation['schema_version'] == 1
+assert observation['context'] == context, 'internal response changed exact request context'
+assert observation['result']['kind'] == 'chess', observation
+result = observation['result']['result']
 assert result['kind'] == 'move', result
 assert result['action'] == 'a2a3', result
 assert result['telemetry']['completed_depth'] == 1, result
@@ -88,29 +99,33 @@ assert result['telemetry']['nodes'] == 21, result
 assert result['telemetry']['score'] == 0, result
 assert result['telemetry']['status'] == 'complete', result
 # Purpose-specific queries exercise the actual shipped advanced solver as well.
-target = {'selection_id': 1, 'ply': 0, 'session_version': 1,
-          'label': 'Package verification: standard start', 'turn': 'white'}
+target = {'selection_id': 1, 'event_index': 0, 'board_ply': 0, 'session_version': 1,
+          'label': 'Package verification: standard start',
+          'turn': {'game_kind': 'chess', 'side': 'white'}}
 analysis_request = copy.deepcopy(request)
-analysis_request.update(request_id=2, process_generation=2,
+analysis_request['context'].update(request_id=2, process_generation=2,
     purpose={'kind': 'move_analysis', 'target': target})
-def query(context):
+def query(request):
     process = subprocess.run([str(engine), 'internal-search'],
-        input=json.dumps(context) + '\n', check=True, capture_output=True,
+        input=json.dumps(request) + '\n', check=True, capture_output=True,
         text=True, timeout=15)
     reply = json.loads(process.stdout)
-    assert reply['context'] == context, 'analysis execution context changed'
+    assert reply['protocol'] == request['protocol']
+    assert reply['observation']['schema_version'] == 1
+    assert reply['observation']['context'] == request['context'], 'analysis execution context changed'
+    assert reply['observation']['result']['kind'] == 'chess', reply
     return reply
 analysis_response = query(analysis_request)
-assert analysis_response['result']['kind'] == 'move', analysis_response
-assert analysis_response['result']['telemetry']['nodes'] == 21, analysis_response
+assert analysis_response['observation']['result']['result']['kind'] == 'move', analysis_response
+assert analysis_response['observation']['result']['result']['telemetry']['nodes'] == 21, analysis_response
 full_request = copy.deepcopy(request)
-full_request.update(request_id=3, process_generation=3,
+full_request['context'].update(request_id=3, process_generation=3,
     limits={'depth': 1, 'nodes': 0},
-    purpose={'kind': 'full_reachability', 'target': target, 'mate': 'either',
+    purpose={'kind': 'chess_full_reachability', 'target': target, 'mate': 'either',
              'limits': {'max_positions': 1, 'max_transitions': 1}})
 full_response = query(full_request)
-assert full_response['result']['kind'] == 'reachability', full_response
-unknown = full_response['result']['result']['unknown']
+assert full_response['observation']['result']['result']['kind'] == 'reachability', full_response
+unknown = full_response['observation']['result']['result']['result']['unknown']
 assert unknown['reason'] in ('position_limit', 'transition_limit'), unknown
 assert unknown['work']['positions'] <= 1 and unknown['work']['transitions'] <= 1, unknown
 report = {

@@ -1,7 +1,7 @@
 import type {
   Color,
   EngineChoice,
-  EngineResult,
+  ChessResult,
   MateReachability,
   ReachabilityTarget,
   Telemetry,
@@ -37,7 +37,7 @@ export function choiceDescription(choice: EngineChoice): string {
     ? readableAction(choice.action)
     : `Claim draw${choice.claim.intended ? `, intending ${readableAction(choice.claim.intended)} (unplayed)` : " in the current position"}`;
 }
-export function resultTelemetry(result: EngineResult | null): Telemetry | null {
+export function resultTelemetry(result: ChessResult | null): Telemetry | null {
   return result === null ||
     result.kind === "failure" ||
     result.kind === "reachability"

@@ -1,4 +1,3 @@
-use crate::wire::{WireRequest, WireResponse};
 use crate::*;
 use std::{
     io::{self, Read, Write},
@@ -46,15 +45,15 @@ impl std::fmt::Display for SubmitError {
 }
 impl std::error::Error for SubmitError {}
 struct Pending {
-    context: Arc<WireRequest>,
+    context: Arc<ExecutionRequest>,
     cancelled: Arc<AtomicBool>,
 }
 #[derive(Default)]
 struct State {
-    current: Option<Arc<WireRequest>>,
+    current: Option<Arc<ExecutionRequest>>,
     cancel: Option<Arc<AtomicBool>>,
     pending: Option<Pending>,
-    result: Option<WireResponse>,
+    result: Option<ExecutionResponse>,
     last_id: u64,
     last_generation: u64,
     shutdown: bool,
@@ -103,14 +102,7 @@ impl EngineBridge {
         Ok(Self { shared })
     }
     /// Replace prior work atomically without launching or serializing on caller.
-    pub fn submit(&self, context: EngineRequest) -> Result<(), SubmitError> {
-        self.submit_wire(WireRequest::Legacy(context))
-    }
-    /// Submit an explicit shared context through the same owner and retirement sequence.
-    pub fn submit_shared(&self, context: SharedRequest) -> Result<(), SubmitError> {
-        self.submit_wire(WireRequest::Shared(context))
-    }
-    fn submit_wire(&self, context: WireRequest) -> Result<(), SubmitError> {
+    pub fn submit(&self, context: ExecutionRequest) -> Result<(), SubmitError> {
         if !context.valid() {
             return Err(SubmitError::InvalidRequest);
         }
@@ -157,27 +149,13 @@ impl EngineBridge {
     }
     /// Consume one current completion. Host must recheck the full context and
     /// native choice legality under its serialized authoritative session lock.
-    pub fn poll(&self) -> Option<EngineResponse> {
-        let mut state = self.shared.state.lock().expect("engine metadata mutex");
-        if !matches!(state.result, Some(WireResponse::Legacy(_))) {
-            return None;
-        }
-        match state.result.take() {
-            Some(WireResponse::Legacy(response)) => Some(response),
-            _ => unreachable!(),
-        }
-    }
-    /// Consume a current shared completion. Calling the legacy poll adapter does
-    /// not discard a shared result; cancellation/replacement still retires both.
-    pub fn poll_shared(&self) -> Option<SharedResponse> {
-        let mut state = self.shared.state.lock().expect("engine metadata mutex");
-        if !matches!(state.result, Some(WireResponse::Shared(_))) {
-            return None;
-        }
-        match state.result.take() {
-            Some(WireResponse::Shared(response)) => Some(response),
-            _ => unreachable!(),
-        }
+    pub fn poll(&self) -> Option<ExecutionResponse> {
+        self.shared
+            .state
+            .lock()
+            .expect("engine metadata mutex")
+            .result
+            .take()
     }
     /// Cancel and stop the supervisory worker, without joining on the caller.
     pub fn shutdown(&self) {
@@ -380,7 +358,7 @@ fn finish_pipes(pipes: &mut Vec<JoinHandle<()>>, deadline: Instant) -> Vec<&'sta
     }
     problems
 }
-fn cleanup_failure(context: &WireRequest, detail: String) -> WireResponse {
+fn cleanup_failure(context: &ExecutionRequest, detail: String) -> ExecutionResponse {
     let result = context.failure(FailureKind::Cleanup, detail);
     // Log before cancellation/shutdown publication filtering. Retention is capped.
     if let Some(message) = result.failure_message() {
@@ -399,7 +377,7 @@ impl Drop for Process {
         let _ = self.child.try_wait();
     }
 }
-fn run(path: &PathBuf, options: BridgeOptions, pending: &Pending) -> WireResponse {
+fn run(path: &PathBuf, options: BridgeOptions, pending: &Pending) -> ExecutionResponse {
     let mut bytes = match serde_json::to_vec(&*pending.context) {
         Ok(bytes) => bytes,
         Err(error) => return pending.context.failure(FailureKind::InvalidRequest, error),
@@ -480,7 +458,7 @@ fn run(path: &PathBuf, options: BridgeOptions, pending: &Pending) -> WireRespons
                         "response missing final newline",
                     );
                 }
-                let response: WireResponse = match serde_json::from_slice(bytes) {
+                let response: ExecutionResponse = match serde_json::from_slice(bytes) {
                     Ok(response) => response,
                     Err(error) => {
                         break pending
@@ -515,15 +493,19 @@ fn run(path: &PathBuf, options: BridgeOptions, pending: &Pending) -> WireRespons
 mod tests {
     use super::*;
     use mshogi_core::chess::{AdjudicatedGame, ClaimPolicy};
-    fn request(id: u64, generation: u64) -> EngineRequest {
-        EngineRequest {
+    fn request(id: u64, generation: u64) -> ExecutionRequest {
+        ExecutionRequest {
             protocol: PROTOCOL_VERSION,
-            purpose: RequestPurpose::EngineTurn,
-            request_id: id,
-            session_version: 0,
-            process_generation: generation,
-            game: AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record(),
-            limits: WorkLimits { depth: 1, nodes: 1 },
+            context: ExecutionContext {
+                purpose: ExecutionPurpose::EngineTurn {},
+                request_id: id,
+                session_version: 0,
+                process_generation: generation,
+                game: mshogi_core::native::CanonicalRecord::chess(
+                    AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record(),
+                ),
+                limits: WorkLimits { depth: 1, nodes: 1 },
+            },
         }
     }
     fn published(bridge: &EngineBridge) {
@@ -551,18 +533,21 @@ mod tests {
             ["pipe helper did not finish within cleanup watchdog; detached"]
         );
         assert!(pipes.is_empty());
-        let result = cleanup_failure(&WireRequest::Legacy(request(31, 42)), problems.join("; "));
+        let result = cleanup_failure(&request(31, 42), problems.join("; "));
         assert!(matches!(
             result,
-            WireResponse::Legacy(EngineResponse {
-                result: EngineResult::Failure {
-                    failure: EngineFailure {
-                        kind: FailureKind::Cleanup,
-                        ..
-                    }
+            ExecutionResponse {
+                observation: ExecutionObservation {
+                    result: ExecutionResult::Failure {
+                        failure: EngineFailure {
+                            kind: FailureKind::Cleanup,
+                            ..
+                        }
+                    },
+                    ..
                 },
                 ..
-            })
+            }
         ));
         release.send(()).unwrap();
         finished.recv_timeout(Duration::from_secs(5)).unwrap();
@@ -582,7 +567,7 @@ mod tests {
         );
         bridge.submit(request(3, 3)).unwrap();
         published(&bridge);
-        assert_eq!(bridge.poll().unwrap().context.request_id, 3);
+        assert_eq!(bridge.poll().unwrap().observation.context.request_id, 3);
         assert!(bridge.poll().is_none());
     }
 }

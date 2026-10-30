@@ -93,7 +93,7 @@ pub(crate) struct XiangqiSession {
     pub(super) viewed: Option<x::HistorySnapshot>,
     pub(super) viewed_game: Option<x::Game>,
     pub(super) paused: bool,
-    pub(super) pending: Option<SharedRequest>,
+    pub(super) pending: Option<ExecutionContext>,
     pub(super) submitted: bool,
     pub(super) phase: EnginePhase,
     pub(super) diagnostic: Option<String>,
@@ -273,11 +273,10 @@ impl DesktopController {
             return Err("Application capacity: native consumer observation retention limit reached; accepted history and observations are preserved. No retry can enlarge this document.".into());
         }
         let game = state.record();
-        let request = SharedRequest {
-            protocol: SHARED_PROTOCOL_VERSION,
+        let request = ExecutionContext {
             purpose: if analysis {
-                SharedPurpose::MoveAnalysis {
-                    target: SharedAnalysisTarget {
+                ExecutionPurpose::MoveAnalysis {
+                    target: ExecutionTarget {
                         selection_id: self.session.selection_id,
                         event_index: game.event_count() as u64,
                         board_ply: game.known_board_actions() as u64,
@@ -295,7 +294,7 @@ impl DesktopController {
                     },
                 }
             } else {
-                SharedPurpose::EngineTurn {}
+                ExecutionPurpose::EngineTurn {}
             },
             request_id: self.session.next_request + 1,
             session_version: self.session.version,
@@ -306,7 +305,8 @@ impl DesktopController {
         if !request.valid_limits() {
             return Err("Unsupported Xiangqi operation or work limits; maximum depth3 and512 visits, ordinary sound_fast_only analysis only.".into());
         }
-        let encoded = serde_json::to_vec(&request).map_err(|e| e.to_string())?;
+        let encoded =
+            serde_json::to_vec(&execution_request(request.clone())).map_err(|e| e.to_string())?;
         if encoded.len() > mshogi_engine::MAX_REQUEST_BYTES {
             return Err(
                 "Application capacity: complete encoded engine request exceeds transport capacity."
@@ -410,7 +410,7 @@ impl DesktopController {
         self.last_command_receipt = Some(receipt);
         Ok(self.shared_snapshot())
     }
-    pub(super) fn accept_xiangqi(&mut self, response: SharedResponse) -> bool {
+    pub(super) fn accept_xiangqi_observation(&mut self, response: ExecutionObservation) -> bool {
         let state = self.shared.xiangqi.as_ref().unwrap();
         let Some(pending) = &state.pending else {
             return false;
@@ -433,8 +433,8 @@ impl DesktopController {
         .is_ok()
     }
     pub(super) fn poll_xiangqi(&mut self) -> SharedSnapshot {
-        if let Some(response) = self.bridge.poll_shared() {
-            self.accept_xiangqi(response);
+        if let Some(response) = self.bridge.poll() {
+            self.accept_shared(response);
         }
         let state = self.shared.xiangqi.as_ref().unwrap();
         if state.pending.is_none()
@@ -457,10 +457,11 @@ impl DesktopController {
             && let Some(request) = state.pending.clone()
         {
             state.submitted = true;
-            if let Err(e) = self.bridge.submit_shared(request.clone()) {
-                self.accept_xiangqi(SharedResponse {
+            if let Err(e) = self.bridge.submit(execution_request(request.clone())) {
+                self.accept_xiangqi_observation(ExecutionObservation {
+                    schema_version: OBSERVATION_SCHEMA_VERSION,
                     context: request,
-                    result: SharedResult::Failure {
+                    result: ExecutionResult::Failure {
                         failure: mshogi_engine::EngineFailure {
                             kind: mshogi_engine::FailureKind::Start,
                             message: format!("Cannot start native work: {e:?}"),
@@ -690,7 +691,7 @@ impl DesktopController {
             paused: state.paused,
             phase: state.phase,
             execution_purpose: state.pending.as_ref().map(|p| {
-                if matches!(p.purpose, SharedPurpose::EngineTurn {}) {
+                if matches!(p.purpose, ExecutionPurpose::EngineTurn {}) {
                     "engine_turn"
                 } else {
                     "move_analysis"
@@ -717,8 +718,8 @@ fn display_observation(
     o: &PresentedObservation,
     current: Option<&PresentedObservation>,
 ) -> PresentedSearchObservation {
-    let t = match &o.response.result {
-        SharedResult::Xiangqi {
+    let t = match &o.observation.result {
+        ExecutionResult::Xiangqi {
             result:
                 XiangqiResult::Choice { telemetry, .. }
                 | XiangqiResult::Finished { telemetry, .. }
@@ -727,19 +728,19 @@ fn display_observation(
         } => Some(telemetry),
         _ => None,
     };
-    let (purpose, event_index, board_ply) = match &o.response.context.purpose {
-        SharedPurpose::MoveAnalysis { target } => (
+    let (purpose, event_index, board_ply) = match &o.observation.context.purpose {
+        ExecutionPurpose::MoveAnalysis { target } => (
             "move_analysis",
             target.event_index as usize,
             target.board_ply as usize,
         ),
         _ => (
             "engine_turn",
-            o.response.context.game.event_count(),
-            o.response.context.game.known_board_actions(),
+            o.observation.context.game.event_count(),
+            o.observation.context.game.known_board_actions(),
         ),
     };
-    let perspective = match &o.response.context.game {
+    let perspective = match &o.observation.context.game {
         CanonicalRecord::Xiangqi(r) => side(NativeSide::Xiangqi(r.side_to_move())).label,
         _ => unreachable!(),
     };
@@ -786,7 +787,7 @@ fn display_observation(
             }
         },
         historical: o.historical,
-        selected: current.is_some_and(|c| c.response == o.response) && !o.historical,
+        selected: current.is_some_and(|c| c.observation == o.observation) && !o.historical,
     }
 }
 

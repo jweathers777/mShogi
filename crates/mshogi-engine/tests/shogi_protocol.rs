@@ -1,4 +1,4 @@
-//! Concrete shogi v3 admission/result boundaries; no second rules engine.
+//! Concrete native shogi admission/result boundaries; no second rules engine.
 use mshogi_core::{native::*, shogi::*};
 use mshogi_engine::*;
 use mshogi_search::shogi as search;
@@ -14,10 +14,9 @@ fn game(sfen: &str) -> Game {
         .unwrap(),
     )
 }
-fn request(game: &Game) -> SharedRequest {
-    SharedRequest {
-        protocol: SHARED_PROTOCOL_VERSION,
-        purpose: SharedPurpose::EngineTurn {},
+fn request(game: &Game) -> ExecutionContext {
+    ExecutionContext {
+        purpose: ExecutionPurpose::EngineTurn {},
         request_id: 1,
         session_version: 7,
         process_generation: 3,
@@ -28,8 +27,8 @@ fn request(game: &Game) -> SharedRequest {
         },
     }
 }
-fn target(c: &SharedRequest, side: Side) -> SharedAnalysisTarget {
-    SharedAnalysisTarget {
+fn target(c: &ExecutionContext, side: Side) -> ExecutionTarget {
+    ExecutionTarget {
         selection_id: 1,
         event_index: c.game.event_count() as u64,
         board_ply: c.game.known_board_actions() as u64,
@@ -40,12 +39,19 @@ fn target(c: &SharedRequest, side: Side) -> SharedAnalysisTarget {
 }
 fn raw(text: &str) -> std::io::Result<Vec<u8>> {
     let mut output = Vec::new();
-    serve_once(Cursor::new(format!("{text}\n")), &mut output)?;
+    serve_once(
+        Cursor::new(format!(
+            "{{\"protocol\":{PROTOCOL_VERSION},\"context\":{text}}}\n"
+        )),
+        &mut output,
+    )?;
     Ok(output)
 }
-fn run(c: SharedRequest) -> SharedResponse {
+fn run(c: ExecutionContext) -> ExecutionObservation {
     let bytes = raw(&serde_json::to_string(&c).unwrap()).unwrap();
-    let response: SharedResponse = serde_json::from_slice(&bytes).unwrap();
+    let response = serde_json::from_slice::<ExecutionResponse>(&bytes)
+        .unwrap()
+        .observation;
     assert_eq!(response.context, c);
     response
 }
@@ -73,7 +79,7 @@ fn real_native_choices_conclusions_and_score_perspective_roundtrip() {
         let c = request(&game);
         let response = run(c.clone());
         assert!(response.matches(&c));
-        let SharedResult::Shogi {
+        let ExecutionResult::Shogi {
             result: ShogiResult::Choice { choice, telemetry },
         } = response.result
         else {
@@ -97,7 +103,7 @@ fn real_native_choices_conclusions_and_score_perspective_roundtrip() {
         if matches!(choice, ShogiChoice::Declare { .. }) {
             assert!(matches!(
                 response.result,
-                SharedResult::Shogi {
+                ExecutionResult::Shogi {
                     result: ShogiResult::Finished {
                         conclusion: Conclusion::Win {
                             winner: Side::Sente,
@@ -125,7 +131,7 @@ fn analysis_is_read_only_and_bound_to_native_side_and_same_ply_terminal_prefix()
     .unwrap();
     let before = game.clone();
     let mut c = request(&game);
-    c.purpose = SharedPurpose::MoveAnalysis {
+    c.purpose = ExecutionPurpose::MoveAnalysis {
         target: target(&c, Side::Sente),
     };
     let response = run(c.clone());
@@ -135,7 +141,7 @@ fn analysis_is_read_only_and_bound_to_native_side_and_same_ply_terminal_prefix()
     assert_eq!(c.game.known_board_actions(), 0);
     assert!(matches!(
         response.result,
-        SharedResult::Shogi {
+        ExecutionResult::Shogi {
             result: ShogiResult::Finished { .. }
         }
     ));
@@ -152,16 +158,16 @@ fn analysis_is_read_only_and_bound_to_native_side_and_same_ply_terminal_prefix()
     ] {
         let mut changed = value.clone();
         *changed.pointer_mut(path).unwrap() = v;
-        let changed: SharedRequest = serde_json::from_value(changed).unwrap();
+        let changed: ExecutionContext = serde_json::from_value(changed).unwrap();
         assert!(!response.matches(&changed), "{path}");
     }
     let mut wrong = c.clone();
-    wrong.purpose = SharedPurpose::MoveAnalysis {
+    wrong.purpose = ExecutionPurpose::MoveAnalysis {
         target: target(&wrong, Side::Gote),
     };
     assert!(matches!(
         run(wrong).result,
-        SharedResult::Failure {
+        ExecutionResult::Failure {
             failure: EngineFailure {
                 kind: FailureKind::InvalidRequest,
                 ..
@@ -169,7 +175,7 @@ fn analysis_is_read_only_and_bound_to_native_side_and_same_ply_terminal_prefix()
         }
     ));
     let mut turn = c;
-    turn.purpose = SharedPurpose::EngineTurn {};
+    turn.purpose = ExecutionPurpose::EngineTurn {};
     assert!(!response.matches(&turn));
 }
 #[test]
@@ -184,7 +190,7 @@ fn precise_limits_and_incomplete_work_do_not_invent_scores_or_moves() {
         c.limits = WorkLimits { depth, nodes };
         let response = run(c.clone());
         assert!(response.matches(&c));
-        let SharedResult::Shogi { result } = response.result else {
+        let ExecutionResult::Shogi { result } = response.result else {
             panic!()
         };
         let t = match result {
@@ -221,7 +227,7 @@ fn precise_limits_and_incomplete_work_do_not_invent_scores_or_moves() {
         assert!(!c.valid_limits());
         assert!(matches!(
             run(c).result,
-            SharedResult::Failure {
+            ExecutionResult::Failure {
                 failure: EngineFailure {
                     kind: FailureKind::InvalidRequest,
                     ..
@@ -241,7 +247,7 @@ fn capabilities_and_result_families_do_not_make_chess_full_a_shogi_operation() {
     );
     let mut c = request(&Game::new());
     let ordinary = run(c.clone());
-    c.purpose = SharedPurpose::ChessFullReachability {
+    c.purpose = ExecutionPurpose::ChessFullReachability {
         target: target(&c, Side::Sente),
         mate: ReachabilityTarget::Either,
         limits: FullLimits {
@@ -254,7 +260,7 @@ fn capabilities_and_result_families_do_not_make_chess_full_a_shogi_operation() {
     assert!(response.matches(&c));
     assert!(matches!(
         response.result,
-        SharedResult::Failure {
+        ExecutionResult::Failure {
             failure: EngineFailure {
                 kind: FailureKind::UnsupportedMode,
                 ..
@@ -271,7 +277,7 @@ fn capabilities_and_result_families_do_not_make_chess_full_a_shogi_operation() {
         mshogi_core::chess::AdjudicatedGame::new(mshogi_core::chess::ClaimPolicy::ExplicitOnly)
             .record(),
     );
-    c.purpose = SharedPurpose::EngineTurn {};
+    c.purpose = ExecutionPurpose::EngineTurn {};
     c.limits = WorkLimits {
         depth: 1,
         nodes: 1000,
@@ -297,7 +303,7 @@ fn strict_result_parsing_and_native_observation_acceptance() {
         ),
     ] {
         assert!(text.contains(a));
-        assert!(serde_json::from_str::<SharedResponse>(&text.replacen(a, b, 1)).is_err());
+        assert!(serde_json::from_str::<ExecutionObservation>(&text.replacen(a, b, 1)).is_err());
     }
     let value = serde_json::to_value(&response).unwrap();
     for (path, v) in [
@@ -311,7 +317,7 @@ fn strict_result_parsing_and_native_observation_acceptance() {
     ] {
         let mut bad = value.clone();
         *bad.pointer_mut(path).unwrap() = v;
-        let parsed: SharedResponse = serde_json::from_value(bad).unwrap();
+        let parsed: ExecutionObservation = serde_json::from_value(bad).unwrap();
         assert!(!parsed.matches(&c), "{path}");
     }
     let mut missing = value;
@@ -319,7 +325,7 @@ fn strict_result_parsing_and_native_observation_acceptance() {
         .as_object_mut()
         .unwrap()
         .remove("score");
-    assert!(serde_json::from_value::<SharedResponse>(missing).is_err());
+    assert!(serde_json::from_value::<ExecutionObservation>(missing).is_err());
     for text in ["\"resign\"", "\"win\"", "\"0000\""] {
         assert!(serde_json::from_str::<Action>(text).is_err());
     }

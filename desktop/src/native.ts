@@ -1,3 +1,4 @@
+import type { NativeSide } from "./product/native";
 // Presentation DTOs mirror mshogi-desktop-session and mshogi-engine serde output.
 // Actions are opaque native identifiers; legality and adjudication stay in Rust.
 export type Color = "white" | "black";
@@ -84,15 +85,15 @@ export type AnalysisOperation =
       max_positions: number;
       max_transitions: number;
     };
-export interface AnalysisTarget {
+export interface ExecutionTarget {
   selection_id: number;
-  ply: number;
+  board_ply: number;
+  event_index: number;
   session_version: number;
   label: string;
-  turn: Color;
+  turn: NativeSide;
 }
-export interface EngineContext {
-  protocol: number;
+export interface ExecutionContext {
   request_id: number;
   session_version: number;
   process_generation: number;
@@ -100,10 +101,10 @@ export interface EngineContext {
   limits: { depth: number; nodes: number };
   purpose:
     | { kind: "engine_turn" }
-    | { kind: "move_analysis"; target: AnalysisTarget }
+    | { kind: "move_analysis"; target: ExecutionTarget }
     | {
-        kind: "full_reachability";
-        target: AnalysisTarget;
+        kind: "chess_full_reachability";
+        target: ExecutionTarget;
         mate: ReachabilityTarget;
         limits: { max_positions: number; max_transitions: number };
       };
@@ -111,28 +112,33 @@ export interface EngineContext {
 export interface AnalysisState {
   status:
     "idle" | "thinking" | "complete" | "incomplete" | "cancelled" | "failed";
-  target: AnalysisTarget | null;
+  target: ExecutionTarget | null;
   operation: AnalysisOperation | null;
-  context: EngineContext | null;
-  result: EngineResult | null;
+  context: ExecutionContext | null;
+  result: ChessResult | null;
   message: string | null;
 }
 
-export type EngineResult =
+export type ChessResult =
   | { kind: "move"; action: string; telemetry: Telemetry }
   | { kind: "claim"; claim: Claim; telemetry: Telemetry }
   | { kind: "finished"; outcome: ChessOutcome; telemetry: Telemetry }
   | { kind: "incomplete"; telemetry: Telemetry }
   | { kind: "failure"; failure: { kind: FailureKind; message: string } }
   | { kind: "reachability"; result: MateReachability };
-export interface EngineResponse {
-  context: EngineContext;
-  result: EngineResult;
+export type ExecutionResult =
+  | { kind: "chess"; result: ChessResult }
+  | { kind: "shogi" | "xiangqi"; result: unknown }
+  | { kind: "failure"; failure: { kind: FailureKind; message: string } };
+export interface ExecutionObservation {
+  schema_version: number;
+  context: ExecutionContext;
+  result: ExecutionResult;
 }
 export interface ArchivedObservation {
   sequence: number;
   label: string;
-  response: EngineResponse;
+  observation: ExecutionObservation;
   historical: boolean;
   analyzed_turn: Color;
   application_error: string | null;
@@ -186,7 +192,7 @@ export interface Snapshot {
   engine: {
     status:
       "idle" | "thinking" | "cancelled" | "failed" | "incomplete" | "paused";
-    last: EngineResult | null;
+    last: ChessResult | null;
     last_turn: Color | null;
     searched_version: number | null;
     message: string | null;

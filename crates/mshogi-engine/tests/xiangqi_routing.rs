@@ -33,10 +33,9 @@ fn warned() -> x::Game {
     }
     g
 }
-fn request(g: &x::Game) -> SharedRequest {
-    SharedRequest {
-        protocol: SHARED_PROTOCOL_VERSION,
-        purpose: SharedPurpose::EngineTurn {},
+fn request(g: &x::Game) -> ExecutionContext {
+    ExecutionContext {
+        purpose: ExecutionPurpose::EngineTurn {},
         request_id: 17,
         session_version: 11,
         process_generation: 7,
@@ -48,11 +47,11 @@ fn request(g: &x::Game) -> SharedRequest {
         },
     }
 }
-fn target(context: &SharedRequest) -> SharedAnalysisTarget {
+fn target(context: &ExecutionContext) -> ExecutionTarget {
     let CanonicalRecord::Xiangqi(native) = &context.game else {
         panic!()
     };
-    SharedAnalysisTarget {
+    ExecutionTarget {
         selection_id: 3,
         event_index: native.event_count() as u64,
         board_ply: native.known_board_actions() as u64,
@@ -63,15 +62,24 @@ fn target(context: &SharedRequest) -> SharedAnalysisTarget {
 }
 fn raw(text: &str) -> std::io::Result<Vec<u8>> {
     let mut output = vec![];
-    serve_once(Cursor::new(format!("{text}\n")), &mut output)?;
+    serve_once(
+        Cursor::new(format!(
+            "{{\"protocol\":{PROTOCOL_VERSION},\"context\":{text}}}\n"
+        )),
+        &mut output,
+    )?;
     Ok(output)
 }
-fn run(context: &SharedRequest) -> SharedResponse {
-    serde_json::from_slice(&raw(&serde_json::to_string(context).unwrap()).unwrap()).unwrap()
+fn run(context: &ExecutionContext) -> ExecutionObservation {
+    serde_json::from_slice::<ExecutionResponse>(
+        &raw(&serde_json::to_string(context).unwrap()).unwrap(),
+    )
+    .unwrap()
+    .observation
 }
-fn failure(response: &SharedResponse, kind: FailureKind) {
+fn failure(response: &ExecutionObservation, kind: FailureKind) {
     assert!(
-        matches!(&response.result, SharedResult::Failure { failure } if failure.kind == kind),
+        matches!(&response.result, ExecutionResult::Failure { failure } if failure.kind == kind),
         "{response:?}"
     );
 }
@@ -92,14 +100,14 @@ fn actual_xiangqi_execution_is_advertised_and_full_remains_explicitly_unsupporte
     let mut context = request(&g);
     for analysis in [false, true] {
         if analysis {
-            context.purpose = SharedPurpose::MoveAnalysis {
+            context.purpose = ExecutionPurpose::MoveAnalysis {
                 target: target(&context),
             };
         }
         let response = run(&context);
         assert_eq!(response.context, context);
         assert!(response.matches(&context));
-        let SharedResult::Xiangqi {
+        let ExecutionResult::Xiangqi {
             result: XiangqiResult::Choice { choice, telemetry },
         } = response.result
         else {
@@ -117,7 +125,7 @@ fn actual_xiangqi_execution_is_advertised_and_full_remains_explicitly_unsupporte
         assert_eq!(before, x::GameRecord::from_game(&g).unwrap());
     }
     context.limits = FULL_SENTINEL;
-    context.purpose = SharedPurpose::ChessFullReachability {
+    context.purpose = ExecutionPurpose::ChessFullReachability {
         target: target(&context),
         mate: ReachabilityTarget::Either,
         limits: FullLimits {
@@ -136,7 +144,7 @@ fn actual_xiangqi_execution_is_advertised_and_full_remains_explicitly_unsupporte
     .unwrap();
     let response = run(&request(&proof));
     assert!(
-        matches!(response.result, SharedResult::Xiangqi { result: XiangqiResult::Finished { conclusion, ref telemetry } }
+        matches!(response.result, ExecutionResult::Xiangqi { result: XiangqiResult::Finished { conclusion, ref telemetry } }
         if Some(conclusion) == proof.conclusion() && telemetry.score == Some(0))
     );
     let standard = x::Game::standard(x::ClaimPolicy::AutoValidClaims).unwrap();
@@ -146,7 +154,7 @@ fn actual_xiangqi_execution_is_advertised_and_full_remains_explicitly_unsupporte
     );
     let response = run(&request(&standard));
     assert!(
-        matches!(response.result, SharedResult::Xiangqi { result: XiangqiResult::Choice { ref telemetry, .. } }
+        matches!(response.result, ExecutionResult::Xiangqi { result: XiangqiResult::Choice { ref telemetry, .. } }
         if telemetry.no_win_assessment == x::NoWinAssessment::UnknownExactUnavailable)
     );
 }
@@ -161,7 +169,7 @@ fn ordinary_limits_and_zero_work_remain_distinct_from_native_conclusions() {
     let response = run(&context);
     assert!(response.matches(&context));
     assert!(
-        matches!(response.result, SharedResult::Xiangqi { result: XiangqiResult::Incomplete { ref telemetry } }
+        matches!(response.result, ExecutionResult::Xiangqi { result: XiangqiResult::Incomplete { ref telemetry } }
         if telemetry.nodes == 0 && telemetry.score.is_none() && telemetry.completed_depth == 0 && telemetry.principal_variation.is_empty())
     );
     for limits in [
@@ -188,14 +196,13 @@ fn ordinary_limits_and_zero_work_remain_distinct_from_native_conclusions() {
 fn response_acceptance_requires_every_identity_setting_and_full_native_history() {
     let g = warned();
     let mut context = request(&g);
-    context.purpose = SharedPurpose::MoveAnalysis {
+    context.purpose = ExecutionPurpose::MoveAnalysis {
         target: target(&context),
     };
     let response = run(&context);
     assert!(response.matches(&context));
     let wire = serde_json::to_value(&context).unwrap();
     for (pointer, value) in [
-        ("/protocol", json!(4)),
         ("/request_id", json!(18)),
         ("/session_version", json!(12)),
         ("/process_generation", json!(8)),
@@ -210,11 +217,11 @@ fn response_acceptance_requires_every_identity_setting_and_full_native_history()
     ] {
         let mut altered = wire.clone();
         *altered.pointer_mut(pointer).unwrap() = value;
-        let altered: SharedRequest = serde_json::from_value(altered).unwrap();
+        let altered: ExecutionContext = serde_json::from_value(altered).unwrap();
         assert!(!response.matches(&altered), "{pointer}");
     }
     let mut altered = context.clone();
-    altered.purpose = SharedPurpose::EngineTurn {};
+    altered.purpose = ExecutionPurpose::EngineTurn {};
     assert!(!response.matches(&altered));
     let fresh = x::Game::from_root(
         x::PositionRoot::from_fen(&g.position().to_fen().unwrap()).unwrap(),
@@ -224,14 +231,14 @@ fn response_acceptance_requires_every_identity_setting_and_full_native_history()
     assert_eq!(fresh.position(), g.position());
     let mut altered = context.clone();
     altered.game = request(&fresh).game;
-    altered.purpose = SharedPurpose::MoveAnalysis {
+    altered.purpose = ExecutionPurpose::MoveAnalysis {
         target: target(&altered),
     };
     assert!(altered.valid_limits());
     assert!(!response.matches(&altered));
     let mut foreign = response.clone();
-    foreign.result = SharedResult::Chess {
-        result: EngineResult::Incomplete {
+    foreign.result = ExecutionResult::Chess {
+        result: ChessResult::Incomplete {
             telemetry: Telemetry {
                 score: None,
                 completed_depth: 0,
@@ -243,7 +250,7 @@ fn response_acceptance_requires_every_identity_setting_and_full_native_history()
     };
     assert!(!foreign.matches(&context));
     let mut overlong = response;
-    overlong.result = SharedResult::Failure {
+    overlong.result = ExecutionResult::Failure {
         failure: EngineFailure {
             kind: FailureKind::UnsupportedMode,
             message: "x".repeat(MAX_STDERR_BYTES + 1),
@@ -255,7 +262,7 @@ fn response_acceptance_requires_every_identity_setting_and_full_native_history()
 #[test]
 fn malformed_or_wrong_target_context_is_invalid_rather_than_an_unsupported_success() {
     let mut context = request(&warned());
-    context.purpose = SharedPurpose::MoveAnalysis {
+    context.purpose = ExecutionPurpose::MoveAnalysis {
         target: target(&context),
     };
     let wire = serde_json::to_value(&context).unwrap();
@@ -271,11 +278,11 @@ fn malformed_or_wrong_target_context_is_invalid_rather_than_an_unsupported_succe
     ] {
         let mut altered = wire.clone();
         *altered.pointer_mut(pointer).unwrap() = value;
-        let altered: SharedRequest = serde_json::from_value(altered).unwrap();
+        let altered: ExecutionContext = serde_json::from_value(altered).unwrap();
         failure(&run(&altered), FailureKind::InvalidRequest);
     }
     let mut wrong = context.clone();
-    let SharedPurpose::MoveAnalysis { target } = &mut wrong.purpose else {
+    let ExecutionPurpose::MoveAnalysis { target } = &mut wrong.purpose else {
         panic!()
     };
     target.turn = NativeSide::Chess(c::Color::White);
@@ -285,12 +292,11 @@ fn malformed_or_wrong_target_context_is_invalid_rather_than_an_unsupported_succe
 #[test]
 fn strict_raw_request_envelope_native_and_response_boundaries_preserve_duplicates() {
     let mut context = request(&warned());
-    context.purpose = SharedPurpose::MoveAnalysis {
+    context.purpose = ExecutionPurpose::MoveAnalysis {
         target: target(&context),
     };
     let text = serde_json::to_string(&context).unwrap();
     for bad in [
-        text.replacen("\"protocol\":3", "\"protocol\":3,\"protocol\":3", 1),
         text.replacen(
             "\"request_id\":17",
             "\"request_id\":17,\"request_id\":17",
@@ -323,14 +329,12 @@ fn strict_raw_request_envelope_native_and_response_boundaries_preserve_duplicate
             "\"kind\":\"warning\",\"kind\":\"warning\"",
             1,
         ),
-        text.replacen("\"protocol\":3", "\"protocol\":99", 1),
     ] {
         assert_ne!(bad, text);
         assert!(raw(&bad).is_err(), "{bad}");
     }
     let baseline: Value = serde_json::from_str(&text).unwrap();
     for key in [
-        "protocol",
         "purpose",
         "request_id",
         "session_version",
@@ -348,7 +352,7 @@ fn strict_raw_request_envelope_native_and_response_boundaries_preserve_duplicate
         "\"history\":\"starts_at_this_position\",\"history\":",
         1,
     );
-    assert!(serde_json::from_str::<SharedResponse>(&bad).is_err());
+    assert!(serde_json::from_str::<ExecutionObservation>(&bad).is_err());
 }
 
 #[test]
@@ -365,27 +369,46 @@ fn actual_maximum_native_audit_ledger_and_whole_encoded_transport_boundaries_fit
     let context = request(&g);
     let envelope = context.game.to_json().unwrap().len();
     let frame = serde_json::to_string(&context).unwrap();
+    let overhead = serde_json::to_string(&ExecutionRequest {
+        protocol: PROTOCOL_VERSION,
+        context: context.clone(),
+    })
+    .unwrap()
+    .len()
+        - frame.len();
     let response = run(&context);
     assert!(matches!(
         response.result,
-        SharedResult::Xiangqi {
+        ExecutionResult::Xiangqi {
             result: XiangqiResult::Finished { .. }
         }
     ));
     assert!(response.matches(&context));
-    let echoed = serde_json::to_vec(&response).unwrap().len();
-    assert!(native_bytes < envelope && envelope < frame.len() && frame.len() < MAX_REQUEST_BYTES);
+    let echoed = serde_json::to_vec(&ExecutionResponse {
+        protocol: PROTOCOL_VERSION,
+        observation: response.clone(),
+    })
+    .unwrap()
+    .len();
+    assert!(
+        native_bytes < envelope
+            && envelope < frame.len()
+            && frame.len() + overhead < MAX_REQUEST_BYTES
+    );
     assert!(echoed < MAX_RESPONSE_BYTES);
     println!(
         "xiangqi512commands/1024events: native={native_bytes}, envelope={envelope}, request={}, response={echoed}",
-        frame.len()
+        frame.len() + overhead
     );
     let exact = frame.replacen(
         "\"game\":",
-        &format!("\"game\":{}", " ".repeat(MAX_REQUEST_BYTES - frame.len())),
+        &format!(
+            "\"game\":{}",
+            " ".repeat(MAX_REQUEST_BYTES - frame.len() - overhead)
+        ),
         1,
     );
-    assert_eq!(exact.len(), MAX_REQUEST_BYTES);
+    assert_eq!(exact.len() + overhead, MAX_REQUEST_BYTES);
     assert!(raw(&exact).is_ok());
     assert!(raw(&format!(" {exact}")).is_err());
     // Standalone wrapper bytes have their own cap, separately from request overhead.
@@ -427,7 +450,7 @@ fn native_telemetry_family_limits_perspective_and_required_fields_are_checked() 
     ] {
         let mut altered = wire.clone();
         *altered.pointer_mut(pointer).unwrap() = value;
-        let altered: SharedResponse = serde_json::from_value(altered).unwrap();
+        let altered: ExecutionObservation = serde_json::from_value(altered).unwrap();
         assert!(!altered.matches(&context), "{pointer}");
     }
     let mut missing = wire;
@@ -435,7 +458,7 @@ fn native_telemetry_family_limits_perspective_and_required_fields_are_checked() 
         .as_object_mut()
         .unwrap()
         .remove("score");
-    assert!(serde_json::from_value::<SharedResponse>(missing).is_err());
+    assert!(serde_json::from_value::<ExecutionObservation>(missing).is_err());
     let text = serde_json::to_string(&response).unwrap();
     let duplicate = text.replacen(
         "\"completed_depth\":1",
@@ -443,7 +466,7 @@ fn native_telemetry_family_limits_perspective_and_required_fields_are_checked() 
         1,
     );
     assert_ne!(duplicate, text);
-    assert!(serde_json::from_str::<SharedResponse>(&duplicate).is_err());
+    assert!(serde_json::from_str::<ExecutionObservation>(&duplicate).is_err());
     let unknown = text.replacen("\"telemetry\":{", "\"telemetry\":{\"unknown\":1,", 1);
-    assert!(serde_json::from_str::<SharedResponse>(&unknown).is_err());
+    assert!(serde_json::from_str::<ExecutionObservation>(&unknown).is_err());
 }

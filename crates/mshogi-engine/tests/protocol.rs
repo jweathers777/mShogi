@@ -2,28 +2,35 @@
 use mshogi_core::chess::*;
 use mshogi_engine::*;
 use std::io::Cursor;
-fn request(game: &AdjudicatedGame) -> EngineRequest {
-    EngineRequest {
-        protocol: PROTOCOL_VERSION,
-        purpose: RequestPurpose::EngineTurn,
+fn request(game: &AdjudicatedGame) -> ExecutionContext {
+    ExecutionContext {
+        purpose: ExecutionPurpose::EngineTurn {},
         request_id: 1,
         session_version: 7,
         process_generation: 3,
-        game: game.record(),
+        game: mshogi_core::native::CanonicalRecord::chess(game.record()),
         limits: WorkLimits {
             depth: 1,
             nodes: 10_000,
         },
     }
 }
-fn run(context: EngineRequest) -> EngineResponse {
-    let mut bytes = serde_json::to_vec(&context).unwrap();
+fn run(context: ExecutionContext) -> ChessResult {
+    let request = ExecutionRequest {
+        protocol: PROTOCOL_VERSION,
+        context: context.clone(),
+    };
+    let mut bytes = serde_json::to_vec(&request).unwrap();
     bytes.push(b'\n');
     let mut output = Vec::new();
     serve_once(Cursor::new(bytes), &mut output).unwrap();
-    let response: EngineResponse = serde_json::from_slice(&output).unwrap();
-    assert_eq!(response.context, context);
-    response
+    let response: ExecutionResponse = serde_json::from_slice(&output).unwrap();
+    assert_eq!(response.observation.context, context);
+    match response.observation.result {
+        ExecutionResult::Chess { result } => result,
+        ExecutionResult::Failure { failure } => ChessResult::Failure { failure },
+        other => panic!("unexpected native family: {other:?}"),
+    }
 }
 #[test]
 fn moves_claims_conclusions_and_incomplete_work_are_distinct() {
@@ -31,7 +38,7 @@ fn moves_claims_conclusions_and_incomplete_work_are_distinct() {
         AdjudicatedGame::from_fen("7k/8/5KQ1/8/8/8/8/8 w - - 0 1", ClaimPolicy::ExplicitOnly)
             .unwrap();
     let response = run(request(&mate));
-    let EngineResult::Move { action, telemetry } = response.result else {
+    let ChessResult::Move { action, telemetry } = response else {
         panic!("{response:?}")
     };
     assert_eq!(action.to_string(), "g6g7");
@@ -41,8 +48,8 @@ fn moves_claims_conclusions_and_incomplete_work_are_distinct() {
     let mut checkmate = mate;
     checkmate.apply(action).unwrap();
     assert!(matches!(
-        run(request(&checkmate)).result,
-        EngineResult::Finished {
+        run(request(&checkmate)),
+        ChessResult::Finished {
             outcome: ChessOutcome::Checkmate {
                 winner: Color::White
             },
@@ -55,10 +62,10 @@ fn moves_claims_conclusions_and_incomplete_work_are_distinct() {
         AdjudicatedGame::from_fen("7k/8/8/8/8/8/8/KR6 b - - 99 1", ClaimPolicy::ExplicitOnly)
             .unwrap();
     let response = run(request(&claim));
-    let EngineResult::Claim {
+    let ChessResult::Claim {
         claim: selected,
         telemetry,
-    } = response.result
+    } = response
     else {
         panic!("{response:?}")
     };
@@ -76,7 +83,7 @@ fn moves_claims_conclusions_and_incomplete_work_are_distinct() {
     let mut zero = request(&AdjudicatedGame::new(ClaimPolicy::ExplicitOnly));
     zero.limits.nodes = 0;
     let response = run(zero);
-    let EngineResult::Incomplete { telemetry } = response.result else {
+    let ChessResult::Incomplete { telemetry } = response else {
         panic!("{response:?}")
     };
     assert_eq!(telemetry.score, None);
@@ -99,14 +106,8 @@ fn same_position_different_known_histories_preserve_different_claim_results() {
     assert_eq!(repeated.position(), imported.position());
     assert!(!repeated.available_claims().is_empty());
     assert!(imported.available_claims().is_empty());
-    assert!(matches!(
-        run(request(&repeated)).result,
-        EngineResult::Claim { .. }
-    ));
-    assert!(matches!(
-        run(request(&imported)).result,
-        EngineResult::Move { .. }
-    ));
+    assert!(matches!(run(request(&repeated)), ChessResult::Claim { .. }));
+    assert!(matches!(run(request(&imported)), ChessResult::Move { .. }));
     assert_ne!(request(&repeated).game, request(&imported).game);
 }
 #[test]
@@ -124,17 +125,13 @@ fn rejects_full_before_replay_without_downgrading_context() {
     .unwrap();
     let response = run(request(&record));
     assert!(matches!(
-        response.result,
-        EngineResult::Failure {
+        response,
+        ChessResult::Failure {
             failure: EngineFailure {
                 kind: FailureKind::UnsupportedMode,
                 ..
             }
         }
-    ));
-    assert!(matches!(
-        response.context.game.adjudication_mode(),
-        AdjudicationMode::Full { .. }
     ));
 }
 #[test]
@@ -149,7 +146,9 @@ fn malformed_oversized_unknown_and_unterminated_input_are_rejected() {
     let mut value =
         serde_json::to_value(request(&AdjudicatedGame::new(ClaimPolicy::ExplicitOnly))).unwrap();
     value["unknown"] = true.into();
-    let mut bytes = serde_json::to_vec(&value).unwrap();
+    let mut bytes =
+        serde_json::to_vec(&serde_json::json!({"protocol":PROTOCOL_VERSION,"context":value}))
+            .unwrap();
     bytes.push(b'\n');
     assert!(serve_once(Cursor::new(bytes), Vec::new()).is_err());
 }
@@ -157,10 +156,10 @@ fn malformed_oversized_unknown_and_unterminated_input_are_rejected() {
 fn invalid_settings_and_search_failure_have_no_score() {
     let game = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
     let mut invalid = request(&game);
-    invalid.protocol = 0;
+    invalid.request_id = 0;
     assert!(matches!(
-        run(invalid).result,
-        EngineResult::Failure {
+        run(invalid),
+        ChessResult::Failure {
             failure: EngineFailure {
                 kind: FailureKind::InvalidRequest,
                 ..
@@ -174,8 +173,8 @@ fn invalid_settings_and_search_failure_have_no_score() {
     )
     .unwrap();
     assert!(matches!(
-        run(request(&overflow)).result,
-        EngineResult::Failure {
+        run(request(&overflow)),
+        ChessResult::Failure {
             failure: EngineFailure {
                 kind: FailureKind::Search,
                 ..
@@ -192,21 +191,22 @@ fn native_record_duplicate_fields_are_not_collapsed_before_strict_validation() {
         "\"claim_policy\":",
         "\"claim_policy\":\"explicit_only\",\"claim_policy\":",
     );
-    assert!(serde_json::from_str::<EngineRequest>(&text).is_err());
+    assert!(serde_json::from_str::<ExecutionContext>(&text).is_err());
 }
 
-fn analysis_target(game: &AdjudicatedGame) -> AnalysisTarget {
-    AnalysisTarget {
+fn analysis_target(game: &AdjudicatedGame) -> ExecutionTarget {
+    ExecutionTarget {
         selection_id: 1,
-        ply: game.history().ply_count() as u64,
+        board_ply: game.history().ply_count() as u64,
+        event_index: game.record().events().len() as u64,
         session_version: 7,
         label: "Native protocol target".into(),
-        turn: game.position().side_to_move(),
+        turn: mshogi_core::native::NativeSide::Chess(game.position().side_to_move()),
     }
 }
-fn full_request(game: &AdjudicatedGame, positions: u64) -> EngineRequest {
+fn full_request(game: &AdjudicatedGame, positions: u64) -> ExecutionContext {
     let mut context = request(game);
-    context.purpose = RequestPurpose::FullReachability {
+    context.purpose = ExecutionPurpose::ChessFullReachability {
         target: analysis_target(game),
         mate: ReachabilityTarget::Either,
         limits: FullLimits {
@@ -223,35 +223,32 @@ fn full_child_operation_reports_real_possible_impossible_and_unknown_work() {
         AdjudicatedGame::from_fen("7k/6Q1/5K2/8/8/8/8/8 b - - 0 1", ClaimPolicy::ExplicitOnly)
             .unwrap();
     assert!(
-        matches!(run(full_request(&mated, 10)).result, EngineResult::Reachability { result: MateReachability::Possible { witness, work } } if witness.is_empty() && work.positions == 1)
+        matches!(run(full_request(&mated, 10)), ChessResult::Reachability { result: MateReachability::Possible { witness, work } } if witness.is_empty() && work.positions == 1)
     );
     let dead = AdjudicatedGame::from_fen("7k/8/8/8/8/8/8/K7 w - - 0 1", ClaimPolicy::ExplicitOnly)
         .unwrap();
     assert!(
-        matches!(run(full_request(&dead, 10)).result, EngineResult::Reachability { result: MateReachability::Impossible { work } } if work.static_leaves == 1)
+        matches!(run(full_request(&dead, 10)), ChessResult::Reachability { result: MateReachability::Impossible { work } } if work.static_leaves == 1)
     );
     let live = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
     assert!(
-        matches!(run(full_request(&live, 0)).result, EngineResult::Reachability { result: MateReachability::Unknown { reason: ReachabilityStop::PositionLimit, work } } if work.positions == 0 && work.transitions == 0)
+        matches!(run(full_request(&live, 0)), ChessResult::Reachability { result: MateReachability::Unknown { reason: ReachabilityStop::PositionLimit, work } } if work.positions == 0 && work.transitions == 0)
     );
 }
 #[test]
 fn analysis_requires_exact_provenance_supported_mode_and_explicit_limits() {
     let live = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
     let mut context = request(&live);
-    context.purpose = RequestPurpose::MoveAnalysis {
+    context.purpose = ExecutionPurpose::MoveAnalysis {
         target: analysis_target(&live),
     };
-    assert!(matches!(
-        run(context.clone()).result,
-        EngineResult::Move { .. }
-    ));
-    if let RequestPurpose::MoveAnalysis { target } = &mut context.purpose {
-        target.ply = 1;
+    assert!(matches!(run(context.clone()), ChessResult::Move { .. }));
+    if let ExecutionPurpose::MoveAnalysis { target } = &mut context.purpose {
+        target.board_ply = 1;
     }
     assert!(matches!(
-        run(context).result,
-        EngineResult::Failure {
+        run(context),
+        ChessResult::Failure {
             failure: EngineFailure {
                 kind: FailureKind::InvalidRequest,
                 ..
@@ -260,15 +257,15 @@ fn analysis_requires_exact_provenance_supported_mode_and_explicit_limits() {
     ));
     let mut invalid = full_request(&live, MAX_FULL_POSITIONS + 1);
     assert!(matches!(
-        run(invalid.clone()).result,
-        EngineResult::Failure {
+        run(invalid.clone()),
+        ChessResult::Failure {
             failure: EngineFailure {
                 kind: FailureKind::InvalidRequest,
                 ..
             }
         }
     ));
-    invalid.purpose = RequestPurpose::MoveAnalysis {
+    invalid.purpose = ExecutionPurpose::MoveAnalysis {
         target: analysis_target(&live),
     };
     invalid.limits = WorkLimits {
@@ -276,8 +273,8 @@ fn analysis_requires_exact_provenance_supported_mode_and_explicit_limits() {
         nodes: 1,
     };
     assert!(matches!(
-        run(invalid).result,
-        EngineResult::Failure {
+        run(invalid),
+        ChessResult::Failure {
             failure: EngineFailure {
                 kind: FailureKind::InvalidRequest,
                 ..
@@ -286,7 +283,7 @@ fn analysis_requires_exact_provenance_supported_mode_and_explicit_limits() {
     ));
     let encoded = serde_json::to_string(&request(&live)).unwrap();
     assert!(
-        serde_json::from_str::<EngineRequest>(
+        serde_json::from_str::<ExecutionContext>(
             &encoded.replace("\"purpose\":{\"kind\":\"engine_turn\"},", "")
         )
         .is_err()

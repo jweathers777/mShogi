@@ -1,3 +1,7 @@
+> Historical interface evidence. MSH-116 retired this internal wire version; the
+> sole current contract is [internal execution v4](internal-execution-v4.md).
+> Native behavior described below remains relevant where unchanged.
+
 # Bundled engine interface v2 — explicit execution purpose
 
 MSH-33 extends the [first-batch boundary](internal-engine-v1.md). The bundled

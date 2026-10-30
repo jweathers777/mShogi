@@ -46,7 +46,7 @@ fn replace(c: &mut DesktopController, g: s::Game, human: s::Side) -> SharedSnaps
     )
     .unwrap()
 }
-fn analyze(c: &mut DesktopController) -> SharedRequest {
+fn analyze(c: &mut DesktopController) -> ExecutionContext {
     send(
         c,
         SessionOperation::Analyze {
@@ -59,9 +59,10 @@ fn analyze(c: &mut DesktopController) -> SharedRequest {
     .unwrap();
     c.shared.shogi.as_ref().unwrap().pending.clone().unwrap()
 }
-fn incomplete(context: SharedRequest) -> SharedResponse {
-    SharedResponse {
-        result: SharedResult::Shogi {
+fn incomplete(context: ExecutionContext) -> ExecutionObservation {
+    ExecutionObservation {
+        schema_version: OBSERVATION_SCHEMA_VERSION,
+        result: ExecutionResult::Shogi {
             result: ShogiResult::Incomplete {
                 telemetry: mshogi_engine::ShogiTelemetry {
                     evaluator_id: "mshogi.shogi.material.v1".into(),
@@ -372,29 +373,32 @@ fn exact_analysis_context_retirement_and_same_board_history() {
             1 => response.context.session_version += 1,
             2 => response.context.process_generation += 1,
             3 => response.context.limits.nodes += 1,
-            4 => response.context.purpose = SharedPurpose::EngineTurn {},
+            4 => response.context.purpose = ExecutionPurpose::EngineTurn {},
             5 => response.context.game = CanonicalRecord::shogi(s::GameRecord::from_game(&fresh)),
             _ => {
-                if let SharedPurpose::MoveAnalysis { target } = &mut response.context.purpose {
+                if let ExecutionPurpose::MoveAnalysis { target } = &mut response.context.purpose {
                     target.selection_id += 1;
                 }
             }
         }
-        assert!(!c.accept_shared(response));
+        assert!(!c.accept_observation(response));
     }
     send(&mut c, SessionOperation::Cancel {}).unwrap();
     let second = analyze(&mut c);
     assert!(second.request_id > first.request_id);
-    assert!(!c.accept_shared(incomplete(first.clone())));
+    assert!(!c.accept_observation(incomplete(first.clone())));
     // Use actual executor below as authoritative telemetry IDs are not presentation constants.
     let mut output = vec![];
     mshogi_engine::serve_once(
-        std::io::Cursor::new(format!("{}\n", serde_json::to_string(&second).unwrap())),
+        std::io::Cursor::new(format!(
+            "{}\n",
+            serde_json::to_string(&execution_request(second.clone())).unwrap()
+        )),
         &mut output,
     )
     .unwrap();
-    let result = serde_json::from_slice(&output).unwrap();
-    assert!(c.accept_shared(result));
+    let result = decode_execution_observation(&output);
+    assert!(c.accept_observation(result));
     settle(&mut c);
     assert_eq!(
         c.shared.shogi.as_ref().unwrap().game.context(),
@@ -408,9 +412,9 @@ fn exact_analysis_context_retirement_and_same_board_history() {
         historic.game,
         CanonicalRecord::shogi(s::GameRecord::from_game(&root.prefix(2).unwrap()))
     );
-    assert!(!c.accept_shared(incomplete(second)));
+    assert!(!c.accept_observation(incomplete(second)));
     send(&mut c, SessionOperation::ReturnLive {}).unwrap();
-    assert!(!c.accept_shared(incomplete(historic)));
+    assert!(!c.accept_observation(incomplete(historic)));
     let before = c.shared_token();
     assert!(
         send(
@@ -475,14 +479,17 @@ fn semantic_undo_replay_does_not_revive_retired_work() {
     assert_ne!(fresh.session_version, old.session_version);
     assert!(fresh.request_id > old.request_id);
     assert_ne!(fresh.purpose, old.purpose);
-    assert!(!c.accept_shared(incomplete(old)));
+    assert!(!c.accept_observation(incomplete(old)));
     let mut bytes = vec![];
     mshogi_engine::serve_once(
-        std::io::Cursor::new(format!("{}\n", serde_json::to_string(&fresh).unwrap())),
+        std::io::Cursor::new(format!(
+            "{}\n",
+            serde_json::to_string(&execution_request(fresh.clone())).unwrap()
+        )),
         &mut bytes,
     )
     .unwrap();
-    assert!(c.accept_shared(serde_json::from_slice(&bytes).unwrap()));
+    assert!(c.accept_observation(decode_execution_observation(&bytes)));
     settle(&mut c);
     assert!(c.shogi_snapshot().status.concluded);
 }
@@ -554,7 +561,7 @@ fn observation_capacity_refuses_new_work_before_changing_session() {
     replace(&mut c, s::Game::new(), s::Side::Sente);
     let request = analyze(&mut c);
     let observation = PresentedObservation {
-        response: incomplete(request),
+        observation: incomplete(request),
         application_error: None,
         historical: false,
     };
@@ -591,14 +598,17 @@ fn close_document_preconditions_advance_for_shogi_events_observations_and_replac
     let terminal = c.pause_for_close().document.revision;
     assert!(terminal > replaced);
     let context = analyze(&mut c);
-    assert!(c.accept_shared({
+    assert!(c.accept_observation({
         let mut bytes = vec![];
         mshogi_engine::serve_once(
-            std::io::Cursor::new(format!("{}\n", serde_json::to_string(&context).unwrap())),
+            std::io::Cursor::new(format!(
+                "{}\n",
+                serde_json::to_string(&execution_request(context.clone())).unwrap()
+            )),
             &mut bytes,
         )
         .unwrap();
-        serde_json::from_slice(&bytes).unwrap()
+        decode_execution_observation(&bytes)
     }));
     let observed = c.snapshot().document.revision;
     assert!(observed > terminal);
@@ -631,7 +641,7 @@ fn incomplete_failure_and_retry_preserve_native_history_without_fallback() {
     send(&mut c, SessionOperation::Resume {}).unwrap();
     let old = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
     let before = c.shogi_snapshot().context;
-    assert!(c.accept_shared(incomplete(old.clone())));
+    assert!(c.accept_observation(incomplete(old.clone())));
     settle(&mut c);
     assert_eq!(c.shogi_snapshot().phase, EnginePhase::Incomplete);
     assert_eq!(c.shogi_snapshot().context, before);
@@ -639,10 +649,11 @@ fn incomplete_failure_and_retry_preserve_native_history_without_fallback() {
     send(&mut c, SessionOperation::Retry {}).unwrap();
     let fresh = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
     assert!(fresh.request_id > old.request_id);
-    assert!(!c.accept_shared(incomplete(old)));
-    assert!(c.accept_shared(SharedResponse {
+    assert!(!c.accept_observation(incomplete(old)));
+    assert!(c.accept_observation(ExecutionObservation {
+        schema_version: OBSERVATION_SCHEMA_VERSION,
         context: fresh,
-        result: SharedResult::Failure {
+        result: ExecutionResult::Failure {
             failure: mshogi_engine::EngineFailure {
                 kind: mshogi_engine::FailureKind::Search,
                 message: "separate unscored process failure".into()
@@ -837,11 +848,11 @@ fn native_search_presentation_preserves_target_purpose_and_real_terminal_distanc
         s::Side::Sente,
     );
     let context = analyze(&mut c);
-    let mut bytes = serde_json::to_vec(&context).unwrap();
+    let mut bytes = serde_json::to_vec(&execution_request(context.clone())).unwrap();
     bytes.push(b'\n');
     let mut output = vec![];
     mshogi_engine::serve_once(std::io::Cursor::new(bytes), &mut output).unwrap();
-    assert!(c.accept_shared(serde_json::from_slice(&output).unwrap()));
+    assert!(c.accept_observation(decode_execution_observation(&output)));
     settle(&mut c);
     let view = c.shared_snapshot();
     assert_eq!(view.event_index, 0);
@@ -897,4 +908,32 @@ fn xiangqi_product_creation_retires_prior_work_and_keeps_archive_admission() {
         );
         assert!(after.capabilities.save, "MSH-99 native archive support");
     }
+}
+
+#[test]
+fn current_wire_frame_is_checked_before_a_durable_native_observation_is_admitted() {
+    let mut c = controller();
+    replace(&mut c, s::Game::new(), s::Side::Sente);
+    let context = analyze(&mut c);
+    let observation = incomplete(context.clone());
+    let before = c.shared_snapshot().context;
+    assert!(!c.accept_shared(ExecutionResponse {
+        protocol: mshogi_engine::PROTOCOL_VERSION - 1,
+        observation: observation.clone(),
+    }));
+    assert_eq!(c.shared_snapshot().context, before);
+    assert!(c.shared.shogi.as_ref().unwrap().observations.is_empty());
+    assert_eq!(c.shared.shogi.as_ref().unwrap().pending, Some(context));
+    assert!(c.accept_shared(ExecutionResponse {
+        protocol: mshogi_engine::PROTOCOL_VERSION,
+        observation,
+    }));
+    settle(&mut c);
+    let saved = c.shared.shogi.as_ref().unwrap();
+    assert_eq!(saved.observations.len(), 1);
+    assert_eq!(
+        saved.observations[0].observation.schema_version,
+        OBSERVATION_SCHEMA_VERSION
+    );
+    assert_eq!(saved.record(), before);
 }

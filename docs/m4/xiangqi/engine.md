@@ -1,3 +1,7 @@
+> MSH-116 update: native engine behavior below is preserved. Older internal
+> wire/API descriptions are historical; actual consumers now use the sole
+> [current execution contract](../../desktop/internal-execution-v4.md), with durable semantic observations.
+
 # Functional Xiangqi evaluator, search and structured child (MSH-97)
 
 Profile remains `mshogi.xiangqi.wxf2018.v1`, edition

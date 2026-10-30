@@ -1,22 +1,27 @@
 //! Actual native executable and portable supervised pipe/process fixtures.
-use mshogi_core::chess::{AdjudicatedGame, ClaimPolicy};
+use mshogi_core::{
+    chess::{AdjudicatedGame, ClaimPolicy},
+    native::CanonicalRecord,
+};
 use mshogi_engine::*;
 use std::{
     path::PathBuf,
     thread,
     time::{Duration, Instant},
 };
-fn request(id: u64) -> EngineRequest {
-    EngineRequest {
+fn request(id: u64) -> ExecutionRequest {
+    ExecutionRequest {
         protocol: PROTOCOL_VERSION,
-        purpose: RequestPurpose::EngineTurn,
-        request_id: id,
-        session_version: 2,
-        process_generation: id,
-        game: AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record(),
-        limits: WorkLimits {
-            depth: 1,
-            nodes: 1000,
+        context: ExecutionContext {
+            purpose: ExecutionPurpose::EngineTurn {},
+            request_id: id,
+            session_version: 2,
+            process_generation: id,
+            game: CanonicalRecord::chess(AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record()),
+            limits: WorkLimits {
+                depth: 1,
+                nodes: 1000,
+            },
         },
     }
 }
@@ -30,7 +35,7 @@ fn bridge(path: &str, watchdog: Duration) -> EngineBridge {
     )
     .unwrap()
 }
-fn wait(bridge: &EngineBridge) -> EngineResponse {
+fn wait(bridge: &EngineBridge) -> ExecutionResponse {
     let deadline = Instant::now() + Duration::from_secs(20);
     loop {
         if let Some(response) = bridge.poll() {
@@ -60,11 +65,17 @@ fn real_bundled_entrypoint_echoes_context_and_plays_an_actual_legal_move() {
     let context = request(1);
     bridge.submit(context.clone()).unwrap();
     let response = wait(&bridge);
-    assert_eq!(response.context, context);
-    let EngineResult::Move { action, telemetry } = response.result else {
+    assert_eq!(response.observation.context, context.context);
+    let ExecutionResult::Chess {
+        result: ChessResult::Move { action, telemetry },
+    } = response.observation.result
+    else {
         panic!("{response:?}")
     };
-    let game = AdjudicatedGame::replay_record(&context.game).unwrap();
+    let CanonicalRecord::Chess(record) = &context.context.game else {
+        panic!()
+    };
+    let game = AdjudicatedGame::replay_record(record).unwrap();
     assert!(game.position().legal_actions().contains(&action));
     assert_eq!(telemetry.completed_depth, 1);
     assert_eq!(telemetry.nodes, 21);
@@ -79,9 +90,12 @@ fn real_bundled_entrypoint_echoes_context_and_plays_an_actual_legal_move() {
 fn real_entrypoint_preserves_incomplete_search_instead_of_fallback_move() {
     let bridge = bridge(env!("CARGO_BIN_EXE_mshogi"), Duration::from_secs(15));
     let mut context = request(1);
-    context.limits.nodes = 0;
+    context.context.limits.nodes = 0;
     bridge.submit(context).unwrap();
-    let EngineResult::Incomplete { telemetry } = wait(&bridge).result else {
+    let ExecutionResult::Chess {
+        result: ChessResult::Incomplete { telemetry },
+    } = wait(&bridge).observation.result
+    else {
         panic!("no incomplete result")
     };
     assert_eq!(telemetry.score, None);
@@ -112,7 +126,7 @@ fn actual_process_failures_remain_explicit_unscored_and_bounded() {
         );
         bridge.submit(request(id)).unwrap();
         let response = wait(&bridge);
-        let EngineResult::Failure { failure } = response.result else {
+        let ExecutionResult::Failure { failure } = response.observation.result else {
             panic!("fixture {id}: {response:?}")
         };
         assert_eq!(failure.kind, kind, "fixture {id}: {}", failure.message);
@@ -122,8 +136,8 @@ fn actual_process_failures_remain_explicit_unscored_and_bounded() {
     let bridge = bridge("/definitely/missing/mshogi-engine", Duration::from_secs(15));
     bridge.submit(request(1)).unwrap();
     assert!(matches!(
-        wait(&bridge).result,
-        EngineResult::Failure {
+        wait(&bridge).observation.result,
+        ExecutionResult::Failure {
             failure: EngineFailure {
                 kind: FailureKind::Start,
                 ..
@@ -144,8 +158,13 @@ fn cancellation_replacement_and_reused_identity_cannot_publish_old_work() {
     assert_eq!(bridge.submit(request(5)), Err(SubmitError::IdentityReused));
     bridge.submit(request(8)).unwrap();
     let response = wait(&bridge);
-    assert_eq!(response.context.request_id, 8);
-    assert!(matches!(response.result, EngineResult::Incomplete { .. }));
+    assert_eq!(response.observation.context.request_id, 8);
+    assert!(matches!(
+        response.observation.result,
+        ExecutionResult::Chess {
+            result: ChessResult::Incomplete { .. }
+        }
+    ));
     assert!(bridge.poll().is_none());
     bridge.cancel();
     stop(&bridge);

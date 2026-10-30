@@ -171,15 +171,12 @@ fn complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix(
         s.analysis.status == AnalysisPhase::Complete
     });
     let context = historical.analysis.context.as_ref().unwrap();
-    assert!(context.game.events().is_empty());
+    let mshogi_core::native::CanonicalRecord::Chess(record) = &context.game else {
+        panic!("chess analysis context");
+    };
+    assert!(record.events().is_empty());
     assert_eq!(
-        context
-            .game
-            .replay_history()
-            .unwrap()
-            .game
-            .position()
-            .to_fen(),
+        record.replay_history().unwrap().game.position().to_fen(),
         initial.fen
     );
     assert_eq!(historical.history, before.history);

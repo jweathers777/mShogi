@@ -47,7 +47,16 @@ is a committed native command and an ineligible out-of-turn declaration produces
 the selected profile's false-declaration loss. Resignation also retains native
 terminal-command admission. Wrong-game commands reject before mutation.
 
-## Transport and compatibility
+## Current execution boundary (MSH-116)
+
+The canonical envelope and native command ownership above remain authoritative.
+Internal execution now uses one [v4 contract](../desktop/internal-execution-v4.md)
+for Chess, Shogi and Xiangqi. Durable schema-1 observations carry complete semantic
+context/result without transport framing. There is no old-wire reader, fallback
+or Chess v2 conversion. The following transport section records the historical
+MSH-69/MSH-95 stage, not current compatibility requirements.
+
+## Historical transport and compatibility (v2/v3)
 
 The console's existing `internal-search` entry point accepts both:
 

@@ -1,6 +1,7 @@
 //! Actual shared desktop controller through the bundled executable's internal entry point.
 use mshogi_core::{chess, native::*, shogi as s};
 use mshogi_desktop_session::*;
+use mshogi_engine::{ExecutionResponse, PROTOCOL_VERSION};
 use std::time::{Duration, Instant};
 fn command(c: &mut DesktopController, operation: SessionOperation) -> SharedSnapshot {
     let snapshot = c.shared_snapshot();
@@ -76,12 +77,12 @@ fn real_chess_shogi_chess_execution_uses_one_supervisor_and_fresh_ids() {
     let played = wait(&mut c, |s| s.event_index == 1);
     assert_eq!(played.events[0].label, "Sente: 1g1f");
     assert_eq!(played.turn.label, "Gote");
-    assert!(played.observations[0].response.context.request_id > old.request_id);
+    assert!(played.observations[0].observation.context.request_id > old.request_id);
     let before = played.context;
     let observed = analyze(&mut c);
     assert_eq!(observed.context, before);
     assert!(observed.analysis.is_some());
-    let last = observed.analysis.unwrap().response;
+    let last = observed.analysis.unwrap().observation;
     command(
         &mut c,
         SessionOperation::Replace {
@@ -91,12 +92,18 @@ fn real_chess_shogi_chess_execution_uses_one_supervisor_and_fresh_ids() {
             human: NativeSide::Chess(chess::Color::White),
         },
     );
-    assert!(!c.accept_shared(last.clone()));
+    assert!(!c.accept_shared(ExecutionResponse {
+        protocol: PROTOCOL_VERSION,
+        observation: last.clone()
+    }));
     let chess = analyze(&mut c);
     let fresh = chess.chess.unwrap().analysis.context.unwrap();
     assert!(fresh.request_id > last.context.request_id);
     assert!(fresh.process_generation > last.context.process_generation);
-    assert!(!c.accept_shared(last));
+    assert!(!c.accept_shared(ExecutionResponse {
+        protocol: PROTOCOL_VERSION,
+        observation: last
+    }));
     c.begin_shutdown();
 }
 #[test]
@@ -121,7 +128,7 @@ fn actual_engine_declaration_is_a_terminal_command_and_analysis_cannot_apply_it(
     assert!(ended.status.label.contains("entering-king declaration"));
     command(&mut c, SessionOperation::Inspect { event_index: 0 });
     let prefix = analyze(&mut c);
-    let response = &prefix.analysis.as_ref().unwrap().response;
+    let response = &prefix.analysis.as_ref().unwrap().observation;
     assert_eq!(response.context.game.event_count(), 0);
     assert_eq!(prefix.event_index, 0);
     assert!(!prefix.status.concluded);
@@ -162,7 +169,7 @@ fn product_new_gote_real_engine_play_analysis_archive_and_resume_use_native_path
     );
     wait(&mut c, |view| view.event_index == 3);
     let observed = analyze(&mut c);
-    let response = observed.analysis.as_ref().unwrap().response.clone();
+    let response = observed.analysis.as_ref().unwrap().observation.clone();
     assert_eq!(observed.event_index, 3);
     assert_eq!(response.context.game.event_count(), 3);
     assert!(observed.search_observations.last().unwrap().selected);
@@ -194,7 +201,10 @@ fn product_new_gote_real_engine_play_analysis_archive_and_resume_use_native_path
             .iter()
             .all(|o| o.historical && !o.selected)
     );
-    assert!(!c.accept_shared(response));
+    assert!(!c.accept_shared(ExecutionResponse {
+        protocol: PROTOCOL_VERSION,
+        observation: response
+    }));
     let inspected = command(&mut c, SessionOperation::Inspect { event_index: 1 });
     assert!(inspected.historical);
     assert_eq!(inspected.context.event_count(), 1);

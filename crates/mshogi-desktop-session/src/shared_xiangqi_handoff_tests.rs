@@ -123,7 +123,7 @@ fn warning_inspection_archive_reopen_and_resume_preserve_one_native_context() {
     assert!(state.pending.is_none() && state.analysis.is_none());
     assert_eq!(state.observations.len(), 1);
     assert!(state.observations[0].historical);
-    assert_eq!(state.observations[0].response, observed);
+    assert_eq!(state.observations[0].observation, observed);
     assert!(c.shared_inspection(old_query).is_err());
     assert!(!accept(&mut c, late.clone()));
     let fresh_inspection = c
@@ -142,7 +142,7 @@ fn warning_inspection_archive_reopen_and_resume_preserve_one_native_context() {
     assert_eq!(live.xiangqi.as_ref().unwrap().warnings.len(), 1);
     send(&mut c, SessionOperation::Resume {}).unwrap();
     let turn = pending(&c);
-    assert!(matches!(turn.purpose, SharedPurpose::EngineTurn {}));
+    assert!(matches!(turn.purpose, ExecutionPurpose::EngineTurn {}));
     assert_eq!(turn.game, canonical);
     assert!(!accept(&mut c, late));
     assert!(accept(&mut c, execute(&turn)));
@@ -186,7 +186,7 @@ fn same_board_history_cancel_and_cross_game_replacement_cannot_revive_results() 
     let wrong_profile = serde_json::to_string(&valid_response)
         .unwrap()
         .replace(x::PROFILE_ID, "mshogi.xiangqi.unsupported.v1");
-    assert!(serde_json::from_str::<SharedResponse>(&wrong_profile).is_err());
+    assert!(serde_json::from_str::<ExecutionObservation>(&wrong_profile).is_err());
     assert_eq!(pending(&c), fresh, "rejection preserves valid pending work");
     send(
         &mut c,

@@ -46,10 +46,10 @@ fn replace(c: &mut DesktopController, game: &x::Game, human: x::Side) -> SharedS
     )
     .unwrap()
 }
-fn pending(c: &DesktopController) -> SharedRequest {
+fn pending(c: &DesktopController) -> ExecutionContext {
     c.shared.xiangqi.as_ref().unwrap().pending.clone().unwrap()
 }
-fn analyze(c: &mut DesktopController, nodes: u64) -> SharedRequest {
+fn analyze(c: &mut DesktopController, nodes: u64) -> ExecutionContext {
     send(
         c,
         SessionOperation::Analyze {
@@ -59,19 +59,22 @@ fn analyze(c: &mut DesktopController, nodes: u64) -> SharedRequest {
     .unwrap();
     pending(c)
 }
-fn execute(request: &SharedRequest) -> SharedResponse {
+fn execute(request: &ExecutionContext) -> ExecutionObservation {
     let mut output = vec![];
     mshogi_engine::serve_once(
-        std::io::Cursor::new(format!("{}\n", serde_json::to_string(request).unwrap())),
+        std::io::Cursor::new(format!(
+            "{}\n",
+            serde_json::to_string(&execution_request(request.clone())).unwrap()
+        )),
         &mut output,
     )
     .unwrap();
-    let response: SharedResponse = serde_json::from_slice(&output).unwrap();
+    let response = decode_execution_observation(&output);
     assert!(response.matches(request));
     response
 }
-fn accept(c: &mut DesktopController, response: SharedResponse) -> bool {
-    let accepted = c.accept_shared(response);
+fn accept(c: &mut DesktopController, response: ExecutionObservation) -> bool {
+    let accepted = c.accept_observation(response);
     if accepted {
         let deadline = Instant::now() + std::time::Duration::from_secs(20);
         while c.shared_snapshot().capacity.status == CapacityPhase::Checking {
@@ -320,7 +323,7 @@ fn native_claim_audit_and_nonmoving_resignation_preserve_board_ply_and_atomicity
     let moved = human_play(&mut c, "a3a4");
     assert_eq!((moved.event_index, moved.board_ply), (3, 1));
     let old = pending(&c);
-    assert!(matches!(old.purpose, SharedPurpose::EngineTurn {}));
+    assert!(matches!(old.purpose, ExecutionPurpose::EngineTurn {}));
     // Black has the move. Red may still resign, through native terminal admission.
     let ended = send(&mut c, SessionOperation::Resign {}).unwrap();
     assert_eq!((ended.event_index, ended.board_ply), (5, 1));
@@ -350,12 +353,12 @@ fn actual_read_only_analysis_rejects_every_context_mismatch_and_cannot_apply_cho
     let before = native(&c);
     assert!(matches!(
         request.purpose,
-        SharedPurpose::MoveAnalysis { .. }
+        ExecutionPurpose::MoveAnalysis { .. }
     ));
     let response = execute(&request);
     assert!(matches!(
         response.result,
-        SharedResult::Xiangqi {
+        ExecutionResult::Xiangqi {
             result: XiangqiResult::Choice { .. }
         }
     ));
@@ -385,18 +388,18 @@ fn actual_read_only_analysis_rejects_every_context_mismatch_and_cannot_apply_cho
             1 => wrong.context.session_version += 1,
             2 => wrong.context.process_generation += 1,
             3 => wrong.context.limits.nodes += 1,
-            4 => wrong.context.purpose = SharedPurpose::EngineTurn {},
+            4 => wrong.context.purpose = ExecutionPurpose::EngineTurn {},
             5 => {
                 wrong.context.game =
                     CanonicalRecord::xiangqi(x::GameRecord::from_game(&different_history).unwrap())
             }
             6 => {
-                if let SharedPurpose::MoveAnalysis { target } = &mut wrong.context.purpose {
+                if let ExecutionPurpose::MoveAnalysis { target } = &mut wrong.context.purpose {
                     target.selection_id += 1
                 }
             }
             _ => {
-                if let SharedPurpose::MoveAnalysis { target } = &mut wrong.context.purpose {
+                if let ExecutionPurpose::MoveAnalysis { target } = &mut wrong.context.purpose {
                     target.event_index += 1
                 }
             }
@@ -612,7 +615,7 @@ fn incomplete_failure_retry_and_limits_are_not_chess_outcomes() {
     let result = execute(&low);
     assert!(matches!(
         result.result,
-        SharedResult::Xiangqi {
+        ExecutionResult::Xiangqi {
             result: XiangqiResult::Incomplete { .. }
         }
     ));
@@ -625,12 +628,13 @@ fn incomplete_failure_retry_and_limits_are_not_chess_outcomes() {
     send(&mut c, SessionOperation::Retry {}).unwrap();
     let retry = pending(&c);
     assert!(retry.request_id > low.request_id);
-    assert!(matches!(retry.purpose, SharedPurpose::EngineTurn {}));
+    assert!(matches!(retry.purpose, ExecutionPurpose::EngineTurn {}));
     assert!(accept(
         &mut c,
-        SharedResponse {
+        ExecutionObservation {
+            schema_version: OBSERVATION_SCHEMA_VERSION,
             context: retry,
-            result: SharedResult::Failure {
+            result: ExecutionResult::Failure {
                 failure: mshogi_engine::EngineFailure {
                     kind: mshogi_engine::FailureKind::Start,
                     message: "test-instrumented start failure".into()

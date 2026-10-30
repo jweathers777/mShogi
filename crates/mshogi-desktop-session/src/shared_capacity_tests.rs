@@ -61,14 +61,17 @@ fn wait_file(c: &mut DesktopController, id: u64) -> Result<(), String> {
         std::thread::sleep(std::time::Duration::from_millis(1));
     }
 }
-fn actual_response(request: SharedRequest) -> SharedResponse {
+fn actual_response(request: ExecutionContext) -> ExecutionObservation {
     let mut bytes = vec![];
     mshogi_engine::serve_once(
-        std::io::Cursor::new(format!("{}\n", serde_json::to_string(&request).unwrap())),
+        std::io::Cursor::new(format!(
+            "{}\n",
+            serde_json::to_string(&execution_request(request.clone())).unwrap()
+        )),
         &mut bytes,
     )
     .unwrap();
-    let response: SharedResponse = serde_json::from_slice(&bytes).unwrap();
+    let response = decode_execution_observation(&bytes);
     assert!(response.matches(&request));
     response
 }
@@ -81,7 +84,7 @@ fn analyze(c: &mut DesktopController) {
     )
     .unwrap();
     let request = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
-    assert!(c.accept_shared(actual_response(request)));
+    assert!(c.accept_observation(actual_response(request)));
     settle(c);
     assert_eq!(
         c.shared_snapshot().capacity.status,
@@ -288,11 +291,18 @@ fn real_maximum_native_ledger_has_bounded_record_context_response_and_archive_si
     .unwrap();
     let request = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
     let response = actual_response(request.clone());
-    let request_size = serde_json::to_vec(&request).unwrap().len();
-    let response_size = serde_json::to_vec(&response).unwrap().len();
+    let request_size = serde_json::to_vec(&execution_request(request.clone()))
+        .unwrap()
+        .len();
+    let response_size = serde_json::to_vec(&ExecutionResponse {
+        protocol: mshogi_engine::PROTOCOL_VERSION,
+        observation: response.clone(),
+    })
+    .unwrap()
+    .len();
     assert!(request_size < mshogi_engine::MAX_REQUEST_BYTES);
     assert!(response_size < mshogi_engine::MAX_RESPONSE_BYTES);
-    assert!(c.accept_shared(response));
+    assert!(c.accept_observation(response));
     settle(&mut c);
     let state = c.shared.shogi.as_ref().unwrap();
     check_capacity(state, &mut || false).unwrap();
@@ -321,11 +331,11 @@ fn long_history_observations_enforce_both_encoded_byte_and_replay_capacity_witho
     let actual = actual_response(request);
     assert!(matches!(
         actual.result,
-        SharedResult::Shogi {
+        ExecutionResult::Shogi {
             result: ShogiResult::Finished { .. }
         }
     ));
-    assert!(c.accept_shared(actual.clone()));
+    assert!(c.accept_observation(actual.clone()));
     settle(&mut c);
     let base = c.shared.shogi.as_ref().unwrap().clone();
     // The position is concluded and analysis is read-only. Build a repetitive,
@@ -342,7 +352,7 @@ fn long_history_observations_enforce_both_encoded_byte_and_replay_capacity_witho
             response.context.request_id = id;
             response.context.session_version = id + 1;
             response.context.process_generation = id + 2;
-            let SharedPurpose::MoveAnalysis { target } = &mut response.context.purpose else {
+            let ExecutionPurpose::MoveAnalysis { target } = &mut response.context.purpose else {
                 unreachable!()
             };
             target.session_version = id + 1;
@@ -356,7 +366,7 @@ fn long_history_observations_enforce_both_encoded_byte_and_replay_capacity_witho
                 false,
             );
             state.observations.push(PresentedObservation {
-                response,
+                observation: response,
                 application_error: None,
                 historical: false,
             });
@@ -427,7 +437,7 @@ fn long_history_observations_enforce_both_encoded_byte_and_replay_capacity_witho
     .unwrap();
     let request = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
     let revision = c.shared_snapshot().document.revision;
-    assert!(c.accept_shared(actual_response(request)));
+    assert!(c.accept_observation(actual_response(request)));
     settle(&mut c);
     let snap = c.shared_snapshot();
     assert_eq!(snap.capacity.status, CapacityPhase::Paused);

@@ -145,6 +145,17 @@ class XiangqiRuntimeEvidenceTests(unittest.TestCase):
                 with self.assertRaises(AssertionError):
                     module.xiangqi_retained_state(data)
 
+    def test_normal_native_error_field_is_wrapped_outside_w3c_error_shape(self):
+        journey = object.__new__(module.Journey)
+        journey.web = Mock()
+        diagnostics = {**self.diagnostics(), 'error': ''}
+        journey.web.read.return_value = [diagnostics]
+        self.assertEqual(journey.xiangqi_diagnostics(), diagnostics)
+        expression = journey.web.read.call_args.args[0]
+        self.assertTrue(expression.startswith('[[...document.querySelectorAll('))
+        self.assertTrue(expression.endswith('??null]'))
+        journey.web.command.assert_not_called()
+
     def test_xiangqi_history_observer_requires_event_prefix_not_only_board_ply(self):
         journey = object.__new__(module.Journey)
         journey.web = Mock()
@@ -213,6 +224,23 @@ class SaveAcceptanceTests(unittest.TestCase):
     def test_all_four_controls_are_required(self):
         self.observation['buttons'].pop()
         self.assertFalse(module.saved_document_accepted(self.observation, self.expected))
+
+    def test_open_requires_actual_current_receipt_and_settled_correct_document(self):
+        # Actual R3 packaged failure screenshot/DOM: Open succeeded with this
+        # new native receipt, while the verifier waited for an obsolete phrase.
+        self.observation['statuses'] = [
+            'Opened complete native document with fresh runtime identities and work stopped.']
+        self.assertTrue(module.opened_document_accepted(self.observation, self.expected))
+        for change in (
+                lambda state: state.update(statuses=['Saved a complete desktop document.']),
+                lambda state: state.update(statuses=['Opening your game…']),
+                lambda state: state.update(statuses=['Open failed; current game retained.']),
+                lambda state: state.update(path='/games/old.mshogi'),
+                lambda state: state.update(dirty='Unsaved changes'),
+                lambda state: state['buttons'][2].update(enabled=False)):
+            state = copy.deepcopy(self.observation)
+            change(state)
+            self.assertFalse(module.opened_document_accepted(state, self.expected))
 
 
 class BoardPointerReadinessTests(unittest.TestCase):

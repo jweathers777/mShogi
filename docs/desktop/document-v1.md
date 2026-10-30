@@ -102,16 +102,18 @@ No evidence is deduplicated in storage, no native proof is trusted from a saved
 flag, and no resource constant is raised. Repeated proof validation is avoided;
 required validation is preserved.
 
-## Finite runtime installation bridge
+## Native runtime installation
 
-R2 owns the single current codec, not the R3 application-owner rewrite. The
-existing Chess/Shogi/Xiangqi runtime captures native payloads for the new writer;
-validated new-format payloads install through existing native installation
-methods. This bridge reads **only the current format**, owns no independent live
-state, preserves file/admission/token guards and has no legacy parser.
-**MSH-118/R3 deletes this capture/install bridge** when it owns the one active
-native document and common metadata. R2 does not start R3 or preserve an old
-reader until R6.
+R2 introduced a finite current-codec-to-existing-runtime capture/install bridge.
+That historical staging is recorded in the MSH-117 review. MSH-118/R3 deletes
+its three installation paths and optional runtime overlays. The current codec
+returns validated native data to one guarded `install_document` transaction,
+which installs exactly one active native document with common runtime metadata.
+See the [current native application contract](native-application.md).
+
+The remaining finite frontend-shape/IPC forwarder owns no native state and reads
+no obsolete document format; MSH-119/R4 deletes it with its actual callers.
+It is separate from the deleted R2 codec installation bridge.
 
 ## Verification fixtures
 

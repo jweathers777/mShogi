@@ -15,6 +15,31 @@ beforeEach(() => {
   command.mockReset();
 });
 afterEach(cleanup);
+it("can render the shared document before the Chess command connection enables its board", () => {
+  // Controlled ordering of the two existing native snapshot paths: the parent
+  // has a real native Chess snapshot, while the child command hook is pending.
+  const sharedSnapshot = { game: "chess", chess: standard,
+    token: { document: 1, version: standard.version, revision: standard.revision, selection: standard.view.selection_id },
+    capabilities: { take_back: standard.can_take_back },
+  } as import("./product/native").GameSnapshot;
+  vi.mocked(useNativeSession).mockReturnValue({ ...mockSession(standard, command), snapshot: null, connected: false });
+  const { container, rerender } = render(<App sharedSnapshot={sharedSnapshot} />);
+  const selector = '.square[aria-label^="e2,"]';
+  function originalPointerTarget() {
+    const element = container.querySelector(selector);
+    return !element || element.getAttribute("aria-disabled") === "true" ? null : element;
+  }
+  expect(container.querySelector(".document-card")).not.toBeNull();
+  expect(container.querySelectorAll(".square")).toHaveLength(64);
+  expect(container.querySelector(selector)?.getAttribute("aria-label")).toContain("White pawn");
+  expect(originalPointerTarget()).toBeNull();
+  expect(command).not.toHaveBeenCalled();
+  vi.mocked(useNativeSession).mockReturnValue(mockSession(standard, command));
+  rerender(<App sharedSnapshot={sharedSnapshot} />);
+  expect(originalPointerTarget()).not.toBeNull();
+  expect(container.querySelector(selector)?.getAttribute("aria-disabled")).toBe("false");
+  expect(command).not.toHaveBeenCalled();
+});
 it("delegates only native close confirmation to the enclosing product shell", () => {
   const dirty = { ...standard, document: { ...standard.document, dirty: true } };
   vi.mocked(useNativeSession).mockReturnValue({ ...mockSession(dirty, command), closeRequest: dirty });

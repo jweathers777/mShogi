@@ -1,0 +1,55 @@
+{
+  "run": 40994147366,
+  "artifact_id": 12950842851,
+  "artifact_name": "desktop-ubuntu-24.04",
+  "artifact_digest": "sha256:7b1be5e0ba05c047bc870dda6f7ff125064005ae2d61985841f787f474f3b3c0",
+  "source": "2f17510e4c5b8c3b92a051adfa070b4d5d834b21",
+  "retained_files": [
+    {
+      "path": "gui-evidence/gui-report.json",
+      "bytes": 440849,
+      "sha256": "72e5676b68e87c666dd85402830f602241c3f03c61aca3a3e93297f8749c86cb"
+    },
+    {
+      "path": "gui-evidence/verification-standard-failure.dom.json",
+      "bytes": 2756,
+      "sha256": "2ebbd0e3b38671c6dc7cbcd4a4970cd63989ed0156ee46fa60bf4f7f67ca3aa8"
+    },
+    {
+      "path": "gui-evidence/verification-standard-failure.webview.png",
+      "bytes": 95403,
+      "sha256": "a9f75255bd7e2a377f39b8d6d9790dddeaa0ae31658c2749ba9010914a918a12"
+    },
+    {
+      "path": "gui-evidence/verification-standard-failure.desktop.png",
+      "bytes": 108648,
+      "sha256": "37d7d596fba9be9c1be45504075beab0730351909c94f5f314e2b40e43f77349"
+    },
+    {
+      "path": "gui-evidence/verification-standard-driver.log",
+      "bytes": 347,
+      "sha256": "5feb0cb5e236488b79013ce998c557dbfd587ff631aead344972e25f8226336e"
+    },
+    {
+      "path": "gui-driver-provenance.json",
+      "bytes": 1381,
+      "sha256": "9b9faaa7e4ff2b32063c340df83becd8bda59eb8fe3c72ed9452523c5058b02f"
+    },
+    {
+      "path": "gui-packages/normal/manifest.json",
+      "bytes": 1789,
+      "sha256": "397ef71abadae2e778409568f821823df925d158591e5919efe447b5ec812a71"
+    },
+    {
+      "path": "gui-packages/verification/manifest.json",
+      "bytes": 351,
+      "sha256": "14eddba80ea1ab81732c8524fa48023d3a24bd00607162622b7821e778361516"
+    },
+    {
+      "path": "package-smoke.json",
+      "bytes": 4203,
+      "sha256": "2264fd2afbd7bcd15a31e9d1e9dd27e5f6b5cec2a73613e2e060aefe29197031"
+    }
+  ],
+  "large_packages": "Original artifact only; no package binaries copied into Git."
+}

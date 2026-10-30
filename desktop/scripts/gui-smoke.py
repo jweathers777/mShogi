@@ -146,18 +146,39 @@ class Webview:
             # WebKit's element-click heuristic requires the SVG group itself
             # in the hit-test tree, although only its painted children occur
             # there. Observe its real geometry, then send actual pointer input.
-            target = self.read("""(() => {
-                const element = document.querySelector(SELECTOR);
-                if (!element || element.getAttribute('aria-disabled') === 'true') return null;
-                const rect = element.getBoundingClientRect();
-                const left = Math.max(0, rect.left), right = Math.min(innerWidth, rect.right);
-                const top = Math.max(0, rect.top), bottom = Math.min(innerHeight, rect.bottom);
-                const x = Math.floor((left + right) / 2), y = Math.floor((top + bottom) / 2);
-                const hit = document.elementFromPoint(x, y);
-                return {x, y, visible: right > left && bottom > top,
-                    hit: hit?.tagName, containsHit: hit !== null && element.contains(hit)};
-            })()""".replace("SELECTOR", json.dumps(selector)))
-            assert target and target["visible"] and target["containsHit"], (selector, target)
+            attempts = 0
+            def ready_target():
+                nonlocal attempts
+                attempts += 1
+                target = self.read("""(() => {
+                    const element = document.querySelector(SELECTOR);
+                    const context = {label: element?.getAttribute('aria-label') ?? null,
+                        runtime: document.querySelector('.shell-runtime')?.textContent ?? null,
+                        heading: document.querySelector('.shell-live-heading')?.textContent ?? null,
+                        squareCount: document.querySelectorAll('.square,.shogi-square').length};
+                    if (!element) return {...context, present: false, enabled: false};
+                    const enabled = element.getAttribute('aria-disabled') !== 'true';
+                    const rect = element.getBoundingClientRect();
+                    const left = Math.max(0, rect.left), right = Math.min(innerWidth, rect.right);
+                    const top = Math.max(0, rect.top), bottom = Math.min(innerHeight, rect.bottom);
+                    const x = Math.floor((left + right) / 2), y = Math.floor((top + bottom) / 2);
+                    const hit = document.elementFromPoint(x, y);
+                    return {...context, present: true, enabled, x, y,
+                        visible: right > left && bottom > top,
+                        hit: hit?.tagName, containsHit: hit !== null && element.contains(hit)};
+                })()""".replace("SELECTOR", json.dumps(selector)))
+                ready = (target["present"] and target["enabled"] and
+                         target["visible"] and target["containsHit"])
+                if self.record is not None and (attempts == 1 or ready):
+                    self.record("Observe board pointer precondition", {
+                        "selector": selector, "attempt": attempts, "ready": ready,
+                        "target": target})
+                assert ready, {"selector": selector, "attempt": attempts, "target": target}
+                return target
+            # The shared document can render before the Chess command hook is
+            # connected. Poll read-only target readiness within the existing
+            # wait budget; dispatch pointer input exactly once, never in wait().
+            target = wait(ready_target, f"board pointer target ready: {selector}")
             self.command("POST", "/actions", {"actions": [{"type": "pointer", "id": "mouse",
                 "parameters": {"pointerType": "mouse"}, "actions": [
                     {"type": "pointerMove", "duration": 0, "origin": "viewport",

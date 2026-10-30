@@ -1,4 +1,5 @@
 """External driver boundary tests; these do not establish actual packaged GUI results."""
+import ast
 import copy
 import http.client
 import importlib.util
@@ -80,6 +81,76 @@ class SaveAcceptanceTests(unittest.TestCase):
     def test_all_four_controls_are_required(self):
         self.observation['buttons'].pop()
         self.assertFalse(module.saved_document_accepted(self.observation, self.expected))
+
+
+class BoardPointerReadinessTests(unittest.TestCase):
+    def setUp(self):
+        self.web = object.__new__(module.Webview)
+        self.web.record = Mock()
+        self.web.read = Mock()
+        self.web.command = Mock()
+        self.selector = '.square[aria-label^="e2,"]'
+        self.ready = {"present": True, "enabled": True, "visible": True,
+                      "containsHit": True, "x": 120, "y": 230,
+                      "label": "e2, White pawn", "runtime": "Local engine"}
+
+    def test_pending_board_is_observed_before_exactly_one_pointer_dispatch(self):
+        for pending in ({"present": False, "enabled": False},
+                        {**self.ready, "enabled": False},
+                        {**self.ready, "visible": False},
+                        {**self.ready, "containsHit": False}):
+            with self.subTest(pending=pending):
+                self.web.read = Mock(side_effect=[pending, self.ready])
+                self.web.command.reset_mock()
+                self.web.record.reset_mock()
+                # Each observation precedes any input, including the ready one.
+                def observe(*args):
+                    self.web.command.assert_not_called()
+                    return next(states)
+                states = iter([pending, self.ready])
+                self.web.read.side_effect = observe
+                with patch.object(module.time, 'sleep'):
+                    self.web.click(self.selector)
+                self.assertEqual(self.web.read.call_count, 2)
+                self.web.command.assert_called_once()
+                method, path, payload = self.web.command.call_args.args
+                self.assertEqual((method, path), ('POST', '/actions'))
+                actions = payload['actions'][0]['actions']
+                self.assertEqual([a['type'] for a in actions], ['pointerMove', 'pointerDown', 'pointerUp'])
+                self.assertEqual((actions[0]['x'], actions[0]['y']), (120, 230))
+                observations = [c.args[1] for c in self.web.record.call_args_list]
+                self.assertEqual([o['ready'] for o in observations], [False, True])
+                self.assertEqual(observations[0]['target'], pending)
+
+    def test_unready_target_times_out_with_reason_and_without_any_input(self):
+        for pending in ({"present": False, "enabled": False},
+                        {**self.ready, "enabled": False},
+                        {**self.ready, "visible": False},
+                        {**self.ready, "containsHit": False}):
+            with self.subTest(pending=pending):
+                self.web.read.return_value = pending
+                with patch.object(module.time, 'monotonic', side_effect=[0, 0, 26]), \
+                        patch.object(module.time, 'sleep'):
+                    with self.assertRaisesRegex(AssertionError, 'Timed out: board pointer target ready') as failure:
+                        self.web.click(self.selector)
+                last = ast.literal_eval(str(failure.exception).split('; last observation: ', 1)[1])
+                self.assertEqual(ast.literal_eval(last)['target'], pending)
+                self.web.command.assert_not_called()
+
+    def test_exhausted_observation_transport_is_fatal_not_another_wait_budget(self):
+        self.web.read.side_effect = ConnectionResetError('exhausted observation')
+        with self.assertRaises(ConnectionResetError):
+            self.web.click(self.selector)
+        self.web.read.assert_called_once()
+        self.web.command.assert_not_called()
+
+    def test_pointer_delivery_failure_is_never_replayed(self):
+        self.web.read.return_value = self.ready
+        self.web.command.side_effect = http.client.RemoteDisconnected('after receipt')
+        with self.assertRaises(http.client.RemoteDisconnected):
+            self.web.click(self.selector)
+        self.web.read.assert_called_once()
+        self.web.command.assert_called_once()
 
 
 class LookupRetryTests(unittest.TestCase):

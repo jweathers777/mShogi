@@ -115,3 +115,13 @@ it("preserves the native Chess initial event without manufacturing a duplicate i
   const snapshot = chess(standardJson); const command = vi.fn(); const { container } = render(<NativeHistory snapshot={snapshot} disabled={false} command={command} />);
   expect(container.querySelectorAll("[data-event='0']")).toHaveLength(1); expect(screen.getAllByRole("button")).toHaveLength(snapshot.events.length);
 });
+
+it("finishes concluded Chess analysis without reopening the native outcome", () => {
+  const snapshot = chess(matedJson); const command = vi.fn();
+  render(<NativeRecovery snapshot={snapshot} error="" disabled={false} command={command} />);
+  expect(screen.queryByRole("button", { name: "Resume play" })).toBeNull();
+  expect(screen.getByText("The game remains concluded. Finishing analysis does not reopen it.")).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Finish analysis" }));
+  expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "resume" });
+  expect(screen.getByLabelText("Game outcome").textContent).toContain("Checkmate");
+});

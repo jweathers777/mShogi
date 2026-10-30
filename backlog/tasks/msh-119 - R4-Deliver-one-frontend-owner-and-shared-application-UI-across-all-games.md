@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-30T12:06:00Z'
-updated_date: '2026-10-30T21:09:00Z'
+updated_date: '2026-10-30T21:17:00Z'
 labels:
   - architecture-migration
   - planning
@@ -62,4 +62,6 @@ Startup 2026-10-30: root Codex owns MSH-119 in primary codex/rewrite at82a8ae8b0
 R4 cutover implemented in primary working tree: one ProductApp/useGameSession/ApplicationView and common player/footer/panels/capability slots. Current Chess native details and direct operations replace embedded Snapshot and nested DesktopCommand; obsolete endpoints, old close event, QA aliases and actual consumers/fixtures migrated. Native168 + current runtime8 + actual subprocess12 + host9 PASS; native/console/host Clippy and formatting PASS (20 unchanged Tao warnings). Frontend strict tsc and223 tests PASS at current working source; initial migration failures corrected (piece coordinates/side art, direct preference shape, current typed-resource tests and native completion labels). Independent source review and actual normal/min packaged GUI evidence pending; R5 controllers unchanged.
 
 Implementation ready for bounded independent source/visual review; current frontend223/223 and strict tsc PASS. GUI verifier55/55 PASS. Current normal macOS package built and package-smoke passes (host19a33348… engine57d09b1a…); actual native AX play/reply/Take back/Resume/Save As accepted. Full current-source captures, lifecycle checks and CI remain pending; no criteria checked yet.
+
+Independent fresh read-only completed diff + six-image comparison review found two material Chess omissions: native in-check heading and Finish analysis on a concluded paused game. Both corrected using existing facts/common resume; added semantic regressions. Reviewer independently40 affected frontend PASS, earlier107 frontend+8 native PASS; current full225 and strict tsc PASS. No material visual finding at1180x820/760x650, all3 completeboards. Living contract/quit docs updated; historical evidence preserved. Source2918217 already pushed; final correction CI/package verification pending.
 <!-- SECTION:NOTES:END -->

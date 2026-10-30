@@ -18,8 +18,10 @@ proceed normally. Repeated native requests are safe: the host/frontend retain a
 single pending close decision.
 
 The host prevents window destruction, pauses pending work, and emits the paused
-snapshot with `desktop-close-requested`. Its exact document-revision check and
-command-blocking close approval occur under the same controller lock. After
+current native snapshot with `game-close-requested`. The single frontend owner
+fetches that authoritative paused state and presents its shared guard. Its exact
+Open-token check (document, version and document revision) and command-blocking
+close approval occur under the same controller lock. After
 Save or Discard, `AppHandle::exit` follows Tauri's `Message::RequestExit` path,
 which does not call Cocoa's `terminate:` and does not reenter this delegate.
 The existing bounded child-shutdown observation still runs after approval.

@@ -7,7 +7,7 @@ import { Dialog } from "./Dialog";
 import { useApplicationFocus } from "./useApplicationFocus";
 import type { GameSnapshot, Operation } from "./native";
 import type { GameSession } from "./useGameSession";
-import { conclusionName } from "../presentation";
+import { gameStatus } from "../presentation";
 import licenseUrl from "../assets/fonts/OFL.txt?url";
 import fontLicense from "../assets/fonts/OFL.txt?raw";
 import fontNotice from "../assets/fonts/NOTICE.txt?raw";
@@ -44,7 +44,7 @@ export function ApplicationView({ snapshot, session, onNewGame, onOpen, blocked 
       <button className="quiet" onClick={() => { void session.file(snapshot, "save_as"); }} disabled={disabled || !snapshot.capabilities.save}>Save as…</button>
       <button className="quiet" onClick={onOpen} disabled={disabled}>Open…</button></>}
     heading={<LiveGameHeading eyebrow={snapshot.historical ? "HISTORY · READ ONLY" : snapshot.status.concluded ? "GAME CONCLUDED" : "YOUR GAME"}
-      status={snapshot.historical ? `Viewing event ${snapshot.event_index}` : thinking ? "mShogi is thinking" : (snapshot.game === "chess" && snapshot.chess.selected_conclusion ? conclusionName(snapshot.chess.selected_conclusion) : snapshot.status.label)}
+      status={snapshot.historical ? `Viewing event ${snapshot.event_index}` : thinking ? "mShogi is thinking" : (snapshot.game === "chess" ? gameStatus({ conclusion: snapshot.chess.selected_conclusion, turn: snapshot.turn.id.side, in_check: snapshot.chess.in_check }) : snapshot.status.label)}
       player={<>You play {snapshot.human.label} against mShogi</>}
       flip={<button className="quiet flip-button" disabled={disabled} aria-label={`Flip board; currently ${side.label} at bottom`} onClick={() => { void flip(); }}>↕ <span>Flip board</span></button>} />}
     positionNotice={snapshot.historical && <HistoricalNotice action={<button disabled={disabled} onClick={() => { void command({ kind: "return_live" }); }}>Return to live</button>}>

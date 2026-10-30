@@ -1,0 +1,6 @@
+Source eea8ce1c0e7b51bf02b42aa62f69d9c833c5735e; Rust run41086132999/job124167653588.
+Exact selected original job-log lines; completed workspace test plus final unfinished Full stress and cancellation.
+2026-10-30T16:09:11.7938974Z test result: ok. 149 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 239.95s
+2026-10-30T16:10:25.0318501Z ##[group]Run cargo clippy --locked -p mshogi-desktop-session --all-targets --all-features -- -D warnings
+2026-10-30T16:11:51.5629571Z test persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable has been running for over 60 seconds
+2026-10-30T16:17:03.3197576Z ##[error]The operation was canceled.

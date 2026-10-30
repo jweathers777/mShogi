@@ -1,0 +1,32 @@
+{
+  "source_revision": "eea8ce1c0e7b51bf02b42aa62f69d9c833c5735e",
+  "reviewer": "/root/r2_independent_review",
+  "method": "Separate read-only agent independently audited actual downloaded GUI/package evidence, hashes and native shutdown proofs; inspected saved current documents and viewed actual stopped/resumed captures. Recorded by integrator from reviewer disposition. Not another GUI campaign or human review.",
+  "material_findings": [],
+  "verified": {
+    "gui_file_hashes": 243,
+    "normal_manifest_hashes": 13,
+    "qa_deb_and_extracted_host_hash": true,
+    "normal_host_instrumentation_markers_absent": 16,
+    "passed_phases": 14,
+    "native_pre_teardown_shutdown_proofs": 14,
+    "both_256_observation_archives_complete": true,
+    "retained_takeback_controls": [
+      "resume",
+      "declare",
+      "take_back"
+    ],
+    "takeback_fresh_document_identity": [
+      1,
+      2
+    ],
+    "takeback_fresh_selection": [
+      4,
+      13
+    ],
+    "takeback_native_events_on_reopen": 0,
+    "stopped_reopen_and_explicit_resume": true,
+    "current_observation_schema": 1
+  },
+  "limits": "Current corrected-source actual Linux Chess/Shogi GUI only; no Xiangqi or macOS/Windows GUI inference. Final native CI disposition recorded separately."
+}

@@ -218,3 +218,33 @@ Current-stage Save/Open is complete without activating R2. MSH-117 is next
 ready but unstarted; outer archive consolidation, runtime/document ownership and
 shared frontend work retain their existing later-stage ownership. No new macOS
 or Xiangqi GUI campaign is claimed, and MSH-112 remains separate.
+
+## R2 completion handoff — 2026-10-30
+
+MSH-117/R2 establishes the sole current
+[`mshogi.desktop.document.v1` envelope](desktop/document-v1.md), with strict
+native identity/raw-payload dispatch and specialized Chess MatchRecord,
+Shogi journal and Xiangqi WXF replay. Desktop1/2/3 readers and writer switches
+are removed; obsolete development saves reject atomically. Schema1 observations,
+selected history, complete Take back lineages, native proof evidence, admission
+and stop/close headroom survive the cutover. No rules/search/engine change or
+native ownership restructuring is included.
+
+Corrected production source `eea8ce1c0e7b51bf02b42aa62f69d9c833c5735e` is
+byte-identical to the product tree verified at CI-only integration
+`ad14caed788f105e27a95868646db8d60cebd310`. Final Rust41088858739 and
+Desktop41088858764 pass all three systems, including161 native all-feature
+checks per system and Linux/Windows packaged Chess/Shogi GUI interaction.
+An independently audited corrected-source Linux14-phase campaign retains exact
+packages, saved documents and stopped/reopened/Resume captures. The original
+Windows Open failure, subsequent CI timeout, bounded native proof-validation
+correction and CI-only execution-budget adjustment remain explicit in the
+[review and evidence](review/desktop-envelope-117.md). No product limit rose.
+
+The only temporary bridge captures existing native runtime state for the current
+writer and installs validated current documents into existing runtime owners.
+It owns no separate live state and reads no obsolete format. **MSH-118/R3 must
+delete it** while establishing application/runtime/document ownership; that task
+is next dependency-ready and remains unstarted. R3–R6, variants and M5 have not
+been activated. No new macOS or Xiangqi GUI campaign or MSH-112 resolution is
+claimed; final integrated three-game/three-system GUI acceptance remains R6.

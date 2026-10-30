@@ -1,0 +1,32 @@
+{
+  "production_source": "eea8ce1c0e7b51bf02b42aa62f69d9c833c5735e",
+  "ci_integration": "ad14caed788f105e27a95868646db8d60cebd310",
+  "reviewer": "/root/r2_independent_review",
+  "method": "Separate read-only agent, not a builder, reviewed source/deletions/native semantics and independently executed 57 boundary tests plus five correction regressions. Independently audited current Linux package artifacts and final exact-source CI metadata/logs. Integrator transcribed the final disposition; not human owner review or a new GUI campaign.",
+  "verdict": "All eight acceptance criteria supported; no unresolved material finding. Complete after final evidence/task integration and normal push.",
+  "criteria": {
+    "1": "Sole strict current envelope and obsolete desktop reader/writer deletion.",
+    "2": "Authoritative complete native records, prefixes, settings and Take back lineages.",
+    "3": "Schema1 observations and bounded native historical Full/exact evidence.",
+    "4": "Measured encoding and all admission/reservation boundaries, complete Full candidate validation, final Windows stress passed.",
+    "5": "Atomic Save/Open, stale-result guards and fresh stopped installation.",
+    "6": "Only finite current capture/install bridge, deletion owned by MSH-118.",
+    "7": "Actual independently audited corrected-source Linux 14-phase packaged file/history/Take back/failure journeys.",
+    "8": "Independent review, exact three-platform native/Desktop CI and preserved original failures."
+  },
+  "ci": {
+    "native": 41088858739,
+    "desktop": 41088858764,
+    "native_jobs_passed": 3,
+    "desktop_jobs_passed": 3,
+    "default_desktop_tests_per_os": 149,
+    "all_feature_desktop_tests_per_os": 161
+  },
+  "limits": [
+    "No new Xiangqi or macOS GUI claim.",
+    "Windows GUI success established by actual CI step, without independent Windows artifact audit.",
+    "Three-game/three-system integrated GUI acceptance remains MSH-121/R6.",
+    "Initial Windows Open failure cause unproven; separate corrected-source job timeout retained.",
+    "MSH-118 remains unstarted."
+  ]
+}

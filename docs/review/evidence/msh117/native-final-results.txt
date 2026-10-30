@@ -1,0 +1,18 @@
+
+macos job log: selected original lines, source ad14caed788f105e27a95868646db8d60cebd310; product identical to eea8ce1.
+2026-10-30T16:24:43.1035990Z test result: ok. 149 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 162.73s
+2026-10-30T16:27:00.5452870Z test persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable has been running for over 60 seconds
+2026-10-30T16:30:01.7396540Z test persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable ... ok
+2026-10-30T16:30:01.7401750Z test result: ok. 161 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 248.63s
+
+linux job log: selected original lines, source ad14caed788f105e27a95868646db8d60cebd310; product identical to eea8ce1.
+2026-10-30T16:26:09.8931557Z test result: ok. 149 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 244.68s
+2026-10-30T16:28:37.3353634Z test persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable has been running for over 60 seconds
+2026-10-30T16:33:26.6516411Z test persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable ... ok
+2026-10-30T16:33:26.6517733Z test result: ok. 161 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 356.18s
+
+windows job124177086439: selected original lines, source ad14caed788f105e27a95868646db8d60cebd310; product identical to eea8ce1.
+2026-10-30T16:26:47.6420124Z test result: ok. 149 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 240.17s
+2026-10-30T16:29:29.5319036Z test persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable has been running for over 60 seconds
+2026-10-30T16:35:01.5558230Z test persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable ... ok
+2026-10-30T16:35:01.5559240Z test result: ok. 161 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 399.00s

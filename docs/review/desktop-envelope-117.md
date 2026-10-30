@@ -170,6 +170,91 @@ Linux native logs establish156/156all-feature tests; Desktop logs241frontend,
 
 ## Corrected committed-source CI and final acceptance
 
-Pending the reviewed correction commit and applicable CI/package reconciliation.
-MSH-117 remains In Review with unchecked AC/DoD. No R3 stage starts. MSH-112
-remains a separate historical issue and is not assumed to explain this failure.
+Corrected production source is `eea8ce1c0e7b51bf02b42aa62f69d9c833c5735e`.
+Desktop [41086133015](https://github.com/jweathers777/mShogi/actions/runs/41086133015)
+passed all three systems, including actual Linux/Windows Chess/Shogi GUI steps.
+macOS establishes package construction, native host checks and bundled-engine
+execution, not new GUI interaction. Native
+[41086132999](https://github.com/jweathers777/mShogi/actions/runs/41086132999)
+passed macOS and Ubuntu; Windows passed the complete workspace suite, then
+160/161 all-feature tests before the overall 15-minute CI job timeout cancelled
+the unfinished Full byte-capacity stress. There was no new assertion failure.
+The [exact selected timeout log](evidence/msh117/windows-native-corrected-timeout.txt)
+and complete job metadata remain separate from the original failing Open.
+
+Independent review approved a minimal CI-only job budget of25minutes at
+`ad14caed788f105e27a95868646db8d60cebd310`. Product code is byte-identical to
+eea8ce1; the native15-second validation budget, byte/count/work limits and every
+test body/assertion remain unchanged. This allows additional time for the workspace
+and full QA suites on hosted Windows; it is not a product-limit increase or a
+claim that the unfinished test passed. Final
+[native41088858739](https://github.com/jweathers777/mShogi/actions/runs/41088858739)
+and [Desktop41088858764](https://github.com/jweathers777/mShogi/actions/runs/41088858764)
+passed all three systems at ad14cae. Each native job passed149 default desktop
+tests plus161 all-feature tests, including the complete Full byte-capacity case.
+Windows job124177086439 finished in15m27s; its all-feature suite took399.00s,
+with the unchanged stress test passing. Linux's all-feature suite took356.18s,
+macOS248.63s. The [original selected results](evidence/msh117/native-final-results.txt)
+and [final native](evidence/msh117/native-ci-final.json)/
+[Desktop metadata](evidence/msh117/desktop-ci-final.json) retain exact provenance.
+Final Desktop CI includes Linux/Windows actual GUI interaction and macOS package/
+host/bundled-engine checks. No final-source GUI inference is made for Xiangqi or
+macOS. There are no remaining required CI failures or unavailable R2 checks.
+
+### Actual current-source Linux package evidence
+
+Run41086133015/job124167653182 produced artifact12991683842,
+`desktop-ubuntu-24.04`,73155706bytes, reported artifact digest
+`sha256:8473001ba383e9db8a516a008a345820105372fb307bc4cae92cdf9f463440e8`.
+The separately labeled QA Debian package and extracted host were used for
+difficult states; the ordinary installed package exercised ordinary Save/Open
+and historical analysis. Normal distributables exclude all16 tested QA markers.
+Normal host SHA256 is
+`80aba03ee087be87a9138ae70e184a6b10ced580dc02f070b41479ba4c2e0181`;
+the unchanged bundled engine SHA256 is
+`1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2`.
+Exact QA/package identities and original evidence bytes are
+[indexed separately](evidence/msh117/linux-current/artifact-index.json).
+
+The root integrator and separate read-only reviewer independently audited all
+243 GUI file hashes,13 normal-package manifest hashes,14 passed phases and14
+native pre-teardown shutdown proofs. Both256-observation documents are complete.
+Actual native Save/Open retains Chess and Shogi selected-history targets;
+Shogi declaration→Take back→Save/Open retains the complete abandoned lineage
+while reopening at0 current native events with no conclusion, fresh document
+identity1→2 and selection4→13, stopped until explicit Resume. Stopped/resumed
+native window captures and DOM observations are retained. Ubuntu24.04/X11,
+WebKitGTK2.52.6 and the recorded MSH-111 no-pool driver provenance identify this
+environment; no driver fix or MSH-112 resolution is claimed.
+
+Windows GUI success is recorded by the exact CI step, with no independent
+Windows artifact-content audit claimed here. The audited Linux campaign meets
+R2's identified-platform requirement. No new Xiangqi or macOS GUI campaign is
+claimed; final integrated three-game/three-system GUI acceptance remains R6.
+
+### Acceptance reconciliation
+
+| AC | Evidence and disposition |
+| --- | --- |
+|1|One strict current envelope; all old desktop readers/writer switches deleted; raw duplicate-preserving parser and identity tests pass.|
+|2|Native MatchRecord/journal replay and current roundtrips retain complete game-specific events, prefixes, selected history, settings and Take back branches.|
+|3|R1 schema1 retained; ordinary/exact/Full observations remain historical with exact targets, native proof evidence and fresh stopped reopen. No graph search or pending execution restored.|
+|4|Actual encoded measurements and byte/event/control/256-observation/replay/headroom tests; complete Full-proof candidate admission and operation-local native validation; unchanged product limits. Full byte stress passes on all three systems.|
+|5|Atomic failed/interrupted writes and invalid/stale/resource-limited Opens preserve accepted state; actual GUI documents reopen stopped with fresh identities and explicit Resume.|
+|6|Only current capture/install bridge; no extra live state or old reader; deletion endpoint explicitly owned by118.|
+|7|Native semantic fixtures plus actual current-source Linux packaged Save/Open/history/Take back/failure journeys; normal/QA package separation audited.|
+|8|Fresh independent source/test/package review; original failure and timeout preserved; final three-platform native/Desktop CI passes at ad14cae, whose product code is identical to eea8ce1. Normal integration/push recorded.|
+
+No R3 stage starts. Legacy development files are intentionally unsupported;
+Chess timed/live-Full/witnessed-match restoration remains unsupported while Full
+analysis evidence is retained. MSH-112 remains separately owned. No unresolved
+material source finding remains. All eight criteria and applicable completion
+items are supported. MSH-117 is complete after final evidence/task integration;
+the next dependency-ready bounded stage is MSH-118/R3, which remains unstarted.
+
+The same separate read-only reviewer made a final fresh acceptance reconciliation
+against the actual final CI JSON/logs, byte-identical production tree and audited
+package artifacts: **all eight AC supported; no unresolved material finding**.
+Its [recorded final disposition](evidence/msh117/final-independent-review.json)
+distinguishes actual independent test execution, source/evidence review and GUI
+artifact audit from an additional GUI campaign or human owner review.

@@ -1,3 +1,10 @@
+> Corrected pre-release policy — MSH-115, 2026-10-30: see the
+> [target architecture reassessment](review/architecture-target-115.md) and
+> accepted design A-09/D-17. Development-era internal APIs/save formats need
+> no compatibility preservation. MSH-106 remains Done and its source/evidence
+> remain historical; its compatibility-based recommendations are superseded
+> for future work. No refactor, implementation task or new gate is authorized.
+
 > Current checkpoint — MSH-106, 2026-10-30: the [three-game architecture report](review/architecture-health-106.md)
 > reviews exact accepted integration `2f17510e4c5b8c3b92a051adfa070b4d5d834b21`.
 > It records diagnostic findings and owner-prioritized follow-up proposals,

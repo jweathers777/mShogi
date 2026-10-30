@@ -1,3 +1,10 @@
+> Current Xiangqi acceptance — MSH-45 (2026-10-30): see the
+> [eight-criterion reconciliation](xiangqi/delivery-acceptance.md), supported by
+> completed MSH-103 at `c80a95a9e9c149556aba6f95055e39cab0d5ccf8` and the
+> unchanged corrected production source. M4/shared integration remain open;
+> MSH-106 is the next dependency-ready diagnostic review, not a refactor mandate.
+> Earlier planning/status statements below retain their historical scope.
+
 # M4 delivery and dependency refinement
 
 Historical MSH-62 planning baseline: no shogi/variant implementation had started.

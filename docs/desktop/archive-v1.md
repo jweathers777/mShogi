@@ -1,5 +1,9 @@
 # Desktop archive v1
 
+Historical MSH-35 contract. MSH-117 replaces this development format with the
+[current desktop document](document-v1.md); its reader/writer is removed.
+The original record below remains evidence of prior behavior.
+
 MSH-35 implements explicit `.mshogi` documents under profile
 `mshogi.desktop.archive.v1`, schema version 1. The archive is strict JSON with
 canonical `MatchRecord` and final `GameRecord` JSON strings. Replaying the match

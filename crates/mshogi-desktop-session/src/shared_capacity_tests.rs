@@ -191,7 +191,7 @@ fn control_boundary_reserves_the_last_slot_for_close_and_never_truncates() {
     assert_eq!(state.controls.len(), MAX_ARCHIVE_CONTROLS);
     check_capacity(&state, &mut || false).unwrap();
     let bytes = encode(&state, 100).unwrap();
-    let envelope: ArchiveV2 = serde_json::from_slice(&bytes).unwrap();
+    let envelope: crate::document::DocumentEnvelope = serde_json::from_slice(&bytes).unwrap();
     let (restored, _) = decode_shogi(envelope.payload.get(), &mut || false).unwrap();
     assert_eq!(restored.controls.len(), MAX_ARCHIVE_CONTROLS);
     assert!(restored.paused);
@@ -217,7 +217,7 @@ fn conservative_reconstruction_budget_is_enforced_before_accepting_a_journal() {
     }
     check_capacity(&state, &mut || false).unwrap();
     let accepted = encode(&state, 100).unwrap();
-    let envelope: ArchiveV2 = serde_json::from_slice(&accepted).unwrap();
+    let envelope: crate::document::DocumentEnvelope = serde_json::from_slice(&accepted).unwrap();
     decode_shogi(envelope.payload.get(), &mut || false).unwrap();
     state.control(
         Some(SessionOperation::Inspect { event_index: 0 }),
@@ -532,7 +532,7 @@ fn runtime_only_revision_exhaustion_preserves_save_and_fresh_reopen_path() {
     wait_file(&mut c, id).unwrap();
     assert!(!c.shared_snapshot().document.dirty);
     let bytes = fs::read(&file).unwrap();
-    let envelope: ArchiveV2 = serde_json::from_slice(&bytes).unwrap();
+    let envelope: crate::document::DocumentEnvelope = serde_json::from_slice(&bytes).unwrap();
     let saved: ShogiArchive = serde_json::from_str(envelope.payload.get()).unwrap();
     assert!(saved.retired_execution_floor < MAX_SAFE_ID - 64);
     let mut reopened = controller();
@@ -590,7 +590,7 @@ fn replay_capacity_retains_one_exact_stop_action_of_headroom() {
     state.control(None, None, true);
     check_capacity(&state, &mut || false).unwrap();
     let encoded = encode(&state, 100).unwrap();
-    let envelope: ArchiveV2 = serde_json::from_slice(&encoded).unwrap();
+    let envelope: crate::document::DocumentEnvelope = serde_json::from_slice(&encoded).unwrap();
     let (reopened, _) = decode_shogi(envelope.payload.get(), &mut || false).unwrap();
     assert_eq!(reopened.controls.len(), state.controls.len());
     assert_eq!(s::GameRecord::from_game(&reopened.game), record);

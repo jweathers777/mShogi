@@ -49,6 +49,42 @@ class SharedPresentationTests(unittest.TestCase):
                     journey.plies(count, historical)
 
 
+class CurrentDocumentInspectionTests(unittest.TestCase):
+    def document(self, game="chess"):
+        profile, edition = {
+            "chess": ("mshogi.chess.match.v1", "FIDE-2023-01-01+mshogi.chess.match.v1"),
+            "shogi": ("mshogi.shogi.csa36.v1", "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026"),
+            "xiangqi": ("mshogi.xiangqi.wxf2018.v1", "WXF-2018+XIANGQI-P1-2026-10-27"),
+        }[game]
+        return {"envelope_version": 1, "format": "mshogi.desktop.document.v1",
+                "game_kind": game, "rules_profile": profile, "profile_edition": edition,
+                "native_schema_version": 1, "payload": {"observations": []}}
+
+    def test_current_envelopes_expose_native_payload_without_reconstruction(self):
+        for game in ("chess", "shogi", "xiangqi"):
+            with self.subTest(game=game):
+                document = self.document(game)
+                self.assertIs(module.desktop_document_payload(document, game), document["payload"])
+
+    def test_old_or_conflicting_envelopes_are_not_accepted_as_gui_evidence(self):
+        for game in ("chess", "shogi", "xiangqi"):
+            for field, value in (("envelope_version", 2), ("format", "mshogi.desktop.archive.v2"),
+                                 ("game_kind", "unknown"), ("rules_profile", "unapproved"),
+                                 ("profile_edition", "unapproved"), ("native_schema_version", 2),
+                                 ("payload", []), ("schema_version", 2), ("profile", "legacy")):
+                with self.subTest(game=game, field=field):
+                    document = self.document(game)
+                    document[field] = value
+                    with self.assertRaises(AssertionError):
+                        module.desktop_document_payload(document, game)
+            for field in self.document(game):
+                with self.subTest(game=game, missing=field):
+                    document = self.document(game)
+                    del document[field]
+                    with self.assertRaises(AssertionError):
+                        module.desktop_document_payload(document, game)
+
+
 class SaveAcceptanceTests(unittest.TestCase):
     def setUp(self):
         self.expected = '/games/new.mshogi'

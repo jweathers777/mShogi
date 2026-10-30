@@ -84,20 +84,10 @@ pub(crate) struct ShogiControl {
     observation: Option<usize>,
     close_pause: bool,
 }
-pub(super) fn required_option<'de, D: serde::Deserializer<'de>, T: Deserialize<'de>>(
+pub(crate) fn required_option<'de, D: serde::Deserializer<'de>, T: Deserialize<'de>>(
     d: D,
 ) -> Result<Option<T>, D::Error> {
     Option::<T>::deserialize(d)
-}
-#[derive(Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-struct ArchiveV2 {
-    schema_version: u32,
-    format: String,
-    game_kind: String,
-    rules_profile: String,
-    profile_edition: String,
-    payload: Box<RawValue>,
 }
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -203,16 +193,7 @@ fn archive(state: &ShogiSession, floor: u64) -> ShogiArchive {
     }
 }
 fn encode(state: &ShogiSession, floor: u64) -> Result<Vec<u8>, String> {
-    let payload = serde_json::value::to_raw_value(&archive(state, floor)).map_err(bounded)?;
-    let envelope = ArchiveV2 {
-        schema_version: 2,
-        format: "mshogi.desktop.archive.v2".into(),
-        game_kind: "shogi".into(),
-        rules_profile: s::PROFILE_ID.into(),
-        profile_edition: s::PROFILE_EDITION.into(),
-        payload,
-    };
-    serde_json::to_vec_pretty(&envelope).map_err(bounded)
+    crate::document::encode(RulesProfile::ShogiCsa36V1, &archive(state, floor))
 }
 fn needs_stop(state: &ShogiSession) -> bool {
     state.pending.is_some() || state.analysis_intent.is_some() || !state.paused
@@ -803,49 +784,16 @@ fn decode_shogi(
     check_capacity(&state, stopped)?;
     Ok((state, saved.retired_execution_floor))
 }
-fn version(bytes: &[u8]) -> Result<u32, String> {
-    #[derive(Deserialize)]
-    struct Header {
-        schema_version: u32,
-    }
-    serde_json::from_slice::<Header>(bytes)
-        .map(|h| h.schema_version)
-        .map_err(|e| format!("Corrupt archive header: {}", bounded(e)))
-}
-fn envelope(bytes: &[u8]) -> Result<ArchiveV2, String> {
-    let value: ArchiveV2 = serde_json::from_slice(bytes)
-        .map_err(|e| format!("Corrupt tagged archive: {}", bounded(e)))?;
-    if value.schema_version != 2 || value.format != "mshogi.desktop.archive.v2" {
-        return Err("Unsupported desktop archive version/format.".into());
-    }
-    let profile = match value.game_kind.as_str() {
-        "chess" => RulesProfile::ChessMatchV1,
-        "shogi" => RulesProfile::ShogiCsa36V1,
-        "xiangqi" => RulesProfile::XiangqiWxf2018V1,
-        other => return Err(format!("Unsupported archive game: {}.", bounded(other))),
-    };
-    if value.rules_profile != profile.id() || value.profile_edition != profile.edition() {
-        return Err(
-            "Wrong profile/edition: archive identity disagrees with its explicit game.".into(),
-        );
-    }
-    Ok(value)
-}
-pub(crate) fn decode_chess_compatible(
+pub(crate) fn decode_chess_document(
     bytes: &[u8],
     stopped: &mut impl FnMut() -> bool,
 ) -> Result<persistence::Opened, String> {
-    match version(bytes)? {
-        1 | 3 => persistence::decode_chess_v1(bytes, stopped),
-        2 => {
-            let value = envelope(bytes)?;
-            if value.game_kind != "chess" {
-                return Err("Wrong game: the legacy chess document consumer cannot install shogi; use the shared native document consumer.".into());
-            }
-            persistence::decode_chess_v1(value.payload.get().as_bytes(), stopped)
-        }
-        _ => Err("Unsupported desktop archive version.".into()),
+    let value = crate::document::DocumentEnvelope::parse(bytes)?;
+    if value.game_kind != GameKind::Chess {
+        return Err("Wrong game: the Chess consumer cannot install another native game.".into());
     }
+    persistence::decode_chess_payload(value.payload.get().as_bytes(), stopped)
+        .map_err(crate::document::diagnostic)
 }
 fn read(path: &std::path::Path, stopped: &mut impl FnMut() -> bool) -> Result<Vec<u8>, String> {
     if !fs::metadata(path)
@@ -932,39 +880,31 @@ pub(crate) fn execute(
             allow_xiangqi,
         } => {
             let bytes = read(&path, stopped)?;
-            let game = match version(&bytes)? {
-                1 | 3 => {
-                    OpenedNative::Chess(Box::new(persistence::decode_chess_v1(&bytes, stopped)?))
-                }
-                2 => {
-                    let value = envelope(&bytes)?;
-                    match value.game_kind.as_str() {
-                        "chess" => OpenedNative::Chess(Box::new(persistence::decode_chess_v1(
-                            value.payload.get().as_bytes(),
-                            stopped,
-                        )?)),
-                        "shogi" => {
-                            let (state, floor) = decode_shogi(value.payload.get(), stopped)?;
-                            OpenedNative::Shogi {
-                                state: Box::new(state),
-                                floor,
-                            }
-                        }
-                        "xiangqi" => {
-                            if !allow_xiangqi {
-                                return Err("Xiangqi product UI is not available yet; current document preserved. Use the native archive consumer.".into());
-                            }
-                            let (state, floor) =
-                                xiangqi::archive::decode(value.payload.get(), stopped)?;
-                            OpenedNative::Xiangqi {
-                                state: Box::new(state),
-                                floor,
-                            }
-                        }
-                        _ => unreachable!(),
+            let value = crate::document::DocumentEnvelope::parse(&bytes)?;
+            let game = match value.game_kind {
+                GameKind::Chess => OpenedNative::Chess(Box::new(
+                    persistence::decode_chess_payload(value.payload.get().as_bytes(), stopped)?,
+                )),
+                GameKind::Shogi => {
+                    let (state, floor) = decode_shogi(value.payload.get(), stopped)?;
+                    OpenedNative::Shogi {
+                        state: Box::new(state),
+                        floor,
                     }
                 }
-                _ => return Err("Unsupported desktop archive version.".into()),
+                GameKind::Xiangqi => {
+                    if !allow_xiangqi {
+                        return Err(
+                            "Xiangqi is unsupported by this consumer; current document preserved."
+                                .into(),
+                        );
+                    }
+                    let (state, floor) = xiangqi::archive::decode(value.payload.get(), stopped)?;
+                    OpenedNative::Xiangqi {
+                        state: Box::new(state),
+                        floor,
+                    }
+                }
             };
             persistence::check(stopped)?;
             Ok(NativeCompleted::Opened { game, path, token })
@@ -1007,7 +947,7 @@ impl DesktopController {
             settings,
         }
     }
-    /// Queue a complete native document. Legacy chess continues to write strict v1.
+    /// Queue a complete current-format document using native payload encoding.
     pub fn queue_shared_save(&mut self, path: PathBuf) -> Result<u64, String> {
         if let Some(state) = &self.shared.xiangqi {
             let work = xiangqi::archive::XiangqiWork::Save {
@@ -1042,7 +982,7 @@ impl DesktopController {
         );
         Ok(id)
     }
-    /// Queue strict v1/v2 native dispatch. Open never installs resumable work.
+    /// Queue strict current-envelope native dispatch. Open never installs resumable work.
     pub fn queue_shared_open(
         &mut self,
         path: PathBuf,
@@ -1170,7 +1110,7 @@ impl DesktopController {
                         self.session.saved_revision = self.session.document_revision;
                         self.session.document_path = Some(path);
                         self.session.capacity = CapacityState::default();
-                        Ok("Opened native shogi archivev2 with fresh runtime identities and work stopped.".into())
+                        Ok("Opened native shogi document with fresh runtime identities and work stopped.".into())
                     }
                 }
             }

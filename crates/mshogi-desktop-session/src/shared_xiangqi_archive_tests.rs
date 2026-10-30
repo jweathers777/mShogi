@@ -245,8 +245,8 @@ fn actual_native_ledgers_roundtrip_warning_fourth_claim_resignation_agreement_an
         replace(&mut c, &game, x::Side::Red);
         let bytes = encode(state(&c), state(&c).execution_floor).unwrap();
         let top: Value = serde_json::from_slice(&bytes).unwrap();
-        assert_eq!(top["schema_version"], 2);
-        assert_eq!(top["format"], "mshogi.desktop.archive.v2");
+        assert_eq!(top["envelope_version"], 1);
+        assert_eq!(top["format"], crate::document::FORMAT);
         assert_eq!(top["rules_profile"], x::PROFILE_ID);
         let (restored, _) = decode(&payload(&bytes), &mut || false).unwrap();
         assert_eq!(
@@ -777,7 +777,7 @@ fn failed_and_interrupted_save_open_preserve_file_dirty_state_and_live_document(
     let mut wrong: Value = serde_json::from_slice(&prior).unwrap();
     wrong["rules_profile"] = json!("wrong");
     let mut unsupported: Value = serde_json::from_slice(&prior).unwrap();
-    unsupported["schema_version"] = json!(999);
+    unsupported["envelope_version"] = json!(999);
     for bytes in [
         b"{broken".to_vec(),
         oversized,
@@ -1560,7 +1560,7 @@ fn response_admission_refusal_cannot_restore_consumed_execution_as_thinking() {
 }
 
 #[test]
-fn actual_pretty_canonical_wrapper_overhead_is_bounded_before_acceptance() {
+fn actual_encoded_canonical_wrapper_overhead_is_bounded_before_acceptance() {
     let game = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
     let state = XiangqiDraft::replacement(&x::GameRecord::from_game(&game).unwrap(), x::Side::Red)
         .materialize()
@@ -1570,7 +1570,8 @@ fn actual_pretty_canonical_wrapper_overhead_is_bounded_before_acceptance() {
     // Original native JSON remains valid; only the actual enclosing wrapper's
     // whitespace pushes its encoded size over the canonical parser ceiling.
     let text = String::from_utf8(bytes).unwrap();
-    let needle = "\"envelope_version\": 1";
+    let needle = "\"envelope_version\":1";
+    assert!(text.contains(needle));
     let oversized = text.replacen(
         needle,
         &format!(

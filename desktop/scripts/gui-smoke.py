@@ -33,6 +33,26 @@ def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def desktop_document_payload(document, game_kind):
+    """Inspect the one current native envelope; this is not a replay validator."""
+    profiles = {
+        "chess": ("mshogi.chess.match.v1", "FIDE-2023-01-01+mshogi.chess.match.v1"),
+        "shogi": ("mshogi.shogi.csa36.v1", "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026"),
+        "xiangqi": ("mshogi.xiangqi.wxf2018.v1", "WXF-2018+XIANGQI-P1-2026-10-27"),
+    }
+    profile, edition = profiles[game_kind]
+    assert set(document) == {
+        "envelope_version", "format", "game_kind", "rules_profile",
+        "profile_edition", "native_schema_version", "payload"}, document
+    assert document["envelope_version"] == 1, document
+    assert document["format"] == "mshogi.desktop.document.v1", document
+    assert document["game_kind"] == game_kind, document
+    assert document["rules_profile"] == profile and document["profile_edition"] == edition, document
+    assert document["native_schema_version"] == 1, document
+    assert isinstance(document["payload"], dict), document
+    return document["payload"]
+
+
 def saved_document_accepted(observation, expected_path):
     """One DOM observation must establish native acceptance, not an old Saved label."""
     return (observation["path"] == str(expected_path)
@@ -595,9 +615,7 @@ class Journey:
         self.wait_saved(path)
         wait(path.exists, "native shogi Save As created exact path")
         archive = json.loads(path.read_text(encoding="utf-8"))
-        assert archive["schema_version"] == 2 and archive["format"] == "mshogi.desktop.archive.v2", archive
-        assert archive["game_kind"] == "shogi" and archive["rules_profile"] == "mshogi.shogi.csa36.v1", archive
-        body = archive["payload"]
+        body = desktop_document_payload(archive, "shogi")
         assert body["current"]["game_kind"] == "shogi"
         if observation_count is not None:
             assert len(body["observations"]) == observation_count
@@ -636,13 +654,13 @@ class Journey:
         self.wait_saved(path)
         wait(path.exists, "native save created file")
         archive = json.loads(path.read_text(encoding="utf-8"))
-        assert archive["profile"] == "mshogi.desktop.archive.v1"
+        body = desktop_document_payload(archive, "chess")
         if observation_count is not None:
-            assert len(archive["observations"]) == observation_count
+            assert len(body["observations"]) == observation_count
         self.record("Inspect actual saved canonical archive", {
             "path": str(path), "sha256": digest(path), "bytes": path.stat().st_size,
-            "observations": len(archive["observations"]), "controls": len(archive["controls"]),
-            "game_events": len(json.loads(archive["game_record_json"])["events"])})
+            "observations": len(body["observations"]), "controls": len(body["controls"]),
+            "game_events": len(json.loads(body["game_record_json"])["events"])})
         return archive
 
     def wait_saved(self, path):
@@ -730,7 +748,7 @@ class Journey:
 
         path = self.args.output / "normal-complete.mshogi"
         archive = self.save(path)
-        assert len(archive["observations"]) >= 2
+        assert len(desktop_document_payload(archive, "chess")["observations"]) >= 2
         self.inspect_piece('chess','b8','c6','Black knight')
         before_write=path.stat().st_mtime_ns
         w.button('Save')
@@ -769,12 +787,13 @@ class Journey:
         w.button("Save")
         self.wait_saved(path)
         archive = json.loads(path.read_text(encoding="utf-8"))
-        observation = archive["observations"][-1]["observation"]["context"]
+        body = desktop_document_payload(archive, "chess")
+        observation = body["observations"][-1]["observation"]["context"]
         assert observation["purpose"]["kind"] == "move_analysis"
         assert len(observation["game"]["payload"]["events"]) == 1
         self.record("History prefix provenance / Return live / Resume", {
             "historical_request": observation, "live_game_events":
-                len(json.loads(archive["game_record_json"])["events"])})
+                len(json.loads(body["game_record_json"])["events"])})
         w.click(".flip-button")
         wait(lambda: w.text(".document-dirty").casefold() == "unsaved changes", "orientation change is protected")
         self.record("Native window-close request", self.native.close_window())
@@ -900,10 +919,10 @@ class Journey:
         self.shogi_events(2)
         assert not w.has(".shogi-history-banner")
         self.capture("return-live-resumed")
-        # A previously recorded native reduced-material diagram supplies real
-        # captured resources in the ordinary package; no fixture entry point is
-        # enabled and the archive retains its explicit diagram provenance.
-        captures=Path(__file__).resolve().parents[2]/'docs/m4/evidence/msh74/records/msh74-native-captures.mshogi'
+        # The current native writer reconstructs this reduced-material fixture
+        # from its recorded root and complete actions; historical MSH-74 evidence
+        # remains unchanged. No fixture entry point is enabled in this package.
+        captures=Path(__file__).with_name('fixtures')/'shogi-captures.mshogi'
         assert captures.is_file(),captures
         self.file('open',captures)
         self.shogi_events(2)
@@ -1018,6 +1037,33 @@ class Journey:
             assert w.read("document.querySelector('.take-back-button').disabled")
             assert "Position restored" in w.text(".play-paused")
             self.capture("takeback-declaration")
+            path = self.args.output / "shogi-takeback-declaration.mshogi"
+            archive = self.shogi_save(path)
+            body = desktop_document_payload(archive, "shogi")
+            commands = [entry["command"]["kind"] for entry in body["controls"] if entry["command"] is not None]
+            assert "declare" in commands and "take_back" in commands, commands
+            assert commands.index("declare") < commands.index("take_back"), commands
+            assert not body["current"]["payload"]["events"], body["current"]
+            old_token = self.inspection_state()["nativeToken"]
+            assert old_token is not None
+            self.file("open", path)
+            wait(lambda: (token := self.inspection_state()["nativeToken"]) and token["document"] > old_token["document"],
+                 "Take back archive Open installs fresh native document identity")
+            self.shogi_events(0, selected=0, historical=False)
+            wait(lambda: "Sente to move" in w.text("[data-game-status]"), "reopened Take back retains the native ongoing root")
+            assert "wins" not in w.text("[data-game-status]")
+            assert w.read("document.querySelector('.shogi-application').dataset.paused") == "true"
+            assert not w.has('.shogi-analysis[data-phase="analyzing"]')
+            self.capture("takeback-reopened-stopped")
+            w.button("Resume play")
+            wait(lambda: w.read("document.querySelector('.shogi-application').dataset.paused") == "false", "explicit Resume after Take back archive Open")
+            self.shogi_events(0, selected=0, historical=False)
+            self.record("Declare / Take back / native Save Open / stopped identities / explicit Resume", {
+                "path": str(path), "sha256": digest(path), "retained_commands": commands,
+                "saved_native_events": len(body["current"]["payload"]["events"]),
+                "old_token": old_token, "fresh_token": self.inspection_state()["nativeToken"],
+                "status": w.text("[data-game-status]")})
+            self.capture("takeback-reopened-resumed")
         elif name == "shogi-concluded":
             self.shogi_events(1)
             assert "Sente resigned" in w.text("[data-game-status]")

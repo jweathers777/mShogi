@@ -364,25 +364,9 @@ fn archive(state: &XiangqiSession, floor: u64) -> XiangqiArchive {
     }
 }
 pub(crate) fn encode(state: &XiangqiSession, floor: u64) -> Result<Vec<u8>, String> {
-    #[derive(Serialize)]
-    struct Envelope {
-        schema_version: u32,
-        format: &'static str,
-        game_kind: &'static str,
-        rules_profile: &'static str,
-        profile_edition: &'static str,
-        payload: XiangqiArchive,
-    }
-    serde_json::to_vec_pretty(&Envelope {
-        schema_version: 2,
-        format: "mshogi.desktop.archive.v2",
-        game_kind: "xiangqi",
-        rules_profile: x::PROFILE_ID,
-        profile_edition: x::PROFILE_EDITION,
-        payload: archive(state, floor),
-    })
-    .map_err(error)
+    crate::document::encode(RulesProfile::XiangqiWxf2018V1, &archive(state, floor))
 }
+
 pub(crate) fn needs_stop(state: &XiangqiSession) -> bool {
     state.pending.is_some()
         || state.analysis_intent.is_some()
@@ -512,7 +496,7 @@ pub(crate) fn check_capacity(
     Ok(())
 }
 
-// Inspect the actual pretty-encoded wrappers, including their enclosing indentation.
+// Inspect actual encoded wrappers, including any enclosing whitespace.
 // Borrowed RawValues avoid copying history or invoking native replay on this probe.
 fn encoded_native_bounds(bytes: &[u8]) -> Result<(), String> {
     #[derive(Deserialize)]
@@ -1520,10 +1504,7 @@ impl DesktopController {
         self.session.saved_revision = self.session.document_revision;
         self.session.document_path = Some(path);
         self.session.capacity = CapacityState::default();
-        Ok(
-            "Opened native Xiangqi archivev2 with fresh runtime identities and work stopped."
-                .into(),
-        )
+        Ok("Opened native Xiangqi document with fresh runtime identities and work stopped.".into())
     }
     pub(crate) fn finish_xiangqi_admission(
         &mut self,

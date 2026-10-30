@@ -174,7 +174,12 @@ fn canonical_fixture_roundtrips_preserve_native_root_history_and_all_outcomes() 
         let file = path(name);
         assert!(!save(&mut c, &file).document.dirty);
         let bytes = fs::read(&file).unwrap();
-        assert_eq!(version(&bytes).unwrap(), 2);
+        assert_eq!(
+            crate::document::DocumentEnvelope::parse(&bytes)
+                .unwrap()
+                .envelope_version,
+            1
+        );
         let before = c.shared_token();
         let opened = open(&mut c, &file).unwrap();
         assert_eq!(record(&c), expected, "{name}");
@@ -371,7 +376,7 @@ fn hostile_archives_reject_without_changing_the_current_document() {
     let version = c.session.version;
     let dirty = c.session.document_revision;
     let cases = [
-        text.replacen("\"schema_version\": 2", "\"schema_version\": 3", 1),
+        text.replacen("\"envelope_version\": 1", "\"envelope_version\": 99", 1),
         text.replacen("\"game_kind\": \"shogi\"", "\"game_kind\": \"xiangqi\"", 1),
         text.replacen(
             "\"rules_profile\": \"mshogi.shogi.csa36.v1\"",
@@ -384,8 +389,8 @@ fn hostile_archives_reject_without_changing_the_current_document() {
             1,
         ),
         text.replacen(
-            "\"schema_version\": 2",
-            "\"schema_version\": 2,\"schema_version\":2",
+            "\"envelope_version\": 1",
+            "\"envelope_version\": 1,\"envelope_version\":1",
             1,
         ),
         text.replacen(
@@ -460,37 +465,32 @@ fn wrong_native_game_and_semantic_journal_or_observation_tampering_reject() {
     assert_eq!(record(&c), expected);
 }
 #[test]
-fn v1_chess_and_explicit_tagged_chess_preserve_existing_semantics() {
+fn current_chess_preserves_semantics_and_development_formats_reject() {
     let mut c = controller();
-    let file = path("chess-v1");
+    let file = path("chess-current");
     save(&mut c, &file);
-    let legacy = fs::read(&file).unwrap();
-    assert_eq!(version(&legacy).unwrap(), 1);
-    let tagged = ArchiveV2 {
-        schema_version: 2,
-        format: "mshogi.desktop.archive.v2".into(),
-        game_kind: "chess".into(),
-        rules_profile: RulesProfile::ChessMatchV1.id().into(),
-        profile_edition: RulesProfile::ChessMatchV1.edition().into(),
-        payload: RawValue::from_string(String::from_utf8(legacy.clone()).unwrap()).unwrap(),
-    };
-    let wrapped = path("chess-v2");
-    fs::write(&wrapped, serde_json::to_vec_pretty(&tagged).unwrap()).unwrap();
-    let old_record = c.session.game.record().to_json();
+    let bytes = fs::read(&file).unwrap();
+    let envelope = crate::document::DocumentEnvelope::parse(&bytes).unwrap();
+    assert_eq!(envelope.game_kind, GameKind::Chess);
+    let expected = c.session.game.record().to_json();
     replace(&mut c, &s::Game::new(), s::Side::Sente);
-    let opened = open(&mut c, &wrapped).unwrap();
+    let opened = open(&mut c, &file).unwrap();
     assert_eq!(opened.game, GameKind::Chess);
-    assert_eq!(c.session.game.record().to_json(), old_record);
+    assert_eq!(c.session.game.record().to_json(), expected);
     assert!(opened.paused);
-    let bad = path("chess-unknown");
-    let value = String::from_utf8(legacy).unwrap().replacen(
-        "\"schema_version\": 1",
-        "\"schema_version\": 1,\"game_kind\":\"chess\"",
-        1,
-    );
-    fs::write(&bad, value).unwrap();
-    assert!(open(&mut c, &bad).is_err());
-    for p in [file, wrapped, bad] {
+    let bad = path("development");
+    for version in [1, 2, 3] {
+        let mut old: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
+        old.as_object_mut().unwrap().remove("envelope_version");
+        old["schema_version"] = version.into();
+        old["format"] = format!("mshogi.desktop.archive.v{version}").into();
+        fs::write(&bad, serde_json::to_vec(&old).unwrap()).unwrap();
+        let before = c.shared_open_token();
+        assert!(open(&mut c, &bad).is_err());
+        assert_eq!(c.shared_open_token(), before);
+        assert_eq!(c.session.game.record().to_json(), expected);
+    }
+    for p in [file, bad] {
         fs::remove_file(p).unwrap();
     }
 }
@@ -528,7 +528,10 @@ fn stale_open_and_cross_game_save_completion_never_replace_current_state() {
     save(&mut c, &file);
     let token = c.shared_open_token();
     let (state, floor) = decode_shogi(
-        envelope(&fs::read(&file).unwrap()).unwrap().payload.get(),
+        crate::document::DocumentEnvelope::parse(&fs::read(&file).unwrap())
+            .unwrap()
+            .payload
+            .get(),
         &mut || false,
     )
     .unwrap();
@@ -609,7 +612,10 @@ fn concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it() {
     assert!(c.shared_document().dirty);
     assert_eq!(c.session.document_path.as_ref(), Some(&copy));
     let (saved, _) = decode_shogi(
-        envelope(&fs::read(&copy).unwrap()).unwrap().payload.get(),
+        crate::document::DocumentEnvelope::parse(&fs::read(&copy).unwrap())
+            .unwrap()
+            .payload
+            .get(),
         &mut || false,
     )
     .unwrap();

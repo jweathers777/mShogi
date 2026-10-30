@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { NativeBoard, nativeSnapshotIsNewer, type NativeBoardSnapshot } from "../NativeBoard";
-import type { Snapshot } from "../native";
 interface ContractSnapshot extends NativeBoardSnapshot {
   status: { label: string }; phase: string; diagnostic: string | null;
   event_index: number; historical: boolean; paused: boolean;
@@ -19,7 +18,7 @@ export function SharedContractApp() {
   const latest = useRef<ContractSnapshot | null>(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [error, setError] = useState("");
-  const [close, setClose] = useState<Snapshot | null>(null);
+  const [close, setClose] = useState<ContractSnapshot | null>(null);
   const active = useRef(true);
   const busy = useRef(false);
   function accept(next: ContractSnapshot) {
@@ -34,7 +33,7 @@ export function SharedContractApp() {
       if (active.current) timer = setTimeout(() => { void poll(); }, 250);
     }
     void poll();
-    void listen<Snapshot>("desktop-close-requested", (e) => { if (active.current) setClose(e.payload); }).then((unlisten) => { if (active.current) stop = unlisten; else unlisten(); });
+    void listen<ContractSnapshot>("game-close-requested", (e) => { if (active.current) setClose(e.payload); }).then((unlisten) => { if (active.current) stop = unlisten; else unlisten(); });
     return () => { active.current = false; clearTimeout(timer); stop?.(); };
   }, []);
   async function command(operation: Record<string, unknown>) {
@@ -55,7 +54,7 @@ export function SharedContractApp() {
   async function finishClose(saved = false) {
     const current = saved ? await file("save") : latest.current;
     if (!current || (saved && current.document.dirty)) return;
-    try { await invoke("desktop_finish_close", { expectedDocumentRevision: current.document.revision }); }
+    try { await invoke("game_finish_close", { expected: { document: current.token.document, version: current.token.version, document_revision: current.document.revision } }); }
     catch (e) { setError(String(e)); }
   }
   if (!snapshot) return <main><h1>MSH-73 DEVELOPMENT CONTRACT</h1><p role="status">Loading native session…</p><p role="alert">{error}</p></main>;
@@ -87,7 +86,7 @@ export function SharedContractApp() {
     </div>}
     {close && <div role="dialog" aria-modal="true" aria-label="Discard development session?">
       <p>Save the complete native document before closing, or explicitly discard unsaved changes.</p>
-      <button onClick={() => { void invoke("desktop_cancel_close").then(() => setClose(null)); }}>Keep open</button>
+      <button onClick={() => { void invoke("game_cancel_close").then(() => setClose(null)); }}>Keep open</button>
       <button onClick={() => { void finishClose(true); }}>Save and close</button>
       <button onClick={() => { void finishClose(); }}>Discard development session and close</button>
     </div>}

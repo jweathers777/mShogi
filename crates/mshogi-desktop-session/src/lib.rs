@@ -8,6 +8,10 @@ pub use shared::*;
 mod capacity;
 pub use capacity::*;
 mod document;
+mod resource;
+pub use resource::*;
+mod lifecycle;
+pub use lifecycle::*;
 mod persistence;
 pub use persistence::*;
 mod analysis;
@@ -266,14 +270,28 @@ pub struct Snapshot {
 }
 
 /// Pure serialized rules/session state; the controller supplies process results.
+/// Monotonic runtime identity and document lifecycle metadata. Native game state is
+/// held only by the selected `ActiveDocument` variant.
 #[derive(Clone)]
-pub struct DesktopSession {
-    game: ChessMatch,
-    human: Color,
+pub struct RuntimeMetadata {
+    document_epoch: u64,
     version: u64,
     revision: u64,
     archive_revision: u64,
     next_request: u64,
+    document_revision: u64,
+    document_identity: u64,
+    saved_revision: u64,
+    document_path: Option<PathBuf>,
+    selection_id: u64,
+    capacity: CapacityState,
+}
+/// Native Chess document and execution state. No other game is stored here.
+#[derive(Clone)]
+pub struct DesktopSession {
+    runtime: RuntimeMetadata,
+    game: ChessMatch,
+    human: Color,
     play_limits: WorkLimits,
     pending: Option<ExecutionContext>,
     engine: EngineState,
@@ -281,20 +299,184 @@ pub struct DesktopSession {
     analysis_pending: Option<ExecutionContext>,
     analysis_submitted: bool,
     play_paused: bool,
-    document_revision: u64,
-    document_identity: u64,
-    saved_revision: u64,
-    document_path: Option<PathBuf>,
     settings: DesktopSettings,
     observations: Vec<ArchivedObservation>,
     controls: Vec<persistence::ControlEntry>,
     takebacks: Vec<persistence::TakeBackEvidence>,
     initial_record: GameRecord,
     viewed: Option<persistence::Viewed>,
-    selection_id: u64,
-    capacity: CapacityState,
     validated_observations: usize,
 }
+impl std::ops::Deref for DesktopSession {
+    type Target = RuntimeMetadata;
+    fn deref(&self) -> &Self::Target {
+        &self.runtime
+    }
+}
+impl std::ops::DerefMut for DesktopSession {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.runtime
+    }
+}
+/// Exactly one authoritative native game/document is installed at a time.
+pub(crate) enum ActiveDocument {
+    /// Native Chess match, document and observations.
+    Chess(Box<DesktopSession>),
+    /// Native Shogi game journal and observations.
+    Shogi {
+        runtime: RuntimeMetadata,
+        state: Box<shared::ShogiSession>,
+    },
+    /// Native Xiangqi WXF game journal and observations.
+    Xiangqi {
+        runtime: RuntimeMetadata,
+        state: Box<shared::xiangqi::XiangqiSession>,
+    },
+}
+impl std::ops::Deref for ActiveDocument {
+    type Target = RuntimeMetadata;
+    fn deref(&self) -> &Self::Target {
+        match self {
+            Self::Chess(state) => &state.runtime,
+            Self::Shogi { runtime, .. } | Self::Xiangqi { runtime, .. } => runtime,
+        }
+    }
+}
+impl std::ops::DerefMut for ActiveDocument {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        match self {
+            Self::Chess(state) => &mut state.runtime,
+            Self::Shogi { runtime, .. } | Self::Xiangqi { runtime, .. } => runtime,
+        }
+    }
+}
+impl ActiveDocument {
+    fn chess(&self) -> &DesktopSession {
+        match self {
+            Self::Chess(state) => state,
+            _ => panic!("Chess endpoint requires active Chess"),
+        }
+    }
+    fn chess_mut(&mut self) -> &mut DesktopSession {
+        match self {
+            Self::Chess(state) => state,
+            _ => panic!("Chess endpoint requires active Chess"),
+        }
+    }
+    fn shogi(&self) -> Option<&shared::ShogiSession> {
+        match self {
+            Self::Shogi { state, .. } => Some(state),
+            _ => None,
+        }
+    }
+    fn shogi_mut(&mut self) -> Option<&mut shared::ShogiSession> {
+        match self {
+            Self::Shogi { state, .. } => Some(state),
+            _ => None,
+        }
+    }
+    fn xiangqi(&self) -> Option<&shared::xiangqi::XiangqiSession> {
+        match self {
+            Self::Xiangqi { state, .. } => Some(state),
+            _ => None,
+        }
+    }
+    fn xiangqi_mut(&mut self) -> Option<&mut shared::xiangqi::XiangqiSession> {
+        match self {
+            Self::Xiangqi { state, .. } => Some(state),
+            _ => None,
+        }
+    }
+    fn install_shogi(&mut self, state: Box<shared::ShogiSession>) {
+        let runtime = std::ops::Deref::deref(self).clone();
+        *self = Self::Shogi { runtime, state };
+    }
+    fn install_xiangqi(&mut self, state: Box<shared::xiangqi::XiangqiSession>) {
+        let runtime = std::ops::Deref::deref(self).clone();
+        *self = Self::Xiangqi { runtime, state };
+    }
+    fn selected_game(&self) -> &AdjudicatedGame {
+        self.chess().selected_game()
+    }
+    fn changed(&mut self) {
+        self.version += 1;
+        self.revision += 1;
+        self.document_revision += 1;
+        self.archive_revision = self.revision.min(MAX_SAFE_ID - 65);
+    }
+    fn retire_execution(&mut self) {
+        match self {
+            Self::Chess(s) => {
+                s.pending = None;
+                s.retire_analysis();
+                s.play_paused = true;
+                s.engine.status = EnginePhase::Paused;
+            }
+            Self::Shogi { state, .. } => {
+                state.retire();
+                state.paused = true;
+            }
+            Self::Xiangqi { state, .. } => {
+                state.retire();
+                state.paused = true;
+            }
+        }
+    }
+    fn snapshot(&self) -> Snapshot {
+        self.chess().snapshot()
+    }
+    fn ensure_capacity(&self) -> Result<(), OperationFailure> {
+        std::ops::Deref::deref(self).ensure_capacity()
+    }
+    fn retire_analysis(&mut self) {
+        match self {
+            Self::Chess(s) => s.retire_analysis(),
+            Self::Shogi { state, .. } => state.retire(),
+            Self::Xiangqi { state, .. } => state.retire(),
+        }
+    }
+    fn capacity_pause(&mut self, error: String) {
+        match self {
+            Self::Chess(s) => s.capacity_pause(error),
+            _ => {
+                self.retire_analysis();
+                self.capacity.status = CapacityPhase::Paused;
+                self.capacity.message = Some(error);
+                self.revision += 1;
+            }
+        }
+    }
+}
+
+impl RuntimeMetadata {
+    fn ensure_capacity(&self) -> Result<(), OperationFailure> {
+        if self.version >= MAX_SAFE_ID - 64
+            || self.revision >= MAX_SAFE_ID - 64
+            || self.next_request >= MAX_SAFE_ID - 64
+            || self.document_revision >= MAX_SAFE_ID - 64
+            || self.selection_id >= MAX_SAFE_ID - 64
+        {
+            Err(resource_refusal(
+                vec![resource_fact(
+                    ResourceCategory::IdentityHeadroom,
+                    self.version
+                        .max(self.revision)
+                        .max(self.next_request)
+                        .max(self.document_revision)
+                        .max(self.selection_id) as usize,
+                    MAX_SAFE_ID as usize,
+                    64,
+                    ResourceScope::Application,
+                    ResourceUnit::Identities,
+                )],
+                "Application capacity: session identity headroom exhausted. Save the complete current document then restart.",
+            ))
+        } else {
+            Ok(())
+        }
+    }
+}
+
 impl Default for DesktopSession {
     fn default() -> Self {
         Self::new()
@@ -304,12 +486,21 @@ impl DesktopSession {
     /// New untimed M2 game with optional claims and a human playing White.
     pub fn new() -> Self {
         Self {
+            runtime: RuntimeMetadata {
+                document_epoch: 0,
+                version: 1,
+                revision: 1,
+                archive_revision: 1,
+                next_request: 0,
+                document_revision: 0,
+                document_identity: 1,
+                saved_revision: 0,
+                document_path: None,
+                selection_id: 1,
+                capacity: CapacityState::default(),
+            },
             game: new_match(),
             human: Color::White,
-            version: 1,
-            revision: 1,
-            archive_revision: 1,
-            next_request: 0,
             play_limits: PLAY_LIMITS,
             pending: None,
             engine: EngineState::default(),
@@ -317,18 +508,12 @@ impl DesktopSession {
             analysis_pending: None,
             analysis_submitted: false,
             play_paused: false,
-            document_revision: 0,
-            document_identity: 1,
-            saved_revision: 0,
-            document_path: None,
             settings: DesktopSettings::default(),
             observations: Vec::new(),
             controls: Vec::new(),
             takebacks: Vec::new(),
             initial_record: AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record(),
             viewed: None,
-            selection_id: 1,
-            capacity: CapacityState::default(),
             validated_observations: 0,
         }
     }
@@ -368,38 +553,33 @@ impl DesktopSession {
         self.document_revision += 1;
         self.archive_revision = self.revision.min(MAX_SAFE_ID - 65);
     }
-    fn ensure_capacity(&self) -> Result<(), String> {
-        if self.version >= MAX_SAFE_ID - 64
-            || self.revision >= MAX_SAFE_ID - 64
-            || self.next_request >= MAX_SAFE_ID - 64
-            || self.document_revision >= MAX_SAFE_ID - 64
-            || self.selection_id >= MAX_SAFE_ID - 64
-        {
-            Err("Application capacity: session identity space exhausted. Save the complete current document, then restart the application.".into())
-        } else {
-            Ok(())
-        }
-    }
+
     /// Apply an atomic human command. Rejection preserves the accepted document;
     /// resource refusals also pause execution and expose a capacity diagnostic.
     pub fn command(&mut self, command: DesktopCommand, at_ns: u64) -> Result<(), String> {
         let mut candidate = self.clone();
         if let Err(error) = candidate.command_unchecked(command, at_ns) {
-            if error.starts_with("Application capacity:") {
-                self.capacity_pause(error.clone());
+            if error.resource.is_some() {
+                self.capacity_pause(error.diagnostic.clone());
+                self.capacity.resource = error.resource;
             }
-            return Err(error);
+            return Err(error.diagnostic);
         }
         if let Err(error) = candidate.check_archive_capacity(&mut || false) {
-            self.capacity_pause(error.clone());
-            return Err(error);
+            self.capacity_pause(error.diagnostic.clone());
+            self.capacity.resource = error.resource;
+            return Err(error.diagnostic);
         }
         candidate.validated_observations = candidate.observations.len();
         candidate.capacity = CapacityState::default();
         *self = candidate;
         Ok(())
     }
-    fn command_unchecked(&mut self, command: DesktopCommand, at_ns: u64) -> Result<(), String> {
+    fn command_unchecked(
+        &mut self,
+        command: DesktopCommand,
+        at_ns: u64,
+    ) -> Result<(), OperationFailure> {
         if command
             .version()
             .is_some_and(|version| version != self.version)
@@ -599,11 +779,13 @@ impl DesktopSession {
             return None;
         }
         if let Err(error) = self.ensure_capacity() {
-            self.capacity_pause(error);
+            self.capacity_pause(error.diagnostic);
+            self.capacity.resource = error.resource;
             return None;
         }
         if let Err(error) = self.observation_slot() {
-            self.capacity_pause(error);
+            self.capacity_pause(error.diagnostic);
+            self.capacity.resource = error.resource;
             return None;
         }
         self.next_request += 1;
@@ -644,7 +826,8 @@ impl DesktopSession {
         if self.pending.as_ref() == Some(&response.context)
             && let Err(error) = self.ensure_capacity()
         {
-            self.capacity_pause(error);
+            self.capacity_pause(error.diagnostic);
+            self.capacity.resource = error.resource;
             return false;
         }
         let mut candidate = self.clone();
@@ -652,7 +835,8 @@ impl DesktopSession {
             return false;
         }
         if let Err(error) = candidate.check_archive_capacity(&mut || false) {
-            self.capacity_pause(error);
+            self.capacity_pause(error.diagnostic);
+            self.capacity.resource = error.resource;
             return false;
         }
         candidate.validated_observations = candidate.observations.len();
@@ -679,7 +863,8 @@ impl DesktopSession {
         }
         if let Err(error) = self.ensure_capacity() {
             self.pending = None;
-            self.fail(error);
+            self.capacity_pause(error.diagnostic);
+            self.capacity.resource = error.resource;
             return false;
         }
         self.remember(response.clone());
@@ -842,10 +1027,12 @@ fn new_match() -> ChessMatch {
     game
 }
 
-/// Tauri-owned serialized controller. Process work runs on the bridge worker.
+/// Authoritative native application runtime. The host serializes short operations;
+/// native mutation, replay and admission run on bounded workers.
 pub struct DesktopController {
     shared: shared::SharedState,
-    session: DesktopSession,
+    session: ActiveDocument,
+    lifecycle: std::sync::Arc<ApplicationLifecycle>,
     bridge: EngineBridge,
     origin: Instant,
     clock_floor: u64,
@@ -857,11 +1044,16 @@ pub struct DesktopController {
     last_command_receipt: Option<AdmissionReceipt>,
 }
 impl DesktopController {
+    /// Native application lifecycle authority, shared with host reservation guards.
+    pub fn lifecycle(&self) -> std::sync::Arc<ApplicationLifecycle> {
+        self.lifecycle.clone()
+    }
     /// Launch the supervisor worker, without starting a child or doing pipe I/O.
     pub fn new(engine_path: PathBuf) -> io::Result<Self> {
         Ok(Self {
             shared: shared::SharedState::default(),
-            session: DesktopSession::new(),
+            lifecycle: std::sync::Arc::new(ApplicationLifecycle::default()),
+            session: ActiveDocument::Chess(Box::default()),
             bridge: EngineBridge::new(engine_path)?,
             origin: Instant::now(),
             clock_floor: 0,
@@ -880,7 +1072,7 @@ impl DesktopController {
     #[cfg(feature = "desktop-verification")]
     pub fn verification(engine_path: PathBuf, fixture: &str) -> Result<Self, String> {
         let mut controller = Self::new(engine_path).map_err(|error| error.to_string())?;
-        controller.session = match fixture {
+        controller.session = ActiveDocument::Chess(Box::new(match fixture {
             "standard" | "shared-contract" => DesktopSession::new(),
             fixture if fixture.starts_with("shogi-") || fixture.starts_with("xiangqi-") => DesktopSession::new(),
             "capacity" => DesktopSession::verification_capacity()?,
@@ -904,7 +1096,7 @@ impl DesktopController {
                 session
             }
             _ => return Err("Unknown desktop verification fixture. Use standard, promotion, claim, current-claim, concluded, incomplete or capacity.".into()),
-        };
+        }));
         if fixture.starts_with("shogi-") {
             controller.verification_shogi(fixture)?;
         }
@@ -941,6 +1133,11 @@ impl DesktopController {
     /// Queue an explicit candidate before polling completions; cancellation wins races.
     /// Use `command_with_receipt` when the caller needs its accepted/rejected outcome.
     pub fn command(&mut self, command: DesktopCommand) -> Result<Snapshot, String> {
+        if self.lifecycle.close_requested() {
+            return Err(
+                "Close is pending. Finish or cancel close before changing the document.".into(),
+            );
+        }
         self.require_chess()?;
         if matches!(
             command,
@@ -971,118 +1168,122 @@ impl DesktopController {
         }
         if self.admission_token.is_some()
             && matches!(command, DesktopCommand::CancelAnalysis { .. })
-            && self.session.analysis_pending.is_none()
+            && self.session.chess_mut().analysis_pending.is_none()
         {
             if command.version() != Some(self.session.version) {
                 return Err("The game changed. Use the current position and try again.".into());
             }
             self.retire_admission();
             self.bridge.cancel();
-            self.session.pending = None;
-            self.session.play_paused = true;
-            self.session.engine.status = EnginePhase::Paused;
-            self.session.analysis.status = AnalysisPhase::Cancelled;
-            self.session.analysis.message = Some("Pending analysis admission cancelled before any command or observation was accepted.".into());
+            self.session.chess_mut().pending = None;
+            self.session.chess_mut().play_paused = true;
+            self.session.chess_mut().engine.status = EnginePhase::Paused;
+            self.session.chess_mut().analysis.status = AnalysisPhase::Cancelled;
+            self.session.chess_mut().analysis.message = Some("Pending analysis admission cancelled before any command or observation was accepted.".into());
             return Ok(self.session.snapshot());
         }
         if let DesktopCommand::TakeBack { version } = command {
             if version != self.session.version
-                || self.session.viewed.is_some()
-                || self.session.take_back_target().is_none()
+                || self.session.chess_mut().viewed.is_some()
+                || self.session.chess_mut().take_back_target().is_none()
             {
                 return Err("No current live human decision is available for Take back.".into());
             }
-            self.session.ensure_capacity()?;
-            let candidate = self.session.clone();
+            self.ensure_runtime_capacity()?;
+            let candidate = self.session.chess().clone();
             self.bridge.cancel();
-            self.session.pending = None;
-            self.session.retire_analysis();
-            self.session.play_paused = true;
-            self.session.engine.status = EnginePhase::Paused;
+            self.session.retire_execution();
+            self.session.chess_mut().engine.status = EnginePhase::Paused;
             self.queue_admission_operation(candidate, Some(self.at_ns()))?;
             self.last_command_receipt = self.admission_receipt.clone();
-            return Ok(self.snapshot());
+            return self
+                .chess_snapshot_if_active()
+                .ok_or_else(|| "The active game changed during Chess command admission.".into());
+        }
+        if command
+            .version()
+            .is_some_and(|version| version != self.session.version)
+        {
+            return Err("The game changed. Use its current native snapshot.".into());
+        }
+        if matches!(
+            &command,
+            DesktopCommand::Play { .. }
+                | DesktopCommand::Analyze { .. }
+                | DesktopCommand::Resume { .. }
+                | DesktopCommand::Retry { .. }
+        ) && let Err(error) = self.session.chess().observation_slot()
+        {
+            self.retire_admission();
+            self.bridge.cancel();
+            self.session.capacity_pause(error.diagnostic.clone());
+            self.session.capacity.resource = error.resource;
+            return Err(error.diagnostic);
         }
         let preferences = matches!(command, DesktopCommand::Preferences { .. });
         let at_ns = self.at_ns();
-        let mut candidate = self.session.clone();
-        if let Err(error) = candidate.command_unchecked(command, at_ns) {
-            if error.starts_with("Application capacity:") {
-                self.retire_admission();
-                self.bridge.cancel();
-                self.session.capacity_pause(error.clone());
-            }
-            return Err(error);
-        }
-        self.queue_admission(candidate)?;
+        let candidate = self.session.chess().clone();
+        self.queue_chess_candidate(
+            candidate,
+            Some(persistence::ChessMutation::Command { command, at_ns }),
+        )?;
         self.last_command_receipt = self.admission_receipt.clone();
         if !preferences {
             self.bridge.cancel();
         }
-        Ok(self.snapshot())
+        self.chess_snapshot_if_active()
+            .ok_or_else(|| "The active game changed during Chess command admission.".into())
     }
     /// Poll the bounded completion slot, accept it atomically, and start eligible work.
-    pub fn snapshot(&mut self) -> Snapshot {
-        if self.shared.admission.is_some() {
-            let mut snapshot = self.session.snapshot();
-            snapshot.io = self.io_state.clone();
-            return snapshot;
-        }
-        if self.shared.xiangqi.is_some() {
-            let mut snapshot = self.session.snapshot();
-            snapshot.io = self.io_state.clone();
-            return snapshot;
-        }
-        if self.shared.shogi.is_some() {
-            self.poll_files();
-            if self.shared.shogi.is_none() {
-                return self.snapshot();
-            }
-            // Legacy read adapter cannot poll or start hidden chess work.
-            let mut snapshot = self.session.snapshot();
-            snapshot.document = self.session.document_state();
-            snapshot.io = self.io_state.clone();
-            return snapshot;
-        }
+    /// Safe finite Chess presentation forwarder. The current native application
+    /// contract is shared_snapshot; a cross-game Open yields None here.
+    pub fn chess_snapshot_if_active(&mut self) -> Option<Snapshot> {
+        self.shared_snapshot().chess
+    }
+    #[cfg(test)]
+    fn snapshot(&mut self) -> Snapshot {
+        self.poll_chess();
+        let mut snapshot = self.session.snapshot();
+        snapshot.io = self.io_state.clone();
+        snapshot
+    }
+    fn poll_chess(&mut self) {
         self.poll_admission();
+        if !matches!(&self.session, ActiveDocument::Chess(_)) {
+            return;
+        }
         self.poll_files();
-        // Open can replace Chess with Shogi while polling. Return its read
-        // adapter before polling or starting any now-retired Chess execution.
-        if self.shared.shogi.is_some() {
-            return self.snapshot();
+        if !matches!(&self.session, ActiveDocument::Chess(_)) {
+            return;
         }
         if self.admission_token.is_none()
-            && (self.session.pending.is_some() || self.session.analysis_pending.is_some())
+            && (self.session.chess_mut().pending.is_some()
+                || self.session.chess_mut().analysis_pending.is_some())
             && let Err(error) = self.session.ensure_capacity()
         {
             self.bridge.cancel();
-            self.session.capacity_pause(error);
+            self.session.capacity_pause(error.diagnostic);
+            self.session.capacity.resource = error.resource;
         }
         if self.admission_token.is_none()
             && let Some(response) = self.bridge.poll()
         {
             let at_ns = self.at_ns();
-            if matches!(
-                response.observation.context.purpose,
-                mshogi_engine::ExecutionPurpose::EngineTurn {}
-            ) {
-                let mut candidate = self.session.clone();
-                if candidate.accept_unchecked(response.observation, at_ns) {
-                    let _ = self.queue_admission(candidate);
-                }
-            } else {
-                let mut candidate = self.session.clone();
-                if candidate.accept_analysis_unchecked(response.observation) {
-                    let _ = self.queue_admission(candidate);
-                }
-            }
+            let candidate = self.session.chess().clone();
+            let _ = self.queue_chess_candidate(
+                candidate,
+                Some(persistence::ChessMutation::Observation {
+                    response: response.observation,
+                    at_ns,
+                }),
+            );
         }
         if self.admission_token.is_none()
-            && let Some(request) = self.session.analysis_request()
+            && let Some(request) = self.session.chess_mut().analysis_request()
             && let Err(error) = self.bridge.submit(request.clone())
         {
-            let mut candidate = self.session.clone();
-            if candidate.accept_analysis_unchecked(ExecutionObservation::new(
+            let candidate = self.session.chess().clone();
+            let response = ExecutionObservation::new(
                 request.context,
                 ExecutionResult::Failure {
                     failure: mshogi_engine::EngineFailure {
@@ -1090,20 +1291,23 @@ impl DesktopController {
                         message: format!("Cannot start analysis work: {error:?}"),
                     },
                 },
-            )) {
-                let _ = self.queue_admission(candidate);
-            }
+            );
+            let _ = self.queue_chess_candidate(
+                candidate,
+                Some(persistence::ChessMutation::Observation {
+                    response,
+                    at_ns: self.at_ns(),
+                }),
+            );
         }
         if self.admission_token.is_none()
-            && let Some(request) = self.session.engine_request()
+            && let Some(request) = self.session.chess_mut().engine_request()
             && let Err(error) = self.bridge.submit(request)
         {
             self.session
+                .chess_mut()
                 .fail(format!("Cannot start engine work: {error:?}"));
         }
-        let mut snapshot = self.session.snapshot();
-        snapshot.io = self.io_state.clone();
-        snapshot
     }
     /// Signal process cleanup before a GUI runtime exits without dropping state.
     /// This does not join or wait on the interaction path.
@@ -1650,29 +1854,34 @@ mod tests {
             }))
         );
         let mut incomplete = DesktopController::verification(path.clone(), "incomplete").unwrap();
-        let request = incomplete.session.engine_request().unwrap().context;
+        let request = incomplete
+            .session
+            .chess_mut()
+            .engine_request()
+            .unwrap()
+            .context;
         assert_eq!(request.limits.nodes, 0);
         assert_eq!(incomplete.session.snapshot().limits, PLAY_LIMITS);
+        let version = incomplete.session.version;
         incomplete
             .session
-            .command(
-                DesktopCommand::Cancel {
-                    version: incomplete.session.version,
-                },
-                1,
-            )
+            .chess_mut()
+            .command(DesktopCommand::Cancel { version }, 1)
             .unwrap();
+        let version = incomplete.session.version;
         incomplete
             .session
-            .command(
-                DesktopCommand::Retry {
-                    version: incomplete.session.version,
-                },
-                2,
-            )
+            .chess_mut()
+            .command(DesktopCommand::Retry { version }, 2)
             .unwrap();
         assert_eq!(
-            incomplete.session.engine_request().unwrap().context.limits,
+            incomplete
+                .session
+                .chess_mut()
+                .engine_request()
+                .unwrap()
+                .context
+                .limits,
             PLAY_LIMITS
         );
         assert!(DesktopController::verification(path, "unknown").is_err());
@@ -1722,8 +1931,8 @@ mod tests {
             .into_iter()
             .collect()
         );
-        let match_record = source.session.game.record().to_json();
-        let game_record = source.session.game.game().record();
+        let match_record = source.session.chess_mut().game.record().to_json();
+        let game_record = source.session.chess_mut().game.game().record();
         let unique = std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)
             .unwrap()
@@ -1743,8 +1952,14 @@ mod tests {
         assert_eq!(reopened.human, Color::White);
         assert!(reopened.play_paused);
         assert!(reopened.version > snapshot.version);
-        assert_eq!(restored.session.game.record().to_json(), match_record);
-        assert_eq!(restored.session.game.game().record(), game_record);
+        assert_eq!(
+            restored.session.chess_mut().game.record().to_json(),
+            match_record
+        );
+        assert_eq!(
+            restored.session.chess_mut().game.game().record(),
+            game_record
+        );
         assert!(reopened.observations.is_empty());
         std::fs::remove_file(path).unwrap();
     }
@@ -1768,3 +1983,6 @@ mod tests {
         assert!(error.contains("mode and limits were not changed"));
     }
 }
+
+#[cfg(test)]
+mod runtime_tests;

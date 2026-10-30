@@ -22,7 +22,7 @@ it("does not close or replace unsaved work when the Save picker is cancelled", a
   fireEvent.click(screen.getByRole("button", { name: "Save and close" }));
   await waitFor(() => expect(bridge.invoke).toHaveBeenCalledWith("native_contract_file", expect.objectContaining({ action: "save" })));
   await act(async () => {});
-  expect(bridge.invoke.mock.calls.some(([name]) => name === "desktop_finish_close")).toBe(false);
+  expect(bridge.invoke.mock.calls.some(([name]) => name === "game_finish_close")).toBe(false);
   expect(screen.getByRole("button", { name: "Keep open" })).toBeTruthy();
 });
 it("closes only after successful save of the exact current document", async () => {
@@ -30,7 +30,9 @@ it("closes only after successful save of the exact current document", async () =
   render(<SharedContractApp />); await screen.findByRole("button", { name: "Save As" });
   act(() => closeListener({ payload: native }));
   fireEvent.click(screen.getByRole("button", { name: "Save and close" }));
-  await waitFor(() => expect(bridge.invoke).toHaveBeenCalledWith("desktop_finish_close", { expectedDocumentRevision: saveResult.document.revision }));
+  await waitFor(() => expect(bridge.invoke).toHaveBeenCalledWith("game_finish_close", {
+    expected: { document: saveResult.token.document, version: saveResult.token.version, document_revision: saveResult.document.revision },
+  }));
 });
 it("requires an explicit unsaved-change choice before Open and keeps work on cancelled Save", async () => {
   render(<SharedContractApp />); await screen.findByRole("button", { name: "Save As" });

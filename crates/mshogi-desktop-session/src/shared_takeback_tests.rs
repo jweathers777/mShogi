@@ -9,9 +9,9 @@ fn controller() -> DesktopController {
     c
 }
 fn game_kind(c: &DesktopController) -> GameKind {
-    if c.shared.xiangqi.is_some() {
+    if c.session.xiangqi().is_some() {
         GameKind::Xiangqi
-    } else if c.shared.shogi.is_some() {
+    } else if c.session.shogi().is_some() {
         GameKind::Shogi
     } else {
         GameKind::Chess
@@ -71,10 +71,10 @@ fn play(c: &mut DesktopController, action: &str) {
     send(c, op).unwrap();
 }
 fn pending(c: &DesktopController) -> ExecutionContext {
-    if let Some(s) = &c.shared.shogi {
+    if let Some(s) = c.session.shogi() {
         s.pending.clone().unwrap()
     } else {
-        c.shared.xiangqi.as_ref().unwrap().pending.clone().unwrap()
+        c.session.xiangqi().unwrap().pending.clone().unwrap()
     }
 }
 fn execute(request: &ExecutionContext) -> ExecutionObservation {

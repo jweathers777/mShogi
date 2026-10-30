@@ -1,0 +1,10 @@
+   Compiling mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.12s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-58e2c610622b01d4)
+
+running 2 tests
+test persistence::save_commit_budget_tests::committed_saves_remain_successful_when_observed_after_the_validation_deadline ... ok
+test persistence::validation_budget_tests::elapsed_validation_budget_is_authoritative_and_cancellation_is_not_resource_exhaustion ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 164 filtered out; finished in 0.00s
+

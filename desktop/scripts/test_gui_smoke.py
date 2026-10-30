@@ -3,6 +3,7 @@ import ast
 import copy
 import http.client
 import importlib.util
+import json
 from pathlib import Path
 import unittest
 from unittest.mock import Mock, patch
@@ -85,6 +86,101 @@ class CurrentDocumentInspectionTests(unittest.TestCase):
                         module.desktop_document_payload(document, game)
 
 
+class XiangqiRuntimeEvidenceTests(unittest.TestCase):
+    def diagnostics(self):
+        snapshot = json.loads((Path(__file__).parents[1] / 'src' / '__fixtures__' /
+                               'shared-xiangqi-played.json').read_text())
+        return {key: copy.deepcopy(snapshot[key]) for key in
+                ('token', 'profile', 'context', 'xiangqi', 'document', 'io', 'observations')}
+
+    def test_all_retains_previous_fourteen_phases_and_adds_normal_xiangqi(self):
+        previous = [None, 'normal-shogi', 'normal-shogi-reopened', 'standard', 'promotion',
+                    'claim', 'capacity', 'synthetic', 'shogi-hands', 'shogi-promotion',
+                    'shogi-forced', 'shogi-declaration', 'shogi-concluded', 'shogi-capacity']
+        actual = module.selected_gui_phases('all')
+        self.assertEqual(len(actual), 15)
+        self.assertEqual([phase for phase in actual if phase != 'normal-xiangqi'], previous)
+        self.assertEqual(module.selected_gui_phases('normal-xiangqi'), ['normal-xiangqi'])
+        self.assertEqual(module.selected_gui_phases('normal'), previous[:3] + ['normal-xiangqi'])
+        self.assertEqual(module.selected_gui_phases('normal-shogi'), previous[1:3])
+        self.assertEqual(module.selected_gui_phases('verification'), previous[3:])
+        self.assertEqual(module.selected_gui_phases('verification-shogi'), previous[8:])
+
+    def test_rejected_open_may_report_io_failure_without_changing_native_authority(self):
+        before = self.diagnostics()
+        after = copy.deepcopy(before)
+        after['token']['revision'] += 1
+        after['io'] = {'id': before['io']['id'] + 1, 'phase': 'failed', 'message': 'Malformed document'}
+        self.assertEqual(module.xiangqi_retained_state(before), module.xiangqi_retained_state(after))
+
+    def test_failed_open_comparison_detects_native_history_settings_and_identity_changes(self):
+        before = self.diagnostics()
+        changes = [
+            lambda data: data['context']['payload']['events'].pop(),
+            lambda data: data['context']['payload']['root'].update(no_capture_plies=29),
+            lambda data: data['xiangqi']['warnings'].append({'side': 'red', 'event_index': 1}),
+            lambda data: data['xiangqi']['count_advice'][0].update(eligible=True),
+            lambda data: data['document']['settings'].update(orientation='black'),
+            lambda data: data['document'].update(dirty=False),
+            lambda data: data['document'].update(path='/wrong/game.mshogi'),
+            lambda data: data['observations'].append({'historical': True, 'unscored': True}),
+        ]
+        changes += [lambda data, key=key: data['token'].update({key: data['token'][key] + 1})
+                    for key in ('document', 'version', 'selection')]
+        for index, change in enumerate(changes):
+            with self.subTest(index=index):
+                after = copy.deepcopy(before)
+                change(after)
+                self.assertNotEqual(module.xiangqi_retained_state(before), module.xiangqi_retained_state(after))
+
+    def test_native_comparison_rejects_wrong_game_or_profile(self):
+        for field, value in (('profile', 'mshogi.shogi.csa36.v1'), ('game_kind', 'shogi'),
+                             ('rules_profile', 'mshogi.shogi.csa36.v1')):
+            with self.subTest(field=field):
+                data = self.diagnostics()
+                if field == 'profile':
+                    data[field] = value
+                else:
+                    data['context'][field] = value
+                with self.assertRaises(AssertionError):
+                    module.xiangqi_retained_state(data)
+
+    def test_xiangqi_history_observer_requires_event_prefix_not_only_board_ply(self):
+        journey = object.__new__(module.Journey)
+        journey.web = Mock()
+        journey.web.read.side_effect = [
+            {'live': '4', 'selected': '2', 'historical': 'false'},
+            {'live': '4', 'selected': '2', 'historical': 'true'}]
+        with patch.object(module.time, 'sleep'):
+            self.assertEqual(journey.xiangqi_events(4, selected=2, historical=True),
+                             {'live': '4', 'selected': '2', 'historical': 'true'})
+        self.assertEqual(journey.web.read.call_count, 2)
+        journey.web.command.assert_not_called()
+
+    def test_analysis_completion_requires_actual_current_purpose_history_and_limits(self):
+        journey = object.__new__(module.Journey)
+        journey.web = Mock()
+        journey.web.text.side_effect = lambda selector: (
+            'Analysis result available' if selector == '.shogi-analysis-state'
+            else 'No move or claim was played')
+        accepted = {'historical': False, 'observation': {'context': {
+            'purpose': {'kind': 'move_analysis'}, 'limits': {'depth': 1, 'nodes': 128},
+            'game': copy.deepcopy(self.diagnostics()['context'])}}}
+        wrong = []
+        for change in (
+                lambda item: item.update(historical=True),
+                lambda item: item['observation']['context'].update(purpose={'kind': 'engine_turn'}),
+                lambda item: item['observation']['context']['limits'].update(nodes=512),
+                lambda item: item['observation']['context']['game']['payload']['events'].pop()):
+            item = copy.deepcopy(accepted)
+            change(item)
+            wrong.append({'observations': [item]})
+        journey.xiangqi_diagnostics = Mock(side_effect=[*wrong, {'observations': [accepted]}])
+        with patch.object(module.time, 'sleep'):
+            self.assertEqual(journey.xiangqi_complete_analysis(2), accepted)
+        self.assertEqual(journey.xiangqi_diagnostics.call_count, 5)
+
+
 class SaveAcceptanceTests(unittest.TestCase):
     def setUp(self):
         self.expected = '/games/new.mshogi'
@@ -157,6 +253,16 @@ class BoardPointerReadinessTests(unittest.TestCase):
                 observations = [c.args[1] for c in self.web.record.call_args_list]
                 self.assertEqual([o['ready'] for o in observations], [False, True])
                 self.assertEqual(observations[0]['target'], pending)
+
+    def test_xiangqi_intersections_use_actual_w3c_pointer_not_svg_element_click(self):
+        self.web.read.return_value = self.ready
+        selector = '.xiangqi-point[data-intersection="a3"]'
+        self.web.click(selector)
+        self.web.command.assert_called_once()
+        method, path, payload = self.web.command.call_args.args
+        self.assertEqual((method, path), ('POST', '/actions'))
+        self.assertEqual(payload['actions'][0]['type'], 'pointer')
+        self.assertEqual(self.web.record.call_args.args[1]['selector'], selector)
 
     def test_unready_target_times_out_with_reason_and_without_any_input(self):
         for pending in ({"present": False, "enabled": False},

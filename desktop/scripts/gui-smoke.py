@@ -53,6 +53,37 @@ def desktop_document_payload(document, game_kind):
     return document["payload"]
 
 
+def xiangqi_retained_state(diagnostics):
+    """Compare accepted native document state, excluding file-operation receipts.
+
+    Snapshot revision and I/O status may advance to report a rejected Open. The
+    document/session/selection authority and complete native semantics may not.
+    This observer does not replay, classify, or reconstruct Xiangqi rules.
+    """
+    assert diagnostics["profile"] == "mshogi.xiangqi.wxf2018.v1", diagnostics
+    context = diagnostics["context"]
+    assert context["game_kind"] == "xiangqi", context
+    assert context["rules_profile"] == diagnostics["profile"], context
+    token = diagnostics["token"]
+    return json.loads(json.dumps({
+        "authority": {key: token[key] for key in ("document", "version", "selection")},
+        "context": context, "xiangqi": diagnostics["xiangqi"],
+        "document": diagnostics["document"], "observations": diagnostics["observations"],
+    }))
+
+
+def selected_gui_phases(choice):
+    """Keep independent native-process journeys explicit and individually runnable."""
+    chess = ["standard", "promotion", "claim", "capacity", "synthetic"]
+    shogi = ["shogi-hands", "shogi-promotion", "shogi-forced", "shogi-declaration",
+             "shogi-concluded", "shogi-capacity"]
+    normal = [None, "normal-shogi", "normal-shogi-reopened", "normal-xiangqi"]
+    return {"normal": normal, "normal-shogi": normal[1:3],
+            "normal-xiangqi": ["normal-xiangqi"],
+            "verification": [*chess, *shogi], "verification-shogi": shogi,
+            "all": [*normal, *chess, *shogi]}[choice]
+
+
 def saved_document_accepted(observation, expected_path):
     """One DOM observation must establish native acceptance, not an old Saved label."""
     return (observation["path"] == str(expected_path)
@@ -162,7 +193,7 @@ class Webview:
         return value["element-6066-11e4-a52e-4f735466cecf"]
 
     def click(self, selector):
-        if selector.startswith((".square[", ".shogi-square[")):
+        if selector.startswith((".square[", ".shogi-square[", ".xiangqi-point[")):
             # WebKit's element-click heuristic requires the SVG group itself
             # in the hit-test tree, although only its painted children occur
             # there. Observe its real geometry, then send actual pointer input.
@@ -175,7 +206,7 @@ class Webview:
                     const context = {label: element?.getAttribute('aria-label') ?? null,
                         runtime: document.querySelector('.shell-runtime')?.textContent ?? null,
                         heading: document.querySelector('.shell-live-heading')?.textContent ?? null,
-                        squareCount: document.querySelectorAll('.square,.shogi-square').length};
+                        squareCount: document.querySelectorAll('.square,.shogi-square,.xiangqi-point').length};
                     if (!element) return {...context, present: false, enabled: false};
                     const enabled = element.getAttribute('aria-disabled') !== 'true';
                     const rect = element.getBoundingClientRect();
@@ -821,6 +852,203 @@ class Journey:
         self.record("Select Shogi and human side in normal New Game", {"side": side, "board_name":
             w.read("document.querySelector('.shogi-board')?.getAttribute('aria-label')")})
 
+    def xiangqi_diagnostics(self):
+        """Read the normal Technical Details data; never invoke private IPC."""
+        return self.web.read("""[...document.querySelectorAll('.shell-technical pre')]
+            .map(e=>{try{return JSON.parse(e.textContent);}catch{return null;}})
+            .find(v=>v?.token&&v?.profile==='mshogi.xiangqi.wxf2018.v1')??null""")
+
+    def xiangqi_events(self, count, selected=None, historical=False):
+        expected = {"live": str(count), "historical": str(historical).lower()}
+        if selected is not None:
+            expected["selected"] = str(selected)
+        def observed():
+            actual = self.web.read("""(() => {const e=document.querySelector('.shell-xiangqi');
+                return e ? {live:e.dataset.liveEvents,selected:e.dataset.currentEvent,
+                    historical:e.dataset.historical}:null;})()""")
+            return actual if actual and all(actual[key] == value for key, value in expected.items()) else None
+        return wait(observed, f"native Xiangqi event/history boundary {expected}")
+
+    def xiangqi_analysis(self, depth=1, nodes=128):
+        if not self.web.has('[data-analysis-start="xiangqi"]'):
+            self.web.button("Analyze position")
+        wait(lambda: self.web.has('[data-analysis-start="xiangqi"]'), "native Xiangqi analysis controls")
+        self.web.set('.shogi-analysis input[name="depth"]', depth)
+        self.web.set('.shogi-analysis input[name="nodes"]', nodes)
+        self.web.click('[data-analysis-start="xiangqi"]')
+
+    def xiangqi_complete_analysis(self, event_count, depth=1, nodes=128):
+        def completed():
+            native = self.xiangqi_diagnostics()
+            if not native:
+                return None
+            for item in reversed(native["observations"]):
+                context = item["observation"]["context"]
+                if (not item["historical"] and context["purpose"]["kind"] == "move_analysis"
+                        and context["limits"] == {"depth": depth, "nodes": nodes}
+                        and len(context["game"]["payload"]["events"]) == event_count):
+                    return item
+            return None
+        observation = wait(completed, f"actual Xiangqi analysis observation for event{event_count}, depth{depth}/{nodes}visits", 45)
+        wait(lambda: "Analysis result available" in self.web.text('.shogi-analysis-state'), "native Xiangqi result presentation")
+        assert "No move or claim was played" in self.web.text('.shogi-analysis')
+        return observation
+
+    def xiangqi_save(self, path):
+        self.file("save_as", path, button_label="Save as…")
+        self.wait_saved(path)
+        wait(path.exists, "native Xiangqi Save As created exact path")
+        archive = json.loads(path.read_text(encoding="utf-8"))
+        body = desktop_document_payload(archive, "xiangqi")
+        assert body["current"]["game_kind"] == "xiangqi", body
+        self.record("Inspect complete native Xiangqi current document", {
+            "path": str(path), "sha256": digest(path), "bytes": path.stat().st_size,
+            "observations": len(body["observations"]), "exact_observations": len(body["exact_observations"]),
+            "controls": len(body["controls"]), "native_events": len(body["current"]["payload"]["events"]),
+            "root": body["current"]["payload"]["root"]})
+        return archive
+
+    def normal_xiangqi(self):
+        """Current runtime ownership/file/close journey in the normal package.
+
+        Existing native fixtures own WXF correctness. This phase observes actual
+        command admission, engine work and native document identity; it does not
+        infer an outcome or score from an incomplete search.
+        """
+        self.start(product="xiangqi")
+        w = self.web
+        w.button("New game")
+        wait(lambda: w.has('.document-guard') or w.has('[aria-label="New game"]'), "New Game guard or chooser")
+        if w.has(".document-guard"):
+            w.button("Discard & continue")
+        wait(lambda: w.has('[aria-label="New game"]'), "normal game selection dialog")
+        w.click('[data-game="xiangqi"]'); w.click('[data-side="red"]'); w.click('[data-start-game]')
+        wait(lambda: w.has(".shell-xiangqi") and not w.has('[aria-label="New game"]'), "native Xiangqi/Red document")
+        self.viewport(1180, 820)
+        self.xiangqi_events(0, selected=0)
+        assert "Red at bottom" in w.read("document.querySelector('.xiangqi-board').getAttribute('aria-label')")
+        geometry = w.read("""(() => {const points=[...document.querySelectorAll('.xiangqi-point')];
+            const visible=e=>{const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&r.left>=-1&&r.top>=-1&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1;};
+            return {points:points.length,allVisible:points.every(visible),
+                palaceSides:[...new Set([...document.querySelectorAll('[data-palace]')].map(e=>e.dataset.palace))],
+                river:document.querySelector('.xiangqi-river')?.textContent};})()""")
+        assert geometry["points"] == 90 and geometry["allVisible"], geometry
+        assert set(geometry["palaceSides"]) == {"mshogi.xiangqi.wxf2018.v1:red", "mshogi.xiangqi.wxf2018.v1:black"}, geometry
+        assert "楚河" in geometry["river"] and "漢界" in geometry["river"], geometry
+        self.record("Normal Xiangqi intersections, river and palaces", geometry)
+        self.capture("initial-red")
+
+        source = '.xiangqi-point[data-intersection="a3"]'
+        target = '.xiangqi-point[data-intersection="a4"]'
+        w.click(source)
+        assert w.read(f"document.querySelector({json.dumps(target)})?.getAttribute('aria-label').includes('legal destination')")
+        w.click(target)
+        self.xiangqi_events(2, selected=2)
+        wait(lambda: w.has('[data-search-purpose="engine_turn"]'), "actual bundled Xiangqi engine observation")
+        played = self.xiangqi_diagnostics()
+        assert played["context"]["payload"]["events"][0]["event"]["action"] == "a3a4", played
+        assert played["context"]["payload"]["conclusion"] is None, played
+        self.capture("play")
+        self.record("Native a3a4 admission and actual bounded engine reply", played)
+
+        # The measured Xiangqi maximum is deliberately small. Completion may win
+        # the real input race; only report cancellation when native state proves
+        # it. Chess/Shogi phases and native tests establish forced cancellation.
+        self.xiangqi_analysis(depth=3, nodes=512)
+        wait(lambda: w.has('.shogi-analysis[data-phase="analyzing"]')
+             or "Analysis result available" in w.text('.shogi-analysis-state'), "native Xiangqi analysis accepts request")
+        cancel_dispatched = False
+        if w.has('.shogi-analysis[data-phase="analyzing"]') and w.has('.shogi-analysis button[type="button"]'):
+            try:
+                w.button("Cancel analysis")
+                cancel_dispatched = True
+            except RuntimeError as error:
+                # Finding the transient button can race genuine completion. Do
+                # not retry input or swallow transport/session failures.
+                reply = json.loads(str(error))
+                value = reply.get("value", reply)
+                if value.get("error") not in ("no such element", "stale element reference") or "Analysis result available" not in w.text('.shogi-analysis-state'):
+                    raise
+                self.record("Xiangqi completion removed cancellation control before input", {"driver_error": str(error), "visible_status": w.text('.shogi-analysis-state')})
+        wait(lambda: "Search stopped" in w.text('.shogi-analysis-state')
+             or "Analysis result available" in w.text('.shogi-analysis-state'), "bounded Xiangqi analysis settles")
+        self.xiangqi_events(2, selected=2)
+        self.record("Actual bounded Xiangqi analysis completion/cancellation observation", {
+            "cancel_dispatched": cancel_dispatched, "visible_status": w.text('.shogi-analysis-state'),
+            "native": self.xiangqi_diagnostics(),
+            "qualification": "Completion may beat cancellation at the native depth3/512-visit limit; no cancellation is inferred."})
+        self.xiangqi_analysis()
+        self.xiangqi_complete_analysis(2)
+        self.xiangqi_events(2, selected=2)
+        self.capture("analysis")
+        path = self.args.output / "normal-xiangqi-complete.mshogi"
+        archive = self.xiangqi_save(path)
+        body = archive["payload"]
+        assert len(body["current"]["payload"]["events"]) == 2 and len(body["observations"]) >= 2, body
+        old = self.xiangqi_diagnostics()
+        self.file("open", path)
+        wait(lambda: (now := self.xiangqi_diagnostics()) and now["token"]["document"] > old["token"]["document"], "Xiangqi Open installs fresh document identity")
+        self.xiangqi_events(2, selected=2)
+        assert w.has(".play-paused") and w.read("document.querySelector('.shell-xiangqi').dataset.paused") == "true"
+        assert not w.has('.shogi-analysis[data-phase="analyzing"]')
+        reopened = self.xiangqi_diagnostics()
+        assert reopened["context"] == old["context"], (old, reopened)
+        assert reopened["token"]["selection"] > old["token"]["selection"], (old, reopened)
+        self.record("Xiangqi current document Open preserves native history and retires runtime work", {"before": old, "after": reopened})
+        self.capture("reopened-stopped")
+
+        w.click('.shogi-history [data-event="1"]')
+        self.xiangqi_events(2, selected=1, historical=True)
+        selected = self.xiangqi_diagnostics()
+        assert len(selected["context"]["payload"]["events"]) == 1, selected
+        assert selected["context"]["payload"]["events"][0]["event"]["action"] == "a3a4", selected
+        self.xiangqi_analysis()
+        self.xiangqi_complete_analysis(1)
+        self.xiangqi_events(2, selected=1, historical=True)
+        history_path = self.args.output / "normal-xiangqi-history.mshogi"
+        historical = self.xiangqi_save(history_path)["payload"]
+        context = historical["observations"][-1]["observation"]["context"]
+        assert context["purpose"]["kind"] == "move_analysis", context
+        assert len(context["game"]["payload"]["events"]) == 1, context
+        assert len(historical["current"]["payload"]["events"]) == 2, historical
+        self.capture("historical-analysis")
+        old = self.xiangqi_diagnostics()
+        self.file("open", history_path)
+        wait(lambda: (now := self.xiangqi_diagnostics()) and now["token"]["document"] > old["token"]["document"], "historical Xiangqi Open establishes fresh authority")
+        self.xiangqi_events(2, selected=1, historical=True)
+        assert self.xiangqi_diagnostics()["context"] == old["context"]
+        self.capture("reopened-history")
+        w.button("Return to live")
+        self.xiangqi_events(2, selected=2)
+        assert w.has(".play-paused")
+        w.button("Resume play")
+        wait(lambda: w.read("document.querySelector('.shell-xiangqi').dataset.paused") == "false", "explicit Xiangqi Resume")
+        self.xiangqi_events(2, selected=2)
+        self.capture("return-live-resumed")
+        w.button("Save")
+        self.wait_saved(history_path)
+
+        corrupt = self.args.output / "normal-xiangqi-corrupt.mshogi"
+        corrupt.write_text('{"format":"mshogi.desktop.document.v1",', encoding="utf-8")
+        before = self.xiangqi_diagnostics()
+        self.file("open", corrupt)
+        wait(lambda: (now := self.xiangqi_diagnostics()) and now["io"]["id"] > before["io"]["id"] and now["io"]["phase"] == "failed", "corrupt Xiangqi Open reports native failure")
+        after = self.xiangqi_diagnostics()
+        assert xiangqi_retained_state(after) == xiangqi_retained_state(before), {"before": before, "after": after}
+        assert "current game" in w.text('.shell-notices').lower()
+        self.record("Corrupt Open preserves complete accepted Xiangqi document and authority", {"before": before, "after": after})
+        self.capture("corrupt-open-preserved")
+        w.click(".flip-button")
+        wait(lambda: w.text('.document-dirty').casefold() == "unsaved changes", "Xiangqi orientation is protected document state")
+        self.record("Native Xiangqi window-close request", self.native.close_window())
+        wait(lambda: w.has(".document-guard"), "native window-close protects Xiangqi unsaved changes")
+        self.capture("native-close-guard")
+        w.button("Cancel")
+        wait(lambda: not w.has(".document-guard"), "cancel native Xiangqi close")
+        assert self.native.alive()
+        self.xiangqi_events(2, selected=2)
+        self.quit()
+
     def normal_shogi(self):
         self.start(product="shogi")
         w = self.web
@@ -1219,7 +1447,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--driver", default="tauri-driver")
     parser.add_argument("--native-driver")
-    parser.add_argument("--phase", choices=["normal", "normal-shogi", "verification", "verification-shogi", "all"], default="all")
+    parser.add_argument("--phase", choices=["normal", "normal-shogi", "normal-xiangqi", "verification", "verification-shogi", "all"], default="all")
     args = parser.parse_args()
     args.output = args.output.resolve()
     args.output.mkdir(parents=True, exist_ok=True)
@@ -1242,14 +1470,7 @@ def main():
     journey = None
     try:
         journey = Journey(args, report)
-        chess_verification = ["standard", "promotion", "claim", "capacity", "synthetic"]
-        shogi_verification = ["shogi-hands", "shogi-promotion", "shogi-forced", "shogi-declaration", "shogi-concluded", "shogi-capacity"]
-        shogi_normal = ["normal-shogi", "normal-shogi-reopened"]
-        phases = ([None, *shogi_normal] if args.phase == "normal" else
-                  shogi_normal if args.phase == "normal-shogi" else
-                  [*chess_verification, *shogi_verification] if args.phase == "verification" else
-                  shogi_verification if args.phase == "verification-shogi" else
-                  [None, *shogi_normal, *chess_verification, *shogi_verification])
+        phases = selected_gui_phases(args.phase)
         failures = []
         report["phase_failures"] = failures
         for fixture in phases:
@@ -1261,6 +1482,8 @@ def main():
                     journey.normal_shogi()
                 elif fixture == "normal-shogi-reopened":
                     journey.normal_shogi_reopened()
+                elif fixture == "normal-xiangqi":
+                    journey.normal_xiangqi()
                 elif fixture.startswith("shogi-"):
                     journey.shogi_fixture(fixture)
                 else:

@@ -1,0 +1,39 @@
+   Compiling mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
+   Compiling mshogi-console v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-console)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.74s
+     Running tests/desktop_analysis.rs (target/debug/deps/desktop_analysis-14f7e59706cdef5b)
+
+running 2 tests
+test actual_full_budget_exhaustion_and_cancelled_replacement_leave_match_unchanged ... ok
+test actual_analysis_suggestions_never_commit_a_turn_and_resume_is_explicit ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.84s
+
+     Running tests/desktop_persistence.rs (target/debug/deps/desktop_persistence-d859371319a174df)
+
+running 3 tests
+test failed_save_and_corrupt_open_preserve_the_valid_file_and_live_document ... ok
+test reopening_retains_unscored_resignation_but_an_earlier_same_ply_view_does_not ... ok
+test complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.41s
+
+     Running tests/desktop_play.rs (target/debug/deps/desktop_play-0092dbe7acc880f5)
+
+running 4 tests
+test actual_missing_response_and_failed_process_pause_without_a_chess_score ... ok
+test human_black_gets_an_automatic_native_opening_and_can_answer_it ... ok
+test cancel_new_game_stale_commands_and_retry_protect_the_live_game ... ok
+test human_white_plays_two_turns_against_actual_bounded_native_replies ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.65s
+
+     Running tests/desktop_shared.rs (target/debug/deps/desktop_shared-55627141a7d5d1c3)
+
+running 3 tests
+test actual_engine_declaration_is_a_terminal_command_and_analysis_cannot_apply_it ... ok
+test real_chess_shogi_chess_execution_uses_one_supervisor_and_fresh_ids ... ok
+test product_new_gote_real_engine_play_analysis_archive_and_resume_use_native_paths ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.74s
+

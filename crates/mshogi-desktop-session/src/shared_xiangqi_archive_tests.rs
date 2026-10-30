@@ -28,9 +28,9 @@ fn receipt(c: &mut DesktopController, r: AdmissionReceipt) -> Result<(), String>
     r.completion().expect("settled admission receipt")
 }
 fn send(c: &mut DesktopController, operation: SessionOperation) -> Result<(), String> {
-    let game = if c.shared.xiangqi.is_some() {
+    let game = if c.session.xiangqi().is_some() {
         GameKind::Xiangqi
-    } else if c.shared.shogi.is_some() {
+    } else if c.session.shogi().is_some() {
         GameKind::Shogi
     } else {
         GameKind::Chess
@@ -53,7 +53,7 @@ fn replace(c: &mut DesktopController, game: &x::Game, human: x::Side) {
     .unwrap();
 }
 fn state(c: &DesktopController) -> &XiangqiSession {
-    c.shared.xiangqi.as_ref().unwrap()
+    c.session.xiangqi().unwrap()
 }
 fn canonical(c: &DesktopController) -> x::GameRecord {
     x::GameRecord::from_game(&state(c).game).unwrap()
@@ -1289,11 +1289,14 @@ fn exact_weighted_replay_threshold_reserves_one_real_close_control() {
         settings: XiangqiSettings::default(),
     };
     s.journal((events, 100), Some(op), None, None, false);
-    assert!(
-        check_capacity(&s, &mut || false)
-            .unwrap_err()
-            .contains("replay")
-    );
+    let refusal = check_capacity(&s, &mut || false).unwrap_err();
+    assert!(refusal.contains("replay"));
+    let facts = refusal.resource.as_ref().unwrap().facts();
+    assert_eq!(facts.len(), 1);
+    assert_eq!(facts[0].category, ResourceCategory::ReplayWork);
+    assert_eq!(facts[0].count, Some(16_000));
+    assert_eq!(facts[0].reserved, Some(1));
+    assert_eq!(facts[0].limit, Some(16_000));
     s.controls.pop();
     assert!(s.close_pause());
     check_capacity(&s, &mut || false).unwrap();
@@ -1547,7 +1550,7 @@ fn response_admission_refusal_cannot_restore_consumed_execution_as_thinking() {
     let response = actual(state(&c).pending.as_ref().unwrap());
     // Separate controller instrumentation: force a semantic admission refusal
     // after the bridge's response has already been delivered.
-    c.shared.xiangqi.as_mut().unwrap().analysis_intent = None;
+    c.session.xiangqi_mut().unwrap().analysis_intent = None;
     let before = canonical(&c);
     assert!(c.accept_observation(response));
     settle(&mut c);

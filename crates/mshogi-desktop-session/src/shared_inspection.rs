@@ -47,9 +47,9 @@ impl DesktopController {
         if query.expected != self.shared_token() {
             return Err("The position changed. Select the piece again.".into());
         }
-        let (game, owner, label, choices) = if let Some(state) = &self.shared.xiangqi {
+        let (game, owner, label, choices) = if let Some(state) = self.session.xiangqi() {
             xiangqi::inspect(state.selected_position(), &query.origin)?
-        } else if let Some(state) = &self.shared.shogi {
+        } else if let Some(state) = self.session.shogi() {
             inspect_shogi(state.selected().position(), &query.origin)?
         } else {
             inspect_chess(self.session.selected_game().position(), &query.origin)?
@@ -214,8 +214,9 @@ mod tests {
                 .unwrap(),
             )
         };
-        c.shared.shogi =
-            Some(ShogiSession::restored(&s::GameRecord::from_game(&game), s::Side::Sente).unwrap());
+        c.session.install_shogi(Box::new(
+            ShogiSession::restored(&s::GameRecord::from_game(&game), s::Side::Sente).unwrap(),
+        ));
     }
     #[test]
     fn exact_native_chess_query_is_not_a_snapshot_poll_or_mutation() {
@@ -244,22 +245,24 @@ mod tests {
     #[test]
     fn chess_pending_engine_work_and_historical_prefix_are_not_touched() {
         let mut c = controller();
+        let version = c.session.version;
         c.session
+            .chess_mut()
             .command_unchecked(
                 DesktopCommand::Play {
-                    version: c.session.version,
+                    version,
                     action: "e2e4".parse().unwrap(),
                 },
                 0,
             )
             .unwrap();
-        c.session.engine_request().unwrap();
-        let pending = c.session.pending.clone();
+        c.session.chess_mut().engine_request().unwrap();
+        let pending = c.session.chess_mut().pending.clone();
         assert!(pending.is_some());
         let before = serde_json::to_string(&c.session.snapshot()).unwrap();
         query(&c, "g8").unwrap();
         query(&c, "g1").unwrap();
-        assert_eq!(c.session.pending, pending);
+        assert_eq!(c.session.chess_mut().pending, pending);
         assert_eq!(
             serde_json::to_string(&c.session.snapshot()).unwrap(),
             before
@@ -297,7 +300,7 @@ mod tests {
             true,
         )
         .unwrap();
-        let shogi = c.shared.shogi.as_ref().unwrap();
+        let shogi = c.session.shogi().unwrap();
         let pending = shogi.pending.clone();
         let record = shogi.record();
         let token = c.shared_token();
@@ -320,15 +323,15 @@ mod tests {
         assert!(hand.choices.iter().any(|a| a.action == "P*4f"));
         assert!(!hand.choices.iter().any(|a| a.action.ends_with('i')));
         assert!(query(&c, &origin.replace(":P", ":R")).is_err());
-        assert_eq!(c.shared.shogi.as_ref().unwrap().record(), record);
-        assert_eq!(c.shared.shogi.as_ref().unwrap().pending, pending);
+        assert_eq!(c.session.shogi().unwrap().record(), record);
+        assert_eq!(c.session.shogi().unwrap().pending, pending);
         assert_eq!(c.shared_token(), token);
     }
     #[test]
     fn exact_historical_selection_and_conclusion_are_read_only() {
         let mut c = controller();
         native_shogi(&mut c, s::INITIAL_SFEN);
-        let state = c.shared.shogi.as_mut().unwrap();
+        let state = c.session.shogi_mut().unwrap();
         let prefix = state.game.clone();
         let request = s::GameRequest {
             expected: state.game.context(),
@@ -340,14 +343,14 @@ mod tests {
         let before = state.record();
         assert!(query(&c, "7g").is_ok());
         assert!(query(&c, "7f").is_err());
-        assert_eq!(c.shared.shogi.as_ref().unwrap().record(), before);
+        assert_eq!(c.session.shogi().unwrap().record(), before);
         let stale = MovementInspectionQuery {
             expected: c.shared_token(),
             origin: "7g".into(),
         };
         c.session.selection_id += 1;
         assert!(c.shared_inspection(stale).is_err());
-        let state = c.shared.shogi.as_mut().unwrap();
+        let state = c.session.shogi_mut().unwrap();
         state.viewed = None;
         let resignation = s::GameRequest {
             expected: state.game.context(),
@@ -357,7 +360,7 @@ mod tests {
         state.game.submit(resignation).unwrap();
         let ended = state.record();
         assert!(query(&c, "7f").unwrap().read_only);
-        assert_eq!(c.shared.shogi.as_ref().unwrap().record(), ended);
+        assert_eq!(c.session.shogi().unwrap().record(), ended);
     }
     #[test]
     fn strict_query_rejects_duplicate_nested_unknown_missing_and_oversize() {

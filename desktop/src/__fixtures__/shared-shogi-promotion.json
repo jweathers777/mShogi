@@ -22,12 +22,14 @@
   "io": {
     "id": 3,
     "phase": "idle",
-    "message": null
+    "message": null,
+    "resource": null
   },
   "capacity": {
     "id": 12,
     "status": "available",
-    "message": null
+    "message": null,
+    "resource": null
   },
   "token": {
     "document": 3,
@@ -461,5 +463,6 @@
   "observations": [],
   "search_observations": [],
   "score_meaning": "Native shogi root-side hundredths of pawn; terminal win distance counts complete command edges, including declarations. Not a chess mate score.",
-  "chess": null
+  "chess": null,
+  "chess_match": null
 }

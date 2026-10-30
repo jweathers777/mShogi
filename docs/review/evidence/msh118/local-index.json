@@ -1,0 +1,87 @@
+{
+  "base": "7414b795d47e9a6408f1b21f07cb1baacfddf8dc",
+  "provenance": "Local working-tree stages, not a claim that every run used the final pinned source. Default165 pass predates final focused corrections; those have dedicated logs. Current committed-source CI is recorded separately.",
+  "environment": "macOS-27.0.1-arm64-arm-64bit",
+  "files": [
+    {
+      "path": "native-default-working.txt",
+      "sha256": "0cc63756c35d1ce58f6760a4bed200c6773055d623e75df4fc2960cdceb03512",
+      "bytes": 17664
+    },
+    {
+      "path": "native-runtime-final.txt",
+      "sha256": "f508f9344d7c4b66c7aa2b18be9307377fcfe5e30f518951c56371766d087bd2",
+      "bytes": 1050
+    },
+    {
+      "path": "native-budget-final.txt",
+      "sha256": "bb4b67c45b373017ba3b5a508174d623d1ee7c59a352b36d915916792583d9ba",
+      "bytes": 671
+    },
+    {
+      "path": "native-controls.txt",
+      "sha256": "ae8f6387e79ae9b9c546116c90fc60469c95349128a068dfaea37d8ae52d19ba",
+      "bytes": 523
+    },
+    {
+      "path": "native-xiangqi-byte.txt",
+      "sha256": "ad92e5d24c28c666671472c12faec154bf47bb21f57ab3566e3cf9541b4f4c14",
+      "bytes": 516
+    },
+    {
+      "path": "native-replay-reserve.txt",
+      "sha256": "963b36393ee19fc8770ecd87170ad90df328f0c030c5c1abd463739f0133ca04",
+      "bytes": 513
+    },
+    {
+      "path": "native-clippy-final.txt",
+      "sha256": "e11f77dff9046362d5c2c603fb8a83fef6f66876cf14fc60172d9e69fee61e8a",
+      "bytes": 195
+    },
+    {
+      "path": "host-tests.txt",
+      "sha256": "127f6682be4b72c2f62481c2c6d706ce5b1663ebc5854c07909bafa50929e1dc",
+      "bytes": 7291
+    },
+    {
+      "path": "host-clippy.txt",
+      "sha256": "e6a14cf1e5ba0e5b3554f4d654d0087d057b0b3fffb8eb752e7ce32c11514931",
+      "bytes": 6599
+    },
+    {
+      "path": "frontend-check.txt",
+      "sha256": "dfddfa5b4e517837513b4b9397053cbd1a8be7aac5f23d8b7d8cb3618e5f5e89",
+      "bytes": 46
+    },
+    {
+      "path": "frontend-tests.txt",
+      "sha256": "e8e3307b36ec616af5a148eb0ef266f681d7f370ae37358e8a9ea9fb050c3802",
+      "bytes": 470
+    },
+    {
+      "path": "console-desktop-tests.txt",
+      "sha256": "75545cd7e4e712c52fd7428346ec33a4553efe8ec89d1cd4e2f73b66d2cf6b4c",
+      "bytes": 2125
+    },
+    {
+      "path": "gui-verifier-tests.txt",
+      "sha256": "894c862bcbff0a1cb161f47afaf9153bdfbe6dbd304cd9e91b8550bad1836f6b",
+      "bytes": 149
+    },
+    {
+      "path": "fixture-generation.txt",
+      "sha256": "a389c5cdebe24cb2573830f595e0e9000bea452a0005290571e158128de44a0e",
+      "bytes": 281
+    },
+    {
+      "path": "workspace-clippy.txt",
+      "sha256": "f640aa5e0e3390de4ff60c53fb3bfc6c462f49bd730cbc1af2044d48cc848130",
+      "bytes": 302
+    },
+    {
+      "path": "native-transitional-failures.txt",
+      "sha256": "87bd8a42d424a8a1d6485bcf0337f8a247045c2cf3c8354d068c30296ed47762",
+      "bytes": 20776
+    }
+  ]
+}

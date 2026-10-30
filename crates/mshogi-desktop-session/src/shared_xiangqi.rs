@@ -92,7 +92,7 @@ pub(crate) struct XiangqiSession {
     pub(super) human: x::Side,
     pub(super) viewed: Option<x::HistorySnapshot>,
     pub(super) viewed_game: Option<x::Game>,
-    pub(super) paused: bool,
+    pub(crate) paused: bool,
     pub(super) pending: Option<ExecutionContext>,
     pub(super) submitted: bool,
     pub(super) phase: EnginePhase,
@@ -102,6 +102,14 @@ pub(crate) struct XiangqiSession {
     pub(super) observation_bytes: usize,
 }
 impl XiangqiSession {
+    pub(crate) fn reopened(&mut self) {
+        self.retire();
+        self.paused = true;
+        for observation in &mut self.observations {
+            observation.historical = true;
+        }
+        self.diagnostic=Some("Document reopened with work stopped. Saved ordinary/exact observations are historical; Resume explicitly.".into());
+    }
     pub(super) fn selected_position(&self) -> &x::Position {
         self.viewed
             .as_ref()
@@ -113,7 +121,7 @@ impl XiangqiSession {
                 .expect("admitted native record capacity"),
         )
     }
-    pub(super) fn retire(&mut self) {
+    pub(crate) fn retire(&mut self) {
         self.pending = None;
         self.submitted = false;
         self.analysis = None;
@@ -121,9 +129,57 @@ impl XiangqiSession {
         self.phase = EnginePhase::Paused;
         self.diagnostic = None;
     }
+    #[cfg(all(test, feature = "desktop-verification"))]
     fn observation_capacity(&self) -> bool {
-        self.observations.len() + self.exact_observations.len() < MAX_ARCHIVE_OBSERVATIONS
-            && self.observation_bytes + mshogi_engine::MAX_RESPONSE_BYTES <= MAX_OBSERVATION_BYTES
+        self.ensure_observation_capacity().is_ok()
+    }
+    pub(super) fn ensure_observation_capacity(&self) -> Result<(), OperationFailure> {
+        let ordinary = self.observations.len();
+        let exact = self.exact_observations.len();
+        let mut facts = Vec::new();
+        if ordinary.saturating_add(exact) >= MAX_ARCHIVE_OBSERVATIONS {
+            facts.push(
+                resource_fact(
+                    ResourceCategory::CombinedObservations,
+                    ordinary.saturating_add(exact),
+                    MAX_ARCHIVE_OBSERVATIONS,
+                    1,
+                    ResourceScope::Xiangqi,
+                    ResourceUnit::Observations,
+                )
+                .with_observations(ordinary as u64, exact as u64)
+                .with_measurement(ResourceMeasurement::Accepted),
+            );
+        }
+        if self
+            .observation_bytes
+            .saturating_add(mshogi_engine::MAX_RESPONSE_BYTES)
+            > MAX_OBSERVATION_BYTES
+        {
+            facts.push(
+                resource_fact(
+                    ResourceCategory::EncodedObservationBytes,
+                    self.observation_bytes,
+                    MAX_OBSERVATION_BYTES,
+                    mshogi_engine::MAX_RESPONSE_BYTES,
+                    ResourceScope::Xiangqi,
+                    ResourceUnit::Bytes,
+                )
+                .with_measurement(ResourceMeasurement::Accepted),
+            );
+        }
+        if facts.is_empty() {
+            Ok(())
+        } else {
+            let diagnostic = if facts.len() == 1
+                && facts[0].category == ResourceCategory::CombinedObservations
+            {
+                "Application capacity: all256 observations are retained. Ordinary and exact observations share this limit. The complete accepted document remains saveable; saving or reopening cannot enlarge its structural limits."
+            } else {
+                "Application capacity: no remaining Xiangqi observation admission capacity. The complete accepted document remains saveable; saving or reopening cannot enlarge its structural limits."
+            };
+            Err(resource_refusal(facts, diagnostic))
+        }
     }
 }
 fn choice(a: x::Action) -> PresentedChoice {
@@ -266,12 +322,14 @@ impl DesktopController {
         self.last_command_receipt = Some(receipt);
         Ok(self.shared_snapshot())
     }
-    fn start_xiangqi(&mut self, limits: WorkLimits, analysis: bool) -> Result<(), String> {
-        self.session.ensure_capacity()?;
-        let state = self.shared.xiangqi.as_ref().unwrap();
-        if !state.observation_capacity() {
-            return Err("Application capacity: native consumer observation retention limit reached; accepted history and observations are preserved. No retry can enlarge this document.".into());
-        }
+    fn start_xiangqi(
+        &mut self,
+        limits: WorkLimits,
+        analysis: bool,
+    ) -> Result<(), OperationFailure> {
+        self.ensure_runtime_capacity()?;
+        let state = self.session.xiangqi().unwrap();
+        state.ensure_observation_capacity()?;
         let game = state.record();
         let request = ExecutionContext {
             purpose: if analysis {
@@ -314,12 +372,13 @@ impl DesktopController {
             );
         }
         self.session.next_request += 1;
-        let state = self.shared.xiangqi.as_mut().unwrap();
+        let selection_id = self.session.selection_id;
+        let state = self.session.xiangqi_mut().unwrap();
         state.execution_floor = state
             .execution_floor
             .max(request.request_id)
             .max(request.session_version)
-            .max(self.session.selection_id);
+            .max(selection_id);
         state.pending = Some(request);
         state.submitted = false;
         state.phase = EnginePhase::Thinking;
@@ -331,7 +390,7 @@ impl DesktopController {
     ) -> Result<SharedSnapshot, String> {
         // Cheap native queries reject impossible requests before even exposing
         // admission progress. All transitions still run on the private worker.
-        let state = self.shared.xiangqi.as_ref().unwrap();
+        let state = self.session.xiangqi().unwrap();
         match &op {
             SessionOperation::Analyze {
                 operation: AnalysisOperation::Moves { depth, nodes },
@@ -342,8 +401,10 @@ impl DesktopController {
                 if !(1..=3).contains(depth) || !(1..=512).contains(nodes) {
                     return Err("Xiangqi analysis requires depth1–3 and1–512 visits.".into());
                 }
-                if !state.observation_capacity() {
-                    return Err("Application capacity: retained observations are at their limit; accepted history is saveable. Saving/reopening cannot enlarge the limit.".into());
+                if let Err(failure) = state.ensure_observation_capacity() {
+                    let diagnostic = failure.diagnostic.clone();
+                    self.pause_native_failure(failure);
+                    return Err(diagnostic);
                 }
             }
             SessionOperation::Analyze { .. } => {
@@ -405,13 +466,13 @@ impl DesktopController {
             | SessionOperation::XiangqiPreferences { .. } => {}
             _ => return Err("Unsupported operation for the native Xiangqi session.".into()),
         }
-        let seed = archive::XiangqiDraft::capture(self.shared.xiangqi.as_ref().unwrap());
+        let seed = archive::XiangqiDraft::capture(self.session.xiangqi().unwrap());
         let receipt = self.queue_xiangqi_candidate(seed, Some(op), None, None, false)?;
         self.last_command_receipt = Some(receipt);
         Ok(self.shared_snapshot())
     }
     pub(super) fn accept_xiangqi_observation(&mut self, response: ExecutionObservation) -> bool {
-        let state = self.shared.xiangqi.as_ref().unwrap();
+        let state = self.session.xiangqi().unwrap();
         let Some(pending) = &state.pending else {
             return false;
         };
@@ -436,7 +497,7 @@ impl DesktopController {
         if let Some(response) = self.bridge.poll() {
             self.accept_shared(response);
         }
-        let state = self.shared.xiangqi.as_ref().unwrap();
+        let state = self.session.xiangqi().unwrap();
         if state.pending.is_none()
             && !state.paused
             && state.viewed.is_none()
@@ -445,13 +506,10 @@ impl DesktopController {
             && state.game.position().side_to_move() != state.human
             && let Err(e) = self.start_xiangqi(PLAY_LIMITS, false)
         {
-            let state = self.shared.xiangqi.as_mut().unwrap();
-            state.paused = true;
-            state.phase = EnginePhase::Paused;
-            state.diagnostic = Some(e);
+            self.pause_native_failure(e);
         }
         let auto_submit = self.shared.auto_submit();
-        let state = self.shared.xiangqi.as_mut().unwrap();
+        let state = self.session.xiangqi_mut().unwrap();
         if auto_submit
             && !state.submitted
             && let Some(request) = state.pending.clone()
@@ -473,7 +531,7 @@ impl DesktopController {
         self.xiangqi_snapshot()
     }
     pub(super) fn xiangqi_snapshot(&self) -> SharedSnapshot {
-        let state = self.shared.xiangqi.as_ref().unwrap();
+        let state = self.session.xiangqi().unwrap();
         let position = state.selected_position();
         let record = state.record();
         let history = state.viewed.clone().unwrap_or_else(|| {
@@ -710,6 +768,7 @@ impl DesktopController {
                 .collect(),
             score_meaning: "Native Red/Black root-side hundredths of soldier. Terminal distances count command edges; heuristic evaluation and existential win witnesses never establish a forced win. Ordinary analysis uses sound_fast_only; Unknown is unscored evidence, not proof of win capability.",
             chess: None,
+            chess_match: None,
         }
     }
 }

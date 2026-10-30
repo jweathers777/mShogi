@@ -1,4 +1,5 @@
-import type { ExecutionObservation } from "../native";
+import type { ResourceFailure } from "../resources";
+import type { AnalysisOperation, DesktopCommand, ExecutionObservation } from "../native";
 import type { NativeBoardSnapshot } from "../NativeBoard";
 import type { Snapshot } from "../native";
 export type GameKind = "chess" | "shogi" | "xiangqi";
@@ -17,8 +18,8 @@ interface GameSnapshotBase extends Omit<NativeBoardSnapshot, "game" | "orientati
   human: Side; turn: Side; sides: Side[];
   orientations: { side: Side; files: string[]; ranks: string[] }[];
   document: { revision: number; dirty: boolean; path: string | null };
-  io: { id: number; phase: string; message: string | null };
-  capacity: { id: number; status: "available" | "checking" | "paused"; message: string | null };
+  io: { id: number; phase: string; message: string | null; resource?: ResourceFailure | null };
+  capacity: { id: number; status: "available" | "checking" | "paused"; message: string | null; resource?: ResourceFailure | null };
   capabilities: { board_action: boolean; declaration: boolean; claims: boolean; resign: boolean; undo: boolean; take_back: boolean; move_analysis: boolean; save: boolean };
   status: { concluded: boolean; label: string; score_half_points: number[] | null };
   events: { index: number; board_ply: number; label: string }[];
@@ -32,6 +33,7 @@ interface GameSnapshotBase extends Omit<NativeBoardSnapshot, "game" | "orientati
   observations: Observation[];
   search_observations: SearchView[];
   chess: Snapshot | null;
+  chess_match?: unknown | null;
 }
 export type ChessShogiSnapshot = GameSnapshotBase & ({ game: "chess" } | { game: "shogi" }) & {
   document: GameSnapshotBase["document"] & { settings: { game_kind: "chess" | "shogi"; settings: { orientation: string; analysis_defaults: { depth: number; nodes: number } } } };
@@ -59,10 +61,11 @@ export interface Observation {
   observation: ExecutionObservation;
 }
 export type Operation =
+  | { kind: "chess"; command: DesktopCommand }
   | { kind: "xiangqi"; command: { kind: "play"; action: string } | { kind: "resign" | "offer_draw" | "accept_draw" | "decline_draw" | "claim_natural_count" } }
   | { kind: "xiangqi_preferences"; settings: { orientation: "red" | "black"; analysis_defaults: { depth: number; nodes: number } } }
   | { kind: "play"; action: string }
   | { kind: "resume" | "retry" | "cancel" | "take_back" | "undo" | "return_live" | "resign" | "declare" }
   | { kind: "inspect"; event_index: number }
-  | { kind: "analyze"; operation: { kind: "moves"; depth: number; nodes: number } }
+  | { kind: "analyze"; operation: AnalysisOperation }
   | { kind: "shogi_preferences"; settings: { orientation: string; analysis_defaults: { depth: number; nodes: number } } };

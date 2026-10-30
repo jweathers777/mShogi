@@ -22,7 +22,7 @@ export function useGameSession() {
       catch (e) { if (!stopped) setError(String(e)); }
       if (!stopped) timer = setTimeout(() => { void poll(); }, 180);
     }
-    void listen("desktop-close-requested", () => {
+    void listen("game-close-requested", () => {
       // Open/New Game may have changed games before the next poll. The product
       // shell owns close for both games, even while a game view is remounting.
       if (!stopped) {
@@ -54,11 +54,11 @@ export function useGameSession() {
   const file = (source: GameSnapshot, action: "save" | "save_as" | "open") => perform("game_file", { action, expected: source.open_token });
   const newGame = (expected: OpenToken, game: GameKind, human: NativeSide) => perform("game_new", { expected, game, human });
   const cancelClose = async () => {
-    try { await invoke("desktop_cancel_close"); setCloseRequested(false); accept(await invoke<GameSnapshot>("game_snapshot")); return true; }
+    try { await invoke("game_cancel_close"); setCloseRequested(false); accept(await invoke<GameSnapshot>("game_snapshot")); return true; }
     catch (e) { setError(String(e)); return false; }
   };
   const finishClose = async (source: GameSnapshot) => {
-    try { await invoke("desktop_finish_close", { expectedDocumentRevision: source.document.revision }); return true; }
+    try { await invoke("game_finish_close", { expected: source.open_token }); return true; }
     catch (e) { setError(String(e)); return false; }
   };
   return { snapshot, busy, error, command, file, newGame, closeRequested, cancelClose, finishClose };

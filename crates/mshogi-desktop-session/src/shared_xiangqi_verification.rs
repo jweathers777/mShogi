@@ -121,9 +121,8 @@ impl DesktopController {
         )?;
         self.finish_verification_admission(receipt)?;
         if fixture == "xiangqi-control-capacity" {
-            self.shared
-                .xiangqi
-                .as_mut()
+            self.session
+                .xiangqi_mut()
                 .unwrap()
                 .verification_control_capacity()?;
         }
@@ -132,7 +131,7 @@ impl DesktopController {
             // Poll only admission here so the supervised child is not also submitted.
             for _ in 0..MAX_ARCHIVE_OBSERVATIONS - 1 {
                 let receipt = self.queue_xiangqi_candidate(
-                    archive::XiangqiDraft::capture(self.shared.xiangqi.as_ref().unwrap()),
+                    archive::XiangqiDraft::capture(self.session.xiangqi().unwrap()),
                     Some(SessionOperation::Analyze {
                         operation: AnalysisOperation::Moves { depth: 1, nodes: 1 },
                     }),
@@ -142,9 +141,8 @@ impl DesktopController {
                 )?;
                 self.finish_verification_admission(receipt)?;
                 let request = self
-                    .shared
-                    .xiangqi
-                    .as_ref()
+                    .session
+                    .xiangqi()
                     .unwrap()
                     .pending
                     .as_ref()
@@ -181,7 +179,7 @@ mod tests {
         )
         .unwrap();
         controller.shared.manual_engine = true;
-        let state = controller.shared.xiangqi.as_ref().unwrap();
+        let state = controller.session.xiangqi().unwrap();
         assert_eq!(state.observations.len(), MAX_ARCHIVE_OBSERVATIONS - 1);
         assert!(state.observations.iter().all(|o| matches!(
             &o.observation.result,
@@ -238,7 +236,7 @@ mod tests {
             };
             assert_eq!(
                 record.to_game().unwrap().events(),
-                controller.shared.xiangqi.as_ref().unwrap().game.events()
+                controller.session.xiangqi().unwrap().game.events()
             );
         }
     }

@@ -1,0 +1,3 @@
+   Compiling mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.01s
+     Running `target/debug/examples/write_frontend_fixtures desktop/src/__fixtures__`

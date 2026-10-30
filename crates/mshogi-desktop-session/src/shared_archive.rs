@@ -102,10 +102,18 @@ struct ShogiArchive {
     // A retired high-water mark is evidence/headroom, never pending execution.
     retired_execution_floor: u64,
 }
+pub(crate) enum ShogiSeed {
+    Current(Box<ShogiSession>),
+    Record {
+        record: Box<s::GameRecord>,
+        human: s::Side,
+        orient_human: bool,
+    },
+}
 pub(crate) enum NativeWork {
     Xiangqi(xiangqi::archive::XiangqiWork),
     Admit {
-        candidate: Box<ShogiSession>,
+        candidate: ShogiSeed,
         command: Option<SessionOperation>,
         response: Option<Box<ExecutionObservation>>,
         replacement: bool,
@@ -121,7 +129,6 @@ pub(crate) enum NativeWork {
     Open {
         path: PathBuf,
         token: SharedOpenToken,
-        allow_xiangqi: bool,
     },
 }
 pub(crate) enum OpenedNative {
@@ -162,11 +169,7 @@ pub(super) fn bounded(error: impl ToString) -> String {
     message.truncate(end);
     message
 }
-fn capacity(message: &str) -> String {
-    format!(
-        "Application capacity: {message} No canonical history or observation was discarded. Save the complete current document, then start a new document to continue."
-    )
-}
+
 fn valid_limits(limits: WorkLimits) -> Result<(), String> {
     if !(1..=4).contains(&limits.depth) || limits.nodes > 20_000 {
         Err("Unsupported shogi operation/limits: ordinary depth1–4 and at most20,000 nodes; untimed play only.".into())
@@ -203,24 +206,61 @@ fn needs_stop(state: &ShogiSession) -> bool {
 const MAX_REPLAY_ACTIONS: usize = 16_000;
 // Native event admission/reconstruction costs more than a cheap desktop control.
 const NATIVE_EVENT_WORK: usize = 4;
-fn counts(state: &ShogiSession, reserve: bool) -> Result<(), String> {
+fn counts(state: &ShogiSession, reserve: bool) -> Result<(), OperationFailure> {
     if state.controls.len() + usize::from(reserve) > MAX_ARCHIVE_CONTROLS
         || state.observations.len() > MAX_ARCHIVE_OBSERVATIONS
     {
-        return Err(capacity(
-            "The supported shogi archive retains256 observations and8192 controls, including a stop/close reservation.",
+        let mut facts = Vec::new();
+        if state.controls.len() + usize::from(reserve) > MAX_ARCHIVE_CONTROLS {
+            facts.push(resource_fact(
+                ResourceCategory::Controls,
+                state.controls.len(),
+                MAX_ARCHIVE_CONTROLS,
+                usize::from(reserve),
+                ResourceScope::Shogi,
+                ResourceUnit::Controls,
+            ));
+        }
+        if state.observations.len() > MAX_ARCHIVE_OBSERVATIONS {
+            facts.push(resource_fact(
+                ResourceCategory::OrdinaryObservations,
+                state.observations.len(),
+                MAX_ARCHIVE_OBSERVATIONS,
+                0,
+                ResourceScope::Shogi,
+                ResourceUnit::Observations,
+            ));
+        }
+        return Err(resource_refusal(
+            facts,
+            "Application capacity: native Shogi document counts exceed supported limits including stop/close reservation. Current accepted document remains saveable.",
         ));
     }
     if state.game.events().len() > s::MAX_RECORD_EVENTS
         || state.initial_record.event_count() > s::MAX_RECORD_EVENTS
     {
-        return Err(capacity(
-            "Shogi history exceeds its native321-event parser bound.",
+        return Err(resource_refusal(
+            vec![resource_fact(
+                ResourceCategory::NativeEvents,
+                state
+                    .game
+                    .events()
+                    .len()
+                    .max(state.initial_record.event_count()),
+                s::MAX_RECORD_EVENTS,
+                0,
+                ResourceScope::Shogi,
+                ResourceUnit::Events,
+            )],
+            "Application capacity: native Shogi event limit reached.",
         ));
     }
     Ok(())
 }
-fn check_capacity(state: &ShogiSession, stopped: &mut impl FnMut() -> bool) -> Result<(), String> {
+fn check_capacity(
+    state: &ShogiSession,
+    stopped: &mut impl FnMut() -> bool,
+) -> Result<(), OperationFailure> {
     let reserve = needs_stop(state) || state.durable_needs_stop;
     counts(state, reserve)?;
     persistence::check(stopped)?;
@@ -231,15 +271,23 @@ fn check_capacity(state: &ShogiSession, stopped: &mut impl FnMut() -> bool) -> R
     }
     let bytes = encode(&state, MAX_SAFE_ID - 17)?;
     if bytes.len() + if reserve { 1024 } else { 0 } > MAX_ARCHIVE_BYTES {
-        return Err(capacity(
-            "The complete shogi archive would exceed16MiB, including identity and stop/close headroom.",
+        return Err(resource_refusal(
+            vec![resource_fact(
+                ResourceCategory::EncodedDocumentBytes,
+                bytes.len(),
+                MAX_ARCHIVE_BYTES,
+                if reserve { 1024 } else { 0 },
+                ResourceScope::Shogi,
+                ResourceUnit::Bytes,
+            )],
+            "Application capacity: complete Shogi document exceeds16MiB including stop/close headroom.",
         ));
     }
     persistence::check(stopped)?;
     replay_work(&state)?;
     Ok(())
 }
-fn replay_work(state: &ShogiSession) -> Result<(), String> {
+fn replay_work(state: &ShogiSession) -> Result<(), OperationFailure> {
     let mut work = (state.initial_record.event_count() + state.game.events().len())
         * NATIVE_EVENT_WORK
         + usize::from(needs_stop(state) || state.durable_needs_stop);
@@ -257,8 +305,16 @@ fn replay_work(state: &ShogiSession) -> Result<(), String> {
             work.saturating_add(o.observation.context.game.event_count() * NATIVE_EVENT_WORK + 8);
     }
     if work > MAX_REPLAY_ACTIONS {
-        Err(capacity(
-            "The document exceeds the bounded16,000 native replay-action work budget.",
+        Err(resource_refusal(
+            vec![resource_fact(
+                ResourceCategory::ReplayWork,
+                work.saturating_sub(usize::from(needs_stop(state) || state.durable_needs_stop)),
+                MAX_REPLAY_ACTIONS,
+                usize::from(needs_stop(state) || state.durable_needs_stop),
+                ResourceScope::Shogi,
+                ResourceUnit::ReplayUnits,
+            )],
+            "Application capacity: complete Shogi document exceeds16,000 native replay work units.",
         ))
     } else {
         Ok(())
@@ -275,7 +331,7 @@ impl ShogiSession {
             self.apply_command(operation.clone())?;
             self.control(Some(operation), None, false);
         }
-        check_capacity(self, &mut || false)
+        check_capacity(self, &mut || false).map_err(String::from)
     }
     pub(crate) fn restored(record: &s::GameRecord, human: s::Side) -> Result<Self, String> {
         let settings = ShogiSettings::default();
@@ -317,7 +373,10 @@ impl ShogiSession {
             close_pause,
         });
     }
-    fn apply_command(&mut self, operation: SessionOperation) -> Result<Option<WorkLimits>, String> {
+    fn apply_command(
+        &mut self,
+        operation: SessionOperation,
+    ) -> Result<Option<WorkLimits>, OperationFailure> {
         if matches!(
             operation,
             SessionOperation::Analyze { .. }
@@ -326,8 +385,19 @@ impl ShogiSession {
                 | SessionOperation::Play { .. }
         ) && self.observations.len() >= MAX_ARCHIVE_OBSERVATIONS
         {
-            return Err(capacity(
-                "All256 observation slots are retained; no new work was started.",
+            return Err(resource_refusal(
+                vec![
+                    resource_fact(
+                        ResourceCategory::OrdinaryObservations,
+                        self.observations.len(),
+                        MAX_ARCHIVE_OBSERVATIONS,
+                        0,
+                        ResourceScope::Shogi,
+                        ResourceUnit::Observations,
+                    )
+                    .with_measurement(ResourceMeasurement::Accepted),
+                ],
+                "Application capacity: all256 observation slots are retained; no new work started.",
             ));
         }
         let preferences = matches!(operation, SessionOperation::ShogiPreferences { .. });
@@ -374,7 +444,7 @@ impl ShogiSession {
         }
         Ok(analysis)
     }
-    fn apply_response(&mut self, response: ExecutionObservation) -> Result<(), String> {
+    fn apply_response(&mut self, response: ExecutionObservation) -> Result<(), OperationFailure> {
         if serde_json::to_vec(&execution_request(response.context.clone()))
             .map_err(bounded)?
             .len()
@@ -387,15 +457,28 @@ impl ShogiSession {
             .len()
                 > mshogi_engine::MAX_RESPONSE_BYTES
         {
-            return Err(capacity(
-                "Encoded observation context/result exceeds native transport limits.",
-            ));
+            return Err(OperationFailure::resource(ResourceFailure::unknown(
+                "Application capacity: encoded observation context/result exceeds native transport limits.",
+            )));
         }
         if !response.matches(&response.context) {
             return Err("Corrupt observation: invalid native context/result metadata.".into());
         }
         if self.observations.len() >= MAX_ARCHIVE_OBSERVATIONS {
-            return Err(capacity("No observation slot remains."));
+            return Err(resource_refusal(
+                vec![
+                    resource_fact(
+                        ResourceCategory::OrdinaryObservations,
+                        self.observations.len(),
+                        MAX_ARCHIVE_OBSERVATIONS,
+                        0,
+                        ResourceScope::Shogi,
+                        ResourceUnit::Observations,
+                    )
+                    .with_measurement(ResourceMeasurement::Accepted),
+                ],
+                "Application capacity: all256 observation slots are retained; no new observation accepted.",
+            ));
         }
         let analysis = matches!(
             response.context.purpose,
@@ -563,7 +646,7 @@ struct RawShogiArchive {
     observations: Vec<Box<RawValue>>,
     retired_execution_floor: u64,
 }
-fn raw_event_count(text: &str) -> Result<usize, String> {
+fn raw_event_count(text: &str) -> Result<usize, OperationFailure> {
     #[derive(Deserialize)]
     struct Envelope {
         game_kind: String,
@@ -587,21 +670,36 @@ fn raw_event_count(text: &str) -> Result<usize, String> {
     }
     let ledger: Ledger = serde_json::from_str(record.payload.get()).map_err(bounded)?;
     if ledger.events.len() > s::MAX_RECORD_EVENTS {
-        return Err(capacity("Native shogi event bound exceeded."));
+        return Err(resource_refusal(
+            vec![resource_fact(
+                ResourceCategory::NativeEvents,
+                ledger.events.len(),
+                s::MAX_RECORD_EVENTS,
+                0,
+                ResourceScope::Shogi,
+                ResourceUnit::Events,
+            )],
+            "Application capacity: native Shogi event bound exceeded.",
+        ));
     }
     Ok(ledger.events.len())
 }
 fn parse_shogi_archive(
     payload: &str,
     stopped: &mut impl FnMut() -> bool,
-) -> Result<ShogiArchive, String> {
+) -> Result<ShogiArchive, OperationFailure> {
     let raw: RawShogiArchive = serde_json::from_str(payload)
         .map_err(|e| format!("Corrupt shogi archive: {}", bounded(e)))?;
     if raw.controls.len() > MAX_ARCHIVE_CONTROLS
         || raw.observations.len() > MAX_ARCHIVE_OBSERVATIONS
     {
-        return Err(capacity(
-            "Saved control/observation counts exceed supported limits.",
+        return Err(document_count_failure(
+            raw.controls.len(),
+            raw.observations.len(),
+            0,
+            false,
+            ResourceScope::Shogi,
+            0,
         ));
     }
     // This is only a resource probe, never an alternate parser. Every original
@@ -661,7 +759,17 @@ fn parse_shogi_archive(
         controls.push(control);
     }
     if work > MAX_REPLAY_ACTIONS {
-        return Err(capacity("Saved journal exceeds16,000 replay actions."));
+        return Err(resource_refusal(
+            vec![resource_fact(
+                ResourceCategory::ReplayWork,
+                work,
+                MAX_REPLAY_ACTIONS,
+                0,
+                ResourceScope::Shogi,
+                ResourceUnit::ReplayUnits,
+            )],
+            "Application capacity: Saved journal exceeds16,000 replay actions.",
+        ));
     }
     persistence::check(stopped)?;
     let initial = serde_json::from_str(raw.initial.get()).map_err(bounded)?;
@@ -687,13 +795,21 @@ fn parse_shogi_archive(
 fn decode_shogi(
     payload: &str,
     stopped: &mut impl FnMut() -> bool,
-) -> Result<(ShogiSession, u64), String> {
+) -> Result<(ShogiSession, u64), OperationFailure> {
     let saved = parse_shogi_archive(payload, stopped)?;
     let NativeSide::Shogi(human) = saved.human else {
         return Err("Wrong game: shogi archive human side is chess.".into());
     };
     if saved.retired_execution_floor >= MAX_SAFE_ID - 64 {
-        return Err(capacity(
+        return Err(resource_refusal(
+            vec![resource_fact(
+                ResourceCategory::IdentityHeadroom,
+                saved.retired_execution_floor as usize,
+                MAX_SAFE_ID as usize,
+                64,
+                ResourceScope::Shogi,
+                ResourceUnit::Identities,
+            )],
             "Saved identity floor leaves no safe runtime headroom.",
         ));
     }
@@ -705,8 +821,13 @@ fn decode_shogi(
     if saved.controls.len() > MAX_ARCHIVE_CONTROLS
         || saved.observations.len() > MAX_ARCHIVE_OBSERVATIONS
     {
-        return Err(capacity(
-            "Saved shogi control/observation counts exceed supported limits.",
+        return Err(document_count_failure(
+            saved.controls.len(),
+            saved.observations.len(),
+            0,
+            false,
+            ResourceScope::Shogi,
+            0,
         ));
     }
     let mut work = state.initial_record.event_count() * NATIVE_EVENT_WORK;
@@ -728,7 +849,17 @@ fn decode_shogi(
                 _ => 1,
             });
             if work > MAX_REPLAY_ACTIONS {
-                return Err(capacity("Saved journal exceeds16,000 replay actions."));
+                return Err(resource_refusal(
+                    vec![resource_fact(
+                        ResourceCategory::ReplayWork,
+                        work,
+                        MAX_REPLAY_ACTIONS,
+                        0,
+                        ResourceScope::Shogi,
+                        ResourceUnit::ReplayUnits,
+                    )],
+                    "Application capacity: Saved journal exceeds16,000 replay actions.",
+                ));
             }
             state.apply_command(operation.clone())?;
         } else if let Some(observation) = control.observation {
@@ -743,7 +874,17 @@ fn decode_shogi(
                 archived.observation.context.game.event_count() * NATIVE_EVENT_WORK + 8,
             );
             if work > MAX_REPLAY_ACTIONS {
-                return Err(capacity("Saved observations exceed16,000 replay actions."));
+                return Err(resource_refusal(
+                    vec![resource_fact(
+                        ResourceCategory::ReplayWork,
+                        work,
+                        MAX_REPLAY_ACTIONS,
+                        0,
+                        ResourceScope::Shogi,
+                        ResourceUnit::ReplayUnits,
+                    )],
+                    "Application capacity: Saved observations exceed16,000 replay actions.",
+                ));
             }
             if [
                 archived.observation.context.request_id,
@@ -787,15 +928,17 @@ fn decode_shogi(
 pub(crate) fn decode_chess_document(
     bytes: &[u8],
     stopped: &mut impl FnMut() -> bool,
-) -> Result<persistence::Opened, String> {
+) -> Result<persistence::Opened, OperationFailure> {
     let value = crate::document::DocumentEnvelope::parse(bytes)?;
     if value.game_kind != GameKind::Chess {
         return Err("Wrong game: the Chess consumer cannot install another native game.".into());
     }
     persistence::decode_chess_payload(value.payload.get().as_bytes(), stopped)
-        .map_err(crate::document::diagnostic)
 }
-fn read(path: &std::path::Path, stopped: &mut impl FnMut() -> bool) -> Result<Vec<u8>, String> {
+fn read(
+    path: &std::path::Path,
+    stopped: &mut impl FnMut() -> bool,
+) -> Result<Vec<u8>, OperationFailure> {
     if !fs::metadata(path)
         .map_err(|e| format!("Open metadata failed: {e}"))?
         .is_file()
@@ -815,7 +958,17 @@ fn read(path: &std::path::Path, stopped: &mut impl FnMut() -> bool) -> Result<Ve
             break;
         }
         if bytes.len() + n > MAX_ARCHIVE_BYTES {
-            return Err(capacity("The encoded desktop archive exceeds16MiB."));
+            return Err(resource_refusal(
+                vec![resource_fact(
+                    ResourceCategory::EncodedDocumentBytes,
+                    bytes.len() + n,
+                    MAX_ARCHIVE_BYTES,
+                    0,
+                    ResourceScope::Application,
+                    ResourceUnit::Bytes,
+                )],
+                "Application capacity: encoded desktop archive exceeds16MiB.",
+            ));
         }
         bytes.extend_from_slice(&buffer[..n]);
     }
@@ -824,16 +977,31 @@ fn read(path: &std::path::Path, stopped: &mut impl FnMut() -> bool) -> Result<Ve
 pub(crate) fn execute(
     work: NativeWork,
     stopped: &mut impl FnMut() -> bool,
-) -> Result<NativeCompleted, String> {
-    let result = (|| match work {
+) -> Result<NativeCompleted, OperationFailure> {
+    match work {
         NativeWork::Xiangqi(work) => xiangqi::archive::execute(work, stopped),
         NativeWork::Admit {
-            mut candidate,
+            candidate,
             command,
             response,
             replacement,
             floor,
         } => {
+            let mut candidate = match candidate {
+                ShogiSeed::Current(state) => state,
+                ShogiSeed::Record {
+                    record,
+                    human,
+                    orient_human,
+                } => {
+                    let mut state = ShogiSession::restored(&record, human)?;
+                    if orient_human {
+                        state.settings.orientation = human;
+                        state.initial_settings = state.settings.clone();
+                    }
+                    Box::new(state)
+                }
+            };
             let mut analysis = None;
             if let Some(command) = command {
                 analysis = candidate.apply_command(command.clone())?;
@@ -846,7 +1014,17 @@ pub(crate) fn execute(
             }
             // Check raw encoded context bounds as well as archive composition.
             if floor >= MAX_SAFE_ID - 64 {
-                return Err(capacity("Runtime identity headroom exhausted."));
+                return Err(resource_refusal(
+                    vec![resource_fact(
+                        ResourceCategory::IdentityHeadroom,
+                        floor as usize,
+                        (MAX_SAFE_ID - 65) as usize,
+                        0,
+                        ResourceScope::Application,
+                        ResourceUnit::Identities,
+                    )],
+                    "Application capacity: runtime identity headroom exhausted.",
+                ));
             }
             check_capacity(&candidate, stopped)?;
             Ok(NativeCompleted::Admitted {
@@ -865,7 +1043,17 @@ pub(crate) fn execute(
             check_capacity(&candidate, stopped)?;
             let bytes = encode(&candidate, floor)?;
             if bytes.len() > MAX_ARCHIVE_BYTES {
-                return Err(capacity("The complete archive exceeds16MiB."));
+                return Err(resource_refusal(
+                    vec![resource_fact(
+                        ResourceCategory::EncodedDocumentBytes,
+                        bytes.len(),
+                        MAX_ARCHIVE_BYTES,
+                        0,
+                        ResourceScope::Shogi,
+                        ResourceUnit::Bytes,
+                    )],
+                    "Application capacity: complete archive exceeds16MiB.",
+                ));
             }
             persistence::atomic_write(&path, &bytes, stopped)?;
             Ok(NativeCompleted::Saved {
@@ -874,11 +1062,7 @@ pub(crate) fn execute(
                 identity,
             })
         }
-        NativeWork::Open {
-            path,
-            token,
-            allow_xiangqi,
-        } => {
+        NativeWork::Open { path, token } => {
             let bytes = read(&path, stopped)?;
             let value = crate::document::DocumentEnvelope::parse(&bytes)?;
             let game = match value.game_kind {
@@ -893,12 +1077,6 @@ pub(crate) fn execute(
                     }
                 }
                 GameKind::Xiangqi => {
-                    if !allow_xiangqi {
-                        return Err(
-                            "Xiangqi is unsupported by this consumer; current document preserved."
-                                .into(),
-                        );
-                    }
                     let (state, floor) = xiangqi::archive::decode(value.payload.get(), stopped)?;
                     OpenedNative::Xiangqi {
                         state: Box::new(state),
@@ -909,31 +1087,30 @@ pub(crate) fn execute(
             persistence::check(stopped)?;
             Ok(NativeCompleted::Opened { game, path, token })
         }
-    })();
-    result.map_err(bounded)
+    }
 }
 impl DesktopController {
     /// Stable shared replacement token; callers confirm unsaved changes against it.
     pub fn shared_open_token(&self) -> SharedOpenToken {
         SharedOpenToken {
-            document: self.shared.epoch,
+            document: self.session.document_epoch,
             version: self.session.version,
             document_revision: self.session.document_revision,
         }
     }
     pub(crate) fn shared_document(&self) -> SharedDocumentState {
-        let settings = if let Some(state) = &self.shared.xiangqi {
+        let settings = if let Some(state) = self.session.xiangqi() {
             NativeDesktopSettings::Xiangqi {
                 orientation: state.settings.orientation,
                 analysis_defaults: state.settings.analysis_defaults,
             }
-        } else if let Some(state) = &self.shared.shogi {
+        } else if let Some(state) = self.session.shogi() {
             NativeDesktopSettings::Shogi {
                 settings: state.settings.clone(),
             }
         } else {
             NativeDesktopSettings::Chess {
-                settings: self.session.settings.clone(),
+                settings: self.session.chess().settings.clone(),
             }
         };
         SharedDocumentState {
@@ -949,7 +1126,7 @@ impl DesktopController {
     }
     /// Queue a complete current-format document using native payload encoding.
     pub fn queue_shared_save(&mut self, path: PathBuf) -> Result<u64, String> {
-        if let Some(state) = &self.shared.xiangqi {
+        if let Some(state) = self.session.xiangqi() {
             let work = xiangqi::archive::XiangqiWork::Save {
                 draft: Box::new(xiangqi::archive::XiangqiDraft::capture(state)),
                 path,
@@ -962,7 +1139,7 @@ impl DesktopController {
                 .submit(id, Work::Native(Box::new(NativeWork::Xiangqi(work))));
             return Ok(id);
         }
-        let Some(state) = &self.shared.shogi else {
+        let Some(state) = self.session.shogi() else {
             return self.queue_save(path);
         };
         let candidate = Box::new(state.clone());
@@ -988,7 +1165,7 @@ impl DesktopController {
         path: PathBuf,
         token: SharedOpenToken,
     ) -> Result<u64, String> {
-        self.queue_open_admission(path, token, true)
+        self.queue_open_admission(path, token)
     }
     /// Product Open uses the same strict native dispatch and stopped restoration.
     pub fn queue_product_open(
@@ -996,26 +1173,22 @@ impl DesktopController {
         path: PathBuf,
         token: SharedOpenToken,
     ) -> Result<u64, String> {
-        self.queue_open_admission(path, token, true)
+        self.queue_open_admission(path, token)
     }
     fn queue_open_admission(
         &mut self,
         path: PathBuf,
         token: SharedOpenToken,
-        allow_xiangqi: bool,
     ) -> Result<u64, String> {
+        if self.lifecycle.close_requested() {
+            return Err("Close is pending. Cancel close before opening another document.".into());
+        }
         if token != self.shared_open_token() {
             return Err("Stale Open: review the current document again.".into());
         }
         let id = self.next_native_io(IoPhase::Opening)?;
-        self.files.submit(
-            id,
-            Work::Native(Box::new(NativeWork::Open {
-                path,
-                token,
-                allow_xiangqi,
-            })),
-        );
+        self.files
+            .submit(id, Work::Native(Box::new(NativeWork::Open { path, token })));
         Ok(id)
     }
     pub(crate) fn retire_native_files(&mut self) -> Result<(), String> {
@@ -1023,19 +1196,31 @@ impl DesktopController {
         self.files.cancel();
         Ok(())
     }
-    fn next_native_io(&mut self, phase: IoPhase) -> Result<u64, String> {
+    pub(crate) fn next_native_io(&mut self, phase: IoPhase) -> Result<u64, String> {
         if self.io_state.id >= MAX_SAFE_ID - 1 || self.session.revision >= MAX_SAFE_ID - 2 {
-            return Err(capacity("File-operation identity headroom exhausted."));
+            let (count, limit) = if self.io_state.id >= MAX_SAFE_ID - 1 {
+                (self.io_state.id, MAX_SAFE_ID - 2)
+            } else {
+                (self.session.revision, MAX_SAFE_ID - 3)
+            };
+            return Err(self.identity_refusal(
+                count,
+                limit,
+                true,
+                ResourceMeasurement::Accepted,
+                "Application capacity: file-operation identity headroom exhausted.",
+            ));
         }
         self.io_state = IoState {
             id: self.io_state.id + 1,
             phase,
             message: None,
+            resource: None,
         };
         self.session.revision += 1;
         Ok(self.io_state.id)
     }
-    pub(super) fn runtime_floor(&self) -> u64 {
+    pub(crate) fn runtime_floor(&self) -> u64 {
         [
             self.session.version,
             self.session.archive_revision,
@@ -1071,48 +1256,7 @@ impl DesktopController {
                 if token != self.shared_open_token() {
                     return Err("Stale Open: current native session preserved.".into());
                 }
-                match game {
-                    OpenedNative::Xiangqi { state, floor } => {
-                        self.install_xiangqi(state, floor, path)
-                    }
-                    OpenedNative::Chess(opened) => self.install_chess_archive(*opened, path),
-                    OpenedNative::Shogi { mut state, floor } => {
-                        let next = self.runtime_floor().max(floor) + 1;
-                        if next >= MAX_SAFE_ID - 64
-                            || self.shared.epoch >= MAX_SAFE_ID - 64
-                            || self.session.document_identity >= MAX_SAFE_ID - 65
-                            || self.session.document_revision >= MAX_SAFE_ID - 65
-                        {
-                            return Err(capacity(
-                                "Reopened runtime identities leave no safe headroom.",
-                            ));
-                        }
-                        self.retire_admission();
-                        self.bridge.cancel();
-                        state.retire();
-                        state.execution_floor = floor;
-                        state.paused = true;
-                        for o in &mut state.observations {
-                            o.historical = true;
-                        }
-                        state.diagnostic=Some("Document reopened with work stopped. Saved observations are historical; Resume explicitly.".into());
-                        self.shared.xiangqi = None;
-                        self.shared.shogi = Some(*state);
-                        self.shared.epoch += 1;
-                        self.session.pending = None;
-                        self.session.retire_analysis();
-                        self.session.version = next;
-                        self.session.revision = next;
-                        self.session.next_request = next;
-                        self.session.selection_id = next;
-                        self.session.document_identity += 1;
-                        self.session.document_revision += 1;
-                        self.session.saved_revision = self.session.document_revision;
-                        self.session.document_path = Some(path);
-                        self.session.capacity = CapacityState::default();
-                        Ok("Opened native shogi document with fresh runtime identities and work stopped.".into())
-                    }
-                }
+                self.install_document(game, path)
             }
         }
     }
@@ -1123,12 +1267,32 @@ impl DesktopController {
         response: Option<ExecutionObservation>,
         replacement: bool,
     ) -> Result<AdmissionReceipt, String> {
-        self.session.ensure_capacity()?;
+        self.queue_shogi_seed(
+            ShogiSeed::Current(Box::new(candidate)),
+            command,
+            response,
+            replacement,
+        )
+    }
+    pub(crate) fn queue_shogi_seed(
+        &mut self,
+        candidate: ShogiSeed,
+        command: Option<SessionOperation>,
+        response: Option<ExecutionObservation>,
+        replacement: bool,
+    ) -> Result<AdmissionReceipt, String> {
+        self.ensure_runtime_capacity()?;
         if self.session.capacity.id >= MAX_SAFE_ID - 64 {
-            return Err(capacity("Admission identity headroom exhausted."));
+            return Err(self.identity_refusal(
+                self.session.capacity.id,
+                MAX_SAFE_ID - 65,
+                false,
+                ResourceMeasurement::Accepted,
+                "Application capacity: admission identity headroom exhausted.",
+            ));
         }
         let preferences = matches!(command, Some(SessionOperation::ShogiPreferences { .. }));
-        let rollback = self.shared.shogi.as_ref().map(|s| {
+        let rollback = self.session.shogi().map(|s| {
             (
                 s.paused,
                 s.phase,
@@ -1143,34 +1307,32 @@ impl DesktopController {
             self.retire_native_files()?;
         }
         if !preferences {
-            if let Some(state) = &mut self.shared.xiangqi {
+            if let Some(state) = self.session.xiangqi_mut() {
                 state.retire();
                 state.paused = true;
             }
             self.bridge.cancel();
-            if let Some(state) = &mut self.shared.shogi {
+            if let Some(state) = self.session.shogi_mut() {
                 state.retire();
                 state.paused = true;
             } else {
-                self.session.pending = None;
-                self.session.retire_analysis();
-                self.session.play_paused = true;
-                self.session.engine.status = EnginePhase::Paused;
+                self.session.retire_execution();
             }
         }
         self.session.capacity.id += 1;
         self.session.capacity.status = CapacityPhase::Checking;
         self.session.capacity.message = None;
+        self.session.capacity.resource = None;
         self.session.revision += 1;
         let receipt = AdmissionReceipt::pending();
         self.admission_receipt = Some(receipt.clone());
         self.admission_token = Some(self.open_token());
-        self.shared.admission = Some((self.shared.epoch, preferences));
+        self.shared.admission = Some((self.session.document_epoch, preferences));
         let floor = self.runtime_floor();
         self.admissions.submit(
             self.session.capacity.id,
             Work::Native(Box::new(NativeWork::Admit {
-                candidate: Box::new(candidate),
+                candidate,
                 command,
                 response: response.map(Box::new),
                 replacement,
@@ -1196,7 +1358,7 @@ impl DesktopController {
         let rollback = self.shared.rollback.take();
         let token = self.admission_token.take();
         let receipt = self.admission_receipt.take();
-        if token != Some(self.open_token()) || epoch != self.shared.epoch {
+        if token != Some(self.open_token()) || epoch != self.session.document_epoch {
             if let Some(r) = receipt {
                 r.finish(Err("Native admission superseded by document change.".into()));
             }
@@ -1212,8 +1374,7 @@ impl DesktopController {
                     analysis,
                     replacement,
                 } => {
-                    self.shared.xiangqi = None;
-                    self.shared.shogi = Some(*state);
+                    self.session.install_shogi(state);
                     if preferences {
                         self.session.document_revision += 1;
                         self.session.revision += 1;
@@ -1222,12 +1383,10 @@ impl DesktopController {
                         self.shared_changed();
                     }
                     if replacement {
-                        self.shared.epoch += 1;
+                        self.session.document_epoch += 1;
                         self.session.document_identity += 1;
                         self.session.document_path = None;
                         self.session.saved_revision = 0;
-                        self.session.pending = None;
-                        self.session.retire_analysis();
                     }
                     self.session.capacity = CapacityState {
                         id,
@@ -1236,7 +1395,7 @@ impl DesktopController {
                     if let Some(limits) = analysis
                         && let Err(e) = self.start_shogi(limits, true)
                     {
-                        self.pause_native_capacity(e);
+                        self.pause_native_failure(e);
                     }
                     if let Some(r) = receipt {
                         r.finish(Ok(()));
@@ -1245,31 +1404,38 @@ impl DesktopController {
                 _ => unreachable!("dedicated admission worker"),
             },
             Ok(Completed::Admitted(mut candidate)) => {
-                self.shared.xiangqi = None;
-                self.shared.shogi = None;
-                self.shared.epoch += 1;
+                if candidate.document_identity == self.session.document_identity {
+                    candidate.document_path = self.session.document_path.clone();
+                    candidate.saved_revision = self.session.saved_revision;
+                } else {
+                    candidate.document_epoch = self.session.document_epoch + 1;
+                }
+                candidate.validated_observations = candidate.observations.len();
                 candidate.revision = candidate.revision.max(self.session.revision + 1);
                 candidate.capacity = CapacityState {
                     id,
                     ..CapacityState::default()
                 };
-                self.session = *candidate;
+                self.session = ActiveDocument::Chess(candidate);
                 if let Some(r) = receipt {
                     r.finish(Ok(()));
                 }
             }
             Err(error) => {
-                if error.starts_with("Application capacity:")
-                    || error.starts_with("Document operation")
-                {
-                    self.pause_native_capacity(error.clone());
+                if error.resource.is_some() {
+                    self.pause_native_capacity(error.diagnostic.clone());
+                    self.session.capacity.resource = error.resource.clone();
                 } else {
+                    if matches!(&self.session, ActiveDocument::Chess(_)) {
+                        self.bridge.cancel();
+                        self.session.retire_execution();
+                    }
                     self.session.capacity = CapacityState {
                         id,
                         ..CapacityState::default()
                     };
                     if let (Some(state), Some((paused, phase, diagnostic, analysis, had_work))) =
-                        (&mut self.shared.shogi, rollback.clone())
+                        (self.session.shogi_mut(), rollback.clone())
                     {
                         if !had_work || preferences {
                             state.paused = paused;
@@ -1284,7 +1450,7 @@ impl DesktopController {
                         }
                     }
                     if let (Some(state), Some((paused, phase, diagnostic, analysis, had_work))) =
-                        (&mut self.shared.xiangqi, rollback)
+                        (self.session.xiangqi_mut(), rollback)
                     {
                         if consumes_response {
                             // The bridge has already delivered this result. Never
@@ -1312,19 +1478,37 @@ impl DesktopController {
                     self.session.revision += 1;
                 }
                 if let Some(r) = receipt {
-                    r.finish(Err(error));
+                    r.finish(Err(error.diagnostic));
                 }
             }
             _ => unreachable!("native admission completion"),
         }
     }
+    pub(crate) fn pause_native_failure(&mut self, error: OperationFailure) {
+        if error.resource.is_some() {
+            self.pause_native_capacity(error.diagnostic);
+            self.session.capacity.resource = error.resource;
+        } else {
+            self.bridge.cancel();
+            self.session.retire_execution();
+            self.session.revision += 1;
+            match &mut self.session {
+                ActiveDocument::Chess(state) => state.engine.message = Some(error.diagnostic),
+                ActiveDocument::Shogi { state, .. } => state.diagnostic = Some(error.diagnostic),
+                ActiveDocument::Xiangqi { state, .. } => state.diagnostic = Some(error.diagnostic),
+            }
+        }
+    }
     pub(crate) fn pause_native_capacity(&mut self, error: String) {
         self.bridge.cancel();
-        if let Some(state) = &mut self.shared.shogi {
+        if matches!(&self.session, ActiveDocument::Chess(_)) {
+            self.session.retire_execution();
+        }
+        if let Some(state) = self.session.shogi_mut() {
             state.retire();
             state.paused = true;
         }
-        if let Some(state) = &mut self.shared.xiangqi {
+        if let Some(state) = self.session.xiangqi_mut() {
             state.retire();
             state.paused = true;
         }

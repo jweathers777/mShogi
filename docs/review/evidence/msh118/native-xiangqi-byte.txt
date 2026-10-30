@@ -1,0 +1,9 @@
+   Compiling mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.26s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-58e2c610622b01d4)
+
+running 1 test
+test shared::xiangqi::tests::retained_observation_count_and_byte_limits_reject_new_work_before_mutation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 164 filtered out; finished in 54.15s
+

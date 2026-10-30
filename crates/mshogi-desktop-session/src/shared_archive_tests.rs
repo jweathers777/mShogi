@@ -102,7 +102,7 @@ fn open(c: &mut DesktopController, p: &std::path::Path) -> Result<SharedSnapshot
     wait_file(c, id)
 }
 fn record(c: &DesktopController) -> s::GameRecord {
-    s::GameRecord::from_game(&c.shared.shogi.as_ref().unwrap().game)
+    s::GameRecord::from_game(&c.session.shogi().as_ref().unwrap().game)
 }
 fn run(context: ExecutionContext) -> ExecutionObservation {
     let mut bytes = vec![];
@@ -127,7 +127,7 @@ fn analyze(c: &mut DesktopController) -> ExecutionObservation {
         },
     )
     .unwrap();
-    let context = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
+    let context = c.session.shogi().unwrap().pending.clone().unwrap();
     let response = run(context);
     assert!(c.accept_observation(response.clone()));
     settle(c);
@@ -183,10 +183,10 @@ fn canonical_fixture_roundtrips_preserve_native_root_history_and_all_outcomes() 
         let before = c.shared_token();
         let opened = open(&mut c, &file).unwrap();
         assert_eq!(record(&c), expected, "{name}");
-        assert_eq!(c.shared.shogi.as_ref().unwrap().game.context(), g.context());
+        assert_eq!(c.session.shogi().unwrap().game.context(), g.context());
         assert!(opened.paused);
         assert!(opened.token.version > before.version);
-        assert!(c.shared.shogi.as_ref().unwrap().pending.is_none());
+        assert!(c.session.shogi().unwrap().pending.is_none());
         assert!(!opened.document.dirty);
         fs::remove_file(file).unwrap();
     }
@@ -208,9 +208,8 @@ fn imported_capture_hand_and_drop_after_reopen_preserve_counter_provenance() {
     assert_eq!(record(&reopened), s::GameRecord::from_game(&g));
     assert!(
         !reopened
-            .shared
-            .shogi
-            .as_ref()
+            .session
+            .shogi()
             .unwrap()
             .game
             .root()
@@ -226,9 +225,8 @@ fn imported_capture_hand_and_drop_after_reopen_preserve_counter_provenance() {
     .unwrap();
     assert_eq!(
         reopened
-            .shared
-            .shogi
-            .as_ref()
+            .session
+            .shogi()
             .unwrap()
             .game
             .position()
@@ -237,14 +235,7 @@ fn imported_capture_hand_and_drop_after_reopen_preserve_counter_provenance() {
         0
     );
     assert_eq!(
-        reopened
-            .shared
-            .shogi
-            .as_ref()
-            .unwrap()
-            .game
-            .position()
-            .next_ply(),
+        reopened.session.shogi().unwrap().game.position().next_ply(),
         20
     );
     save(&mut reopened, &file);
@@ -298,7 +289,7 @@ fn observations_keep_exact_retired_branch_targets_and_never_resume_on_open() {
         },
     )
     .unwrap();
-    let engine_request = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
+    let engine_request = c.session.shogi().unwrap().pending.clone().unwrap();
     let engine = run(engine_request);
     assert!(c.accept_observation(engine));
     settle(&mut c);
@@ -316,9 +307,8 @@ fn observations_keep_exact_retired_branch_targets_and_never_resume_on_open() {
     send(&mut c, SessionOperation::Cancel {}).unwrap();
     let expected = record(&c);
     let responses: Vec<_> = c
-        .shared
-        .shogi
-        .as_ref()
+        .session
+        .shogi()
         .unwrap()
         .observations
         .iter()
@@ -333,7 +323,7 @@ fn observations_keep_exact_retired_branch_targets_and_never_resume_on_open() {
     assert!(opened.analysis.is_none());
     assert!(c.runtime_floor() > runtime);
     assert!(!c.accept_observation(analysis));
-    let restored = &c.shared.shogi.as_ref().unwrap().observations;
+    let restored = &c.session.shogi().unwrap().observations;
     assert_eq!(
         restored
             .iter()
@@ -350,16 +340,16 @@ fn pending_runtime_is_not_archived_and_resume_allocates_fresh_identity() {
     let mut c = controller();
     replace(&mut c, &s::Game::new(), s::Side::Gote);
     send(&mut c, SessionOperation::Resume {}).unwrap();
-    let old = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
+    let old = c.session.shogi().unwrap().pending.clone().unwrap();
     let file = path("pending");
     save(&mut c, &file);
     let bytes = String::from_utf8(fs::read(&file).unwrap()).unwrap();
     assert!(!bytes.contains("\"pending\""));
     open(&mut c, &file).unwrap();
-    assert!(c.shared.shogi.as_ref().unwrap().pending.is_none());
+    assert!(c.session.shogi().unwrap().pending.is_none());
     assert!(!c.accept_observation(run(old.clone())));
     send(&mut c, SessionOperation::Resume {}).unwrap();
-    let fresh = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
+    let fresh = c.session.shogi().unwrap().pending.clone().unwrap();
     assert!(fresh.request_id > old.request_id);
     assert!(fresh.process_generation > old.process_generation);
     assert_ne!(fresh.session_version, old.session_version);
@@ -429,7 +419,7 @@ fn wrong_native_game_and_semantic_journal_or_observation_tampering_reject() {
     let mut c = controller();
     replace(&mut c, &s::Game::new(), s::Side::Sente);
     analyze(&mut c);
-    let payload = archive(c.shared.shogi.as_ref().unwrap(), c.runtime_floor());
+    let payload = archive(c.session.shogi().unwrap(), c.runtime_floor());
     let expected = record(&c);
     let serialize = |p: &ShogiArchive| serde_json::to_string(p).unwrap();
     let mut wrong: ShogiArchive = serde_json::from_str(&serialize(&payload)).unwrap();
@@ -472,11 +462,11 @@ fn current_chess_preserves_semantics_and_development_formats_reject() {
     let bytes = fs::read(&file).unwrap();
     let envelope = crate::document::DocumentEnvelope::parse(&bytes).unwrap();
     assert_eq!(envelope.game_kind, GameKind::Chess);
-    let expected = c.session.game.record().to_json();
+    let expected = c.session.chess_mut().game.record().to_json();
     replace(&mut c, &s::Game::new(), s::Side::Sente);
     let opened = open(&mut c, &file).unwrap();
     assert_eq!(opened.game, GameKind::Chess);
-    assert_eq!(c.session.game.record().to_json(), expected);
+    assert_eq!(c.session.chess_mut().game.record().to_json(), expected);
     assert!(opened.paused);
     let bad = path("development");
     for version in [1, 2, 3] {
@@ -488,7 +478,7 @@ fn current_chess_preserves_semantics_and_development_formats_reject() {
         let before = c.shared_open_token();
         assert!(open(&mut c, &bad).is_err());
         assert_eq!(c.shared_open_token(), before);
-        assert_eq!(c.session.game.record().to_json(), expected);
+        assert_eq!(c.session.chess_mut().game.record().to_json(), expected);
     }
     for p in [file, bad] {
         fs::remove_file(p).unwrap();
@@ -587,7 +577,7 @@ fn concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it() {
     };
     let receipt = c
         .queue_native_candidate(
-            c.shared.shogi.as_ref().unwrap().clone(),
+            c.session.shogi().unwrap().clone(),
             Some(SessionOperation::ShogiPreferences {
                 settings: settings.clone(),
             }),
@@ -608,7 +598,7 @@ fn concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it() {
     assert_eq!(c.io_state.phase, IoPhase::Complete);
     settle(&mut c);
     assert_eq!(receipt.completion(), Some(Ok(())));
-    assert_eq!(c.shared.shogi.as_ref().unwrap().settings, settings);
+    assert_eq!(c.session.shogi().unwrap().settings, settings);
     assert!(c.shared_document().dirty);
     assert_eq!(c.session.document_path.as_ref(), Some(&copy));
     let (saved, _) = decode_shogi(
@@ -625,7 +615,7 @@ fn concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it() {
         .unwrap();
     let receipt = c
         .queue_native_candidate(
-            c.shared.shogi.as_ref().unwrap().clone(),
+            c.session.shogi().unwrap().clone(),
             Some(SessionOperation::Resign {}),
             None,
             false,
@@ -640,7 +630,7 @@ fn concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it() {
     assert_eq!(c.io_state.phase, IoPhase::Complete);
     assert!(receipt.completion().unwrap().is_err());
     c.poll_native_admission();
-    assert!(c.shared.shogi.as_ref().unwrap().game.conclusion().is_none());
+    assert!(c.session.shogi().unwrap().game.conclusion().is_none());
     assert!(!c.shared_document().dirty);
     for p in [original, copy] {
         fs::remove_file(p).unwrap();
@@ -657,7 +647,7 @@ fn persisted_preferences_keep_exact_pending_execution_and_original_limits() {
         },
     )
     .unwrap();
-    let request = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
+    let request = c.session.shogi().unwrap().pending.clone().unwrap();
     let version = c.shared_token().version;
     let settings = ShogiSettings {
         orientation: s::Side::Gote,
@@ -674,16 +664,13 @@ fn persisted_preferences_keep_exact_pending_execution_and_original_limits() {
     )
     .unwrap();
     assert_eq!(c.shared_token().version, version);
-    assert_eq!(
-        c.shared.shogi.as_ref().unwrap().pending.as_ref(),
-        Some(&request)
-    );
+    assert_eq!(c.session.shogi().unwrap().pending.as_ref(), Some(&request));
     assert!(c.accept_observation(run(request)));
     settle(&mut c);
     let file = path("settings");
     save(&mut c, &file);
     open(&mut c, &file).unwrap();
-    let state = c.shared.shogi.as_ref().unwrap();
+    let state = c.session.shogi().unwrap();
     assert_eq!(state.settings, settings);
     assert_eq!(
         state.observations[0].observation.context.limits,
@@ -698,11 +685,8 @@ fn raw_nested_observation_fields_remain_strict_and_identity_errors_are_explicit(
     let mut c = controller();
     replace(&mut c, &s::Game::new(), s::Side::Sente);
     analyze(&mut c);
-    let text = serde_json::to_string(&archive(
-        c.shared.shogi.as_ref().unwrap(),
-        c.runtime_floor(),
-    ))
-    .unwrap();
+    let text =
+        serde_json::to_string(&archive(c.session.shogi().unwrap(), c.runtime_floor())).unwrap();
     for (before, after) in [
         ("\"application_error\":null,", ""),
         (
@@ -739,7 +723,7 @@ fn inability_to_start_native_execution_is_a_capacity_pause_not_engine_failure() 
     send(&mut c, SessionOperation::Resume {}).unwrap();
     // Simulate the already accepted runtime reaching its identity guard before
     // the next automatic turn starts; current document must still be saveable.
-    let state = c.shared.shogi.as_mut().unwrap();
+    let state = c.session.shogi_mut().unwrap();
     state.retire();
     state.paused = false;
     c.session.next_request = MAX_SAFE_ID - 64;
@@ -771,7 +755,7 @@ fn product_new_game_archive_reopens_native_human_orientation_stopped_and_fresh()
     settle(&mut c);
     receipt.completion().unwrap().unwrap();
     let before = c.shared_snapshot();
-    let pending = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
+    let pending = c.session.shogi().unwrap().pending.clone().unwrap();
     let file = path("product-new-gote");
     save(&mut c, &file);
     let reopened = open(&mut c, &file).unwrap();
@@ -786,14 +770,13 @@ fn product_new_game_archive_reopens_native_human_orientation_stopped_and_fresh()
         }
         _ => panic!("native shogi settings"),
     }
-    assert!(c.shared.shogi.as_ref().unwrap().pending.is_none());
+    assert!(c.session.shogi().unwrap().pending.is_none());
     let old_response = run(pending);
     assert!(!c.accept_observation(old_response));
     send(&mut c, SessionOperation::Resume {}).unwrap();
     assert!(
-        c.shared
-            .shogi
-            .as_ref()
+        c.session
+            .shogi()
             .unwrap()
             .pending
             .as_ref()
@@ -809,7 +792,7 @@ fn durable_observations_have_a_semantic_schema_without_transport_framing() {
     let mut c = controller();
     replace(&mut c, &s::Game::new(), s::Side::Sente);
     let accepted = analyze(&mut c);
-    let payload = archive(c.shared.shogi.as_ref().unwrap(), c.runtime_floor());
+    let payload = archive(c.session.shogi().unwrap(), c.runtime_floor());
     let encoded = serde_json::to_value(&payload).unwrap();
     let observation = &encoded["observations"][0]["observation"];
     assert_eq!(observation["schema_version"], OBSERVATION_SCHEMA_VERSION);

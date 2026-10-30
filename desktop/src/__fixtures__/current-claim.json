@@ -224,12 +224,14 @@
   "capacity": {
     "id": 0,
     "status": "available",
-    "message": null
+    "message": null,
+    "resource": null
   },
   "io": {
     "id": 0,
     "phase": "idle",
-    "message": null
+    "message": null,
+    "resource": null
   },
   "view": {
     "historical": false,

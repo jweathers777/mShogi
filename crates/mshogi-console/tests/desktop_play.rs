@@ -17,7 +17,10 @@ fn controller(executable: &str) -> DesktopController {
 fn until(controller: &mut DesktopController, ready: impl Fn(&Snapshot) -> bool) -> Snapshot {
     let deadline = Instant::now() + Duration::from_secs(20);
     loop {
-        let snapshot = controller.snapshot();
+        let snapshot = controller
+            .shared_snapshot()
+            .chess
+            .expect("native Chess fixture");
         if ready(&snapshot) {
             return snapshot;
         }
@@ -104,7 +107,10 @@ fn shutdown(controller: &mut DesktopController) {
 #[test]
 fn human_white_plays_two_turns_against_actual_bounded_native_replies() {
     let mut controller = controller(env!("CARGO_BIN_EXE_mshogi"));
-    let initial = controller.snapshot();
+    let initial = controller
+        .shared_snapshot()
+        .chess
+        .expect("native Chess fixture");
     assert_eq!(initial.human, Color::White);
     assert_eq!(initial.turn, Color::White);
     assert_eq!(initial.engine.status, EnginePhase::Idle);
@@ -136,7 +142,10 @@ fn human_white_plays_two_turns_against_actual_bounded_native_replies() {
     assert_eq!(replied.history.len(), 4);
     real_observations(&replied, Color::Black, thinking.version);
     replay(&replied);
-    let settled = controller.snapshot();
+    let settled = controller
+        .shared_snapshot()
+        .chess
+        .expect("native Chess fixture");
     assert_eq!(
         settled.history, replied.history,
         "completion is applied once"
@@ -148,7 +157,10 @@ fn human_white_plays_two_turns_against_actual_bounded_native_replies() {
 #[test]
 fn human_black_gets_an_automatic_native_opening_and_can_answer_it() {
     let mut controller = controller(env!("CARGO_BIN_EXE_mshogi"));
-    let initial = controller.snapshot();
+    let initial = controller
+        .shared_snapshot()
+        .chess
+        .expect("native Chess fixture");
     let thinking = controller
         .settled(DesktopCommand::NewGame {
             version: initial.version,
@@ -183,7 +195,10 @@ fn human_black_gets_an_automatic_native_opening_and_can_answer_it() {
 #[test]
 fn cancel_new_game_stale_commands_and_retry_protect_the_live_game() {
     let mut controller = controller(env!("CARGO_BIN_EXE_mshogi"));
-    let initial = controller.snapshot();
+    let initial = controller
+        .shared_snapshot()
+        .chess
+        .expect("native Chess fixture");
     let thinking = controller
         .settled(DesktopCommand::NewGame {
             version: initial.version,
@@ -201,7 +216,10 @@ fn cancel_new_game_stale_commands_and_retry_protect_the_live_game() {
         .unwrap();
     assert_eq!(cancelled.engine.status, EnginePhase::Cancelled);
     for _ in 0..10 {
-        let snapshot = controller.snapshot();
+        let snapshot = controller
+            .shared_snapshot()
+            .chess
+            .expect("native Chess fixture");
         assert_eq!(snapshot.engine.status, EnginePhase::Cancelled);
         assert!(snapshot.history.is_empty());
         assert!(snapshot.conclusion.is_none());
@@ -241,7 +259,10 @@ fn cancel_new_game_stale_commands_and_retry_protect_the_live_game() {
             .is_err()
     );
     for _ in 0..10 {
-        let snapshot = controller.snapshot();
+        let snapshot = controller
+            .shared_snapshot()
+            .chess
+            .expect("native Chess fixture");
         assert_eq!(snapshot.version, fresh.version);
         assert_eq!(snapshot.turn, Color::White);
         assert_eq!(snapshot.engine.status, EnginePhase::Idle);
@@ -267,7 +288,10 @@ fn actual_missing_response_and_failed_process_pause_without_a_chess_score() {
     // Separate fixture helper, excluded from packaged normal applications:
     // request1 exits successfully without output; request2 exits nonzero.
     let mut controller = controller(env!("CARGO_BIN_EXE_mshogi-internal-fixture"));
-    let initial = controller.snapshot();
+    let initial = controller
+        .shared_snapshot()
+        .chess
+        .expect("native Chess fixture");
     controller
         .settled(DesktopCommand::NewGame {
             version: initial.version,
@@ -284,7 +308,10 @@ fn actual_missing_response_and_failed_process_pause_without_a_chess_score() {
     assert!(failed.history.is_empty());
     assert!(failed.conclusion.is_none());
     assert_eq!(failed.turn, Color::White);
-    let stable = controller.snapshot();
+    let stable = controller
+        .shared_snapshot()
+        .chess
+        .expect("native Chess fixture");
     assert_eq!(
         stable.version, failed.version,
         "failure does not silently retry"
@@ -321,7 +348,14 @@ trait SettledCommand {
 }
 impl SettledCommand for DesktopController {
     fn settled(&mut self, command: DesktopCommand) -> Result<Snapshot, String> {
-        let (mut snapshot, receipt) = self.command_with_receipt(command)?;
+        let expected = self.shared_token();
+        let (initial, receipt) =
+            self.shared_command_with_receipt(mshogi_desktop_session::SharedDesktopCommand {
+                expected,
+                game: mshogi_desktop_session::GameKind::Chess,
+                operation: mshogi_desktop_session::SessionOperation::Chess { command },
+            })?;
+        let mut snapshot = initial.chess.expect("native Chess fixture");
         let deadline = Instant::now() + Duration::from_secs(20);
         loop {
             if let Some(result) = receipt.completion() {
@@ -333,7 +367,7 @@ impl SettledCommand for DesktopController {
                 "native capacity admission deadline"
             );
             thread::sleep(Duration::from_millis(1));
-            snapshot = self.snapshot();
+            snapshot = self.shared_snapshot().chess.expect("native Chess fixture");
         }
     }
 }

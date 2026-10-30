@@ -175,7 +175,8 @@ impl DesktopSession {
         if self.analysis_pending.as_ref() == Some(&response.context)
             && let Err(error) = self.ensure_capacity()
         {
-            self.capacity_pause(error);
+            self.capacity_pause(error.diagnostic);
+            self.capacity.resource = error.resource;
             return false;
         }
         let mut candidate = self.clone();
@@ -183,7 +184,8 @@ impl DesktopSession {
             return false;
         }
         if let Err(error) = candidate.check_archive_capacity(&mut || false) {
-            self.capacity_pause(error);
+            self.capacity_pause(error.diagnostic);
+            self.capacity.resource = error.resource;
             return false;
         }
         candidate.validated_observations = candidate.observations.len();

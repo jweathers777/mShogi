@@ -187,3 +187,15 @@ it("does not enable game interaction when native close protection cannot registe
   expect(result.current.error).toContain("Native close protection");
   expect(invoke).not.toHaveBeenCalled();
 });
+
+it("does not invent a Chess snapshot after the native Open forwarder changes games", async () => {
+  vi.mocked(invoke).mockResolvedValueOnce(standard).mockResolvedValueOnce(null);
+  const { result } = renderHook(useNativeSession);
+  await act(async () => { await Promise.resolve(); });
+  let opened: Snapshot | null = standard;
+  await act(async () => { opened = await result.current.open(standard.version, standard.document.revision); });
+  expect(opened).toBeNull();
+  expect(result.current.snapshot).toBe(standard);
+  expect(result.current.error).toBe("");
+  expect(result.current.documentEpoch).toBe(0);
+});

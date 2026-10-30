@@ -3,10 +3,11 @@ id: MSH-118
 title: >-
   R3: Establish native application runtime document ownership and the current
   host contract
-status: Ready
-assignee: []
+status: In Review
+assignee:
+  - '@codex'
 created_date: '2026-10-30T12:06:00Z'
-updated_date: '2026-10-30T12:12:00Z'
+updated_date: '2026-10-30T18:05:00Z'
 labels:
   - architecture-migration
   - planning
@@ -18,6 +19,8 @@ documentation:
   - docs/design.md
   - docs/architecture-migration-plan.md
   - docs/review/architecture-target-115.md
+  - docs/desktop/native-application.md
+  - docs/review/native-application-118.md
 priority: medium
 type: task
 ordinal: 118000
@@ -49,3 +52,19 @@ Owner-approved MSH-115 migration stage; shared integration ownership supports MS
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Split common native runtime/document metadata from game-owned state and introduce exactly one ActiveDocument Chess/Shogi/Xiangqi variant, removing dormant Chess and optional overlays. 2. Consolidate typed candidate admission, file completion and guarded installation using existing bounded workers; move native reconstruction/apply/encoding costs off the serialized host lock, preserve stable receipts, reservations and fresh stopped identity. 3. Complete current native command/snapshot/file/close contracts, especially Chess claims/preferences/Full/observations; replace string-derived resource classification with bounded native typed facts at actual limit checks. Delete R2 capture/install ownership; document the sole temporary current-controller-to-existing-frontend forwarder and its MSH-119 deletion endpoint. 4. Port semantic regressions and independently expected fixtures, add ownership/install/stale/capacity/host-close tests, exercise packaged file/lifecycle/close journeys on an identified platform, obtain separate independent review, run applicable CI and normally integrate/push only MSH-118.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Startup 2026-10-30: root Codex owns MSH-118 in primary codex/rewrite checkout at7414b795d47e9a6408f1b21f07cb1baacfddf8dc. Clean, fetched origin aligned0/0; no In Progress owner. Existing unrelated worktrees preserved. PATH Backlog1.55.0 incompatible; using pinned1.55.1 after overview/execution guides. Read owner request, design A-09/A-10, task/dependencies116/117Done and approved migration. Actual source: DesktopController retains DesktopSession plus optional Shogi/Xiangqi overlays; common metadata lives in Chess; three install paths; shared Chess observation placeholders. Read-only boundary audit delegated; root is primary builder/integrator. No R4/R5 work or new compatibility requirement.
+
+Implementation checkpoint: common metadata extracted to RuntimeMetadata and optional native overlays replaced by a single ActiveDocument. Core worker owns native files; root owns host/lifecycle and integration; isolated resource types and external GUI-verifier work do not overlap production ownership. Native lifecycle now owns command/file RAII reservations and exact-token close approval; host retains technical cleanup only. Root host8 and frontend17 focused checks plus TypeScript pass at working source. Read-only reviewer independently reran17 frontend checks and found post-picker Open/close race; root added under-lock recheck and focused regression. Initial core run149pass/7fail exposed dormant-Chess assumptions and two actual replacement/poll cutover issues; fixes and rerun pending. All AC/DoD unchecked; no Done/CI/package claim yet. No R4/R5 started.
+
+Reviewed source checkpoint: one ActiveDocument and RuntimeMetadata, worker-native admission/install, controller-owned lifecycle and typed resource facts implemented. Independent read-only r3_boundary_audit approved corrected source; findings and original local logs indexed in docs/review/native-application-118.md. Native default165 before final corrections plus final runtime6/budget2/control1/byte1/replay1, host9, console actual subprocess12, frontend243, GUI verifier50, TypeScript, workspace/native/host Clippy and fmt pass. Post-deadline committed Save stays successful; live revisions monotonic across Open; post-picker close race rejected. Preparing reviewed source commit for applicable CI and actual packaged lifecycle verification; all criteria remain unchecked pending that evidence. R4 frontend forwarder explicitly expires in MSH-119; no later task started.
+<!-- SECTION:NOTES:END -->

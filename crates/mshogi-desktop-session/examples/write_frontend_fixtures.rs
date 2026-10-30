@@ -173,7 +173,7 @@ fn main() {
         .command_with_receipt(DesktopCommand::Resign { version: 1 })
         .unwrap();
     while receipt.completion().is_none() {
-        controller.snapshot();
+        controller.shared_snapshot();
         std::thread::sleep(std::time::Duration::from_millis(1));
     }
     receipt.completion().unwrap().unwrap();
@@ -217,7 +217,14 @@ fn main() {
         .unwrap();
         std::fs::write(
             directory.join("capacity.json"),
-            serde_json::to_string_pretty(&capacity.snapshot()).unwrap() + "\n",
+            serde_json::to_string_pretty(
+                &capacity
+                    .shared_snapshot()
+                    .chess
+                    .expect("native Chess fixture"),
+            )
+            .unwrap()
+                + "\n",
         )
         .unwrap();
     }
@@ -226,7 +233,10 @@ fn main() {
 fn wait_document(controller: &mut DesktopController, id: u64) -> mshogi_desktop_session::Snapshot {
     let deadline = std::time::Instant::now() + std::time::Duration::from_secs(20);
     loop {
-        let snapshot = controller.snapshot();
+        let snapshot = controller
+            .shared_snapshot()
+            .chess
+            .expect("native Chess fixture");
         if snapshot.io.id == id && matches!(snapshot.io.phase, IoPhase::Complete | IoPhase::Failed)
         {
             assert_eq!(

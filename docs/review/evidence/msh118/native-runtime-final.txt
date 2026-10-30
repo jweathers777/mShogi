@@ -1,0 +1,14 @@
+   Compiling mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.87s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-58e2c610622b01d4)
+
+running 6 tests
+test runtime_tests::close_authority_rejects_all_native_replacement_commands_and_open_but_keeps_save_available ... ok
+test runtime_tests::direct_identity_refusals_publish_native_facts_without_mutating_the_game ... ok
+test runtime_tests::current_chess_contract_contains_actual_claims_match_and_search_observations ... ok
+test runtime_tests::rejected_chess_worker_command_is_not_capacity_engine_failure_or_outcome ... ok
+test runtime_tests::exactly_one_native_document_and_uniform_metadata_survive_cross_game_replacement ... ok
+test runtime_tests::reopened_all_game_identities_exceed_runtime_only_revisions_without_spending_saved_watermarks ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 159 filtered out; finished in 0.26s
+

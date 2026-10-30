@@ -36,7 +36,10 @@ fn controller() -> DesktopController {
 fn until(controller: &mut DesktopController, ready: impl Fn(&Snapshot) -> bool) -> Snapshot {
     let deadline = Instant::now() + Duration::from_secs(30);
     loop {
-        let snapshot = controller.snapshot();
+        let snapshot = controller
+            .shared_snapshot()
+            .chess
+            .expect("native Chess fixture");
         if ready(&snapshot) {
             return snapshot;
         }
@@ -70,7 +73,10 @@ fn complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix(
     let path = directory.0.join("game.mshogi");
     let second_path = directory.0.join("reopened.mshogi");
     let mut controller = controller();
-    let initial = controller.snapshot();
+    let initial = controller
+        .shared_snapshot()
+        .chess
+        .expect("native Chess fixture");
     controller
         .settled(DesktopCommand::Play {
             version: initial.version,
@@ -266,7 +272,10 @@ fn reopening_retains_unscored_resignation_but_an_earlier_same_ply_view_does_not(
     let directory = Directory::new();
     let path = directory.0.join("resigned.mshogi");
     let mut controller = controller();
-    let initial = controller.snapshot();
+    let initial = controller
+        .shared_snapshot()
+        .chess
+        .expect("native Chess fixture");
     let resigned = controller
         .settled(DesktopCommand::Resign {
             version: initial.version,
@@ -311,7 +320,14 @@ trait SettledCommand {
 }
 impl SettledCommand for DesktopController {
     fn settled(&mut self, command: DesktopCommand) -> Result<Snapshot, String> {
-        let (mut snapshot, receipt) = self.command_with_receipt(command)?;
+        let expected = self.shared_token();
+        let (initial, receipt) =
+            self.shared_command_with_receipt(mshogi_desktop_session::SharedDesktopCommand {
+                expected,
+                game: mshogi_desktop_session::GameKind::Chess,
+                operation: mshogi_desktop_session::SessionOperation::Chess { command },
+            })?;
+        let mut snapshot = initial.chess.expect("native Chess fixture");
         let deadline = Instant::now() + Duration::from_secs(20);
         loop {
             if let Some(result) = receipt.completion() {
@@ -323,7 +339,7 @@ impl SettledCommand for DesktopController {
                 "native capacity admission deadline"
             );
             thread::sleep(Duration::from_millis(1));
-            snapshot = self.snapshot();
+            snapshot = self.shared_snapshot().chess.expect("native Chess fixture");
         }
     }
 }

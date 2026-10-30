@@ -118,7 +118,7 @@ fn warning_inspection_archive_reopen_and_resume_preserve_one_native_context() {
         reopened.xiangqi.as_ref().unwrap().canonical_context_scope,
         "live_with_immutable_selection"
     );
-    let state = c.shared.xiangqi.as_ref().unwrap();
+    let state = c.session.xiangqi().unwrap();
     assert_eq!(state.settings, settings);
     assert!(state.pending.is_none() && state.analysis.is_none());
     assert_eq!(state.observations.len(), 1);

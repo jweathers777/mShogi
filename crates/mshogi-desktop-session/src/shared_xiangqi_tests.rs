@@ -10,9 +10,9 @@ fn controller() -> DesktopController {
     c
 }
 fn send(c: &mut DesktopController, operation: SessionOperation) -> Result<SharedSnapshot, String> {
-    let game = if c.shared.xiangqi.is_some() {
+    let game = if c.session.xiangqi().is_some() {
         GameKind::Xiangqi
-    } else if c.shared.shogi.is_some() {
+    } else if c.session.shogi().is_some() {
         GameKind::Shogi
     } else {
         GameKind::Chess
@@ -47,7 +47,7 @@ fn replace(c: &mut DesktopController, game: &x::Game, human: x::Side) -> SharedS
     .unwrap()
 }
 fn pending(c: &DesktopController) -> ExecutionContext {
-    c.shared.xiangqi.as_ref().unwrap().pending.clone().unwrap()
+    c.session.xiangqi().unwrap().pending.clone().unwrap()
 }
 fn analyze(c: &mut DesktopController, nodes: u64) -> ExecutionContext {
     send(
@@ -86,7 +86,7 @@ fn accept(c: &mut DesktopController, response: ExecutionObservation) -> bool {
 }
 fn native(c: &DesktopController) -> CanonicalRecord {
     CanonicalRecord::xiangqi(
-        x::GameRecord::from_game(&c.shared.xiangqi.as_ref().unwrap().game).unwrap(),
+        x::GameRecord::from_game(&c.session.xiangqi().as_ref().unwrap().game).unwrap(),
     )
 }
 fn human_play(c: &mut DesktopController, action: &str) -> SharedSnapshot {
@@ -364,9 +364,8 @@ fn actual_read_only_analysis_rejects_every_context_mismatch_and_cannot_apply_cho
     ));
     let different_history = x::Game::from_root(
         x::PositionRoot::from_fen(
-            &c.shared
-                .xiangqi
-                .as_ref()
+            &c.session
+                .xiangqi()
                 .unwrap()
                 .game
                 .position()
@@ -379,7 +378,7 @@ fn actual_read_only_analysis_rejects_every_context_mismatch_and_cannot_apply_cho
     .unwrap();
     assert_eq!(
         different_history.position(),
-        c.shared.xiangqi.as_ref().unwrap().game.position()
+        c.session.xiangqi().unwrap().game.position()
     );
     for mismatch in 0..8 {
         let mut wrong = response.clone();
@@ -705,14 +704,11 @@ fn retained_observation_count_and_byte_limits_reject_new_work_before_mutation() 
     for expected in 1..=MAX_ARCHIVE_OBSERVATIONS {
         let request = analyze(&mut c, 1);
         assert!(accept(&mut c, execute(&request)));
-        assert_eq!(
-            c.shared.xiangqi.as_ref().unwrap().observations.len(),
-            expected
-        );
+        assert_eq!(c.session.xiangqi().unwrap().observations.len(), expected);
     }
     let before = c.shared_token();
     let record = native(&c);
-    let observations = c.shared.xiangqi.as_ref().unwrap().observations.clone();
+    let observations = c.session.xiangqi().unwrap().observations.clone();
     let error = send(
         &mut c,
         SessionOperation::Analyze {
@@ -721,14 +717,16 @@ fn retained_observation_count_and_byte_limits_reject_new_work_before_mutation() 
     )
     .unwrap_err();
     assert!(error.contains("capacity"));
-    assert_eq!(c.shared_token(), before);
+    assert_eq!(c.shared_token().version, before.version);
+    assert_eq!(c.shared_token().selection, before.selection);
+    assert_eq!(c.shared_token().document, before.document);
     assert_eq!(native(&c), record);
     assert_eq!(
-        c.shared.xiangqi.as_ref().unwrap().observations.len(),
+        c.session.xiangqi().unwrap().observations.len(),
         MAX_ARCHIVE_OBSERVATIONS
     );
     assert_eq!(
-        serde_json::to_vec(&c.shared.xiangqi.as_ref().unwrap().observations).unwrap(),
+        serde_json::to_vec(&c.session.xiangqi().as_ref().unwrap().observations).unwrap(),
         serde_json::to_vec(&observations).unwrap()
     );
 
@@ -740,7 +738,7 @@ fn retained_observation_count_and_byte_limits_reject_new_work_before_mutation() 
     );
     // Separate instrumentation: deterministic byte reservation at the native
     // ceiling, independent of count and without allocating giant diagnostics.
-    c.shared.xiangqi.as_mut().unwrap().observation_bytes =
+    c.session.xiangqi_mut().unwrap().observation_bytes =
         MAX_OBSERVATION_BYTES - mshogi_engine::MAX_RESPONSE_BYTES;
     let request = analyze(&mut c, 1);
     assert!(accept(&mut c, execute(&request)));
@@ -755,8 +753,21 @@ fn retained_observation_count_and_byte_limits_reject_new_work_before_mutation() 
         .unwrap_err()
         .contains("capacity")
     );
-    assert_eq!(c.shared_token(), before);
-    assert_eq!(c.shared.xiangqi.as_ref().unwrap().observations.len(), 1);
+    assert_eq!(c.shared_token().version, before.version);
+    assert_eq!(c.shared_token().selection, before.selection);
+    assert_eq!(c.shared_token().document, before.document);
+    assert_eq!(c.session.xiangqi().unwrap().observations.len(), 1);
+    let snapshot = c.shared_snapshot();
+    let facts = snapshot.capacity.resource.as_ref().unwrap().facts();
+    assert_eq!(facts.len(), 1);
+    assert_eq!(facts[0].category, ResourceCategory::EncodedObservationBytes);
+    assert_eq!(facts[0].measurement, ResourceMeasurement::Accepted);
+    assert_eq!(
+        facts[0].reserved,
+        Some(mshogi_engine::MAX_RESPONSE_BYTES as u64)
+    );
+    assert!(facts[0].count.unwrap() + facts[0].reserved.unwrap() > facts[0].limit.unwrap());
+    assert!(!snapshot.capacity.message.as_ref().unwrap().contains("256"));
 }
 
 #[test]

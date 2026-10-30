@@ -16,7 +16,10 @@ fn controller() -> DesktopController {
 fn until(controller: &mut DesktopController, ready: impl Fn(&Snapshot) -> bool) -> Snapshot {
     let deadline = Instant::now() + Duration::from_secs(30);
     loop {
-        let snapshot = controller.snapshot();
+        let snapshot = controller
+            .shared_snapshot()
+            .chess
+            .expect("native Chess fixture");
         if ready(&snapshot) {
             return snapshot;
         }
@@ -42,7 +45,10 @@ fn moves(depth: u16, nodes: u64) -> AnalysisOperation {
 #[test]
 fn actual_analysis_suggestions_never_commit_a_turn_and_resume_is_explicit() {
     let mut controller = controller();
-    let initial = controller.snapshot();
+    let initial = controller
+        .shared_snapshot()
+        .chess
+        .expect("native Chess fixture");
     let turn = controller
         .settled(DesktopCommand::Play {
             version: initial.version,
@@ -93,7 +99,10 @@ fn actual_analysis_suggestions_never_commit_a_turn_and_resume_is_explicit() {
             .contains(action)
     );
     for _ in 0..10 {
-        let stable = controller.snapshot();
+        let stable = controller
+            .shared_snapshot()
+            .chess
+            .expect("native Chess fixture");
         assert_eq!(stable.history, result.history);
         assert_eq!(stable.fen, result.fen);
         assert!(stable.play_paused);
@@ -116,7 +125,10 @@ fn actual_analysis_suggestions_never_commit_a_turn_and_resume_is_explicit() {
 #[test]
 fn actual_full_budget_exhaustion_and_cancelled_replacement_leave_match_unchanged() {
     let mut controller = controller();
-    let initial = controller.snapshot();
+    let initial = controller
+        .shared_snapshot()
+        .chess
+        .expect("native Chess fixture");
     let started = controller
         .settled(DesktopCommand::Analyze {
             version: initial.version,
@@ -171,7 +183,10 @@ fn actual_full_budget_exhaustion_and_cancelled_replacement_leave_match_unchanged
     );
     assert!(cancelled.play_paused);
     for _ in 0..10 {
-        let snapshot = controller.snapshot();
+        let snapshot = controller
+            .shared_snapshot()
+            .chess
+            .expect("native Chess fixture");
         assert_eq!(snapshot.fen, initial.fen);
         assert_eq!(snapshot.analysis.status, AnalysisPhase::Cancelled);
         assert!(snapshot.history.is_empty() && snapshot.conclusion.is_none());
@@ -201,7 +216,14 @@ trait SettledCommand {
 }
 impl SettledCommand for DesktopController {
     fn settled(&mut self, command: DesktopCommand) -> Result<Snapshot, String> {
-        let (mut snapshot, receipt) = self.command_with_receipt(command)?;
+        let expected = self.shared_token();
+        let (initial, receipt) =
+            self.shared_command_with_receipt(mshogi_desktop_session::SharedDesktopCommand {
+                expected,
+                game: mshogi_desktop_session::GameKind::Chess,
+                operation: mshogi_desktop_session::SessionOperation::Chess { command },
+            })?;
+        let mut snapshot = initial.chess.expect("native Chess fixture");
         let deadline = Instant::now() + Duration::from_secs(20);
         loop {
             if let Some(result) = receipt.completion() {
@@ -213,7 +235,7 @@ impl SettledCommand for DesktopController {
                 "native capacity admission deadline"
             );
             thread::sleep(Duration::from_millis(1));
-            snapshot = self.snapshot();
+            snapshot = self.shared_snapshot().chess.expect("native Chess fixture");
         }
     }
 }

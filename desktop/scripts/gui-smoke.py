@@ -251,6 +251,55 @@ class Webview:
         element = self.find(f"//button[normalize-space(.)='{label}']", "xpath")
         self.command("POST", f"/element/{element}/click", {})
 
+    def focused_button(self, label, max_tabs=64):
+        """Reach a clipped control with real keyboard navigation, then click once.
+
+        WebKit element-click need not reveal controls inside a nested inspector.
+        Read-only DOM observations establish unique/enabled/focused/visible state;
+        only actual W3C Tab input may reveal it. No scroll/focus JS or IPC occurs.
+        A failed final click is propagated without replaying any action.
+        """
+        assert isinstance(max_tabs, int) and max_tabs >= 0
+
+        def observe():
+            return self.read("""(() => {
+                const matches=[...document.querySelectorAll('button')].filter(e=>e.textContent.trim()===LABEL);
+                const e=matches.length===1?matches[0]:null;
+                if(!e)return {matches:matches.length,enabled:false,focused:false,visible:false};
+                const r=e.getBoundingClientRect();
+                const clip={left:0,top:0,right:innerWidth,bottom:innerHeight};
+                for(let p=e.parentElement;p;p=p.parentElement){
+                    const c=getComputedStyle(p),b=p.getBoundingClientRect();
+                    if(/^(auto|scroll|hidden|clip)$/.test(c.overflowX)){clip.left=Math.max(clip.left,b.left);clip.right=Math.min(clip.right,b.right);}
+                    if(/^(auto|scroll|hidden|clip)$/.test(c.overflowY)){clip.top=Math.max(clip.top,b.top);clip.bottom=Math.min(clip.bottom,b.bottom);}
+                }
+                const hit=document.elementFromPoint((r.left+r.right)/2,(r.top+r.bottom)/2);
+                return {matches:1,enabled:!e.disabled,focused:document.activeElement===e,
+                    visible:r.width>0&&r.height>0&&r.left>=clip.left-1&&r.top>=clip.top-1&&r.right<=clip.right+1&&r.bottom<=clip.bottom+1&&!!hit&&e.contains(hit),
+                    rect:{left:r.left,top:r.top,right:r.right,bottom:r.bottom},clip,
+                    activeLabel:document.activeElement?.getAttribute('aria-label')??document.activeElement?.textContent?.trim()};
+            })()""".replace("LABEL", json.dumps(label)))
+
+        for tabs in range(max_tabs + 1):
+            observed = observe()
+            if self.record is not None:
+                self.record("Observe keyboard control precondition", {"label": label, "tabs": tabs, "target": observed})
+            assert observed["matches"] == 1 and observed["enabled"], {"label": label, "tabs": tabs, "target": observed}
+            if observed["focused"]:
+                if not observed["visible"]:
+                    def revealed():
+                        state = observe()
+                        assert state["matches"] == 1 and state["enabled"] and state["focused"], state
+                        return state if state["visible"] else None
+                    observed = wait(revealed, f"keyboard-focused control revealed: {label}", 2)
+                if self.record is not None:
+                    self.record("Keyboard control focused and visible before one click", {"label": label, "tabs": tabs, "target": observed})
+                self.button(label)
+                return
+            if tabs < max_tabs:
+                self.key("\ue004")
+        raise AssertionError(f"Control unreachable within {max_tabs} actual Tab inputs: {label}; last observation: {observed!r}")
+
     def set(self, selector, value):
         element = self.find(selector)
         self.command("POST", f"/element/{element}/click", {})
@@ -770,7 +819,7 @@ class Journey:
         self.capture("play")
         self.record("Play e2e4 against actual bundled engine", w.text('[data-search-purpose="engine_turn"]'))
 
-        w.button("Take back")
+        w.focused_button("Take back")
         self.plies(0)
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "true", "Chess Take back is stopped")
         self.capture("takeback-stopped")
@@ -1001,7 +1050,7 @@ class Journey:
         self.capture("play")
         self.record("Pointer selection / Escape / keyboard a3a4 / actual bounded engine reply", played)
 
-        w.button("Take back")
+        w.focused_button("Take back")
         self.xiangqi_events(0, selected=0)
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "true", "Xiangqi Take back is stopped")
         self.capture("takeback-stopped")
@@ -1143,7 +1192,7 @@ class Journey:
         self.capture("play")
         self.record("Pointer selection / Escape / keyboard 7g7f / actual engine reply", w.text(".shogi-history"))
 
-        w.button("Take back")
+        w.focused_button("Take back")
         self.shogi_events(0)
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "true", "Shogi Take back is stopped")
         self.capture("takeback-stopped")
@@ -1328,7 +1377,7 @@ class Journey:
             self.shogi_events(1)
             wait(lambda: "Sente wins by entering-king declaration" in w.text("[data-game-status]"), "authoritative declaration conclusion")
             assert w.read("[...document.querySelectorAll('.shogi-game-actions button')].map(e=>({label:e.textContent.trim(),enabled:!e.disabled}))") == [{"label": "Take back", "enabled": True}], "A concluded game exposes only native Take back"
-            w.button("Take back")
+            w.focused_button("Take back")
             self.shogi_events(0)
             wait(lambda: "Sente to move" in w.text("[data-game-status]"), "declaration Take back restores native human decision")
             assert w.read("document.querySelector('.shogi-application').dataset.paused") == "true"
@@ -1376,7 +1425,7 @@ class Journey:
             self.shogi_events(1, selected=1)
             assert "Sente resigned" in w.text("[data-game-status]")
             self.record("Select distinct native terminal event at unchanged board ply", w.text(".shogi-history"))
-            w.button("Take back")
+            w.focused_button("Take back")
             self.shogi_events(0)
             wait(lambda: "Sente to move" in w.text("[data-game-status]"), "resignation Take back restores native human decision")
             assert w.read("document.querySelector('.shogi-application').dataset.paused") == "true"

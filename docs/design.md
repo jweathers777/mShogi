@@ -146,6 +146,41 @@ plans/reviews, including MSH-106, without rewriting their historical records.
 The [MSH-115 reassessment](review/architecture-target-115.md) is a proposal;
 recording this policy does not authorize its production refactors.
 
+### A-10. Approved application architecture and shared product UI
+
+Owner approval, 2026-10-30: select MSH-115's coherent staged target—one
+application/runtime controller, exactly one active native-tagged document, one
+current internal execution contract, one current desktop envelope with native
+payloads, one frontend session/operation owner and one shared board interaction
+controller. Remove obsolete development-era APIs, transports, archive readers,
+compatibility adapters and duplicate implementation paths. Native game rules,
+actions, histories, adjudication, search and justified optimized structures
+remain independent. A-09 applies; external required protocols remain supported.
+
+There is **one product interface**, not three applications under common chrome.
+The application owns layout/visual hierarchy, dark responsive composition,
+document and lifecycle controls, player/turn/status, analysis/history/Game
+Actions/Technical Details, dialogs/notices/errors/recovery, common language and
+control placement, and shared keyboard/focus/accessibility conventions.
+Game-specific capability content composes into those sections: Chess claims,
+Shogi declarations and Xiangqi warnings retain their semantics without owning
+separate application layouts or repeated panel/lifecycle implementations.
+
+Game renderers supply topology/geometry/coordinates/decorations, piece art/
+typography/orientation, hands or other genuine board-adjacent native content,
+and promotion/compound-route/specialized completion views. One common native-
+choice interaction lifetime owns agreed selection/cancellation/inspection/
+completion behavior. This does not require a universal board renderer, native
+rules model or frontend rules interpreter.
+
+The [approved implementation plan](architecture-migration-plan.md) maps R1–R6
+and separate P9 to native tasks. R4 owns the shared application sections and
+single frontend owner; R5 owns board interaction and specialized renderer/
+completion integration, with no unassigned UI gap. The R1/R2 observation/codec
+coordination and finite bridge/deletion endpoints remain. Recording approval
+and creating future tasks authorizes no execution in this planning assignment;
+routine internal choices need no artificial owner checkpoint.
+
 ## 4. First milestones
 
 ### M0. Repository workflow bootstrap
@@ -402,6 +437,7 @@ When code reveals a design problem, report the specific conflict and a proposed 
 | D-15 | Accepted XIANGQI-P1, 2026-10-27 | John selects `mshogi.xiangqi.wxf2018.v1`, official bilingual WXF2018 with individual discrepancy reconciliation and no blanket language precedence; third-occurrence warning/fourth continued unilateral loss or applicable WXF draw; untimed native claims and scoped AXF/CXA research; required sound fast plus bounded/terminable exact3.2A path. G-CYCLE/G-NOWIN gate affected work, not settled91/92. MSH-80 closes planning only; stop before implementation. See [owner decisions](m4/xiangqi/owner-decisions.md). |
 | D-16 | Accepted future M5 experiment, 2026-10-27 | John adds MSH-104 per-game opening knowledge to56 closure while adoption remains optional. Dedicated compact teacher-distilled opening policy, learned evaluator55 and optional full policy/value59 are distinct. Compare practical direct/order/book-hybrid/no-prior uses, sparse Chu/Tenjiku generation, provenance/regeneration and total benefit/cost; no product Python or mandatory opening mechanism. See [scope](m5/opening-knowledge.md). |
 | D-17 | Accepted pre-release compatibility policy, 2026-10-30 | John: unreleased greenfield rewrite; no external internal-API consumers or development-save compatibility obligation. Obsolete APIs/IPC/adapters/readers and interface-only tests may be replaced/deleted; preserve native semantics/history/atomicity, execution safety, current-format losslessness, shared product consistency, external interoperability and independent conformance. See A-09 and MSH-115. No refactor implementation authorized by this review. |
+| D-18 | Accepted MSH-115 target and shared product UI, 2026-10-30 | John selects coherent R1–R6 migration: one controller/active native document/current execution/current envelope/frontend owner/interaction controller, deletion of obsolete development layers, native semantics independent. One application owns common sections and conventions; game capabilities/renderers supply only genuine native content. See A-10 and the approved migration plan. This assignment creates planning tasks only, with P9 triage intended first and no automatic M4 gate changes. |
 
 Accepted records reflect actual owner direction. Working defaults are implementation proposals consistent with it, not fabricated owner decisions. Deferred questions only block work that depends on their resolution. A routine choice within accepted requirements does not need a new approval ceremony.
 

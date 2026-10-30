@@ -1,0 +1,8 @@
+{
+  "source_revision": "8f4136961633659571f57fe1645a47fcfee52d45",
+  "job": 124149218704,
+  "retrieval": "gh api repos/jweathers777/mShogi/actions/jobs/124149218704/logs --allow-escape-sequences",
+  "raw_bytes": 530701,
+  "raw_sha256": "c336e154f7ac1cec7aaae28fee2dacdf5f4a12d68794435cbd579b9406f2ad66",
+  "excerpt": "ANSI stripped; original line numbers retained"
+}

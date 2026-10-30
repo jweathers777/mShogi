@@ -17,6 +17,7 @@ pub const MAX_ARCHIVE_EVENTS: usize = 4096;
 pub const MAX_ARCHIVE_OBSERVATIONS: usize = 256;
 /// Maximum accepted desktop controls in a saved document.
 pub const MAX_ARCHIVE_CONTROLS: usize = 8192;
+const VALIDATION_BUDGET: std::time::Duration = std::time::Duration::from_secs(15);
 /// Native preferences persist independently of game/search identity.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -269,7 +270,7 @@ impl FileWorker {
                         }
                         state.pending.take().expect("pending document job")
                     };
-                    let deadline = Instant::now() + std::time::Duration::from_secs(15);
+                    let deadline = Instant::now() + VALIDATION_BUDGET;
                     let stopped = || job.stop.load(Ordering::Acquire) || Instant::now() >= deadline;
                     let result = execute(job.work, stopped).map_err(crate::document::diagnostic);
                     let mut state = worker.state.lock().expect("document worker metadata");
@@ -480,9 +481,16 @@ pub(super) fn decode_chess_payload(
         return Err("Desktop final GameRecord disagrees with complete MatchRecord replay.".into());
     }
     let lineage = validate_takebacks(&archive, &record, stopped)?;
+    let mut verified_witnesses = Vec::new();
     for observation in &archive.observations {
         check(stopped)?;
-        validate_observation_lineage(observation, &final_record, &lineage, stopped)?;
+        validate_observation_lineage(
+            observation,
+            &final_record,
+            &lineage,
+            &mut verified_witnesses,
+            stopped,
+        )?;
     }
     let viewed = archive
         .selected_event
@@ -728,10 +736,11 @@ fn validate_takebacks(
     }
     Ok(lineage)
 }
-fn validate_observation_lineage(
-    observation: &ArchivedObservation,
+fn validate_observation_lineage<'a>(
+    observation: &'a ArchivedObservation,
     final_record: &GameRecord,
     lineage: &[GameRecord],
+    verified_witnesses: &mut Vec<&'a ArchivedObservation>,
     stopped: &mut impl FnMut() -> bool,
 ) -> Result<(), String> {
     let source = chess_record(&observation.observation.context.game)?;
@@ -741,13 +750,60 @@ fn validate_observation_lineage(
         .ok_or(
             "Observation target history is not an admitted current or abandoned native lineage.",
         )?;
-    validate_observation(observation, record, stopped)
+    let reused = verified_witnesses
+        .iter()
+        .any(|prior| same_full_certificate(prior, observation));
+    validate_observation_evidence(observation, record, reused, stopped)?;
+    if !reused && has_full_certificate(observation) {
+        verified_witnesses.push(observation);
+    }
+    Ok(())
+}
+// Only successful native proofs validated during THIS operation may be reused.
+// Every observation still undergoes its own lineage/context/perspective/work
+// validation. No runtime identity is reused, and no saved flag is trusted.
+fn has_full_certificate(observation: &ArchivedObservation) -> bool {
+    observation.application_error.is_none()
+        && matches!(
+            observation.observation.context.purpose,
+            mshogi_engine::ExecutionPurpose::ChessFullReachability { .. }
+        )
+        && matches!(
+            &observation.observation.result,
+            ExecutionResult::Chess {
+                result: ChessResult::Reachability {
+                    result: MateReachability::Possible { .. }
+                }
+            }
+        )
+}
+fn same_full_certificate(a: &ArchivedObservation, b: &ArchivedObservation) -> bool {
+    use mshogi_engine::ExecutionPurpose;
+    has_full_certificate(a)
+        && has_full_certificate(b)
+        && a.observation.context.game == b.observation.context.game
+        && a.observation.context.limits == b.observation.context.limits
+        && a.analyzed_turn == b.analyzed_turn
+        && a.observation.result == b.observation.result
+        && matches!((&a.observation.context.purpose, &b.observation.context.purpose),
+            (ExecutionPurpose::ChessFullReachability { mate: am, limits: al, .. },
+             ExecutionPurpose::ChessFullReachability { mate: bm, limits: bl, .. })
+                if am == bm && al == bl)
 }
 fn validate_observation(
     observation: &ArchivedObservation,
     final_record: &GameRecord,
     stopped: &mut impl FnMut() -> bool,
 ) -> Result<(), String> {
+    validate_observation_evidence(observation, final_record, false, stopped)
+}
+fn validate_observation_evidence(
+    observation: &ArchivedObservation,
+    final_record: &GameRecord,
+    witness_verified: bool,
+    stopped: &mut impl FnMut() -> bool,
+) -> Result<(), String> {
+    check(stopped)?;
     let context = &observation.observation.context;
     let replay =
         AdjudicatedGame::replay_record_with_stop(chess_record(&context.game)?, &mut *stopped)
@@ -768,12 +824,13 @@ fn validate_observation(
     if observation.analyzed_turn != replay.position().side_to_move() {
         return Err("Observation score perspective disagrees with its exact target.".into());
     }
-    validate_result(observation, &replay, stopped)?;
+    validate_result(observation, &replay, witness_verified, stopped)?;
     Ok(())
 }
 fn validate_result(
     observation: &ArchivedObservation,
     game: &AdjudicatedGame,
+    witness_verified: bool,
     stopped: &mut impl FnMut() -> bool,
 ) -> Result<(), String> {
     use mshogi_engine::{EngineChoice, ExecutionPurpose, StopReason};
@@ -829,27 +886,30 @@ fn validate_result(
                 let ExecutionPurpose::ChessFullReachability { mate, .. } = context.purpose else {
                     unreachable!()
                 };
-                let targets: &[Color] = match mate {
-                    mshogi_engine::ReachabilityTarget::Either => &[Color::White, Color::Black],
-                    mshogi_engine::ReachabilityTarget::White => &[Color::White],
-                    mshogi_engine::ReachabilityTarget::Black => &[Color::Black],
-                };
-                let mut valid = false;
-                for side in targets {
-                    check(stopped)?;
-                    match mating_feasibility_with_stop(game.position(), *side, Some(witness), &mut *stopped) {
+                if !witness_verified {
+                    let targets: &[Color] = match mate {
+                        mshogi_engine::ReachabilityTarget::Either => &[Color::White, Color::Black],
+                        mshogi_engine::ReachabilityTarget::White => &[Color::White],
+                        mshogi_engine::ReachabilityTarget::Black => &[Color::Black],
+                    };
+                    let mut valid = false;
+                    for side in targets {
+                        check(stopped)?;
+                        match mating_feasibility_with_stop(game.position(), *side, Some(witness), &mut *stopped) {
                         Ok(MatingFeasibility::Possible) => { valid = true; break; },
                         Err("mating witness verification interrupted") => return Err("Stored witness verification interrupted by the operation budget/cancellation.".into()),
                         _ => {},
                     }
-                }
-                check(stopped)?;
-                if !valid {
-                    return Err(
+                    }
+                    check(stopped)?;
+                    if !valid {
+                        return Err(
                         "Stored cooperative witness does not establish the requested legal mate."
                             .into(),
                     );
+                    }
                 }
+                check(stopped)?;
                 work
             }
             MateReachability::Impossible { work } | MateReachability::Unknown { work, .. } => work,
@@ -1047,9 +1107,9 @@ impl DesktopSession {
         let mut archive = self.archive_snapshot();
         archive.match_record_json = self.game.record().to_json();
         archive.game_record_json = self.game.game().record().to_json();
-        // Immutable accepted lineage was already admitted natively. Do not
-        // reconstruct every abandoned branch on each ordinary action; Open
-        // performs complete authoritative lineage replay before installation.
+        // Ordinary immutable lineage was already admitted natively. Full-proof
+        // documents additionally validate the entire Open path below, before
+        // commitment, so distinct certificates cannot overrun restoration.
         preflight_reserved(&archive, reserve_controls)?;
         // Budget each archive watermark at its maximum supported decimal width.
         // Reopening and runtime-only selection/work/I/O cannot grow this encoding.
@@ -1063,11 +1123,29 @@ impl DesktopSession {
             return Err("Application capacity: this operation would exceed the 16 MiB complete archive budget, including runtime identity and stop/close reservations. No new history or observations were accepted. Save the complete current document, then start a new game/document to continue.".into());
         }
         check(stopped)?;
-        // Validate new raw evidence before accepting it; malformed or oversized
-        // engine failure/PV/witness payloads must not make the document unsaveable.
-        let final_record = self.game.game().record();
-        for observation in self.observations.iter().skip(self.validated_observations) {
-            validate_observation(observation, &final_record, stopped)?;
+        // Full proof documents must fit the COMPLETE Open validation path,
+        // not only validate the newest certificate. Distinct expensive proofs
+        // cannot accumulate beyond the existing cancellable worker budget.
+        // Ordinary commands cannot mutate the admitted immutable proof set;
+        // their count/byte/history/lineage reserves were checked above.
+        if self.observations.len() > self.validated_observations
+            && self.observations.iter().any(has_full_certificate)
+        {
+            let deadline = Instant::now() + VALIDATION_BUDGET;
+            let result = super::shared::archive::decode_chess_document(&bytes, &mut || {
+                stopped() || Instant::now() >= deadline
+            });
+            if Instant::now() >= deadline {
+                return Err("Application capacity: the complete document's native proof replay exceeded the 15-second validation budget. No new history or observations were accepted; the previous complete document remains saveable.".into());
+            }
+            result?;
+        } else {
+            // Existing immutable evidence was already admitted natively. New
+            // ordinary results still receive full native validation.
+            let final_record = self.game.game().record();
+            for observation in self.observations.iter().skip(self.validated_observations) {
+                validate_observation(observation, &final_record, stopped)?;
+            }
         }
         Ok(())
     }
@@ -2594,6 +2672,9 @@ mod tests {
         assert_eq!(reopened.session.game.record().to_json(), before);
         fs::remove_dir_all(directory).unwrap();
     }
+    // The mandatory all-feature native CI step runs this full stress body on
+    // every OS; do not duplicate it in the same job's default workspace pass.
+    #[cfg(feature = "desktop-verification")]
     #[test]
     fn real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable() {
         let game =
@@ -2687,8 +2768,15 @@ mod tests {
         let id = source.queue_save(path.clone()).unwrap();
         assert_eq!(wait(&mut source, id).io.phase, IoPhase::Complete);
         let mut reopened = controller();
+        let began = Instant::now();
         let id = reopened.queue_open(path, reopened.open_token()).unwrap();
-        assert_eq!(wait(&mut reopened, id).io.phase, IoPhase::Complete);
+        let opened = wait(&mut reopened, id);
+        assert_eq!(opened.io.phase, IoPhase::Complete, "{:?}", opened.io);
+        eprintln!(
+            "MSH-117 Full byte boundary: {accepted} complete observations, {} encoded bytes, reopened {}ms",
+            bytes.len(),
+            began.elapsed().as_millis()
+        );
         assert_eq!(reopened.session.observations.len(), accepted);
         assert_eq!(
             reopened.session.game.record().to_json(),
@@ -3060,3 +3148,7 @@ mod takeback_tests {
         );
     }
 }
+
+#[cfg(test)]
+#[path = "full_archive_tests.rs"]
+mod full_archive_tests;

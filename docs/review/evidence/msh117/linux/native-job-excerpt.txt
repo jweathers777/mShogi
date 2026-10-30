@@ -1,0 +1,13 @@
+357: 2026-10-30T15:28:07.3701862Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+596: 2026-10-30T15:28:17.2963950Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+607: 2026-10-30T15:28:17.2988290Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+656: 2026-10-30T15:28:17.8298472Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+667: 2026-10-30T15:28:18.5095318Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.68s
+690: 2026-10-30T15:28:18.7087153Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+702: 2026-10-30T15:28:22.8999148Z test result: ok. 5 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 4.19s
+723: 2026-10-30T15:28:25.3347988Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+775: 2026-10-30T15:28:28.0122486Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
+1200: 2026-10-30T15:32:02.7762316Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+1291: 2026-10-30T15:32:10.7118394Z cargo test --locked -p mshogi-desktop-session --all-features
+1300: 2026-10-30T15:32:17.7477355Z running 156 tests
+1461: 2026-10-30T15:35:12.9670189Z test result: ok. 156 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 175.22s

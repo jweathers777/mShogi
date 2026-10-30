@@ -1,0 +1,12 @@
+   Compiling mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.04s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-58e2c610622b01d4)
+
+running 5 tests
+test persistence::full_archive_tests::failed_certificates_do_not_enter_operation_cache ... ok
+test persistence::full_archive_tests::distinct_witnesses_and_same_board_different_history_never_share_certificate_verification ... ok
+test persistence::full_archive_tests::later_duplicate_cannot_bypass_context_perspective_goal_limits_or_work_validation ... ok
+test persistence::full_archive_tests::complete_candidate_admission_rechecks_distinct_prior_full_proofs_past_the_high_watermark ... ok
+test persistence::full_archive_tests::full_certificate_reuse_is_operation_local_cancellable_and_ignores_only_runtime_identity ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 144 filtered out; finished in 0.38s

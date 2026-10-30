@@ -1,0 +1,6 @@
+1620: 2026-10-30T15:28:38.6066207Z  Test Files  25 passed (25)
+1621: 2026-10-30T15:28:38.6067392Z       Tests  241 passed (241)
+2457: 2026-10-30T15:30:45.4071934Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+3109: 2026-10-30T15:33:05.9146555Z Ran 43 tests in 0.009s
+3317: 2026-10-30T15:34:09.5229614Z ##[group]Run GDK_BACKEND=x11 WEBKIT_DISABLE_COMPOSITING_MODE=1 dbus-run-session -- xvfb-run -a -s '-screen 0 1440x1100x24' python3 desktop/scripts/gui-smoke.py --normal-host /usr/bin/mshogi-desktop --normal-engine /usr/bin/mshogi --verification-host "$PWD/gui-extracted/usr/bin/mshogi-desktop" --verification-engine "$PWD/gui-extracted/usr/bin/mshogi" --output "$PWD/gui-evidence"
+3318: 2026-10-30T15:34:09.5231462Z GDK_BACKEND=x11 WEBKIT_DISABLE_COMPOSITING_MODE=1 dbus-run-session -- xvfb-run -a -s '-screen 0 1440x1100x24' python3 desktop/scripts/gui-smoke.py --normal-host /usr/bin/mshogi-desktop --normal-engine /usr/bin/mshogi --verification-host "$PWD/gui-extracted/usr/bin/mshogi-desktop" --verification-engine "$PWD/gui-extracted/usr/bin/mshogi" --output "$PWD/gui-evidence"

@@ -1,0 +1,107 @@
+{
+  "source_revision": "8f4136961633659571f57fe1645a47fcfee52d45",
+  "run": 41080845341,
+  "job": 124149218704,
+  "artifact_id": 12990541294,
+  "artifact_name": "desktop-ubuntu-24.04",
+  "artifact_bytes": 72985157,
+  "reported_artifact_digest": "sha256:26201f25c0625f06a43c6d877974131c036fc77787cb11cc301b15e22552fd02",
+  "retained_files": [
+    {
+      "path": "gui-evidence/gui-report.json",
+      "bytes": 488676,
+      "sha256": "c4e2877ffe328ab5aa14bd94fe7f18a8c1d5b56fc6164ea80deb39f5b35a252a"
+    },
+    {
+      "path": "gui-driver-provenance.json",
+      "bytes": 1381,
+      "sha256": "cfb68a2affbdf17e1e8c4ebee1a5b799115b05e0e37a9b958ca5596420bd6c23"
+    },
+    {
+      "path": "gui-driver-boundary/summary.json",
+      "bytes": 5577,
+      "sha256": "4bbb185e2708a94541602e7b35e79ec9e3fa4204e4f5f4a5e4b577764e9a55d0"
+    },
+    {
+      "path": "gui-packages/normal/manifest.json",
+      "bytes": 1789,
+      "sha256": "cb572b998e98aeec96d6acae8b35e35de4c8a4a18ec651fd12cf60b679fd0f1a"
+    },
+    {
+      "path": "gui-packages/verification/manifest.json",
+      "bytes": 351,
+      "sha256": "f79abaee3d7602b788055a662386025a74bcc42ba47e6defd49e1bb129a1f0cc"
+    },
+    {
+      "path": "package-smoke.json",
+      "bytes": 5896,
+      "sha256": "0b773fc689cb36533a1c2d391a2c80b08e767ea00f195e670bd902b5b6207df2"
+    },
+    {
+      "path": "gui-evidence/normal-complete.mshogi",
+      "bytes": 6163,
+      "sha256": "6dc9fe7a0cbfa32aa36823690156735674aef450d616bfcd3eec92f67fa509c0"
+    },
+    {
+      "path": "gui-evidence/normal-shogi-history.mshogi",
+      "bytes": 12077,
+      "sha256": "efa8b21b51a2adf57d2a769c7fda95e7ec0fab5afdbcecfcc25fb8f04686cf42"
+    },
+    {
+      "path": "gui-evidence/shogi-takeback-declaration.mshogi",
+      "bytes": 3607,
+      "sha256": "409d4b07e8ccbd44401914015d2efac6ab59ad95854255ab59a6044fe05f08f7"
+    },
+    {
+      "path": "gui-evidence/capacity-complete.mshogi",
+      "bytes": 300732,
+      "sha256": "60f267da2de452b5334022ab6fbe95095816bc2c5cd9724491d97589bad2baeb"
+    },
+    {
+      "path": "gui-evidence/shogi-capacity-complete.mshogi",
+      "bytes": 581912,
+      "sha256": "1d2514cc3698503ef08d4c18b2f6526f330f4ecdf780018421a7abbcb0f12646"
+    },
+    {
+      "path": "gui-evidence/normal-historical-analysis.webview.png",
+      "bytes": 124311,
+      "sha256": "80cb41fb2a4a7bef46016add5356d8dc7569d566a96f8d6032d3c6d6fa303a65"
+    },
+    {
+      "path": "gui-evidence/normal-shogi-reopened-historical-analysis.webview.png",
+      "bytes": 135007,
+      "sha256": "e1c1466474a7f5601160c8e0f625ed5c2331b25fd9a95031442d485d60d9fce1"
+    },
+    {
+      "path": "gui-evidence/verification-shogi-declaration-takeback-reopened-stopped.webview.png",
+      "bytes": 92797,
+      "sha256": "f80723a1b9cf5aaed41b90e45b0c912e54cf9d8a464aafa28798716f4c159a35"
+    },
+    {
+      "path": "gui-evidence/verification-shogi-declaration-takeback-reopened-stopped.desktop.png",
+      "bytes": 106467,
+      "sha256": "d7a7be347a7cdf9a4c6349894b83c3dda3befdd614bc016e0336a059db7215a8"
+    },
+    {
+      "path": "gui-evidence/verification-shogi-declaration-takeback-reopened-stopped.dom.json",
+      "bytes": 9167,
+      "sha256": "57b3000e47bf83593e98dc9744973d2b34e987042e0174a00254bfbce71a1efc"
+    },
+    {
+      "path": "gui-evidence/verification-shogi-declaration-takeback-reopened-resumed.webview.png",
+      "bytes": 91017,
+      "sha256": "58b3f0316d72ce4d43fef2e9e64579933e06960fb4369aced3d167bf5aa89855"
+    },
+    {
+      "path": "gui-evidence/verification-shogi-declaration-takeback-reopened-resumed.desktop.png",
+      "bytes": 104682,
+      "sha256": "484f6bd9b9d48621a59b9afd0b39d4997e74dea54f5294b11d5f327da2789e9d"
+    },
+    {
+      "path": "gui-evidence/verification-shogi-declaration-takeback-reopened-resumed.dom.json",
+      "bytes": 1327,
+      "sha256": "29ce89dc58007871d881f1beceb43c05fab191d8399c0a7aeec18ee796e96b40"
+    }
+  ],
+  "scope": "Actual installed normal and separately extracted labeled verification Linux Chess/Shogi packages. No Xiangqi GUI or macOS inference. Complete243-file GUI artifact/package binaries remain in referenced CI artifact."
+}

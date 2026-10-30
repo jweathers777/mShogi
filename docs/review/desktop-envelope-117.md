@@ -116,13 +116,60 @@ were fixed with real long malformed payload/identity tests. It challenged select
 history reconstruction headroom; the added reserve and existing Full-budget
 distinction resolve that finding. **No material source finding remains.**
 
-## Committed-source CI and package disposition
+## Initial committed-source CI and required correction
 
-Pending the reviewed source commit and applicable CI. No current packaged GUI
-or cross-platform success is claimed yet. The updated GUI verifier exercises
-current-format Save/Open/history, failure/recovery and a new formal declaration
-→ Take back → Save/Open → fresh stopped state → explicit Resume journey.
-Separately labeled verification packages exercise difficult states; normal
-packages must exclude instrumentation. MSH-122 and R1 remain qualified historical
-evidence, not proof of this changed archive boundary. MSH-112 remains separate.
-MSH-117 stays unfinished until actual package evidence and CI are reconciled.
+Reviewed source `8f4136961633659571f57fe1645a47fcfee52d45` integrated/pushed
+normally. Desktop41080845341 passed all3jobs; Rust41080845090 passed Linux/macOS
+but **Windows failed**:155/156all-feature checks passed, and the extreme Full
+witness byte-boundary case saved successfully then returned Failed on Open.
+The original assertion omitted the I/O diagnostic, so its exact failure cause
+cannot be established from that log; no unsupported timeout/race classification
+is claimed. The [failing probe](evidence/msh117/windows-native-initial-failure.txt)
+and exact first-run CI metadata/provenance remain historical evidence.
+
+The failure exposed a real preservation risk: compact encoding can retain many
+large Full certificates, but Open revalidated every repeated proof while
+admission previously validated only new evidence. The correction retains the
+same limits and complete storage, and shares successful native proof validation
+only within one operation. Exact history/goal/limits/result/work/witness form the
+key; every observation still receives all native context/perspective/lineage/work
+checks. A fresh Open starts untrusted. New observation admission for Full-proof
+documents runs the actual complete encoded Open/replay path under the existing
+15-second budget, including prior distinct proofs. Ordinary immutable-proof
+commands retain existing reserves without repeating unchanged certificates.
+
+Five new native regressions pass, independently rerun:40,001-action certificate
+first/fresh-operation native verification, bounded repeated-proof reuse,
+same-board/different-history and distinct-witness misses,12later corruptions,
+failed-proof cache exclusion, previous distinct proofs checked beyond the
+watermark and atomic cancellation/refusal. Stricter initial correction (full
+candidate replay on every command too) passed the unchanged byte stress body in
+249.37s locally. Final scope avoids repeating immutable proof work for ordinary
+commands; final committed-source Windows execution remains required below.
+
+Only the extremely expensive byte stress is placed under desktop-verification;
+the **unchanged mandatory all-feature native CI step still executes its full
+body on every OS**, rather than twice in the same job's default/all-feature
+passes. No body/threshold/assertion was weakened; its failure now prints actual
+IoState, and success records encoded count/bytes/Open time. The5new cache/admission
+checks remain in the default tests. Independent review explicitly approved this
+verification-cost placement and final correction; no source finding remains.
+
+At initial8f41369, actual Linux14-phase installed normal/separately labeled QA
+GUI evidence passed:243file hashes,13normal package hashes,QApackage/host,
+16normal-host instrumentation exclusions and14native pre-teardown shutdown
+proofs audited by root and the fresh reviewer. Current-format saved Chess/Shogi
+histories and both256-observation archives are retained. The actual new
+Shogi declaration→Take back→Save/Open→stopped reopen→explicit Resume journey
+retains `resume,declare,take_back`,0current native events, fresh document1→2 and
+selection4→13, with no declared outcome revived. Selected original reports,
+archives/captures and package identities are [indexed here](evidence/msh117/linux/artifact-index.json).
+This is qualified initial-source GUI evidence; no Xiangqi or macOS GUI claim.
+Linux native logs establish156/156all-feature tests; Desktop logs241frontend,
+43Python verifier and5host checks. No failed native run is hidden by these results.
+
+## Corrected committed-source CI and final acceptance
+
+Pending the reviewed correction commit and applicable CI/package reconciliation.
+MSH-117 remains In Review with unchecked AC/DoD. No R3 stage starts. MSH-112
+remains a separate historical issue and is not assumed to explain this failure.

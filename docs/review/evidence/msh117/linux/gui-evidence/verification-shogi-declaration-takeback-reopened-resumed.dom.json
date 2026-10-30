@@ -1,0 +1,15 @@
+{
+  "text": "\u265c\nmShogi\nSHOGI \u00b7 UNTIMED\nLocal engine\nUNSAVED CHANGES\nshogi-takeback-declaration.mshogi\nNew game\nSave\nSave as\u2026\nOpen\u2026\nYOUR GAME\n\nSente to move\nYou play Sente against mShogi\n\u2195\nFlip board\nm\nmShogiGote\nYour opponent\nNo pieces in hand\n\u7389\n\u5c06\n\u98db\n\u8eca\n\u89d2\n\u884c\n\u3068\n\u91d1\n\u3068\n\u91d1\n\u3068\n\u91d1\n\u3068\n\u91d1\n\u3068\n\u91d1\n\u3068\n\u91d1\n\u3068\n\u91d1\n\u3068\n\u91d1\n\u738b\n\u5c06\n9\n8\n7\n6\n5\n4\n3\n2\n1\na\nb\nc\nd\ne\nf\ng\nh\ni\nY\nYouSente\nHuman player\nTo move\n\n\u89d2\n\u884c\n1\n\n\u6b69\n\u5175\n5\nSelect a piece or hand piece, then a marked square.\nArrows \u00b7 Enter \u00b7 Esc\nYour turn\nLive position \u00b7 0 plies\nAnalysis\n\nPlay details\nAnalyze position\nNative engine\nIdle\nPlay limit: depth 2 \u00b7 5000 nodes\nNo engine search has completed in this game.\nGame history\n0 events\n\n0\nStarting position\nGame actions\n\nTake back\nEntering-king prerequisites are satisfied. Eligibility alone does not conclude the game.\n\nDeclare entering king\u2026Resign game\u2026\nAbout & technical details\n",
+  "focus": {
+    "label": null,
+    "text": "Sente to move",
+    "tag": "H2"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 820,
+    "width": 1180
+  },
+  "common_actions": [],
+  "inputs": []
+}

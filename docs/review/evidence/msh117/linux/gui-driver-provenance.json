@@ -1,0 +1,26 @@
+{
+  "upstream_url": "https://static.crates.io/crates/tauri-driver/tauri-driver-2.0.6.crate",
+  "upstream_version": "2.0.6",
+  "upstream_archive_sha256": "24dc39bd26a65361c1c8e067636bbff1d9dd7e2fc58ff874edfba33acab0e6d0",
+  "source_revision": "8f4136961633659571f57fe1645a47fcfee52d45",
+  "original_server_sha256": "e6c4065dc58f1c3a9e727e40982ddb17472af9e55b0797138db6f482af3ea75b",
+  "command": [
+    "cargo",
+    "+1.90.0",
+    "build",
+    "--release",
+    "--locked",
+    "--manifest-path",
+    "/home/runner/work/_temp/mshogi-gui-driver/tauri-driver-2.0.6/Cargo.toml",
+    "--target-dir",
+    "/home/runner/work/_temp/mshogi-gui-driver/target"
+  ],
+  "rustc": "rustc 1.90.0 (1159e78c4 2025-09-14)\nbinary: rustc\ncommit-hash: 1159e78c4747b02ef996e55082b704c09b970588\ncommit-date: 2025-09-14\nhost: x86_64-unknown-linux-gnu\nrelease: 1.90.0\nLLVM version: 20.1.8\n",
+  "cargo_lock_sha256": "24b50c537696d54b7d2c5bfb9b2d591a78b2e429969edc61ee24989a1d69b86f",
+  "policy": "No pooled downstream connections; no request replay; upstream retry_canceled_requests(false) retained.",
+  "patched_server_sha256": "e2cba9d68c37ee0c16b122fa7fbd66a98b5220271e9b3701190a3c6ba97c6b3f",
+  "binaries": {
+    "tauri-driver": "94e7345a51842e7a3f78bbd2194b1675cc02f86a9b7ae7ca986b0bf447b754ab",
+    "tauri-driver-original": "f2673b1e3f50b44cf8bd5a083b9eef56cf573c148a79eddf51d54b812338b1cc"
+  }
+}

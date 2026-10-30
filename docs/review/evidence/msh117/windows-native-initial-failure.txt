@@ -1,0 +1,26 @@
+1472: 2026-10-30T15:38:54.8600806Z ---- persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable stdout ----
+1473: 2026-10-30T15:38:54.8601459Z
+1474: 2026-10-30T15:38:54.8602263Z thread 'persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable' (6516) panicked at crates\mshogi-desktop-session\src\persistence.rs:2691:9:
+1475: 2026-10-30T15:38:54.8603130Z assertion `left == right` failed
+1476: 2026-10-30T15:38:54.8603373Z   left: Failed
+1477: 2026-10-30T15:38:54.8603564Z  right: Complete
+1478: 2026-10-30T15:38:54.8603858Z note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+1479: 2026-10-30T15:38:54.8604236Z
+1480: 2026-10-30T15:38:54.8604240Z
+1481: 2026-10-30T15:38:54.8604312Z failures:
+1482: 2026-10-30T15:38:54.8604715Z     persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable
+1483: 2026-10-30T15:38:54.8605143Z
+1484: 2026-10-30T15:38:54.8605405Z test result: FAILED. 155 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 243.59s
+1485: 2026-10-30T15:38:54.8605688Z
+1486: 2026-10-30T15:38:54.8624334Z error: test failed, to rerun pass `-p mshogi-desktop-session --lib`
+1487: 2026-10-30T15:38:54.8706117Z ##[error]Process completed with exit code 101.
+1488: 2026-10-30T15:38:54.8926704Z Post job cleanup.
+1489: 2026-10-30T15:38:55.0203398Z [command]"C:\Program Files\Git\bin\git.exe" version
+1490: 2026-10-30T15:38:55.0427921Z git version 2.56.0.windows.3
+1491: 2026-10-30T15:38:55.0471827Z Temporarily overriding HOME='D:\a\_temp\7b9e05f6-cf00-40c0-87b2-2ae598dc8407' before making global git config changes
+1492: 2026-10-30T15:38:55.0472525Z Adding repository directory to the temporary git global config as a safe directory
+1493: 2026-10-30T15:38:55.0480744Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\mShogi\mShogi
+1494: 2026-10-30T15:38:55.0719188Z Removing SSH command configuration
+1495: 2026-10-30T15:38:55.0728223Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+1496: 2026-10-30T15:38:55.0976135Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+1497: 2026-10-30T15:38:55.5188788Z Removing HTTP extra header

@@ -1,0 +1,8 @@
+{
+  "source_revision": "8f4136961633659571f57fe1645a47fcfee52d45",
+  "run": 41080845090,
+  "job": 124149217728,
+  "raw_bytes": 145286,
+  "raw_sha256": "96606c09ce8db8b05e6548d89ed5ab12149e650658c1520c837dbcfd973e067d",
+  "method": "Completed job logs via gh api --allow-escape-sequences; retained numbered excerpt, normalized CRLF/ANSI only. Original assertion omitted IoState.message; no exact original error cause is established."
+}

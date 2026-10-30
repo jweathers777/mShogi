@@ -1,8 +1,8 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use mshogi_desktop_session::{
-    ApplicationLifecycle, DesktopCommand, DesktopController, IoPhase, OpenToken,
-    OperationReservation, SharedOpenToken, SharedSnapshot, Snapshot,
+    ApplicationLifecycle, DesktopController, IoPhase, OperationReservation, SharedOpenToken,
+    SharedSnapshot,
 };
 #[cfg(feature = "desktop-verification")]
 use mshogi_desktop_session::{SyntheticCommand, SyntheticController, SyntheticSnapshot};
@@ -46,9 +46,9 @@ impl VerificationState {
     fn is_synthetic(&self) -> bool {
         self.fixture == "synthetic"
     }
-    fn require_chess(&self) -> Result<(), String> {
+    fn require_product(&self) -> Result<(), String> {
         if self.is_synthetic() {
-            Err("Synthetic fixture actions and records are separate from chess documents.".into())
+            Err("Synthetic fixture actions and records are separate from game documents.".into())
         } else {
             Ok(())
         }
@@ -103,9 +103,9 @@ fn resize_verification_window(
     // A subsequent native Resized event updates this after deferred OS changes.
     update_verification_window_title(app).map_err(|error| error.to_string())
 }
-fn ensure_chess_mode(_app: &AppHandle) -> Result<(), String> {
+fn ensure_product_mode(_app: &AppHandle) -> Result<(), String> {
     #[cfg(feature = "desktop-verification")]
-    _app.state::<VerificationState>().require_chess()?;
+    _app.state::<VerificationState>().require_product()?;
     Ok(())
 }
 #[cfg(feature = "desktop-verification")]
@@ -200,7 +200,7 @@ async fn game_command(
     app: AppHandle,
     command_json: String,
 ) -> Result<mshogi_desktop_session::SharedSnapshot, String> {
-    ensure_chess_mode(&app)?;
+    ensure_product_mode(&app)?;
     let command = mshogi_desktop_session::SharedDesktopCommand::from_json(&command_json)?;
     let shutdown = app.state::<Arc<ShutdownState>>().inner().clone();
     let (initial, receipt, reservation) = with_controller(
@@ -239,7 +239,7 @@ fn current_contract_snapshot(
         DesktopController::shared_snapshot,
     )
 }
-// Both games share native pickers, the bounded archive worker and atomic writer.
+// All games share native pickers, the bounded archive worker and atomic writer.
 #[tauri::command]
 async fn game_file(
     app: AppHandle,
@@ -333,33 +333,6 @@ fn queue_game_file(
     }
 }
 
-// Raw native commands preserve strict duplicate-field rejection all the way to
-// the authoritative session parser. The development harness is only an adapter.
-#[cfg(feature = "desktop-verification")]
-#[tauri::command]
-fn native_contract_snapshot(
-    controller: State<'_, Mutex<DesktopController>>,
-    shutdown: State<'_, Arc<ShutdownState>>,
-) -> Result<mshogi_desktop_session::SharedSnapshot, String> {
-    game_snapshot(controller, shutdown)
-}
-#[cfg(feature = "desktop-verification")]
-#[tauri::command]
-async fn native_contract_command(
-    app: AppHandle,
-    command_json: String,
-) -> Result<mshogi_desktop_session::SharedSnapshot, String> {
-    game_command(app, command_json).await
-}
-#[cfg(feature = "desktop-verification")]
-#[tauri::command]
-async fn native_contract_file(
-    app: AppHandle,
-    action: String,
-    expected: mshogi_desktop_session::SharedOpenToken,
-) -> Result<mshogi_desktop_session::SharedSnapshot, String> {
-    game_file(app, action, expected).await
-}
 #[tauri::command]
 async fn game_new(
     app: AppHandle,
@@ -367,7 +340,7 @@ async fn game_new(
     human: mshogi_desktop_session::NativeSide,
     expected: mshogi_desktop_session::SharedOpenToken,
 ) -> Result<mshogi_desktop_session::SharedSnapshot, String> {
-    ensure_chess_mode(&app)?;
+    ensure_product_mode(&app)?;
     let shutdown = app.state::<Arc<ShutdownState>>().inner().clone();
     let (initial, receipt, reservation) = with_controller(
         &app.state::<Mutex<DesktopController>>(),
@@ -425,63 +398,13 @@ fn with_controller<T>(
     }
     Ok(operation(&mut controller))
 }
-#[tauri::command]
-fn desktop_snapshot(
-    controller: State<'_, Mutex<DesktopController>>,
-    shutdown: State<'_, Arc<ShutdownState>>,
-) -> Result<Snapshot, String> {
-    with_controller(&controller, &shutdown, legacy_snapshot)?
-}
-// Current native lifecycle owns all document-operation reservations. The host
-// retains only technical event-loop/cleanup state.
+// Native lifecycle owns document reservations; the host owns only event-loop cleanup.
 fn app_lifecycle(app: &AppHandle) -> Arc<ApplicationLifecycle> {
     app.state::<Arc<ApplicationLifecycle>>().inner().clone()
 }
-fn legacy_snapshot(controller: &mut DesktopController) -> Result<Snapshot, String> {
-    controller
-        .shared_snapshot()
-        .chess
-        .ok_or_else(|| "The active native game uses the current application contract.".into())
-}
-#[tauri::command]
-async fn desktop_command(app: AppHandle, command: DesktopCommand) -> Result<Snapshot, String> {
-    ensure_chess_mode(&app)?;
-    let shutdown = app.state::<Arc<ShutdownState>>().inner().clone();
-    let (initial, receipt, reservation) = with_controller(
-        &app.state::<Mutex<DesktopController>>(),
-        &shutdown,
-        |controller| {
-            let reservation = controller.lifecycle().reserve_command()?;
-            let (snapshot, receipt) = controller.command_with_receipt(command)?;
-            Ok::<_, String>((snapshot, receipt, reservation))
-        },
-    )??;
-    if let Some(completion) = receipt.completion() {
-        completion?;
-        return Ok(initial);
-    }
-    // One bounded host waiter. Serialization/validation belongs to the native
-    // admission worker; the controller lock is released between polls. A
-    // stable receipt survives later engine-result admissions and cancellation.
-    tauri::async_runtime::spawn_blocking(move || {
-        let _reservation = reservation;
-        loop {
-            let snapshot = current_snapshot(&app)?;
-            if let Some(completion) = receipt.completion() {
-                completion?;
-                return Ok(snapshot);
-            }
-            thread::sleep(Duration::from_millis(15));
-        }
-    })
-    .await
-    .map_err(|error| format!("Native command admission failed: {error}"))?
-}
-
-/// The native lifecycle reserves both picker and file completion. Dialogs and
-/// I/O run off the serialized controller lock.
+/// Picker and completion are reserved under the native application owner.
 fn reserve_file_operation(app: &AppHandle) -> Result<OperationReservation, String> {
-    ensure_chess_mode(app)?;
+    ensure_product_mode(app)?;
     let shutdown = app.state::<Arc<ShutdownState>>();
     with_controller(
         &app.state::<Mutex<DesktopController>>(),
@@ -489,128 +412,7 @@ fn reserve_file_operation(app: &AppHandle) -> Result<OperationReservation, Strin
         |controller| controller.lifecycle().reserve_file(),
     )?
 }
-fn current_snapshot(app: &AppHandle) -> Result<Snapshot, String> {
-    with_controller(
-        &app.state::<Mutex<DesktopController>>(),
-        &app.state::<Arc<ShutdownState>>(),
-        legacy_snapshot,
-    )?
-}
-fn wait_file_operation(app: &AppHandle, id: u64) -> Result<Option<Snapshot>, String> {
-    loop {
-        let snapshot = current_contract_snapshot(app)?;
-        if snapshot.io.id != id {
-            return Err("The file operation was superseded; no completion was accepted.".into());
-        }
-        match snapshot.io.phase {
-            IoPhase::Complete => return Ok(snapshot.chess),
-            IoPhase::Failed => {
-                return Err(snapshot
-                    .io
-                    .message
-                    .unwrap_or_else(|| "File operation failed.".into()));
-            }
-            _ => thread::sleep(Duration::from_millis(15)),
-        }
-    }
-}
-async fn save_document(app: AppHandle, save_as: bool) -> Result<Option<Snapshot>, String> {
-    let reservation = reserve_file_operation(&app)?;
-    tauri::async_runtime::spawn_blocking(move || {
-        let _reservation = reservation;
-        let existing = current_snapshot(&app)?.document.path;
-        let path = if !save_as && existing.is_some() {
-            existing.map(PathBuf::from)
-        } else {
-            app.dialog()
-                .file()
-                .set_title("Save mShogi game")
-                .add_filter("mShogi game", &["mshogi"])
-                .set_file_name("game.mshogi")
-                .blocking_save_file()
-                .map(|path| path.into_path().map_err(|error| error.to_string()))
-                .transpose()?
-        };
-        let Some(path) = path else {
-            return current_snapshot(&app).map(Some);
-        };
-        let id = with_controller(
-            &app.state::<Mutex<DesktopController>>(),
-            &app.state::<Arc<ShutdownState>>(),
-            |controller| controller.queue_shared_save(path),
-        )??;
-        wait_file_operation(&app, id)
-    })
-    .await
-    .map_err(|error| format!("Native save task failed: {error}"))?
-}
-#[tauri::command]
-async fn desktop_save(app: AppHandle) -> Result<Option<Snapshot>, String> {
-    save_document(app, false).await
-}
-#[tauri::command]
-async fn desktop_save_as(app: AppHandle) -> Result<Option<Snapshot>, String> {
-    save_document(app, true).await
-}
-#[tauri::command]
-async fn desktop_open(
-    app: AppHandle,
-    expected_version: u64,
-    expected_document_revision: u64,
-) -> Result<Option<Snapshot>, String> {
-    let reservation = reserve_file_operation(&app)?;
-    let token = OpenToken {
-        version: expected_version,
-        document_revision: expected_document_revision,
-    };
-    tauri::async_runtime::spawn_blocking(move || {
-        let _reservation = reservation;
-        // Reject stale guard decisions before showing a picker as well as at
-        // queue/commit time. A picker never grants authority to replace a game.
-        let actual = with_controller(
-            &app.state::<Mutex<DesktopController>>(),
-            &app.state::<Arc<ShutdownState>>(),
-            |controller| {
-                if controller.lifecycle().close_requested() {
-                    Err("Finish or cancel the close request before opening a game.".to_string())
-                } else {
-                    Ok(controller.shared_open_token())
-                }
-            },
-        )??;
-        if actual.version != token.version || actual.document_revision != token.document_revision {
-            return Err("The game changed. Review unsaved changes and try Open again.".into());
-        }
-        let path = app
-            .dialog()
-            .file()
-            .set_title("Open mShogi game")
-            .add_filter("mShogi game", &["mshogi"])
-            .blocking_pick_file()
-            .map(|path| path.into_path().map_err(|error| error.to_string()))
-            .transpose()?;
-        let Some(path) = path else {
-            return current_snapshot(&app).map(Some);
-        };
-        let id = with_controller(
-            &app.state::<Mutex<DesktopController>>(),
-            &app.state::<Arc<ShutdownState>>(),
-            |controller| {
-                if controller.lifecycle().close_requested() {
-                    Err("Finish or cancel the close request before opening a game.".to_string())
-                } else {
-                    controller.queue_product_open(path, actual)
-                }
-            },
-        )??;
-        wait_file_operation(&app, id)
-    })
-    .await
-    .map_err(|error| format!("Native open task failed: {error}"))?
-}
-// Current native close contract. The old desktop_* routes/events below are
-// the sole frontend forwarder for App/useNativeSession and verification views;
-// MSH-119 deletes them with those callers. They own no native document state.
+// The one current native close contract serves every selected game.
 fn request_close(app: &AppHandle) -> Result<(), String> {
     let shutdown = app.state::<Arc<ShutdownState>>();
     let snapshot = with_controller(
@@ -629,13 +431,6 @@ fn request_close(app: &AppHandle) -> Result<(), String> {
         return Err(format!(
             "Could not request unsaved-change confirmation: {error}"
         ));
-    }
-    if let Some(chess) = snapshot.chess {
-        app.emit("desktop-close-requested", chess)
-            .map_err(|error| {
-                let _ = app_lifecycle(app).cancel_close();
-                format!("Could not forward Chess close confirmation: {error}")
-            })?;
     }
     if let Some(window) = app.get_webview_window("main") {
         let _ = window.show();
@@ -676,37 +471,6 @@ fn approve_close(
     controller
         .lifecycle()
         .approve_close(expected, controller.shared_open_token())
-}
-#[tauri::command]
-fn desktop_request_close(app: AppHandle) -> Result<(), String> {
-    request_close(&app)
-}
-#[tauri::command]
-fn desktop_cancel_close(
-    controller: State<'_, Mutex<DesktopController>>,
-    shutdown: State<'_, Arc<ShutdownState>>,
-) -> Result<Snapshot, String> {
-    with_controller(&controller, &shutdown, |controller| {
-        controller.lifecycle().cancel_close()?;
-        legacy_snapshot(controller)
-    })?
-}
-#[tauri::command]
-fn desktop_finish_close(app: AppHandle, expected_document_revision: u64) -> Result<(), String> {
-    let shutdown = app.state::<Arc<ShutdownState>>();
-    with_controller(
-        &app.state::<Mutex<DesktopController>>(),
-        &shutdown,
-        |controller| {
-            let expected = controller.shared_open_token();
-            if expected.document_revision != expected_document_revision {
-                return Err("The game changed. Review unsaved changes before closing.".into());
-            }
-            approve_close(controller, expected)
-        },
-    )??;
-    app.exit(0);
-    Ok(())
 }
 #[cfg(feature = "desktop-verification")]
 fn initial_controller(fixture: &str) -> Result<DesktopController, Box<dyn std::error::Error>> {
@@ -938,22 +702,8 @@ fn main() {
             game_request_close,
             game_cancel_close,
             game_finish_close,
-            desktop_snapshot,
-            desktop_command,
-            desktop_save,
-            desktop_save_as,
-            desktop_open,
-            desktop_request_close,
-            desktop_cancel_close,
-            desktop_finish_close,
             #[cfg(feature = "desktop-verification")]
             desktop_verification_mode,
-            #[cfg(feature = "desktop-verification")]
-            native_contract_snapshot,
-            #[cfg(feature = "desktop-verification")]
-            native_contract_command,
-            #[cfg(feature = "desktop-verification")]
-            native_contract_file,
             #[cfg(feature = "desktop-verification")]
             synthetic_snapshot,
             #[cfg(feature = "desktop-verification")]
@@ -1221,7 +971,7 @@ mod tests {
             "no Chess projection or dormant game for Shogi"
         );
         assert!(native.document.dirty);
-        assert!(legacy_snapshot(&mut controller.lock().unwrap()).is_err());
+        assert_eq!(native.game, GameKind::Shogi);
         let paused = with_controller(&controller, &shutdown, |c| {
             c.lifecycle().request_close().unwrap();
             c.application_pause_for_close()
@@ -1248,7 +998,7 @@ mod tests {
         let controller = controller();
         let shutdown = ShutdownState::default();
         let verification = VerificationState::new("synthetic".into());
-        assert!(verification.require_chess().is_err());
+        assert!(verification.require_product().is_err());
         let initial =
             with_synthetic(&controller, &shutdown, &verification, |s| s.snapshot()).unwrap();
         let lifecycle = controller.lock().unwrap().lifecycle();
@@ -1290,7 +1040,7 @@ mod tests {
         let controller = controller();
         let shutdown = ShutdownState::default();
         let verification = VerificationState::new("standard".into());
-        assert!(verification.require_chess().is_ok());
+        assert!(verification.require_product().is_ok());
         assert!(
             with_synthetic(&controller, &shutdown, &verification, |_| panic!(
                 "inactive fixture entered"

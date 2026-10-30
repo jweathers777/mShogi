@@ -1,0 +1,769 @@
+{
+  "open_token": {
+    "document": 1,
+    "version": 3,
+    "document_revision": 2
+  },
+  "document": {
+    "revision": 2,
+    "dirty": true,
+    "path": null,
+    "settings": {
+      "game_kind": "chess",
+      "settings": {
+        "orientation": "white",
+        "analysis_defaults": {
+          "kind": "moves",
+          "depth": 4,
+          "nodes": 100000
+        }
+      }
+    }
+  },
+  "io": {
+    "id": 1,
+    "phase": "idle",
+    "message": null,
+    "resource": null
+  },
+  "capacity": {
+    "id": 3,
+    "status": "available",
+    "message": null,
+    "resource": null
+  },
+  "token": {
+    "document": 1,
+    "version": 3,
+    "revision": 7,
+    "selection": 2
+  },
+  "game": "chess",
+  "profile": "mshogi.chess.match.v1",
+  "edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+  "human": {
+    "id": {
+      "game_kind": "chess",
+      "side": "white"
+    },
+    "key": "mshogi.chess.match.v1:white",
+    "label": "White",
+    "first_mover": true
+  },
+  "turn": {
+    "id": {
+      "game_kind": "chess",
+      "side": "white"
+    },
+    "key": "mshogi.chess.match.v1:white",
+    "label": "White",
+    "first_mover": true
+  },
+  "sides": [
+    {
+      "id": {
+        "game_kind": "chess",
+        "side": "white"
+      },
+      "key": "mshogi.chess.match.v1:white",
+      "label": "White",
+      "first_mover": true
+    },
+    {
+      "id": {
+        "game_kind": "chess",
+        "side": "black"
+      },
+      "key": "mshogi.chess.match.v1:black",
+      "label": "Black",
+      "first_mover": false
+    }
+  ],
+  "board": {
+    "files": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g",
+      "h"
+    ],
+    "ranks": [
+      "8",
+      "7",
+      "6",
+      "5",
+      "4",
+      "3",
+      "2",
+      "1"
+    ],
+    "label": "Chess board",
+    "initial_focus": "e2"
+  },
+  "orientations": [
+    {
+      "side": {
+        "id": {
+          "game_kind": "chess",
+          "side": "white"
+        },
+        "key": "mshogi.chess.match.v1:white",
+        "label": "White",
+        "first_mover": true
+      },
+      "files": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h"
+      ],
+      "ranks": [
+        "8",
+        "7",
+        "6",
+        "5",
+        "4",
+        "3",
+        "2",
+        "1"
+      ]
+    },
+    {
+      "side": {
+        "id": {
+          "game_kind": "chess",
+          "side": "black"
+        },
+        "key": "mshogi.chess.match.v1:black",
+        "label": "Black",
+        "first_mover": false
+      },
+      "files": [
+        "h",
+        "g",
+        "f",
+        "e",
+        "d",
+        "c",
+        "b",
+        "a"
+      ],
+      "ranks": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ]
+    }
+  ],
+  "pieces": [
+    {
+      "square": "a1",
+      "owner": "mshogi.chess.match.v1:white",
+      "kind": "rook",
+      "promoted": false,
+      "text": "R",
+      "label": "a1, White rook"
+    },
+    {
+      "square": "b1",
+      "owner": "mshogi.chess.match.v1:white",
+      "kind": "knight",
+      "promoted": false,
+      "text": "N",
+      "label": "b1, White knight"
+    },
+    {
+      "square": "c1",
+      "owner": "mshogi.chess.match.v1:white",
+      "kind": "bishop",
+      "promoted": false,
+      "text": "B",
+      "label": "c1, White bishop"
+    },
+    {
+      "square": "d1",
+      "owner": "mshogi.chess.match.v1:white",
+      "kind": "queen",
+      "promoted": false,
+      "text": "Q",
+      "label": "d1, White queen"
+    },
+    {
+      "square": "e1",
+      "owner": "mshogi.chess.match.v1:white",
+      "kind": "king",
+      "promoted": false,
+      "text": "K",
+      "label": "e1, White king"
+    },
+    {
+      "square": "f1",
+      "owner": "mshogi.chess.match.v1:white",
+      "kind": "bishop",
+      "promoted": false,
+      "text": "B",
+      "label": "f1, White bishop"
+    },
+    {
+      "square": "g1",
+      "owner": "mshogi.chess.match.v1:white",
+      "kind": "knight",
+      "promoted": false,
+      "text": "N",
+      "label": "g1, White knight"
+    },
+    {
+      "square": "h1",
+      "owner": "mshogi.chess.match.v1:white",
+      "kind": "rook",
+      "promoted": false,
+      "text": "R",
+      "label": "h1, White rook"
+    },
+    {
+      "square": "a2",
+      "owner": "mshogi.chess.match.v1:white",
+      "kind": "pawn",
+      "promoted": false,
+      "text": "P",
+      "label": "a2, White pawn"
+    },
+    {
+      "square": "b2",
+      "owner": "mshogi.chess.match.v1:white",
+      "kind": "pawn",
+      "promoted": false,
+      "text": "P",
+      "label": "b2, White pawn"
+    },
+    {
+      "square": "c2",
+      "owner": "mshogi.chess.match.v1:white",
+      "kind": "pawn",
+      "promoted": false,
+      "text": "P",
+      "label": "c2, White pawn"
+    },
+    {
+      "square": "d2",
+      "owner": "mshogi.chess.match.v1:white",
+      "kind": "pawn",
+      "promoted": false,
+      "text": "P",
+      "label": "d2, White pawn"
+    },
+    {
+      "square": "e2",
+      "owner": "mshogi.chess.match.v1:white",
+      "kind": "pawn",
+      "promoted": false,
+      "text": "P",
+      "label": "e2, White pawn"
+    },
+    {
+      "square": "f2",
+      "owner": "mshogi.chess.match.v1:white",
+      "kind": "pawn",
+      "promoted": false,
+      "text": "P",
+      "label": "f2, White pawn"
+    },
+    {
+      "square": "g2",
+      "owner": "mshogi.chess.match.v1:white",
+      "kind": "pawn",
+      "promoted": false,
+      "text": "P",
+      "label": "g2, White pawn"
+    },
+    {
+      "square": "h2",
+      "owner": "mshogi.chess.match.v1:white",
+      "kind": "pawn",
+      "promoted": false,
+      "text": "P",
+      "label": "h2, White pawn"
+    },
+    {
+      "square": "a7",
+      "owner": "mshogi.chess.match.v1:black",
+      "kind": "pawn",
+      "promoted": false,
+      "text": "P",
+      "label": "a7, Black pawn"
+    },
+    {
+      "square": "b7",
+      "owner": "mshogi.chess.match.v1:black",
+      "kind": "pawn",
+      "promoted": false,
+      "text": "P",
+      "label": "b7, Black pawn"
+    },
+    {
+      "square": "c7",
+      "owner": "mshogi.chess.match.v1:black",
+      "kind": "pawn",
+      "promoted": false,
+      "text": "P",
+      "label": "c7, Black pawn"
+    },
+    {
+      "square": "d7",
+      "owner": "mshogi.chess.match.v1:black",
+      "kind": "pawn",
+      "promoted": false,
+      "text": "P",
+      "label": "d7, Black pawn"
+    },
+    {
+      "square": "e7",
+      "owner": "mshogi.chess.match.v1:black",
+      "kind": "pawn",
+      "promoted": false,
+      "text": "P",
+      "label": "e7, Black pawn"
+    },
+    {
+      "square": "f7",
+      "owner": "mshogi.chess.match.v1:black",
+      "kind": "pawn",
+      "promoted": false,
+      "text": "P",
+      "label": "f7, Black pawn"
+    },
+    {
+      "square": "g7",
+      "owner": "mshogi.chess.match.v1:black",
+      "kind": "pawn",
+      "promoted": false,
+      "text": "P",
+      "label": "g7, Black pawn"
+    },
+    {
+      "square": "h7",
+      "owner": "mshogi.chess.match.v1:black",
+      "kind": "pawn",
+      "promoted": false,
+      "text": "P",
+      "label": "h7, Black pawn"
+    },
+    {
+      "square": "a8",
+      "owner": "mshogi.chess.match.v1:black",
+      "kind": "rook",
+      "promoted": false,
+      "text": "R",
+      "label": "a8, Black rook"
+    },
+    {
+      "square": "b8",
+      "owner": "mshogi.chess.match.v1:black",
+      "kind": "knight",
+      "promoted": false,
+      "text": "N",
+      "label": "b8, Black knight"
+    },
+    {
+      "square": "c8",
+      "owner": "mshogi.chess.match.v1:black",
+      "kind": "bishop",
+      "promoted": false,
+      "text": "B",
+      "label": "c8, Black bishop"
+    },
+    {
+      "square": "d8",
+      "owner": "mshogi.chess.match.v1:black",
+      "kind": "queen",
+      "promoted": false,
+      "text": "Q",
+      "label": "d8, Black queen"
+    },
+    {
+      "square": "e8",
+      "owner": "mshogi.chess.match.v1:black",
+      "kind": "king",
+      "promoted": false,
+      "text": "K",
+      "label": "e8, Black king"
+    },
+    {
+      "square": "f8",
+      "owner": "mshogi.chess.match.v1:black",
+      "kind": "bishop",
+      "promoted": false,
+      "text": "B",
+      "label": "f8, Black bishop"
+    },
+    {
+      "square": "g8",
+      "owner": "mshogi.chess.match.v1:black",
+      "kind": "knight",
+      "promoted": false,
+      "text": "N",
+      "label": "g8, Black knight"
+    },
+    {
+      "square": "h8",
+      "owner": "mshogi.chess.match.v1:black",
+      "kind": "rook",
+      "promoted": false,
+      "text": "R",
+      "label": "h8, Black rook"
+    }
+  ],
+  "hands": [],
+  "choices": [
+    {
+      "origin": {
+        "kind": "board",
+        "square": "b1"
+      },
+      "action": "b1c3",
+      "from": "b1",
+      "steps": [
+        "c3"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "b1"
+      },
+      "action": "b1a3",
+      "from": "b1",
+      "steps": [
+        "a3"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "g1"
+      },
+      "action": "g1h3",
+      "from": "g1",
+      "steps": [
+        "h3"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "g1"
+      },
+      "action": "g1f3",
+      "from": "g1",
+      "steps": [
+        "f3"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "a2"
+      },
+      "action": "a2a3",
+      "from": "a2",
+      "steps": [
+        "a3"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "a2"
+      },
+      "action": "a2a4",
+      "from": "a2",
+      "steps": [
+        "a4"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "b2"
+      },
+      "action": "b2b3",
+      "from": "b2",
+      "steps": [
+        "b3"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "b2"
+      },
+      "action": "b2b4",
+      "from": "b2",
+      "steps": [
+        "b4"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "c2"
+      },
+      "action": "c2c3",
+      "from": "c2",
+      "steps": [
+        "c3"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "c2"
+      },
+      "action": "c2c4",
+      "from": "c2",
+      "steps": [
+        "c4"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "d2"
+      },
+      "action": "d2d3",
+      "from": "d2",
+      "steps": [
+        "d3"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "d2"
+      },
+      "action": "d2d4",
+      "from": "d2",
+      "steps": [
+        "d4"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "e2"
+      },
+      "action": "e2e3",
+      "from": "e2",
+      "steps": [
+        "e3"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "e2"
+      },
+      "action": "e2e4",
+      "from": "e2",
+      "steps": [
+        "e4"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "f2"
+      },
+      "action": "f2f3",
+      "from": "f2",
+      "steps": [
+        "f3"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "f2"
+      },
+      "action": "f2f4",
+      "from": "f2",
+      "steps": [
+        "f4"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "g2"
+      },
+      "action": "g2g3",
+      "from": "g2",
+      "steps": [
+        "g3"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "g2"
+      },
+      "action": "g2g4",
+      "from": "g2",
+      "steps": [
+        "g4"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "h2"
+      },
+      "action": "h2h3",
+      "from": "h2",
+      "steps": [
+        "h3"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "h2"
+      },
+      "action": "h2h4",
+      "from": "h2",
+      "steps": [
+        "h4"
+      ],
+      "completion": null
+    }
+  ],
+  "capabilities": {
+    "board_action": true,
+    "drops": false,
+    "promotion": true,
+    "take_back": false,
+    "undo": false,
+    "engine_turn": false,
+    "move_analysis": true,
+    "chess_full": true,
+    "claims": false,
+    "declaration": false,
+    "resign": true,
+    "hands": false,
+    "history": true,
+    "save": true
+  },
+  "status": {
+    "concluded": false,
+    "label": "White to move",
+    "score_half_points": null
+  },
+  "events": [
+    {
+      "index": 0,
+      "board_ply": 0,
+      "label": "Initial known position"
+    },
+    {
+      "index": 1,
+      "board_ply": 0,
+      "label": "Match started"
+    }
+  ],
+  "event_index": 1,
+  "board_ply": 0,
+  "play_limits": {
+    "depth": 2,
+    "nodes": 20000
+  },
+  "historical": false,
+  "paused": false,
+  "phase": "idle",
+  "execution_purpose": null,
+  "diagnostic": null,
+  "declaration_advice": [],
+  "context": {
+    "envelope_version": 1,
+    "game_kind": "chess",
+    "rules_profile": "mshogi.chess.match.v1",
+    "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+    "native_schema_version": 1,
+    "payload": {"schema_version":1,"rules_profile":"mshogi.chess.match.v1","initial_fen":"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1","history_origin":"imported_fen","claim_policy":"explicit_only","events":[]}
+  },
+  "analysis": null,
+  "observations": [],
+  "search_observations": [],
+  "score_meaning": "Chess root-side centipawns; native mate distance and bounded cooperative Full proof remain distinct (see chess analysis).",
+  "chess": {
+    "claims": [],
+    "live_conclusion": null,
+    "selected_conclusion": null,
+    "in_check": false,
+    "analysis": {
+      "status": "idle",
+      "target": null,
+      "operation": null,
+      "context": null,
+      "result": null,
+      "message": null
+    },
+    "last_engine_result": null,
+    "last_engine_turn": null,
+    "searched_version": null,
+    "rules_mode": "m2"
+  },
+  "chess_match": {
+    "schema_version": 1,
+    "rules_profile": "mshogi.chess.match.v1",
+    "initial_record_json": "{\"schema_version\":1,\"rules_profile\":\"mshogi.chess.match.v1\",\"initial_fen\":\"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\",\"history_origin\":\"imported_fen\",\"claim_policy\":\"explicit_only\",\"events\":[]}",
+    "time_control": "untimed",
+    "events": [
+      {
+        "request": {
+          "at_ns": 0,
+          "version": 0,
+          "actor": "white",
+          "command": "start"
+        },
+        "reply": {
+          "version": 1,
+          "remaining_ns": null,
+          "active": "white",
+          "conclusion": null,
+          "rejection": null
+        }
+      }
+    ]
+  }
+}

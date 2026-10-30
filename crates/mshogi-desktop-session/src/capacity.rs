@@ -227,10 +227,11 @@ impl DesktopController {
     }
     /// Queue a command and return a stable, caller-owned completion receipt.
     /// Continue polling snapshots off the UI thread until completion is present.
-    pub fn command_with_receipt(
+    #[cfg(test)]
+    pub(super) fn command_with_receipt(
         &mut self,
-        command: DesktopCommand,
-    ) -> Result<(Snapshot, AdmissionReceipt), String> {
+        command: ChessMutationCommand,
+    ) -> Result<(ChessSnapshot, AdmissionReceipt), String> {
         self.last_command_receipt = None;
         let snapshot = self.command(command)?;
         let receipt = self.last_command_receipt.take().unwrap_or_else(|| {
@@ -280,7 +281,7 @@ impl DesktopController {
         let preferences = matches!(
             &mutation,
             Some(persistence::ChessMutation::Command {
-                command: DesktopCommand::Preferences { .. },
+                command: ChessMutationCommand::Preferences { .. },
                 ..
             })
         );
@@ -326,7 +327,7 @@ impl DesktopSession {
         // fixture initializer and its name do not exist in normal distributions.
         for index in 0..MAX_ARCHIVE_OBSERVATIONS - 1 {
             session.command_unchecked(
-                DesktopCommand::Analyze {
+                ChessMutationCommand::Analyze {
                     version: session.version,
                     operation: AnalysisOperation::Moves { depth: 1, nodes: 0 },
                 },

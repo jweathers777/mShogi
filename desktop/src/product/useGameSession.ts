@@ -61,6 +61,10 @@ export function useGameSession() {
     try { await invoke("game_finish_close", { expected: source.open_token }); return true; }
     catch (e) { setError(String(e)); return false; }
   };
-  return { snapshot, busy, error, command, file, newGame, closeRequested, cancelClose, finishClose };
+  const requestClose = async () => {
+    try { await invoke("game_request_close"); }
+    catch (e) { if (alive.current) setError(String(e)); }
+  };
+  return { snapshot, busy, error, command, file, newGame, closeRequested, cancelClose, finishClose, requestClose };
 }
 export type GameSession = ReturnType<typeof useGameSession>;

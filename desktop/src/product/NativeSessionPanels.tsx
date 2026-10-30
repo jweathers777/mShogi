@@ -1,32 +1,22 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AnalysisActions, InspectorSwitch, NativeEnginePanel } from "./ApplicationShell";
 import type { GameSnapshot, Operation, SearchView } from "./native";
-import type { GameSession } from "./useGameSession";
+import { resourceExplanation } from "./resourcePresentation";
+import { ChessAnalysisContent, ChessSavedEvidence } from "./ChessAnalysisContent";
+import type { AnalysisOperation } from "../native";
+import { colorName, conclusionName } from "../presentation";
 
-// Shared interaction language only. Scores, targets, choices and admission stay native.
-export function nativeCapacityReached(snapshot: GameSnapshot, error: string) {
-  return snapshot.capacity.status === "paused" || /application capacity/i.test(error);
+// Only native state/facts establish capacity; command errors remain unclassified.
+export function nativeCapacityReached(snapshot: GameSnapshot) {
+  return snapshot.capacity.status === "paused" || Boolean(snapshot.capacity.resource);
 }
-// Retained observations never shrink in one document. Remember that native
-// structural refusal across Save; a fresh Open/New document gets a fresh key.
-export function useNativeCapacityError(snapshot: GameSnapshot, error: string) {
-  const [retained, setRetained] = useState<{ document: number; error: string } | null>(null);
-  useEffect(() => {
-    if (/application capacity:.*(?:retained observations|observation retention)/i.test(error))
-      setRetained({ document: snapshot.token.document, error });
-  }, [snapshot.token.document, error]);
-  return /application capacity/i.test(error) ? error : retained?.document === snapshot.token.document ? retained.error : "";
-}
-export function publicSessionError(message: string) {
-  if (/capacity|limit/i.test(message)) return "An application limit was reached. Your current game is retained. Save it before starting another game.";
-  if (/stale|changed|superseded/i.test(message)) return "The game changed. Review the current position and try the action again.";
-  if (/unsupported|wrong game|profile|version/i.test(message)) return "This game or saved mode is not supported. Your current game has been kept.";
-  if (/save|file|open|archive|corrupt|metadata/i.test(message)) return "The file operation could not complete. Your current game and unsaved changes have been kept.";
+export function publicSessionError(_message: string) {
   return "The action could not complete. Your current game has been kept; details are available below.";
 }
-export function Observation({ view, game = "shogi" }: { view: SearchView; game?: "shogi" | "xiangqi" }) {
+export function Observation({ view, game = "shogi", rejected = false }: { view: SearchView; game?: "chess" | "shogi" | "xiangqi"; rejected?: boolean }) {
+  if (rejected) return <div className="shogi-search-observation"><p>Rejected engine response · event {view.event_index}. No valid score or proof is presented.</p></div>;
   return <div className="shogi-search-observation" data-search-purpose={view.purpose}>
-    <p className="search-target">{view.historical ? "Saved observation" : view.purpose === "engine_turn" ? "Last engine turn" : "Move analysis"} · event {view.event_index}</p>
+    <p className="search-target">{view.historical ? "Saved observation" : view.purpose === "engine_turn" ? "Last engine turn" : view.purpose === "chess_full_reachability" ? "Full cooperative reachability" : "Move analysis"} · event {view.event_index}</p>
     <p className="shogi-evaluation">{view.score ?? "No completed evaluation"}</p>
     <p className="analysis-perspective">{view.perspective} perspective · {view.status}</p>
     <dl className="shogi-telemetry"><div><dt>Completed depth</dt><dd>{view.completed_depth ?? "—"}</dd></div><div><dt>Nodes</dt><dd>{view.nodes?.toLocaleString() ?? "—"}</dd></div></dl>
@@ -34,62 +24,58 @@ export function Observation({ view, game = "shogi" }: { view: SearchView; game?:
     {view.purpose === "move_analysis" && <p className="analysis-readonly">Read-only analysis. No move or {game === "shogi" ? "declaration" : "claim"} was played.</p>}
   </div>;
 }
-export function useNativeWorkCommand(snapshot: GameSnapshot, session: GameSession) {
-  const statusRef = useRef<HTMLHeadingElement>(null), restore = useRef(false);
-  useLayoutEffect(() => { if (restore.current) { restore.current = false; statusRef.current?.focus(); } }, [snapshot.token.revision]);
-  const command = async (operation: Operation) => {
-    if (["return_live", "resume", "retry", "cancel"].includes(operation.kind)) restore.current = true;
-    const next = await session.command(snapshot, operation);
-    if (!next) restore.current = false;
-    return next;
-  };
-  return { statusRef, command };
-}
 export function NativeHistory({ snapshot, disabled, command }: { snapshot: GameSnapshot; disabled: boolean; command: (op: Operation) => unknown }) {
-  return <section className="shogi-history" data-current-event={snapshot.event_index} aria-label="Game history"><div className="shogi-section-heading"><h2>Game history</h2><span>{snapshot.events.length} {snapshot.events.length === 1 ? "event" : "events"}</span></div><ol>{[{ index: 0, label: "Starting position" }, ...snapshot.events].map((event) => <li key={event.index}><button data-event={event.index} aria-current={snapshot.event_index === event.index ? "step" : undefined} disabled={disabled} onClick={() => { void command({ kind: "inspect", event_index: event.index }); }}><span className="event-number">{event.index}</span><span>{event.label}</span></button></li>)}</ol></section>;
+  const events = snapshot.events.some((event) => event.index === 0) ? snapshot.events : [{ index: 0, label: "Starting position" }, ...snapshot.events];
+  const recordedCount = snapshot.events.filter((event) => event.index !== 0).length;
+  return <section className="shogi-history" data-current-event={snapshot.event_index} aria-label="Game history"><div className="shogi-section-heading"><h2>Game history</h2><span>{recordedCount} {recordedCount === 1 ? "event" : "events"}</span></div><ol>{events.map((event) => <li key={event.index}><button data-event={event.index} aria-current={snapshot.event_index === event.index ? "step" : undefined} disabled={disabled} onClick={() => { void command({ kind: "inspect", event_index: event.index }); }}><span className="event-number">{event.index}</span><span>{event.label}</span></button></li>)}</ol></section>;
 }
-export function NativeRecovery({ snapshot, error, disabled, command, pending = false, capacityError = "" }: { snapshot: GameSnapshot; error: string; disabled: boolean; command: (op: Operation) => unknown; pending?: boolean; capacityError?: string }) {
-  const capacity = nativeCapacityReached(snapshot, capacityError || error), message = snapshot.capacity.message ?? (capacityError || error);
-  const observationCount = snapshot.observations.length + (snapshot.game === "xiangqi" ? snapshot.xiangqi.exact_observations.length : 0);
-  // Only these native preflight reasons identify observation retention alone.
-  // Archive diagnostics may mention several bounds; their numbers cannot tell
-  // us which resource refused the candidate. Preserve those details below.
-  const observationStorage = message.startsWith("Application capacity: retained observations are at their limit;")
-    || message.startsWith("Application capacity: native consumer observation retention limit reached;")
-    || message.startsWith("Application capacity: All256 observation slots are retained;")
-    || message.startsWith("Application capacity: all256 observations are retained.");
-  const explanation = observationStorage && observationCount === 256 ? "This game has reached the limit of 256 recorded engine observations."
-    : observationStorage ? "This game has reached its recorded-observation storage limit."
-    : "Your current game can still be saved.";
-  const analyzing = snapshot.phase === "thinking" && snapshot.execution_purpose === "move_analysis";
+export function NativeRecovery({ snapshot, error, disabled, command, pending = false }: { snapshot: GameSnapshot; error: string; disabled: boolean; command: (op: Operation) => unknown; pending?: boolean }) {
+  const capacity = nativeCapacityReached(snapshot);
+  const adjudicationPending = pending || (snapshot.game === "xiangqi" && snapshot.xiangqi.pending !== null);
+  const explanation = resourceExplanation(snapshot.capacity.resource);
+  const capacityNotice = useRef<HTMLElement>(null);
+  useLayoutEffect(() => { if (capacity) capacityNotice.current?.focus(); }, [snapshot.capacity.id, capacity]);
+  const analyzing = snapshot.game === "chess" ? snapshot.chess.analysis.status === "thinking" : snapshot.phase === "thinking" && snapshot.execution_purpose === "move_analysis";
   const thinking = snapshot.phase === "thinking" && snapshot.execution_purpose === "engine_turn";
-  const failure = error || (snapshot.io.phase === "failed" ? snapshot.io.message ?? "File operation failed" : "");
+  const fileFailed = snapshot.io.phase === "failed";
+  const failure = fileFailed || (error && !capacity);
+  const conclusion = snapshot.game === "chess" ? snapshot.chess?.selected_conclusion : null;
+  const fileResource = fileFailed ? snapshot.io.resource : null;
   return <>
-    {failure && !(capacity && /application capacity/i.test(failure)) && <section className="shogi-notice error" role="alert"><strong>{publicSessionError(failure)}</strong></section>}
-    {capacity && <section className="shogi-notice capacity-notice" role="alert"><h3>Application limit reached</h3><p>{explanation} Save the complete current game, then start a new game. Saving and reopening does not reset this limit.</p></section>}
-    {["failed", "incomplete", "cancelled"].includes(snapshot.phase) && !capacity && <section className="shogi-notice" role="status"><h3>{snapshot.phase === "failed" ? "Engine connection failed" : snapshot.phase === "incomplete" ? "Search incomplete" : "Search stopped"}</h3><p>{snapshot.phase === "failed" ? "The current game is intact. No game result is implied." : `No uncompleted move or ${snapshot.game === "xiangqi" ? "claim" : "declaration"} was played.`}</p>{!snapshot.historical && !snapshot.status.concluded && !pending && snapshot.turn.key !== snapshot.human.key && <button disabled={disabled} onClick={() => { void command({ kind: "retry" }); }}>Retry engine turn</button>}</section>}
-    {snapshot.paused && !snapshot.historical && !snapshot.status.concluded && !analyzing && !capacity && !pending && <section className="shogi-resume play-paused"><p role="status">{snapshot.diagnostic === "Position restored. Resume play when ready." ? snapshot.diagnostic : "Play is paused."}</p><button className="primary" disabled={disabled} onClick={() => { void command({ kind: "resume" }); }}>Resume play</button></section>}
-    {thinking && <section className="shogi-notice" role="status"><h3>mShogi is thinking</h3><p>The engine is choosing a move within its work limits.</p><button disabled={disabled} onClick={() => { void command({ kind: "cancel" }); }}>Cancel search</button></section>}
+    {snapshot.status.concluded && <section className="shogi-notice outcome-card" aria-label="Game outcome"><h3>{conclusion ? conclusionName(conclusion) : snapshot.status.label}</h3><p>{conclusion && "unresolved" in conclusion ? `${colorName(conclusion.unresolved.actor)} ${conclusion.unresolved.trigger === "resignation" ? "resigned" : "ran out of time"}. The M2 profile could not establish whether the opponent can mate. Play has stopped without an established win or draw, and no score is assigned.` : "Play has ended. The native outcome is separate from engine process status and evaluation."}</p></section>}
+    {snapshot.game === "xiangqi" && snapshot.xiangqi.pending && <section className="shogi-notice" role="status"><h3>Adjudication unresolved</h3><p>Play is stopped. This game is unscored; no win, loss or draw has been established.</p></section>}
+    {snapshot.game === "xiangqi" && !snapshot.status.concluded && snapshot.xiangqi.warnings.filter((warning) => warning.active).map((warning) => <section className="shogi-notice" role="status" key={warning.event_index}><h3>Repetition warning</h3><p>{warning.side === "red" ? "Red" : "Black"} must vary {warning.fault === "perpetual_check" ? "perpetual check" : "perpetual chase"}. Continuing the prohibited repetition can lose the game.</p></section>)}
+    {snapshot.game === "xiangqi" && !snapshot.status.concluded && snapshot.xiangqi.offered_by !== null && <section className="shogi-notice" role="status"><h3>Draw offered by {snapshot.xiangqi.offered_by === "red" ? "Red" : "Black"}</h3><p>The offer has not concluded the game.</p></section>}
+    {failure && <section className="shogi-notice error" role="alert"><strong>{fileResource ? "Application limit reached" : fileFailed ? "The file operation could not complete. Your current game and unsaved changes have been kept." : publicSessionError(error)}</strong>{fileResource && <p>{resourceExplanation(fileResource)}</p>}</section>}
+    {snapshot.capacity.status === "checking" && <section className="shogi-notice" role="status"><strong>Checking complete save capacity</strong><p>The native host is checking this operation before adding it to the saved document.</p></section>}
+    {capacity && <section className="shogi-notice capacity-notice" role="alert" aria-label="Document capacity" ref={capacityNotice} tabIndex={-1}><h3>Application limit reached</h3><p>{explanation} Save or Save as to keep the complete current game, then start a new game. Saving and reopening does not reset this limit.</p><p>This is an application resource limit. No game result or illegal action is implied. Your complete accepted game and observations are preserved.</p></section>}
+    {["failed", "incomplete", "cancelled"].includes(snapshot.phase) && !capacity && <section className="shogi-notice" role="status"><h3>{snapshot.phase === "failed" ? "Engine connection failed" : snapshot.phase === "incomplete" ? "Search incomplete" : "Search stopped"}</h3><p>{snapshot.phase === "failed" ? "The current game is intact. No game result is implied." : `No uncompleted move or ${snapshot.game === "shogi" ? "declaration" : "claim"} was played.`}</p>{!snapshot.historical && !snapshot.status.concluded && !adjudicationPending && !(snapshot.game === "chess" && snapshot.chess.analysis.status !== "idle") && snapshot.execution_purpose !== "move_analysis" && snapshot.execution_purpose !== "chess_full_reachability" && snapshot.turn.key !== snapshot.human.key && <button data-focus-after="engine" disabled={disabled} onClick={() => { void command({ kind: "retry" }); }}>Retry engine turn</button>}</section>}
+    {snapshot.paused && !snapshot.historical && !snapshot.status.concluded && (!analyzing || snapshot.game === "chess") && !capacity && !adjudicationPending && <section className="shogi-resume play-paused"><p role="status">{snapshot.diagnostic === "Position restored. Resume play when ready." ? snapshot.diagnostic : "Play is paused."}</p><button data-focus-after="board" className="primary" disabled={disabled} onClick={() => { void command({ kind: "resume" }); }}>Resume play</button></section>}
+    {thinking && <section className="shogi-notice" role="status"><h3>mShogi is thinking</h3><p>The engine is choosing a move within its work limits.</p><button data-focus-after="engine" disabled={disabled} onClick={() => { void command({ kind: "cancel" }); }}>Cancel search</button></section>}
   </>;
 }
 export function NativeAnalysis({ snapshot, defaults, disabled, command, maxDepth, maxNodes, minNodes, unavailable }: {
-  snapshot: GameSnapshot; defaults: { depth: number; nodes: number }; disabled: boolean; command: (op: Operation) => unknown;
+  snapshot: GameSnapshot; defaults: AnalysisOperation | { depth: number; nodes: number }; disabled: boolean; command: (op: Operation) => unknown;
   maxDepth: number; maxNodes: number; minNodes: number; unavailable?: string | undefined;
 }) {
+  const movesDefaults = "depth" in defaults ? defaults : { depth: 4, nodes: 100000 };
+  const [validation, setValidation] = useState("");
   const [inspector, setInspector] = useState<"play" | "analysis">("play");
-  const [depth, setDepth] = useState(String(defaults.depth)), [nodes, setNodes] = useState(String(defaults.nodes));
-  useEffect(() => { setDepth(String(defaults.depth)); setNodes(String(defaults.nodes)); }, [snapshot.token.document]);
-  const analyzing = snapshot.phase === "thinking" && snapshot.execution_purpose === "move_analysis";
+  const [depth, setDepth] = useState(String(movesDefaults.depth)), [nodes, setNodes] = useState(String(movesDefaults.nodes));
+  useEffect(() => { setDepth(String(movesDefaults.depth)); setNodes(String(movesDefaults.nodes)); }, [snapshot.token.document]);
+  const analyzing = snapshot.game === "chess" ? snapshot.chess.analysis.status === "thinking" : snapshot.phase === "thinking" && snapshot.execution_purpose === "move_analysis";
   const thinking = snapshot.phase === "thinking" && snapshot.execution_purpose === "engine_turn";
   const current = snapshot.search_observations.find((v) => v.selected);
   const lastEngine = [...snapshot.search_observations].reverse().find((v) => v.purpose === "engine_turn" && !v.historical);
-  const game = snapshot.game === "xiangqi" ? "xiangqi" : "shogi";
+  const game = snapshot.game;
   return <><InspectorSwitch value={inspector} onChange={setInspector} /><section className="shogi-analysis" aria-label="Engine analysis" data-phase={analyzing ? "analyzing" : snapshot.phase}>
     {inspector === "analysis" ? <><div className="shogi-section-heading"><strong>Read-only analysis</strong></div><p className="analysis-location">Selected event {snapshot.event_index} · {snapshot.turn.label} perspective</p>
-      <form onSubmit={(e) => { e.preventDefault(); if (e.currentTarget.checkValidity() && !disabled && snapshot.capacity.status !== "paused" && snapshot.capabilities.move_analysis) void command({ kind: "analyze", operation: { kind: "moves", depth: Number(depth), nodes: Number(nodes) } }); }}><div className="shogi-analysis-fields"><label>Depth<input name="depth" type="number" min="1" max={maxDepth} step="1" value={depth} onChange={(e) => setDepth(e.target.value)} required /></label><label>Node limit<input name="nodes" type="number" min={minNodes} max={maxNodes} step="1" value={nodes} onChange={(e) => setNodes(e.target.value)} required /></label></div><AnalysisActions><button className="secondary" data-analysis-start={game} disabled={disabled || snapshot.capacity.status === "paused" || !snapshot.capabilities.move_analysis}>{analyzing ? "Replace analysis" : "Start move analysis"}</button>{analyzing && <button className="quiet" type="button" onClick={() => { void command({ kind: "cancel" }); }} disabled={disabled}>Cancel analysis</button>}</AnalysisActions></form>
+      <form noValidate onSubmit={(e) => { e.preventDefault(); if (!e.currentTarget.checkValidity()) { setValidation(`Move analysis requires a whole-number depth from 1 to ${maxDepth} and a node budget from ${minNodes.toLocaleString()} to ${maxNodes.toLocaleString()}.`); return; } setValidation(""); if (!disabled && snapshot.capacity.status !== "paused" && snapshot.capabilities.move_analysis) void command({ kind: "analyze", operation: { kind: "moves", depth: Number(depth), nodes: Number(nodes) } }); }}><div className="shogi-analysis-fields"><label>Depth<input name="depth" type="number" min="1" max={maxDepth} step="1" value={depth} onChange={(e) => setDepth(e.target.value)} required /></label><label>Node limit<input name="nodes" type="number" min={minNodes} max={maxNodes} step="1" value={nodes} onChange={(e) => setNodes(e.target.value)} required /></label></div><AnalysisActions><button className="secondary" data-analysis-start={game} disabled={disabled || snapshot.capacity.status === "paused" || !snapshot.capabilities.move_analysis}>{analyzing ? "Replace analysis" : "Start move analysis"}</button>{analyzing && <button className="quiet" type="button" onClick={() => { void command({ kind: "cancel" }); }} disabled={disabled}>Cancel analysis</button>}</AnalysisActions></form>
+      {validation && <p role="alert" className="validation-error">{validation}</p>}
       <p className="shogi-analysis-state" role="status" aria-live="polite">{unavailable ?? (analyzing ? "Analyzing the selected position…" : snapshot.phase === "cancelled" ? "Search stopped" : current ? "Analysis result available" : "Choose Analyze to inspect this position.")}</p>
-      {current && <Observation view={current} game={game} />}
-      {snapshot.search_observations.length > 0 && <details className="recorded-searches"><summary>Recorded searches ({snapshot.search_observations.length})</summary>{snapshot.search_observations.map((v) => <article key={v.observation_index}><Observation view={v} game={game} /></article>)}</details>}
-    </> : <NativeEnginePanel limits={snapshot.play_limits} status={thinking ? "Searching" : snapshot.paused ? "Play paused" : snapshot.phase}>{lastEngine ? <Observation view={lastEngine} game={game} /> : <p className="muted">No engine search has completed in this game.</p>}</NativeEnginePanel>}
+      {snapshot.game === "chess" ? <ChessAnalysisContent snapshot={snapshot} disabled={disabled || snapshot.capacity.status === "paused" || !snapshot.capabilities.chess_full} command={command} defaults={"kind" in defaults ? defaults : { kind: "moves", ...defaults }} /> : current && <Observation view={current} game={game} rejected={Boolean(snapshot.observations[current.observation_index]?.application_error)} />}
+      {snapshot.game === "chess" && snapshot.observations.length > 0 && <details className="recorded-chess-evidence"><summary>Recorded native evidence ({snapshot.observations.length})</summary>{snapshot.observations.map((entry, index) => <article key={index}><ChessSavedEvidence observation={entry.observation} rejected={entry.application_error !== null} /></article>)}</details>}
+      {snapshot.search_observations.length > 0 && <details className="recorded-searches"><summary>Recorded searches ({snapshot.search_observations.length})</summary>{snapshot.search_observations.map((v) => <article key={v.observation_index}><Observation view={v} game={game} rejected={Boolean(snapshot.observations[v.observation_index]?.application_error)} /></article>)}</details>}
+    </> : <NativeEnginePanel limits={snapshot.play_limits} status={thinking ? "Searching" : snapshot.paused ? "Play paused" : snapshot.phase}>{lastEngine ? <Observation view={lastEngine} game={game} rejected={Boolean(snapshot.observations[lastEngine.observation_index]?.application_error)} /> : <p className="muted">No engine search has completed in this game.</p>}</NativeEnginePanel>}
   </section></>;
 }

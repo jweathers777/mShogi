@@ -161,6 +161,7 @@ impl DesktopSession {
         })
     }
     /// Accept read-only observations. This never applies a board move or claim.
+    #[cfg(test)]
     pub fn accept_analysis(&mut self, response: ExecutionResponse) -> bool {
         let Some(pending) = &self.analysis_pending else {
             return false;
@@ -293,7 +294,7 @@ mod tests {
     fn analyze(session: &mut DesktopSession) -> ExecutionContext {
         session
             .command(
-                DesktopCommand::Analyze {
+                ChessMutationCommand::Analyze {
                     version: session.version,
                     operation: AnalysisOperation::Moves {
                         depth: 1,
@@ -322,7 +323,7 @@ mod tests {
         assert!(
             session
                 .command(
-                    DesktopCommand::Play {
+                    ChessMutationCommand::Play {
                         version: session.version,
                         action: "e2e4".parse().unwrap()
                     },
@@ -332,7 +333,7 @@ mod tests {
         );
         session
             .command(
-                DesktopCommand::Resume {
+                ChessMutationCommand::Resume {
                     version: session.version,
                 },
                 3,
@@ -341,7 +342,7 @@ mod tests {
         assert!(!session.play_paused);
         session
             .command(
-                DesktopCommand::Play {
+                ChessMutationCommand::Play {
                     version: session.version,
                     action: "e2e4".parse().unwrap(),
                 },
@@ -358,7 +359,7 @@ mod tests {
         let mut session = DesktopSession::new();
         session
             .command(
-                DesktopCommand::NewGame {
+                ChessMutationCommand::NewGame {
                     document_revision: session.document_revision,
                     version: 1,
                     human: Color::Black,
@@ -371,7 +372,7 @@ mod tests {
         assert!(!session.accept(move_result(turn.clone()), 2));
         session
             .command(
-                DesktopCommand::Analyze {
+                ChessMutationCommand::Analyze {
                     version: session.version,
                     operation: AnalysisOperation::FullReachability {
                         target: ReachabilityTarget::Either,
@@ -399,7 +400,7 @@ mod tests {
         assert_eq!(session.game.record().to_json(), before);
         session
             .command(
-                DesktopCommand::Resume {
+                ChessMutationCommand::Resume {
                     version: session.version,
                 },
                 4,
@@ -418,7 +419,7 @@ mod tests {
         let request = analyze(&mut session);
         session
             .command(
-                DesktopCommand::CancelAnalysis {
+                ChessMutationCommand::CancelAnalysis {
                     version: session.version,
                 },
                 2,
@@ -433,7 +434,7 @@ mod tests {
         assert!(
             session
                 .command(
-                    DesktopCommand::Analyze {
+                    ChessMutationCommand::Analyze {
                         version: before,
                         operation: AnalysisOperation::Moves { depth: 9, nodes: 1 }
                     },
@@ -444,7 +445,7 @@ mod tests {
         assert_eq!(session.version, before);
         session
             .command(
-                DesktopCommand::NewGame {
+                ChessMutationCommand::NewGame {
                     document_revision: session.document_revision,
                     version: before,
                     human: Color::White,
@@ -481,7 +482,7 @@ mod tests {
         let request = analyze(&mut session);
         session
             .command(
-                DesktopCommand::Resign {
+                ChessMutationCommand::Resign {
                     version: session.version,
                 },
                 2,
@@ -504,7 +505,7 @@ mod tests {
         let record = session.game.record().to_json();
         session
             .command(
-                DesktopCommand::Resume {
+                ChessMutationCommand::Resume {
                     version: session.version,
                 },
                 3,

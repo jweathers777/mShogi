@@ -233,8 +233,8 @@ class Webview:
                         "target": target})
                 assert ready, {"selector": selector, "attempt": attempts, "target": target}
                 return target
-            # The shared document can render before the Chess command hook is
-            # connected. Poll read-only target readiness within the existing
+            # Native operation admission may still be settling when a board
+            # renders. Poll read-only target readiness within the existing
             # wait budget; dispatch pointer input exactly once, never in wait().
             target = wait(ready_target, f"board pointer target ready: {selector}")
             self.command("POST", "/actions", {"actions": [{"type": "pointer", "id": "mouse",
@@ -524,16 +524,16 @@ class Journey:
             const rectElement=e=>{if(!e)return null;const r=e.getBoundingClientRect();return {left:r.left,top:r.top,width:r.width,height:r.height};};
             const rect=s=>rectElement(document.querySelector(s));
             const theme=s=>{const e=document.querySelector(s);if(!e)return null;const c=getComputedStyle(e);return Object.fromEntries(['backgroundColor','color','borderTopColor','borderTopWidth','borderRadius','fontSize','fontFamily','colorScheme'].map(k=>[k,c[k]]));};
-            const visible=e=>{const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&r.left>=-1&&r.top>=-1&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1;};
-            const squares=[...document.querySelectorAll('.square,.shogi-square')];
-            return {game:root?.classList.contains('shell-shogi')?'shogi':'chess',viewport:{width:innerWidth,height:innerHeight},
+            const visible=e=>{if(!e)return false;const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&r.left>=-1&&r.top>=-1&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1;};
+            const squares=[...document.querySelectorAll('.square,.shogi-square,.xiangqi-point')];
+            return {game:root?.classList.contains('shell-xiangqi')?'xiangqi':root?.classList.contains('shell-shogi')?'shogi':'chess',viewport:{width:innerWidth,height:innerHeight},
                 themeIdentity:root?.dataset.theme,
                 themes:Object.fromEntries(['.game-shell','.shell-header','.shell-card','.shell-section-title','.shell-file-actions .primary','.shell-file-actions .quiet','.inspector-switch button[aria-pressed="true"]'].map(s=>[s,theme(s)])),
                 header:rect('.shell-header'),document:rect('.shell-document'),actions:rect('.shell-file-actions'),
                 heading:rect('.shell-live-heading'),boardPanel:rect('.shell-board-panel'),sidebar:rect('.shell-sidebar'),
                 gameArea:rect('.shell-game-area'),
-                help:rect('.shell-game-footer .board-help,.shell-game-footer .shogi-board-help'),
-                helpVisible:visible(document.querySelector('.shell-game-footer .board-help,.shell-game-footer .shogi-board-help')),
+                help:rect('.shell-game-footer .shell-board-help,.shell-game-footer .board-help,.shell-game-footer .shogi-board-help,.shell-game-footer .xiangqi-help'),
+                helpVisible:visible(document.querySelector('.shell-game-footer .shell-board-help,.shell-game-footer .board-help,.shell-game-footer .shogi-board-help,.shell-game-footer .xiangqi-help')),
                 footnoteVisible:!!document.querySelector('[data-position-status]')&&visible(document.querySelector('[data-position-status]')),
                 positionStatus:document.querySelector('[data-position-status]')?.textContent,
                 documentState:document.querySelector('[data-document-state]')?.dataset.documentState,
@@ -550,13 +550,14 @@ class Journey:
         })()""")
         assert layout['game'] == game and layout['sections'] == ['analysis','history','actions'], layout
         assert layout['themeIdentity'] == 'mshogi-dark' and all(layout['themes'].values()), layout
-        assert layout['squareCount']==(64 if game=='chess' else 81) and layout['allSquaresVisible'] and layout['pageWidth']<=layout['viewport']['width']+1, layout
+        assert layout['squareCount']=={'chess': 64, 'shogi': 81, 'xiangqi': 90}[game] and layout['allSquaresVisible'] and layout['pageWidth']<=layout['viewport']['width']+1, layout
         assert layout['inspectorButtons'] == [{'label':'Play details','pressed':'true'}, {'label':'Analyze position','pressed':'false'}], layout
         assert [slot['name'] for slot in layout['slots']] == ['upper-player','board','lower-player','footer'], layout
         assert layout['help'] and layout['help']['height'] > 0 and layout['helpVisible'] and layout['footnoteVisible'], ('live help belongs visibly in the shared footer',layout)
         assert layout['documentState'] == 'unsaved', layout
         assert layout['positionStatus'] == 'Your turnLive position · 0 plies', layout
-        assert play_limit_matches(layout['playLimits'], 2, 5000 if game == 'shogi' else 20000), layout
+        expected_depth, expected_nodes = {'chess': (2, 20000), 'shogi': (2, 5000), 'xiangqi': (1, 128)}[game]
+        assert play_limit_matches(layout['playLimits'], expected_depth, expected_nodes), layout
         assert layout['documentInHeader'] and layout['flipInHeading'] and layout['technicalCollapsed'], layout
         assert layout['headerButtons'] == ['New game','Save','Save as…','Open…'], layout
         assert layout['boardPanel']['left'] < layout['sidebar']['left'], layout
@@ -586,14 +587,13 @@ class Journey:
     def inspection_state(self):
         return self.web.read("""(() => {
             const text=s=>document.querySelector(s)?.textContent??null;
-            const squareLabels=[...document.querySelectorAll('.square,.shogi-square')].map(e=>e.getAttribute('aria-label')?.split(',').slice(0,2).join(','));
+            const squareLabels=[...document.querySelectorAll('.square,.shogi-square,.xiangqi-point')].map(e=>e.getAttribute('aria-label')?.split(',').slice(0,2).join(','));
             const pre=[...document.querySelectorAll('.shell-technical pre')].map(e=>{try{return JSON.parse(e.textContent);}catch{return null;}}).find(v=>v?.token);
             const root=document.querySelector('.game-shell');
-            return {pieces:squareLabels,history:text('.event-timeline')??text('.shogi-history'),
+            return {pieces:squareLabels,history:text('.shogi-history'),
                 status:text('[data-game-status]'),dirty:text('.document-dirty')?.toLowerCase(),
                 documentTitle:text('.shell-document h2'),runtime:text('.shell-runtime'),
                 analysis:text('.shell-analysis'),nativeToken:pre?.token??null,
-                chessVersion:[...document.querySelectorAll('.shell-technical details')].map(e=>e.textContent).find(t=>t.includes('Session version'))??null,
                 event:root?.dataset.currentEvent,liveEvents:root?.dataset.liveEvents,historical:root?.dataset.historical,paused:root?.dataset.paused};
         })()""")
 
@@ -605,7 +605,7 @@ class Journey:
     def inspect_piece(self, game, origin, destination, label):
         """Real native query through normal UI; completing a route stays read-only."""
         w=self.web; before=self.inspection_state()
-        square=self.square if game=='chess' else self.shogi_square
+        square=self.square if game=='chess' else self.xiangqi_point if game=='xiangqi' else self.shogi_square
         w.click(square(origin))
         wait(lambda: f'Inspecting {label}' in w.text('.movement-inspection-status'), 'native opponent movement inspection')
         # Shogi/Xiangqi have a separate keyboard-hint span in this row; Chess
@@ -614,7 +614,7 @@ class Journey:
         assert inspection_status_matches(status, label), ('inspection status', status, label)
         assert w.read(f"document.querySelector({json.dumps(square(destination))})?.getAttribute('aria-label')?.includes('read-only inspection destination')")
         assert w.read(f"document.querySelector({json.dumps(square(destination))})?.querySelector('.inspection-marker')!==null")
-        assert not w.has('.square.target,.shogi-square.target')
+        assert not w.has('.square.target,.shogi-square.target,.xiangqi-destination')
         self.capture(f'inspect-{game}-{origin}')
         w.click(square(destination))
         time.sleep(0.35)  # Observe across native snapshot polls, not only local selection state.
@@ -623,7 +623,7 @@ class Journey:
         w.key('\ue00c')
         wait(lambda:not w.has('.inspection-marker,.inspection-origin-ring'), 'Escape clears read-only inspection')
         self.assert_inspection_unchanged(before, 'Board inspection Escape preserves authoritative context')
-        self.record('Native movement inspection and complete read-only route preserve context',{'game':game,'origin':origin,'destination':destination,'label':label,'native_token':before['nativeToken'],'chess_version':before['chessVersion'],'history':before['history']})
+        self.record('Native movement inspection and complete read-only route preserve context',{'game':game,'origin':origin,'destination':destination,'label':label,'native_token':before['nativeToken'],'history':before['history']})
 
     def file(self, kind, path, cancel=False, button_label=None):
         with ThreadPoolExecutor(max_workers=1) as pool:
@@ -683,7 +683,7 @@ class Journey:
 
     def shogi_flip(self):
         previous = self.web.read("document.querySelector('.shogi-application')?.dataset.orientation")
-        self.web.click(".shogi-flip")
+        self.web.click(".flip-button")
         wait(lambda: self.web.read("document.querySelector('.shogi-application')?.dataset.orientation") != previous,
              "native shogi orientation changes")
 
@@ -765,10 +765,20 @@ class Journey:
         w.key('\ue00c');self.plies(0)
         w.click(self.square("e2")); w.click(self.square("e4"))
         self.plies(2)
-        wait(lambda: "Move returned:" in w.text(".engine-choice"), "actual engine reply")
+        wait(lambda: w.has('[data-search-purpose="engine_turn"]'), "actual engine reply")
         assert not w.has(".outcome-card")
         self.capture("play")
-        self.record("Play e2e4 against actual bundled engine", w.text(".engine-choice"))
+        self.record("Play e2e4 against actual bundled engine", w.text('[data-search-purpose="engine_turn"]'))
+
+        w.button("Take back")
+        self.plies(0)
+        wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "true", "Chess Take back is stopped")
+        self.capture("takeback-stopped")
+        w.button("Resume play")
+        wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "false", "explicit Chess Resume after Take back")
+        w.click(self.square("e2")); w.click(self.square("e4"))
+        self.plies(2)
+        self.record("Shared Take back / stopped Chess native decision / explicit Resume / replay", self.inspection_state())
 
         w.button("New game")
         wait(lambda: w.has(".document-guard"), "unsaved replacement guard")
@@ -776,21 +786,21 @@ class Journey:
         wait(lambda: not w.has(".document-guard"), "cancel replacement")
         self.plies(2)
         w.button("Analyze position")
-        w.set('.analysis-fields input[min="1"]', 8)
-        w.set('.analysis-fields input[min="0"]', 5_000_000)
-        w.click('[data-analysis-start="moves"]')
-        wait(lambda: w.text(".analysis-card .engine-phase") == "Analyzing", "real active analysis")
+        w.set('.shogi-analysis input[name="depth"]', 8)
+        w.set('.shogi-analysis input[name="nodes"]', 5_000_000)
+        w.click('[data-analysis-start="chess"]')
+        wait(lambda: w.has('.shogi-analysis[data-phase="analyzing"]'), "real active analysis")
         self.capture("active-analysis")
         w.button("Cancel analysis")
         wait(lambda: "cancelled" in w.text('[aria-label="Analysis status"]').lower(), "analysis cancellation")
         self.plies(2)
         self.record("Cancel demonstrably active analysis", w.text('[aria-label="Analysis status"]'))
-        w.click('[data-analysis-start="moves"]')
-        wait(lambda: w.text(".analysis-card .engine-phase") == "Analyzing", "replacement begins from active work")
-        w.set('.analysis-fields input[min="1"]', 1)
-        w.set('.analysis-fields input[min="0"]', 1_000)
-        w.click('[data-analysis-start="moves"]')
-        wait(lambda: "not played" in w.text(".analysis-suggestion"), "completed read-only replacement")
+        w.click('[data-analysis-start="chess"]')
+        wait(lambda: w.has('.shogi-analysis[data-phase="analyzing"]'), "replacement begins from active work")
+        w.set('.shogi-analysis input[name="depth"]', 1)
+        w.set('.shogi-analysis input[name="nodes"]', 1_000)
+        w.click('[data-analysis-start="chess"]')
+        wait(lambda: "not played" in w.text(".analysis-result"), "completed read-only replacement")
         self.plies(2)
         self.capture("replacement-complete")
         self.record("Replace with bounded read-only suggestion", w.text(".analysis-result"))
@@ -811,15 +821,15 @@ class Journey:
         w.button("Play details")
         assert "No engine search has completed" in w.text(".sidebar")
         self.record("Reopen complete document without resuming work", w.text(".document-card"))
-        w.click(".event-timeline li:nth-child(3) button")
+        w.click('.shogi-history [data-event="2"]')
         self.plies(1, historical=True)
         assert "read only" in w.text(".historical-notice")
         self.inspect_piece('chess','b8','c6','Black knight')
         w.button("Analyze position")
-        w.set('.analysis-fields input[min="1"]', 1)
-        w.set('.analysis-fields input[min="0"]', 1_000)
-        w.click('[data-analysis-start="moves"]')
-        wait(lambda: "not played" in w.text(".analysis-suggestion"), "historical analysis")
+        w.set('.shogi-analysis input[name="depth"]', 1)
+        w.set('.shogi-analysis input[name="nodes"]', 1_000)
+        w.click('[data-analysis-start="chess"]')
+        wait(lambda: "not played" in w.text(".analysis-result"), "historical analysis")
         assert "Black" in w.text(".analysis-result")
         self.plies(1, historical=True)
         self.capture("historical-analysis")
@@ -869,6 +879,21 @@ class Journey:
              f"human {side} at bottom")
         self.record("Select Shogi and human side in normal New Game", {"side": side, "board_name":
             w.read("document.querySelector('.shogi-board')?.getAttribute('aria-label')")})
+
+    def xiangqi_point(self, point):
+        return f'.xiangqi-point[data-intersection="{point}"]'
+
+    def xiangqi_board_fits(self):
+        geometry = self.web.read("""(() => {const points=[...document.querySelectorAll('.xiangqi-point')];
+            const visible=e=>{const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&r.left>=-1&&r.top>=-1&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1;};
+            return {viewport:{width:innerWidth,height:innerHeight},points:points.length,allVisible:points.every(visible),
+                palaceSides:[...new Set([...document.querySelectorAll('[data-palace]')].map(e=>e.dataset.palace))],
+                river:document.querySelector('.xiangqi-river')?.textContent};})()""")
+        assert geometry["points"] == 90 and geometry["allVisible"], geometry
+        assert set(geometry["palaceSides"]) == {"mshogi.xiangqi.wxf2018.v1:red", "mshogi.xiangqi.wxf2018.v1:black"}, geometry
+        assert "楚河" in geometry["river"] and "漢界" in geometry["river"], geometry
+        self.record("Complete native Xiangqi intersections, river and palaces without scrolling", geometry)
+        return geometry
 
     def xiangqi_diagnostics(self):
         """Read the normal Technical Details data; never invoke private IPC."""
@@ -949,29 +974,42 @@ class Journey:
         self.viewport(1180, 820)
         self.xiangqi_events(0, selected=0)
         assert "Red at bottom" in w.read("document.querySelector('.xiangqi-board').getAttribute('aria-label')")
-        geometry = w.read("""(() => {const points=[...document.querySelectorAll('.xiangqi-point')];
-            const visible=e=>{const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&r.left>=-1&&r.top>=-1&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1;};
-            return {points:points.length,allVisible:points.every(visible),
-                palaceSides:[...new Set([...document.querySelectorAll('[data-palace]')].map(e=>e.dataset.palace))],
-                river:document.querySelector('.xiangqi-river')?.textContent};})()""")
-        assert geometry["points"] == 90 and geometry["allVisible"], geometry
-        assert set(geometry["palaceSides"]) == {"mshogi.xiangqi.wxf2018.v1:red", "mshogi.xiangqi.wxf2018.v1:black"}, geometry
-        assert "楚河" in geometry["river"] and "漢界" in geometry["river"], geometry
-        self.record("Normal Xiangqi intersections, river and palaces", geometry)
-        self.capture("initial-red")
+        self.xiangqi_board_fits()
+        self.shared_shell("xiangqi")
+        self.capture("initial-red-normal-size")
+        self.viewport(760, 650)
+        self.xiangqi_board_fits()
+        self.shared_shell("xiangqi")
+        self.capture("initial-red-minimum-size")
+        self.inspect_piece("xiangqi", "a6", "a5", "Black soldier")
+        self.viewport(1180, 820)
 
         source = '.xiangqi-point[data-intersection="a3"]'
         target = '.xiangqi-point[data-intersection="a4"]'
         w.click(source)
         assert w.read(f"document.querySelector({json.dumps(target)})?.getAttribute('aria-label').includes('legal destination')")
-        w.click(target)
+        w.key("\ue00c")
+        self.xiangqi_events(0, selected=0)
+        assert w.read("document.activeElement?.dataset.intersection") == "a3"
+        for key in ("\ue007", "\ue013", "\ue007"):
+            w.key(key)
         self.xiangqi_events(2, selected=2)
         wait(lambda: w.has('[data-search-purpose="engine_turn"]'), "actual bundled Xiangqi engine observation")
         played = self.xiangqi_diagnostics()
         assert played["context"]["payload"]["events"][0]["event"]["action"] == "a3a4", played
         assert played["context"]["payload"]["conclusion"] is None, played
         self.capture("play")
-        self.record("Native a3a4 admission and actual bounded engine reply", played)
+        self.record("Pointer selection / Escape / keyboard a3a4 / actual bounded engine reply", played)
+
+        w.button("Take back")
+        self.xiangqi_events(0, selected=0)
+        wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "true", "Xiangqi Take back is stopped")
+        self.capture("takeback-stopped")
+        w.button("Resume play")
+        wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "false", "explicit Xiangqi Resume after Take back")
+        w.click(source); w.click(target)
+        self.xiangqi_events(2, selected=2)
+        self.record("Shared Take back / stopped Xiangqi native decision / explicit Resume / replay", self.xiangqi_diagnostics())
 
         # The measured Xiangqi maximum is deliberately small. Completion may win
         # the real input race; only report cancellation when native state proves
@@ -1105,6 +1143,16 @@ class Journey:
         self.capture("play")
         self.record("Pointer selection / Escape / keyboard 7g7f / actual engine reply", w.text(".shogi-history"))
 
+        w.button("Take back")
+        self.shogi_events(0)
+        wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "true", "Shogi Take back is stopped")
+        self.capture("takeback-stopped")
+        w.button("Resume play")
+        wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "false", "explicit Shogi Resume after Take back")
+        w.click(self.shogi_square("7g")); w.click(self.shogi_square("7f"))
+        self.shogi_events(2)
+        self.record("Shared Take back / stopped Shogi native decision / explicit Resume / replay", self.inspection_state())
+
         self.shogi_analysis(depth=4, nodes=20_000)
         wait(lambda: w.has('.shogi-analysis[data-phase="analyzing"]'), "actual active shogi analysis")
         self.capture("active-analysis")
@@ -1148,7 +1196,7 @@ class Journey:
         self.capture("reopened-stopped")
         w.click('.shogi-history [data-event="1"]')
         self.shogi_events(2, selected=1, historical=True)
-        assert "live game is unchanged" in w.text(".shogi-history-banner")
+        assert "live game is unchanged" in w.text(".shell-history-notice")
         self.inspect_piece('shogi','7c','7d','Gote pawn')
         self.shogi_analysis()
         self.shogi_complete_analysis()
@@ -1167,7 +1215,7 @@ class Journey:
         w.button("Resume play")
         wait(lambda: w.read("document.querySelector('.shogi-application').dataset.paused") == "false", "explicit resumed shogi live play")
         self.shogi_events(2)
-        assert not w.has(".shogi-history-banner")
+        assert not w.has(".shell-history-notice")
         self.capture("return-live-resumed")
         # The current native writer reconstructs this reduced-material fixture
         # from its recorded root and complete actions; historical MSH-74 evidence
@@ -1368,11 +1416,11 @@ class Journey:
             try:
                 engine.rename(held)
                 w.click(self.square("d2")); w.click(self.square("d4"))
-                wait(lambda: "Engine failure" in w.text("[role=alert]"), "genuine missing engine failure")
+                wait(lambda: "Engine connection failed" in w.text(".shell-notices"), "genuine missing engine failure")
                 self.plies(3)
                 assert not w.has(".outcome-card")
                 self.capture("engine-failure")
-                self.record("Genuine missing-engine startup failure preserves three plies", w.text("[role=alert]"))
+                self.record("Genuine missing-engine startup failure preserves three plies", w.text(".shell-notices"))
             finally:
                 if held.exists():
                     held.rename(engine)
@@ -1381,7 +1429,7 @@ class Journey:
             self.plies(4)
             assert not w.has(".outcome-card")
             self.record("Restore identical sidecar and Retry without losing history", {
-                "engine_sha256": digest(engine), "result": w.text(".engine-choice")})
+                "engine_sha256": digest(engine), "result": w.text('[data-search-purpose="engine_turn"]')})
         elif name == "promotion":
             w.click(self.square("a7")); w.click(self.square("a8"))
             wait(lambda: w.has(".promotion-dialog"), "actual promotion choices")
@@ -1401,10 +1449,11 @@ class Journey:
             self.plies(0)
             self.record("Optional intended-move claim concludes without playing intention", w.text(".outcome-card"))
         elif name == "capacity":
-            assert "observations (255)" in w.text(".saved-observations")
-            w.button("Analyze position"); w.click('[data-analysis-start="moves"]')
-            wait(lambda: "observations (256)" in w.text(".saved-observations"), "accept observation 256")
-            w.click('[data-analysis-start="moves"]')
+            w.button("Analyze position")
+            assert "Recorded native evidence (255)" in w.text(".recorded-chess-evidence")
+            w.click('[data-analysis-start="chess"]')
+            wait(lambda: "Recorded native evidence (256)" in w.text(".recorded-chess-evidence"), "accept observation 256")
+            w.click('[data-analysis-start="chess"]')
             wait(lambda: "Application limit reached" in w.text(".capacity-notice"), "reject operation before observation 257")
             wait(lambda: w.read("""(() => {
                 const notice = document.querySelector('.capacity-notice');
@@ -1413,7 +1462,7 @@ class Journey:
                 const rect = notice.getBoundingClientRect(), box = sidebar.getBoundingClientRect();
                 return rect.top >= Math.max(0, box.top) && rect.bottom <= Math.min(innerHeight, box.bottom);
             })()"""), "new capacity pause is focused and visible in the actual inspector")
-            assert "observations (256)" in w.text(".saved-observations")
+            assert "Recorded native evidence (256)" in w.text(".recorded-chess-evidence")
             assert not w.has(".outcome-card")
             self.capture("capacity-pause")
             self.save(self.args.output / "capacity-complete.mshogi", 256)

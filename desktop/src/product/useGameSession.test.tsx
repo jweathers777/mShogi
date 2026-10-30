@@ -5,11 +5,12 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { useGameSession } from "./useGameSession";
-import type { GameSnapshot, ChessShogiSnapshot } from "./native";
+import type { GameSnapshot, ShogiSnapshot } from "./native";
+import chessJson from "../__fixtures__/shared-chess-standard.json";
 import standardJson from "../__fixtures__/shared-shogi-standard.json";
 vi.mock("@tauri-apps/api/core", () => ({ invoke: vi.fn() }));
 vi.mock("@tauri-apps/api/event", () => ({ listen: vi.fn() }));
-const standard = standardJson as ChessShogiSnapshot;
+const standard = standardJson as ShogiSnapshot;
 function deferred<T>() { let resolve!: (value: T) => void; const promise = new Promise<T>((done) => { resolve = done; }); return { resolve, promise }; }
 beforeEach(() => { vi.useFakeTimers(); vi.mocked(invoke).mockReset(); vi.mocked(listen).mockReset().mockResolvedValue(() => {}); });
 afterEach(() => { cleanup(); vi.useRealTimers(); });
@@ -78,7 +79,7 @@ it("reports native close-protection registration failure without an unhandled re
 it("routes native close by the current game when Open precedes the next shared poll", async () => {
   let close!: () => void;
   vi.mocked(listen).mockImplementationOnce(async (_name, handler) => { close = handler as typeof close; return () => {}; });
-  const chess = { ...standard, game: "chess" as const };
+  const chess = chessJson as GameSnapshot;
   const opened = { ...standard, token: { ...standard.token, document: standard.token.document + 1, revision: standard.token.revision + 1 }, paused: true };
   vi.mocked(invoke).mockResolvedValueOnce(chess).mockResolvedValueOnce(opened);
   const { result } = renderHook(useGameSession); await flush();
@@ -90,7 +91,7 @@ it("routes native close by the current game when Open precedes the next shared p
 it("retains the product close request when a Chess replacement precedes its view mounting", async () => {
   let close!: () => void;
   vi.mocked(listen).mockImplementationOnce(async (_name, handler) => { close = handler as typeof close; return () => {}; });
-  const chess = { ...standard, game: "chess" as const, token: { ...standard.token, document: standard.token.document + 1, revision: standard.token.revision + 1 } };
+  const chess = { ...(chessJson as GameSnapshot), token: { ...standard.token, document: standard.token.document + 1, revision: standard.token.revision + 1 } };
   vi.mocked(invoke).mockResolvedValueOnce(standard).mockResolvedValueOnce(chess);
   const { result } = renderHook(useGameSession); await flush();
   await act(async () => { close(); await Promise.resolve(); });

@@ -19,9 +19,11 @@ mod takeback;
 pub use analysis::*;
 use mshogi_core::chess::*;
 use mshogi_core::native::CanonicalRecord;
+#[cfg(any(test, feature = "desktop-verification"))]
+use mshogi_engine::ExecutionResponse;
 use mshogi_engine::{
     ChessResult, EngineBridge, EngineClaim, ExecutionContext, ExecutionObservation,
-    ExecutionRequest, ExecutionResponse, ExecutionResult, WorkLimits,
+    ExecutionRequest, ExecutionResult, WorkLimits,
 };
 use serde::{Deserialize, Serialize};
 use std::{io, path::PathBuf, time::Instant};
@@ -50,10 +52,11 @@ pub const PLAY_LIMITS: WorkLimits = WorkLimits {
     nodes: 20_000,
 };
 
-/// One complete host command. A frontend version is mandatory for mutations.
+/// Private journalled Chess mutation. The current application transport uses
+/// SessionOperation and its complete outer SessionToken instead.
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
-pub enum DesktopCommand {
+enum ChessMutationCommand {
     /// Replace the live game, invalidating every previous search.
     NewGame {
         /// Expected current session version.
@@ -135,7 +138,7 @@ pub enum DesktopCommand {
         version: u64,
     },
 }
-impl DesktopCommand {
+impl ChessMutationCommand {
     fn version(&self) -> Option<u64> {
         match self {
             Self::Preferences { .. } => None,
@@ -222,7 +225,7 @@ impl Default for EngineState {
 }
 /// Immutable native view. Revision protects async frontend responses.
 #[derive(Clone, Debug, Serialize)]
-pub struct Snapshot {
+struct ChessSnapshot {
     /// Monotonic observation revision, including engine lifecycle changes.
     pub revision: u64,
     /// Monotonic live-session command version, independent of ply count.
@@ -288,7 +291,7 @@ pub struct RuntimeMetadata {
 }
 /// Native Chess document and execution state. No other game is stored here.
 #[derive(Clone)]
-pub struct DesktopSession {
+struct DesktopSession {
     runtime: RuntimeMetadata,
     game: ChessMatch,
     human: Color,
@@ -422,7 +425,7 @@ impl ActiveDocument {
             }
         }
     }
-    fn snapshot(&self) -> Snapshot {
+    fn snapshot(&self) -> ChessSnapshot {
         self.chess().snapshot()
     }
     fn ensure_capacity(&self) -> Result<(), OperationFailure> {
@@ -556,7 +559,8 @@ impl DesktopSession {
 
     /// Apply an atomic human command. Rejection preserves the accepted document;
     /// resource refusals also pause execution and expose a capacity diagnostic.
-    pub fn command(&mut self, command: DesktopCommand, at_ns: u64) -> Result<(), String> {
+    #[cfg(test)]
+    fn command(&mut self, command: ChessMutationCommand, at_ns: u64) -> Result<(), String> {
         let mut candidate = self.clone();
         if let Err(error) = candidate.command_unchecked(command, at_ns) {
             if error.resource.is_some() {
@@ -577,7 +581,7 @@ impl DesktopSession {
     }
     fn command_unchecked(
         &mut self,
-        command: DesktopCommand,
+        command: ChessMutationCommand,
         at_ns: u64,
     ) -> Result<(), OperationFailure> {
         if command
@@ -589,15 +593,15 @@ impl DesktopSession {
         self.ensure_capacity()?;
         if matches!(
             command,
-            DesktopCommand::Analyze { .. }
-                | DesktopCommand::Resume { .. }
-                | DesktopCommand::Retry { .. }
+            ChessMutationCommand::Analyze { .. }
+                | ChessMutationCommand::Resume { .. }
+                | ChessMutationCommand::Retry { .. }
         ) {
             self.observation_slot()?;
         }
         let recorded = command.clone();
         match command {
-            DesktopCommand::NewGame {
+            ChessMutationCommand::NewGame {
                 human,
                 document_revision,
                 ..
@@ -626,7 +630,7 @@ impl DesktopSession {
                 self.changed();
                 self.document_identity = self.version;
             }
-            DesktopCommand::Preferences {
+            ChessMutationCommand::Preferences {
                 orientation,
                 analysis_defaults,
             } => {
@@ -639,10 +643,10 @@ impl DesktopSession {
                 self.revision += 1;
                 self.archive_revision = self.revision.min(MAX_SAFE_ID - 65);
             }
-            DesktopCommand::Inspect { .. } => {
+            ChessMutationCommand::Inspect { .. } => {
                 return Err("History selection requires the native controller worker.".into());
             }
-            DesktopCommand::ReturnLive { .. } => {
+            ChessMutationCommand::ReturnLive { .. } => {
                 self.retire_analysis();
                 self.pending = None;
                 self.viewed = None;
@@ -652,7 +656,7 @@ impl DesktopSession {
                 self.version += 1;
                 self.revision += 1;
             }
-            DesktopCommand::Play { action, .. } => {
+            ChessMutationCommand::Play { action, .. } => {
                 self.human_turn()?;
                 self.apply_match(self.human, MatchCommand::Move(action), at_ns)?;
                 self.pending = None;
@@ -660,7 +664,7 @@ impl DesktopSession {
                 self.engine.message = None;
                 self.changed();
             }
-            DesktopCommand::Claim { claim, .. } => {
+            ChessMutationCommand::Claim { claim, .. } => {
                 self.human_turn()?;
                 if claim.actor != self.human {
                     return Err("The claim must belong to the player to move.".into());
@@ -678,11 +682,11 @@ impl DesktopSession {
                 self.engine.message = None;
                 self.changed();
             }
-            DesktopCommand::TakeBack { .. } => self.take_back(at_ns)?,
-            DesktopCommand::Analyze { operation, .. } => self.start_analysis(operation)?,
-            DesktopCommand::CancelAnalysis { .. } => self.cancel_analysis()?,
-            DesktopCommand::Resume { .. } => self.resume()?,
-            DesktopCommand::Resign { .. } => {
+            ChessMutationCommand::TakeBack { .. } => self.take_back(at_ns)?,
+            ChessMutationCommand::Analyze { operation, .. } => self.start_analysis(operation)?,
+            ChessMutationCommand::CancelAnalysis { .. } => self.cancel_analysis()?,
+            ChessMutationCommand::Resume { .. } => self.resume()?,
+            ChessMutationCommand::Resign { .. } => {
                 if self.game.conclusion().is_some() {
                     return Err("This game has concluded. Start a new game to play again.".into());
                 }
@@ -694,7 +698,7 @@ impl DesktopSession {
                 self.engine.message = None;
                 self.changed();
             }
-            DesktopCommand::Cancel { .. } => {
+            ChessMutationCommand::Cancel { .. } => {
                 if self.game.conclusion().is_some()
                     || self.pending.is_none()
                     || self.engine.status != EnginePhase::Thinking
@@ -707,7 +711,7 @@ impl DesktopSession {
                     Some("Engine work cancelled. No move or chess result was applied.".into());
                 self.changed();
             }
-            DesktopCommand::Retry { .. } => {
+            ChessMutationCommand::Retry { .. } => {
                 if self.play_paused
                     || self.game.conclusion().is_some()
                     || self.game.game().position().side_to_move() == self.human
@@ -726,7 +730,7 @@ impl DesktopSession {
                 self.changed();
             }
         }
-        if !matches!(recorded, DesktopCommand::ReturnLive { .. }) {
+        if !matches!(recorded, ChessMutationCommand::ReturnLive { .. }) {
             self.journal(recorded, at_ns);
         }
         Ok(())
@@ -812,6 +816,7 @@ impl DesktopSession {
         })
     }
     /// Accept and apply only the exact outstanding live context. Stale responses do nothing.
+    #[cfg(test)]
     pub fn accept(&mut self, response: ExecutionResponse, at_ns: u64) -> bool {
         let Some(pending) = &self.pending else {
             return false;
@@ -942,7 +947,7 @@ impl DesktopSession {
         }
     }
     /// Build a rules-owned immutable view. This never starts search or changes the game.
-    pub fn snapshot(&self) -> Snapshot {
+    fn snapshot(&self) -> ChessSnapshot {
         let position = self.game.game().position();
         let mut pieces = Vec::new();
         for rank in 0..8 {
@@ -973,7 +978,7 @@ impl DesktopSession {
                 })
                 .collect()
         };
-        Snapshot {
+        ChessSnapshot {
             revision: self.revision,
             version: self.version,
             human: self.human,
@@ -1039,7 +1044,7 @@ pub struct DesktopController {
     files: persistence::FileWorker,
     io_state: IoState,
     admissions: persistence::FileWorker,
-    admission_token: Option<OpenToken>,
+    admission_token: Option<AdmissionToken>,
     admission_receipt: Option<AdmissionReceipt>,
     last_command_receipt: Option<AdmissionReceipt>,
 }
@@ -1132,7 +1137,7 @@ impl DesktopController {
     }
     /// Queue an explicit candidate before polling completions; cancellation wins races.
     /// Use `command_with_receipt` when the caller needs its accepted/rejected outcome.
-    pub fn command(&mut self, command: DesktopCommand) -> Result<Snapshot, String> {
+    fn command(&mut self, command: ChessMutationCommand) -> Result<ChessSnapshot, String> {
         if self.lifecycle.close_requested() {
             return Err(
                 "Close is pending. Finish or cancel close before changing the document.".into(),
@@ -1141,14 +1146,14 @@ impl DesktopController {
         self.require_chess()?;
         if matches!(
             command,
-            DesktopCommand::Analyze { .. }
-                | DesktopCommand::Resume { .. }
-                | DesktopCommand::ReturnLive { .. }
+            ChessMutationCommand::Analyze { .. }
+                | ChessMutationCommand::Resume { .. }
+                | ChessMutationCommand::ReturnLive { .. }
         ) && matches!(self.io_state.phase, IoPhase::Viewing | IoPhase::Opening)
         {
             return Err("Wait for the current document/history operation before changing its analysis target.".into());
         }
-        if let DesktopCommand::Inspect {
+        if let ChessMutationCommand::Inspect {
             version,
             event_index,
         } = command
@@ -1158,16 +1163,16 @@ impl DesktopController {
         if self.admission_token.is_some()
             && !matches!(
                 command,
-                DesktopCommand::Cancel { .. }
-                    | DesktopCommand::CancelAnalysis { .. }
-                    | DesktopCommand::NewGame { .. }
-                    | DesktopCommand::ReturnLive { .. }
+                ChessMutationCommand::Cancel { .. }
+                    | ChessMutationCommand::CancelAnalysis { .. }
+                    | ChessMutationCommand::NewGame { .. }
+                    | ChessMutationCommand::ReturnLive { .. }
             )
         {
             return Err("Wait for native document capacity admission to complete.".into());
         }
         if self.admission_token.is_some()
-            && matches!(command, DesktopCommand::CancelAnalysis { .. })
+            && matches!(command, ChessMutationCommand::CancelAnalysis { .. })
             && self.session.chess_mut().analysis_pending.is_none()
         {
             if command.version() != Some(self.session.version) {
@@ -1182,7 +1187,7 @@ impl DesktopController {
             self.session.chess_mut().analysis.message = Some("Pending analysis admission cancelled before any command or observation was accepted.".into());
             return Ok(self.session.snapshot());
         }
-        if let DesktopCommand::TakeBack { version } = command {
+        if let ChessMutationCommand::TakeBack { version } = command {
             if version != self.session.version
                 || self.session.chess_mut().viewed.is_some()
                 || self.session.chess_mut().take_back_target().is_none()
@@ -1196,9 +1201,7 @@ impl DesktopController {
             self.session.chess_mut().engine.status = EnginePhase::Paused;
             self.queue_admission_operation(candidate, Some(self.at_ns()))?;
             self.last_command_receipt = self.admission_receipt.clone();
-            return self
-                .chess_snapshot_if_active()
-                .ok_or_else(|| "The active game changed during Chess command admission.".into());
+            return Ok(self.session.snapshot());
         }
         if command
             .version()
@@ -1208,10 +1211,10 @@ impl DesktopController {
         }
         if matches!(
             &command,
-            DesktopCommand::Play { .. }
-                | DesktopCommand::Analyze { .. }
-                | DesktopCommand::Resume { .. }
-                | DesktopCommand::Retry { .. }
+            ChessMutationCommand::Play { .. }
+                | ChessMutationCommand::Analyze { .. }
+                | ChessMutationCommand::Resume { .. }
+                | ChessMutationCommand::Retry { .. }
         ) && let Err(error) = self.session.chess().observation_slot()
         {
             self.retire_admission();
@@ -1220,7 +1223,7 @@ impl DesktopController {
             self.session.capacity.resource = error.resource;
             return Err(error.diagnostic);
         }
-        let preferences = matches!(command, DesktopCommand::Preferences { .. });
+        let preferences = matches!(command, ChessMutationCommand::Preferences { .. });
         let at_ns = self.at_ns();
         let candidate = self.session.chess().clone();
         self.queue_chess_candidate(
@@ -1231,17 +1234,10 @@ impl DesktopController {
         if !preferences {
             self.bridge.cancel();
         }
-        self.chess_snapshot_if_active()
-            .ok_or_else(|| "The active game changed during Chess command admission.".into())
-    }
-    /// Poll the bounded completion slot, accept it atomically, and start eligible work.
-    /// Safe finite Chess presentation forwarder. The current native application
-    /// contract is shared_snapshot; a cross-game Open yields None here.
-    pub fn chess_snapshot_if_active(&mut self) -> Option<Snapshot> {
-        self.shared_snapshot().chess
+        Ok(self.session.snapshot())
     }
     #[cfg(test)]
-    fn snapshot(&mut self) -> Snapshot {
+    fn snapshot(&mut self) -> ChessSnapshot {
         self.poll_chess();
         let mut snapshot = self.session.snapshot();
         snapshot.io = self.io_state.clone();
@@ -1379,7 +1375,7 @@ mod tests {
     fn human_black() -> DesktopSession {
         let mut s = DesktopSession::new();
         s.command(
-            DesktopCommand::NewGame {
+            ChessMutationCommand::NewGame {
                 document_revision: s.document_revision,
                 version: 1,
                 human: Color::Black,
@@ -1397,7 +1393,7 @@ mod tests {
         let before = s.game.record().to_json();
         assert!(
             s.command(
-                DesktopCommand::Play {
+                ChessMutationCommand::Play {
                     version: 1,
                     action: "e2e5".parse().unwrap()
                 },
@@ -1408,7 +1404,7 @@ mod tests {
         assert_eq!(s.game.record().to_json(), before);
         assert_eq!(s.version, 1);
         s.command(
-            DesktopCommand::Play {
+            ChessMutationCommand::Play {
                 version: 1,
                 action: "e2e4".parse().unwrap(),
             },
@@ -1418,7 +1414,7 @@ mod tests {
         assert_eq!(s.snapshot().history, ["e2e4"]);
         assert!(
             s.command(
-                DesktopCommand::Play {
+                ChessMutationCommand::Play {
                     version: 1,
                     action: "d2d4".parse().unwrap()
                 },
@@ -1448,7 +1444,7 @@ mod tests {
         wrong_generation.process_generation += 1;
         assert!(!s.accept(response(wrong_generation, "e2e4"), 1));
         s.command(
-            DesktopCommand::NewGame {
+            ChessMutationCommand::NewGame {
                 document_revision: s.document_revision,
                 version: s.version,
                 human: Color::Black,
@@ -1486,12 +1482,12 @@ mod tests {
     fn cancel_wins_even_if_a_complete_response_has_arrived() {
         let mut s = human_black();
         let old = s.engine_request().unwrap().context;
-        s.command(DesktopCommand::Cancel { version: s.version }, 1)
+        s.command(ChessMutationCommand::Cancel { version: s.version }, 1)
             .unwrap();
         assert!(!s.accept(response(old.clone(), "e2e4"), 2));
         assert!(s.snapshot().history.is_empty());
         assert!(s.engine_request().is_none());
-        s.command(DesktopCommand::Retry { version: s.version }, 3)
+        s.command(ChessMutationCommand::Retry { version: s.version }, 3)
             .unwrap();
         let fresh = s.engine_request().unwrap().context;
         assert!(fresh.request_id > old.request_id);
@@ -1543,7 +1539,7 @@ mod tests {
             .unwrap();
         assert!(s.snapshot().conclusion.is_none());
         s.command(
-            DesktopCommand::Claim {
+            ChessMutationCommand::Claim {
                 version: s.version,
                 claim,
             },
@@ -1621,7 +1617,7 @@ mod tests {
             let old = if engine_turn {
                 session
                     .command(
-                        DesktopCommand::Play {
+                        ChessMutationCommand::Play {
                             version: session.version,
                             action: "e2e4".parse().unwrap(),
                         },
@@ -1636,7 +1632,7 @@ mod tests {
             let before_history = session.snapshot().history;
             session
                 .command(
-                    DesktopCommand::Resign {
+                    ChessMutationCommand::Resign {
                         version: session.version,
                     },
                     2,
@@ -1664,13 +1660,13 @@ mod tests {
             }
             let record = session.game.record().to_json();
             for command in [
-                DesktopCommand::Resign {
+                ChessMutationCommand::Resign {
                     version: session.version,
                 },
-                DesktopCommand::Cancel {
+                ChessMutationCommand::Cancel {
                     version: session.version,
                 },
-                DesktopCommand::Retry {
+                ChessMutationCommand::Retry {
                     version: session.version,
                 },
             ] {
@@ -1688,7 +1684,7 @@ mod tests {
         assert!(session.snapshot().conclusion.is_none());
         session
             .command(
-                DesktopCommand::Resign {
+                ChessMutationCommand::Resign {
                     version: session.version,
                 },
                 1,
@@ -1752,7 +1748,7 @@ mod tests {
             assert_eq!(session.game.record().to_json(), before_match);
             session
                 .command(
-                    DesktopCommand::Retry {
+                    ChessMutationCommand::Retry {
                         version: session.version,
                     },
                     2,
@@ -1767,7 +1763,7 @@ mod tests {
             assert!(!session.accept(response(old, "e2e4"), 3));
             session
                 .command(
-                    DesktopCommand::Cancel {
+                    ChessMutationCommand::Cancel {
                         version: session.version,
                     },
                     4,
@@ -1777,7 +1773,7 @@ mod tests {
             assert!(!session.accept(response(fresh, "e2e4"), 5));
             session
                 .command(
-                    DesktopCommand::Retry {
+                    ChessMutationCommand::Retry {
                         version: session.version,
                     },
                     6,
@@ -1795,19 +1791,19 @@ mod tests {
         let version = session.version;
         assert!(
             session
-                .command(DesktopCommand::Cancel { version }, 1)
+                .command(ChessMutationCommand::Cancel { version }, 1)
                 .is_err()
         );
         assert!(
             session
-                .command(DesktopCommand::Retry { version }, 1)
+                .command(ChessMutationCommand::Retry { version }, 1)
                 .is_err()
         );
         assert_eq!(session.version, version);
         assert_eq!(session.game.record().to_json(), before);
         session
             .command(
-                DesktopCommand::Play {
+                ChessMutationCommand::Play {
                     version,
                     action: "e2e4".parse().unwrap(),
                 },
@@ -1818,7 +1814,7 @@ mod tests {
         let version = session.version;
         assert!(
             session
-                .command(DesktopCommand::Retry { version }, 3)
+                .command(ChessMutationCommand::Retry { version }, 3)
                 .is_err()
         );
         assert_eq!(session.pending, Some(request));
@@ -1866,13 +1862,13 @@ mod tests {
         incomplete
             .session
             .chess_mut()
-            .command(DesktopCommand::Cancel { version }, 1)
+            .command(ChessMutationCommand::Cancel { version }, 1)
             .unwrap();
         let version = incomplete.session.version;
         incomplete
             .session
             .chess_mut()
-            .command(DesktopCommand::Retry { version }, 2)
+            .command(ChessMutationCommand::Retry { version }, 2)
             .unwrap();
         assert_eq!(
             incomplete
@@ -1889,7 +1885,7 @@ mod tests {
     #[cfg(feature = "desktop-verification")]
     #[test]
     fn verification_promotion_has_four_native_choices_and_roundtrips_complete_archive() {
-        fn wait_document(controller: &mut DesktopController, id: u64) -> Snapshot {
+        fn wait_document(controller: &mut DesktopController, id: u64) -> ChessSnapshot {
             let deadline = Instant::now() + std::time::Duration::from_secs(5);
             loop {
                 let snapshot = controller.snapshot();

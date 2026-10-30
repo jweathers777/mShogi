@@ -3,17 +3,20 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { Board } from "./Board";
 import userEvent from "@testing-library/user-event";
-import type { Snapshot } from "./native";
-import standardJson from "./__fixtures__/standard.json";
-import promotionJson from "./__fixtures__/promotion.json";
-const standard = standardJson as Snapshot;
-const promotion = promotionJson as Snapshot;
+import type { ChessSnapshot } from "./product/native";
+import standardJson from "./__fixtures__/shared-chess-standard.json";
+import promotionJson from "./__fixtures__/shared-chess-promotion.json";
+function boardFacts(value: ChessSnapshot) {
+  return { pieces: value.pieces.map(p => ({ square: p.square, color: value.sides.find(s => s.key === p.owner)!.id.side as "white" | "black", kind: p.kind, label: p.label })), choices: value.choices, version: value.token.version };
+}
+const standard = boardFacts(standardJson as ChessSnapshot);
+const promotion = boardFacts(promotionJson as ChessSnapshot);
 afterEach(cleanup);
 function board(snapshot = standard) {
   const onPlay = vi.fn();
   const props = {
     pieces: snapshot.pieces,
-    choices: snapshot.legal_choices,
+    choices: snapshot.choices,
     version: snapshot.version,
     disabled: false,
     orientation: "white" as const,
@@ -129,7 +132,7 @@ const inspectedPawn = {
 };
 it.each(["white", "black"] as const)("inspects an opponent in %s orientation, switches to friendly action, and clears with Escape", async (orientation) => {
   const onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue(inspectedPawn);
-  render(<Board pieces={standard.pieces} choices={standard.legal_choices} version={0} orientation={orientation} disabled={false} humanOwner="white" onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
+  render(<Board pieces={standard.pieces} choices={standard.choices} version={0} orientation={orientation} disabled={false} humanOwner="white" onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
   square("e7").focus(); fireEvent.keyDown(square("e7"), { key: "Enter" });
   const status = await screen.findByText("Inspecting Black pawn · Esc clears");
   expect(status.textContent).toBe("Inspecting Black pawn · Esc clears");
@@ -148,7 +151,7 @@ it.each(["white", "black"] as const)("inspects an opponent in %s orientation, sw
 it("keeps historical/engine-turn inspection available when board actions are disabled and retires late results", async () => {
   let resolve!: (value: typeof inspectedPawn) => void;
   const onInspect = vi.fn().mockReturnValue(new Promise((r) => { resolve = r; })), onPlay = vi.fn();
-  const props = { pieces: standard.pieces, choices: standard.legal_choices, version: 0, orientation: "white" as const, disabled: true, humanOwner: "white", onPlay, onInspect, inspectionDisabled: false, inspectionContextKey: "historical-1" };
+  const props = { pieces: standard.pieces, choices: standard.choices, version: 0, orientation: "white" as const, disabled: true, humanOwner: "white", onPlay, onInspect, inspectionDisabled: false, inspectionContextKey: "historical-1" };
   const { rerender } = render(<Board {...props} />);
   fireEvent.click(square("e7")); expect(onInspect).toHaveBeenCalledWith("e7");
   rerender(<Board {...props} inspectionContextKey="historical-2" />);
@@ -164,7 +167,7 @@ it("retains complete compound inspection routes and completion alternatives with
     { action: "synthetic-route-b", from: "e7", steps: ["e6", "d6"], completion: { label: "Do not promote", glyph: null } },
     { action: "synthetic-route-stop", from: "e7", steps: ["e6"], completion: null },
   ] });
-  render(<Board pieces={standard.pieces} choices={standard.legal_choices} version={0} orientation="white" disabled={false} humanOwner="white" onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
+  render(<Board pieces={standard.pieces} choices={standard.choices} version={0} orientation="white" disabled={false} humanOwner="white" onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
   fireEvent.click(square("e7")); await screen.findByText(/Inspecting Black pawn · Esc clears/); fireEvent.click(square("e6"));
   expect(square("d6").getAttribute("aria-label")).toContain("read-only inspection destination");
   expect(screen.queryByRole("button", { name: "Complete action here" })).toBeNull();
@@ -179,7 +182,7 @@ it("preserves actionable capture destination precedence over enemy-origin inspec
 });
 it("switches from an inspection capture marker to the friendly piece's actionable choices", async () => {
   const onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue({ ...inspectedPawn, choices: [{ action: "inspection-capture-contract", from: "e7", steps: ["e2"], completion: null }] });
-  render(<Board pieces={standard.pieces} choices={standard.legal_choices} version={0} orientation="white" disabled={false} humanOwner="white" onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
+  render(<Board pieces={standard.pieces} choices={standard.choices} version={0} orientation="white" disabled={false} humanOwner="white" onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
   fireEvent.click(square("e7")); await screen.findByText(/Inspecting Black pawn · Esc clears/);
   fireEvent.click(square("e2")); expect(square("e2").getAttribute("aria-label")).toContain("selected"); expect(square("e4").getAttribute("aria-label")).toContain("legal destination"); expect(onPlay).not.toHaveBeenCalled();
 });
@@ -187,7 +190,7 @@ it("keeps live inspection help in the shell footer without changing board select
   const helpTarget = document.createElement("div");
   document.body.append(helpTarget);
   const onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue(inspectedPawn);
-  const { container, unmount } = render(<Board pieces={standard.pieces} choices={standard.legal_choices} version={0} orientation="white" disabled={false} humanOwner="white" onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} helpTarget={helpTarget} />);
+  const { container, unmount } = render(<Board pieces={standard.pieces} choices={standard.choices} version={0} orientation="white" disabled={false} humanOwner="white" onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} helpTarget={helpTarget} />);
   expect(helpTarget.textContent).toContain("Select a piece");
   expect(container.querySelector(".board-wrap .board-help")).toBeNull();
   fireEvent.click(square("e7"));

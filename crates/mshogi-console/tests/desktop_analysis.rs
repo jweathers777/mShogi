@@ -1,7 +1,11 @@
 //! Actual subprocess analysis through the public desktop resource owner.
 use mshogi_core::chess::{Color, MateReachability};
+use mshogi_core::native::NativeSide;
 use mshogi_desktop_session::{
-    AnalysisOperation, AnalysisPhase, DesktopCommand, DesktopController, EnginePhase, Snapshot,
+    AnalysisOperation, AnalysisPhase, DesktopController, EnginePhase, SharedSnapshot,
+};
+use mshogi_desktop_session::{
+    ChessPresentation, SessionOperation, SessionToken, SharedDesktopCommand, SharedOpenToken,
 };
 use mshogi_engine::{ChessResult, ExecutionPurpose};
 use std::{
@@ -13,13 +17,13 @@ use std::{
 fn controller() -> DesktopController {
     DesktopController::new(PathBuf::from(env!("CARGO_BIN_EXE_mshogi"))).unwrap()
 }
-fn until(controller: &mut DesktopController, ready: impl Fn(&Snapshot) -> bool) -> Snapshot {
+fn until(
+    controller: &mut DesktopController,
+    ready: impl Fn(&SharedSnapshot) -> bool,
+) -> SharedSnapshot {
     let deadline = Instant::now() + Duration::from_secs(30);
     loop {
-        let snapshot = controller
-            .shared_snapshot()
-            .chess
-            .expect("native Chess fixture");
+        let snapshot = controller.shared_snapshot();
         if ready(&snapshot) {
             return snapshot;
         }
@@ -45,34 +49,35 @@ fn moves(depth: u16, nodes: u64) -> AnalysisOperation {
 #[test]
 fn actual_analysis_suggestions_never_commit_a_turn_and_resume_is_explicit() {
     let mut controller = controller();
-    let initial = controller
-        .shared_snapshot()
-        .chess
-        .expect("native Chess fixture");
+    let initial = controller.shared_snapshot();
     let turn = controller
-        .settled(DesktopCommand::Play {
-            version: initial.version,
-            action: "e2e4".parse().unwrap(),
-        })
+        .settled(
+            initial.token,
+            SessionOperation::ChessPlay {
+                action: "e2e4".parse().unwrap(),
+            },
+        )
         .unwrap();
     // Analyze is serialized before any poll can apply an engine-turn reply.
     let analyzing = controller
-        .settled(DesktopCommand::Analyze {
-            version: turn.version,
-            operation: moves(2, 20_000),
-        })
+        .settled(
+            turn.token,
+            SessionOperation::Analyze {
+                operation: moves(2, 20_000),
+            },
+        )
         .unwrap();
-    assert!(analyzing.play_paused);
-    assert_eq!(analyzing.history, ["e2e4"]);
+    assert!(analyzing.paused);
+    assert_eq!(history(&analyzing), ["e2e4"]);
     let result = until(&mut controller, |s| {
-        s.analysis.status == AnalysisPhase::Complete
+        chess(s).analysis.status == AnalysisPhase::Complete
     });
-    assert_eq!(result.history, analyzing.history);
-    assert_eq!(result.fen, analyzing.fen);
-    assert!(result.conclusion.is_none());
-    assert_eq!(result.turn, Color::Black);
-    assert!(result.play_paused);
-    let context = result.analysis.context.as_ref().unwrap();
+    assert_eq!(history(&result), history(&analyzing));
+    assert_eq!(fen(&result), fen(&analyzing));
+    assert!(chess(&result).live_conclusion.is_none());
+    assert_eq!(side_to_move(&result), Color::Black);
+    assert!(result.paused);
+    let context = chess(&result).analysis.context.as_ref().unwrap();
     let mshogi_core::native::CanonicalRecord::Chess(record) = &context.game else {
         panic!("chess analysis context");
     };
@@ -82,10 +87,13 @@ fn actual_analysis_suggestions_never_commit_a_turn_and_resume_is_explicit() {
     ));
     assert_eq!(
         record.replay_history().unwrap().game.position().to_fen(),
-        result.fen
+        fen(&result)
     );
-    let Some(ChessResult::Move { action, telemetry }) = &result.analysis.result else {
-        panic!("expected a real move suggestion: {:?}", result.analysis)
+    let Some(ChessResult::Move { action, telemetry }) = &chess(&result).analysis.result else {
+        panic!(
+            "expected a real move suggestion: {:?}",
+            chess(&result).analysis
+        )
     };
     assert_eq!(telemetry.completed_depth, 2);
     assert!(telemetry.nodes > 0 && telemetry.nodes <= 20_000);
@@ -99,71 +107,78 @@ fn actual_analysis_suggestions_never_commit_a_turn_and_resume_is_explicit() {
             .contains(action)
     );
     for _ in 0..10 {
-        let stable = controller
-            .shared_snapshot()
-            .chess
-            .expect("native Chess fixture");
-        assert_eq!(stable.history, result.history);
-        assert_eq!(stable.fen, result.fen);
-        assert!(stable.play_paused);
+        let stable = controller.shared_snapshot();
+        assert_eq!(history(&stable), history(&result));
+        assert_eq!(fen(&stable), fen(&result));
+        assert!(stable.paused);
     }
     let resumed = controller
-        .settled(DesktopCommand::Resume {
-            version: result.version,
-        })
+        .settled(result.token, SessionOperation::Resume {})
         .unwrap();
-    assert!(!resumed.play_paused);
+    assert!(!resumed.paused);
     let played = until(&mut controller, |s| {
-        s.turn == Color::White && s.engine.status == EnginePhase::Idle
+        side_to_move(s) == Color::White && s.phase == EnginePhase::Idle
     });
-    assert_eq!(played.history.len(), 2);
-    assert_eq!(played.history[0], "e2e4");
-    assert!(played.conclusion.is_none());
+    assert_eq!(history(&played).len(), 2);
+    assert_eq!(history(&played)[0], "e2e4");
+    assert!(chess(&played).live_conclusion.is_none());
     shutdown(&mut controller);
 }
 
 #[test]
 fn actual_full_budget_exhaustion_and_cancelled_replacement_leave_match_unchanged() {
     let mut controller = controller();
-    let initial = controller
-        .shared_snapshot()
-        .chess
-        .expect("native Chess fixture");
+    let initial = controller.shared_snapshot();
     let started = controller
-        .settled(DesktopCommand::Analyze {
-            version: initial.version,
-            operation: AnalysisOperation::FullReachability {
-                target: mshogi_engine::ReachabilityTarget::Either,
-                max_positions: 1,
-                max_transitions: 1,
+        .settled(
+            initial.token,
+            SessionOperation::Analyze {
+                operation: AnalysisOperation::FullReachability {
+                    target: mshogi_engine::ReachabilityTarget::Either,
+                    max_positions: 1,
+                    max_transitions: 1,
+                },
             },
-        })
+        )
         .unwrap();
     let full = until(&mut controller, |s| {
-        s.analysis.status == AnalysisPhase::Incomplete
+        chess(s).analysis.status == AnalysisPhase::Incomplete
     });
-    assert_eq!(full.fen, initial.fen);
-    assert!(full.history.is_empty() && full.conclusion.is_none());
+    assert_eq!(fen(&full), fen(&initial));
+    assert!(history(&full).is_empty() && chess(&full).live_conclusion.is_none());
     let Some(ChessResult::Reachability {
         result: MateReachability::Unknown { work, .. },
-    }) = &full.analysis.result
+    }) = &chess(&full).analysis.result
     else {
-        panic!("bounded Full did not remain unknown: {:?}", full.analysis)
+        panic!(
+            "bounded Full did not remain unknown: {:?}",
+            chess(&full).analysis
+        )
     };
     assert!(work.positions <= 1 && work.transitions <= 1);
-    assert_eq!(full.rules_mode, "m2");
-    let old_context = full.analysis.context.as_ref().unwrap();
+    assert_eq!(chess(&full).rules_mode, "m2");
+    let old_context = chess(&full).analysis.context.as_ref().unwrap();
     let replaced = controller
-        .settled(DesktopCommand::Analyze {
-            version: full.version,
-            operation: moves(8, 5_000_000),
-        })
+        .settled(
+            full.token,
+            SessionOperation::Analyze {
+                operation: moves(8, 5_000_000),
+            },
+        )
         .unwrap();
-    assert_eq!(replaced.analysis.status, AnalysisPhase::Thinking);
-    assert!(replaced.analysis.result.is_none());
-    assert!(replaced.analysis.context.as_ref().unwrap().request_id > old_context.request_id);
+    assert_eq!(chess(&replaced).analysis.status, AnalysisPhase::Thinking);
+    assert!(chess(&replaced).analysis.result.is_none());
     assert!(
-        replaced
+        chess(&replaced)
+            .analysis
+            .context
+            .as_ref()
+            .unwrap()
+            .request_id
+            > old_context.request_id
+    );
+    assert!(
+        chess(&replaced)
             .analysis
             .context
             .as_ref()
@@ -172,70 +187,115 @@ fn actual_full_budget_exhaustion_and_cancelled_replacement_leave_match_unchanged
             > old_context.process_generation
     );
     let cancelled = controller
-        .settled(DesktopCommand::CancelAnalysis {
-            version: replaced.version,
-        })
+        .settled(replaced.token, SessionOperation::Cancel {})
         .unwrap();
-    assert_eq!(cancelled.analysis.status, AnalysisPhase::Cancelled);
+    assert_eq!(chess(&cancelled).analysis.status, AnalysisPhase::Cancelled);
     assert!(
-        cancelled.analysis.result.is_none(),
+        chess(&cancelled).analysis.result.is_none(),
         "cancel cannot invent final work observations"
     );
-    assert!(cancelled.play_paused);
+    assert!(cancelled.paused);
     for _ in 0..10 {
-        let snapshot = controller
-            .shared_snapshot()
-            .chess
-            .expect("native Chess fixture");
-        assert_eq!(snapshot.fen, initial.fen);
-        assert_eq!(snapshot.analysis.status, AnalysisPhase::Cancelled);
-        assert!(snapshot.history.is_empty() && snapshot.conclusion.is_none());
+        let snapshot = controller.shared_snapshot();
+        assert_eq!(fen(&snapshot), fen(&initial));
+        assert_eq!(chess(&snapshot).analysis.status, AnalysisPhase::Cancelled);
+        assert!(history(&snapshot).is_empty() && chess(&snapshot).live_conclusion.is_none());
         thread::sleep(Duration::from_millis(2));
     }
     let fresh = controller
-        .settled(DesktopCommand::NewGame {
-            version: cancelled.version,
-            document_revision: cancelled.document.revision,
-            human: Color::Black,
-        })
+        .fresh(
+            SharedOpenToken {
+                document: cancelled.token.document,
+                version: cancelled.token.version,
+                document_revision: cancelled.document.revision,
+            },
+            Color::Black,
+        )
         .unwrap();
-    assert!(!fresh.play_paused);
-    assert!(fresh.analysis.result.is_none());
+    assert!(!fresh.paused);
+    assert!(chess(&fresh).analysis.result.is_none());
     let played = until(&mut controller, |s| {
-        s.turn == Color::Black && s.engine.status == EnginePhase::Idle
+        side_to_move(s) == Color::Black && s.phase == EnginePhase::Idle
     });
-    assert_eq!(played.history.len(), 1);
-    assert!(played.analysis.result.is_none());
-    assert!(started.version < played.version);
+    assert_eq!(history(&played).len(), 1);
+    assert!(chess(&played).analysis.result.is_none());
+    assert!(started.token.version < played.token.version);
     shutdown(&mut controller);
 }
 
-// Match the host command promise: completion means native admission settled.
+fn chess(snapshot: &SharedSnapshot) -> &ChessPresentation {
+    snapshot.chess.as_ref().expect("native Chess capabilities")
+}
+fn history(snapshot: &SharedSnapshot) -> Vec<String> {
+    live_game(snapshot)
+        .history()
+        .actions()
+        .map(|a| a.to_string())
+        .collect()
+}
+fn fen(snapshot: &SharedSnapshot) -> String {
+    live_game(snapshot).position().to_fen()
+}
+fn side_to_move(snapshot: &SharedSnapshot) -> Color {
+    let NativeSide::Chess(side) = snapshot.turn.id else {
+        panic!("Chess turn")
+    };
+    side
+}
 trait SettledCommand {
-    fn settled(&mut self, command: DesktopCommand) -> Result<Snapshot, String>;
+    fn settled(
+        &mut self,
+        expected: SessionToken,
+        operation: SessionOperation,
+    ) -> Result<SharedSnapshot, String>;
+    fn fresh(&mut self, expected: SharedOpenToken, human: Color) -> Result<SharedSnapshot, String>;
+}
+fn complete(
+    controller: &mut DesktopController,
+    mut snapshot: SharedSnapshot,
+    receipt: mshogi_desktop_session::AdmissionReceipt,
+) -> Result<SharedSnapshot, String> {
+    let deadline = Instant::now() + Duration::from_secs(20);
+    loop {
+        if let Some(result) = receipt.completion() {
+            result?;
+            return Ok(snapshot);
+        }
+        assert!(Instant::now() < deadline);
+        thread::sleep(Duration::from_millis(1));
+        snapshot = controller.shared_snapshot();
+    }
 }
 impl SettledCommand for DesktopController {
-    fn settled(&mut self, command: DesktopCommand) -> Result<Snapshot, String> {
-        let expected = self.shared_token();
-        let (initial, receipt) =
-            self.shared_command_with_receipt(mshogi_desktop_session::SharedDesktopCommand {
-                expected,
-                game: mshogi_desktop_session::GameKind::Chess,
-                operation: mshogi_desktop_session::SessionOperation::Chess { command },
-            })?;
-        let mut snapshot = initial.chess.expect("native Chess fixture");
-        let deadline = Instant::now() + Duration::from_secs(20);
-        loop {
-            if let Some(result) = receipt.completion() {
-                result?;
-                return Ok(snapshot);
-            }
-            assert!(
-                Instant::now() < deadline,
-                "native capacity admission deadline"
-            );
-            thread::sleep(Duration::from_millis(1));
-            snapshot = self.shared_snapshot().chess.expect("native Chess fixture");
-        }
+    fn settled(
+        &mut self,
+        expected: SessionToken,
+        operation: SessionOperation,
+    ) -> Result<SharedSnapshot, String> {
+        let (snapshot, receipt) = self.shared_command_with_receipt(SharedDesktopCommand {
+            expected,
+            game: mshogi_desktop_session::GameKind::Chess,
+            operation,
+        })?;
+        complete(self, snapshot, receipt)
     }
+    fn fresh(&mut self, expected: SharedOpenToken, human: Color) -> Result<SharedSnapshot, String> {
+        let (snapshot, receipt) = self.shared_new_game(
+            expected,
+            mshogi_desktop_session::GameKind::Chess,
+            NativeSide::Chess(human),
+        )?;
+        complete(self, snapshot, receipt)
+    }
+}
+
+fn live_game(snapshot: &SharedSnapshot) -> mshogi_core::chess::AdjudicatedGame {
+    snapshot
+        .chess_match
+        .as_ref()
+        .unwrap()
+        .replay()
+        .unwrap()
+        .game()
+        .clone()
 }

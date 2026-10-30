@@ -4,22 +4,18 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { ProductApp } from "./ProductApp";
 import { useGameSession } from "./useGameSession";
 import type { GameSession } from "./useGameSession";
-import type { ChessShogiSnapshot as GameSnapshot } from "./native";
+import type { ShogiSnapshot as GameSnapshot } from "./native";
 import standardJson from "../__fixtures__/shared-shogi-standard.json";
 import xiangqiJson from "../__fixtures__/shared-xiangqi-standard.json";
 import type { XiangqiSnapshot } from "./native";
-import chessJson from "../__fixtures__/standard.json";
-import { mockSession } from "../__tests__/session";
-import { useNativeSession } from "../useNativeSession";
-import type { Snapshot } from "../native";
+import chessJson from "../__fixtures__/shared-chess-standard.json";
+import type { ChessSnapshot } from "./native";
 vi.mock("./useGameSession", () => ({ useGameSession: vi.fn() }));
-vi.mock("../useNativeSession", () => ({ useNativeSession: vi.fn() }));
 const standard = standardJson as GameSnapshot;
 let session: GameSession;
 beforeEach(() => {
-  session = { snapshot: { ...standard, document: { ...standard.document, dirty: false } }, busy: false, error: "", closeRequested: false, command: vi.fn().mockResolvedValue(standard), file: vi.fn().mockResolvedValue(standard), newGame: vi.fn().mockResolvedValue(standard), cancelClose: vi.fn().mockResolvedValue(true), finishClose: vi.fn().mockResolvedValue(true) };
+  session = { snapshot: { ...standard, document: { ...standard.document, dirty: false } }, busy: false, error: "", closeRequested: false, command: vi.fn().mockResolvedValue(standard), file: vi.fn().mockResolvedValue(standard), newGame: vi.fn().mockResolvedValue(standard), cancelClose: vi.fn().mockResolvedValue(true), finishClose: vi.fn().mockResolvedValue(true), requestClose: vi.fn().mockResolvedValue(undefined) };
   vi.mocked(useGameSession).mockImplementation(() => session);
-  vi.mocked(useNativeSession).mockReturnValue(mockSession(chessJson as Snapshot));
 });
 afterEach(cleanup);
 it.each([["Shogi", "Sente", "shogi", "sente"], ["Shogi", "Gote", "shogi", "gote"], ["Chess", "White", "chess", "white"], ["Chess", "Black", "chess", "black"], ["Xiangqi", "Red", "xiangqi", "red"], ["Xiangqi", "Black", "xiangqi", "black"]])("chooses %s / %s with explicit native game and side identity", async (gameLabel, sideLabel, game, side) => {
@@ -62,9 +58,7 @@ it("protects native quit with Save/Discard/Cancel and returns explicitly to play
 });
 it("owns one close guard across a Shogi-to-Chess view replacement", async () => {
   const { rerender } = render(<ProductApp />);
-  session = { ...session, snapshot: { ...standard, game: "chess", token: { ...standard.token, document: standard.token.document + 1 } }, closeRequested: true };
-  const chess = { ...(chessJson as Snapshot), document: { ...(chessJson as Snapshot).document, dirty: true } };
-  vi.mocked(useNativeSession).mockReturnValue({ ...mockSession(chess), closeRequest: chess });
+  session = { ...session, snapshot: { ...(chessJson as ChessSnapshot), document: { ...(chessJson as ChessSnapshot).document, dirty: true } }, closeRequested: true };
   rerender(<ProductApp />);
   expect(await screen.findAllByRole("dialog")).toHaveLength(1);
   expect(screen.getByRole("dialog", { name: "Save your changes?" })).toBeTruthy();
@@ -103,21 +97,18 @@ it("protects the Xiangqi document during failed Save-and-open and native close",
   fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
   expect(session.cancelClose).toHaveBeenCalledOnce(); expect(session.finishClose).not.toHaveBeenCalled();
 });
-it("routes product Chess Take back through the full shared rendered token and common operation", () => {
-  const chess = { ...(chessJson as Snapshot), can_take_back: true };
-  const source = { ...standard, game: "chess" as const, chess, capabilities: { ...standard.capabilities, take_back: true } };
+it("routes Chess Take back through the full shared rendered token and common operation", () => {
+  const source = { ...(chessJson as ChessSnapshot), capabilities: { ...chessJson.capabilities, take_back: true } };
   session = { ...session, snapshot: source };
   render(<ProductApp />);
   fireEvent.click(screen.getByRole("button", { name: "Take back" }));
   expect(session.command).toHaveBeenCalledExactlyOnceWith(source, { kind: "take_back" });
-  expect(vi.mocked(useNativeSession).mock.results.at(-1)?.value.command).not.toHaveBeenCalled();
 });
 
-it.each(["The game changed; stale request.", "Application capacity: retained lineage replay budget."])("shows native product Chess Take back refusal: %s", (error) => {
-  const chess = { ...(chessJson as Snapshot), can_take_back: true };
-  session = { ...session, snapshot: { ...standard, game: "chess", chess, capabilities: { ...standard.capabilities, take_back: true } }, error };
+it("does not classify an untyped command diagnostic as a particular resource", () => {
+  session = { ...session, snapshot: chessJson as ChessSnapshot, error: "Application capacity: retained lineage replay budget." };
   render(<ProductApp />);
-  const alert = screen.getByRole("alert");
-  expect(alert.textContent).toContain(error.startsWith("Application capacity:") ? "Application limit reached" : "Command or connection problem");
+  expect(screen.getByRole("alert").textContent).toContain("The action could not complete");
   expect((screen.getByRole("button", { name: "Save" }) as HTMLButtonElement).disabled).toBe(false);
+  expect((screen.getByRole("button", { name: "Save as…" }) as HTMLButtonElement).disabled).toBe(false);
 });

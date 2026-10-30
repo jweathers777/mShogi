@@ -50,6 +50,41 @@ class SharedPresentationTests(unittest.TestCase):
                     journey.plies(count, historical)
 
 
+class XiangqiBoardGeometryTests(unittest.TestCase):
+    def geometry(self, points=90, visible=True):
+        return {"viewport": {"width": 760, "height": 650}, "points": points, "allVisible": visible,
+                "palaceSides": ["mshogi.xiangqi.wxf2018.v1:red", "mshogi.xiangqi.wxf2018.v1:black"],
+                "river": "楚河漢界"}
+
+    def journey(self, geometry):
+        journey = object.__new__(module.Journey)
+        journey.web = Mock()
+        journey.web.read.return_value = geometry
+        journey.record = Mock()
+        return journey
+
+    def test_actual_minimum_xiangqi_geometry_requires90_visible_intersections(self):
+        geometry = self.geometry()
+        journey = self.journey(geometry)
+        self.assertEqual(journey.xiangqi_board_fits(), geometry)
+        journey.web.command.assert_not_called()
+        self.assertIn(".xiangqi-point", journey.web.read.call_args.args[0])
+
+    def test_square_board_counts_or_clipped_xiangqi_are_not_accepted(self):
+        for geometry in (self.geometry(81), self.geometry(64), self.geometry(visible=False)):
+            with self.subTest(geometry=geometry):
+                with self.assertRaises(AssertionError):
+                    self.journey(geometry).xiangqi_board_fits()
+
+    def test_missing_native_palaces_or_river_fail_the_geometry_probe(self):
+        for change in (lambda data: data.update(palaceSides=[]),
+                       lambda data: data.update(river="ordinary chess board")):
+            geometry = self.geometry()
+            change(geometry)
+            with self.assertRaises(AssertionError):
+                self.journey(geometry).xiangqi_board_fits()
+
+
 class CurrentDocumentInspectionTests(unittest.TestCase):
     def document(self, game="chess"):
         profile, edition = {

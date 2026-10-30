@@ -1,10 +1,11 @@
 ---
 id: MSH-119
 title: 'R4: Deliver one frontend owner and shared application UI across all games'
-status: Ready
-assignee: []
+status: In Review
+assignee:
+  - '@codex'
 created_date: '2026-10-30T12:06:00Z'
-updated_date: '2026-10-30T12:10:00Z'
+updated_date: '2026-10-30T21:09:00Z'
 labels:
   - architecture-migration
   - planning
@@ -46,3 +47,19 @@ Owner-approved MSH-115 migration stage; shared integration ownership supports MS
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Replace actual production routing with one useGameSession owner and ProductApp composition; use the current tagged native snapshot/operations, preserving exact rendered authority, file receipts, dirty and native-close guards and non-board focus. 2. Migrate native Chess-specific presentation and operations away from embedded legacy Snapshot/DesktopCommand; delete desktop_* forwarding handlers/events, legacy frontend owner/pages/DTOs and migrate real fixture/example/host/consumer tests. 3. Compose one document/header/heading/player/status/analysis/history/actions/technical/dialog/recovery implementation with small native capability content and existing specialized boards/hands/artwork; board selection/controller copies stay explicitly with MSH-120. Consume typed capacity facts without diagnostic inference and preserve all native Chess claims/Full, Shogi declaration and Xiangqi event/proof behavior. 4. Port meaningful semantic/race/focus tests, verify actual normal/minimum packaged all-three-game journeys and visual consistency, obtain separate independent review, run focused and applicable CI, then integrate/push only MSH-119 with exact evidence.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Startup 2026-10-30: root Codex owns MSH-119 in primary codex/rewrite at82a8ae8b0b7c023306f960b0d48e36b33dc036b0. Clean primary checkout, remote fetched aligned; unrelated existing worktrees retained; no In Progress worker. PATH Backlog1.55.0 mismatch resolved using pinned1.55.1 after overview/execution guides. Read request/design A09/A10 D17/D18, migration plan and task/dependency118Done. Source confirms ProductApp mounts useGameSession then Chess App mounts useNativeSession; Shogi/Xq each assemble separate shell sections. Root owns single frontend/composition; bounded native current-contract/host/fixture builder and shared-panel builder have disjoint files; fresh read-only independent reviewer owns no implementation. Existing Board/ShogiBoard/XiangqiBoard interaction state remains R5; no universal renderer or rules change.
+
+R4 cutover implemented in primary working tree: one ProductApp/useGameSession/ApplicationView and common player/footer/panels/capability slots. Current Chess native details and direct operations replace embedded Snapshot and nested DesktopCommand; obsolete endpoints, old close event, QA aliases and actual consumers/fixtures migrated. Native168 + current runtime8 + actual subprocess12 + host9 PASS; native/console/host Clippy and formatting PASS (20 unchanged Tao warnings). Frontend strict tsc and223 tests PASS at current working source; initial migration failures corrected (piece coordinates/side art, direct preference shape, current typed-resource tests and native completion labels). Independent source review and actual normal/min packaged GUI evidence pending; R5 controllers unchanged.
+
+Implementation ready for bounded independent source/visual review; current frontend223/223 and strict tsc PASS. GUI verifier55/55 PASS. Current normal macOS package built and package-smoke passes (host19a33348… engine57d09b1a…); actual native AX play/reply/Take back/Resume/Save As accepted. Full current-source captures, lifecycle checks and CI remain pending; no criteria checked yet.
+<!-- SECTION:NOTES:END -->

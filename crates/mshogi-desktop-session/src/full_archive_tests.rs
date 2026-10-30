@@ -21,7 +21,7 @@ fn proof(history_cycles: usize, witness_cycles: usize) -> (DesktopSession, Archi
     let mut session = DesktopSession::from_record(&game.record(), Color::White).unwrap();
     session
         .command(
-            DesktopCommand::Analyze {
+            ChessMutationCommand::Analyze {
                 version: session.version,
                 operation: AnalysisOperation::FullReachability {
                     target: ReachabilityTarget::White,

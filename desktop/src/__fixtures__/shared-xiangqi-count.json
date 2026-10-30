@@ -1265,12 +1265,14 @@
   "io": {
     "id": 1,
     "phase": "idle",
-    "message": null
+    "message": null,
+    "resource": null
   },
   "capacity": {
     "id": 2,
     "status": "available",
-    "message": null
+    "message": null,
+    "resource": null
   },
   "token": {
     "document": 1,
@@ -2384,5 +2386,6 @@
   "observations": [],
   "search_observations": [],
   "score_meaning": "Native Red/Black root-side hundredths of soldier. Terminal distances count command edges; heuristic evaluation and existential win witnesses never establish a forced win. Ordinary analysis uses sound_fast_only; Unknown is unscored evidence, not proof of win capability.",
-  "chess": null
+  "chess": null,
+  "chess_match": null
 }

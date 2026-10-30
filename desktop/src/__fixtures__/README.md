@@ -1,7 +1,11 @@
 # Native snapshot fixtures
 
-Generated from `DesktopSession::from_record` and `snapshot`, using the real
-Rust core under explicit-claim M2 adjudication. They exercise frontend selection
+Generated through the current `DesktopController::shared_command_with_receipt`
+and `shared_snapshot` contract, using authoritative native records. Chess fixtures
+use explicit-claim M2 adjudication. The `shared-chess-*` family contains native
+Chess capability details within the same application snapshot as Shogi/Xiangqi;
+there is no embedded former Chess Snapshot DTO. Analysis fixtures run the actual
+engine through the generator executable's isolated `internal-search` child mode. They exercise frontend selection
 and rendering against actual serialization; they are not an independent rules
 oracle. M1/M2 rules fixtures remain authoritative correctness evidence.
 

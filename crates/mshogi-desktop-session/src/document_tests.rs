@@ -262,7 +262,7 @@ fn real_native_transcripts_roundtrip_current_documents_with_fresh_stopped_runtim
     // Chess's full MatchRecord remains distinct from the execution GameRecord.
     let mut source = controller();
     let (_, receipt) = source
-        .command_with_receipt(DesktopCommand::Resign {
+        .command_with_receipt(ChessMutationCommand::Resign {
             version: source.session.version,
         })
         .unwrap();

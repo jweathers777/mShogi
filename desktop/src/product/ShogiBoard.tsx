@@ -1,8 +1,8 @@
 import { useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
 import type { BoardChoice, NativePiece } from "../Board";
-import type { ChessShogiSnapshot as GameSnapshot, Side } from "./native";
+import type { ShogiSnapshot as GameSnapshot, Side } from "./native";
 import { inspectionStatus, type InspectMovement, type MovementInspection } from "./movementInspection";
-import { GameArea, GamePositionStatus, PlayerArea } from "./ApplicationShell";
+import { GameFrame } from "./GameFrame";
 import "../movement-inspection.css";
 
 // Decoration only. Native kind/promotion/owner remain the action and identity data.
@@ -110,9 +110,7 @@ export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDi
   }
   function tray(side: Side) {
     const hands = snapshot.hands.filter((h) => h.owner === side.key && h.count > 0);
-    const human = side.key === snapshot.human.key;
-    return <PlayerArea className="shogi-player" side={side.label} human={human}
-      toMove={snapshot.turn.key === side.key && !snapshot.status.concluded} playerKey={side.id.side}>
+    return <>
       <div className="shogi-hand" role="group" aria-label={`${side.label} pieces in hand`}>
         {!hands.length && <span className="empty-hand">No pieces in hand</span>}
         {hands.map((h) => <button key={h.origin} className={`hand-piece${selected === h.origin ? inspection ? " inspecting" : inspectionPending ? "" : " selected" : ""}`} ref={(node) => { if (node) refs.current.set(h.origin, node); else refs.current.delete(h.origin); }}
@@ -124,7 +122,7 @@ export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDi
             else if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); const available = hands.filter((hand) => (!disabled && snapshot.choices.some((c) => c.from === hand.origin)) || (onInspect && !inspectionDisabled)); const index = available.findIndex((hand) => hand.origin === h.origin); const next = available[(index + (e.key === "ArrowRight" ? 1 : -1) + available.length) % available.length]; if (next) focus(next.origin); }
           }}><svg viewBox="0 0 100 100" aria-hidden="true"><ShogiPiece kind={h.kind} first={side.first_mover} rotated={side.key !== orientation.side.key} /></svg><span className="hand-count">{h.count}</span></button>)}
       </div>
-    </PlayerArea>;
+    </>;
   }
   const width = columns * 100 + 56, height = rows * 100 + 56;
   const destinationIndex = squares.indexOf(lastDestination.current);
@@ -159,14 +157,11 @@ export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDi
     </div>;
   const footer = <>
     <div className={`shogi-board-help${inspection || inspectionPending ? " movement-inspection-status" : ""}`}><span>{inspection ? inspectionStatus(inspection.label) : inspectionPending ? "Loading read-only movement inspection…" : "Select a piece or hand piece, then a marked square."}</span><span>Arrows · Enter · Esc</span></div>
-    <GamePositionStatus historical={snapshot.historical} concluded={snapshot.status.concluded}
-      paused={snapshot.paused} humanTurn={snapshot.turn.key === snapshot.human.key}
-      thinking={snapshot.phase === "thinking" && snapshot.execution_purpose === "engine_turn"} ply={snapshot.board_ply} />
     {continuation && <div className="shogi-route" onKeyDown={(e) => { if (e.key === "Escape") { e.preventDefault(); cancel(); } }}><p>{announcement}</p>{terminal.length > 0 && !inspection && <button onClick={() => finish(terminal)}>Complete action here</button>}<button onClick={cancel}>Cancel selection</button></div>}
     <span className="sr-only" role="status" aria-live="polite">{announcement}</span>
   </>;
-  return <GameArea className="shogi-stage" upperPlayer={tray(topSide)} board={board}
-    lowerPlayer={tray(orientation.side)} footer={footer}
+  return <GameFrame className="shogi-stage" snapshot={snapshot} bottom={orientation.side} upperContent={tray(topSide)} board={board}
+    lowerContent={tray(orientation.side)} help={footer}
     onFocusCapture={() => { hadFocus.current = true; }}
     onBlurCapture={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node | null)) hadFocus.current = false; }} />;
 }

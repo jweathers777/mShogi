@@ -3,11 +3,11 @@ id: MSH-118
 title: >-
   R3: Establish native application runtime document ownership and the current
   host contract
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-30T12:06:00Z'
-updated_date: '2026-10-30T18:23:00Z'
+updated_date: '2026-10-30T18:44:00Z'
 labels:
   - architecture-migration
   - planning
@@ -34,23 +34,23 @@ Owner-approved MSH-115 migration stage; shared integration ownership supports MS
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 One application controller owns explicit common runtime/document metadata and exactly one active native-tagged document. Replace the ever-present global Chess DesktopSession plus optional overlay ownership; game-native state, histories, settings, journals, observations and semantic command admission remain independent.
-- [ ] #2 One bounded admission/execution/file lifecycle handles typed native candidates, stable receipts, identity reservations and actual per-native replay/encoding costs off the serialized host lock. Commit only after complete current-format admission; failed/cancelled/stale work preserves accepted saveable state.
-- [ ] #3 One installation transaction checks authority/receipt, retires execution, allocates fresh document/session/request/process/selection identities and installs validated data stopped with saved observations historical. History selection, semantic undo, Take back and replacement never revive old work.
-- [ ] #4 The current host command/snapshot/file/application-close contract provides complete native Chess claim/preferences/ordinary and Full analysis behavior, Shogi capabilities and Xiangqi event/claim/proof context. Remove empty compatibility projections as a target; no frontend rules or common outcome reinterpretation.
-- [ ] #5 Delete the R2 new-codec-to-old-runtime adapter and replaced native metadata/install owners here. A temporary current-controller-to-old-frontend-shape/command forwarder may serve only the named in-repository caller until R4, with no second session or old-file support; R4 deletes its endpoints and DTO together.
-- [ ] #6 Native menu Quit/window-close and common request/cancel/finish close behavior migrate to neutral application ownership rather than being deleted by desktop_* name prefix. Preserve dirty guards, file/command reservations, Tao termination regression and normal instrumentation exclusion.
-- [ ] #7 Focused all-three-game admission/install/current-IPC/identity/Take back/cross-game replacement and failure tests plus actual packaged lifecycle/file/close interaction on an identified platform support the changed owner; distinguish final R6 three-platform evidence.
-- [ ] #8 Focused native/consumer regressions and proportionate independent review support all acceptance criteria at exact revisions; applicable CI and normal integration/push are recorded with passed/failed/not-run/platform distinctions. Historical evidence remains unchanged; obsolete interface-only tests are replaced by semantic tests rather than preserving removed APIs. No next stage starts automatically.
-- [ ] #9 Native admission owns explicit bounded typed resource facts delivered through the current host/snapshot/error contract, with resource category and applicable actual count/limit while unknown/multiple causes remain expressible. Preserve bounded Technical Details and truthful generic fallback; capacity is distinct from illegal actions, game outcomes and engine failures. Focused native payload tests cover control-only zero observations, genuine and combined ordinary/exact observation accounting, 256-to257, bytes/events/replay and stop/close headroom, with Save/Save As preserved. R4 consumes these facts without diagnostic-string inference.
+- [x] #1 One application controller owns explicit common runtime/document metadata and exactly one active native-tagged document. Replace the ever-present global Chess DesktopSession plus optional overlay ownership; game-native state, histories, settings, journals, observations and semantic command admission remain independent.
+- [x] #2 One bounded admission/execution/file lifecycle handles typed native candidates, stable receipts, identity reservations and actual per-native replay/encoding costs off the serialized host lock. Commit only after complete current-format admission; failed/cancelled/stale work preserves accepted saveable state.
+- [x] #3 One installation transaction checks authority/receipt, retires execution, allocates fresh document/session/request/process/selection identities and installs validated data stopped with saved observations historical. History selection, semantic undo, Take back and replacement never revive old work.
+- [x] #4 The current host command/snapshot/file/application-close contract provides complete native Chess claim/preferences/ordinary and Full analysis behavior, Shogi capabilities and Xiangqi event/claim/proof context. Remove empty compatibility projections as a target; no frontend rules or common outcome reinterpretation.
+- [x] #5 Delete the R2 new-codec-to-old-runtime adapter and replaced native metadata/install owners here. A temporary current-controller-to-old-frontend-shape/command forwarder may serve only the named in-repository caller until R4, with no second session or old-file support; R4 deletes its endpoints and DTO together.
+- [x] #6 Native menu Quit/window-close and common request/cancel/finish close behavior migrate to neutral application ownership rather than being deleted by desktop_* name prefix. Preserve dirty guards, file/command reservations, Tao termination regression and normal instrumentation exclusion.
+- [x] #7 Focused all-three-game admission/install/current-IPC/identity/Take back/cross-game replacement and failure tests plus actual packaged lifecycle/file/close interaction on an identified platform support the changed owner; distinguish final R6 three-platform evidence.
+- [x] #8 Focused native/consumer regressions and proportionate independent review support all acceptance criteria at exact revisions; applicable CI and normal integration/push are recorded with passed/failed/not-run/platform distinctions. Historical evidence remains unchanged; obsolete interface-only tests are replaced by semantic tests rather than preserving removed APIs. No next stage starts automatically.
+- [x] #9 Native admission owns explicit bounded typed resource facts delivered through the current host/snapshot/error contract, with resource category and applicable actual count/limit while unknown/multiple causes remain expressible. Preserve bounded Technical Details and truthful generic fallback; capacity is distinct from illegal actions, game outcomes and engine failures. Focused native payload tests cover control-only zero observations, genuine and combined ordinary/exact observation accounting, 256-to257, bytes/events/replay and stop/close headroom, with Save/Save As preserved. R4 consumes these facts without diagnostic-string inference.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -71,4 +71,18 @@ Reviewed source checkpoint: one ActiveDocument and RuntimeMetadata, worker-nativ
 Committed source b568ea7103e283155a851df16d3b382b3842eebc pushed. Independent reviewer confirmed exact source and16 local log hashes. Normal local macOS27.0.1 arm64 .app built; actual Chess/Xiangqi play, selected-history analysis, native Save/Open stopped, Return to live/Resume, native window-close Cancel and Cmd-Q Save & continue passed; host/engine absence confirmed.17 retained artifacts/package hashes independently audited in docs/review/evidence/msh118/macos. Final local pinned all-feature run177pass/1fail: Full-byte test expected legacy diagnostic spacing16 MiB versus current16MiB; actual typed byte facts now replace that brittle string assertion, retaining real overflow and complete Save/Open checks. Corrected stress rerun/review pending. CI41103862958/41103863940 running; intermittent jobs-list502 and empty step lists accurately remain observation limitations, not successes.
 
 Initial CI terminal: Rust41103862958 default166passes onall3OS, all-feature177/1fails the same obsolete16 MiB substring assertion. Corrected semantic resource-fact/full-byte test passed162.70s includingSave/Open; independent reviewer approved strongerassertions. Desktop41103863940 normalmacpackagepasses; Linux/Windows13/15actualphasespass. ActualretainedDOM proves ChessOpen succeededwithnewreceipt butverifierexpectedoldtext; Xqdiagnosticserror emptyfieldcollidedwithW3Cerror detector. Externalverifier-onlyfixes requireactualacceptedpath/unmodified/settledOpenreceipt andwrapreadonlyXqdiagnostics withoutchangingtransporterrorhandling.52rootGUItests/39independentlyrerun smokechecks pass; originalfailurereports/screenshots/logexcerpts retained. No production changes sinceb568ea7. Independentreview approves verificationcorrection forfreshCI; taskremainsInReview.
+
+Final acceptance: independent read-only r3_boundary_audit supports AC1–9 with no material finding at tested integration6e9b2e20a0315bbe902189376a6c0241dfd810f1; production unchanged fromapprovedb568ea7103e283155a851df16d3b382b3842eebc. Rust41106568111/Desktop41106568074 pass all3OS. Native166default/178allfeatures eachOS, realFull-byteSave/Open andgoldenfixtures pass; frontend243eachOS andhost6default/9localallfeatures pass. Linux33retained/294originalGUIfiles andWindows8retained/255originalGUIfiles independentlyhashaudited;15/15actualphases each with nativeexitproofs, normalinstrumentationexclusion, realXqcancellation/stoppedfreshOpen/event1analysis/corruptOpen/close. Local normalmacOS actualfile/lifecycle/Save-and-Quit evidence separately audited. Final currentcontract, fullACmatrix and exactpackage/CI/review provenance in docs/review/native-application-118.md. Original failures preserved. Sourceintegratedandpushedcodex/rewrite; finaldocumentation/evidencecompletion follows normally. No taskworktreecreated; unrelatedcheckouts unchanged. MSH119 nextready butunstarted; R4/R5/R6/variants/M5 notactivated.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+R3 establishes exactly one ActiveDocument with uniform RuntimeMetadata, bounded worker admission, guarded current-document installation and application-owned command/file/close lifecycle. Dormant Chess overlays, replaced metadata owners and the R2 three-install bridge are deleted.
+
+The current native contract preserves Chess claims, Full analysis, history, preferences and Take back; Shogi actions and declaration semantics; and Xiangqi WXF events, claims and proof context. Bounded typed resource facts preserve existing limits, reservations and complete saveability. The sole finite frontend DTO/IPC forwarder owns no session or obsolete-file reader; MSH-119 deletes it with its callers.
+
+Production source: b568ea7103e283155a851df16d3b382b3842eebc. Tested integration on codex/rewrite: 6e9b2e20a0315bbe902189376a6c0241dfd810f1; subsequent changes are verification or completion evidence only. Independent source, verification and artifact audits support all nine criteria with no material finding. Rust 41106568111 and Desktop 41106568074 pass all three systems: native 166 default / 178 all-feature tests per OS, frontend 243 per OS, plus normal macOS lifecycle interaction and 15-phase actual Linux/Windows packaged GUI campaigns. Original failed test/verifier probes remain explicit.
+
+Exact package hashes, tests, review method, corrections and platform distinctions: docs/review/native-application-118.md. MSH-119/R4 frontend consolidation, R5 board interaction and R6 final integrated platform acceptance remain separate. M4 stays open. Stop after MSH-118; MSH-119 is the sole dependency-ready task and remains unstarted.
+<!-- SECTION:FINAL_SUMMARY:END -->

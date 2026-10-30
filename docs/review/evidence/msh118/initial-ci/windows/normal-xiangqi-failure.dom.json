@@ -1,0 +1,15 @@
+{
+  "text": "\u265c\nmShogi\n\nXIANGQI \u00b7 UNTIMED\n\nLocal engine\nUNSAVED\nUntitled xiangqi game\nNew game\nSave\nSave as\u2026\nOpen\u2026\n\nYOUR GAME\n\nRed to move\n\nYou play Red against mShogi\n\n\u2195\nFlip board\nm\nmShogiBlack\nYour opponent\n\u695a\u6cb3\n\u6f22\u754c\na\nb\nc\nd\ne\nf\ng\nh\ni\n9\n8\n7\n6\n5\n4\n3\n2\n1\n0\n\u4fe5\n\u7832\n\u76f8\n\u4ed5\n\u5e25\n\u4ed5\n\u76f8\n\u508c\n\u4fe5\n\u70ae\n\u70ae\n\u5175\n\u5175\n\u5175\n\u5175\n\u5175\n\u5352\n\u5352\n\u5352\n\u5352\n\u5352\n\u7832\n\u8eca\n\u99ac\n\u8c61\n\u58eb\n\u5c07\n\u58eb\n\u8c61\n\u99ac\n\u8eca\nY\nYouRed\nHuman player\nTo move\nSelect a piece, then a marked intersection.\nArrows \u00b7 Enter \u00b7 Esc\nYour turn\nLive position \u00b7 2 plies\nAnalysis\nPlay details\nAnalyze position\nNative engine\nIdle\n\nPlay limit: depth 1 \u00b7 128 nodes\n\nLast engine turn \u00b7 event 1\n\n+3.80 soldiers\n\nBlack perspective \u00b7 Complete\n\nCompleted depth\n1\nNodes\n45\n\nContinuation\nb7b0\n\nGame history\n2 events\n0\nStarting position\n1\nRed: a3\u2013a4\n2\nBlack: b7\u00d7b0\nGame actions\nTake backResign game\u2026\nAbout & technical details",
+  "focus": {
+    "label": "a4, Red soldier",
+    "tag": "g",
+    "text": "\u5175"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 820,
+    "width": 1180
+  },
+  "common_actions": [],
+  "inputs": []
+}

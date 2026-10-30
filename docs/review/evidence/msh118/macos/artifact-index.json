@@ -1,0 +1,90 @@
+{
+  "source_revision": "b568ea7103e283155a851df16d3b382b3842eebc",
+  "files": [
+    {
+      "path": "chess-play.ax.txt",
+      "bytes": 6947,
+      "sha256": "322016c0b77aedc8db016f31fa4128f674fd2686e658d596664a55ade959d60c"
+    },
+    {
+      "path": "chess-play.png",
+      "bytes": 355406,
+      "sha256": "aeb6883ec30dc4bde2ded87ef20ebe6e40896553a30df214cffab150c933ae47"
+    },
+    {
+      "path": "chess-saved.ax.txt",
+      "bytes": 7049,
+      "sha256": "136116a5324d3ebe323ad6f3c63b8917c63ed9e464bb183b2e6169fbb73c98da"
+    },
+    {
+      "path": "chess.mshogi",
+      "bytes": 3035,
+      "sha256": "6db689820cc725fa2f10941f7f8997eaee0cad7ad0daa5cd6971b8eb8ab21e1a"
+    },
+    {
+      "path": "interaction.json",
+      "bytes": 2049,
+      "sha256": "01e6707bb0007d58acab2e03076a563944353155810b1a1c8cc7b403fbfa655f"
+    },
+    {
+      "path": "package-build.txt",
+      "bytes": 8517,
+      "sha256": "727edf7286c664bcbdbfb7b0af722210bf0181dd772ac7923bfd9357a1c280cf"
+    },
+    {
+      "path": "package-smoke.json",
+      "bytes": 5785,
+      "sha256": "f5d566b01dec995323933971a7b49e297641394b3f99a1d9ea388254e0b53a26"
+    },
+    {
+      "path": "quit-process-check.json",
+      "bytes": 146,
+      "sha256": "1852846ae3b295894c3fb3612986c00fa10fc42861f21ee7b665a2b841fa90e5"
+    },
+    {
+      "path": "window-close-guard.ax.txt",
+      "bytes": 794,
+      "sha256": "cd5555863908996d816fcc5f3a928a995c40798a3399d5f28de63e5e9197b0bd"
+    },
+    {
+      "path": "window-close-guard.png",
+      "bytes": 247980,
+      "sha256": "be15d199454804603f60f74fa1c2d15fc5f618f20dcbff8c23d661020531d4b8"
+    },
+    {
+      "path": "xiangqi-historical-analysis.ax.txt",
+      "bytes": 8582,
+      "sha256": "8d6db5c6f38af558220501eca3205572de1fe39d2f9df771bdf3806a004f7a72"
+    },
+    {
+      "path": "xiangqi-historical-analysis.png",
+      "bytes": 390975,
+      "sha256": "d69d45e9c42281f9308e77d3cac461ff6e37e5d1c64981d5d4f68bc7e7fecdad"
+    },
+    {
+      "path": "xiangqi-live-stopped.ax.txt",
+      "bytes": 8122,
+      "sha256": "2fde021c1847fce641b76ae305847cea3484a66e95ae7c6d70a47637dc6ee1aa"
+    },
+    {
+      "path": "xiangqi-live-stopped.png",
+      "bytes": 387369,
+      "sha256": "91525651eabb412239fd00ed09c669d93f9193c483da48bca9d5780019310e64"
+    },
+    {
+      "path": "xiangqi-reopened-historical.ax.txt",
+      "bytes": 8262,
+      "sha256": "787f8aa0cfbdf61512209f33a712653909d4090b8882c5c2245fe51ea2f4ffec"
+    },
+    {
+      "path": "xiangqi-reopened-historical.png",
+      "bytes": 376827,
+      "sha256": "dc24050cf1b73d6d00deb35ca97189a94737a4c5298a9c4ab79d32554eb22a11"
+    },
+    {
+      "path": "xiangqi.mshogi",
+      "bytes": 10042,
+      "sha256": "69b088ff635d961b73501255f200af3b619d564e57f910c3f1a2a2fa40f965ef"
+    }
+  ]
+}

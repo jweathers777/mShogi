@@ -1,0 +1,187 @@
+
+> mshogi-desktop@0.1.0 desktop:build
+> npm run engine:prepare && tauri build --bundles app
+
+
+> mshogi-desktop@0.1.0 engine:prepare
+> node scripts/prepare-engine.mjs
+
+   Compiling mshogi-engine v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-engine)
+   Compiling mshogi-console v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-console)
+    Finished `release` profile [optimized] target(s) in 7.88s
+Prepared bundled engine for aarch64-apple-darwin
+        Info Looking up installed tauri packages to check mismatched versions...
+     Running beforeBuildCommand `npm run build`
+
+> mshogi-desktop@0.1.0 build
+> node scripts/build-frontend.mjs
+
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 51 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                     0.35 kB │ gzip:   0.25 kB
+dist/assets/OFL-By6UdhZC.txt                        4.30 kB │ gzip:   1.93 kB
+dist/assets/mshogi-xiangqi-pieces-D8W6RA8B.woff2    6.80 kB
+dist/assets/mshogi-pieces-DRRpchTm.woff2            9.12 kB
+dist/assets/index-DDqd1nW0.css                     33.09 kB │ gzip:   7.82 kB
+dist/assets/index-BQ78yoQc.js                     337.21 kB │ gzip: 102.18 kB
+
+[33m[INEFFECTIVE_DYNAMIC_IMPORT] [0mnode_modules/@tauri-apps/api/core.js is dynamically imported by src/product/ShogiApp.tsx, src/product/XiangqiApp.tsx but also statically imported by node_modules/@tauri-apps/api/event.js, src/product/useGameSession.ts, src/product/useMovementInspection.ts, src/useNativeSession.ts, dynamic import will not move module into another chunk.
+
+✓ built in 134ms
+Normal frontend excludes verification modules and markers.
+warning: use of deprecated static `objc2_app_kit::NSKeyUp`
+  --> vendor/tao/src/platform_impl/macos/app.rs:41:30
+   |
+41 |     if event_type == appkit::NSKeyUp
+   |                              ^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated static `objc2_app_kit::NSWindowFullScreenButton`: The standard window button for NSWindowFullScreenButton is always nil; use NSWindowZoomButton instead
+  --> vendor/tao/src/platform_impl/macos/window.rs:51:47
+   |
+51 |   NSWindowButton, NSWindowCollectionBehavior, NSWindowFullScreenButton, NSWindowOrderingMode,
+   |                                               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: use of deprecated static `objc2_app_kit::NSWindowFullScreenButton`: The standard window button for NSWindowFullScreenButton is always nil; use NSWindowZoomButton instead
+   --> vendor/tao/src/platform_impl/macos/window.rs:261:9
+    |
+261 |         NSWindowFullScreenButton,
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: use of deprecated static `objc2_app_kit::NSFilenamesPboardType`: Create multiple pasteboard items with NSPasteboardTypeFileURL or kUTTypeFileURL instead
+   --> vendor/tao/src/platform_impl/macos/window.rs:552:75
+    |
+552 |       ns_window.registerForDraggedTypes(&NSArray::arrayWithObject(appkit::NSFilenamesPboardType));
+    |                                                                           ^^^^^^^^^^^^^^^^^^^^^
+
+warning: use of deprecated static `objc2_app_kit::NSFilenamesPboardType`: Create multiple pasteboard items with NSPasteboardTypeFileURL or kUTTypeFileURL instead
+   --> vendor/tao/src/platform_impl/macos/window_delegate.rs:173:72
+    |
+173 |   let Some(filenames) = NSPasteboard::propertyListForType(&pb, appkit::NSFilenamesPboardType)
+    |                                                                        ^^^^^^^^^^^^^^^^^^^^^
+
+warning: unnecessary `unsafe` block
+   --> vendor/tao/src/platform_impl/macos/app_delegate.rs:173:14
+    |
+173 |   let urls = unsafe {
+    |              ^^^^^^ unnecessary `unsafe` block
+    |
+    = note: `#[warn(unused_unsafe)]` (part of `#[warn(unused)]`) on by default
+
+warning: unnecessary `unsafe` block
+ --> vendor/tao/src/platform_impl/macos/badge.rs:8:3
+  |
+8 |   unsafe { NSApp(mtm).dockTile().setBadgeLabel(label.as_deref()) };
+  |   ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> vendor/tao/src/platform_impl/macos/event.rs:114:20
+    |
+114 |   let characters = unsafe { ns_event.charactersIgnoringModifiers().unwrap_or_default() };
+    |                    ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> vendor/tao/src/platform_impl/macos/event.rs:142:24
+    |
+142 |       let characters = unsafe { ns_event.characters().unwrap_or_default() };
+    |                        ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> vendor/tao/src/platform_impl/macos/event.rs:165:21
+    |
+165 |     let modifiers = unsafe { NSEvent::modifierFlags(ns_event) };
+    |                     ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> vendor/tao/src/platform_impl/macos/event.rs:307:15
+    |
+307 |   let flags = unsafe { NSEvent::modifierFlags(event) };
+    |               ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> vendor/tao/src/platform_impl/macos/event.rs:333:3
+    |
+333 |   unsafe { event.keyCode() }
+    |   ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> vendor/tao/src/platform_impl/macos/progress_bar.rs:161:3
+    |
+161 |   unsafe { NSBezierPath::bezierPathWithRoundedRect_xRadius_yRadius(rect, radius, radius).fill() };
+    |   ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> vendor/tao/src/platform_impl/macos/util/mod.rs:102:15
+    |
+102 |   let point = unsafe { NSEvent::mouseLocation() };
+    |               ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> vendor/tao/src/platform/macos.rs:419:5
+    |
+419 |     unsafe { objc2_app_kit::NSApplication::sharedApplication(mtm).unhide(None) }
+    |     ^^^^^^ unnecessary `unsafe` block
+
+warning: methods `set_badge_count` and `set_badge_label` are never used
+   --> vendor/tao/src/platform_impl/macos/event_loop.rs:127:10
+    |
+ 86 | impl<T: 'static> EventLoopWindowTarget<T> {
+    | ----------------------------------------- methods in this implementation
+...
+127 |   pub fn set_badge_count(&self, count: Option<i64>, _desktop_filename: Option<String>) {
+    |          ^^^^^^^^^^^^^^^
+...
+132 |   pub fn set_badge_label(&self, label: Option<String>) {
+    |          ^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `0` is never read
+ --> vendor/tao/src/platform_impl/macos/icon.rs:8:25
+  |
+8 | pub struct PlatformIcon(RgbaIcon);
+  |            ------------ ^^^^^^^^
+  |            |
+  |            field in this struct
+  |
+  = help: consider removing this field
+  = note: `PlatformIcon` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: function `yes` is never used
+   --> vendor/tao/src/platform_impl/macos/util/mod.rs:126:26
+    |
+126 | pub extern "C-unwind" fn yes(_: &Object, _: Sel) -> BOOL {
+    |                          ^^^
+
+warning: field `saved_desktop_display_mode` is never read
+   --> vendor/tao/src/platform_impl/macos/window.rs:450:7
+    |
+430 | pub struct SharedState {
+    |            ----------- field in this struct
+...
+450 |   pub saved_desktop_display_mode: Option<(CGDisplay, CGDisplayMode)>,
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: field `inner_rect` is never read
+   --> vendor/tao/src/platform_impl/macos/window.rs:487:7
+    |
+479 | pub struct UnownedWindow {
+    |            ------------- field in this struct
+...
+487 |   pub inner_rect: Option<PhysicalSize<u32>>,
+    |       ^^^^^^^^^^
+
+warning: `tao` (lib) generated 20 warnings
+   Compiling mshogi-engine v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-engine)
+   Compiling mshogi-desktop v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri)
+   Compiling mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
+    Finished `release` profile [optimized] target(s) in 27.85s
+       Built application at: /Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/mshogi-desktop
+    Bundling mShogi.app (/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi.app)
+    Finished 1 bundle at:
+        /Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi.app (17.99 MiB)
+

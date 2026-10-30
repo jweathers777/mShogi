@@ -1,0 +1,13 @@
+Original selected job log lines, source b568ea7103e283155a851df16d3b382b3842eebc; run41103862958. Complete default suite passes; all-feature test assumption fails.
+Rust (windows-2022)	UNKNOWN STEP	2026-10-30T18:12:59.2532046Z test result: ok. 166 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 242.33s
+Rust (windows-2022)	UNKNOWN STEP	2026-10-30T18:21:09.0444427Z test persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable ... FAILED
+Rust (windows-2022)	UNKNOWN STEP	2026-10-30T18:21:09.0448761Z assertion failed: source.session.capacity.message.as_deref().unwrap().contains("16 MiB")
+Rust (windows-2022)	UNKNOWN STEP	2026-10-30T18:21:09.0451630Z test result: FAILED. 177 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 396.77s
+Rust (ubuntu-24.04)	UNKNOWN STEP	2026-10-30T18:11:56.9389357Z test result: ok. 166 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 244.71s
+Rust (ubuntu-24.04)	UNKNOWN STEP	2026-10-30T18:19:09.5800474Z test persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable ... FAILED
+Rust (ubuntu-24.04)	UNKNOWN STEP	2026-10-30T18:19:09.5805532Z assertion failed: source.session.capacity.message.as_deref().unwrap().contains("16 MiB")
+Rust (ubuntu-24.04)	UNKNOWN STEP	2026-10-30T18:19:09.5808608Z test result: FAILED. 177 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 351.87s
+Rust (macos-15)	UNKNOWN STEP	2026-10-30T18:11:11.2863750Z test result: ok. 166 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 184.32s
+Rust (macos-15)	UNKNOWN STEP	2026-10-30T18:16:33.4624080Z test persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable ... FAILED
+Rust (macos-15)	UNKNOWN STEP	2026-10-30T18:16:33.4813160Z assertion failed: source.session.capacity.message.as_deref().unwrap().contains("16 MiB")
+Rust (macos-15)	UNKNOWN STEP	2026-10-30T18:16:33.4864810Z test result: FAILED. 177 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 245.01s

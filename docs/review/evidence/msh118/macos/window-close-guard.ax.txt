@@ -1,0 +1,28 @@
+Window: "mShogi", App: mShogi.
+0 standard window mShogi, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 stepper 0
+				4 unknown
+				5 unknown
+			6 stepper 0
+				7 unknown
+				8 unknown
+			9 container Save your changes?
+				10 heading Save your changes?, Value: 2
+					11 text Save your changes?
+				12 text Save this game before closing mShogi, or explicitly discard its unsaved changes.
+				13 button Save & continue
+				14 button Discard & continue
+				15 button Cancel
+	16 close button
+	17 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	18 minimize button
+	19 text mShogi
+20 menu bar
+	21 mShogi
+	22 Edit
+	23 View
+	24 Window
+
+The focused UI element is 15 button Cancel

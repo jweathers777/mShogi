@@ -96,6 +96,13 @@ def saved_document_accepted(observation, expected_path):
                         for word in ("saving", "opening")))
 
 
+def opened_document_accepted(observation, expected_path):
+    """Require the current native Open receipt as well as settled saved state."""
+    return (saved_document_accepted(observation, expected_path)
+            and any(status.startswith("Opened ") and "work stopped" in status
+                    for status in observation["statuses"]))
+
+
 def play_limit_matches(text, depth, nodes):
     """Compare actual displayed integers without imposing a WebView locale."""
     match = re.fullmatch(r"Play limit: depth ([0-9]+) · ([0-9,. \u00a0\u202f]+) nodes", text or "")
@@ -694,17 +701,28 @@ class Journey:
             "game_events": len(json.loads(body["game_record_json"])["events"])})
         return archive
 
-    def wait_saved(self, path):
-        def accepted():
-            observation = self.web.read("""(() => ({
+    def document_file_state(self):
+        return self.web.read("""(() => ({
                 path:document.querySelector('.shell-document h2')?.getAttribute('title')??null,
                 dirty:document.querySelector('.document-dirty')?.textContent??'',
                 buttons:[...document.querySelectorAll('.shell-file-actions button')].map(e=>({label:e.textContent.trim(),enabled:!e.disabled})),
                 statuses:[...document.querySelectorAll('.shell-document [role="status"]')].map(e=>e.textContent)
             }))()""")
+
+    def wait_saved(self, path):
+        def accepted():
+            observation = self.document_file_state()
             return observation if saved_document_accepted(observation, path) else None
         observation = wait(accepted, f"native document accepts exact saved path with file work settled: {path}")
         self.record('Observe native accepted save path and settled file controls', observation)
+        return observation
+
+    def wait_opened(self, path):
+        def accepted():
+            observation = self.document_file_state()
+            return observation if opened_document_accepted(observation, path) else None
+        observation = wait(accepted, f"native Open accepts exact path with work stopped and file controls settled: {path}")
+        self.record('Observe native accepted Open receipt and stopped document', observation)
         return observation
 
     def quit(self, synthetic=False):
@@ -787,7 +805,7 @@ class Journey:
         self.wait_saved(path)
         assert json.loads(path.read_text(encoding='utf-8'))==archive,'inspection changed canonical chess archive'
         self.file("open", path)
-        wait(lambda: "Opened the complete document with work stopped" in w.text(".document-card"), "reopen completed")
+        self.wait_opened(path)
         self.plies(2)
         assert w.has(".play-paused")
         w.button("Play details")
@@ -854,9 +872,13 @@ class Journey:
 
     def xiangqi_diagnostics(self):
         """Read the normal Technical Details data; never invoke private IPC."""
-        return self.web.read("""[...document.querySelectorAll('.shell-technical pre')]
+        # Normal diagnostics include an application `error` field. Wrap the
+        # observed value so it cannot be mistaken for a W3C error response by
+        # the driver boundary; do not change transport error classification.
+        observed = self.web.read("""[[...document.querySelectorAll('.shell-technical pre')]
             .map(e=>{try{return JSON.parse(e.textContent);}catch{return null;}})
-            .find(v=>v?.token&&v?.profile==='mshogi.xiangqi.wxf2018.v1')??null""")
+            .find(v=>v?.token&&v?.profile==='mshogi.xiangqi.wxf2018.v1')??null]""")
+        return observed[0]
 
     def xiangqi_events(self, count, selected=None, historical=False):
         expected = {"live": str(count), "historical": str(historical).lower()}

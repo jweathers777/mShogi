@@ -1,0 +1,10 @@
+   Compiling mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.43s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-72dbb958aa69b860)
+
+running 1 test
+test persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable has been running for over 60 seconds
+test persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 177 filtered out; finished in 162.70s
+

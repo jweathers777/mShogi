@@ -1,0 +1,32 @@
+{
+  "source_revision": "b568ea7103e283155a851df16d3b382b3842eebc",
+  "environment": "macOS27.0.1 arm64; normal release .app; Node24.19.0; Rust1.99.1",
+  "verified_at_utc": "2026-10-30T18:13:57.488893+00:00",
+  "method": "cua_repl native AX click/key input and OS Save/Open panels; read-only AX/screenshot evidence. No injected IPC, browser-hosted page, or verification feature.",
+  "package_root": "desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+  "host_pid": 15783,
+  "journeys": [
+    "Launch normal package from its full build path; Chess e2e4 and actual a7a5 depth2/nodes642 response",
+    "Native Save chess.mshogi; UNMODIFIED",
+    "New game Xiangqi Red installs different native active document; a3a4 and actual b7b0 depth1/nodes45 response",
+    "Save xiangqi.mshogi; select event1 read-only; analyze depth1/nodes128 Black, actual result nodes45, live remains2 events",
+    "Save exact selected history and observations; native Open same file; event1 restored, observations2 historical",
+    "Return to live explicitly: live2 plies, Play paused/Resume; explicit Resume returns Your turn",
+    "Native red-window-close opens dirty guard; Cancel preserves game paused",
+    "Command-Q opens native Quit dirty guard; Save & continue saves close_pause then exits",
+    "Host15783 and all package host/engine processes absent after native Quit"
+  ],
+  "limitations": [
+    "Focused local Chess/Xiangqi lifecycle run, not all-game/all-platform R6 acceptance",
+    "No deliberate long-running analysis cancellation in this local journey; bounded analysis completed",
+    "Native Open AX row activation gave no selection; supported Go to path selected file successfully"
+  ],
+  "checks": {
+    "normal_package_instrumentation_exclusion": "package-smoke.py passed marker and inventory assertions",
+    "current_archive_format": "mshogi.desktop.document.v1",
+    "xiangqi_native_profile": "mshogi.xiangqi.wxf2018.v1",
+    "xiangqi_final_events": 2,
+    "xiangqi_retained_observations": 2,
+    "quit": "actual native process absence"
+  }
+}

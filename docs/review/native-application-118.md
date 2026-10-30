@@ -75,13 +75,50 @@ expectation; updated exact native token coverage and final243 pass supersede it.
 
 ## Committed-source CI and packaged acceptance
 
-Pending the reviewed source commit, applicable three-platform native/Desktop CI
-and actual installed/packaged lifecycle evidence. MSH-118 remains In Review
-with unchecked criteria until reconciliation. The normal-Xiangqi GUI phase adds
+Independently approved source `b568ea7103e283155a851df16d3b382b3842eebc`
+is integrated and pushed to `codex/rewrite`. Initial Rust41103862958 failed
+its Full-byte stress assertion on obsolete diagnostic spacing (`16 MiB` versus
+`16MiB`). The local all-feature result177/1 exposes the same assertion. A stronger
+native test now asserts authoritative encoded-byte facts, exact unchanged limit,
+measurement/scope/units and actual excess usage. Corrected full stress passes
+1/1 in162.70s, including the formerly unexecuted complete Save/Open tail.
+
+Initial Desktop41103863940 passed macOS packaging; Linux/Windows each passed
+13/15 actual GUI phases. Chess reopened successfully with the new native receipt,
+but the verifier waited for the old exact sentence. Xiangqi played successfully,
+but its normal Technical Details application `error` field was misclassified as
+a WebDriver error. Actual failed DOM/screenshots establish both verifier defects.
+The external observer now requires accepted path/unmodified/settled controls plus
+a native Open/work-stopped receipt, and wraps read-only Xiangqi diagnostics
+without weakening driver error handling.52 external verifier tests pass.
+Original [failed reports and captures](evidence/msh118/initial-ci) are retained.
+No production behavior or limits changed in these verification corrections.
+Transient GitHub jobs-list502/empty steps were observation failures, not passes.
+Corrected committed-source CI and the new complete Xiangqi phase remain required;
+MSH-118 stays In Review until reconciliation. The normal-Xiangqi GUI phase adds
 file/history/close coverage to the existing14 phases using real pointer/keyboard
 and native dialog input, read-only DOM observation and native record assertions.
 It records actual completion versus cancellation at the small native budget;
-completion is never called cancellation. No actual GUI success is claimed here.
+completion is never called cancellation. Its corrected complete CI GUI execution is still pending.
+
+Separately, the normal locally built macOS27.0.1 arm64 `.app` at the committed
+source passed [actual native interaction](evidence/msh118/macos/interaction.json).
+Its host SHA256 is `3a1bf3ead08fcb2ed90115b5498180d24a08ca25351d035d06cba1574b47f1ba`;
+bundled engine `57d09b1a22f96a7a9b89a9c6c2550b233ed8213f591580ad8e66106900b7ac3a`.
+Package inventory, instrumentation-marker exclusion, UCI, real engine-turn,
+read-only analysis and bounded Full/Unknown queries passed. These engine queries
+are supporting evidence, separate from actual GUI interaction.
+
+Native AX/pointer/key input and OS Save/Open panels exercised Chess e2e4 and the
+real a7a5 reply; cross-game New Xiangqi Red, a3a4 and the real b7b0 reply;
+Save, selected event1 analysis1/128, Save/Open with two historical observations,
+restored event1, Return to live, explicit stopped Resume, native window-close
+Cancel, then Command-Q Save & continue. Saved canonical files retain complete
+native events and control history. Actual hostPID15783 and all package host/engine
+processes were absent after Quit. AX, screenshots, package hashes and original
+saved documents are [indexed](evidence/msh118/macos/artifact-index.json).
+This focused local journey is not a new all-game/all-platform GUI campaign;
+small-budget analysis completed, so no local cancellation success is claimed.
 
 R6 retains final integrated all-game/all-platform acceptance. No R4, R5, R6,
 variant or M5 task starts automatically. Historical MSH-111/112 findings and

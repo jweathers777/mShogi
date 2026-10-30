@@ -3033,15 +3033,15 @@ mod tests {
             let revision = source.session.document_revision;
             if !source.session.chess_mut().accept_analysis(response) {
                 assert_eq!(source.session.capacity.status, CapacityPhase::Paused);
-                assert!(
-                    source
-                        .session
-                        .capacity
-                        .message
-                        .as_deref()
-                        .unwrap()
-                        .contains("16 MiB")
-                );
+                let facts = source.session.capacity.resource.as_ref().unwrap().facts();
+                assert_eq!(facts.len(), 1);
+                let fact = &facts[0];
+                assert_eq!(fact.category, ResourceCategory::EncodedDocumentBytes);
+                assert_eq!(fact.measurement, ResourceMeasurement::Candidate);
+                assert_eq!(fact.scope, Some(ResourceScope::Chess));
+                assert_eq!(fact.unit, Some(ResourceUnit::Bytes));
+                assert_eq!(fact.limit, Some(MAX_ARCHIVE_BYTES as u64));
+                assert!(fact.count.unwrap() + fact.reserved.unwrap_or(0) > fact.limit.unwrap());
                 assert_eq!(source.session.chess_mut().game.record().to_json(), before);
                 assert_eq!(source.session.document_revision, revision);
                 assert_eq!(source.session.chess_mut().observations.len(), accepted);

@@ -1,0 +1,37 @@
+{
+  "run": 41103863940,
+  "source_revision": "b568ea7103e283155a851df16d3b382b3842eebc",
+  "result": "failed;13of15phasespassed",
+  "files": [
+    {
+      "path": "gui-report.json",
+      "bytes": 522403,
+      "sha256": "82070c3454ac9e490bb6b7f00d783190e60247bef00ac92a888b04ba2e6f47e3"
+    },
+    {
+      "path": "normal-failure.dom.json",
+      "bytes": 2799,
+      "sha256": "bb748dd650b28c2ac403cfc910f66c4004637293501fcb3ec6bbf53c633a314d"
+    },
+    {
+      "path": "normal-failure.webview.png",
+      "bytes": 118334,
+      "sha256": "1e470e1cd65c3ce6618bea26c981dc898c398142683dbbcb4df29979d8cb1f26"
+    },
+    {
+      "path": "normal-xiangqi-failure.dom.json",
+      "bytes": 1340,
+      "sha256": "a7cdeb18efa3d99587b5843cc030088736b4bcb754c7468114fd7b48ca2e00f2"
+    },
+    {
+      "path": "normal-xiangqi-failure.webview.png",
+      "bytes": 257984,
+      "sha256": "901c5114b907257c05b894192e4e73e4a04a2431557992db21a5ab0407d412da"
+    },
+    {
+      "path": "package-smoke.json",
+      "bytes": 5896,
+      "sha256": "17878db58edc85969d604eaff975fab5e468770557b5c8833242b1085de64b02"
+    }
+  ]
+}

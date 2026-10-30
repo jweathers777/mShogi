@@ -229,14 +229,16 @@
     }
   },
   "capacity": {
-    "id": 3,
+    "id": 1,
     "status": "available",
-    "message": null
+    "message": null,
+    "resource": null
   },
   "io": {
     "id": 3,
     "phase": "complete",
-    "message": "Reconstructed an exact read-only history prefix."
+    "message": "Reconstructed an exact read-only history prefix.",
+    "resource": null
   },
   "view": {
     "historical": true,

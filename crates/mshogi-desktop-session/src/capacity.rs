@@ -2,6 +2,110 @@
 use super::*;
 use std::sync::{Arc, Mutex};
 
+/// Internal worker refusal keeps semantic/native errors distinct from resource
+/// facts. Public legacy error text is only a bounded diagnostic projection.
+#[derive(Clone, Debug)]
+pub(crate) struct OperationFailure {
+    pub diagnostic: String,
+    pub resource: Option<ResourceFailure>,
+}
+impl OperationFailure {
+    pub(crate) fn resource(failure: ResourceFailure) -> Self {
+        Self {
+            diagnostic: failure.diagnostic().into(),
+            resource: Some(failure),
+        }
+    }
+}
+impl From<String> for OperationFailure {
+    fn from(value: String) -> Self {
+        Self {
+            diagnostic: crate::document::diagnostic(value),
+            resource: None,
+        }
+    }
+}
+impl From<&str> for OperationFailure {
+    fn from(value: &str) -> Self {
+        value.to_string().into()
+    }
+}
+impl From<OperationFailure> for String {
+    fn from(value: OperationFailure) -> Self {
+        value.diagnostic
+    }
+}
+impl std::fmt::Display for OperationFailure {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        self.diagnostic.fmt(f)
+    }
+}
+impl std::ops::Deref for OperationFailure {
+    type Target = str;
+    fn deref(&self) -> &str {
+        &self.diagnostic
+    }
+}
+pub(crate) fn resource_fact(
+    category: ResourceCategory,
+    count: usize,
+    limit: usize,
+    reserved: usize,
+    scope: ResourceScope,
+    unit: ResourceUnit,
+) -> ResourceFact {
+    ResourceFact::measured(category, count as u64, limit as u64)
+        .with_reserved(reserved as u64)
+        .with_scope(scope)
+        .with_unit(unit)
+}
+pub(crate) fn resource_refusal(
+    facts: Vec<ResourceFact>,
+    diagnostic: impl AsRef<str>,
+) -> OperationFailure {
+    OperationFailure::resource(ResourceFailure::multiple(facts, diagnostic))
+}
+pub(crate) fn document_count_failure(
+    controls: usize,
+    ordinary: usize,
+    exact: usize,
+    combined: bool,
+    scope: ResourceScope,
+    reserve: usize,
+) -> OperationFailure {
+    let mut facts = Vec::new();
+    if controls.saturating_add(reserve) > MAX_ARCHIVE_CONTROLS {
+        facts.push(resource_fact(
+            ResourceCategory::Controls,
+            controls,
+            MAX_ARCHIVE_CONTROLS,
+            reserve,
+            scope,
+            ResourceUnit::Controls,
+        ));
+    }
+    if ordinary.saturating_add(exact) > MAX_ARCHIVE_OBSERVATIONS {
+        facts.push(
+            resource_fact(
+                if combined {
+                    ResourceCategory::CombinedObservations
+                } else {
+                    ResourceCategory::OrdinaryObservations
+                },
+                ordinary.saturating_add(exact),
+                MAX_ARCHIVE_OBSERVATIONS,
+                0,
+                scope,
+                ResourceUnit::Observations,
+            )
+            .with_observations(ordinary as u64, exact as u64),
+        );
+    }
+    resource_refusal(
+        facts,
+        "Application capacity: saved native document counts exceed supported limits; current document preserved.",
+    )
+}
 /// Resource admission is independent of engine execution and chess outcomes.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
@@ -23,6 +127,8 @@ pub struct CapacityState {
     pub status: CapacityPhase,
     /// Actionable resource diagnostic, separate from chess and engine failures.
     pub message: Option<String>,
+    /// Authoritative native category/count/limit; absent for non-resource errors.
+    pub resource: Option<ResourceFailure>,
 }
 /// A bounded, caller-owned receipt survives later automatic result admissions.
 #[derive(Clone, Debug)]
@@ -43,9 +149,22 @@ impl AdmissionReceipt {
     }
 }
 impl DesktopSession {
-    pub(super) fn observation_slot(&self) -> Result<(), String> {
+    pub(super) fn observation_slot(&self) -> Result<(), OperationFailure> {
         if self.observations.len() >= MAX_ARCHIVE_OBSERVATIONS {
-            Err("Application capacity: all 256 observation slots are retained. Save this complete document, then start a new game/document to continue analysis or engine play.".into())
+            Err(resource_refusal(
+                vec![
+                    resource_fact(
+                        ResourceCategory::OrdinaryObservations,
+                        self.observations.len(),
+                        MAX_ARCHIVE_OBSERVATIONS,
+                        0,
+                        ResourceScope::Chess,
+                        ResourceUnit::Observations,
+                    )
+                    .with_measurement(ResourceMeasurement::Accepted),
+                ],
+                "Application capacity: all256 retained observation slots are occupied. Current document remains saveable; start a new document to continue work.",
+            ))
         } else {
             Ok(())
         }
@@ -72,6 +191,40 @@ impl DesktopSession {
     }
 }
 impl DesktopController {
+    pub(crate) fn ensure_runtime_capacity(&mut self) -> Result<(), OperationFailure> {
+        if let Err(error) = self.session.ensure_capacity() {
+            self.pause_native_failure(error.clone());
+            Err(error)
+        } else {
+            Ok(())
+        }
+    }
+    pub(crate) fn identity_refusal(
+        &mut self,
+        count: u64,
+        limit: u64,
+        file: bool,
+        measurement: ResourceMeasurement,
+        diagnostic: &str,
+    ) -> String {
+        let resource = ResourceFailure::new(
+            ResourceFact::measured(ResourceCategory::IdentityHeadroom, count, limit)
+                .with_measurement(measurement)
+                .with_scope(ResourceScope::Application)
+                .with_unit(ResourceUnit::Identities),
+            diagnostic,
+        );
+        if file {
+            self.io_state.resource = Some(resource);
+            self.io_state.message = Some(diagnostic.into());
+            self.io_state.phase = IoPhase::Failed;
+        } else {
+            self.session.capacity.resource = Some(resource);
+            self.session.capacity.message = Some(diagnostic.into());
+            self.session.capacity.status = CapacityPhase::Paused;
+        }
+        diagnostic.into()
+    }
     /// Queue a command and return a stable, caller-owned completion receipt.
     /// Continue polling snapshots off the UI thread until completion is present.
     pub fn command_with_receipt(
@@ -88,16 +241,28 @@ impl DesktopController {
         Ok((snapshot, receipt))
     }
 
+    #[cfg(test)]
     pub(super) fn queue_admission(&mut self, candidate: DesktopSession) -> Result<(), String> {
         self.queue_admission_operation(candidate, None)
     }
     pub(super) fn queue_admission_operation(
         &mut self,
-        mut candidate: DesktopSession,
+        candidate: DesktopSession,
         take_back_at: Option<u64>,
     ) -> Result<(), String> {
+        self.queue_chess_candidate(
+            candidate,
+            take_back_at.map(|at_ns| persistence::ChessMutation::TakeBack { at_ns }),
+        )
+    }
+    pub(super) fn queue_chess_candidate(
+        &mut self,
+        mut candidate: DesktopSession,
+        mutation: Option<persistence::ChessMutation>,
+    ) -> Result<(), String> {
+        candidate.document_epoch = self.session.document_epoch;
         if self.session.capacity.id >= MAX_SAFE_ID - 32 {
-            return Err("Application capacity: admission identity space exhausted. Save the current document and restart.".into());
+            return Err(self.identity_refusal(self.session.capacity.id,MAX_SAFE_ID-33,false,ResourceMeasurement::Accepted,"Application capacity: admission identity space exhausted. Current document remains saveable."));
         }
         if let Some(receipt) = self.admission_receipt.take() {
             receipt.finish(Err(
@@ -108,72 +273,29 @@ impl DesktopController {
         self.session.capacity.id += 1;
         self.session.capacity.status = CapacityPhase::Checking;
         self.session.capacity.message = None;
+        self.session.capacity.resource = None;
         self.session.revision += 1;
         candidate.capacity.id = self.session.capacity.id;
         self.admission_token = Some(self.open_token());
-        if let Some(at_ns) = take_back_at {
-            self.admissions.submit(
-                self.session.capacity.id,
-                persistence::Work::TakeBack {
-                    candidate: Box::new(candidate),
-                    at_ns,
-                },
-            );
-        } else {
-            self.admissions
-                .submit_admission(self.session.capacity.id, candidate);
-        }
+        let preferences = matches!(
+            &mutation,
+            Some(persistence::ChessMutation::Command {
+                command: DesktopCommand::Preferences { .. },
+                ..
+            })
+        );
+        self.shared.admission = Some((self.session.document_epoch, preferences));
+        self.admissions.submit(
+            self.session.capacity.id,
+            persistence::Work::Admit {
+                candidate: Box::new(candidate),
+                mutation,
+            },
+        );
         Ok(())
     }
     pub(super) fn poll_admission(&mut self) {
-        let Some((id, result)) = self.admissions.poll_admission() else {
-            return;
-        };
-        if id != self.session.capacity.id {
-            return;
-        }
-        let Some(token) = self.admission_token.take() else {
-            return;
-        };
-        if token != self.open_token() {
-            if let Some(receipt) = self.admission_receipt.take() {
-                receipt.finish(Err(
-                    "The live document changed before command acceptance.".into()
-                ));
-            }
-            self.session.capacity.status = CapacityPhase::Available;
-            return;
-        }
-        match result {
-            Ok(mut candidate) => {
-                if let Some(receipt) = self.admission_receipt.take() {
-                    receipt.finish(Ok(()));
-                }
-                if candidate.document_identity == self.session.document_identity {
-                    candidate.document_path = self.session.document_path.clone();
-                    candidate.saved_revision = self.session.saved_revision;
-                }
-                candidate.validated_observations = candidate.observations.len();
-                candidate.revision = candidate.revision.max(self.session.revision + 1);
-                candidate.capacity = CapacityState {
-                    id,
-                    ..CapacityState::default()
-                };
-                self.session = candidate;
-            }
-            Err(error) => {
-                self.bridge.cancel();
-                self.session.capacity_pause(error);
-                if let Some(receipt) = self.admission_receipt.take() {
-                    receipt.finish(Err(self
-                        .session
-                        .capacity
-                        .message
-                        .clone()
-                        .expect("capacity diagnostic")));
-                }
-            }
-        }
+        self.poll_native_admission();
     }
     pub(super) fn retire_admission(&mut self) {
         self.shared.admission = None;
@@ -190,6 +312,7 @@ impl DesktopController {
         if self.session.capacity.status == CapacityPhase::Checking {
             self.session.capacity.status = CapacityPhase::Available;
             self.session.capacity.message = None;
+            self.session.capacity.resource = None;
         }
         self.session.revision += 1;
     }

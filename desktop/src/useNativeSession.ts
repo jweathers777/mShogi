@@ -78,7 +78,11 @@ export function useNativeSession() {
       setBusy(true);
       setError("");
       try {
-        const incoming = await invoke<Snapshot>(name, args);
+        // R3 forwarding returns null after a successful cross-game Open: the
+        // current game owner remounts the native view. Never fabricate Chess
+        // state for the newly active native document. MSH-119 deletes this hook.
+        const incoming = await invoke<Snapshot | null>(name, args);
+        if (incoming === null) return null;
         accept(incoming);
         return latest.current;
       } catch (reason: unknown) {

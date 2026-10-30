@@ -2,7 +2,7 @@
 use super::*;
 use std::{
     fs::{self, OpenOptions},
-    io::{Read, Write},
+    io::Write,
     sync::{
         Arc, Condvar, Mutex,
         atomic::{AtomicBool, Ordering},
@@ -103,6 +103,8 @@ pub struct IoState {
     pub phase: IoPhase,
     /// Plain completion/failure detail.
     pub message: Option<String>,
+    /// Native resource facts when the failed file operation establishes them.
+    pub resource: Option<ResourceFailure>,
 }
 /// One native event boundary, including nonmove commands.
 #[derive(Clone, Debug, Serialize)]
@@ -185,12 +187,29 @@ pub(super) struct Viewed {
     conclusion: Option<MatchConclusion>,
     index: usize,
 }
+pub(super) enum ChessMutation {
+    Replace {
+        record: GameRecord,
+        human: Color,
+        paused: bool,
+    },
+    Command {
+        command: DesktopCommand,
+        at_ns: u64,
+    },
+    Observation {
+        response: ExecutionObservation,
+        at_ns: u64,
+    },
+    TakeBack {
+        at_ns: u64,
+    },
+}
 pub(super) enum Work {
     Native(Box<super::shared::archive::NativeWork>),
-    Admit(Box<DesktopSession>),
-    TakeBack {
+    Admit {
         candidate: Box<DesktopSession>,
-        at_ns: u64,
+        mutation: Option<ChessMutation>,
     },
     Save {
         archive: Box<ChessDocument>,
@@ -200,10 +219,7 @@ pub(super) enum Work {
         revision: u64,
         document_identity: u64,
     },
-    Open {
-        path: PathBuf,
-        token: OpenToken,
-    },
+
     View {
         record: MatchRecord,
         index: usize,
@@ -218,11 +234,6 @@ pub(super) enum Completed {
         revision: u64,
         document_identity: u64,
     },
-    Opened {
-        opened: Box<Opened>,
-        path: PathBuf,
-        token: OpenToken,
-    },
     Viewed {
         view: Box<Viewed>,
         token: OpenToken,
@@ -236,7 +247,7 @@ struct Job {
 #[derive(Default)]
 struct WorkerState {
     pending: Option<Job>,
-    result: Option<(u64, Result<Completed, String>)>,
+    result: Option<(u64, Result<Completed, OperationFailure>)>,
     current: Option<Arc<AtomicBool>>,
     shutdown: bool,
 }
@@ -270,9 +281,15 @@ impl FileWorker {
                         }
                         state.pending.take().expect("pending document job")
                     };
-                    let deadline = Instant::now() + VALIDATION_BUDGET;
+                    let began = Instant::now();
+                    let deadline = began + VALIDATION_BUDGET;
                     let stopped = || job.stop.load(Ordering::Acquire) || Instant::now() >= deadline;
-                    let result = execute(job.work, stopped).map_err(crate::document::diagnostic);
+                    let result = finish_validation_budget(
+                        execute(job.work, stopped),
+                        began.elapsed(),
+                        VALIDATION_BUDGET,
+                        job.stop.load(Ordering::Acquire),
+                    );
                     let mut state = worker.state.lock().expect("document worker metadata");
                     if !state.shutdown
                         && !job.stop.load(Ordering::Acquire)
@@ -287,20 +304,6 @@ impl FileWorker {
                 worker.exited.store(true, Ordering::Release);
             })?;
         Ok(Self { shared })
-    }
-    pub(super) fn submit_admission(&self, id: u64, candidate: DesktopSession) {
-        self.submit(id, Work::Admit(Box::new(candidate)));
-    }
-    pub(super) fn poll_admission(&self) -> Option<(u64, Result<DesktopSession, String>)> {
-        self.poll().map(|(id, result)| {
-            (
-                id,
-                result.map(|completed| match completed {
-                    Completed::Admitted(candidate) => *candidate,
-                    _ => unreachable!("dedicated admission worker"),
-                }),
-            )
-        })
     }
     pub(super) fn cancel(&self) {
         let mut state = self.shared.state.lock().expect("document worker metadata");
@@ -329,7 +332,7 @@ impl FileWorker {
         self.shared.wake.notify_one();
         drop(retired);
     }
-    pub(super) fn poll(&self) -> Option<(u64, Result<Completed, String>)> {
+    pub(super) fn poll(&self) -> Option<(u64, Result<Completed, OperationFailure>)> {
         self.shared
             .state
             .lock()
@@ -354,6 +357,39 @@ impl Drop for FileWorker {
         self.shutdown();
     }
 }
+fn finish_validation_budget(
+    result: Result<Completed, OperationFailure>,
+    elapsed: std::time::Duration,
+    budget: std::time::Duration,
+    cancelled: bool,
+) -> Result<Completed, OperationFailure> {
+    // Atomic rename is the Save commit point. Its successful completion cannot
+    // subsequently become a failed Save because scheduling crossed the budget.
+    // atomic_write checks the deadline/cancellation predicate before that point.
+    let committed_save = match &result {
+        Ok(Completed::Saved { .. }) => true,
+        Ok(Completed::Native(value)) => matches!(
+            value.as_ref(),
+            shared::archive::NativeCompleted::Saved { .. }
+        ),
+        _ => false,
+    };
+    if !committed_save && !cancelled && elapsed >= budget {
+        Err(resource_refusal(
+            vec![resource_fact(
+                ResourceCategory::ValidationBudget,
+                elapsed.as_millis().min(u64::MAX as u128) as usize,
+                budget.as_millis() as usize,
+                0,
+                ResourceScope::Application,
+                ResourceUnit::Milliseconds,
+            )],
+            "Application capacity: native document validation exceeded its bounded15-second budget. The accepted current document is preserved.",
+        ))
+    } else {
+        result
+    }
+}
 pub(super) fn check(stopped: &mut impl FnMut() -> bool) -> Result<(), String> {
     if stopped() {
         Err("Document operation cancelled or exceeded its 15-second validation budget.".into())
@@ -361,26 +397,62 @@ pub(super) fn check(stopped: &mut impl FnMut() -> bool) -> Result<(), String> {
         Ok(())
     }
 }
-fn execute(work: Work, mut stopped: impl FnMut() -> bool) -> Result<Completed, String> {
+fn execute(work: Work, mut stopped: impl FnMut() -> bool) -> Result<Completed, OperationFailure> {
     match work {
         Work::Native(work) => super::shared::archive::execute(*work, &mut stopped)
             .map(|value| Completed::Native(Box::new(value))),
-        Work::TakeBack {
+        Work::Admit {
             mut candidate,
-            at_ns,
+            mutation,
         } => {
             candidate.ensure_capacity()?;
-            candidate.take_back_with_stop(&mut stopped)?;
-            candidate.journal(
-                DesktopCommand::TakeBack {
-                    version: candidate.version - 1,
-                },
-                at_ns,
-            );
-            candidate.check_archive_capacity(&mut stopped)?;
-            Ok(Completed::Admitted(candidate))
-        }
-        Work::Admit(candidate) => {
+            if let Some(mutation) = mutation {
+                match mutation {
+                    ChessMutation::Replace {
+                        record,
+                        human,
+                        paused,
+                    } => {
+                        let mut next = DesktopSession::from_record(&record, human)?;
+                        next.runtime = candidate.runtime.clone();
+                        next.version += 1;
+                        next.revision += 1;
+                        next.selection_id += 1;
+                        next.document_identity += 1;
+                        next.document_revision += 1;
+                        next.document_path = None;
+                        next.saved_revision = 0;
+                        next.settings.orientation = human;
+                        next.play_paused = paused;
+                        candidate = Box::new(next);
+                    }
+                    ChessMutation::Command { command, at_ns } => {
+                        candidate.command_unchecked(command, at_ns)?
+                    }
+                    ChessMutation::Observation { response, at_ns } => {
+                        let accepted = if matches!(
+                            response.context.purpose,
+                            mshogi_engine::ExecutionPurpose::EngineTurn {}
+                        ) {
+                            candidate.accept_unchecked(response, at_ns)
+                        } else {
+                            candidate.accept_analysis_unchecked(response)
+                        };
+                        if !accepted {
+                            return Err("Execution observation no longer matches the exact submitted native context.".into());
+                        }
+                    }
+                    ChessMutation::TakeBack { at_ns } => {
+                        candidate.take_back_with_stop(&mut stopped)?;
+                        candidate.journal(
+                            DesktopCommand::TakeBack {
+                                version: candidate.version - 1,
+                            },
+                            at_ns,
+                        );
+                    }
+                }
+            }
             candidate.check_archive_capacity(&mut stopped)?;
             Ok(Completed::Admitted(candidate))
         }
@@ -409,37 +481,6 @@ fn execute(work: Work, mut stopped: impl FnMut() -> bool) -> Result<Completed, S
                 document_identity,
             })
         }
-        Work::Open { path, token } => {
-            if !fs::metadata(&path)
-                .map_err(|e| format!("Open metadata failed: {e}"))?
-                .is_file()
-            {
-                return Err("Only regular desktop document files can be opened.".into());
-            }
-            let mut file = fs::File::open(&path).map_err(|e| format!("Open failed: {e}"))?;
-            if !file.metadata().map_err(|e| e.to_string())?.is_file() {
-                return Err("Only regular desktop document files can be opened.".into());
-            }
-            let mut bytes = Vec::new();
-            let mut chunk = [0; 8192];
-            loop {
-                check(&mut stopped)?;
-                let n = file.read(&mut chunk).map_err(|e| e.to_string())?;
-                if n == 0 {
-                    break;
-                }
-                if bytes.len() + n > MAX_ARCHIVE_BYTES {
-                    return Err("Document exceeds the 16 MiB archive byte limit.".into());
-                }
-                bytes.extend_from_slice(&chunk[..n]);
-            }
-            let opened = super::shared::archive::decode_chess_document(&bytes, &mut stopped)?;
-            Ok(Completed::Opened {
-                opened: Box::new(opened),
-                path,
-                token,
-            })
-        }
         Work::View {
             record,
             index,
@@ -459,7 +500,7 @@ fn encode_chess(payload: &ChessDocument) -> Result<Vec<u8>, String> {
 pub(super) fn decode_chess_payload(
     bytes: &[u8],
     stopped: &mut impl FnMut() -> bool,
-) -> Result<Opened, String> {
+) -> Result<Opened, OperationFailure> {
     let archive: ChessDocument =
         serde_json::from_slice(bytes).map_err(|e| format!("Invalid desktop archive: {e}"))?;
     let record = preflight(&archive)?;
@@ -468,8 +509,19 @@ pub(super) fn decode_chess_payload(
     resave.revision = MAX_SAFE_ID - 17;
     resave.next_request = MAX_SAFE_ID - 17;
     resave.document_revision = MAX_SAFE_ID - 17;
-    if encode_chess(&resave)?.len() > MAX_ARCHIVE_BYTES {
-        return Err("Application capacity: reopened runtime identities would exceed the complete 16 MiB archive budget. The current document was preserved.".into());
+    let resave_bytes = encode_chess(&resave)?.len();
+    if resave_bytes > MAX_ARCHIVE_BYTES {
+        return Err(resource_refusal(
+            vec![resource_fact(
+                ResourceCategory::EncodedDocumentBytes,
+                resave_bytes,
+                MAX_ARCHIVE_BYTES,
+                0,
+                ResourceScope::Chess,
+                ResourceUnit::Bytes,
+            )],
+            "Application capacity: reopened runtime identities exceed16MiB archive budget. Current document preserved.",
+        ));
     }
     check(stopped)?;
     let game = record
@@ -502,13 +554,13 @@ pub(super) fn decode_chess_payload(
         viewed,
     })
 }
-fn preflight(archive: &ChessDocument) -> Result<MatchRecord, String> {
+fn preflight(archive: &ChessDocument) -> Result<MatchRecord, OperationFailure> {
     preflight_reserved(archive, 0)
 }
 fn preflight_reserved(
     archive: &ChessDocument,
     reserve_controls: usize,
-) -> Result<MatchRecord, String> {
+) -> Result<MatchRecord, OperationFailure> {
     archive.settings.analysis_defaults.validate()?;
     if archive.play_limits != PLAY_LIMITS {
         return Err("Unsupported live play limits; no settings were downgraded.".into());
@@ -527,9 +579,31 @@ fn preflight_reserved(
     if archive.observations.len() > MAX_ARCHIVE_OBSERVATIONS
         || archive.controls.len() > MAX_ARCHIVE_CONTROLS
     {
-        return Err(
-            "Archive observation/control resource limit exceeded; no history was truncated.".into(),
-        );
+        let mut facts = Vec::new();
+        if archive.observations.len() > MAX_ARCHIVE_OBSERVATIONS {
+            facts.push(resource_fact(
+                ResourceCategory::OrdinaryObservations,
+                archive.observations.len(),
+                MAX_ARCHIVE_OBSERVATIONS,
+                0,
+                ResourceScope::Chess,
+                ResourceUnit::Observations,
+            ));
+        }
+        if archive.controls.len() > MAX_ARCHIVE_CONTROLS {
+            facts.push(resource_fact(
+                ResourceCategory::Controls,
+                archive.controls.len(),
+                MAX_ARCHIVE_CONTROLS,
+                0,
+                ResourceScope::Chess,
+                ResourceUnit::Controls,
+            ));
+        }
+        return Err(resource_refusal(
+            facts,
+            "Archive observation/control resource limit exceeded; no history was truncated.",
+        ));
     }
     let record = MatchRecord::from_json(&archive.match_record_json).map_err(|e| e.to_string())?;
     let initial = record.initial_record().map_err(|e| e.to_string())?;
@@ -548,7 +622,17 @@ fn preflight_reserved(
     if initial.events().len() + record.event_count() > MAX_ARCHIVE_EVENTS
         || final_record.events().len() > MAX_ARCHIVE_EVENTS
     {
-        return Err("Archive exceeds 4096 game/match events.".into());
+        return Err(resource_refusal(
+            vec![resource_fact(
+                ResourceCategory::NativeEvents,
+                (initial.events().len() + record.event_count()).max(final_record.events().len()),
+                MAX_ARCHIVE_EVENTS,
+                0,
+                ResourceScope::Chess,
+                ResourceUnit::Events,
+            )],
+            "Archive exceeds4096 game/match events.",
+        ));
     }
     let current_history_events = initial.events().len() + record.event_count();
     if archive
@@ -614,7 +698,31 @@ fn preflight_reserved(
     if retained_events > MAX_ARCHIVE_EVENTS
         || (!archive.takebacks.is_empty() && replay_work > 16_000)
     {
-        return Err("Application capacity: complete retained takeback lineage exceeds the 4096-event/16000 replay-work budget.".into());
+        let mut facts = Vec::new();
+        if retained_events > MAX_ARCHIVE_EVENTS {
+            facts.push(resource_fact(
+                ResourceCategory::NativeEvents,
+                retained_events,
+                MAX_ARCHIVE_EVENTS,
+                0,
+                ResourceScope::Chess,
+                ResourceUnit::Events,
+            ));
+        }
+        if !archive.takebacks.is_empty() && replay_work > 16_000 {
+            facts.push(resource_fact(
+                ResourceCategory::ReplayWork,
+                replay_work.saturating_sub(reserve_controls),
+                16_000,
+                reserve_controls,
+                ResourceScope::Chess,
+                ResourceUnit::ReplayUnits,
+            ));
+        }
+        return Err(resource_refusal(
+            facts,
+            "Application capacity: complete retained takeback lineage exceeds the4096-event/16000 replay-work budget.",
+        ));
     }
     let mut last_control_at = 0;
     for (i, control) in archive.controls.iter().enumerate() {
@@ -1087,7 +1195,7 @@ impl DesktopSession {
     pub(super) fn check_archive_capacity(
         &self,
         stopped: &mut impl FnMut() -> bool,
-    ) -> Result<(), String> {
+    ) -> Result<(), OperationFailure> {
         let reserve_stop = self.pending.is_some()
             || self.analysis_pending.is_some()
             || (!self.play_paused
@@ -1101,7 +1209,53 @@ impl DesktopSession {
             self.controls.len(),
             reserve_controls,
         ) {
-            return Err("Application capacity: this operation would exceed 4096 events, 256 observations or 8192 controls (including a stop/close reservation). No document history or observations were accepted or discarded. Save the complete current document, then start a new game/document to continue.".into());
+            let mut facts = Vec::new();
+            let events = self.initial_record.events().len() + self.game.record().event_count();
+            if events > MAX_ARCHIVE_EVENTS {
+                facts.push(resource_fact(
+                    ResourceCategory::NativeEvents,
+                    events,
+                    MAX_ARCHIVE_EVENTS,
+                    0,
+                    ResourceScope::Chess,
+                    ResourceUnit::Events,
+                ));
+            }
+            let native = self.game.game().record().events().len();
+            if native > MAX_ARCHIVE_EVENTS {
+                facts.push(resource_fact(
+                    ResourceCategory::NativeEvents,
+                    native,
+                    MAX_ARCHIVE_EVENTS,
+                    0,
+                    ResourceScope::Chess,
+                    ResourceUnit::Events,
+                ));
+            }
+            if self.observations.len() > MAX_ARCHIVE_OBSERVATIONS {
+                facts.push(resource_fact(
+                    ResourceCategory::OrdinaryObservations,
+                    self.observations.len(),
+                    MAX_ARCHIVE_OBSERVATIONS,
+                    0,
+                    ResourceScope::Chess,
+                    ResourceUnit::Observations,
+                ));
+            }
+            if self.controls.len() + reserve_controls > MAX_ARCHIVE_CONTROLS {
+                facts.push(resource_fact(
+                    ResourceCategory::Controls,
+                    self.controls.len(),
+                    MAX_ARCHIVE_CONTROLS,
+                    reserve_controls,
+                    ResourceScope::Chess,
+                    ResourceUnit::Controls,
+                ));
+            }
+            return Err(resource_refusal(
+                facts,
+                "Application capacity: native document counts exceed their supported limits including stop/close reservation. The current accepted document remains saveable.",
+            ));
         }
         check(stopped)?;
         let mut archive = self.archive_snapshot();
@@ -1120,7 +1274,17 @@ impl DesktopSession {
         let bytes = encode_chess(&archive)?;
         let reserve_bytes = if reserve_stop { 1024 } else { 0 };
         if !bytes_fit(bytes.len(), reserve_bytes) {
-            return Err("Application capacity: this operation would exceed the 16 MiB complete archive budget, including runtime identity and stop/close reservations. No new history or observations were accepted. Save the complete current document, then start a new game/document to continue.".into());
+            return Err(resource_refusal(
+                vec![resource_fact(
+                    ResourceCategory::EncodedDocumentBytes,
+                    bytes.len(),
+                    MAX_ARCHIVE_BYTES,
+                    reserve_bytes,
+                    ResourceScope::Chess,
+                    ResourceUnit::Bytes,
+                )],
+                "Application capacity: complete encoded document exceeds16MiB including reserved headroom. Current accepted document remains saveable.",
+            ));
         }
         check(stopped)?;
         // Full proof documents must fit the COMPLETE Open validation path,
@@ -1136,7 +1300,17 @@ impl DesktopSession {
                 stopped() || Instant::now() >= deadline
             });
             if Instant::now() >= deadline {
-                return Err("Application capacity: the complete document's native proof replay exceeded the 15-second validation budget. No new history or observations were accepted; the previous complete document remains saveable.".into());
+                return Err(resource_refusal(
+                    vec![resource_fact(
+                        ResourceCategory::ValidationBudget,
+                        VALIDATION_BUDGET.as_millis() as usize,
+                        VALIDATION_BUDGET.as_millis() as usize,
+                        0,
+                        ResourceScope::Chess,
+                        ResourceUnit::Milliseconds,
+                    )],
+                    "Application capacity: complete native proof replay exceeded its15-second validation budget. Previous complete document remains saveable.",
+                ));
             }
             result?;
         } else {
@@ -1312,23 +1486,15 @@ impl DesktopController {
         }
     }
     fn next_io(&mut self, phase: IoPhase) -> Result<u64, String> {
-        if self.io_state.id >= MAX_SAFE_ID - 1 || self.session.revision >= MAX_SAFE_ID - 2 {
-            return Err("Document operation identity exhausted.".into());
-        }
-        self.io_state = IoState {
-            id: self.io_state.id + 1,
-            phase,
-            message: None,
-        };
-        self.session.revision += 1;
-        Ok(self.io_state.id)
+        self.next_native_io(phase)
     }
     /// Queue a complete save snapshot; serialization and all file I/O run off-path.
     pub fn queue_save(&mut self, path: PathBuf) -> Result<u64, String> {
         self.require_chess()?;
-        if self.session.controls.len() > MAX_ARCHIVE_CONTROLS
-            || self.session.observations.len() > MAX_ARCHIVE_OBSERVATIONS
-            || self.session.initial_record.events().len() + self.session.game.record().event_count()
+        if self.session.chess_mut().controls.len() > MAX_ARCHIVE_CONTROLS
+            || self.session.chess_mut().observations.len() > MAX_ARCHIVE_OBSERVATIONS
+            || self.session.chess_mut().initial_record.events().len()
+                + self.session.chess_mut().game.record().event_count()
                 > MAX_ARCHIVE_EVENTS
         {
             return Err("Document resource limits exceeded (4096 events, 256 observations, 8192 controls); no history was truncated or file changed.".into());
@@ -1337,24 +1503,24 @@ impl DesktopController {
         let archive = ChessDocument {
             match_record_json: String::new(),
             game_record_json: String::new(),
-            human: self.session.human,
-            settings: self.session.settings.clone(),
-            play_limits: self.session.play_limits,
-            observations: self.session.observations.clone(),
-            controls: self.session.controls.clone(),
-            takebacks: self.session.takebacks.clone(),
+            human: self.session.chess_mut().human,
+            settings: self.session.chess().settings.clone(),
+            play_limits: self.session.chess_mut().play_limits,
+            observations: self.session.chess_mut().observations.clone(),
+            controls: self.session.chess_mut().controls.clone(),
+            takebacks: self.session.chess_mut().takebacks.clone(),
             version: self.session.version,
             revision: self.session.archive_revision,
             next_request: self.session.next_request.max(self.session.selection_id),
             document_revision: self.session.document_revision,
-            selected_event: self.session.viewed.as_ref().map(|v| v.index),
+            selected_event: self.session.chess_mut().viewed.as_ref().map(|v| v.index),
         };
         self.files.submit(
             id,
             Work::Save {
                 archive: Box::new(archive),
-                record: self.session.game.record().clone(),
-                game_record: Box::new(self.session.game.game().record()),
+                record: self.session.chess_mut().game.record().clone(),
+                game_record: Box::new(self.session.chess_mut().game.game().record()),
                 path,
                 revision: self.session.document_revision,
                 document_identity: self.session.document_identity,
@@ -1370,26 +1536,24 @@ impl DesktopController {
                 "The document changed before Open. Confirm the current document again.".into(),
             );
         }
-        let id = self.next_io(IoPhase::Opening)?;
-        self.files.submit(id, Work::Open { path, token });
-        Ok(id)
+        self.queue_shared_open(path, self.shared_open_token())
     }
     pub(super) fn queue_view(&mut self, version: u64, index: usize) -> Result<Snapshot, String> {
         if version != self.session.version {
             return Err("The game changed before history selection.".into());
         }
-        let count =
-            self.session.initial_record.events().len() + self.session.game.record().event_count();
+        let count = self.session.chess_mut().initial_record.events().len()
+            + self.session.chess_mut().game.record().event_count();
         if index > count || count > MAX_ARCHIVE_EVENTS {
             return Err("Unsupported history event boundary/resource limit.".into());
         }
         self.session.ensure_capacity()?;
         self.retire_admission();
         self.bridge.cancel();
-        self.session.pending = None;
+        self.session.chess_mut().pending = None;
         self.session.retire_analysis();
-        self.session.play_paused = true;
-        self.session.engine.status = EnginePhase::Paused;
+        self.session.chess_mut().play_paused = true;
+        self.session.chess_mut().engine.status = EnginePhase::Paused;
         self.session.version += 1;
         self.session.revision += 1;
         self.session.selection_id += 1;
@@ -1398,12 +1562,14 @@ impl DesktopController {
         self.files.submit(
             id,
             Work::View {
-                record: self.session.game.record().clone(),
+                record: self.session.chess_mut().game.record().clone(),
                 index,
                 token,
             },
         );
-        Ok(self.snapshot())
+        self.chess_snapshot_if_active().ok_or_else(|| {
+            "The active native game changed during the requested Chess operation.".into()
+        })
     }
     pub(super) fn poll_files(&mut self) {
         let Some((id, result)) = self.files.poll() else {
@@ -1428,17 +1594,6 @@ impl DesktopController {
                 }
                 Ok("Saved a complete desktop document.".into())
             }
-            Ok(Completed::Opened {
-                opened,
-                path,
-                token,
-            }) => {
-                if token != self.open_token() {
-                    Err("The live document changed during validation. Open was not applied.".into())
-                } else {
-                    self.install_chess_archive(*opened, path)
-                }
-            }
             Ok(Completed::Viewed { view, token }) => {
                 if token != self.open_token() {
                     Err(
@@ -1446,11 +1601,14 @@ impl DesktopController {
                             .into(),
                     )
                 } else {
-                    self.session.viewed = Some(*view);
+                    self.session.chess_mut().viewed = Some(*view);
                     Ok("Reconstructed an exact read-only history prefix.".into())
                 }
             }
-            Err(error) => Err(error),
+            Err(error) => {
+                self.io_state.resource = error.resource;
+                Err(error.diagnostic)
+            }
         };
         self.io_state.phase = if result.is_ok() {
             IoPhase::Complete
@@ -1460,105 +1618,145 @@ impl DesktopController {
         self.io_state.message = Some(result.unwrap_or_else(|error| error));
         self.session.revision += 1;
     }
-    pub(super) fn install_chess_archive(
+    /// The sole current-document installation authority. Every payload has already
+    /// passed strict native replay on the bounded document worker. This method
+    /// assigns fresh identities and stops execution before the atomic owner swap.
+    pub(crate) fn install_document(
         &mut self,
-        opened: Opened,
+        opened: shared::archive::OpenedNative,
         path: PathBuf,
     ) -> Result<String, String> {
-        let saved = opened.archive;
-        let next = [
-            self.session.version,
-            self.session.revision,
-            self.session.next_request,
-            self.session.selection_id,
-            saved.version,
-            saved.revision,
-            saved.next_request,
-        ]
-        .into_iter()
-        .max()
-        .unwrap_or(0)
-            + 1;
+        use shared::archive::OpenedNative;
+        let (floor, saved_revision) = match &opened {
+            OpenedNative::Chess(value) => (
+                value
+                    .archive
+                    .version
+                    .max(value.archive.revision)
+                    .max(value.archive.next_request),
+                value.archive.document_revision,
+            ),
+            OpenedNative::Shogi { floor, .. } | OpenedNative::Xiangqi { floor, .. } => (*floor, 0),
+        };
+        let next = self
+            .runtime_floor()
+            .max(self.session.revision)
+            .max(floor)
+            .checked_add(1)
+            .ok_or("Runtime identity exhausted.")?;
+        let revision = self.session.document_revision.max(saved_revision);
         if next >= MAX_SAFE_ID - 64
-            || self.shared.epoch >= MAX_SAFE_ID - 64
-            || self.session.document_revision.max(saved.document_revision) >= MAX_SAFE_ID - 65
+            || self.session.document_epoch >= MAX_SAFE_ID - 64
+            || revision >= MAX_SAFE_ID - 65
+            || self.session.document_identity >= MAX_SAFE_ID - 65
         {
-            self.io_state.phase = IoPhase::Failed;
-            self.io_state.message = Some("Application capacity: reopened identities leave no safe save/runtime headroom. Current document preserved.".into());
-            self.session.revision += 1;
-            return Err("Application capacity: reopened identity headroom exhausted.".into());
+            let (count, limit) = if next >= MAX_SAFE_ID - 64 {
+                (next, MAX_SAFE_ID - 65)
+            } else if self.session.document_epoch >= MAX_SAFE_ID - 64 {
+                (self.session.document_epoch, MAX_SAFE_ID - 65)
+            } else if revision >= MAX_SAFE_ID - 65 {
+                (revision, MAX_SAFE_ID - 66)
+            } else {
+                (self.session.document_identity, MAX_SAFE_ID - 66)
+            };
+            return Err(self.identity_refusal(count,limit,true,ResourceMeasurement::Candidate,"Application capacity: reopened runtime identities leave no safe headroom. Current document preserved."));
         }
+        let runtime = RuntimeMetadata {
+            document_epoch: self.session.document_epoch + 1,
+            version: next,
+            revision: next,
+            archive_revision: next,
+            next_request: next,
+            document_revision: revision + 1,
+            document_identity: next,
+            saved_revision: revision + 1,
+            document_path: Some(path),
+            selection_id: next,
+            capacity: CapacityState::default(),
+        };
+        let (candidate, clock_floor) = match opened {
+            OpenedNative::Chess(opened) => {
+                let Opened {
+                    archive: saved,
+                    game,
+                    viewed,
+                } = *opened;
+                let clock_floor = game
+                    .record()
+                    .timestamp_floor()
+                    .max(saved.controls.iter().map(|c| c.at_ns).max().unwrap_or(0));
+                let initial_record = game
+                    .record()
+                    .initial_record()
+                    .expect("worker validated initial record");
+                let mut observations = saved.observations;
+                for observation in &mut observations {
+                    observation.historical = true;
+                }
+                let validated_observations = observations.len();
+                let state=DesktopSession {
+                    runtime,game,initial_record,human:saved.human,settings:saved.settings,
+                    play_limits:saved.play_limits,observations,controls:saved.controls,takebacks:saved.takebacks,
+                    pending:None,analysis:AnalysisState::default(),analysis_pending:None,analysis_submitted:false,
+                    play_paused:true,viewed,validated_observations,
+                    engine:EngineState {status:EnginePhase::Paused,message:Some("Document reopened with work stopped. Saved observations are historical. Resume play explicitly.".into()),..EngineState::default()},
+                };
+                (ActiveDocument::Chess(Box::new(state)), clock_floor)
+            }
+            OpenedNative::Shogi { mut state, floor } => {
+                state.reopened(floor);
+                (ActiveDocument::Shogi { runtime, state }, 0)
+            }
+            OpenedNative::Xiangqi { mut state, .. } => {
+                state.reopened();
+                (ActiveDocument::Xiangqi { runtime, state }, 0)
+            }
+        };
         self.retire_admission();
-        self.shared.xiangqi = None;
-        self.shared.shogi = None;
-        self.shared.epoch += 1;
-        self.session.capacity.status = CapacityPhase::Available;
-        self.session.capacity.message = None;
+        self.last_command_receipt = None;
         self.bridge.cancel();
-        self.clock_floor = opened.game.record().timestamp_floor().max(
-            saved
-                .controls
-                .iter()
-                .map(|control| control.at_ns)
-                .max()
-                .unwrap_or(0),
-        );
+        self.clock_floor = clock_floor;
         self.origin = Instant::now();
-        self.session.game = opened.game;
-        self.session.initial_record = self
-            .session
-            .game
-            .record()
-            .initial_record()
-            .expect("worker validated initial record");
-        self.session.human = saved.human;
-        self.session.settings = saved.settings;
-        self.session.play_limits = saved.play_limits;
-        self.session.observations = saved.observations;
-        for observation in &mut self.session.observations {
-            observation.historical = true;
-        }
-        self.session.controls = saved.controls;
-        self.session.takebacks = saved.takebacks;
-        self.session.validated_observations = self.session.observations.len();
-        self.session.document_revision =
-            self.session.document_revision.max(saved.document_revision) + 1;
-        self.session.saved_revision = self.session.document_revision;
-        self.session.document_path = Some(path);
-        self.session.document_identity = next;
-        self.session.version = next;
-        self.session.revision = next;
-        self.session.archive_revision = next;
-        self.session.next_request = next;
-        self.session.selection_id = next;
-        self.session.pending = None;
-        self.session.retire_analysis();
-        self.session.viewed = opened.viewed;
-        self.session.play_paused = true;
-        self.session.engine = EngineState { status: EnginePhase::Paused, message: Some("Document reopened with work stopped. Saved observations are historical. Resume play explicitly.".into()), ..EngineState::default() };
-        Ok("Opened the complete document with work stopped.".into())
+        self.session = candidate;
+        Ok(
+            "Opened complete native document with fresh runtime identities and work stopped."
+                .into(),
+        )
     }
     /// Stabilize a close decision by retiring work without inventing results.
     /// Repeated preflight is idempotent; an untouched initial game stays clean.
-    pub fn pause_for_close(&mut self) -> Snapshot {
+    #[cfg(test)]
+    fn pause_for_close(&mut self) -> Snapshot {
+        self.require_chess()
+            .expect("legacy Chess close endpoint requires Chess");
+        self.pause_application();
+        self.snapshot()
+    }
+    /// Stop the actual native document before host close confirmation. No other
+    /// game is constructed and no result is invented.
+    pub fn application_pause_for_close(&mut self) -> SharedSnapshot {
+        self.pause_application();
+        self.shared_snapshot()
+    }
+    fn pause_application(&mut self) {
         self.pause_shared_for_close();
         self.retire_admission();
-        if self.session.pending.is_some() || self.session.analysis_pending.is_some() {
+        if matches!(&self.session, ActiveDocument::Chess(_))
+            && (self.session.chess().pending.is_some()
+                || self.session.chess().analysis_pending.is_some())
+        {
             self.bridge.cancel();
-            self.session.pending = None;
-            self.session.retire_analysis();
-            self.session.play_paused = true;
-            self.session.engine.status = EnginePhase::Paused;
+            self.session.retire_execution();
             self.session.changed();
-            self.session.controls.push(ControlEntry {
-                sequence: self.session.controls.len() as u64 + 1,
+            let control = ControlEntry {
+                sequence: self.session.chess().controls.len() as u64 + 1,
                 at_ns: self.at_ns(),
                 version: self.session.version,
                 command: None,
                 close_pause: true,
-            });
+            };
+            self.session.chess_mut().controls.push(control);
         }
-        self.snapshot()
     }
 }
 fn board_pieces(position: &Position) -> Vec<BoardPiece> {
@@ -1671,14 +1869,17 @@ mod tests {
             thread::sleep(std::time::Duration::from_millis(1));
         }
         receipt.completion().unwrap().unwrap();
-        let id = source.queue_shared_save(path.clone()).unwrap();
-        assert_eq!(wait(&mut source, id).io.phase, IoPhase::Complete);
+        source.queue_shared_save(path.clone()).unwrap();
+        while source.shared_snapshot().io.phase == IoPhase::Saving {
+            thread::sleep(std::time::Duration::from_millis(1));
+        }
+        assert_eq!(source.shared_snapshot().io.phase, IoPhase::Complete);
 
         for legacy_first in [false, true] {
             let mut opened = controller();
             // An eligible old Chess engine turn must not start after Open has
             // committed Shogi, even when the legacy view polls first.
-            opened.session.human = Color::Black;
+            opened.session.chess_mut().human = Color::Black;
             let before = opened.shared_token();
             opened
                 .queue_shared_open(path.clone(), opened.shared_open_token())
@@ -1690,9 +1891,9 @@ mod tests {
                 assert!(Instant::now() < deadline);
                 thread::sleep(std::time::Duration::from_millis(1));
             }
-            assert!(opened.shared.shogi.is_none());
+            assert!(opened.session.shogi().is_none());
             if legacy_first {
-                opened.snapshot();
+                assert!(opened.shared_snapshot().chess.is_none());
             }
             let first = opened.shared_snapshot();
             assert_eq!(first.io.phase, IoPhase::Complete);
@@ -1701,7 +1902,7 @@ mod tests {
             assert_eq!(first.board.files.len(), 9);
             assert_eq!(first.human.id, NativeSide::Shogi(shogi::Side::Sente));
             assert!(first.paused);
-            assert!(opened.session.pending.is_none());
+            assert!(matches!(&opened.session, ActiveDocument::Shogi { .. }));
             let next = opened.shared_snapshot();
             assert_eq!(first.token, next.token);
             assert_eq!(first.game, next.game);
@@ -1720,7 +1921,9 @@ mod tests {
                     ClaimPolicy::ExplicitOnly,
                 )
                 .unwrap();
-                source.session = DesktopSession::from_record(&game.record(), Color::White).unwrap();
+                source.session = ActiveDocument::Chess(Box::new(
+                    DesktopSession::from_record(&game.record(), Color::White).unwrap(),
+                ));
                 let choice = source
                     .session
                     .snapshot()
@@ -1740,8 +1943,8 @@ mod tests {
                 let version = source.session.version;
                 settled(&mut source, DesktopCommand::Resign { version });
             }
-            let core_record = source.session.game.record().to_json();
-            let conclusion = source.session.game.conclusion();
+            let core_record = source.session.chess_mut().game.record().to_json();
+            let conclusion = source.session.chess_mut().game.conclusion();
             assert!(conclusion.is_some());
             let saved_version = source.session.version;
             let id = source.queue_save(path.clone()).unwrap();
@@ -1756,13 +1959,18 @@ mod tests {
                 "{:?}",
                 snapshot.io.message
             );
-            assert_eq!(restored.session.game.record().to_json(), core_record);
+            assert_eq!(
+                restored.session.chess_mut().game.record().to_json(),
+                core_record
+            );
             assert_eq!(snapshot.conclusion, conclusion);
             assert!(snapshot.history.is_empty());
             assert!(snapshot.play_paused);
             assert!(!snapshot.document.dirty);
             assert!(snapshot.version > saved_version);
-            assert!(restored.at_ns() >= restored.session.game.record().timestamp_floor());
+            assert!(
+                restored.at_ns() >= restored.session.chess_mut().game.record().timestamp_floor()
+            );
             // The preceding event has the same board/ply, but no future claim or resignation.
             let final_index = snapshot.view.event_count;
             let before = restored
@@ -1775,7 +1983,7 @@ mod tests {
             assert!(viewed.view.historical);
             assert!(viewed.view.conclusion.is_none());
             assert_eq!(viewed.view.ply, 0);
-            assert_eq!(restored.session.game.conclusion(), conclusion);
+            assert_eq!(restored.session.chess_mut().game.conclusion(), conclusion);
             // Same diagram/ply, distinct native terminal-event prefix: saving
             // an inspected prefix must not silently reopen the live conclusion.
             let save = restored.queue_save(path.clone()).unwrap();
@@ -1791,10 +1999,14 @@ mod tests {
             assert_eq!(selected_view.view.ply, viewed.view.ply);
             assert_eq!(selected_view.view.fen, viewed.view.fen);
             assert!(selected_view.view.conclusion.is_none());
-            assert_eq!(selected.session.game.record().to_json(), core_record);
-            assert_eq!(selected.session.game.conclusion(), conclusion);
+            assert_eq!(
+                selected.session.chess_mut().game.record().to_json(),
+                core_record
+            );
+            assert_eq!(selected.session.chess_mut().game.conclusion(), conclusion);
             assert!(
-                selected.session.pending.is_none() && selected.session.analysis_pending.is_none()
+                selected.session.chess_mut().pending.is_none()
+                    && selected.session.chess_mut().analysis_pending.is_none()
             );
             assert!(selected_view.version > viewed.version);
             let live = settled(
@@ -1833,6 +2045,7 @@ mod tests {
         let save = controller.queue_save(path.clone()).unwrap();
         controller
             .session
+            .chess_mut()
             .command(
                 DesktopCommand::Preferences {
                     orientation: Color::Black,
@@ -1855,6 +2068,7 @@ mod tests {
         let open = controller.queue_open(path, token).unwrap();
         controller
             .session
+            .chess_mut()
             .command(
                 DesktopCommand::Preferences {
                     orientation: Color::White,
@@ -1866,12 +2080,15 @@ mod tests {
                 2,
             )
             .unwrap();
-        let before = controller.session.game.record().to_json();
+        let before = controller.session.chess_mut().game.record().to_json();
         let version = controller.session.version;
         let snapshot = wait(&mut controller, open);
         assert_eq!(snapshot.io.phase, IoPhase::Failed);
         assert_eq!(snapshot.version, version);
-        assert_eq!(controller.session.game.record().to_json(), before);
+        assert_eq!(
+            controller.session.chess_mut().game.record().to_json(),
+            before
+        );
         assert!(snapshot.document.dirty);
         fs::remove_dir_all(directory).unwrap();
     }
@@ -1976,11 +2193,17 @@ mod tests {
         let version = restored.session.version;
         settled(&mut restored, DesktopCommand::Resume { version });
         assert!(matches!(
-            restored.session.controls.last().unwrap().command,
+            restored
+                .session
+                .chess_mut()
+                .controls
+                .last()
+                .unwrap()
+                .command,
             Some(DesktopCommand::Resume { .. })
         ));
-        assert!(restored.session.controls.last().unwrap().at_ns >= 100_000_000_000);
-        assert!(preflight(&archive(&restored.session)).is_ok());
+        assert!(restored.session.chess_mut().controls.last().unwrap().at_ns >= 100_000_000_000);
+        assert!(preflight(&archive(restored.session.chess())).is_ok());
         fs::remove_dir_all(directory).unwrap();
     }
     #[test]
@@ -2075,15 +2298,20 @@ mod tests {
             AdjudicatedGame::from_fen("7k/8/8/8/8/8/R7/K7 w - - 99 1", ClaimPolicy::ExplicitOnly)
                 .unwrap();
         let mut controller = controller();
-        controller.session = DesktopSession::from_record(&game.record(), Color::White).unwrap();
+        controller.session = ActiveDocument::Chess(Box::new(
+            DesktopSession::from_record(&game.record(), Color::White).unwrap(),
+        ));
         // Force a positive controller timestamp so mixing a hardcoded zero
         // with this real clock would fail deterministically.
         controller.clock_floor = 100_000_000_000;
         let claim = controller.session.snapshot().claims[0];
         let concluded = settled(&mut controller, DesktopCommand::Claim { version: 1, claim });
         assert!(concluded.conclusion.is_some());
-        assert_eq!(controller.session.game.record().event_count(), 2);
-        let before = controller.session.game.record().to_json();
+        assert_eq!(
+            controller.session.chess_mut().game.record().event_count(),
+            2
+        );
+        let before = controller.session.chess_mut().game.record().to_json();
         let inspected = controller
             .command(DesktopCommand::Inspect {
                 version: controller.session.version,
@@ -2091,20 +2319,28 @@ mod tests {
             })
             .unwrap();
         wait(&mut controller, inspected.io.id);
+        let version = controller.session.version;
+        let at_ns = controller.at_ns();
         controller
             .session
+            .chess_mut()
             .command(
                 DesktopCommand::Analyze {
-                    version: controller.session.version,
+                    version,
                     operation: AnalysisOperation::Moves {
                         depth: 1,
                         nodes: 1000,
                     },
                 },
-                controller.at_ns(),
+                at_ns,
             )
             .unwrap();
-        let request = controller.session.analysis_request().unwrap().context;
+        let request = controller
+            .session
+            .chess_mut()
+            .analysis_request()
+            .unwrap()
+            .context;
         assert_eq!(request.game.event_count(), 0);
         assert_eq!(request.game, CanonicalRecord::chess(game.record()));
         let target = match &request.purpose {
@@ -2112,18 +2348,19 @@ mod tests {
             _ => panic!(),
         };
         assert_eq!(target.selection_id, controller.session.selection_id);
+        let version = controller.session.version;
+        let at_ns = controller.at_ns();
         controller
             .session
-            .command(
-                DesktopCommand::ReturnLive {
-                    version: controller.session.version,
-                },
-                controller.at_ns(),
-            )
+            .chess_mut()
+            .command(DesktopCommand::ReturnLive { version }, at_ns)
             .unwrap();
-        assert!(controller.session.analysis_pending.is_none());
-        assert_eq!(controller.session.game.record().to_json(), before);
-        assert!(controller.session.viewed.is_none());
+        assert!(controller.session.chess_mut().analysis_pending.is_none());
+        assert_eq!(
+            controller.session.chess_mut().game.record().to_json(),
+            before
+        );
+        assert!(controller.session.chess_mut().viewed.is_none());
     }
     fn analysis_observations(count: usize) -> DesktopSession {
         let mut session = DesktopSession::new();
@@ -2170,8 +2407,8 @@ mod tests {
     #[test]
     fn observation_256_is_accepted_257_rejected_and_save_open_preserves_every_observation() {
         let mut source = controller();
-        source.session = analysis_observations(256);
-        let match_before = source.session.game.record().to_json();
+        source.session = ActiveDocument::Chess(Box::new(analysis_observations(256)));
+        let match_before = source.session.chess_mut().game.record().to_json();
         let document_before = source.session.document_revision;
         let version = source.session.version;
         let error = source
@@ -2182,9 +2419,12 @@ mod tests {
             .unwrap_err();
         assert!(error.starts_with("Application capacity:"));
         assert_eq!(source.session.capacity.status, CapacityPhase::Paused);
-        assert_eq!(source.session.game.record().to_json(), match_before);
+        assert_eq!(
+            source.session.chess_mut().game.record().to_json(),
+            match_before
+        );
         assert_eq!(source.session.document_revision, document_before);
-        assert_eq!(source.session.observations.len(), 256);
+        assert_eq!(source.session.chess_mut().observations.len(), 256);
         let directory = directory();
         let path = directory.join("complete.mshogi");
         let id = source.queue_save(path.clone()).unwrap();
@@ -2204,7 +2444,7 @@ mod tests {
                 .unwrap_err()
                 .starts_with("Application capacity:")
         );
-        assert_eq!(reopened.session.observations.len(), 256);
+        assert_eq!(reopened.session.chess_mut().observations.len(), 256);
         let second = directory.join("reopened.mshogi");
         let id = reopened.queue_save(second).unwrap();
         assert_eq!(wait(&mut reopened, id).io.phase, IoPhase::Complete);
@@ -2214,9 +2454,9 @@ mod tests {
     #[test]
     fn control_boundary_rejects_unchanged_and_reserved_close_is_saveable() {
         let mut source = controller();
-        source.session.human = Color::Black;
+        source.session.chess_mut().human = Color::Black;
         for i in 0..8191 {
-            source.session.journal(
+            source.session.chess_mut().journal(
                 DesktopCommand::Preferences {
                     orientation: Color::White,
                     analysis_defaults: AnalysisOperation::Moves { depth: 1, nodes: 0 },
@@ -2224,13 +2464,19 @@ mod tests {
                 i,
             );
         }
-        assert!(source.session.check_archive_capacity(&mut || false).is_ok());
-        let request = source.session.engine_request().unwrap().context;
+        assert!(
+            source
+                .session
+                .chess_mut()
+                .check_archive_capacity(&mut || false)
+                .is_ok()
+        );
+        let request = source.session.chess_mut().engine_request().unwrap().context;
         let closed = source.pause_for_close();
         assert!(closed.play_paused);
-        assert_eq!(source.session.controls.len(), 8192);
-        assert!(source.session.pending.is_none());
-        assert!(!source.session.accept(
+        assert_eq!(source.session.chess_mut().controls.len(), 8192);
+        assert!(source.session.chess_mut().pending.is_none());
+        assert!(!source.session.chess_mut().accept(
             test_response(
                 request,
                 ChessResult::Failure {
@@ -2242,9 +2488,10 @@ mod tests {
             ),
             8192
         ));
-        let before = archive(&source.session);
+        let before = archive(source.session.chess());
         let error = source
             .session
+            .chess_mut()
             .command(
                 DesktopCommand::Preferences {
                     orientation: Color::Black,
@@ -2254,10 +2501,19 @@ mod tests {
             )
             .unwrap_err();
         assert!(error.starts_with("Application capacity:"));
-        assert_eq!(source.session.controls.len(), 8192);
-        assert_eq!(source.session.settings.orientation, Color::White);
+        assert_eq!(source.session.chess_mut().controls.len(), 8192);
+        assert_eq!(
+            source.session.chess_mut().settings.orientation,
+            Color::White
+        );
         assert_eq!(source.session.document_revision, before.document_revision);
-        assert!(source.session.check_archive_capacity(&mut || false).is_ok());
+        assert!(
+            source
+                .session
+                .chess_mut()
+                .check_archive_capacity(&mut || false)
+                .is_ok()
+        );
         let directory = directory();
         let id = source.queue_save(directory.join("closed.mshogi")).unwrap();
         assert_eq!(wait(&mut source, id).io.phase, IoPhase::Complete);
@@ -2330,7 +2586,7 @@ mod tests {
         assert_eq!(source.session.snapshot().history, ["e2e4"]);
         source.pause_for_close();
         assert_eq!(receipt.completion(), Some(Ok(())));
-        let mut candidate = source.session.clone();
+        let mut candidate = source.session.chess().clone();
         candidate
             .command_unchecked(
                 DesktopCommand::Analyze {
@@ -2363,8 +2619,14 @@ mod tests {
         assert!(pending.completion().unwrap().is_err());
         assert_eq!(source.session.document_revision, document_revision);
         source.snapshot();
-        assert!(source.session.analysis_pending.is_none());
-        assert!(source.session.check_archive_capacity(&mut || false).is_ok());
+        assert!(source.session.chess_mut().analysis_pending.is_none());
+        assert!(
+            source
+                .session
+                .chess_mut()
+                .check_archive_capacity(&mut || false)
+                .is_ok()
+        );
     }
 
     #[test]
@@ -2372,7 +2634,7 @@ mod tests {
         let directory = directory();
         let path = directory.join("initial.mshogi");
         let mut source = controller();
-        let mut candidate = source.session.clone();
+        let mut candidate = source.session.chess().clone();
         candidate
             .command_unchecked(
                 DesktopCommand::Preferences {
@@ -2396,16 +2658,19 @@ mod tests {
             thread::sleep(std::time::Duration::from_millis(1));
         }
         assert_eq!(receipt.completion(), Some(Ok(())));
-        assert!(source.session.document_state().dirty);
+        assert!(source.session.chess_mut().document_state().dirty);
         assert_eq!(source.session.document_path.as_ref(), Some(&path));
         let bytes = fs::read(&path).unwrap();
         let document = crate::document::DocumentEnvelope::parse(&bytes).unwrap();
         let file: ChessDocument = serde_json::from_str(document.payload.get()).unwrap();
         assert_eq!(file.settings.orientation, Color::White);
-        assert_eq!(source.session.settings.orientation, Color::Black);
+        assert_eq!(
+            source.session.chess_mut().settings.orientation,
+            Color::Black
+        );
         let mut opened = controller();
         let id = opened.queue_open(path, opened.open_token()).unwrap();
-        let mut candidate = opened.session.clone();
+        let mut candidate = opened.session.chess().clone();
         candidate
             .command_unchecked(
                 DesktopCommand::Preferences {
@@ -2432,13 +2697,22 @@ mod tests {
         assert_eq!(opened.io_state.phase, IoPhase::Complete);
         assert!(obsolete.completion().unwrap().is_err());
         opened.poll_admission();
-        assert_eq!(opened.session.settings.orientation, Color::White);
         assert_eq!(
-            opened.session.settings.analysis_defaults,
+            opened.session.chess_mut().settings.orientation,
+            Color::White
+        );
+        assert_eq!(
+            opened.session.chess_mut().settings.analysis_defaults,
             file.settings.analysis_defaults
         );
         assert_ne!(opened.session.capacity.status, CapacityPhase::Paused);
-        assert!(opened.session.check_archive_capacity(&mut || false).is_ok());
+        assert!(
+            opened
+                .session
+                .chess_mut()
+                .check_archive_capacity(&mut || false)
+                .is_ok()
+        );
         fs::remove_dir_all(directory).unwrap();
     }
     #[test]
@@ -2487,10 +2761,10 @@ mod tests {
     #[test]
     fn cancellation_retires_an_uncommitted_engine_result_candidate() {
         let mut source = controller();
-        source.session.human = Color::Black;
-        let context = source.session.engine_request().unwrap().context;
+        source.session.chess_mut().human = Color::Black;
+        let context = source.session.chess_mut().engine_request().unwrap().context;
         let action = "e2e4".parse().unwrap();
-        let mut candidate = source.session.clone();
+        let mut candidate = source.session.chess().clone();
         assert!(
             candidate.accept_unchecked(
                 test_response(
@@ -2526,16 +2800,25 @@ mod tests {
         assert!(result_receipt.completion().unwrap().is_err());
         assert_eq!(cancel_receipt.completion(), Some(Ok(())));
         assert!(source.session.snapshot().history.is_empty());
-        assert!(source.session.observations.is_empty());
-        assert_eq!(source.session.engine.status, EnginePhase::Cancelled);
-        assert!(source.session.check_archive_capacity(&mut || false).is_ok());
+        assert!(source.session.chess_mut().observations.is_empty());
+        assert_eq!(
+            source.session.chess_mut().engine.status,
+            EnginePhase::Cancelled
+        );
+        assert!(
+            source
+                .session
+                .chess_mut()
+                .check_archive_capacity(&mut || false)
+                .is_ok()
+        );
     }
     #[test]
     fn concurrent_save_as_bookkeeping_survives_later_candidate_commit() {
         let directory = directory();
         let path = directory.join("new-path.mshogi");
         let mut source = controller();
-        let mut candidate = source.session.clone();
+        let mut candidate = source.session.chess().clone();
         candidate
             .command_unchecked(
                 DesktopCommand::Preferences {
@@ -2557,7 +2840,7 @@ mod tests {
         assert_eq!(source.io_state.id, id);
         assert_eq!(source.io_state.phase, IoPhase::Complete);
         assert_eq!(source.session.document_path.as_ref(), Some(&path));
-        assert!(!source.session.document_state().dirty);
+        assert!(!source.session.chess_mut().document_state().dirty);
         while receipt.completion().is_none() {
             source.poll_admission();
             assert!(Instant::now() < deadline);
@@ -2566,8 +2849,11 @@ mod tests {
         assert_eq!(receipt.completion(), Some(Ok(())));
         assert_eq!(source.session.document_path.as_ref(), Some(&path));
         assert_eq!(source.session.saved_revision, 0);
-        assert!(source.session.document_state().dirty);
-        assert_eq!(source.session.settings.orientation, Color::Black);
+        assert!(source.session.chess_mut().document_state().dirty);
+        assert_eq!(
+            source.session.chess_mut().settings.orientation,
+            Color::Black
+        );
         fs::remove_dir_all(directory).unwrap();
     }
 
@@ -2575,17 +2861,19 @@ mod tests {
     fn event_4096_commits_but_engine_event_4097_rejects_before_move_or_observation() {
         let mut source = controller();
         for index in 1..4095 {
-            let reply = source.session.game.submit(MatchRequest {
+            let version = source.session.chess().game.version();
+            let reply = source.session.chess_mut().game.submit(MatchRequest {
                 at_ns: index,
-                version: source.session.game.version(),
+                version,
                 actor: Color::White,
                 command: MatchCommand::Observe { witness: None },
             });
             assert!(reply.rejection.is_none());
         }
-        assert_eq!(source.session.game.record().event_count(), 4095);
+        assert_eq!(source.session.chess_mut().game.record().event_count(), 4095);
         source
             .session
+            .chess_mut()
             .command(
                 DesktopCommand::Play {
                     version: 1,
@@ -2594,12 +2882,12 @@ mod tests {
                 4095,
             )
             .unwrap();
-        assert_eq!(source.session.game.record().event_count(), 4096);
-        let context = source.session.engine_request().unwrap().context;
+        assert_eq!(source.session.chess_mut().game.record().event_count(), 4096);
+        let context = source.session.chess_mut().engine_request().unwrap().context;
         let action = "e7e5".parse().unwrap();
-        let before = source.session.game.record().to_json();
+        let before = source.session.chess_mut().game.record().to_json();
         let revision = source.session.document_revision;
-        assert!(!source.session.accept(
+        assert!(!source.session.chess_mut().accept(
             test_response(
                 context,
                 ChessResult::Move {
@@ -2615,10 +2903,10 @@ mod tests {
             ),
             4096
         ));
-        assert_eq!(source.session.game.record().to_json(), before);
+        assert_eq!(source.session.chess_mut().game.record().to_json(), before);
         assert_eq!(source.session.document_revision, revision);
         assert_eq!(source.session.capacity.status, CapacityPhase::Paused);
-        assert!(source.session.observations.is_empty());
+        assert!(source.session.chess_mut().observations.is_empty());
         let directory = directory();
         let path = directory.join("event-boundary.mshogi");
         let id = source.queue_save(path.clone()).unwrap();
@@ -2626,8 +2914,11 @@ mod tests {
         let mut reopened = controller();
         let id = reopened.queue_open(path, reopened.open_token()).unwrap();
         assert_eq!(wait(&mut reopened, id).io.phase, IoPhase::Complete);
-        assert_eq!(reopened.session.game.record().event_count(), 4096);
-        assert_eq!(reopened.session.game.record().to_json(), before);
+        assert_eq!(
+            reopened.session.chess_mut().game.record().event_count(),
+            4096
+        );
+        assert_eq!(reopened.session.chess_mut().game.record().to_json(), before);
         fs::remove_dir_all(directory).unwrap();
     }
     #[test]
@@ -2665,11 +2956,11 @@ mod tests {
         unsupported.document_revision = MAX_SAFE_ID - 34;
         fs::write(&path, encode_chess(&unsupported).unwrap()).unwrap();
         let token = reopened.open_token();
-        let before = reopened.session.game.record().to_json();
+        let before = reopened.session.chess_mut().game.record().to_json();
         let id = reopened.queue_open(path, token).unwrap();
         assert_eq!(wait(&mut reopened, id).io.phase, IoPhase::Failed);
         assert_eq!(reopened.open_token(), token);
-        assert_eq!(reopened.session.game.record().to_json(), before);
+        assert_eq!(reopened.session.chess_mut().game.record().to_json(), before);
         fs::remove_dir_all(directory).unwrap();
     }
     // The mandatory all-feature native CI step runs this full stress body on
@@ -2681,7 +2972,9 @@ mod tests {
             AdjudicatedGame::from_fen("7k/8/5KQ1/8/8/8/8/8 w - - 0 1", ClaimPolicy::ExplicitOnly)
                 .unwrap();
         let mut source = controller();
-        source.session = DesktopSession::from_record(&game.record(), Color::White).unwrap();
+        source.session = ActiveDocument::Chess(Box::new(
+            DesktopSession::from_record(&game.record(), Color::White).unwrap(),
+        ));
         // A legal cooperative cycle, then Qg7 mate. Every result is below the
         // engine's 2 MiB wire cap and obeys its recorded Full work bounds.
         let cycle: Vec<Action> = ["g6g5", "h8h7", "g5g6", "h7h8"]
@@ -2702,11 +2995,13 @@ mod tests {
         };
         let mut accepted = 0;
         loop {
+            let version = source.session.version;
             source
                 .session
+                .chess_mut()
                 .command(
                     DesktopCommand::Analyze {
-                        version: source.session.version,
+                        version,
                         operation: AnalysisOperation::FullReachability {
                             target: mshogi_engine::ReachabilityTarget::White,
                             max_positions: 100_000,
@@ -2716,7 +3011,12 @@ mod tests {
                     accepted as u64,
                 )
                 .unwrap();
-            let context = source.session.analysis_request().unwrap().context;
+            let context = source
+                .session
+                .chess_mut()
+                .analysis_request()
+                .unwrap()
+                .context;
             let response = test_response(
                 context,
                 ChessResult::Reachability {
@@ -2729,9 +3029,9 @@ mod tests {
             assert!(
                 serde_json::to_vec(&response).unwrap().len() < mshogi_engine::MAX_RESPONSE_BYTES
             );
-            let before = source.session.game.record().to_json();
+            let before = source.session.chess_mut().game.record().to_json();
             let revision = source.session.document_revision;
-            if !source.session.accept_analysis(response) {
+            if !source.session.chess_mut().accept_analysis(response) {
                 assert_eq!(source.session.capacity.status, CapacityPhase::Paused);
                 assert!(
                     source
@@ -2742,9 +3042,9 @@ mod tests {
                         .unwrap()
                         .contains("16 MiB")
                 );
-                assert_eq!(source.session.game.record().to_json(), before);
+                assert_eq!(source.session.chess_mut().game.record().to_json(), before);
                 assert_eq!(source.session.document_revision, revision);
-                assert_eq!(source.session.observations.len(), accepted);
+                assert_eq!(source.session.chess_mut().observations.len(), accepted);
                 break;
             }
             accepted += 1;
@@ -2754,11 +3054,11 @@ mod tests {
             );
         }
         assert!(accepted > 1);
-        let bytes = encode_chess(&archive(&source.session)).unwrap();
+        let bytes = encode_chess(&archive(source.session.chess())).unwrap();
         assert!(bytes.len() <= MAX_ARCHIVE_BYTES);
         // An independently encoded next observation crosses the actual encoded
         // archive cap; this is not merely a count or helper boundary assertion.
-        let mut too_large = archive(&source.session);
+        let mut too_large = archive(source.session.chess());
         let mut next = too_large.observations.last().unwrap().clone();
         next.sequence += 1;
         too_large.observations.push(next);
@@ -2777,10 +3077,10 @@ mod tests {
             bytes.len(),
             began.elapsed().as_millis()
         );
-        assert_eq!(reopened.session.observations.len(), accepted);
+        assert_eq!(reopened.session.chess_mut().observations.len(), accepted);
         assert_eq!(
-            reopened.session.game.record().to_json(),
-            source.session.game.record().to_json()
+            reopened.session.chess_mut().game.record().to_json(),
+            source.session.chess_mut().game.record().to_json()
         );
         fs::remove_dir_all(directory).unwrap();
     }
@@ -3125,25 +3425,33 @@ mod takeback_tests {
         assert!(s.pending.is_some());
         assert!(accepted > 10);
         let mut c = DesktopController::new("/unused/msh113-close-engine".into()).unwrap();
-        c.session = s;
-        let before = c.session.controls.len();
+        c.session = ActiveDocument::Chess(Box::new(s));
+        let before = c.session.chess_mut().controls.len();
         c.pause_for_close();
-        assert_eq!(c.session.controls.len(), before + 1);
-        assert!(c.session.controls.last().unwrap().close_pause);
-        c.session.check_archive_capacity(&mut || false).unwrap();
-        let bytes = encoded(&c.session);
+        assert_eq!(c.session.chess_mut().controls.len(), before + 1);
+        assert!(c.session.chess_mut().controls.last().unwrap().close_pause);
+        c.session
+            .chess_mut()
+            .check_archive_capacity(&mut || false)
+            .unwrap();
+        let bytes = encoded(c.session.chess());
         super::super::shared::archive::decode_chess_document(&bytes, &mut || false).unwrap();
-        let last = c.session.initial_record.events().len() + c.session.game.record().event_count();
-        c.session.viewed = Some(view_prefix(c.session.game.record(), last, &mut || false).unwrap());
-        c.session.check_archive_capacity(&mut || false).unwrap();
-        let selected = encoded(&c.session);
+        let last = c.session.chess_mut().initial_record.events().len()
+            + c.session.chess_mut().game.record().event_count();
+        c.session.chess_mut().viewed =
+            Some(view_prefix(c.session.chess_mut().game.record(), last, &mut || false).unwrap());
+        c.session
+            .chess_mut()
+            .check_archive_capacity(&mut || false)
+            .unwrap();
+        let selected = encoded(c.session.chess());
         let reopened =
             super::super::shared::archive::decode_chess_document(&selected, &mut || false).unwrap();
         assert_eq!(reopened.viewed.unwrap().index, last);
         println!(
             "MSH-117 current envelope lineage boundary: {} accepted preferences, {} controls, {} encoded bytes; mandatory close retained and reopened",
             accepted,
-            c.session.controls.len(),
+            c.session.chess_mut().controls.len(),
             bytes.len()
         );
     }
@@ -3152,3 +3460,78 @@ mod takeback_tests {
 #[cfg(test)]
 #[path = "full_archive_tests.rs"]
 mod full_archive_tests;
+
+#[cfg(test)]
+mod validation_budget_tests {
+    use super::*;
+    #[test]
+    fn elapsed_validation_budget_is_authoritative_and_cancellation_is_not_resource_exhaustion() {
+        let budget = std::time::Duration::from_secs(15);
+        let error = finish_validation_budget(
+            Err("Native command rejected.".into()),
+            std::time::Duration::from_millis(14999),
+            budget,
+            false,
+        )
+        .err()
+        .unwrap();
+        assert!(error.resource.is_none());
+        let cancelled = finish_validation_budget(
+            Err("Cancelled native work.".into()),
+            std::time::Duration::from_millis(15001),
+            budget,
+            true,
+        )
+        .err()
+        .unwrap();
+        assert!(cancelled.resource.is_none());
+        let expired = finish_validation_budget(
+            Ok(Completed::Admitted(Box::default())),
+            std::time::Duration::from_millis(15001),
+            budget,
+            false,
+        )
+        .err()
+        .unwrap();
+        let facts = expired.resource.unwrap();
+        let fact = &facts.facts()[0];
+        assert_eq!(fact.category, ResourceCategory::ValidationBudget);
+        assert_eq!(fact.count, Some(15001));
+        assert_eq!(fact.limit, Some(15000));
+        assert_eq!(fact.unit, Some(ResourceUnit::Milliseconds));
+    }
+}
+
+#[cfg(test)]
+mod save_commit_budget_tests {
+    use super::*;
+    #[test]
+    fn committed_saves_remain_successful_when_observed_after_the_validation_deadline() {
+        let elapsed = std::time::Duration::from_millis(15001);
+        let budget = std::time::Duration::from_secs(15);
+        let chess = Completed::Saved {
+            path: PathBuf::from("/native/committed.mshogi"),
+            revision: 7,
+            document_identity: 9,
+        };
+        assert!(finish_validation_budget(Ok(chess), elapsed, budget, false).is_ok());
+        let native = Completed::Native(Box::new(shared::archive::NativeCompleted::Saved {
+            path: PathBuf::from("/native/committed-native.mshogi"),
+            revision: 11,
+            identity: 13,
+        }));
+        assert!(finish_validation_budget(Ok(native), elapsed, budget, false).is_ok());
+        let error = finish_validation_budget(
+            Ok(Completed::Admitted(Box::default())),
+            elapsed,
+            budget,
+            false,
+        )
+        .err()
+        .unwrap();
+        assert_eq!(
+            error.resource.unwrap().facts()[0].category,
+            ResourceCategory::ValidationBudget
+        );
+    }
+}

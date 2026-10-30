@@ -1,3 +1,4 @@
+import type { ResourceFailure } from "./resources";
 import type { NativeSide } from "./product/native";
 // Presentation DTOs mirror mshogi-desktop-session and mshogi-engine serde output.
 // Actions are opaque native identifiers; legality and adjudication stay in Rust.
@@ -150,6 +151,7 @@ export interface DocumentState {
   settings: { orientation: Color; analysis_defaults: AnalysisOperation };
 }
 export interface DocumentIo {
+  resource?: ResourceFailure | null;
   id: number;
   phase: "idle" | "saving" | "opening" | "viewing" | "complete" | "failed";
   message: string | null;
@@ -170,6 +172,7 @@ export interface HistoricalView {
 export interface Snapshot {
   can_take_back: boolean;
   capacity: {
+    resource?: ResourceFailure | null;
     id: number;
     status: "available" | "checking" | "paused";
     message: string | null;

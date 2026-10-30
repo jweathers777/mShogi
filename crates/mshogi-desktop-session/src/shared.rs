@@ -7,7 +7,7 @@ pub use archive::{NativeDesktopSettings, SharedDocumentState, SharedOpenToken, S
 #[path = "shared_inspection.rs"]
 mod inspection;
 #[path = "shared_xiangqi.rs"]
-mod xiangqi;
+pub(super) mod xiangqi;
 pub use inspection::{MovementInspection, MovementInspectionQuery};
 pub use mshogi_core::native::{GameKind, NativeSide};
 pub use mshogi_core::shogi::Side as ShogiSide;
@@ -374,6 +374,104 @@ fn display_shogi_observation(
             && current.is_some_and(|c| c.observation == observation.observation),
     }
 }
+fn display_chess_observation(
+    index: usize,
+    observation: &PresentedObservation,
+    current: Option<&PresentedObservation>,
+    root_side: Color,
+) -> PresentedSearchObservation {
+    let context = &observation.observation.context;
+    let (purpose, event_index, board_ply) = match &context.purpose {
+        ExecutionPurpose::EngineTurn {} => (
+            "engine_turn",
+            context.game.event_count(),
+            context.game.known_board_actions(),
+        ),
+        ExecutionPurpose::MoveAnalysis { target } => (
+            "move_analysis",
+            target.event_index as usize,
+            target.board_ply as usize,
+        ),
+        ExecutionPurpose::ChessFullReachability { target, .. } => (
+            "chess_full_reachability",
+            target.event_index as usize,
+            target.board_ply as usize,
+        ),
+    };
+    let result =
+        chess_observation_result(&observation.observation).expect("admitted Chess observation");
+    let telemetry = match &result {
+        ChessResult::Move { telemetry, .. }
+        | ChessResult::Claim { telemetry, .. }
+        | ChessResult::Finished { telemetry, .. }
+        | ChessResult::Incomplete { telemetry } => Some(telemetry),
+        _ => None,
+    };
+    let status = if observation.application_error.is_some() {
+        "Rejected engine result"
+    } else {
+        match &result {
+            ChessResult::Reachability {
+                result: MateReachability::Possible { .. },
+            } => "Cooperative mate witness",
+            ChessResult::Reachability {
+                result: MateReachability::Impossible { .. },
+            } => "Mating reachability disproved",
+            ChessResult::Reachability {
+                result: MateReachability::Unknown { .. },
+            } => "Unknown mating reachability",
+            ChessResult::Failure { .. } => "Engine failure",
+            _ => match telemetry.expect("search telemetry").status {
+                mshogi_engine::StopReason::Complete => "Complete",
+                mshogi_engine::StopReason::NodeLimit => "Node limit reached",
+                mshogi_engine::StopReason::Stopped => "Analysis stopped",
+            },
+        }
+    };
+
+    let score = telemetry.and_then(|t| t.score).map(|value| {
+        if value.abs() > 900_000 {
+            format!(
+                "{}mate in {} plies",
+                if value < 0 { "−" } else { "" },
+                1_000_000 - value.abs()
+            )
+        } else {
+            format!("{:+.2} pawns", f64::from(value) / 100.0)
+        }
+    });
+    PresentedSearchObservation {
+        observation_index: index,
+        purpose,
+        event_index,
+        board_ply,
+        perspective: side(NativeSide::Chess(root_side)).label,
+        engine: "mShogi",
+        score,
+        completed_depth: telemetry.map(|t| t.completed_depth),
+        nodes: telemetry.map(|t| t.nodes),
+        variation: telemetry.map_or_else(Vec::new, |t| {
+            t.principal_variation
+                .iter()
+                .map(|choice| match choice {
+                    mshogi_engine::EngineChoice::Move { action } => action.to_string(),
+                    mshogi_engine::EngineChoice::Claim { claim } => format!(
+                        "Claim {:?}{}",
+                        claim.reason,
+                        claim
+                            .intended
+                            .map(|a| format!(" by intended {a}"))
+                            .unwrap_or_default()
+                    ),
+                })
+                .collect()
+        }),
+        status,
+        historical: observation.historical,
+        selected: !observation.historical
+            && current.is_some_and(|c| c.observation == observation.observation),
+    }
+}
 /// Typed shared desktop view with exact runtime identity and native context.
 #[derive(Clone, Debug, Serialize)]
 pub struct SharedSnapshot {
@@ -449,6 +547,9 @@ pub struct SharedSnapshot {
     pub score_meaning: &'static str,
     /// Existing chess view/archive/claims/observations remain natively typed and unchanged.
     pub chess: Option<Snapshot>,
+    /// Complete authoritative Chess match record, including clock/policy/events.
+    /// Native GameRecord context above remains separately authoritative for rules/search.
+    pub chess_match: Option<MatchRecord>,
 }
 /// The request still carries a mandatory game tag, even for common operations.
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -649,7 +750,7 @@ pub(super) struct ShogiSession {
     game: s::Game,
     human: s::Side,
     viewed: Option<s::Game>,
-    paused: bool,
+    pub(crate) paused: bool,
     pending: Option<ExecutionContext>,
     submitted: bool,
     phase: EnginePhase,
@@ -666,9 +767,6 @@ type ShogiRollback = (
 );
 #[derive(Default)]
 pub(super) struct SharedState {
-    pub epoch: u64,
-    pub shogi: Option<ShogiSession>,
-    pub xiangqi: Option<xiangqi::XiangqiSession>,
     pub admission: Option<(u64, bool)>,
     pub admission_consumes_response: bool,
     pub rollback: Option<ShogiRollback>,
@@ -685,6 +783,15 @@ impl SharedState {
     }
 }
 impl ShogiSession {
+    pub(crate) fn reopened(&mut self, floor: u64) {
+        self.retire();
+        self.paused = true;
+        self.execution_floor = floor;
+        for observation in &mut self.observations {
+            observation.historical = true;
+        }
+        self.diagnostic=Some("Document reopened with work stopped. Saved observations are historical; Resume explicitly.".into());
+    }
     fn take_back_target(&self) -> Option<usize> {
         let events = self.game.events();
         if let Some(last) = events.last()
@@ -706,7 +813,7 @@ impl ShogiSession {
     fn selected(&self) -> &s::Game {
         self.viewed.as_ref().unwrap_or(&self.game)
     }
-    fn retire(&mut self) {
+    pub(crate) fn retire(&mut self) {
         self.pending = None;
         self.submitted = false;
         self.analysis_intent = None;
@@ -788,7 +895,7 @@ impl DesktopController {
     /// wire family. The enclosing Tauri mutex serializes all these entry points.
     pub fn shared_token(&self) -> SessionToken {
         SessionToken {
-            document: self.shared.epoch,
+            document: self.session.document_epoch,
             version: self.session.version,
             revision: self.session.revision,
             selection: self.session.selection_id,
@@ -803,14 +910,19 @@ impl DesktopController {
         game: GameKind,
         human: NativeSide,
     ) -> Result<(SharedSnapshot, AdmissionReceipt), String> {
+        if self.lifecycle.close_requested() {
+            return Err(
+                "Close is pending. Finish or cancel close before replacing the document.".into(),
+            );
+        }
         if expected != self.shared_open_token() {
             return Err("The document changed. Review unsaved changes again.".into());
         }
         if human.game() != game {
             return Err("The selected player side does not belong to this game.".into());
         }
-        self.session.ensure_capacity()?;
-        if self.shared.epoch >= MAX_SAFE_ID - 64 {
+        self.ensure_runtime_capacity()?;
+        if self.session.document_epoch >= MAX_SAFE_ID - 64 {
             return Err("Application capacity: document identity exhausted.".into());
         }
         let receipt = match human {
@@ -830,12 +942,12 @@ impl DesktopController {
             }
             NativeSide::Shogi(human) => {
                 let record = s::GameRecord::from_game(&s::Game::new());
-                let mut candidate = ShogiSession::restored(&record, human)?;
-                candidate.settings.orientation = human;
-                candidate.initial_settings = candidate.settings.clone();
-                // Resume is itself admitted and journaled, preserving archive replay.
-                self.queue_native_candidate(
-                    candidate,
+                self.queue_shogi_seed(
+                    archive::ShogiSeed::Record {
+                        record: Box::new(record),
+                        human,
+                        orient_human: true,
+                    },
                     Some(SessionOperation::Resume {}),
                     None,
                     true,
@@ -843,35 +955,37 @@ impl DesktopController {
             }
             NativeSide::Chess(human) => {
                 let record = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record();
-                let mut candidate = DesktopSession::from_record(&record, human)?;
-                candidate.settings.orientation = human;
-                candidate.version = self.session.version + 1;
-                candidate.revision = self.session.revision + 1;
-                candidate.next_request = self.session.next_request;
-                candidate.selection_id = self.session.selection_id + 1;
-                candidate.document_identity = self.session.document_identity + 1;
-                candidate.document_revision = self.session.document_revision + 1;
-                candidate.play_paused = false;
-                self.retire_admission();
-                self.bridge.cancel();
-                self.retire_native_files()?;
-                if let Some(state) = &mut self.shared.shogi {
-                    state.retire();
-                    state.paused = true;
-                }
-                if let Some(state) = &mut self.shared.xiangqi {
-                    state.retire();
-                    state.paused = true;
-                }
-                self.queue_admission(candidate)?;
-                self.shared.admission = Some((self.shared.epoch, false));
-                self.admission_receipt
-                    .clone()
-                    .expect("queued admission receipt")
+                self.queue_chess_replacement(record, human, false)?
             }
         };
         self.last_command_receipt = Some(receipt.clone());
         Ok((self.shared_snapshot(), receipt))
+    }
+    fn queue_chess_replacement(
+        &mut self,
+        record: GameRecord,
+        human: Color,
+        paused: bool,
+    ) -> Result<AdmissionReceipt, String> {
+        self.retire_admission();
+        self.bridge.cancel();
+        self.retire_native_files()?;
+        self.session.retire_execution();
+        let mut candidate = DesktopSession::new();
+        candidate.runtime = std::ops::Deref::deref(&self.session).clone();
+        self.queue_chess_candidate(
+            candidate,
+            Some(persistence::ChessMutation::Replace {
+                record,
+                human,
+                paused,
+            }),
+        )?;
+        self.shared.admission = Some((self.session.document_epoch, false));
+        Ok(self
+            .admission_receipt
+            .clone()
+            .expect("queued replacement receipt"))
     }
     fn shared_changed(&mut self) {
         self.session.version += 1;
@@ -881,7 +995,7 @@ impl DesktopController {
         self.session.archive_revision = self.session.revision.min(MAX_SAFE_ID - 65);
     }
     pub(super) fn require_chess(&self) -> Result<(), String> {
-        if self.shared.shogi.is_some() || self.shared.xiangqi.is_some() {
+        if self.session.shogi().is_some() || self.session.xiangqi().is_some() {
             Err("Wrong game: this legacy chess endpoint cannot act on another native game; use the shared native endpoint.".into())
         } else {
             Ok(())
@@ -893,14 +1007,19 @@ impl DesktopController {
         &mut self,
         command: SharedDesktopCommand,
     ) -> Result<SharedSnapshot, String> {
+        if self.lifecycle.close_requested() {
+            return Err(
+                "Close is pending. Finish or cancel close before changing the document.".into(),
+            );
+        }
         if command.expected != self.shared_token() {
             return Err(
                 "The session or selected event changed; use its current native snapshot.".into(),
             );
         }
-        let active = if self.shared.xiangqi.is_some() {
+        let active = if self.session.xiangqi().is_some() {
             GameKind::Xiangqi
-        } else if self.shared.shogi.is_some() {
+        } else if self.session.shogi().is_some() {
             GameKind::Shogi
         } else {
             GameKind::Chess
@@ -908,8 +1027,8 @@ impl DesktopController {
         if command.game != active {
             return Err("Command game does not match the active native session.".into());
         }
-        self.session.ensure_capacity()?;
-        if self.shared.epoch >= MAX_SAFE_ID - 64 {
+        self.ensure_runtime_capacity()?;
+        if self.session.document_epoch >= MAX_SAFE_ID - 64 {
             return Err("Application capacity: document identity exhausted.".into());
         }
         if let SessionOperation::Replace { record, human } = command.operation {
@@ -927,41 +1046,29 @@ impl DesktopController {
                 let NativeSide::Shogi(human) = human else {
                     unreachable!()
                 };
-                let candidate = ShogiSession::restored(&record, human)?;
-                let receipt = self.queue_native_candidate(candidate, None, None, true)?;
+                let receipt = self.queue_shogi_seed(
+                    archive::ShogiSeed::Record {
+                        record,
+                        human,
+                        orient_human: false,
+                    },
+                    None,
+                    None,
+                    true,
+                )?;
                 self.last_command_receipt = Some(receipt);
             } else if let CanonicalRecord::Chess(record) = record {
                 let NativeSide::Chess(human) = human else {
                     unreachable!()
                 };
-                let mut candidate = DesktopSession::from_record(&record, human)?;
-                candidate.version = self.session.version + 1;
-                candidate.revision = self.session.revision + 1;
-                candidate.next_request = self.session.next_request;
-                candidate.selection_id = self.session.selection_id + 1;
-                candidate.document_identity = self.session.document_identity + 1;
-                candidate.document_revision = self.session.document_revision + 1;
-                candidate.play_paused = true;
-                self.retire_admission();
-                self.bridge.cancel();
-                self.retire_native_files()?;
-                if let Some(state) = &mut self.shared.shogi {
-                    state.retire();
-                    state.paused = true;
-                }
-                if let Some(state) = &mut self.shared.xiangqi {
-                    state.retire();
-                    state.paused = true;
-                }
-                self.queue_admission(candidate)?;
-                self.shared.admission = Some((self.shared.epoch, false));
-                self.last_command_receipt = self.admission_receipt.clone();
+                let receipt = self.queue_chess_replacement(*record, human, true)?;
+                self.last_command_receipt = Some(receipt);
             } else {
                 return Err("Unsupported desktop game; the current document was preserved.".into());
             }
             return Ok(self.shared_snapshot());
         }
-        if self.shared.xiangqi.is_some() {
+        if self.session.xiangqi().is_some() {
             if self.admission_token.is_some() {
                 if !matches!(command.operation, SessionOperation::Cancel {}) {
                     return Err(
@@ -973,7 +1080,7 @@ impl DesktopController {
             self.last_command_receipt = None;
             return self.xiangqi_command(command.operation);
         }
-        if self.shared.shogi.is_none() {
+        if self.session.shogi().is_none() {
             let legacy = match command.operation {
                 SessionOperation::Chess { command } => command,
                 SessionOperation::Analyze { operation } => DesktopCommand::Analyze {
@@ -988,7 +1095,7 @@ impl DesktopController {
                     version: self.session.version,
                 },
                 SessionOperation::Cancel {} => {
-                    if self.session.analysis_pending.is_some() {
+                    if self.session.chess_mut().analysis_pending.is_some() {
                         DesktopCommand::CancelAnalysis {
                             version: self.session.version,
                         }
@@ -1024,7 +1131,7 @@ impl DesktopController {
         {
             return Err("Wait for native persistence admission before another command.".into());
         }
-        let state = self.shared.shogi.as_ref().unwrap();
+        let state = self.session.shogi().unwrap();
         if matches!(command.operation, SessionOperation::TakeBack {})
             && (state.viewed.is_some() || state.take_back_target().is_none())
         {
@@ -1036,13 +1143,26 @@ impl DesktopController {
         self.last_command_receipt = Some(receipt);
         Ok(self.shared_snapshot())
     }
-    fn start_shogi(&mut self, limits: WorkLimits, analysis: bool) -> Result<(), String> {
-        let state = self.shared.shogi.as_ref().unwrap();
-        if state.observations.len() >= 256 {
-            return Err("Application capacity: all256 observations are retained. Save this complete document, then start a new document to continue.".into());
-        }
-        self.session.ensure_capacity()?;
+    fn start_shogi(&mut self, limits: WorkLimits, analysis: bool) -> Result<(), OperationFailure> {
+        self.ensure_runtime_capacity()?;
         self.session.next_request += 1;
+        let state = self.session.shogi().unwrap();
+        if state.observations.len() >= 256 {
+            return Err(resource_refusal(
+                vec![
+                    resource_fact(
+                        ResourceCategory::OrdinaryObservations,
+                        state.observations.len(),
+                        MAX_ARCHIVE_OBSERVATIONS,
+                        0,
+                        ResourceScope::Shogi,
+                        ResourceUnit::Observations,
+                    )
+                    .with_measurement(ResourceMeasurement::Accepted),
+                ],
+                "Application capacity: all256 retained observation slots are occupied. Current document remains saveable; start a new document to continue.",
+            ));
+        }
         let game = state.record();
         let purpose = if analysis {
             ExecutionPurpose::MoveAnalysis {
@@ -1074,12 +1194,13 @@ impl DesktopController {
             game,
             limits,
         };
-        let state = self.shared.shogi.as_mut().unwrap();
+        let selection_id = self.session.selection_id;
+        let state = self.session.shogi_mut().unwrap();
         state.execution_floor = state
             .execution_floor
             .max(request.request_id)
             .max(request.session_version)
-            .max(self.session.selection_id);
+            .max(selection_id);
         state.pending = Some(request);
         state.submitted = false;
         state.phase = EnginePhase::Thinking;
@@ -1093,10 +1214,10 @@ impl DesktopController {
         self.accept_observation(response.observation)
     }
     pub(crate) fn accept_observation(&mut self, response: ExecutionObservation) -> bool {
-        if self.shared.xiangqi.is_some() {
+        if self.session.xiangqi().is_some() {
             return self.accept_xiangqi_observation(response);
         }
-        let Some(state) = self.shared.shogi.as_ref() else {
+        let Some(state) = self.session.shogi() else {
             return false;
         };
         if self.session.ensure_capacity().is_err() || state.observations.len() >= 256 {
@@ -1119,16 +1240,16 @@ impl DesktopController {
     pub fn shared_snapshot(&mut self) -> SharedSnapshot {
         self.poll_native_admission();
         self.poll_files();
-        if self.shared.xiangqi.is_some() {
+        if self.session.xiangqi().is_some() {
             return if self.shared.admission.is_some() {
                 self.xiangqi_snapshot()
             } else {
                 self.poll_xiangqi()
             };
         }
-        if self.shared.shogi.is_some() {
+        if self.session.shogi().is_some() {
             self.poll_files();
-            if self.shared.shogi.is_none() {
+            if self.session.shogi().is_none() {
                 return self.shared_snapshot();
             }
             if self.admission_token.is_none()
@@ -1136,7 +1257,7 @@ impl DesktopController {
             {
                 self.accept_shared(response);
             }
-            let state = self.shared.shogi.as_ref().unwrap();
+            let state = self.session.shogi().unwrap();
             if self.admission_token.is_none()
                 && state.pending.is_none()
                 && !state.paused
@@ -1145,10 +1266,10 @@ impl DesktopController {
                 && state.game.position().side_to_move() != state.human
                 && let Err(e) = self.start_shogi(SHOGI_PLAY_LIMITS, false)
             {
-                self.pause_native_capacity(e);
+                self.pause_native_failure(e);
             }
             let auto_submit = self.shared.auto_submit();
-            let state = self.shared.shogi.as_mut().unwrap();
+            let state = self.session.shogi_mut().unwrap();
             if self.admission_token.is_none()
                 && auto_submit
                 && let Some(request) = state.pending.clone()
@@ -1170,24 +1291,26 @@ impl DesktopController {
             }
             return self.shogi_snapshot();
         }
-        let snapshot = self.snapshot();
-        // The legacy poll may commit a cross-game Open. Never publish its Chess
+        self.poll_chess();
+        // The native poll may commit a cross-game Open. Never publish its Chess
         // projection with the replacement Shogi epoch: equal-token freshness
         // rejection would then hide the correct Shogi view indefinitely.
-        if self.shared.shogi.is_some() || self.shared.xiangqi.is_some() {
+        if self.session.shogi().is_some() || self.session.xiangqi().is_some() {
             return self.shared_snapshot();
         }
+        let mut snapshot = self.session.snapshot();
+        snapshot.io = self.io_state.clone();
         self.chess_snapshot(snapshot)
     }
     pub(super) fn pause_shared_for_close(&mut self) {
         self.retire_admission();
-        if let Some(state) = &mut self.shared.xiangqi
+        if let Some(state) = self.session.xiangqi_mut()
             && state.close_pause()
         {
             self.bridge.cancel();
             self.shared_changed();
         }
-        if let Some(state) = self.shared.shogi.as_mut()
+        if let Some(state) = self.session.shogi_mut()
             && (state.pending.is_some() || !state.paused || state.analysis_intent.is_some())
         {
             state.retire();
@@ -1198,7 +1321,7 @@ impl DesktopController {
         }
     }
     fn shogi_snapshot(&self) -> SharedSnapshot {
-        let state = self.shared.shogi.as_ref().unwrap();
+        let state = self.session.shogi().unwrap();
         let game = state.selected();
         let position = game.position();
         let sides = vec![
@@ -1422,6 +1545,7 @@ impl DesktopController {
                 .collect(),
             score_meaning: "Native shogi root-side hundredths of pawn; terminal win distance counts complete command edges, including declarations. Not a chess mate score.",
             chess: None,
+            chess_match: None,
         }
     }
     fn chess_snapshot(&self, snapshot: Snapshot) -> SharedSnapshot {
@@ -1496,6 +1620,35 @@ impl DesktopController {
                 .map(|n| [n, 2 - n]),
         };
         let active = !snapshot.view.historical && snapshot.conclusion.is_none();
+        let observations: Vec<_> = snapshot
+            .observations
+            .iter()
+            .map(|entry| PresentedObservation {
+                observation: entry.observation.clone(),
+                application_error: entry.application_error.clone(),
+                historical: entry.historical,
+            })
+            .collect();
+        let analysis = observations
+            .iter()
+            .find(|entry| {
+                snapshot.analysis.context.as_ref() == Some(&entry.observation.context)
+                    && chess_observation_result(&entry.observation).as_ref()
+                        == snapshot.analysis.result.as_ref()
+            })
+            .cloned();
+        let search_observations = observations
+            .iter()
+            .enumerate()
+            .map(|(index, entry)| {
+                display_chess_observation(
+                    index,
+                    entry,
+                    analysis.as_ref(),
+                    snapshot.observations[index].analyzed_turn,
+                )
+            })
+            .collect();
         SharedSnapshot {
             xiangqi: None,
             open_token: self.shared_open_token(),
@@ -1557,9 +1710,10 @@ impl DesktopController {
             phase: snapshot.engine.status,
             execution_purpose: self
                 .session
+                .chess()
                 .analysis_pending
                 .as_ref()
-                .or(self.session.pending.as_ref())
+                .or(self.session.chess().pending.as_ref())
                 .map(|request| match request.purpose {
                     mshogi_engine::ExecutionPurpose::EngineTurn {} => "engine_turn",
                     mshogi_engine::ExecutionPurpose::MoveAnalysis { .. } => "move_analysis",
@@ -1570,10 +1724,11 @@ impl DesktopController {
             diagnostic: snapshot.engine.message.clone(),
             declaration_advice: vec![],
             context: CanonicalRecord::chess(self.session.selected_game().record()),
-            analysis: None,
-            observations: vec![],
-            search_observations: vec![],
+            analysis,
+            observations,
+            search_observations,
             score_meaning: "Chess root-side centipawns; native mate distance and bounded cooperative Full proof remain distinct (see chess analysis).",
+            chess_match: Some(self.session.chess().game.record().clone()),
             chess: Some(snapshot),
         }
     }
@@ -1648,15 +1803,14 @@ impl DesktopController {
         }
         receipt.completion().expect("completed fixture admission")?;
         if fixture == "shogi-control-capacity" {
-            self.shared
-                .shogi
-                .as_mut()
+            self.session
+                .shogi_mut()
                 .unwrap()
                 .verification_control_capacity()?;
         }
         if fixture == "shogi-capacity" {
             for _ in 0..MAX_ARCHIVE_OBSERVATIONS - 1 {
-                let candidate = self.shared.shogi.as_ref().expect("shogi fixture").clone();
+                let candidate = self.session.shogi().expect("shogi fixture").clone();
                 let receipt = self.queue_native_candidate(
                     candidate,
                     Some(SessionOperation::Analyze {
@@ -1671,9 +1825,8 @@ impl DesktopController {
                 }
                 receipt.completion().expect("completed fixture analysis")?;
                 let request = self
-                    .shared
-                    .shogi
-                    .as_ref()
+                    .session
+                    .shogi()
                     .and_then(|s| s.pending.clone())
                     .expect("fixture request");
                 let mut bytes = serde_json::to_vec(&execution_request(request.clone()))
@@ -1685,7 +1838,7 @@ impl DesktopController {
                 let response = serde_json::from_slice::<ExecutionResponse>(&response)
                     .map_err(|e| e.to_string())?
                     .observation;
-                let candidate = self.shared.shogi.as_ref().expect("shogi fixture").clone();
+                let candidate = self.session.shogi().expect("shogi fixture").clone();
                 let receipt =
                     self.queue_native_candidate(candidate, None, Some(response), false)?;
                 while receipt.completion().is_none() {

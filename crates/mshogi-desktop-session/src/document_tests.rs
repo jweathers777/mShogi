@@ -268,10 +268,11 @@ fn real_native_transcripts_roundtrip_current_documents_with_fresh_stopped_runtim
         .unwrap();
     settle(&mut source);
     receipt.completion().unwrap().unwrap();
-    assert!(source.session.game.conclusion().is_some());
+    assert!(source.session.chess_mut().game.conclusion().is_some());
     assert!(
         source
             .session
+            .chess_mut()
             .game
             .record()
             .events()
@@ -280,8 +281,18 @@ fn real_native_transcripts_roundtrip_current_documents_with_fresh_stopped_runtim
                 mshogi_core::chess::MatchCommand::Resign { .. }
             ) && request.actor == mshogi_core::chess::Color::White)
     );
-    assert_eq!(source.session.game.game().record().events().len(), 0);
-    let before = source.session.game.record().to_json();
+    assert_eq!(
+        source
+            .session
+            .chess_mut()
+            .game
+            .game()
+            .record()
+            .events()
+            .len(),
+        0
+    );
+    let before = source.session.chess_mut().game.record().to_json();
     let bytes = saved(&mut source);
     assert_eq!(
         DocumentEnvelope::parse(&bytes).unwrap().game_kind,
@@ -289,9 +300,9 @@ fn real_native_transcripts_roundtrip_current_documents_with_fresh_stopped_runtim
     );
     let mut restored = controller();
     open(&mut restored, &bytes).unwrap();
-    assert_eq!(restored.session.game.record().to_json(), before);
-    assert!(restored.session.play_paused);
-    assert!(restored.session.pending.is_none());
+    assert_eq!(restored.session.chess_mut().game.record().to_json(), before);
+    assert!(restored.session.chess_mut().play_paused);
+    assert!(restored.session.chess_mut().pending.is_none());
 }
 
 #[test]

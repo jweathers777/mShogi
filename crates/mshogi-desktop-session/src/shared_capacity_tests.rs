@@ -83,7 +83,7 @@ fn analyze(c: &mut DesktopController) {
         },
     )
     .unwrap();
-    let request = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
+    let request = c.session.shogi().unwrap().pending.clone().unwrap();
     assert!(c.accept_observation(actual_response(request)));
     settle(c);
     assert_eq!(
@@ -92,7 +92,7 @@ fn analyze(c: &mut DesktopController) {
     );
 }
 fn record(c: &DesktopController) -> s::GameRecord {
-    s::GameRecord::from_game(&c.shared.shogi.as_ref().unwrap().game)
+    s::GameRecord::from_game(&c.session.shogi().as_ref().unwrap().game)
 }
 
 #[test]
@@ -101,11 +101,11 @@ fn actual_256_observations_save_reopen_and_reject_257_without_changing_accepted_
     replace(&mut c, &s::Game::new());
     for count in 1..=MAX_ARCHIVE_OBSERVATIONS {
         analyze(&mut c);
-        assert_eq!(c.shared.shogi.as_ref().unwrap().observations.len(), count);
+        assert_eq!(c.session.shogi().unwrap().observations.len(), count);
     }
     let retained = record(&c);
     let revision = c.shared_snapshot().document.revision;
-    let controls = c.shared.shogi.as_ref().unwrap().controls.len();
+    let controls = c.session.shogi().unwrap().controls.len();
     let error = send(
         &mut c,
         SessionOperation::Analyze {
@@ -118,8 +118,8 @@ fn actual_256_observations_save_reopen_and_reject_257_without_changing_accepted_
     assert!(!error.contains("retry"));
     assert_eq!(record(&c), retained);
     assert_eq!(c.shared_snapshot().document.revision, revision);
-    assert_eq!(c.shared.shogi.as_ref().unwrap().controls.len(), controls);
-    assert!(c.shared.shogi.as_ref().unwrap().pending.is_none());
+    assert_eq!(c.session.shogi().unwrap().controls.len(), controls);
+    assert!(c.session.shogi().unwrap().pending.is_none());
     let file = path("256-observations");
     let id = c.queue_shared_save(file.clone()).unwrap();
     wait_file(&mut c, id).unwrap();
@@ -130,7 +130,7 @@ fn actual_256_observations_save_reopen_and_reject_257_without_changing_accepted_
     let id = reopened.queue_shared_open(file.clone(), token).unwrap();
     wait_file(&mut reopened, id).unwrap();
     assert_eq!(record(&reopened), retained);
-    let state = reopened.shared.shogi.as_ref().unwrap();
+    let state = reopened.session.shogi().unwrap();
     assert_eq!(state.observations.len(), MAX_ARCHIVE_OBSERVATIONS);
     assert!(state.observations.iter().all(|o| o.historical));
     assert!(state.pending.is_none());
@@ -139,10 +139,7 @@ fn actual_256_observations_save_reopen_and_reject_257_without_changing_accepted_
     let error = send(&mut reopened, SessionOperation::Resume {}).unwrap_err();
     assert!(error.starts_with("Application capacity:"));
     assert_eq!(reopened.shared_snapshot().document.revision, revision);
-    assert_eq!(
-        reopened.shared.shogi.as_ref().unwrap().observations.len(),
-        256
-    );
+    assert_eq!(reopened.session.shogi().unwrap().observations.len(), 256);
     let copy = path("256-save-as");
     let id = reopened.queue_shared_save(copy.clone()).unwrap();
     wait_file(&mut reopened, id).unwrap();
@@ -180,11 +177,14 @@ fn control_boundary_reserves_the_last_slot_for_close_and_never_truncates() {
         None,
         false,
     );
-    assert!(
-        check_capacity(&too_many, &mut || false)
-            .unwrap_err()
-            .contains("stop/close")
-    );
+    let failure = check_capacity(&too_many, &mut || false).unwrap_err();
+    let facts = failure.resource.as_ref().unwrap().facts();
+    assert_eq!(facts.len(), 1);
+    assert_eq!(facts[0].category, ResourceCategory::Controls);
+    assert_eq!(facts[0].count, Some(MAX_ARCHIVE_CONTROLS as u64));
+    assert_eq!(facts[0].reserved, Some(1));
+    assert_eq!(facts[0].measurement, ResourceMeasurement::Candidate);
+    assert!(too_many.observations.is_empty());
     state.retire();
     state.paused = true;
     state.control(None, None, true);
@@ -289,7 +289,7 @@ fn real_maximum_native_ledger_has_bounded_record_context_response_and_archive_si
         },
     )
     .unwrap();
-    let request = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
+    let request = c.session.shogi().unwrap().pending.clone().unwrap();
     let response = actual_response(request.clone());
     let request_size = serde_json::to_vec(&execution_request(request.clone()))
         .unwrap()
@@ -304,7 +304,7 @@ fn real_maximum_native_ledger_has_bounded_record_context_response_and_archive_si
     assert!(response_size < mshogi_engine::MAX_RESPONSE_BYTES);
     assert!(c.accept_observation(response));
     settle(&mut c);
-    let state = c.shared.shogi.as_ref().unwrap();
+    let state = c.session.shogi().unwrap();
     check_capacity(state, &mut || false).unwrap();
     let bytes = encode(state, c.runtime_floor()).unwrap();
     assert!(bytes.len() < MAX_ARCHIVE_BYTES);
@@ -327,7 +327,7 @@ fn long_history_observations_enforce_both_encoded_byte_and_replay_capacity_witho
         },
     )
     .unwrap();
-    let request = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
+    let request = c.session.shogi().unwrap().pending.clone().unwrap();
     let actual = actual_response(request);
     assert!(matches!(
         actual.result,
@@ -337,7 +337,7 @@ fn long_history_observations_enforce_both_encoded_byte_and_replay_capacity_witho
     ));
     assert!(c.accept_observation(actual.clone()));
     settle(&mut c);
-    let base = c.shared.shogi.as_ref().unwrap().clone();
+    let base = c.session.shogi().unwrap().clone();
     // The position is concluded and analysis is read-only. Build a repetitive,
     // valid fixture from the real native result with distinct execution contexts;
     // Save/Open below independently validates every observation and command.
@@ -422,7 +422,7 @@ fn long_history_observations_enforce_both_encoded_byte_and_replay_capacity_witho
     let accepted = build(low);
     assert!(encode(&accepted, MAX_SAFE_ID - 17).unwrap().len() < MAX_ARCHIVE_BYTES);
     let floor = accepted.execution_floor;
-    c.shared.shogi = Some(accepted);
+    c.session.install_shogi(Box::new(accepted));
     c.session.version = floor + 1;
     c.session.next_request = floor + 1;
     c.session.selection_id = floor + 1;
@@ -435,7 +435,7 @@ fn long_history_observations_enforce_both_encoded_byte_and_replay_capacity_witho
         },
     )
     .unwrap();
-    let request = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
+    let request = c.session.shogi().unwrap().pending.clone().unwrap();
     let revision = c.shared_snapshot().document.revision;
     assert!(c.accept_observation(actual_response(request)));
     settle(&mut c);
@@ -444,7 +444,7 @@ fn long_history_observations_enforce_both_encoded_byte_and_replay_capacity_witho
     assert!(snap.capacity.message.unwrap().contains("replay"));
     assert_eq!(snap.document.revision, revision);
     assert_eq!(record(&c), before);
-    assert_eq!(c.shared.shogi.as_ref().unwrap().observations.len(), low);
+    assert_eq!(c.session.shogi().unwrap().observations.len(), low);
     eprintln!("MSH73 replay-capacity candidate rejected, beginning Save/Open");
     let file = path("byte-boundary");
     let id = c.queue_shared_save(file.clone()).unwrap();
@@ -455,10 +455,7 @@ fn long_history_observations_enforce_both_encoded_byte_and_replay_capacity_witho
     let id = reopened.queue_shared_open(file.clone(), token).unwrap();
     wait_file(&mut reopened, id).unwrap();
     assert_eq!(record(&reopened), record(&c));
-    assert_eq!(
-        reopened.shared.shogi.as_ref().unwrap().observations.len(),
-        low
-    );
+    assert_eq!(reopened.session.shogi().unwrap().observations.len(), low);
     eprintln!(
         "MSH73 replay-boundary accepted={low} retained-archive={size} byte-boundary accepted={byte_low} rejected={byte_high} rejected-candidate={rejected_size} bytes"
     );
@@ -486,7 +483,7 @@ fn reopened_active_journal_retains_stop_reservation_across_preferences() {
     let token = c.shared_open_token();
     let id = c.queue_shared_open(file.clone(), token).unwrap();
     wait_file(&mut c, id).unwrap();
-    let opened = c.shared.shogi.as_ref().unwrap();
+    let opened = c.session.shogi().unwrap();
     assert!(opened.paused);
     assert!(opened.pending.is_none());
     assert!(opened.durable_needs_stop);
@@ -497,15 +494,15 @@ fn reopened_active_journal_retains_stop_reservation_across_preferences() {
     assert!(error.starts_with("Application capacity:"));
     assert_eq!(c.shared_snapshot().document.revision, revision);
     assert_eq!(
-        c.shared.shogi.as_ref().unwrap().controls.len(),
+        c.session.shogi().unwrap().controls.len(),
         MAX_ARCHIVE_CONTROLS - 1
     );
     assert_eq!(
-        c.shared.shogi.as_ref().unwrap().settings.orientation,
+        c.session.shogi().unwrap().settings.orientation,
         s::Side::Sente
     );
     send(&mut c, SessionOperation::Cancel {}).unwrap();
-    let state = c.shared.shogi.as_ref().unwrap();
+    let state = c.session.shogi().unwrap();
     assert_eq!(state.controls.len(), MAX_ARCHIVE_CONTROLS);
     assert!(!state.durable_needs_stop);
     let id = c.queue_shared_save(file.clone()).unwrap();
@@ -514,7 +511,7 @@ fn reopened_active_journal_retains_stop_reservation_across_preferences() {
     let id = c.queue_shared_open(file.clone(), token).unwrap();
     wait_file(&mut c, id).unwrap();
     assert_eq!(
-        c.shared.shogi.as_ref().unwrap().controls.len(),
+        c.session.shogi().unwrap().controls.len(),
         MAX_ARCHIVE_CONTROLS
     );
     fs::remove_file(file).unwrap();
@@ -613,14 +610,14 @@ fn verification_control_limits_refuse_truthfully_and_keep_complete_save_open() {
         assert_eq!(before.board_ply, 0);
         let operation = if fixture.starts_with("shogi") {
             assert_eq!(
-                c.shared.shogi.as_ref().unwrap().controls.len(),
+                c.session.shogi().unwrap().controls.len(),
                 MAX_ARCHIVE_CONTROLS - 1
             );
             SessionOperation::ShogiPreferences {
                 settings: ShogiSettings::default(),
             }
         } else {
-            let state = c.shared.xiangqi.as_ref().unwrap();
+            let state = c.session.xiangqi().unwrap();
             assert_eq!(state.controls.len(), MAX_ARCHIVE_CONTROLS - 1);
             assert!(state.exact_observations.is_empty());
             SessionOperation::XiangqiPreferences {
@@ -628,11 +625,19 @@ fn verification_control_limits_refuse_truthfully_and_keep_complete_save_open() {
             }
         };
         let error = send(&mut c, operation).unwrap_err();
-        // This real diagnostic is ambiguous; the frontend must not guess from256.
-        assert!(error.contains("256") && error.contains("8192"), "{error}");
+        assert!(error.starts_with("Application capacity:"), "{error}");
         let after = c.shared_snapshot();
         assert_eq!(after.capacity.status, CapacityPhase::Paused);
         assert_eq!(after.capacity.message.as_deref(), Some(error.as_str()));
+        let resource = after
+            .capacity
+            .resource
+            .as_ref()
+            .expect("authoritative native refusal");
+        assert_eq!(resource.facts().len(), 1);
+        assert_eq!(resource.facts()[0].category, ResourceCategory::Controls);
+        assert_eq!(resource.facts()[0].count, Some(MAX_ARCHIVE_CONTROLS as u64));
+        assert_eq!(resource.facts()[0].reserved, Some(1));
         assert!(after.observations.is_empty());
         assert_eq!(after.context, before.context);
         let file = path(fixture);

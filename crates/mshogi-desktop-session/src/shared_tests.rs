@@ -15,7 +15,7 @@ fn imported(fen: &str) -> s::Game {
     )
 }
 fn send(c: &mut DesktopController, op: SessionOperation) -> Result<SharedSnapshot, String> {
-    let game = if c.shared.shogi.is_some() {
+    let game = if c.session.shogi().is_some() {
         GameKind::Shogi
     } else {
         GameKind::Chess
@@ -57,7 +57,7 @@ fn analyze(c: &mut DesktopController) -> ExecutionContext {
         },
     )
     .unwrap();
-    c.shared.shogi.as_ref().unwrap().pending.clone().unwrap()
+    c.session.shogi().unwrap().pending.clone().unwrap()
 }
 fn incomplete(context: ExecutionContext) -> ExecutionObservation {
     ExecutionObservation {
@@ -148,9 +148,9 @@ fn identities_native_geometry_and_chess_compatibility() {
         c.queue_open(PathBuf::from("/unused/open"), c.open_token())
             .is_err()
     );
-    let snapshot = c.pause_for_close();
+    let snapshot = c.application_pause_for_close();
     assert!(snapshot.document.dirty);
-    assert!(c.shared.shogi.as_ref().unwrap().paused);
+    assert!(c.session.shogi().unwrap().paused);
 }
 
 #[test]
@@ -167,14 +167,7 @@ fn presented_budget_matches_submitted_play_and_board_ply_ignores_terminal_events
     assert_eq!(initial.board_ply, 0);
     let playing = send(&mut c, SessionOperation::Resume {}).unwrap();
     assert_eq!(
-        c.shared
-            .shogi
-            .as_ref()
-            .unwrap()
-            .pending
-            .as_ref()
-            .unwrap()
-            .limits,
+        c.session.shogi().unwrap().pending.as_ref().unwrap().limits,
         playing.play_limits
     );
     send(&mut c, SessionOperation::Cancel {}).unwrap();
@@ -400,10 +393,7 @@ fn exact_analysis_context_retirement_and_same_board_history() {
     let result = decode_execution_observation(&output);
     assert!(c.accept_observation(result));
     settle(&mut c);
-    assert_eq!(
-        c.shared.shogi.as_ref().unwrap().game.context(),
-        root.context()
-    );
+    assert_eq!(c.session.shogi().unwrap().game.context(), root.context());
     assert!(c.shogi_snapshot().analysis.is_some());
     send(&mut c, SessionOperation::Inspect { event_index: 2 }).unwrap();
     let historic = analyze(&mut c);
@@ -440,7 +430,7 @@ fn replacement_retires_chess_files_and_pending_admission() {
     // Stage a real immutable candidate without polling it. The public command
     // also returns a snapshot and may already accept a fast worker completion;
     // that legitimately completed command is not pending work to retire.
-    let mut candidate = c.session.clone();
+    let mut candidate = c.session.chess().clone();
     candidate
         .command_unchecked(
             DesktopCommand::Play {
@@ -456,10 +446,9 @@ fn replacement_retires_chess_files_and_pending_admission() {
     replace(&mut c, s::Game::new(), s::Side::Sente);
     assert!(receipt.completion().unwrap().is_err());
     for _ in 0..20 {
-        c.snapshot();
         c.shared_snapshot();
     }
-    assert!(c.shared.shogi.is_some());
+    assert!(c.session.shogi().is_some());
     assert_eq!(c.shared_snapshot().context.event_count(), 0);
 }
 #[test]
@@ -565,7 +554,7 @@ fn observation_capacity_refuses_new_work_before_changing_session() {
         application_error: None,
         historical: false,
     };
-    let state = c.shared.shogi.as_mut().unwrap();
+    let state = c.session.shogi_mut().unwrap();
     state.retire();
     state.observations = vec![observation; 256];
     let token = c.shared_token();
@@ -584,18 +573,18 @@ fn observation_capacity_refuses_new_work_before_changing_session() {
     assert_eq!(c.shared_token().selection, token.selection);
     assert_eq!(c.shogi_snapshot().context, context);
     assert_eq!(c.shogi_snapshot().observations.len(), 256);
-    assert!(c.shared.shogi.as_ref().unwrap().pending.is_none());
+    assert!(c.session.shogi().unwrap().pending.is_none());
 }
 
 #[test]
 fn close_document_preconditions_advance_for_shogi_events_observations_and_replacement() {
     let mut c = controller();
-    let initial = c.snapshot().document.revision;
+    let initial = c.shared_snapshot().document.revision;
     replace(&mut c, s::Game::new(), s::Side::Sente);
-    let replaced = c.pause_for_close().document.revision;
+    let replaced = c.application_pause_for_close().document.revision;
     assert!(replaced > initial);
     send(&mut c, SessionOperation::Resign {}).unwrap();
-    let terminal = c.pause_for_close().document.revision;
+    let terminal = c.application_pause_for_close().document.revision;
     assert!(terminal > replaced);
     let context = analyze(&mut c);
     assert!(c.accept_observation({
@@ -610,7 +599,7 @@ fn close_document_preconditions_advance_for_shogi_events_observations_and_replac
         .unwrap();
         decode_execution_observation(&bytes)
     }));
-    let observed = c.snapshot().document.revision;
+    let observed = c.shared_snapshot().document.revision;
     assert!(observed > terminal);
     send(
         &mut c,
@@ -622,7 +611,7 @@ fn close_document_preconditions_advance_for_shogi_events_observations_and_replac
         },
     )
     .unwrap();
-    assert!(c.snapshot().document.revision > observed);
+    assert!(c.shared_snapshot().document.revision > observed);
 }
 #[test]
 fn command_diagnostics_are_bounded_without_splitting_utf8() {
@@ -639,7 +628,7 @@ fn incomplete_failure_and_retry_preserve_native_history_without_fallback() {
     let mut c = controller();
     replace(&mut c, s::Game::new(), s::Side::Gote);
     send(&mut c, SessionOperation::Resume {}).unwrap();
-    let old = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
+    let old = c.session.shogi().unwrap().pending.clone().unwrap();
     let before = c.shogi_snapshot().context;
     assert!(c.accept_observation(incomplete(old.clone())));
     settle(&mut c);
@@ -647,7 +636,7 @@ fn incomplete_failure_and_retry_preserve_native_history_without_fallback() {
     assert_eq!(c.shogi_snapshot().context, before);
     assert!(!c.shogi_snapshot().status.concluded);
     send(&mut c, SessionOperation::Retry {}).unwrap();
-    let fresh = c.shared.shogi.as_ref().unwrap().pending.clone().unwrap();
+    let fresh = c.session.shogi().unwrap().pending.clone().unwrap();
     assert!(fresh.request_id > old.request_id);
     assert!(!c.accept_observation(incomplete(old)));
     assert!(c.accept_observation(ExecutionObservation {
@@ -725,7 +714,7 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
                 assert!(current.hands.is_empty());
                 assert!(!current.capabilities.promotion && !current.capabilities.declaration);
                 assert_eq!(current.turn.id, NativeSide::Xiangqi(x::Side::Red));
-                let state = c.shared.xiangqi.as_ref().unwrap();
+                let state = c.session.xiangqi().unwrap();
                 assert_eq!(state.settings.orientation, side);
                 assert_eq!(current.capabilities.board_action, side == x::Side::Red);
                 assert_eq!(state.pending.is_some(), side == x::Side::Black);
@@ -735,10 +724,10 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
                 assert_eq!(current.choices.len(), 30);
                 assert!(!current.capabilities.declaration);
                 assert_eq!(current.turn.id, NativeSide::Shogi(s::Side::Sente));
-                assert_eq!(c.shared.shogi.as_ref().unwrap().settings.orientation, side);
+                assert_eq!(c.session.shogi().unwrap().settings.orientation, side);
                 assert_eq!(current.capabilities.board_action, side == s::Side::Sente);
                 assert_eq!(
-                    c.shared.shogi.as_ref().unwrap().pending.is_some(),
+                    c.session.shogi().unwrap().pending.is_some(),
                     side == s::Side::Gote
                 );
             }
@@ -754,7 +743,7 @@ fn product_new_rejects_stale_or_conflicting_choices_before_retiring_live_work() 
     let mut c = controller();
     let stale = c.shared_open_token();
     let before = new_product_game(&mut c, GameKind::Shogi, NativeSide::Shogi(s::Side::Gote));
-    let pending = c.shared.shogi.as_ref().unwrap().pending.clone();
+    let pending = c.session.shogi().unwrap().pending.clone();
     assert!(
         c.shared_new_game(stale, GameKind::Chess, NativeSide::Chess(Color::White))
             .is_err()
@@ -768,8 +757,8 @@ fn product_new_rejects_stale_or_conflicting_choices_before_retiring_live_work() 
         .is_err()
     );
     assert_eq!(c.shared_token(), before.token);
-    assert_eq!(c.shared.shogi.as_ref().unwrap().pending, pending);
-    assert_eq!(c.shared.shogi.as_ref().unwrap().game.events().len(), 0);
+    assert_eq!(c.session.shogi().unwrap().pending, pending);
+    assert_eq!(c.session.shogi().unwrap().game.events().len(), 0);
 }
 #[test]
 fn product_declaration_capability_is_advisory_eligibility_but_native_terminal_semantics_remain() {
@@ -892,13 +881,13 @@ fn xiangqi_product_creation_retires_prior_work_and_keeps_archive_admission() {
         c.shared_snapshot();
         let token = c.shared_token();
         let open = c.shared_open_token();
-        let pending = c.shared.shogi.as_ref().and_then(|g| g.pending.clone());
+        let pending = c.session.shogi().and_then(|g| g.pending.clone());
         let after = new_product_game(&mut c, GameKind::Xiangqi, NativeSide::Xiangqi(x::Side::Red));
         assert_eq!(after.game, GameKind::Xiangqi);
         assert_ne!(after.token, token);
         assert!(!after.paused);
         assert!(after.capabilities.board_action);
-        assert!(c.shared.shogi.is_none());
+        assert!(c.session.shogi().is_none());
         if let Some(old) = pending {
             assert_ne!(old.game, after.context);
         }
@@ -922,14 +911,14 @@ fn current_wire_frame_is_checked_before_a_durable_native_observation_is_admitted
         observation: observation.clone(),
     }));
     assert_eq!(c.shared_snapshot().context, before);
-    assert!(c.shared.shogi.as_ref().unwrap().observations.is_empty());
-    assert_eq!(c.shared.shogi.as_ref().unwrap().pending, Some(context));
+    assert!(c.session.shogi().unwrap().observations.is_empty());
+    assert_eq!(c.session.shogi().unwrap().pending, Some(context));
     assert!(c.accept_shared(ExecutionResponse {
         protocol: mshogi_engine::PROTOCOL_VERSION,
         observation,
     }));
     settle(&mut c);
-    let saved = c.shared.shogi.as_ref().unwrap();
+    let saved = c.session.shogi().unwrap();
     assert_eq!(saved.observations.len(), 1);
     assert_eq!(
         saved.observations[0].observation.schema_version,

@@ -249,7 +249,7 @@ struct XiangqiArchive {
 pub(crate) struct XiangqiDraft {
     saved: XiangqiArchive,
     viewed: Option<usize>,
-    paused: bool,
+    pub(crate) paused: bool,
     phase: EnginePhase,
     diagnostic: Option<String>,
     analysis: Option<PresentedObservation>,
@@ -439,13 +439,42 @@ fn exact_work(e: &XiangqiExactEvidence) -> usize {
 pub(crate) fn check_capacity(
     state: &XiangqiSession,
     stopped: &mut impl FnMut() -> bool,
-) -> Result<(), String> {
+) -> Result<(), OperationFailure> {
     let reserve = usize::from(needs_stop(state));
     if state.controls.len().saturating_add(reserve) > MAX_ARCHIVE_CONTROLS
         || state.observations.len() + state.exact_observations.len() > MAX_ARCHIVE_OBSERVATIONS
     {
-        return Err(capacity(
-            "The archive retains256 total ordinary/exact observations and8192 controls including stop/close.",
+        let mut facts = Vec::new();
+        if state.controls.len().saturating_add(reserve) > MAX_ARCHIVE_CONTROLS {
+            facts.push(resource_fact(
+                ResourceCategory::Controls,
+                state.controls.len(),
+                MAX_ARCHIVE_CONTROLS,
+                reserve,
+                ResourceScope::Xiangqi,
+                ResourceUnit::Controls,
+            ));
+        }
+        let observations = state.observations.len() + state.exact_observations.len();
+        if observations > MAX_ARCHIVE_OBSERVATIONS {
+            facts.push(
+                resource_fact(
+                    ResourceCategory::CombinedObservations,
+                    observations,
+                    MAX_ARCHIVE_OBSERVATIONS,
+                    0,
+                    ResourceScope::Xiangqi,
+                    ResourceUnit::Observations,
+                )
+                .with_observations(
+                    state.observations.len() as u64,
+                    state.exact_observations.len() as u64,
+                ),
+            );
+        }
+        return Err(resource_refusal(
+            facts,
+            "Application capacity: native Xiangqi document counts exceed supported limits including stop/close reservation. Current accepted document remains saveable.",
         ));
     }
     let mut work = record_work(
@@ -473,8 +502,16 @@ pub(crate) fn check_capacity(
         work = work.saturating_add(exact_work(e));
     }
     if work > MAX_REPLAY_WORK {
-        return Err(capacity(
-            "The complete document exceeds16,000 weighted native replay work units.",
+        return Err(resource_refusal(
+            vec![resource_fact(
+                ResourceCategory::ReplayWork,
+                work.saturating_sub(reserve),
+                MAX_REPLAY_WORK,
+                reserve,
+                ResourceScope::Xiangqi,
+                ResourceUnit::ReplayUnits,
+            )],
+            "Application capacity: complete Xiangqi document exceeds16,000 native replay work units.",
         ));
     }
     persistence::check(stopped)?;
@@ -487,8 +524,16 @@ pub(crate) fn check_capacity(
         .saturating_add(if reserve != 0 { 1024 } else { 0 })
         > MAX_ARCHIVE_BYTES
     {
-        return Err(capacity(
-            "The actual complete encoded archive exceeds16MiB including reserved identity/stop/close headroom.",
+        return Err(resource_refusal(
+            vec![resource_fact(
+                ResourceCategory::EncodedDocumentBytes,
+                bytes.len() + state.observations.iter().filter(|o| o.historical).count(),
+                MAX_ARCHIVE_BYTES,
+                if reserve != 0 { 1024 } else { 0 },
+                ResourceScope::Xiangqi,
+                ResourceUnit::Bytes,
+            )],
+            "Application capacity: complete Xiangqi document exceeds16MiB including stop/close headroom.",
         ));
     }
     encoded_native_bounds(&bytes)?;
@@ -498,7 +543,7 @@ pub(crate) fn check_capacity(
 
 // Inspect actual encoded wrappers, including any enclosing whitespace.
 // Borrowed RawValues avoid copying history or invoking native replay on this probe.
-fn encoded_native_bounds(bytes: &[u8]) -> Result<(), String> {
+fn encoded_native_bounds(bytes: &[u8]) -> Result<(), OperationFailure> {
     #[derive(Deserialize)]
     struct Envelope<'a> {
         #[serde(borrow)]
@@ -535,10 +580,18 @@ fn encoded_native_bounds(bytes: &[u8]) -> Result<(), String> {
         #[serde(borrow)]
         source: &'a RawValue,
     }
-    fn fits(raw: &RawValue) -> Result<(), String> {
+    fn fits(raw: &RawValue) -> Result<(), OperationFailure> {
         if raw.get().len() > mshogi_core::native::MAX_RECORD_ENVELOPE_BYTES {
-            return Err(capacity(
-                "An actual encoded canonical wrapper exceeds1MiB including archive indentation.",
+            return Err(resource_refusal(
+                vec![resource_fact(
+                    ResourceCategory::CanonicalRecordBytes,
+                    raw.get().len(),
+                    mshogi_core::native::MAX_RECORD_ENVELOPE_BYTES,
+                    0,
+                    ResourceScope::Xiangqi,
+                    ResourceUnit::Bytes,
+                )],
+                "Application capacity: actual encoded canonical wrapper exceeds1MiB.",
             ));
         }
         Ok(())
@@ -569,7 +622,7 @@ impl XiangqiSession {
             self.apply_command(operation.clone())?;
             self.journal(before, Some(operation), None, None, false);
         }
-        check_capacity(self, &mut || false)
+        check_capacity(self, &mut || false).map_err(String::from)
     }
     fn board_actions(&self) -> usize {
         self.game
@@ -608,7 +661,10 @@ impl XiangqiSession {
         self.journal(before, None, None, None, true);
         true
     }
-    fn apply_command(&mut self, operation: SessionOperation) -> Result<Option<WorkLimits>, String> {
+    fn apply_command(
+        &mut self,
+        operation: SessionOperation,
+    ) -> Result<Option<WorkLimits>, OperationFailure> {
         let mut analysis = None;
         let preferences = matches!(operation, SessionOperation::XiangqiPreferences { .. });
         match operation {
@@ -643,14 +699,14 @@ impl XiangqiSession {
             SessionOperation::Analyze { operation: AnalysisOperation::Moves { depth, nodes } } => {
                 if self.viewed.is_some() && self.viewed_game.is_none() { return Err("This immutable event is inside an atomic native command. Analysis requires a committed command boundary; view and movement inspection remain available.".into()); }
                 let limits = WorkLimits { depth, nodes }; valid_limits(limits)?;
-                if !self.observation_capacity() { return Err(capacity("All observation capacity is retained; no new analysis started.")); }
+                self.ensure_observation_capacity()?;
                 self.retire(); self.paused = true; self.settings.analysis_defaults = limits;
                 self.analysis_intent = Some((self.record(), limits)); analysis = Some(limits);
             }
             SessionOperation::Analyze { .. } => return Err("Chess Full is not Xiangqi analysis. Native bounded exact no-win execution is a separate facility, not this ordinary operation.".into()),
             SessionOperation::Resume {} | SessionOperation::Retry {} => {
                 if self.viewed.is_some() || self.game.conclusion().is_some() { return Err("Resume requires a live unconcluded game. Return to live first.".into()); }
-                if !self.observation_capacity() { return Err(capacity("All retained observation slots are occupied; no new work started.")); }
+                self.ensure_observation_capacity()?;
                 self.retire(); self.paused = false; self.phase = EnginePhase::Idle;
             }
             SessionOperation::XiangqiPreferences { settings } => { valid_limits(settings.analysis_defaults)?; self.settings = settings; }
@@ -662,14 +718,14 @@ impl XiangqiSession {
         }
         Ok(analysis)
     }
-    fn apply_response(&mut self, response: ExecutionObservation) -> Result<(), String> {
+    fn apply_response(&mut self, response: ExecutionObservation) -> Result<(), OperationFailure> {
         self.apply_response_reusing(response, &mut ValidatedVariations::default())
     }
     fn apply_response_reusing(
         &mut self,
         response: ExecutionObservation,
         variations: &mut ValidatedVariations,
-    ) -> Result<(), String> {
+    ) -> Result<(), OperationFailure> {
         if serde_json::to_vec(&execution_request(response.context.clone()))
             .map_err(error)?
             .len()
@@ -682,15 +738,32 @@ impl XiangqiSession {
             .len()
                 > mshogi_engine::MAX_RESPONSE_BYTES
         {
-            return Err(capacity(
-                "Encoded observation exceeds its native transport bounds.",
-            ));
+            return Err(OperationFailure::resource(ResourceFailure::unknown(
+                "Application capacity: encoded observation exceeds native transport bounds.",
+            )));
         }
         if !response.matches(&response.context) {
             return Err("Corrupt native observation/context metadata.".into());
         }
         if self.observations.len() + self.exact_observations.len() >= MAX_ARCHIVE_OBSERVATIONS {
-            return Err(capacity("No retained observation slot remains."));
+            return Err(resource_refusal(
+                vec![
+                    resource_fact(
+                        ResourceCategory::CombinedObservations,
+                        self.observations.len() + self.exact_observations.len(),
+                        MAX_ARCHIVE_OBSERVATIONS,
+                        0,
+                        ResourceScope::Xiangqi,
+                        ResourceUnit::Observations,
+                    )
+                    .with_observations(
+                        self.observations.len() as u64,
+                        self.exact_observations.len() as u64,
+                    )
+                    .with_measurement(ResourceMeasurement::Accepted),
+                ],
+                "Application capacity: all256 combined ordinary/exact observation slots are retained; no new work accepted.",
+            ));
         }
         let read_only = matches!(
             response.context.purpose,
@@ -863,9 +936,9 @@ pub(crate) enum XiangqiCompleted {
 pub(crate) fn execute(
     work: XiangqiWork,
     stopped: &mut impl FnMut() -> bool,
-) -> Result<super::super::archive::NativeCompleted, String> {
+) -> Result<super::super::archive::NativeCompleted, OperationFailure> {
     use super::super::archive::NativeCompleted;
-    let result: Result<NativeCompleted, String> = match work {
+    let result: Result<NativeCompleted, OperationFailure> = match work {
         XiangqiWork::Admit {
             draft,
             command,
@@ -907,7 +980,17 @@ pub(crate) fn execute(
                 state.journal(before, None, None, Some(index), false);
             }
             if floor >= MAX_SAFE_ID - 64 {
-                return Err(capacity("Runtime identity headroom exhausted."));
+                return Err(resource_refusal(
+                    vec![resource_fact(
+                        ResourceCategory::IdentityHeadroom,
+                        floor as usize,
+                        (MAX_SAFE_ID - 65) as usize,
+                        0,
+                        ResourceScope::Application,
+                        ResourceUnit::Identities,
+                    )],
+                    "Application capacity: runtime identity headroom exhausted.",
+                ));
             }
             state.execution_floor = state.execution_floor.max(floor);
             check_capacity(&state, stopped)?;
@@ -936,7 +1019,7 @@ pub(crate) fn execute(
             })
         }
     };
-    result.map_err(error)
+    result
 }
 
 #[derive(Deserialize)]
@@ -1089,9 +1172,19 @@ impl RawExactEvidence {
         })
     }
 }
-fn raw_work(text: &str) -> Result<usize, String> {
+fn raw_work(text: &str) -> Result<usize, OperationFailure> {
     if text.len() > mshogi_core::native::MAX_RECORD_ENVELOPE_BYTES {
-        return Err(capacity("Saved canonical wrapper exceeds1MiB."));
+        return Err(resource_refusal(
+            vec![resource_fact(
+                ResourceCategory::CanonicalRecordBytes,
+                text.len(),
+                mshogi_core::native::MAX_RECORD_ENVELOPE_BYTES,
+                0,
+                ResourceScope::Xiangqi,
+                ResourceUnit::Bytes,
+            )],
+            "Application capacity: saved canonical wrapper exceeds1MiB.",
+        ));
     }
     #[derive(Deserialize)]
     struct Envelope {
@@ -1125,8 +1218,24 @@ fn raw_work(text: &str) -> Result<usize, String> {
         return Err("Wrong game/profile/edition in Xiangqi archive native context.".into());
     }
     let ledger: Ledger = serde_json::from_str(e.payload.get()).map_err(error)?;
-    if ledger.events.len() > x::MAX_GAME_EVENTS || ledger.commands.len() > x::MAX_GAME_COMMANDS {
-        return Err(capacity("Native Xiangqi command/event bound exceeded."));
+    if ledger.commands.len() > x::MAX_GAME_COMMANDS {
+        return Err(OperationFailure::resource(ResourceFailure::new(
+            ResourceFact::unknown().with_scope(ResourceScope::Xiangqi),
+            "Application capacity: native Xiangqi command bound exceeded.",
+        )));
+    }
+    if ledger.events.len() > x::MAX_GAME_EVENTS {
+        return Err(resource_refusal(
+            vec![resource_fact(
+                ResourceCategory::NativeEvents,
+                ledger.events.len(),
+                x::MAX_GAME_EVENTS,
+                0,
+                ResourceScope::Xiangqi,
+                ResourceUnit::Events,
+            )],
+            "Application capacity: native Xiangqi command/event bound exceeded.",
+        ));
     }
     let mut command_plays = 0usize;
     for raw in &ledger.commands {
@@ -1148,7 +1257,7 @@ fn raw_work(text: &str) -> Result<usize, String> {
 pub(crate) fn decode(
     payload: &str,
     stopped: &mut impl FnMut() -> bool,
-) -> Result<(XiangqiSession, u64), String> {
+) -> Result<(XiangqiSession, u64), OperationFailure> {
     let raw: RawArchive = serde_json::from_str(payload).map_err(error)?;
     if raw.play_limits != PLAY_LIMITS {
         return Err("Unsupported Xiangqi saved play limits; no downgrade was applied.".into());
@@ -1163,8 +1272,13 @@ pub(crate) fn decode(
             .saturating_add(raw.exact_observations.len())
             > MAX_ARCHIVE_OBSERVATIONS
     {
-        return Err(capacity(
-            "Saved control/observation count exceeds supported limits.",
+        return Err(document_count_failure(
+            raw.controls.len(),
+            raw.observations.len(),
+            raw.exact_observations.len(),
+            true,
+            ResourceScope::Xiangqi,
+            0,
         ));
     }
     // Resource probes never replace the original bytes supplied to strict parsers.
@@ -1218,7 +1332,9 @@ pub(crate) fn decode(
         let r: ReportProbe = serde_json::from_str(e.report.get()).map_err(error)?;
         let v: VerdictProbe = serde_json::from_str(r.verdict.get()).map_err(error)?;
         if v.witness.len() > 4096 {
-            return Err(capacity("Saved exact witness exceeds4096 actions."));
+            return Err(OperationFailure::resource(ResourceFailure::unknown(
+                capacity("Saved exact witness exceeds4096 actions."),
+            )));
         }
         work = work.saturating_add(raw_work(e.source.get())? + 8);
         if v.kind == "natural_win" {
@@ -1257,17 +1373,39 @@ pub(crate) fn decode(
             }
         }
         let control: XiangqiControl = serde_json::from_str(text.get()).map_err(error)?;
-        if control.native_events_before > x::MAX_GAME_EVENTS
-            || control.native_board_actions_before > x::MAX_GAME_COMMANDS
-        {
-            return Err(capacity("Journal native event count exceeds its bound."));
+        if control.native_board_actions_before > x::MAX_GAME_COMMANDS {
+            return Err(OperationFailure::resource(ResourceFailure::new(
+                ResourceFact::unknown().with_scope(ResourceScope::Xiangqi),
+                "Application capacity: native board-action journal count exceeds its bound.",
+            )));
+        }
+        if control.native_events_before > x::MAX_GAME_EVENTS {
+            return Err(resource_refusal(
+                vec![resource_fact(
+                    ResourceCategory::NativeEvents,
+                    control.native_events_before,
+                    x::MAX_GAME_EVENTS,
+                    0,
+                    ResourceScope::Xiangqi,
+                    ResourceUnit::Events,
+                )],
+                "Application capacity: journal native event count exceeds its bound.",
+            ));
         }
         work = work.saturating_add(control_work(&control));
         controls.push(control);
     }
     if work > MAX_REPLAY_WORK {
-        return Err(capacity(
-            "Saved journal exceeds16,000 weighted replay work units.",
+        return Err(resource_refusal(
+            vec![resource_fact(
+                ResourceCategory::ReplayWork,
+                work,
+                MAX_REPLAY_WORK,
+                0,
+                ResourceScope::Xiangqi,
+                ResourceUnit::ReplayUnits,
+            )],
+            "Application capacity: Saved journal exceeds16,000 weighted replay work units.",
         ));
     }
     persistence::check(stopped)?;
@@ -1278,7 +1416,17 @@ pub(crate) fn decode(
     valid_limits(raw.initial_settings.analysis_defaults)?;
     valid_limits(raw.settings.analysis_defaults)?;
     if raw.retired_execution_floor >= MAX_SAFE_ID - 64 {
-        return Err(capacity("Saved identity floor leaves no runtime headroom."));
+        return Err(resource_refusal(
+            vec![resource_fact(
+                ResourceCategory::IdentityHeadroom,
+                raw.retired_execution_floor as usize,
+                MAX_SAFE_ID as usize,
+                64,
+                ResourceScope::Xiangqi,
+                ResourceUnit::Identities,
+            )],
+            "Application capacity: saved identity floor leaves no runtime headroom.",
+        ));
     }
     let NativeSide::Xiangqi(human) = raw.human else {
         return Err("Wrong game for saved human side.".into());
@@ -1385,9 +1533,8 @@ impl DesktopController {
             return Err("Stale historical evidence attachment.".into());
         }
         let state = self
-            .shared
-            .xiangqi
-            .as_ref()
+            .session
+            .xiangqi()
             .ok_or("No native Xiangqi document.")?;
         self.queue_xiangqi_candidate(
             XiangqiDraft::capture(state),
@@ -1405,13 +1552,19 @@ impl DesktopController {
         exact: Option<XiangqiExactEvidence>,
         replacement: bool,
     ) -> Result<AdmissionReceipt, String> {
-        self.session.ensure_capacity()?;
+        self.ensure_runtime_capacity()?;
         if self.session.capacity.id >= MAX_SAFE_ID - 64 {
-            return Err(capacity("Admission identity headroom exhausted."));
+            return Err(self.identity_refusal(
+                self.session.capacity.id,
+                MAX_SAFE_ID - 65,
+                false,
+                ResourceMeasurement::Accepted,
+                "Application capacity: admission identity headroom exhausted.",
+            ));
         }
         let preferences =
             exact.is_some() || matches!(command, Some(SessionOperation::XiangqiPreferences { .. }));
-        let rollback = self.shared.xiangqi.as_ref().map(|s| {
+        let rollback = self.session.xiangqi().map(|s| {
             (
                 s.paused,
                 s.phase,
@@ -1431,7 +1584,7 @@ impl DesktopController {
             // retained until candidate admission, but its abandoned work cannot
             // race the reversal or become current again after a refusal.
             self.bridge.cancel();
-            if let Some(state) = &mut self.shared.xiangqi {
+            if let Some(state) = self.session.xiangqi_mut() {
                 state.retire();
                 state.paused = true;
             }
@@ -1442,11 +1595,12 @@ impl DesktopController {
         self.session.capacity.id += 1;
         self.session.capacity.status = CapacityPhase::Checking;
         self.session.capacity.message = None;
+        self.session.capacity.resource = None;
         self.session.revision += 1;
         let receipt = AdmissionReceipt::pending();
         self.admission_receipt = Some(receipt.clone());
         self.admission_token = Some(self.open_token());
-        self.shared.admission = Some((self.shared.epoch, preferences));
+        self.shared.admission = Some((self.session.document_epoch, preferences));
         let floor = self.runtime_floor();
         self.admissions.submit(
             self.session.capacity.id,
@@ -1462,49 +1616,6 @@ impl DesktopController {
             ))),
         );
         Ok(receipt)
-    }
-    pub(crate) fn install_xiangqi(
-        &mut self,
-        mut state: Box<XiangqiSession>,
-        floor: u64,
-        path: PathBuf,
-    ) -> Result<String, String> {
-        let next = self
-            .runtime_floor()
-            .max(floor)
-            .checked_add(1)
-            .ok_or("Runtime identity exhausted.")?;
-        if next >= MAX_SAFE_ID - 64
-            || self.shared.epoch >= MAX_SAFE_ID - 64
-            || self.session.document_identity >= MAX_SAFE_ID - 65
-            || self.session.document_revision >= MAX_SAFE_ID - 65
-        {
-            return Err(capacity("Reopened runtime identities leave no headroom."));
-        }
-        self.retire_admission();
-        self.last_command_receipt = None;
-        self.bridge.cancel();
-        state.retire();
-        state.paused = true;
-        for o in &mut state.observations {
-            o.historical = true;
-        }
-        state.diagnostic = Some("Document reopened with work stopped. Saved ordinary/exact observations are historical; Resume explicitly.".into());
-        self.shared.shogi = None;
-        self.shared.xiangqi = Some(*state);
-        self.shared.epoch += 1;
-        self.session.pending = None;
-        self.session.retire_analysis();
-        self.session.version = next;
-        self.session.revision = next;
-        self.session.next_request = next;
-        self.session.selection_id = next;
-        self.session.document_identity += 1;
-        self.session.document_revision += 1;
-        self.session.saved_revision = self.session.document_revision;
-        self.session.document_path = Some(path);
-        self.session.capacity = CapacityState::default();
-        Ok("Opened native Xiangqi document with fresh runtime identities and work stopped.".into())
     }
     pub(crate) fn finish_xiangqi_admission(
         &mut self,
@@ -1522,12 +1633,9 @@ impl DesktopController {
             self.bridge.cancel();
         }
         if replacement {
-            self.session.pending = None;
-            self.session.retire_analysis();
-            self.session.play_paused = true;
+            self.session.retire_execution();
         }
-        self.shared.shogi = None;
-        self.shared.xiangqi = Some(*state);
+        self.session.install_xiangqi(state);
         if changed {
             self.shared_changed();
         } else {
@@ -1536,19 +1644,14 @@ impl DesktopController {
             self.session.archive_revision = self.session.revision.min(MAX_SAFE_ID - 65);
         }
         if replacement {
-            self.shared.epoch += 1;
+            self.session.document_epoch += 1;
             self.session.document_identity += 1;
             self.session.document_path = None;
             self.session.saved_revision = 0;
         }
         let floor = self.runtime_floor();
-        self.shared.xiangqi.as_mut().unwrap().execution_floor = self
-            .shared
-            .xiangqi
-            .as_ref()
-            .unwrap()
-            .execution_floor
-            .max(floor);
+        self.session.xiangqi_mut().unwrap().execution_floor =
+            self.session.xiangqi().unwrap().execution_floor.max(floor);
         self.session.capacity = CapacityState {
             id,
             ..CapacityState::default()
@@ -1556,7 +1659,7 @@ impl DesktopController {
         if let Some(limits) = analysis
             && let Err(e) = self.start_xiangqi(limits, true)
         {
-            self.pause_native_capacity(e);
+            self.pause_native_failure(e);
         }
         if let Some(r) = receipt {
             r.finish(Ok(()));

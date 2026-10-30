@@ -106,6 +106,7 @@ fn payload(session: &DesktopSession, observations: Vec<ArchivedObservation>) -> 
 
 fn open(archive: &ChessDocument) -> Result<Opened, String> {
     crate::shared::archive::decode_chess_document(&encode_chess(archive).unwrap(), &mut || false)
+        .map_err(String::from)
 }
 
 #[test]

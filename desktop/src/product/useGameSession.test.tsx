@@ -67,7 +67,7 @@ it("fetches authoritative paused shogi metadata before opening the native quit g
   expect(result.current.snapshot).toBe(stopped); expect(result.current.closeRequested).toBe(true);
   vi.mocked(invoke).mockResolvedValueOnce(undefined);
   await act(async () => { await result.current.finishClose(stopped); });
-  expect(invoke).toHaveBeenLastCalledWith("desktop_finish_close", { expectedDocumentRevision: stopped.document.revision });
+  expect(invoke).toHaveBeenLastCalledWith("game_finish_close", { expected: stopped.open_token });
 });
 it("reports native close-protection registration failure without an unhandled rejection", async () => {
   vi.mocked(listen).mockRejectedValueOnce("Listener unavailable"); vi.mocked(invoke).mockResolvedValue(standard);
@@ -120,4 +120,14 @@ it("retires StrictMode effect callbacks, poll loops and delayed native listeners
   expect(invoke).toHaveBeenCalledTimes(prior + 1);
   unmount(); expect(activeStop).toHaveBeenCalledTimes(1);
   await vi.advanceTimersByTimeAsync(1000); expect(invoke).toHaveBeenCalledTimes(prior + 1);
+});
+
+it("uses the native close contract and exact rendered document token", async () => {
+  vi.mocked(invoke).mockResolvedValue(standard);
+  const { result } = renderHook(useGameSession); await flush();
+  expect(listen).toHaveBeenCalledWith("game-close-requested", expect.any(Function));
+  await act(async () => { await result.current.finishClose(standard); });
+  expect(invoke).toHaveBeenLastCalledWith("game_finish_close", { expected: standard.open_token });
+  await act(async () => { await result.current.cancelClose(); });
+  expect(invoke).toHaveBeenCalledWith("game_cancel_close");
 });

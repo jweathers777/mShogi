@@ -1,6 +1,9 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use mshogi_desktop_session::{DesktopCommand, DesktopController, IoPhase, OpenToken, Snapshot};
+use mshogi_desktop_session::{
+    ApplicationLifecycle, DesktopCommand, DesktopController, IoPhase, OpenToken,
+    OperationReservation, SharedOpenToken, SharedSnapshot, Snapshot,
+};
 #[cfg(feature = "desktop-verification")]
 use mshogi_desktop_session::{SyntheticCommand, SyntheticController, SyntheticSnapshot};
 use std::{
@@ -21,10 +24,6 @@ use tauri_plugin_dialog::DialogExt;
 
 #[derive(Default)]
 struct ShutdownState {
-    command_operation: AtomicBool,
-    close_requested: AtomicBool,
-    close_approved: AtomicBool,
-    file_operation: AtomicBool,
     started: AtomicBool,
     ready: AtomicBool,
     observation_finished: AtomicBool,
@@ -117,8 +116,8 @@ fn with_synthetic<T>(
     operation: impl FnOnce(&mut SyntheticController) -> T,
 ) -> Result<T, String> {
     // Use the same outer lock as close approval; never acquire these in reverse.
-    with_controller(controller, shutdown, |_| {
-        if shutdown.close_requested.load(Ordering::Acquire) {
+    with_controller(controller, shutdown, |controller| {
+        if controller.lifecycle().close_requested() {
             return Err("Finish or cancel the close request before changing the fixture.".into());
         }
         let mut synthetic = verification
@@ -208,7 +207,7 @@ async fn game_command(
         &app.state::<Mutex<DesktopController>>(),
         &shutdown,
         |controller| {
-            let reservation = reserve_game_command(&shutdown)?;
+            let reservation = controller.lifecycle().reserve_command()?;
             let (initial, receipt) = controller.shared_command_with_receipt(command)?;
             Ok::<_, String>((initial, receipt, reservation))
         },
@@ -261,12 +260,7 @@ async fn game_file(
         if actual != expected {
             return Err("The document changed. Review unsaved changes again.".into());
         }
-        if app
-            .state::<Arc<ShutdownState>>()
-            .close_requested
-            .load(Ordering::Acquire)
-            && action == "open"
-        {
+        if app_lifecycle(&app).close_requested() && action == "open" {
             return Err("Finish or cancel the close request before opening.".into());
         }
         let snapshot = current_contract_snapshot(&app)?;
@@ -296,13 +290,7 @@ async fn game_file(
         let id = with_controller(
             &app.state::<Mutex<DesktopController>>(),
             &app.state::<Arc<ShutdownState>>(),
-            |c| {
-                if action == "open" {
-                    c.queue_product_open(path, expected)
-                } else {
-                    c.queue_shared_save(path)
-                }
-            },
+            |c| queue_game_file(c, &action, path, expected),
         )??;
         loop {
             let snapshot = current_contract_snapshot(&app)?;
@@ -323,6 +311,26 @@ async fn game_file(
     })
     .await
     .map_err(|e| format!("Native document waiter failed: {e}"))?
+}
+
+// Called after native picker completion under controller serialization. The
+// picker itself grants no authority to replace a document or bypass close.
+fn queue_game_file(
+    controller: &mut DesktopController,
+    action: &str,
+    path: PathBuf,
+    expected: SharedOpenToken,
+) -> Result<u64, String> {
+    match action {
+        "open" => {
+            if controller.lifecycle().close_requested() {
+                return Err("Finish or cancel the close request before opening.".into());
+            }
+            controller.queue_product_open(path, expected)
+        }
+        "save" | "save_as" => controller.queue_shared_save(path),
+        _ => Err("Unknown native file operation.".into()),
+    }
 }
 
 // Raw native commands preserve strict duplicate-field rejection all the way to
@@ -365,7 +373,7 @@ async fn game_new(
         &app.state::<Mutex<DesktopController>>(),
         &shutdown,
         |controller| {
-            let reservation = reserve_game_command(&shutdown)?;
+            let reservation = controller.lifecycle().reserve_command()?;
             let (initial, receipt) = controller.shared_new_game(expected, game, human)?;
             Ok::<_, String>((initial, receipt, reservation))
         },
@@ -406,13 +414,13 @@ fn with_controller<T>(
     shutdown: &ShutdownState,
     operation: impl FnOnce(&mut DesktopController) -> T,
 ) -> Result<T, String> {
-    if shutdown.started.load(Ordering::Acquire) || shutdown.close_approved.load(Ordering::Acquire) {
+    if shutdown.started.load(Ordering::Acquire) {
         return Err("The application is closing; no further game commands are accepted.".into());
     }
     let mut controller = controller
         .lock()
         .map_err(|_| "Native session lock unavailable".to_string())?;
-    if shutdown.started.load(Ordering::Acquire) || shutdown.close_approved.load(Ordering::Acquire) {
+    if shutdown.started.load(Ordering::Acquire) || controller.lifecycle().close_approved() {
         return Err("The application is closing; no further game commands are accepted.".into());
     }
     Ok(operation(&mut controller))
@@ -422,26 +430,18 @@ fn desktop_snapshot(
     controller: State<'_, Mutex<DesktopController>>,
     shutdown: State<'_, Arc<ShutdownState>>,
 ) -> Result<Snapshot, String> {
-    with_controller(&controller, &shutdown, DesktopController::snapshot)
+    with_controller(&controller, &shutdown, legacy_snapshot)?
 }
-struct CommandOperationGuard(Arc<ShutdownState>);
-impl Drop for CommandOperationGuard {
-    fn drop(&mut self) {
-        self.0.command_operation.store(false, Ordering::Release);
-    }
+// Current native lifecycle owns all document-operation reservations. The host
+// retains only technical event-loop/cleanup state.
+fn app_lifecycle(app: &AppHandle) -> Arc<ApplicationLifecycle> {
+    app.state::<Arc<ApplicationLifecycle>>().inner().clone()
 }
-// Call while holding the controller lock, like file and close ownership.
-fn reserve_game_command(shutdown: &Arc<ShutdownState>) -> Result<CommandOperationGuard, String> {
-    if shutdown.close_requested.load(Ordering::Acquire)
-        || shutdown.file_operation.load(Ordering::Acquire)
-    {
-        return Err("Finish the document or close operation first.".into());
-    }
-    shutdown
-        .command_operation
-        .compare_exchange(false, true, Ordering::AcqRel, Ordering::Acquire)
-        .map_err(|_| "Wait for the current game command.".to_string())?;
-    Ok(CommandOperationGuard(shutdown.clone()))
+fn legacy_snapshot(controller: &mut DesktopController) -> Result<Snapshot, String> {
+    controller
+        .shared_snapshot()
+        .chess
+        .ok_or_else(|| "The active native game uses the current application contract.".into())
 }
 #[tauri::command]
 async fn desktop_command(app: AppHandle, command: DesktopCommand) -> Result<Snapshot, String> {
@@ -451,18 +451,9 @@ async fn desktop_command(app: AppHandle, command: DesktopCommand) -> Result<Snap
         &app.state::<Mutex<DesktopController>>(),
         &shutdown,
         |controller| {
-            if shutdown.close_requested.load(Ordering::Acquire) {
-                return Err(
-                    "Finish or cancel the close request before changing the game.".to_string(),
-                );
-            }
-            shutdown
-                .command_operation
-                .compare_exchange(false, true, Ordering::AcqRel, Ordering::Acquire)
-                .map_err(|_| "Wait for the current native command to complete.".to_string())?;
-            let reservation = CommandOperationGuard(shutdown.clone());
+            let reservation = controller.lifecycle().reserve_command()?;
             let (snapshot, receipt) = controller.command_with_receipt(command)?;
-            Ok((snapshot, receipt, reservation))
+            Ok::<_, String>((snapshot, receipt, reservation))
         },
     )??;
     if let Some(completion) = receipt.completion() {
@@ -487,41 +478,32 @@ async fn desktop_command(app: AppHandle, command: DesktopCommand) -> Result<Snap
     .map_err(|error| format!("Native command admission failed: {error}"))?
 }
 
-/// At most one native picker/waiter may exist. Acquisition and close approval
-/// are serialized with the controller, while dialogs and I/O never hold it.
-struct FileOperationGuard(Arc<ShutdownState>);
-impl Drop for FileOperationGuard {
-    fn drop(&mut self) {
-        self.0.file_operation.store(false, Ordering::Release);
-    }
-}
-fn reserve_file_operation(app: &AppHandle) -> Result<FileOperationGuard, String> {
+/// The native lifecycle reserves both picker and file completion. Dialogs and
+/// I/O run off the serialized controller lock.
+fn reserve_file_operation(app: &AppHandle) -> Result<OperationReservation, String> {
     ensure_chess_mode(app)?;
-    let shutdown = app.state::<Arc<ShutdownState>>().inner().clone();
-    with_controller(&app.state::<Mutex<DesktopController>>(), &shutdown, |_| {
-        shutdown
-            .file_operation
-            .compare_exchange(false, true, Ordering::AcqRel, Ordering::Acquire)
-            .map(|_| ())
-            .map_err(|_| "Finish the current file operation first.".to_string())
-    })??;
-    Ok(FileOperationGuard(shutdown))
+    let shutdown = app.state::<Arc<ShutdownState>>();
+    with_controller(
+        &app.state::<Mutex<DesktopController>>(),
+        &shutdown,
+        |controller| controller.lifecycle().reserve_file(),
+    )?
 }
 fn current_snapshot(app: &AppHandle) -> Result<Snapshot, String> {
     with_controller(
         &app.state::<Mutex<DesktopController>>(),
         &app.state::<Arc<ShutdownState>>(),
-        DesktopController::snapshot,
-    )
+        legacy_snapshot,
+    )?
 }
-fn wait_file_operation(app: &AppHandle, id: u64) -> Result<Snapshot, String> {
+fn wait_file_operation(app: &AppHandle, id: u64) -> Result<Option<Snapshot>, String> {
     loop {
-        let snapshot = current_snapshot(app)?;
+        let snapshot = current_contract_snapshot(app)?;
         if snapshot.io.id != id {
             return Err("The file operation was superseded; no completion was accepted.".into());
         }
         match snapshot.io.phase {
-            IoPhase::Complete => return Ok(snapshot),
+            IoPhase::Complete => return Ok(snapshot.chess),
             IoPhase::Failed => {
                 return Err(snapshot
                     .io
@@ -532,7 +514,7 @@ fn wait_file_operation(app: &AppHandle, id: u64) -> Result<Snapshot, String> {
         }
     }
 }
-async fn save_document(app: AppHandle, save_as: bool) -> Result<Snapshot, String> {
+async fn save_document(app: AppHandle, save_as: bool) -> Result<Option<Snapshot>, String> {
     let reservation = reserve_file_operation(&app)?;
     tauri::async_runtime::spawn_blocking(move || {
         let _reservation = reservation;
@@ -550,7 +532,7 @@ async fn save_document(app: AppHandle, save_as: bool) -> Result<Snapshot, String
                 .transpose()?
         };
         let Some(path) = path else {
-            return current_snapshot(&app);
+            return current_snapshot(&app).map(Some);
         };
         let id = with_controller(
             &app.state::<Mutex<DesktopController>>(),
@@ -563,11 +545,11 @@ async fn save_document(app: AppHandle, save_as: bool) -> Result<Snapshot, String
     .map_err(|error| format!("Native save task failed: {error}"))?
 }
 #[tauri::command]
-async fn desktop_save(app: AppHandle) -> Result<Snapshot, String> {
+async fn desktop_save(app: AppHandle) -> Result<Option<Snapshot>, String> {
     save_document(app, false).await
 }
 #[tauri::command]
-async fn desktop_save_as(app: AppHandle) -> Result<Snapshot, String> {
+async fn desktop_save_as(app: AppHandle) -> Result<Option<Snapshot>, String> {
     save_document(app, true).await
 }
 #[tauri::command]
@@ -575,7 +557,7 @@ async fn desktop_open(
     app: AppHandle,
     expected_version: u64,
     expected_document_revision: u64,
-) -> Result<Snapshot, String> {
+) -> Result<Option<Snapshot>, String> {
     let reservation = reserve_file_operation(&app)?;
     let token = OpenToken {
         version: expected_version,
@@ -589,11 +571,7 @@ async fn desktop_open(
             &app.state::<Mutex<DesktopController>>(),
             &app.state::<Arc<ShutdownState>>(),
             |controller| {
-                if app
-                    .state::<Arc<ShutdownState>>()
-                    .close_requested
-                    .load(Ordering::Acquire)
-                {
+                if controller.lifecycle().close_requested() {
                     Err("Finish or cancel the close request before opening a game.".to_string())
                 } else {
                     Ok(controller.shared_open_token())
@@ -612,17 +590,13 @@ async fn desktop_open(
             .map(|path| path.into_path().map_err(|error| error.to_string()))
             .transpose()?;
         let Some(path) = path else {
-            return current_snapshot(&app);
+            return current_snapshot(&app).map(Some);
         };
         let id = with_controller(
             &app.state::<Mutex<DesktopController>>(),
             &app.state::<Arc<ShutdownState>>(),
             |controller| {
-                if app
-                    .state::<Arc<ShutdownState>>()
-                    .close_requested
-                    .load(Ordering::Acquire)
-                {
+                if controller.lifecycle().close_requested() {
                     Err("Finish or cancel the close request before opening a game.".to_string())
                 } else {
                     controller.queue_product_open(path, actual)
@@ -634,32 +608,74 @@ async fn desktop_open(
     .await
     .map_err(|error| format!("Native open task failed: {error}"))?
 }
+// Current native close contract. The old desktop_* routes/events below are
+// the sole frontend forwarder for App/useNativeSession and verification views;
+// MSH-119 deletes them with those callers. They own no native document state.
 fn request_close(app: &AppHandle) -> Result<(), String> {
     let shutdown = app.state::<Arc<ShutdownState>>();
     let snapshot = with_controller(
         &app.state::<Mutex<DesktopController>>(),
         &shutdown,
-        |controller| {
-            if shutdown.close_requested.swap(true, Ordering::AcqRel) {
-                controller.snapshot()
+        |controller| -> Result<SharedSnapshot, String> {
+            if controller.lifecycle().request_close()? {
+                Ok(controller.application_pause_for_close())
             } else {
-                controller.pause_for_close()
+                Ok(controller.shared_snapshot())
             }
         },
-    )?;
-    // Re-emitting on a repeated request also covers a request made before the
-    // frontend event listener finished initializing. The UI deduplicates it.
-    if let Err(error) = app.emit("desktop-close-requested", snapshot) {
-        shutdown.close_requested.store(false, Ordering::Release);
+    )??;
+    if let Err(error) = app.emit("game-close-requested", &snapshot) {
+        app_lifecycle(app).cancel_close()?;
         return Err(format!(
             "Could not request unsaved-change confirmation: {error}"
         ));
+    }
+    if let Some(chess) = snapshot.chess {
+        app.emit("desktop-close-requested", chess)
+            .map_err(|error| {
+                let _ = app_lifecycle(app).cancel_close();
+                format!("Could not forward Chess close confirmation: {error}")
+            })?;
     }
     if let Some(window) = app.get_webview_window("main") {
         let _ = window.show();
         let _ = window.set_focus();
     }
     Ok(())
+}
+#[tauri::command]
+fn game_request_close(app: AppHandle) -> Result<(), String> {
+    request_close(&app)
+}
+#[tauri::command]
+fn game_cancel_close(
+    controller: State<'_, Mutex<DesktopController>>,
+    shutdown: State<'_, Arc<ShutdownState>>,
+) -> Result<SharedSnapshot, String> {
+    with_controller(&controller, &shutdown, |controller| {
+        controller.lifecycle().cancel_close()?;
+        Ok(controller.shared_snapshot())
+    })?
+}
+#[tauri::command]
+fn game_finish_close(app: AppHandle, expected: SharedOpenToken) -> Result<(), String> {
+    let shutdown = app.state::<Arc<ShutdownState>>();
+    with_controller(
+        &app.state::<Mutex<DesktopController>>(),
+        &shutdown,
+        |controller| approve_close(controller, expected),
+    )??;
+    app.exit(0);
+    Ok(())
+}
+fn approve_close(
+    controller: &mut DesktopController,
+    expected: SharedOpenToken,
+) -> Result<(), String> {
+    // Caller holds the same controller lock as all accepted mutations.
+    controller
+        .lifecycle()
+        .approve_close(expected, controller.shared_open_token())
 }
 #[tauri::command]
 fn desktop_request_close(app: AppHandle) -> Result<(), String> {
@@ -671,9 +687,9 @@ fn desktop_cancel_close(
     shutdown: State<'_, Arc<ShutdownState>>,
 ) -> Result<Snapshot, String> {
     with_controller(&controller, &shutdown, |controller| {
-        shutdown.close_requested.store(false, Ordering::Release);
-        controller.snapshot()
-    })
+        controller.lifecycle().cancel_close()?;
+        legacy_snapshot(controller)
+    })?
 }
 #[tauri::command]
 fn desktop_finish_close(app: AppHandle, expected_document_revision: u64) -> Result<(), String> {
@@ -681,29 +697,15 @@ fn desktop_finish_close(app: AppHandle, expected_document_revision: u64) -> Resu
     with_controller(
         &app.state::<Mutex<DesktopController>>(),
         &shutdown,
-        |controller| approve_close(controller, &shutdown, expected_document_revision),
+        |controller| {
+            let expected = controller.shared_open_token();
+            if expected.document_revision != expected_document_revision {
+                return Err("The game changed. Review unsaved changes before closing.".into());
+            }
+            approve_close(controller, expected)
+        },
     )??;
     app.exit(0);
-    Ok(())
-}
-fn approve_close(
-    controller: &mut DesktopController,
-    shutdown: &ShutdownState,
-    expected_document_revision: u64,
-) -> Result<(), String> {
-    if !shutdown.close_requested.load(Ordering::Acquire) {
-        return Err("Request close before confirming it.".to_string());
-    }
-    if shutdown.file_operation.load(Ordering::Acquire) {
-        return Err("Wait for the file operation before closing.".to_string());
-    }
-    let snapshot = controller.snapshot();
-    if snapshot.document.revision != expected_document_revision {
-        return Err("The game changed. Review unsaved changes before closing.".to_string());
-    }
-    // Caller holds the same lock as every native mutation. Shutdown still has
-    // its own flag so approval cannot skip child cleanup.
-    shutdown.close_approved.store(true, Ordering::Release);
     Ok(())
 }
 #[cfg(feature = "desktop-verification")]
@@ -913,12 +915,18 @@ fn main() {
                 let verification = VerificationState::new(
                     std::env::var("MSHOGI_DESKTOP_FIXTURE").unwrap_or_else(|_| "standard".into()),
                 );
-                app.manage(Mutex::new(initial_controller(&verification.fixture)?));
+                let controller = initial_controller(&verification.fixture)?;
+                app.manage(controller.lifecycle());
+                app.manage(Mutex::new(controller));
                 app.manage(verification);
                 update_verification_window_title(app.handle())?;
             }
             #[cfg(not(feature = "desktop-verification"))]
-            app.manage(Mutex::new(initial_controller()?));
+            {
+                let controller = initial_controller()?;
+                app.manage(controller.lifecycle());
+                app.manage(Mutex::new(controller));
+            }
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
@@ -927,6 +935,9 @@ fn main() {
             game_command,
             game_file,
             game_new,
+            game_request_close,
+            game_cancel_close,
+            game_finish_close,
             desktop_snapshot,
             desktop_command,
             desktop_save,
@@ -956,7 +967,7 @@ fn main() {
                 return;
             }
             api.prevent_exit();
-            if !shutdown.close_approved.load(Ordering::Acquire) {
+            if !app_lifecycle(app).close_approved() {
                 if let Err(error) = request_close(app) {
                     eprintln!("Native close request failed: {error}");
                 }
@@ -1005,12 +1016,9 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-
     fn controller() -> Mutex<DesktopController> {
-        // No search is submitted in these host-gate tests, so no child starts.
         Mutex::new(DesktopController::new(PathBuf::from("unused-test-engine")).unwrap())
     }
-
     #[test]
     fn normal_movement_inspection_is_strict_atomic_and_does_not_poll() {
         let controller = controller();
@@ -1063,39 +1071,208 @@ mod tests {
         );
     }
 
+    #[test]
+    fn stale_or_unrequested_close_cannot_authorize_shutdown() {
+        let controller = controller();
+        let shutdown = ShutdownState::default();
+        let token = controller.lock().unwrap().shared_open_token();
+        assert!(
+            with_controller(&controller, &shutdown, |c| approve_close(c, token))
+                .unwrap()
+                .is_err()
+        );
+        controller
+            .lock()
+            .unwrap()
+            .lifecycle()
+            .request_close()
+            .unwrap();
+        for stale in [
+            SharedOpenToken {
+                document: token.document + 1,
+                ..token
+            },
+            SharedOpenToken {
+                version: token.version + 1,
+                ..token
+            },
+            SharedOpenToken {
+                document_revision: token.document_revision + 1,
+                ..token
+            },
+        ] {
+            assert!(
+                with_controller(&controller, &shutdown, |c| approve_close(c, stale))
+                    .unwrap()
+                    .is_err()
+            );
+        }
+        assert!(!controller.lock().unwrap().lifecycle().close_approved());
+        assert!(with_controller(&controller, &shutdown, |_| ()).is_ok());
+    }
+
+    #[test]
+    fn native_file_reservation_blocks_close_then_approval_blocks_every_host_entry() {
+        let controller = controller();
+        let shutdown = ShutdownState::default();
+        let (token, lifecycle) = {
+            let c = controller.lock().unwrap();
+            (c.shared_open_token(), c.lifecycle())
+        };
+        lifecycle.request_close().unwrap();
+        let file = lifecycle.reserve_file().unwrap();
+        assert!(
+            with_controller(&controller, &shutdown, |c| approve_close(c, token))
+                .unwrap()
+                .is_err()
+        );
+        drop(file);
+        with_controller(&controller, &shutdown, |c| approve_close(c, token))
+            .unwrap()
+            .unwrap();
+        assert!(
+            with_controller(&controller, &shutdown, |_| panic!(
+                "closed controller entered"
+            ))
+            .is_err()
+        );
+        assert!(
+            !shutdown.started.load(Ordering::Acquire),
+            "native approval must leave technical cleanup available"
+        );
+    }
+
+    #[test]
+    fn native_command_reservation_releases_after_rejection_and_excludes_file_work() {
+        let controller = controller();
+        let lifecycle = controller.lock().unwrap().lifecycle();
+        let first = lifecycle.reserve_command().unwrap();
+        assert!(lifecycle.reserve_command().is_err());
+        assert!(lifecycle.reserve_file().is_err());
+        drop(first);
+        assert!(!lifecycle.operation_active());
+        lifecycle.request_close().unwrap();
+        assert!(lifecycle.reserve_command().is_err());
+        lifecycle.cancel_close().unwrap();
+        assert!(lifecycle.reserve_command().is_ok());
+    }
+
+    #[test]
+    fn picker_result_cannot_open_during_same_token_close_confirmation() {
+        let mut controller = DesktopController::new(PathBuf::from("unused-test-engine")).unwrap();
+        let expected = controller.shared_open_token();
+        let before_io = controller.shared_snapshot().io.id;
+        controller.lifecycle().request_close().unwrap();
+        assert_eq!(controller.shared_open_token(), expected);
+        let error = queue_game_file(
+            &mut controller,
+            "open",
+            PathBuf::from("unread.mshogi"),
+            expected,
+        )
+        .unwrap_err();
+        assert!(error.contains("close request"));
+        assert_eq!(controller.shared_open_token(), expected);
+        assert_eq!(
+            controller.shared_snapshot().io.id,
+            before_io,
+            "the picker result never queues file work"
+        );
+        controller.lifecycle().cancel_close().unwrap();
+        assert!(
+            queue_game_file(
+                &mut controller,
+                "open",
+                PathBuf::from("unread.mshogi"),
+                expected
+            )
+            .is_ok()
+        );
+    }
+
+    #[test]
+    fn shogi_product_close_uses_current_document_identity_and_stops_execution() {
+        use mshogi_desktop_session::{GameKind, NativeSide, ShogiSide};
+        let controller = controller();
+        let shutdown = ShutdownState::default();
+        let initial = controller.lock().unwrap().shared_open_token();
+        let receipt = with_controller(&controller, &shutdown, |c| {
+            c.shared_new_game(
+                c.shared_open_token(),
+                GameKind::Shogi,
+                NativeSide::Shogi(ShogiSide::Sente),
+            )
+        })
+        .unwrap()
+        .unwrap()
+        .1;
+        let deadline = Instant::now() + Duration::from_secs(20);
+        while receipt.completion().is_none() {
+            with_controller(&controller, &shutdown, DesktopController::shared_snapshot).unwrap();
+            assert!(Instant::now() < deadline);
+            thread::sleep(Duration::from_millis(1));
+        }
+        receipt.completion().unwrap().unwrap();
+        let native =
+            with_controller(&controller, &shutdown, DesktopController::shared_snapshot).unwrap();
+        assert_eq!(native.game, GameKind::Shogi);
+        assert!(
+            native.chess.is_none(),
+            "no Chess projection or dormant game for Shogi"
+        );
+        assert!(native.document.dirty);
+        assert!(legacy_snapshot(&mut controller.lock().unwrap()).is_err());
+        let paused = with_controller(&controller, &shutdown, |c| {
+            c.lifecycle().request_close().unwrap();
+            c.application_pause_for_close()
+        })
+        .unwrap();
+        assert_eq!(paused.game, GameKind::Shogi);
+        assert!(paused.paused);
+        assert!(
+            with_controller(&controller, &shutdown, |c| approve_close(c, initial))
+                .unwrap()
+                .is_err()
+        );
+        with_controller(&controller, &shutdown, |c| {
+            approve_close(c, paused.open_token)
+        })
+        .unwrap()
+        .unwrap();
+        assert!(controller.lock().unwrap().lifecycle().close_approved());
+    }
+
     #[cfg(feature = "desktop-verification")]
     #[test]
-    fn synthetic_mutations_share_close_gates_and_keep_chess_separate() {
+    fn synthetic_mutations_share_native_close_ownership_without_a_product_game_alias() {
         let controller = controller();
         let shutdown = ShutdownState::default();
         let verification = VerificationState::new("synthetic".into());
         assert!(verification.require_chess().is_err());
-        let initial = with_synthetic(&controller, &shutdown, &verification, |synthetic| {
-            synthetic.snapshot()
-        })
-        .unwrap();
-        shutdown.close_requested.store(true, Ordering::Release);
+        let initial =
+            with_synthetic(&controller, &shutdown, &verification, |s| s.snapshot()).unwrap();
+        let lifecycle = controller.lock().unwrap().lifecycle();
+        lifecycle.request_close().unwrap();
         assert!(
             with_synthetic(&controller, &shutdown, &verification, |_| panic!(
-                "pending close entered fixture"
+                "close entered fixture"
             ))
             .is_err()
         );
-        shutdown.close_requested.store(false, Ordering::Release);
-        let reset = with_synthetic(&controller, &shutdown, &verification, |synthetic| {
-            synthetic.command(SyntheticCommand::Reset {
+        lifecycle.cancel_close().unwrap();
+        let reset = with_synthetic(&controller, &shutdown, &verification, |s| {
+            s.command(SyntheticCommand::Reset {
                 version: initial.version,
             })
         })
         .unwrap()
         .unwrap();
         assert!(reset.version > initial.version);
-        let chess = with_controller(&controller, &shutdown, DesktopController::snapshot).unwrap();
-        assert!(chess.history.is_empty());
-        assert!(!chess.document.dirty);
-        shutdown.close_requested.store(true, Ordering::Release);
-        with_controller(&controller, &shutdown, |controller| {
-            approve_close(controller, &shutdown, chess.document.revision)
+        let snapshot =
+            with_controller(&controller, &shutdown, DesktopController::shared_snapshot).unwrap();
+        lifecycle.request_close().unwrap();
+        with_controller(&controller, &shutdown, |c| {
+            approve_close(c, snapshot.open_token)
         })
         .unwrap()
         .unwrap();
@@ -1120,125 +1297,5 @@ mod tests {
             ))
             .is_err()
         );
-    }
-
-    #[test]
-    fn stale_or_unrequested_close_cannot_authorize_shutdown() {
-        let controller = controller();
-        let shutdown = ShutdownState::default();
-        let snapshot =
-            with_controller(&controller, &shutdown, DesktopController::snapshot).unwrap();
-        assert!(
-            with_controller(&controller, &shutdown, |controller| {
-                approve_close(controller, &shutdown, snapshot.document.revision)
-            })
-            .unwrap()
-            .is_err()
-        );
-        shutdown.close_requested.store(true, Ordering::Release);
-        assert!(
-            with_controller(&controller, &shutdown, |controller| {
-                approve_close(controller, &shutdown, snapshot.document.revision + 1)
-            })
-            .unwrap()
-            .is_err()
-        );
-        assert!(!shutdown.close_approved.load(Ordering::Acquire));
-        assert!(with_controller(&controller, &shutdown, DesktopController::snapshot).is_ok());
-    }
-
-    #[test]
-    fn file_operation_blocks_close_then_approval_blocks_every_controller_entry() {
-        let controller = controller();
-        let shutdown = Arc::new(ShutdownState::default());
-        let snapshot =
-            with_controller(&controller, &shutdown, DesktopController::snapshot).unwrap();
-        shutdown.close_requested.store(true, Ordering::Release);
-        shutdown.file_operation.store(true, Ordering::Release);
-        let operation = FileOperationGuard(shutdown.clone());
-        assert!(
-            with_controller(&controller, &shutdown, |controller| {
-                approve_close(controller, &shutdown, snapshot.document.revision)
-            })
-            .unwrap()
-            .is_err()
-        );
-        drop(operation);
-        with_controller(&controller, &shutdown, |controller| {
-            approve_close(controller, &shutdown, snapshot.document.revision)
-        })
-        .unwrap()
-        .unwrap();
-        assert!(
-            with_controller(&controller, &shutdown, |_| panic!(
-                "closed controller entered"
-            ))
-            .is_err()
-        );
-        assert!(
-            !shutdown.started.load(Ordering::Acquire),
-            "approval must leave cleanup available"
-        );
-    }
-    #[test]
-    fn product_command_reservation_releases_on_failure_and_respects_document_close_ownership() {
-        let shutdown = Arc::new(ShutdownState::default());
-        let first = reserve_game_command(&shutdown).unwrap();
-        assert!(reserve_game_command(&shutdown).is_err());
-        drop(first);
-        assert!(!shutdown.command_operation.load(Ordering::Acquire));
-        shutdown.file_operation.store(true, Ordering::Release);
-        assert!(reserve_game_command(&shutdown).is_err());
-        shutdown.file_operation.store(false, Ordering::Release);
-        shutdown.close_requested.store(true, Ordering::Release);
-        assert!(reserve_game_command(&shutdown).is_err());
-        shutdown.close_requested.store(false, Ordering::Release);
-        assert!(reserve_game_command(&shutdown).is_ok());
-    }
-    #[test]
-    fn shogi_product_close_uses_native_document_revision_and_stops_execution() {
-        use mshogi_desktop_session::{GameKind, NativeSide};
-        let controller = controller();
-        let shutdown = Arc::new(ShutdownState::default());
-        let receipt = with_controller(&controller, &shutdown, |c| {
-            c.shared_new_game(
-                c.shared_open_token(),
-                GameKind::Shogi,
-                NativeSide::Shogi(mshogi_desktop_session::ShogiSide::Sente),
-            )
-        })
-        .unwrap()
-        .unwrap()
-        .1;
-        let deadline = Instant::now() + Duration::from_secs(20);
-        while receipt.completion().is_none() {
-            with_controller(&controller, &shutdown, DesktopController::shared_snapshot).unwrap();
-            assert!(Instant::now() < deadline);
-            thread::sleep(Duration::from_millis(1));
-        }
-        receipt.completion().unwrap().unwrap();
-        let native =
-            with_controller(&controller, &shutdown, DesktopController::shared_snapshot).unwrap();
-        assert_eq!(native.game, GameKind::Shogi);
-        assert!(native.document.dirty);
-        let paused =
-            with_controller(&controller, &shutdown, DesktopController::pause_for_close).unwrap();
-        assert!(paused.document.revision >= native.document.revision);
-        shutdown.close_requested.store(true, Ordering::Release);
-        assert!(
-            with_controller(&controller, &shutdown, |c| approve_close(
-                c,
-                &shutdown,
-                native.document.revision
-            ))
-            .unwrap()
-            .is_err()
-        );
-        with_controller(&controller, &shutdown, |c| {
-            approve_close(c, &shutdown, paused.document.revision)
-        })
-        .unwrap()
-        .unwrap();
-        assert!(shutdown.close_approved.load(Ordering::Acquire));
     }
 }

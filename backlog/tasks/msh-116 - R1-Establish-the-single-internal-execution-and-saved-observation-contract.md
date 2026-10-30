@@ -1,11 +1,11 @@
 ---
 id: MSH-116
 title: 'R1: Establish the single internal execution and saved-observation contract'
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-30T12:06:00Z'
-updated_date: '2026-10-30T14:37:00Z'
+updated_date: '2026-10-30T15:02:00Z'
 labels:
   - architecture-migration
   - planning
@@ -31,20 +31,20 @@ Owner-approved MSH-115 migration stage; shared integration ownership supports MS
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Exactly one current tagged internal request/response family and submit/poll path serves actual Chess/Shogi/Xiangqi consumers. Remove Legacy/Shared dual transport, V2 wrapper conversion, chess_adapter and unknown-version legacy-shape fallback after all callers migrate; standard UCI/USI/Xiangqi interoperability remains unchanged.
-- [ ] #2 Complete submitted game/profile/schema/history, purpose, selected prefix, request/session/process identities and limits bind acceptance. Moves, claims/declarations, concluded games, incomplete/Unknown, failure and Chess Full remain native-distinct; no fabricated fallback/score/outcome or revived retired work.
-- [ ] #3 Durable observation structures, validators, fixtures, desktop/archive consumers and actual child entry points migrate with the transport. Observations retain exact native target/result/provenance as historical data; current-stage complete Save/Open works without preserving an old execution parser.
-- [ ] #4 Actual encoded request/response/diagnostic limits, bounded queues/watchdogs/cleanup, cancellation/replacement and stale-result protection remain verified through real subprocess tests, including same-position/different-history and wrong purpose/limits/identity/selection.
-- [ ] #5 R1 and R2 may coordinate saved-observation/codec cutover as independently reviewed subunits under one bounded integration owner if separate landing would create incomplete persistence or throwaway formats. Keep an acyclic task dependency, record exact subunit evidence, and do not mark either Done with unsupported criteria or leave a permanent adapter.
-- [ ] #6 Focused native/consumer regressions and proportionate independent review support all acceptance criteria at exact revisions; applicable CI and normal integration/push are recorded with passed/failed/not-run/platform distinctions. Historical evidence remains unchanged; obsolete interface-only tests are replaced by semantic tests rather than preserving removed APIs. No next stage starts automatically.
+- [x] #1 Exactly one current tagged internal request/response family and submit/poll path serves actual Chess/Shogi/Xiangqi consumers. Remove Legacy/Shared dual transport, V2 wrapper conversion, chess_adapter and unknown-version legacy-shape fallback after all callers migrate; standard UCI/USI/Xiangqi interoperability remains unchanged.
+- [x] #2 Complete submitted game/profile/schema/history, purpose, selected prefix, request/session/process identities and limits bind acceptance. Moves, claims/declarations, concluded games, incomplete/Unknown, failure and Chess Full remain native-distinct; no fabricated fallback/score/outcome or revived retired work.
+- [x] #3 Durable observation structures, validators, fixtures, desktop/archive consumers and actual child entry points migrate with the transport. Observations retain exact native target/result/provenance as historical data; current-stage complete Save/Open works without preserving an old execution parser.
+- [x] #4 Actual encoded request/response/diagnostic limits, bounded queues/watchdogs/cleanup, cancellation/replacement and stale-result protection remain verified through real subprocess tests, including same-position/different-history and wrong purpose/limits/identity/selection.
+- [x] #5 R1 and R2 may coordinate saved-observation/codec cutover as independently reviewed subunits under one bounded integration owner if separate landing would create incomplete persistence or throwaway formats. Keep an acyclic task dependency, record exact subunit evidence, and do not mark either Done with unsupported criteria or leave a permanent adapter.
+- [x] #6 Focused native/consumer regressions and proportionate independent review support all acceptance criteria at exact revisions; applicable CI and normal integration/push are recorded with passed/failed/not-run/platform distinctions. Historical evidence remains unchanged; obsolete interface-only tests are replaced by semantic tests rather than preserving removed APIs. No next stage starts automatically.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -63,4 +63,16 @@ Implementation now uses one protocol4 ExecutionRequest{protocol,context}/Executi
 Final current local controller suite148/148PASS (80.03s), externalUCI/USI/Xiangqi29/29PASS; relevant alltarget/allfeatureClippyPASS, format/diff/doctorPASS. Source/deletion review approved with no material findings. Resource measurements include currentwire: Chess4096events request573986/response574161;Shogi320 request80074/response80399;Xiangqi1024events request253992/response254436; no limit changes. Currentarchive warning89events32obs834832bytes/reopen323ms; acceptedcount103events7obs227613bytes/709ms. Fullsource/verification detail docs/review/execution-migration-116.md. Current source commit and CI next; do not markDone before evidence.
 
 Final verification-feature snapshot audit removed remaining old framing in255 capacity.json observations via actual native generator. Existing7Xiangqi snapshots refresh native Take back capability only. Separate reviewer compared all255 prior/current native semantics and metadata, noloss; independently9HistorytestsPASS. RootfocusedAnalysis/History26PASS andTypeScriptPASS. No old execution identifiers in productioncallers and no old observation framing in currentfrontend snapshots. Historicalevidencefilesunchanged; no R2 taskactivated.
+
+Reviewed source integrated and pushed on codex/rewrite at900544cf813ebb6b11428ac0fc9d5d45399dee1f. Independent commit audit confirms reviewed source/deletions and no later-stage implementation. Exact native CI41073291155 and desktop/packageCI41073291104 running. No AC/DoD marked complete while CI/evidence pending. Current contract/evidence doc links resolve; checkout source remains unchanged. One integrator only; no task117activation.
+
+At exactsource900544c, LinuxDesktop41073291104/job124122703356 PASSED actual14GUIphases. Downloaded artifact12986746658 (sha256:df89bd78b0cf928023d21d8df9759e67c7595b9deee566db3bd30ac6beb357e1). Root and separate reviewer audited229GUIhashes,13normalmanifestfiles,QAdebhash,14pre-teardownnativeexitproofs, normal16QAmarkerexclusions. Actual savedChess/Shogi ordinary/history and256-capacity observations allsemanticschema1,nooldresponse/protocolfields; stoppedreopen/exactprefix/ReturnLive/Resume verified. Packagedengineactualprotocol4 turn/analysis/FullUnknown verified. NativeLinux/macOSCIgreen; WindowsnativeandpackageCIpending. No newXiangqiGUIorMacGUIclaim. Selected artifacts underdocs/review/evidence/msh116/linux; finalcriterionchecksawaitremainingCI.
+
+Final acceptance at production source900544cf813ebb6b11428ac0fc9d5d45399dee1f: Rust41073291155 and Desktop41073291104 each3/3platformjobsSUCCESS. Linux actual14packagedGUIphases,229artifacthashes and14nativepre-teardownexitproofs; Windows actual14phases,202hashes and14exitproofs audited independently. Durable schema1 observations verified in savedChess/Shogi histories and both256capacityarchives. Final fresh read-only reviewer supportsAC1-6 with no material findings. CI fullfrontend241PASS; native148,engine39,console30,externalprotocol29,verifier41 and other focused checks retained in docs/review/execution-migration-116.md. Mac package/engine/nativeCI only; no newMac orXiangqiGUI claim. No production changes after900544; final task/docs/artifact reconciliation is evidence-only. Source integrated/pushed normally; no permanent execution adapter, no R2 activation, no new worktree. MSH112 ownership unchanged. All sixAC/fourDoD supported by linked criterion matrix and actual review;117 next-ready remains unstarted.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Completed R1 on codex/rewrite at reviewed production source900544cf813ebb6b11428ac0fc9d5d45399dee1f. One strict protocol4 ExecutionRequest/Response and submit/poll path now serves actual Chess/Shogi/Xiangqi consumers; obsolete wire families, Chess conversion adapter, fallback and paired bridge APIs deleted. Durable schema1 observations contain native semantic context/result rather than transport framing; controllers, archives, validators, fixtures, frontend and package verifiers migrated without loss of native history, exact evidence or Take back lineages. Current Save/Open works without starting117. Native semantics, identity/limits, cancellation/cleanup and external protocols preserved. Independent read-only review found no material remaining issue; all6native/desktopCIjobs green with actual Linux/Windows14-phase packageGUI evidence. Full evidence, exact revisions, resource measurements, development failures and platform limits: docs/review/execution-migration-116.md and evidence/msh116. No newMac/XiangqiGUI claim; no rules/strength change. Outer archive consolidation117, ownership118 and frontend119 remain later stages;117 dependency-ready and unstarted. Final evidence-only reconciliation follows the already integrated/pushed source; no other task closed.
+<!-- SECTION:FINAL_SUMMARY:END -->

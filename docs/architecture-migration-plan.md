@@ -204,3 +204,17 @@ its unrecoverable absent-versus-disabled distinction remain explicit in the
 [triage evidence](review/linux-gui-triage-122.md). No architecture migration or
 product behavior changed. MSH-116/R1 is the next dependency-ready assignment,
 still unstarted; no new dependency gate is added. MSH-111/112 ownership is unchanged.
+
+## R1 completion handoff — 2026-10-30
+
+The historical planning and P9 handoffs above remain intact. MSH-116/R1 is now
+complete at production source `900544cf813ebb6b11428ac0fc9d5d45399dee1f`: one
+protocol4 native-tagged execution family, semantic schema1 durable observations,
+real consumer migration and obsolete transport deletion. Independent source,
+persistence and artifact review found no material remaining finding; three-platform
+Rust/Desktop CI and actual Linux/Windows Chess/Shogi package GUI checks passed.
+See the [exact evidence and limitations](review/execution-migration-116.md).
+Current-stage Save/Open is complete without activating R2. MSH-117 is next
+ready but unstarted; outer archive consolidation, runtime/document ownership and
+shared frontend work retain their existing later-stage ownership. No new macOS
+or Xiangqi GUI campaign is claimed, and MSH-112 remains separate.

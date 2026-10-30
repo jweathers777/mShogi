@@ -1,0 +1,139 @@
+{
+  "run": 41063294647,
+  "job": 124088161908,
+  "artifact_id": 12980863590,
+  "artifact_name": "desktop-ubuntu-24.04",
+  "artifact_bytes": 72999292,
+  "reported_artifact_digest": "sha256:d46fb1d99f1ed98b1a5cc6a8712ceb12313ca389607042b46aa03d8f1fcb38e5",
+  "source": "1d84232c425270a6517711dbaa598106fc08aa31",
+  "retained_files": [
+    {
+      "path": "gui-evidence/gui-report.json",
+      "bytes": 467682,
+      "sha256": "625f759a3a343ea1f68dd40507b068c76195258c634046a8b1fa8d5b758bfa69"
+    },
+    {
+      "path": "gui-driver-provenance.json",
+      "bytes": 1381,
+      "sha256": "89c80d207c58ba6fb6fafa58cf2dae1cf8e5a5086cdb7bc606cc3e6b20e73ccc"
+    },
+    {
+      "path": "gui-driver-boundary/summary.json",
+      "bytes": 5577,
+      "sha256": "4bbb185e2708a94541602e7b35e79ec9e3fa4204e4f5f4a5e4b577764e9a55d0"
+    },
+    {
+      "path": "gui-packages/normal/manifest.json",
+      "bytes": 1789,
+      "sha256": "76811cb286730f24ade3d3b59656c290d5a077fe7ccb7f0cf40746f37959e65c"
+    },
+    {
+      "path": "gui-packages/verification/manifest.json",
+      "bytes": 351,
+      "sha256": "8a062c808bd685821745a32089c1a7824bbc4ed577fb57639bee4e721580838e"
+    },
+    {
+      "path": "package-smoke.json",
+      "bytes": 4203,
+      "sha256": "2264fd2afbd7bcd15a31e9d1e9dd27e5f6b5cec2a73613e2e060aefe29197031"
+    },
+    {
+      "path": "gui-evidence/verification-standard-result.webview.png",
+      "bytes": 104166,
+      "sha256": "4c91a7269ff04864827db8dccd23252aadb99b15f2267540cc54753391ce679a"
+    },
+    {
+      "path": "gui-evidence/verification-standard-result.desktop.png",
+      "bytes": 117136,
+      "sha256": "09b006d40c86b09e5081e05ab41527c9196bf3d90f701a851b633305fdfb0e59"
+    },
+    {
+      "path": "gui-evidence/verification-standard-result.dom.json",
+      "bytes": 1656,
+      "sha256": "562c29723344803420716637e69a3057d3b84559b3a0b23aa09e0a31f5a76da0"
+    },
+    {
+      "path": "gui-evidence/verification-standard-engine-failure.webview.png",
+      "bytes": 107428,
+      "sha256": "cfedafa8155b3799d36c813537d8f0420defa88cf5dddf826e3da0d2de454e6f"
+    },
+    {
+      "path": "gui-evidence/verification-standard-engine-failure.desktop.png",
+      "bytes": 120653,
+      "sha256": "24b181b5c083cb0cce8b501ab46b72bf1fe3374dfea21df83e6218c9f72daec4"
+    },
+    {
+      "path": "gui-evidence/verification-standard-engine-failure.dom.json",
+      "bytes": 1744,
+      "sha256": "9f41364e794a6ac4a7df0f68afac9fb2241fe67c7b619aa04f5aae353aaac248"
+    },
+    {
+      "path": "gui-evidence/normal-native-close-guard.webview.png",
+      "bytes": 123037,
+      "sha256": "ea5f4fb6aac5b673012c1a84d3dc718cd32cc89a2e399ae85a25f2285aafe486"
+    },
+    {
+      "path": "gui-evidence/normal-native-close-guard.desktop.png",
+      "bytes": 131224,
+      "sha256": "b89c0dc73e102eae51745b7412bc70aecd6112aa802879716003b6d75cda0300"
+    },
+    {
+      "path": "gui-evidence/normal-native-close-guard.dom.json",
+      "bytes": 2726,
+      "sha256": "ab69f391d430f13c69a6b48fcca0ff96720c85634816cf72332dfb2dbea966fc"
+    },
+    {
+      "path": "gui-evidence/normal-shogi-native-close-guard.webview.png",
+      "bytes": 137525,
+      "sha256": "9170d25219b0245d03ba43c9c7b438ce1bec3297d6dcca16190487e4c394cdd8"
+    },
+    {
+      "path": "gui-evidence/normal-shogi-native-close-guard.desktop.png",
+      "bytes": 144561,
+      "sha256": "5eccd96ee6bb97822c3b286769cc20a1c0d400f63a25f9022f57c02f07b21ec0"
+    },
+    {
+      "path": "gui-evidence/normal-shogi-native-close-guard.dom.json",
+      "bytes": 2401,
+      "sha256": "a956e32ff092764d2a3903c2c9f20793b13d1d1893c0d0e4bdaad476095f5a99"
+    },
+    {
+      "path": "gui-evidence/verification-standard-driver.log",
+      "bytes": 347,
+      "sha256": "00a9c1b70dca2d9f1ff7d0363deb59fadfc7e3801a653dda641514f301a4c2db"
+    }
+  ],
+  "large_files": "Complete229-fileGUI evidence and normal/QA packages available in original artifact; selected files retained here.",
+  "locally_recorded_evidence": [
+    {
+      "path": "integrator-audit.json",
+      "bytes": 8904,
+      "sha256": "9b3ee7e61181c41ffbb513cda9ec738095534e8cacf704780f4cf68a4ec8347c"
+    },
+    {
+      "path": "independent-review.json",
+      "bytes": 1537,
+      "sha256": "47f9406d38aebffe687f9e5d8735e4207f1ef2002b67fc250611e14d0ddaa9b6"
+    },
+    {
+      "path": "desktop-ci.json",
+      "bytes": 14799,
+      "sha256": "7340be7caae3f65f9cec30ca54702d854b2d2b8d5fa40dba0630fbf397d021c1"
+    },
+    {
+      "path": "native-ci.json",
+      "bytes": 6905,
+      "sha256": "c4a2e4f4868d6106f77d78f0014eb89037c1dec8ce2ac352a7f2a66131718ff5"
+    },
+    {
+      "path": "linux-log-excerpt.txt",
+      "bytes": 5708,
+      "sha256": "016e7e4d90bc914c3a2178eb88fb682b5c550aa2f1c97ea9d6534d9c78b14754"
+    },
+    {
+      "path": "linux-log-provenance.json",
+      "bytes": 384,
+      "sha256": "9826f45e2a6095b77f56ef3a664e5a86c1277e8ab76a4629f5383d73afb74f27"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "run": 41063294647,
+  "job": 124088161908,
+  "command": "gh run view 41063294647 --job 124088161908 --log",
+  "full_log_bytes": 761974,
+  "full_log_sha256": "59f32f40c49a53912061ac58bc3948a9470955157e78489268feb50f229b2291",
+  "excerpt": "Selected numbered lines preserving actual commands, boundary-test results and native shutdown events; full log remains at referenced run."
+}

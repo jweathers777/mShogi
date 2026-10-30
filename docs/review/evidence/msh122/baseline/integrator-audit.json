@@ -1,0 +1,291 @@
+{
+  "method": "Root separately checked actual downloaded report, all referenced GUI/normal-manifest hashes, QA Deb hash, native pre-teardown shutdown events and normal host marker exclusion. Independent review recorded separately.",
+  "gui_file_hashes_checked": 229,
+  "normal_manifest_hashes_checked": 13,
+  "qa_deb_hash_verified": true,
+  "normal_host_qa_markers_absent": 16,
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "passed",
+      "native_shutdown": [
+        {
+          "at_utc": "2026-10-30T13:36:18.168358+00:00",
+          "operation": "Observe native shutdown before driver teardown",
+          "observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        }
+      ],
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "passed",
+      "native_shutdown": [
+        {
+          "at_utc": "2026-10-30T13:36:33.049549+00:00",
+          "operation": "Observe native shutdown before driver teardown",
+          "observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        }
+      ],
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "passed",
+      "native_shutdown": [
+        {
+          "at_utc": "2026-10-30T13:36:56.741002+00:00",
+          "operation": "Observe native shutdown before driver teardown",
+          "observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        }
+      ],
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "native_shutdown": [
+        {
+          "at_utc": "2026-10-30T13:36:59.782446+00:00",
+          "operation": "Observe native shutdown before driver teardown",
+          "observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        }
+      ],
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "native_shutdown": [
+        {
+          "at_utc": "2026-10-30T13:37:02.040424+00:00",
+          "operation": "Observe native shutdown before driver teardown",
+          "observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        }
+      ],
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed",
+      "native_shutdown": [
+        {
+          "at_utc": "2026-10-30T13:37:04.052298+00:00",
+          "operation": "Observe native shutdown before driver teardown",
+          "observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        }
+      ],
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "native_shutdown": [
+        {
+          "at_utc": "2026-10-30T13:37:09.860796+00:00",
+          "operation": "Observe native shutdown before driver teardown",
+          "observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        }
+      ],
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed",
+      "native_shutdown": [
+        {
+          "at_utc": "2026-10-30T13:37:13.110119+00:00",
+          "operation": "Observe native shutdown before driver teardown",
+          "observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        }
+      ],
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed",
+      "native_shutdown": [
+        {
+          "at_utc": "2026-10-30T13:37:17.683724+00:00",
+          "operation": "Observe native shutdown before driver teardown",
+          "observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        }
+      ],
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed",
+      "native_shutdown": [
+        {
+          "at_utc": "2026-10-30T13:37:21.122231+00:00",
+          "operation": "Observe native shutdown before driver teardown",
+          "observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        }
+      ],
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed",
+      "native_shutdown": [
+        {
+          "at_utc": "2026-10-30T13:37:24.174546+00:00",
+          "operation": "Observe native shutdown before driver teardown",
+          "observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        }
+      ],
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed",
+      "native_shutdown": [
+        {
+          "at_utc": "2026-10-30T13:37:27.712612+00:00",
+          "operation": "Observe native shutdown before driver teardown",
+          "observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        }
+      ],
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed",
+      "native_shutdown": [
+        {
+          "at_utc": "2026-10-30T13:37:31.817419+00:00",
+          "operation": "Observe native shutdown before driver teardown",
+          "observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        }
+      ],
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed",
+      "native_shutdown": [
+        {
+          "at_utc": "2026-10-30T13:37:39.968813+00:00",
+          "operation": "Observe native shutdown before driver teardown",
+          "observation": {
+            "host_alive": false,
+            "immediate_matching_processes": [],
+            "final_matching_processes": []
+          }
+        }
+      ],
+      "cleanup_isolation": {
+        "host_alive": false,
+        "matching_processes": [],
+        "scope": "Failure containment only; never native Quit evidence."
+      }
+    }
+  ],
+  "pending_pointer_observations": 0,
+  "final_guard_transport_closures_with_native_absence": 2
+}

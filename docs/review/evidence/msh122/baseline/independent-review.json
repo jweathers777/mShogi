@@ -1,0 +1,24 @@
+{
+  "reviewer": "/root/msh122_review",
+  "method": "Separate agent session with read-only source, actual original and baseline artifact review and independent local test/hash execution; recorded by integrator from reviewer messages, not a human review or second GUI campaign.",
+  "source_revision": "1d84232c425270a6517711dbaa598106fc08aa31",
+  "scope": [
+    "original full report and phase traceback",
+    "original DOM/screenshots and host/driver log",
+    "verifier and frontend regression diff",
+    "all41PythonGUItests independently executed",
+    "all14actualLinuxGUIphase results",
+    "229GUIand13normalmanifest hashes plusQAdeb independently checked",
+    "14nativepre-teardown shutdown proofs",
+    "actualstandardmissingengine/retry transcript anddesktopcapture"
+  ],
+  "material_findings": [],
+  "disposition": "Source and Linux evidence accepted. Exact original missing-versus-disabled branch remains unknown; controlled test demonstrates reachable readiness failure; new passing baseline is not timing diagnosis. Complete final CI/integration bookkeeping before Done.",
+  "excluded_claims": [
+    "No new Xiangqi GUI campaign",
+    "No inferred cross-platform GUI result",
+    "No product architecture migration",
+    "No MSH111 reopening or MSH112 fix"
+  ],
+  "final_consistency_review": "Reviewer verified final AC1\u20136 matrix,19 retained artifact file hashes and both current-source CI metadata records with all3jobs successful; no material mismatch. Approval supports Done and evidence-only normal commit/push."
+}

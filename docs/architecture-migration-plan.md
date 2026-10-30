@@ -193,3 +193,14 @@ The intended next bounded assignment is **MSH-122/P9**, High priority, before
 substantial refactoring. MSH-116/R1 is also dependency-ready without a mechanical
 P9 gate. Neither has been activated. Stop after normal planning integration and
 push; no architecture stage, Linux investigation, next variant or M5 work begins.
+
+## P9 completion handoff — 2026-10-30
+
+The planning-state statements above remain historical. MSH-122/P9 is now
+complete: verifier-only readiness correction at `1d84232c425270a6517711dbaa598106fc08aa31`,
+independent source/evidence review, actual Linux14-phase installed/packaged GUI
+baseline, and green three-platform Desktop/Rust CI. The original failed run and
+its unrecoverable absent-versus-disabled distinction remain explicit in the
+[triage evidence](review/linux-gui-triage-122.md). No architecture migration or
+product behavior changed. MSH-116/R1 is the next dependency-ready assignment,
+still unstarted; no new dependency gate is added. MSH-111/112 ownership is unchanged.

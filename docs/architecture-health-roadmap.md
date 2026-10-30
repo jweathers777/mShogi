@@ -1,3 +1,10 @@
+> Owner-approved target and shared-UI plan — 2026-10-30: design A-10/D-18 and
+> the [bounded implementation records](architecture-migration-plan.md) now supersede
+> earlier pending-target/implementation-task restrictions for planning. MSH-106
+> and MSH-115 remain Done with their historical reports/evidence unchanged.
+> R1–R6/P9 are Ready/unassigned and unstarted; no M4 closure or unrelated variant
+> dependency changes. This assignment stops after planning/integration.
+
 > Corrected pre-release policy — MSH-115, 2026-10-30: see the
 > [target architecture reassessment](review/architecture-target-115.md) and
 > accepted design A-09/D-17. Development-era internal APIs/save formats need

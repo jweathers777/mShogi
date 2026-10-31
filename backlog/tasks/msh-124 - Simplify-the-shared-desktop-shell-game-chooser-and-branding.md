@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-31T09:02:00Z'
-updated_date: '2026-10-31T13:54:00Z'
+updated_date: '2026-10-31T14:11:00Z'
 labels:
   - desktop
   - owner-approved-ux
@@ -66,4 +66,8 @@ Implementation checkpoint: one shared Analysis → Game Actions → Moves compos
 Implementation integrated/pushed checkpoint de5209d3ac0d987d42396a5b2e3bf4325800784d; final production ead30e672f2a2cf1747c02c8daa508babed3b7c2 adds only support paragraph wrapping found by actual GUI/independent visual review. Author full frontend272/25files PASS, strictTS PASS, external GUI-driver71 PASS. Independent source reviewer shell124_review executed141 focused checks +TS PASS; corrected DOM-order About trap finding resolved. Local actual normal all3 at1180 and separately labeled minimum760 package keyboard/history/full-focus checks PASS; final About normal/min wrapping/focus rechecked. Exact manifests, original failing/settling observations and successful captures preserved under docs/review/evidence/msh124/macos. CI and final independent visual/platform audit pending; AC/DoD remain unchecked until evidence complete.
 
 Initial Desktop CI41206493902 atde5209d: macOSpackagePASS; Linux/Windows12of15GUIphasesPASS/3FAIL. Exact report retained. Two failures were obsolete verification copy (historical read-only prose and Recorded native evidence); corrected probes now also require exact historical event/native mode/Return availability and accepted255/256 counts. Real cross-game minimum Analysis height mismatch: LinuxXq221vsChess200, WindowsXq229.046875vsChess200. Shared minimum232px reserves actual content in all3; strict cross-game geometry comparison unchanged. Root external73PASS; independent reviewer checked measured232correction as in-scope. Fresh actualminimumcaptures and CI required before closing finding.
+
+Finalproduction4a624d6c4f129ce774d385192fbbe6a9bdcf547a: freshMac232pxminimum all3captures align; independentreview22MacscreenshotsPASS, externaldriver73independentlyPASS. Finalnormal/QApackagesmoke+exactmanifests recorded. Actual finalMacnativeSELECTtypeahead s→Shogi,x→Xiangqi; retainedsidearrowstoRandom andkeyboardStart admittedBlackorientation/realRedenginefirstturn, no genericactorfallback. NativeCI41207699395 attempt1 separatelyfailed unchangedMac retirement355(LateReplyvsResourceLimit, matching72/76history) andLinuxearlyexit172(MissingResponse/BrokenpipevsUnexpectedExit, existing112). InitialdeNative41206493928all3PASS; noRust/Cargo/tauri diff. BothfocusedtestsPASS locally, notplatformfix. Independentnativefailureassessment preserved; rerun unavailablewhileWindowsmatrixactive, retryoncewhencomplete. RequiredfinalGUI CI41207699334 stillrunning; no prematureDone or nativeassertion/timeoutchanges.
+
+Desktop CI 41207699334 passes all three platforms at 4a624d6; actual Linux/Windows reports each pass 15/15 phases. Artifact audit verifies all 435 Linux and 396 Windows report files, all package-manifest entries, six whole-outline measurements per platform and exact common card rectangles at both sizes. Independent screenshot review then identified F-V03: Linux lacks the circled-i font glyph and shows an empty About box. This is not waived by green automation. Replace only that glyph with an inline SVG in the unchanged labeled 23px button; focused support/shell checks 18/18 pass, strict TypeScript passes. Final Linux vector-icon package capture and review required before Done. Native rerun remains separately pending; no native source changed.
 <!-- SECTION:NOTES:END -->

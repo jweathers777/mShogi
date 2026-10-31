@@ -57,7 +57,7 @@ export function ApplicationView({ snapshot, session, onNewGame, onOpen, blocked 
       unavailable={!exactPrefix ? "Analysis is unavailable between a move and its following event. Select a completed event or return to live." : undefined} />}
     history={<NativeHistory snapshot={snapshot} disabled={disabled} command={command} />}
     gameActions={<GameActions snapshot={snapshot} disabled={disabled || capacity} command={command} confirm={setConfirmation} />}
-    support={<button className="support-trigger" data-support-trigger aria-label="About mShogi" title="About mShogi" disabled={disabled} onClick={() => setSupportOpen(true)}>ⓘ</button>}
+    support={<button className="support-trigger" data-support-trigger aria-label="About mShogi" title="About mShogi" disabled={disabled} onClick={() => setSupportOpen(true)}><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.6" /><path d="M12 10v7" fill="none" stroke="currentColor" strokeWidth="1.8" /><circle cx="12" cy="7" r="1" fill="currentColor" /></svg></button>}
     overlays={<>{!blocked && supportOpen && <SupportDialog snapshot={snapshot} session={session} close={() => setSupportOpen(false)} />}{!blocked && confirmation && <Dialog title={confirmation.title} cancel={() => { if (!busy) setConfirmation(null); }}>
       <p>{confirmation.meaning}</p><div className="dialog-actions"><button data-cancel className="quiet" disabled={busy} onClick={() => setConfirmation(null)}>Cancel</button>
         <button className="danger" disabled={busy || JSON.stringify(confirmation.source.token) !== JSON.stringify(snapshot.token)} onClick={() => {

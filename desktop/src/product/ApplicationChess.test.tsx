@@ -40,7 +40,7 @@ it("persists orientation independently of the human side and displays the readab
 it.each([standardJson, shogiJson, xiangqiJson])("uses the same actual common section and board-slot ownership", fixture => {
   const { container } = app(fixture as GameSnapshot);
   expect(container.querySelectorAll(".shell-header")).toHaveLength(1);
-  expect([...container.querySelectorAll("[data-shell-section]")].map(n => n.getAttribute("data-shell-section"))).toEqual(["analysis", "history", "actions"]);
+  expect([...container.querySelectorAll("[data-shell-section]")].map(n => n.getAttribute("data-shell-section"))).toEqual(["analysis", "actions", "history"]);
   expect([...container.querySelector(".shell-game-area")!.children].map(n => n.getAttribute("data-game-slot"))).toEqual(["upper-player", "board", "lower-player", "footer"]);
   for (const name of ["New game", "Save", "Save as…", "Open…"]) expect(screen.getByRole("button", { name }).closest(".shell-header")).toBeTruthy();
   expect(screen.getByRole("heading", { name: "Untitled game" })).toBeTruthy();

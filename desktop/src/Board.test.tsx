@@ -193,14 +193,14 @@ it("keeps live inspection help in the shell footer without changing board select
   document.body.append(helpTarget);
   const onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue(inspectedPawn);
   const { container, unmount } = render(<Board pieces={standard.pieces} choices={standard.choices} version={0} orientation="white" disabled={false} humanOwner="white" onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} helpTarget={helpTarget} />);
-  expect(helpTarget.textContent).toContain("Select a piece");
+  expect(helpTarget.textContent).toContain("Arrows: move focus");
   expect(container.querySelector(".board-wrap .board-help")).toBeNull();
   fireEvent.click(square("e7"));
   await screen.findByText(/Inspecting Black pawn · Esc clears/);
   expect(helpTarget.querySelector(".movement-inspection-status")).not.toBeNull();
   expect(document.activeElement).toBe(square("e7"));
   fireEvent.keyDown(square("e7"), { key: "Escape" });
-  expect(helpTarget.textContent).toContain("Select a piece");
+  expect(helpTarget.textContent).toContain("Arrows: move focus");
   expect(onPlay).not.toHaveBeenCalled();
   unmount();
   expect(helpTarget.textContent).toBe("");

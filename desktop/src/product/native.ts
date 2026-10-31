@@ -76,7 +76,7 @@ export type XiangqiSnapshot = GameSnapshotBase & {
     offered_by: "red" | "black" | null;
     conclusion: unknown | null; pending: { reason: string; occurrences: number[] } | null;
     no_win_assessment: { kind: "proven_neither_can_win" | "proven_natural_win" | "unknown_exact_unavailable" | "unknown_exact_incomplete" | "failure"; winner?: "red" | "black"; witness?: string[]; reason?: string };
-    exact_observations: unknown[];
+    exact_observations: XiangqiExactEvidence[];
   };
   document: GameSnapshotBase["document"] & { settings: { game_kind: "xiangqi"; orientation: "red" | "black"; analysis_defaults: { depth: number; nodes: number } } };
 };
@@ -96,3 +96,16 @@ export type Operation =
   | { kind: "inspect"; event_index: number }
   | { kind: "analyze"; operation: AnalysisOperation }
   | { kind: "shogi_preferences"; settings: { orientation: string; analysis_defaults: { depth: number; nodes: number } } };
+
+// Existing native saved-report projection, not a frontend proof validator or
+// execution request. Exact source/provenance remains intact in About diagnostics.
+export interface XiangqiExactEvidence {
+  format: string; executor: string; source: unknown; purpose: string; goal: string;
+  event_count: number; historical_target: boolean; position_json: string;
+  native_session: number; native_generation: number;
+  limits: { states: number; transitions: number; millis: number; memory_bytes: number; witness_plies: number; traversal: string };
+  report: { verdict: { kind: "neither_can_win" } | { kind: "natural_win"; winner: "red" | "black"; reason: string; witness: string[] }
+    | { kind: "unknown"; reason: "cancelled" | "states" | "transitions" | "memory" | "deadline" | "witness" }
+    | { kind: "failure"; reason: string };
+    work: { states: number; expanded: number; transitions: number; cache_hits: number; cache_probes: number; max_branching: number; memory_bytes: number; elapsed_micros: number } };
+}

@@ -91,16 +91,20 @@ def saved_document_accepted(observation, expected_path):
             and observation["buttons"] == [
                 {"label": label, "enabled": True}
                 for label in ("New game", "Save", "Save as…", "Open…")]
+            and observation.get("io", {}).get("phase") == "complete"
+            and observation["io"].get("id", 0) > observation.get("after_io_id", 0)
             and not any(word in status.casefold()
                         for status in observation["statuses"]
                         for word in ("saving", "opening")))
 
 
 def opened_document_accepted(observation, expected_path):
-    """Require the current native Open receipt as well as settled saved state."""
+    """Require the public native Open receipt as well as settled saved state."""
     return (saved_document_accepted(observation, expected_path)
-            and any(status.startswith("Opened ") and "work stopped" in status
-                    for status in observation["statuses"]))
+            and observation.get("io", {}).get("phase") == "complete"
+            and observation["io"].get("id", 0) > observation.get("after_io_id", 0)
+            and (observation["io"].get("message") or "").startswith("Opened ")
+            and "work stopped" in observation["io"]["message"])
 
 
 def play_limit_matches(text, depth, nodes):
@@ -134,6 +138,19 @@ def moves_controls_settled(observed, event, orientation=None, changed_from=None)
             and bool(observed["orientation"])
             and (orientation is None or observed["orientation"] == orientation)
             and (changed_from is None or observed["orientation"] != changed_from))
+
+
+def focus_outline_visible(observed):
+    """Require the actual focused outline inside every scroll clip and viewport."""
+    if not isinstance(observed, dict) or not observed.get("focused") or not observed.get("focusVisible"):
+        return False
+    if observed.get("outlineStyle") in (None, "none", "hidden") or observed.get("outlineWidth", 0) <= 0:
+        return False
+    rect, clip = observed.get("outline", {}), observed.get("clip", {})
+    return (all(isinstance(rect.get(k), (float, int)) and isinstance(clip.get(k), (float, int))
+                for k in ("left", "right", "top", "bottom"))
+            and rect["left"] >= clip["left"] - .5 and rect["right"] <= clip["right"] + .5
+            and rect["top"] >= clip["top"] - .5 and rect["bottom"] <= clip["bottom"] + .5)
 
 
 def terminal_transport_closed(error):
@@ -638,6 +655,7 @@ class Journey:
             w.keyboard_activate(selector)
             self.wait_moves_controls(event, selector, selected["orientation"])
             self.assert_completed_cue(action, event, [origin], [destination])
+            self.assert_focus_outline(selector, game)
             self.capture(f"moves-{game}-{width}-keyboard-history")
             w.button("Return to live")
             wait(lambda: w.read("document.querySelector('.game-shell').dataset.historical") == "false", "explicit Return to live")
@@ -745,6 +763,81 @@ class Journey:
         self.record("Observe exact separate synthetic native acceptance", record)
         return record
 
+    def assert_focus_outline(self, selector, game):
+        observed=self.web.read("""(() => {
+            const e=document.querySelector(SELECTOR);if(!e)return null;
+            const r=e.getBoundingClientRect(),c=getComputedStyle(e),width=parseFloat(c.outlineWidth)||0,offset=parseFloat(c.outlineOffset)||0;
+            const pad=Math.max(0,width+offset),clip={left:0,top:0,right:innerWidth,bottom:innerHeight},ancestors=[];
+            for(let p=e.parentElement;p;p=p.parentElement){const s=getComputedStyle(p),b=p.getBoundingClientRect();
+                const cx=/^(auto|scroll|hidden|clip)$/.test(s.overflowX),cy=/^(auto|scroll|hidden|clip)$/.test(s.overflowY);
+                if(cx){clip.left=Math.max(clip.left,b.left+p.clientLeft);clip.right=Math.min(clip.right,b.left+p.clientLeft+p.clientWidth);}
+                if(cy){clip.top=Math.max(clip.top,b.top+p.clientTop);clip.bottom=Math.min(clip.bottom,b.top+p.clientTop+p.clientHeight);}
+                if(cx||cy)ancestors.push({tag:p.tagName,class:p.className,overflowX:s.overflowX,overflowY:s.overflowY,rect:{left:b.left,right:b.right,top:b.top,bottom:b.bottom}});
+            }
+            return {focused:document.activeElement===e,focusVisible:e.matches(':focus-visible'),outlineStyle:c.outlineStyle,outlineWidth:width,outlineOffset:offset,
+                outline:{left:r.left-pad,right:r.right+pad,top:r.top-pad,bottom:r.bottom+pad},clip,ancestors,viewport:{width:innerWidth,height:innerHeight}};
+        })()""".replace('SELECTOR',json.dumps(selector)))
+        assert focus_outline_visible(observed), {'game':game,'selector':selector,'focus':observed}
+        self.record('Actual keyboard Moves focus outline clears every overflow clip and viewport',{'game':game,'selector':selector,**observed})
+        return observed
+
+    def support_access(self, game):
+        """Keyboard-opened ordinary About, disclosures and focus restoration."""
+        w=self.web
+        w.keyboard_activate('[data-support-trigger]')
+        wait(lambda:w.has('.support-dialog'), 'keyboard About access')
+        assert w.read("document.querySelector('.support-dialog')?.getAttribute('role')")=='dialog'
+        assert w.read("document.querySelector('.support-dialog')?.contains(document.activeElement)")
+        summaries=w.read("[...document.querySelectorAll('.support-dialog summary')].map(e=>e.textContent)")
+        assert summaries==['Diagnostics','Font license'],summaries
+        w.keyboard_activate('.support-dialog details:first-of-type summary')
+        native=w.read("[JSON.parse(document.querySelector('[data-native-diagnostics]').textContent)]")[0]
+        assert all(k in native for k in ('token','profile','context','document','capacity','diagnostic','io','error','analysis','observations')),native
+        assert native['context']['game_kind']==game,native
+        w.keyboard_activate('.support-dialog details:first-of-type summary')
+        w.keyboard_activate('.support-dialog details:nth-of-type(2) summary')
+        license=w.text('.support-dialog details:nth-of-type(2)')
+        assert 'SIL OPEN FONT LICENSE' in license and 'mShogi' in license,license
+        assert w.read("!!document.querySelector('.support-dialog a[download][href]')")
+        size=w.read('({width:innerWidth,height:innerHeight})')
+        self.capture(f'support-{game}-{size["width"]}x{size["height"]}')
+        w.key('\ue00c')
+        wait(lambda:not w.has('.support-dialog'),'Escape closes About')
+        assert w.read("document.activeElement===document.querySelector('[data-support-trigger]')"),'About restores its invoker'
+        assert not w.has('[data-native-diagnostics]'),'diagnostics absent outside About'
+        self.record('Keyboard About / native diagnostics / font license / Escape / restored focus',{'game':game,'summaries':summaries,'profile':native['profile'],'token':native['token']})
+
+    def choose_game(self, game):
+        """Actual native-select/radio keys, at normal and minimum dimensions."""
+        w=self.web
+        expected=['chess','shogi','xiangqi']
+        observed=w.read("[...document.querySelector('[data-game-select]').options].map(e=>({value:e.value,label:e.textContent,disabled:e.disabled}))")
+        assert observed==[{'value':k,'label':label,'disabled':False} for k,label in zip(expected,['Chess','Shogi','Xiangqi'])],observed
+        def select(kind):
+            w.click('[data-game-select]');w.key('\ue011')  # Home
+            for _ in range(expected.index(kind)):w.key('\ue015')  # ArrowDown
+            w.key('\ue007')
+            wait(lambda:w.read("document.querySelector('[data-game-select]').value")==kind,'native game dropdown selection')
+        for width,height in ((1180,820),(760,650)):
+            self.viewport(width,height)
+            for kind in expected:
+                select(kind)
+                sides={'chess':['White','Black','Random'],'shogi':['Sente','Gote','Random'],'xiangqi':['Red','Black','Random']}[kind]
+                buttons=w.read("[...document.querySelectorAll('.side-choices button')].map(e=>({label:e.textContent,role:e.getAttribute('role'),selected:e.getAttribute('aria-checked'),chosen:e.classList.contains('chosen')}))")
+                assert [e['label'] for e in buttons]==sides and all(e['role']=='radio' for e in buttons),buttons
+                assert sum(e['chosen'] and e['selected']=='true' for e in buttons)==1,buttons
+                w.click(f'[data-side="{sides[0].lower()}"]')
+                w.key('\ue014')  # Right: existing native side radio behavior
+                wait(lambda:w.read("document.activeElement?.textContent")==sides[1],'side radio arrow selects second side')
+                assert w.read("document.activeElement?.getAttribute('aria-checked')")=='true'
+                w.key('\ue012')  # Left restores first side
+                wait(lambda:w.read("document.activeElement?.textContent")==sides[0],'side radio arrow returns first side')
+                assert w.read("document.activeElement?.classList.contains('chosen')")
+                self.capture(f'chooser-{kind}-{width}')
+                self.record('Supported-only native game dropdown preserves side radio keys and styling',{'game':kind,'options':observed,'sides':buttons,'viewport':[width,height]})
+        self.viewport(1180,820)
+        select(game)
+
     def shared_shell(self, game):
         layout = self.web.read("""(() => {
             const root=document.querySelector('.game-shell');
@@ -773,9 +866,11 @@ class Journey:
                 documentInHeader:document.querySelector('.shell-header')?.contains(document.querySelector('.shell-document')),
                 flipInHeading:document.querySelector('.shell-live-heading')?.contains(document.querySelector('.flip-button')),
                 headerButtons:[...document.querySelectorAll('.shell-file-actions button')].map(e=>e.textContent.trim()),
-                technicalCollapsed:document.querySelector('.shell-technical')?.open===false};
+                brand:document.querySelector('.brand-mark')?.textContent,gameLabel:document.querySelector('.product-brand p')?.textContent,
+                supportOutsideSidebar:!!document.querySelector('[data-support-trigger]')&&!document.querySelector('.shell-sidebar')?.contains(document.querySelector('[data-support-trigger]')),
+                rawDiagnosticsAbsent:!document.querySelector('[data-native-diagnostics],.shell-technical')};
         })()""")
-        assert layout['game'] == game and layout['sections'] == ['analysis','history','actions'], layout
+        assert layout['game'] == game and layout['sections'] == ['analysis','actions','history'], layout
         assert layout['themeIdentity'] == 'mshogi-dark' and all(layout['themes'].values()), layout
         assert layout['squareCount']=={'chess': 64, 'shogi': 81, 'xiangqi': 90}[game] and layout['allSquaresVisible'] and layout['pageWidth']<=layout['viewport']['width']+1, layout
         assert layout['inspectorButtons'] == [{'label':'Play details','pressed':'true'}, {'label':'Analyze position','pressed':'false'}], layout
@@ -785,7 +880,9 @@ class Journey:
         assert layout['positionStatus'] == 'Your turnLive position · 0 plies', layout
         expected_depth, expected_nodes = {'chess': (2, 20000), 'shogi': (2, 5000), 'xiangqi': (1, 128)}[game]
         assert play_limit_matches(layout['playLimits'], expected_depth, expected_nodes), layout
-        assert layout['documentInHeader'] and layout['flipInHeading'] and layout['technicalCollapsed'], layout
+        assert layout['documentInHeader'] and layout['flipInHeading'] and layout['supportOutsideSidebar'] and layout['rawDiagnosticsAbsent'], layout
+        assert layout['brand'] == '歩' and layout['gameLabel'] == game.upper(), layout
+        self.support_access(game)
         assert layout['headerButtons'] == ['New game','Save','Save as…','Open…'], layout
         assert layout['boardPanel']['left'] < layout['sidebar']['left'], layout
         for slot in layout['slots']:
@@ -815,12 +912,11 @@ class Journey:
         return self.web.read("""(() => {
             const text=s=>document.querySelector(s)?.textContent??null;
             const squareLabels=[...document.querySelectorAll('.square,.shogi-square,.xiangqi-point')].map(e=>e.getAttribute('aria-label')?.split(',').slice(0,2).join(','));
-            const pre=[...document.querySelectorAll('.shell-technical pre')].map(e=>{try{return JSON.parse(e.textContent);}catch{return null;}}).find(v=>v?.token);
             const root=document.querySelector('.game-shell');
             return {pieces:squareLabels,history:text('.shogi-history'),
                 status:text('[data-game-status]'),dirty:text('.document-dirty')?.toLowerCase(),
                 documentTitle:text('.shell-document h2'),runtime:text('.shell-runtime'),
-                analysis:text('.shell-analysis'),nativeToken:pre?.token??null,
+                analysis:text('.shell-analysis'),
                 event:root?.dataset.currentEvent,liveEvents:root?.dataset.liveEvents,historical:root?.dataset.historical,paused:root?.dataset.paused};
         })()""")
 
@@ -831,7 +927,7 @@ class Journey:
 
     def inspect_piece(self, game, origin, destination, label):
         """Real native query through normal UI; completing a route stays read-only."""
-        w=self.web; before=self.inspection_state()
+        w=self.web; native_before=self.native_diagnostics(); before=self.inspection_state()
         square=self.square if game=='chess' else self.xiangqi_point if game=='xiangqi' else self.shogi_square
         w.click(square(origin))
         wait(lambda: f'Inspecting {label}' in w.text('.movement-inspection-status'), 'native opponent movement inspection')
@@ -850,9 +946,13 @@ class Journey:
         w.key('\ue00c')
         wait(lambda:not w.has('.inspection-marker,.inspection-origin-ring'), 'Escape clears read-only inspection')
         self.assert_inspection_unchanged(before, 'Board inspection Escape preserves authoritative context')
-        self.record('Native movement inspection and complete read-only route preserve context',{'game':game,'origin':origin,'destination':destination,'label':label,'native_token':before['nativeToken'],'history':before['history']})
+        native_after=self.native_diagnostics()
+        for key in ('token','context','document','observations'):
+            assert native_before[key] == native_after[key], (key,native_before[key],native_after[key])
+        self.record('Native movement inspection and complete read-only route preserve context',{'game':game,'origin':origin,'destination':destination,'label':label,'native_token':native_before['token'],'history':before['history']})
 
     def file(self, kind, path, cancel=False, button_label=None):
+        self._file_receipt_floor = self.native_diagnostics()["io"]["id"]
         with ThreadPoolExecutor(max_workers=1) as pool:
             picker = pool.submit(self.native.choose_file, kind, None if cancel else path)
             self.web.button(button_label or ("Open…" if kind == "open" else "Save"))
@@ -929,12 +1029,15 @@ class Journey:
         return archive
 
     def document_file_state(self):
-        return self.web.read("""(() => ({
+        state = self.web.read("""(() => ({
                 path:document.querySelector('.shell-document h2')?.getAttribute('title')??null,
                 dirty:document.querySelector('.document-dirty')?.textContent??'',
                 buttons:[...document.querySelectorAll('.shell-file-actions button')].map(e=>({label:e.textContent.trim(),enabled:!e.disabled})),
                 statuses:[...document.querySelectorAll('.shell-document [role="status"]')].map(e=>e.textContent)
             }))()""")
+        state["io"] = self.native_diagnostics()["io"]
+        state["after_io_id"] = getattr(self, "_file_receipt_floor", 0)
+        return state
 
     def wait_saved(self, path):
         def accepted():
@@ -1100,7 +1203,7 @@ class Journey:
         if w.has(".document-guard"):
             w.button("Discard & continue")
         wait(lambda: w.has('[aria-label="New game"]'), "explicit game selection dialog")
-        w.click('[data-game="shogi"]')
+        self.choose_game('shogi')
         w.click(f'[data-side="{side}"]')
         w.click("[data-start-game]")
         wait(lambda: w.has(".shogi-application") and not w.has('[aria-label="New game"]'), "new native shogi product game")
@@ -1124,15 +1227,25 @@ class Journey:
         self.record("Complete native Xiangqi intersections, river and palaces without scrolling", geometry)
         return geometry
 
+    def native_diagnostics(self):
+        """Open the public support surface with real input; no hidden DOM/IPC."""
+        w=self.web
+        wait(lambda:w.read("!!document.querySelector('[data-support-trigger]:not(:disabled)')"), "support available after native work settles")
+        w.click('[data-support-trigger]')
+        wait(lambda:w.has('.support-dialog'), "public About dialog")
+        try:
+            w.click('.support-dialog details summary')
+            observed=w.read("[JSON.parse(document.querySelector('[data-native-diagnostics]').textContent)]")[0]
+            assert isinstance(observed,dict) and observed.get('token') and observed.get('context'), observed
+            return observed
+        finally:
+            w.click('.support-dialog [data-cancel]')
+            wait(lambda:not w.has('.support-dialog'), "Close public About dialog")
+
     def xiangqi_diagnostics(self):
-        """Read the normal Technical Details data; never invoke private IPC."""
-        # Normal diagnostics include an application `error` field. Wrap the
-        # observed value so it cannot be mistaken for a W3C error response by
-        # the driver boundary; do not change transport error classification.
-        observed = self.web.read("""[[...document.querySelectorAll('.shell-technical pre')]
-            .map(e=>{try{return JSON.parse(e.textContent);}catch{return null;}})
-            .find(v=>v?.token&&v?.profile==='mshogi.xiangqi.wxf2018.v1')??null]""")
-        return observed[0]
+        observed=self.native_diagnostics()
+        assert observed['profile']=='mshogi.xiangqi.wxf2018.v1',observed
+        return observed
 
     def xiangqi_events(self, count, selected=None, historical=False):
         expected = {"live": str(count), "historical": str(historical).lower()}
@@ -1198,7 +1311,7 @@ class Journey:
         if w.has(".document-guard"):
             w.button("Discard & continue")
         wait(lambda: w.has('[aria-label="New game"]'), "normal game selection dialog")
-        w.click('[data-game="xiangqi"]'); w.click('[data-side="red"]'); w.click('[data-start-game]')
+        self.choose_game('xiangqi'); w.click('[data-side="red"]'); w.click('[data-start-game]')
         wait(lambda: w.has(".shell-xiangqi") and not w.has('[aria-label="New game"]'), "native Xiangqi/Red document")
         self.viewport(1180, 820)
         self.xiangqi_events(0, selected=0)
@@ -1576,10 +1689,10 @@ class Journey:
             assert "declare" in commands and "take_back" in commands, commands
             assert commands.index("declare") < commands.index("take_back"), commands
             assert not body["current"]["payload"]["events"], body["current"]
-            old_token = self.inspection_state()["nativeToken"]
+            old_token = self.native_diagnostics()["token"]
             assert old_token is not None
             self.file("open", path)
-            wait(lambda: (token := self.inspection_state()["nativeToken"]) and token["document"] > old_token["document"],
+            wait(lambda: (token := self.native_diagnostics()["token"]) and token["document"] > old_token["document"],
                  "Take back archive Open installs fresh native document identity")
             self.shogi_events(0, selected=0, historical=False)
             wait(lambda: "Sente to move" in w.text("[data-game-status]"), "reopened Take back retains the native ongoing root")
@@ -1593,7 +1706,7 @@ class Journey:
             self.record("Declare / Take back / native Save Open / stopped identities / explicit Resume", {
                 "path": str(path), "sha256": digest(path), "retained_commands": commands,
                 "saved_native_events": len(body["current"]["payload"]["events"]),
-                "old_token": old_token, "fresh_token": self.inspection_state()["nativeToken"],
+                "old_token": old_token, "fresh_token": self.native_diagnostics()["token"],
                 "status": w.text("[data-game-status]")})
             self.capture("takeback-reopened-resumed")
         elif name == "shogi-concluded":

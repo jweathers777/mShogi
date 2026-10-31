@@ -268,3 +268,24 @@ R5 implementation or UX implementation is made by this planning assignment.
 Ordinary integration/push carries these planning records only; existing failed
 checks and completed evidence remain historical and unchanged. Stop after
 planning; no new owner decision is required by the recorded direction.
+
+## MSH-124 implementation handoff
+
+The shared shell now renders Analysis → Game Actions → Moves for all three
+implemented games. The header uses **歩** and one small **About mShogi** control;
+About contains keyboard-operable Diagnostics and Font license disclosures,
+full native context/provenance/resource facts, bundled notices and Quit. Fast
+Xiangqi board-win assessments and historical exact result meanings remain in
+Analysis, with Unknown, incomplete work, failure and possible versus forced
+wins distinguished. The game chooser is a labeled native select with exactly
+Chess/Shogi/Xiangqi; the existing native side radio buttons remain unchanged.
+
+Moves and the outer sidebar reserve eight pixels for the existing outward
+focus ring; focus reveal is restricted to sidebar controls and their nested
+scroll viewports. This corrects the MSH-123 lower-edge presentation boundary
+without adding a board controller or changing exact history selection.
+MSH-125 remains separate: Save/Save as/Open, replacement/quit guards, Resign
+confirmation, and Return to live followed by explicit Resume retain their
+existing behavior. Package evidence and independent review are recorded in the
+MSH-124 task and its review record; implementation alone does not establish
+platform or visual acceptance.

@@ -32,12 +32,13 @@ it("uses the accepted shell, actual native play limits and shared document/statu
   const { container } = app();
   expect(container.querySelector(".game-shell")?.getAttribute("data-theme")).toBe("mshogi-dark");
   expect(screen.getByRole("heading", { name: "mShogi", level: 1 })).toBeTruthy();
-  expect(screen.getByText("XIANGQI · UNTIMED")).toBeTruthy();
+  expect(screen.getByText("XIANGQI")).toBeTruthy();
   expect(screen.getByRole("heading", { name: "Untitled game" })).toBeTruthy();
   expect(container.querySelector("[data-document-state]")?.textContent).toBe("Unsaved");
   expect(container.querySelector("[data-play-limits]")?.textContent).toBe("Play limit: depth 1 · 128 nodes");
-  expect([...container.querySelectorAll("[data-shell-section]")].map((node) => node.getAttribute("data-shell-section"))).toEqual(["analysis", "history", "actions"]);
-  expect(container.querySelector(".shell-sidebar > details")?.textContent).toContain("About & technical details");
+  expect([...container.querySelectorAll("[data-shell-section]")].map((node) => node.getAttribute("data-shell-section"))).toEqual(["analysis", "actions", "history"]);
+  expect(container.querySelector(".shell-sidebar > details")).toBeNull();
+  expect(screen.getByRole("button", { name: "About mShogi" }).closest(".shell-header")).toBeTruthy();
   expect([...container.querySelector(".shell-game-area")!.children].map((node) => node.getAttribute("data-game-slot"))).toEqual(["upper-player", "board", "lower-player", "footer"]);
   expect(container.querySelector("[data-position-status]")?.textContent).toBe("Your turnLive position · 0 plies");
   for (const name of ["New game", "Save", "Save as…", "Open…"]) expect(screen.getByRole("button", { name }).closest(".shell-header")).toBeTruthy();
@@ -113,7 +114,7 @@ it("uses selected native observations only, preserving perspective, provenance a
   fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
   const current = document.querySelector<HTMLElement>(".shogi-analysis > .shogi-search-observation")!;
   expect(within(current).getByText("Red perspective · Complete")).toBeTruthy();
-  expect(within(current).getByText("Read-only analysis. No move or claim was played.")).toBeTruthy();
+  expect(within(current).getByText("No move or claim was played.")).toBeTruthy();
   rerender(<XiangqiApp {...props} snapshot={{ ...standard, historical: true, event_index: 1, search_observations: [{ ...view, selected: false, historical: true, score: null, status: "Node limit reached", completed_depth: null }] }} />);
   expect(document.querySelector(".shogi-analysis > .shogi-search-observation")).toBeNull();
   expect(screen.getByText("Saved observation · event 0")).toBeTruthy();
@@ -129,7 +130,7 @@ it("navigates exact native event indices and keeps partial command prefixes insp
   const history = { ...native, historical: true, paused: true, event_index: last.index - 1, capabilities: { ...native.capabilities, board_action: false, move_analysis: false }, xiangqi: { ...native.xiangqi, canonical_context_scope: "live_with_immutable_selection" as const, selected_canonical: null } };
   rerender(<XiangqiApp {...props} snapshot={history} />);
   fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
-  expect(screen.getByText(/Analysis is unavailable inside a recorded command/)).toBeTruthy();
+  expect(screen.getByText(/Analysis is unavailable between a move and its following event/)).toBeTruthy();
   expect((screen.getByRole("button", { name: "Start move analysis" }) as HTMLButtonElement).disabled).toBe(true);
   expect(screen.queryByRole("button", { name: "Resume play" })).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Return to live" }));

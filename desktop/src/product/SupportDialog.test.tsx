@@ -19,6 +19,9 @@ it.each([chess,shogi,xiangqi])("keeps common support outside the sidebar and ret
  const {container,session}=app(value);
  const support=screen.getByRole("button",{name:"About mShogi"});
  expect(support.closest(".shell-header")).toBeTruthy();
+ expect(support.querySelector('svg[aria-hidden="true"][focusable="false"]')).toBeTruthy();
+ expect(support.querySelectorAll("circle")).toHaveLength(2);
+ expect(support.textContent).toBe("");
  expect(container.querySelector(".shell-sidebar [data-native-diagnostics]")).toBeNull();
  expect(container.textContent).not.toMatch(/UNTIMED|Hollow rings|reconstructed|Native rules/);
  fireEvent.click(support);

@@ -164,7 +164,7 @@
    application sidebar. Focus reveal scrolls only these non-board viewports. */
 .game-shell .moves-scroll button { scroll-margin:8px; }
 .game-shell .brand-name { display:flex; align-items:center; gap:9px; }
-.game-shell.game-shell .support-trigger { padding:2px; width:23px; height:23px; border:0; background:transparent; color:var(--shell-muted); font-size:18px; line-height:1; }
+.game-shell.game-shell .support-trigger { display:grid; place-items:center; padding:2px; width:23px; height:23px; border:0; background:transparent; color:var(--shell-muted); font-size:18px; line-height:1; }
 .game-select-label { display:grid; gap:8px; font-size:13px; margin:18px 0; }
 .game-select-label select { width:100%; background:#243b42; color:#e7ece5; border:1px solid #56716f; border-radius:6px; font:inherit; padding:10px; }
 .product-dialog.support-dialog { max-height:calc(100dvh - 40px); overflow:auto; padding:24px; scroll-padding:10px; }

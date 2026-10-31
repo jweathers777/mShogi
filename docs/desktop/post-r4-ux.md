@@ -289,3 +289,14 @@ confirmation, and Return to live followed by explicit Resume retain their
 existing behavior. Package evidence and independent review are recorded in the
 MSH-124 task and its review record; implementation alone does not establish
 platform or visual acceptance.
+
+Final MSH-124 acceptance evidence is recorded in the
+[shared-shell review](../review/shell-124.md). Final production
+`91eb13e2451af77150b82b62a448bf97e9d5ac58` uses a decorative SVG About icon
+after actual Linux review found a missing font glyph; the original failed
+captures remain preserved. Exact common minimum Analysis geometry is supported
+by a shared 232px minimum, measured from actual Linux/Windows content. Final
+normal/minimum package comparisons, complete outward focus bounds, supported
+native select/side-button journeys, licenses and normal instrumentation
+exclusion are recorded separately for each platform. MSH-125 remains unstarted
+and MSH-121 retains integrated architecture/product acceptance.

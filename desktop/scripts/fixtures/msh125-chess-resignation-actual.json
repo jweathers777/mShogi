@@ -1,0 +1,351 @@
+{
+  "provenance": {
+    "kind": "actual_packaged_linux_gui_diagnostics",
+    "source_revision": "58a5d7ad95cba1724118a91d8ad4958fb1c287ed",
+    "ci_run": 41214429648,
+    "phase": "normal",
+    "failed_probe": "incorrect canonical-board-record inequality for match-only terminal event"
+  },
+  "before": {
+    "token": {
+      "revision": 90,
+      "document": 1,
+      "selection": 73,
+      "version": 75
+    },
+    "profile": "mshogi.chess.match.v1",
+    "context": {
+      "envelope_version": 1,
+      "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+      "payload": {
+        "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "history_origin": "standard_start",
+        "rules_profile": "mshogi.chess.match.v1",
+        "schema_version": 1,
+        "claim_policy": "explicit_only",
+        "events": [
+          {
+            "event": {
+              "action": "e2e4",
+              "kind": "move"
+            },
+            "ply": 0
+          },
+          {
+            "event": {
+              "action": "a7a5",
+              "kind": "move"
+            },
+            "ply": 1
+          }
+        ]
+      },
+      "game_kind": "chess",
+      "rules_profile": "mshogi.chess.match.v1",
+      "native_schema_version": 1
+    },
+    "chess_match": {
+      "rules_profile": "mshogi.chess.match.v1",
+      "schema_version": 1,
+      "time_control": "untimed",
+      "events": [
+        {
+          "reply": {
+            "rejection": null,
+            "conclusion": null,
+            "remaining_ns": null,
+            "active": "white",
+            "version": 1
+          },
+          "request": {
+            "version": 0,
+            "actor": "white",
+            "command": "start",
+            "at_ns": 0
+          }
+        },
+        {
+          "reply": {
+            "rejection": null,
+            "conclusion": null,
+            "remaining_ns": null,
+            "active": "black",
+            "version": 2
+          },
+          "request": {
+            "version": 1,
+            "actor": "white",
+            "command": {
+              "move": "e2e4"
+            },
+            "at_ns": 23267842704
+          }
+        },
+        {
+          "reply": {
+            "rejection": null,
+            "conclusion": null,
+            "remaining_ns": null,
+            "active": "white",
+            "version": 3
+          },
+          "request": {
+            "version": 2,
+            "actor": "black",
+            "command": {
+              "move": "a7a5"
+            },
+            "at_ns": 23510490209
+          }
+        }
+      ],
+      "initial_record_json": "{\"schema_version\":1,\"rules_profile\":\"mshogi.chess.match.v1\",\"initial_fen\":\"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\",\"history_origin\":\"standard_start\",\"claim_policy\":\"explicit_only\",\"events\":[]}"
+    },
+    "chess": {
+      "claims": [],
+      "in_check": false,
+      "searched_version": null,
+      "last_engine_turn": null,
+      "rules_mode": "m2",
+      "selected_conclusion": null,
+      "analysis": {
+        "status": "idle",
+        "operation": null,
+        "context": null,
+        "target": null,
+        "result": null,
+        "message": null
+      },
+      "live_conclusion": null,
+      "last_engine_result": null
+    },
+    "moves": {
+      "entries": [
+        {
+          "event_index": 2,
+          "action": "e2e4",
+          "number": 1,
+          "command_end": 2,
+          "notation": "e4",
+          "column": 0,
+          "board_ply": 1,
+          "command_start": 1
+        },
+        {
+          "event_index": 3,
+          "action": "a7a5",
+          "number": 1,
+          "command_end": 3,
+          "notation": "a5",
+          "column": 1,
+          "board_ply": 2,
+          "command_start": 2
+        }
+      ],
+      "last_action": {
+        "event_index": 3,
+        "action": "a7a5",
+        "origin": {
+          "square": "a7",
+          "kind": "board"
+        },
+        "effects": [],
+        "steps": [
+          "a5"
+        ]
+      },
+      "root": {
+        "label": "Starting position",
+        "numbering": "Moves from the starting position"
+      }
+    }
+  },
+  "after": {
+    "token": {
+      "revision": 92,
+      "document": 1,
+      "selection": 73,
+      "version": 76
+    },
+    "profile": "mshogi.chess.match.v1",
+    "context": {
+      "envelope_version": 1,
+      "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+      "payload": {
+        "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "history_origin": "standard_start",
+        "rules_profile": "mshogi.chess.match.v1",
+        "schema_version": 1,
+        "claim_policy": "explicit_only",
+        "events": [
+          {
+            "event": {
+              "action": "e2e4",
+              "kind": "move"
+            },
+            "ply": 0
+          },
+          {
+            "event": {
+              "action": "a7a5",
+              "kind": "move"
+            },
+            "ply": 1
+          }
+        ]
+      },
+      "game_kind": "chess",
+      "rules_profile": "mshogi.chess.match.v1",
+      "native_schema_version": 1
+    },
+    "chess_match": {
+      "rules_profile": "mshogi.chess.match.v1",
+      "schema_version": 1,
+      "time_control": "untimed",
+      "events": [
+        {
+          "reply": {
+            "rejection": null,
+            "conclusion": null,
+            "remaining_ns": null,
+            "active": "white",
+            "version": 1
+          },
+          "request": {
+            "version": 0,
+            "actor": "white",
+            "command": "start",
+            "at_ns": 0
+          }
+        },
+        {
+          "reply": {
+            "rejection": null,
+            "conclusion": null,
+            "remaining_ns": null,
+            "active": "black",
+            "version": 2
+          },
+          "request": {
+            "version": 1,
+            "actor": "white",
+            "command": {
+              "move": "e2e4"
+            },
+            "at_ns": 23267842704
+          }
+        },
+        {
+          "reply": {
+            "rejection": null,
+            "conclusion": null,
+            "remaining_ns": null,
+            "active": "white",
+            "version": 3
+          },
+          "request": {
+            "version": 2,
+            "actor": "black",
+            "command": {
+              "move": "a7a5"
+            },
+            "at_ns": 23510490209
+          }
+        },
+        {
+          "reply": {
+            "rejection": null,
+            "conclusion": {
+              "unresolved": {
+                "trigger": "resignation",
+                "actor": "white"
+              }
+            },
+            "remaining_ns": null,
+            "active": null,
+            "version": 4
+          },
+          "request": {
+            "version": 3,
+            "actor": "white",
+            "command": {
+              "resign": {
+                "witness": null
+              }
+            },
+            "at_ns": 29010631584
+          }
+        }
+      ],
+      "initial_record_json": "{\"schema_version\":1,\"rules_profile\":\"mshogi.chess.match.v1\",\"initial_fen\":\"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\",\"history_origin\":\"standard_start\",\"claim_policy\":\"explicit_only\",\"events\":[]}"
+    },
+    "chess": {
+      "claims": [],
+      "in_check": false,
+      "searched_version": null,
+      "last_engine_turn": null,
+      "rules_mode": "m2",
+      "selected_conclusion": {
+        "unresolved": {
+          "trigger": "resignation",
+          "actor": "white"
+        }
+      },
+      "analysis": {
+        "status": "idle",
+        "operation": null,
+        "context": null,
+        "target": null,
+        "result": null,
+        "message": null
+      },
+      "live_conclusion": {
+        "unresolved": {
+          "trigger": "resignation",
+          "actor": "white"
+        }
+      },
+      "last_engine_result": null
+    },
+    "moves": {
+      "entries": [
+        {
+          "event_index": 2,
+          "action": "e2e4",
+          "number": 1,
+          "command_end": 2,
+          "notation": "e4",
+          "column": 0,
+          "board_ply": 1,
+          "command_start": 1
+        },
+        {
+          "event_index": 3,
+          "action": "a7a5",
+          "number": 1,
+          "command_end": 3,
+          "notation": "a5",
+          "column": 1,
+          "board_ply": 2,
+          "command_start": 2
+        }
+      ],
+      "last_action": {
+        "event_index": 3,
+        "action": "a7a5",
+        "origin": {
+          "square": "a7",
+          "kind": "board"
+        },
+        "effects": [],
+        "steps": [
+          "a5"
+        ]
+      },
+      "root": {
+        "label": "Starting position",
+        "numbering": "Moves from the starting position"
+      }
+    }
+  }
+}

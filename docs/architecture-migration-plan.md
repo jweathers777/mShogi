@@ -1,5 +1,34 @@
 # Approved architecture migration plan
 
+## Current scheduling refinement — 2026-10-31
+
+MSH-116–119 and122 are Done; their evidence remains historical. MSH-120/R5
+and121/R6 remain unassigned Ready work, with unchecked criteria and no active
+implementation. The owner-approved [post-R4 UX contract](desktop/post-r4-ux.md)
+adds three bounded product tasks without reopening119 or expanding R5:
+
+| Task | Complete direct prerequisites | Scope |
+| --- | --- | --- |
+| MSH-123 | MSH-120 | Standard two-column Moves, sourced native display notation/exact event mapping and native completed-action cues |
+| MSH-124 | MSH-119 | Shared shell order/copy, supported-only game dropdown, unchanged side buttons, branding and support access |
+| MSH-125 | MSH-119 | Save/Load/New/Quit, direct Resign and one-step native browse Return while preserving intentional stops |
+| MSH-121 / R6 | MSH-116, MSH-117, MSH-118, MSH-119, MSH-120, MSH-123, MSH-124, MSH-125 | Existing independent integrated architecture/platform acceptance plus approved final product journeys |
+
+All three new tasks remain unassigned Ready future work with unchecked AC/DoD,
+not started implementation. R5's complete prerequisite stays MSH-119, and its
+existing criteria are unchanged. Last-move rendering is123's dependent product
+work, consuming R5's surviving controller/renderers. Suggested integration order
+is120,123,124,125,121;124/125 are independently dependency-ready and one integrator
+serializes their overlapping application files. No artificial123→124→125 graph
+chain or variant/M5 prerequisite is introduced. A-11/D-19 refines visible sidebar
+order and document workflows; technical evidence/native semantic safety remains.
+
+The original creation baseline below and later R1–R4 handoffs retain their
+then-current wording and evidence. Use this current overlay for task status,
+additional R6 prerequisites and approved post-R4 presentation requirements.
+
+## Original creation baseline — 2026-10-30
+
 Owner approval recorded 2026-10-30 against current `codex/rewrite` baseline
 `ed34855dc1e13eb96eeb1f79d0f5e7f08f07738b`. This assignment changes planning
 only: no production code, tests, runtime contract, codec, GUI driver or new game

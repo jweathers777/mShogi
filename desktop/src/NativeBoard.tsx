@@ -1,6 +1,7 @@
 // Concrete presentation adapter. Native side labels, ordering, hands and complete
 // choices arrive from Rust. No notation, promotion or legality is calculated here.
-import { Board, type BoardChoice, type NativeHand, type NativePiece } from "./Board";
+import { Board } from "./Board";
+import type { CompletedActionGeometry, NativeChoice, NativeHand, NativePiece } from "./boardPresentation";
 export interface NativeBoardSnapshot {
   token: { document: number; version: number; revision: number; selection: number };
   game: "chess" | "shogi" | "xiangqi";
@@ -11,20 +12,21 @@ export interface NativeBoardSnapshot {
   sides: { key: string; first_mover: boolean }[];
   pieces: NativePiece[];
   hands: NativeHand[];
-  choices: BoardChoice[];
+  choices: NativeChoice[];
   capabilities: { board_action: boolean };
 }
 export function nativeSnapshotIsNewer(current: NativeBoardSnapshot | null, incoming: NativeBoardSnapshot): boolean {
   if (current === null) return true;
   return incoming.token.document > current.token.document || (incoming.token.document === current.token.document && incoming.token.revision > current.token.revision);
 }
-export function NativeBoard({ snapshot, bottomSide, onPlay }: {
+export function NativeBoard({ snapshot, bottomSide, onPlay, completedAction }: {
   snapshot: NativeBoardSnapshot; bottomSide: string; onPlay: (action: string) => void;
+  completedAction?: CompletedActionGeometry | null;
 }) {
   if (snapshot.board.intersections) return <p role="alert">This game requires its native intersection renderer.</p>;
   const orientation = snapshot.orientations.find((o) => o.side.key === bottomSide);
   if (!orientation) return <p role="alert">Unsupported native orientation.</p>;
-  return <Board pieces={snapshot.pieces} choices={snapshot.choices} hands={snapshot.hands}
+  return <Board completedAction={completedAction ?? null} pieces={snapshot.pieces} choices={snapshot.choices} hands={snapshot.hands}
     geometry={{ ...snapshot.board, initialFocus: snapshot.board.initial_focus }}
     nativeOrientation={{ files: orientation.files, ranks: orientation.ranks, label: orientation.side.label, bottomOwner: orientation.side.key }}
     nativeFirstOwner={snapshot.sides.find((side) => side.first_mover)!.key}

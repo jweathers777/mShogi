@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, type FocusEvent } from "react";
-// Common non-board focus recovery. Native-choice selection and roving board
-// focus remain with the specialized renderers until MSH-120.
+// Common non-board focus recovery. Selection and roving board focus belong to
+// the shared native-choice controller; this hook recovers application controls.
 export function useApplicationFocus(blocked: boolean) {
   const scope = useRef("board");
   const last = useRef<Element | null>(null), suspended = useRef<Element | null>(null);

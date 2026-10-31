@@ -1,4 +1,4 @@
-import type { BoardChoice } from "../Board";
+import type { NativeChoice } from "../boardPresentation";
 import type { NativeBoardSnapshot } from "../NativeBoard";
 import type { Side } from "./native";
 
@@ -10,7 +10,7 @@ export interface MovementInspection extends InspectionContext {
   origin: string;
   side: Side;
   label: string;
-  choices: BoardChoice[];
+  choices: NativeChoice[];
   read_only: true;
 }
 export type InspectMovement = (origin: string) => Promise<MovementInspection | null>;

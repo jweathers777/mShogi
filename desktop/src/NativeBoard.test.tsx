@@ -54,11 +54,11 @@ it("keeps optional promotion/decline separate and cancels without a partial acti
   expect(onPlay).not.toHaveBeenCalled(); fireEvent.click(square("5d")); fireEvent.click(square("5c"));
   fireEvent.click(screen.getByRole("button", { name: "Do not promote" })); expect(onPlay).toHaveBeenCalledExactlyOnceWith("5d5c");
 });
-it("offers only native forced promotion and retires selection across replacement", () => {
+it("submits the sole native forced promotion and retires selection across replacement", () => {
   const { props, rerender, onPlay } = board(forced as NativeBoardSnapshot);
   fireEvent.click(square("5b")); fireEvent.click(square("5a"));
   expect(screen.queryByRole("button", { name: "Do not promote" })).toBeNull();
-  fireEvent.click(screen.getByRole("button", { name: "Promote" })); expect(onPlay).toHaveBeenCalledExactlyOnceWith("5b5a+");
+  expect(screen.queryByRole("dialog")).toBeNull(); expect(onPlay).toHaveBeenCalledExactlyOnceWith("5b5a+");
   fireEvent.click(square("5b"));
   const replacement = { ...props.snapshot, token: { ...props.snapshot.token, document: props.snapshot.token.document + 1 } };
   rerender(<NativeBoard {...props} snapshot={replacement} />); fireEvent.click(square("5a")); expect(onPlay).toHaveBeenCalledTimes(1);

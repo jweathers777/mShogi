@@ -1,6 +1,8 @@
-import { useId, useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useId } from "react";
+import type { CompletedActionGeometry } from "../boardPresentation";
+import { gridNeighbor, useNativeChoiceController } from "../interaction/useNativeChoiceController";
 import type { XiangqiSnapshot as GameSnapshot } from "./native";
-import { inspectionStatus, type InspectMovement, type MovementInspection } from "./movementInspection";
+import { inspectionStatus, type InspectMovement } from "./movementInspection";
 import { GameFrame } from "./GameFrame";
 import "../movement-inspection.css";
 import "./xiangqi.css";
@@ -17,6 +19,8 @@ export function xiangqiGlyph(kind: string, red: boolean): string {
 export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDisabled = disabled }: {
   snapshot: GameSnapshot; disabled: boolean; onPlay: (action: string) => void;
   onInspect?: InspectMovement; inspectionDisabled?: boolean;
+  // Separate read-only presentation input for MSH-123; never controller state.
+  completedAction?: CompletedActionGeometry | null;
 }) {
   const id = useId().replaceAll(":", "");
   const topology = snapshot.board.intersections;
@@ -24,68 +28,21 @@ export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspection
   const orientation = snapshot.orientations.find((o) => o.side.id.side === bottom) ?? snapshot.orientations[0]!;
   const points = orientation.ranks.flatMap((rank) => orientation.files.map((file) => `${file}${rank}`));
   const columns = orientation.files.length;
-  const [selected, setSelected] = useState<string | null>(null);
-  const [focused, setFocused] = useState(snapshot.board.initial_focus);
-  const [inspection, setInspection] = useState<MovementInspection | null>(null);
-  const [loading, setLoading] = useState(false), [announcement, setAnnouncement] = useState("");
-  const query = useRef(0), refs = useRef(new Map<string, SVGGElement>());
-  const hadFocus = useRef(false), lastDestination = useRef(snapshot.board.initial_focus);
-  const context = JSON.stringify(snapshot.token);
-  useLayoutEffect(() => {
-    query.current++; setSelected(null); setInspection(null); setLoading(false); setAnnouncement("");
-    if (hadFocus.current) refs.current.get(lastDestination.current)?.focus();
-    return () => { query.current++; };
-  }, [context, bottom, disabled, inspectionDisabled, onInspect]);
+  const interaction = useNativeChoiceController({
+    contextKey: JSON.stringify([snapshot.game, snapshot.profile, snapshot.edition, snapshot.token, bottom]),
+    choices: snapshot.choices,
+    origins: snapshot.pieces.map((piece) => ({ key: piece.square, owner: piece.owner, inspectable: true })),
+    humanOwner: snapshot.human.key, disabled, inspectionDisabled, onInspect, onPlay,
+    initialFocus: snapshot.board.initial_focus, boardKeys: points,
+    neighbor: (key, direction) => gridNeighbor(points, columns, key, direction),
+  });
+  const { selected, prefix, focused, inspection, inspectionPending: loading, announcement, destinations, completions, continuation, terminals } = interaction;
   if (!topology) return <p role="alert">The native intersection board is unavailable.</p>;
 
   const position = (point: string): [number, number] => {
     const index = points.indexOf(point);
     return [90 + (index % columns) * 100, 90 + Math.floor(index / columns) * 100];
   };
-  const choices = inspection?.choices ?? (disabled ? [] : snapshot.choices);
-  const candidates = choices.filter((choice) => choice.from === selected);
-  const destinations = candidates.map((choice) => choice.steps[0]);
-  function focus(point: string) { setFocused(point); refs.current.get(point)?.focus(); }
-  function clear(message = "Selection cancelled.") {
-    query.current++; setSelected(null); setInspection(null); setLoading(false); setAnnouncement(message);
-  }
-  function cancel() { const origin = selected ?? lastDestination.current; clear(); focus(origin); }
-  function select(point: string) {
-    if (disabled && (inspectionDisabled || !onInspect)) return;
-    hadFocus.current = true; focus(point);
-    const completions = candidates.filter((choice) => choice.steps.length === 1 && choice.steps[0] === point);
-    // An enemy occupying an actionable destination remains a capture, not a mode switch.
-    if (completions.length) {
-      if (inspection) { setAnnouncement("Read-only inspection destination. No action was submitted."); return; }
-      if (!disabled && completions.length === 1 && snapshot.choices.some((choice) => choice.action === completions[0]!.action)) {
-        lastDestination.current = point; clear("Move submitted."); onPlay(completions[0]!.action);
-      }
-      return;
-    }
-    if (selected === point) { clear(); return; }
-    const piece = snapshot.pieces.find((p) => p.square === point);
-    if (!disabled && piece?.owner === snapshot.human.key && snapshot.choices.some((choice) => choice.from === point)) {
-      clear(); setSelected(point); setAnnouncement("Piece selected. Choose a marked legal intersection.");
-    } else if (piece && onInspect && !inspectionDisabled) {
-      clear(); setSelected(point); setLoading(true); setAnnouncement("Loading read-only movement inspection.");
-      const request = ++query.current;
-      void onInspect(point).then((result) => {
-        if (request !== query.current) return;
-        setLoading(false);
-        if (result && result.origin === point) {
-          setInspection(result); setAnnouncement(`Inspecting ${result.label}. Read-only movement choices; no action can be played.`);
-        } else { setSelected(null); setAnnouncement("Movement inspection is unavailable for this position."); }
-      });
-    } else setAnnouncement("Select a piece or one of its marked destinations. Escape cancels.");
-  }
-  function key(event: KeyboardEvent<SVGGElement>, point: string) {
-    const offset = ({ ArrowLeft: -1, ArrowRight: 1, ArrowUp: -columns, ArrowDown: columns } as Record<string, number>)[event.key];
-    if (offset !== undefined) {
-      event.preventDefault(); const index = points.indexOf(point), next = index + offset;
-      if (next >= 0 && next < points.length && (Math.abs(offset) === columns || Math.floor(index / columns) === Math.floor(next / columns))) focus(points[next]!);
-    } else if (event.key === "Enter" || event.key === " ") { event.preventDefault(); select(point); }
-    else if (event.key === "Escape") { event.preventDefault(); cancel(); }
-  }
   const riverYs = topology.river_between_ranks.map((rank) => 90 + orientation.ranks.indexOf(String(rank)) * 100).sort((a, b) => a - b);
   const riverMiddle = (riverYs[0]! + riverYs[1]!) / 2;
   const board = <div className="xiangqi-board-frame">
@@ -114,10 +71,10 @@ export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspection
         return <g key={point} data-intersection={point} data-square={point} transform={`translate(${x} ${y})`}
           className={`xiangqi-point${selected === point && !inspection && !loading ? " selected" : ""}`}
           role="button" tabIndex={(points.includes(focused) ? focused : snapshot.board.initial_focus) === point ? 0 : -1}
-          aria-disabled={disabled && (inspectionDisabled || !onInspect)} aria-pressed={selected === point}
-          aria-label={`${point}, ${piece ? `${owner?.label ?? "Player"} ${piece.kind}` : "empty"}${selected === point ? inspection ? `, Inspecting ${inspection.label}` : loading ? ", loading movement inspection" : ", selected" : ""}${target ? inspection ? ", read-only inspection destination" : ", legal destination" : ""}`}
-          ref={(node) => { if (node) refs.current.set(point, node); else refs.current.delete(point); }}
-          onFocus={() => setFocused(point)} onClick={() => select(point)} onKeyDown={(event) => key(event, point)}>
+          aria-disabled={interaction.interactionDisabled} aria-pressed={selected === point}
+          aria-label={`${point}, ${piece ? `${owner?.label ?? "Player"} ${piece.kind}` : "empty"}${selected === point ? inspection ? `, Inspecting ${inspection.label}` : loading ? ", loading movement inspection" : ", selected" : ""}${target ? inspection ? ", read-only inspection destination" : ", legal destination" : ""}${prefix.includes(point) ? ", route step" : ""}`}
+          ref={(node) => interaction.register(point, node)}
+          onFocus={() => interaction.onFocus(point)} onClick={() => interaction.select(point)} onKeyDown={(event) => interaction.keyDown(event, point)}>
           <circle className="xiangqi-hit" r="49" />
           {piece && <g className={`xiangqi-piece ${owner?.id.side === "red" ? "red" : "black"}`} data-kind={piece.kind} data-owner={owner?.id.side} aria-hidden="true">
             <circle className="xiangqi-piece-shadow" cy="4" r="42" /><circle className="xiangqi-rim" r="42" />
@@ -132,14 +89,18 @@ export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspection
         </g>;
       })}
     </svg>
+    {completions.length > 0 && <div ref={interaction.completionRef} role="dialog" aria-modal="true" aria-label="Choose complete action" className="shogi-promotion xiangqi-completion" style={{ top: `${Math.floor(points.indexOf(interaction.completionTarget) / columns) < orientation.ranks.length / 2 ? 28 : 54}%` }} onKeyDown={interaction.completionKey}>
+      <strong>Complete action</strong><p>Choose the native action for this route.</p><div>{completions.map((choice) => <button key={choice.action} className="primary" onClick={() => interaction.chooseCompletion(choice.action)}>{choice.completion?.label ?? "Complete action"}</button>)}</div><button className="quiet" onClick={interaction.cancel}>Cancel selection</button>
+    </div>}
   </div>;
   const footer = <>
     <div className="shell-board-help"><div className={`board-help xiangqi-help${inspection || loading ? " movement-inspection-status" : ""}`}>
       <span>{inspection ? inspectionStatus(inspection.label) : loading ? "Loading read-only movement inspection…" : "Select a piece, then a marked intersection."}</span><span>Arrows · Enter · Esc</span>
     </div></div>
+    {continuation && <div className="shogi-route xiangqi-route" onKeyDown={(event) => { if (event.key === "Escape") { event.preventDefault(); interaction.cancel(); } }}><p>{announcement}</p>{terminals.length > 0 && !inspection && <button onClick={interaction.completeHere}>Complete action here</button>}<button onClick={interaction.cancel}>Cancel selection</button></div>}
     <span className="sr-only" role="status" aria-live="polite">{announcement}</span>
   </>;
   return <GameFrame className="xiangqi-stage" snapshot={snapshot} bottom={orientation.side} board={board} help={footer}
-    onFocusCapture={() => { hadFocus.current = true; }}
-    onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) hadFocus.current = false; }} />;
+    onFocusCapture={interaction.onFocusCapture}
+    onBlurCapture={interaction.onBlurCapture} />;
 }

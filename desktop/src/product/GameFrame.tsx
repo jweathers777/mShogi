@@ -3,8 +3,8 @@ import { GameArea, GamePositionStatus, PlayerArea } from "./ApplicationShell";
 import type { GameSnapshot, Side } from "./native";
 
 // Application-owned player/status placement; hands and board help remain native
-// renderer content. Selection and completion state stay with the existing boards
-// until MSH-120 replaces those controllers.
+// renderer content. The shared native-choice controller owns board interaction;
+// this frame owns no selection, inspection or completion state.
 export function GameFrame({ snapshot, bottom, board, help, upperContent, lowerContent, className = "", onFocusCapture, onBlurCapture }: {
   snapshot: GameSnapshot; bottom: Side; board: ReactNode; help: ReactNode;
   upperContent?: ReactNode; lowerContent?: ReactNode; className?: string;

@@ -54,12 +54,13 @@ it("focuses the readable native conclusion when claiming removes its control", (
   expect(document.activeElement).toBe(document.querySelector("[data-game-status]"));
   expect(document.activeElement?.textContent).toContain("Draw");
 });
-it("recovers Resume and selected-position remount focus to the existing native board controller", () => {
+it("recovers Resume and selected-position focus through the retained shared board controller", () => {
   const { props, rerender } = app({ ...standard, paused: true }); screen.getByRole("button", { name: "Resume play" }).focus();
   rerender(<ApplicationView {...props} snapshot={standard} />);
   const original = document.querySelector('[data-game-slot="board"] [tabindex="0"]'); expect(document.activeElement).toBe(original);
+  fireEvent.click(original!); expect(original?.getAttribute("aria-pressed")).toBe("true");
   rerender(<ApplicationView {...props} snapshot={{ ...standard, token: { ...standard.token, selection: standard.token.selection + 1 } }} />);
-  const current = document.querySelector('[data-game-slot="board"] [tabindex="0"]'); expect(current).not.toBe(original); expect(document.activeElement).toBe(current);
+  const current = document.querySelector('[data-game-slot="board"] [tabindex="0"]'); expect(current).toBe(original); expect(document.activeElement).toBe(current); expect(current?.getAttribute("aria-pressed")).toBe("false");
 });
 it("does not reclaim focus from a native close or replacement dialog", () => {
   const { props, rerender } = app(); screen.getByRole("button", { name: "New game" }).focus();

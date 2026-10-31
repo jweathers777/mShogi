@@ -85,6 +85,98 @@ class XiangqiBoardGeometryTests(unittest.TestCase):
                 self.journey(geometry).xiangqi_board_fits()
 
 
+class SyntheticFullBoardEvidenceTests(unittest.TestCase):
+    def geometry(self, orientation="white", width=1180, height=820):
+        return {"viewport": {"width": width, "height": height}, "positionCount": 256,
+                "uniquePositions": 256, "positions": [f"{file}{rank}" for file in "abcdefghijklmnop" for rank in range(1, 17)],
+                "fullyVisible": True, "clippedPositions": [], "boardVisible": True,
+                "orientationLabel": f"Synthetic development strider board, 16 by 16; invented rules, {orientation} at bottom",
+                "board": {"left": 20, "top": 160, "right": 460, "bottom": 600, "width": 440, "height": 440},
+                "pageWidth": width, "boardAncestors": []}
+
+    def journey(self, observed):
+        journey = object.__new__(module.Journey)
+        journey.web, journey.record = Mock(), Mock()
+        journey.web.read.return_value = observed
+        return journey
+
+    def test_all256_positions_must_already_fit_at_both_supported_sizes_and_orientations(self):
+        for orientation in ("white", "black"):
+            for width, height in ((1180, 820), (760, 650)):
+                with self.subTest(orientation=orientation, viewport=(width, height)):
+                    geometry = self.geometry(orientation, width, height)
+                    journey = self.journey(geometry)
+                    self.assertEqual(journey.synthetic_board_fits(orientation), geometry)
+                    journey.web.command.assert_not_called()
+                    expression = journey.web.read.call_args.args[0]
+                    self.assertIn(".synthetic-board .square", expression)
+                    self.assertIn("getBoundingClientRect", expression)
+                    self.assertIn("getComputedStyle", expression)
+                    for mutation in ("scrollIntoView(", "scrollTo(", ".focus(", "dispatchEvent(", "invoke(", "scrollTop ="):
+                        self.assertNotIn(mutation, expression)
+
+    def test_incomplete_duplicate_clipped_or_scrolling_board_cannot_pass_the_geometry_probe(self):
+        changes = (
+            lambda data: data.update(positionCount=255),
+            lambda data: data.update(uniquePositions=255),
+            lambda data: data["positions"].__setitem__(0, data["positions"][1]),
+            lambda data: data["positions"].pop(),
+            lambda data: data.update(fullyVisible=False, clippedPositions=["p16"]),
+            lambda data: data.update(clippedPositions=["p16"]),
+            lambda data: data.update(boardVisible=False),
+            lambda data: data.update(pageWidth=data["viewport"]["width"] + 50),
+            lambda data: data.update(orientationLabel="Synthetic board, black at bottom"),
+        )
+        for change in changes:
+            geometry = self.geometry()
+            change(geometry)
+            with self.subTest(geometry=geometry):
+                with self.assertRaises(AssertionError):
+                    self.journey(geometry).synthetic_board_fits("white")
+
+    def record(self, actions):
+        return {"schema_version": 1, "rules_profile": "mshogi.synthetic.strider16.v1",
+                "initial_fixture": "strider16-capture-and-return-v1", "actions": actions}
+
+    def test_partial_or_cancelled_selection_requires_exactly_zero_native_actions(self):
+        journey = self.journey(self.record([]))
+        journey.web.text.return_value = "Version 1 · Accepted actions 0"
+        self.assertEqual(journey.synthetic_record([]), self.record([]))
+        journey.web.command.assert_not_called()
+
+    def test_terminal_prefix_is_not_confused_with_a_longer_complete_route(self):
+        journey = self.journey(None)
+        journey.web.read.side_effect = [self.record(["136>153>136"]), self.record(["136>153"])]
+        journey.web.text.return_value = "Version 2 · Accepted actions 1"
+        with patch.object(module.time, "sleep"):
+            self.assertEqual(journey.synthetic_record(["136>153"]), self.record(["136>153"]))
+        self.assertEqual(journey.web.read.call_count, 2)
+        journey.web.command.assert_not_called()
+
+    def test_equal_endpoint_routes_remain_distinct_in_native_acceptance(self):
+        journey = self.journey(None)
+        journey.web.read.side_effect = [self.record(["136>153>136"]), self.record(["136>135>136"])]
+        journey.web.text.return_value = "Version 4 · Accepted actions 1"
+        with patch.object(module.time, "sleep"):
+            self.assertEqual(journey.synthetic_record(["136>135>136"]), self.record(["136>135>136"]))
+        self.assertEqual(journey.web.read.call_count, 2)
+
+    def test_a_wrong_profile_root_or_schema_is_not_synthetic_acceptance(self):
+        for field, value in (("rules_profile", "mshogi.chess.match.v1"),
+                             ("initial_fixture", "different-root"), ("schema_version", 2)):
+            with self.subTest(field=field):
+                record = self.record([])
+                record[field] = value
+                with self.assertRaisesRegex(ValueError, "Unexpected synthetic native record identity"):
+                    self.journey(record).synthetic_record([])
+
+    def test_displayed_count_must_agree_exactly_without_accepting_a_numeric_prefix(self):
+        journey = self.journey(self.record(["136>153"]))
+        journey.web.text.return_value = "Version 12 · Accepted actions 10"
+        with self.assertRaises(AssertionError):
+            journey.synthetic_record(["136>153"])
+
+
 class CurrentDocumentInspectionTests(unittest.TestCase):
     def document(self, game="chess"):
         profile, edition = {

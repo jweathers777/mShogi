@@ -180,11 +180,13 @@ it("preserves actionable capture destination precedence over enemy-origin inspec
   render(<Board pieces={standard.pieces} choices={[{ action: "capture-contract", from: "e2", steps: ["e7"], completion: null }]} version={0} orientation="white" disabled={false} humanOwner="white" onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
   fireEvent.click(square("e2")); fireEvent.click(square("e7")); expect(onPlay).toHaveBeenCalledExactlyOnceWith("capture-contract"); expect(onInspect).not.toHaveBeenCalled();
 });
-it("switches from an inspection capture marker to the friendly piece's actionable choices", async () => {
+it("keeps a marked inspection destination read-only, then permits explicit friendly switching", async () => {
   const onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue({ ...inspectedPawn, choices: [{ action: "inspection-capture-contract", from: "e7", steps: ["e2"], completion: null }] });
   render(<Board pieces={standard.pieces} choices={standard.choices} version={0} orientation="white" disabled={false} humanOwner="white" onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
   fireEvent.click(square("e7")); await screen.findByText(/Inspecting Black pawn · Esc clears/);
-  fireEvent.click(square("e2")); expect(square("e2").getAttribute("aria-label")).toContain("selected"); expect(square("e4").getAttribute("aria-label")).toContain("legal destination"); expect(onPlay).not.toHaveBeenCalled();
+  fireEvent.click(square("e2")); expect(square("e4").getAttribute("aria-label")).not.toContain("legal destination"); expect(onPlay).not.toHaveBeenCalled();
+  fireEvent.keyDown(square("e2"), { key: "Escape" }); expect(document.activeElement).toBe(square("e7"));
+  fireEvent.click(square("e2")); expect(square("e4").getAttribute("aria-label")).toContain("legal destination"); expect(onPlay).not.toHaveBeenCalled();
 });
 it("keeps live inspection help in the shell footer without changing board selection or keyboard clearing", async () => {
   const helpTarget = document.createElement("div");
@@ -203,4 +205,24 @@ it("keeps live inspection help in the shell footer without changing board select
   unmount();
   expect(helpTarget.textContent).toBe("");
   helpTarget.remove();
+});
+
+it("retires completion focus to the board but never steals an unrelated input on native context changes", () => {
+  const { props, rerender } = board(promotion);
+  fireEvent.click(square("a7")); fireEvent.click(square("a8"));
+  expect(document.activeElement).toBe(screen.getByRole("button", { name: "queen" }));
+  rerender(<Board {...props} version={props.version + 1} />);
+  expect(screen.queryByRole("dialog")).toBeNull(); expect(document.activeElement).toBe(square("a8"));
+  const input = document.createElement("input"); input.setAttribute("aria-label", "Sidebar notes"); document.body.append(input); input.focus();
+  rerender(<Board {...props} version={props.version + 2} disabled />);
+  expect(document.activeElement).toBe(input); input.remove();
+});
+it("keeps completed-history geometry separate from current selection and inspection state", () => {
+  const { props, rerender, onPlay } = board();
+  fireEvent.click(square("e2"));
+  rerender(<Board {...props} completedAction={{ origin: { kind: "board", square: "b8" }, steps: ["c6"] }} />);
+  expect(square("e4").getAttribute("aria-label")).toContain("legal destination");
+  expect(square("b8").getAttribute("aria-pressed")).toBe("false");
+  expect(document.querySelector('[data-last-move]')).toBeNull();
+  fireEvent.click(square("e4")); expect(onPlay).toHaveBeenCalledExactlyOnceWith("e2e4");
 });

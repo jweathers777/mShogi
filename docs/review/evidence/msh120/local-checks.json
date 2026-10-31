@@ -1,0 +1,64 @@
+{
+  "production_source": "7ebab4648ade6d6be6da6220aefc0948558a23a8",
+  "fixture_correction_source": "39ab0c1b0a145a97c3bd980a2b216ba743cb8f0c",
+  "checks": [
+    {
+      "command": "cd desktop && npm run check",
+      "result": "passed",
+      "scope": "strict TypeScript"
+    },
+    {
+      "command": "cd desktop && npm test",
+      "result": "passed",
+      "tests": 252,
+      "files": 21,
+      "scope": "all frontend current production consumers"
+    },
+    {
+      "command": "cargo test --locked -p mshogi-desktop-session inspection",
+      "result": "passed",
+      "tests": 8,
+      "log": "r5-native-inspection.log",
+      "scope": "authoritative native inspection/history/stale consumers"
+    },
+    {
+      "command": "python3 -m unittest discover -s desktop/scripts -p 'test_gui*.py'",
+      "result": "passed",
+      "tests": 69,
+      "scope": "external verification driver boundaries, not actual GUI"
+    },
+    {
+      "command": "cd desktop && npm test -- --run src/verification/SyntheticApp.test.tsx src/interaction/useNativeChoiceController.test.tsx",
+      "result": "passed",
+      "tests": 23,
+      "source": "39ab exact source content",
+      "log": "r5-fixture-layout-tests.log",
+      "scope": "focused fixture/controller after CSS correction; actual layout established by packages"
+    },
+    {
+      "command": "cd desktop && npm test -- --run src/Board.test.tsx src/BoardRoutes.test.tsx src/NativeBoard.test.tsx src/interaction/useNativeChoiceController.test.tsx src/product/ShogiBoard.test.tsx src/product/XiangqiBoard.test.tsx src/product/useMovementInspection.test.tsx src/product/ApplicationFocus.test.tsx",
+      "result": "passed",
+      "reviewer": "separate reviewer agent /root/r4_independent",
+      "tests": 95,
+      "files": 8,
+      "log": "r5-independent-focused.log"
+    },
+    {
+      "command": "python3 -m unittest discover -s desktop/scripts -p test_gui_smoke.py",
+      "result": "passed",
+      "reviewer": "separate reviewer agent /root/r4_independent",
+      "tests": 56,
+      "log": "r5-independent-driver.log"
+    },
+    {
+      "command": "backlog doctor (pinned1.55.1)",
+      "result": "passed",
+      "scope": "no duplicate IDs, self-dependencies or cycles"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "reuse": "R1-R4 native rules, profile, history, engine/search, archive/admission/termination evidence unchanged; no new rules or strength campaign claimed."
+}

@@ -1,0 +1,13 @@
+
+> mshogi-desktop@0.1.0 test
+> vitest run --run src/Board.test.tsx src/BoardRoutes.test.tsx src/NativeBoard.test.tsx src/interaction/useNativeChoiceController.test.tsx src/product/ShogiBoard.test.tsx src/product/XiangqiBoard.test.tsx src/product/useMovementInspection.test.tsx src/product/ApplicationFocus.test.tsx
+
+
+ RUN  v5.0.5 /Users/johnweathers/Development/Personal/mShogi/desktop
+
+
+ Test Files  8 passed (8)
+      Tests  95 passed (95)
+   Start at  10:37:23
+   Duration  5.46s (tests 76%, environment 18%, import 4%, transform 2%)
+

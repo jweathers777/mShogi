@@ -1,0 +1,13 @@
+
+> mshogi-desktop@0.1.0 test
+> vitest run --run src/verification/SyntheticApp.test.tsx src/interaction/useNativeChoiceController.test.tsx
+
+
+ RUN  v5.0.5 /Users/johnweathers/Development/Personal/mShogi/desktop
+
+
+ Test Files  2 passed (2)
+      Tests  23 passed (23)
+   Start at  10:50:01
+   Duration  2.10s (tests 55%, environment 36%, import 7%, transform 1%)
+

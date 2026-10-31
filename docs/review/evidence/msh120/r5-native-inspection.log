@@ -1,0 +1,15 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.09s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-58e2c610622b01d4)
+
+running 8 tests
+test shared::inspection::tests::strict_query_rejects_duplicate_nested_unknown_missing_and_oversize ... ok
+test shared::inspection::tests::selected_shogi_owner_promotions_hands_and_pending_work_stay_native ... ok
+test shared::inspection::tests::exact_historical_selection_and_conclusion_are_read_only ... ok
+test shared::inspection::tests::exact_native_chess_query_is_not_a_snapshot_poll_or_mutation ... ok
+test shared::xiangqi::tests::native_opponent_inspection_is_immutable_nonactionable_and_selection_bound ... ok
+test shared::inspection::tests::chess_pending_engine_work_and_historical_prefix_are_not_touched ... ok
+test shared::xiangqi::tests::handoff::warning_inspection_archive_reopen_and_resume_preserve_one_native_context ... ok
+test shared::takeback_tests::takeback_native_history_requires_return_to_live_and_disables_stale_inspection ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 160 filtered out; finished in 1.90s
+

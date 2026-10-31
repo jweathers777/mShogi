@@ -1,0 +1,15 @@
+{
+  "reviewer": "/root/r4_independent",
+  "source_revision": "39ab0c1b0a145a97c3bd980a2b216ba743cb8f0c",
+  "run_id": 41190406750,
+  "attempt": 1,
+  "job_id": 124505869511,
+  "platform": "ubuntu-24.04",
+  "status": "completed",
+  "conclusion": "failure",
+  "log_path": "/private/tmp/r5-independent-corrected-native-linux-failure.log",
+  "log_sha256": "eaa08a2c3b4957d0bf68ee5d161e4d2f3e081b9bf25f0892a24fb7483fdb525f",
+  "failure": "process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored,runner.rs172: exit handshake MissingResponse/Brokenpipe vs expectedUnexpectedExit. Runner suite9passed1failed.",
+  "relationship": "Same baseline6509failure in41187557967 and trackedMSH-112; no native/runner/testsourcechangefrom7ebab all3nativePASS41189535914. New39ab onlysyntheticQAstylesheet. A passing retrywouldnotfixrace.",
+  "scope": "Preservedactualfailure, notclaiming pass."
+}

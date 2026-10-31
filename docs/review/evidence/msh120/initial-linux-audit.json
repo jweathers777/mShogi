@@ -1,0 +1,311 @@
+{
+  "reviewer": "/root/r4_independent",
+  "source_revision": "7ebab4648ade6d6be6da6220aefc0948558a23a8",
+  "run_id": 41189536158,
+  "artifact_id": 13038158496,
+  "report_sha256": "3c6934b73061272f5e0b4c2f4d51288f4f2ae29d6fad8c997d1127dd5413de83",
+  "report_path": "/private/tmp/r5-independent-initial-linux/gui-evidence/gui-report.json",
+  "verdict": "FAILED:14phases passed; synthetic terminal-prefix accepted action leaves board clipped after native route-control keyboard focus scrolling. This is not a passing package campaign.",
+  "environment": {
+    "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "runner_image": "20261026.354.1",
+    "runner_os": "Linux",
+    "renderer_environment": {
+      "GDK_BACKEND": "x11",
+      "WEBKIT_DISABLE_COMPOSITING_MODE": "1",
+      "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+      "LIBGL_ALWAYS_SOFTWARE": null
+    }
+  },
+  "normal_manifest_all_files_verified": 13,
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "passed",
+      "host_sha256": "286141abc72c53f6cb2f0014b063e2c1182a600c471a18956e30e11eef7d225f",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "synthetic_geometry": []
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "passed",
+      "host_sha256": "286141abc72c53f6cb2f0014b063e2c1182a600c471a18956e30e11eef7d225f",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "synthetic_geometry": []
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "passed",
+      "host_sha256": "286141abc72c53f6cb2f0014b063e2c1182a600c471a18956e30e11eef7d225f",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "synthetic_geometry": []
+    },
+    {
+      "phase": "normal-xiangqi",
+      "status": "passed",
+      "host_sha256": "286141abc72c53f6cb2f0014b063e2c1182a600c471a18956e30e11eef7d225f",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "synthetic_geometry": []
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "host_sha256": "1f4d08c6bb7f14c66d248397aa56751f699e552b3a4c73fe6edbce41d203c242",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "synthetic_geometry": []
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "host_sha256": "1f4d08c6bb7f14c66d248397aa56751f699e552b3a4c73fe6edbce41d203c242",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "synthetic_geometry": []
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed",
+      "host_sha256": "1f4d08c6bb7f14c66d248397aa56751f699e552b3a4c73fe6edbce41d203c242",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "synthetic_geometry": []
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "host_sha256": "1f4d08c6bb7f14c66d248397aa56751f699e552b3a4c73fe6edbce41d203c242",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "synthetic_geometry": []
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "failed",
+      "host_sha256": "1f4d08c6bb7f14c66d248397aa56751f699e552b3a4c73fe6edbce41d203c242",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit_observations": [],
+      "synthetic_geometry": [
+        {
+          "viewport": {
+            "height": 820,
+            "width": 1180
+          },
+          "orientation": "Synthetic development strider board, 16 by 16; invented rules, white at bottom",
+          "board": {
+            "left": 330,
+            "width": 520,
+            "right": 850,
+            "top": 237,
+            "height": 520,
+            "bottom": 757
+          },
+          "fullyVisible": true
+        },
+        {
+          "viewport": {
+            "height": 650,
+            "width": 760
+          },
+          "orientation": "Synthetic development strider board, 16 by 16; invented rules, white at bottom",
+          "board": {
+            "left": 172.5,
+            "width": 415,
+            "right": 587.5,
+            "top": 234,
+            "height": 415,
+            "bottom": 649
+          },
+          "fullyVisible": true
+        },
+        {
+          "viewport": {
+            "height": 650,
+            "width": 760
+          },
+          "orientation": "Synthetic development strider board, 16 by 16; invented rules, black at bottom",
+          "board": {
+            "left": 172.5,
+            "width": 415,
+            "right": 587.5,
+            "top": 234,
+            "height": 415,
+            "bottom": 649
+          },
+          "fullyVisible": true
+        },
+        {
+          "viewport": {
+            "height": 820,
+            "width": 1180
+          },
+          "orientation": "Synthetic development strider board, 16 by 16; invented rules, black at bottom",
+          "board": {
+            "left": 330,
+            "width": 520,
+            "right": 850,
+            "top": 237,
+            "height": 520,
+            "bottom": 757
+          },
+          "fullyVisible": true
+        },
+        {
+          "viewport": {
+            "height": 820,
+            "width": 1180
+          },
+          "orientation": "Synthetic development strider board, 16 by 16; invented rules, black at bottom",
+          "board": {
+            "left": 330,
+            "width": 520,
+            "right": 850,
+            "top": 237,
+            "height": 520,
+            "bottom": 757
+          },
+          "fullyVisible": true
+        }
+      ]
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed",
+      "host_sha256": "1f4d08c6bb7f14c66d248397aa56751f699e552b3a4c73fe6edbce41d203c242",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "synthetic_geometry": []
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed",
+      "host_sha256": "1f4d08c6bb7f14c66d248397aa56751f699e552b3a4c73fe6edbce41d203c242",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "synthetic_geometry": []
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed",
+      "host_sha256": "1f4d08c6bb7f14c66d248397aa56751f699e552b3a4c73fe6edbce41d203c242",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "synthetic_geometry": []
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed",
+      "host_sha256": "1f4d08c6bb7f14c66d248397aa56751f699e552b3a4c73fe6edbce41d203c242",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "synthetic_geometry": []
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed",
+      "host_sha256": "1f4d08c6bb7f14c66d248397aa56751f699e552b3a4c73fe6edbce41d203c242",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "synthetic_geometry": []
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed",
+      "host_sha256": "1f4d08c6bb7f14c66d248397aa56751f699e552b3a4c73fe6edbce41d203c242",
+      "engine_sha256": "1e22e13216061d515b6214c7ef0e4917b99ee40ccd593d87bfcdc45f8e2ed3b2",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ],
+      "synthetic_geometry": []
+    }
+  ],
+  "failure_summary": "verification-synthetic full-board probe afterCompleteactionhere136>153:boardtop-179,bottom341,height520;document scrollTop416;first6ranksclipped. Initial4normal/minbothorientation andpartialprefixfitprobespassed.",
+  "scope": "Initial pinned7ebab actual Linux installednormal/QA evidence and failure retained unchanged; no finalPASS inferred."
+}

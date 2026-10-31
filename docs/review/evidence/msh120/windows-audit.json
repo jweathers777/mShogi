@@ -1,0 +1,636 @@
+{
+  "reviewer": "/root/r4_independent",
+  "verdict": "PASS: actual final installed Windows15phase GUI, manifests and unchanged strict fullboard probes; no unresolved material finding.",
+  "source_revision": "39ab0c1b0a145a97c3bd980a2b216ba743cb8f0c",
+  "run_id": 41190406764,
+  "artifact_id": 13038828237,
+  "report_path": "/private/tmp/r5-independent-final-windows/gui-evidence/gui-report.json",
+  "report_sha256": "b5e1ca0e58492a8e39677a7dcbe327dc98774eb9d708616c55fb70b0d638e228",
+  "environment": {
+    "platform": "Windows-2022Server-10.0.20348-SP0",
+    "python": "3.12.10",
+    "runner_image": "20261026.347.1",
+    "runner_os": "Windows",
+    "renderer_environment": {
+      "GDK_BACKEND": null,
+      "WEBKIT_DISABLE_COMPOSITING_MODE": null,
+      "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+      "LIBGL_ALWAYS_SOFTWARE": null
+    }
+  },
+  "all_report_files_sha_verified": 288,
+  "normal_manifest_files_sha_verified": 2,
+  "normal_host_sha256": "c4dd6cbc9bf3bd2a22b02777a8494f6815bf83c6f86cd0312311fb64d11aa8fd",
+  "normal_engine_sha256": "7d9cb4447e40f1175bdb903f661adb416d0f229cad318e9bea4b38acec0e7da3",
+  "qa_installer_sha256": "83190d81f4a0428f650b84c9d87d25c079174e4255dfe7cb8d46237a321ecbe0",
+  "normal_instrumentation_exclusion": "Actual installed normal host16marker guard executed successfully in final Windows CI job124505869610 package-smoke.py. InstalledEXE is notretained inartifact; independent reviewer checked successfuljob log, exactguard source, reporthashandmatching actualGUIhostidentity ratherthanclaiminglocalbinaryscan.",
+  "windows_job_log_sha256": "74db34ec8cab68fde213136108f2783964cff8d7705e02315428d3ffe41bdf7d",
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "passed",
+      "host_sha256": "c4dd6cbc9bf3bd2a22b02777a8494f6815bf83c6f86cd0312311fb64d11aa8fd",
+      "engine_sha256": "7d9cb4447e40f1175bdb903f661adb416d0f229cad318e9bea4b38acec0e7da3",
+      "native_exit": {
+        "host_alive": false,
+        "immediate_matching_processes": [],
+        "final_matching_processes": []
+      },
+      "actual_keyboard_control_visibility": [
+        {
+          "label": "Take back",
+          "tabs": 7,
+          "target": {
+            "activeLabel": "Take back",
+            "clip": {
+              "bottom": 777,
+              "left": 860,
+              "right": 1152,
+              "top": 102
+            },
+            "enabled": true,
+            "focused": true,
+            "matches": 1,
+            "rect": {
+              "bottom": 777.09375,
+              "left": 874,
+              "right": 956.78125,
+              "top": 739.09375
+            },
+            "visible": true
+          }
+        }
+      ]
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "passed",
+      "host_sha256": "c4dd6cbc9bf3bd2a22b02777a8494f6815bf83c6f86cd0312311fb64d11aa8fd",
+      "engine_sha256": "7d9cb4447e40f1175bdb903f661adb416d0f229cad318e9bea4b38acec0e7da3",
+      "native_exit": {
+        "host_alive": false,
+        "immediate_matching_processes": [],
+        "final_matching_processes": []
+      },
+      "actual_keyboard_control_visibility": [
+        {
+          "label": "Take back",
+          "tabs": 6,
+          "target": {
+            "activeLabel": "Take back",
+            "clip": {
+              "bottom": 777,
+              "left": 860,
+              "right": 1152,
+              "top": 102
+            },
+            "enabled": true,
+            "focused": true,
+            "matches": 1,
+            "rect": {
+              "bottom": 777.09375,
+              "left": 874,
+              "right": 956.78125,
+              "top": 739.09375
+            },
+            "visible": true
+          }
+        }
+      ]
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "passed",
+      "host_sha256": "c4dd6cbc9bf3bd2a22b02777a8494f6815bf83c6f86cd0312311fb64d11aa8fd",
+      "engine_sha256": "7d9cb4447e40f1175bdb903f661adb416d0f229cad318e9bea4b38acec0e7da3",
+      "native_exit": {
+        "host_alive": false,
+        "immediate_matching_processes": [],
+        "final_matching_processes": []
+      },
+      "actual_keyboard_control_visibility": []
+    },
+    {
+      "phase": "normal-xiangqi",
+      "status": "passed",
+      "host_sha256": "c4dd6cbc9bf3bd2a22b02777a8494f6815bf83c6f86cd0312311fb64d11aa8fd",
+      "engine_sha256": "7d9cb4447e40f1175bdb903f661adb416d0f229cad318e9bea4b38acec0e7da3",
+      "native_exit": {
+        "host_alive": false,
+        "immediate_matching_processes": [],
+        "final_matching_processes": []
+      },
+      "actual_keyboard_control_visibility": [
+        {
+          "label": "Take back",
+          "tabs": 6,
+          "target": {
+            "activeLabel": "Take back",
+            "clip": {
+              "bottom": 777,
+              "left": 860,
+              "right": 1152,
+              "top": 102
+            },
+            "enabled": true,
+            "focused": true,
+            "matches": 1,
+            "rect": {
+              "bottom": 777.09375,
+              "left": 874,
+              "right": 956.78125,
+              "top": 739.09375
+            },
+            "visible": true
+          }
+        }
+      ]
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "host_sha256": "239dc126ed89480bf7d80599e0284d558748cae707852c111cde3fb640141fa6",
+      "engine_sha256": "7d9cb4447e40f1175bdb903f661adb416d0f229cad318e9bea4b38acec0e7da3",
+      "native_exit": {
+        "host_alive": false,
+        "immediate_matching_processes": [],
+        "final_matching_processes": []
+      },
+      "actual_keyboard_control_visibility": []
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "host_sha256": "239dc126ed89480bf7d80599e0284d558748cae707852c111cde3fb640141fa6",
+      "engine_sha256": "7d9cb4447e40f1175bdb903f661adb416d0f229cad318e9bea4b38acec0e7da3",
+      "native_exit": {
+        "host_alive": false,
+        "immediate_matching_processes": [],
+        "final_matching_processes": []
+      },
+      "actual_keyboard_control_visibility": []
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed",
+      "host_sha256": "239dc126ed89480bf7d80599e0284d558748cae707852c111cde3fb640141fa6",
+      "engine_sha256": "7d9cb4447e40f1175bdb903f661adb416d0f229cad318e9bea4b38acec0e7da3",
+      "native_exit": {
+        "host_alive": false,
+        "immediate_matching_processes": [],
+        "final_matching_processes": []
+      },
+      "actual_keyboard_control_visibility": []
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "host_sha256": "239dc126ed89480bf7d80599e0284d558748cae707852c111cde3fb640141fa6",
+      "engine_sha256": "7d9cb4447e40f1175bdb903f661adb416d0f229cad318e9bea4b38acec0e7da3",
+      "native_exit": {
+        "host_alive": false,
+        "immediate_matching_processes": [],
+        "final_matching_processes": []
+      },
+      "actual_keyboard_control_visibility": []
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed",
+      "host_sha256": "239dc126ed89480bf7d80599e0284d558748cae707852c111cde3fb640141fa6",
+      "engine_sha256": "7d9cb4447e40f1175bdb903f661adb416d0f229cad318e9bea4b38acec0e7da3",
+      "native_exit": {
+        "host_alive": false,
+        "immediate_matching_processes": [],
+        "final_matching_processes": []
+      },
+      "actual_keyboard_control_visibility": [
+        {
+          "label": "Cancel selection",
+          "tabs": 2,
+          "target": {
+            "activeLabel": "Cancel selection",
+            "clip": {
+              "bottom": 820,
+              "left": 0,
+              "right": 1180,
+              "top": 0
+            },
+            "enabled": true,
+            "focused": true,
+            "matches": 1,
+            "rect": {
+              "bottom": 801,
+              "left": 283.390625,
+              "right": 430.078125,
+              "top": 758
+            },
+            "visible": true
+          }
+        },
+        {
+          "label": "Complete action here",
+          "tabs": 1,
+          "target": {
+            "activeLabel": "Complete action here",
+            "clip": {
+              "bottom": 820,
+              "left": 0,
+              "right": 1180,
+              "top": 0
+            },
+            "enabled": true,
+            "focused": true,
+            "matches": 1,
+            "rect": {
+              "bottom": 801,
+              "left": 89.59375,
+              "right": 275.390625,
+              "top": 758
+            },
+            "visible": true
+          }
+        }
+      ]
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed",
+      "host_sha256": "239dc126ed89480bf7d80599e0284d558748cae707852c111cde3fb640141fa6",
+      "engine_sha256": "7d9cb4447e40f1175bdb903f661adb416d0f229cad318e9bea4b38acec0e7da3",
+      "native_exit": {
+        "host_alive": false,
+        "immediate_matching_processes": [],
+        "final_matching_processes": []
+      },
+      "actual_keyboard_control_visibility": []
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed",
+      "host_sha256": "239dc126ed89480bf7d80599e0284d558748cae707852c111cde3fb640141fa6",
+      "engine_sha256": "7d9cb4447e40f1175bdb903f661adb416d0f229cad318e9bea4b38acec0e7da3",
+      "native_exit": {
+        "host_alive": false,
+        "immediate_matching_processes": [],
+        "final_matching_processes": []
+      },
+      "actual_keyboard_control_visibility": []
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed",
+      "host_sha256": "239dc126ed89480bf7d80599e0284d558748cae707852c111cde3fb640141fa6",
+      "engine_sha256": "7d9cb4447e40f1175bdb903f661adb416d0f229cad318e9bea4b38acec0e7da3",
+      "native_exit": {
+        "host_alive": false,
+        "immediate_matching_processes": [],
+        "final_matching_processes": []
+      },
+      "actual_keyboard_control_visibility": []
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed",
+      "host_sha256": "239dc126ed89480bf7d80599e0284d558748cae707852c111cde3fb640141fa6",
+      "engine_sha256": "7d9cb4447e40f1175bdb903f661adb416d0f229cad318e9bea4b38acec0e7da3",
+      "native_exit": {
+        "host_alive": false,
+        "immediate_matching_processes": [],
+        "final_matching_processes": []
+      },
+      "actual_keyboard_control_visibility": [
+        {
+          "label": "Take back",
+          "tabs": 15,
+          "target": {
+            "activeLabel": "Take back",
+            "clip": {
+              "bottom": 777,
+              "left": 860,
+              "right": 1152,
+              "top": 102
+            },
+            "enabled": true,
+            "focused": true,
+            "matches": 1,
+            "rect": {
+              "bottom": 708.546875,
+              "left": 874,
+              "right": 956.78125,
+              "top": 670.546875
+            },
+            "visible": true
+          }
+        }
+      ]
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed",
+      "host_sha256": "239dc126ed89480bf7d80599e0284d558748cae707852c111cde3fb640141fa6",
+      "engine_sha256": "7d9cb4447e40f1175bdb903f661adb416d0f229cad318e9bea4b38acec0e7da3",
+      "native_exit": {
+        "host_alive": false,
+        "immediate_matching_processes": [],
+        "final_matching_processes": []
+      },
+      "actual_keyboard_control_visibility": [
+        {
+          "label": "Take back",
+          "tabs": 5,
+          "target": {
+            "activeLabel": "Take back",
+            "clip": {
+              "bottom": 777,
+              "left": 860,
+              "right": 1152,
+              "top": 102
+            },
+            "enabled": true,
+            "focused": true,
+            "matches": 1,
+            "rect": {
+              "bottom": 776.546875,
+              "left": 874,
+              "right": 956.78125,
+              "top": 738.546875
+            },
+            "visible": true
+          }
+        }
+      ]
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed",
+      "host_sha256": "239dc126ed89480bf7d80599e0284d558748cae707852c111cde3fb640141fa6",
+      "engine_sha256": "7d9cb4447e40f1175bdb903f661adb416d0f229cad318e9bea4b38acec0e7da3",
+      "native_exit": {
+        "host_alive": false,
+        "immediate_matching_processes": [],
+        "final_matching_processes": []
+      },
+      "actual_keyboard_control_visibility": []
+    }
+  ],
+  "synthetic_fullboard_observations": [
+    {
+      "viewport": {
+        "height": 820,
+        "width": 1180
+      },
+      "orientation": "Synthetic development strider board, 16 by 16; invented rules, white at bottom",
+      "board": {
+        "bottom": 778.5,
+        "height": 538.3125,
+        "left": 82.59375,
+        "right": 742.59375,
+        "top": 240.1875,
+        "width": 660
+      },
+      "position_count": 256,
+      "fully_visible": true,
+      "board_visible": true
+    },
+    {
+      "viewport": {
+        "height": 650,
+        "width": 760
+      },
+      "orientation": "Synthetic development strider board, 16 by 16; invented rules, white at bottom",
+      "board": {
+        "bottom": 608.5,
+        "height": 370.71875,
+        "left": 20,
+        "right": 500,
+        "top": 237.78125,
+        "width": 480
+      },
+      "position_count": 256,
+      "fully_visible": true,
+      "board_visible": true
+    },
+    {
+      "viewport": {
+        "height": 650,
+        "width": 760
+      },
+      "orientation": "Synthetic development strider board, 16 by 16; invented rules, black at bottom",
+      "board": {
+        "bottom": 608.5,
+        "height": 370.71875,
+        "left": 20,
+        "right": 500,
+        "top": 237.78125,
+        "width": 480
+      },
+      "position_count": 256,
+      "fully_visible": true,
+      "board_visible": true
+    },
+    {
+      "viewport": {
+        "height": 820,
+        "width": 1180
+      },
+      "orientation": "Synthetic development strider board, 16 by 16; invented rules, black at bottom",
+      "board": {
+        "bottom": 778.5,
+        "height": 538.3125,
+        "left": 82.59375,
+        "right": 742.59375,
+        "top": 240.1875,
+        "width": 660
+      },
+      "position_count": 256,
+      "fully_visible": true,
+      "board_visible": true
+    },
+    {
+      "viewport": {
+        "height": 820,
+        "width": 1180
+      },
+      "orientation": "Synthetic development strider board, 16 by 16; invented rules, black at bottom",
+      "board": {
+        "bottom": 685.5,
+        "height": 445.3125,
+        "left": 82.59375,
+        "right": 742.59375,
+        "top": 240.1875,
+        "width": 660
+      },
+      "position_count": 256,
+      "fully_visible": true,
+      "board_visible": true
+    },
+    {
+      "viewport": {
+        "height": 820,
+        "width": 1180
+      },
+      "orientation": "Synthetic development strider board, 16 by 16; invented rules, black at bottom",
+      "board": {
+        "bottom": 778.5,
+        "height": 538.3125,
+        "left": 82.59375,
+        "right": 742.59375,
+        "top": 240.1875,
+        "width": 660
+      },
+      "position_count": 256,
+      "fully_visible": true,
+      "board_visible": true
+    },
+    {
+      "viewport": {
+        "height": 820,
+        "width": 1180
+      },
+      "orientation": "Synthetic development strider board, 16 by 16; invented rules, white at bottom",
+      "board": {
+        "bottom": 778.5,
+        "height": 538.3125,
+        "left": 82.59375,
+        "right": 742.59375,
+        "top": 240.1875,
+        "width": 660
+      },
+      "position_count": 256,
+      "fully_visible": true,
+      "board_visible": true
+    }
+  ],
+  "synthetic_exact_native_records": [
+    {
+      "actions": [],
+      "initial_fixture": "strider16-capture-and-return-v1",
+      "rules_profile": "mshogi.synthetic.strider16.v1",
+      "schema_version": 1
+    },
+    {
+      "actions": [],
+      "initial_fixture": "strider16-capture-and-return-v1",
+      "rules_profile": "mshogi.synthetic.strider16.v1",
+      "schema_version": 1
+    },
+    {
+      "actions": [],
+      "initial_fixture": "strider16-capture-and-return-v1",
+      "rules_profile": "mshogi.synthetic.strider16.v1",
+      "schema_version": 1
+    },
+    {
+      "actions": [],
+      "initial_fixture": "strider16-capture-and-return-v1",
+      "rules_profile": "mshogi.synthetic.strider16.v1",
+      "schema_version": 1
+    },
+    {
+      "actions": [],
+      "initial_fixture": "strider16-capture-and-return-v1",
+      "rules_profile": "mshogi.synthetic.strider16.v1",
+      "schema_version": 1
+    },
+    {
+      "actions": [],
+      "initial_fixture": "strider16-capture-and-return-v1",
+      "rules_profile": "mshogi.synthetic.strider16.v1",
+      "schema_version": 1
+    },
+    {
+      "actions": [
+        "136>153"
+      ],
+      "initial_fixture": "strider16-capture-and-return-v1",
+      "rules_profile": "mshogi.synthetic.strider16.v1",
+      "schema_version": 1
+    },
+    {
+      "actions": [],
+      "initial_fixture": "strider16-capture-and-return-v1",
+      "rules_profile": "mshogi.synthetic.strider16.v1",
+      "schema_version": 1
+    },
+    {
+      "actions": [],
+      "initial_fixture": "strider16-capture-and-return-v1",
+      "rules_profile": "mshogi.synthetic.strider16.v1",
+      "schema_version": 1
+    },
+    {
+      "actions": [
+        "136>153>136"
+      ],
+      "initial_fixture": "strider16-capture-and-return-v1",
+      "rules_profile": "mshogi.synthetic.strider16.v1",
+      "schema_version": 1
+    },
+    {
+      "actions": [],
+      "initial_fixture": "strider16-capture-and-return-v1",
+      "rules_profile": "mshogi.synthetic.strider16.v1",
+      "schema_version": 1
+    },
+    {
+      "actions": [
+        "136>135>136"
+      ],
+      "initial_fixture": "strider16-capture-and-return-v1",
+      "rules_profile": "mshogi.synthetic.strider16.v1",
+      "schema_version": 1
+    }
+  ],
+  "directly_visually_reviewed_screenshots": [
+    {
+      "path": "/private/tmp/r5-independent-final-windows/gui-evidence/normal-initial-chess-normal-size.webview.png",
+      "sha256": "23e2e23812afe9f32c15af556919191f8906b0f266f57f0ec2bf4ead6d66b5bf"
+    },
+    {
+      "path": "/private/tmp/r5-independent-final-windows/gui-evidence/normal-initial-chess-minimum-size.webview.png",
+      "sha256": "744a360922ed0d92ecf9bf9d624a4b3eb1e7d04c05d9cd231cc8cadcf9b18a93"
+    },
+    {
+      "path": "/private/tmp/r5-independent-final-windows/gui-evidence/normal-shogi-initial-sente.webview.png",
+      "sha256": "f8ea453c77999232522b310cbcbed3b0adc3fb7e4f5b61bb29522620737f4baf"
+    },
+    {
+      "path": "/private/tmp/r5-independent-final-windows/gui-evidence/normal-shogi-minimum-size.webview.png",
+      "sha256": "cf44e3114f71ca7cdf2bdf59f8afae102722b049dbdea2fc9bd2c38aae4948ab"
+    },
+    {
+      "path": "/private/tmp/r5-independent-final-windows/gui-evidence/normal-xiangqi-initial-red-normal-size.webview.png",
+      "sha256": "e9c673acaacf5cfc31173f681db30ae7971e1324842af07d90adaff65af9781a"
+    },
+    {
+      "path": "/private/tmp/r5-independent-final-windows/gui-evidence/normal-xiangqi-initial-red-minimum-size.webview.png",
+      "sha256": "7d0ba7949b7e210908729dd6ed3172a575f8ce6a947e669568bbb40b9da6874c"
+    },
+    {
+      "path": "/private/tmp/r5-independent-final-windows/gui-evidence/verification-synthetic-full-board-white-normal-size.webview.png",
+      "sha256": "6e4cec3c914cc123016ed5d8ac9b2c80ba18f7778977e32dc333646373e1ecc4"
+    },
+    {
+      "path": "/private/tmp/r5-independent-final-windows/gui-evidence/verification-synthetic-full-board-white-minimum-size.webview.png",
+      "sha256": "d0b7d8a2b8709f96ba8dd3163c573cc4616cba615a0e4877e7aeda9423b46ce6"
+    },
+    {
+      "path": "/private/tmp/r5-independent-final-windows/gui-evidence/verification-synthetic-full-board-black-normal-size.webview.png",
+      "sha256": "cb1822e3f2c11d7d2a1cff7b1713887e881bb1825343bf9982b499b6d4dd1b4c"
+    },
+    {
+      "path": "/private/tmp/r5-independent-final-windows/gui-evidence/verification-synthetic-full-board-black-minimum-size.webview.png",
+      "sha256": "0098c7684266f3874f248d3298b89896a307e4559c872ca1c41fa1be0b44df76"
+    },
+    {
+      "path": "/private/tmp/r5-independent-final-windows/gui-evidence/verification-synthetic-partial-prefix-no-commit.webview.png",
+      "sha256": "c0723f11003eac36319378dcc6353718b1ae571bcb373d7b3f7e5dd8ebccc07e"
+    },
+    {
+      "path": "/private/tmp/r5-independent-final-windows/gui-evidence/verification-synthetic-terminal-prefix-complete-here.webview.png",
+      "sha256": "b07dc628c602e877f39ac4548f423458a1227f6b024db34a0315fc3b917b3520"
+    }
+  ],
+  "scope": "Actual installed normal Windows3game pointer/keyboard/inspection/focus/flip/play/analysis/cancellation/history/Takeback/SaveOpen/nativequit plus separatelyinstalledQA cases. Native rules/strength/macOS GUI not inferred. Initial14PASS/1FAILcampaign retained separately."
+}

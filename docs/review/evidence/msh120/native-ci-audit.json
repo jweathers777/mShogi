@@ -1,0 +1,59 @@
+{
+  "reviewer": "/root/r4_independent",
+  "source_revision": "7ebab4648ade6d6be6da6220aefc0948558a23a8",
+  "run_id": 41189535914,
+  "attempt": 1,
+  "status": "completed",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "job_id": 124503269560,
+      "name": "Rust (ubuntu-24.04)",
+      "conclusion": "success",
+      "log_sha256": "c62f96bd08400e6ba22e211c8163360098eaa86c83f85ac902d8cbc59902534b",
+      "native_session_default_passed": 168,
+      "native_session_all_features_passed": 180,
+      "exact_count_lines": [
+        "2026-10-31T09:45:05.5968757Z test result: ok. 168 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 245.85s",
+        "2026-10-31T09:52:27.1233741Z test result: ok. 180 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 360.28s"
+      ],
+      "existing_runner_112_test_line": "2026-10-31T09:45:38.7314595Z test process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored ... ok",
+      "fixture_gate": "success"
+    },
+    {
+      "job_id": 124503269624,
+      "name": "Rust (windows-2022)",
+      "conclusion": "success",
+      "log_sha256": "82eef0b9fc6cd691b5db85848e412f2582a4561c5fa3e739251362fd81cf4956",
+      "native_session_default_passed": 168,
+      "native_session_all_features_passed": 180,
+      "exact_count_lines": [
+        "2026-10-31T09:43:27.9472759Z test result: ok. 168 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 151.64s",
+        "2026-10-31T09:48:01.7013406Z test result: ok. 180 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 219.51s"
+      ],
+      "existing_runner_112_test_line": "2026-10-31T09:43:47.4297554Z test process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored ... ok",
+      "fixture_gate": "success"
+    },
+    {
+      "job_id": 124503269669,
+      "name": "Rust (macos-15)",
+      "conclusion": "success",
+      "log_sha256": "9e2637a8b900d4556742dfd55e959ce6400276bd5622987a20a0d801276a3a52",
+      "native_session_default_passed": 168,
+      "native_session_all_features_passed": 180,
+      "exact_count_lines": [
+        "2026-10-31T09:44:33.6221620Z test result: ok. 168 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 198.00s",
+        "2026-10-31T09:50:38.1688940Z test result: ok. 180 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 283.53s"
+      ],
+      "existing_runner_112_test_line": "2026-10-31T09:45:08.1536460Z test process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored ... ok",
+      "fixture_gate": "success"
+    }
+  ],
+  "preserved_baseline_failure": {
+    "run_id": 41187557967,
+    "source_revision": "6509dd3ea7db60a10f95e5fc50768668596f39f3",
+    "linux_job_id": 124497468392,
+    "failure": "runner.rs172 MissingResponse/Brokenpipe duringhandshake vs expectedUnexpectedExit; original9passed1failed. No runner/test assertion changed; MSH-112 remains. This passing source run doesnot fix race."
+  },
+  "scope": "Native workspace checks and unchanged default/allfeature session contracts; not GUI interaction. Final39ab only verificationstylesheet; no native change."
+}

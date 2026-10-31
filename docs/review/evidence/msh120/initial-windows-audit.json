@@ -1,0 +1,215 @@
+{
+  "reviewer": "/root/r4_independent",
+  "source_revision": "7ebab4648ade6d6be6da6220aefc0948558a23a8",
+  "run_id": 41189536158,
+  "artifact_id": 13037914245,
+  "report_sha256": "abc97cc9825356561be11758f990ee1a6c580171df4e2c905e616c6d44f745cb",
+  "report_path": "/private/tmp/r5-independent-initial-windows/gui-evidence/gui-report.json",
+  "verdict": "FAILED:14phases passed; synthetic minimumwhite outerSVGclipped2.78px. This is not a passing package campaign.",
+  "environment": {
+    "platform": "Windows-2022Server-10.0.20348-SP0",
+    "python": "3.12.10",
+    "runner_image": "20261026.347.1",
+    "runner_os": "Windows",
+    "renderer_environment": {
+      "GDK_BACKEND": null,
+      "WEBKIT_DISABLE_COMPOSITING_MODE": null,
+      "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+      "LIBGL_ALWAYS_SOFTWARE": null
+    }
+  },
+  "normal_manifest_all_files_verified": 2,
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "passed",
+      "host_sha256": "fd9640fbb1edc70849911d04d4d4d2c79e6b8391324398ab370a9ec424fcf4a9",
+      "engine_sha256": "4e69cad271f33fc4ca6588ba13b57f61b24c5e1d19931075200df89a3719b04e",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ]
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "passed",
+      "host_sha256": "fd9640fbb1edc70849911d04d4d4d2c79e6b8391324398ab370a9ec424fcf4a9",
+      "engine_sha256": "4e69cad271f33fc4ca6588ba13b57f61b24c5e1d19931075200df89a3719b04e",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ]
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "passed",
+      "host_sha256": "fd9640fbb1edc70849911d04d4d4d2c79e6b8391324398ab370a9ec424fcf4a9",
+      "engine_sha256": "4e69cad271f33fc4ca6588ba13b57f61b24c5e1d19931075200df89a3719b04e",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ]
+    },
+    {
+      "phase": "normal-xiangqi",
+      "status": "passed",
+      "host_sha256": "fd9640fbb1edc70849911d04d4d4d2c79e6b8391324398ab370a9ec424fcf4a9",
+      "engine_sha256": "4e69cad271f33fc4ca6588ba13b57f61b24c5e1d19931075200df89a3719b04e",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ]
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "host_sha256": "1402fd0995d734192c582e32ecb76496c14a015608ff41961a88fd125c029ef7",
+      "engine_sha256": "4e69cad271f33fc4ca6588ba13b57f61b24c5e1d19931075200df89a3719b04e",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ]
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "host_sha256": "1402fd0995d734192c582e32ecb76496c14a015608ff41961a88fd125c029ef7",
+      "engine_sha256": "4e69cad271f33fc4ca6588ba13b57f61b24c5e1d19931075200df89a3719b04e",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ]
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed",
+      "host_sha256": "1402fd0995d734192c582e32ecb76496c14a015608ff41961a88fd125c029ef7",
+      "engine_sha256": "4e69cad271f33fc4ca6588ba13b57f61b24c5e1d19931075200df89a3719b04e",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ]
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "host_sha256": "1402fd0995d734192c582e32ecb76496c14a015608ff41961a88fd125c029ef7",
+      "engine_sha256": "4e69cad271f33fc4ca6588ba13b57f61b24c5e1d19931075200df89a3719b04e",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ]
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "failed",
+      "host_sha256": "1402fd0995d734192c582e32ecb76496c14a015608ff41961a88fd125c029ef7",
+      "engine_sha256": "4e69cad271f33fc4ca6588ba13b57f61b24c5e1d19931075200df89a3719b04e",
+      "native_exit_observations": []
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed",
+      "host_sha256": "1402fd0995d734192c582e32ecb76496c14a015608ff41961a88fd125c029ef7",
+      "engine_sha256": "4e69cad271f33fc4ca6588ba13b57f61b24c5e1d19931075200df89a3719b04e",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ]
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed",
+      "host_sha256": "1402fd0995d734192c582e32ecb76496c14a015608ff41961a88fd125c029ef7",
+      "engine_sha256": "4e69cad271f33fc4ca6588ba13b57f61b24c5e1d19931075200df89a3719b04e",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ]
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed",
+      "host_sha256": "1402fd0995d734192c582e32ecb76496c14a015608ff41961a88fd125c029ef7",
+      "engine_sha256": "4e69cad271f33fc4ca6588ba13b57f61b24c5e1d19931075200df89a3719b04e",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ]
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed",
+      "host_sha256": "1402fd0995d734192c582e32ecb76496c14a015608ff41961a88fd125c029ef7",
+      "engine_sha256": "4e69cad271f33fc4ca6588ba13b57f61b24c5e1d19931075200df89a3719b04e",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ]
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed",
+      "host_sha256": "1402fd0995d734192c582e32ecb76496c14a015608ff41961a88fd125c029ef7",
+      "engine_sha256": "4e69cad271f33fc4ca6588ba13b57f61b24c5e1d19931075200df89a3719b04e",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ]
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed",
+      "host_sha256": "1402fd0995d734192c582e32ecb76496c14a015608ff41961a88fd125c029ef7",
+      "engine_sha256": "4e69cad271f33fc4ca6588ba13b57f61b24c5e1d19931075200df89a3719b04e",
+      "native_exit_observations": [
+        {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      ]
+    }
+  ],
+  "failure_summary": "verification-synthetic white760x650 SVGbottom652.78125,height415,top237.78125,actualviewportheight650. All256positionsindividuallyvisible butouterboardrectclipped; strictboardVisible false. Sourcefixedlater byviewportboundedfixturelayout, probeunchanged.",
+  "scope": "Initial pinned7ebab actual installed Windows normal/QA evidence and failure retained unchanged; no finalPASS inferred."
+}

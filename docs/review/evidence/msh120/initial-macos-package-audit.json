@@ -1,0 +1,15 @@
+{
+  "reviewer": "/root/r4_independent",
+  "source_revision": "7ebab4648ade6d6be6da6220aefc0948558a23a8",
+  "run_id": 41189536158,
+  "artifact_id": 13038735794,
+  "artifact_directory": "/private/tmp/r5-independent-final-macos",
+  "package_manifest_sha256": "d3a353996568acd67b0bc7ec7e88b682c0a390e2ef585eee42e022e48f20be82",
+  "package_smoke_sha256": "63d8fc5c77f77c32af3b6cfe73a5ecd48bae8fe3539d7d2177430f77ee32c68b",
+  "all_manifest_files_verified": 5,
+  "host_sha256": "edfe0aa42fdefbfc682ba82dfc9bbea0261064e51aa609ae12a2adef91c778c6",
+  "engine_sha256": "d0cf52d369eeb1097ac920895b6bf75da16448428a4421974724d63f0262ba50",
+  "normal_host_verification_marker_count_checked": 16,
+  "normal_host_verification_marker_hits": [],
+  "scope": "Actual normal macOS CI package inventory, checksums, instrumentation exclusion and successful bundled-engine UCI/internal play,analysis,Full smoke. No CI macOS GUI interaction claimed."
+}

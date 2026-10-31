@@ -1,0 +1,146 @@
+{
+  "environment": "macOS 27.0.1 (26A434), arm64, native WKWebView; CUA accessibility/native keyboard/pointer; Node24/Rust1.99.1",
+  "normal_source": "7ebab4648ade6d6be6da6220aefc0948558a23a8",
+  "verification_source": "39ab0c1b0a145a97c3bd980a2b216ba743cb8f0c",
+  "source_note": "39ab changes only verification/synthetic.css. Normal product source/embedded assets are unchanged from7ebab. Corrected local QA was built from the exact39ab source content immediately before committing that CSS. No native controller/rules/engine/archive source changed.",
+  "packages": [
+    {
+      "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+      "source_content_revision": "7ebab4648ade6d6be6da6220aefc0948558a23a8",
+      "files": {
+        "Contents/Info.plist": {
+          "bytes": 1048,
+          "sha256": "343be4b5b0ce533854424094072924e4695b92c95e1c220e1cd7ec09b5a8ce90"
+        },
+        "Contents/MacOS/mshogi": {
+          "bytes": 2628096,
+          "sha256": "57d09b1a22f96a7a9b89a9c6c2550b233ed8213f591580ad8e66106900b7ac3a"
+        },
+        "Contents/MacOS/mshogi-desktop": {
+          "bytes": 15820384,
+          "sha256": "f8977a3ee457c9418202c5fa7120da6094415c5db1d965c46656a92ca084951e"
+        },
+        "Contents/Resources/icon.icns": {
+          "bytes": 39844,
+          "sha256": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+        }
+      }
+    },
+    {
+      "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi Verification.app",
+      "source_content_revision": "39ab0c1b0a145a97c3bd980a2b216ba743cb8f0c",
+      "files": {
+        "Contents/Info.plist": {
+          "bytes": 1087,
+          "sha256": "166a320e22c63d1fea58096a8b4e25432753d73fe439fe3797b738473f828172"
+        },
+        "Contents/MacOS/mshogi": {
+          "bytes": 2628096,
+          "sha256": "57d09b1a22f96a7a9b89a9c6c2550b233ed8213f591580ad8e66106900b7ac3a"
+        },
+        "Contents/MacOS/mshogi-desktop": {
+          "bytes": 16149056,
+          "sha256": "33c339b1cbe392fe6f9c416d6e3696b582b5a66d90b8ee019df0abeb6911e5a0"
+        },
+        "Contents/Resources/icon.icns": {
+          "bytes": 39844,
+          "sha256": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+        }
+      }
+    }
+  ],
+  "normal_journeys": [
+    "Chess: native e7 pawn inspection and keyboard e6 preview without commit; Escape; keyboard e2e4, actual a7a5 engine reply,2plies,focus e4; Take back restores0plies/paused; Resume; native Save to temporary r5-chess.mshogi,UNMODIFIED.",
+    "Shogi: native Gote3c pawn inspection; Flip clears inspection; Gote-bottom keyboard7g7f with actual4c4d engine reply,2plies,focus7f; selected event1 readonly then Return to live; protected New game.",
+    "Xiangqi: native Blackb7 cannon inspection to Redb0 horse previews without commit; Escape; keyboarda3a4, actualb7b0 engine reply,2plies,focusa4; native CmdQ unsaved guard and Discard exits."
+  ],
+  "verification_journeys": [
+    "Shogi native promotion: keyboard5d->5c alternatives, Escape0plies/focus5c; reopen,Tab/Enter Promote submits5d5c+; real engine reply and focus5c.",
+    "Shogi hands: opponent pawn inspection/Escape; ownhand selection/Escape restoreshandfocus; P*5e exact native drop,real engine reply,4totalplies,hand count removal andfocus5e.",
+    "Synthetic: keyboard prefix/Escape0accepted; explicit Complete action here accepts136>153 exactly; distinct136>153>136 and136>135>136 each1accepted with separate native schema/profile/root record; native closeguard.",
+    "After fixture correction: actual760x650 white/black wholeboard,partialcontrols,Complete action here andresize1180x820; captured complete136>153>136 record and native close exit0."
+  ],
+  "process_exit_codes": {
+    "synthetic_initial": 0,
+    "shogi_promotion": 0,
+    "shogi_hands": 0,
+    "synthetic_capture_repeat": 0,
+    "synthetic_corrected": 0
+  },
+  "screenshots": {
+    "chess-inspection-readonly.jpg": {
+      "bytes": 307017,
+      "sha256": "cd3654904fa5aa8d71fd95a2a1aacb344fb8d46242b851c4c6ccf0f977f9d999"
+    },
+    "chess-keyboard-engine-reply.jpg": {
+      "bytes": 314585,
+      "sha256": "77525743b9b38ded153536a787b4b08b1998f9831fabbc04d04be34509d30424"
+    },
+    "final-synthetic-minimum-black.jpg": {
+      "bytes": 318257,
+      "sha256": "df8bb960f0003f786a9703d46b59d628e5f57a769479b20a572e7000247825d3"
+    },
+    "final-synthetic-minimum-complete.jpg": {
+      "bytes": 319576,
+      "sha256": "f7d832bfbdaae851a43adc52b6a2efbadee187879df1e844f89bb9565e06f11f"
+    },
+    "final-synthetic-minimum-partial.jpg": {
+      "bytes": 331870,
+      "sha256": "eea590439df3cef19535ca8a356156616919f93a974661e090338d9f7b37d0c8"
+    },
+    "final-synthetic-minimum-white.jpg": {
+      "bytes": 318268,
+      "sha256": "f0059c31c74df67c093f3d35539a7d6a146ece56fbf7b27c54a0a656302acd9c"
+    },
+    "final-synthetic-normal-black.jpg": {
+      "bytes": 458908,
+      "sha256": "33d1f021df242f0f2027c3252185d23ab64994dcc789becf25409f9fada5fc72"
+    },
+    "final-synthetic-normal-white.jpg": {
+      "bytes": 452369,
+      "sha256": "17abbdfbdc5620f97c5f0d0ef46dfb670ada3b311cf8faa844efef533ac174eb"
+    },
+    "final-synthetic-route-record.jpg": {
+      "bytes": 449237,
+      "sha256": "9d16a3699df8dc8865d367e6a57400aeb0f44980669f86f040a710f0d830d56f"
+    },
+    "qa-chess-minimum.jpg": {
+      "bytes": 227332,
+      "sha256": "087820f06b3e31960ea8a09fa9c83ee070c07ed52850954689132ce909418f6a"
+    },
+    "qa-chess-normal.jpg": {
+      "bytes": 320651,
+      "sha256": "d39cae7525e9ffbe8d56a91f8e04e7a7ab5fce6d6898bdefad98b5c9a993f6e6"
+    },
+    "qa-shogi-minimum.jpg": {
+      "bytes": 221891,
+      "sha256": "2c078378053aefb9a91a8e31d2726bd1696c295bfd5cbb661a5195eb71592977"
+    },
+    "qa-xiangqi-minimum.jpg": {
+      "bytes": 248688,
+      "sha256": "e246a2abc816608e0595990f482fc6858e6c214669479858a1945a3fb19cd999"
+    },
+    "qa-xiangqi-normal.jpg": {
+      "bytes": 376607,
+      "sha256": "01fbab212e34d172f811808cee6e85a19e7d32b30719ca29e52cb854ffe18ba4"
+    },
+    "shogi-keyboard-engine-reply.jpg": {
+      "bytes": 366570,
+      "sha256": "249e5458ee8f0ff6ce39fbe25d28580456aa8c2dbd50b929c119895b7b7f9ea6"
+    },
+    "shogi-normal.jpg": {
+      "bytes": 357041,
+      "sha256": "f14158cadfbcf78a34fdb86da471f9fb2b0d5e96e1aa22b62207fa8aef831a57"
+    },
+    "xiangqi-inspection-readonly.jpg": {
+      "bytes": 368760,
+      "sha256": "fb96d1b4fd8ebe52535fbbc3c7655fbef947a80929a66bf89ac4931f10bc3c20"
+    },
+    "xiangqi-keyboard-engine-reply.jpg": {
+      "bytes": 371588,
+      "sha256": "0947d2a67cdee159528aeddbb32da1df853537340cf187b76162301661bfb44b"
+    }
+  },
+  "capture_provenance": "Normal Chess/Shogi/Xiangqi journey pictures are normal package7ebab. qa-* are separate verification7ebab product content, normal/min sizes; Shogi minimum is hands fixture after play, not identical position to normal Shogi. Title continues to name launchfixture shogi-hands after native New switches game; actual content is game identity. final-synthetic-* are corrected39ab content. Earlier helper captures after rebinding were discovered to target old normal process; excluded from this evidence and replaced with explicit-target captures. No image editing.",
+  "review": "Independent reviewer directly inspected all6 corrected synthetic captures and6 same-size product captures; no material visual finding. Final CI package audit separate."
+}

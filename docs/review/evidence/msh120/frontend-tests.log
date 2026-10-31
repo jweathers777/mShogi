@@ -1,0 +1,16 @@
+
+> mshogi-desktop@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.5 /Users/johnweathers/Development/Personal/mShogi/desktop
+
+
+ Test Files  21 passed (21)
+      Tests  252 passed (252)
+   Start at  10:35:57
+   Duration  8.65s (tests 83%, environment 13%, import 3%, transform 1%)
+
+    Isolate  21 workers spawned · ~418ms startup each (spawn + environment, per file)
+             at least ~558ms faster with isolate: false — reuses workers across files instead of one per file
+

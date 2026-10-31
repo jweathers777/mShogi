@@ -1,0 +1,62 @@
+{
+  "reviewer": "/root/r4_independent",
+  "verdict": "PASS. No unresolved material MSH-120 source, semantic, deletion, interaction, visual or evidence finding.",
+  "baseline": "6509dd3ea7db60a10f95e5fc50768668596f39f3",
+  "production_revision": "7ebab4648ade6d6be6da6220aefc0948558a23a8",
+  "final_verification_revision": "39ab0c1b0a145a97c3bd980a2b216ba743cb8f0c",
+  "independent_method": "Read-only bounded completed source diff plus explicit newuntrackedfiles beforecommit; directsource/test/contractanalysis; independent95frontendtestsin8files and56externaldriverchecks; actualdownloadedinstalledLinux/Windowsreports+checksums+nativeexits+12captureseach; localmacpackage/screenshotSHAchecksand6product+6correctedsyntheticvisualinspection. Agentreview, nothumanowner/accessibilitycertification.",
+  "source_findings": "No unresolved material defect in sole nativechoice controller, exactcontext statelessqueryvalidator, completeaction/route/completion/focus ownership, specializedrenderers, deletions or123readonlygeometryhandoff. Explicitly reviewed commonread-onlyroute-firstcornercase andsoleforcedpromotiontestmigration; nativeactionexpectationsnotchanged.",
+  "resolved_material_verification_finding": "Initial7ebabLinuxsynthetic postterminal clipped6ranks andWindowsminimum outerSVGclipped2.78px. Final39abonlyQAstylesheetboundsfixtureheightandseparatesdiagnostics;strictprobeunchanged, actualfinalLinux/Windows15phase+macsnapshotsPASS.",
+  "desktop_ci": {
+    "run_id": 41190406764,
+    "source_revision": "39ab0c1b0a145a97c3bd980a2b216ba743cb8f0c",
+    "status": "completed",
+    "conclusion": "success",
+    "attempt": 1,
+    "platforms": [
+      "ubuntu-24.04",
+      "macos-15",
+      "windows-2022"
+    ],
+    "linux_actual_gui_phases_passed": 15,
+    "windows_actual_gui_phases_passed": 15,
+    "macos_ci_scope": "normalpackage+bundledenginesmoke; actualmacGUIindependentlocalpackageevidence"
+  },
+  "native_ci_reused": {
+    "run_id": 41189535914,
+    "source_revision": "7ebab4648ade6d6be6da6220aefc0948558a23a8",
+    "status": "completed",
+    "conclusion": "success",
+    "attempt": 1,
+    "all3platforms_passed": true,
+    "session_default_passed_per_platform": 168,
+    "session_allfeatures_passed_per_platform": 180,
+    "fixture_gates": "all3passed"
+  },
+  "native_duplicate_failure": {
+    "run_id": 41190406750,
+    "source_revision": "39ab0c1b0a145a97c3bd980a2b216ba743cb8f0c",
+    "status": "completed",
+    "conclusion": "failure",
+    "attempt": 1,
+    "macos_windows": "passed",
+    "linux": "existingMSH112runner earlyexit MissingResponse/BrokenpipevsUnexpectedExit at runner.rs172;9pass1fail",
+    "retry": "notperformed afterproportionatereview; unchangednativecampaignnotrequiredagain"
+  },
+  "proportionality_judgment": "Native/Rust/runner/core/engine/fixtures/toolchainsarebyteunchangedbetween7ebaband39ab(theonlydiffisverification/synthetic.css). Reuseall3OSnativePASSforR5; preserveactualduplicateLinuxFAILandMSH112open. Do notclaimall39abCIgreenor racefixed. Final39abactualpackagedGUIwasgenuinegateandispassed.",
+  "audits": [
+    "/private/tmp/r5-independent-final-linux-audit.json",
+    "/private/tmp/r5-independent-final-windows-audit.json",
+    "/private/tmp/r5-independent-corrected-macos-audit.json",
+    "/private/tmp/r5-independent-final-native-audit.json",
+    "/private/tmp/r5-independent-initial-linux-audit.json",
+    "/private/tmp/r5-independent-initial-windows-audit.json",
+    "/private/tmp/r5-independent-corrected-native-linux-failure-audit.json"
+  ],
+  "remaining_scope": [
+    "MSH123Moves/nativehistorynotation/lastmovefeatureunimplemented; read-onlygeometryinputonly.",
+    "MSH124/125/121remainunstarted; noR6closureclaim.",
+    "MSH112knownrunnerclassificationraceunfixed.",
+    "No newrules/strength/nativeperformanceorhumanaccessibilitycertificationclaim."
+  ]
+}

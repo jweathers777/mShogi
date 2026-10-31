@@ -1,0 +1,15 @@
+The following is a diff from the previous accessibility tree for Window: "mShogi Verification — synthetic (test state) — content 1180.0 × 820.0 logical" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 283-284
++					295 container (expanded) Secondary Actions: Collapse
++						296 summary Separate synthetic record, Value: on
++							297 text Separate synthetic record
++						298 text Temporary verification data; not a chess document.
++						299 text {
+  "schema_version": 1,
+  "rules_profile": "mshogi.synthetic.strider16.v1",
+  "initial_fixture": "strider16-capture-and-return-v1",
+  "actions": [
+    "136>153>136"
+  ]
+}
+The focused UI element is 296 summary Separate synthetic record, Value: on

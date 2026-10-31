@@ -5,7 +5,7 @@ status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-31T09:02:00Z'
-updated_date: '2026-10-31T16:02:00Z'
+updated_date: '2026-10-31T16:05:00Z'
 labels:
   - desktop
   - owner-approved-ux
@@ -72,6 +72,10 @@ Corrected source58a5d7ad95cba1724118a91d8ad4958fb1c287ed integrated/pushed. Fina
 Final-source58 desktopLinux14/15 phases PASS; late normalChess Resign probe failed because it incorrectly required board context to change. Actual native match accepted White resignation, unresolved/unscored, with unchanged canonical board context. Correct external verifier against the separate authoritative Chess match ledger: one terminal event, exact unchanged prefix/profile/root, correct actor/version, accepted unscored conclusion and unchanged board/Moves. Captured actual native payload is a reproducible regression fixture;94 driver/adapters PASS including wrong actor/stale/rejected/duplicate/invented-board/winner negatives. This is verification-only; production remains58. Preserve failed run41214429648 and rerun actual GUI after independent probe review. Native58 matrix Mac/Windows PASS; LinuxMSH112 failed-job retry underway at identical source.
 
 Final independent acceptance PASS after actual Windows15/15 and Linux15/15 GUI audits, all3 native/Desktop CI PASS at8de. Final review personally examined39 captures across Mac checkpoints/Linux/Windows and independently checked package/evidence hashes and12 remote focus bounds. See linked review for exact executed commands and author versus reviewer evidence. All7AC/4DoD supported; no other task started or closed. Source already integrated/pushed, final documentation/task/evidence committed on the same rewrite branch.
+
+Completion4733f6a pushed; evidence staged check flagged CRLF/trailing whitespace in16 imported Windows JSON/log files and the shell continued commit despite that failed check. Preserve byte-exact originals in raw-text-artifacts.tar.gz with original/normalized SHA provenance; normalize repository text views only, all JSON semantics equal. Final diff check nowPASS. Source/package/CI/capture evidence unchanged; no test assertion weakened. Independent bounded evidence-format review requested; final corrective documentation/evidence push follows without rewriting history.
+
+Independent evidence-format follow-up PASS: all16 raw originals exactly match4733f6a committed bytes and recorded SHA/length; normalized text views differ only LF/trailing whitespace; all9 JSON comparisons preserve ordered duplicate fields and equal content. Both working and full8de-to-current diff checks PASS. Product/verifier sources, PNG/package/ZIP/audit identities unchanged. Latest signed-off report retained; no additional production campaign required.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

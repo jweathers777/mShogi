@@ -1,0 +1,56 @@
+{
+  "text": "\u6b69\nmShogi\n\nCHESS\nLocal engine\nUNSAVED CHANGES\nnormal-complete.mshogi\nNew game\nSave\nLoad\nGAME CONCLUDED\n\nUnresolved \u2014 unscored\nYou play White against mShogi\n\u2195\nFlip board\nY\nYouWhite\nHuman player\n\u265c\n1\n\u265e\n\u265d\n\u265a\n\u265b\n\u265d\n\u265e\n\u265c\n\u265f\n2\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n3\n4\n\u265f\n5\n\u265f\n6\n\u265f\n7\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265c\n8\nh\n\u265e\ng\n\u265d\nf\n\u265a\ne\n\u265b\nd\n\u265d\nc\n\u265e\nb\n\u265c\na\nm\nmShogiBlack\nYour opponent\nArrows: move focus \u00b7 Enter/Space: select \u00b7 Esc: cancel\nGame concluded\nLive position \u00b7 2 plies\nUnresolved \u2014 unscored\nWhite resigned. Whether the opponent can mate could not be established. Play has stopped without an established win or draw, and no score is assigned.\nAnalysis\n\nPlay details\nAnalyze position\nMove analysis\nSelected event 4 \u00b7 White perspective\n\nDepth\nNode limit\nStart move analysis\nSet work limits and start analysis.\nAdvanced: Full mating reachability\nSaved analysis evidence (4)\nRecorded searches (4)\nGame Actions\n\nTake back\nMoves\n2 moves\nStarting position\nMoves from the starting position\nMove number\tWhite\tBlack\n1.\te4\ta5\nPosition events (2)\n\n1\nMatch started\n\n4\nResignation",
+  "focus": {
+    "label": "About mShogi",
+    "text": "",
+    "tag": "BUTTON"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 820,
+    "width": 1180
+  },
+  "common_actions": [],
+  "inputs": [
+    {
+      "min": "1",
+      "disabled": false,
+      "type": "number",
+      "value": "1",
+      "max": "8",
+      "tag": "INPUT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "1000",
+      "max": "5000000",
+      "tag": "INPUT"
+    },
+    {
+      "min": null,
+      "disabled": false,
+      "type": "select-one",
+      "value": "either",
+      "max": null,
+      "tag": "SELECT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "1000",
+      "max": "100000",
+      "tag": "INPUT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "10000",
+      "max": "1000000",
+      "tag": "INPUT"
+    }
+  ]
+}

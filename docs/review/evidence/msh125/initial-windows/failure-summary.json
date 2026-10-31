@@ -1,0 +1,84 @@
+{
+  "source_revision": "871a1fa4b6ae1b463aa4c2abd92bb696d5cfb550",
+  "ci_run": 41212862693,
+  "windows_job": 124571306427,
+  "artifact_id": 13047408166,
+  "artifact_sha256": "2ece9c6291bffc6d0b58d559c9dfa7bb124ab23df71d516e81828e260921d752",
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "failed",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2082, in main\n    journey.normal()\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 1219, in normal\n    self.intentional_replacement_failures('chess')\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 1035, in intentional_replacement_failures\n    assert before['document']['path'] is None and before['document']['dirty'], before\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: {'analysis': {'context': None, 'message': None, 'operation': None, 'result': None, 'status': 'idle', 'target': None}, 'capacity': {'id': 0, 'message': None, 'resource': None, 'status': 'available'}, 'chess': {'analysis': {'context': None, 'message': None, 'operation': None, 'result': None, 'status': 'idle', 'target': None}, 'claims': [], 'in_check': False, 'last_engine_result': None, 'last_engine_turn': None, 'live_conclusion': None, 'rules_mode': 'm2', 'searched_version': None, 'selected_conclusion': None}, 'chess_match': {'events': [{'reply': {'active': 'white', 'conclusion': None, 'rejection': None, 'remaining_ns': None, 'version': 1}, 'request': {'actor': 'white', 'at_ns': 0, 'command': 'start', 'version': 0}}], 'initial_record_json': '{\"schema_version\":1,\"rules_profile\":\"mshogi.chess.match.v1\",\"initial_fen\":\"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\",\"history_origin\":\"standard_start\",\"claim_policy\":\"explicit_only\",\"events\":[]}', 'rules_profile': 'mshogi.chess.match.v1', 'schema_version': 1, 'time_control': 'untimed'}, 'context': {'envelope_version': 1, 'game_kind': 'chess', 'native_schema_version': 1, 'payload': {'claim_policy': 'explicit_only', 'events': [], 'history_origin': 'standard_start', 'initial_fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'rules_profile': 'mshogi.chess.match.v1', 'schema_version': 1}, 'profile_edition': 'FIDE-2023-01-01+mshogi.chess.match.v1', 'rules_profile': 'mshogi.chess.match.v1'}, 'diagnostic': None, 'document': {'dirty': False, 'path': None, 'revision': 0, 'settings': {'game_kind': 'chess', 'settings': {'analysis_defaults': {'depth': 4, 'kind': 'moves', 'nodes': 100000}, 'orientation': 'white'}}}, 'error': '', 'io': {'id': 0, 'message': None, 'phase': 'idle', 'resource': None}, 'moves': {'entries': [], 'last_action': None, 'root': {'label': 'Starting position', 'numbering': 'Moves from the starting position'}}, 'observations': [], 'profile': 'mshogi.chess.match.v1', 'token': {'document': 0, 'revision': 1, 'selection': 1, 'version': 1}}\n"
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "normal-xiangqi",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed",
+      "traceback": null
+    }
+  ]
+}

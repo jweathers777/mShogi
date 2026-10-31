@@ -304,7 +304,7 @@ and MSH-121 retains integrated architecture/product acceptance.
 ## MSH-125 implementation handoff
 
 The shared product now presents New game / Save / Load, intentional atomic
-New/Load replacement, a dirty-only Save Game safeguard with Save/Discard/Cancel,
+New/Load replacement, an unsaved (never-saved or changed) Save Game safeguard with Save/Discard/Cancel,
 and direct native Resign. All three games share the same workflow owner. The
 [native application contract](native-application.md#msh-125-native-workflow-refinement)
 defines transient browse-origin admission, newer-stop precedence, fresh execution
@@ -312,3 +312,8 @@ and the exact close-stop exemption. Current envelope, atomic writer, observation
 resource limits, native rules and accepted MSH-124 shell remain intact. Final
 MSH-125 evidence records actual package interactions separately from controller
 and frontend checks; MSH-121 remains the subsequent independent integrated review.
+
+Final MSH-125 acceptance and retained failures are recorded in the
+[workflow review](../review/workflows-125.md), with normal/QA package hashes and
+actual GUI interaction distinguished from native/frontend checks. No saved work
+is implicitly resumed, and intentional New/Load replacement is not an autosave.

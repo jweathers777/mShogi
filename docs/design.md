@@ -236,9 +236,19 @@ native side buttons, shared 歩 branding and header About/license/diagnostics
 access. Outward Moves focus rings remain visible through nested minimum-size
 scroll boundaries. The [MSH-124 review](review/shell-124.md) identifies actual
 normal/minimum three-game packages, independent visual/accessibility review,
-source revisions, original failures and final CI. MSH-125 and R6 remain open;
-M4 remains open. Existing document, Resign and Return/Resume behavior is
-unchanged; MSH-125 owns its approved refinements.
+source revisions, original failures and final CI. At that completion, MSH-125
+and R6 remained open and existing document/Resign/Return behavior was unchanged.
+
+Current workflow handoff (MSH-125, 2026-10-31): one shared New game / Save / Load
+workflow admits intentional replacement atomically; native never-saved/dirty Quit
+protection uses Save / Discard / Cancel. Direct Resign preserves native outcomes
+and unresolved/unscored meaning. One native Return to live restores play only
+from browse-only suspension with fresh execution; Load, Take back, cancellation,
+failure, conclusion and capacity stops retain explicit Resume/Retry. See the
+[workflow review](review/workflows-125.md) for exact source, normal/QA package
+identities, actual platform interactions, independent review and retained failures.
+Archive formats, capacity, native rules and engine policy remain unchanged.
+MSH-121/R6 owns subsequent integrated architecture/product acceptance; M4 remains open.
 
 ## 4. First milestones
 

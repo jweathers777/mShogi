@@ -1,0 +1,84 @@
+{
+  "source_revision": "871a1fa4b6ae1b463aa4c2abd92bb696d5cfb550",
+  "ci_run": 41212862693,
+  "linux_job": 124571306572,
+  "artifact_id": 13046773014,
+  "artifact_sha256": "484880a64fefa1ee31c6a3fb1b19b8f4a56d10904c42c95df54b32729bf906f8",
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "failed",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 2082, in main\n    journey.normal()\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 1219, in normal\n    self.intentional_replacement_failures('chess')\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 1035, in intentional_replacement_failures\n    assert before['document']['path'] is None and before['document']['dirty'], before\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: {'chess': {'claims': [], 'in_check': False, 'searched_version': None, 'last_engine_turn': None, 'rules_mode': 'm2', 'selected_conclusion': None, 'analysis': {'status': 'idle', 'operation': None, 'context': None, 'target': None, 'result': None, 'message': None}, 'live_conclusion': None, 'last_engine_result': None}, 'capacity': {'status': 'available', 'resource': None, 'id': 0, 'message': None}, 'diagnostic': None, 'observations': [], 'chess_match': {'rules_profile': 'mshogi.chess.match.v1', 'schema_version': 1, 'time_control': 'untimed', 'events': [{'reply': {'rejection': None, 'conclusion': None, 'remaining_ns': None, 'active': 'white', 'version': 1}, 'request': {'version': 0, 'actor': 'white', 'command': 'start', 'at_ns': 0}}], 'initial_record_json': '{\"schema_version\":1,\"rules_profile\":\"mshogi.chess.match.v1\",\"initial_fen\":\"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\",\"history_origin\":\"standard_start\",\"claim_policy\":\"explicit_only\",\"events\":[]}'}, 'profile': 'mshogi.chess.match.v1', 'io': {'phase': 'idle', 'resource': None, 'id': 0, 'message': None}, 'document': {'settings': {'settings': {'orientation': 'white', 'analysis_defaults': {'kind': 'moves', 'nodes': 100000, 'depth': 4}}, 'game_kind': 'chess'}, 'revision': 0, 'dirty': False, 'path': None}, 'moves': {'entries': [], 'last_action': None, 'root': {'label': 'Starting position', 'numbering': 'Moves from the starting position'}}, 'context': {'envelope_version': 1, 'profile_edition': 'FIDE-2023-01-01+mshogi.chess.match.v1', 'payload': {'initial_fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'history_origin': 'standard_start', 'rules_profile': 'mshogi.chess.match.v1', 'schema_version': 1, 'claim_policy': 'explicit_only', 'events': []}, 'game_kind': 'chess', 'rules_profile': 'mshogi.chess.match.v1', 'native_schema_version': 1}, 'error': '', 'analysis': {'status': 'idle', 'operation': None, 'context': None, 'target': None, 'result': None, 'message': None}, 'token': {'revision': 1, 'document': 0, 'selection': 1, 'version': 1}}\n"
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "failed",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 247, in _request_once\n    with urllib.request.urlopen(request, timeout=45) as response:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 215, in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 521, in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 630, in http_response\n    response = self.parent.error(\n               ^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 559, in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 400: Bad Request\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 2084, in main\n    journey.normal_shogi()\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 1619, in normal_shogi\n    self.moves_navigation(\"shogi\", \"7g7f\", \"\uff17\uff16\u6b69\", 1, \"7g\", \"7f\")\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 666, in moves_navigation\n    w.click(selector)\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 308, in click\n    self.command(\"POST\", f\"/element/{self.find(selector)}/click\", {})\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 257, in command\n    return self.request(method, f\"/session/{self.session}{path}\", data)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 228, in request\n    result = self._request_once(method, path, data)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 250, in _request_once\n    raise RuntimeError(error.read().decode(errors=\"replace\")) from error\nRuntimeError: {\"value\":{\"error\":\"element not interactable\",\"message\":\"\",\"stacktrace\":\"\"}}\n"
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "failed",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 2086, in main\n    journey.normal_shogi_reopened()\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 1666, in normal_shogi_reopened\n    wait(lambda: w.has(\".shogi-application\"), \"fresh normal Chess launch dispatches shogi archive\")\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 209, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: fresh normal Chess launch dispatches shogi archive; last observation: False\n"
+    },
+    {
+      "phase": "normal-xiangqi",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed",
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed",
+      "traceback": null
+    }
+  ]
+}

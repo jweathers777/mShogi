@@ -1,0 +1,17 @@
+{
+  "source_revision": "58a5d7ad95cba1724118a91d8ad4958fb1c287ed",
+  "observations": [
+    {
+      "package": "normal",
+      "pid": 91838,
+      "action": "Saved unmodified Chess, bare CmdQ; no post-exit CUA app lookup",
+      "result": "ps -p91838 produced no PID; host exited without Save Game prompt"
+    },
+    {
+      "package": "verification",
+      "pid": 92029,
+      "action": "Native Cocoa Quit (verification) on unsaved Xiangqi, guard Discard",
+      "result": "ps -p92029 produced no PID; anchored packaged host/engine pgrep no matching processes"
+    }
+  ]
+}

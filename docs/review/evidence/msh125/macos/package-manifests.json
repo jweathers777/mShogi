@@ -1,0 +1,53 @@
+{
+  "environment": {
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "sw_vers": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0.1\nBuildVersion:\t\t26A434\n",
+    "arch": "arm64"
+  },
+  "packages": [
+    {
+      "label": "normal",
+      "source_revision": "871a1fa4b6ae1b463aa4c2abd92bb696d5cfb550",
+      "path": "/private/tmp/msh125-packages/mShogi.app",
+      "files": {
+        "Contents/Info.plist": "343be4b5b0ce533854424094072924e4695b92c95e1c220e1cd7ec09b5a8ce90",
+        "Contents/MacOS/mshogi-desktop": "ab461219c10b8dd3ae1d8618632b56a4d75d6804dc66bdbf552c944757b3c2d0",
+        "Contents/MacOS/mshogi": "92592cb2a4f5ed57ed1b62498b7d288e2a4bc01cb4f0f87827eedf762f9ca5d7",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+      }
+    },
+    {
+      "label": "verification",
+      "source_revision": "871a1fa4b6ae1b463aa4c2abd92bb696d5cfb550",
+      "path": "/private/tmp/msh125-packages/mShogi Verification.app",
+      "files": {
+        "Contents/Info.plist": "166a320e22c63d1fea58096a8b4e25432753d73fe439fe3797b738473f828172",
+        "Contents/MacOS/mshogi-desktop": "86dbde42d9fd15bae853259ce752afe1d382a2ad73492a5b71402381e64041d4",
+        "Contents/MacOS/mshogi": "92592cb2a4f5ed57ed1b62498b7d288e2a4bc01cb4f0f87827eedf762f9ca5d7",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+      }
+    },
+    {
+      "label": "normal",
+      "source_revision": "58a5d7ad95cba1724118a91d8ad4958fb1c287ed",
+      "path": "/private/tmp/msh125-packages-58a5d7a/mShogi.app",
+      "files": {
+        "Contents/Info.plist": "343be4b5b0ce533854424094072924e4695b92c95e1c220e1cd7ec09b5a8ce90",
+        "Contents/MacOS/mshogi-desktop": "7db2eb4cd6306967ea8ac76a3fa8984e631b9b802c968a3276338dfc2596beb3",
+        "Contents/MacOS/mshogi": "92592cb2a4f5ed57ed1b62498b7d288e2a4bc01cb4f0f87827eedf762f9ca5d7",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+      }
+    },
+    {
+      "label": "verification",
+      "source_revision": "58a5d7ad95cba1724118a91d8ad4958fb1c287ed",
+      "path": "/private/tmp/msh125-packages-58a5d7a/mShogi Verification.app",
+      "files": {
+        "Contents/Info.plist": "166a320e22c63d1fea58096a8b4e25432753d73fe439fe3797b738473f828172",
+        "Contents/MacOS/mshogi-desktop": "4cc08e66f7691bff936268069b1e3d8711843790c7e2c7a8c7545da7534dc039",
+        "Contents/MacOS/mshogi": "92592cb2a4f5ed57ed1b62498b7d288e2a4bc01cb4f0f87827eedf762f9ca5d7",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+      }
+    }
+  ]
+}

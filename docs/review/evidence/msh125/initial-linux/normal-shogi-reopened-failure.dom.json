@@ -1,0 +1,15 @@
+{
+  "text": "\u6b69\nmShogi\n\nCHESS\nLocal engine\nUNSAVED\nUntitled game\nNew game\nSave\nLoad\nYOUR GAME\n\nWhite to move\nYou play White against mShogi\n\u2195\nFlip board\nm\nmShogiBlack\nYour opponent\n\u265c\n8\n\u265e\n\u265d\n\u265b\n\u265a\n\u265d\n\u265e\n\u265c\n\u265f\n7\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n6\n5\n4\n3\n\u265f\n2\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265c\n1\na\n\u265e\nb\n\u265d\nc\n\u265b\nd\n\u265a\ne\n\u265d\nf\n\u265e\ng\n\u265c\nh\nY\nYouWhite\nHuman player\nTo move\nArrows: move focus \u00b7 Enter/Space: select \u00b7 Esc: cancel\nYour turn\nLive position \u00b7 0 plies\nThe file operation could not complete. Your current game and unsaved changes have been kept.\nAnalysis\n\nPlay details\nAnalyze position\nEngine\nIdle\nPlay limit: depth 2 \u00b7 20000 nodes\nNo engine search has completed in this game.\nGame Actions\n\nTake backResign\nMoves\n0 moves\nStarting position\nMoves from the starting position\nMove number\tWhite\tBlack\nNo moves in known history.\n\nPosition events (1)\n\n1\nMatch started",
+  "focus": {
+    "label": null,
+    "text": "Load",
+    "tag": "BUTTON"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 795,
+    "width": 1180
+  },
+  "common_actions": [],
+  "inputs": []
+}

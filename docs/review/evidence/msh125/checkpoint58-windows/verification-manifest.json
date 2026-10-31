@@ -1,0 +1,6 @@
+{
+  "sha256": "6d065183b9f80d94ff47e061dfe082576bd4ed2efcf58459db6889baf9fbdb66",
+  "installer": "D:\\a\\mShogi\\mShogi\\desktop\\src-tauri\\target\\release\\bundle\\nsis\\mShogi Verification_0.1.0_x64-setup.exe",
+  "installation": "D:\\a\\_temp\\mshogi-gui-verification",
+  "source_revision": "58a5d7ad95cba1724118a91d8ad4958fb1c287ed"
+}

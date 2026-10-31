@@ -172,6 +172,7 @@
 .support-dialog summary { cursor:pointer; padding:4px 0; }
 .support-dialog pre { white-space:pre-wrap; overflow-wrap:anywhere; max-height:220px; overflow:auto; padding:8px; background:#14292e; font-size:11px; }
 .support-dialog a { color:#c3dca5; }
+.support-dialog p { overflow-wrap:anywhere; }
 .position-assessment { margin-top:14px; color:var(--shell-muted); font-size:11px; }
 .position-assessment summary { cursor:pointer; line-height:1.5; }
 .position-assessment p { margin:7px 0; font-size:11px; }

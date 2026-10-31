@@ -150,14 +150,21 @@ acknowledgement is logged as uncertainty; force-kill/crash cleanup is not promis
 ## Isolated verification application
 
 Difficult outcome/recovery states have an explicitly opt-in
-`desktop-verification` Cargo feature, not enabled by normal build or CI packaging.
+`desktop-verification` Cargo feature, excluded from normal distributables. CI
+constructs a separately identified verification package for difficult states.
 On macOS, after building the normal application above:
 
 ```sh
 npm run desktop:build -- --bundles app --features desktop-verification --config src-tauri/tauri.verification.conf.json
-open --env MSHOGI_DESKTOP_FIXTURE=claim "src-tauri/target/release/bundle/macos/mShogi Verification.app"
+python3 scripts/macos-verification.py prepare qa
+python3 scripts/macos-verification.py select qa claim
+python3 scripts/macos-verification.py inspect qa
 ```
 
+Launch the fixed path reported by the helper; automated interaction uses the
+supported Computer Use app API. The release/bundle verification output is a
+staging input, not another launch identity. Keep the primary-checkout helper
+and fixed launch paths even when source is built in a temporary worktree.
 The separate application name, identifier and window title label test state.
 Fixture names are `standard`, `claim` (intended fifty-move claim), `current-claim`,
 `concluded`, `incomplete`, `promotion` and `capacity`. `promotion` uses a real
@@ -166,13 +173,14 @@ engine request; Retry uses ordinary play limits. `capacity` starts with 255
 genuine native zero-node analysis observations so the next accepted analysis
 reaches 256 and subsequent work demonstrates the application limit. These
 observations remain in saved documents. Close before launching another fixture.
-Use `MSHOGI_DESKTOP_FIXTURE=synthetic` in that same separate build for the
-invented 16-by-16 strider fixture. It uses the shared board and selector, with
+Use `python3 scripts/macos-verification.py prepare synthetic`, then
+`python3 scripts/macos-verification.py select synthetic synthetic`, for the fixed
+separately labeled invented 16-by-16 strider fixture. It uses the shared board and selector, with
 native complete choices and a separate temporary record. Select `i9 → j10 → i9`
 to capture and return, or Reset and select `i9 → h9 → i9` to return without that
 capture. A valid short prefix requires **Complete action here**; selecting it
 alone submits nothing. Escape cancels from the board or route controls. Flip
-changes orientation; arrow keys scroll focused squares into view. One complete
+changes orientation; arrow keys move board focus. One complete
 action ends the demonstration; Reset advances the native version and clears its
 temporary record. This is development infrastructure, not another real game.
 

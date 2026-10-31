@@ -2,7 +2,7 @@
 
 ## Current macOS identity and approval discipline (MSH-121)
 
-Use at most three reusable application identities. Never add a fixture, task ID,
+Use at most three reusable application launch identities. Never add a fixture, task ID,
 commit hash, timestamp or random suffix to a bundle ID or launch path.
 
 | Role | Fixed bundle identifier | Predictable location from repository root |
@@ -11,12 +11,19 @@ commit hash, timestamp or random suffix to a bundle ID or launch path.
 | QA | `org.mshogi.desktop.verification.r6.shogipromotion` | `desktop/src-tauri/target/verification/macos/mShogi Verification.app` |
 | Synthetic | `org.mshogi.desktop.verification.r6.synthetic` | `desktop/src-tauri/target/verification/macos/mShogi Synthetic.app` |
 
+Stage and launch from the primary integration checkout, including when source
+is built in a temporary worktree. Invoke the helper stored in that primary
+checkout; do not run a copied helper from a task checkout or create another
+launch directory there. The fixed paths are launch identities, not disposable
+per-task build directories. Keep one active instance per slot.
+
 The QA and synthetic identifiers are deliberately retained historical IDs which
 already had saved user approvals during R6. The QA ID does not restrict the app
 to Shogi or promotion. Do not rename these IDs for cosmetic consistency. The
 normal distributable remains independent; the synthetic fixture remains clearly
 labeled as invented, and is not a supported game in New Game.
 
+The QA build output is a staging input; do not launch it as a fourth identity.
 The external `desktop/scripts/macos-verification.py` helper stages a separately
 built QA bundle, sets its fixed identity and signs it once per actual build.
 It refuses to replace a running staged app. Scenario selection writes a bounded
@@ -27,9 +34,10 @@ host contains neither this reader nor its environment marker. Changing a
 scenario does not touch Info.plist, signed resources, executable or signature.
 Do not put the selected fixture in `LSEnvironment` or create another app copy.
 
-From the repository root, after building the QA package:
+From the primary repository root:
 
 ```sh
+npm --prefix desktop run desktop:build -- --bundles app --features desktop-verification --config src-tauri/tauri.verification.conf.json
 python3 desktop/scripts/macos-verification.py prepare qa
 python3 desktop/scripts/macos-verification.py select qa xiangqi-count
 python3 desktop/scripts/macos-verification.py inspect qa
@@ -50,8 +58,9 @@ permissions are separate. The read-only R6 investigation found actual saved
 `approvedBundleIdentifiers` in the CUAService app-approval record, including the
 individual per-fixture IDs that caused repeated requests. No approval or
 security configuration was changed. The original twenty application copies had
-twenty IDs and signature hashes despite identical QA executable code. This was
-unnecessary verification identity proliferation.
+twenty IDs: normal, base QA and eighteen per-fixture clones. The base QA and
+clones shared the same function code, despite different signature hashes.
+The per-fixture identities were unnecessary.
 
 Ad-hoc signing has no TeamIdentifier in these local builds; observed designated
 requirements include an exact code hash. Bundle ID alone therefore does not

@@ -250,6 +250,16 @@ identities, actual platform interactions, independent review and retained failur
 Archive formats, capacity, native rules and engine policy remain unchanged.
 MSH-121/R6 owns subsequent integrated architecture/product acceptance; M4 remains open.
 
+Current integrated acceptance handoff (MSH-121/R6, 2026-10-31): fresh independent
+source/caller/native/interaction reviews accept the approved single-owner target
+and completed123/124/125 UX. Actual Chess/Shogi/Xiangqi packaged journeys and
+normal/minimum comparisons are recorded separately for Windows, macOS and Linux
+in the [final acceptance report](review/architecture-acceptance-121.md). Fixed
+normal/QA/synthetic macOS launch slots replace per-fixture application identities;
+actual approval reuse across rebuilds is observed, not guaranteed for future
+platform policy. Existing game semantics, capacity and complete-save guarantees
+remain unchanged. MSH-112 and M4/46/47 remain open; no next task starts.
+
 ## 4. First milestones
 
 ### M0. Repository workflow bootstrap

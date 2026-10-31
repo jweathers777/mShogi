@@ -1,10 +1,11 @@
 ---
 id: MSH-124
 title: Simplify the shared desktop shell game chooser and branding
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-10-31T09:02:00Z'
-updated_date: '2026-10-31T12:33:00Z'
+updated_date: '2026-10-31T13:38:00Z'
 labels:
   - desktop
   - owner-approved-ux
@@ -44,8 +45,21 @@ Owner-approved post-MSH-119 product presentation refinement (2026-10-31), preser
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Keep one primary builder/integrator in the clean primary codex/rewrite checkout at 97b9470. Refine existing ProductApp/ApplicationView/ApplicationShell: one native HTML game select with only implemented games, unchanged side radio buttons and admission/lifecycle callbacks; shared 歩 brand; exact Analysis → Game Actions → Moves order.
+2. Move diagnostics, execution provenance, exact historical evidence and all font/license notices into one shared keyboard-accessible About dialog opened outside the sidebar. Retain current native Quit and all player-facing result/warning/Unknown/recovery/capacity distinctions. Simplify ordinary copy without changing native commands, analysis meanings, document controls or R5 selection ownership.
+3. Reproduce the MSH-123 minimum-size outline clipping from its actual package captures. Preserve the full focus outline using shared sidebar/inner-scroll gutters and bounded non-board focus reveal, without hiding indicators or altering Moves identities, board geometry or controller state. Add focused accessibility and semantic regressions.
+4. Update external packaged GUI verification for the new dropdown, shared section order, About access and truthful copy; prove full board and focused control outline visibility at actual 1180x820 and760x650. Run focused/full frontend and strictTS checks, normal/QA package exclusion and actual three-game package interaction, independent source/visual/accessibility review and applicable CI. Reuse unchanged native correctness evidence; normal integration/push, six AC/four DoD only when supported; stop124.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 MSH-123 final platform visual handoff (planning note only; task remains Ready/unstarted): at760x650 the lower edge of the focused Moves button gold outline can clip at the scrollable sidebar viewport in Windows all3 and Linux Xiangqi. Top/sides, label and selected-position state remain clear; actual Tab/Enter succeeds and independent123review classifies this nonmaterial. Consider edge spacing/scroll reveal during this existing shell-layout/accessibility scope. Exact unchanged captures and reviewer rationale: docs/review/evidence/msh123/final-platform-visual.md (recorded on123finalization). No dependency/AC/ownership change or implementation begins.
+
+Startup: root Codex owns MSH-124 in primary codex/rewrite at97b9470943107ae842c8184081c5e8e4cd26ef32; clean checkout, no active In Progress/In Review owner displaced, unrelated worktrees preserved. PATH Backlog1.55.0 differs; pinned project1.55.1 overview/execution guide used for all mutations. MSH-119 dependency and completed120/123 evidence inspected. User attachment requires correction of123focusedge, not optional deferral. ProductApp currently owns chooser/lifecycle; ApplicationShell orders analysis/history/actions/technical; ApplicationView owns diagnostics/capability composition; Dialog already traps select/buttons and restores invoker. No native or125 lifecycle change planned.
+
+Implementation checkpoint: one shared Analysis → Game Actions → Moves composition; supported-only native HTML game selector retains existing side radio buttons and admission/dirty guards. Shared 歩 header About dialog replaces sidebar diagnostics, retaining raw context/provenance/resource facts/licenses/Quit; Xiangqi fast/exact/Unknown/witness meanings remain readable in Analysis. Non-board nested scroll gutters/reveal preserve outward focus rings; R5 and native code unchanged. Focused tests added; independent source review in progress and actual packaged visual/focus verification still required. Initial frontend failures were obsolete copy/order expectations plus a new About trap regression test: jsdom comma-selector ordering placed visible links before summaries; explicit document order now enforced and rerun pending. No failed check treated as passed.
 <!-- SECTION:NOTES:END -->

@@ -97,7 +97,7 @@ export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspection
   </div>;
   const footer = <>
     <div className="shell-board-help"><div className={`board-help xiangqi-help${inspection || loading ? " movement-inspection-status" : ""}`}>
-      <span>{inspection ? inspectionStatus(inspection.label) : loading ? "Loading read-only movement inspection…" : "Select a piece, then a marked intersection."}</span><span>Arrows · Enter · Esc</span>
+      <span>{inspection ? inspectionStatus(inspection.label) : loading ? "Loading read-only movement inspection…" : "Arrows: move focus · Enter/Space: select · Esc: cancel"}</span>
     </div></div>
     {continuation && <div className="shogi-route xiangqi-route" onKeyDown={(event) => { if (event.key === "Escape") { event.preventDefault(); interaction.cancel(); } }}><p>{announcement}</p>{terminals.length > 0 && !inspection && <button onClick={interaction.completeHere}>Complete action here</button>}<button onClick={interaction.cancel}>Cancel selection</button></div>}
     <span className="sr-only" role="status" aria-live="polite">{announcement}</span>

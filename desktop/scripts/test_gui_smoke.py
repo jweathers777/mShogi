@@ -387,11 +387,12 @@ class XiangqiRuntimeEvidenceTests(unittest.TestCase):
         journey = object.__new__(module.Journey)
         journey.web = Mock()
         diagnostics = {**self.diagnostics(), 'error': ''}
-        journey.web.read.return_value = [diagnostics]
+        journey.web.read.side_effect = [True, [diagnostics]]
+        journey.web.has.side_effect = [True, False]
         self.assertEqual(journey.xiangqi_diagnostics(), diagnostics)
         expression = journey.web.read.call_args.args[0]
-        self.assertTrue(expression.startswith('[[...document.querySelectorAll('))
-        self.assertTrue(expression.endswith('??null]'))
+        self.assertTrue(expression.startswith('[JSON.parse('))
+        self.assertTrue(expression.endswith(')]'))
         journey.web.command.assert_not_called()
 
     def test_xiangqi_history_observer_requires_event_prefix_not_only_board_ply(self):
@@ -435,6 +436,7 @@ class SaveAcceptanceTests(unittest.TestCase):
         self.expected = '/games/new.mshogi'
         self.observation = {
             'path': self.expected, 'dirty': 'UNMODIFIED', 'statuses': [],
+            'io': {'id': 8, 'phase': 'complete', 'message': 'Saved complete native desktop archive.'},
             'buttons': [{'label': label, 'enabled': True}
                         for label in ('New game', 'Save', 'Save as…', 'Open…')]}
 
@@ -459,6 +461,14 @@ class SaveAcceptanceTests(unittest.TestCase):
                 self.observation['statuses'] = [status]
                 self.assertFalse(module.saved_document_accepted(self.observation, self.expected))
 
+    def test_prior_native_receipt_cannot_accept_a_new_file_operation(self):
+        self.observation['after_io_id']=8
+        self.assertFalse(module.saved_document_accepted(self.observation,self.expected))
+        self.observation['io']['id']=9
+        self.assertTrue(module.saved_document_accepted(self.observation,self.expected))
+        self.observation['io']['phase']='failed'
+        self.assertFalse(module.saved_document_accepted(self.observation,self.expected))
+
     def test_all_four_controls_are_required(self):
         self.observation['buttons'].pop()
         self.assertFalse(module.saved_document_accepted(self.observation, self.expected))
@@ -466,13 +476,15 @@ class SaveAcceptanceTests(unittest.TestCase):
     def test_open_requires_actual_current_receipt_and_settled_correct_document(self):
         # Actual R3 packaged failure screenshot/DOM: Open succeeded with this
         # new native receipt, while the verifier waited for an obsolete phrase.
-        self.observation['statuses'] = [
-            'Opened complete native document with fresh runtime identities and work stopped.']
+        self.observation['io'] = {'id':9,'phase':'complete','message':
+            'Opened complete native document with fresh runtime identities and work stopped.'}
         self.assertTrue(module.opened_document_accepted(self.observation, self.expected))
         for change in (
-                lambda state: state.update(statuses=['Saved a complete desktop document.']),
+                lambda state: state.update(io={'id':9,'phase':'complete','message':'Saved complete native desktop archive.'}),
+                lambda state: state.update(io={'id':0,'phase':'complete','message':'Opened complete native document with work stopped.'}),
+                lambda state: state.update(io={'id':9,'phase':'failed','message':'Opened complete native document with work stopped.'}),
                 lambda state: state.update(statuses=['Opening your game…']),
-                lambda state: state.update(statuses=['Open failed; current game retained.']),
+                lambda state: state.update(io={'id':10,'phase':'failed','message':'Open failed; current game retained.'}),
                 lambda state: state.update(path='/games/old.mshogi'),
                 lambda state: state.update(dirty='Unsaved changes'),
                 lambda state: state['buttons'][2].update(enabled=False)):
@@ -807,6 +819,63 @@ class FatalWaitBoundaryTests(unittest.TestCase):
                     else: web.close()
                 web._request_once.assert_called_once()
                 web.record.assert_not_called()
+
+
+
+
+class ShellFocusEvidenceTests(unittest.TestCase):
+    def observation(self):
+        return {'focused': True, 'focusVisible': True, 'outlineStyle': 'solid', 'outlineWidth': 2,
+                'outline': {'left': 410, 'right': 700, 'top': 580, 'bottom': 646},
+                'clip': {'left': 408, 'right': 702, 'top': 120, 'bottom': 648}}
+
+    def test_full_outline_not_only_button_label_must_fit_all_clip_edges(self):
+        observed=self.observation()
+        self.assertTrue(module.focus_outline_visible(observed))
+        for key,value in (('left',407),('right',703),('top',119),('bottom',649)):
+            bad=copy.deepcopy(observed);bad['outline'][key]=value
+            self.assertFalse(module.focus_outline_visible(bad),key)
+        for key,value in (('focused',False),('focusVisible',False),('outlineStyle','none'),('outlineWidth',0)):
+            self.assertFalse(module.focus_outline_visible({**observed,key:value}),key)
+        self.assertFalse(module.focus_outline_visible(None))
+
+    def test_actual_focus_probe_observes_every_ancestor_without_reveal_injection(self):
+        journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()
+        journey.web.read.return_value=self.observation()
+        journey.assert_focus_outline('.moves-table [data-event="2"]','chess')
+        expression=journey.web.read.call_args.args[0]
+        for required in ('outlineWidth','outlineOffset','parentElement','overflowX','overflowY','clientWidth','clientHeight','document.activeElement===e',":focus-visible"):
+            self.assertIn(required,expression)
+        for forbidden in ('.focus(','.click(','scrollIntoView(', 'scrollTop =','dispatchEvent(', 'invoke('):
+            self.assertNotIn(forbidden,expression)
+        journey.web.click.assert_not_called();journey.web.key.assert_not_called()
+
+
+class PublicSupportDiagnosticsTests(unittest.TestCase):
+    def test_native_diagnostics_require_public_actual_input_and_always_close(self):
+        journey=object.__new__(module.Journey);journey.web=Mock()
+        native={'token':{'document':7},'context':{'game_kind':'shogi'}}
+        journey.web.read.side_effect=[True,[native]]
+        journey.web.has.side_effect=[True,False]
+        self.assertEqual(journey.native_diagnostics(),native)
+        self.assertEqual(journey.web.click.call_args_list,[unittest.mock.call('[data-support-trigger]'),
+            unittest.mock.call('.support-dialog details summary'),unittest.mock.call('.support-dialog [data-cancel]')])
+        for call in journey.web.read.call_args_list:
+            for forbidden in ('invoke(', 'dispatchEvent(', '.click(', '.focus('):
+                self.assertNotIn(forbidden,call.args[0])
+
+    def test_bad_diagnostic_payload_still_closes_public_dialog(self):
+        journey=object.__new__(module.Journey);journey.web=Mock()
+        journey.web.read.side_effect=[True,[None]];journey.web.has.side_effect=[True,False]
+        with self.assertRaises(AssertionError):journey.native_diagnostics()
+        self.assertEqual(journey.web.click.call_args_list[-1],unittest.mock.call('.support-dialog [data-cancel]'))
+
+    def test_lightweight_inspection_observer_never_opens_support_or_invents_native_token(self):
+        journey=object.__new__(module.Journey);journey.web=Mock()
+        journey.inspection_state()
+        expression=journey.web.read.call_args.args[0]
+        self.assertNotIn('nativeToken',expression);self.assertNotIn('data-native-diagnostics',expression)
+        journey.web.click.assert_not_called();journey.web.key.assert_not_called()
 
 
 if __name__ == '__main__':

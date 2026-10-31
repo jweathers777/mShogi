@@ -13,13 +13,15 @@ describe("one application shell for native games", () => {
         heading={<LiveGameHeading eyebrow="YOUR GAME" status="Your turn" player="You play the first side" flip={<button>Flip board</button>} />}
         board={<div>Native board</div>} analysis={<p>Native observations</p>}
         history={<h2>Game history</h2>} gameActions={<button>Resign</button>}
-        technical={<p>Native technical details</p>} />);
+        support={<button>About mShogi</button>} />);
       const header = container.querySelector(".shell-header")!;
       for (const label of ["New game", "Save", "Save as…", "Open…"]) expect(header.contains(screen.getByRole("button", { name: label }))).toBe(true);
       expect(header.querySelector(".shell-document")?.textContent).toContain("UnsavedUntitled game");
-      expect(Array.from(container.querySelectorAll("[data-shell-section]")).map(e => e.getAttribute("data-shell-section"))).toEqual(["analysis", "history", "actions"]);
+      expect(Array.from(container.querySelectorAll("[data-shell-section]")).map(e => e.getAttribute("data-shell-section"))).toEqual(["analysis", "actions", "history"]);
       expect(container.querySelector(".shell-board-panel")?.contains(screen.getByRole("button", { name: "Flip board" }))).toBe(true);
-      expect(container.querySelector("details")?.open).toBe(false);
+      expect(header.contains(screen.getByRole("button", { name: "About mShogi" }))).toBe(true);
+      expect(container.querySelector(".shell-sidebar details")).toBeNull();
+      expect(header.textContent).toContain("歩");
       expect(container.querySelector("main")?.classList.contains(`shell-${game}`)).toBe(true);
     });
   }
@@ -38,7 +40,7 @@ it.each([
 
 it("keeps actual play limits between native engine status and observations", () => {
   const { container, rerender } = render(<NativeEnginePanel status="Searching" limits={{ depth: 2, nodes: 5000 }}><p>No completed observation</p></NativeEnginePanel>);
-  expect([...container.querySelector(".engine-card")!.children].map(e => e.textContent)).toEqual(["Native engineSearching", "Play limit: depth 2 · 5,000 nodes", "No completed observation"]);
+  expect([...container.querySelector(".engine-card")!.children].map(e => e.textContent)).toEqual(["EngineSearching", "Play limit: depth 2 · 5,000 nodes", "No completed observation"]);
   rerender(<NativeEnginePanel status="Play paused" limits={{ depth: 3, nodes: 12345 }}><p>Real observation</p></NativeEnginePanel>);
   expect(screen.getByText("Play limit: depth 3 · 12,345 nodes")).toBeTruthy();
 });
@@ -48,7 +50,7 @@ it.each([
   [{ historical: false, concluded: false, paused: false, humanTurn: false, thinking: true }, "mShogi is searching within fixed work limits"],
   [{ historical: false, concluded: false, paused: true, humanTurn: true, thinking: false }, "Play paused · resume explicitly to continue"],
   [{ historical: false, concluded: true, paused: true, humanTurn: true, thinking: false }, "Game concluded"],
-  [{ historical: true, concluded: true, paused: true, humanTurn: true, thinking: false }, "Read-only history · return to live to play"],
+  [{ historical: true, concluded: true, paused: true, humanTurn: true, thinking: false }, "History · return to live to play"],
 ])("preserves footer status precedence for %j", (state, label) => {
   render(<GamePositionStatus {...state} ply={1} />);
   expect(screen.getByText(label)).toBeTruthy();

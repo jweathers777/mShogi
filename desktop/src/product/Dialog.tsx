@@ -17,7 +17,13 @@ export function Dialog({ title, children, cancel, className = "" }: { title: str
   return <div className="modal-backdrop product-backdrop"><div ref={ref} className={`product-dialog ${className}`} role="dialog" aria-modal="true" aria-label={title} onKeyDown={(e) => {
     if (e.key === "Escape") { e.preventDefault(); cancel(); }
     if (e.key === "Tab") {
-      const items = [...(ref.current?.querySelectorAll<HTMLElement>('button:not(:disabled), select:not(:disabled), input:not(:disabled), a[href]') ?? [])];
+      const items = [...(ref.current?.querySelectorAll<HTMLElement>('button:not(:disabled), select:not(:disabled), input:not(:disabled):not([type="hidden"]), a[href], summary') ?? [])].filter(item => {
+        for (let ancestor = item.parentElement; ancestor && ancestor !== ref.current; ancestor = ancestor.parentElement) {
+          if (ancestor.hidden || ancestor.hasAttribute("inert")) return false;
+          if (ancestor instanceof HTMLDetailsElement && !ancestor.open && item !== ancestor.querySelector(":scope > summary")) return false;
+        }
+        return !item.hidden;
+      }).sort((a,b) => a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1);
       const index = items.indexOf(document.activeElement as HTMLElement);
       e.preventDefault(); items[(index + (e.shiftKey ? -1 : 1) + items.length) % items.length]?.focus();
     }

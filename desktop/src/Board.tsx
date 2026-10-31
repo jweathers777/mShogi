@@ -58,7 +58,7 @@ export function Board({ pieces, choices, orientation, version, disabled,
   const displayFiles = nativeOrientation?.files ?? (orientation === "white" ? geometry.files : [...geometry.files].reverse());
   const displayRanks = nativeOrientation?.ranks ?? (orientation === "white" ? [...geometry.ranks].reverse() : geometry.ranks);
   const width = 40 + columns * 100, height = 40 + rows * 100;
-  const help = <p className={`board-help${inspection || inspectionPending ? " movement-inspection-status" : ""}`}>{inspection ? inspectionStatus(inspection.label) : inspectionPending ? "Loading read-only movement inspection…" : "Select a piece, then a destination. Arrow keys move focus · Enter or Space selects · Escape cancels."}</p>;
+  const help = <p className={`board-help${inspection || inspectionPending ? " movement-inspection-status" : ""}`}>{inspection ? inspectionStatus(inspection.label) : inspectionPending ? "Loading read-only movement inspection…" : "Arrows: move focus · Enter/Space: select · Esc: cancel"}</p>;
   return <div className="board-wrap" onFocusCapture={interaction.onFocusCapture} onBlurCapture={interaction.onBlurCapture}>
     {hands.length > 0 && <div role="group" aria-label="Native hands">
       {hands.map(hand => <button key={hand.origin} ref={node => interaction.register(hand.origin, node)}

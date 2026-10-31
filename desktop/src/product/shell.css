@@ -24,7 +24,7 @@
 .game-shell.game-shell .quiet:hover:enabled { background:#2a4247; }
 .game-shell.game-shell .secondary { color:#eaf1e6; background:#345b50; border-color:#56796c; }
 .game-shell.game-shell button { font-size:12px; }
-.game-shell.game-shell button:focus-visible,.game-shell.game-shell input:focus-visible,.game-shell.game-shell summary:focus-visible { outline:3px solid #e4c381; outline-offset:3px; }
+.game-shell.game-shell button:focus-visible,.game-shell.game-shell input:focus-visible,.game-shell.game-shell select:focus-visible,.game-shell.game-shell summary:focus-visible { outline:3px solid #e4c381; outline-offset:3px; }
 .game-shell .shell-workspace { height:calc(100dvh - 82px); display:grid; grid-template-columns:minmax(0,1fr) 292px; gap:28px; padding:20px 28px 16px; max-width:1520px; margin:auto; align-items:stretch; }
 .game-shell .shell-board-panel { min-width:0; min-height:0; display:flex; flex-direction:column; }
 .game-shell .shell-live-heading { height:80px; min-height:80px; flex-shrink:0; margin:0; display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
@@ -53,7 +53,7 @@
 .game-shell .shell-game-footer .game-footnote { font-size:9px; line-height:1.2; margin-top:2px; }
 .game-shell .movement-inspection-status { color:#ffd3df; background:#3c2430; border-color:#f59ab0; }
 .game-shell .hand-piece.inspecting { outline-color:#f59ab0; }
-.game-shell .shell-sidebar { min-height:0; display:flex; flex-direction:column; gap:14px; overflow-y:auto; scrollbar-gutter:stable; padding-right:4px; }
+.game-shell .shell-sidebar { min-height:0; display:flex; flex-direction:column; gap:14px; overflow-y:auto; scrollbar-gutter:stable; padding:8px; margin:-8px; scroll-padding:8px; }
 .game-shell .shell-sidebar>* { flex-shrink:0; }
 /* Keep the common gap even without notices; whitespace-only adapter fragments
    must not determine where another game's first card starts. */
@@ -82,7 +82,7 @@
 .game-shell .moves-root { align-self:flex-start; background:transparent; padding:4px 6px; color:var(--shell-text); font-size:11px; }
 .game-shell .moves-root[aria-current="step"] { background:#344b41; }
 .game-shell .moves-numbering { margin:3px 0; color:var(--shell-muted); font-size:10px; line-height:1.35; }
-.game-shell .moves-scroll { flex:1; min-height:42px; overflow:auto; }
+.game-shell .moves-scroll { flex:1; min-height:42px; overflow:auto; padding:8px; scroll-padding:8px; }
 .game-shell .moves-table { width:100%; border-collapse:collapse; table-layout:fixed; font-size:12px; }
 .game-shell .moves-table th:first-child { width:28px; }
 .game-shell .moves-table th { color:var(--shell-muted); font-size:10px; font-weight:400; text-align:left; padding:4px; }
@@ -103,9 +103,6 @@
 .native-history-row { display:flex; align-items:center; gap:10px; padding:7px 6px; font-size:11px; border-radius:4px; }
 .game-shell .shell-actions .resign-button { width:auto; margin:0; }
 .game-shell .shogi-game-actions button { margin:0 4px 0 0; }
-.game-shell .shell-technical { font-size:11px; padding:12px 0; border-top:1px solid var(--shell-border); color:var(--shell-muted); }
-.game-shell .shell-technical a { color:#c3dca5; }
-.shell-technical pre { white-space:pre-wrap; overflow-wrap:anywhere; max-height:220px; overflow:auto; }
 .game-shell .shogi-notice,.game-shell .shogi-resume { color:var(--shell-text); border:1px solid #72816a; background:#263d36; border-radius:8px; padding:12px; }
 .game-shell .shogi-notice h3,.game-shell .shogi-notice p,.game-shell .shogi-resume p { color:#d5e2ce; }
 .game-shell .shogi-notice.error { background:#402c31; border-color:#c28c8c; color:#f3c4bf; }
@@ -162,3 +159,20 @@
 .game-shell .shell-analysis-actions { display:flex; gap:7px; margin-top:10px; }
 .game-shell .shell-analysis-actions button { flex:1; min-width:0; width:auto; margin:0; padding:8px; font-size:11px; }
 .game-shell .inspector-switch { margin-bottom:12px; }
+
+/* Outward focus rings need room at both the nested Moves scroller and the
+   application sidebar. Focus reveal scrolls only these non-board viewports. */
+.game-shell .moves-scroll button { scroll-margin:8px; }
+.game-shell .brand-name { display:flex; align-items:center; gap:9px; }
+.game-shell.game-shell .support-trigger { padding:2px; width:23px; height:23px; border:0; background:transparent; color:var(--shell-muted); font-size:18px; line-height:1; }
+.game-select-label { display:grid; gap:8px; font-size:13px; margin:18px 0; }
+.game-select-label select { width:100%; background:#243b42; color:#e7ece5; border:1px solid #56716f; border-radius:6px; font:inherit; padding:10px; }
+.product-dialog.support-dialog { max-height:calc(100dvh - 40px); overflow:auto; padding:24px; scroll-padding:10px; }
+.support-dialog details { margin:14px 0; }
+.support-dialog summary { cursor:pointer; padding:4px 0; }
+.support-dialog pre { white-space:pre-wrap; overflow-wrap:anywhere; max-height:220px; overflow:auto; padding:8px; background:#14292e; font-size:11px; }
+.support-dialog a { color:#c3dca5; }
+.position-assessment { margin-top:14px; color:var(--shell-muted); font-size:11px; }
+.position-assessment summary { cursor:pointer; line-height:1.5; }
+.position-assessment p { margin:7px 0; font-size:11px; }
+.position-assessment article { border-top:1px solid var(--shell-border); margin-top:10px; padding-top:8px; }

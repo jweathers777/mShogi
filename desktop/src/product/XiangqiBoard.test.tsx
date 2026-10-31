@@ -139,7 +139,7 @@ it("allows native inspection of a historical position while all game actions rem
   render(<XiangqiBoard snapshot={snapshot} disabled onPlay={onPlay} onInspect={onInspect} inspectionDisabled={false} />);
   fireEvent.click(point("b7")); await screen.findByText(/Inspecting Black cannon · Esc clears/);
   fireEvent.click(point("b0")); expect(onPlay).not.toHaveBeenCalled();
-  expect(document.querySelector("[data-position-status]")?.textContent).toContain("Read-only history");
+  expect(document.querySelector("[data-position-status]")?.textContent).toContain("History · return to live");
 });
 
 // Renderer contract probes, not additional Xiangqi rules: complete native choice

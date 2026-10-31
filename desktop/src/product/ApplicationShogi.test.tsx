@@ -17,7 +17,7 @@ it("uses disk-aware document labels, supplied play budget and native selected bo
   const history = { ...snapshot, historical: true, event_index: 2, board_ply: 1, paused: true, document: { ...snapshot.document, path: "/games/shogi.mshogi", dirty: false } };
   rerender(<ShogiApp {...props} snapshot={history} />);
   expect(container.querySelector("[data-document-state]")?.textContent).toBe("Unmodified");
-  expect(container.querySelector("[data-position-status]")?.textContent).toBe("Read-only history · return to live to playSelected position · 1 ply");
+  expect(container.querySelector("[data-position-status]")?.textContent).toBe("History · return to live to playSelected position · 1 ply");
   rerender(<ShogiApp {...props} snapshot={{ ...history, document: { ...history.document, dirty: true } }} />);
   expect(container.querySelector("[data-document-state]")?.textContent).toBe("Unsaved changes");
 });
@@ -90,7 +90,7 @@ it("formats only supplied observations with position, perspective and incomplete
   expect(within(current).getByText("+42 heuristic units")).toBeTruthy();
   expect(within(current).getByText("Sente perspective · Node limit reached")).toBeTruthy();
   expect(within(current).getByText("Move analysis · event 0")).toBeTruthy();
-  expect(within(current).getByText("Read-only analysis. No move or declaration was played.")).toBeTruthy();
+  expect(within(current).getByText("No move or declaration was played.")).toBeTruthy();
   // A newly selected position must not show the old observation as its result.
   rerender(<ShogiApp {...props} snapshot={{ ...snapshot, historical: true, event_index: 1, search_observations: [{ ...view, selected: false, historical: true }] }} />);
   expect(document.querySelector(".shogi-analysis > .shogi-search-observation")).toBeNull();

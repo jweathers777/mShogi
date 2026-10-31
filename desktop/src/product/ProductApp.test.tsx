@@ -18,9 +18,9 @@ beforeEach(() => {
   vi.mocked(useGameSession).mockImplementation(() => session);
 });
 afterEach(cleanup);
-it.each([["Shogi", "Sente", "shogi", "sente"], ["Shogi", "Gote", "shogi", "gote"], ["Chess", "White", "chess", "white"], ["Chess", "Black", "chess", "black"], ["Xiangqi", "Red", "xiangqi", "red"], ["Xiangqi", "Black", "xiangqi", "black"]])("chooses %s / %s with explicit native game and side identity", async (gameLabel, sideLabel, game, side) => {
+it.each([["Shogi", "Sente", "shogi", "sente"], ["Shogi", "Gote", "shogi", "gote"], ["Chess", "White", "chess", "white"], ["Chess", "Black", "chess", "black"], ["Xiangqi", "Red", "xiangqi", "red"], ["Xiangqi", "Black", "xiangqi", "black"]])("chooses %s / %s with explicit native game and side identity", async (_gameLabel, sideLabel, game, side) => {
   render(<ProductApp />); fireEvent.click(screen.getByRole("button", { name: "New game" }));
-  fireEvent.click(screen.getByRole("radio", { name: new RegExp(gameLabel) }));
+  fireEvent.change(screen.getByRole("combobox", { name: "Game" }), { target: { value: game } });
   fireEvent.click(screen.getByRole("radio", { name: sideLabel }));
   fireEvent.click(screen.getByRole("button", { name: "Start game" }));
   expect(session.newGame).toHaveBeenCalledExactlyOnceWith(standard.open_token, game, { game_kind: game, side });
@@ -75,10 +75,14 @@ it("replaces an uncommitted New Game chooser with the native quit guard", async 
   expect(screen.getByRole("dialog", { name: "Close mShogi?" })).toBeTruthy();
   expect(session.newGame).not.toHaveBeenCalled();
 });
-it("provides keyboard radio navigation and restores focus on cancelling New Game", async () => {
+it("offers only implemented games in the compact native chooser and preserves side radio navigation", async () => {
   render(<ProductApp />); const newGame = screen.getByRole("button", { name: "New game" }); newGame.focus(); fireEvent.click(newGame);
-  const game = screen.getByRole("radio", { name: /Shogi/ }); game.focus(); fireEvent.keyDown(game, { key: "ArrowLeft" });
-  const chess = screen.getByRole("radio", { name: /Chess/ }); expect(document.activeElement).toBe(chess); expect(chess.getAttribute("aria-checked")).toBe("true");
+  const chooser = screen.getByRole("combobox", { name: "Game" });
+  expect(chooser.tagName).toBe("SELECT");
+  expect(screen.getAllByRole("option").map(option => [option.textContent, (option as HTMLOptionElement).value])).toEqual([["Chess", "chess"], ["Shogi", "shogi"], ["Xiangqi", "xiangqi"]]);
+  expect(screen.getAllByRole("radio").map(radio => radio.textContent)).toEqual(["Sente", "Gote", "Random"]);
+  const sente = screen.getByRole("radio", { name: "Sente" }); sente.focus(); fireEvent.keyDown(sente, { key: "ArrowRight" });
+  const gote = screen.getByRole("radio", { name: "Gote" }); expect(document.activeElement).toBe(gote); expect(gote.getAttribute("aria-checked")).toBe("true");
   fireEvent.keyDown(screen.getByRole("dialog", { name: "New game" }), { key: "Escape" });
   expect(screen.queryByRole("dialog")).toBeNull(); await waitFor(() => expect(document.activeElement).toBe(newGame));
 });

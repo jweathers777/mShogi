@@ -249,7 +249,17 @@ Selecting another event retires prior analysis. **Return to live** restores the
 live board; **Resume play** is a separate action. Branching and variation editing
 are outside this batch.
 
-## MSH-72 shared chess/shogi contract development surface
+## macOS verification identities
+
+Use the fixed reusable QA and synthetic slots through
+`python3 scripts/macos-verification.py`; see the current
+[packaged verification instructions](../docs/desktop/packaged-gui-verification.md).
+Do not copy, rename or re-sign an application for each fixture. Fixture selection
+is an external startup file and must be changed while the app is stopped.
+Normal app launches continue to use the primary checkout's normal package.
+Computer Use approvals are owned by the user/platform, not this helper.
+
+## Historical MSH-72 shared chess/shogi contract development surface
 
 The normal application remains the delivered chess desktop. The separately
 labeled `shared-contract` verification fixture exercises the native shogi session,

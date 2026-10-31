@@ -125,6 +125,17 @@ def completed_action_matches(observed, action, event, origins, destinations, rou
             and observed.get("route") == route)
 
 
+def moves_controls_settled(observed, event, orientation=None, changed_from=None):
+    """Selection alone can render before native capacity admission completes."""
+    return (isinstance(observed, dict) and observed.get("event") == str(event)
+            and observed.get("rootEnabled") is True and observed.get("flipEnabled") is True
+            and observed.get("targetEnabled") is True and observed.get("checkingCapacity") is False
+            and isinstance(observed.get("orientation"), str)
+            and bool(observed["orientation"])
+            and (orientation is None or observed["orientation"] == orientation)
+            and (changed_from is None or observed["orientation"] != changed_from))
+
+
 def terminal_transport_closed(error):
     """Only meaningful after dispatching the known native-close guard action."""
     if isinstance(error, (http.client.RemoteDisconnected, ConnectionResetError, BrokenPipeError)):
@@ -581,6 +592,25 @@ class Journey:
         self.record("Observe readonly completed action geometry", cue)
         return cue
 
+    def wait_moves_controls(self, event, selector=".moves-root", orientation=None, changed_from=None):
+        def observed():
+            state = self.web.read("""(() => {const root=document.querySelector('.moves-root'),flip=document.querySelector('.flip-button'),
+                target=document.querySelector(SELECTOR);
+                return {event:document.querySelector('.moves-panel')?.dataset.currentEvent,
+                    orientation:flip?.getAttribute('aria-label'),rootEnabled:!!root&&!root.disabled,
+                    flipEnabled:!!flip&&!flip.disabled,targetEnabled:!!target&&!target.disabled,
+                    checkingCapacity:[...document.querySelectorAll('[role="status"]')].some(e=>e.textContent.includes('Checking complete save capacity'))};})()""".replace("SELECTOR", json.dumps(selector)))
+            assert moves_controls_settled(state, event, orientation, changed_from), state
+            return state
+        state = wait(observed, f"native Moves selection/controls settled at event {event}")
+        self.record("Observe admitted Moves controls before next real input", state)
+        return state
+
+    def flip_moves_board(self, event, selector, orientation=None):
+        before = self.wait_moves_controls(event, selector)
+        self.web.click(".flip-button")
+        return self.wait_moves_controls(event, selector, orientation, before["orientation"])
+
     def moves_navigation(self, game, action, notation, event, origin, destination):
         """Actual shared Moves pointer/Tab/Enter at both supported sizes."""
         w = self.web
@@ -589,30 +619,34 @@ class Journey:
         assert w.text(selector).strip() == notation, (game, w.text(selector))
         live = self.completed_cue()
         assert live and live["action"] != action and live["event"] != str(event), live
+        live_event = w.read("document.querySelector('.moves-panel').dataset.currentEvent")
+        self.wait_moves_controls(live_event, selector)
         for width, height in ((1180, 820), (760, 650)):
             self.viewport(width, height)
             w.click(selector)
-            wait(lambda: w.read("document.querySelector('.moves-panel').dataset.currentEvent") == str(event), "Moves pointer selects exact native post-action prefix")
+            selected = self.wait_moves_controls(event, selector)
             assert w.read(f"document.querySelector({json.dumps(selector)}).getAttribute('aria-current')") == "step"
             self.assert_completed_cue(action, event, [origin], [destination])
             self.capture(f"moves-{game}-{width}-pointer-history")
-            w.click(".flip-button")
+            self.flip_moves_board(event, selector)
             self.assert_completed_cue(action, event, [origin], [destination])
             self.capture(f"moves-{game}-{width}-flipped-history")
-            w.click(".flip-button")
+            self.flip_moves_board(event, selector, selected["orientation"])
             w.keyboard_activate(".moves-root")
-            wait(lambda: w.read("document.querySelector('.moves-panel').dataset.currentEvent") == "0", "keyboard selects native known root")
+            self.wait_moves_controls(0, selector, selected["orientation"])
             assert self.completed_cue() is None, "Known root cannot invent a last move"
             w.keyboard_activate(selector)
-            wait(lambda: w.read("document.querySelector('.moves-panel').dataset.currentEvent") == str(event), "Tab Enter selects exact native move prefix")
+            self.wait_moves_controls(event, selector, selected["orientation"])
             self.assert_completed_cue(action, event, [origin], [destination])
             self.capture(f"moves-{game}-{width}-keyboard-history")
             w.button("Return to live")
             wait(lambda: w.read("document.querySelector('.game-shell').dataset.historical") == "false", "explicit Return to live")
+            self.wait_moves_controls(live_event, selector, selected["orientation"])
             wait(lambda: self.completed_cue() == live, "Return to live restores genuine engine action cue")
             if w.has(".play-paused"):
                 w.button("Resume play")
                 wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "false", "explicit Resume after browsing")
+                self.wait_moves_controls(live_event, selector, selected["orientation"])
         self.viewport(1180, 820)
         self.record("All-game shared Moves pointer and keyboard exact-prefix navigation", {"game": game, "action": action,
             "notation": notation, "event": event, "live_cue": live, "sizes": [[1180, 820], [760, 650]]})

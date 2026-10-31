@@ -1,11 +1,11 @@
 ---
 id: MSH-123
 title: Deliver standard Moves notation exact history mapping and last-move cues
-status: In Progress
+status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-31T09:02:00Z'
-updated_date: '2026-10-31T11:58:00Z'
+updated_date: '2026-10-31T12:16:00Z'
 labels:
   - desktop
   - owner-approved-ux
@@ -63,4 +63,6 @@ Startup: root Codex owns MSH-123 in primary codex/rewrite at0b4218deaa8dbe705b88
 Owner decision 2026-10-31: after primary English/Chinese WXF Article7.5 research found literal two/three-stack coverage but no four/five or ambiguous multiple-file convention, John explicitly approved the documented ordinal+file display extension. Number soldiers from the mover's front within the native file, use mover-relative file number for stacks3–5 and otherwise ambiguous two-soldier stacks on multiple files. Example Red c5/c6,g5/g6: c6d6=17=6; g6f6=13=4. Document this as an owner-approved source-consistent display extension, not explicit WXF text; native rules/profile/actions unchanged. Research note /private/tmp/msh123-notation-research.md provides sources and concrete independent fixture strategy. No other product decision outstanding.
 
 Source checkpoint: native SAN/JSA/WXF projection and exact command/action-prefix geometry implemented; 16 independent notation/projection cases plus three actual native session journeys pass. Full frontend264/23 and strictTS pass at current working source. Independent native/source review PASS and frontend106/eight-file review PASS after correcting Shogi completed/capture-corner similarity with actual double underline. Clippy redundant-index finding corrected and passed. Full native desktop-session feature suite running; packaged all3 normal/min GUI and CI remain required, task unfinished. docs/review/moves-123.md preserves source research and candidate-fixture/test-assumption failures; owner-approved rare WXF extension documented in post-r4-ux.md. No124/125/R6 work started.
+
+Sourcefc7a6ae integrated/pushed; fullfront264/23, nativeclippy, source/notation106frontend independent checks and27actualmacOS screenshot visualreview PASS. Actualnormal/QAall3 normal/min, keyboardhistory, dropfailure/retry andnativecompoundroutes verified. InitialLinuxCI41199352841 revealednewdriver Flip/admission readinessrace (disabledroot), elevenfixturephasesPASS; normal3failed andmissingreopenarchive secondary. Verification-onlyfollowup waits observed changed/restoredorientation, exactprefix, enabledcontrols andcapacitycompletion before nextsingle realinput;78driverchecksPASS. Productsource unchanged. Finalcorrectedplatform GUI/CI remains pending, so noAC/DoDchecked andnotDone. Historicalfailures retained in review/evidence.
 <!-- SECTION:NOTES:END -->

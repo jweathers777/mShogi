@@ -1053,6 +1053,27 @@ class ShellFocusEvidenceTests(unittest.TestCase):
 
 
 class PublicSupportDiagnosticsTests(unittest.TestCase):
+    def test_retry_wait_reads_live_move_idle_dom_then_observes_native_once(self):
+        journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()
+        journey.web.read.side_effect=[False,True]
+        native={'moves':{'entries':[{'native_action':'b2b9'}]}}
+        journey.xiangqi_diagnostics=Mock(return_value=native)
+        self.assertEqual(journey.completed_xiangqi_retry(),native)
+        self.assertEqual(journey.web.read.call_count,2)
+        journey.xiangqi_diagnostics.assert_called_once()
+        expression=journey.web.read.call_args.args[0]
+        for required in ('.moves-table [data-event]',"dataset.phase === 'idle'",'[data-support-trigger]:not(:disabled)'):
+            self.assertIn(required,expression)
+        journey.web.click.assert_not_called()
+
+    def test_retry_dom_cannot_substitute_for_native_completed_move_evidence(self):
+        journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()
+        journey.web.read.return_value=True
+        journey.xiangqi_diagnostics=Mock(return_value={'moves':{'entries':[]}})
+        with self.assertRaises(AssertionError):journey.completed_xiangqi_retry()
+        journey.xiangqi_diagnostics.assert_called_once()
+        journey.record.assert_not_called()
+
     def test_native_diagnostics_require_public_actual_input_and_always_close(self):
         journey=object.__new__(module.Journey);journey.web=Mock()
         native={'token':{'document':7},'context':{'game_kind':'shogi'}}

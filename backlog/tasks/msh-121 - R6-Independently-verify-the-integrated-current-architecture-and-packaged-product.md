@@ -7,7 +7,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-10-30T12:06:00Z'
-updated_date: '2026-10-31T19:32:00Z'
+updated_date: '2026-10-31T20:11:00Z'
 labels:
   - architecture-migration
   - planning
@@ -82,4 +82,6 @@ Fresh independent native/public-API and frontend review confirms warning-prefix 
 Actual176 packaged GUI Linux/Windows27/31 each;0b169 warning-corrected campaigns28/31 each. Remaining three failures are external pending-probe assumptions: Chess Match Start offsets2/1, Shogi/Xiangqi ordered-control retained lineage rather than Chess takebacks array. Actual saved archives independently replay/open/save losslessly; focused native retired-work testPASS. Corrections plus native Load assertions independently reviewed104testsPASS. No product change. Native0b169 CI41222383083 all3PASS; original176Linux runner exit/Broken-pipe classification failure preserved underMSH112, not fixed by rerun. Final corrected GUIcampaign required; allACremainunchecked.
 
 Final3681579 actualLinux/Windows31/31semanticGUIphasePASS; native41225777111 andDesktop41225777103all3jobsPASS. Independent700Linux/599Windowsfilehash+nativecleanup+lineage/prefix/exactevidenceauditPASS. Linuxall6physicalnormal/minimumviewsPASS. Windowsnormal1180contentrendersfullybutnative1196x879frameclippedby1024x768CI desktop; physicalnormalvisualgateNOTpassed. SeparateexternalWindowsadapterfixselectsenumeratedsupported32bitmode,recordsAPIresults/geometry,andrejectsoffscreenHWNDcapture.110tests+independentsourceReviewPASS; actualWindowsrerunrequired. No productchange; MaccurrentGUIcontinuing; allACremainunchecked.
+
+Windowse778actualmode1024x768to1920x1080(CDS_TEST0/apply0),all6physicalnormal/minviewsindependentlyPASS. Entirecampaign26/31:4QAdefaultcascadeoffscreenfailurescorrectlycaughtbyguard,1retryAboutpolltimeoutafteractualsuccessfulengineply. NarrowexternalfixmovesexactownedHWNDwithoutresizingandpollsreadonlyvisiblemove/idle/supportenabledbeforeonenativediagnosticread.114independenttests+sourceReviewPASS; no productchange. Preservee778failedcampaign; freshWindowsrunrequired. Macactualnormalall3play/analysisSaveLoad andQAcompleteactions/claim/declaration/warningprefix/pendingTakebackreplacementcancel/retryevidenceprogresscaptured; nofinalacceptanceyet.
 <!-- SECTION:NOTES:END -->

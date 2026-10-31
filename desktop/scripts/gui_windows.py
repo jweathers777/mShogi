@@ -28,6 +28,15 @@ def _contains(outer, inner) -> bool:
             and outer[1] <= inner[1] < inner[3] <= outer[3])
 
 
+def _capture_position(work_area, rectangle) -> tuple[int, int]:
+    """Normalize OS cascade placement without changing the app's chosen size."""
+    width, height = rectangle[2] - rectangle[0], rectangle[3] - rectangle[1]
+    if width <= 0 or height <= 0 or width > work_area[2] - work_area[0] or height > work_area[3] - work_area[1]:
+        raise RuntimeError("The native verification window cannot fit its monitor work area")
+    return (min(work_area[0] + 20, work_area[2] - width),
+            min(work_area[1] + 20, work_area[3] - height))
+
+
 def _display_preflight(api, constants) -> dict:
     """Prepare the external runner desktop, never the application or its layout.
 
@@ -319,6 +328,23 @@ class Native:
             if len(windows) == 1:
                 selected = windows[0]
                 self.pid, self.hwnd = selected["pid"], selected["hwnd"]
+                import win32api
+                import win32con
+                import win32gui
+                work_area = win32api.GetMonitorInfo(win32api.MonitorFromWindow(
+                    self.hwnd, win32con.MONITOR_DEFAULTTONEAREST))["Work"]
+                x, y = _capture_position(work_area, selected["rectangle"])
+                win32gui.SetWindowPos(self.hwnd, None, x, y, 0, 0,
+                                     win32con.SWP_NOSIZE | win32con.SWP_NOZORDER | win32con.SWP_NOACTIVATE)
+                after = list(win32gui.GetWindowRect(self.hwnd))
+                self._event("native_initial_placement", pid=self.pid, hwnd=self.hwnd,
+                            before=selected["rectangle"], after=after, work_area=list(work_area),
+                            size_preserved=(after[2] - after[0], after[3] - after[1]) == (
+                                selected["rectangle"][2] - selected["rectangle"][0],
+                                selected["rectangle"][3] - selected["rectangle"][1]))
+                if not _contains(work_area, after):
+                    raise RuntimeError("Windows did not place the verification window wholly inside the monitor work area")
+                selected["rectangle"] = after
                 return self._event("attach", **selected, host=self.host, engine=self.engine,
                                    webview2_processes=self._webview_processes())
             if len(windows) > 1:

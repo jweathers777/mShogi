@@ -1504,6 +1504,18 @@ class Journey:
         assert observed['profile']=='mshogi.xiangqi.wxf2018.v1',observed
         return observed
 
+    def completed_xiangqi_retry(self):
+        # Do not repeatedly open a modal inside a completion poll. Observe the
+        # real result first; support availability can change as native work settles.
+        wait(lambda: self.web.read("""(() => document.querySelectorAll('.moves-table [data-event]').length === 1
+            && document.querySelector('.shogi-analysis')?.dataset.phase === 'idle'
+            && !!document.querySelector('[data-support-trigger]:not(:disabled)'))()"""),
+             'real engine retry completes in the visible live game')
+        observed = self.xiangqi_diagnostics()
+        assert len(observed['moves']['entries']) == 1, observed
+        self.record('Read native completed retry once after visible engine idle and one move', observed)
+        return observed
+
     def xiangqi_events(self, count, selected=None, historical=False):
         expected = {"live": str(count), "historical": str(historical).lower()}
         if selected is not None:
@@ -2184,7 +2196,7 @@ class Journey:
             try:
                 shutil.copy2(self.args.verification_engine, missing)
                 w.button('Retry engine turn')
-                wait(lambda: len(self.xiangqi_diagnostics()['moves']['entries']) == 1, 'real engine retry completes')
+                self.completed_xiangqi_retry()
                 assert not w.has('.outcome-card')
             finally:
                 missing.unlink(missing_ok=True)

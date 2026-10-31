@@ -91,6 +91,15 @@ class WindowsDisplayTests(unittest.TestCase):
         self.assertFalse(module._contains([0, 0, 1920, 1040], [-1, 20, 760, 650]))
         self.assertFalse(module._contains([0, 0, 1920, 1040], [20, 20, 20, 650]))
 
+    def test_default_windows_cascade_is_placed_inside_without_resizing(self):
+        self.assertEqual(module._capture_position([0, 0, 1920, 1040], [234, 221, 1430, 1080]), (20, 20))
+        self.assertEqual(module._capture_position([0, 0, 1196, 859], [234, 221, 1430, 1080]), (0, 0))
+        self.assertEqual(module._capture_position([-1920, 0, 0, 1040], [-1800, 221, -604, 1080]), (-1900, 20))
+
+    def test_initial_placement_refuses_a_window_that_cannot_fit(self):
+        with self.assertRaisesRegex(RuntimeError, 'cannot fit'):
+            module._capture_position([0, 0, 1024, 728], [20, 20, 1216, 899])
+
 
 if __name__ == '__main__':
     unittest.main()

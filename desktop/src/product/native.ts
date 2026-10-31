@@ -25,6 +25,9 @@ interface GameSnapshotBase extends Omit<NativeBoardSnapshot, "game" | "orientati
   human: Side; turn: Side; sides: Side[];
   orientations: { side: Side; files: string[]; ranks: string[] }[];
   document: { revision: number; dirty: boolean; path: string | null };
+  // Native close admission can exempt only its own unchanged stop journal.
+  // The document's canonical dirty state remains independent and authoritative.
+  close_requires_save: boolean;
   io: { id: number; phase: string; message: string | null; resource?: ResourceFailure | null };
   capacity: { id: number; status: "available" | "checking" | "paused"; message: string | null; resource?: ResourceFailure | null };
   capabilities: { board_action: boolean; declaration: boolean; claims: boolean; resign: boolean; undo: boolean; take_back: boolean; move_analysis: boolean; chess_full: boolean; save: boolean; drops: boolean; promotion: boolean; engine_turn: boolean; hands: boolean; history: boolean };

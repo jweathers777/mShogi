@@ -27,8 +27,9 @@ specific operation rather than whatever a later snapshot happens to report.
 Current-file validation returns native typed data. One `install_document`
 transaction checks authority and identity headroom, retires old execution,
 assigns fresh runtime identity and installs the validated native variant stopped.
-Saved observations become historical evidence. Return to live and Resume remain
-separate operations; neither historical selection nor Take back revives work.
+Saved observations become historical evidence. Loaded and Take back sessions
+require explicit Resume. MSH-125 adds the native browse-origin policy below;
+neither historical selection nor Take back revives retired work.
 
 ## Current host surface
 
@@ -41,7 +42,7 @@ duplicate fields must not disappear through an intermediate object map.
 | `game_command` | Exact rendered `SessionToken`, explicit game and typed native/common operation; stable admission receipt |
 | `game_new` | Exact `SharedOpenToken`, native game and human side; native replacement admission |
 | `game_inspection` | Native read-only complete movement inspection with exact selection authority |
-| `game_file` | Save/Save As/Open through native pickers, bounded worker validation and atomic replacement |
+| `game_file` | Product Save/Load via internal save/save_as/open operations, native pickers, bounded validation and atomic replacement |
 | `game_request_close` | Request native unsaved confirmation and stop the active game without inventing a result |
 | `game_cancel_close` | Clear confirmation while leaving stopped execution stopped |
 | `game_finish_close` | Approve only the complete current `SharedOpenToken`, after command/file reservations release |
@@ -128,3 +129,46 @@ Source, tests, independent review, exact package identities and actual platform
 results are recorded in the MSH-118 task and [completion evidence](../review/native-application-118.md). R6 owns
 final integrated Chess/Shogi/Xiangqi packaged GUI acceptance on all three systems;
 native tests or package construction do not establish that later criterion.
+
+## MSH-125 native workflow refinement
+
+Ordinary document controls are New game, Save and Load. First Save selects a
+path; later Save uses the accepted current path. Cancelled Save/Load pickers
+return cancellation, never successful receipts. The exact document/version/
+content token is checked again after every picker, including Save. New and Load
+are intentional replacements with no extra dirty confirmation; the existing
+accepted native document stays installed until bounded validation and atomic
+admission succeed. Cancellation, rejection or stale authority does not discard
+it. The current envelope and all histories/observations/Take back lineages,
+limits and stop/close reserves are unchanged.
+
+Each native session carries transient browse-only running intent and, when
+already stopped, its recovery meaning. Inspect retires execution and records
+that intent only on entry from live play. Repeated exact-prefix navigation
+does not grant new authority. ReturnLive retires historical analysis and clears
+the selection. Only a game suspended solely by browsing restores running intent;
+its restart is recorded with the normal Resume control within the same bounded
+candidate admission, including complete journal and reserved close capacity.
+A later engine turn allocates fresh request, version and process-generation
+identities. No stored request, saved observation or expensive exact operation
+is resumed.
+
+Load, Take back, explicit cancellation, failed/incomplete work, conclusion and
+capacity stops do not acquire browse-only permission. A newer cancellation or
+failed historical analysis supersedes older stopped-state recovery. Reopen
+clears all browse intent and stops work. Return from a concluded game is
+view-only; explicitly finishing existing Chess Full/ordinary analysis retires
+analysis without changing its conclusion or permitting a board action.
+
+Native close first stops execution. `close_requires_save` distinguishes the
+current document's dirty state from a stop-only close journal: an otherwise
+saved game may close without an unnecessary prompt only at that exact native
+post-stop token. This never marks new canonical controls as saved or writes
+the file. A newer dirty token, cancelled guard or genuine unsaved document
+requires protection. Save/Discard/Cancel retain exact receipt/reservation
+checks, native menu/window/macOS termination handling and bounded shutdown.
+Resign submits one complete native action under the rendered token, without
+a frontend confirmation or inferred outcome. Other native confirmations remain.
+
+Implementation verification and final package acceptance are recorded with
+MSH-125; this contract update alone does not claim GUI or platform success.

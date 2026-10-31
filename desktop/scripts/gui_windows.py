@@ -326,7 +326,7 @@ class Native:
                 # The actual Tauri file picker can have GW_OWNER=0. Its exact
                 # PID/executable, native class and application-defined title still
                 # bind it to this host; do not raise the main window above it.
-                picker_titles = {"Save mShogi game", "Open mShogi game", "Confirm Save As"}
+                picker_titles = {"Save mShogi game", "Load mShogi game", "Confirm Save As"}
                 modals = [(max(owned_depth(window), int(window["title"] in picker_titles)), window)
                           for window in windows if window["class"] == "#32770"]
                 modals = [(depth, window) for depth, window in modals if depth]
@@ -452,7 +452,7 @@ class Native:
         if kind not in ("save", "save_as", "open"):
             raise ValueError(f"Unknown native picker kind: {kind}")
         save = kind != "open"
-        title = "Save mShogi game" if save else "Open mShogi game"
+        title = "Save mShogi game" if save else "Load mShogi game"
         deadline = time.monotonic() + _TIMEOUT
         com, initialized = None, False
         try:

@@ -300,3 +300,15 @@ normal/minimum package comparisons, complete outward focus bounds, supported
 native select/side-button journeys, licenses and normal instrumentation
 exclusion are recorded separately for each platform. MSH-125 remains unstarted
 and MSH-121 retains integrated architecture/product acceptance.
+
+## MSH-125 implementation handoff
+
+The shared product now presents New game / Save / Load, intentional atomic
+New/Load replacement, a dirty-only Save Game safeguard with Save/Discard/Cancel,
+and direct native Resign. All three games share the same workflow owner. The
+[native application contract](native-application.md#msh-125-native-workflow-refinement)
+defines transient browse-origin admission, newer-stop precedence, fresh execution
+and the exact close-stop exemption. Current envelope, atomic writer, observations,
+resource limits, native rules and accepted MSH-124 shell remain intact. Final
+MSH-125 evidence records actual package interactions separately from controller
+and frontend checks; MSH-121 remains the subsequent independent integrated review.

@@ -1561,6 +1561,23 @@ impl DesktopController {
         self.bridge.cancel();
         self.session.chess_mut().pending = None;
         self.session.retire_analysis();
+        if self.session.chess().viewed.is_none() && self.io_state.phase != IoPhase::Viewing {
+            let state = self.session.chess();
+            self.session.chess_mut().browse_running = !state.play_paused
+                && state.game.conclusion().is_none()
+                && matches!(
+                    state.engine.status,
+                    EnginePhase::Idle | EnginePhase::Thinking
+                );
+        }
+        if !self.session.chess().browse_running && self.session.chess().browse_stop.is_none() {
+            let state = self.session.chess();
+            self.session.chess_mut().browse_stop = Some(BrowseStop {
+                paused: state.play_paused,
+                phase: state.engine.status,
+                diagnostic: state.engine.message.clone(),
+            });
+        }
         self.session.chess_mut().play_paused = true;
         self.session.chess_mut().engine.status = EnginePhase::Paused;
         self.session.version += 1;
@@ -1615,6 +1632,7 @@ impl DesktopController {
                 }
             }
             Err(error) => {
+                self.session.clear_browse_intent();
                 self.io_state.resource = error.resource;
                 Err(error.diagnostic)
             }
@@ -1707,7 +1725,7 @@ impl DesktopController {
                     runtime,game,initial_record,human:saved.human,settings:saved.settings,
                     play_limits:saved.play_limits,observations,controls:saved.controls,takebacks:saved.takebacks,
                     pending:None,analysis:AnalysisState::default(),analysis_pending:None,analysis_submitted:false,
-                    play_paused:true,viewed,validated_observations,
+                    play_paused:true,browse_running:false,browse_stop:None,viewed,validated_observations,
                     engine:EngineState {status:EnginePhase::Paused,message:Some("Document reopened with work stopped. Saved observations are historical. Resume play explicitly.".into()),..EngineState::default()},
                 };
                 (ActiveDocument::Chess(Box::new(state)), clock_floor)
@@ -1744,10 +1762,14 @@ impl DesktopController {
     /// Stop the actual native document before host close confirmation. No other
     /// game is constructed and no result is invented.
     pub fn application_pause_for_close(&mut self) -> SharedSnapshot {
+        let dirty_before = self.shared_document().dirty;
         self.pause_application();
+        self.lifecycle
+            .record_close_guard(self.shared_open_token(), dirty_before);
         self.shared_snapshot()
     }
     fn pause_application(&mut self) {
+        self.session.clear_browse_intent();
         self.pause_shared_for_close();
         self.retire_admission();
         if matches!(&self.session, ActiveDocument::Chess(_))

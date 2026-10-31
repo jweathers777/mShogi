@@ -7,6 +7,7 @@ import { listen } from "@tauri-apps/api/event";
 import { useGameSession } from "./useGameSession";
 import type { GameSnapshot, ShogiSnapshot } from "./native";
 import chessJson from "../__fixtures__/shared-chess-standard.json";
+import xiangqiJson from "../__fixtures__/shared-xiangqi-standard.json";
 import standardJson from "../__fixtures__/shared-shogi-standard.json";
 vi.mock("@tauri-apps/api/core", () => ({ invoke: vi.fn() }));
 vi.mock("@tauri-apps/api/event", () => ({ listen: vi.fn() }));
@@ -131,4 +132,60 @@ it("uses the native close contract and exact rendered document token", async () 
   expect(invoke).toHaveBeenLastCalledWith("game_finish_close", { expected: standard.open_token });
   await act(async () => { await result.current.cancelClose(); });
   expect(invoke).toHaveBeenCalledWith("game_cancel_close");
+});
+
+it.each([chessJson, standardJson, xiangqiJson])("serializes direct $game resignation and rejects obsolete rendered authority without inferring an outcome", async fixture => {
+  const source = fixture as unknown as GameSnapshot; const reply = deferred<GameSnapshot>();
+  const operation = source.game === "xiangqi" ? { kind: "xiangqi" as const, command: { kind: "resign" as const } } : { kind: "resign" as const };
+  vi.mocked(invoke).mockResolvedValueOnce(source).mockReturnValueOnce(reply.promise);
+  const { result } = renderHook(useGameSession); await flush();
+  let pending!: Promise<GameSnapshot | null>;
+  act(() => { pending = result.current.command(source, operation); });
+  await act(async () => { expect(await result.current.command(source, operation)).toBeNull(); });
+  expect(invoke).toHaveBeenCalledTimes(2);
+  await act(async () => { reply.resolve(source); await pending; });
+  expect(invoke).toHaveBeenLastCalledWith("game_command", { commandJson: JSON.stringify({ expected: source.token, game: source.game, operation }) });
+  expect(result.current.snapshot).toBe(source);
+  vi.mocked(invoke).mockRejectedValueOnce("Stale rendered context");
+  await act(async () => { expect(await result.current.command(source, operation)).toBeNull(); });
+  expect(result.current.error).toContain("Stale"); expect(result.current.snapshot).toBe(source);
+});
+
+it.each([chessJson, standardJson, xiangqiJson])("keeps exact $game Save authority for first/subsequent Save and preserves rejected/cancelled receipts", async fixture => {
+  const source = fixture as unknown as GameSnapshot;
+  const saved = { ...source, token: { ...source.token, revision: source.token.revision + 1 }, open_token: { ...source.open_token, version: source.open_token.version + 1 }, document: { ...source.document, path: "/games/accepted.mshogi", dirty: false } } as GameSnapshot;
+  vi.mocked(invoke).mockResolvedValueOnce(source).mockResolvedValueOnce(saved).mockResolvedValueOnce(saved).mockRejectedValueOnce("Save cancelled.").mockRejectedValueOnce("Atomic write interrupted.");
+  const { result } = renderHook(useGameSession); await flush();
+  await act(async () => { expect(await result.current.file(source, "save")).toBe(saved); });
+  expect(invoke).toHaveBeenLastCalledWith("game_file", { action: "save", expected: source.open_token });
+  await act(async () => { await result.current.file(saved, "save"); });
+  expect(invoke).toHaveBeenLastCalledWith("game_file", { action: "save", expected: saved.open_token });
+  await act(async () => { expect(await result.current.file(saved, "save")).toBeNull(); });
+  expect(result.current.snapshot).toBe(saved); expect(result.current.error).toBe("Save cancelled.");
+  await act(async () => { expect(await result.current.file(saved, "save")).toBeNull(); });
+  expect(result.current.snapshot).toBe(saved); expect(result.current.error).toBe("Atomic write interrupted.");
+});
+it.each([chessJson, standardJson, xiangqiJson])("keeps dirty $game during cancelled/malformed/resource/stale Load and rejected New Game", async fixture => {
+  const source = fixture as unknown as GameSnapshot;
+  vi.mocked(invoke).mockResolvedValueOnce(source).mockRejectedValueOnce("Load cancelled.").mockRejectedValueOnce("Malformed record.").mockRejectedValueOnce("Replay capacity exceeded.").mockRejectedValueOnce("Stale document token.").mockRejectedValueOnce("New Game admission failed.");
+  const { result } = renderHook(useGameSession); await flush();
+  for (const reason of ["Load cancelled.", "Malformed record.", "Replay capacity exceeded.", "Stale document token."]) {
+    await act(async () => { expect(await result.current.file(source, "open")).toBeNull(); });
+    expect(invoke).toHaveBeenLastCalledWith("game_file", { action: "open", expected: source.open_token });
+    expect(result.current.snapshot).toBe(source); expect(result.current.error).toBe(reason);
+  }
+  await act(async () => { expect(await result.current.newGame(source.open_token, source.game, source.human.id)).toBeNull(); });
+  expect(invoke).toHaveBeenLastCalledWith("game_new", { expected: source.open_token, game: source.game, human: source.human.id });
+  expect(result.current.snapshot).toBe(source); expect(result.current.error).toBe("New Game admission failed.");
+});
+it.each([chessJson, standardJson, xiangqiJson])("does not turn delayed clean $game Save into authority over newer dirty work", async fixture => {
+  const source = fixture as unknown as GameSnapshot, save = deferred<GameSnapshot>(), poll = deferred<GameSnapshot>();
+  const clean = { ...source, token: { ...source.token, revision: source.token.revision + 1 }, document: { ...source.document, dirty: false } } as GameSnapshot;
+  const changed = { ...source, token: { ...source.token, revision: source.token.revision + 2 }, open_token: { ...source.open_token, document_revision: source.open_token.document_revision + 1 }, document: { ...source.document, dirty: true, revision: source.document.revision + 1 } } as GameSnapshot;
+  vi.mocked(invoke).mockResolvedValueOnce(source).mockReturnValueOnce(save.promise).mockReturnValueOnce(poll.promise);
+  const { result } = renderHook(useGameSession); await flush();
+  let pending!: Promise<GameSnapshot | null>; act(() => { pending = result.current.file(source, "save"); });
+  await act(async () => { await vi.advanceTimersByTimeAsync(180); poll.resolve(changed); await Promise.resolve(); });
+  await act(async () => { save.resolve(clean); expect(await pending).toBe(changed); });
+  expect(result.current.snapshot).toBe(changed); expect(result.current.snapshot?.document.dirty).toBe(true);
 });

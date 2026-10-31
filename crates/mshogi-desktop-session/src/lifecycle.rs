@@ -8,6 +8,7 @@ struct State {
     file: bool,
     close_requested: bool,
     close_approved: bool,
+    close_guard: Option<(SharedOpenToken, bool)>,
 }
 
 /// Shared native lifecycle authority owned by the application controller.
@@ -95,6 +96,7 @@ impl ApplicationLifecycle {
             return Err("Application close is already approved.".into());
         }
         state.close_requested = false;
+        state.close_guard = None;
         Ok(())
     }
 
@@ -121,6 +123,21 @@ impl ApplicationLifecycle {
         }
         state.close_approved = true;
         Ok(())
+    }
+
+    /// The close stop may journal execution retirement, but must not manufacture
+    /// a warning for an otherwise saved document. Exempt only that exact native
+    /// stop token; never mark its new canonical control as saved on disk.
+    pub(crate) fn record_close_guard(&self, token: SharedOpenToken, dirty_before_stop: bool) {
+        self.state
+            .lock()
+            .expect("application lifecycle")
+            .close_guard = Some((token, dirty_before_stop));
+    }
+    pub(crate) fn close_requires_save(&self, token: SharedOpenToken, dirty: bool) -> bool {
+        let state = self.state.lock().expect("application lifecycle");
+        dirty
+            && !matches!(state.close_guard, Some((source,false)) if state.close_requested && source==token)
     }
 
     /// Whether a native close guard is pending, independently of game outcomes.

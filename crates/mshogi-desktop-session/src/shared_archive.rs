@@ -349,6 +349,8 @@ impl ShogiSession {
             human,
             viewed: None,
             paused: true,
+            browse_running: false,
+            browse_stop: None,
             pending: None,
             submitted: false,
             phase: EnginePhase::Paused,
@@ -415,6 +417,7 @@ impl ShogiSession {
                 self.retire();self.paused=true;
             }
             SessionOperation::TakeBack{}=>{
+                self.browse_running=false;
                 if self.viewed.is_some(){return Err("Return to live before Take back.".into());}
                 let target=self.take_back_target().ok_or("No earlier playable human decision is available.")?;
                 self.game=self.game.prefix(target).map_err(|e|format!("Native Take back rejected: {e:?}"))?;
@@ -423,16 +426,37 @@ impl ShogiSession {
                 for o in &mut self.observations{o.historical=true;}
             }
             SessionOperation::Undo{}=>{
+                self.browse_running=false;
                 if self.viewed.is_some()||self.game.events().is_empty(){return Err("Undo requires a live accepted event.".into());}
                 self.game=self.game.prefix(self.game.events().len()-1).map_err(|e|format!("Native undo rejected: {e:?}"))?;self.retire();self.paused=true;
             }
-            SessionOperation::Inspect{event_index}=>{self.viewed=Some(self.game.prefix(event_index).map_err(|e|format!("Native history rejected: {e:?}"))?);self.retire();self.paused=true;}
-            SessionOperation::ReturnLive{}=>{self.viewed=None;self.retire();self.paused=true;}
-            SessionOperation::Cancel{}=>{self.retire();self.paused=true;self.phase=EnginePhase::Cancelled;}
+            SessionOperation::Inspect { event_index } => {
+                if self.viewed.is_none() {
+                    self.browse_running = !self.paused && self.game.conclusion().is_none()
+                        && matches!(self.phase, EnginePhase::Idle | EnginePhase::Thinking);
+                }
+                if !self.browse_running && self.browse_stop.is_none() {
+                    self.browse_stop = Some(BrowseStop { paused: true, phase: self.phase, diagnostic: self.diagnostic.clone() });
+                }
+                self.viewed = Some(self.game.prefix(event_index).map_err(|e| format!("Native history rejected: {e:?}"))?);
+                self.retire(); self.paused = true;
+            }
+            SessionOperation::ReturnLive {} => {
+                let resume = std::mem::take(&mut self.browse_running) && self.viewed.is_some()
+                    && self.game.conclusion().is_none()
+                    && matches!(self.phase, EnginePhase::Paused | EnginePhase::Idle | EnginePhase::Thinking);
+                let stop = self.browse_stop.take().unwrap_or(BrowseStop { paused: true, phase: self.phase, diagnostic: self.diagnostic.clone() });
+                self.viewed = None; self.retire(); self.paused = true;
+                if resume { self.apply_command(SessionOperation::Resume {})?; }
+                else if !matches!(stop.phase, EnginePhase::Idle | EnginePhase::Thinking) { self.phase = stop.phase; self.diagnostic = stop.diagnostic; }
+            }
+            SessionOperation::Cancel{}=>{self.browse_running=false;self.browse_stop=None;self.retire();self.paused=true;self.phase=EnginePhase::Cancelled;}
             SessionOperation::Analyze{operation:AnalysisOperation::Moves{depth,nodes}}=>{
+                if self.viewed.is_none(){self.browse_running=false;}
                 let limits=WorkLimits{depth,nodes};valid_limits(limits)?;self.retire();self.paused=true;self.settings.analysis_defaults=limits;self.analysis_intent=Some((self.record(),limits));analysis=Some(limits);
             }
             SessionOperation::Resume{}|SessionOperation::Retry{}=>{
+                self.browse_running=false;
                 if self.viewed.is_some()||self.game.conclusion().is_some(){return Err("Resume requires a live unconcluded game.".into());}
                 self.retire();self.paused=false;self.phase=EnginePhase::Idle;
             }
@@ -626,6 +650,13 @@ impl ShogiSession {
             self.analysis_intent = None;
         } else if self.phase != EnginePhase::Idle {
             self.paused = true;
+        }
+        if matches!(
+            self.phase,
+            EnginePhase::Failed | EnginePhase::Incomplete | EnginePhase::Cancelled
+        ) {
+            self.browse_running = false;
+            self.browse_stop = None;
         }
         self.pending = None;
         self.submitted = false;
@@ -1005,7 +1036,12 @@ pub(crate) fn execute(
             let mut analysis = None;
             if let Some(command) = command {
                 analysis = candidate.apply_command(command.clone())?;
+                let resumed_return =
+                    matches!(command, SessionOperation::ReturnLive {}) && !candidate.paused;
                 candidate.control(Some(command), None, false);
+                if resumed_return {
+                    candidate.control(Some(SessionOperation::Resume {}), None, false);
+                }
             }
             if let Some(response) = response {
                 let index = candidate.observations.len();
@@ -1485,6 +1521,7 @@ impl DesktopController {
         }
     }
     pub(crate) fn pause_native_failure(&mut self, error: OperationFailure) {
+        self.session.clear_browse_intent();
         if error.resource.is_some() {
             self.pause_native_capacity(error.diagnostic);
             self.session.capacity.resource = error.resource;
@@ -1500,6 +1537,7 @@ impl DesktopController {
         }
     }
     pub(crate) fn pause_native_capacity(&mut self, error: String) {
+        self.session.clear_browse_intent();
         self.bridge.cancel();
         if matches!(&self.session, ActiveDocument::Chess(_)) {
             self.session.retire_execution();

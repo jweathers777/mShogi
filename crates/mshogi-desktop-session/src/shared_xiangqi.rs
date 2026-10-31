@@ -93,6 +93,8 @@ pub(crate) struct XiangqiSession {
     pub(super) viewed: Option<x::HistorySnapshot>,
     pub(super) viewed_game: Option<x::Game>,
     pub(crate) paused: bool,
+    pub(crate) browse_running: bool,
+    pub(crate) browse_stop: Option<BrowseStop>,
     pub(super) pending: Option<ExecutionContext>,
     pub(super) submitted: bool,
     pub(super) phase: EnginePhase,
@@ -105,6 +107,8 @@ impl XiangqiSession {
     pub(crate) fn reopened(&mut self) {
         self.retire();
         self.paused = true;
+        self.browse_running = false;
+        self.browse_stop = None;
         for observation in &mut self.observations {
             observation.historical = true;
         }
@@ -748,6 +752,7 @@ impl DesktopController {
             play_limits: PLAY_LIMITS,
             historical,
             paused: state.paused,
+            close_requires_save: self.close_requires_save(),
             phase: state.phase,
             execution_purpose: state.pending.as_ref().map(|p| {
                 if matches!(p.purpose, ExecutionPurpose::EngineTurn {}) {

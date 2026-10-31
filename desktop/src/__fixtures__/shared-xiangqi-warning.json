@@ -1,4 +1,5 @@
 {
+  "close_requires_save": true,
   "moves": {
     "root": {
       "label": "Starting position",

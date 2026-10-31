@@ -250,6 +250,8 @@ pub(crate) struct XiangqiDraft {
     saved: XiangqiArchive,
     viewed: Option<usize>,
     pub(crate) paused: bool,
+    browse_running: bool,
+    browse_stop: Option<BrowseStop>,
     phase: EnginePhase,
     diagnostic: Option<String>,
     analysis: Option<PresentedObservation>,
@@ -281,6 +283,8 @@ impl XiangqiDraft {
             },
             viewed: None,
             paused: true,
+            browse_running: false,
+            browse_stop: None,
             phase: EnginePhase::Paused,
             diagnostic: None,
             analysis: None,
@@ -296,6 +300,8 @@ impl XiangqiDraft {
             saved: archive(state, state.execution_floor),
             viewed: state.viewed.as_ref().map(|v| v.event_count),
             paused: state.paused,
+            browse_running: state.browse_running,
+            browse_stop: state.browse_stop.clone(),
             phase: state.phase,
             diagnostic: state.diagnostic.clone(),
             analysis: state.analysis.clone(),
@@ -333,6 +339,8 @@ impl XiangqiDraft {
             viewed,
             viewed_game,
             paused: self.paused,
+            browse_running: self.browse_running,
+            browse_stop: self.browse_stop,
             pending: self.pending,
             submitted: self.submitted,
             phase: self.phase,
@@ -676,6 +684,7 @@ impl XiangqiSession {
                 self.undo.push(submission.undo); self.retire();
             }
             SessionOperation::TakeBack {} => {
+                self.browse_running=false;
                 if self.viewed.is_some() { return Err("Return to live before Take back.".into()); }
                 let target = self.game.preceding_playable_decision(self.human).ok_or("No earlier playable human decision is available.")?;
                 let prefix = self.game.committed_prefix(target).map_err(error)?;
@@ -686,18 +695,30 @@ impl XiangqiSession {
                 for o in &mut self.observations { o.historical = true; }
             }
             SessionOperation::Undo {} => {
+                self.browse_running=false;
                 if self.viewed.is_some() || self.undo.is_empty() { return Err("No live native command to undo.".into()); }
                 self.game.undo(self.undo.pop().unwrap()).map_err(error)?; self.retire(); self.paused = true;
             }
             SessionOperation::Inspect { event_index } => {
+                if self.viewed.is_none() { self.browse_running = !self.paused && self.game.conclusion().is_none() && matches!(self.phase, EnginePhase::Idle|EnginePhase::Thinking); }
+                if !self.browse_running&&self.browse_stop.is_none(){self.browse_stop=Some(BrowseStop{paused:true,phase:self.phase,diagnostic:self.diagnostic.clone()});}
                 let viewed = self.game.event_prefix(event_index).map_err(error)?;
                 let viewed_game = self.game.committed_prefix(event_index).ok();
                 self.retire(); self.viewed = Some(viewed); self.viewed_game = viewed_game; self.paused = true;
             }
-            SessionOperation::ReturnLive {} => { self.retire(); self.viewed = None; self.viewed_game = None; self.paused = true; }
-            SessionOperation::Cancel {} => { self.retire(); self.paused = true; self.phase = EnginePhase::Cancelled; }
+            SessionOperation::ReturnLive {} => {
+                let resume = std::mem::take(&mut self.browse_running) && self.viewed.is_some()
+                    && self.game.conclusion().is_none()
+                    && matches!(self.phase, EnginePhase::Paused | EnginePhase::Idle | EnginePhase::Thinking);
+                let stop = self.browse_stop.take().unwrap_or(BrowseStop { paused: true, phase: self.phase, diagnostic: self.diagnostic.clone() });
+                self.retire(); self.viewed = None; self.viewed_game = None; self.paused = true;
+                if resume { self.apply_command(SessionOperation::Resume {})?; }
+                else if !matches!(stop.phase, EnginePhase::Idle | EnginePhase::Thinking) { self.phase = stop.phase; self.diagnostic = stop.diagnostic; }
+            }
+            SessionOperation::Cancel {} => { self.browse_running=false; self.browse_stop=None; self.retire(); self.paused = true; self.phase = EnginePhase::Cancelled; }
             SessionOperation::Analyze { operation: AnalysisOperation::Moves { depth, nodes } } => {
                 if self.viewed.is_some() && self.viewed_game.is_none() { return Err("This immutable event is inside an atomic native command. Analysis requires a committed command boundary; view and movement inspection remain available.".into()); }
+                if self.viewed.is_none() { self.browse_running=false; }
                 let limits = WorkLimits { depth, nodes }; valid_limits(limits)?;
                 self.ensure_observation_capacity()?;
                 self.retire(); self.paused = true; self.settings.analysis_defaults = limits;
@@ -705,6 +726,7 @@ impl XiangqiSession {
             }
             SessionOperation::Analyze { .. } => return Err("Chess Full is not Xiangqi analysis. Native bounded exact no-win execution is a separate facility, not this ordinary operation.".into()),
             SessionOperation::Resume {} | SessionOperation::Retry {} => {
+                self.browse_running=false;
                 if self.viewed.is_some() || self.game.conclusion().is_some() { return Err("Resume requires a live unconcluded game. Return to live first.".into()); }
                 self.ensure_observation_capacity()?;
                 self.retire(); self.paused = false; self.phase = EnginePhase::Idle;
@@ -875,6 +897,13 @@ impl XiangqiSession {
         self.submitted = false;
         self.analysis_intent = None;
         self.phase = phase;
+        if matches!(
+            phase,
+            EnginePhase::Failed | EnginePhase::Incomplete | EnginePhase::Cancelled
+        ) {
+            self.browse_running = false;
+            self.browse_stop = None;
+        }
         self.paused = read_only || phase != EnginePhase::Idle;
         self.diagnostic = observation.application_error.clone().or_else(|| {
             match &observation.observation.result {
@@ -957,7 +986,12 @@ pub(crate) fn execute(
             let mut analysis = None;
             if let Some(command) = command {
                 analysis = state.apply_command(command.clone())?;
+                let resumed_return =
+                    matches!(command, SessionOperation::ReturnLive {}) && !state.paused;
                 state.journal(before, Some(command), None, None, false);
+                if resumed_return {
+                    state.journal(before, Some(SessionOperation::Resume {}), None, None, false);
+                }
             }
             if let Some(response) = response {
                 let submitted = state

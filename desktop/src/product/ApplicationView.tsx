@@ -40,8 +40,7 @@ export function ApplicationView({ snapshot, session, onNewGame, onOpen, blocked 
       {["saving", "opening", "viewing"].includes(snapshot.io.phase) && <p role="status">{snapshot.io.phase === "saving" ? "Saving your game…" : snapshot.io.phase === "opening" ? "Opening your game…" : "Opening the selected position…"}</p>}</>}
     actions={<><button className="primary" onClick={onNewGame} disabled={disabled}>New game</button>
       <button className="quiet" onClick={() => { void session.file(snapshot, "save"); }} disabled={disabled || !snapshot.capabilities.save}>Save</button>
-      <button className="quiet" onClick={() => { void session.file(snapshot, "save_as"); }} disabled={disabled || !snapshot.capabilities.save}>Save as…</button>
-      <button className="quiet" onClick={onOpen} disabled={disabled}>Open…</button></>}
+      <button className="quiet" onClick={onOpen} disabled={disabled}>Load</button></>}
     heading={<LiveGameHeading eyebrow={snapshot.historical ? "HISTORY · READ ONLY" : snapshot.status.concluded ? "GAME CONCLUDED" : "YOUR GAME"}
       status={snapshot.historical ? "Viewing history" : thinking ? "mShogi is thinking" : (snapshot.game === "chess" ? gameStatus({ conclusion: snapshot.chess.selected_conclusion, turn: snapshot.turn.id.side, in_check: snapshot.chess.in_check }) : snapshot.status.label)}
       player={<>You play {snapshot.human.label} against mShogi</>}

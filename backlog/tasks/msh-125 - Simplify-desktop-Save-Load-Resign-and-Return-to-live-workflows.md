@@ -1,9 +1,11 @@
 ---
 id: MSH-125
 title: Simplify desktop Save Load Resign and Return to live workflows
-status: Ready
-assignee: []
+status: In Review
+assignee:
+  - '@codex'
 created_date: '2026-10-31T09:02:00Z'
+updated_date: '2026-10-31T15:01:00Z'
 labels:
   - desktop
   - owner-approved-ux
@@ -43,3 +45,22 @@ Owner-approved post-MSH-119 lifecycle/interaction changes (2026-10-31). Current 
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Root Codex owns integration in the clean primary codex/rewrite checkout at07c0be6; pinned Backlog1.55.1 resolves global1.55.0 mismatch. Keep one shared ProductApp/ApplicationView workflow, with a bounded frontend worker owning only those presentation/hook/action files and tests. Preserve current shell, selector, Moves, R5, native rules and archive format.
+2. Inspect and extend authoritative native command admission with runtime browse-origin intent: history entry retires execution; one ReturnLive restores eligible previously running intent with fresh work only. Pre-existing/intervening Load, Take back, cancellation, failure, conclusion, capacity or stop authority overrides it. Preserve historical analysis retirement, full context/history and saveability admission. Strengthen post-picker Save/New/Open/close identity boundaries where concrete inspection finds gaps.
+3. Simplify shared Save/Load/New/Quit and direct Resign: intentional replacement only after native admission, first/subsequent Save and cancellation receipts remain truthful, clean Quit avoids a prompt, dirty Quit Save/Discard/Cancel retains native close reservations. Add all-three-game native/controller/frontend regressions for exact tokens, stale receipts, atomic disk/replacement and running versus stopped return.
+4. Verify identified normal/separate-QA packaged all-three-game workflows on macOS, update external GUI probes for changed approved behavior without weakening semantics, verify normal instrumentation exclusion. Obtain independent review focused on losslessness, deliberate replacement, runtime browse origin, stale execution and honest outcomes; resolve material findings, run focused/native/desktop CI, record source/package evidence, normal integration/push and stop125.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Startup: clean codex/rewrite07c0be6 aligned0/0 with origin, unrelated three worktrees preserved, no In Progress/In Review owner displaced. MSH-119 direct dependency Done;120/123/124 remain Done. Read task, owner attachment, design, post-r4 browse policy and migration plan. Actual shared ProductApp currently guards dirty New/Open and clean Quit, GameActions confirms Resign; native ReturnLive pauses all3. Root primary builder, no other task started.
+
+Implementation checkpoint (uncommitted): shared header Save/Load with intentional New/Load admission and direct Resign; frontend318/26 PASS plus strictTS. Host post-picker Save/Open now rechecks exact source token; cancellation is an explicit rejected receipt, native Load title; host12 PASS. Native transient browse-running intent preserves named stopped recovery, retires history analysis and uses normal journaled Resume under the same atomic capacity admission. New eight all3 native journey tests PASS, including fresh request/process identities, retired responses through correct native handler, Load/Take back/cancel/failure/capacity/conclusion stops, stopped replay and clean-close authority. Original187 native regressions PASS before final focused additions. New test found Chess Resume accepted a concluded session; native admission now rejects it without changing its outcome. Close guard exempts only exact stop-only token from warning, never marks canonical close controls disk-saved; newer dirty token requires guard. Independent review and packaged verification remain pending; no AC/DoD checked.
+
+Source verification ready: full native-session199 tests PASS, full frontend319/26 PASS, strictTS PASS, external driver/adapters91 PASS, host12 PASS at initial host boundary (final native rebuild pending). Independent review F01 found older stopped recovery overriding newer cancelled/failed historical analysis; clear both stale browse intent/stop and preserve newer meaning, with strengthened positive all3 regression PASS. Preserve concluded Chess ordinary/Full Finish analysis without reopening game; reject Resume of concluded Idle and hide that unavailable control. Two new near-control-limit tests prove Return+Resume controls and close reserve are admitted atomically, otherwise complete current archive unchanged. Clippy initially found adjacent minified if formatting; source formatting corrected, rerun pending. Actual package/GUI and native/Desktop CI remain required, no criteria checked. Scope unchanged; MSH-121 unstarted.
+<!-- SECTION:NOTES:END -->

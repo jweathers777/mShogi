@@ -23,6 +23,74 @@ _TIMEOUT = 20.0
 _RUNTIME_KEY = r"Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}"
 
 
+def _contains(outer, inner) -> bool:
+    return (outer[0] <= inner[0] < inner[2] <= outer[2]
+            and outer[1] <= inner[1] < inner[3] <= outer[3])
+
+
+def _display_preflight(api, constants) -> dict:
+    """Prepare the external runner desktop, never the application or its layout.
+
+    Select only a mode reported by Windows; an unsupported arbitrary resolution
+    can return success from a shell wrapper while leaving a cropped desktop.
+    """
+    def state():
+        mode = api.EnumDisplaySettings(None, constants.ENUM_CURRENT_SETTINGS)
+        monitor = api.GetMonitorInfo(api.MonitorFromPoint((0, 0), constants.MONITOR_DEFAULTTOPRIMARY))
+        return {"width": mode.PelsWidth, "height": mode.PelsHeight,
+                "bits_per_pixel": mode.BitsPerPel, "frequency": mode.DisplayFrequency,
+                "monitor": list(monitor["Monitor"]), "work_area": list(monitor["Work"])}
+
+    # The normal 1180x820 client plus native frame, (20,20) placement and taskbar
+    # must fit. The screenshot check below validates each actual resulting HWND.
+    def sufficient(value):
+        area = value["work_area"]
+        return area[2] - area[0] >= 1280 and area[3] - area[1] >= 920
+
+    before = state()
+    evidence = {"before": before, "supported_modes": [], "attempts": [], "after": before}
+    if sufficient(before):
+        evidence["action"] = "existing_sufficient_desktop"
+        return evidence
+    modes = []
+    for index in range(512):
+        try:
+            mode = api.EnumDisplaySettings(None, index)
+        except Exception as error:
+            evidence["enumeration_end"] = {"index": index, "diagnostic": repr(error)}
+            break
+        description = {"width": mode.PelsWidth, "height": mode.PelsHeight,
+                       "bits_per_pixel": mode.BitsPerPel, "frequency": mode.DisplayFrequency}
+        if description not in evidence["supported_modes"]:
+            evidence["supported_modes"].append(description)
+        if mode.BitsPerPel == 32 and mode.PelsWidth >= 1280 and mode.PelsHeight >= 960:
+            modes.append(mode)
+    modes.sort(key=lambda mode: (0 if (mode.PelsWidth, mode.PelsHeight) == (1920, 1080) else 1,
+                                 mode.PelsWidth * mode.PelsHeight, -mode.DisplayFrequency))
+    for mode in modes:
+        attempt = {"width": mode.PelsWidth, "height": mode.PelsHeight,
+                   "bits_per_pixel": mode.BitsPerPel, "frequency": mode.DisplayFrequency}
+        evidence["attempts"].append(attempt)
+        attempt["test_result"] = api.ChangeDisplaySettings(mode, constants.CDS_TEST)
+        if attempt["test_result"] != constants.DISP_CHANGE_SUCCESSFUL:
+            continue
+        # Dynamic only: no registry persistence, driver installation or reboot.
+        attempt["apply_result"] = api.ChangeDisplaySettings(mode, 0)
+        if attempt["apply_result"] != constants.DISP_CHANGE_SUCCESSFUL:
+            continue
+        deadline = time.monotonic() + 5
+        while True:
+            evidence["after"] = state()
+            if sufficient(evidence["after"]):
+                evidence["action"] = "supported_mode_applied"
+                return evidence
+            if time.monotonic() >= deadline:
+                break
+            time.sleep(.05)
+    evidence["action"] = "insufficient_interactive_display"
+    return evidence
+
+
 def _windows():
     if sys.platform != "win32":
         raise RuntimeError("The native Windows GUI helper requires Windows")
@@ -206,6 +274,14 @@ class Native:
         if versions["pywinauto"] != "0.6.9":
             self._diagnostics("native-tool-version")
             raise RuntimeError("CI native Windows GUI helper requires pywinauto==0.6.9")
+        import win32api
+        import win32con
+        display = _display_preflight(win32api, win32con)
+        self._event("interactive_display_preflight", **display)
+        value["interactive_display"] = display
+        if display["action"] == "insufficient_interactive_display":
+            self._diagnostics("insufficient-interactive-display")
+            raise RuntimeError("The interactive Windows desktop cannot contain the normal verification window; supported display-mode preflight failed")
         return value
 
     def _windows_owned(self, include_dialogs: bool = True) -> list[dict]:
@@ -293,6 +369,8 @@ class Native:
 
     def screenshot(self, path: Path) -> None:
         from PIL import ImageGrab
+        import win32api
+        import win32con
         import win32gui
         import win32process
 
@@ -383,9 +461,17 @@ class Native:
         win32gui.EnumWindows(collect_console, None)
         if engine_consoles:
             focus_error = focus_error or "The bound bundled engine opened a visible native console"
+        display = None
+        if target is not None:
+            monitor = win32api.GetMonitorInfo(win32api.MonitorFromWindow(target["hwnd"], win32con.MONITOR_DEFAULTTONEAREST))
+            rectangle = list(win32gui.GetWindowRect(target["hwnd"]))
+            display = {"target_rectangle": rectangle, "monitor": list(monitor["Monitor"]),
+                       "work_area": list(monitor["Work"])}
+            if not _contains(display["work_area"], rectangle):
+                focus_error = focus_error or "The bound native capture target extends outside the monitor work area"
         self._event("native_screenshot", path=str(path), action=action, target=target,
                     foreground_before=before, foreground_after=after,
-                    engine_consoles=engine_consoles, focus_error=focus_error)
+                    engine_consoles=engine_consoles, display=display, focus_error=focus_error)
         if focus_error is not None:
             raise RuntimeError(f"Native screenshot foreground validation failed: {focus_error}")
 

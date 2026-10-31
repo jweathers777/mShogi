@@ -50,6 +50,70 @@ class SharedPresentationTests(unittest.TestCase):
                     journey.plies(count, historical)
 
 
+class CompletedCueEvidenceTests(unittest.TestCase):
+    def cue(self, action="e2e4", event=2, origins=None, destinations=None, route=None):
+        destinations = ["e4"] if destinations is None else destinations
+        return {"action": action, "event": str(event), "hidden": "true", "pointerEvents": "none",
+                "origins": ["e2"] if origins is None else origins, "destinations": destinations,
+                "destinationSignatures": ["double-underline"] * len(destinations), "route": route}
+
+    def test_exact_native_identity_and_nonactionable_signature_are_required(self):
+        cue = self.cue()
+        self.assertTrue(module.completed_action_matches(cue, "e2e4", 2, ["e2"], ["e4"]))
+        for field, value in (("action", "e2e3"), ("event", "3"), ("origins", []),
+                             ("destinations", ["e3"]), ("hidden", None), ("pointerEvents", "auto"),
+                             ("destinationSignatures", ["solid-corners"]), ("route", "e2>e3>e4")):
+            with self.subTest(field=field):
+                self.assertFalse(module.completed_action_matches({**cue, field: value}, "e2e4", 2, ["e2"], ["e4"]))
+        self.assertFalse(module.completed_action_matches(None, "e2e4", 2, ["e2"], ["e4"]))
+
+    def test_drop_requires_no_invented_origin_and_equal_endpoint_routes_remain_distinct(self):
+        self.assertTrue(module.completed_action_matches(self.cue("P*5e", 3, [], ["5e"]), "P*5e", 3, [], ["5e"]))
+        self.assertFalse(module.completed_action_matches(self.cue("P*5e", 3, ["5d"], ["5e"]), "P*5e", 3, [], ["5e"]))
+        cue = self.cue("136>153>136", 1, ["i9"], ["i9"], "i9>j10>i9")
+        self.assertTrue(module.completed_action_matches(cue, "136>153>136", 1, ["i9"], ["i9"], "i9>j10>i9"))
+        self.assertFalse(module.completed_action_matches(cue, "136>135>136", 1, ["i9"], ["i9"], "i9>h9>i9"))
+
+
+class MovesKeyboardEvidenceTests(unittest.TestCase):
+    def setUp(self):
+        self.web = object.__new__(module.Webview)
+        self.web.read, self.web.record, self.web.key = Mock(), Mock(), Mock()
+        self.hidden = {"matches": 1, "enabled": True, "focused": False, "visible": False}
+        self.ready = {**self.hidden, "focused": True, "visible": True}
+
+    def test_actual_tabs_then_one_enter_with_no_dom_input_or_scroll_injection(self):
+        self.web.read.side_effect = [self.hidden, self.hidden, self.ready]
+        self.web.keyboard_activate('.moves-table [data-event="2"]', max_tabs=3)
+        self.assertEqual(self.web.key.call_args_list, [unittest.mock.call("\ue004"), unittest.mock.call("\ue004"), unittest.mock.call("\ue007")])
+        expression = self.web.read.call_args.args[0]
+        for forbidden in (".focus(", ".click(", "scrollIntoView(", "scrollTop =", "dispatchEvent(", "invoke("):
+            self.assertNotIn(forbidden, expression)
+
+    def test_missing_disabled_or_unreachable_target_never_dispatches_enter(self):
+        for observed in ({**self.hidden, "matches": 0}, {**self.hidden, "enabled": False}):
+            self.web.read.return_value = observed
+            with self.assertRaises(AssertionError):
+                self.web.keyboard_activate(".moves-root", max_tabs=2)
+            self.web.key.assert_not_called()
+        self.web.read.return_value = self.hidden
+        with self.assertRaisesRegex(AssertionError, "unreachable"):
+            self.web.keyboard_activate(".moves-root", max_tabs=2)
+        self.assertEqual(self.web.key.call_args_list, [unittest.mock.call("\ue004"), unittest.mock.call("\ue004")])
+
+    def test_enter_delivery_failure_is_not_replayed(self):
+        self.web.read.return_value = self.ready
+        self.web.key.side_effect = http.client.RemoteDisconnected("Enter delivered or not is unknown")
+        with self.assertRaises(http.client.RemoteDisconnected):
+            self.web.keyboard_activate(".moves-root")
+        self.web.key.assert_called_once_with("\ue007")
+
+    def test_focused_target_waits_for_readonly_paint_without_tabbing_away(self):
+        self.web.read.side_effect = [{**self.ready, "visible": False}, self.ready]
+        self.web.keyboard_activate(".moves-root")
+        self.web.key.assert_called_once_with("\ue007")
+
+
 class XiangqiBoardGeometryTests(unittest.TestCase):
     def geometry(self, points=90, visible=True):
         return {"viewport": {"width": 760, "height": 650}, "points": points, "allVisible": visible,

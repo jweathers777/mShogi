@@ -77,12 +77,12 @@ it("keeps resource-limit refusal distinct and retains a complete Save path", () 
   fireEvent.click(point("e3")); fireEvent.click(point("e4")); expect(session.command).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole("button", { name: "Save" })); expect(session.file).toHaveBeenCalledExactlyOnceWith(snapshot, "save");
 });
-it("shows native readable capture history without exposing the canonical diagnostic payload", () => {
+it("shows native WXF capture notation without exposing the canonical diagnostic payload", () => {
   const snapshot = playedJson as unknown as GameSnapshot;
   app(snapshot);
-  const history = screen.getByRole("region", { name: "Game history" });
-  expect(history.textContent).toContain("Red: b2×b9");
-  expect(history.textContent).toContain("Black: a9×b9");
+  const history = screen.getByRole("region", { name: "Moves" });
+  expect(history.textContent).toContain("C8+7");
+  expect(history.textContent).toContain("R1=2");
   expect(history.textContent).not.toMatch(/Some\(|BoardAction|captured_id|moving_id/);
   expect(snapshot.events.map((e) => [e.index, e.board_ply])).toEqual([[1, 1], [2, 2]]);
   expect(snapshot.context).toEqual(playedJson.context);

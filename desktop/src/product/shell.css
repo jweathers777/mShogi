@@ -78,6 +78,25 @@
 .game-shell .shogi-search-observation { border-color:var(--shell-border); }
 .game-shell .shogi-analysis-fields input { color:var(--shell-text); background:#13252a; border-color:#56716f; }
 .game-shell .shogi-history ol { max-height:174px; }
+.game-shell .moves-panel { min-height:0; }
+.game-shell .moves-root { align-self:flex-start; background:transparent; padding:4px 6px; color:var(--shell-text); font-size:11px; }
+.game-shell .moves-root[aria-current="step"] { background:#344b41; }
+.game-shell .moves-numbering { margin:3px 0; color:var(--shell-muted); font-size:10px; line-height:1.35; }
+.game-shell .moves-scroll { flex:1; min-height:42px; overflow:auto; }
+.game-shell .moves-table { width:100%; border-collapse:collapse; table-layout:fixed; font-size:12px; }
+.game-shell .moves-table th:first-child { width:28px; }
+.game-shell .moves-table th { color:var(--shell-muted); font-size:10px; font-weight:400; text-align:left; padding:4px; }
+.game-shell .moves-table td { position:relative; vertical-align:top; padding:1px 2px; }
+.game-shell .moves-table td button { width:100%; text-align:left; padding:5px 6px; background:transparent; color:var(--shell-text); font-size:12px; border-radius:4px; overflow-wrap:anywhere; }
+.game-shell .moves-table td button:hover:enabled { background:#2a4247; }
+.game-shell .moves-table td button[aria-current="step"] { background:#344b41; color:#e5eddc; font-weight:600; }
+.game-shell .moves-table td[data-associated-selection] { box-shadow:inset 0 -1px #a9b69c; }
+.game-shell .move-event-count { position:absolute; right:4px; top:1px; color:#d1c38e; font-size:10px; }
+.game-shell .moves-empty { color:var(--shell-muted); font-size:11px; margin:6px; }
+.game-shell .moves-events { flex-shrink:0; font-size:11px; border-top:1px solid var(--shell-line); margin-top:5px; padding-top:5px; }
+.game-shell .moves-events summary { cursor:pointer; color:var(--shell-muted); }
+.game-shell .moves-events small { color:var(--shell-muted); }
+.game-shell .shell-history .moves-events ol { flex:initial; min-height:0; max-height:80px; overflow:auto; margin:5px 0; }
 .game-shell .shogi-history li button,.game-shell .native-history-row { color:var(--shell-text); }
 .game-shell .shogi-history li button:hover:enabled { background:#2a4247; }
 .game-shell .shogi-history li button[aria-current="step"],.game-shell .native-history-row[aria-current="step"] { color:#e5eddc; background:#344b41; }

@@ -158,10 +158,11 @@ it("uses the shared player/board/footer slots while retaining native hands and k
   movedPawn.focus(); await userEvent.setup().keyboard("{Enter}"); fireEvent.keyDown(movedPawn, { key: "ArrowDown" });
   expect(document.activeElement).toBe(square("5g")); fireEvent.click(square("5e")); expect(onPlay).toHaveBeenCalledExactlyOnceWith("P*5e");
 });
-it("keeps future read-only completed geometry separate from the pending native choice", () => {
+it("keeps rendered read-only completed geometry separate from the pending native choice", () => {
   const { props, rerender, onPlay } = board(); fireEvent.click(square("7g"));
   rerender(<ShogiBoard {...props} completedAction={{ origin: { kind: "hand", owner: gote.key, piece_kind: "pawn" }, steps: ["3d"] }} />);
   expect(square("7f").getAttribute("aria-label")).toContain("legal destination");
+  expect(document.querySelector('[data-last-move="destination"]')?.getAttribute("data-location")).toBe("3d");
   fireEvent.click(square("7f")); expect(onPlay).toHaveBeenCalledExactlyOnceWith("7g7f");
 });
 

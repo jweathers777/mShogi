@@ -1,5 +1,6 @@
 import type { NativeChoice, BoardGeometry } from "../boardPresentation";
 import type { BoardPiece } from "../native";
+import type { CompletedActionGeometry } from "../boardPresentation";
 
 export interface SyntheticSnapshot {
   profile: "mshogi.synthetic.strider16.v1";
@@ -14,6 +15,7 @@ export interface SyntheticSnapshot {
     actions: string[];
   };
   complete: boolean;
+  last_action?: CompletedActionGeometry | null;
 }
 export type SyntheticCommand =
   | { kind: "play"; version: number; action: string }

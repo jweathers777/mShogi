@@ -5,6 +5,8 @@ mod synthetic;
 pub use synthetic::*;
 mod shared;
 pub use shared::*;
+mod moves;
+pub use moves::{CompletedActionGeometry, MoveEffect, MovesProjection, MovesRoot, PresentedMove};
 mod capacity;
 pub use capacity::*;
 mod document;

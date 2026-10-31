@@ -1,4 +1,12 @@
 {
+  "moves": {
+    "root": {
+      "label": "Starting position",
+      "numbering": "Move numbering starts at 1 · Earlier history is unknown"
+    },
+    "entries": [],
+    "last_action": null
+  },
   "open_token": {
     "document": 1,
     "version": 4,

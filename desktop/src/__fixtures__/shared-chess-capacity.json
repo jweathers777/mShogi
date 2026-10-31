@@ -1,4 +1,12 @@
 {
+  "moves": {
+    "root": {
+      "label": "Starting position",
+      "numbering": "Moves from the starting position"
+    },
+    "entries": [],
+    "last_action": null
+  },
   "open_token": {
     "document": 0,
     "version": 256,

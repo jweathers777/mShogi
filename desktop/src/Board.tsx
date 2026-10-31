@@ -4,6 +4,7 @@ import type { BoardPiece, Color } from "./native";
 import type { BoardGeometry, CompletedActionGeometry, NativeChoice, NativeHand, NativePiece } from "./boardPresentation";
 import { gridNeighbor, useNativeChoiceController } from "./interaction/useNativeChoiceController";
 import { inspectionStatus, type InspectMovement } from "./product/movementInspection";
+import { CompletedActionCue } from "./CompletedActionCue";
 import "./movement-inspection.css";
 
 interface Props {
@@ -40,7 +41,7 @@ export function displayedSquares(orientation: Color, geometry = chessGeometry): 
   return ranks.flatMap((rank) => files.map((file) => `${file}${rank}`));
 }
 export function Board({ pieces, choices, orientation, version, disabled,
-  onPlay, geometry = chessGeometry, glyphs = {}, profile = "chess", nativeOrientation, hands = [], nativeFirstOwner, humanOwner, onInspect, inspectionDisabled = disabled, inspectionContextKey, helpTarget }: Props) {
+  onPlay, geometry = chessGeometry, glyphs = {}, profile = "chess", nativeOrientation, hands = [], nativeFirstOwner, humanOwner, onInspect, inspectionDisabled = disabled, inspectionContextKey, helpTarget, completedAction }: Props) {
   const completionTitle = useId();
   const squares = nativeOrientation ? nativeOrientation.ranks.flatMap(rank => nativeOrientation.files.map(file => `${file}${rank}`)) : displayedSquares(orientation, geometry);
   const columns = geometry.files.length, rows = geometry.ranks.length;
@@ -87,6 +88,7 @@ export function Board({ pieces, choices, orientation, version, disabled,
             <rect x="3" y="3" width="94" height="94" className="focus-ring" />
           </g>;
         })}
+        <CompletedActionCue action={completedAction} center={key => { const index = squares.indexOf(key); return index < 0 ? null : [70 + index % columns * 100, 70 + Math.floor(index / columns) * 100]; }} />
       </svg>
     </div>
     {helpTarget === undefined ? help : helpTarget ? createPortal(help, helpTarget) : null}

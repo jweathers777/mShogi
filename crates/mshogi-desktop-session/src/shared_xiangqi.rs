@@ -591,6 +591,7 @@ impl DesktopController {
             },
         };
         SharedSnapshot {
+            moves: self.present_moves(history.event_count),
             xiangqi: Some(XiangqiPresentation {
                 terminal_actions: XiangqiTerminalActions {
                     offer_draw: active && !state.paused && state.game.can_offer_draw(state.human),

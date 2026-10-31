@@ -1,0 +1,8 @@
+.completed-action-cue { pointer-events:none; fill:none; }
+.completed-action-origin { stroke:#5b5140; stroke-width:2.5; stroke-dasharray:4 3; opacity:.85; }
+.completed-action-destination { stroke:#5a3d13; stroke-width:4; stroke-linecap:square; }
+.chess-board .completed-action-origin { stroke:#f1e7bd; filter:drop-shadow(0 1px 1px #22302c); }
+.chess-board .completed-action-destination { stroke:#fff0aa; filter:drop-shadow(0 1px 1px #22302c); }
+.completed-action-route polyline { stroke:#5b5140; stroke-width:2; stroke-dasharray:6 8; opacity:.8; }
+.completed-action-route circle { fill:#f5e6bf; stroke:#5b5140; stroke-width:1.5; }
+.completed-action-route text { fill:#443520; font:600 12px system-ui,sans-serif; stroke:none; }

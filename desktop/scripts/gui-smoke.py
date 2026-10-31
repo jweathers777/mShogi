@@ -115,6 +115,16 @@ def inspection_status_matches(text, native_label):
     return text == f"Inspecting {native_label} · Esc clears"
 
 
+def completed_action_matches(observed, action, event, origins, destinations, route=None):
+    """Validate observed native geometry, never derive moves from board rules."""
+    return (isinstance(observed, dict) and observed.get("action") == action
+            and observed.get("event") == str(event)
+            and observed.get("hidden") == "true" and observed.get("pointerEvents") == "none"
+            and observed.get("origins") == origins and observed.get("destinations") == destinations
+            and observed.get("destinationSignatures") == ["double-underline"] * len(destinations)
+            and observed.get("route") == route)
+
+
 def terminal_transport_closed(error):
     """Only meaningful after dispatching the known native-close guard action."""
     if isinstance(error, (http.client.RemoteDisconnected, ConnectionResetError, BrokenPipeError)):
@@ -299,6 +309,37 @@ class Webview:
             if tabs < max_tabs:
                 self.key("\ue004")
         raise AssertionError(f"Control unreachable within {max_tabs} actual Tab inputs: {label}; last observation: {observed!r}")
+
+    def keyboard_activate(self, selector, max_tabs=64):
+        """Actual bounded Tab/Enter; DOM reads never reveal or focus a target."""
+        def observe():
+            return self.read("""(() => {
+                const matches=[...document.querySelectorAll(SELECTOR)],e=matches.length===1?matches[0]:null;
+                if(!e)return {matches:matches.length,enabled:false,focused:false,visible:false};
+                const r=e.getBoundingClientRect(),clip={left:0,top:0,right:innerWidth,bottom:innerHeight};
+                for(let p=e.parentElement;p;p=p.parentElement){const c=getComputedStyle(p),b=p.getBoundingClientRect();
+                    if(/^(auto|scroll|hidden|clip)$/.test(c.overflowX)){clip.left=Math.max(clip.left,b.left);clip.right=Math.min(clip.right,b.right);}
+                    if(/^(auto|scroll|hidden|clip)$/.test(c.overflowY)){clip.top=Math.max(clip.top,b.top);clip.bottom=Math.min(clip.bottom,b.bottom);}}
+                return {matches:1,enabled:!e.disabled,focused:document.activeElement===e,
+                    visible:r.width>0&&r.height>0&&r.left>=clip.left-1&&r.top>=clip.top-1&&r.right<=clip.right+1&&r.bottom<=clip.bottom+1};
+            })()""".replace("SELECTOR", json.dumps(selector)))
+        for tabs in range(max_tabs + 1):
+            observed = observe()
+            assert observed["matches"] == 1 and observed["enabled"], (selector, observed)
+            if observed["focused"]:
+                if not observed["visible"]:
+                    def revealed():
+                        state = observe()
+                        assert state["matches"] == 1 and state["enabled"] and state["focused"], state
+                        return state if state["visible"] else None
+                    observed = wait(revealed, f"keyboard-focused move target revealed: {selector}", 2)
+                if self.record is not None:
+                    self.record("Actual Tab reaches visible target before one Enter", {"selector": selector, "tabs": tabs, "target": observed})
+                self.key("\ue007")
+                return
+            if tabs < max_tabs:
+                self.key("\ue004")
+        raise AssertionError(f"Target unreachable within {max_tabs} actual Tabs: {selector}; {observed!r}")
 
     def set(self, selector, value):
         element = self.find(selector)
@@ -521,6 +562,60 @@ class Journey:
 
     def square(self, name):
         return f'.square[aria-label^="{name},"]'
+
+    def completed_cue(self):
+        return self.web.read("""(() => {const e=document.querySelector('.completed-action-cue');if(!e)return null;
+            return {action:e.dataset.nativeLastAction,event:e.dataset.lastEvent,hidden:e.getAttribute('aria-hidden'),
+                pointerEvents:getComputedStyle(e).pointerEvents,
+                origins:[...e.querySelectorAll('[data-last-move="origin"]')].map(p=>p.dataset.location),
+                destinations:[...e.querySelectorAll('[data-last-move="destination"]')].map(p=>p.dataset.location),
+                destinationSignatures:[...e.querySelectorAll('[data-last-move="destination"]')].map(p=>p.dataset.cueSignature),
+                route:e.querySelector('.completed-action-route')?.dataset.route??null};})()""")
+
+    def assert_completed_cue(self, action, event, origins, destinations, route=None):
+        def observed():
+            cue = self.completed_cue()
+            assert completed_action_matches(cue, action, event, origins, destinations, route), cue
+            return cue
+        cue = wait(observed, f"exact native completed cue {action} at event {event}")
+        self.record("Observe readonly completed action geometry", cue)
+        return cue
+
+    def moves_navigation(self, game, action, notation, event, origin, destination):
+        """Actual shared Moves pointer/Tab/Enter at both supported sizes."""
+        w = self.web
+        selector = f'.moves-table button[data-native-action="{action}"][data-event="{event}"]'
+        wait(lambda: w.has(selector), f"native {game} standard notation target")
+        assert w.text(selector).strip() == notation, (game, w.text(selector))
+        live = self.completed_cue()
+        assert live and live["action"] != action and live["event"] != str(event), live
+        for width, height in ((1180, 820), (760, 650)):
+            self.viewport(width, height)
+            w.click(selector)
+            wait(lambda: w.read("document.querySelector('.moves-panel').dataset.currentEvent") == str(event), "Moves pointer selects exact native post-action prefix")
+            assert w.read(f"document.querySelector({json.dumps(selector)}).getAttribute('aria-current')") == "step"
+            self.assert_completed_cue(action, event, [origin], [destination])
+            self.capture(f"moves-{game}-{width}-pointer-history")
+            w.click(".flip-button")
+            self.assert_completed_cue(action, event, [origin], [destination])
+            self.capture(f"moves-{game}-{width}-flipped-history")
+            w.click(".flip-button")
+            w.keyboard_activate(".moves-root")
+            wait(lambda: w.read("document.querySelector('.moves-panel').dataset.currentEvent") == "0", "keyboard selects native known root")
+            assert self.completed_cue() is None, "Known root cannot invent a last move"
+            w.keyboard_activate(selector)
+            wait(lambda: w.read("document.querySelector('.moves-panel').dataset.currentEvent") == str(event), "Tab Enter selects exact native move prefix")
+            self.assert_completed_cue(action, event, [origin], [destination])
+            self.capture(f"moves-{game}-{width}-keyboard-history")
+            w.button("Return to live")
+            wait(lambda: w.read("document.querySelector('.game-shell').dataset.historical") == "false", "explicit Return to live")
+            wait(lambda: self.completed_cue() == live, "Return to live restores genuine engine action cue")
+            if w.has(".play-paused"):
+                w.button("Resume play")
+                wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "false", "explicit Resume after browsing")
+        self.viewport(1180, 820)
+        self.record("All-game shared Moves pointer and keyboard exact-prefix navigation", {"game": game, "action": action,
+            "notation": notation, "event": event, "live_cue": live, "sizes": [[1180, 820], [760, 650]]})
 
     def viewport(self, width, height):
         """Request and measure content size; OS decoration is never assumed."""
@@ -867,9 +962,11 @@ class Journey:
         assert not w.has(".outcome-card")
         self.capture("play")
         self.record("Play e2e4 against actual bundled engine", w.text('[data-search-purpose="engine_turn"]'))
+        self.moves_navigation("chess", "e2e4", "e4", 2, "e2", "e4")
 
         w.focused_button("Take back")
         self.plies(0)
+        assert self.completed_cue() is None, "Take back to root retires completed cue"
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "true", "Chess Take back is stopped")
         self.capture("takeback-stopped")
         w.button("Resume play")
@@ -1098,9 +1195,11 @@ class Journey:
         assert played["context"]["payload"]["conclusion"] is None, played
         self.capture("play")
         self.record("Pointer selection / Escape / keyboard a3a4 / actual bounded engine reply", played)
+        self.moves_navigation("xiangqi", "a3a4", "P9+1", 1, "a3", "a4")
 
         w.focused_button("Take back")
         self.xiangqi_events(0, selected=0)
+        assert self.completed_cue() is None, "Xiangqi Take back to root retires cue"
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "true", "Xiangqi Take back is stopped")
         self.capture("takeback-stopped")
         w.button("Resume play")
@@ -1240,9 +1339,11 @@ class Journey:
         wait(lambda: w.has('[data-search-purpose="engine_turn"]'), "actual bundled shogi engine observation")
         self.capture("play")
         self.record("Pointer selection / Escape / keyboard 7g7f / actual engine reply", w.text(".shogi-history"))
+        self.moves_navigation("shogi", "7g7f", "７６歩", 1, "7g", "7f")
 
         w.focused_button("Take back")
         self.shogi_events(0)
+        assert self.completed_cue() is None, "Shogi Take back to root retires cue"
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "true", "Shogi Take back is stopped")
         self.capture("takeback-stopped")
         w.button("Resume play")
@@ -1386,6 +1487,7 @@ class Journey:
                 self.shogi_events(3)
                 assert "No game result is implied" in w.text(".shogi-sidebar")
                 assert "Sente pawn" in w.read(f"document.querySelector({json.dumps(self.shogi_square('5e'))}).getAttribute('aria-label')")
+                self.assert_completed_cue("P*5e", 3, [], ["5e"])
                 self.capture("engine-failure")
             finally:
                 if held.exists():
@@ -1468,6 +1570,7 @@ class Journey:
             w.click('.shogi-history [data-event="0"]')
             self.shogi_events(1, selected=0, historical=True)
             self.capture("before-terminal-event")
+            w.click(".moves-events summary")
             w.click('.shogi-history [data-event="1"]')
             self.shogi_events(1, selected=1, historical=True)
             w.button("Return to live")
@@ -1612,6 +1715,7 @@ class Journey:
             self.synthetic_record([])
             w.focused_button("Complete action here")
             terminal = self.synthetic_record(["136>153"])
+            self.assert_completed_cue("136>153", 1, ["i9"], ["j10"])
             assert "strider" in w.read(f"document.querySelector({json.dumps(self.square('j10'))}).getAttribute('aria-label')")
             assert "empty" in w.read(f"document.querySelector({json.dumps(self.square('i9'))}).getAttribute('aria-label')")
             self.synthetic_board_fits("black")
@@ -1626,6 +1730,7 @@ class Journey:
             for key in ("\ue007", "\ue012", "\ue015", "\ue007", "\ue014", "\ue013", "\ue007"):
                 w.key(key)
             captured = self.synthetic_record(["136>153>136"])
+            self.assert_completed_cue("136>153>136", 1, ["i9"], ["i9"], "i9>j10>i9")
             assert "empty" in w.read(f"document.querySelector({json.dumps(self.square('j10'))}).getAttribute('aria-label')")
             assert "strider" in w.read(f"document.querySelector({json.dumps(self.square('i9'))}).getAttribute('aria-label')")
             w.click(".synthetic-inspector details summary")
@@ -1639,6 +1744,7 @@ class Journey:
             for key in ("\ue007", "\ue012", "\ue007", "\ue014", "\ue007"):
                 w.key(key)
             alternate = self.synthetic_record(["136>135>136"])
+            self.assert_completed_cue("136>135>136", 1, ["i9"], ["i9"], "i9>h9>i9")
             assert "stone" in w.read(f"document.querySelector({json.dumps(self.square('j10'))}).getAttribute('aria-label')")
             assert "strider" in w.read(f"document.querySelector({json.dumps(self.square('i9'))}).getAttribute('aria-label')")
             self.capture("alternate-route")

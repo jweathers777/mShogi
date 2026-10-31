@@ -170,9 +170,10 @@ it("keeps different native routes with identical endpoints distinct", () => {
   expect(props.onPlay).not.toHaveBeenCalled(); expect(point("b4").getAttribute("aria-label")).toContain("legal destination");
   fireEvent.click(point("b4")); expect(props.onPlay).toHaveBeenCalledExactlyOnceWith("contract-via-b3");
 });
-it("keeps future read-only completed geometry separate from current selection", () => {
+it("keeps rendered read-only completed geometry separate from current selection", () => {
   const { props, rerender } = board(); fireEvent.click(point("a3"));
   rerender(<XiangqiBoard {...props} completedAction={{ origin: { kind: "intersection", point: "a6" }, steps: ["a5"] }} />);
   expect(point("a4").getAttribute("aria-label")).toContain("legal destination");
+  expect(document.querySelector('[data-last-move="destination"]')?.getAttribute("data-location")).toBe("a5");
   fireEvent.click(point("a4")); expect(props.onPlay).toHaveBeenCalledExactlyOnceWith("a3a4");
 });

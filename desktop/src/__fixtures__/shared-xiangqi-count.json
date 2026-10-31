@@ -1,4 +1,1024 @@
 {
+  "moves": {
+    "root": {
+      "label": "Starting position",
+      "numbering": "FEN fullmove 1; only known actions are shown"
+    },
+    "entries": [
+      {
+        "event_index": 1,
+        "board_ply": 1,
+        "number": 1,
+        "column": 0,
+        "notation": "R9=6",
+        "action": "a5d5",
+        "command_start": 0,
+        "command_end": 1
+      },
+      {
+        "event_index": 2,
+        "board_ply": 2,
+        "number": 1,
+        "column": 1,
+        "notation": "R9+3",
+        "action": "i9i6",
+        "command_start": 1,
+        "command_end": 2
+      },
+      {
+        "event_index": 3,
+        "board_ply": 3,
+        "number": 2,
+        "column": 0,
+        "notation": "R6+1",
+        "action": "d5d6",
+        "command_start": 2,
+        "command_end": 3
+      },
+      {
+        "event_index": 4,
+        "board_ply": 4,
+        "number": 2,
+        "column": 1,
+        "notation": "R9+5",
+        "action": "i6i1",
+        "command_start": 3,
+        "command_end": 4
+      },
+      {
+        "event_index": 5,
+        "board_ply": 5,
+        "number": 3,
+        "column": 0,
+        "notation": "R6=1",
+        "action": "d6i6",
+        "command_start": 4,
+        "command_end": 5
+      },
+      {
+        "event_index": 6,
+        "board_ply": 6,
+        "number": 3,
+        "column": 1,
+        "notation": "R9=2",
+        "action": "i1b1",
+        "command_start": 5,
+        "command_end": 6
+      },
+      {
+        "event_index": 7,
+        "board_ply": 7,
+        "number": 4,
+        "column": 0,
+        "notation": "R1=5",
+        "action": "i6e6",
+        "command_start": 6,
+        "command_end": 7
+      },
+      {
+        "event_index": 8,
+        "board_ply": 8,
+        "number": 4,
+        "column": 1,
+        "notation": "R2=9",
+        "action": "b1i1",
+        "command_start": 7,
+        "command_end": 8
+      },
+      {
+        "event_index": 9,
+        "board_ply": 9,
+        "number": 5,
+        "column": 0,
+        "notation": "R5+3",
+        "action": "e6e9",
+        "command_start": 8,
+        "command_end": 9
+      },
+      {
+        "event_index": 10,
+        "board_ply": 10,
+        "number": 5,
+        "column": 1,
+        "notation": "K6+1",
+        "action": "f9f8",
+        "command_start": 9,
+        "command_end": 10
+      },
+      {
+        "event_index": 11,
+        "board_ply": 11,
+        "number": 6,
+        "column": 0,
+        "notation": "R5-9",
+        "action": "e9e0",
+        "command_start": 10,
+        "command_end": 11
+      },
+      {
+        "event_index": 12,
+        "board_ply": 12,
+        "number": 6,
+        "column": 1,
+        "notation": "R9=6",
+        "action": "i1f1",
+        "command_start": 11,
+        "command_end": 12
+      },
+      {
+        "event_index": 13,
+        "board_ply": 13,
+        "number": 7,
+        "column": 0,
+        "notation": "R5=4",
+        "action": "e0f0",
+        "command_start": 12,
+        "command_end": 13
+      },
+      {
+        "event_index": 14,
+        "board_ply": 14,
+        "number": 7,
+        "column": 1,
+        "notation": "K6-1",
+        "action": "f8f9",
+        "command_start": 13,
+        "command_end": 14
+      },
+      {
+        "event_index": 15,
+        "board_ply": 15,
+        "number": 8,
+        "column": 0,
+        "notation": "R4=1",
+        "action": "f0i0",
+        "command_start": 14,
+        "command_end": 15
+      },
+      {
+        "event_index": 16,
+        "board_ply": 16,
+        "number": 8,
+        "column": 1,
+        "notation": "R6=5",
+        "action": "f1e1",
+        "command_start": 15,
+        "command_end": 16
+      },
+      {
+        "event_index": 17,
+        "board_ply": 17,
+        "number": 9,
+        "column": 0,
+        "notation": "R1=4",
+        "action": "i0f0",
+        "command_start": 16,
+        "command_end": 17
+      },
+      {
+        "event_index": 18,
+        "board_ply": 18,
+        "number": 9,
+        "column": 1,
+        "notation": "K6=5",
+        "action": "f9e9",
+        "command_start": 17,
+        "command_end": 18
+      },
+      {
+        "event_index": 19,
+        "board_ply": 19,
+        "number": 10,
+        "column": 0,
+        "notation": "R4+4",
+        "action": "f0f4",
+        "command_start": 18,
+        "command_end": 19
+      },
+      {
+        "event_index": 20,
+        "board_ply": 20,
+        "number": 10,
+        "column": 1,
+        "notation": "R5-5",
+        "action": "e1e6",
+        "command_start": 19,
+        "command_end": 20
+      },
+      {
+        "event_index": 21,
+        "board_ply": 21,
+        "number": 11,
+        "column": 0,
+        "notation": "R4+5",
+        "action": "f4f9",
+        "command_start": 20,
+        "command_end": 21
+      },
+      {
+        "event_index": 22,
+        "board_ply": 22,
+        "number": 11,
+        "column": 1,
+        "notation": "K5+1",
+        "action": "e9e8",
+        "command_start": 21,
+        "command_end": 22
+      },
+      {
+        "event_index": 23,
+        "board_ply": 23,
+        "number": 12,
+        "column": 0,
+        "notation": "R4-1",
+        "action": "f9f8",
+        "command_start": 22,
+        "command_end": 23
+      },
+      {
+        "event_index": 24,
+        "board_ply": 24,
+        "number": 12,
+        "column": 1,
+        "notation": "K5+1",
+        "action": "e8e7",
+        "command_start": 23,
+        "command_end": 24
+      },
+      {
+        "event_index": 25,
+        "board_ply": 25,
+        "number": 13,
+        "column": 0,
+        "notation": "R4-1",
+        "action": "f8f7",
+        "command_start": 24,
+        "command_end": 25
+      },
+      {
+        "event_index": 26,
+        "board_ply": 26,
+        "number": 13,
+        "column": 1,
+        "notation": "K5-1",
+        "action": "e7e8",
+        "command_start": 25,
+        "command_end": 26
+      },
+      {
+        "event_index": 27,
+        "board_ply": 27,
+        "number": 14,
+        "column": 0,
+        "notation": "R4=6",
+        "action": "f7d7",
+        "command_start": 26,
+        "command_end": 27
+      },
+      {
+        "event_index": 28,
+        "board_ply": 28,
+        "number": 14,
+        "column": 1,
+        "notation": "R5-1",
+        "action": "e6e7",
+        "command_start": 27,
+        "command_end": 28
+      },
+      {
+        "event_index": 29,
+        "board_ply": 29,
+        "number": 15,
+        "column": 0,
+        "notation": "R6-4",
+        "action": "d7d3",
+        "command_start": 28,
+        "command_end": 29
+      },
+      {
+        "event_index": 30,
+        "board_ply": 30,
+        "number": 15,
+        "column": 1,
+        "notation": "R5=6",
+        "action": "e7f7",
+        "command_start": 29,
+        "command_end": 30
+      },
+      {
+        "event_index": 31,
+        "board_ply": 31,
+        "number": 16,
+        "column": 0,
+        "notation": "R6+5",
+        "action": "d3d8",
+        "command_start": 30,
+        "command_end": 31
+      },
+      {
+        "event_index": 32,
+        "board_ply": 32,
+        "number": 16,
+        "column": 1,
+        "notation": "K5-1",
+        "action": "e8e9",
+        "command_start": 31,
+        "command_end": 32
+      },
+      {
+        "event_index": 33,
+        "board_ply": 33,
+        "number": 17,
+        "column": 0,
+        "notation": "R6-3",
+        "action": "d8d5",
+        "command_start": 32,
+        "command_end": 33
+      },
+      {
+        "event_index": 34,
+        "board_ply": 34,
+        "number": 17,
+        "column": 1,
+        "notation": "R6=7",
+        "action": "f7g7",
+        "command_start": 33,
+        "command_end": 34
+      },
+      {
+        "event_index": 35,
+        "board_ply": 35,
+        "number": 18,
+        "column": 0,
+        "notation": "K6+1",
+        "action": "d0d1",
+        "command_start": 34,
+        "command_end": 35
+      },
+      {
+        "event_index": 36,
+        "board_ply": 36,
+        "number": 18,
+        "column": 1,
+        "notation": "R7+2",
+        "action": "g7g5",
+        "command_start": 35,
+        "command_end": 36
+      },
+      {
+        "event_index": 37,
+        "board_ply": 37,
+        "number": 19,
+        "column": 0,
+        "notation": "R6-1",
+        "action": "d5d4",
+        "command_start": 36,
+        "command_end": 37
+      },
+      {
+        "event_index": 38,
+        "board_ply": 38,
+        "number": 19,
+        "column": 1,
+        "notation": "R7-4",
+        "action": "g5g9",
+        "command_start": 37,
+        "command_end": 38
+      },
+      {
+        "event_index": 39,
+        "board_ply": 39,
+        "number": 20,
+        "column": 0,
+        "notation": "R6=5",
+        "action": "d4e4",
+        "command_start": 38,
+        "command_end": 39
+      },
+      {
+        "event_index": 40,
+        "board_ply": 40,
+        "number": 20,
+        "column": 1,
+        "notation": "K5=6",
+        "action": "e9f9",
+        "command_start": 39,
+        "command_end": 40
+      },
+      {
+        "event_index": 41,
+        "board_ply": 41,
+        "number": 21,
+        "column": 0,
+        "notation": "R5-3",
+        "action": "e4e1",
+        "command_start": 40,
+        "command_end": 41
+      },
+      {
+        "event_index": 42,
+        "board_ply": 42,
+        "number": 21,
+        "column": 1,
+        "notation": "R7+4",
+        "action": "g9g5",
+        "command_start": 41,
+        "command_end": 42
+      },
+      {
+        "event_index": 43,
+        "board_ply": 43,
+        "number": 22,
+        "column": 0,
+        "notation": "R5+3",
+        "action": "e1e4",
+        "command_start": 42,
+        "command_end": 43
+      },
+      {
+        "event_index": 44,
+        "board_ply": 44,
+        "number": 22,
+        "column": 1,
+        "notation": "R7-1",
+        "action": "g5g6",
+        "command_start": 43,
+        "command_end": 44
+      },
+      {
+        "event_index": 45,
+        "board_ply": 45,
+        "number": 23,
+        "column": 0,
+        "notation": "R5+5",
+        "action": "e4e9",
+        "command_start": 44,
+        "command_end": 45
+      },
+      {
+        "event_index": 46,
+        "board_ply": 46,
+        "number": 23,
+        "column": 1,
+        "notation": "K6+1",
+        "action": "f9f8",
+        "command_start": 45,
+        "command_end": 46
+      },
+      {
+        "event_index": 47,
+        "board_ply": 47,
+        "number": 24,
+        "column": 0,
+        "notation": "R5-8",
+        "action": "e9e1",
+        "command_start": 46,
+        "command_end": 47
+      },
+      {
+        "event_index": 48,
+        "board_ply": 48,
+        "number": 24,
+        "column": 1,
+        "notation": "R7+3",
+        "action": "g6g3",
+        "command_start": 47,
+        "command_end": 48
+      },
+      {
+        "event_index": 49,
+        "board_ply": 49,
+        "number": 25,
+        "column": 0,
+        "notation": "K6-1",
+        "action": "d1d0",
+        "command_start": 48,
+        "command_end": 49
+      },
+      {
+        "event_index": 50,
+        "board_ply": 50,
+        "number": 25,
+        "column": 1,
+        "notation": "R7-5",
+        "action": "g3g8",
+        "command_start": 49,
+        "command_end": 50
+      },
+      {
+        "event_index": 51,
+        "board_ply": 51,
+        "number": 26,
+        "column": 0,
+        "notation": "R5+8",
+        "action": "e1e9",
+        "command_start": 50,
+        "command_end": 51
+      },
+      {
+        "event_index": 52,
+        "board_ply": 52,
+        "number": 26,
+        "column": 1,
+        "notation": "R7-1",
+        "action": "g8g9",
+        "command_start": 51,
+        "command_end": 52
+      },
+      {
+        "event_index": 53,
+        "board_ply": 53,
+        "number": 27,
+        "column": 0,
+        "notation": "R5-1",
+        "action": "e9e8",
+        "command_start": 52,
+        "command_end": 53
+      },
+      {
+        "event_index": 54,
+        "board_ply": 54,
+        "number": 27,
+        "column": 1,
+        "notation": "K6+1",
+        "action": "f8f7",
+        "command_start": 53,
+        "command_end": 54
+      },
+      {
+        "event_index": 55,
+        "board_ply": 55,
+        "number": 28,
+        "column": 0,
+        "notation": "R5=4",
+        "action": "e8f8",
+        "command_start": 54,
+        "command_end": 55
+      },
+      {
+        "event_index": 56,
+        "board_ply": 56,
+        "number": 28,
+        "column": 1,
+        "notation": "K6=5",
+        "action": "f7e7",
+        "command_start": 55,
+        "command_end": 56
+      },
+      {
+        "event_index": 57,
+        "board_ply": 57,
+        "number": 29,
+        "column": 0,
+        "notation": "R4=3",
+        "action": "f8g8",
+        "command_start": 56,
+        "command_end": 57
+      },
+      {
+        "event_index": 58,
+        "board_ply": 58,
+        "number": 29,
+        "column": 1,
+        "notation": "R7=1",
+        "action": "g9a9",
+        "command_start": 57,
+        "command_end": 58
+      },
+      {
+        "event_index": 59,
+        "board_ply": 59,
+        "number": 30,
+        "column": 0,
+        "notation": "R3=4",
+        "action": "g8f8",
+        "command_start": 58,
+        "command_end": 59
+      },
+      {
+        "event_index": 60,
+        "board_ply": 60,
+        "number": 30,
+        "column": 1,
+        "notation": "R1+4",
+        "action": "a9a5",
+        "command_start": 59,
+        "command_end": 60
+      },
+      {
+        "event_index": 61,
+        "board_ply": 61,
+        "number": 31,
+        "column": 0,
+        "notation": "R4-5",
+        "action": "f8f3",
+        "command_start": 60,
+        "command_end": 61
+      },
+      {
+        "event_index": 62,
+        "board_ply": 62,
+        "number": 31,
+        "column": 1,
+        "notation": "R1-3",
+        "action": "a5a8",
+        "command_start": 61,
+        "command_end": 62
+      },
+      {
+        "event_index": 63,
+        "board_ply": 63,
+        "number": 32,
+        "column": 0,
+        "notation": "R4=2",
+        "action": "f3h3",
+        "command_start": 62,
+        "command_end": 63
+      },
+      {
+        "event_index": 64,
+        "board_ply": 64,
+        "number": 32,
+        "column": 1,
+        "notation": "R1+7",
+        "action": "a8a1",
+        "command_start": 63,
+        "command_end": 64
+      },
+      {
+        "event_index": 65,
+        "board_ply": 65,
+        "number": 33,
+        "column": 0,
+        "notation": "R2+2",
+        "action": "h3h5",
+        "command_start": 64,
+        "command_end": 65
+      },
+      {
+        "event_index": 66,
+        "board_ply": 66,
+        "number": 33,
+        "column": 1,
+        "notation": "R1-8",
+        "action": "a1a9",
+        "command_start": 65,
+        "command_end": 66
+      },
+      {
+        "event_index": 67,
+        "board_ply": 67,
+        "number": 34,
+        "column": 0,
+        "notation": "R2-1",
+        "action": "h5h4",
+        "command_start": 66,
+        "command_end": 67
+      },
+      {
+        "event_index": 68,
+        "board_ply": 68,
+        "number": 34,
+        "column": 1,
+        "notation": "R1+1",
+        "action": "a9a8",
+        "command_start": 67,
+        "command_end": 68
+      },
+      {
+        "event_index": 69,
+        "board_ply": 69,
+        "number": 35,
+        "column": 0,
+        "notation": "R2=6",
+        "action": "h4d4",
+        "command_start": 68,
+        "command_end": 69
+      },
+      {
+        "event_index": 70,
+        "board_ply": 70,
+        "number": 35,
+        "column": 1,
+        "notation": "R1=7",
+        "action": "a8g8",
+        "command_start": 69,
+        "command_end": 70
+      },
+      {
+        "event_index": 71,
+        "board_ply": 71,
+        "number": 36,
+        "column": 0,
+        "notation": "R6=3",
+        "action": "d4g4",
+        "command_start": 70,
+        "command_end": 71
+      },
+      {
+        "event_index": 72,
+        "board_ply": 72,
+        "number": 36,
+        "column": 1,
+        "notation": "R7=8",
+        "action": "g8h8",
+        "command_start": 71,
+        "command_end": 72
+      },
+      {
+        "event_index": 73,
+        "board_ply": 73,
+        "number": 37,
+        "column": 0,
+        "notation": "R3=8",
+        "action": "g4b4",
+        "command_start": 72,
+        "command_end": 73
+      },
+      {
+        "event_index": 74,
+        "board_ply": 74,
+        "number": 37,
+        "column": 1,
+        "notation": "K5-1",
+        "action": "e7e8",
+        "command_start": 73,
+        "command_end": 74
+      },
+      {
+        "event_index": 75,
+        "board_ply": 75,
+        "number": 38,
+        "column": 0,
+        "notation": "R8-4",
+        "action": "b4b0",
+        "command_start": 74,
+        "command_end": 75
+      },
+      {
+        "event_index": 76,
+        "board_ply": 76,
+        "number": 38,
+        "column": 1,
+        "notation": "R8+1",
+        "action": "h8h7",
+        "command_start": 75,
+        "command_end": 76
+      },
+      {
+        "event_index": 77,
+        "board_ply": 77,
+        "number": 39,
+        "column": 0,
+        "notation": "R8+4",
+        "action": "b0b4",
+        "command_start": 76,
+        "command_end": 77
+      },
+      {
+        "event_index": 78,
+        "board_ply": 78,
+        "number": 39,
+        "column": 1,
+        "notation": "R8=6",
+        "action": "h7f7",
+        "command_start": 77,
+        "command_end": 78
+      },
+      {
+        "event_index": 79,
+        "board_ply": 79,
+        "number": 40,
+        "column": 0,
+        "notation": "R8-4",
+        "action": "b4b0",
+        "command_start": 78,
+        "command_end": 79
+      },
+      {
+        "event_index": 80,
+        "board_ply": 80,
+        "number": 40,
+        "column": 1,
+        "notation": "R6+5",
+        "action": "f7f2",
+        "command_start": 79,
+        "command_end": 80
+      },
+      {
+        "event_index": 81,
+        "board_ply": 81,
+        "number": 41,
+        "column": 0,
+        "notation": "R8=7",
+        "action": "b0c0",
+        "command_start": 80,
+        "command_end": 81
+      },
+      {
+        "event_index": 82,
+        "board_ply": 82,
+        "number": 41,
+        "column": 1,
+        "notation": "R6-5",
+        "action": "f2f7",
+        "command_start": 81,
+        "command_end": 82
+      },
+      {
+        "event_index": 83,
+        "board_ply": 83,
+        "number": 42,
+        "column": 0,
+        "notation": "R7+4",
+        "action": "c0c4",
+        "command_start": 82,
+        "command_end": 83
+      },
+      {
+        "event_index": 84,
+        "board_ply": 84,
+        "number": 42,
+        "column": 1,
+        "notation": "R6+2",
+        "action": "f7f5",
+        "command_start": 83,
+        "command_end": 84
+      },
+      {
+        "event_index": 85,
+        "board_ply": 85,
+        "number": 43,
+        "column": 0,
+        "notation": "R7=6",
+        "action": "c4d4",
+        "command_start": 84,
+        "command_end": 85
+      },
+      {
+        "event_index": 86,
+        "board_ply": 86,
+        "number": 43,
+        "column": 1,
+        "notation": "R6=5",
+        "action": "f5e5",
+        "command_start": 85,
+        "command_end": 86
+      },
+      {
+        "event_index": 87,
+        "board_ply": 87,
+        "number": 44,
+        "column": 0,
+        "notation": "K6+1",
+        "action": "d0d1",
+        "command_start": 86,
+        "command_end": 87
+      },
+      {
+        "event_index": 88,
+        "board_ply": 88,
+        "number": 44,
+        "column": 1,
+        "notation": "R5=6",
+        "action": "e5f5",
+        "command_start": 87,
+        "command_end": 88
+      },
+      {
+        "event_index": 89,
+        "board_ply": 89,
+        "number": 45,
+        "column": 0,
+        "notation": "R6=2",
+        "action": "d4h4",
+        "command_start": 88,
+        "command_end": 89
+      },
+      {
+        "event_index": 90,
+        "board_ply": 90,
+        "number": 45,
+        "column": 1,
+        "notation": "R6=9",
+        "action": "f5i5",
+        "command_start": 89,
+        "command_end": 90
+      },
+      {
+        "event_index": 91,
+        "board_ply": 91,
+        "number": 46,
+        "column": 0,
+        "notation": "K6-1",
+        "action": "d1d0",
+        "command_start": 90,
+        "command_end": 91
+      },
+      {
+        "event_index": 92,
+        "board_ply": 92,
+        "number": 46,
+        "column": 1,
+        "notation": "R9=5",
+        "action": "i5e5",
+        "command_start": 91,
+        "command_end": 92
+      },
+      {
+        "event_index": 93,
+        "board_ply": 93,
+        "number": 47,
+        "column": 0,
+        "notation": "K6+1",
+        "action": "d0d1",
+        "command_start": 92,
+        "command_end": 93
+      },
+      {
+        "event_index": 94,
+        "board_ply": 94,
+        "number": 47,
+        "column": 1,
+        "notation": "R5+5",
+        "action": "e5e0",
+        "command_start": 93,
+        "command_end": 94
+      },
+      {
+        "event_index": 95,
+        "board_ply": 95,
+        "number": 48,
+        "column": 0,
+        "notation": "R2-3",
+        "action": "h4h1",
+        "command_start": 94,
+        "command_end": 95
+      },
+      {
+        "event_index": 96,
+        "board_ply": 96,
+        "number": 48,
+        "column": 1,
+        "notation": "K5=6",
+        "action": "e8f8",
+        "command_start": 95,
+        "command_end": 96
+      },
+      {
+        "event_index": 97,
+        "board_ply": 97,
+        "number": 49,
+        "column": 0,
+        "notation": "R2=3",
+        "action": "h1g1",
+        "command_start": 96,
+        "command_end": 97
+      },
+      {
+        "event_index": 98,
+        "board_ply": 98,
+        "number": 49,
+        "column": 1,
+        "notation": "K6=5",
+        "action": "f8e8",
+        "command_start": 97,
+        "command_end": 98
+      },
+      {
+        "event_index": 99,
+        "board_ply": 99,
+        "number": 50,
+        "column": 0,
+        "notation": "K6+1",
+        "action": "d1d2",
+        "command_start": 98,
+        "command_end": 99
+      },
+      {
+        "event_index": 100,
+        "board_ply": 100,
+        "number": 50,
+        "column": 1,
+        "notation": "R5=1",
+        "action": "e0a0",
+        "command_start": 99,
+        "command_end": 100
+      }
+    ],
+    "last_action": {
+      "action": "e0a0",
+      "event_index": 100,
+      "origin": {
+        "kind": "intersection",
+        "point": "e0"
+      },
+      "steps": [
+        "a0"
+      ],
+      "effects": []
+    }
+  },
   "xiangqi": {
     "terminal_actions": {
       "offer_draw": false,

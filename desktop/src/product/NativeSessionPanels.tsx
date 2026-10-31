@@ -25,9 +25,39 @@ export function Observation({ view, game = "shogi", rejected = false }: { view: 
   </div>;
 }
 export function NativeHistory({ snapshot, disabled, command }: { snapshot: GameSnapshot; disabled: boolean; command: (op: Operation) => unknown }) {
-  const events = snapshot.events.some((event) => event.index === 0) ? snapshot.events : [{ index: 0, label: "Starting position" }, ...snapshot.events];
-  const recordedCount = snapshot.events.filter((event) => event.index !== 0).length;
-  return <section className="shogi-history" data-current-event={snapshot.event_index} aria-label="Game history"><div className="shogi-section-heading"><h2>Game history</h2><span>{recordedCount} {recordedCount === 1 ? "event" : "events"}</span></div><ol>{events.map((event) => <li key={event.index}><button data-event={event.index} aria-current={snapshot.event_index === event.index ? "step" : undefined} disabled={disabled} onClick={() => { void command({ kind: "inspect", event_index: event.index }); }}><span className="event-number">{event.index}</span><span>{event.label}</span></button></li>)}</ol></section>;
+  const { root, entries } = snapshot.moves;
+  const moveScroll = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const container = moveScroll.current, selected = container?.querySelector<HTMLButtonElement>('button[aria-current="step"]');
+    if (!container || !selected) return;
+    const frame = container.getBoundingClientRect(), target = selected.getBoundingClientRect();
+    if (target.top < frame.top) container.scrollTop -= frame.top - target.top;
+    else if (target.bottom > frame.bottom) container.scrollTop += target.bottom - frame.bottom;
+  }, [snapshot.event_index, entries.length]);
+  const first = snapshot.sides.find(side => side.first_mover)!, second = snapshot.sides.find(side => !side.first_mover)!;
+  const rows = [...new Set(entries.map(entry => entry.number))];
+  const details = snapshot.events.filter(event => event.index !== 0 && !entries.some(entry => entry.event_index === event.index));
+  const select = (event_index: number) => { void command({ kind: "inspect", event_index }); };
+  return <section className="shogi-history moves-panel" data-current-event={snapshot.event_index} aria-label="Moves">
+    <div className="shogi-section-heading"><h2>Moves</h2><span>{entries.length} {entries.length === 1 ? "move" : "moves"}</span></div>
+    <button className="moves-root" data-event={0} aria-current={snapshot.event_index === 0 ? "step" : undefined} disabled={disabled} onClick={() => select(0)}>{root.label}</button>
+    <p className="moves-numbering">{root.numbering}</p>
+    <div className="moves-scroll" ref={moveScroll}><table className="moves-table"><thead><tr><th scope="col"><span className="sr-only">Move number</span></th><th scope="col">{first.label}</th><th scope="col">{second.label}</th></tr></thead><tbody>
+      {rows.map(number => <tr key={number}><th scope="row">{number}.</th>{([0, 1] as const).map(column => {
+        const entry = entries.find(candidate => candidate.number === number && candidate.column === column);
+        if (!entry) return <td key={column} />;
+        const associated = details.filter(event => event.index > entry.command_start && event.index <= entry.command_end);
+        return <td key={column} data-associated-selection={associated.some(event => event.index === snapshot.event_index) || undefined}>
+          <button data-event={entry.event_index} data-native-action={entry.action} aria-current={snapshot.event_index === entry.event_index ? "step" : undefined} disabled={disabled} onClick={() => select(entry.event_index)} aria-label={`${number}. ${column === 0 ? first.label : second.label}: ${entry.notation}`}>{entry.notation}</button>
+          {associated.length > 0 && <span className="move-event-count" title={associated.map(event => event.label).join(" · ")} aria-label={`${associated.length} associated position ${associated.length === 1 ? "event" : "events"}; available in Position events`}>*</span>}
+        </td>;
+      })}</tr>)}
+    </tbody></table>{entries.length === 0 && <p className="moves-empty">No moves in known history.</p>}</div>
+    {details.length > 0 && <details className="moves-events" open={details.some(event => event.index === snapshot.event_index) || undefined}><summary>Position events ({details.length})</summary><ol>{details.map(event => {
+      const entry = entries.find(candidate => event.index > candidate.command_start && event.index <= candidate.command_end);
+      return <li key={event.index}><button data-event={event.index} aria-current={snapshot.event_index === event.index ? "step" : undefined} disabled={disabled} onClick={() => select(event.index)}><span className="event-number">{event.index}</span><span>{entry && <small>After {entry.number}. {entry.notation} · </small>}{event.label}</span></button></li>;
+    })}</ol></details>}
+  </section>;
 }
 export function NativeRecovery({ snapshot, error, disabled, command, pending = false }: { snapshot: GameSnapshot; error: string; disabled: boolean; command: (op: Operation) => unknown; pending?: boolean }) {
   const capacity = nativeCapacityReached(snapshot);

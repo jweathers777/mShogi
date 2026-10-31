@@ -458,6 +458,17 @@ impl Game {
     pub fn events(&self) -> &[GameEvent] {
         &self.events
     }
+    /// Exact before/after event-prefix counts for each admitted command.
+    /// Event array indices occupy [start, end); their prefix IDs occupy (start, end].
+    /// A board-action prefix inside this range is independently viewable, but
+    /// is not thereby a committed execution context. No replay is performed.
+    pub fn command_event_ranges(&self) -> impl Iterator<Item = (usize, usize)> + '_ {
+        self.commands.iter().scan(0, |start, command| {
+            let range = (*start, command.event_end);
+            *start = command.event_end;
+            Some(range)
+        })
+    }
     /// Current committed warning state; historical inactive warnings are retained.
     pub fn warnings(&self) -> &[Warning] {
         &self.warnings

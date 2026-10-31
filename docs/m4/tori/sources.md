@@ -23,8 +23,8 @@ Useful **image locators**, not invented folio numbers: 4 setup (board printed
 sideways); 5 royal/crane/pheasant; 6 quails/falcon; 7 eagle/swallow; 8 right goose,
 8 left beginning of play rules; 9 right continuation, 9 left promotion/date;
 10 author. The researcher inspected all15; root inspected4–9 and the independent
-reviewer4–10. Later instructional/game material was not turned into a checked
-legal transcript. The raw manifest/image hashes permit exact future review.
+reviewer4–10. The later literary appendix was visually inspected, not fully translated;
+no game transcript is established by this acquired15-image set. The raw manifest/image hashes permit exact future review.
 
 **T-H2 — 1833 metadata/physical holding only.** Kagawa 神原文庫 catalogue
 [*禽象戯* entry](https://opac.lib.kagawa-u.ac.jp/KMBR/mokuroku/KCCC1_W7.html),

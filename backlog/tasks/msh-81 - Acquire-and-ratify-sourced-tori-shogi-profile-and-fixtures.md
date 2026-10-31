@@ -4,7 +4,7 @@ title: Acquire and ratify sourced tori shogi profile and fixtures
 status: To Do
 assignee: []
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-31T21:48:00Z'
+updated_date: '2026-10-31T21:53:00Z'
 labels:
   - m4
   - owner-msh-42
@@ -76,6 +76,10 @@ Activated by explicit owner request2026-10-31. Current primarycodex/rewrite6a9d2
 Research breakthrough2026-10-31: acquired all15publicTohokuIIIF images record10010000019229/Kano5/17701/1/TT21260078; image9text internallydatedBunsei11/1828, image10author豊田四郎兵衛安親. Institutioncopypublicationdate remainsunknown. OUC47770/T010299 independentlycatalogues1828holding (metadataonly); Kagawa796/2 item2111124178 OPAC513862 resolvedbutfacsimileunread. Okano10/2008 pp241-265 remainsunacquired; publisherrepositorypolicybegins16/2014, exactlawfulaccesspathrecorded. ActualHamburg2pageandKanare2022EN/JP/pieces PDFs acquired/renderedread; directmandatoryentry evidence and modernwording/diagramlimits distinguished. Dossierdocs/m4/tori maps sourcefacts,P01-06blockingclauses,36nonexecutableseeds (10explicitlyblocked), currentR1-R6handoff. ReservedcandidateID notadopted; no sourcecode/profile/format/UI changes. Freshindependentsource/fixturereview inprogress; alloriginalAC/DoD remainunchecked.
 
 Boundedresearchhandoff complete, fullMSH81unfinished. Freshindependenttori_profile_review personallyinspectedhistorical4-10/modernrulesandverifiedall15images,3KanarePDFs,19modernledgerartifacts. Fourdoc/fixturefindingsresolved/rechecked: validhawkinstead-of-impossible-swallowzoneexit, captureownershipplusblockedquail/demotionseeds, acquiredTohokuURL, own/unpromoted/filedropmultiplicityprovenance. Final39seeds=27supportedpartial-or-contract/12blockednull; fixtureSHA c122560a85c8fee3af5d08eea6a86a2fa36cb213882141c436ab8ceaa7f60bae. IndependentverdictPASSforpartialresearchintegration, NOprofile-ratification/completionapproval. Alloriginal4AC/4DoD remainunchecked. NamednextactionTORI-P1basisreview plusP02promotion/P03repetition/P04endings/P06transferreconciliation; unavailableOkano/Kagawa aretargetedpaths,notuniversalcorpusgate. ReturnToDo/unassigned because source/rulesblocksremain; noactiveimplementationownerreserved. Proportionatevalidation:125records/336edgesunique/resolved/acyclic,39seedsource/gateintegrity,15image+3PDFhashes,protectedAC/DoDandcompleted62/121unchanged,local9links,diffcheck/doctorPASS. Product/frontend/host/build/workflow/instructionsdiffempty from6a9d24d. No native,reference,package orGUItestcampaign run orclaimed. Research-onlyintegration uses recordedplanning CI-skipconvention toavoid unrelatedbroadapplicationcampaigns; no newCIpassclaim.
+
+Useful bounded research integrated/pushed normally on codex/rewrite at15e6bd66c58869031ba3248df9dfe24e7bf8f355 (origin6a9d24d→15e6bd6). Commit is research/docs/task-only and uses recorded [skip ci] planning convention; actual gh run list for that SHA returned [] at verification time, so no native/application CI pass is claimed. Final integrity reports39seeds/27partial-or-contract/12blocked,125records/336edges,15historical+3PDFhashes,11local links,unchangedoriginalAC/DoD andcompleted62/121,emptyproduct/build/workflow/AGENTSdiff. Staged diffcheck passed. No taskworktreecreated or unrelatedworktreeremoved; publicsourcecaches retained for the documented81continuation. Status remainsToDo/unassigned/allACandDoDunchecked. Subsequent integration-reference bookkeeping changes only this task; stop81.
+
+Final source-ledger wording cross-check against historical researcher report corrects a minor label after15e6bd6: the later images contain a literary appendix, not an established instructional/game transcript. This changes no fixture, translation gate or acquisition claim. Final handoff commit therefore includes this one documentation clarification alongside task integration-reference bookkeeping; it is still research-only and uses the same documented CI-skip convention.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

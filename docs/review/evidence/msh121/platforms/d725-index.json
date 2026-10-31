@@ -1,0 +1,64 @@
+{
+  "source": "d725f255339b639cbc7b50bbd95bbbf3344dc459",
+  "desktop_run": 41237789041,
+  "desktop_url": "https://github.com/jweathers777/mShogi/actions/runs/41237789041",
+  "desktop": "passed all3 jobs; actualWindows+Linux31/31 each; macOSjobpackagesupportonly",
+  "native_run": 41237789163,
+  "native_url": "https://github.com/jweathers777/mShogi/actions/runs/41237789163",
+  "native": "passed all3; originalMSH112failurestillunresolved",
+  "platforms": {
+    "linux": {
+      "artifact_id": 13056384945,
+      "artifact_zip": "/private/tmp/msh121-linux-d725f25.zip",
+      "artifact_zip_sha256": "07fcd831a2f6a9ec2ac4fae7027059ee6e13816e8f98e9c1d9e981d04944fb1c",
+      "audit": "/private/tmp/msh121-linux-d725f25/audit.json",
+      "passed": 31,
+      "required": 31,
+      "checked_file_hashes": 700,
+      "normal_host_sha256": "b3be4a22e7801d773cf18a2cb46b40a321d12c6c856fa413d2ae170aed1a7093",
+      "verification_host_sha256": "06a11b02f41afc0e5d3c2d4fad5a75d19439878ac4e40e4d6ab82b2fdedf4acc",
+      "real_bundled_engine_sha256": "325157b4d14f21cc39b2f1663ef7eff60f3c79d7b4981a9cefb30c36052ff559",
+      "cleanup": "Every passedphase actualnativeQuit observedbefore driverteardown; hostfalse/finalmatchingprocessesempty; forcedcleanupnotcountedasQuit",
+      "environment": {
+        "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+        "python": "3.12.3",
+        "runner_image": "20261026.354.1",
+        "runner_os": "Linux",
+        "renderer_environment": {
+          "GDK_BACKEND": "x11",
+          "WEBKIT_DISABLE_COMPOSITING_MODE": "1",
+          "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+          "LIBGL_ALWAYS_SOFTWARE": null
+        }
+      }
+    },
+    "windows": {
+      "artifact_id": 13056751577,
+      "artifact_zip": "/private/tmp/msh121-windows-d725f25.zip",
+      "artifact_zip_sha256": "a0b45e72ac8a8e4b022f9afe4e5ad3cb4259b2bed0ef87f14e3a525df8b7d79d",
+      "audit": "/private/tmp/msh121-windows-d725f25/audit.json",
+      "passed": 31,
+      "required": 31,
+      "checked_file_hashes": 599,
+      "normal_host_sha256": "43e17355f985fe9cdfe088a6350cc82d9faa6e37310b0ec035cf20d3f0f6f9b6",
+      "verification_host_sha256": "7da1d6680e9bd9866dcf62a1afffd7faf1659d79133097e9c46a22873dd4f3e7",
+      "real_bundled_engine_sha256": "e95316e2c207a0a99dc956f24dd5420c2a23bac2603fd751571bda61f88eeae3",
+      "cleanup": "Every passedphase actualnativeQuit observedbefore driverteardown; hostfalse/finalmatchingprocessesempty; forcedcleanupnotcountedasQuit",
+      "environment": {
+        "platform": "Windows-2022Server-10.0.20348-SP0",
+        "python": "3.12.10",
+        "runner_image": "20261026.347.1",
+        "runner_os": "Windows",
+        "renderer_environment": {
+          "GDK_BACKEND": null,
+          "WEBKIT_DISABLE_COMPOSITING_MODE": null,
+          "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+          "LIBGL_ALWAYS_SOFTWARE": null
+        }
+      },
+      "display_audit": "/private/tmp/msh121-windows-d725f25/display-audit.json",
+      "display": "31size-preservedinitialplacements;243foregroundboundnativecapturesallcontained;6normal/minphysicalviews1920x1080;TEST0/APPLY0"
+    }
+  },
+  "independent_review": "PASS currentWindows599hashes/31phases/31size-preservedplacements/243containedcaptures/6freshphysicalnormal-minimages; Linux700hashes/31phases/cleanup/12directZIPimageidentity. Reports /private/tmp/msh121-{windows,linux}-final-independent.md. All original failures preserved."
+}

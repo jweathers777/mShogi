@@ -3,11 +3,11 @@ id: MSH-121
 title: >-
   R6: Independently verify the integrated current architecture and packaged
   product
-status: In Progress
+status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-30T12:06:00Z'
-updated_date: '2026-10-31T20:42:00Z'
+updated_date: '2026-10-31T20:53:00Z'
 labels:
   - architecture-migration
   - planning
@@ -90,4 +90,6 @@ Ownersteering:stopper-scenarioMacidentityproliferationandinvestigateComputerUsea
 StableMacidentityexperimentactualPASS: already-approvedlegacyQAIDorg.mshogi.desktop.verification.r6.shogipromotion stagedatfixedtarget/verification/macos/mShogi Verification.app. Old176hostlaunch1.31s noobservedapprovalinterruption; nativeQuitDiscard; replacedstoppedslotwithrebuiltQAhost(128byteexternalfixtureselector),samepath/ID,differenthost/signaturehash,bothstrictcodesign0; launchxiangqi-count1.43s noobservedapprovalinterruption. ActualPID16887pathconfirmed; approvedBundleIdentifiersfileSHA401fe192...unchanged. Runningselectrefusedexit1,selectorpreserved. Currentplatformproofisinstalledsessiononly,noguaranteeforfuturepolicy/appversions/rebuilds. Noapproval/securitystorewrite. Helper11independenttestsPASS/nativeQAhost13testsbuilt/normalcheck+QAclippyPASS; newQA-reader1independentPASS. Docs/AGENTSrecordmax3fixedidentities,externalimmutable-bundlescenarioselection,normalinstrumentationexclusionandstrictsigningqualifications. d725all3native/DesktopCIgreen; actualLinux/Windows31eachPASSwithall243Windowscapturetargetscontained; freshindependentartifactreviewPASS. Stop121scopeunchanged.
 
 Macmanualcampaignnow388nativeAX/action/capturerecordsand89rawimages:normalall3play+realanalysisSaveLoad/stoppedResume/history/Return;QAclaimsintended/current,Shogidrop/promotion/declaration,Xqwarning8/9count/exact5reports,all3pendingTakebackreplacementcancelandactualfailure/restoredrealengineRetry,syntheticstagedkeyboardroutes/cancel/orientation/close. StableQA/syntheticreusealsoactualPASSsavedapprovalhashunchangedandstrictQAenginefaultrestoration0. FinalQA-onlytitleprovenancerefinementreportsactualnativeouter_sizealongsideinner_size(DPIlogical),independent13hosttests+ClippyPASS,normalinitializerunchanged. Reuseallunchangedsemantic/productevidence; refresh6same-sizeMacviewswithbothnativegeometryvalues; currentactualCIandfinalreviewmatrixpendingbeforecheckingAC.
+
+Fresh overall independent acceptance at5a782bf finds no unresolved material product/evidence defect; AC1-6/8-9 supported, AC7/final DoD conditional only on actual latest native/Desktop CI and normal evidence integration/push. Final Mac415records/95captures independently reviewed; explicit source-only59annotation reconciliation preserves exact original gzip/UI fields. Final six QA-standard geometry views at5a separately identified from normal176 journeys and fixed801 reuse. All20 obsolete audited inactive scratch app copies removed after exact identity/host checks; fixed normal/QA/synthetic launch slots remain. Actual same-path/ID rebuilt executable/signature reuse, external immutable-bundle scenario changes and synthetic reuse had no observed approval interruption; approval-store SHA401fe192...unchanged through final frame rebuild and cleanup. No security/approval policy modified; future platform prompts remain possible. Durable reports, exact CI artifacts and limitations are in docs/review/architecture-acceptance-121.md. No subsequent task started.
 <!-- SECTION:NOTES:END -->

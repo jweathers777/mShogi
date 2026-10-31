@@ -1,0 +1,1044 @@
+{
+  "normal_package_source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+  "normal_production_behavior_unchanged_from": "13510da9e24b69a340444f272668ecb59478ddbb",
+  "initial_QA_source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+  "fixed_QA_selector_source": "801e1a905c682c408fc293a88b131d873c9c960b",
+  "final_QA_geometry_source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+  "method": "Root operated actual native packaged macOS apps with cua native AX/pointer/keyboard; no injected UI or game state. Native test fixtures are separately labeled. Independent reviewers inspect source/tests/artifacts, not personal remote UI operation.",
+  "normal_instrumentation_exclusion": "normal-package-smoke.json plus current normal cfg and CI; fixed fixture-file reader is QA-only",
+  "system": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0.1\nBuildVersion:\t\t26A434\n",
+  "native_runtime": "runtime-versions.json",
+  "logical_vs_pixels": "Final QA native inner_size and outer_size are queried separately and converted by native scale_factor. On this macOS environment they both report requested1180x820/760x650; do not infer this equality on other platforms. CUA raw images are2360x1640/1520x1300 at2x and include native titlebar; they are not independent DOM viewport measurements.",
+  "geometry": [
+    {
+      "label": "final-chess-normal-geometry",
+      "source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+      "native_inner_logical": [
+        1180.0,
+        820.0
+      ],
+      "native_outer_logical": [
+        1180.0,
+        820.0
+      ]
+    },
+    {
+      "label": "final-chess-minimum-geometry",
+      "source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+      "native_inner_logical": [
+        760.0,
+        650.0
+      ],
+      "native_outer_logical": [
+        760.0,
+        650.0
+      ]
+    },
+    {
+      "label": "final-shogi-normal-geometry",
+      "source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+      "native_inner_logical": [
+        1180.0,
+        820.0
+      ],
+      "native_outer_logical": [
+        1180.0,
+        820.0
+      ]
+    },
+    {
+      "label": "final-shogi-minimum-geometry",
+      "source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+      "native_inner_logical": [
+        760.0,
+        650.0
+      ],
+      "native_outer_logical": [
+        760.0,
+        650.0
+      ]
+    },
+    {
+      "label": "final-xq-normal-geometry",
+      "source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+      "native_inner_logical": [
+        1180.0,
+        820.0
+      ],
+      "native_outer_logical": [
+        1180.0,
+        820.0
+      ]
+    },
+    {
+      "label": "final-xiangqi-minimum-geometry",
+      "source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+      "native_inner_logical": [
+        760.0,
+        650.0
+      ],
+      "native_outer_logical": [
+        760.0,
+        650.0
+      ]
+    }
+  ],
+  "encoding_qualification": "Initial raw CUA JPEG bytes were saved with a .png suffix. They are preserved byte-for-byte and identified by actual JPEG format here. Final six comparison captures use correct .jpg extension. No pixel editing/conversion.",
+  "record_count": 415,
+  "capture_count": 95,
+  "captures": [
+    {
+      "path": "final-chess-1180.jpg",
+      "source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "88dfba2312071c1792ae3d2c8449520a3e73d8f3dfebd7c2212ec618f564b6b8"
+    },
+    {
+      "path": "final-chess-760.jpg",
+      "source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+      "format": "JPEG",
+      "pixels": [
+        1520,
+        1300
+      ],
+      "sha256": "a3ea0c0e42d7628b899477fe1b4ee07ae7c5b269a8f1f43b50081acc37e595f4"
+    },
+    {
+      "path": "final-shogi-1180.jpg",
+      "source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "7159ed6fcd9ee322716c783dade2398592deb7c146cea48f207d133326c28189"
+    },
+    {
+      "path": "final-shogi-760.jpg",
+      "source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+      "format": "JPEG",
+      "pixels": [
+        1520,
+        1300
+      ],
+      "sha256": "ae0c4f0c2dab06c896d6ca7af5a49d158443805e588c0cc559a6be28e348ffea"
+    },
+    {
+      "path": "final-xiangqi-1180.jpg",
+      "source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "5d0f5a593a15e057728251f3f4003864274db5dee16f2cb5a4a773690131886e"
+    },
+    {
+      "path": "final-xiangqi-760.jpg",
+      "source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+      "format": "JPEG",
+      "pixels": [
+        1520,
+        1300
+      ],
+      "sha256": "9f6a6a92c15ac9643da592c88f546fab121bbea27143ed0623c8f6c6a2c85268"
+    },
+    {
+      "path": "normal-about-support.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "bd70096066aa4d09ea4f917a40193b8862a823bbd777db15c04f1282eec58380"
+    },
+    {
+      "path": "normal-chess-1180.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "f526338eb9b1836d766519e4106ce4836103f9f1c48d551390d619177a73472c"
+    },
+    {
+      "path": "normal-chess-analysis-readonly.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "d06adcb3aa2cf37d2ef6f81de6aaec0ec6e9dbfd939db32f8bb25e5b65939cec"
+    },
+    {
+      "path": "normal-chess-history.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "45c3d81f7ceea0752c1e914c0754698d8409854210a7b2cdaf65c8acad6a1eff"
+    },
+    {
+      "path": "normal-chess-loaded-stopped.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "f6e87cb12865832dc7fe05492144e4710c985ccb1cd31308b01fd9ffdc86e930"
+    },
+    {
+      "path": "normal-chess-opponent-inspection.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "fffe0cb2dde633d27f0c7851840169efc89c09bc2c87cb03a1c5e0da25d5e3ba"
+    },
+    {
+      "path": "normal-chess-play.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "601ec5bf8fe9eae147946cfea73a24799ac02a252625773ea8ed3d7543b7ddcf"
+    },
+    {
+      "path": "normal-chess-quit-guard.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "9a9cafa07dd0f140bb5853f785e90ef7a53c34770db63078a39457331594d87e"
+    },
+    {
+      "path": "normal-chess-resign-unresolved.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "12cd4e62fd920da2f8d1709ba75deaa556588c6fcf39589e2a46a571eb56ced6"
+    },
+    {
+      "path": "normal-chess-takeback-stopped.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "e09df32cb5dc363ae3a32a84c09d6e3080008d127d08b78d1780c65b3ccfd571"
+    },
+    {
+      "path": "normal-diagnostics.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "1e2ff575a6a890bdbe0fd52c12991562be736b6393bba6992a8ca126aeb424e9"
+    },
+    {
+      "path": "normal-font-license.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "e57bfbb17170b94bca79b85a56b47498b4ae6761db253c175f303c7211336e07"
+    },
+    {
+      "path": "normal-shogi-1180.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "fbd85d802af96a7127f97cc5083dd25bf850fa35b249b59e2e8240bc03cdae51"
+    },
+    {
+      "path": "normal-shogi-analysis.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "abbf2d4f1dfe1f3e7dde951b85e4f8e2844fa5809dd6de7c05036d51e25b1650"
+    },
+    {
+      "path": "normal-shogi-play.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "caf1aa30575c608a9c96a20e48599738f0fced0ead0c5c08ab97fbb7a00ef085"
+    },
+    {
+      "path": "normal-shogi-reopened.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "153624b1fe0cc1a329cb68a046f92ed5307ca786265c29598041dbbe4bd80482"
+    },
+    {
+      "path": "normal-xiangqi-1180.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "f5b263ecfd605b1dd798c78147d11cf6af86ab772c7518c89e0c0cdb4c97f6b7"
+    },
+    {
+      "path": "normal-xiangqi-analysis.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "39c8f1c394d43b08bf673d6ac285b9ffc044c5322e936950d9ffb921a67d42e4"
+    },
+    {
+      "path": "normal-xiangqi-play.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "dcf0fd95a9b48d99a11a44f61d6d7a66671e5f199789ac8e4dd2c347540b1b3b"
+    },
+    {
+      "path": "normal-xiangqi-reopened.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "322c59786d144be6b25a510dcf712d26bf016abe7d2243cead2cc096b04b402f"
+    },
+    {
+      "path": "qa-chess-1180.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "d584674976ea2b35690da2782c2e4eea7fd5df154959058843ba7ff5382f3328"
+    },
+    {
+      "path": "qa-chess-760.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        1520,
+        1300
+      ],
+      "sha256": "417fbe0170ec1edccc7e72fdfa7ec81ec7bab173f9d227672393354182b90622"
+    },
+    {
+      "path": "qa-chess-analysis-cancelled.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "e1632290f99f3571f76c1c9106cf2a64289c1f7eac0586f2fc701d8fbfc655ab"
+    },
+    {
+      "path": "qa-chess-current-claim-available.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "3de6b65b0a18e1dceb0e5096d43d63711b4ec749bc8d824a5d5e216524ba3e5e"
+    },
+    {
+      "path": "qa-chess-current-claim-concluded.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "1609369411acba0ede52af376b7b0c5a4745c7051108fa23e4737c701cc7451f"
+    },
+    {
+      "path": "qa-chess-engine-failure.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "ba0c940b9db917961d93d5f257236c3ca43af7eba413ef7c160ab9d2ffafcd49"
+    },
+    {
+      "path": "qa-chess-engine-pending.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "832673f9fd191079e504d86009c0a416936e0300a48f2042e1639066ac0aa065"
+    },
+    {
+      "path": "qa-chess-full-cancelled.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "6c5ce34a64e41d5a01a3e6af62e72d4cfc7c6e610a2c46eda564198500527284"
+    },
+    {
+      "path": "qa-chess-full-proof.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "7d6661d8c1690347c766b93c1b465e1ce5f1c7d8a129b92bec4407ece9cebca5"
+    },
+    {
+      "path": "qa-chess-full-unknown.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "f431df2e3564a152c60f0643ce84a191d7b40fa5b86a56cb427154ec829d6dba"
+    },
+    {
+      "path": "qa-chess-pending-retired.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "640652883203a64bc277287dcb49b66f87cb90dca1d1670d3348c55af3b321b1"
+    },
+    {
+      "path": "qa-chess-promoted-knight.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "d2632f4e4aa3fcce6b2f60685c4b32acd0461889beb9278b9286ec9535666dc1"
+    },
+    {
+      "path": "qa-chess-promotion-choices.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "cb9a118c4b50ae545ec21acb745487c1cbedbc85ecf836be86f75f7190544f4e"
+    },
+    {
+      "path": "qa-chess-quit-guard.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "48d5c00950e0b57127dea3c22e68ca15b95f7ae12abf750d878ac0cb40d55645"
+    },
+    {
+      "path": "qa-shogi-1180.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "cc2e69a1775857655226f4f0a2d39e2ba510040414fedac7d8afb573968c8dad"
+    },
+    {
+      "path": "qa-shogi-760.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        1520,
+        1300
+      ],
+      "sha256": "af5d074752bb9bb5e7176320962e5d92c65e5106a3d64920b021aef84353757b"
+    },
+    {
+      "path": "qa-shogi-analysis-cancelled.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "6201454694f3efd26e189b7686e33d4f63d15d330e645ccbef6c0561f1587d09"
+    },
+    {
+      "path": "qa-shogi-analysis.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "616b8bebabf7e7c934cfb9f0976e6bdb7f2dc4d8333839ff21418dd68cabf3b5"
+    },
+    {
+      "path": "qa-shogi-declaration-concluded.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "717b8dc832585f13c2573b082e51c1d012caf12cbb29af6ec8ed4a3e1b476c98"
+    },
+    {
+      "path": "qa-shogi-declaration-eligible.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "bbfcde15917af2472a4868c9e7ffe782b8d8677ff189c049155bd14d998c9870"
+    },
+    {
+      "path": "qa-shogi-engine-failure.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "28e54ec60929f28dbd3341fe2912a1d715cc308ba8937491a53582f38b125a17"
+    },
+    {
+      "path": "qa-shogi-engine-pending.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "864bfc74ed9371f6c995d3fe3cab22e4126bfda17654cbea667c2bfe59943c89"
+    },
+    {
+      "path": "qa-shogi-flipped.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "295e4ce0e35c3ad15663caa8c06db29a65b04a35d0b646739832ec545fd6122d"
+    },
+    {
+      "path": "qa-shogi-hand-inspection.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "085b467798bf132859c36362ba15845c0ad43b31d4f95cde40a6a2a1913f7780"
+    },
+    {
+      "path": "qa-shogi-history.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "f38ad8a96db1c2111e9a3722183f8ac78c0d9591eef0117705003ba9eae4df3e"
+    },
+    {
+      "path": "qa-shogi-native-drop.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "9b2950c688f4af5930f2ee227cfc9e423dc270b5a7ab44ae69af284956e99d47"
+    },
+    {
+      "path": "qa-shogi-play.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "14d3f65f187949c8ad4b6c8edbdac400f506756e2c2ecd793dd1b1094acd4cbe"
+    },
+    {
+      "path": "qa-shogi-promotion-accepted.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "84dbf7735e2fb990bf1ba56b4e1d1ff5fb1e8f67264f99593fba113bc34b82c6"
+    },
+    {
+      "path": "qa-shogi-promotion-options.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "8114e91bf36f2a392bd038f5cd1ddc717782828e92f05d839cb23a73e393118a"
+    },
+    {
+      "path": "qa-shogi-reopened.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "89cfa9142b4a1cad12ee9071e191e74b455ebe713be3f281ada6449ba8709809"
+    },
+    {
+      "path": "qa-shogi-retry.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "ae9732ddd291a49803369cecd7b69448aa54eec70c674a632618ef8d04fd6d5b"
+    },
+    {
+      "path": "qa-shogi-takeback.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "6c6ec2955ffe8827e57e515bdb6838393708e4322274bc1bb91e82724ac79cd6"
+    },
+    {
+      "path": "qa-synthetic-16x16.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "4aa0a60133ee7c765d9be1ba2a7c823448e998322016ffea1d22d76b78f9ff97"
+    },
+    {
+      "path": "qa-synthetic-alt-route.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "6c4f592d2d36f8af4dead3bc50a0a52a27c6b7af003aa20b4f3b11a9c32875f3"
+    },
+    {
+      "path": "qa-synthetic-flipped.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "1ff433eb8f95d4b65463258f3b68eea21fa204337ab40b6f01dd8bac978fb080"
+    },
+    {
+      "path": "qa-synthetic-partial.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "27f7dbb4417d0498bcbbb7808f5bdb49c397054a14e98f4b5e784bca4dc21735"
+    },
+    {
+      "path": "qa-synthetic-route-accepted.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "0668c6af09a31233f59eea9c6ebcf69da219b9e86c23d1ceaaf7bbc0d4e7d51b"
+    },
+    {
+      "path": "qa-xiangqi-1180.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "2f13cd699d247e34fe9eb9a436062ad3476ef337a794c8d170a5c706bcd85b3b"
+    },
+    {
+      "path": "qa-xiangqi-760.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        1520,
+        1300
+      ],
+      "sha256": "b5326e3684bdf1df883669ec5240e310814d600b548c7635e18e73ee71cc01ae"
+    },
+    {
+      "path": "qa-xiangqi-analysis-cancelled.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "edf0330e143f7f7c3bae76294b905938ce2c0f587c6def84e8314de36c7e66d1"
+    },
+    {
+      "path": "qa-xiangqi-analysis.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "426645366fdb2e3a8c66c3ad8fc921f94a5609a3f9a831384b5bbd9b280ad1c3"
+    },
+    {
+      "path": "qa-xiangqi-close-guard.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "4ab47abea75d22a99401fe86e5bbfddc6ab161ae4b89867eb1263ad04cce60d3"
+    },
+    {
+      "path": "qa-xiangqi-control-capacity-saved.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "6db4a6b38d1198c8d9adf63e77a221f13d82cb53079efbfbe0973c5aed671363"
+    },
+    {
+      "path": "qa-xiangqi-control-capacity.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "63eab38d00a4d60c45ed327bc4182dac964f0f21ea2f4c2d3b7905d358629cae"
+    },
+    {
+      "path": "qa-xiangqi-engine-failure.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "24c132eeadf229c413f6fe05a678145a91b2b40404c4a11c0a7b978f7c1d32f6"
+    },
+    {
+      "path": "qa-xiangqi-engine-pending.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "755026a8bae53c2a37b1365dee247042f553a6d6fd10aba9936f2c2c7e0e02e2"
+    },
+    {
+      "path": "qa-xiangqi-exact-five-results.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "fdee525c692ae0b725d7d0d6dd23f9cec2acdda546b331c36e0d0048e5d15645"
+    },
+    {
+      "path": "qa-xiangqi-exact-reopened.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "e6adbb75f4329ea0530e011482748155943f664cc9eeaa4948939221b9cceeed"
+    },
+    {
+      "path": "qa-xiangqi-history.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "13fd058fc3d9bd22a191b2cae5441f58bf3283024e1af59fb9e68bc3989cc958"
+    },
+    {
+      "path": "qa-xiangqi-opponent-inspection.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "ba0a12d1b393f7a731b9da6f65852418d3fd86fe3565a554fff7f4361df308e4"
+    },
+    {
+      "path": "qa-xiangqi-play.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "796d807a3c192b2f1fe3292319e5dffb0943dfa3ff581c15711ddf46b489258a"
+    },
+    {
+      "path": "qa-xiangqi-reopened.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "7d27636e11c1ef5675454a87ccd5d1b9b2b32d674c8a78b1453b48bcb85ea5bf"
+    },
+    {
+      "path": "qa-xiangqi-resigned.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "0efbb4a6b22e8cb64827d4599c1e21be5b40bcf6aa0758fe8ad13d762b103372"
+    },
+    {
+      "path": "qa-xiangqi-takeback.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "3b4fa4b0c9771b3827c60308e18e042ed1c8b9761bea1e15565c92c0e7e43f46"
+    },
+    {
+      "path": "qa-xiangqi-warning-live.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "67930b510bbb3dc8ae2e02ce98b9acf9dcb3c11a947e619de643fb6750e4dae9"
+    },
+    {
+      "path": "qa-xiangqi-warning-prefix8.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "810dcbd1d29ba4d46fc5fb467efbadf2ac42988d48491b0dabc37446ec12a272"
+    },
+    {
+      "path": "qa-xiangqi-warning-prefix9.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "6dd4ae8fe899c6678c64fb63dfe6e7df5bdff8c4a1d79488fe61ee053ea33e23"
+    },
+    {
+      "path": "stable-qa-chess-recovered.png",
+      "source": "801e1a905c682c408fc293a88b131d873c9c960b",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "f277cf6ba361731af206ac86b2d8786c351dc6ed1ecac7de32d8b42ffe9344b2"
+    },
+    {
+      "path": "stable-qa-chess-recovery-failed.png",
+      "source": "801e1a905c682c408fc293a88b131d873c9c960b",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "e85b16441e226e4bf3cdaf8fbdc428a3c6e2ea82d557a99b935377bad333d179"
+    },
+    {
+      "path": "stable-qa-intended-claim-concluded.png",
+      "source": "801e1a905c682c408fc293a88b131d873c9c960b",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "ef234a335d364a5535a5316c503692d9960396a035ed1a0f7d3bdc70a40fd00d"
+    },
+    {
+      "path": "stable-qa-intended-claim.png",
+      "source": "801e1a905c682c408fc293a88b131d873c9c960b",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "458e41df097f783e60acd2fd9b14823cfa64b48fca67af7d9b58bd9a8e81bfcb"
+    },
+    {
+      "path": "stable-qa-old-build.png",
+      "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "1669418afed3d69de2fd0c346570e2fe7ede857f0b46c8532b1b74ea4202cd8b"
+    },
+    {
+      "path": "stable-qa-shogi-recovered.png",
+      "source": "801e1a905c682c408fc293a88b131d873c9c960b",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "43c2aa8b852e686f0961714901d51d0dbd7d0be744720d9ea28f98d872c2dedb"
+    },
+    {
+      "path": "stable-qa-shogi-recovery-failed.png",
+      "source": "801e1a905c682c408fc293a88b131d873c9c960b",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "c156a5171fd752f0dac45eabc9142fa2f327d202d53c79ecd818fcf34a8386ae"
+    },
+    {
+      "path": "stable-qa-xiangqi-count-available.png",
+      "source": "801e1a905c682c408fc293a88b131d873c9c960b",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "a3d59e00991e6cc0b1b7d4906eb5df1b6bcfcb7fd1d332e2449004da61798940"
+    },
+    {
+      "path": "stable-qa-xiangqi-count-concluded.png",
+      "source": "801e1a905c682c408fc293a88b131d873c9c960b",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "a31697117d65ce5ead03a0acc30806f58a3d439220fa7d28c7a768e19f652855"
+    },
+    {
+      "path": "stable-qa-xiangqi-recovered.png",
+      "source": "801e1a905c682c408fc293a88b131d873c9c960b",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "a693a3c9ed0eb8038d938bd40c6b999b6a96bd6a1defa07fcaa9db22f4f264fc"
+    },
+    {
+      "path": "stable-qa-xiangqi-recovery-failed.png",
+      "source": "801e1a905c682c408fc293a88b131d873c9c960b",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "69cd7b39c17321e8f2f961a6b2b3dc98a995a14d54f7cc443819ee090832577d"
+    },
+    {
+      "path": "stable-synthetic-identity.png",
+      "source": "801e1a905c682c408fc293a88b131d873c9c960b",
+      "format": "JPEG",
+      "pixels": [
+        2360,
+        1640
+      ],
+      "sha256": "4aa0a60133ee7c765d9be1ba2a7c823448e998322016ffea1d22d76b78f9ff97"
+    }
+  ],
+  "cleanup": "After all native guards completed, actual ps probe found no mShogi app, engine or gate processes. Explicit synthetic close is distinct from saving a real game.",
+  "limits": "No VoiceOver-personally-operated claim. Functional search, not competitive strength. Chess castling/en-passant conformance is native fixture evidence, not newly executed GUI special moves. Xiangqi exact execution remains native/console; GUI displays actual saved exact reports.",
+  "source_metadata_reconciliation": "source-reconciliation.json; exact pre-correction log retained gzip, UI observations/capture bytes unchanged"
+}

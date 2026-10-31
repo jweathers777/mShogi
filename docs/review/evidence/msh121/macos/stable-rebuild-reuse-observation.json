@@ -1,0 +1,56 @@
+{
+  "at": "2026-10-31T20:32:35.092059+00:00",
+  "running_fixed_qa_processes": [
+    "16887 /Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi-desktop"
+  ],
+  "running_selector_refusal_exit": 1,
+  "diagnostic": "Traceback (most recent call last):\n  File \"/Users/johnweathers/Development/Personal/mShogi/desktop/scripts/macos-verification.py\", line 167, in <module>\n    main()\n  File \"/Users/johnweathers/Development/Personal/mShogi/desktop/scripts/macos-verification.py\", line 159, in main\n    result = prepare(args.kind, args.gate) if args.operation == \"prepare\" else select(args.kind, args.fixture) if args.operation == \"select\" else inspect(args.kind)\n                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/johnweathers/Development/Personal/mShogi/desktop/scripts/macos-verification.py\", line 56, in select\n    raise RuntimeError(\"Close the staged application natively before selecting its next fixture\")\nRuntimeError: Close the staged application natively before selecting its next fixture\n",
+  "selector_preserved": true,
+  "approval_file_sha256": "401fe192e9a95516a387311ef66dc1828f897e8a27331a8eb01e76d21be7960d",
+  "observed_launches": [
+    {
+      "build": "old176 staged with fixed approved legacy ID and new permanent path",
+      "tool_duration_seconds": 1.3101,
+      "approval_interruption_observed": false
+    },
+    {
+      "build": "new QA host with external fixture reader; different executable and code hash, same path and ID",
+      "fixture": "xiangqi-count",
+      "tool_duration_seconds": 1.427,
+      "approval_interruption_observed": false
+    },
+    {
+      "build": "unchanged rebuilt QA bundle; external selector only",
+      "fixture": "claim",
+      "tool_duration_seconds": 0.8519,
+      "approval_interruption_observed": false
+    },
+    {
+      "build": "unchanged fixed QA app, external standard selector",
+      "tool_duration_seconds": 0.8504,
+      "approval_interruption_observed": false
+    },
+    {
+      "build": "rebuilt fixed synthetic app, saved legacy synthetic ID/new fixed path",
+      "tool_duration_seconds": 1.5153,
+      "approval_interruption_observed": false
+    },
+    {
+      "build": "5a782bf QA native-frame reporting rebuild; same fixed path and approved ID",
+      "tool_duration_seconds": 1.5263,
+      "approval_interruption_observed": false,
+      "evidence": "interaction.json records388\u2013414 and stable-qa-frame-build.json; six actual cross-game native geometry captures"
+    }
+  ],
+  "qualification": "Observed this installed Computer Use version/session. No approval records or policies were changed. No guarantee for future versions, accounts, managed policies or signatures.",
+  "fixture_change_signed_bundle_files_unchanged": true,
+  "fixture_change_signature_unchanged": true,
+  "saved_approval_store_unchanged_through_all_experiments": true,
+  "final_approval_file_sha256": "401fe192e9a95516a387311ef66dc1828f897e8a27331a8eb01e76d21be7960d",
+  "source": "801e1a905c682c408fc293a88b131d873c9c960b",
+  "qa_engine_fault_restore_sha256": "9c54babdc56fbb471c1731225d1784da741c070e819365724fb5ec6d8fd7c99d",
+  "strict_qa_signature_after_fault_restoration": 0,
+  "at_final": "2026-10-31T20:38:16.352146+00:00",
+  "final_approval_file_sha256_after_frame_rebuild_and_cleanup": "401fe192e9a95516a387311ef66dc1828f897e8a27331a8eb01e76d21be7960d",
+  "approval_store_unchanged_after_frame_rebuild_and_cleanup": true
+}

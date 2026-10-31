@@ -1,0 +1,413 @@
+{
+  "source_revision": "0b169e0be19b83c322c3a906719a934d055a1eb3",
+  "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/41222382986",
+  "artifact_zip": "/private/tmp/msh121-windows-0b169.zip",
+  "artifact_zip_sha256": "c61b9952d8fadfd4d68e4f9daa912295267fb02e0aa93a6c7cba9550ff33b0a4",
+  "status": "failed",
+  "phase_count": 31,
+  "passed": 28,
+  "failures": [
+    {
+      "phase": "verification-pending-chess",
+      "status": "failed",
+      "error": "Timed out: exact native completed cue e2e4 at event 1; last observation: \"{'action': 'a7a5', 'destinationSignatures': ['double-underline'], 'destinations': ['a5'], 'event': '3', 'hidden': 'true', 'origins': ['a7'], 'pointerEvents': 'none', 'route': None}\"",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2398, in main\n    journey.pending(fixture.removeprefix(\"pending-\"))\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2002, in pending\n    self.assert_completed_cue(origin + destination, 1, [origin], [destination])\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 717, in assert_completed_cue\n    cue = wait(observed, f\"exact native completed cue {action} at event {event}\")\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 285, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: exact native completed cue e2e4 at event 1; last observation: \"{'action': 'a7a5', 'destinationSignatures': ['double-underline'], 'destinations': ['a5'], 'event': '3', 'hidden': 'true', 'origins': ['a7'], 'pointerEvents': 'none', 'route': None}\"\n"
+    },
+    {
+      "phase": "verification-pending-shogi",
+      "status": "failed",
+      "error": "'takebacks'",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2398, in main\n    journey.pending(fixture.removeprefix(\"pending-\"))\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2044, in pending\n    assert body['takebacks'], 'abandoned pending continuation retained losslessly'\n           ~~~~^^^^^^^^^^^^^\nKeyError: 'takebacks'\n"
+    },
+    {
+      "phase": "verification-pending-xiangqi",
+      "status": "failed",
+      "error": "'takebacks'",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2398, in main\n    journey.pending(fixture.removeprefix(\"pending-\"))\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2044, in pending\n    assert body['takebacks'], 'abandoned pending continuation retained losslessly'\n           ~~~~^^^^^^^^^^^^^\nKeyError: 'takebacks'\n"
+    }
+  ],
+  "checked_file_hashes": 587,
+  "environment": {
+    "platform": "Windows-2022Server-10.0.20348-SP0",
+    "python": "3.12.10",
+    "runner_image": "20261026.347.1",
+    "runner_os": "Windows",
+    "renderer_environment": {
+      "GDK_BACKEND": null,
+      "WEBKIT_DISABLE_COMPOSITING_MODE": null,
+      "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+      "LIBGL_ALWAYS_SOFTWARE": null
+    }
+  },
+  "driver_identity": {
+    "path": "C:\\Users\\runneradmin\\.cargo\\bin\\tauri-driver.EXE",
+    "sha256": "7dd7cf8f703143f159e8347d280bb9c75fe9a28f53e62970763e11de43a9f858",
+    "version": ""
+  },
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "passed",
+      "host_sha256": "0c837be099da90434ad6720d955af6c20835014c77e68b308bc55b746c6bb0b3",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "passed",
+      "host_sha256": "0c837be099da90434ad6720d955af6c20835014c77e68b308bc55b746c6bb0b3",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "passed",
+      "host_sha256": "0c837be099da90434ad6720d955af6c20835014c77e68b308bc55b746c6bb0b3",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "normal-xiangqi",
+      "status": "passed",
+      "host_sha256": "0c837be099da90434ad6720d955af6c20835014c77e68b308bc55b746c6bb0b3",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-current-claim",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-concluded",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-full-unknown-cancel",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": {
+        "source": "D:\\a\\mShogi\\mShogi\\desktop\\scripts\\verification\\engine-gate.rs",
+        "source_sha256": "ff5669a8dc9662a45ef5a52029b9e8e41e04731ea069d03ae40b87404eddb3f6",
+        "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\r6-engine-gate.exe",
+        "sha256": "31ef33974bf3bb6a505f99d03224f74b3830e8ad2d834c83cb135b9ae23277c6",
+        "real_engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+        "delay_ms": 5000,
+        "compile_command": [
+          "rustc",
+          "--edition=2024",
+          "D:\\a\\mShogi\\mShogi\\desktop\\scripts\\verification\\engine-gate.rs",
+          "-o",
+          "D:\\a\\mShogi\\mShogi\\gui-evidence\\r6-engine-gate.exe"
+        ],
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+        "mechanism": "External bounded startup delay then unchanged real bundled engine; Unix exec / Windows kill-on-close job; no fabricated response."
+      }
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-pending-chess",
+      "status": "failed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": {
+        "source": "D:\\a\\mShogi\\mShogi\\desktop\\scripts\\verification\\engine-gate.rs",
+        "source_sha256": "ff5669a8dc9662a45ef5a52029b9e8e41e04731ea069d03ae40b87404eddb3f6",
+        "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\r6-engine-gate.exe",
+        "sha256": "a973c49f5e2dbbce8b0f4fe8cd0fa28bfbbb7ad97e536d12f08bfb3c7fa81da6",
+        "real_engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+        "delay_ms": 5000,
+        "compile_command": [
+          "rustc",
+          "--edition=2024",
+          "D:\\a\\mShogi\\mShogi\\desktop\\scripts\\verification\\engine-gate.rs",
+          "-o",
+          "D:\\a\\mShogi\\mShogi\\gui-evidence\\r6-engine-gate.exe"
+        ],
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+        "mechanism": "External bounded startup delay then unchanged real bundled engine; Unix exec / Windows kill-on-close job; no fabricated response."
+      }
+    },
+    {
+      "phase": "verification-pending-shogi",
+      "status": "failed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": {
+        "source": "D:\\a\\mShogi\\mShogi\\desktop\\scripts\\verification\\engine-gate.rs",
+        "source_sha256": "ff5669a8dc9662a45ef5a52029b9e8e41e04731ea069d03ae40b87404eddb3f6",
+        "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\r6-engine-gate.exe",
+        "sha256": "821d0ad07fe1942aa02a9f66ade9e49724cba8ac05fdfcdbdcaed6622b003531",
+        "real_engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+        "delay_ms": 5000,
+        "compile_command": [
+          "rustc",
+          "--edition=2024",
+          "D:\\a\\mShogi\\mShogi\\desktop\\scripts\\verification\\engine-gate.rs",
+          "-o",
+          "D:\\a\\mShogi\\mShogi\\gui-evidence\\r6-engine-gate.exe"
+        ],
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+        "mechanism": "External bounded startup delay then unchanged real bundled engine; Unix exec / Windows kill-on-close job; no fabricated response."
+      }
+    },
+    {
+      "phase": "verification-pending-xiangqi",
+      "status": "failed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": {
+        "source": "D:\\a\\mShogi\\mShogi\\desktop\\scripts\\verification\\engine-gate.rs",
+        "source_sha256": "ff5669a8dc9662a45ef5a52029b9e8e41e04731ea069d03ae40b87404eddb3f6",
+        "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\r6-engine-gate.exe",
+        "sha256": "d37f330ff5ff045fdc6159757a34fbc0d40da796279b22ff7914e38d4388d427",
+        "real_engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+        "delay_ms": 5000,
+        "compile_command": [
+          "rustc",
+          "--edition=2024",
+          "D:\\a\\mShogi\\mShogi\\desktop\\scripts\\verification\\engine-gate.rs",
+          "-o",
+          "D:\\a\\mShogi\\mShogi\\gui-evidence\\r6-engine-gate.exe"
+        ],
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+        "mechanism": "External bounded startup delay then unchanged real bundled engine; Unix exec / Windows kill-on-close job; no fabricated response."
+      }
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-xiangqi-warning",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-xiangqi-fourth",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-xiangqi-count",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-xiangqi-offer",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-xiangqi-agreed",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-xiangqi-fast-proof",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-xiangqi-resigned",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-xiangqi-capacity",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-xiangqi-failure",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    },
+    {
+      "phase": "verification-xiangqi-exact-evidence",
+      "status": "passed",
+      "host_sha256": "4184acd12f4f87bb8da676c6c167960592478a25c61cd13045a7b55f1150dff2",
+      "engine_sha256": "28b5c727c78fb2ef176587bffadf8fffefeb2c997b436ad6662427181d215c54",
+      "external_gate": null
+    }
+  ],
+  "preserved_members": [
+    "package-smoke.json",
+    "gui-packages/normal/manifest.json",
+    "gui-packages/normal/package-smoke.json",
+    "gui-packages/verification/manifest.json",
+    "gui-evidence/gui-report.json",
+    "gui-evidence/normal-initial-chess-minimum-size.desktop.png",
+    "gui-evidence/normal-initial-chess-minimum-size.dom.json",
+    "gui-evidence/normal-initial-chess-minimum-size.webview.png",
+    "gui-evidence/normal-initial-chess-normal-size.desktop.png",
+    "gui-evidence/normal-initial-chess-normal-size.dom.json",
+    "gui-evidence/normal-initial-chess-normal-size.webview.png",
+    "gui-evidence/normal-shogi-initial-sente.desktop.png",
+    "gui-evidence/normal-shogi-initial-sente.dom.json",
+    "gui-evidence/normal-shogi-initial-sente.webview.png",
+    "gui-evidence/normal-shogi-minimum-size.desktop.png",
+    "gui-evidence/normal-shogi-minimum-size.dom.json",
+    "gui-evidence/normal-shogi-minimum-size.webview.png",
+    "gui-evidence/normal-xiangqi-initial-red-minimum-size.desktop.png",
+    "gui-evidence/normal-xiangqi-initial-red-minimum-size.dom.json",
+    "gui-evidence/normal-xiangqi-initial-red-minimum-size.webview.png",
+    "gui-evidence/normal-xiangqi-initial-red-normal-size.desktop.png",
+    "gui-evidence/normal-xiangqi-initial-red-normal-size.dom.json",
+    "gui-evidence/normal-xiangqi-initial-red-normal-size.webview.png",
+    "gui-evidence/verification-concluded-full-cooperative-proof-concluded.desktop.png",
+    "gui-evidence/verification-concluded-full-cooperative-proof-concluded.dom.json",
+    "gui-evidence/verification-concluded-full-cooperative-proof-concluded.webview.png",
+    "gui-evidence/verification-full-unknown-cancel-full-budget-unknown.desktop.png",
+    "gui-evidence/verification-full-unknown-cancel-full-budget-unknown.dom.json",
+    "gui-evidence/verification-full-unknown-cancel-full-budget-unknown.webview.png",
+    "gui-evidence/verification-full-unknown-cancel-full-cancelled-unscored.desktop.png",
+    "gui-evidence/verification-full-unknown-cancel-full-cancelled-unscored.dom.json",
+    "gui-evidence/verification-full-unknown-cancel-full-cancelled-unscored.webview.png",
+    "gui-evidence/verification-pending-chess-failure.desktop.png",
+    "gui-evidence/verification-pending-chess-failure.dom.json",
+    "gui-evidence/verification-pending-chess-failure.webview.png",
+    "gui-evidence/verification-pending-shogi-analysis-replaced-cancelled.desktop.png",
+    "gui-evidence/verification-pending-shogi-analysis-replaced-cancelled.dom.json",
+    "gui-evidence/verification-pending-shogi-analysis-replaced-cancelled.webview.png",
+    "gui-evidence/verification-pending-shogi-failure.desktop.png",
+    "gui-evidence/verification-pending-shogi-failure.dom.json",
+    "gui-evidence/verification-pending-shogi-failure.webview.png",
+    "gui-evidence/verification-pending-shogi-takeback-pending-stopped.desktop.png",
+    "gui-evidence/verification-pending-shogi-takeback-pending-stopped.dom.json",
+    "gui-evidence/verification-pending-shogi-takeback-pending-stopped.webview.png",
+    "gui-evidence/verification-pending-xiangqi-analysis-replaced-cancelled.desktop.png",
+    "gui-evidence/verification-pending-xiangqi-analysis-replaced-cancelled.dom.json",
+    "gui-evidence/verification-pending-xiangqi-analysis-replaced-cancelled.webview.png",
+    "gui-evidence/verification-pending-xiangqi-failure.desktop.png",
+    "gui-evidence/verification-pending-xiangqi-failure.dom.json",
+    "gui-evidence/verification-pending-xiangqi-failure.webview.png",
+    "gui-evidence/verification-pending-xiangqi-takeback-pending-stopped.desktop.png",
+    "gui-evidence/verification-pending-xiangqi-takeback-pending-stopped.dom.json",
+    "gui-evidence/verification-pending-xiangqi-takeback-pending-stopped.webview.png",
+    "gui-evidence/verification-shogi-hands-engine-failure.desktop.png",
+    "gui-evidence/verification-shogi-hands-engine-failure.dom.json",
+    "gui-evidence/verification-shogi-hands-engine-failure.webview.png",
+    "gui-evidence/verification-standard-engine-failure.dom.json",
+    "gui-evidence/verification-standard-engine-failure.desktop.png",
+    "gui-evidence/verification-standard-engine-failure.webview.png",
+    "gui-evidence/verification-synthetic-full-board-black-minimum-size.desktop.png",
+    "gui-evidence/verification-synthetic-full-board-black-minimum-size.dom.json",
+    "gui-evidence/verification-synthetic-full-board-black-minimum-size.webview.png",
+    "gui-evidence/verification-synthetic-full-board-white-minimum-size.webview.png",
+    "gui-evidence/verification-synthetic-full-board-white-minimum-size.desktop.png",
+    "gui-evidence/verification-synthetic-full-board-white-minimum-size.dom.json",
+    "gui-evidence/verification-xiangqi-exact-evidence-saved-native-exact-proof-witness-unknown.desktop.png",
+    "gui-evidence/verification-xiangqi-exact-evidence-saved-native-exact-proof-witness-unknown.dom.json",
+    "gui-evidence/verification-xiangqi-exact-evidence-saved-native-exact-proof-witness-unknown.webview.png",
+    "gui-evidence/verification-xiangqi-failure/native-001-save-picker-entered.png",
+    "gui-evidence/verification-xiangqi-failure/native-001-save-picker.png",
+    "gui-evidence/verification-xiangqi-failure/native-002-open-picker.png",
+    "gui-evidence/verification-xiangqi-failure/native-002-open-picker-entered.png",
+    "gui-evidence/verification-xiangqi-failure/native-003-quit-menu.png",
+    "gui-evidence/verification-xiangqi-failure-driver.log",
+    "gui-evidence/verification-xiangqi-failure-native-capability-result.desktop.png",
+    "gui-evidence/verification-xiangqi-failure-native-capability-result.dom.json",
+    "gui-evidence/verification-xiangqi-failure-native-capability-result.webview.png",
+    "gui-evidence/verification-xiangqi-warning-warning-exact-event-prefix.desktop.png",
+    "gui-evidence/verification-xiangqi-warning-warning-exact-event-prefix.webview.png",
+    "gui-evidence/verification-xiangqi-warning-warning-exact-event-prefix.dom.json",
+    "webview-driver.json"
+  ]
+}

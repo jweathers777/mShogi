@@ -1,0 +1,6 @@
+{
+  "corrected_source_metadata_records": 59,
+  "original_log_sha256": "7a0b1ff1aa56b188930cde1c94d18a87ef6a734507126f2e331250bc29bb340d",
+  "original_log_gzip": "interaction-before-source-reconciliation.json.gz",
+  "change": "Source annotation only; actual UI states/actions/capture bytes unchanged. Package-provenance.json remains the historical initial176 build inventory. Current stable QA/new frame manifests and campaign-summary.json distinguish actual revisions."
+}

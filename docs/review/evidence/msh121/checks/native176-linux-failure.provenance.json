@@ -1,0 +1,9 @@
+{
+  "source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+  "run": 41221362786,
+  "platform": "Linux",
+  "result": "failed; known MSH-112 runner exit classification",
+  "original_bytes": 112375,
+  "original_sha256": "81b51225e906c0d1103d2c7a55757808d035e8e1ccaa5312a2e816d9433915f3",
+  "storage": "exact original log bytes gzip-compressed; preserve CRLF/trailing whitespace"
+}

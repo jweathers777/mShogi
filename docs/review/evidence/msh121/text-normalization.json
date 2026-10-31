@@ -1,0 +1,202 @@
+[
+  {
+    "view": "checks/native-final-d725.log",
+    "raw_gzip": "checks/native-final-d725.log.original.gz",
+    "original_sha256": "8c3ea4df8c0ceefc8fb21b1fcbc8601f3404aa3c22ce274db204c8353b4ec1c2",
+    "original_bytes": 3321,
+    "normalized_sha256": "740db34d2cd6f8f30a2a698eec3a990b28ca68813000ebddb29b54c4dd319310",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "checks/native-host-frame-review.log",
+    "raw_gzip": "checks/native-host-frame-review.log.original.gz",
+    "original_sha256": "07740315afa3508645b57836d12f1cb83faf5f0803c41ec114174958364f647e",
+    "original_bytes": 7423,
+    "normalized_sha256": "8eb223beab648073def6839156f950a3131a1cc5372f0a86a539cef25ebaf77a",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "checks/native-negative-final-d725.log",
+    "raw_gzip": "checks/native-negative-final-d725.log.original.gz",
+    "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "original_bytes": 0,
+    "normalized_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "checks/native-selector-review.log",
+    "raw_gzip": "checks/native-selector-review.log.original.gz",
+    "original_sha256": "a8a2e66e7116cd3b379660688092ef8a86207b9ccd4cc9830c0b4efad628fdb9",
+    "original_bytes": 6368,
+    "normalized_sha256": "ce5f5afa28b440caee3d096abb6ffdb5a4d2e24a4a3661befc046d3fbedf6f51",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "checks/stable-host-tests.log",
+    "raw_gzip": "checks/stable-host-tests.log.original.gz",
+    "original_sha256": "07aecbb044bc3490535c0ae319d3e829896137d429acd476b76c4679e311dc31",
+    "original_bytes": 7405,
+    "normalized_sha256": "a89311a2700eb8a6bd66935b40f4a26b7233cc146ccbbba4e77444c397fb7e48",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "platforms/d725-index.json",
+    "raw_gzip": "platforms/d725-index.json.original.gz",
+    "original_sha256": "c5782b1edbf0705752211dbc00554f151e30964fb4453ca110816550f3dc4fe4",
+    "original_bytes": 3443,
+    "normalized_sha256": "ae8cdecc1b1ad28c80d2b66cfe887554b522193fa952f69e2f514b9aa34295eb",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "platforms/d725f25/linux/audit.json",
+    "raw_gzip": "platforms/d725f25/linux/audit.json.original.gz",
+    "original_sha256": "5c89f9dcd0d37b1802012c5f43e82930d7885f72f59c402cf934cf88ee91e2a9",
+    "original_bytes": 20069,
+    "normalized_sha256": "bf893b7ec4df43e0800e4b2ffeba3d884858fdcdd06eaea21efe354f2022fdc3",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "platforms/d725f25/linux/gui-packages/normal/manifest.json",
+    "raw_gzip": "platforms/d725f25/linux/gui-packages/normal/manifest.json.original.gz",
+    "original_sha256": "40d6f7b6a7c5ee376cfa846927674d2a548b9494435739a24887e13125029cfd",
+    "original_bytes": 1789,
+    "normalized_sha256": "1cff8e19399c4c0414b5eb804158974917bd7358c48a0f79c7d08fc1176efd36",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "platforms/d725f25/linux/gui-packages/verification/manifest.json",
+    "raw_gzip": "platforms/d725f25/linux/gui-packages/verification/manifest.json.original.gz",
+    "original_sha256": "96a9bd77abe0b1d6daf802581359d57931903b722e1ad20d83823bb6ee35d356",
+    "original_bytes": 351,
+    "normalized_sha256": "ed6aa4695bf23c1f5c99c9a344385248de226b30c413e3b51a493793a4acd15e",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "platforms/d725f25/windows/audit.json",
+    "raw_gzip": "platforms/d725f25/windows/audit.json.original.gz",
+    "original_sha256": "b7e71dc01b2a1417b1b134f4b2c587784b1de3df66ea1aeb716d27e2abe36ac0",
+    "original_bytes": 19691,
+    "normalized_sha256": "f551810a52038b2698e6d5bd2480e19c45821b3ea9f757971d830b20e69b60e1",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "platforms/d725f25/windows/display-audit.json",
+    "raw_gzip": "platforms/d725f25/windows/display-audit.json.original.gz",
+    "original_sha256": "42cf296314874071585c1d604ecad4d40d93f43aeccdb51aeaaf2c50ada24221",
+    "original_bytes": 46073,
+    "normalized_sha256": "06d0a6dc345a9f5ed6f70d8c216f44828eaa001def2cb9356a838104ef50cb41",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "platforms/d725f25/windows/gui-packages/normal/manifest.json",
+    "raw_gzip": "platforms/d725f25/windows/gui-packages/normal/manifest.json.original.gz",
+    "original_sha256": "edf1c33695a04e15b49e0c031f30e9b793196f961ff3329a54033140bb5c9a6c",
+    "original_bytes": 300,
+    "normalized_sha256": "fc4291dd8ee4fa7561e0650e1db092c7fe532cc02bd8b1e90ef48d3fdbd23eb1",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "platforms/d725f25/windows/gui-packages/normal/package-smoke.json",
+    "raw_gzip": "platforms/d725f25/windows/gui-packages/normal/package-smoke.json.original.gz",
+    "original_sha256": "67c237c5e787a0ef2b7abeaa566c1d344577bd95942065aa908c5b34d4426ccb",
+    "original_bytes": 5892,
+    "normalized_sha256": "a114e4362c38c1ff7f1de6a88f72889d5ad24fe7b4b3fa6a01eb7a6b05a601d8",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "platforms/d725f25/windows/gui-packages/verification/manifest.json",
+    "raw_gzip": "platforms/d725f25/windows/gui-packages/verification/manifest.json.original.gz",
+    "original_sha256": "9c003005b147d05c1646e39bd95ae7d47177fc52b9cc21c86e1115688ccfb91c",
+    "original_bytes": 345,
+    "normalized_sha256": "b28cfabbf67bb74c823a60fa29199a1ed66a7b9035a8dadbcaff63e9081e1831",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "platforms/d725f25/windows/package-smoke.json",
+    "raw_gzip": "platforms/d725f25/windows/package-smoke.json.original.gz",
+    "original_sha256": "67c237c5e787a0ef2b7abeaa566c1d344577bd95942065aa908c5b34d4426ccb",
+    "original_bytes": 5892,
+    "normalized_sha256": "a114e4362c38c1ff7f1de6a88f72889d5ad24fe7b4b3fa6a01eb7a6b05a601d8",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "platforms/d725f25/windows/webview-driver.json",
+    "raw_gzip": "platforms/d725f25/windows/webview-driver.json.original.gz",
+    "original_sha256": "221e0699cf5c5b46ddd9bfd0edff3c5c48b41e22b8aca5adc31aaca378699d50",
+    "original_bytes": 1384,
+    "normalized_sha256": "2608a91fe55a9e8f01d5b73d89ec901772d3e06afa98de289e7f2952be106838",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "platforms/historical-status.json",
+    "raw_gzip": "platforms/historical-status.json.original.gz",
+    "original_sha256": "f3802ee9064f90ac400022635f5cf3ef3ed9ae0d52c6e5c72893dd3aed020ad2",
+    "original_bytes": 8395,
+    "normalized_sha256": "0ef3e132e8b091f31897e61491c1dfeb9ca9c28638afb4e3c0a198f0c6ca7a61",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "platforms/history/0b169/linux/audit.json",
+    "raw_gzip": "platforms/history/0b169/linux/audit.json.original.gz",
+    "original_sha256": "de773c0356d8eaffe97449821e336a8ef1486a4f3146e8de148eba6415062e3c",
+    "original_bytes": 22741,
+    "normalized_sha256": "ebab8651a38d07b8a9c8cd154546eb40ee21cb83ab1920e0b657a070e3ed3cae",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "platforms/history/0b169/windows/audit.json",
+    "raw_gzip": "platforms/history/0b169/windows/audit.json.original.gz",
+    "original_sha256": "6d5fcf84a13c60dd8b4382914e47036c7d9616cc66b8d0e707422b524bd9d357",
+    "original_bytes": 22307,
+    "normalized_sha256": "5c808aa918f3156f1f34834d37b08531415944a971178c32b64236c67c2f3b9e",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "platforms/history/176/linux/audit.json",
+    "raw_gzip": "platforms/history/176/linux/audit.json.original.gz",
+    "original_sha256": "f47b54882902804b0baabdd338cc37657fc85e8168e2452f2aced462bf9ac5f9",
+    "original_bytes": 23350,
+    "normalized_sha256": "17781e20abc9e17baf898c1d3dc366cbcf3677e222ad27758d085b3af238efcd",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "platforms/history/176/windows/audit.json",
+    "raw_gzip": "platforms/history/176/windows/audit.json.original.gz",
+    "original_sha256": "4faddef73673fcb7c656e54aca330f7765ac580cb1f6c0bfe5f2a4cc7470e2bb",
+    "original_bytes": 22902,
+    "normalized_sha256": "7bc987375d4dc8ab83ab0f48febac110745575ca826206799adf2025569ef6ed",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "platforms/history/3681579/linux/audit.json",
+    "raw_gzip": "platforms/history/3681579/linux/audit.json.original.gz",
+    "original_sha256": "a89961632f45d000c1e9a63d0bed587ffd53cf65b8e7e99388464e5d0209564e",
+    "original_bytes": 20069,
+    "normalized_sha256": "0f8ca2651554980f88b366617c95f8c485ec44698fac31337591e8c5f55716cf",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "platforms/history/3681579/windows/audit.json",
+    "raw_gzip": "platforms/history/3681579/windows/audit.json.original.gz",
+    "original_sha256": "72142f64584b7a753efdc5bd0d54bd46d88d2f0f91fe25957cc188e7270b9376",
+    "original_bytes": 19691,
+    "normalized_sha256": "2549c362b362572bf8dced9314730ece90cc9bd38310b371c648af8c3e247f51",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "platforms/history/e778135/linux/audit.json",
+    "raw_gzip": "platforms/history/e778135/linux/audit.json.original.gz",
+    "original_sha256": "3351a17eb0d04331ddfeddea9cfa332ff299c3ab13d11284d6dcaf22b9e142bd",
+    "original_bytes": 20069,
+    "normalized_sha256": "c5f546438eb1d30be65bf40ed399b4813dd315078b20763d979e68de496ad519",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  },
+  {
+    "view": "platforms/history/e778135/windows/audit.json",
+    "raw_gzip": "platforms/history/e778135/windows/audit.json.original.gz",
+    "original_sha256": "4d61b40ee3dc0aa53c80eb3a3393e30dcc90b6af0074a0b28e5a08d8e8cb8d73",
+    "original_bytes": 23667,
+    "normalized_sha256": "eeb9a74d1f06599bd1476b6df16ee85ad874dfc58ca91af49c3e5a233b1bf5f3",
+    "normalization": "LF and trailing whitespace/blank EOF only; exact original compressed alongside, no semantic fields changed"
+  }
+]

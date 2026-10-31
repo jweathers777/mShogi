@@ -1,0 +1,34 @@
+{
+  "original_log_sha256": "7a0b1ff1aa56b188930cde1c94d18a87ef6a734507126f2e331250bc29bb340d",
+  "indexing": "zero-based inclusive original immutable log records",
+  "reason": "Recorder helper closures retained old source label. This overlay corrects only provenance, not UI observations, actions or screenshots. Exact raw log gzip retained. Normal product source unchanged135\u2192final; QA-only files/builds differ.",
+  "ranges": [
+    {
+      "start": 0,
+      "end": 343,
+      "actual_source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+      "manifest": "package-provenance.json",
+      "host_source_sha256": "be30a1f6f8a7ea54c5c5172a7d434115b3aa477704757084b09fac29f524d4c0",
+      "first_label": "normal-chess-1180.png",
+      "last_label": "stable-old-build-discard"
+    },
+    {
+      "start": 344,
+      "end": 387,
+      "actual_source": "801e1a905c682c408fc293a88b131d873c9c960b",
+      "manifest": "stable-qa-new-build.json",
+      "host_source_sha256": "09a0ee219257e278b00ceafdae70c3eccca4461386fe50855202cef12a34fd45",
+      "first_label": "stable-rebuilt-qa-xiangqi-count",
+      "last_label": "stable-synthetic-native-close"
+    },
+    {
+      "start": 388,
+      "end": 414,
+      "actual_source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+      "manifest": "stable-qa-frame-build.json",
+      "host_source_sha256": "4e804ed3626725a2304a8577c46fb550d7c71f91e553d323cdfa0e936a1fb890",
+      "first_label": "final-chess-normal-geometry",
+      "last_label": "final-qa-native-discard"
+    }
+  ]
+}

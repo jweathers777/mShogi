@@ -1,0 +1,522 @@
+{
+  "package_source": "176c46a9dca35f97452b011d29ad6a94ee2a2900",
+  "product_behavior_source": "13510da9e24b69a340444f272668ecb59478ddbb",
+  "current_verifier_source": "e778135fbc9dc835b88b13ec3d38b9f63c723f4d",
+  "system": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0.1\nBuildVersion:\t\t26A434\n",
+  "machine": "arm64",
+  "driver": "Codex cua native AX/pointer/keyboard; no IPC or injected game mutations",
+  "normal_build_log": "/private/tmp/msh121-normal-build.log",
+  "qa_build_log": "/private/tmp/msh121-qa-build.log",
+  "packages": [
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 concluded.app",
+      "id": "org.mshogi.desktop.verification.r6.concluded",
+      "environment": {
+        "MSHOGI_DESKTOP_FIXTURE": "concluded"
+      },
+      "code": [
+        {
+          "path": "Contents/MacOS/mshogi",
+          "bytes": 2612960,
+          "sha256": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+        },
+        {
+          "path": "Contents/MacOS/mshogi-desktop",
+          "bytes": 16141008,
+          "sha256": "db85842c2b53a6767d9021a47703ee0f11e42b420d34803a741d1daf7e449588"
+        }
+      ],
+      "signature": 0
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 current-claim.app",
+      "id": "org.mshogi.desktop.verification.r6.currentclaim",
+      "environment": {
+        "MSHOGI_DESKTOP_FIXTURE": "current-claim"
+      },
+      "code": [
+        {
+          "path": "Contents/MacOS/mshogi",
+          "bytes": 2612960,
+          "sha256": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+        },
+        {
+          "path": "Contents/MacOS/mshogi-desktop",
+          "bytes": 16141008,
+          "sha256": "0c69dd83eb860bf6e51e557fbad75c6877bfeb3f80b15596cebe81363ff7d9f2"
+        }
+      ],
+      "signature": 0
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 full-unknown.app",
+      "id": "org.mshogi.desktop.verification.r6.fullunknown",
+      "environment": {
+        "MSHOGI_DESKTOP_FIXTURE": "full-unknown"
+      },
+      "code": [
+        {
+          "path": "Contents/MacOS/mshogi",
+          "bytes": 2612960,
+          "sha256": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+        },
+        {
+          "path": "Contents/MacOS/mshogi-desktop",
+          "bytes": 16141008,
+          "sha256": "2d125b21f66dda14a35465770ea09e065314ffb78c187f79c965600cfcc5e86f"
+        }
+      ],
+      "signature": 0
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 promotion.app",
+      "id": "org.mshogi.desktop.verification.r6.promotion",
+      "environment": {
+        "MSHOGI_DESKTOP_FIXTURE": "promotion"
+      },
+      "code": [
+        {
+          "path": "Contents/MacOS/mshogi",
+          "bytes": 2612960,
+          "sha256": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+        },
+        {
+          "path": "Contents/MacOS/mshogi-desktop",
+          "bytes": 16141008,
+          "sha256": "196b86f6379b2a86caa6488a05a8d588f227c1e4e8a3fbccbe27f64539fd96d1"
+        }
+      ],
+      "signature": 0
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 shogi-declaration.app",
+      "id": "org.mshogi.desktop.verification.r6.shogideclaration",
+      "environment": {
+        "MSHOGI_DESKTOP_FIXTURE": "shogi-declaration"
+      },
+      "code": [
+        {
+          "path": "Contents/MacOS/mshogi",
+          "bytes": 2612960,
+          "sha256": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+        },
+        {
+          "path": "Contents/MacOS/mshogi-desktop",
+          "bytes": 16141008,
+          "sha256": "2b520eb79d0a24f38ed68eec9fa9de989b5ff4fadb95720516c1f40a1558482e"
+        }
+      ],
+      "signature": 0
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 shogi-failure.app",
+      "id": "org.mshogi.desktop.verification.r6.shogifailure",
+      "environment": {
+        "MSHOGI_DESKTOP_FIXTURE": "shogi-failure"
+      },
+      "code": [
+        {
+          "path": "Contents/MacOS/mshogi",
+          "bytes": 2612960,
+          "sha256": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+        },
+        {
+          "path": "Contents/MacOS/mshogi-desktop",
+          "bytes": 16141008,
+          "sha256": "aa1b40b19acfce475c987ec239ec8bb03a69b6c433c4611ab396d7f757863d36"
+        }
+      ],
+      "signature": 0
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 shogi-hands.app",
+      "id": "org.mshogi.desktop.verification.r6.shogihands",
+      "environment": {
+        "MSHOGI_DESKTOP_FIXTURE": "shogi-hands"
+      },
+      "code": [
+        {
+          "path": "Contents/MacOS/mshogi",
+          "bytes": 2612960,
+          "sha256": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+        },
+        {
+          "path": "Contents/MacOS/mshogi-desktop",
+          "bytes": 16141008,
+          "sha256": "b95c192d971516257b099bcbb9def4874fc70a012efbb9455bf26f706bdb4e0c"
+        }
+      ],
+      "signature": 0
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 synthetic.app",
+      "id": "org.mshogi.desktop.verification.r6.synthetic",
+      "environment": {
+        "MSHOGI_DESKTOP_FIXTURE": "synthetic"
+      },
+      "code": [
+        {
+          "path": "Contents/MacOS/mshogi",
+          "bytes": 2612960,
+          "sha256": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+        },
+        {
+          "path": "Contents/MacOS/mshogi-desktop",
+          "bytes": 16141008,
+          "sha256": "e29a05fbf818f25c854b8edbd27a4bfdf9a74f3c0e133d2b1fca7540821f8823"
+        }
+      ],
+      "signature": 0
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 xiangqi-control-capacity.app",
+      "id": "org.mshogi.desktop.verification.r6.xiangqicontrolcapacity",
+      "environment": {
+        "MSHOGI_DESKTOP_FIXTURE": "xiangqi-control-capacity"
+      },
+      "code": [
+        {
+          "path": "Contents/MacOS/mshogi",
+          "bytes": 2612960,
+          "sha256": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+        },
+        {
+          "path": "Contents/MacOS/mshogi-desktop",
+          "bytes": 16141024,
+          "sha256": "e968d1d5f3fd2970f28f4c2b778f6528145b62e32ddb85000a33e0da7db28f90"
+        }
+      ],
+      "signature": 0
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 xiangqi-count.app",
+      "id": "org.mshogi.desktop.verification.r6.xiangqicount",
+      "environment": {
+        "MSHOGI_DESKTOP_FIXTURE": "xiangqi-count"
+      },
+      "code": [
+        {
+          "path": "Contents/MacOS/mshogi",
+          "bytes": 2612960,
+          "sha256": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+        },
+        {
+          "path": "Contents/MacOS/mshogi-desktop",
+          "bytes": 16141008,
+          "sha256": "b19abe29bc61515afef98366fd76dfc59ac19d6c556e4c7d7a5a8610297959fd"
+        }
+      ],
+      "signature": 0
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 xiangqi-exact-evidence.app",
+      "id": "org.mshogi.desktop.verification.r6.xiangqiexactevidence",
+      "environment": {
+        "MSHOGI_DESKTOP_FIXTURE": "xiangqi-exact-evidence"
+      },
+      "code": [
+        {
+          "path": "Contents/MacOS/mshogi",
+          "bytes": 2612960,
+          "sha256": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+        },
+        {
+          "path": "Contents/MacOS/mshogi-desktop",
+          "bytes": 16141008,
+          "sha256": "9557817df9455a03d1ffbd9b38e2284a0e7c8d1c32c9cd4d3499166d45fc266d"
+        }
+      ],
+      "signature": 0
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 xiangqi-failure.app",
+      "id": "org.mshogi.desktop.verification.r6.xiangqifailure",
+      "environment": {
+        "MSHOGI_DESKTOP_FIXTURE": "xiangqi-failure"
+      },
+      "code": [
+        {
+          "path": "Contents/MacOS/mshogi",
+          "bytes": 2612960,
+          "sha256": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+        },
+        {
+          "path": "Contents/MacOS/mshogi-desktop",
+          "bytes": 16141008,
+          "sha256": "33ffecde5b37ca9fe2ff78052005893ad61ce047a014d7b89f2fa85ec57923a9"
+        }
+      ],
+      "signature": 0
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 xiangqi-warning.app",
+      "id": "org.mshogi.desktop.verification.r6.xiangqiwarning",
+      "environment": {
+        "MSHOGI_DESKTOP_FIXTURE": "xiangqi-warning"
+      },
+      "code": [
+        {
+          "path": "Contents/MacOS/mshogi",
+          "bytes": 2612960,
+          "sha256": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+        },
+        {
+          "path": "Contents/MacOS/mshogi-desktop",
+          "bytes": 16141008,
+          "sha256": "9770dad9e696e85ade937cb76882e82faca5fc089b31e0d87271ea8e10014773"
+        }
+      ],
+      "signature": 0
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi Verification.app",
+      "id": "org.mshogi.desktop.verification",
+      "environment": {},
+      "code": [
+        {
+          "path": "Contents/MacOS/mshogi",
+          "bytes": 2628096,
+          "sha256": "92592cb2a4f5ed57ed1b62498b7d288e2a4bc01cb4f0f87827eedf762f9ca5d7"
+        },
+        {
+          "path": "Contents/MacOS/mshogi-desktop",
+          "bytes": 16235216,
+          "sha256": "3f8aa95de98e35be5d1f14b829d1e3fce5bc3350b878ff6169c09371652be4f1"
+        }
+      ],
+      "signature": 1
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi.app",
+      "id": "org.mshogi.desktop",
+      "environment": {},
+      "code": [
+        {
+          "path": "Contents/MacOS/mshogi",
+          "bytes": 2628096,
+          "sha256": "92592cb2a4f5ed57ed1b62498b7d288e2a4bc01cb4f0f87827eedf762f9ca5d7"
+        },
+        {
+          "path": "Contents/MacOS/mshogi-desktop",
+          "bytes": 15881280,
+          "sha256": "ec8ce8cb9153b5f9bf175aebe0348da0d3669e270b2ddde08f803e49eac2bc7e"
+        }
+      ],
+      "signature": 1
+    }
+  ],
+  "captures": [
+    {
+      "path": "normal-chess-1180.png",
+      "bytes": 296989,
+      "sha256": "f526338eb9b1836d766519e4106ce4836103f9f1c48d551390d619177a73472c"
+    },
+    {
+      "path": "normal-chess-analysis-readonly.png",
+      "bytes": 359111,
+      "sha256": "d06adcb3aa2cf37d2ef6f81de6aaec0ec6e9dbfd939db32f8bb25e5b65939cec"
+    },
+    {
+      "path": "normal-chess-history.png",
+      "bytes": 312782,
+      "sha256": "45c3d81f7ceea0752c1e914c0754698d8409854210a7b2cdaf65c8acad6a1eff"
+    },
+    {
+      "path": "normal-chess-loaded-stopped.png",
+      "bytes": 315252,
+      "sha256": "f6e87cb12865832dc7fe05492144e4710c985ccb1cd31308b01fd9ffdc86e930"
+    },
+    {
+      "path": "normal-chess-play.png",
+      "bytes": 308060,
+      "sha256": "601ec5bf8fe9eae147946cfea73a24799ac02a252625773ea8ed3d7543b7ddcf"
+    },
+    {
+      "path": "normal-chess-quit-guard.png",
+      "bytes": 218032,
+      "sha256": "9a9cafa07dd0f140bb5853f785e90ef7a53c34770db63078a39457331594d87e"
+    },
+    {
+      "path": "normal-chess-resign-unresolved.png",
+      "bytes": 334588,
+      "sha256": "12cd4e62fd920da2f8d1709ba75deaa556588c6fcf39589e2a46a571eb56ced6"
+    },
+    {
+      "path": "normal-chess-takeback-stopped.png",
+      "bytes": 337376,
+      "sha256": "e09df32cb5dc363ae3a32a84c09d6e3080008d127d08b78d1780c65b3ccfd571"
+    },
+    {
+      "path": "qa-chess-1180.png",
+      "bytes": 310311,
+      "sha256": "d584674976ea2b35690da2782c2e4eea7fd5df154959058843ba7ff5382f3328"
+    },
+    {
+      "path": "qa-chess-760.png",
+      "bytes": 223451,
+      "sha256": "417fbe0170ec1edccc7e72fdfa7ec81ec7bab173f9d227672393354182b90622"
+    },
+    {
+      "path": "qa-chess-current-claim-available.png",
+      "bytes": 294116,
+      "sha256": "3de6b65b0a18e1dceb0e5096d43d63711b4ec749bc8d824a5d5e216524ba3e5e"
+    },
+    {
+      "path": "qa-chess-current-claim-concluded.png",
+      "bytes": 293594,
+      "sha256": "1609369411acba0ede52af376b7b0c5a4745c7051108fa23e4737c701cc7451f"
+    },
+    {
+      "path": "qa-chess-full-proof.png",
+      "bytes": 328514,
+      "sha256": "7d6661d8c1690347c766b93c1b465e1ce5f1c7d8a129b92bec4407ece9cebca5"
+    },
+    {
+      "path": "qa-chess-promoted-knight.png",
+      "bytes": 282711,
+      "sha256": "d2632f4e4aa3fcce6b2f60685c4b32acd0461889beb9278b9286ec9535666dc1"
+    },
+    {
+      "path": "qa-chess-promotion-choices.png",
+      "bytes": 217059,
+      "sha256": "cb9a118c4b50ae545ec21acb745487c1cbedbc85ecf836be86f75f7190544f4e"
+    },
+    {
+      "path": "qa-chess-quit-guard.png",
+      "bytes": 208791,
+      "sha256": "48d5c00950e0b57127dea3c22e68ca15b95f7ae12abf750d878ac0cb40d55645"
+    },
+    {
+      "path": "qa-shogi-1180.png",
+      "bytes": 359770,
+      "sha256": "cc2e69a1775857655226f4f0a2d39e2ba510040414fedac7d8afb573968c8dad"
+    },
+    {
+      "path": "qa-shogi-760.png",
+      "bytes": 255176,
+      "sha256": "af5d074752bb9bb5e7176320962e5d92c65e5106a3d64920b021aef84353757b"
+    },
+    {
+      "path": "qa-shogi-analysis.png",
+      "bytes": 395108,
+      "sha256": "616b8bebabf7e7c934cfb9f0976e6bdb7f2dc4d8333839ff21418dd68cabf3b5"
+    },
+    {
+      "path": "qa-shogi-declaration-concluded.png",
+      "bytes": 342042,
+      "sha256": "717b8dc832585f13c2573b082e51c1d012caf12cbb29af6ec8ed4a3e1b476c98"
+    },
+    {
+      "path": "qa-shogi-declaration-eligible.png",
+      "bytes": 321192,
+      "sha256": "bbfcde15917af2472a4868c9e7ffe782b8d8677ff189c049155bd14d998c9870"
+    },
+    {
+      "path": "qa-shogi-flipped.png",
+      "bytes": 306693,
+      "sha256": "295e4ce0e35c3ad15663caa8c06db29a65b04a35d0b646739832ec545fd6122d"
+    },
+    {
+      "path": "qa-shogi-hand-inspection.png",
+      "bytes": 351226,
+      "sha256": "085b467798bf132859c36362ba15845c0ad43b31d4f95cde40a6a2a1913f7780"
+    },
+    {
+      "path": "qa-shogi-history.png",
+      "bytes": 365565,
+      "sha256": "f38ad8a96db1c2111e9a3722183f8ac78c0d9591eef0117705003ba9eae4df3e"
+    },
+    {
+      "path": "qa-shogi-native-drop.png",
+      "bytes": 306594,
+      "sha256": "9b2950c688f4af5930f2ee227cfc9e423dc270b5a7ab44ae69af284956e99d47"
+    },
+    {
+      "path": "qa-shogi-play.png",
+      "bytes": 377157,
+      "sha256": "14d3f65f187949c8ad4b6c8edbdac400f506756e2c2ecd793dd1b1094acd4cbe"
+    },
+    {
+      "path": "qa-shogi-reopened.png",
+      "bytes": 377657,
+      "sha256": "89cfa9142b4a1cad12ee9071e191e74b455ebe713be3f281ada6449ba8709809"
+    },
+    {
+      "path": "qa-shogi-takeback.png",
+      "bytes": 398374,
+      "sha256": "6c6ec2955ffe8827e57e515bdb6838393708e4322274bc1bb91e82724ac79cd6"
+    },
+    {
+      "path": "qa-xiangqi-1180.png",
+      "bytes": 373782,
+      "sha256": "2f13cd699d247e34fe9eb9a436062ad3476ef337a794c8d170a5c706bcd85b3b"
+    },
+    {
+      "path": "qa-xiangqi-760.png",
+      "bytes": 258532,
+      "sha256": "b5326e3684bdf1df883669ec5240e310814d600b548c7635e18e73ee71cc01ae"
+    },
+    {
+      "path": "qa-xiangqi-analysis.png",
+      "bytes": 401510,
+      "sha256": "426645366fdb2e3a8c66c3ad8fc921f94a5609a3f9a831384b5bbd9b280ad1c3"
+    },
+    {
+      "path": "qa-xiangqi-close-guard.png",
+      "bytes": 245462,
+      "sha256": "4ab47abea75d22a99401fe86e5bbfddc6ab161ae4b89867eb1263ad04cce60d3"
+    },
+    {
+      "path": "qa-xiangqi-history.png",
+      "bytes": 379306,
+      "sha256": "13fd058fc3d9bd22a191b2cae5441f58bf3283024e1af59fb9e68bc3989cc958"
+    },
+    {
+      "path": "qa-xiangqi-opponent-inspection.png",
+      "bytes": 344607,
+      "sha256": "ba0a12d1b393f7a731b9da6f65852418d3fd86fe3565a554fff7f4361df308e4"
+    },
+    {
+      "path": "qa-xiangqi-play.png",
+      "bytes": 385715,
+      "sha256": "796d807a3c192b2f1fe3292319e5dffb0943dfa3ff581c15711ddf46b489258a"
+    },
+    {
+      "path": "qa-xiangqi-reopened.png",
+      "bytes": 389543,
+      "sha256": "7d27636e11c1ef5675454a87ccd5d1b9b2b32d674c8a78b1453b48bcb85ea5bf"
+    },
+    {
+      "path": "qa-xiangqi-resigned.png",
+      "bytes": 408507,
+      "sha256": "0efbb4a6b22e8cb64827d4599c1e21be5b40bcf6aa0758fe8ad13d762b103372"
+    },
+    {
+      "path": "qa-xiangqi-takeback.png",
+      "bytes": 407554,
+      "sha256": "3b4fa4b0c9771b3827c60308e18e042ed1c8b9761bea1e15565c92c0e7e43f46"
+    },
+    {
+      "path": "qa-xiangqi-warning-live.png",
+      "bytes": 339730,
+      "sha256": "67930b510bbb3dc8ae2e02ce98b9acf9dcb3c11a947e619de643fb6750e4dae9"
+    },
+    {
+      "path": "qa-xiangqi-warning-prefix8.png",
+      "bytes": 327494,
+      "sha256": "810dcbd1d29ba4d46fc5fb467efbadf2ac42988d48491b0dabc37446ec12a272"
+    },
+    {
+      "path": "qa-xiangqi-warning-prefix9.png",
+      "bytes": 348914,
+      "sha256": "6dd4ae8fe899c6678c64fb63dfe6e7df5bdff8c4a1d79488fe61ee053ea33e23"
+    }
+  ],
+  "cleanup_process_probe": "ps: no mShogi/mshogi-engine app child remains after explicit native Quit/Discard at this checkpoint",
+  "inventory_scope": "Historical initial176 package copies only; later stable builds are separately inventoried, not represented by these original binaries.",
+  "later_build_manifests": [
+    "stable-qa-new-build.json",
+    "stable-synthetic-build.json",
+    "stable-qa-frame-build.json"
+  ]
+}

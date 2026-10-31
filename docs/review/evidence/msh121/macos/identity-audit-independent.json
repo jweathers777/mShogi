@@ -1,0 +1,1042 @@
+[
+  {
+    "path": "/private/tmp/msh121-packages/mShogi R6 claim.app",
+    "bundle_id": "org.mshogi.desktop.verification.r6.claim",
+    "bundle_name": "mShogi R6 claim",
+    "display_name": "mShogi R6 claim",
+    "executable": "mshogi-desktop",
+    "version": "0.1.0",
+    "host_sha256": "b550c606d00d295630ff450f1c4463535b90309883f6d396dc311da8b2570455",
+    "plist_sha256": "483794d84a981f4928a8701ca9fe8365f7e11c290b03c790036173dd55276878",
+    "engine_sha256": {
+      "Contents/MacOS/mshogi": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+    },
+    "codesign_display_exit": 0,
+    "codesign_display": "# designated => cdhash H\"bc9aa2e8254ef029f041664a70c71f31a9df5b89\"\nExecutable=/private/tmp/msh121-packages/mShogi R6 claim.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.claim\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=31713 flags=0x2(adhoc) hashes=984+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=bc9aa2e8254ef029f041664a70c71f31a9df5b89\nCandidateCDHashFull sha256=bc9aa2e8254ef029f041664a70c71f31a9df5b89587b502bac3b2993d491a022\nHash choices=sha256\nCMSDigest=bc9aa2e8254ef029f041664a70c71f31a9df5b89587b502bac3b2993d491a022\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10485760\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=bc9aa2e8254ef029f041664a70c71f31a9df5b89\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n",
+    "codesign_verify_exit": 0,
+    "codesign_verify": "--prepared:/private/tmp/msh121-packages/mShogi R6 claim.app/Contents/MacOS/mshogi\n--validated:/private/tmp/msh121-packages/mShogi R6 claim.app/Contents/MacOS/mshogi\n/private/tmp/msh121-packages/mShogi R6 claim.app: valid on disk\n/private/tmp/msh121-packages/mShogi R6 claim.app: satisfies its Designated Requirement\n",
+    "macho_segments": {
+      "__PAGEZERO": {
+        "offset": 0,
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "__TEXT": {
+        "offset": 0,
+        "size": 10485760,
+        "sha256": "6bece816cb3d2c6984d7f91a65f8af3ed2ab40c2794df8ab39ad8830213657df"
+      },
+      "__DATA_CONST": {
+        "offset": 10485760,
+        "size": 229376,
+        "sha256": "4f559e2e2e0a4275a144f586d9a96b23f96b26849182a535076dc48f4a1edfd3"
+      },
+      "__DATA": {
+        "offset": 10715136,
+        "size": 16384,
+        "sha256": "bb96201eae549c08f12c70d1dee439994c20036920bf9c8258a661a589f3f3b4"
+      },
+      "__LINKEDIT": {
+        "offset": 10731520,
+        "size": 5409488,
+        "sha256": "04850b50391472210d9e34473885fa1d8d353d141e8c1ffcaa17cceebcf442e3"
+      }
+    },
+    "cdhash": "bc9aa2e8254ef029f041664a70c71f31a9df5b89",
+    "macho_code_sections": {
+      "__TEXT,__text": {
+        "offset": 3776,
+        "size": 7747644,
+        "sha256": "a4bb566d87effd3b69c8a4b712c9554c74492f037a343b831820b97837550212"
+      }
+    }
+  },
+  {
+    "path": "/private/tmp/msh121-packages/mShogi R6 concluded.app",
+    "bundle_id": "org.mshogi.desktop.verification.r6.concluded",
+    "bundle_name": "mShogi R6 concluded",
+    "display_name": "mShogi R6 concluded",
+    "executable": "mshogi-desktop",
+    "version": "0.1.0",
+    "host_sha256": "db85842c2b53a6767d9021a47703ee0f11e42b420d34803a741d1daf7e449588",
+    "plist_sha256": "5c8e3d6e36fba03abe15262caa3a19c25d05ceed17e3d6666f0d08e69c09a892",
+    "engine_sha256": {
+      "Contents/MacOS/mshogi": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+    },
+    "codesign_display_exit": 0,
+    "codesign_display": "# designated => cdhash H\"551c9bc87b2615e9ed623b845c9145d8b58dbdbd\"\nExecutable=/private/tmp/msh121-packages/mShogi R6 concluded.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.concluded\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=31717 flags=0x2(adhoc) hashes=984+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=551c9bc87b2615e9ed623b845c9145d8b58dbdbd\nCandidateCDHashFull sha256=551c9bc87b2615e9ed623b845c9145d8b58dbdbd540bdfe0dd8e75602845838f\nHash choices=sha256\nCMSDigest=551c9bc87b2615e9ed623b845c9145d8b58dbdbd540bdfe0dd8e75602845838f\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10485760\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=551c9bc87b2615e9ed623b845c9145d8b58dbdbd\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n",
+    "codesign_verify_exit": 0,
+    "codesign_verify": "--prepared:/private/tmp/msh121-packages/mShogi R6 concluded.app/Contents/MacOS/mshogi\n--validated:/private/tmp/msh121-packages/mShogi R6 concluded.app/Contents/MacOS/mshogi\n/private/tmp/msh121-packages/mShogi R6 concluded.app: valid on disk\n/private/tmp/msh121-packages/mShogi R6 concluded.app: satisfies its Designated Requirement\n",
+    "macho_segments": {
+      "__PAGEZERO": {
+        "offset": 0,
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "__TEXT": {
+        "offset": 0,
+        "size": 10485760,
+        "sha256": "6bece816cb3d2c6984d7f91a65f8af3ed2ab40c2794df8ab39ad8830213657df"
+      },
+      "__DATA_CONST": {
+        "offset": 10485760,
+        "size": 229376,
+        "sha256": "4f559e2e2e0a4275a144f586d9a96b23f96b26849182a535076dc48f4a1edfd3"
+      },
+      "__DATA": {
+        "offset": 10715136,
+        "size": 16384,
+        "sha256": "bb96201eae549c08f12c70d1dee439994c20036920bf9c8258a661a589f3f3b4"
+      },
+      "__LINKEDIT": {
+        "offset": 10731520,
+        "size": 5409488,
+        "sha256": "5aa2d012044fe43de6174b943a491e7e08a5ee913666a300c0a43c35173595e8"
+      }
+    },
+    "cdhash": "551c9bc87b2615e9ed623b845c9145d8b58dbdbd",
+    "macho_code_sections": {
+      "__TEXT,__text": {
+        "offset": 3776,
+        "size": 7747644,
+        "sha256": "a4bb566d87effd3b69c8a4b712c9554c74492f037a343b831820b97837550212"
+      }
+    }
+  },
+  {
+    "path": "/private/tmp/msh121-packages/mShogi R6 current-claim.app",
+    "bundle_id": "org.mshogi.desktop.verification.r6.currentclaim",
+    "bundle_name": "mShogi R6 current-claim",
+    "display_name": "mShogi R6 current-claim",
+    "executable": "mshogi-desktop",
+    "version": "0.1.0",
+    "host_sha256": "0c69dd83eb860bf6e51e557fbad75c6877bfeb3f80b15596cebe81363ff7d9f2",
+    "plist_sha256": "7e9eb4675856162ec5d6cf3530e756e5faaa74bec8e76d8bc292e84d064eb87f",
+    "engine_sha256": {
+      "Contents/MacOS/mshogi": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+    },
+    "codesign_display_exit": 0,
+    "codesign_display": "# designated => cdhash H\"e0bad35f96e7b08a4fd8e810f1f937fb4da1a898\"\nExecutable=/private/tmp/msh121-packages/mShogi R6 current-claim.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.currentclaim\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=31720 flags=0x2(adhoc) hashes=984+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=e0bad35f96e7b08a4fd8e810f1f937fb4da1a898\nCandidateCDHashFull sha256=e0bad35f96e7b08a4fd8e810f1f937fb4da1a898de9df8d8ce78b5b754a465bd\nHash choices=sha256\nCMSDigest=e0bad35f96e7b08a4fd8e810f1f937fb4da1a898de9df8d8ce78b5b754a465bd\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10485760\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=e0bad35f96e7b08a4fd8e810f1f937fb4da1a898\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n",
+    "codesign_verify_exit": 0,
+    "codesign_verify": "--prepared:/private/tmp/msh121-packages/mShogi R6 current-claim.app/Contents/MacOS/mshogi\n--validated:/private/tmp/msh121-packages/mShogi R6 current-claim.app/Contents/MacOS/mshogi\n/private/tmp/msh121-packages/mShogi R6 current-claim.app: valid on disk\n/private/tmp/msh121-packages/mShogi R6 current-claim.app: satisfies its Designated Requirement\n",
+    "macho_segments": {
+      "__PAGEZERO": {
+        "offset": 0,
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "__TEXT": {
+        "offset": 0,
+        "size": 10485760,
+        "sha256": "6bece816cb3d2c6984d7f91a65f8af3ed2ab40c2794df8ab39ad8830213657df"
+      },
+      "__DATA_CONST": {
+        "offset": 10485760,
+        "size": 229376,
+        "sha256": "4f559e2e2e0a4275a144f586d9a96b23f96b26849182a535076dc48f4a1edfd3"
+      },
+      "__DATA": {
+        "offset": 10715136,
+        "size": 16384,
+        "sha256": "bb96201eae549c08f12c70d1dee439994c20036920bf9c8258a661a589f3f3b4"
+      },
+      "__LINKEDIT": {
+        "offset": 10731520,
+        "size": 5409488,
+        "sha256": "afe080e8e520a048c7b6e82236befabd97a08b25fc2b5011f5b23982bc2a289c"
+      }
+    },
+    "cdhash": "e0bad35f96e7b08a4fd8e810f1f937fb4da1a898",
+    "macho_code_sections": {
+      "__TEXT,__text": {
+        "offset": 3776,
+        "size": 7747644,
+        "sha256": "a4bb566d87effd3b69c8a4b712c9554c74492f037a343b831820b97837550212"
+      }
+    }
+  },
+  {
+    "path": "/private/tmp/msh121-packages/mShogi R6 full-unknown.app",
+    "bundle_id": "org.mshogi.desktop.verification.r6.fullunknown",
+    "bundle_name": "mShogi R6 full-unknown",
+    "display_name": "mShogi R6 full-unknown",
+    "executable": "mshogi-desktop",
+    "version": "0.1.0",
+    "host_sha256": "2d125b21f66dda14a35465770ea09e065314ffb78c187f79c965600cfcc5e86f",
+    "plist_sha256": "a105454d6fa21afb2647b9250306f9b1abf5588bcd28c17413893da31aef1cd8",
+    "engine_sha256": {
+      "Contents/MacOS/mshogi": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+    },
+    "codesign_display_exit": 0,
+    "codesign_display": "# designated => cdhash H\"770c57d3ddc1f07e8b7c5c1b6c2f9b934f79b1b1\"\nExecutable=/private/tmp/msh121-packages/mShogi R6 full-unknown.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.fullunknown\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=31719 flags=0x2(adhoc) hashes=984+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=770c57d3ddc1f07e8b7c5c1b6c2f9b934f79b1b1\nCandidateCDHashFull sha256=770c57d3ddc1f07e8b7c5c1b6c2f9b934f79b1b18e9f7e8af4f1457d633bb720\nHash choices=sha256\nCMSDigest=770c57d3ddc1f07e8b7c5c1b6c2f9b934f79b1b18e9f7e8af4f1457d633bb720\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10485760\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=770c57d3ddc1f07e8b7c5c1b6c2f9b934f79b1b1\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n",
+    "codesign_verify_exit": 0,
+    "codesign_verify": "--prepared:/private/tmp/msh121-packages/mShogi R6 full-unknown.app/Contents/MacOS/mshogi\n--validated:/private/tmp/msh121-packages/mShogi R6 full-unknown.app/Contents/MacOS/mshogi\n/private/tmp/msh121-packages/mShogi R6 full-unknown.app: valid on disk\n/private/tmp/msh121-packages/mShogi R6 full-unknown.app: satisfies its Designated Requirement\n",
+    "macho_segments": {
+      "__PAGEZERO": {
+        "offset": 0,
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "__TEXT": {
+        "offset": 0,
+        "size": 10485760,
+        "sha256": "6bece816cb3d2c6984d7f91a65f8af3ed2ab40c2794df8ab39ad8830213657df"
+      },
+      "__DATA_CONST": {
+        "offset": 10485760,
+        "size": 229376,
+        "sha256": "4f559e2e2e0a4275a144f586d9a96b23f96b26849182a535076dc48f4a1edfd3"
+      },
+      "__DATA": {
+        "offset": 10715136,
+        "size": 16384,
+        "sha256": "bb96201eae549c08f12c70d1dee439994c20036920bf9c8258a661a589f3f3b4"
+      },
+      "__LINKEDIT": {
+        "offset": 10731520,
+        "size": 5409488,
+        "sha256": "e86df8514730474e7ba2b83186c44924451a84b7c26e0331cbf6837c627d2769"
+      }
+    },
+    "cdhash": "770c57d3ddc1f07e8b7c5c1b6c2f9b934f79b1b1",
+    "macho_code_sections": {
+      "__TEXT,__text": {
+        "offset": 3776,
+        "size": 7747644,
+        "sha256": "a4bb566d87effd3b69c8a4b712c9554c74492f037a343b831820b97837550212"
+      }
+    }
+  },
+  {
+    "path": "/private/tmp/msh121-packages/mShogi R6 pending-chess.app",
+    "bundle_id": "org.mshogi.desktop.verification.r6.pendingchess",
+    "bundle_name": "mShogi R6 pending-chess",
+    "display_name": "mShogi R6 pending-chess",
+    "executable": "mshogi-desktop",
+    "version": "0.1.0",
+    "host_sha256": "3699c5988410de6a1f1535f647c6feb5588e06857c6ee6e0908d8e6cf4a49673",
+    "plist_sha256": "0677efa93c3854a56a246b2642bf071d8e09a80e84c8ff0bf3681040d3f80d55",
+    "engine_sha256": {
+      "Contents/MacOS/mshogi": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+    },
+    "codesign_display_exit": 0,
+    "codesign_display": "# designated => cdhash H\"cf7534208778613e0715877ed184675d10dd6133\"\nExecutable=/private/tmp/msh121-packages/mShogi R6 pending-chess.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.pendingchess\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=31720 flags=0x2(adhoc) hashes=984+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=cf7534208778613e0715877ed184675d10dd6133\nCandidateCDHashFull sha256=cf7534208778613e0715877ed184675d10dd613339c3034a2d5d9ad6e9df5044\nHash choices=sha256\nCMSDigest=cf7534208778613e0715877ed184675d10dd613339c3034a2d5d9ad6e9df5044\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10485760\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=cf7534208778613e0715877ed184675d10dd6133\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n",
+    "codesign_verify_exit": 0,
+    "codesign_verify": "--prepared:/private/tmp/msh121-packages/mShogi R6 pending-chess.app/Contents/MacOS/mshogi\n--validated:/private/tmp/msh121-packages/mShogi R6 pending-chess.app/Contents/MacOS/mshogi\n/private/tmp/msh121-packages/mShogi R6 pending-chess.app: valid on disk\n/private/tmp/msh121-packages/mShogi R6 pending-chess.app: satisfies its Designated Requirement\n",
+    "macho_segments": {
+      "__PAGEZERO": {
+        "offset": 0,
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "__TEXT": {
+        "offset": 0,
+        "size": 10485760,
+        "sha256": "6bece816cb3d2c6984d7f91a65f8af3ed2ab40c2794df8ab39ad8830213657df"
+      },
+      "__DATA_CONST": {
+        "offset": 10485760,
+        "size": 229376,
+        "sha256": "4f559e2e2e0a4275a144f586d9a96b23f96b26849182a535076dc48f4a1edfd3"
+      },
+      "__DATA": {
+        "offset": 10715136,
+        "size": 16384,
+        "sha256": "bb96201eae549c08f12c70d1dee439994c20036920bf9c8258a661a589f3f3b4"
+      },
+      "__LINKEDIT": {
+        "offset": 10731520,
+        "size": 5409488,
+        "sha256": "10135c8f7715360d2dc70868d46dbbb7fa99e3eae649616990d3c73d1fe3a7b0"
+      }
+    },
+    "cdhash": "cf7534208778613e0715877ed184675d10dd6133",
+    "macho_code_sections": {
+      "__TEXT,__text": {
+        "offset": 3776,
+        "size": 7747644,
+        "sha256": "a4bb566d87effd3b69c8a4b712c9554c74492f037a343b831820b97837550212"
+      }
+    }
+  },
+  {
+    "path": "/private/tmp/msh121-packages/mShogi R6 pending-shogi.app",
+    "bundle_id": "org.mshogi.desktop.verification.r6.pendingshogi",
+    "bundle_name": "mShogi R6 pending-shogi",
+    "display_name": "mShogi R6 pending-shogi",
+    "executable": "mshogi-desktop",
+    "version": "0.1.0",
+    "host_sha256": "1287eb5f7b99e63d8b40656dba38b9bbca243af83e59ee56a6fb4832a2a39a57",
+    "plist_sha256": "fc33e7c0db0523b5e6439805c468ad8208ca7dc351f8cce7261c7d73e86036ec",
+    "engine_sha256": {
+      "Contents/MacOS/mshogi": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+    },
+    "codesign_display_exit": 0,
+    "codesign_display": "# designated => cdhash H\"230724128efbe64861f425359a759735498a65c9\"\nExecutable=/private/tmp/msh121-packages/mShogi R6 pending-shogi.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.pendingshogi\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=31720 flags=0x2(adhoc) hashes=984+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=230724128efbe64861f425359a759735498a65c9\nCandidateCDHashFull sha256=230724128efbe64861f425359a759735498a65c90de4ae8f6e4750e63781d947\nHash choices=sha256\nCMSDigest=230724128efbe64861f425359a759735498a65c90de4ae8f6e4750e63781d947\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10485760\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=230724128efbe64861f425359a759735498a65c9\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n",
+    "codesign_verify_exit": 0,
+    "codesign_verify": "--prepared:/private/tmp/msh121-packages/mShogi R6 pending-shogi.app/Contents/MacOS/mshogi\n--validated:/private/tmp/msh121-packages/mShogi R6 pending-shogi.app/Contents/MacOS/mshogi\n/private/tmp/msh121-packages/mShogi R6 pending-shogi.app: valid on disk\n/private/tmp/msh121-packages/mShogi R6 pending-shogi.app: satisfies its Designated Requirement\n",
+    "macho_segments": {
+      "__PAGEZERO": {
+        "offset": 0,
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "__TEXT": {
+        "offset": 0,
+        "size": 10485760,
+        "sha256": "6bece816cb3d2c6984d7f91a65f8af3ed2ab40c2794df8ab39ad8830213657df"
+      },
+      "__DATA_CONST": {
+        "offset": 10485760,
+        "size": 229376,
+        "sha256": "4f559e2e2e0a4275a144f586d9a96b23f96b26849182a535076dc48f4a1edfd3"
+      },
+      "__DATA": {
+        "offset": 10715136,
+        "size": 16384,
+        "sha256": "bb96201eae549c08f12c70d1dee439994c20036920bf9c8258a661a589f3f3b4"
+      },
+      "__LINKEDIT": {
+        "offset": 10731520,
+        "size": 5409488,
+        "sha256": "0920e93c1ee6f8c69501b2e32572f3db8be99b907cdec62ee28cf3a0af9ccee1"
+      }
+    },
+    "cdhash": "230724128efbe64861f425359a759735498a65c9",
+    "macho_code_sections": {
+      "__TEXT,__text": {
+        "offset": 3776,
+        "size": 7747644,
+        "sha256": "a4bb566d87effd3b69c8a4b712c9554c74492f037a343b831820b97837550212"
+      }
+    }
+  },
+  {
+    "path": "/private/tmp/msh121-packages/mShogi R6 pending-xiangqi.app",
+    "bundle_id": "org.mshogi.desktop.verification.r6.pendingxiangqi",
+    "bundle_name": "mShogi R6 pending-xiangqi",
+    "display_name": "mShogi R6 pending-xiangqi",
+    "executable": "mshogi-desktop",
+    "version": "0.1.0",
+    "host_sha256": "cf45278c07dfd02d00e9005e6442b739235825f7bcab94e63d5be17d0cc68ea2",
+    "plist_sha256": "08e23695fbcf90ae1215c47c11a7975ba0faec292fbec95c48a4d47afef16b2f",
+    "engine_sha256": {
+      "Contents/MacOS/mshogi": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+    },
+    "codesign_display_exit": 0,
+    "codesign_display": "# designated => cdhash H\"ffa8d56a62f9a50133c1c1b29ef83e16680139cd\"\nExecutable=/private/tmp/msh121-packages/mShogi R6 pending-xiangqi.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.pendingxiangqi\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=31722 flags=0x2(adhoc) hashes=984+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=ffa8d56a62f9a50133c1c1b29ef83e16680139cd\nCandidateCDHashFull sha256=ffa8d56a62f9a50133c1c1b29ef83e16680139cd133598add7a7118f88933e82\nHash choices=sha256\nCMSDigest=ffa8d56a62f9a50133c1c1b29ef83e16680139cd133598add7a7118f88933e82\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10485760\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=ffa8d56a62f9a50133c1c1b29ef83e16680139cd\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n",
+    "codesign_verify_exit": 0,
+    "codesign_verify": "--prepared:/private/tmp/msh121-packages/mShogi R6 pending-xiangqi.app/Contents/MacOS/mshogi\n--validated:/private/tmp/msh121-packages/mShogi R6 pending-xiangqi.app/Contents/MacOS/mshogi\n/private/tmp/msh121-packages/mShogi R6 pending-xiangqi.app: valid on disk\n/private/tmp/msh121-packages/mShogi R6 pending-xiangqi.app: satisfies its Designated Requirement\n",
+    "macho_segments": {
+      "__PAGEZERO": {
+        "offset": 0,
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "__TEXT": {
+        "offset": 0,
+        "size": 10485760,
+        "sha256": "6bece816cb3d2c6984d7f91a65f8af3ed2ab40c2794df8ab39ad8830213657df"
+      },
+      "__DATA_CONST": {
+        "offset": 10485760,
+        "size": 229376,
+        "sha256": "4f559e2e2e0a4275a144f586d9a96b23f96b26849182a535076dc48f4a1edfd3"
+      },
+      "__DATA": {
+        "offset": 10715136,
+        "size": 16384,
+        "sha256": "bb96201eae549c08f12c70d1dee439994c20036920bf9c8258a661a589f3f3b4"
+      },
+      "__LINKEDIT": {
+        "offset": 10731520,
+        "size": 5409488,
+        "sha256": "7d15afbddcb9846bc54aec0e45f722d43eda9125fce1974d9919e54c86b8be21"
+      }
+    },
+    "cdhash": "ffa8d56a62f9a50133c1c1b29ef83e16680139cd",
+    "macho_code_sections": {
+      "__TEXT,__text": {
+        "offset": 3776,
+        "size": 7747644,
+        "sha256": "a4bb566d87effd3b69c8a4b712c9554c74492f037a343b831820b97837550212"
+      }
+    }
+  },
+  {
+    "path": "/private/tmp/msh121-packages/mShogi R6 promotion.app",
+    "bundle_id": "org.mshogi.desktop.verification.r6.promotion",
+    "bundle_name": "mShogi R6 promotion",
+    "display_name": "mShogi R6 promotion",
+    "executable": "mshogi-desktop",
+    "version": "0.1.0",
+    "host_sha256": "196b86f6379b2a86caa6488a05a8d588f227c1e4e8a3fbccbe27f64539fd96d1",
+    "plist_sha256": "3bf9b3d8c3a41691045c8f6af44bf47f626cb0ea58c08be2b57f6112d1bc0c65",
+    "engine_sha256": {
+      "Contents/MacOS/mshogi": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+    },
+    "codesign_display_exit": 0,
+    "codesign_display": "# designated => cdhash H\"e0766e238a3edbeb9a59503143f446e5bb77a2fe\"\nExecutable=/private/tmp/msh121-packages/mShogi R6 promotion.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.promotion\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=31717 flags=0x2(adhoc) hashes=984+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=e0766e238a3edbeb9a59503143f446e5bb77a2fe\nCandidateCDHashFull sha256=e0766e238a3edbeb9a59503143f446e5bb77a2feae2c3b0e75c8cb3b8b5d9503\nHash choices=sha256\nCMSDigest=e0766e238a3edbeb9a59503143f446e5bb77a2feae2c3b0e75c8cb3b8b5d9503\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10485760\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=e0766e238a3edbeb9a59503143f446e5bb77a2fe\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n",
+    "codesign_verify_exit": 0,
+    "codesign_verify": "--prepared:/private/tmp/msh121-packages/mShogi R6 promotion.app/Contents/MacOS/mshogi\n--validated:/private/tmp/msh121-packages/mShogi R6 promotion.app/Contents/MacOS/mshogi\n/private/tmp/msh121-packages/mShogi R6 promotion.app: valid on disk\n/private/tmp/msh121-packages/mShogi R6 promotion.app: satisfies its Designated Requirement\n",
+    "macho_segments": {
+      "__PAGEZERO": {
+        "offset": 0,
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "__TEXT": {
+        "offset": 0,
+        "size": 10485760,
+        "sha256": "6bece816cb3d2c6984d7f91a65f8af3ed2ab40c2794df8ab39ad8830213657df"
+      },
+      "__DATA_CONST": {
+        "offset": 10485760,
+        "size": 229376,
+        "sha256": "4f559e2e2e0a4275a144f586d9a96b23f96b26849182a535076dc48f4a1edfd3"
+      },
+      "__DATA": {
+        "offset": 10715136,
+        "size": 16384,
+        "sha256": "bb96201eae549c08f12c70d1dee439994c20036920bf9c8258a661a589f3f3b4"
+      },
+      "__LINKEDIT": {
+        "offset": 10731520,
+        "size": 5409488,
+        "sha256": "f62ef77b402dccb37528d20afb85777b70d96cded5f38066bb1c1fda26978412"
+      }
+    },
+    "cdhash": "e0766e238a3edbeb9a59503143f446e5bb77a2fe",
+    "macho_code_sections": {
+      "__TEXT,__text": {
+        "offset": 3776,
+        "size": 7747644,
+        "sha256": "a4bb566d87effd3b69c8a4b712c9554c74492f037a343b831820b97837550212"
+      }
+    }
+  },
+  {
+    "path": "/private/tmp/msh121-packages/mShogi R6 shogi-declaration.app",
+    "bundle_id": "org.mshogi.desktop.verification.r6.shogideclaration",
+    "bundle_name": "mShogi R6 shogi-declaration",
+    "display_name": "mShogi R6 shogi-declaration",
+    "executable": "mshogi-desktop",
+    "version": "0.1.0",
+    "host_sha256": "2b520eb79d0a24f38ed68eec9fa9de989b5ff4fadb95720516c1f40a1558482e",
+    "plist_sha256": "ec46f11db12824d17d362b7e392c2bc3387bff455df8ad1e65bf5e80bb3ad67e",
+    "engine_sha256": {
+      "Contents/MacOS/mshogi": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+    },
+    "codesign_display_exit": 0,
+    "codesign_display": "# designated => cdhash H\"f514f8e2bd0237e6fec40561988c4378de97d07f\"\nExecutable=/private/tmp/msh121-packages/mShogi R6 shogi-declaration.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.shogideclaration\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=31724 flags=0x2(adhoc) hashes=984+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=f514f8e2bd0237e6fec40561988c4378de97d07f\nCandidateCDHashFull sha256=f514f8e2bd0237e6fec40561988c4378de97d07f2a8647c2fdb32e3a36818b99\nHash choices=sha256\nCMSDigest=f514f8e2bd0237e6fec40561988c4378de97d07f2a8647c2fdb32e3a36818b99\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10485760\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=f514f8e2bd0237e6fec40561988c4378de97d07f\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n",
+    "codesign_verify_exit": 0,
+    "codesign_verify": "--prepared:/private/tmp/msh121-packages/mShogi R6 shogi-declaration.app/Contents/MacOS/mshogi\n--validated:/private/tmp/msh121-packages/mShogi R6 shogi-declaration.app/Contents/MacOS/mshogi\n/private/tmp/msh121-packages/mShogi R6 shogi-declaration.app: valid on disk\n/private/tmp/msh121-packages/mShogi R6 shogi-declaration.app: satisfies its Designated Requirement\n",
+    "macho_segments": {
+      "__PAGEZERO": {
+        "offset": 0,
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "__TEXT": {
+        "offset": 0,
+        "size": 10485760,
+        "sha256": "6bece816cb3d2c6984d7f91a65f8af3ed2ab40c2794df8ab39ad8830213657df"
+      },
+      "__DATA_CONST": {
+        "offset": 10485760,
+        "size": 229376,
+        "sha256": "4f559e2e2e0a4275a144f586d9a96b23f96b26849182a535076dc48f4a1edfd3"
+      },
+      "__DATA": {
+        "offset": 10715136,
+        "size": 16384,
+        "sha256": "bb96201eae549c08f12c70d1dee439994c20036920bf9c8258a661a589f3f3b4"
+      },
+      "__LINKEDIT": {
+        "offset": 10731520,
+        "size": 5409488,
+        "sha256": "ca036c613bb64a01765dd7c1c703010a92535c479bd497c22727b7553dc3fa95"
+      }
+    },
+    "cdhash": "f514f8e2bd0237e6fec40561988c4378de97d07f",
+    "macho_code_sections": {
+      "__TEXT,__text": {
+        "offset": 3776,
+        "size": 7747644,
+        "sha256": "a4bb566d87effd3b69c8a4b712c9554c74492f037a343b831820b97837550212"
+      }
+    }
+  },
+  {
+    "path": "/private/tmp/msh121-packages/mShogi R6 shogi-failure.app",
+    "bundle_id": "org.mshogi.desktop.verification.r6.shogifailure",
+    "bundle_name": "mShogi R6 shogi-failure",
+    "display_name": "mShogi R6 shogi-failure",
+    "executable": "mshogi-desktop",
+    "version": "0.1.0",
+    "host_sha256": "aa1b40b19acfce475c987ec239ec8bb03a69b6c433c4611ab396d7f757863d36",
+    "plist_sha256": "1d34b8239b19da0179724099bd9bb1e3670bad99fdd03b85048aef33ac18346c",
+    "engine_sha256": {
+      "Contents/MacOS/mshogi": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+    },
+    "codesign_display_exit": 0,
+    "codesign_display": "# designated => cdhash H\"a6ae6b3f6a926947a39c272722190e385847dfe0\"\nExecutable=/private/tmp/msh121-packages/mShogi R6 shogi-failure.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.shogifailure\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=31720 flags=0x2(adhoc) hashes=984+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=a6ae6b3f6a926947a39c272722190e385847dfe0\nCandidateCDHashFull sha256=a6ae6b3f6a926947a39c272722190e385847dfe02377d9e72e2c13fcd093b5e0\nHash choices=sha256\nCMSDigest=a6ae6b3f6a926947a39c272722190e385847dfe02377d9e72e2c13fcd093b5e0\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10485760\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=a6ae6b3f6a926947a39c272722190e385847dfe0\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n",
+    "codesign_verify_exit": 0,
+    "codesign_verify": "--prepared:/private/tmp/msh121-packages/mShogi R6 shogi-failure.app/Contents/MacOS/mshogi\n--validated:/private/tmp/msh121-packages/mShogi R6 shogi-failure.app/Contents/MacOS/mshogi\n/private/tmp/msh121-packages/mShogi R6 shogi-failure.app: valid on disk\n/private/tmp/msh121-packages/mShogi R6 shogi-failure.app: satisfies its Designated Requirement\n",
+    "macho_segments": {
+      "__PAGEZERO": {
+        "offset": 0,
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "__TEXT": {
+        "offset": 0,
+        "size": 10485760,
+        "sha256": "6bece816cb3d2c6984d7f91a65f8af3ed2ab40c2794df8ab39ad8830213657df"
+      },
+      "__DATA_CONST": {
+        "offset": 10485760,
+        "size": 229376,
+        "sha256": "4f559e2e2e0a4275a144f586d9a96b23f96b26849182a535076dc48f4a1edfd3"
+      },
+      "__DATA": {
+        "offset": 10715136,
+        "size": 16384,
+        "sha256": "bb96201eae549c08f12c70d1dee439994c20036920bf9c8258a661a589f3f3b4"
+      },
+      "__LINKEDIT": {
+        "offset": 10731520,
+        "size": 5409488,
+        "sha256": "b8d86e1bb19987240a04133c12026f7288ebf39ec17b2d23899054cf887a2b00"
+      }
+    },
+    "cdhash": "a6ae6b3f6a926947a39c272722190e385847dfe0",
+    "macho_code_sections": {
+      "__TEXT,__text": {
+        "offset": 3776,
+        "size": 7747644,
+        "sha256": "a4bb566d87effd3b69c8a4b712c9554c74492f037a343b831820b97837550212"
+      }
+    }
+  },
+  {
+    "path": "/private/tmp/msh121-packages/mShogi R6 shogi-hands.app",
+    "bundle_id": "org.mshogi.desktop.verification.r6.shogihands",
+    "bundle_name": "mShogi R6 shogi-hands",
+    "display_name": "mShogi R6 shogi-hands",
+    "executable": "mshogi-desktop",
+    "version": "0.1.0",
+    "host_sha256": "b95c192d971516257b099bcbb9def4874fc70a012efbb9455bf26f706bdb4e0c",
+    "plist_sha256": "1490a114cb1719ddd8b2a3b75e2eb08050aa7e2b63cfa49a848ad55058697bf7",
+    "engine_sha256": {
+      "Contents/MacOS/mshogi": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+    },
+    "codesign_display_exit": 0,
+    "codesign_display": "# designated => cdhash H\"8f858cb16bd4e19d1d5a9546abb09c195e25626d\"\nExecutable=/private/tmp/msh121-packages/mShogi R6 shogi-hands.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.shogihands\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=31718 flags=0x2(adhoc) hashes=984+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=8f858cb16bd4e19d1d5a9546abb09c195e25626d\nCandidateCDHashFull sha256=8f858cb16bd4e19d1d5a9546abb09c195e25626d3187190bf828a6207dadb74e\nHash choices=sha256\nCMSDigest=8f858cb16bd4e19d1d5a9546abb09c195e25626d3187190bf828a6207dadb74e\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10485760\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=8f858cb16bd4e19d1d5a9546abb09c195e25626d\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n",
+    "codesign_verify_exit": 0,
+    "codesign_verify": "--prepared:/private/tmp/msh121-packages/mShogi R6 shogi-hands.app/Contents/MacOS/mshogi\n--validated:/private/tmp/msh121-packages/mShogi R6 shogi-hands.app/Contents/MacOS/mshogi\n/private/tmp/msh121-packages/mShogi R6 shogi-hands.app: valid on disk\n/private/tmp/msh121-packages/mShogi R6 shogi-hands.app: satisfies its Designated Requirement\n",
+    "macho_segments": {
+      "__PAGEZERO": {
+        "offset": 0,
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "__TEXT": {
+        "offset": 0,
+        "size": 10485760,
+        "sha256": "6bece816cb3d2c6984d7f91a65f8af3ed2ab40c2794df8ab39ad8830213657df"
+      },
+      "__DATA_CONST": {
+        "offset": 10485760,
+        "size": 229376,
+        "sha256": "4f559e2e2e0a4275a144f586d9a96b23f96b26849182a535076dc48f4a1edfd3"
+      },
+      "__DATA": {
+        "offset": 10715136,
+        "size": 16384,
+        "sha256": "bb96201eae549c08f12c70d1dee439994c20036920bf9c8258a661a589f3f3b4"
+      },
+      "__LINKEDIT": {
+        "offset": 10731520,
+        "size": 5409488,
+        "sha256": "1d18b10490623eb765a37fa76d3ae95d17440605ac9141d05ff944cb452b9cc6"
+      }
+    },
+    "cdhash": "8f858cb16bd4e19d1d5a9546abb09c195e25626d",
+    "macho_code_sections": {
+      "__TEXT,__text": {
+        "offset": 3776,
+        "size": 7747644,
+        "sha256": "a4bb566d87effd3b69c8a4b712c9554c74492f037a343b831820b97837550212"
+      }
+    }
+  },
+  {
+    "path": "/private/tmp/msh121-packages/mShogi R6 shogi-promotion.app",
+    "bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+    "bundle_name": "mShogi R6 shogi-promotion",
+    "display_name": "mShogi R6 shogi-promotion",
+    "executable": "mshogi-desktop",
+    "version": "0.1.0",
+    "host_sha256": "445912a5b66adc08d27e945ed4c9af87589b0e8dbcdc1a799440bd8ab1901865",
+    "plist_sha256": "d65bd881f4308567717dd92780e7c1b9831158f6513d86e6684ba3c6dddae4af",
+    "engine_sha256": {
+      "Contents/MacOS/mshogi": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+    },
+    "codesign_display_exit": 0,
+    "codesign_display": "# designated => cdhash H\"08b21841350027fa7dfb7550b7272d0333785b66\"\nExecutable=/private/tmp/msh121-packages/mShogi R6 shogi-promotion.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.shogipromotion\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=31722 flags=0x2(adhoc) hashes=984+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=08b21841350027fa7dfb7550b7272d0333785b66\nCandidateCDHashFull sha256=08b21841350027fa7dfb7550b7272d0333785b66e083ee552e553d11e34dbc73\nHash choices=sha256\nCMSDigest=08b21841350027fa7dfb7550b7272d0333785b66e083ee552e553d11e34dbc73\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10485760\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=08b21841350027fa7dfb7550b7272d0333785b66\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n",
+    "codesign_verify_exit": 0,
+    "codesign_verify": "--prepared:/private/tmp/msh121-packages/mShogi R6 shogi-promotion.app/Contents/MacOS/mshogi\n--validated:/private/tmp/msh121-packages/mShogi R6 shogi-promotion.app/Contents/MacOS/mshogi\n/private/tmp/msh121-packages/mShogi R6 shogi-promotion.app: valid on disk\n/private/tmp/msh121-packages/mShogi R6 shogi-promotion.app: satisfies its Designated Requirement\n",
+    "macho_segments": {
+      "__PAGEZERO": {
+        "offset": 0,
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "__TEXT": {
+        "offset": 0,
+        "size": 10485760,
+        "sha256": "6bece816cb3d2c6984d7f91a65f8af3ed2ab40c2794df8ab39ad8830213657df"
+      },
+      "__DATA_CONST": {
+        "offset": 10485760,
+        "size": 229376,
+        "sha256": "4f559e2e2e0a4275a144f586d9a96b23f96b26849182a535076dc48f4a1edfd3"
+      },
+      "__DATA": {
+        "offset": 10715136,
+        "size": 16384,
+        "sha256": "bb96201eae549c08f12c70d1dee439994c20036920bf9c8258a661a589f3f3b4"
+      },
+      "__LINKEDIT": {
+        "offset": 10731520,
+        "size": 5409488,
+        "sha256": "991ef29a2e17cc555145c133fff976296ae0dd7dcabab3d9541015f8934b9575"
+      }
+    },
+    "cdhash": "08b21841350027fa7dfb7550b7272d0333785b66",
+    "macho_code_sections": {
+      "__TEXT,__text": {
+        "offset": 3776,
+        "size": 7747644,
+        "sha256": "a4bb566d87effd3b69c8a4b712c9554c74492f037a343b831820b97837550212"
+      }
+    }
+  },
+  {
+    "path": "/private/tmp/msh121-packages/mShogi R6 synthetic.app",
+    "bundle_id": "org.mshogi.desktop.verification.r6.synthetic",
+    "bundle_name": "mShogi R6 synthetic",
+    "display_name": "mShogi R6 synthetic",
+    "executable": "mshogi-desktop",
+    "version": "0.1.0",
+    "host_sha256": "e29a05fbf818f25c854b8edbd27a4bfdf9a74f3c0e133d2b1fca7540821f8823",
+    "plist_sha256": "6db97e140f46d20efefd519ee85b99c5a8768bb39dc13349caec39fda4e4bfb5",
+    "engine_sha256": {
+      "Contents/MacOS/mshogi": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+    },
+    "codesign_display_exit": 0,
+    "codesign_display": "# designated => cdhash H\"14a78a7d29fb9b7be1b3ed1744fe68094e3dbbcd\"\nExecutable=/private/tmp/msh121-packages/mShogi R6 synthetic.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.synthetic\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=31717 flags=0x2(adhoc) hashes=984+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=14a78a7d29fb9b7be1b3ed1744fe68094e3dbbcd\nCandidateCDHashFull sha256=14a78a7d29fb9b7be1b3ed1744fe68094e3dbbcd8be6ce55e1b7fc33fce409a6\nHash choices=sha256\nCMSDigest=14a78a7d29fb9b7be1b3ed1744fe68094e3dbbcd8be6ce55e1b7fc33fce409a6\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10485760\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=14a78a7d29fb9b7be1b3ed1744fe68094e3dbbcd\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n",
+    "codesign_verify_exit": 0,
+    "codesign_verify": "--prepared:/private/tmp/msh121-packages/mShogi R6 synthetic.app/Contents/MacOS/mshogi\n--validated:/private/tmp/msh121-packages/mShogi R6 synthetic.app/Contents/MacOS/mshogi\n/private/tmp/msh121-packages/mShogi R6 synthetic.app: valid on disk\n/private/tmp/msh121-packages/mShogi R6 synthetic.app: satisfies its Designated Requirement\n",
+    "macho_segments": {
+      "__PAGEZERO": {
+        "offset": 0,
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "__TEXT": {
+        "offset": 0,
+        "size": 10485760,
+        "sha256": "6bece816cb3d2c6984d7f91a65f8af3ed2ab40c2794df8ab39ad8830213657df"
+      },
+      "__DATA_CONST": {
+        "offset": 10485760,
+        "size": 229376,
+        "sha256": "4f559e2e2e0a4275a144f586d9a96b23f96b26849182a535076dc48f4a1edfd3"
+      },
+      "__DATA": {
+        "offset": 10715136,
+        "size": 16384,
+        "sha256": "bb96201eae549c08f12c70d1dee439994c20036920bf9c8258a661a589f3f3b4"
+      },
+      "__LINKEDIT": {
+        "offset": 10731520,
+        "size": 5409488,
+        "sha256": "d8ba770679eb172086baa479b9792aad52c90ea919fd04eb99ae828d82196b32"
+      }
+    },
+    "cdhash": "14a78a7d29fb9b7be1b3ed1744fe68094e3dbbcd",
+    "macho_code_sections": {
+      "__TEXT,__text": {
+        "offset": 3776,
+        "size": 7747644,
+        "sha256": "a4bb566d87effd3b69c8a4b712c9554c74492f037a343b831820b97837550212"
+      }
+    }
+  },
+  {
+    "path": "/private/tmp/msh121-packages/mShogi R6 xiangqi-control-capacity.app",
+    "bundle_id": "org.mshogi.desktop.verification.r6.xiangqicontrolcapacity",
+    "bundle_name": "mShogi R6 xiangqi-control-capacity",
+    "display_name": "mShogi R6 xiangqi-control-capacity",
+    "executable": "mshogi-desktop",
+    "version": "0.1.0",
+    "host_sha256": "e968d1d5f3fd2970f28f4c2b778f6528145b62e32ddb85000a33e0da7db28f90",
+    "plist_sha256": "101b0fe4023eaefd1a6757f4f8ff055276bfd4342738e03301a9437d249a73f2",
+    "engine_sha256": {
+      "Contents/MacOS/mshogi": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+    },
+    "codesign_display_exit": 0,
+    "codesign_display": "# designated => cdhash H\"64527c2a991024ddb705bbad98d3090ab290107a\"\nExecutable=/private/tmp/msh121-packages/mShogi R6 xiangqi-control-capacity.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.xiangqicontrolcapacity\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=31730 flags=0x2(adhoc) hashes=984+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=64527c2a991024ddb705bbad98d3090ab290107a\nCandidateCDHashFull sha256=64527c2a991024ddb705bbad98d3090ab290107a46e7b8a226ab6da6543da37d\nHash choices=sha256\nCMSDigest=64527c2a991024ddb705bbad98d3090ab290107a46e7b8a226ab6da6543da37d\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10485760\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=64527c2a991024ddb705bbad98d3090ab290107a\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n",
+    "codesign_verify_exit": 0,
+    "codesign_verify": "--prepared:/private/tmp/msh121-packages/mShogi R6 xiangqi-control-capacity.app/Contents/MacOS/mshogi\n--validated:/private/tmp/msh121-packages/mShogi R6 xiangqi-control-capacity.app/Contents/MacOS/mshogi\n/private/tmp/msh121-packages/mShogi R6 xiangqi-control-capacity.app: valid on disk\n/private/tmp/msh121-packages/mShogi R6 xiangqi-control-capacity.app: satisfies its Designated Requirement\n",
+    "macho_segments": {
+      "__PAGEZERO": {
+        "offset": 0,
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "__TEXT": {
+        "offset": 0,
+        "size": 10485760,
+        "sha256": "e0e2fb8f14927954e427623c4c0dd54c43bba33792c555d3d48d994c19698827"
+      },
+      "__DATA_CONST": {
+        "offset": 10485760,
+        "size": 229376,
+        "sha256": "4f559e2e2e0a4275a144f586d9a96b23f96b26849182a535076dc48f4a1edfd3"
+      },
+      "__DATA": {
+        "offset": 10715136,
+        "size": 16384,
+        "sha256": "bb96201eae549c08f12c70d1dee439994c20036920bf9c8258a661a589f3f3b4"
+      },
+      "__LINKEDIT": {
+        "offset": 10731520,
+        "size": 5409504,
+        "sha256": "59b5764e0ea2c652814445cff428dd262fea717a78da2363f52abb2089e5aa83"
+      }
+    },
+    "cdhash": "64527c2a991024ddb705bbad98d3090ab290107a",
+    "macho_code_sections": {
+      "__TEXT,__text": {
+        "offset": 3776,
+        "size": 7747644,
+        "sha256": "a4bb566d87effd3b69c8a4b712c9554c74492f037a343b831820b97837550212"
+      }
+    }
+  },
+  {
+    "path": "/private/tmp/msh121-packages/mShogi R6 xiangqi-count.app",
+    "bundle_id": "org.mshogi.desktop.verification.r6.xiangqicount",
+    "bundle_name": "mShogi R6 xiangqi-count",
+    "display_name": "mShogi R6 xiangqi-count",
+    "executable": "mshogi-desktop",
+    "version": "0.1.0",
+    "host_sha256": "b19abe29bc61515afef98366fd76dfc59ac19d6c556e4c7d7a5a8610297959fd",
+    "plist_sha256": "b4cfc12ff0b6531378e9a753be1eed965e5e532d097c59579e29f88ee613a30a",
+    "engine_sha256": {
+      "Contents/MacOS/mshogi": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+    },
+    "codesign_display_exit": 0,
+    "codesign_display": "# designated => cdhash H\"36307ac020cb5529ef5d3b41ddc36b7653f1d987\"\nExecutable=/private/tmp/msh121-packages/mShogi R6 xiangqi-count.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.xiangqicount\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=31720 flags=0x2(adhoc) hashes=984+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=36307ac020cb5529ef5d3b41ddc36b7653f1d987\nCandidateCDHashFull sha256=36307ac020cb5529ef5d3b41ddc36b7653f1d98759f40362a8a358b79f1a8b2a\nHash choices=sha256\nCMSDigest=36307ac020cb5529ef5d3b41ddc36b7653f1d98759f40362a8a358b79f1a8b2a\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10485760\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=36307ac020cb5529ef5d3b41ddc36b7653f1d987\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n",
+    "codesign_verify_exit": 0,
+    "codesign_verify": "--prepared:/private/tmp/msh121-packages/mShogi R6 xiangqi-count.app/Contents/MacOS/mshogi\n--validated:/private/tmp/msh121-packages/mShogi R6 xiangqi-count.app/Contents/MacOS/mshogi\n/private/tmp/msh121-packages/mShogi R6 xiangqi-count.app: valid on disk\n/private/tmp/msh121-packages/mShogi R6 xiangqi-count.app: satisfies its Designated Requirement\n",
+    "macho_segments": {
+      "__PAGEZERO": {
+        "offset": 0,
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "__TEXT": {
+        "offset": 0,
+        "size": 10485760,
+        "sha256": "6bece816cb3d2c6984d7f91a65f8af3ed2ab40c2794df8ab39ad8830213657df"
+      },
+      "__DATA_CONST": {
+        "offset": 10485760,
+        "size": 229376,
+        "sha256": "4f559e2e2e0a4275a144f586d9a96b23f96b26849182a535076dc48f4a1edfd3"
+      },
+      "__DATA": {
+        "offset": 10715136,
+        "size": 16384,
+        "sha256": "bb96201eae549c08f12c70d1dee439994c20036920bf9c8258a661a589f3f3b4"
+      },
+      "__LINKEDIT": {
+        "offset": 10731520,
+        "size": 5409488,
+        "sha256": "e710906e0e08d9cce11a9cf56197c7ead0a2ab69d3475fd684aba9116e21e343"
+      }
+    },
+    "cdhash": "36307ac020cb5529ef5d3b41ddc36b7653f1d987",
+    "macho_code_sections": {
+      "__TEXT,__text": {
+        "offset": 3776,
+        "size": 7747644,
+        "sha256": "a4bb566d87effd3b69c8a4b712c9554c74492f037a343b831820b97837550212"
+      }
+    }
+  },
+  {
+    "path": "/private/tmp/msh121-packages/mShogi R6 xiangqi-exact-evidence.app",
+    "bundle_id": "org.mshogi.desktop.verification.r6.xiangqiexactevidence",
+    "bundle_name": "mShogi R6 xiangqi-exact-evidence",
+    "display_name": "mShogi R6 xiangqi-exact-evidence",
+    "executable": "mshogi-desktop",
+    "version": "0.1.0",
+    "host_sha256": "9557817df9455a03d1ffbd9b38e2284a0e7c8d1c32c9cd4d3499166d45fc266d",
+    "plist_sha256": "584a360a671dbe1f685405b6a80a8f7f68b0d3b2d385257f8cc4ec01f99a7651",
+    "engine_sha256": {
+      "Contents/MacOS/mshogi": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+    },
+    "codesign_display_exit": 0,
+    "codesign_display": "# designated => cdhash H\"1e516249f5fd7622b9d419980c9838a1fac4df65\"\nExecutable=/private/tmp/msh121-packages/mShogi R6 xiangqi-exact-evidence.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.xiangqiexactevidence\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=31728 flags=0x2(adhoc) hashes=984+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=1e516249f5fd7622b9d419980c9838a1fac4df65\nCandidateCDHashFull sha256=1e516249f5fd7622b9d419980c9838a1fac4df659f57c89d7bc25beddead9b76\nHash choices=sha256\nCMSDigest=1e516249f5fd7622b9d419980c9838a1fac4df659f57c89d7bc25beddead9b76\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10485760\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=1e516249f5fd7622b9d419980c9838a1fac4df65\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n",
+    "codesign_verify_exit": 0,
+    "codesign_verify": "--prepared:/private/tmp/msh121-packages/mShogi R6 xiangqi-exact-evidence.app/Contents/MacOS/mshogi\n--validated:/private/tmp/msh121-packages/mShogi R6 xiangqi-exact-evidence.app/Contents/MacOS/mshogi\n/private/tmp/msh121-packages/mShogi R6 xiangqi-exact-evidence.app: valid on disk\n/private/tmp/msh121-packages/mShogi R6 xiangqi-exact-evidence.app: satisfies its Designated Requirement\n",
+    "macho_segments": {
+      "__PAGEZERO": {
+        "offset": 0,
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "__TEXT": {
+        "offset": 0,
+        "size": 10485760,
+        "sha256": "6bece816cb3d2c6984d7f91a65f8af3ed2ab40c2794df8ab39ad8830213657df"
+      },
+      "__DATA_CONST": {
+        "offset": 10485760,
+        "size": 229376,
+        "sha256": "4f559e2e2e0a4275a144f586d9a96b23f96b26849182a535076dc48f4a1edfd3"
+      },
+      "__DATA": {
+        "offset": 10715136,
+        "size": 16384,
+        "sha256": "bb96201eae549c08f12c70d1dee439994c20036920bf9c8258a661a589f3f3b4"
+      },
+      "__LINKEDIT": {
+        "offset": 10731520,
+        "size": 5409488,
+        "sha256": "49bf227458bc9ee6e863cad992baa4d2caecc9ab5b3909110b41e94fd91d9855"
+      }
+    },
+    "cdhash": "1e516249f5fd7622b9d419980c9838a1fac4df65",
+    "macho_code_sections": {
+      "__TEXT,__text": {
+        "offset": 3776,
+        "size": 7747644,
+        "sha256": "a4bb566d87effd3b69c8a4b712c9554c74492f037a343b831820b97837550212"
+      }
+    }
+  },
+  {
+    "path": "/private/tmp/msh121-packages/mShogi R6 xiangqi-failure.app",
+    "bundle_id": "org.mshogi.desktop.verification.r6.xiangqifailure",
+    "bundle_name": "mShogi R6 xiangqi-failure",
+    "display_name": "mShogi R6 xiangqi-failure",
+    "executable": "mshogi-desktop",
+    "version": "0.1.0",
+    "host_sha256": "33ffecde5b37ca9fe2ff78052005893ad61ce047a014d7b89f2fa85ec57923a9",
+    "plist_sha256": "d1dbd745c9bd30204330210093b6848a73c1368dfa8b2a0838b0177085cf062a",
+    "engine_sha256": {
+      "Contents/MacOS/mshogi": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+    },
+    "codesign_display_exit": 0,
+    "codesign_display": "# designated => cdhash H\"cff1eb133e23bd6c3d3dd1341fbd267a2d9729a8\"\nExecutable=/private/tmp/msh121-packages/mShogi R6 xiangqi-failure.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.xiangqifailure\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=31722 flags=0x2(adhoc) hashes=984+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=cff1eb133e23bd6c3d3dd1341fbd267a2d9729a8\nCandidateCDHashFull sha256=cff1eb133e23bd6c3d3dd1341fbd267a2d9729a83b0bec13e8f610e0e17f64d2\nHash choices=sha256\nCMSDigest=cff1eb133e23bd6c3d3dd1341fbd267a2d9729a83b0bec13e8f610e0e17f64d2\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10485760\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=cff1eb133e23bd6c3d3dd1341fbd267a2d9729a8\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n",
+    "codesign_verify_exit": 0,
+    "codesign_verify": "--prepared:/private/tmp/msh121-packages/mShogi R6 xiangqi-failure.app/Contents/MacOS/mshogi\n--validated:/private/tmp/msh121-packages/mShogi R6 xiangqi-failure.app/Contents/MacOS/mshogi\n/private/tmp/msh121-packages/mShogi R6 xiangqi-failure.app: valid on disk\n/private/tmp/msh121-packages/mShogi R6 xiangqi-failure.app: satisfies its Designated Requirement\n",
+    "macho_segments": {
+      "__PAGEZERO": {
+        "offset": 0,
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "__TEXT": {
+        "offset": 0,
+        "size": 10485760,
+        "sha256": "6bece816cb3d2c6984d7f91a65f8af3ed2ab40c2794df8ab39ad8830213657df"
+      },
+      "__DATA_CONST": {
+        "offset": 10485760,
+        "size": 229376,
+        "sha256": "4f559e2e2e0a4275a144f586d9a96b23f96b26849182a535076dc48f4a1edfd3"
+      },
+      "__DATA": {
+        "offset": 10715136,
+        "size": 16384,
+        "sha256": "bb96201eae549c08f12c70d1dee439994c20036920bf9c8258a661a589f3f3b4"
+      },
+      "__LINKEDIT": {
+        "offset": 10731520,
+        "size": 5409488,
+        "sha256": "512a6ac743f86b78553a70ec75de4bdad1bc53630db6b374ed5d5dba1e8fdf95"
+      }
+    },
+    "cdhash": "cff1eb133e23bd6c3d3dd1341fbd267a2d9729a8",
+    "macho_code_sections": {
+      "__TEXT,__text": {
+        "offset": 3776,
+        "size": 7747644,
+        "sha256": "a4bb566d87effd3b69c8a4b712c9554c74492f037a343b831820b97837550212"
+      }
+    }
+  },
+  {
+    "path": "/private/tmp/msh121-packages/mShogi R6 xiangqi-warning.app",
+    "bundle_id": "org.mshogi.desktop.verification.r6.xiangqiwarning",
+    "bundle_name": "mShogi R6 xiangqi-warning",
+    "display_name": "mShogi R6 xiangqi-warning",
+    "executable": "mshogi-desktop",
+    "version": "0.1.0",
+    "host_sha256": "9770dad9e696e85ade937cb76882e82faca5fc089b31e0d87271ea8e10014773",
+    "plist_sha256": "69e5fe67c3a3a52ebff9b861c724ff4949740e4f4c532400fb1edb3b69d81a31",
+    "engine_sha256": {
+      "Contents/MacOS/mshogi": "bd0018b7c8444b253a816222cac145f6991256490a0edec09e8eb6fb47829eda"
+    },
+    "codesign_display_exit": 0,
+    "codesign_display": "# designated => cdhash H\"c38da550327f8dcfe36d034cf81ad08bda1d6941\"\nExecutable=/private/tmp/msh121-packages/mShogi R6 xiangqi-warning.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.xiangqiwarning\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=31722 flags=0x2(adhoc) hashes=984+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=c38da550327f8dcfe36d034cf81ad08bda1d6941\nCandidateCDHashFull sha256=c38da550327f8dcfe36d034cf81ad08bda1d6941b4a5356c1f5e47995e0f6afb\nHash choices=sha256\nCMSDigest=c38da550327f8dcfe36d034cf81ad08bda1d6941b4a5356c1f5e47995e0f6afb\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10485760\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=c38da550327f8dcfe36d034cf81ad08bda1d6941\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n",
+    "codesign_verify_exit": 0,
+    "codesign_verify": "--prepared:/private/tmp/msh121-packages/mShogi R6 xiangqi-warning.app/Contents/MacOS/mshogi\n--validated:/private/tmp/msh121-packages/mShogi R6 xiangqi-warning.app/Contents/MacOS/mshogi\n/private/tmp/msh121-packages/mShogi R6 xiangqi-warning.app: valid on disk\n/private/tmp/msh121-packages/mShogi R6 xiangqi-warning.app: satisfies its Designated Requirement\n",
+    "macho_segments": {
+      "__PAGEZERO": {
+        "offset": 0,
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "__TEXT": {
+        "offset": 0,
+        "size": 10485760,
+        "sha256": "6bece816cb3d2c6984d7f91a65f8af3ed2ab40c2794df8ab39ad8830213657df"
+      },
+      "__DATA_CONST": {
+        "offset": 10485760,
+        "size": 229376,
+        "sha256": "4f559e2e2e0a4275a144f586d9a96b23f96b26849182a535076dc48f4a1edfd3"
+      },
+      "__DATA": {
+        "offset": 10715136,
+        "size": 16384,
+        "sha256": "bb96201eae549c08f12c70d1dee439994c20036920bf9c8258a661a589f3f3b4"
+      },
+      "__LINKEDIT": {
+        "offset": 10731520,
+        "size": 5409488,
+        "sha256": "fd68a96b300eb9a862c921028c351bedd3d502605fe3cb367170fdb894c318ef"
+      }
+    },
+    "cdhash": "c38da550327f8dcfe36d034cf81ad08bda1d6941",
+    "macho_code_sections": {
+      "__TEXT,__text": {
+        "offset": 3776,
+        "size": 7747644,
+        "sha256": "a4bb566d87effd3b69c8a4b712c9554c74492f037a343b831820b97837550212"
+      }
+    }
+  },
+  {
+    "path": "/private/tmp/msh121-packages/mShogi Verification.app",
+    "bundle_id": "org.mshogi.desktop.verification",
+    "bundle_name": "mShogi Verification",
+    "display_name": "mShogi Verification",
+    "executable": "mshogi-desktop",
+    "version": "0.1.0",
+    "host_sha256": "3f8aa95de98e35be5d1f14b829d1e3fce5bc3350b878ff6169c09371652be4f1",
+    "plist_sha256": "166a320e22c63d1fea58096a8b4e25432753d73fe439fe3797b738473f828172",
+    "engine_sha256": {
+      "Contents/MacOS/mshogi": "92592cb2a4f5ed57ed1b62498b7d288e2a4bc01cb4f0f87827eedf762f9ca5d7"
+    },
+    "codesign_display_exit": 0,
+    "codesign_display": "# designated => cdhash H\"5752905c5e65a0192318415154c14fea9abfff2f\"\nExecutable=/private/tmp/msh121-packages/mShogi Verification.app/Contents/MacOS/mshogi-desktop\nIdentifier=mshogi_desktop-db4cea4a035f290f\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=125976 flags=0x20002(adhoc,linker-signed) hashes=3933+0 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=5752905c5e65a0192318415154c14fea9abfff2f\nCandidateCDHashFull sha256=5752905c5e65a0192318415154c14fea9abfff2fbdb6bc4b11df652fd7ae5cf6\nHash choices=sha256\nCMSDigest=5752905c5e65a0192318415154c14fea9abfff2fbdb6bc4b11df652fd7ae5cf6\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10485760\nExecutable Segment flags=0x1\nPage size=4096\nCDHash=5752905c5e65a0192318415154c14fea9abfff2f\nSignature=adhoc\nInfo.plist=not bound\nTeamIdentifier=not set\nSealed Resources=none\n",
+    "codesign_verify_exit": 1,
+    "codesign_verify": "/private/tmp/msh121-packages/mShogi Verification.app: code has no resources but signature indicates they must be present\n",
+    "macho_segments": {
+      "__PAGEZERO": {
+        "offset": 0,
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "__TEXT": {
+        "offset": 0,
+        "size": 10485760,
+        "sha256": "4cff337b91f9636e76e8d82ee799948718f99d53aa7776edff7087357723b68b"
+      },
+      "__DATA_CONST": {
+        "offset": 10485760,
+        "size": 229376,
+        "sha256": "4f559e2e2e0a4275a144f586d9a96b23f96b26849182a535076dc48f4a1edfd3"
+      },
+      "__DATA": {
+        "offset": 10715136,
+        "size": 16384,
+        "sha256": "bb96201eae549c08f12c70d1dee439994c20036920bf9c8258a661a589f3f3b4"
+      },
+      "__LINKEDIT": {
+        "offset": 10731520,
+        "size": 5503696,
+        "sha256": "30b71b67f63bdeb12c85dd2e021583d9bd5ec0dcb7d8276c84a93893daac26f5"
+      }
+    },
+    "cdhash": "5752905c5e65a0192318415154c14fea9abfff2f",
+    "macho_code_sections": {
+      "__TEXT,__text": {
+        "offset": 3776,
+        "size": 7747644,
+        "sha256": "a4bb566d87effd3b69c8a4b712c9554c74492f037a343b831820b97837550212"
+      }
+    }
+  },
+  {
+    "path": "/private/tmp/msh121-packages/mShogi.app",
+    "bundle_id": "org.mshogi.desktop",
+    "bundle_name": "mShogi",
+    "display_name": "mShogi",
+    "executable": "mshogi-desktop",
+    "version": "0.1.0",
+    "host_sha256": "ec8ce8cb9153b5f9bf175aebe0348da0d3669e270b2ddde08f803e49eac2bc7e",
+    "plist_sha256": "343be4b5b0ce533854424094072924e4695b92c95e1c220e1cd7ec09b5a8ce90",
+    "engine_sha256": {
+      "Contents/MacOS/mshogi": "92592cb2a4f5ed57ed1b62498b7d288e2a4bc01cb4f0f87827eedf762f9ca5d7"
+    },
+    "codesign_display_exit": 0,
+    "codesign_display": "# designated => cdhash H\"36fcc92fa56e10a0dcc3ac7d7317c9064f37e5a1\"\nExecutable=/private/tmp/msh121-packages/mShogi.app/Contents/MacOS/mshogi-desktop\nIdentifier=mshogi_desktop-5d1fd20094c6a138\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=123256 flags=0x20002(adhoc,linker-signed) hashes=3848+0 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=36fcc92fa56e10a0dcc3ac7d7317c9064f37e5a1\nCandidateCDHashFull sha256=36fcc92fa56e10a0dcc3ac7d7317c9064f37e5a1743f2f7b3b019aca32ca8fb9\nHash choices=sha256\nCMSDigest=36fcc92fa56e10a0dcc3ac7d7317c9064f37e5a1743f2f7b3b019aca32ca8fb9\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10190848\nExecutable Segment flags=0x1\nPage size=4096\nCDHash=36fcc92fa56e10a0dcc3ac7d7317c9064f37e5a1\nSignature=adhoc\nInfo.plist=not bound\nTeamIdentifier=not set\nSealed Resources=none\n",
+    "codesign_verify_exit": 1,
+    "codesign_verify": "/private/tmp/msh121-packages/mShogi.app: code has no resources but signature indicates they must be present\n",
+    "macho_segments": {
+      "__PAGEZERO": {
+        "offset": 0,
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "__TEXT": {
+        "offset": 0,
+        "size": 10190848,
+        "sha256": "e78ec5d4c401d1a8837ace60c898badc25e31538c6622e9372518c3cb6ed3a8b"
+      },
+      "__DATA_CONST": {
+        "offset": 10190848,
+        "size": 229376,
+        "sha256": "029e7c2ff1f35f1dd3c469da8cbd930ef1535b1bb617ffd10e318ce440af1ba3"
+      },
+      "__DATA": {
+        "offset": 10420224,
+        "size": 16384,
+        "sha256": "d6f9f75673e0f0e175d2dda3cdd1beda727ed5452ca369eba2fcbc149c37f966"
+      },
+      "__LINKEDIT": {
+        "offset": 10436608,
+        "size": 5444672,
+        "sha256": "530eb9b6287f4c39f3741a87593aa31c78ac305fc15584077d46779878b8b579"
+      }
+    },
+    "cdhash": "36fcc92fa56e10a0dcc3ac7d7317c9064f37e5a1",
+    "macho_code_sections": {
+      "__TEXT,__text": {
+        "offset": 3712,
+        "size": 7531388,
+        "sha256": "d2022ba27fe7c8dfbdf0129b85c7381457945b2293f7ca592ddeb55be019f6b9"
+      }
+    }
+  }
+]

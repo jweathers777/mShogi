@@ -1,0 +1,26 @@
+{
+  "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app",
+  "bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+  "expected_bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+  "environment": {
+    "MSHOGI_DESKTOP_FIXTURE_FILE": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/qa.fixture"
+  },
+  "files": {
+    "Contents/Info.plist": "0a16e98931910a2e976eeffe0fdb563ca73ceaf7e60af2548c944d9bc86131da",
+    "Contents/MacOS/mshogi": "9c54babdc56fbb471c1731225d1784da741c070e819365724fb5ec6d8fd7c99d",
+    "Contents/MacOS/mshogi-desktop": "06072357acdb77a686285125bdc30a41b4d41ca54c2425c2bdc777ab972e5dfe",
+    "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc",
+    "Contents/_CodeSignature/CodeResources": "5c3b800d316cd319740d0028a6ad7e42277c476bd71e0344a9791416d623b98a"
+  },
+  "signatures": {
+    "display": {
+      "exit_code": 0,
+      "output": "# designated => cdhash H\"de61155585034f56925c8730c093406b0a5ee37a\"\nExecutable=/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.shogipromotion\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=31690 flags=0x2(adhoc) hashes=983+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=de61155585034f56925c8730c093406b0a5ee37a\nCandidateCDHashFull sha256=de61155585034f56925c8730c093406b0a5ee37a541c075618fe296db544c719\nHash choices=sha256\nCMSDigest=de61155585034f56925c8730c093406b0a5ee37a541c075618fe296db544c719\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10469376\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=de61155585034f56925c8730c093406b0a5ee37a\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n"
+    },
+    "strict_verify": {
+      "exit_code": 0,
+      "output": "--prepared:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n--validated:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: valid on disk\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: satisfies its Designated Requirement\n"
+    }
+  },
+  "qualification": "Ad-hoc signatures may change on rebuild; no approval persistence is inferred"
+}

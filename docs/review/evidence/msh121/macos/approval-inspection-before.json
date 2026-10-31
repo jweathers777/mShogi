@@ -1,0 +1,24 @@
+{
+  "at": "2026-10-31T20:27:39.658632+00:00",
+  "method": "read-only, no permission/config writes",
+  "store": "~/Library/Group Containers/2DC432GLL2.com.openai.sky.CUAService/Library/Application Support/Software/ComputerUseAppApprovals.json",
+  "sha256": "401fe192e9a95516a387311ef66dc1828f897e8a27331a8eb01e76d21be7960d",
+  "schema_keys": [
+    "approvedBundleIdentifiers"
+  ],
+  "approved_mshogi_bundle_identifiers": [
+    "org.mshogi.desktop.verification.r6.currentclaim",
+    "org.mshogi.desktop.verification.r6.shogihands",
+    "org.mshogi.desktop.verification.r6.shogideclaration",
+    "org.mshogi.desktop.verification.r6.xiangqiwarning",
+    "org.mshogi.desktop.verification.r6.pendingchess",
+    "org.mshogi.desktop.verification.r6.pendingshogi",
+    "org.mshogi.desktop.verification.r6.pendingxiangqi",
+    "org.mshogi.desktop.verification.r6.shogifailure",
+    "org.mshogi.desktop.verification.r6.xiangqiexactevidence",
+    "org.mshogi.desktop.verification.r6.synthetic",
+    "org.mshogi.desktop.verification.r6.xiangqicontrolcapacity",
+    "org.mshogi.desktop.verification.r6.shogipromotion"
+  ],
+  "interpretation": "Actual saved list contains exact bundle identifiers. No path/signature/hash fields in this record. Separate runtime policy may still apply; persistence across rebuild must be empirically checked."
+}

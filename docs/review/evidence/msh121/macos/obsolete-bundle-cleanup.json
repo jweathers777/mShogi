@@ -1,0 +1,109 @@
+{
+  "at": "2026-10-31T20:52:56.943131+00:00",
+  "reason": "Completed per-scenario and initial scratch application copies; retained audited metadata, screenshots and exact source references. Fixed normal/QA/synthetic reusable paths remain.",
+  "process_check": "No audited application path in ps -axo pid=,comm= before removal; no product process was terminated.",
+  "removed": [
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 claim.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.claim",
+      "host_sha256": "b550c606d00d295630ff450f1c4463535b90309883f6d396dc311da8b2570455"
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 concluded.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.concluded",
+      "host_sha256": "db85842c2b53a6767d9021a47703ee0f11e42b420d34803a741d1daf7e449588"
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 current-claim.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.currentclaim",
+      "host_sha256": "0c69dd83eb860bf6e51e557fbad75c6877bfeb3f80b15596cebe81363ff7d9f2"
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 full-unknown.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.fullunknown",
+      "host_sha256": "2d125b21f66dda14a35465770ea09e065314ffb78c187f79c965600cfcc5e86f"
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 pending-chess.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.pendingchess",
+      "host_sha256": "3699c5988410de6a1f1535f647c6feb5588e06857c6ee6e0908d8e6cf4a49673"
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 pending-shogi.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.pendingshogi",
+      "host_sha256": "1287eb5f7b99e63d8b40656dba38b9bbca243af83e59ee56a6fb4832a2a39a57"
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 pending-xiangqi.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.pendingxiangqi",
+      "host_sha256": "cf45278c07dfd02d00e9005e6442b739235825f7bcab94e63d5be17d0cc68ea2"
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 promotion.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.promotion",
+      "host_sha256": "196b86f6379b2a86caa6488a05a8d588f227c1e4e8a3fbccbe27f64539fd96d1"
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 shogi-declaration.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.shogideclaration",
+      "host_sha256": "2b520eb79d0a24f38ed68eec9fa9de989b5ff4fadb95720516c1f40a1558482e"
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 shogi-failure.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.shogifailure",
+      "host_sha256": "aa1b40b19acfce475c987ec239ec8bb03a69b6c433c4611ab396d7f757863d36"
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 shogi-hands.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.shogihands",
+      "host_sha256": "b95c192d971516257b099bcbb9def4874fc70a012efbb9455bf26f706bdb4e0c"
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 shogi-promotion.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+      "host_sha256": "445912a5b66adc08d27e945ed4c9af87589b0e8dbcdc1a799440bd8ab1901865"
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 synthetic.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.synthetic",
+      "host_sha256": "e29a05fbf818f25c854b8edbd27a4bfdf9a74f3c0e133d2b1fca7540821f8823"
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 xiangqi-control-capacity.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.xiangqicontrolcapacity",
+      "host_sha256": "e968d1d5f3fd2970f28f4c2b778f6528145b62e32ddb85000a33e0da7db28f90"
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 xiangqi-count.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.xiangqicount",
+      "host_sha256": "b19abe29bc61515afef98366fd76dfc59ac19d6c556e4c7d7a5a8610297959fd"
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 xiangqi-exact-evidence.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.xiangqiexactevidence",
+      "host_sha256": "9557817df9455a03d1ffbd9b38e2284a0e7c8d1c32c9cd4d3499166d45fc266d"
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 xiangqi-failure.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.xiangqifailure",
+      "host_sha256": "33ffecde5b37ca9fe2ff78052005893ad61ce047a014d7b89f2fa85ec57923a9"
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi R6 xiangqi-warning.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.xiangqiwarning",
+      "host_sha256": "9770dad9e696e85ade937cb76882e82faca5fc089b31e0d87271ea8e10014773"
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi Verification.app",
+      "bundle_id": "org.mshogi.desktop.verification",
+      "host_sha256": "3f8aa95de98e35be5d1f14b829d1e3fce5bc3350b878ff6169c09371652be4f1"
+    },
+    {
+      "path": "/private/tmp/msh121-packages/mShogi.app",
+      "bundle_id": "org.mshogi.desktop",
+      "host_sha256": "ec8ce8cb9153b5f9bf175aebe0348da0d3669e270b2ddde08f803e49eac2bc7e"
+    }
+  ],
+  "approval_store_modified": false,
+  "unrelated_worktrees_removed": false
+}

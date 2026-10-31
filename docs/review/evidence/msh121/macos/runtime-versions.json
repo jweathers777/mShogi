@@ -1,0 +1,17 @@
+{
+  "desktop_app": {
+    "CFBundleIdentifier": "com.openai.codex",
+    "CFBundleShortVersionString": "26.1013.40934",
+    "CFBundleVersion": "20770"
+  },
+  "webkit": {
+    "CFBundleIdentifier": "com.apple.WebKit",
+    "CFBundleShortVersionString": "22625",
+    "CFBundleVersion": "22625.1.29.11.28"
+  },
+  "Resources/cua_node/lib/node_modules/@oai/sky/Codex Computer Use.app/Contents/SharedSupport/CUALockScreenGuardian.app/Contents/Info.plist": {
+    "CFBundleIdentifier": "com.openai.sky.CUAService.guardian",
+    "CFBundleShortVersionString": "26.1013.1001501",
+    "CFBundleVersion": "1001501"
+  }
+}

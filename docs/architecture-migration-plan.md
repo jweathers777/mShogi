@@ -3,8 +3,10 @@
 ## Current scheduling refinement — 2026-10-31
 
 MSH-116–119 and122 are Done; their evidence remains historical. MSH-120/R5
-and121/R6 remain unassigned Ready work, with unchecked criteria and no active
-implementation. The owner-approved [post-R4 UX contract](desktop/post-r4-ux.md)
+is Done; its [current source and package evidence](review/native-choice-controller-120.md)
+records the surviving interaction owner, independent review, actual packaged
+interaction and precise native/package CI results. MSH-121/R6 remains unassigned Ready work
+with unchecked criteria and unsatisfied prerequisites. The owner-approved [post-R4 UX contract](desktop/post-r4-ux.md)
 adds three bounded product tasks without reopening119 or expanding R5:
 
 | Task | Complete direct prerequisites | Scope |
@@ -333,3 +335,29 @@ in the [R4 review](review/frontend-application-119.md). Normal packages exclude
 QA instrumentation. The completion commit changes documentation/evidence/task
 records only. MSH-120/R5 is now next dependency-ready and remains unstarted;
 R6, variants and M5 remain unstarted and M4 remains open.
+
+
+## R5 implementation handoff — 2026-10-31
+
+R5 production source7ebab4648ade6d6be6da6220aefc0948558a23a8 supplies one
+`useNativeChoiceController` used by Chess/synthetic Board, native Board adapter,
+ShogiBoard and XiangqiBoard. Selection/prefix/candidates, terminal/continuing
+routes, completions, read-only inspection freshness, cancellation, exactly-one
+complete action and board/hand/completion focus have one owner. Independent
+renderer state machines and the inspection query's duplicate lifecycle are
+removed. Geometry/art/hands/native labels stay specialized within R4 sections.
+
+Separate readonly `CompletedActionGeometry` props preserve123's origin category
+and ordered route handoff, without deriving history or rendering new last-move
+cues.123 owns all native selected-prefix mapping, notation/Moves and cue product
+behavior.124/125/121 remain unstarted. Their existing dependencies are unchanged.
+
+The separate synthetic verification layout39ab0c1 fixes the actual Linux
+post-completion clipping finding with a bounded board/route region and separate
+scrolling diagnostics. Normal product code/assets are unchanged. Historical
+failed probes, source/GUI/platform distinctions, independent review and exact
+package identities are retained in the [R5 review](review/native-choice-controller-120.md).
+R5 is Done after independent final review and accepted three-platform package
+evidence. The unchanged native CI evidence is reused and the separate MSH-112
+race failure remains explicitly recorded.123 is now dependency-ready alongside
+124/125; no subsequent task starts automatically.

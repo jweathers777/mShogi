@@ -6,6 +6,7 @@ title: >-
 status: Ready
 assignee: []
 created_date: '2026-10-30T12:06:00Z'
+updated_date: '2026-10-31T09:05:00Z'
 labels:
   - architecture-migration
   - planning
@@ -16,10 +17,14 @@ dependencies:
   - MSH-118
   - MSH-119
   - MSH-120
+  - MSH-123
+  - MSH-124
+  - MSH-125
 documentation:
   - docs/design.md
   - docs/architecture-migration-plan.md
   - docs/review/architecture-target-115.md
+  - docs/desktop/post-r4-ux.md
 priority: medium
 type: task
 ordinal: 121000
@@ -41,6 +46,7 @@ Owner-approved MSH-115 migration stage; shared integration ownership supports MS
 - [ ] #6 Same-size normal/minimum cross-game captures and independent interaction/accessibility assessment establish shared theme/layout/player/status/analysis/history/actions/technical sections and shared conventions while boards/pieces/hands/native controls remain appropriate. Labeled synthetic compound/large-board evidence stays distinct from real games; normal distributables exclude instrumentation.
 - [ ] #7 Current final source, independent review findings/resolutions, normal integration/push, appropriate native/desktop CI and exact package/environment/platform evidence are recorded. P9 baseline and MSH-111/112 histories remain qualified; a passing rerun is not proof of a fix. Do not close M4/46/47 or start variants/M5 automatically.
 - [ ] #8 No intermediate adapter or split application is accepted as final architecture. Historical game/task/verification evidence remains preserved without retaining obsolete executable contracts; stop after this bounded integration verdict.
+- [ ] #9 Final current-product acceptance additionally covers completed123/124/125 on all three required packaged platforms: sourced two-column Moves with exact non-move event context and origin/destination/path cues, supported-only dropdown with preserved side buttons, Analysis/Game Actions/Moves order and nonintrusive diagnostics/licenses, Save/Load with intentional atomic replacement, concise dirty Quit, direct native Resign and one-step browse Return versus intentional stopped Resume. Earlier AC terms Save/Open, history and technical sections refer to these owner-approved visible Save/Load, Moves and support placement; preserve all underlying semantic/safety/platform obligations and distinguish actual GUI from tests/builds.
 <!-- AC:END -->
 
 ## Definition of Done
@@ -50,3 +56,9 @@ Owner-approved MSH-115 migration stage; shared integration ownership supports MS
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner-approved post-R4 UX planning2026-10-31: complete direct dependency set retains116-120 and adds123/124/125 so final combined product acceptance includes the approved interface. Original8AC/4DoD remain unchecked and preserved; added criterion clarifies superseded visible terms without weakening atomic Save/Load, native diagnostics, exact history or required three-platform GUI.119 staysDone;120 and121 remainReady/unassigned/unstarted. No unrelated M4/variant/M5 gate or implementation added.
+<!-- SECTION:NOTES:END -->

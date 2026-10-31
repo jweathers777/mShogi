@@ -4,6 +4,7 @@ title: 'R5: Replace board interaction copies with one native-choice controller'
 status: Ready
 assignee: []
 created_date: '2026-10-30T12:06:00Z'
+updated_date: '2026-10-31T09:05:00Z'
 labels:
   - architecture-migration
   - planning
@@ -14,6 +15,7 @@ documentation:
   - docs/design.md
   - docs/architecture-migration-plan.md
   - docs/review/architecture-target-115.md
+  - docs/desktop/post-r4-ux.md
 priority: medium
 type: task
 ordinal: 120000
@@ -43,3 +45,9 @@ Owner-approved MSH-115 migration stage; shared integration ownership supports MS
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner-approved planning coordination2026-10-31: original R5 criteria and direct dependency119 preserved. New123 owns completed last-move notation/history/geometry presentation after120; R5 remains controller extraction plus specialized rendering integration, not this product feature.124/125 own shell and lifecycle changes,121 waits for allthree. New read-only cue context must remain separate from selection/inspection/focus state;123 consumes the surviving boundary rather than adding a competing controller. No R5 implementation or detailed future plan begins.
+<!-- SECTION:NOTES:END -->

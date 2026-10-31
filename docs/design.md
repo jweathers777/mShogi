@@ -181,6 +181,48 @@ coordination and finite bridge/deletion endpoints remain. Recording approval
 and creating future tasks authorizes no execution in this planning assignment;
 routine internal choices need no artificial owner checkpoint.
 
+### A-11. Owner-approved desktop UX after R4
+
+Owner direction, 2026-10-31: retain the single application and accepted dark
+shell delivered by MSH-119. The [post-R4 UX contract](desktop/post-r4-ux.md)
+refines A-10's visible sections to **Analysis → Game Actions → Moves**, with
+diagnostics and required notices available through nonintrusive support/About
+access outside the ordinary game sidebar. Historical evidence of earlier
+section order and controls remains valid for its recorded source, not a veto on
+this approved future presentation.
+
+New Game shows a compact dropdown of **implemented playable games only**;
+unsupported/future variants are absent, even as disabled entries. Preserve the
+existing side-button visual treatment and native White/Black, Sente/Gote,
+Red/Black and Random labels. Use the existing Shogi selector character for the
+application brand. Remove implementation narration while preserving meaningful
+uncertainty, result, capacity and recovery information.
+
+Moves are actual native complete board actions in sourced game-appropriate
+notation, in two player columns. Native warnings, claims and other non-move
+events remain exact authoritative history, associated with their move/position
+rather than extra move rows. Preserve exact selectable event prefixes, historical
+analysis provenance and native origin/ordered-path/destination geometry. The
+last completed action highlights origin and a stronger destination throughout
+thinking and historical navigation; drops have destination only. This belongs
+to MSH-123 after R5, without expanding MSH-120's controller criteria.
+
+Ordinary document actions are Save and Load, with first Save choosing a path
+and no ordinary Save As. New Game/Load intentionally replace without a separate
+unsaved warning, **only on valid atomic success**; cancellation, failure and stale
+admission preserve the current document. Unsaved Quit retains concise Save /
+Discard / Cancel protection. Resign submits directly without confirmation and
+displays the actual native conclusion or unscored uncertainty. One-step Return
+to live restores play suspended solely by browsing using fresh native admission;
+pre-existing stopped Load/Take back/cancellation/failure remains explicitly
+stopped. Native retirement, atomicity, complete saveability, current envelope,
+game profiles and stale-result protections remain unchanged requirements.
+
+MSH-123/124/125 own these bounded product changes; MSH-121 additionally depends
+on them and retains final three-platform packaged acceptance. This records
+approved direction and future work only; MSH-119 remains Done, R5/R6 unstarted,
+and M4 open. No later variant or M5 gate changes.
+
 ## 4. First milestones
 
 ### M0. Repository workflow bootstrap
@@ -438,6 +480,7 @@ When code reveals a design problem, report the specific conflict and a proposed 
 | D-16 | Accepted future M5 experiment, 2026-10-27 | John adds MSH-104 per-game opening knowledge to56 closure while adoption remains optional. Dedicated compact teacher-distilled opening policy, learned evaluator55 and optional full policy/value59 are distinct. Compare practical direct/order/book-hybrid/no-prior uses, sparse Chu/Tenjiku generation, provenance/regeneration and total benefit/cost; no product Python or mandatory opening mechanism. See [scope](m5/opening-knowledge.md). |
 | D-17 | Accepted pre-release compatibility policy, 2026-10-30 | John: unreleased greenfield rewrite; no external internal-API consumers or development-save compatibility obligation. Obsolete APIs/IPC/adapters/readers and interface-only tests may be replaced/deleted; preserve native semantics/history/atomicity, execution safety, current-format losslessness, shared product consistency, external interoperability and independent conformance. See A-09 and MSH-115. No refactor implementation authorized by this review. |
 | D-18 | Accepted MSH-115 target and shared product UI, 2026-10-30 | John selects coherent R1–R6 migration: one controller/active native document/current execution/current envelope/frontend owner/interaction controller, deletion of obsolete development layers, native semantics independent. One application owns common sections and conventions; game capabilities/renderers supply only genuine native content. See A-10 and the approved migration plan. This assignment creates planning tasks only, with P9 triage intended first and no automatic M4 gate changes. |
+| D-19 | Accepted post-R4 desktop UX, 2026-10-31 | John approves sourced two-column Moves/native event mapping, origin/destination last-move cues, Analysis/Game Actions/Moves order, supported-only dropdown with unchanged native side buttons, Shogi branding, nonintrusive support, Save/Load and intentional atomic replacement, concise Quit, direct Resign and one-step browse-only Return to live. Five supplemental clarifications supersede conflicting attachment wording. See A-11 and the [bounded contract](desktop/post-r4-ux.md);123/124/125 are future tasks and121 gains their completion gates. No implementation starts by recording approval. |
 
 Accepted records reflect actual owner direction. Working defaults are implementation proposals consistent with it, not fabricated owner decisions. Deferred questions only block work that depends on their resolution. A routine choice within accepted requirements does not need a new approval ceremony.
 

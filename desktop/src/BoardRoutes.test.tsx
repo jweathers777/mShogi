@@ -1,7 +1,8 @@
 // @vitest-environment jsdom
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { Board, displayedSquares, type BoardGeometry, type BoardChoice } from "./Board";
+import { Board, displayedSquares } from "./Board";
+import type { BoardGeometry, NativeChoice } from "./boardPresentation";
 import type { BoardPiece } from "./native";
 import nativeJson from "./__fixtures__/synthetic.json";
 
@@ -10,7 +11,7 @@ interface Fixture {
   version: number;
   geometry: Omit<BoardGeometry, "initialFocus"> & { initial_focus: string };
   pieces: BoardPiece[];
-  choices: BoardChoice[];
+  choices: NativeChoice[];
 }
 const fixture = nativeJson as Fixture;
 const geometry: BoardGeometry = { ...fixture.geometry, initialFocus: fixture.geometry.initial_focus };

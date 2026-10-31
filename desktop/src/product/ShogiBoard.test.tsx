@@ -158,3 +158,22 @@ it("uses the shared player/board/footer slots while retaining native hands and k
   movedPawn.focus(); await userEvent.setup().keyboard("{Enter}"); fireEvent.keyDown(movedPawn, { key: "ArrowDown" });
   expect(document.activeElement).toBe(square("5g")); fireEvent.click(square("5e")); expect(onPlay).toHaveBeenCalledExactlyOnceWith("P*5e");
 });
+it("keeps future read-only completed geometry separate from the pending native choice", () => {
+  const { props, rerender, onPlay } = board(); fireEvent.click(square("7g"));
+  rerender(<ShogiBoard {...props} completedAction={{ origin: { kind: "hand", owner: gote.key, piece_kind: "pawn" }, steps: ["3d"] }} />);
+  expect(square("7f").getAttribute("aria-label")).toContain("legal destination");
+  fireEvent.click(square("7f")); expect(onPlay).toHaveBeenCalledExactlyOnceWith("7g7f");
+});
+
+it("recovers removed hand-control focus without stealing the application's unrelated input", () => {
+  const snapshot = dropsJson as GameSnapshot;
+  const props = { snapshot, disabled: false, onPlay: vi.fn() };
+  const { rerender } = render(<ShogiBoard {...props} />);
+  const pawn = screen.getByRole("button", { name: "Sente pawn in hand, 1" }); pawn.focus();
+  const noHands = { ...snapshot, token: { ...snapshot.token, revision: snapshot.token.revision + 1 }, hands: snapshot.hands.map(hand => ({ ...hand, count: 0 })) };
+  rerender(<ShogiBoard {...props} snapshot={noHands} />);
+  expect(document.activeElement).toBe(square(snapshot.board.initial_focus));
+  const input = document.createElement("input"); document.body.append(input); input.focus();
+  rerender(<ShogiBoard {...props} snapshot={{ ...noHands, token: { ...noHands.token, revision: noHands.token.revision + 1 } }} disabled />);
+  expect(document.activeElement).toBe(input); input.remove();
+});

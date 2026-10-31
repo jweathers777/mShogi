@@ -567,6 +567,55 @@ class Journey:
         self.record("Observe complete 9x9 native product board without scrolling", geometry)
         return geometry
 
+    def synthetic_board_fits(self, orientation):
+        """Observe all native 16x16 positions in place; never scroll to expose them."""
+        geometry = self.web.read("""(() => {
+            const board=document.querySelector('.synthetic-board .chess-board');
+            const squares=[...document.querySelectorAll('.synthetic-board .square')];
+            const rect=e=>{const r=e.getBoundingClientRect();return {left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height};};
+            const fullyVisible=e=>{
+                if(!e)return false;
+                const r=e.getBoundingClientRect(),clip={left:0,top:0,right:innerWidth,bottom:innerHeight};
+                for(let p=e.parentElement;p;p=p.parentElement){
+                    const c=getComputedStyle(p),b=p.getBoundingClientRect();
+                    if(/^(auto|scroll|hidden|clip)$/.test(c.overflowX)){clip.left=Math.max(clip.left,b.left);clip.right=Math.min(clip.right,b.right);}
+                    if(/^(auto|scroll|hidden|clip)$/.test(c.overflowY)){clip.top=Math.max(clip.top,b.top);clip.bottom=Math.min(clip.bottom,b.bottom);}
+                }
+                return r.width>0&&r.height>0&&r.left>=clip.left-1&&r.top>=clip.top-1&&r.right<=clip.right+1&&r.bottom<=clip.bottom+1;
+            };
+            const key=e=>e.getAttribute('aria-label')?.split(',')[0]??'';
+            const ancestors=[];
+            for(let p=board?.parentElement;p;p=p.parentElement){const c=getComputedStyle(p);ancestors.push({tag:p.tagName,className:p.className,
+                overflowX:c.overflowX,overflowY:c.overflowY,scrollLeft:p.scrollLeft,scrollTop:p.scrollTop,
+                clientWidth:p.clientWidth,clientHeight:p.clientHeight,scrollWidth:p.scrollWidth,scrollHeight:p.scrollHeight});}
+            return {viewport:{width:innerWidth,height:innerHeight},positionCount:squares.length,
+                uniquePositions:new Set(squares.map(key)).size,positions:squares.map(key),
+                fullyVisible:squares.every(fullyVisible),clippedPositions:squares.filter(e=>!fullyVisible(e)).map(key),
+                board:board?rect(board):null,boardVisible:fullyVisible(board),
+                orientationLabel:board?.getAttribute('aria-label')??'',pageWidth:document.documentElement.scrollWidth,
+                boardAncestors:ancestors};
+        })()""")
+        assert geometry["positionCount"] == 256 and geometry["uniquePositions"] == 256, geometry
+        assert len(geometry["positions"]) == 256 and len(set(geometry["positions"])) == 256, geometry
+        assert geometry["fullyVisible"] and not geometry["clippedPositions"] and geometry["boardVisible"], geometry
+        assert geometry["orientationLabel"].endswith(f", {orientation} at bottom"), geometry
+        assert geometry["pageWidth"] <= geometry["viewport"]["width"] + 1, geometry
+        self.record("Observe all256 synthetic positions fully visible without scrolling or zooming", geometry)
+        return geometry
+
+    def synthetic_record(self, actions):
+        """Require the native record and visible acceptance count to agree."""
+        def accepted():
+            record = self.web.read("JSON.parse(document.querySelector('.synthetic-inspector pre').textContent)")
+            if (record["rules_profile"] != "mshogi.synthetic.strider16.v1" or record["schema_version"] != 1
+                    or record["initial_fixture"] != "strider16-capture-and-return-v1"):
+                raise ValueError(f"Unexpected synthetic native record identity: {record!r}")
+            return record if record["actions"] == actions else None
+        record = wait(accepted, f"exact native synthetic actions {actions!r}")
+        assert re.search(rf"\bAccepted actions {len(actions)}\b", self.web.text(".synthetic-inspector")), record
+        self.record("Observe exact separate synthetic native acceptance", record)
+        return record
+
     def shared_shell(self, game):
         layout = self.web.read("""(() => {
             const root=document.querySelector('.game-shell');
@@ -1522,38 +1571,80 @@ class Journey:
         elif name == "synthetic":
             assert "not a real shogi variant" in w.text()
             assert not w.has(".document-card")
+            self.viewport(1180, 820)
+            self.synthetic_board_fits("white")
+            self.capture("full-board-white-normal-size")
+            self.viewport(760, 650)
+            self.synthetic_board_fits("white")
+            self.capture("full-board-white-minimum-size")
             w.button("↕ Flip board")
-            w.key("\ue004")  # Tab from Flip enters the board's single stop.
+            self.synthetic_board_fits("black")
+            self.capture("full-board-black-minimum-size")
+            self.viewport(1180, 820)
+            self.synthetic_board_fits("black")
+            self.capture("full-board-black-normal-size")
+            self.synthetic_record([])
+
+            w.key("\ue004")  # Actual Tab from Flip enters the board's single stop.
             wait(lambda: str(w.read("document.activeElement?.getAttribute('aria-label')")).startswith("i9,"),
-                 "keyboard focus exposes native synthetic origin")
-            # Black orientation: left/down goes i9 -> j10. Native keyboard
-            # focus scrolls the shared large board into view without JS input.
+                 "keyboard focus enters the fully visible native synthetic board")
+            # Black orientation: left/down goes i9 -> j10. The entire board is
+            # already visible; keyboard navigation is not a scrolling mechanism.
             for key in ("\ue007", "\ue012", "\ue015", "\ue007"):
                 w.key(key)
             assert "No action submitted" in w.text(".route-selection")
-            assert "Accepted actions 0" in w.text(".synthetic-inspector")
-            w.key("\ue004"); w.key("\ue00c")  # Tab to completion, Escape cancels.
-            wait(lambda: not w.has(".route-selection"), "cancel staged selection")
+            self.synthetic_record([])
+            self.synthetic_board_fits("black")
+            self.capture("partial-prefix-no-commit")
+            w.key("\ue004"); w.key("\ue00c")  # Tab to route control, Escape cancels.
+            wait(lambda: not w.has(".route-selection"), "Escape cancels staged selection")
+            self.synthetic_record([])
+
+            # Pointer selection and a real Cancel selection button also preserve
+            # the untouched native record; no route prefix counts as an action.
+            w.click(self.square("i9")); w.click(self.square("j10"))
+            self.synthetic_record([])
+            w.focused_button("Cancel selection")
+            wait(lambda: not w.has(".route-selection"), "Cancel selection abandons native prefix")
+            self.synthetic_record([])
+
+            w.click(self.square("i9")); w.click(self.square("j10"))
+            self.synthetic_record([])
+            w.focused_button("Complete action here")
+            terminal = self.synthetic_record(["136>153"])
+            assert "strider" in w.read(f"document.querySelector({json.dumps(self.square('j10'))}).getAttribute('aria-label')")
+            assert "empty" in w.read(f"document.querySelector({json.dumps(self.square('i9'))}).getAttribute('aria-label')")
+            self.synthetic_board_fits("black")
+            self.capture("terminal-prefix-complete-here")
+
+            w.button("Reset synthetic fixture")
+            self.synthetic_record([])
+            # Establish the origin with pointer + Escape before keyboard input;
+            # reset need not erase an otherwise valid roving-focus coordinate.
+            w.click(self.square("i9")); w.key("\ue00c")
+            self.synthetic_record([])
             for key in ("\ue007", "\ue012", "\ue015", "\ue007", "\ue014", "\ue013", "\ue007"):
                 w.key(key)
-            wait(lambda: "Accepted actions 1" in w.text(".synthetic-inspector"), "native complete route")
+            captured = self.synthetic_record(["136>153>136"])
             assert "empty" in w.read(f"document.querySelector({json.dumps(self.square('j10'))}).getAttribute('aria-label')")
+            assert "strider" in w.read(f"document.querySelector({json.dumps(self.square('i9'))}).getAttribute('aria-label')")
             w.click(".synthetic-inspector details summary")
-            assert "136>153>136" in w.text(".synthetic-inspector pre")
             self.capture("capture-route")
+
             w.button("Reset synthetic fixture")
-            wait(lambda: "Accepted actions 0" in w.text(".synthetic-inspector"), "native reset")
-            w.button("↕ Flip board")  # White orientation for the alternate route.
-            w.key("\ue004")
-            wait(lambda: str(w.read("document.activeElement?.getAttribute('aria-label')")).startswith("i9,"),
-                 "keyboard focus exposes reset synthetic origin")
+            self.synthetic_record([])
+            w.button("↕ Flip board")
+            self.synthetic_board_fits("white")
+            w.click(self.square("i9")); w.key("\ue00c")
             for key in ("\ue007", "\ue012", "\ue007", "\ue014", "\ue007"):
                 w.key(key)
-            wait(lambda: "136>135>136" in w.text(".synthetic-inspector pre"), "alternate complete native route")
+            alternate = self.synthetic_record(["136>135>136"])
             assert "stone" in w.read(f"document.querySelector({json.dumps(self.square('j10'))}).getAttribute('aria-label')")
-            assert "mshogi.synthetic.strider16.v1" in w.text(".synthetic-inspector pre")
+            assert "strider" in w.read(f"document.querySelector({json.dumps(self.square('i9'))}).getAttribute('aria-label')")
             self.capture("alternate-route")
-            self.record("Distinct complete routes share endpoints but preserve different effects", w.text(".synthetic-inspector"))
+            self.record("Terminal prefix and distinct equal-endpoint routes retain their exact native effects", {
+                "terminal_prefix": terminal, "capture_and_return": captured, "alternate_return": alternate,
+                "native_expectation": "136>153 ends on j10; both return routes end on i9; only the j10 route removes its stone."})
         else:
             raise AssertionError(name)
         self.capture("result")

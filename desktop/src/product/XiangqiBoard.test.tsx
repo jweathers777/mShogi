@@ -141,3 +141,38 @@ it("allows native inspection of a historical position while all game actions rem
   fireEvent.click(point("b0")); expect(onPlay).not.toHaveBeenCalled();
   expect(document.querySelector("[data-position-status]")?.textContent).toContain("Read-only history");
 });
+
+// Renderer contract probes, not additional Xiangqi rules: complete native choice
+// identifiers and ordered routes must survive presentation without interpretation.
+it("preserves ordered routes, terminal-prefix alternatives and native completion identities", () => {
+  const snapshot: GameSnapshot = { ...standard, choices: [
+    { action: "contract-short-A", from: "a3", steps: ["a4"], completion: { label: "Finish A", glyph: null } },
+    { action: "contract-short-B", from: "a3", steps: ["a4"], completion: { label: "Finish B", glyph: null } },
+    { action: "contract-long", from: "a3", steps: ["a4", "b4", "a3"], completion: null },
+  ] };
+  const { props } = board(snapshot);
+  fireEvent.click(point("a3")); fireEvent.click(point("a4"));
+  expect(props.onPlay).not.toHaveBeenCalled(); expect(point("b4").getAttribute("aria-label")).toContain("legal destination");
+  fireEvent.click(screen.getByRole("button", { name: "Complete action here" }));
+  const chooser = screen.getByRole("dialog", { name: "Choose complete action" });
+  expect(props.onPlay).not.toHaveBeenCalled(); expect(document.activeElement).toBe(screen.getByRole("button", { name: "Finish A" }));
+  fireEvent.keyDown(chooser, { key: "Escape" }); expect(screen.queryByRole("dialog")).toBeNull(); expect(props.onPlay).not.toHaveBeenCalled();
+  fireEvent.click(point("a3")); fireEvent.click(point("a4")); fireEvent.click(point("b4"));
+  expect(props.onPlay).not.toHaveBeenCalled(); fireEvent.click(point("a3"));
+  expect(props.onPlay).toHaveBeenCalledExactlyOnceWith("contract-long");
+});
+it("keeps different native routes with identical endpoints distinct", () => {
+  const snapshot: GameSnapshot = { ...standard, choices: [
+    { action: "contract-via-a4", from: "a3", steps: ["a4", "b4"], completion: null },
+    { action: "contract-via-b3", from: "a3", steps: ["b3", "b4"], completion: null },
+  ] };
+  const { props } = board(snapshot); fireEvent.click(point("a3")); fireEvent.click(point("b3"));
+  expect(props.onPlay).not.toHaveBeenCalled(); expect(point("b4").getAttribute("aria-label")).toContain("legal destination");
+  fireEvent.click(point("b4")); expect(props.onPlay).toHaveBeenCalledExactlyOnceWith("contract-via-b3");
+});
+it("keeps future read-only completed geometry separate from current selection", () => {
+  const { props, rerender } = board(); fireEvent.click(point("a3"));
+  rerender(<XiangqiBoard {...props} completedAction={{ origin: { kind: "intersection", point: "a6" }, steps: ["a5"] }} />);
+  expect(point("a4").getAttribute("aria-label")).toContain("legal destination");
+  fireEvent.click(point("a4")); expect(props.onPlay).toHaveBeenCalledExactlyOnceWith("a3a4");
+});

@@ -1,4 +1,4 @@
-import type { BoardChoice, BoardGeometry } from "../Board";
+import type { NativeChoice, BoardGeometry } from "../boardPresentation";
 import type { BoardPiece } from "../native";
 
 export interface SyntheticSnapshot {
@@ -6,7 +6,7 @@ export interface SyntheticSnapshot {
   version: number;
   geometry: Omit<BoardGeometry, "initialFocus"> & { initial_focus: string };
   pieces: BoardPiece[];
-  choices: BoardChoice[];
+  choices: NativeChoice[];
   record: {
     schema_version: 1;
     rules_profile: "mshogi.synthetic.strider16.v1";

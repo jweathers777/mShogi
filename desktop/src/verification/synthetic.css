@@ -1,12 +1,14 @@
 .synthetic-introduction { max-width: 90ch; margin: 18px 0; color: #bfd0c9; line-height: 1.6; }
 .synthetic-badge { color: #f0dca8; border: 1px solid #887744; padding: 7px 12px; border-radius: 5px; }
-.synthetic-workspace { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: start; }
-.synthetic-board { min-width: 0; }
-.synthetic-inspector { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; padding-bottom: 24px; }
+.synthetic-application { height: 100dvh; display: grid; grid-template-rows: auto auto minmax(0, 1fr); padding-bottom: 12px; }
+.synthetic-workspace { min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 30%); gap: 20px; }
+.synthetic-board { min-width: 0; min-height: 0; display: flex; flex-direction: column; }
+.synthetic-board .board-heading { flex: none; }
+.synthetic-board .board-wrap { min-height: 0; flex: 1; width: 100%; max-width: 660px; display: flex; flex-direction: column; }
+.synthetic-board .board-fit { min-height: 0; flex: 1; display: flex; }
+.synthetic-board .chess-board { min-height: 0; height: 100%; }
+.synthetic-board .route-selection { flex: none; margin-top: 6px; padding: 6px; }
+.synthetic-board .board-help { flex: none; }
+.synthetic-inspector { min-height: 0; overflow: auto; display: flex; flex-direction: column; gap: 16px; }
 .synthetic-inspector p { margin-top: 10px; line-height: 1.6; }
 .synthetic-inspector pre { overflow-wrap: anywhere; white-space: pre-wrap; font-size: 11px; }
-@media (max-width: 1050px) {
-  .synthetic-workspace { grid-template-columns: minmax(0, 1fr); }
-  .synthetic-inspector { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 720px) { .synthetic-inspector { grid-template-columns: minmax(0, 1fr); } }

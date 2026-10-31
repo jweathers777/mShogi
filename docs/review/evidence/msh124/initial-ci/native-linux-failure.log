@@ -1,0 +1,18 @@
+
+2026-10-31T13:59:00.0279955Z ---- process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored stdout ----
+2026-10-31T13:59:00.0280143Z
+2026-10-31T13:59:00.0280382Z thread 'process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored' (6403) panicked at crates/mshogi-runner/tests/runner.rs:172:9:
+2026-10-31T13:59:00.0281019Z assertion `left == right` failed: exit: RunnerFailure { kind: MissingResponse, engine: 0, phase: "handshake", at_ns: 1455086, watchdog_ms: Some(100), deadline_ns: None, detail: "Broken pipe (os error 32)", exit: None, last_output: None }
+2026-10-31T13:59:00.0281548Z   left: MissingResponse
+2026-10-31T13:59:00.0281672Z  right: UnexpectedExit
+2026-10-31T13:59:00.0281857Z note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+2026-10-31T13:59:00.0282017Z
+2026-10-31T13:59:00.0282020Z
+2026-10-31T13:59:00.0282065Z failures:
+2026-10-31T13:59:00.0282308Z     process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored
+2026-10-31T13:59:00.0282537Z
+2026-10-31T13:59:00.0282730Z test result: FAILED. 9 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.13s
+2026-10-31T13:59:00.0282998Z
+2026-10-31T13:59:00.0283389Z error: test failed, to rerun pass `-p mshogi-runner --test runner`
+2026-10-31T13:59:00.0319522Z ##[error]Process completed with exit code 101.
+2026-10-31T13:59:00.0473957Z

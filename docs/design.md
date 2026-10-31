@@ -228,7 +228,17 @@ Moves projection and readonly completed-action cues are implemented for Chess,
 Shogi and Xiangqi. The [MSH-123 review](review/moves-123.md) records exact
 history boundaries, sourced notation, the owner-approved WXF ordinal+file
 extension and packaged evidence. The preceding approval paragraph remains the
-historical planning record. MSH-124/125 and R6 remain open; M4 remains open.
+historical planning record.
+
+Current shared-shell handoff (MSH-124, 2026-10-31): the application owns
+Analysis → Game Actions → Moves, a supported-game dropdown with unchanged
+native side buttons, shared 歩 branding and header About/license/diagnostics
+access. Outward Moves focus rings remain visible through nested minimum-size
+scroll boundaries. The [MSH-124 review](review/shell-124.md) identifies actual
+normal/minimum three-game packages, independent visual/accessibility review,
+source revisions, original failures and final CI. MSH-125 and R6 remain open;
+M4 remains open. Existing document, Resign and Return/Resume behavior is
+unchanged; MSH-125 owns its approved refinements.
 
 ## 4. First milestones
 

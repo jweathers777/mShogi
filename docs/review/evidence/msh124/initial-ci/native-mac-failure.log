@@ -1,0 +1,17 @@
+
+2026-10-31T13:59:05.7035910Z ---- missing_retirement_eof_cannot_hide_a_delayed_duplicate_bestmove stdout ----
+2026-10-31T13:59:05.7036570Z
+2026-10-31T13:59:05.7037290Z thread 'missing_retirement_eof_cannot_hide_a_delayed_duplicate_bestmove' (37653) panicked at crates/mshogi-runner/tests/shogi_runner.rs:355:9:
+2026-10-31T13:59:05.7038130Z assertion `left == right` failed
+2026-10-31T13:59:05.7038410Z   left: LateReply
+2026-10-31T13:59:05.7038630Z  right: ResourceLimit
+2026-10-31T13:59:05.7038990Z note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+2026-10-31T13:59:05.7040070Z
+2026-10-31T13:59:05.7040280Z
+2026-10-31T13:59:05.7043300Z failures:
+2026-10-31T13:59:05.7043610Z     missing_retirement_eof_cannot_hide_a_delayed_duplicate_bestmove
+2026-10-31T13:59:05.7043910Z
+2026-10-31T13:59:05.7044270Z test result: FAILED. 13 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.46s
+2026-10-31T13:59:05.7044630Z
+2026-10-31T13:59:05.7053480Z ##[error]Process completed with exit code 101.
+2026-10-31T13:59:05.7160810Z

@@ -1,0 +1,101 @@
+{
+  "run": 41206493902,
+  "source_revision": "de5209d3ac0d987d42396a5b2e3bf4325800784d",
+  "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/41206493902",
+  "environment": {
+    "platform": "Windows-2022Server-10.0.20348-SP0",
+    "python": "3.12.10",
+    "runner_image": "20261026.347.1",
+    "runner_os": "Windows",
+    "renderer_environment": {
+      "GDK_BACKEND": null,
+      "WEBKIT_DISABLE_COMPOSITING_MODE": null,
+      "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+      "LIBGL_ALWAYS_SOFTWARE": null
+    }
+  },
+  "method": "Actual installed/packaged GUI via W3C pointer/keyboard and native OS dialogs/close, external to distributables. Read-only DOM inspection; no direct IPC or injected input events.",
+  "counts": {
+    "passed": 12,
+    "failed": 3
+  },
+  "original_report_sha256": "a3365bca19c787996be51b4e3684b7b413f24b9decd2e25766532bf5f448e278",
+  "packages": [
+    {
+      "phase": "normal",
+      "host_sha256": "75aa1653123acb21e15cf4918c707f8b6738cc0f59d9cdcb66a26aeffd72502d",
+      "engine_sha256": "3d89792977e99ac84e5160b4996a07bdc73423a45ec33affa435bd996e2114a8"
+    },
+    {
+      "phase": "normal-shogi",
+      "host_sha256": "75aa1653123acb21e15cf4918c707f8b6738cc0f59d9cdcb66a26aeffd72502d",
+      "engine_sha256": "3d89792977e99ac84e5160b4996a07bdc73423a45ec33affa435bd996e2114a8"
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "host_sha256": "75aa1653123acb21e15cf4918c707f8b6738cc0f59d9cdcb66a26aeffd72502d",
+      "engine_sha256": "3d89792977e99ac84e5160b4996a07bdc73423a45ec33affa435bd996e2114a8"
+    },
+    {
+      "phase": "normal-xiangqi",
+      "host_sha256": "75aa1653123acb21e15cf4918c707f8b6738cc0f59d9cdcb66a26aeffd72502d",
+      "engine_sha256": "3d89792977e99ac84e5160b4996a07bdc73423a45ec33affa435bd996e2114a8"
+    },
+    {
+      "phase": "verification-standard",
+      "host_sha256": "4719e02dfc7dae58cac94aa7e939fd2d00612eb172c753ca5a60492de41cb4d3",
+      "engine_sha256": "3d89792977e99ac84e5160b4996a07bdc73423a45ec33affa435bd996e2114a8"
+    },
+    {
+      "phase": "verification-promotion",
+      "host_sha256": "4719e02dfc7dae58cac94aa7e939fd2d00612eb172c753ca5a60492de41cb4d3",
+      "engine_sha256": "3d89792977e99ac84e5160b4996a07bdc73423a45ec33affa435bd996e2114a8"
+    },
+    {
+      "phase": "verification-claim",
+      "host_sha256": "4719e02dfc7dae58cac94aa7e939fd2d00612eb172c753ca5a60492de41cb4d3",
+      "engine_sha256": "3d89792977e99ac84e5160b4996a07bdc73423a45ec33affa435bd996e2114a8"
+    },
+    {
+      "phase": "verification-capacity",
+      "host_sha256": "4719e02dfc7dae58cac94aa7e939fd2d00612eb172c753ca5a60492de41cb4d3",
+      "engine_sha256": "3d89792977e99ac84e5160b4996a07bdc73423a45ec33affa435bd996e2114a8"
+    },
+    {
+      "phase": "verification-synthetic",
+      "host_sha256": "4719e02dfc7dae58cac94aa7e939fd2d00612eb172c753ca5a60492de41cb4d3",
+      "engine_sha256": "3d89792977e99ac84e5160b4996a07bdc73423a45ec33affa435bd996e2114a8"
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "host_sha256": "4719e02dfc7dae58cac94aa7e939fd2d00612eb172c753ca5a60492de41cb4d3",
+      "engine_sha256": "3d89792977e99ac84e5160b4996a07bdc73423a45ec33affa435bd996e2114a8"
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "host_sha256": "4719e02dfc7dae58cac94aa7e939fd2d00612eb172c753ca5a60492de41cb4d3",
+      "engine_sha256": "3d89792977e99ac84e5160b4996a07bdc73423a45ec33affa435bd996e2114a8"
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "host_sha256": "4719e02dfc7dae58cac94aa7e939fd2d00612eb172c753ca5a60492de41cb4d3",
+      "engine_sha256": "3d89792977e99ac84e5160b4996a07bdc73423a45ec33affa435bd996e2114a8"
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "host_sha256": "4719e02dfc7dae58cac94aa7e939fd2d00612eb172c753ca5a60492de41cb4d3",
+      "engine_sha256": "3d89792977e99ac84e5160b4996a07bdc73423a45ec33affa435bd996e2114a8"
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "host_sha256": "4719e02dfc7dae58cac94aa7e939fd2d00612eb172c753ca5a60492de41cb4d3",
+      "engine_sha256": "3d89792977e99ac84e5160b4996a07bdc73423a45ec33affa435bd996e2114a8"
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "host_sha256": "4719e02dfc7dae58cac94aa7e939fd2d00612eb172c753ca5a60492de41cb4d3",
+      "engine_sha256": "3d89792977e99ac84e5160b4996a07bdc73423a45ec33affa435bd996e2114a8"
+    }
+  ],
+  "scope": "Original failed evidence retained. Twelve phases passed; three failures must be resolved in later identified source/package evidence."
+}

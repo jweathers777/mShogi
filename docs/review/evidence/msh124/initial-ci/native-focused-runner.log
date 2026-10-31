@@ -1,0 +1,8 @@
+   Compiling mshogi-runner v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-runner)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.24s
+     Running tests/runner.rs (target/debug/deps/runner-4577e987d7d1dbe3)
+
+running 1 test
+test process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.62s

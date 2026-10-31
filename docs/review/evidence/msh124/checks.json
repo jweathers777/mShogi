@@ -1,0 +1,70 @@
+{
+  "source_revision": "de5209d3ac0d987d42396a5b2e3bf4325800784d",
+  "final_css_only_revision": "ead30e672f2a2cf1747c02c8daa508babed3b7c2",
+  "environment": {
+    "os": "macOS27.0.1 (26A434)",
+    "arch": "arm64",
+    "rust": "1.99.1",
+    "node": "v24.19.0",
+    "backlog": "pinned1.55.1 (global1.55.0 not used for mutations)"
+  },
+  "checks": [
+    {
+      "command": "npm test -- --reporter=dot",
+      "result": "passed",
+      "files": 25,
+      "tests": 272,
+      "log": "/private/tmp/msh124-front-final.log"
+    },
+    {
+      "command": "npm run check",
+      "result": "passed"
+    },
+    {
+      "command": "python3 -m unittest discover -s desktop/scripts -p test_gui_smoke.py",
+      "result": "passed",
+      "tests": 73,
+      "log": "/private/tmp/msh124-driver-corrected-root.log"
+    },
+    {
+      "command": "python3 -m py_compile desktop/scripts/gui-smoke.py desktop/scripts/test_gui_smoke.py",
+      "result": "passed",
+      "operator": "shell124_gui"
+    },
+    {
+      "command": "backlog doctor",
+      "result": "passed",
+      "diagnostic": "No duplicate IDs, self-referential dependencies, or dependency cycles found."
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "independent_source": {
+    "reviewer": "shell124_review",
+    "focused_tests": 141,
+    "typescript": "passed",
+    "report": "source-review.md"
+  },
+  "scope": "No native Rust production changes. Reuse MSH119/120/123 native evidence; platform CI and actual package GUI are separate records.",
+  "final_css_and_driver_revision": "4a624d6c4f129ce774d385192fbbe6a9bdcf547a",
+  "final_production_revision": "91eb13e2451af77150b82b62a448bf97e9d5ac58",
+  "final_frontend": {
+    "command": "npm test -- --reporter=dot",
+    "passed": 272,
+    "files": 25,
+    "log": "/private/tmp/msh124-front-vector-final.log",
+    "typescript": "passed"
+  },
+  "independent_final": {
+    "source": "91eb13e2451af77150b82b62a448bf97e9d5ac58",
+    "verdict": "PASS; no unresolved material MSH-124 finding",
+    "personally_viewed_screenshots": 74,
+    "final_support_tests": 5,
+    "driver_tests": 73,
+    "typescript": "passed",
+    "method": "Independent source diff and focused executions; actual screenshot review plus retained image-hash/focus/layout/CI evidence inspection. Root operated local native Mac GUI; CI drivers operated Windows/Linux GUI."
+  },
+  "launch_bundle_verification": "Primary normal macOS bundle matches every final vector-normal manifest file (4/4 SHA256), author verified at handoff."
+}

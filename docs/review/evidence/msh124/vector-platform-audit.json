@@ -1,0 +1,6813 @@
+{
+  "linux": {
+    "source_revision": "91eb13e2451af77150b82b62a448bf97e9d5ac58",
+    "run": 41208986515,
+    "artifact_zip_sha256": "9039048167c7cc2a733e53e7db582b4da71daae14e31ec0d0aa2a14a4493618e",
+    "normal_manifest_files_verified": 13,
+    "manifest_files_absent_from_artifact": [],
+    "normal_smoke": {
+      "package_root": "package-extracted",
+      "engine": "usr/bin/mshogi",
+      "sha256": "325157b4d14f21cc39b2f1663ef7eff60f3c79d7b4981a9cefb30c36052ff559",
+      "host_sha256": "0a82442eb854ba82e7ce6902a73656b745cdb79cf39256bd68c0c5072b6bacc1",
+      "version": "mshogi 0.1.0",
+      "uci_observations": [
+        "id name mShogi 0.1.0",
+        "id author John Weathers",
+        "option name ClaimPolicy type combo default explicit var explicit var auto",
+        "uciok",
+        "readyok",
+        "info depth 1 nodes 21 time 4 score cp 0 pv a2a3",
+        "bestmove a2a3"
+      ],
+      "internal_response": {
+        "protocol": 4,
+        "observation": {
+          "schema_version": 1,
+          "context": {
+            "purpose": {
+              "kind": "engine_turn"
+            },
+            "request_id": 1,
+            "session_version": 1,
+            "process_generation": 1,
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "chess",
+              "rules_profile": "mshogi.chess.match.v1",
+              "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+              "native_schema_version": 1,
+              "payload": {
+                "schema_version": 1,
+                "rules_profile": "mshogi.chess.match.v1",
+                "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                "history_origin": "standard_start",
+                "claim_policy": "explicit_only",
+                "events": []
+              }
+            },
+            "limits": {
+              "depth": 1,
+              "nodes": 1000
+            }
+          },
+          "result": {
+            "kind": "chess",
+            "result": {
+              "kind": "move",
+              "action": "a2a3",
+              "telemetry": {
+                "score": 0,
+                "completed_depth": 1,
+                "nodes": 21,
+                "principal_variation": [
+                  {
+                    "kind": "move",
+                    "action": "a2a3"
+                  }
+                ],
+                "status": "complete"
+              }
+            }
+          }
+        }
+      },
+      "analysis_response": {
+        "protocol": 4,
+        "observation": {
+          "schema_version": 1,
+          "context": {
+            "purpose": {
+              "kind": "move_analysis",
+              "target": {
+                "selection_id": 1,
+                "event_index": 0,
+                "board_ply": 0,
+                "session_version": 1,
+                "label": "Package verification: standard start",
+                "turn": {
+                  "game_kind": "chess",
+                  "side": "white"
+                }
+              }
+            },
+            "request_id": 2,
+            "session_version": 1,
+            "process_generation": 2,
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "chess",
+              "rules_profile": "mshogi.chess.match.v1",
+              "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+              "native_schema_version": 1,
+              "payload": {
+                "schema_version": 1,
+                "rules_profile": "mshogi.chess.match.v1",
+                "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                "history_origin": "standard_start",
+                "claim_policy": "explicit_only",
+                "events": []
+              }
+            },
+            "limits": {
+              "depth": 1,
+              "nodes": 1000
+            }
+          },
+          "result": {
+            "kind": "chess",
+            "result": {
+              "kind": "move",
+              "action": "a2a3",
+              "telemetry": {
+                "score": 0,
+                "completed_depth": 1,
+                "nodes": 21,
+                "principal_variation": [
+                  {
+                    "kind": "move",
+                    "action": "a2a3"
+                  }
+                ],
+                "status": "complete"
+              }
+            }
+          }
+        }
+      },
+      "full_response": {
+        "protocol": 4,
+        "observation": {
+          "schema_version": 1,
+          "context": {
+            "purpose": {
+              "kind": "chess_full_reachability",
+              "target": {
+                "selection_id": 1,
+                "event_index": 0,
+                "board_ply": 0,
+                "session_version": 1,
+                "label": "Package verification: standard start",
+                "turn": {
+                  "game_kind": "chess",
+                  "side": "white"
+                }
+              },
+              "mate": "either",
+              "limits": {
+                "max_positions": 1,
+                "max_transitions": 1
+              }
+            },
+            "request_id": 3,
+            "session_version": 1,
+            "process_generation": 3,
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "chess",
+              "rules_profile": "mshogi.chess.match.v1",
+              "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+              "native_schema_version": 1,
+              "payload": {
+                "schema_version": 1,
+                "rules_profile": "mshogi.chess.match.v1",
+                "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                "history_origin": "standard_start",
+                "claim_policy": "explicit_only",
+                "events": []
+              }
+            },
+            "limits": {
+              "depth": 1,
+              "nodes": 0
+            }
+          },
+          "result": {
+            "kind": "chess",
+            "result": {
+              "kind": "reachability",
+              "result": {
+                "unknown": {
+                  "reason": "position_limit",
+                  "work": {
+                    "positions": 1,
+                    "expanded": 1,
+                    "transitions": 1,
+                    "static_leaves": 0
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "files": [
+        "usr/bin/mshogi",
+        "usr/bin/mshogi-desktop",
+        "usr/share/applications/mShogi.desktop",
+        "usr/share/icons/hicolor/128x128/apps/mshogi-desktop.png",
+        "usr/share/icons/hicolor/256x256@2/apps/mshogi-desktop.png",
+        "usr/share/icons/hicolor/32x32/apps/mshogi-desktop.png"
+      ],
+      "scope": "Package inventory and actual UCI, engine-turn, move-analysis and bounded Full reachability queries. Host acceptance and installed UI interaction are separate evidence."
+    },
+    "scope": "Actual installed normal and separately labeled verification package GUI interaction with native input and read-only DOM observations.",
+    "gui_report_file_hashes_verified": 435,
+    "phases": [
+      {
+        "phase": "normal",
+        "status": "passed",
+        "host_sha256": "0a82442eb854ba82e7ce6902a73656b745cdb79cf39256bd68c0c5072b6bacc1",
+        "engine_sha256": "325157b4d14f21cc39b2f1663ef7eff60f3c79d7b4981a9cefb30c36052ff559"
+      },
+      {
+        "phase": "normal-shogi",
+        "status": "passed",
+        "host_sha256": "0a82442eb854ba82e7ce6902a73656b745cdb79cf39256bd68c0c5072b6bacc1",
+        "engine_sha256": "325157b4d14f21cc39b2f1663ef7eff60f3c79d7b4981a9cefb30c36052ff559"
+      },
+      {
+        "phase": "normal-shogi-reopened",
+        "status": "passed",
+        "host_sha256": "0a82442eb854ba82e7ce6902a73656b745cdb79cf39256bd68c0c5072b6bacc1",
+        "engine_sha256": "325157b4d14f21cc39b2f1663ef7eff60f3c79d7b4981a9cefb30c36052ff559"
+      },
+      {
+        "phase": "normal-xiangqi",
+        "status": "passed",
+        "host_sha256": "0a82442eb854ba82e7ce6902a73656b745cdb79cf39256bd68c0c5072b6bacc1",
+        "engine_sha256": "325157b4d14f21cc39b2f1663ef7eff60f3c79d7b4981a9cefb30c36052ff559"
+      },
+      {
+        "phase": "verification-standard",
+        "status": "passed",
+        "host_sha256": "1b612d76c659bac09eb987993396c14c40a5f3564582ec9679cc50917f755766",
+        "engine_sha256": "325157b4d14f21cc39b2f1663ef7eff60f3c79d7b4981a9cefb30c36052ff559"
+      },
+      {
+        "phase": "verification-promotion",
+        "status": "passed",
+        "host_sha256": "1b612d76c659bac09eb987993396c14c40a5f3564582ec9679cc50917f755766",
+        "engine_sha256": "325157b4d14f21cc39b2f1663ef7eff60f3c79d7b4981a9cefb30c36052ff559"
+      },
+      {
+        "phase": "verification-claim",
+        "status": "passed",
+        "host_sha256": "1b612d76c659bac09eb987993396c14c40a5f3564582ec9679cc50917f755766",
+        "engine_sha256": "325157b4d14f21cc39b2f1663ef7eff60f3c79d7b4981a9cefb30c36052ff559"
+      },
+      {
+        "phase": "verification-capacity",
+        "status": "passed",
+        "host_sha256": "1b612d76c659bac09eb987993396c14c40a5f3564582ec9679cc50917f755766",
+        "engine_sha256": "325157b4d14f21cc39b2f1663ef7eff60f3c79d7b4981a9cefb30c36052ff559"
+      },
+      {
+        "phase": "verification-synthetic",
+        "status": "passed",
+        "host_sha256": "1b612d76c659bac09eb987993396c14c40a5f3564582ec9679cc50917f755766",
+        "engine_sha256": "325157b4d14f21cc39b2f1663ef7eff60f3c79d7b4981a9cefb30c36052ff559"
+      },
+      {
+        "phase": "verification-shogi-hands",
+        "status": "passed",
+        "host_sha256": "1b612d76c659bac09eb987993396c14c40a5f3564582ec9679cc50917f755766",
+        "engine_sha256": "325157b4d14f21cc39b2f1663ef7eff60f3c79d7b4981a9cefb30c36052ff559"
+      },
+      {
+        "phase": "verification-shogi-promotion",
+        "status": "passed",
+        "host_sha256": "1b612d76c659bac09eb987993396c14c40a5f3564582ec9679cc50917f755766",
+        "engine_sha256": "325157b4d14f21cc39b2f1663ef7eff60f3c79d7b4981a9cefb30c36052ff559"
+      },
+      {
+        "phase": "verification-shogi-forced",
+        "status": "passed",
+        "host_sha256": "1b612d76c659bac09eb987993396c14c40a5f3564582ec9679cc50917f755766",
+        "engine_sha256": "325157b4d14f21cc39b2f1663ef7eff60f3c79d7b4981a9cefb30c36052ff559"
+      },
+      {
+        "phase": "verification-shogi-declaration",
+        "status": "passed",
+        "host_sha256": "1b612d76c659bac09eb987993396c14c40a5f3564582ec9679cc50917f755766",
+        "engine_sha256": "325157b4d14f21cc39b2f1663ef7eff60f3c79d7b4981a9cefb30c36052ff559"
+      },
+      {
+        "phase": "verification-shogi-concluded",
+        "status": "passed",
+        "host_sha256": "1b612d76c659bac09eb987993396c14c40a5f3564582ec9679cc50917f755766",
+        "engine_sha256": "325157b4d14f21cc39b2f1663ef7eff60f3c79d7b4981a9cefb30c36052ff559"
+      },
+      {
+        "phase": "verification-shogi-capacity",
+        "status": "passed",
+        "host_sha256": "1b612d76c659bac09eb987993396c14c40a5f3564582ec9679cc50917f755766",
+        "engine_sha256": "325157b4d14f21cc39b2f1663ef7eff60f3c79d7b4981a9cefb30c36052ff559"
+      }
+    ],
+    "focus_measurements": [
+      {
+        "game": "chess",
+        "selector": ".moves-table button[data-native-action=\"e2e4\"][data-event=\"2\"]",
+        "focusVisible": true,
+        "outlineOffset": 3,
+        "outlineStyle": "solid",
+        "focused": true,
+        "ancestors": [
+          {
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "left": 874,
+              "bottom": 765,
+              "right": 1138,
+              "top": 640
+            },
+            "class": "moves-scroll",
+            "tag": "DIV"
+          },
+          {
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "left": 860,
+              "bottom": 802,
+              "right": 1152,
+              "top": 566
+            },
+            "class": "shell-card shell-history",
+            "tag": "SECTION"
+          },
+          {
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "left": 852,
+              "bottom": 769,
+              "right": 1160,
+              "top": 94
+            },
+            "class": "shell-sidebar sidebar shogi-sidebar",
+            "tag": "ASIDE"
+          },
+          {
+            "overflowX": "hidden",
+            "overflowY": "hidden",
+            "rect": {
+              "left": 0,
+              "bottom": 820,
+              "right": 1180,
+              "top": 0
+            },
+            "class": "game-shell shell-chess application",
+            "tag": "MAIN"
+          }
+        ],
+        "viewport": {
+          "height": 820,
+          "width": 1180
+        },
+        "outlineWidth": 3,
+        "outline": {
+          "left": 906,
+          "bottom": 700,
+          "right": 1024,
+          "top": 662
+        },
+        "clip": {
+          "left": 874,
+          "bottom": 765,
+          "right": 1138,
+          "top": 640
+        }
+      },
+      {
+        "game": "chess",
+        "selector": ".moves-table button[data-native-action=\"e2e4\"][data-event=\"2\"]",
+        "focusVisible": true,
+        "outlineOffset": 3,
+        "outlineStyle": "solid",
+        "focused": true,
+        "ancestors": [
+          {
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "left": 520,
+              "bottom": 624,
+              "right": 728,
+              "top": 515
+            },
+            "class": "moves-scroll",
+            "tag": "DIV"
+          },
+          {
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "left": 506,
+              "bottom": 661,
+              "right": 742,
+              "top": 441
+            },
+            "class": "shell-card shell-history",
+            "tag": "SECTION"
+          },
+          {
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "left": 498,
+              "bottom": 585,
+              "right": 750,
+              "top": 80
+            },
+            "class": "shell-sidebar sidebar shogi-sidebar",
+            "tag": "ASIDE"
+          },
+          {
+            "overflowX": "hidden",
+            "overflowY": "hidden",
+            "rect": {
+              "left": 0,
+              "bottom": 650,
+              "right": 760,
+              "top": 0
+            },
+            "class": "game-shell shell-chess application",
+            "tag": "MAIN"
+          }
+        ],
+        "viewport": {
+          "height": 650,
+          "width": 760
+        },
+        "outlineWidth": 3,
+        "outline": {
+          "left": 552,
+          "bottom": 575,
+          "right": 642,
+          "top": 537
+        },
+        "clip": {
+          "left": 520,
+          "bottom": 585,
+          "right": 728,
+          "top": 515
+        }
+      },
+      {
+        "game": "shogi",
+        "selector": ".moves-table button[data-native-action=\"7g7f\"][data-event=\"1\"]",
+        "focusVisible": true,
+        "outlineOffset": 3,
+        "outlineStyle": "solid",
+        "focused": true,
+        "ancestors": [
+          {
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "left": 874,
+              "bottom": 788,
+              "right": 1138,
+              "top": 640
+            },
+            "class": "moves-scroll",
+            "tag": "DIV"
+          },
+          {
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "left": 860,
+              "bottom": 802,
+              "right": 1152,
+              "top": 566
+            },
+            "class": "shell-card shell-history",
+            "tag": "SECTION"
+          },
+          {
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "left": 852,
+              "bottom": 769,
+              "right": 1160,
+              "top": 94
+            },
+            "class": "shell-sidebar sidebar shogi-sidebar",
+            "tag": "ASIDE"
+          },
+          {
+            "overflowX": "hidden",
+            "overflowY": "hidden",
+            "rect": {
+              "left": 0,
+              "bottom": 820,
+              "right": 1180,
+              "top": 0
+            },
+            "class": "game-shell shell-shogi shogi-application",
+            "tag": "MAIN"
+          }
+        ],
+        "viewport": {
+          "height": 820,
+          "width": 1180
+        },
+        "outlineWidth": 3,
+        "outline": {
+          "left": 906,
+          "bottom": 702,
+          "right": 1024,
+          "top": 662
+        },
+        "clip": {
+          "left": 874,
+          "bottom": 769,
+          "right": 1138,
+          "top": 640
+        }
+      },
+      {
+        "game": "shogi",
+        "selector": ".moves-table button[data-native-action=\"7g7f\"][data-event=\"1\"]",
+        "focusVisible": true,
+        "outlineOffset": 3,
+        "outlineStyle": "solid",
+        "focused": true,
+        "ancestors": [
+          {
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "left": 520,
+              "bottom": 645,
+              "right": 728,
+              "top": 513
+            },
+            "class": "moves-scroll",
+            "tag": "DIV"
+          },
+          {
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "left": 506,
+              "bottom": 659,
+              "right": 742,
+              "top": 439
+            },
+            "class": "shell-card shell-history",
+            "tag": "SECTION"
+          },
+          {
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "left": 498,
+              "bottom": 585,
+              "right": 750,
+              "top": 80
+            },
+            "class": "shell-sidebar sidebar shogi-sidebar",
+            "tag": "ASIDE"
+          },
+          {
+            "overflowX": "hidden",
+            "overflowY": "hidden",
+            "rect": {
+              "left": 0,
+              "bottom": 650,
+              "right": 760,
+              "top": 0
+            },
+            "class": "game-shell shell-shogi shogi-application",
+            "tag": "MAIN"
+          }
+        ],
+        "viewport": {
+          "height": 650,
+          "width": 760
+        },
+        "outlineWidth": 3,
+        "outline": {
+          "left": 552,
+          "bottom": 575,
+          "right": 642,
+          "top": 535
+        },
+        "clip": {
+          "left": 520,
+          "bottom": 585,
+          "right": 728,
+          "top": 513
+        }
+      },
+      {
+        "game": "xiangqi",
+        "selector": ".moves-table button[data-native-action=\"a3a4\"][data-event=\"1\"]",
+        "focusVisible": true,
+        "outlineOffset": 3,
+        "outlineStyle": "solid",
+        "focused": true,
+        "ancestors": [
+          {
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "left": 874,
+              "bottom": 818,
+              "right": 1138,
+              "top": 670
+            },
+            "class": "moves-scroll",
+            "tag": "DIV"
+          },
+          {
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "left": 860,
+              "bottom": 832,
+              "right": 1152,
+              "top": 596
+            },
+            "class": "shell-card shell-history",
+            "tag": "SECTION"
+          },
+          {
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "left": 852,
+              "bottom": 769,
+              "right": 1160,
+              "top": 94
+            },
+            "class": "shell-sidebar sidebar shogi-sidebar",
+            "tag": "ASIDE"
+          },
+          {
+            "overflowX": "hidden",
+            "overflowY": "hidden",
+            "rect": {
+              "left": 0,
+              "bottom": 820,
+              "right": 1180,
+              "top": 0
+            },
+            "class": "game-shell shell-xiangqi shogi-application",
+            "tag": "MAIN"
+          }
+        ],
+        "viewport": {
+          "height": 820,
+          "width": 1180
+        },
+        "outlineWidth": 3,
+        "outline": {
+          "left": 906,
+          "bottom": 730,
+          "right": 1024,
+          "top": 692
+        },
+        "clip": {
+          "left": 874,
+          "bottom": 769,
+          "right": 1138,
+          "top": 670
+        }
+      },
+      {
+        "game": "xiangqi",
+        "selector": ".moves-table button[data-native-action=\"a3a4\"][data-event=\"1\"]",
+        "focusVisible": true,
+        "outlineOffset": 3,
+        "outlineStyle": "solid",
+        "focused": true,
+        "ancestors": [
+          {
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "left": 520,
+              "bottom": 634,
+              "right": 728,
+              "top": 515
+            },
+            "class": "moves-scroll",
+            "tag": "DIV"
+          },
+          {
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "left": 506,
+              "bottom": 648,
+              "right": 742,
+              "top": 428
+            },
+            "class": "shell-card shell-history",
+            "tag": "SECTION"
+          },
+          {
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "left": 498,
+              "bottom": 585,
+              "right": 750,
+              "top": 80
+            },
+            "class": "shell-sidebar sidebar shogi-sidebar",
+            "tag": "ASIDE"
+          },
+          {
+            "overflowX": "hidden",
+            "overflowY": "hidden",
+            "rect": {
+              "left": 0,
+              "bottom": 650,
+              "right": 760,
+              "top": 0
+            },
+            "class": "game-shell shell-xiangqi shogi-application",
+            "tag": "MAIN"
+          }
+        ],
+        "viewport": {
+          "height": 650,
+          "width": 760
+        },
+        "outlineWidth": 3,
+        "outline": {
+          "left": 552,
+          "bottom": 575,
+          "right": 642,
+          "top": 537
+        },
+        "clip": {
+          "left": 520,
+          "bottom": 585,
+          "right": 728,
+          "top": 515
+        }
+      }
+    ],
+    "initial_layouts": [
+      {
+        "boardPanel": {
+          "height": 702,
+          "left": 28,
+          "width": 804,
+          "top": 102
+        },
+        "flipInHeading": true,
+        "game": "chess",
+        "themeIdentity": "mshogi-dark",
+        "positionStatus": "Your turnLive position \u00b7 0 plies",
+        "allSquaresVisible": true,
+        "squareCount": 64,
+        "document": {
+          "height": 38,
+          "left": 225.53125,
+          "width": 563.46875,
+          "top": 21.5
+        },
+        "documentState": "unsaved",
+        "viewport": {
+          "height": 820,
+          "width": 1180
+        },
+        "themes": {
+          ".inspector-switch button[aria-pressed=\"true\"]": {
+            "fontSize": "12px",
+            "color": "rgb(229, 239, 216)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgba(0, 0, 0, 0)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(56, 83, 73)"
+          },
+          ".shell-section-title": {
+            "fontSize": "13px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-file-actions .quiet": {
+            "fontSize": "12px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(86, 113, 111)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-header": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(20, 41, 46)"
+          },
+          ".shell-file-actions .primary": {
+            "fontSize": "12px",
+            "color": "rgb(25, 46, 41)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(213, 228, 189)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgb(213, 228, 189)"
+          },
+          ".shell-card": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(59, 82, 88)",
+            "colorScheme": "dark",
+            "borderRadius": "9px",
+            "backgroundColor": "rgb(27, 46, 53)"
+          },
+          ".game-shell": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(17, 30, 35)"
+          }
+        },
+        "heading": {
+          "height": 80,
+          "left": 28,
+          "width": 804,
+          "top": 102
+        },
+        "documentInHeader": true,
+        "cards": [
+          {
+            "name": "analysis",
+            "rect": {
+              "height": 218,
+              "left": 860,
+              "width": 292,
+              "top": 116
+            }
+          },
+          {
+            "name": "actions",
+            "rect": {
+              "height": 90,
+              "left": 860,
+              "width": 292,
+              "top": 348
+            }
+          },
+          {
+            "name": "history",
+            "rect": {
+              "height": 236,
+              "left": 860,
+              "width": 292,
+              "top": 452
+            }
+          }
+        ],
+        "helpVisible": true,
+        "headerButtons": [
+          "New game",
+          "Save",
+          "Save as\u2026",
+          "Open\u2026"
+        ],
+        "inspectorButtons": [
+          {
+            "label": "Play details",
+            "pressed": "true"
+          },
+          {
+            "label": "Analyze position",
+            "pressed": "false"
+          }
+        ],
+        "rawDiagnosticsAbsent": true,
+        "footnoteVisible": true,
+        "help": {
+          "height": 18,
+          "left": 28,
+          "width": 804,
+          "top": 756
+        },
+        "supportOutsideSidebar": true,
+        "slots": [
+          {
+            "name": "upper-player",
+            "rect": {
+              "height": 52,
+              "left": 28,
+              "width": 804,
+              "top": 190
+            }
+          },
+          {
+            "name": "board",
+            "rect": {
+              "height": 462,
+              "left": 28,
+              "width": 804,
+              "top": 242
+            }
+          },
+          {
+            "name": "lower-player",
+            "rect": {
+              "height": 52,
+              "left": 28,
+              "width": 804,
+              "top": 704
+            }
+          },
+          {
+            "name": "footer",
+            "rect": {
+              "height": 48,
+              "left": 28,
+              "width": 804,
+              "top": 756
+            }
+          }
+        ],
+        "header": {
+          "height": 82,
+          "left": 0,
+          "width": 1180,
+          "top": 0
+        },
+        "gameArea": {
+          "height": 614,
+          "left": 28,
+          "width": 804,
+          "top": 190
+        },
+        "sections": [
+          "analysis",
+          "actions",
+          "history"
+        ],
+        "playLimits": "Play limit: depth 2 \u00b7 20000 nodes",
+        "pageWidth": 1180,
+        "brand": "\u6b69",
+        "gameLabel": "CHESS",
+        "sidebar": {
+          "height": 675,
+          "left": 852,
+          "width": 308,
+          "top": 94
+        },
+        "actions": {
+          "height": 34,
+          "left": 811,
+          "width": 341,
+          "top": 23.5
+        }
+      },
+      {
+        "boardPanel": {
+          "height": 554,
+          "left": 18,
+          "width": 470,
+          "top": 88
+        },
+        "flipInHeading": true,
+        "game": "chess",
+        "themeIdentity": "mshogi-dark",
+        "positionStatus": "Your turnLive position \u00b7 0 plies",
+        "allSquaresVisible": true,
+        "squareCount": 64,
+        "document": {
+          "height": 38,
+          "left": 210.25,
+          "width": 211.75,
+          "top": 18.5
+        },
+        "documentState": "unsaved",
+        "viewport": {
+          "height": 650,
+          "width": 760
+        },
+        "themes": {
+          ".inspector-switch button[aria-pressed=\"true\"]": {
+            "fontSize": "12px",
+            "color": "rgb(229, 239, 216)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgba(0, 0, 0, 0)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(56, 83, 73)"
+          },
+          ".shell-section-title": {
+            "fontSize": "13px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-file-actions .quiet": {
+            "fontSize": "11px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(86, 113, 111)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-header": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(20, 41, 46)"
+          },
+          ".shell-file-actions .primary": {
+            "fontSize": "11px",
+            "color": "rgb(25, 46, 41)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(213, 228, 189)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgb(213, 228, 189)"
+          },
+          ".shell-card": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(59, 82, 88)",
+            "colorScheme": "dark",
+            "borderRadius": "9px",
+            "backgroundColor": "rgb(27, 46, 53)"
+          },
+          ".game-shell": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(17, 30, 35)"
+          }
+        },
+        "heading": {
+          "height": 65,
+          "left": 18,
+          "width": 470,
+          "top": 88
+        },
+        "documentInHeader": true,
+        "cards": [
+          {
+            "name": "analysis",
+            "rect": {
+              "height": 232,
+              "left": 506,
+              "width": 236,
+              "top": 102
+            }
+          },
+          {
+            "name": "actions",
+            "rect": {
+              "height": 126,
+              "left": 506,
+              "width": 236,
+              "top": 348
+            }
+          },
+          {
+            "name": "history",
+            "rect": {
+              "height": 220,
+              "left": 506,
+              "width": 236,
+              "top": 488
+            }
+          }
+        ],
+        "helpVisible": true,
+        "headerButtons": [
+          "New game",
+          "Save",
+          "Save as\u2026",
+          "Open\u2026"
+        ],
+        "inspectorButtons": [
+          {
+            "label": "Play details",
+            "pressed": "true"
+          },
+          {
+            "label": "Analyze position",
+            "pressed": "false"
+          }
+        ],
+        "rawDiagnosticsAbsent": true,
+        "footnoteVisible": true,
+        "help": {
+          "height": 18,
+          "left": 18,
+          "width": 470,
+          "top": 594
+        },
+        "supportOutsideSidebar": true,
+        "slots": [
+          {
+            "name": "upper-player",
+            "rect": {
+              "height": 45,
+              "left": 18,
+              "width": 470,
+              "top": 161
+            }
+          },
+          {
+            "name": "board",
+            "rect": {
+              "height": 343,
+              "left": 18,
+              "width": 470,
+              "top": 206
+            }
+          },
+          {
+            "name": "lower-player",
+            "rect": {
+              "height": 45,
+              "left": 18,
+              "width": 470,
+              "top": 549
+            }
+          },
+          {
+            "name": "footer",
+            "rect": {
+              "height": 48,
+              "left": 18,
+              "width": 470,
+              "top": 594
+            }
+          }
+        ],
+        "header": {
+          "height": 76,
+          "left": 0,
+          "width": 760,
+          "top": 0
+        },
+        "gameArea": {
+          "height": 481,
+          "left": 18,
+          "width": 470,
+          "top": 161
+        },
+        "sections": [
+          "analysis",
+          "actions",
+          "history"
+        ],
+        "playLimits": "Play limit: depth 2 \u00b7 20000 nodes",
+        "pageWidth": 760,
+        "brand": "\u6b69",
+        "gameLabel": "CHESS",
+        "sidebar": {
+          "height": 505,
+          "left": 498,
+          "width": 252,
+          "top": 80
+        },
+        "actions": {
+          "height": 31,
+          "left": 444,
+          "width": 288,
+          "top": 22
+        }
+      },
+      {
+        "boardPanel": {
+          "height": 702,
+          "left": 28,
+          "width": 804,
+          "top": 102
+        },
+        "flipInHeading": true,
+        "game": "shogi",
+        "themeIdentity": "mshogi-dark",
+        "positionStatus": "Your turnLive position \u00b7 0 plies",
+        "allSquaresVisible": true,
+        "squareCount": 81,
+        "document": {
+          "height": 38,
+          "left": 225.53125,
+          "width": 563.46875,
+          "top": 21.5
+        },
+        "documentState": "unsaved",
+        "viewport": {
+          "height": 820,
+          "width": 1180
+        },
+        "themes": {
+          ".inspector-switch button[aria-pressed=\"true\"]": {
+            "fontSize": "12px",
+            "color": "rgb(229, 239, 216)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgba(0, 0, 0, 0)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(56, 83, 73)"
+          },
+          ".shell-section-title": {
+            "fontSize": "13px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-file-actions .quiet": {
+            "fontSize": "12px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(86, 113, 111)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-header": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(20, 41, 46)"
+          },
+          ".shell-file-actions .primary": {
+            "fontSize": "12px",
+            "color": "rgb(25, 46, 41)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(213, 228, 189)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgb(213, 228, 189)"
+          },
+          ".shell-card": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(59, 82, 88)",
+            "colorScheme": "dark",
+            "borderRadius": "9px",
+            "backgroundColor": "rgb(27, 46, 53)"
+          },
+          ".game-shell": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(17, 30, 35)"
+          }
+        },
+        "heading": {
+          "height": 80,
+          "left": 28,
+          "width": 804,
+          "top": 102
+        },
+        "documentInHeader": true,
+        "cards": [
+          {
+            "name": "analysis",
+            "rect": {
+              "height": 218,
+              "left": 860,
+              "width": 292,
+              "top": 116
+            }
+          },
+          {
+            "name": "actions",
+            "rect": {
+              "height": 90,
+              "left": 860,
+              "width": 292,
+              "top": 348
+            }
+          },
+          {
+            "name": "history",
+            "rect": {
+              "height": 236,
+              "left": 860,
+              "width": 292,
+              "top": 452
+            }
+          }
+        ],
+        "helpVisible": true,
+        "headerButtons": [
+          "New game",
+          "Save",
+          "Save as\u2026",
+          "Open\u2026"
+        ],
+        "inspectorButtons": [
+          {
+            "label": "Play details",
+            "pressed": "true"
+          },
+          {
+            "label": "Analyze position",
+            "pressed": "false"
+          }
+        ],
+        "rawDiagnosticsAbsent": true,
+        "footnoteVisible": true,
+        "help": {
+          "height": 18,
+          "left": 28,
+          "width": 804,
+          "top": 756
+        },
+        "supportOutsideSidebar": true,
+        "slots": [
+          {
+            "name": "upper-player",
+            "rect": {
+              "height": 52,
+              "left": 28,
+              "width": 804,
+              "top": 190
+            }
+          },
+          {
+            "name": "board",
+            "rect": {
+              "height": 462,
+              "left": 28,
+              "width": 804,
+              "top": 242
+            }
+          },
+          {
+            "name": "lower-player",
+            "rect": {
+              "height": 52,
+              "left": 28,
+              "width": 804,
+              "top": 704
+            }
+          },
+          {
+            "name": "footer",
+            "rect": {
+              "height": 48,
+              "left": 28,
+              "width": 804,
+              "top": 756
+            }
+          }
+        ],
+        "header": {
+          "height": 82,
+          "left": 0,
+          "width": 1180,
+          "top": 0
+        },
+        "gameArea": {
+          "height": 614,
+          "left": 28,
+          "width": 804,
+          "top": 190
+        },
+        "sections": [
+          "analysis",
+          "actions",
+          "history"
+        ],
+        "playLimits": "Play limit: depth 2 \u00b7 5000 nodes",
+        "pageWidth": 1180,
+        "brand": "\u6b69",
+        "gameLabel": "SHOGI",
+        "sidebar": {
+          "height": 675,
+          "left": 852,
+          "width": 308,
+          "top": 94
+        },
+        "actions": {
+          "height": 34,
+          "left": 811,
+          "width": 341,
+          "top": 23.5
+        }
+      },
+      {
+        "boardPanel": {
+          "height": 554,
+          "left": 18,
+          "width": 470,
+          "top": 88
+        },
+        "flipInHeading": true,
+        "game": "shogi",
+        "themeIdentity": "mshogi-dark",
+        "positionStatus": "Your turnLive position \u00b7 0 plies",
+        "allSquaresVisible": true,
+        "squareCount": 81,
+        "document": {
+          "height": 38,
+          "left": 210.25,
+          "width": 211.75,
+          "top": 18.5
+        },
+        "documentState": "unsaved",
+        "viewport": {
+          "height": 650,
+          "width": 760
+        },
+        "themes": {
+          ".inspector-switch button[aria-pressed=\"true\"]": {
+            "fontSize": "12px",
+            "color": "rgb(229, 239, 216)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgba(0, 0, 0, 0)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(56, 83, 73)"
+          },
+          ".shell-section-title": {
+            "fontSize": "13px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-file-actions .quiet": {
+            "fontSize": "11px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(86, 113, 111)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-header": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(20, 41, 46)"
+          },
+          ".shell-file-actions .primary": {
+            "fontSize": "11px",
+            "color": "rgb(25, 46, 41)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(213, 228, 189)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgb(213, 228, 189)"
+          },
+          ".shell-card": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(59, 82, 88)",
+            "colorScheme": "dark",
+            "borderRadius": "9px",
+            "backgroundColor": "rgb(27, 46, 53)"
+          },
+          ".game-shell": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(17, 30, 35)"
+          }
+        },
+        "heading": {
+          "height": 65,
+          "left": 18,
+          "width": 470,
+          "top": 88
+        },
+        "documentInHeader": true,
+        "cards": [
+          {
+            "name": "analysis",
+            "rect": {
+              "height": 232,
+              "left": 506,
+              "width": 236,
+              "top": 102
+            }
+          },
+          {
+            "name": "actions",
+            "rect": {
+              "height": 126,
+              "left": 506,
+              "width": 236,
+              "top": 348
+            }
+          },
+          {
+            "name": "history",
+            "rect": {
+              "height": 220,
+              "left": 506,
+              "width": 236,
+              "top": 488
+            }
+          }
+        ],
+        "helpVisible": true,
+        "headerButtons": [
+          "New game",
+          "Save",
+          "Save as\u2026",
+          "Open\u2026"
+        ],
+        "inspectorButtons": [
+          {
+            "label": "Play details",
+            "pressed": "true"
+          },
+          {
+            "label": "Analyze position",
+            "pressed": "false"
+          }
+        ],
+        "rawDiagnosticsAbsent": true,
+        "footnoteVisible": true,
+        "help": {
+          "height": 18,
+          "left": 18,
+          "width": 470,
+          "top": 594
+        },
+        "supportOutsideSidebar": true,
+        "slots": [
+          {
+            "name": "upper-player",
+            "rect": {
+              "height": 45,
+              "left": 18,
+              "width": 470,
+              "top": 161
+            }
+          },
+          {
+            "name": "board",
+            "rect": {
+              "height": 343,
+              "left": 18,
+              "width": 470,
+              "top": 206
+            }
+          },
+          {
+            "name": "lower-player",
+            "rect": {
+              "height": 45,
+              "left": 18,
+              "width": 470,
+              "top": 549
+            }
+          },
+          {
+            "name": "footer",
+            "rect": {
+              "height": 48,
+              "left": 18,
+              "width": 470,
+              "top": 594
+            }
+          }
+        ],
+        "header": {
+          "height": 76,
+          "left": 0,
+          "width": 760,
+          "top": 0
+        },
+        "gameArea": {
+          "height": 481,
+          "left": 18,
+          "width": 470,
+          "top": 161
+        },
+        "sections": [
+          "analysis",
+          "actions",
+          "history"
+        ],
+        "playLimits": "Play limit: depth 2 \u00b7 5000 nodes",
+        "pageWidth": 760,
+        "brand": "\u6b69",
+        "gameLabel": "SHOGI",
+        "sidebar": {
+          "height": 505,
+          "left": 498,
+          "width": 252,
+          "top": 80
+        },
+        "actions": {
+          "height": 31,
+          "left": 444,
+          "width": 288,
+          "top": 22
+        }
+      },
+      {
+        "boardPanel": {
+          "height": 702,
+          "left": 28,
+          "width": 804,
+          "top": 102
+        },
+        "flipInHeading": true,
+        "game": "xiangqi",
+        "themeIdentity": "mshogi-dark",
+        "positionStatus": "Your turnLive position \u00b7 0 plies",
+        "allSquaresVisible": true,
+        "squareCount": 90,
+        "document": {
+          "height": 38,
+          "left": 225.53125,
+          "width": 563.46875,
+          "top": 21.5
+        },
+        "documentState": "unsaved",
+        "viewport": {
+          "height": 820,
+          "width": 1180
+        },
+        "themes": {
+          ".inspector-switch button[aria-pressed=\"true\"]": {
+            "fontSize": "12px",
+            "color": "rgb(229, 239, 216)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgba(0, 0, 0, 0)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(56, 83, 73)"
+          },
+          ".shell-section-title": {
+            "fontSize": "13px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-file-actions .quiet": {
+            "fontSize": "12px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(86, 113, 111)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-header": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(20, 41, 46)"
+          },
+          ".shell-file-actions .primary": {
+            "fontSize": "12px",
+            "color": "rgb(25, 46, 41)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(213, 228, 189)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgb(213, 228, 189)"
+          },
+          ".shell-card": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(59, 82, 88)",
+            "colorScheme": "dark",
+            "borderRadius": "9px",
+            "backgroundColor": "rgb(27, 46, 53)"
+          },
+          ".game-shell": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(17, 30, 35)"
+          }
+        },
+        "heading": {
+          "height": 80,
+          "left": 28,
+          "width": 804,
+          "top": 102
+        },
+        "documentInHeader": true,
+        "cards": [
+          {
+            "name": "analysis",
+            "rect": {
+              "height": 218,
+              "left": 860,
+              "width": 292,
+              "top": 116
+            }
+          },
+          {
+            "name": "actions",
+            "rect": {
+              "height": 90,
+              "left": 860,
+              "width": 292,
+              "top": 348
+            }
+          },
+          {
+            "name": "history",
+            "rect": {
+              "height": 236,
+              "left": 860,
+              "width": 292,
+              "top": 452
+            }
+          }
+        ],
+        "helpVisible": true,
+        "headerButtons": [
+          "New game",
+          "Save",
+          "Save as\u2026",
+          "Open\u2026"
+        ],
+        "inspectorButtons": [
+          {
+            "label": "Play details",
+            "pressed": "true"
+          },
+          {
+            "label": "Analyze position",
+            "pressed": "false"
+          }
+        ],
+        "rawDiagnosticsAbsent": true,
+        "footnoteVisible": true,
+        "help": {
+          "height": 18,
+          "left": 28,
+          "width": 804,
+          "top": 756
+        },
+        "supportOutsideSidebar": true,
+        "slots": [
+          {
+            "name": "upper-player",
+            "rect": {
+              "height": 52,
+              "left": 28,
+              "width": 804,
+              "top": 190
+            }
+          },
+          {
+            "name": "board",
+            "rect": {
+              "height": 462,
+              "left": 28,
+              "width": 804,
+              "top": 242
+            }
+          },
+          {
+            "name": "lower-player",
+            "rect": {
+              "height": 52,
+              "left": 28,
+              "width": 804,
+              "top": 704
+            }
+          },
+          {
+            "name": "footer",
+            "rect": {
+              "height": 48,
+              "left": 28,
+              "width": 804,
+              "top": 756
+            }
+          }
+        ],
+        "header": {
+          "height": 82,
+          "left": 0,
+          "width": 1180,
+          "top": 0
+        },
+        "gameArea": {
+          "height": 614,
+          "left": 28,
+          "width": 804,
+          "top": 190
+        },
+        "sections": [
+          "analysis",
+          "actions",
+          "history"
+        ],
+        "playLimits": "Play limit: depth 1 \u00b7 128 nodes",
+        "pageWidth": 1180,
+        "brand": "\u6b69",
+        "gameLabel": "XIANGQI",
+        "sidebar": {
+          "height": 675,
+          "left": 852,
+          "width": 308,
+          "top": 94
+        },
+        "actions": {
+          "height": 34,
+          "left": 811,
+          "width": 341,
+          "top": 23.5
+        }
+      },
+      {
+        "boardPanel": {
+          "height": 554,
+          "left": 18,
+          "width": 470,
+          "top": 88
+        },
+        "flipInHeading": true,
+        "game": "xiangqi",
+        "themeIdentity": "mshogi-dark",
+        "positionStatus": "Your turnLive position \u00b7 0 plies",
+        "allSquaresVisible": true,
+        "squareCount": 90,
+        "document": {
+          "height": 38,
+          "left": 210.25,
+          "width": 211.75,
+          "top": 18.5
+        },
+        "documentState": "unsaved",
+        "viewport": {
+          "height": 650,
+          "width": 760
+        },
+        "themes": {
+          ".inspector-switch button[aria-pressed=\"true\"]": {
+            "fontSize": "12px",
+            "color": "rgb(229, 239, 216)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgba(0, 0, 0, 0)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(56, 83, 73)"
+          },
+          ".shell-section-title": {
+            "fontSize": "13px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-file-actions .quiet": {
+            "fontSize": "11px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(86, 113, 111)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgba(0, 0, 0, 0)"
+          },
+          ".shell-header": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(20, 41, 46)"
+          },
+          ".shell-file-actions .primary": {
+            "fontSize": "11px",
+            "color": "rgb(25, 46, 41)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(213, 228, 189)",
+            "colorScheme": "dark",
+            "borderRadius": "7px",
+            "backgroundColor": "rgb(213, 228, 189)"
+          },
+          ".shell-card": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "1px",
+            "borderTopColor": "rgb(59, 82, 88)",
+            "colorScheme": "dark",
+            "borderRadius": "9px",
+            "backgroundColor": "rgb(27, 46, 53)"
+          },
+          ".game-shell": {
+            "fontSize": "14px",
+            "color": "rgb(231, 236, 229)",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "borderTopWidth": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "borderRadius": "0px",
+            "backgroundColor": "rgb(17, 30, 35)"
+          }
+        },
+        "heading": {
+          "height": 65,
+          "left": 18,
+          "width": 470,
+          "top": 88
+        },
+        "documentInHeader": true,
+        "cards": [
+          {
+            "name": "analysis",
+            "rect": {
+              "height": 232,
+              "left": 506,
+              "width": 236,
+              "top": 102
+            }
+          },
+          {
+            "name": "actions",
+            "rect": {
+              "height": 126,
+              "left": 506,
+              "width": 236,
+              "top": 348
+            }
+          },
+          {
+            "name": "history",
+            "rect": {
+              "height": 220,
+              "left": 506,
+              "width": 236,
+              "top": 488
+            }
+          }
+        ],
+        "helpVisible": true,
+        "headerButtons": [
+          "New game",
+          "Save",
+          "Save as\u2026",
+          "Open\u2026"
+        ],
+        "inspectorButtons": [
+          {
+            "label": "Play details",
+            "pressed": "true"
+          },
+          {
+            "label": "Analyze position",
+            "pressed": "false"
+          }
+        ],
+        "rawDiagnosticsAbsent": true,
+        "footnoteVisible": true,
+        "help": {
+          "height": 18,
+          "left": 18,
+          "width": 470,
+          "top": 594
+        },
+        "supportOutsideSidebar": true,
+        "slots": [
+          {
+            "name": "upper-player",
+            "rect": {
+              "height": 45,
+              "left": 18,
+              "width": 470,
+              "top": 161
+            }
+          },
+          {
+            "name": "board",
+            "rect": {
+              "height": 343,
+              "left": 18,
+              "width": 470,
+              "top": 206
+            }
+          },
+          {
+            "name": "lower-player",
+            "rect": {
+              "height": 45,
+              "left": 18,
+              "width": 470,
+              "top": 549
+            }
+          },
+          {
+            "name": "footer",
+            "rect": {
+              "height": 48,
+              "left": 18,
+              "width": 470,
+              "top": 594
+            }
+          }
+        ],
+        "header": {
+          "height": 76,
+          "left": 0,
+          "width": 760,
+          "top": 0
+        },
+        "gameArea": {
+          "height": 481,
+          "left": 18,
+          "width": 470,
+          "top": 161
+        },
+        "sections": [
+          "analysis",
+          "actions",
+          "history"
+        ],
+        "playLimits": "Play limit: depth 1 \u00b7 128 nodes",
+        "pageWidth": 760,
+        "brand": "\u6b69",
+        "gameLabel": "XIANGQI",
+        "sidebar": {
+          "height": 505,
+          "left": 498,
+          "width": 252,
+          "top": 80
+        },
+        "actions": {
+          "height": 31,
+          "left": 444,
+          "width": 288,
+          "top": 22
+        }
+      }
+    ],
+    "support_interactions": [
+      {
+        "game": "chess",
+        "summaries": [
+          "Diagnostics",
+          "Font license"
+        ],
+        "profile": "mshogi.chess.match.v1",
+        "token": {
+          "revision": 1,
+          "document": 0,
+          "selection": 1,
+          "version": 1
+        }
+      },
+      {
+        "game": "chess",
+        "summaries": [
+          "Diagnostics",
+          "Font license"
+        ],
+        "profile": "mshogi.chess.match.v1",
+        "token": {
+          "revision": 1,
+          "document": 0,
+          "selection": 1,
+          "version": 1
+        }
+      },
+      {
+        "game": "shogi",
+        "summaries": [
+          "Diagnostics",
+          "Font license"
+        ],
+        "profile": "mshogi.shogi.csa36.v1",
+        "token": {
+          "revision": 5,
+          "document": 1,
+          "selection": 2,
+          "version": 2
+        }
+      },
+      {
+        "game": "shogi",
+        "summaries": [
+          "Diagnostics",
+          "Font license"
+        ],
+        "profile": "mshogi.shogi.csa36.v1",
+        "token": {
+          "revision": 5,
+          "document": 1,
+          "selection": 2,
+          "version": 2
+        }
+      },
+      {
+        "game": "xiangqi",
+        "summaries": [
+          "Diagnostics",
+          "Font license"
+        ],
+        "profile": "mshogi.xiangqi.wxf2018.v1",
+        "token": {
+          "revision": 5,
+          "document": 1,
+          "selection": 2,
+          "version": 2
+        }
+      },
+      {
+        "game": "xiangqi",
+        "summaries": [
+          "Diagnostics",
+          "Font license"
+        ],
+        "profile": "mshogi.xiangqi.wxf2018.v1",
+        "token": {
+          "revision": 5,
+          "document": 1,
+          "selection": 2,
+          "version": 2
+        }
+      }
+    ],
+    "chooser_interactions": [
+      {
+        "game": "chess",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "White",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Black",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "shogi",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "Sente",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Gote",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "xiangqi",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "Red",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Black",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "chess",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "White",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Black",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "shogi",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "Sente",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Gote",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "xiangqi",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "Red",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Black",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "chess",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "White",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Black",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "shogi",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "Sente",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Gote",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "xiangqi",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "Red",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Black",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "chess",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "White",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Black",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "shogi",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "Sente",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Gote",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "xiangqi",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "Red",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Black",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "chess",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "White",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Black",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "shogi",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "Sente",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Gote",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "xiangqi",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "Red",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Black",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "chess",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "White",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Black",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "shogi",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "Sente",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Gote",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "xiangqi",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "Red",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Black",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "chess",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "White",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Black",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "shogi",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "Sente",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Gote",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "xiangqi",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "Red",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Black",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "chess",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "White",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Black",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "shogi",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "Sente",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Gote",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "xiangqi",
+        "options": [
+          {
+            "label": "Chess",
+            "disabled": false,
+            "value": "chess"
+          },
+          {
+            "label": "Shogi",
+            "disabled": false,
+            "value": "shogi"
+          },
+          {
+            "label": "Xiangqi",
+            "disabled": false,
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "label": "Red",
+            "selected": "true",
+            "chosen": true,
+            "role": "radio"
+          },
+          {
+            "label": "Black",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          },
+          {
+            "label": "Random",
+            "selected": "false",
+            "chosen": false,
+            "role": "radio"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      }
+    ],
+    "screenshots_extracted": [
+      "normal-initial-chess-normal-size.webview.png",
+      "normal-initial-chess-minimum-size.webview.png",
+      "normal-shogi-initial-sente.webview.png",
+      "normal-shogi-minimum-size.webview.png",
+      "normal-xiangqi-initial-red-normal-size.webview.png",
+      "normal-xiangqi-initial-red-minimum-size.webview.png",
+      "normal-moves-chess-1180-keyboard-history.webview.png",
+      "normal-moves-chess-760-keyboard-history.webview.png",
+      "normal-shogi-moves-shogi-1180-keyboard-history.webview.png",
+      "normal-shogi-moves-shogi-760-keyboard-history.webview.png",
+      "normal-xiangqi-moves-xiangqi-1180-keyboard-history.webview.png",
+      "normal-xiangqi-moves-xiangqi-760-keyboard-history.webview.png",
+      "normal-xiangqi-support-xiangqi-760x650.webview.png",
+      "normal-shogi-chooser-shogi-760.webview.png"
+    ]
+  },
+  "macos": {
+    "source_revision": "91eb13e2451af77150b82b62a448bf97e9d5ac58",
+    "run": 41208986515,
+    "artifact_zip_sha256": "1afa8bb9141c0eaf17d27120093d6c0da06cea2b1d9f9aba84674a57604b5ed3",
+    "normal_manifest_files_verified": 5,
+    "manifest_files_absent_from_artifact": [],
+    "normal_smoke": {
+      "package_root": "desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+      "engine": "Contents/MacOS/mshogi",
+      "sha256": "d4fa9358c8976e4e30dc402e7223e6edf939e092ae8c3951144055491222a764",
+      "host_sha256": "80e2e5c163ebb86f2138bf5adb36a069af773aeeab1a64754d201b33c5263ff8",
+      "version": "mshogi 0.1.0",
+      "uci_observations": [
+        "id name mShogi 0.1.0",
+        "id author John Weathers",
+        "option name ClaimPolicy type combo default explicit var explicit var auto",
+        "uciok",
+        "readyok",
+        "info depth 1 nodes 21 time 13 score cp 0 pv a2a3",
+        "bestmove a2a3"
+      ],
+      "internal_response": {
+        "protocol": 4,
+        "observation": {
+          "schema_version": 1,
+          "context": {
+            "purpose": {
+              "kind": "engine_turn"
+            },
+            "request_id": 1,
+            "session_version": 1,
+            "process_generation": 1,
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "chess",
+              "rules_profile": "mshogi.chess.match.v1",
+              "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+              "native_schema_version": 1,
+              "payload": {
+                "schema_version": 1,
+                "rules_profile": "mshogi.chess.match.v1",
+                "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                "history_origin": "standard_start",
+                "claim_policy": "explicit_only",
+                "events": []
+              }
+            },
+            "limits": {
+              "depth": 1,
+              "nodes": 1000
+            }
+          },
+          "result": {
+            "kind": "chess",
+            "result": {
+              "kind": "move",
+              "action": "a2a3",
+              "telemetry": {
+                "score": 0,
+                "completed_depth": 1,
+                "nodes": 21,
+                "principal_variation": [
+                  {
+                    "kind": "move",
+                    "action": "a2a3"
+                  }
+                ],
+                "status": "complete"
+              }
+            }
+          }
+        }
+      },
+      "analysis_response": {
+        "protocol": 4,
+        "observation": {
+          "schema_version": 1,
+          "context": {
+            "purpose": {
+              "kind": "move_analysis",
+              "target": {
+                "selection_id": 1,
+                "event_index": 0,
+                "board_ply": 0,
+                "session_version": 1,
+                "label": "Package verification: standard start",
+                "turn": {
+                  "game_kind": "chess",
+                  "side": "white"
+                }
+              }
+            },
+            "request_id": 2,
+            "session_version": 1,
+            "process_generation": 2,
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "chess",
+              "rules_profile": "mshogi.chess.match.v1",
+              "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+              "native_schema_version": 1,
+              "payload": {
+                "schema_version": 1,
+                "rules_profile": "mshogi.chess.match.v1",
+                "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                "history_origin": "standard_start",
+                "claim_policy": "explicit_only",
+                "events": []
+              }
+            },
+            "limits": {
+              "depth": 1,
+              "nodes": 1000
+            }
+          },
+          "result": {
+            "kind": "chess",
+            "result": {
+              "kind": "move",
+              "action": "a2a3",
+              "telemetry": {
+                "score": 0,
+                "completed_depth": 1,
+                "nodes": 21,
+                "principal_variation": [
+                  {
+                    "kind": "move",
+                    "action": "a2a3"
+                  }
+                ],
+                "status": "complete"
+              }
+            }
+          }
+        }
+      },
+      "full_response": {
+        "protocol": 4,
+        "observation": {
+          "schema_version": 1,
+          "context": {
+            "purpose": {
+              "kind": "chess_full_reachability",
+              "target": {
+                "selection_id": 1,
+                "event_index": 0,
+                "board_ply": 0,
+                "session_version": 1,
+                "label": "Package verification: standard start",
+                "turn": {
+                  "game_kind": "chess",
+                  "side": "white"
+                }
+              },
+              "mate": "either",
+              "limits": {
+                "max_positions": 1,
+                "max_transitions": 1
+              }
+            },
+            "request_id": 3,
+            "session_version": 1,
+            "process_generation": 3,
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "chess",
+              "rules_profile": "mshogi.chess.match.v1",
+              "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+              "native_schema_version": 1,
+              "payload": {
+                "schema_version": 1,
+                "rules_profile": "mshogi.chess.match.v1",
+                "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                "history_origin": "standard_start",
+                "claim_policy": "explicit_only",
+                "events": []
+              }
+            },
+            "limits": {
+              "depth": 1,
+              "nodes": 0
+            }
+          },
+          "result": {
+            "kind": "chess",
+            "result": {
+              "kind": "reachability",
+              "result": {
+                "unknown": {
+                  "reason": "position_limit",
+                  "work": {
+                    "positions": 1,
+                    "expanded": 1,
+                    "transitions": 1,
+                    "static_leaves": 0
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "files": [
+        "Contents/Info.plist",
+        "Contents/MacOS/mshogi",
+        "Contents/MacOS/mshogi-desktop",
+        "Contents/Resources/icon.icns"
+      ],
+      "scope": "Package inventory and actual UCI, engine-turn, move-analysis and bounded Full reachability queries. Host acceptance and installed UI interaction are separate evidence."
+    },
+    "scope": "macOS CI verifies package/engine only; local native Mac CUA evidence is separate."
+  },
+  "windows": {
+    "source_revision": "91eb13e2451af77150b82b62a448bf97e9d5ac58",
+    "run": 41208986515,
+    "artifact_zip_sha256": "6f29763b82810dce46f7d8e98d09551d19118129b4e53747ea812adcf9312a96",
+    "normal_manifest_files_verified": 2,
+    "manifest_files_absent_from_artifact": [],
+    "normal_smoke": {
+      "package_root": "D:\\a\\_temp\\mshogi-package-smoke",
+      "engine": "mshogi.exe",
+      "sha256": "02c658043263cea84fd776bfdf130d8bbd7daeaf8ea8038abc4667154df8c66c",
+      "host_sha256": "11cfef8e6749a6b21bb1058c9b8f1e7409523e0cde30e40d4e6d9d74ef665e50",
+      "version": "mshogi 0.1.0",
+      "uci_observations": [
+        "id name mShogi 0.1.0",
+        "id author John Weathers",
+        "option name ClaimPolicy type combo default explicit var explicit var auto",
+        "uciok",
+        "readyok",
+        "info depth 1 nodes 21 time 7 score cp 0 pv a2a3",
+        "bestmove a2a3"
+      ],
+      "internal_response": {
+        "protocol": 4,
+        "observation": {
+          "schema_version": 1,
+          "context": {
+            "purpose": {
+              "kind": "engine_turn"
+            },
+            "request_id": 1,
+            "session_version": 1,
+            "process_generation": 1,
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "chess",
+              "rules_profile": "mshogi.chess.match.v1",
+              "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+              "native_schema_version": 1,
+              "payload": {
+                "schema_version": 1,
+                "rules_profile": "mshogi.chess.match.v1",
+                "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                "history_origin": "standard_start",
+                "claim_policy": "explicit_only",
+                "events": []
+              }
+            },
+            "limits": {
+              "depth": 1,
+              "nodes": 1000
+            }
+          },
+          "result": {
+            "kind": "chess",
+            "result": {
+              "kind": "move",
+              "action": "a2a3",
+              "telemetry": {
+                "score": 0,
+                "completed_depth": 1,
+                "nodes": 21,
+                "principal_variation": [
+                  {
+                    "kind": "move",
+                    "action": "a2a3"
+                  }
+                ],
+                "status": "complete"
+              }
+            }
+          }
+        }
+      },
+      "analysis_response": {
+        "protocol": 4,
+        "observation": {
+          "schema_version": 1,
+          "context": {
+            "purpose": {
+              "kind": "move_analysis",
+              "target": {
+                "selection_id": 1,
+                "event_index": 0,
+                "board_ply": 0,
+                "session_version": 1,
+                "label": "Package verification: standard start",
+                "turn": {
+                  "game_kind": "chess",
+                  "side": "white"
+                }
+              }
+            },
+            "request_id": 2,
+            "session_version": 1,
+            "process_generation": 2,
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "chess",
+              "rules_profile": "mshogi.chess.match.v1",
+              "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+              "native_schema_version": 1,
+              "payload": {
+                "schema_version": 1,
+                "rules_profile": "mshogi.chess.match.v1",
+                "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                "history_origin": "standard_start",
+                "claim_policy": "explicit_only",
+                "events": []
+              }
+            },
+            "limits": {
+              "depth": 1,
+              "nodes": 1000
+            }
+          },
+          "result": {
+            "kind": "chess",
+            "result": {
+              "kind": "move",
+              "action": "a2a3",
+              "telemetry": {
+                "score": 0,
+                "completed_depth": 1,
+                "nodes": 21,
+                "principal_variation": [
+                  {
+                    "kind": "move",
+                    "action": "a2a3"
+                  }
+                ],
+                "status": "complete"
+              }
+            }
+          }
+        }
+      },
+      "full_response": {
+        "protocol": 4,
+        "observation": {
+          "schema_version": 1,
+          "context": {
+            "purpose": {
+              "kind": "chess_full_reachability",
+              "target": {
+                "selection_id": 1,
+                "event_index": 0,
+                "board_ply": 0,
+                "session_version": 1,
+                "label": "Package verification: standard start",
+                "turn": {
+                  "game_kind": "chess",
+                  "side": "white"
+                }
+              },
+              "mate": "either",
+              "limits": {
+                "max_positions": 1,
+                "max_transitions": 1
+              }
+            },
+            "request_id": 3,
+            "session_version": 1,
+            "process_generation": 3,
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "chess",
+              "rules_profile": "mshogi.chess.match.v1",
+              "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+              "native_schema_version": 1,
+              "payload": {
+                "schema_version": 1,
+                "rules_profile": "mshogi.chess.match.v1",
+                "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                "history_origin": "standard_start",
+                "claim_policy": "explicit_only",
+                "events": []
+              }
+            },
+            "limits": {
+              "depth": 1,
+              "nodes": 0
+            }
+          },
+          "result": {
+            "kind": "chess",
+            "result": {
+              "kind": "reachability",
+              "result": {
+                "unknown": {
+                  "reason": "position_limit",
+                  "work": {
+                    "positions": 1,
+                    "expanded": 1,
+                    "transitions": 1,
+                    "static_leaves": 0
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "files": [
+        "mshogi-desktop.exe",
+        "mshogi.exe",
+        "uninstall.exe"
+      ],
+      "scope": "Package inventory and actual UCI, engine-turn, move-analysis and bounded Full reachability queries. Host acceptance and installed UI interaction are separate evidence."
+    },
+    "scope": "Actual installed normal and separately labeled verification package GUI interaction with native input and read-only DOM observations.",
+    "gui_report_file_hashes_verified": 396,
+    "phases": [
+      {
+        "phase": "normal",
+        "status": "passed",
+        "host_sha256": "11cfef8e6749a6b21bb1058c9b8f1e7409523e0cde30e40d4e6d9d74ef665e50",
+        "engine_sha256": "02c658043263cea84fd776bfdf130d8bbd7daeaf8ea8038abc4667154df8c66c"
+      },
+      {
+        "phase": "normal-shogi",
+        "status": "passed",
+        "host_sha256": "11cfef8e6749a6b21bb1058c9b8f1e7409523e0cde30e40d4e6d9d74ef665e50",
+        "engine_sha256": "02c658043263cea84fd776bfdf130d8bbd7daeaf8ea8038abc4667154df8c66c"
+      },
+      {
+        "phase": "normal-shogi-reopened",
+        "status": "passed",
+        "host_sha256": "11cfef8e6749a6b21bb1058c9b8f1e7409523e0cde30e40d4e6d9d74ef665e50",
+        "engine_sha256": "02c658043263cea84fd776bfdf130d8bbd7daeaf8ea8038abc4667154df8c66c"
+      },
+      {
+        "phase": "normal-xiangqi",
+        "status": "passed",
+        "host_sha256": "11cfef8e6749a6b21bb1058c9b8f1e7409523e0cde30e40d4e6d9d74ef665e50",
+        "engine_sha256": "02c658043263cea84fd776bfdf130d8bbd7daeaf8ea8038abc4667154df8c66c"
+      },
+      {
+        "phase": "verification-standard",
+        "status": "passed",
+        "host_sha256": "53d5f367bba13903390aa6a2a184d101ed68957220b009ac68027ee2301c8b9c",
+        "engine_sha256": "02c658043263cea84fd776bfdf130d8bbd7daeaf8ea8038abc4667154df8c66c"
+      },
+      {
+        "phase": "verification-promotion",
+        "status": "passed",
+        "host_sha256": "53d5f367bba13903390aa6a2a184d101ed68957220b009ac68027ee2301c8b9c",
+        "engine_sha256": "02c658043263cea84fd776bfdf130d8bbd7daeaf8ea8038abc4667154df8c66c"
+      },
+      {
+        "phase": "verification-claim",
+        "status": "passed",
+        "host_sha256": "53d5f367bba13903390aa6a2a184d101ed68957220b009ac68027ee2301c8b9c",
+        "engine_sha256": "02c658043263cea84fd776bfdf130d8bbd7daeaf8ea8038abc4667154df8c66c"
+      },
+      {
+        "phase": "verification-capacity",
+        "status": "passed",
+        "host_sha256": "53d5f367bba13903390aa6a2a184d101ed68957220b009ac68027ee2301c8b9c",
+        "engine_sha256": "02c658043263cea84fd776bfdf130d8bbd7daeaf8ea8038abc4667154df8c66c"
+      },
+      {
+        "phase": "verification-synthetic",
+        "status": "passed",
+        "host_sha256": "53d5f367bba13903390aa6a2a184d101ed68957220b009ac68027ee2301c8b9c",
+        "engine_sha256": "02c658043263cea84fd776bfdf130d8bbd7daeaf8ea8038abc4667154df8c66c"
+      },
+      {
+        "phase": "verification-shogi-hands",
+        "status": "passed",
+        "host_sha256": "53d5f367bba13903390aa6a2a184d101ed68957220b009ac68027ee2301c8b9c",
+        "engine_sha256": "02c658043263cea84fd776bfdf130d8bbd7daeaf8ea8038abc4667154df8c66c"
+      },
+      {
+        "phase": "verification-shogi-promotion",
+        "status": "passed",
+        "host_sha256": "53d5f367bba13903390aa6a2a184d101ed68957220b009ac68027ee2301c8b9c",
+        "engine_sha256": "02c658043263cea84fd776bfdf130d8bbd7daeaf8ea8038abc4667154df8c66c"
+      },
+      {
+        "phase": "verification-shogi-forced",
+        "status": "passed",
+        "host_sha256": "53d5f367bba13903390aa6a2a184d101ed68957220b009ac68027ee2301c8b9c",
+        "engine_sha256": "02c658043263cea84fd776bfdf130d8bbd7daeaf8ea8038abc4667154df8c66c"
+      },
+      {
+        "phase": "verification-shogi-declaration",
+        "status": "passed",
+        "host_sha256": "53d5f367bba13903390aa6a2a184d101ed68957220b009ac68027ee2301c8b9c",
+        "engine_sha256": "02c658043263cea84fd776bfdf130d8bbd7daeaf8ea8038abc4667154df8c66c"
+      },
+      {
+        "phase": "verification-shogi-concluded",
+        "status": "passed",
+        "host_sha256": "53d5f367bba13903390aa6a2a184d101ed68957220b009ac68027ee2301c8b9c",
+        "engine_sha256": "02c658043263cea84fd776bfdf130d8bbd7daeaf8ea8038abc4667154df8c66c"
+      },
+      {
+        "phase": "verification-shogi-capacity",
+        "status": "passed",
+        "host_sha256": "53d5f367bba13903390aa6a2a184d101ed68957220b009ac68027ee2301c8b9c",
+        "engine_sha256": "02c658043263cea84fd776bfdf130d8bbd7daeaf8ea8038abc4667154df8c66c"
+      }
+    ],
+    "focus_measurements": [
+      {
+        "game": "chess",
+        "selector": ".moves-table button[data-native-action=\"e2e4\"][data-event=\"2\"]",
+        "ancestors": [
+          {
+            "class": "moves-scroll",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "bottom": 776.09375,
+              "left": 874,
+              "right": 1123,
+              "top": 656.140625
+            },
+            "tag": "DIV"
+          },
+          {
+            "class": "shell-card shell-history",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "bottom": 815.09375,
+              "left": 860,
+              "right": 1137,
+              "top": 579.09375
+            },
+            "tag": "SECTION"
+          },
+          {
+            "class": "shell-sidebar sidebar shogi-sidebar",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "bottom": 769,
+              "left": 852,
+              "right": 1160,
+              "top": 94
+            },
+            "tag": "ASIDE"
+          },
+          {
+            "class": "game-shell shell-chess application",
+            "overflowX": "hidden",
+            "overflowY": "hidden",
+            "rect": {
+              "bottom": 820,
+              "left": 0,
+              "right": 1180,
+              "top": 0
+            },
+            "tag": "MAIN"
+          }
+        ],
+        "clip": {
+          "bottom": 769,
+          "left": 874,
+          "right": 1123,
+          "top": 656.140625
+        },
+        "focusVisible": true,
+        "focused": true,
+        "outline": {
+          "bottom": 721.140625,
+          "left": 906,
+          "right": 1016.5,
+          "top": 681.140625
+        },
+        "outlineOffset": 3,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "viewport": {
+          "height": 820,
+          "width": 1180
+        }
+      },
+      {
+        "game": "chess",
+        "selector": ".moves-table button[data-native-action=\"e2e4\"][data-event=\"2\"]",
+        "ancestors": [
+          {
+            "class": "moves-scroll",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "bottom": 538.09375,
+              "left": 505,
+              "right": 698,
+              "top": 434.140625
+            },
+            "tag": "DIV"
+          },
+          {
+            "class": "shell-card shell-history",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "bottom": 577.09375,
+              "left": 491,
+              "right": 712,
+              "top": 357.09375
+            },
+            "tag": "SECTION"
+          },
+          {
+            "class": "shell-sidebar sidebar shogi-sidebar",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "bottom": 585,
+              "left": 483,
+              "right": 735,
+              "top": 80
+            },
+            "tag": "ASIDE"
+          },
+          {
+            "class": "game-shell shell-chess application",
+            "overflowX": "hidden",
+            "overflowY": "hidden",
+            "rect": {
+              "bottom": 650,
+              "left": 0,
+              "right": 745,
+              "top": 0
+            },
+            "tag": "MAIN"
+          }
+        ],
+        "clip": {
+          "bottom": 538.140625,
+          "left": 505,
+          "right": 698,
+          "top": 434.140625
+        },
+        "focusVisible": true,
+        "focused": true,
+        "outline": {
+          "bottom": 499.140625,
+          "left": 537,
+          "right": 619.5,
+          "top": 459.140625
+        },
+        "outlineOffset": 3,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "viewport": {
+          "height": 650,
+          "width": 760
+        }
+      },
+      {
+        "game": "shogi",
+        "selector": ".moves-table button[data-native-action=\"7g7f\"][data-event=\"1\"]",
+        "ancestors": [
+          {
+            "class": "moves-scroll",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "bottom": 801.09375,
+              "left": 874,
+              "right": 1123,
+              "top": 656.140625
+            },
+            "tag": "DIV"
+          },
+          {
+            "class": "shell-card shell-history",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "bottom": 815.09375,
+              "left": 860,
+              "right": 1137,
+              "top": 579.09375
+            },
+            "tag": "SECTION"
+          },
+          {
+            "class": "shell-sidebar sidebar shogi-sidebar",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "bottom": 769,
+              "left": 852,
+              "right": 1160,
+              "top": 94
+            },
+            "tag": "ASIDE"
+          },
+          {
+            "class": "game-shell shell-shogi shogi-application",
+            "overflowX": "hidden",
+            "overflowY": "hidden",
+            "rect": {
+              "bottom": 820,
+              "left": 0,
+              "right": 1180,
+              "top": 0
+            },
+            "tag": "MAIN"
+          }
+        ],
+        "clip": {
+          "bottom": 769,
+          "left": 874,
+          "right": 1123,
+          "top": 656.140625
+        },
+        "focusVisible": true,
+        "focused": true,
+        "outline": {
+          "bottom": 721.140625,
+          "left": 906,
+          "right": 1016.5,
+          "top": 681.140625
+        },
+        "outlineOffset": 3,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "viewport": {
+          "height": 820,
+          "width": 1180
+        }
+      },
+      {
+        "game": "shogi",
+        "selector": ".moves-table button[data-native-action=\"7g7f\"][data-event=\"1\"]",
+        "ancestors": [
+          {
+            "class": "moves-scroll",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "bottom": 563.09375,
+              "left": 505,
+              "right": 698,
+              "top": 434.140625
+            },
+            "tag": "DIV"
+          },
+          {
+            "class": "shell-card shell-history",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "bottom": 577.09375,
+              "left": 491,
+              "right": 712,
+              "top": 357.09375
+            },
+            "tag": "SECTION"
+          },
+          {
+            "class": "shell-sidebar sidebar shogi-sidebar",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "bottom": 585,
+              "left": 483,
+              "right": 735,
+              "top": 80
+            },
+            "tag": "ASIDE"
+          },
+          {
+            "class": "game-shell shell-shogi shogi-application",
+            "overflowX": "hidden",
+            "overflowY": "hidden",
+            "rect": {
+              "bottom": 650,
+              "left": 0,
+              "right": 745,
+              "top": 0
+            },
+            "tag": "MAIN"
+          }
+        ],
+        "clip": {
+          "bottom": 563.140625,
+          "left": 505,
+          "right": 698,
+          "top": 434.140625
+        },
+        "focusVisible": true,
+        "focused": true,
+        "outline": {
+          "bottom": 499.140625,
+          "left": 537,
+          "right": 619.5,
+          "top": 459.140625
+        },
+        "outlineOffset": 3,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "viewport": {
+          "height": 650,
+          "width": 760
+        }
+      },
+      {
+        "game": "xiangqi",
+        "selector": ".moves-table button[data-native-action=\"a3a4\"][data-event=\"1\"]",
+        "ancestors": [
+          {
+            "class": "moves-scroll",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "bottom": 831.59375,
+              "left": 874,
+              "right": 1123,
+              "top": 686.640625
+            },
+            "tag": "DIV"
+          },
+          {
+            "class": "shell-card shell-history",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "bottom": 845.59375,
+              "left": 860,
+              "right": 1137,
+              "top": 609.59375
+            },
+            "tag": "SECTION"
+          },
+          {
+            "class": "shell-sidebar sidebar shogi-sidebar",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "bottom": 769,
+              "left": 852,
+              "right": 1160,
+              "top": 94
+            },
+            "tag": "ASIDE"
+          },
+          {
+            "class": "game-shell shell-xiangqi shogi-application",
+            "overflowX": "hidden",
+            "overflowY": "hidden",
+            "rect": {
+              "bottom": 820,
+              "left": 0,
+              "right": 1180,
+              "top": 0
+            },
+            "tag": "MAIN"
+          }
+        ],
+        "clip": {
+          "bottom": 769,
+          "left": 874,
+          "right": 1123,
+          "top": 686.640625
+        },
+        "focusVisible": true,
+        "focused": true,
+        "outline": {
+          "bottom": 751.640625,
+          "left": 906,
+          "right": 1016.5,
+          "top": 711.640625
+        },
+        "outlineOffset": 3,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "viewport": {
+          "height": 820,
+          "width": 1180
+        }
+      },
+      {
+        "game": "xiangqi",
+        "selector": ".moves-table button[data-native-action=\"a3a4\"][data-event=\"1\"]",
+        "ancestors": [
+          {
+            "class": "moves-scroll",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "bottom": 562.59375,
+              "left": 505,
+              "right": 698,
+              "top": 447.140625
+            },
+            "tag": "DIV"
+          },
+          {
+            "class": "shell-card shell-history",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "bottom": 576.59375,
+              "left": 491,
+              "right": 712,
+              "top": 356.59375
+            },
+            "tag": "SECTION"
+          },
+          {
+            "class": "shell-sidebar sidebar shogi-sidebar",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "rect": {
+              "bottom": 585,
+              "left": 483,
+              "right": 735,
+              "top": 80
+            },
+            "tag": "ASIDE"
+          },
+          {
+            "class": "game-shell shell-xiangqi shogi-application",
+            "overflowX": "hidden",
+            "overflowY": "hidden",
+            "rect": {
+              "bottom": 650,
+              "left": 0,
+              "right": 745,
+              "top": 0
+            },
+            "tag": "MAIN"
+          }
+        ],
+        "clip": {
+          "bottom": 562.140625,
+          "left": 505,
+          "right": 698,
+          "top": 447.140625
+        },
+        "focusVisible": true,
+        "focused": true,
+        "outline": {
+          "bottom": 512.140625,
+          "left": 537,
+          "right": 619.5,
+          "top": 472.140625
+        },
+        "outlineOffset": 3,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "viewport": {
+          "height": 650,
+          "width": 760
+        }
+      }
+    ],
+    "initial_layouts": [
+      {
+        "actions": {
+          "height": 36,
+          "left": 854.25,
+          "top": 22.5,
+          "width": 297.75
+        },
+        "allSquaresVisible": true,
+        "boardPanel": {
+          "height": 702,
+          "left": 28,
+          "top": 102,
+          "width": 804
+        },
+        "brand": "\u6b69",
+        "cards": [
+          {
+            "name": "analysis",
+            "rect": {
+              "height": 218,
+              "left": 860,
+              "top": 116,
+              "width": 277
+            }
+          },
+          {
+            "name": "actions",
+            "rect": {
+              "height": 92.546875,
+              "left": 860,
+              "top": 348,
+              "width": 277
+            }
+          },
+          {
+            "name": "history",
+            "rect": {
+              "height": 236,
+              "left": 860,
+              "top": 454.546875,
+              "width": 277
+            }
+          }
+        ],
+        "document": {
+          "height": 41.796875,
+          "left": 218,
+          "top": 19.59375,
+          "width": 614.25
+        },
+        "documentInHeader": true,
+        "documentState": "unsaved",
+        "flipInHeading": true,
+        "footnoteVisible": true,
+        "game": "chess",
+        "gameArea": {
+          "height": 614,
+          "left": 28,
+          "top": 190,
+          "width": 804
+        },
+        "gameLabel": "CHESS",
+        "header": {
+          "height": 82,
+          "left": 0,
+          "top": 0,
+          "width": 1180
+        },
+        "headerButtons": [
+          "New game",
+          "Save",
+          "Save as\u2026",
+          "Open\u2026"
+        ],
+        "heading": {
+          "height": 80,
+          "left": 28,
+          "top": 102,
+          "width": 804
+        },
+        "help": {
+          "height": 18,
+          "left": 28,
+          "top": 756,
+          "width": 804
+        },
+        "helpVisible": true,
+        "inspectorButtons": [
+          {
+            "label": "Play details",
+            "pressed": "true"
+          },
+          {
+            "label": "Analyze position",
+            "pressed": "false"
+          }
+        ],
+        "pageWidth": 1180,
+        "playLimits": "Play limit: depth 2 \u00b7 20,000 nodes",
+        "positionStatus": "Your turnLive position \u00b7 0 plies",
+        "rawDiagnosticsAbsent": true,
+        "sections": [
+          "analysis",
+          "actions",
+          "history"
+        ],
+        "sidebar": {
+          "height": 675,
+          "left": 852,
+          "top": 94,
+          "width": 308
+        },
+        "slots": [
+          {
+            "name": "upper-player",
+            "rect": {
+              "height": 52,
+              "left": 28,
+              "top": 190,
+              "width": 804
+            }
+          },
+          {
+            "name": "board",
+            "rect": {
+              "height": 462,
+              "left": 28,
+              "top": 242,
+              "width": 804
+            }
+          },
+          {
+            "name": "lower-player",
+            "rect": {
+              "height": 52,
+              "left": 28,
+              "top": 704,
+              "width": 804
+            }
+          },
+          {
+            "name": "footer",
+            "rect": {
+              "height": 48,
+              "left": 28,
+              "top": 756,
+              "width": 804
+            }
+          }
+        ],
+        "squareCount": 64,
+        "supportOutsideSidebar": true,
+        "themeIdentity": "mshogi-dark",
+        "themes": {
+          ".game-shell": {
+            "backgroundColor": "rgb(17, 30, 35)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "borderTopWidth": "0px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "14px"
+          },
+          ".inspector-switch button[aria-pressed=\"true\"]": {
+            "backgroundColor": "rgb(56, 83, 73)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(0, 0, 0, 0)",
+            "borderTopWidth": "1px",
+            "color": "rgb(229, 239, 216)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "12px"
+          },
+          ".shell-card": {
+            "backgroundColor": "rgb(27, 46, 53)",
+            "borderRadius": "9px",
+            "borderTopColor": "rgb(59, 82, 88)",
+            "borderTopWidth": "1px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "14px"
+          },
+          ".shell-file-actions .primary": {
+            "backgroundColor": "rgb(213, 228, 189)",
+            "borderRadius": "7px",
+            "borderTopColor": "rgb(213, 228, 189)",
+            "borderTopWidth": "1px",
+            "color": "rgb(25, 46, 41)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "12px"
+          },
+          ".shell-file-actions .quiet": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "7px",
+            "borderTopColor": "rgb(86, 113, 111)",
+            "borderTopWidth": "1px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "12px"
+          },
+          ".shell-header": {
+            "backgroundColor": "rgb(20, 41, 46)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "borderTopWidth": "0px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "14px"
+          },
+          ".shell-section-title": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "borderTopWidth": "0px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "13px"
+          }
+        },
+        "viewport": {
+          "height": 820,
+          "width": 1180
+        }
+      },
+      {
+        "actions": {
+          "height": 33,
+          "left": 478.640625,
+          "top": 21,
+          "width": 253.359375
+        },
+        "allSquaresVisible": true,
+        "boardPanel": {
+          "height": 554,
+          "left": 18,
+          "top": 88,
+          "width": 470
+        },
+        "brand": "\u6b69",
+        "cards": [
+          {
+            "name": "analysis",
+            "rect": {
+              "height": 232,
+              "left": 506,
+              "top": 102,
+              "width": 221
+            }
+          },
+          {
+            "name": "actions",
+            "rect": {
+              "height": 130.546875,
+              "left": 506,
+              "top": 348,
+              "width": 221
+            }
+          },
+          {
+            "name": "history",
+            "rect": {
+              "height": 220,
+              "left": 506,
+              "top": 492.546875,
+              "width": 221
+            }
+          }
+        ],
+        "document": {
+          "height": 41.796875,
+          "left": 200.015625,
+          "top": 16.59375,
+          "width": 256.625
+        },
+        "documentInHeader": true,
+        "documentState": "unsaved",
+        "flipInHeading": true,
+        "footnoteVisible": true,
+        "game": "chess",
+        "gameArea": {
+          "height": 481,
+          "left": 18,
+          "top": 161,
+          "width": 470
+        },
+        "gameLabel": "CHESS",
+        "header": {
+          "height": 76,
+          "left": 0,
+          "top": 0,
+          "width": 760
+        },
+        "headerButtons": [
+          "New game",
+          "Save",
+          "Save as\u2026",
+          "Open\u2026"
+        ],
+        "heading": {
+          "height": 65,
+          "left": 18,
+          "top": 88,
+          "width": 470
+        },
+        "help": {
+          "height": 18,
+          "left": 18,
+          "top": 594,
+          "width": 470
+        },
+        "helpVisible": true,
+        "inspectorButtons": [
+          {
+            "label": "Play details",
+            "pressed": "true"
+          },
+          {
+            "label": "Analyze position",
+            "pressed": "false"
+          }
+        ],
+        "pageWidth": 760,
+        "playLimits": "Play limit: depth 2 \u00b7 20,000 nodes",
+        "positionStatus": "Your turnLive position \u00b7 0 plies",
+        "rawDiagnosticsAbsent": true,
+        "sections": [
+          "analysis",
+          "actions",
+          "history"
+        ],
+        "sidebar": {
+          "height": 505,
+          "left": 498,
+          "top": 80,
+          "width": 252
+        },
+        "slots": [
+          {
+            "name": "upper-player",
+            "rect": {
+              "height": 45,
+              "left": 18,
+              "top": 161,
+              "width": 470
+            }
+          },
+          {
+            "name": "board",
+            "rect": {
+              "height": 343,
+              "left": 18,
+              "top": 206,
+              "width": 470
+            }
+          },
+          {
+            "name": "lower-player",
+            "rect": {
+              "height": 45,
+              "left": 18,
+              "top": 549,
+              "width": 470
+            }
+          },
+          {
+            "name": "footer",
+            "rect": {
+              "height": 48,
+              "left": 18,
+              "top": 594,
+              "width": 470
+            }
+          }
+        ],
+        "squareCount": 64,
+        "supportOutsideSidebar": true,
+        "themeIdentity": "mshogi-dark",
+        "themes": {
+          ".game-shell": {
+            "backgroundColor": "rgb(17, 30, 35)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "borderTopWidth": "0px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "14px"
+          },
+          ".inspector-switch button[aria-pressed=\"true\"]": {
+            "backgroundColor": "rgb(56, 83, 73)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(0, 0, 0, 0)",
+            "borderTopWidth": "1px",
+            "color": "rgb(229, 239, 216)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "12px"
+          },
+          ".shell-card": {
+            "backgroundColor": "rgb(27, 46, 53)",
+            "borderRadius": "9px",
+            "borderTopColor": "rgb(59, 82, 88)",
+            "borderTopWidth": "1px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "14px"
+          },
+          ".shell-file-actions .primary": {
+            "backgroundColor": "rgb(213, 228, 189)",
+            "borderRadius": "7px",
+            "borderTopColor": "rgb(213, 228, 189)",
+            "borderTopWidth": "1px",
+            "color": "rgb(25, 46, 41)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "11px"
+          },
+          ".shell-file-actions .quiet": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "7px",
+            "borderTopColor": "rgb(86, 113, 111)",
+            "borderTopWidth": "1px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "11px"
+          },
+          ".shell-header": {
+            "backgroundColor": "rgb(20, 41, 46)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "borderTopWidth": "0px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "14px"
+          },
+          ".shell-section-title": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "borderTopWidth": "0px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "13px"
+          }
+        },
+        "viewport": {
+          "height": 650,
+          "width": 760
+        }
+      },
+      {
+        "actions": {
+          "height": 36,
+          "left": 854.25,
+          "top": 22.5,
+          "width": 297.75
+        },
+        "allSquaresVisible": true,
+        "boardPanel": {
+          "height": 702,
+          "left": 28,
+          "top": 102,
+          "width": 804
+        },
+        "brand": "\u6b69",
+        "cards": [
+          {
+            "name": "analysis",
+            "rect": {
+              "height": 218,
+              "left": 860,
+              "top": 116,
+              "width": 277
+            }
+          },
+          {
+            "name": "actions",
+            "rect": {
+              "height": 92.546875,
+              "left": 860,
+              "top": 348,
+              "width": 277
+            }
+          },
+          {
+            "name": "history",
+            "rect": {
+              "height": 236,
+              "left": 860,
+              "top": 454.546875,
+              "width": 277
+            }
+          }
+        ],
+        "document": {
+          "height": 41.796875,
+          "left": 218,
+          "top": 19.59375,
+          "width": 614.25
+        },
+        "documentInHeader": true,
+        "documentState": "unsaved",
+        "flipInHeading": true,
+        "footnoteVisible": true,
+        "game": "shogi",
+        "gameArea": {
+          "height": 614,
+          "left": 28,
+          "top": 190,
+          "width": 804
+        },
+        "gameLabel": "SHOGI",
+        "header": {
+          "height": 82,
+          "left": 0,
+          "top": 0,
+          "width": 1180
+        },
+        "headerButtons": [
+          "New game",
+          "Save",
+          "Save as\u2026",
+          "Open\u2026"
+        ],
+        "heading": {
+          "height": 80,
+          "left": 28,
+          "top": 102,
+          "width": 804
+        },
+        "help": {
+          "height": 18,
+          "left": 28,
+          "top": 756,
+          "width": 804
+        },
+        "helpVisible": true,
+        "inspectorButtons": [
+          {
+            "label": "Play details",
+            "pressed": "true"
+          },
+          {
+            "label": "Analyze position",
+            "pressed": "false"
+          }
+        ],
+        "pageWidth": 1180,
+        "playLimits": "Play limit: depth 2 \u00b7 5,000 nodes",
+        "positionStatus": "Your turnLive position \u00b7 0 plies",
+        "rawDiagnosticsAbsent": true,
+        "sections": [
+          "analysis",
+          "actions",
+          "history"
+        ],
+        "sidebar": {
+          "height": 675,
+          "left": 852,
+          "top": 94,
+          "width": 308
+        },
+        "slots": [
+          {
+            "name": "upper-player",
+            "rect": {
+              "height": 52,
+              "left": 28,
+              "top": 190,
+              "width": 804
+            }
+          },
+          {
+            "name": "board",
+            "rect": {
+              "height": 462,
+              "left": 28,
+              "top": 242,
+              "width": 804
+            }
+          },
+          {
+            "name": "lower-player",
+            "rect": {
+              "height": 52,
+              "left": 28,
+              "top": 704,
+              "width": 804
+            }
+          },
+          {
+            "name": "footer",
+            "rect": {
+              "height": 48,
+              "left": 28,
+              "top": 756,
+              "width": 804
+            }
+          }
+        ],
+        "squareCount": 81,
+        "supportOutsideSidebar": true,
+        "themeIdentity": "mshogi-dark",
+        "themes": {
+          ".game-shell": {
+            "backgroundColor": "rgb(17, 30, 35)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "borderTopWidth": "0px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "14px"
+          },
+          ".inspector-switch button[aria-pressed=\"true\"]": {
+            "backgroundColor": "rgb(56, 83, 73)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(0, 0, 0, 0)",
+            "borderTopWidth": "1px",
+            "color": "rgb(229, 239, 216)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "12px"
+          },
+          ".shell-card": {
+            "backgroundColor": "rgb(27, 46, 53)",
+            "borderRadius": "9px",
+            "borderTopColor": "rgb(59, 82, 88)",
+            "borderTopWidth": "1px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "14px"
+          },
+          ".shell-file-actions .primary": {
+            "backgroundColor": "rgb(213, 228, 189)",
+            "borderRadius": "7px",
+            "borderTopColor": "rgb(213, 228, 189)",
+            "borderTopWidth": "1px",
+            "color": "rgb(25, 46, 41)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "12px"
+          },
+          ".shell-file-actions .quiet": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "7px",
+            "borderTopColor": "rgb(86, 113, 111)",
+            "borderTopWidth": "1px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "12px"
+          },
+          ".shell-header": {
+            "backgroundColor": "rgb(20, 41, 46)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "borderTopWidth": "0px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "14px"
+          },
+          ".shell-section-title": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "borderTopWidth": "0px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "13px"
+          }
+        },
+        "viewport": {
+          "height": 820,
+          "width": 1180
+        }
+      },
+      {
+        "actions": {
+          "height": 33,
+          "left": 478.640625,
+          "top": 21,
+          "width": 253.359375
+        },
+        "allSquaresVisible": true,
+        "boardPanel": {
+          "height": 554,
+          "left": 18,
+          "top": 88,
+          "width": 470
+        },
+        "brand": "\u6b69",
+        "cards": [
+          {
+            "name": "analysis",
+            "rect": {
+              "height": 232,
+              "left": 506,
+              "top": 102,
+              "width": 221
+            }
+          },
+          {
+            "name": "actions",
+            "rect": {
+              "height": 130.546875,
+              "left": 506,
+              "top": 348,
+              "width": 221
+            }
+          },
+          {
+            "name": "history",
+            "rect": {
+              "height": 220,
+              "left": 506,
+              "top": 492.546875,
+              "width": 221
+            }
+          }
+        ],
+        "document": {
+          "height": 41.796875,
+          "left": 200.015625,
+          "top": 16.59375,
+          "width": 256.625
+        },
+        "documentInHeader": true,
+        "documentState": "unsaved",
+        "flipInHeading": true,
+        "footnoteVisible": true,
+        "game": "shogi",
+        "gameArea": {
+          "height": 481,
+          "left": 18,
+          "top": 161,
+          "width": 470
+        },
+        "gameLabel": "SHOGI",
+        "header": {
+          "height": 76,
+          "left": 0,
+          "top": 0,
+          "width": 760
+        },
+        "headerButtons": [
+          "New game",
+          "Save",
+          "Save as\u2026",
+          "Open\u2026"
+        ],
+        "heading": {
+          "height": 65,
+          "left": 18,
+          "top": 88,
+          "width": 470
+        },
+        "help": {
+          "height": 18,
+          "left": 18,
+          "top": 594,
+          "width": 470
+        },
+        "helpVisible": true,
+        "inspectorButtons": [
+          {
+            "label": "Play details",
+            "pressed": "true"
+          },
+          {
+            "label": "Analyze position",
+            "pressed": "false"
+          }
+        ],
+        "pageWidth": 760,
+        "playLimits": "Play limit: depth 2 \u00b7 5,000 nodes",
+        "positionStatus": "Your turnLive position \u00b7 0 plies",
+        "rawDiagnosticsAbsent": true,
+        "sections": [
+          "analysis",
+          "actions",
+          "history"
+        ],
+        "sidebar": {
+          "height": 505,
+          "left": 498,
+          "top": 80,
+          "width": 252
+        },
+        "slots": [
+          {
+            "name": "upper-player",
+            "rect": {
+              "height": 45,
+              "left": 18,
+              "top": 161,
+              "width": 470
+            }
+          },
+          {
+            "name": "board",
+            "rect": {
+              "height": 343,
+              "left": 18,
+              "top": 206,
+              "width": 470
+            }
+          },
+          {
+            "name": "lower-player",
+            "rect": {
+              "height": 45,
+              "left": 18,
+              "top": 549,
+              "width": 470
+            }
+          },
+          {
+            "name": "footer",
+            "rect": {
+              "height": 48,
+              "left": 18,
+              "top": 594,
+              "width": 470
+            }
+          }
+        ],
+        "squareCount": 81,
+        "supportOutsideSidebar": true,
+        "themeIdentity": "mshogi-dark",
+        "themes": {
+          ".game-shell": {
+            "backgroundColor": "rgb(17, 30, 35)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "borderTopWidth": "0px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "14px"
+          },
+          ".inspector-switch button[aria-pressed=\"true\"]": {
+            "backgroundColor": "rgb(56, 83, 73)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(0, 0, 0, 0)",
+            "borderTopWidth": "1px",
+            "color": "rgb(229, 239, 216)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "12px"
+          },
+          ".shell-card": {
+            "backgroundColor": "rgb(27, 46, 53)",
+            "borderRadius": "9px",
+            "borderTopColor": "rgb(59, 82, 88)",
+            "borderTopWidth": "1px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "14px"
+          },
+          ".shell-file-actions .primary": {
+            "backgroundColor": "rgb(213, 228, 189)",
+            "borderRadius": "7px",
+            "borderTopColor": "rgb(213, 228, 189)",
+            "borderTopWidth": "1px",
+            "color": "rgb(25, 46, 41)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "11px"
+          },
+          ".shell-file-actions .quiet": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "7px",
+            "borderTopColor": "rgb(86, 113, 111)",
+            "borderTopWidth": "1px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "11px"
+          },
+          ".shell-header": {
+            "backgroundColor": "rgb(20, 41, 46)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "borderTopWidth": "0px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "14px"
+          },
+          ".shell-section-title": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "borderTopWidth": "0px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "13px"
+          }
+        },
+        "viewport": {
+          "height": 650,
+          "width": 760
+        }
+      },
+      {
+        "actions": {
+          "height": 36,
+          "left": 854.25,
+          "top": 22.5,
+          "width": 297.75
+        },
+        "allSquaresVisible": true,
+        "boardPanel": {
+          "height": 702,
+          "left": 28,
+          "top": 102,
+          "width": 804
+        },
+        "brand": "\u6b69",
+        "cards": [
+          {
+            "name": "analysis",
+            "rect": {
+              "height": 218,
+              "left": 860,
+              "top": 116,
+              "width": 277
+            }
+          },
+          {
+            "name": "actions",
+            "rect": {
+              "height": 92.546875,
+              "left": 860,
+              "top": 348,
+              "width": 277
+            }
+          },
+          {
+            "name": "history",
+            "rect": {
+              "height": 236,
+              "left": 860,
+              "top": 454.546875,
+              "width": 277
+            }
+          }
+        ],
+        "document": {
+          "height": 41.796875,
+          "left": 218,
+          "top": 19.59375,
+          "width": 614.25
+        },
+        "documentInHeader": true,
+        "documentState": "unsaved",
+        "flipInHeading": true,
+        "footnoteVisible": true,
+        "game": "xiangqi",
+        "gameArea": {
+          "height": 614,
+          "left": 28,
+          "top": 190,
+          "width": 804
+        },
+        "gameLabel": "XIANGQI",
+        "header": {
+          "height": 82,
+          "left": 0,
+          "top": 0,
+          "width": 1180
+        },
+        "headerButtons": [
+          "New game",
+          "Save",
+          "Save as\u2026",
+          "Open\u2026"
+        ],
+        "heading": {
+          "height": 80,
+          "left": 28,
+          "top": 102,
+          "width": 804
+        },
+        "help": {
+          "height": 18,
+          "left": 28,
+          "top": 756,
+          "width": 804
+        },
+        "helpVisible": true,
+        "inspectorButtons": [
+          {
+            "label": "Play details",
+            "pressed": "true"
+          },
+          {
+            "label": "Analyze position",
+            "pressed": "false"
+          }
+        ],
+        "pageWidth": 1180,
+        "playLimits": "Play limit: depth 1 \u00b7 128 nodes",
+        "positionStatus": "Your turnLive position \u00b7 0 plies",
+        "rawDiagnosticsAbsent": true,
+        "sections": [
+          "analysis",
+          "actions",
+          "history"
+        ],
+        "sidebar": {
+          "height": 675,
+          "left": 852,
+          "top": 94,
+          "width": 308
+        },
+        "slots": [
+          {
+            "name": "upper-player",
+            "rect": {
+              "height": 52,
+              "left": 28,
+              "top": 190,
+              "width": 804
+            }
+          },
+          {
+            "name": "board",
+            "rect": {
+              "height": 462,
+              "left": 28,
+              "top": 242,
+              "width": 804
+            }
+          },
+          {
+            "name": "lower-player",
+            "rect": {
+              "height": 52,
+              "left": 28,
+              "top": 704,
+              "width": 804
+            }
+          },
+          {
+            "name": "footer",
+            "rect": {
+              "height": 48,
+              "left": 28,
+              "top": 756,
+              "width": 804
+            }
+          }
+        ],
+        "squareCount": 90,
+        "supportOutsideSidebar": true,
+        "themeIdentity": "mshogi-dark",
+        "themes": {
+          ".game-shell": {
+            "backgroundColor": "rgb(17, 30, 35)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "borderTopWidth": "0px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "14px"
+          },
+          ".inspector-switch button[aria-pressed=\"true\"]": {
+            "backgroundColor": "rgb(56, 83, 73)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(0, 0, 0, 0)",
+            "borderTopWidth": "1px",
+            "color": "rgb(229, 239, 216)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "12px"
+          },
+          ".shell-card": {
+            "backgroundColor": "rgb(27, 46, 53)",
+            "borderRadius": "9px",
+            "borderTopColor": "rgb(59, 82, 88)",
+            "borderTopWidth": "1px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "14px"
+          },
+          ".shell-file-actions .primary": {
+            "backgroundColor": "rgb(213, 228, 189)",
+            "borderRadius": "7px",
+            "borderTopColor": "rgb(213, 228, 189)",
+            "borderTopWidth": "1px",
+            "color": "rgb(25, 46, 41)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "12px"
+          },
+          ".shell-file-actions .quiet": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "7px",
+            "borderTopColor": "rgb(86, 113, 111)",
+            "borderTopWidth": "1px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "12px"
+          },
+          ".shell-header": {
+            "backgroundColor": "rgb(20, 41, 46)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "borderTopWidth": "0px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "14px"
+          },
+          ".shell-section-title": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "borderTopWidth": "0px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "13px"
+          }
+        },
+        "viewport": {
+          "height": 820,
+          "width": 1180
+        }
+      },
+      {
+        "actions": {
+          "height": 33,
+          "left": 478.640625,
+          "top": 21,
+          "width": 253.359375
+        },
+        "allSquaresVisible": true,
+        "boardPanel": {
+          "height": 554,
+          "left": 18,
+          "top": 88,
+          "width": 470
+        },
+        "brand": "\u6b69",
+        "cards": [
+          {
+            "name": "analysis",
+            "rect": {
+              "height": 232,
+              "left": 506,
+              "top": 102,
+              "width": 221
+            }
+          },
+          {
+            "name": "actions",
+            "rect": {
+              "height": 130.546875,
+              "left": 506,
+              "top": 348,
+              "width": 221
+            }
+          },
+          {
+            "name": "history",
+            "rect": {
+              "height": 220,
+              "left": 506,
+              "top": 492.546875,
+              "width": 221
+            }
+          }
+        ],
+        "document": {
+          "height": 41.796875,
+          "left": 200.015625,
+          "top": 16.59375,
+          "width": 256.625
+        },
+        "documentInHeader": true,
+        "documentState": "unsaved",
+        "flipInHeading": true,
+        "footnoteVisible": true,
+        "game": "xiangqi",
+        "gameArea": {
+          "height": 481,
+          "left": 18,
+          "top": 161,
+          "width": 470
+        },
+        "gameLabel": "XIANGQI",
+        "header": {
+          "height": 76,
+          "left": 0,
+          "top": 0,
+          "width": 760
+        },
+        "headerButtons": [
+          "New game",
+          "Save",
+          "Save as\u2026",
+          "Open\u2026"
+        ],
+        "heading": {
+          "height": 65,
+          "left": 18,
+          "top": 88,
+          "width": 470
+        },
+        "help": {
+          "height": 18,
+          "left": 18,
+          "top": 594,
+          "width": 470
+        },
+        "helpVisible": true,
+        "inspectorButtons": [
+          {
+            "label": "Play details",
+            "pressed": "true"
+          },
+          {
+            "label": "Analyze position",
+            "pressed": "false"
+          }
+        ],
+        "pageWidth": 760,
+        "playLimits": "Play limit: depth 1 \u00b7 128 nodes",
+        "positionStatus": "Your turnLive position \u00b7 0 plies",
+        "rawDiagnosticsAbsent": true,
+        "sections": [
+          "analysis",
+          "actions",
+          "history"
+        ],
+        "sidebar": {
+          "height": 505,
+          "left": 498,
+          "top": 80,
+          "width": 252
+        },
+        "slots": [
+          {
+            "name": "upper-player",
+            "rect": {
+              "height": 45,
+              "left": 18,
+              "top": 161,
+              "width": 470
+            }
+          },
+          {
+            "name": "board",
+            "rect": {
+              "height": 343,
+              "left": 18,
+              "top": 206,
+              "width": 470
+            }
+          },
+          {
+            "name": "lower-player",
+            "rect": {
+              "height": 45,
+              "left": 18,
+              "top": 549,
+              "width": 470
+            }
+          },
+          {
+            "name": "footer",
+            "rect": {
+              "height": 48,
+              "left": 18,
+              "top": 594,
+              "width": 470
+            }
+          }
+        ],
+        "squareCount": 90,
+        "supportOutsideSidebar": true,
+        "themeIdentity": "mshogi-dark",
+        "themes": {
+          ".game-shell": {
+            "backgroundColor": "rgb(17, 30, 35)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "borderTopWidth": "0px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "14px"
+          },
+          ".inspector-switch button[aria-pressed=\"true\"]": {
+            "backgroundColor": "rgb(56, 83, 73)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(0, 0, 0, 0)",
+            "borderTopWidth": "1px",
+            "color": "rgb(229, 239, 216)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "12px"
+          },
+          ".shell-card": {
+            "backgroundColor": "rgb(27, 46, 53)",
+            "borderRadius": "9px",
+            "borderTopColor": "rgb(59, 82, 88)",
+            "borderTopWidth": "1px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "14px"
+          },
+          ".shell-file-actions .primary": {
+            "backgroundColor": "rgb(213, 228, 189)",
+            "borderRadius": "7px",
+            "borderTopColor": "rgb(213, 228, 189)",
+            "borderTopWidth": "1px",
+            "color": "rgb(25, 46, 41)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "11px"
+          },
+          ".shell-file-actions .quiet": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "7px",
+            "borderTopColor": "rgb(86, 113, 111)",
+            "borderTopWidth": "1px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "11px"
+          },
+          ".shell-header": {
+            "backgroundColor": "rgb(20, 41, 46)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "borderTopWidth": "0px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "14px"
+          },
+          ".shell-section-title": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgb(231, 236, 229)",
+            "borderTopWidth": "0px",
+            "color": "rgb(231, 236, 229)",
+            "colorScheme": "dark",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "fontSize": "13px"
+          }
+        },
+        "viewport": {
+          "height": 650,
+          "width": 760
+        }
+      }
+    ],
+    "support_interactions": [
+      {
+        "game": "chess",
+        "summaries": [
+          "Diagnostics",
+          "Font license"
+        ],
+        "profile": "mshogi.chess.match.v1",
+        "token": {
+          "document": 0,
+          "revision": 1,
+          "selection": 1,
+          "version": 1
+        }
+      },
+      {
+        "game": "chess",
+        "summaries": [
+          "Diagnostics",
+          "Font license"
+        ],
+        "profile": "mshogi.chess.match.v1",
+        "token": {
+          "document": 0,
+          "revision": 1,
+          "selection": 1,
+          "version": 1
+        }
+      },
+      {
+        "game": "shogi",
+        "summaries": [
+          "Diagnostics",
+          "Font license"
+        ],
+        "profile": "mshogi.shogi.csa36.v1",
+        "token": {
+          "document": 1,
+          "revision": 5,
+          "selection": 2,
+          "version": 2
+        }
+      },
+      {
+        "game": "shogi",
+        "summaries": [
+          "Diagnostics",
+          "Font license"
+        ],
+        "profile": "mshogi.shogi.csa36.v1",
+        "token": {
+          "document": 1,
+          "revision": 5,
+          "selection": 2,
+          "version": 2
+        }
+      },
+      {
+        "game": "xiangqi",
+        "summaries": [
+          "Diagnostics",
+          "Font license"
+        ],
+        "profile": "mshogi.xiangqi.wxf2018.v1",
+        "token": {
+          "document": 1,
+          "revision": 5,
+          "selection": 2,
+          "version": 2
+        }
+      },
+      {
+        "game": "xiangqi",
+        "summaries": [
+          "Diagnostics",
+          "Font license"
+        ],
+        "profile": "mshogi.xiangqi.wxf2018.v1",
+        "token": {
+          "document": 1,
+          "revision": 5,
+          "selection": 2,
+          "version": 2
+        }
+      }
+    ],
+    "chooser_interactions": [
+      {
+        "game": "chess",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "White",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Black",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "shogi",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "Sente",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Gote",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "xiangqi",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "Red",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Black",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "chess",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "White",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Black",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "shogi",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "Sente",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Gote",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "xiangqi",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "Red",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Black",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "chess",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "White",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Black",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "shogi",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "Sente",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Gote",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "xiangqi",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "Red",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Black",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "chess",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "White",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Black",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "shogi",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "Sente",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Gote",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "xiangqi",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "Red",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Black",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "chess",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": false,
+            "label": "White",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": true,
+            "label": "Black",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "shogi",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "Sente",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Gote",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "xiangqi",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "Red",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Black",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "chess",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "White",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Black",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "shogi",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "Sente",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Gote",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "xiangqi",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "Red",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Black",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "chess",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "White",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Black",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "shogi",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "Sente",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Gote",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "xiangqi",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "Red",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Black",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          1180,
+          820
+        ]
+      },
+      {
+        "game": "chess",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "White",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Black",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "shogi",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "Sente",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Gote",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      },
+      {
+        "game": "xiangqi",
+        "options": [
+          {
+            "disabled": false,
+            "label": "Chess",
+            "value": "chess"
+          },
+          {
+            "disabled": false,
+            "label": "Shogi",
+            "value": "shogi"
+          },
+          {
+            "disabled": false,
+            "label": "Xiangqi",
+            "value": "xiangqi"
+          }
+        ],
+        "sides": [
+          {
+            "chosen": true,
+            "label": "Red",
+            "role": "radio",
+            "selected": "true"
+          },
+          {
+            "chosen": false,
+            "label": "Black",
+            "role": "radio",
+            "selected": "false"
+          },
+          {
+            "chosen": false,
+            "label": "Random",
+            "role": "radio",
+            "selected": "false"
+          }
+        ],
+        "viewport": [
+          760,
+          650
+        ]
+      }
+    ],
+    "screenshots_extracted": [
+      "normal-initial-chess-normal-size.webview.png",
+      "normal-initial-chess-minimum-size.webview.png",
+      "normal-shogi-initial-sente.webview.png",
+      "normal-shogi-minimum-size.webview.png",
+      "normal-xiangqi-initial-red-normal-size.webview.png",
+      "normal-xiangqi-initial-red-minimum-size.webview.png",
+      "normal-moves-chess-1180-keyboard-history.webview.png",
+      "normal-moves-chess-760-keyboard-history.webview.png",
+      "normal-shogi-moves-shogi-1180-keyboard-history.webview.png",
+      "normal-shogi-moves-shogi-760-keyboard-history.webview.png",
+      "normal-xiangqi-moves-xiangqi-1180-keyboard-history.webview.png",
+      "normal-xiangqi-moves-xiangqi-760-keyboard-history.webview.png",
+      "normal-xiangqi-support-xiangqi-760x650.webview.png",
+      "normal-shogi-chooser-shogi-760.webview.png"
+    ]
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "environment": "macOS-27.0.1-arm64-arm-64bit",
+  "packages": [
+    {
+      "label": "initial-normal",
+      "source_revision": "de5209d3ac0d987d42396a5b2e3bf4325800784d",
+      "path": "/private/tmp/msh124-packages/mShogi.app",
+      "files": {
+        "Contents/Info.plist": "343be4b5b0ce533854424094072924e4695b92c95e1c220e1cd7ec09b5a8ce90",
+        "Contents/MacOS/mshogi-desktop": "687e2568c4f2b02ec31b43ce4556868297d4b1bb782b86ef8c79981bc8cbd23a",
+        "Contents/MacOS/mshogi": "92592cb2a4f5ed57ed1b62498b7d288e2a4bc01cb4f0f87827eedf762f9ca5d7",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+      }
+    },
+    {
+      "label": "initial-verification",
+      "source_revision": "de5209d3ac0d987d42396a5b2e3bf4325800784d",
+      "path": "/private/tmp/msh124-packages/mShogi Verification.app",
+      "files": {
+        "Contents/Info.plist": "166a320e22c63d1fea58096a8b4e25432753d73fe439fe3797b738473f828172",
+        "Contents/MacOS/mshogi-desktop": "59dc9b228c40921ea22552eeeb4e2b3bc729634c3bb5b5df7c9927db6bb5cc18",
+        "Contents/MacOS/mshogi": "92592cb2a4f5ed57ed1b62498b7d288e2a4bc01cb4f0f87827eedf762f9ca5d7",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+      }
+    },
+    {
+      "label": "final-normal",
+      "source_revision": "ead30e672f2a2cf1747c02c8daa508babed3b7c2",
+      "path": "/private/tmp/msh124-packages-final/mShogi.app",
+      "files": {
+        "Contents/Info.plist": "343be4b5b0ce533854424094072924e4695b92c95e1c220e1cd7ec09b5a8ce90",
+        "Contents/MacOS/mshogi-desktop": "3d62fa0565fd1bf39bb7c3b3ea5be1f5f8921469404f122a05fc19aa427e4258",
+        "Contents/MacOS/mshogi": "92592cb2a4f5ed57ed1b62498b7d288e2a4bc01cb4f0f87827eedf762f9ca5d7",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+      }
+    },
+    {
+      "label": "final-verification",
+      "source_revision": "ead30e672f2a2cf1747c02c8daa508babed3b7c2",
+      "path": "/private/tmp/msh124-packages-final/mShogi Verification.app",
+      "files": {
+        "Contents/Info.plist": "166a320e22c63d1fea58096a8b4e25432753d73fe439fe3797b738473f828172",
+        "Contents/MacOS/mshogi-desktop": "593d7de024db4b65377d5f44cdda4e8a6445e71045eeb12938d41044fecb5f4f",
+        "Contents/MacOS/mshogi": "92592cb2a4f5ed57ed1b62498b7d288e2a4bc01cb4f0f87827eedf762f9ca5d7",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+      }
+    },
+    {
+      "label": "aligned-normal",
+      "source_revision": "4a624d6c4f129ce774d385192fbbe6a9bdcf547a",
+      "path": "/private/tmp/msh124-packages-aligned/mShogi.app",
+      "files": {
+        "Contents/Info.plist": "343be4b5b0ce533854424094072924e4695b92c95e1c220e1cd7ec09b5a8ce90",
+        "Contents/MacOS/mshogi-desktop": "3d5d9d91793c9ab71d1254c2a5d8e0c4db58c006916e4367d446e6626754c1b9",
+        "Contents/MacOS/mshogi": "92592cb2a4f5ed57ed1b62498b7d288e2a4bc01cb4f0f87827eedf762f9ca5d7",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+      }
+    },
+    {
+      "label": "aligned-verification",
+      "source_revision": "4a624d6c4f129ce774d385192fbbe6a9bdcf547a",
+      "path": "/private/tmp/msh124-packages-aligned/mShogi Verification.app",
+      "files": {
+        "Contents/Info.plist": "166a320e22c63d1fea58096a8b4e25432753d73fe439fe3797b738473f828172",
+        "Contents/MacOS/mshogi-desktop": "fb74eac91227ccbf704b96a16593885ec7d506f09b1dd9f35dd4369607d2902e",
+        "Contents/MacOS/mshogi": "92592cb2a4f5ed57ed1b62498b7d288e2a4bc01cb4f0f87827eedf762f9ca5d7",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+      }
+    },
+    {
+      "label": "vector-normal",
+      "source_revision": "91eb13e2451af77150b82b62a448bf97e9d5ac58",
+      "path": "/private/tmp/msh124-packages-vector/mShogi.app",
+      "files": {
+        "Contents/Info.plist": "343be4b5b0ce533854424094072924e4695b92c95e1c220e1cd7ec09b5a8ce90",
+        "Contents/MacOS/mshogi-desktop": "29132ead620992bc6d769d9dbde8923bcff368f89b084d5b4c47db1a28f41ebf",
+        "Contents/MacOS/mshogi": "92592cb2a4f5ed57ed1b62498b7d288e2a4bc01cb4f0f87827eedf762f9ca5d7",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+      }
+    },
+    {
+      "label": "vector-verification",
+      "source_revision": "91eb13e2451af77150b82b62a448bf97e9d5ac58",
+      "path": "/private/tmp/msh124-packages-vector/mShogi Verification.app",
+      "files": {
+        "Contents/Info.plist": "166a320e22c63d1fea58096a8b4e25432753d73fe439fe3797b738473f828172",
+        "Contents/MacOS/mshogi-desktop": "442e03d418824223b10d2afcd9f0714f2951cb333097f2ea18c33430a91a5a37",
+        "Contents/MacOS/mshogi": "92592cb2a4f5ed57ed1b62498b7d288e2a4bc01cb4f0f87827eedf762f9ca5d7",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+      }
+    }
+  ]
+}

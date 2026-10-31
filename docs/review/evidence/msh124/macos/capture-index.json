@@ -1,0 +1,118 @@
+{
+  "date": "2026-10-31",
+  "operator": "root Codex, native CUA",
+  "initial_source": "de5209d3ac0d987d42396a5b2e3bf4325800784d",
+  "final_source": "ead30e672f2a2cf1747c02c8daa508babed3b7c2",
+  "captures": {
+    "macos/normal-chess-1180.png": {
+      "sha256": "7c4437b3aad14be93b450e9c537600fcfb278ad71582eeaa534190fdd9c3e561",
+      "bytes": 302459
+    },
+    "macos/qa-xiangqi-760-keyboard-history-final.png": {
+      "sha256": "7f2ee7d6e720ec3a5c63dedf6c5ef7e5066114a48bfaae23fb3c5f088cef283b",
+      "bytes": 247398
+    },
+    "macos/qa-shogi-760-keyboard-history.png": {
+      "sha256": "98d0c4a59732bb88bfad542b95e450f4a43233597cd9ce216322c18a5d5937bc",
+      "bytes": 246247
+    },
+    "macos/aligned-qa-xiangqi-760.png": {
+      "sha256": "9fba8682427d0546d08db3499374a1bfe2dcc493ee81d86f872edf7e73c34ec8",
+      "bytes": 258875
+    },
+    "macos/normal-shogi-1180.png": {
+      "sha256": "6d8823629aaa2d00c08ba2a3766ddd6d2fc28b3f369499b57d9742df065372ec",
+      "bytes": 352812
+    },
+    "macos/aligned-qa-chess-760.png": {
+      "sha256": "22fc9dc1598f5adb803b910264f682bb3f493ae3ea7e21e43928f8f5e894a3e7",
+      "bytes": 223573
+    },
+    "macos/normal-chooser-xiangqi-sides.png": {
+      "sha256": "7f7741fa2cd3fb5e67824fafcf3d96ddb7de12ed81358baaeb72e78151a9559d",
+      "bytes": 223137
+    },
+    "macos/final-qa-about-quit-focus-760.png": {
+      "sha256": "cdc46d0b06c69872144538fa60e4b23959d1c35fe9174b5fa144f02dab5a1d1d",
+      "bytes": 373340
+    },
+    "macos/qa-shogi-760.png": {
+      "sha256": "af2d45b40771638f56bd7a1b29b6424df3bda5a81d606afde97360ac913d24ee",
+      "bytes": 260789
+    },
+    "macos/qa-chess-760-keyboard-history.png": {
+      "sha256": "9d55b4f4b2d60406619ee84edce89cfc3dc8a3f490ca4c29ea75fbe17e488a32",
+      "bytes": 227559
+    },
+    "macos/qa-chooser-xiangqi-760.png": {
+      "sha256": "c269e2757faaf758b605e81a1c9a34ade6098c6dbe7e240a681e4e75adf96696",
+      "bytes": 153304
+    },
+    "macos/final-qa-about-license-760.png": {
+      "sha256": "39322aad78a2651a68c9d4766c38eda7cea9ef12e57aef8065125b2cb15ca746",
+      "bytes": 382599
+    },
+    "macos/vector-normal-chess-1180.png": {
+      "sha256": "34549b150935283e88ed069db0bbbffc24b251a44cd9b07bb95b9172e699d40a",
+      "bytes": 302289
+    },
+    "macos/normal-chess-1180-keyboard-history.png": {
+      "sha256": "0b23b823283fcd50132cdc4563360ab2ef4f295b34887bcdd5f079454eea014a",
+      "bytes": 320583
+    },
+    "macos/aligned-normal-keyboard-dropdown-random.png": {
+      "sha256": "d1e4472dce980f1c077a423a416f1d43f27ec59dc0261c08aee4a9175d2b553b",
+      "bytes": 208365
+    },
+    "macos/normal-about-keyboard-license.png": {
+      "sha256": "b962a5f0052a76afec42507020a2ea2b7ffb3648188d581ad9d230c96c049063",
+      "bytes": 500907
+    },
+    "macos/qa-xiangqi-760.png": {
+      "sha256": "ca3e445293688434a8035aace4ce63f6d96c98d2f1a50ef3dde6711fb1f1697c",
+      "bytes": 262785
+    },
+    "macos/qa-chess-760.png": {
+      "sha256": "3b22cb7bc9876b7e6b21b9e39f04c822e8adfc5c4bffa98ffa99a8532d55c120",
+      "bytes": 229205
+    },
+    "macos/qa-chooser-shogi-760.png": {
+      "sha256": "09f8a2336bdb0f3ba4a8a6303dc69a2af946ebd7309a0c5ca2f366fc689f8ada",
+      "bytes": 151790
+    },
+    "macos/vector-qa-chess-760.png": {
+      "sha256": "952aa7650b94ea123caa99f8577355c6b424b3dbd84350ccf565d69faa981ede",
+      "bytes": 220303
+    },
+    "macos/aligned-normal-random-black-play-1180.png": {
+      "sha256": "0bb931d36886884469faf0d3b3736f45ae9ca1793fc47abc3e0862ecba97919c",
+      "bytes": 377374
+    },
+    "macos/normal-chooser-options.png": {
+      "sha256": "330a539164ec83c05c3f6a5b8b4dc4e9bb72299983ce5084daaf19cdd6a3d380",
+      "bytes": 221372
+    },
+    "macos/normal-xiangqi-1180.png": {
+      "sha256": "61560bbb396d87f2cc1c9f7795fc2734627874cbd738b30445cd4a17886ac8ef",
+      "bytes": 366836
+    },
+    "macos/normal-chooser-shogi-sides.png": {
+      "sha256": "a2208cc6f4f7ca070102e91c512f5d5eafb3af3017226319e3a434e63db5a08c",
+      "bytes": 215102
+    },
+    "macos/final-normal-about-license-1180.png": {
+      "sha256": "5fb808c65dd870c476cd34b1bf815fd860a3c8285d1b711a780b9b88cea09bb5",
+      "bytes": 510068
+    },
+    "macos/aligned-qa-shogi-760.png": {
+      "sha256": "3cea481a739a8433cdd733fe8ca656a07ea22a45e08be293dabf27cb96983cb8",
+      "bytes": 255258
+    },
+    "macos/qa-xiangqi-760-keyboard-history.png": {
+      "sha256": "5024529dac6e489483ece3d0236b7545c41a70ed270aa3bcacf9f7236b0265bb",
+      "bytes": 245922
+    }
+  },
+  "aligned_source": "4a624d6c4f129ce774d385192fbbe6a9bdcf547a",
+  "vector_source": "91eb13e2451af77150b82b62a448bf97e9d5ac58"
+}

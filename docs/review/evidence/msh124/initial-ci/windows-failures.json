@@ -1,0 +1,97 @@
+{
+  "source_revision": "de5209d3ac0d987d42396a5b2e3bf4325800784d",
+  "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/41206493902",
+  "status": "failed",
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "failed",
+      "error": "",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 1944, in main\n    journey.normal()\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 1158, in normal\n    assert \"read only\" in w.text(\".historical-notice\")\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "normal-xiangqi",
+      "status": "failed",
+      "error": "('cards', 'analysis', 'height', {'name': 'analysis', 'rect': {'height': 200, 'left': 506, 'top': 102, 'width': 221}}, {'name': 'analysis', 'rect': {'height': 229.046875, 'left': 506, 'top': 102, 'width': 221}})",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 1950, in main\n    journey.normal_xiangqi()\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 1324, in normal_xiangqi\n    self.shared_shell(\"xiangqi\")\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 907, in shared_shell\n    assert abs(current['rect'][axis]-prior['rect'][axis])<=3,(collection,current['name'],axis,prior,current)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: ('cards', 'analysis', 'height', {'name': 'analysis', 'rect': {'height': 200, 'left': 506, 'top': 102, 'width': 221}}, {'name': 'analysis', 'rect': {'height': 229.046875, 'left': 506, 'top': 102, 'width': 221}})\n"
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "failed",
+      "error": "",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 1954, in main\n    journey.fixture(fixture)\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 1801, in fixture\n    assert \"Recorded native evidence (255)\" in w.text(\".recorded-chess-evidence\")\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed",
+      "error": null,
+      "traceback": null
+    }
+  ]
+}

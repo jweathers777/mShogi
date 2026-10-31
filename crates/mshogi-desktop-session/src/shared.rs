@@ -528,6 +528,8 @@ pub struct SharedSnapshot {
     pub historical: bool,
     /// Whether explicit Resume is required before live engine work.
     pub paused: bool,
+    /// Native close guard distinguishes an unsaved document from its stop-only journal.
+    pub close_requires_save: bool,
     /// Execution lifecycle, independent of native game outcome.
     pub phase: EnginePhase,
     /// Actual currently owned request purpose, never inferred from turn or pause.
@@ -668,7 +670,7 @@ pub enum SessionOperation {
         /// Selected complete event prefix, not a board move number.
         event_index: usize,
     },
-    /// Explicitly return to live with execution still paused.
+    /// Return to live, restoring only native browse-suspended running intent.
     ReturnLive {},
     /// Replace execution with bounded read-only analysis of the selected prefix.
     Analyze {
@@ -735,7 +737,7 @@ enum OperationWire {
         // Selected complete event prefix, not a board move number.
         event_index: usize,
     },
-    // Explicitly return to live with execution still paused.
+    // Return to live, restoring only native browse-suspended running intent.
     ReturnLive {},
     // Replace execution with bounded read-only analysis of the selected prefix.
     Analyze {
@@ -792,6 +794,8 @@ pub(super) struct ShogiSession {
     human: s::Side,
     viewed: Option<s::Game>,
     pub(crate) paused: bool,
+    pub(crate) browse_running: bool,
+    pub(crate) browse_stop: Option<BrowseStop>,
     pending: Option<ExecutionContext>,
     submitted: bool,
     phase: EnginePhase,
@@ -816,7 +820,7 @@ pub(super) struct SharedState {
     pub manual_engine: bool,
 }
 impl SharedState {
-    fn auto_submit(&self) -> bool {
+    pub(super) fn auto_submit(&self) -> bool {
         #[cfg(test)]
         if self.manual_engine {
             return false;
@@ -828,6 +832,8 @@ impl ShogiSession {
     pub(crate) fn reopened(&mut self, floor: u64) {
         self.retire();
         self.paused = true;
+        self.browse_running = false;
+        self.browse_stop = None;
         self.execution_floor = floor;
         for observation in &mut self.observations {
             observation.historical = true;
@@ -1581,6 +1587,7 @@ impl DesktopController {
             play_limits: SHOGI_PLAY_LIMITS,
             historical,
             paused: state.paused,
+            close_requires_save: self.close_requires_save(),
             phase: state.phase,
             execution_purpose: state.pending.as_ref().map(|request| match request.purpose {
                 ExecutionPurpose::EngineTurn {} => "engine_turn",
@@ -1765,6 +1772,7 @@ impl DesktopController {
             play_limits: snapshot.limits,
             historical: snapshot.view.historical,
             paused: snapshot.play_paused,
+            close_requires_save: self.close_requires_save(),
             phase: snapshot.engine.status,
             execution_purpose: self
                 .session
@@ -1963,3 +1971,7 @@ impl DesktopController {
 #[cfg(test)]
 #[path = "shared_moves_tests.rs"]
 mod moves_tests;
+
+#[cfg(test)]
+#[path = "workflow_tests.rs"]
+mod workflow_tests;

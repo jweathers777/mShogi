@@ -42,7 +42,7 @@ it.each([standardJson, shogiJson, xiangqiJson])("uses the same actual common sec
   expect(container.querySelectorAll(".shell-header")).toHaveLength(1);
   expect([...container.querySelectorAll("[data-shell-section]")].map(n => n.getAttribute("data-shell-section"))).toEqual(["analysis", "actions", "history"]);
   expect([...container.querySelector(".shell-game-area")!.children].map(n => n.getAttribute("data-game-slot"))).toEqual(["upper-player", "board", "lower-player", "footer"]);
-  for (const name of ["New game", "Save", "Save as…", "Open…"]) expect(screen.getByRole("button", { name }).closest(".shell-header")).toBeTruthy();
+  for (const name of ["New game", "Save", "Load"]) expect(screen.getByRole("button", { name }).closest(".shell-header")).toBeTruthy();
   expect(screen.getByRole("heading", { name: "Untitled game" })).toBeTruthy();
   expect(container.querySelector("[data-document-state]")?.textContent).toBe("Unsaved");
   expect(container.querySelector("[data-position-status]")?.textContent).toBe("Your turnLive position · 0 plies");

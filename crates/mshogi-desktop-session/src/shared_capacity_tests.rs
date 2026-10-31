@@ -660,3 +660,44 @@ fn verification_control_limits_refuse_truthfully_and_keep_complete_save_open() {
         fs::remove_file(copy).unwrap();
     }
 }
+
+#[test]
+fn browse_return_admits_both_resume_control_and_stop_headroom_before_commit() {
+    let mut state =
+        ShogiSession::restored(&s::GameRecord::from_game(&s::Game::new()), s::Side::Sente).unwrap();
+    for op in [
+        SessionOperation::Resume {},
+        SessionOperation::Inspect { event_index: 0 },
+    ] {
+        state.apply_command(op.clone()).unwrap();
+        state.control(Some(op), None, false);
+    }
+    while state.controls.len() < MAX_ARCHIVE_CONTROLS - 2 {
+        let op = SessionOperation::ShogiPreferences {
+            settings: state.settings.clone(),
+        };
+        state.apply_command(op.clone()).unwrap();
+        state.control(Some(op), None, false);
+    }
+    check_capacity(&state, &mut || false).unwrap();
+    let before = encode(&state, 100).unwrap();
+    let error = execute(
+        NativeWork::Admit {
+            candidate: ShogiSeed::Current(Box::new(state.clone())),
+            command: Some(SessionOperation::ReturnLive {}),
+            response: None,
+            replacement: false,
+            floor: 100,
+        },
+        &mut || false,
+    )
+    .err()
+    .expect("two controls plus reserved stop must refuse");
+    assert!(error.resource.is_some());
+    assert!(error.contains("stop/close"));
+    assert_eq!(encode(&state, 100).unwrap(), before);
+    assert_eq!(state.controls.len(), MAX_ARCHIVE_CONTROLS - 2);
+    let envelope: crate::document::DocumentEnvelope = serde_json::from_slice(&before).unwrap();
+    let (reopened, _) = decode_shogi(envelope.payload.get(), &mut || false).unwrap();
+    assert!(reopened.paused);
+}

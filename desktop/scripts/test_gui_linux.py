@@ -1,6 +1,7 @@
 """Focused external-adapter simulation; no app or GUI assertions."""
 import importlib.util
 from pathlib import Path
+import threading
 from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock
@@ -56,5 +57,26 @@ class PickerFallbackTests(unittest.TestCase):
   self.native._run.return_value=SimpleNamespace(returncode=0,stdout='999\n')
   with self.assertRaisesRegex(RuntimeError,'lost focus'):self.fallback()
   self.native._key.assert_not_called()
+
+class LoadPickerTests(unittest.TestCase):
+ def test_product_load_title_keeps_native_open_semantics_and_escape_cancellation(self):
+  native=object.__new__(module.Native)
+  native.output=Path('unused-mocked-load-output')
+  native.pid=456
+  native._event_lock=threading.Lock();native._counter=0
+  native.alive=Mock(return_value=True)
+  picker=dict(PICKER,title='Load mShogi game')
+  native._windows=Mock(side_effect=[[picker],[]])
+  native._wait=Mock(side_effect=lambda predicate,*args,**kwargs:predicate())
+  native._activate=Mock();native.screenshot=Mock();native._key=Mock()
+  native._event=Mock(side_effect=lambda event,**fields:dict(event=event,**fields))
+  native._diagnostics=Mock()
+  observed=native.choose_file('open',None)
+  self.assertEqual(observed['window']['title'],'Load mShogi game')
+  self.assertEqual(observed['picker_kind'],'open')
+  self.assertTrue(observed['cancelled']);self.assertTrue(observed['picker_closed'])
+  native._activate.assert_called_once_with(123)
+  native._key.assert_called_once_with('Escape')
+  native._diagnostics.assert_not_called()
 
 if __name__=='__main__':unittest.main(verbosity=2)

@@ -90,7 +90,7 @@ def saved_document_accepted(observation, expected_path):
             and observation["dirty"].casefold() == "unmodified"
             and observation["buttons"] == [
                 {"label": label, "enabled": True}
-                for label in ("New game", "Save", "Save as…", "Open…")]
+                for label in ("New game", "Save", "Load")]
             and observation.get("io", {}).get("phase") == "complete"
             and observation["io"].get("id", 0) > observation.get("after_io_id", 0)
             and not any(word in status.casefold()
@@ -105,6 +105,16 @@ def opened_document_accepted(observation, expected_path):
             and observation["io"].get("id", 0) > observation.get("after_io_id", 0)
             and (observation["io"].get("message") or "").startswith("Opened ")
             and "work stopped" in observation["io"]["message"])
+
+
+def retained_document_state(diagnostics):
+    """Exact accepted semantic authority; an I/O failure may update only receipts."""
+    token = diagnostics["token"]
+    return json.loads(json.dumps({
+        "authority": {key: token[key] for key in ("document", "version", "selection")},
+        **{key: diagnostics[key] for key in ("profile", "context", "document", "observations")},
+        **{key: diagnostics[key] for key in ("xiangqi",) if key in diagnostics},
+    }))
 
 
 def play_limit_matches(text, depth, nodes):
@@ -674,10 +684,9 @@ class Journey:
             wait(lambda: w.read("document.querySelector('.game-shell').dataset.historical") == "false", "explicit Return to live")
             self.wait_moves_controls(live_event, selector, selected["orientation"])
             wait(lambda: self.completed_cue() == live, "Return to live restores genuine engine action cue")
-            if w.has(".play-paused"):
-                w.button("Resume play")
-                wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "false", "explicit Resume after browsing")
-                self.wait_moves_controls(live_event, selector, selected["orientation"])
+            wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == "false", "one-step Return to live restores otherwise running human play")
+            assert not w.has(".play-paused"), "history browsing alone must not require Resume"
+            self.wait_moves_controls(live_event, selector, selected["orientation"])
         self.viewport(1180, 820)
         self.record("All-game shared Moves pointer and keyboard exact-prefix navigation", {"game": game, "action": action,
             "notation": notation, "event": event, "live_cue": live, "sizes": [[1180, 820], [760, 650]]})
@@ -896,7 +905,7 @@ class Journey:
         assert layout['documentInHeader'] and layout['flipInHeading'] and layout['supportOutsideSidebar'] and layout['rawDiagnosticsAbsent'], layout
         assert layout['brand'] == '歩' and layout['gameLabel'] == game.upper(), layout
         self.support_access(game)
-        assert layout['headerButtons'] == ['New game','Save','Save as…','Open…'], layout
+        assert layout['headerButtons'] == ['New game','Save','Load'], layout
         assert layout['boardPanel']['left'] < layout['sidebar']['left'], layout
         for slot in layout['slots']:
             box=slot['rect']
@@ -974,17 +983,110 @@ class Journey:
             assert native_before[key] == native_after[key], (key,native_before[key],native_after[key])
         self.record('Native movement inspection and complete read-only route preserve context',{'game':game,'origin':origin,'destination':destination,'label':label,'native_token':native_before['token'],'history':before['history']})
 
-    def file(self, kind, path, cancel=False, button_label=None):
-        self._file_receipt_floor = self.native_diagnostics()["io"]["id"]
+    def file(self, kind, path, cancel=False, button_label=None, button_selector=None):
+        if not self.web.has(".document-guard"):
+            self._file_receipt_floor = self.native_diagnostics()["io"]["id"]
         with ThreadPoolExecutor(max_workers=1) as pool:
             picker = pool.submit(self.native.choose_file, kind, None if cancel else path)
-            self.web.button(button_label or ("Open…" if kind == "open" else "Save"))
+            if button_selector:
+                self.web.click(button_selector)
+            else:
+                self.web.button(button_label or ("Load" if kind == "open" else "Save"))
             if kind == "open":
-                wait(lambda: picker.done() or self.web.has(".document-guard"), "native Open picker or unsaved guard")
-                if self.web.has(".document-guard"):
-                    self.web.button("Discard & continue")
+                assert not self.web.has(".document-guard"), "intentional Load must not add an unsaved replacement dialog"
             evidence = picker.result(timeout=35)
         self.record(f"Native {kind} {'cancel' if cancel else 'choose file'}", evidence)
+
+    def cancel_new_game(self):
+        w = self.web
+        before = self.native_diagnostics()
+        w.button("New game")
+        wait(lambda: w.has('[aria-label="New game"]'), "New Game directly opens its chooser")
+        assert not w.has(".document-guard"), "New Game adds no unsaved replacement guard"
+        w.click('.new-game-dialog [data-cancel]')
+        wait(lambda: not w.has('.new-game-dialog'), "cancel New Game preserves the installed document")
+        after = self.native_diagnostics()
+        assert retained_document_state(after) == retained_document_state(before), (before, after)
+        self.record("Cancel intentional New Game before native replacement", {"before": before, "after": after})
+
+    def intentional_replacement_failures(self, game):
+        """Real picker/close input, with exact native history retained on failure."""
+        w = self.web
+        self.cancel_new_game()
+        before = self.native_diagnostics()
+        self.file("open", self.args.output / f"unused-{game}.mshogi", cancel=True)
+        after = self.native_diagnostics()
+        assert 'cancelled' in after['error'].casefold(), after
+        assert retained_document_state(after) == retained_document_state(before), (before, after)
+        self.record("Cancel Load retains complete accepted native document", {"game": game, "before": before, "after": after})
+
+        corrupt = self.args.output / f"workflow-{game}-corrupt.mshogi"
+        corrupt.write_text('{"format":"mshogi.desktop.document.v1",', encoding="utf-8")
+        self.file("open", corrupt)
+        def failed_load():
+            observed = self.native_diagnostics()
+            return observed if observed['io']['id'] > before['io']['id'] and observed['io']['phase'] == 'failed' else None
+        after = wait(failed_load, "rejected malformed Load retains the installed document")
+        assert retained_document_state(after) == retained_document_state(before), (before, after)
+        self.record("Reject malformed intentional Load without replacing the current game", {"game": game, "before": before, "after": after})
+
+        # First-Save cancellation is also tested inside the actual native-close
+        # guard, where a false successful receipt would otherwise close the app.
+        assert before['document']['path'] is None and before['document']['dirty'], before
+        self.record("Native close before first Save", self.native.close_window())
+        wait(lambda: w.has('.document-guard'), "unsaved native close opens Save Game")
+        guard = w.read("""(() => ({title:document.querySelector('.document-guard h2')?.textContent,
+            buttons:[...document.querySelectorAll('.document-guard button')].map(e=>e.textContent.trim())}))()""")
+        assert guard == {'title': 'Save Game', 'buttons': ['Save', 'Discard', 'Cancel']}, guard
+        self.file('save', self.args.output / f"never-saved-{game}.mshogi", cancel=True,
+                  button_selector='.document-guard button.secondary')
+        wait(lambda: "The game was not saved" in w.text('.document-guard'), "cancelled Save retains unsaved close guard")
+        assert self.native.alive() and w.has('.document-guard')
+        self.capture(f"workflow-{game}-cancelled-save-keeps-guard")
+        w.click('.document-guard [data-cancel]')
+        wait(lambda: not w.has('.document-guard'), "Cancel releases the native close reservation")
+        after = self.native_diagnostics()
+        assert after['context'] == before['context'], (before, after)
+        assert after['document']['path'] is None and after['document']['dirty'], after
+        assert not (self.args.output / f"never-saved-{game}.mshogi").exists()
+        self.record("Cancelled first Save cannot authorize native close; Cancel preserves game", {
+            "game": game, "before": before, "after": after, "guard": guard})
+        if w.has('.play-paused'):
+            w.button('Resume play')
+            wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == 'false', "explicit Resume after cancelled native close")
+
+    def direct_resign(self, game):
+        w = self.web
+        before = self.native_diagnostics()
+        w.focused_button('Resign')
+        wait(lambda: not w.has('.resign-button'), "direct authoritative resignation settles")
+        assert not w.has('.confirmation-dialog'), "Resign must not open another confirmation"
+        after = self.native_diagnostics()
+        assert after['context'] != before['context'], (before, after)
+        assert 'resign' in json.dumps(after['context']).casefold(), after
+        status = w.text('[data-game-status]')
+        assert 'native rules determine' not in status.casefold()
+        self.record("Direct Resign submits native actor once and presents actual result", {
+            "game": game, "before": before, "after": after, "visible_result": status})
+        self.capture(f"workflow-{game}-direct-resign")
+
+    def save_current(self, evidence_path):
+        """Use only ordinary Save; external copies retain evidence, not Save As."""
+        current = self.native_diagnostics()["document"]["path"]
+        actual = Path(current) if current else evidence_path
+        if current:
+            self._file_receipt_floor = self.native_diagnostics()["io"]["id"]
+            self.web.button("Save")
+        else:
+            self.file("save", actual)
+        self.wait_saved(actual)
+        wait(actual.exists, "native Save created the accepted document path")
+        if actual != evidence_path:
+            shutil.copyfile(actual, evidence_path)
+            self.record("Retain external archive evidence copy after ordinary Save", {
+                "saved_path": str(actual), "evidence_copy": str(evidence_path),
+                "sha256": digest(actual), "qualification": "Filesystem evidence copy; not product Save As."})
+        return json.loads(actual.read_text(encoding="utf-8"))
 
     def shogi_square(self, square):
         return f'.shogi-square[data-square="{square}"]'
@@ -999,10 +1101,7 @@ class Journey:
              f"shogi historical viewing {historical}")
 
     def shogi_save(self, path, observation_count=None):
-        self.file("save_as", path, button_label="Save as…")
-        self.wait_saved(path)
-        wait(path.exists, "native shogi Save As created exact path")
-        archive = json.loads(path.read_text(encoding="utf-8"))
+        archive = self.save_current(path)
         body = desktop_document_payload(archive, "shogi")
         assert body["current"]["game_kind"] == "shogi"
         if observation_count is not None:
@@ -1038,10 +1137,7 @@ class Journey:
              "native shogi orientation changes")
 
     def save(self, path, observation_count=None):
-        self.file("save", path)
-        self.wait_saved(path)
-        wait(path.exists, "native save created file")
-        archive = json.loads(path.read_text(encoding="utf-8"))
+        archive = self.save_current(path)
         body = desktop_document_payload(archive, "chess")
         if observation_count is not None:
             assert len(body["observations"]) == observation_count
@@ -1078,13 +1174,22 @@ class Journey:
         self.record('Observe native accepted Open receipt and stopped document', observation)
         return observation
 
-    def quit(self, synthetic=False):
+    def quit(self, synthetic=False, save=False):
+        before = None if synthetic else self.native_diagnostics()
+        dirty = synthetic or before["document"]["dirty"]
         evidence = self.native.quit_app()
         self.record("Native Quit request", evidence)
+        if not dirty:
+            self.stopped()
+            self.record("Clean native Quit completes without an unsaved guard", {"dirty_before_quit": False})
+            return
         guard = '[aria-labelledby="synthetic-close-title"]' if synthetic else ".document-guard"
         wait(lambda: self.web.has(guard), "native quit reaches its specific application guard")
-        label = "Close fixture" if synthetic else "Discard & continue"
-        element = self.web.find(f"//button[normalize-space(.)='{label}']", "xpath")
+        label = "Close fixture" if synthetic else "Save" if save else "Discard"
+        if save:
+            assert before['document']['path'], "Quit Save verification requires an established native save path"
+        selector = f"//button[normalize-space(.)='{label}']" if synthetic else f"//div[contains(@class,'document-guard')]//button[normalize-space(.)='{label}']"
+        element = self.web.find(selector, "xpath")
         self.record("Dispatch final native-close guard action", {"label": label, "element": element})
         try:
             self.web.command("POST", f"/element/{element}/click", {})
@@ -1094,6 +1199,10 @@ class Journey:
             self.record("Final guard click closed its WebDriver transport", {
                 "error": str(error), "qualification": "Not exit proof; native host/engine absence is still required before teardown."})
         self.stopped()
+        if save:
+            path = Path(before['document']['path'])
+            desktop_document_payload(json.loads(path.read_text(encoding='utf-8')), before['context']['game_kind'])
+            self.record("Dirty native Quit saves the complete current document before shutdown", {'path': str(path), 'sha256': digest(path)})
 
     def normal(self):
         self.start()
@@ -1107,6 +1216,7 @@ class Journey:
         self.capture('initial-chess-minimum-size')
         self.inspect_piece('chess','e7','e5','Black pawn')
         self.viewport(1180,820)
+        self.intentional_replacement_failures('chess')
         w.click(self.square('e2'))
         assert w.read(f"document.querySelector({json.dumps(self.square('e4'))})?.classList.contains('target')")
         w.click(self.square('b8'))
@@ -1135,10 +1245,7 @@ class Journey:
         self.plies(2)
         self.record("Shared Take back / stopped Chess native decision / explicit Resume / replay", self.inspection_state())
 
-        w.button("New game")
-        wait(lambda: w.has(".document-guard"), "unsaved replacement guard")
-        w.button("Cancel")
-        wait(lambda: not w.has(".document-guard"), "cancel replacement")
+        self.cancel_new_game()
         self.plies(2)
         w.button("Analyze position")
         w.set('.shogi-analysis input[name="depth"]', 8)
@@ -1217,15 +1324,14 @@ class Journey:
         wait(lambda: not w.has(".document-guard"), "cancel native close")
         assert self.native.alive()
         self.plies(2)
-        self.quit()
+        self.direct_resign('chess')
+        self.quit(save=True)
 
     def new_shogi(self, side):
         w = self.web
         w.button("New game")
-        wait(lambda: w.has('.document-guard') or w.has('[aria-label="New game"]'), "New Game guard or explicit game chooser")
-        if w.has(".document-guard"):
-            w.button("Discard & continue")
         wait(lambda: w.has('[aria-label="New game"]'), "explicit game selection dialog")
+        assert not w.has('.document-guard'), "intentional New Game must not add an unsaved replacement dialog"
         self.choose_game('shogi')
         w.click(f'[data-side="{side}"]')
         w.click("[data-start-game]")
@@ -1307,10 +1413,7 @@ class Journey:
         return observation
 
     def xiangqi_save(self, path):
-        self.file("save_as", path, button_label="Save as…")
-        self.wait_saved(path)
-        wait(path.exists, "native Xiangqi Save As created exact path")
-        archive = json.loads(path.read_text(encoding="utf-8"))
+        archive = self.save_current(path)
         body = desktop_document_payload(archive, "xiangqi")
         assert body["current"]["game_kind"] == "xiangqi", body
         self.record("Inspect complete native Xiangqi current document", {
@@ -1330,10 +1433,8 @@ class Journey:
         self.start(product="xiangqi")
         w = self.web
         w.button("New game")
-        wait(lambda: w.has('.document-guard') or w.has('[aria-label="New game"]'), "New Game guard or chooser")
-        if w.has(".document-guard"):
-            w.button("Discard & continue")
         wait(lambda: w.has('[aria-label="New game"]'), "normal game selection dialog")
+        assert not w.has('.document-guard'), "intentional New Game must not add an unsaved replacement dialog"
         self.choose_game('xiangqi'); w.click('[data-side="red"]'); w.click('[data-start-game]')
         wait(lambda: w.has(".shell-xiangqi") and not w.has('[aria-label="New game"]'), "native Xiangqi/Red document")
         self.viewport(1180, 820)
@@ -1348,6 +1449,7 @@ class Journey:
         self.capture("initial-red-minimum-size")
         self.inspect_piece("xiangqi", "a6", "a5", "Black soldier")
         self.viewport(1180, 820)
+        self.intentional_replacement_failures('xiangqi')
 
         source = '.xiangqi-point[data-intersection="a3"]'
         target = '.xiangqi-point[data-intersection="a4"]'
@@ -1474,6 +1576,10 @@ class Journey:
         wait(lambda: not w.has(".document-guard"), "cancel native Xiangqi close")
         assert self.native.alive()
         self.xiangqi_events(2, selected=2)
+        w.button('Resume play')
+        wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == 'false', 'explicit Xiangqi Resume after cancelled close')
+        self.direct_resign('xiangqi')
+        self.save_current(history_path)
         self.quit()
 
     def normal_shogi(self):
@@ -1498,6 +1604,7 @@ class Journey:
         self.capture("initial-gote")
         self.new_shogi("sente")
         self.shogi_events(0)
+        self.intentional_replacement_failures('shogi')
         w.click(self.shogi_square("7g"))
         assert w.read(f"document.querySelector({json.dumps(self.shogi_square('7f'))}).classList.contains('target')")
         w.key("\ue00c")  # Escape retains board history and restores origin focus.
@@ -1547,6 +1654,9 @@ class Journey:
         wait(lambda: not w.has(".document-guard"), "cancel native shogi window close")
         assert self.native.alive()
         self.shogi_events(2)
+        w.button('Resume play')
+        wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == 'false', 'explicit Shogi Resume after cancelled close')
+        self.direct_resign('shogi')
         self.quit()
 
     def normal_shogi_reopened(self):
@@ -1589,8 +1699,12 @@ class Journey:
         # The current native writer reconstructs this reduced-material fixture
         # from its recorded root and complete actions; historical MSH-74 evidence
         # remains unchanged. No fixture entry point is enabled in this package.
-        captures=Path(__file__).with_name('fixtures')/'shogi-captures.mshogi'
-        assert captures.is_file(),captures
+        source_captures=Path(__file__).with_name('fixtures')/'shogi-captures.mshogi'
+        assert source_captures.is_file(),source_captures
+        # Ordinary Save now writes its loaded path. Operate an external copy;
+        # never overwrite the committed fixture during a real product journey.
+        captures=self.args.output/'normal-shogi-captures-source.mshogi'
+        shutil.copyfile(source_captures,captures)
         self.file('open',captures)
         self.shogi_events(2)
         wait(lambda:w.has('.shogi-player[data-player="gote"] .hand-piece[data-hand-piece="pawn"]'),'normal reopened opponent hand resource')
@@ -1616,7 +1730,8 @@ class Journey:
         after_archive=self.shogi_save(self.args.output/'normal-shogi-inspection-after.mshogi')
         assert after_archive==before_archive,'read-only hand inspection changed canonical native archive'
         self.record('Normal-package opponent hand inspection preserves complete canonical archive',{
-            'source_archive':str(captures),'source_sha256':digest(captures),
+            'source_archive':str(source_captures),'source_sha256':digest(source_captures),
+            'loaded_copy':str(captures),
             'root':before_archive['payload']['current']['payload']['root'],
             'native_events':len(before_archive['payload']['current']['payload']['events']),
             'before_sha256':digest(self.args.output/'normal-shogi-inspection-before.mshogi'),

@@ -291,6 +291,13 @@ pub struct RuntimeMetadata {
     selection_id: u64,
     capacity: CapacityState,
 }
+/// Runtime stop meaning retained across read-only browsing; never an execution request.
+#[derive(Clone)]
+struct BrowseStop {
+    paused: bool,
+    phase: EnginePhase,
+    diagnostic: Option<String>,
+}
 /// Native Chess document and execution state. No other game is stored here.
 #[derive(Clone)]
 struct DesktopSession {
@@ -304,6 +311,9 @@ struct DesktopSession {
     analysis_pending: Option<ExecutionContext>,
     analysis_submitted: bool,
     play_paused: bool,
+    // Runtime browse intent only; never a saved pending request.
+    browse_running: bool,
+    browse_stop: Option<BrowseStop>,
     settings: DesktopSettings,
     observations: Vec<ArchivedObservation>,
     controls: Vec<persistence::ControlEntry>,
@@ -409,7 +419,24 @@ impl ActiveDocument {
         self.document_revision += 1;
         self.archive_revision = self.revision.min(MAX_SAFE_ID - 65);
     }
+    fn clear_browse_intent(&mut self) {
+        match self {
+            Self::Chess(s) => {
+                s.browse_running = false;
+                s.browse_stop = None;
+            }
+            Self::Shogi { state, .. } => {
+                state.browse_running = false;
+                state.browse_stop = None;
+            }
+            Self::Xiangqi { state, .. } => {
+                state.browse_running = false;
+                state.browse_stop = None;
+            }
+        }
+    }
     fn retire_execution(&mut self) {
+        self.clear_browse_intent();
         match self {
             Self::Chess(s) => {
                 s.pending = None;
@@ -441,6 +468,7 @@ impl ActiveDocument {
         }
     }
     fn capacity_pause(&mut self, error: String) {
+        self.clear_browse_intent();
         match self {
             Self::Chess(s) => s.capacity_pause(error),
             _ => {
@@ -513,6 +541,8 @@ impl DesktopSession {
             analysis_pending: None,
             analysis_submitted: false,
             play_paused: false,
+            browse_running: false,
+            browse_stop: None,
             settings: DesktopSettings::default(),
             observations: Vec::new(),
             controls: Vec::new(),
@@ -624,6 +654,7 @@ impl DesktopSession {
                 self.selection_id += 1;
                 self.retire_analysis();
                 self.play_paused = false;
+                self.browse_running = false;
                 self.game = new_match();
                 self.human = human;
                 self.play_limits = PLAY_LIMITS;
@@ -649,6 +680,20 @@ impl DesktopSession {
                 return Err("History selection requires the native controller worker.".into());
             }
             ChessMutationCommand::ReturnLive { .. } => {
+                let resume = std::mem::take(&mut self.browse_running)
+                    && self.viewed.is_some()
+                    && self.game.conclusion().is_none()
+                    && !matches!(
+                        self.analysis.status,
+                        AnalysisPhase::Failed
+                            | AnalysisPhase::Cancelled
+                            | AnalysisPhase::Incomplete
+                    );
+                let stop = self.browse_stop.take().unwrap_or(BrowseStop {
+                    paused: self.play_paused,
+                    phase: self.engine.status,
+                    diagnostic: self.engine.message.clone(),
+                });
                 self.retire_analysis();
                 self.pending = None;
                 self.viewed = None;
@@ -657,6 +702,20 @@ impl DesktopSession {
                 self.engine.status = EnginePhase::Paused;
                 self.version += 1;
                 self.revision += 1;
+                if resume {
+                    // One admitted Return transaction records a normal fresh Resume;
+                    // no historical execution context is restored.
+                    self.command_unchecked(
+                        ChessMutationCommand::Resume {
+                            version: self.version,
+                        },
+                        at_ns,
+                    )?;
+                } else if !matches!(stop.phase, EnginePhase::Idle | EnginePhase::Thinking) {
+                    self.play_paused = stop.paused;
+                    self.engine.status = stop.phase;
+                    self.engine.message = stop.diagnostic;
+                }
             }
             ChessMutationCommand::Play { action, .. } => {
                 self.human_turn()?;
@@ -701,6 +760,7 @@ impl DesktopSession {
                 self.changed();
             }
             ChessMutationCommand::Cancel { .. } => {
+                self.browse_running = false;
                 if self.game.conclusion().is_some()
                     || self.pending.is_none()
                     || self.engine.status != EnginePhase::Thinking
@@ -941,6 +1001,7 @@ impl DesktopSession {
     }
     /// Pause for an application/process failure without assigning a chess score.
     pub fn fail(&mut self, message: String) {
+        self.browse_running = false;
         self.pending = None;
         self.engine.status = EnginePhase::Failed;
         self.engine.message = Some(message);
@@ -1051,6 +1112,10 @@ pub struct DesktopController {
     last_command_receipt: Option<AdmissionReceipt>,
 }
 impl DesktopController {
+    fn close_requires_save(&self) -> bool {
+        self.lifecycle
+            .close_requires_save(self.shared_open_token(), self.shared_document().dirty)
+    }
     /// Native application lifecycle authority, shared with host reservation guards.
     pub fn lifecycle(&self) -> std::sync::Arc<ApplicationLifecycle> {
         self.lifecycle.clone()
@@ -1183,6 +1248,7 @@ impl DesktopController {
             self.retire_admission();
             self.bridge.cancel();
             self.session.chess_mut().pending = None;
+            self.session.chess_mut().browse_running = false;
             self.session.chess_mut().play_paused = true;
             self.session.chess_mut().engine.status = EnginePhase::Paused;
             self.session.chess_mut().analysis.status = AnalysisPhase::Cancelled;
@@ -1277,6 +1343,7 @@ impl DesktopController {
             );
         }
         if self.admission_token.is_none()
+            && self.shared.auto_submit()
             && let Some(request) = self.session.chess_mut().analysis_request()
             && let Err(error) = self.bridge.submit(request.clone())
         {
@@ -1299,6 +1366,7 @@ impl DesktopController {
             );
         }
         if self.admission_token.is_none()
+            && self.shared.auto_submit()
             && let Some(request) = self.session.chess_mut().engine_request()
             && let Err(error) = self.bridge.submit(request)
         {

@@ -5,6 +5,7 @@ import http.client
 import importlib.util
 import json
 from pathlib import Path
+import tempfile
 import unittest
 from unittest.mock import Mock, patch
 import urllib.error
@@ -438,7 +439,7 @@ class SaveAcceptanceTests(unittest.TestCase):
             'path': self.expected, 'dirty': 'UNMODIFIED', 'statuses': [],
             'io': {'id': 8, 'phase': 'complete', 'message': 'Saved complete native desktop archive.'},
             'buttons': [{'label': label, 'enabled': True}
-                        for label in ('New game', 'Save', 'Save as…', 'Open…')]}
+                        for label in ('New game', 'Save', 'Load')]}
 
     def test_already_saved_old_path_is_not_acceptance(self):
         self.observation['path'] = '/games/old.mshogi'
@@ -469,7 +470,7 @@ class SaveAcceptanceTests(unittest.TestCase):
         self.observation['io']['phase']='failed'
         self.assertFalse(module.saved_document_accepted(self.observation,self.expected))
 
-    def test_all_four_controls_are_required(self):
+    def test_all_three_current_controls_are_required(self):
         self.observation['buttons'].pop()
         self.assertFalse(module.saved_document_accepted(self.observation, self.expected))
 
@@ -491,6 +492,65 @@ class SaveAcceptanceTests(unittest.TestCase):
             state = copy.deepcopy(self.observation)
             change(state)
             self.assertFalse(module.opened_document_accepted(state, self.expected))
+
+
+class CurrentFileWorkflowTests(unittest.TestCase):
+    def journey(self, path=None):
+        journey = object.__new__(module.Journey)
+        journey.native_diagnostics = Mock(return_value={'document': {'path': path}, 'io': {'id': 4}})
+        journey.file, journey.wait_saved, journey.web, journey.record = Mock(), Mock(), Mock(), Mock()
+        return journey
+
+    def test_first_save_uses_picker_then_requires_actual_accepted_path(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'first.mshogi'
+            path.write_text('{"complete":"native evidence"}')
+            journey = self.journey()
+            self.assertEqual(journey.save_current(path), {'complete': 'native evidence'})
+            journey.file.assert_called_once_with('save', path)
+            journey.wait_saved.assert_called_once_with(path)
+            journey.web.button.assert_not_called()
+
+    def test_subsequent_save_uses_current_path_and_labels_external_copy_honestly(self):
+        with tempfile.TemporaryDirectory() as directory:
+            actual, evidence = Path(directory) / 'current.mshogi', Path(directory) / 'evidence.mshogi'
+            actual.write_text('{"complete":"accepted current native archive"}')
+            journey = self.journey(str(actual))
+            journey.save_current(evidence)
+            journey.file.assert_not_called()
+            journey.web.button.assert_called_once_with('Save')
+            journey.wait_saved.assert_called_once_with(actual)
+            self.assertEqual(evidence.read_bytes(), actual.read_bytes())
+            self.assertIn('not product Save As', journey.record.call_args.args[1]['qualification'])
+
+    def test_existing_file_is_not_evidence_of_success_until_receipt_is_accepted(self):
+        with tempfile.TemporaryDirectory() as directory:
+            actual, evidence = Path(directory) / 'old.mshogi', Path(directory) / 'not-written.mshogi'
+            actual.write_text('{"old":"valid"}')
+            journey = self.journey(str(actual))
+            journey.wait_saved.side_effect = AssertionError('native Save failed')
+            with self.assertRaisesRegex(AssertionError, 'native Save failed'):
+                journey.save_current(evidence)
+            self.assertFalse(evidence.exists())
+
+    def test_replacement_comparison_preserves_native_history_and_runtime_authority(self):
+        for fixture in ('shared-chess-standard.json', 'shared-shogi-standard.json', 'shared-xiangqi-played.json'):
+            path = Path(__file__).parents[1] / 'src' / '__fixtures__' / fixture
+            self.assertTrue(path.exists(), path)
+            with self.subTest(fixture=fixture):
+                before = json.loads(path.read_text())
+                after = copy.deepcopy(before)
+                after['token']['revision'] += 1
+                after['io']['phase'] = 'failed'
+                self.assertEqual(module.retained_document_state(before), module.retained_document_state(after))
+                for key in ('context', 'document', 'observations'):
+                    changed = copy.deepcopy(after)
+                    changed[key] = {'lost': key}
+                    self.assertNotEqual(module.retained_document_state(before), module.retained_document_state(changed))
+                for key in ('document', 'version', 'selection'):
+                    changed = copy.deepcopy(after)
+                    changed['token'][key] += 1
+                    self.assertNotEqual(module.retained_document_state(before), module.retained_document_state(changed))
 
 
 class KeyboardControlReadinessTests(unittest.TestCase):

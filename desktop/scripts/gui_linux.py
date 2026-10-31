@@ -278,7 +278,7 @@ class Native:
     def choose_file(self, kind: str, path: Path | None) -> dict:
         """Wait for, screenshot, and operate the bound process's real picker."""
         kind = kind.lower()
-        titles = {"save": "Save mShogi game", "save_as": "Save mShogi game", "open": "Open mShogi game"}
+        titles = {"save": "Save mShogi game", "save_as": "Save mShogi game", "open": "Load mShogi game"}
         if kind not in titles:
             raise ValueError(f"Unknown native picker kind: {kind}")
         with self._event_lock:

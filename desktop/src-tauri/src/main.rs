@@ -258,7 +258,7 @@ async fn game_file(
             |c| c.shared_open_token(),
         )?;
         if actual != expected {
-            return Err("The document changed. Review unsaved changes again.".into());
+            return Err("The document changed. Try the operation again.".into());
         }
         if app_lifecycle(&app).close_requested() && action == "open" {
             return Err("Finish or cancel the close request before opening.".into());
@@ -269,7 +269,7 @@ async fn game_file(
         } else {
             let picker = app.dialog().file().add_filter("mShogi game", &["mshogi"]);
             let selected = if action == "open" {
-                picker.set_title("Open mShogi game").blocking_pick_file()
+                picker.set_title("Load mShogi game").blocking_pick_file()
             } else {
                 picker
                     .set_title("Save mShogi game")
@@ -285,7 +285,13 @@ async fn game_file(
                 .transpose()?
         };
         let Some(path) = path else {
-            return current_contract_snapshot(&app);
+            // Cancellation is not a successful Save receipt and cannot authorize
+            // a pending close, even if a newer snapshot happens to be clean.
+            return Err(if action == "open" {
+                "Load cancelled.".into()
+            } else {
+                "Save cancelled.".into()
+            });
         };
         let id = with_controller(
             &app.state::<Mutex<DesktopController>>(),
@@ -321,6 +327,12 @@ fn queue_game_file(
     path: PathBuf,
     expected: SharedOpenToken,
 ) -> Result<u64, String> {
+    // The engine/close callback may change authoritative content while the OS
+    // picker is open. A path grants no authority to save that newer document.
+    // Check every operation again under the same lock as capture/queueing.
+    if expected != controller.shared_open_token() {
+        return Err("The document changed. Try the operation again.".into());
+    }
     match action {
         "open" => {
             if controller.lifecycle().close_requested() {
@@ -938,6 +950,187 @@ mod tests {
             )
             .is_ok()
         );
+    }
+
+    fn file_path(label: &str) -> PathBuf {
+        static NEXT: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+        std::env::temp_dir().join(format!(
+            "msh125-host-{}-{}-{label}.mshogi",
+            std::process::id(),
+            NEXT.fetch_add(1, Ordering::Relaxed)
+        ))
+    }
+
+    fn wait_file(controller: &mut DesktopController, id: u64) -> Result<SharedSnapshot, String> {
+        let deadline = Instant::now() + Duration::from_secs(20);
+        loop {
+            let snapshot = controller.shared_snapshot();
+            assert_eq!(snapshot.io.id, id, "unexpected superseding file work");
+            match snapshot.io.phase {
+                IoPhase::Complete => return Ok(snapshot),
+                IoPhase::Failed => return Err(snapshot.io.message.unwrap_or_default()),
+                _ => {}
+            }
+            assert!(Instant::now() < deadline, "host file work did not complete");
+            thread::sleep(Duration::from_millis(1));
+        }
+    }
+
+    fn assert_picker_source_authority(controller: &mut DesktopController) {
+        let expected = controller.shared_open_token();
+        let before = controller.shared_snapshot();
+        // Each component independently rejects: same board/ply is not authority
+        // to save or replace an obsolete document or content revision.
+        for stale in [
+            SharedOpenToken {
+                document: expected.document + 1,
+                ..expected
+            },
+            SharedOpenToken {
+                version: expected.version + 1,
+                ..expected
+            },
+            SharedOpenToken {
+                document_revision: expected.document_revision + 1,
+                ..expected
+            },
+        ] {
+            for action in ["save", "save_as", "open"] {
+                let path = file_path("obsolete-picker");
+                let error = queue_game_file(controller, action, path.clone(), stale).unwrap_err();
+                assert!(error.contains("document changed"));
+                let after = controller.shared_snapshot();
+                assert_eq!(after.open_token, expected);
+                assert_eq!(after.io.id, before.io.id, "obsolete work was queued");
+                assert_eq!(after.document.dirty, before.document.dirty);
+                assert_eq!(after.document.path, before.document.path);
+                assert!(!path.exists(), "an obsolete picker wrote a document");
+            }
+        }
+    }
+
+    #[test]
+    fn picker_save_and_open_recheck_every_source_identity_before_queuing() {
+        let mut controller = DesktopController::new(PathBuf::from("unused-test-engine")).unwrap();
+        assert_picker_source_authority(&mut controller);
+    }
+
+    fn assert_file_completion_authority(controller: &mut DesktopController) {
+        let path = file_path("accepted");
+        let token = controller.shared_open_token();
+        let before = controller.shared_snapshot();
+        let invalid_first = file_path("missing-first-parent").join("game.mshogi");
+        let id = queue_game_file(controller, "save", invalid_first, token).unwrap();
+        assert!(wait_file(controller, id).is_err());
+        let failed = controller.shared_snapshot();
+        assert_eq!(failed.open_token, token);
+        assert_eq!(failed.document.dirty, before.document.dirty);
+        assert_eq!(failed.document.path, before.document.path);
+        assert!(!path.exists());
+
+        let id = queue_game_file(controller, "save", path.clone(), token).unwrap();
+        let saved = wait_file(controller, id).unwrap();
+        assert!(!saved.document.dirty);
+        assert_eq!(saved.document.path.as_deref(), path.to_str());
+        let bytes = std::fs::read(&path).unwrap();
+        assert!(!bytes.is_empty());
+
+        // A subsequent Save uses the established path and remains an actual
+        // atomic writer operation, including during an unsaved-close workflow.
+        controller.lifecycle().request_close().unwrap();
+        let reservation = controller.lifecycle().reserve_file().unwrap();
+        let token = controller.shared_open_token();
+        let id = queue_game_file(controller, "save", path.clone(), token).unwrap();
+        let saved = wait_file(controller, id).unwrap();
+        assert!(!saved.document.dirty);
+        assert_eq!(std::fs::read(&path).unwrap(), bytes);
+        assert!(approve_close(controller, saved.open_token).is_err());
+        drop(reservation);
+        controller.lifecycle().cancel_close().unwrap();
+
+        let invalid = file_path("invalid-load");
+        std::fs::write(&invalid, b"not a native desktop document").unwrap();
+        let token = controller.shared_open_token();
+        let id = queue_game_file(controller, "open", invalid.clone(), token).unwrap();
+        assert!(wait_file(controller, id).is_err());
+        assert_eq!(controller.shared_open_token(), token);
+        assert!(!controller.shared_snapshot().document.dirty);
+        assert_eq!(
+            controller.shared_snapshot().document.path.as_deref(),
+            path.to_str()
+        );
+        assert_eq!(std::fs::read(&path).unwrap(), bytes);
+
+        // A filesystem failure cannot replace the valid path or bless a newer
+        // revision. Atomic writer fault-injection coverage lives in native tests.
+        let missing_parent = file_path("missing-parent").join("game.mshogi");
+        let id = queue_game_file(controller, "save", missing_parent, token).unwrap();
+        assert!(wait_file(controller, id).is_err());
+        let failed = controller.shared_snapshot();
+        assert_eq!(failed.open_token, token);
+        assert!(!failed.document.dirty);
+        assert_eq!(failed.document.path.as_deref(), path.to_str());
+        assert_eq!(std::fs::read(&path).unwrap(), bytes);
+        std::fs::remove_file(path).unwrap();
+        std::fs::remove_file(invalid).unwrap();
+    }
+
+    #[test]
+    fn accepted_file_work_preserves_path_content_and_close_reservations_on_failure() {
+        let mut controller = DesktopController::new(PathBuf::from("unused-test-engine")).unwrap();
+        assert_file_completion_authority(&mut controller);
+    }
+
+    #[cfg(feature = "desktop-verification")]
+    #[test]
+    fn all_native_games_preserve_picker_source_and_file_completion_authority() {
+        for fixture in ["standard", "shogi-standard", "xiangqi-standard"] {
+            let mut controller =
+                DesktopController::verification(PathBuf::from("unused-test-engine"), fixture)
+                    .unwrap();
+            assert_picker_source_authority(&mut controller);
+            assert_file_completion_authority(&mut controller);
+
+            // Even an identical new standard diagram has fresh native authority.
+            // A delayed Save/Load/close from the old document cannot target it.
+            let obsolete = controller.shared_open_token();
+            let (_, receipt) = controller
+                .shared_new_game(
+                    obsolete,
+                    mshogi_desktop_session::GameKind::Shogi,
+                    mshogi_desktop_session::NativeSide::Shogi(
+                        mshogi_desktop_session::ShogiSide::Sente,
+                    ),
+                )
+                .unwrap();
+            let deadline = Instant::now() + Duration::from_secs(20);
+            while receipt.completion().is_none() {
+                controller.shared_snapshot();
+                assert!(Instant::now() < deadline);
+                thread::sleep(Duration::from_millis(1));
+            }
+            receipt.completion().unwrap().unwrap();
+            let current = controller.shared_open_token();
+            assert_ne!(current.document, obsolete.document);
+            let id = controller.shared_snapshot().io.id;
+            for action in ["save", "open"] {
+                assert!(
+                    queue_game_file(
+                        &mut controller,
+                        action,
+                        file_path("replaced-document"),
+                        obsolete,
+                    )
+                    .is_err()
+                );
+                assert_eq!(controller.shared_snapshot().io.id, id);
+                assert_eq!(controller.shared_open_token(), current);
+            }
+            controller.lifecycle().request_close().unwrap();
+            assert!(approve_close(&mut controller, obsolete).is_err());
+            assert!(!controller.lifecycle().close_approved());
+            approve_close(&mut controller, current).unwrap();
+        }
     }
 
     #[test]

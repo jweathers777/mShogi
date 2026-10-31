@@ -107,15 +107,16 @@ it("requires native declaration capability plus a formal confirmation and preser
   fireEvent.click(screen.getByRole("button", { name: "Confirm declaration" }));
   expect(session.command).toHaveBeenCalledExactlyOnceWith(eligible, { kind: "declare" });
 });
-it("cancels resignation and refuses a confirmation after native selection changes", () => {
-  const { props, session, rerender } = app();
-  fireEvent.click(screen.getByRole("button", { name: "Resign game…" }));
+it("retains cancellation and exact-context protection for declaration confirmations", () => {
+  const eligible = { ...standard, capabilities: { ...standard.capabilities, declaration: true } };
+  const { props, session, rerender } = app(eligible);
+  fireEvent.click(screen.getByRole("button", { name: "Declare entering king…" }));
   fireEvent.click(screen.getByRole("button", { name: "Cancel" })); expect(session.command).not.toHaveBeenCalled();
-  fireEvent.click(screen.getByRole("button", { name: "Resign game…" }));
-  const next = { ...standard, token: { ...standard.token, selection: standard.token.selection + 1 } };
+  fireEvent.click(screen.getByRole("button", { name: "Declare entering king…" }));
+  const next = { ...eligible, token: { ...eligible.token, selection: eligible.token.selection + 1 } };
   rerender(<ShogiApp {...props} snapshot={next} />);
-  expect((screen.getByRole("button", { name: "Resign game" }) as HTMLButtonElement).disabled).toBe(true);
-  fireEvent.click(screen.getByRole("button", { name: "Resign game" })); expect(session.command).not.toHaveBeenCalled();
+  expect((screen.getByRole("button", { name: "Confirm declaration" }) as HTMLButtonElement).disabled).toBe(true);
+  fireEvent.click(screen.getByRole("button", { name: "Confirm declaration" })); expect(session.command).not.toHaveBeenCalled();
 });
 it("distinguishes application capacity from engine failure and keeps the complete save path", () => {
   const snapshot = { ...standard, phase: "incomplete" as const, capacity: { ...standard.capacity, status: "paused" as const, message: "256 observation limit" } };

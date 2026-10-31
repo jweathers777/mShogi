@@ -125,3 +125,13 @@ it("finishes concluded Chess analysis without reopening the native outcome", () 
   expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "resume" });
   expect(screen.getByLabelText("Game outcome").textContent).toContain("Checkmate");
 });
+it("offers finishing concluded Chess analysis only while an actual analysis exists", () => {
+  const snapshot = chess(unresolvedJson); snapshot.paused = true; const command = vi.fn();
+  const { rerender } = render(<NativeRecovery snapshot={snapshot} error="" disabled={false} command={command} />);
+  expect(screen.queryByRole("button", { name: "Finish analysis" })).toBeNull();
+  snapshot.chess.analysis.status = "thinking";
+  rerender(<NativeRecovery snapshot={snapshot} error="" disabled={false} command={command} />);
+  fireEvent.click(screen.getByRole("button", { name: "Finish analysis" }));
+  expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "resume" });
+  expect(screen.getByLabelText("Game outcome").textContent).toContain("no score is assigned");
+});

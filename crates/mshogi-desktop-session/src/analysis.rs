@@ -81,6 +81,9 @@ pub struct AnalysisState {
 impl DesktopSession {
     pub(super) fn start_analysis(&mut self, operation: AnalysisOperation) -> Result<(), String> {
         operation.validate()?;
+        if self.viewed.is_none() {
+            self.browse_running = false;
+        }
         self.settings.analysis_defaults = operation;
         self.pending = None;
         self.play_paused = true;
@@ -231,6 +234,18 @@ impl DesktopSession {
         {
             observation.application_error = message.clone();
         }
+        if matches!(
+            status,
+            AnalysisPhase::Failed | AnalysisPhase::Incomplete | AnalysisPhase::Cancelled
+        ) {
+            self.browse_running = false;
+            self.browse_stop = None;
+            self.engine.message = Some(
+                message
+                    .clone()
+                    .unwrap_or_else(|| "Analysis incomplete. Resume play when ready.".into()),
+            );
+        }
         self.analysis.status = status;
         self.analysis.message = message;
         self.analysis.result = Some(result);
@@ -244,6 +259,8 @@ impl DesktopSession {
         self.analysis = AnalysisState::default();
     }
     pub(super) fn cancel_analysis(&mut self) -> Result<(), String> {
+        self.browse_running = false;
+        self.browse_stop = None;
         if self.analysis_pending.is_none() || self.analysis.status != AnalysisPhase::Thinking {
             return Err("There is no active analysis to cancel.".into());
         }
@@ -254,11 +271,16 @@ impl DesktopSession {
             "Analysis cancelled before final observations were received. Play remains paused."
                 .into(),
         );
+        self.engine.message = self.analysis.message.clone();
         self.changed();
         Ok(())
     }
     pub(super) fn resume(&mut self) -> Result<(), String> {
-        if !self.play_paused || self.viewed.is_some() {
+        self.browse_running = false;
+        if !self.play_paused
+            || self.viewed.is_some()
+            || (self.game.conclusion().is_some() && self.analysis.status == AnalysisPhase::Idle)
+        {
             return Err("There is no paused play or analysis to finish.".into());
         }
         self.retire_analysis();

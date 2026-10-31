@@ -170,6 +170,7 @@ impl DesktopSession {
         }
     }
     pub(super) fn capacity_pause(&mut self, error: String) {
+        self.browse_running = false;
         self.pending = None;
         if self.analysis_pending.take().is_some() {
             self.analysis.status = AnalysisPhase::Cancelled;

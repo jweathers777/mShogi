@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { claimName } from "../presentation";
 import { TakeBackControl } from "./TakeBackControl";
 import type { GameSnapshot, Operation } from "./native";
@@ -8,6 +8,13 @@ export function GameActions({ snapshot, disabled, command, confirm }: {
   confirm: (value: Confirmation) => void;
 }) {
   const [claimIndex, setClaimIndex] = useState(0);
+  const resigning = useRef(false);
+  async function resign() {
+    if (disabled || resigning.current) return;
+    resigning.current = true;
+    try { await command(snapshot.game === "xiangqi" ? { kind: "xiangqi", command: { kind: "resign" } } : { kind: "resign" }); }
+    finally { resigning.current = false; }
+  }
   const ask = (operation: Operation, title: string, action: string, meaning: string) => confirm({ source: snapshot, operation, title, action, meaning });
   const terminal = snapshot.game === "xiangqi" ? snapshot.xiangqi.terminal_actions : null;
   const claims = snapshot.game === "chess" ? snapshot.chess.claims : [];
@@ -31,6 +38,6 @@ export function GameActions({ snapshot, disabled, command, confirm }: {
     {terminal?.offer_draw && <button className="quiet" disabled={disabled} onClick={() => ask({ kind: "xiangqi", command: { kind: "offer_draw" } }, "Offer a draw?", "Offer draw", "An offer alone does not end the game. Your opponent must accept it.")}>Offer draw…</button>}
     {terminal?.accept_draw && <button className="secondary" disabled={disabled} onClick={() => ask({ kind: "xiangqi", command: { kind: "accept_draw" } }, "Accept the draw?", "Accept draw", "Accepting the outstanding offer ends this game as a draw.")}>Accept draw…</button>}
     {terminal?.decline_draw && <button className="quiet" disabled={disabled} onClick={() => ask({ kind: "xiangqi", command: { kind: "decline_draw" } }, "Decline the draw?", "Decline draw", "The game will continue without this offer.")}>Decline draw…</button>}
-    {snapshot.capabilities.resign && <button className="quiet resign-button" disabled={disabled} onClick={() => ask(snapshot.game === "xiangqi" ? { kind: "xiangqi", command: { kind: "resign" } } : { kind: "resign" }, "Resign this game?", "Resign game", `${snapshot.human.label} will resign. The game result will be shown; an unresolved result remains unscored.`)}>Resign game…</button>}
+    {snapshot.capabilities.resign && <button className="quiet resign-button" disabled={disabled} onClick={() => { void resign(); }}>Resign</button>}
   </section>;
 }

@@ -69,6 +69,7 @@ impl DesktopSession {
         if self.viewed.is_some() {
             return Err("Return to live before Take back.".into());
         }
+        self.browse_running = false;
         let before = self.game.record().clone();
         let restored = restore(&before, self.human, stopped)?;
         self.takebacks.push(persistence::TakeBackEvidence {

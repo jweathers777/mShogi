@@ -41,7 +41,7 @@ it("uses the accepted shell, actual native play limits and shared document/statu
   expect(screen.getByRole("button", { name: "About mShogi" }).closest(".shell-header")).toBeTruthy();
   expect([...container.querySelector(".shell-game-area")!.children].map((node) => node.getAttribute("data-game-slot"))).toEqual(["upper-player", "board", "lower-player", "footer"]);
   expect(container.querySelector("[data-position-status]")?.textContent).toBe("Your turnLive position · 0 plies");
-  for (const name of ["New game", "Save", "Save as…", "Open…"]) expect(screen.getByRole("button", { name }).closest(".shell-header")).toBeTruthy();
+  for (const name of ["New game", "Save", "Load"]) expect(screen.getByRole("button", { name }).closest(".shell-header")).toBeTruthy();
   expect(screen.queryByText(/Entering.king|pieces in hand|Promote/)).toBeNull();
   expect(screen.queryByRole("spinbutton")).toBeNull();
   expect((screen.getByRole("button", { name: "Analyze position" }) as HTMLButtonElement).disabled).toBe(false);
@@ -57,8 +57,7 @@ it("flips using native Xiangqi preferences while preserving existing document an
   expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "xiangqi_preferences", settings: { orientation: "black", analysis_defaults: { depth: 1, nodes: 128 } } });
   fireEvent.click(screen.getByRole("button", { name: "New game" })); expect(props.onNewGame).toHaveBeenCalledOnce();
   fireEvent.click(screen.getByRole("button", { name: "Save" })); expect(session.file).toHaveBeenLastCalledWith(standard, "save");
-  fireEvent.click(screen.getByRole("button", { name: "Save as…" })); expect(session.file).toHaveBeenLastCalledWith(standard, "save_as");
-  fireEvent.click(screen.getByRole("button", { name: "Open…" })); expect(props.onOpen).toHaveBeenCalledOnce();
+  fireEvent.click(screen.getByRole("button", { name: "Load" })); expect(props.onOpen).toHaveBeenCalledOnce();
 });
 it("shows real engine work and cancellation without fabricated telemetry or analysis execution", () => {
   const snapshot = { ...standard, phase: "thinking" as const, execution_purpose: "engine_turn", capabilities: { ...standard.capabilities, board_action: false } };
@@ -171,7 +170,7 @@ for (const [label, json] of [["fourth occurrence", fourthJson], ["agreement", ag
     expect(native.status.concluded).toBe(true);
     expect(document.querySelector("[data-game-status]")?.textContent).toBe(native.status.label);
     expect(screen.queryByRole("button", { name: "Resume play" })).toBeNull();
-    expect(screen.queryByRole("button", { name: "Resign game…" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Resign" })).toBeNull();
     expect(screen.queryByRole("heading", { name: "Repetition warning" })).toBeNull();
   });
 }

@@ -1597,3 +1597,46 @@ fn actual_encoded_canonical_wrapper_overhead_is_bounded_before_acceptance() {
     let original: Original = serde_json::from_str(&oversized).unwrap();
     assert!(decode(original.payload.get(), &mut || false).is_err());
 }
+
+#[test]
+fn browse_return_reserves_journaled_resume_and_close_without_losing_current_xiangqi_document() {
+    let game = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
+    let record = x::GameRecord::from_game(&game).unwrap();
+    let mut state = XiangqiDraft::replacement(&record, x::Side::Red)
+        .materialize()
+        .unwrap();
+    for op in [
+        SessionOperation::Resume {},
+        SessionOperation::Inspect { event_index: 0 },
+    ] {
+        let before = (state.game.events().len(), state.board_actions());
+        state.apply_command(op.clone()).unwrap();
+        state.journal(before, Some(op), None, None, false);
+    }
+    while state.controls.len() < MAX_ARCHIVE_CONTROLS - 2 {
+        let op = SessionOperation::XiangqiPreferences {
+            settings: state.settings.clone(),
+        };
+        let before = (state.game.events().len(), state.board_actions());
+        state.apply_command(op.clone()).unwrap();
+        state.journal(before, Some(op), None, None, false);
+    }
+    check_capacity(&state, &mut || false).unwrap();
+    let before = encode(&state, 100).unwrap();
+    let error = execute(
+        XiangqiWork::Admit {
+            draft: Box::new(XiangqiDraft::capture(&state)),
+            command: Some(SessionOperation::ReturnLive {}),
+            response: None,
+            exact: None,
+            replacement: false,
+            floor: 100,
+        },
+        &mut || false,
+    )
+    .err()
+    .expect("reserve both commands plus close");
+    assert!(error.resource.is_some());
+    assert_eq!(encode(&state, 100).unwrap(), before);
+    assert_eq!(state.controls.len(), MAX_ARCHIVE_CONTROLS - 2);
+}

@@ -4,7 +4,7 @@ title: Deliver complete tori shogi rules and functional product integration
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-10-26T07:46:00Z'
+updated_date: '2026-10-31T21:41:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -18,6 +18,8 @@ documentation:
   - docs/design.md
   - docs/m4/delivery-plan.md
   - docs/m4/implementation-map.md
+  - docs/m4/tori/handoff.md
+  - docs/m4/tori/profile.md
 ordinal: 42000
 ---
 
@@ -53,4 +55,6 @@ Open design questions (D-07/D-08): Resolve the authoritative historical rule sou
 
 <!-- SECTION:NOTES:BEGIN -->
 MSH62 planning refinement2026-10-26: original identity,status,AC and DoD remain intact. This complete-delivery record now depends explicitly on its required bounded component/shared work; docs/m4/delivery-plan.md traces each original criterion and single ownership. No game implementation or delivery completion occurred. Earlier M3-context wording remains historical; current authorization is planning-only.
+
+MSH81 currentresearch2026-10-31 supplies docs/m4/tori source/profile-gate ledger and currentR1-R6consumer handoff. Tohoku15-imageprimarywitness nowacquired; textdate1828 is notprovenphysicalcopydate. Candidateprofile remainsunratified; P02promotion/drop timing,P03formalrepetition/check andP04exceptionalendings blockconformance. Preserve nativequailidentity/7x7geometry/history,currentexecution/document/runtime/sharedinteractionowners andsaveability. Source-groundedscopeconstraints only: no detailedfutureplan,dependency/ACchange,Readyactivation or deliveryclosure; complete81 before affected85/77implementation.
 <!-- SECTION:NOTES:END -->

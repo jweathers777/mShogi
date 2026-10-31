@@ -4,7 +4,7 @@ title: Deliver the authoritative tori shogi native handoff for shared consumers
 status: To Do
 assignee: []
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-26T07:44:00Z'
+updated_date: '2026-10-31T21:41:00Z'
 labels:
   - m4
   - owner-msh-42
@@ -18,6 +18,8 @@ references:
 documentation:
   - docs/m4/later-game-sources.md
   - docs/m4/delivery-plan.md
+  - docs/m4/tori/handoff.md
+  - docs/m4/tori/profile.md
 type: task
 ordinal: 85000
 ---
@@ -47,3 +49,9 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MSH81 currentresearch2026-10-31 supplies docs/m4/tori source/profile-gate ledger and currentR1-R6consumer handoff. Tohoku15-imageprimarywitness nowacquired; textdate1828 is notprovenphysicalcopydate. Candidateprofile remainsunratified; P02promotion/drop timing,P03formalrepetition/check andP04exceptionalendings blockconformance. Preserve nativequailidentity/7x7geometry/history,currentexecution/document/runtime/sharedinteractionowners andsaveability. Source-groundedscopeconstraints only: no detailedfutureplan,dependency/ACchange,Readyactivation or deliveryclosure; complete81 before affected85/77implementation.
+<!-- SECTION:NOTES:END -->

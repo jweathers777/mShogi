@@ -56,7 +56,10 @@ jobs:
           cargo fmt --all -- --check
           cargo clippy --locked --all-targets -- -D warnings
           cargo test --locked
-          cargo check --locked --features desktop-verification
+          cargo test --locked --features desktop-verification
+      - name: Verify stable macOS QA identities and external fixture selection
+        if: runner.os == 'macOS'
+        run: python3 -m unittest discover -s desktop/scripts -p test_macos_verification.py -v
       - name: Build normal native package
         working-directory: desktop
         run: npm run desktop:build -- --bundles ${{ matrix.bundle }}

@@ -1,5 +1,76 @@
 # Packaged application GUI verification
 
+## Current macOS identity and approval discipline (MSH-121)
+
+Use at most three reusable application identities. Never add a fixture, task ID,
+commit hash, timestamp or random suffix to a bundle ID or launch path.
+
+| Role | Fixed bundle identifier | Predictable location from repository root |
+| --- | --- | --- |
+| Normal | `org.mshogi.desktop` | `desktop/src-tauri/target/release/bundle/macos/mShogi.app` |
+| QA | `org.mshogi.desktop.verification.r6.shogipromotion` | `desktop/src-tauri/target/verification/macos/mShogi Verification.app` |
+| Synthetic | `org.mshogi.desktop.verification.r6.synthetic` | `desktop/src-tauri/target/verification/macos/mShogi Synthetic.app` |
+
+The QA and synthetic identifiers are deliberately retained historical IDs which
+already had saved user approvals during R6. The QA ID does not restrict the app
+to Shogi or promotion. Do not rename these IDs for cosmetic consistency. The
+normal distributable remains independent; the synthetic fixture remains clearly
+labeled as invented, and is not a supported game in New Game.
+
+The external `desktop/scripts/macos-verification.py` helper stages a separately
+built QA bundle, sets its fixed identity and signs it once per actual build.
+It refuses to replace a running staged app. Scenario selection writes a bounded
+token atomically to an external sibling file while the app is stopped. The
+QA-only host reads that file at startup through `MSHOGI_DESKTOP_FIXTURE_FILE`.
+Missing, oversized or malformed configured files fail explicitly. The normal
+host contains neither this reader nor its environment marker. Changing a
+scenario does not touch Info.plist, signed resources, executable or signature.
+Do not put the selected fixture in `LSEnvironment` or create another app copy.
+
+From the repository root, after building the QA package:
+
+```sh
+python3 desktop/scripts/macos-verification.py prepare qa
+python3 desktop/scripts/macos-verification.py select qa xiangqi-count
+python3 desktop/scripts/macos-verification.py inspect qa
+python3 desktop/scripts/macos-verification.py prepare synthetic
+python3 desktop/scripts/macos-verification.py select synthetic synthetic
+```
+
+Launch and control the reported exact path through the supported Computer Use
+app API. Reuse its app handle while running and use New Game for ordinary game
+changes. Quit through the application's native guard before selecting another
+startup fixture. Preparation and selection do not launch apps, manipulate UI,
+or grant access. Optional externally delayed-engine preparation stays QA-only;
+record its real bundled-engine and gate identities. Never replace a running
+bundle or change a running session by rewriting its selector.
+
+Computer Use's saved app approvals and macOS Accessibility/Screen Recording
+permissions are separate. The read-only R6 investigation found actual saved
+`approvedBundleIdentifiers` in the CUAService app-approval record, including the
+individual per-fixture IDs that caused repeated requests. No approval or
+security configuration was changed. The original twenty application copies had
+twenty IDs and signature hashes despite identical QA executable code. This was
+unnecessary verification identity proliferation.
+
+Ad-hoc signing has no TeamIdentifier in these local builds; observed designated
+requirements include an exact code hash. Bundle ID alone therefore does not
+establish that every policy layer will reuse an approval after rebuilding. The
+helper records actual signing and resource verification, and the acceptance
+evidence must record real unchanged relaunch, changed-build reuse and selector
+changes. A platform-controlled prompt can still occur; do not promise otherwise,
+edit the saved allow list, disable checks or self-approve a request. Report any
+remaining limitation explicitly. The base Tauri linker signatures and a fully
+resource-sealed staged QA signature are different evidence; do not conflate
+them with Developer ID signing or notarization.
+
+Official references: [Computer Use approvals](https://learn.chatgpt.com/docs/computer-use)
+and [macOS application policy](https://learn.chatgpt.com/docs/config-file/config-reference).
+The local saved-record observations and rebuild experiment are recorded with
+the R6 evidence; unrelated application approvals are not copied into the repo.
+
+## Historical M3 campaign and continuing platform methods
+
 MSH-38 verifies actual installed or packaged applications. Normal package
 construction, inventory and bundled-engine protocol reports are separate
 supporting evidence. M3 stays open until Windows, macOS and Linux interaction

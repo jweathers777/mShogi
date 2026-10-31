@@ -485,6 +485,40 @@ fn approve_close(
         .approve_close(expected, controller.shared_open_token())
 }
 #[cfg(feature = "desktop-verification")]
+fn read_verification_fixture(path: &std::path::Path) -> std::io::Result<String> {
+    use std::io::Read;
+    // Scenario selection lives outside the signed bundle. A fixed QA identity
+    // can therefore be reused without rewriting Info.plist or re-signing it.
+    let mut bytes = Vec::new();
+    std::fs::File::open(path)?
+        .take(129)
+        .read_to_end(&mut bytes)?;
+    if bytes.len() > 128 {
+        return Err(std::io::Error::other(
+            "Verification fixture selector exceeds 128 bytes",
+        ));
+    }
+    let name = std::str::from_utf8(&bytes)
+        .map_err(std::io::Error::other)?
+        .trim();
+    if name.is_empty() || !name.bytes().all(|c| c.is_ascii_alphanumeric() || c == b'-') {
+        return Err(std::io::Error::other(
+            "Invalid verification fixture selector",
+        ));
+    }
+    Ok(name.into())
+}
+#[cfg(feature = "desktop-verification")]
+fn verification_fixture_name() -> std::io::Result<String> {
+    if let Some(path) = std::env::var_os("MSHOGI_DESKTOP_FIXTURE_FILE") {
+        // Missing or malformed configured selectors fail explicitly; never
+        // silently open another scenario or a product game instead.
+        read_verification_fixture(std::path::Path::new(&path))
+    } else {
+        Ok(std::env::var("MSHOGI_DESKTOP_FIXTURE").unwrap_or_else(|_| "standard".into()))
+    }
+}
+#[cfg(feature = "desktop-verification")]
 fn initial_controller(fixture: &str) -> Result<DesktopController, Box<dyn std::error::Error>> {
     let chess_fixture = if fixture == "synthetic" {
         "standard"
@@ -691,9 +725,7 @@ fn main() {
         .setup(|app| {
             #[cfg(feature = "desktop-verification")]
             {
-                let verification = VerificationState::new(
-                    std::env::var("MSHOGI_DESKTOP_FIXTURE").unwrap_or_else(|_| "standard".into()),
-                );
+                let verification = VerificationState::new(verification_fixture_name()?);
                 let controller = initial_controller(&verification.fixture)?;
                 app.manage(controller.lifecycle());
                 app.manage(Mutex::new(controller));
@@ -781,6 +813,34 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[cfg(feature = "desktop-verification")]
+    #[test]
+    fn external_fixture_selection_is_bounded_and_never_silently_falls_back() {
+        let path = std::env::temp_dir().join(format!(
+            "mshogi-fixture-selector-{}-{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        assert!(read_verification_fixture(&path).is_err());
+        for fixture in ["shogi-promotion", "xiangqi-count", "synthetic"] {
+            std::fs::write(&path, format!("{fixture}\n")).unwrap();
+            assert_eq!(read_verification_fixture(&path).unwrap(), fixture);
+        }
+        for invalid in [
+            Vec::new(),
+            b"../standard".to_vec(),
+            b"standard\nsynthetic".to_vec(),
+            vec![b'a'; 129],
+            vec![0xff],
+        ] {
+            std::fs::write(&path, invalid).unwrap();
+            assert!(read_verification_fixture(&path).is_err());
+        }
+        std::fs::remove_file(path).unwrap();
+    }
     fn controller() -> Mutex<DesktopController> {
         Mutex::new(DesktopController::new(PathBuf::from("unused-test-engine")).unwrap())
     }

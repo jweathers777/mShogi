@@ -64,6 +64,16 @@ Record the actual commands, outcomes, environment, and code revision used for ve
 
 Backlog.md allows a task to be marked Done with unchecked criteria. Project policy does not. Check only criteria supported by evidence; leave the task unfinished if required verification is unavailable.
 
+For macOS GUI verification, reuse the fixed normal/QA/synthetic application slots
+and identities documented in `docs/desktop/packaged-gui-verification.md`. Never
+create a bundle identifier, app name or launch directory per fixture, task or
+revision. Change a QA scenario through the external fixture selector while its
+application is stopped; do not rewrite or re-sign the bundle per scenario.
+Inspect existing saved approvals read-only when diagnosing access. Never edit
+approval stores or security policy, self-grant access, or promise that an app
+rebuild cannot trigger a platform-controlled prompt. Record actual identity,
+signature and reuse observations.
+
 ## Git and routine autonomy
 
 The established workflow permits ordinary local commits, non-destructive integration, normal pushes to the configured project remote, and cleanup of the agent's own completed disposable branches/worktrees. Use the designated rewrite branch as the integration target. Keep the original project history and default branch intact unless John explicitly changes that instruction.

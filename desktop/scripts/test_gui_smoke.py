@@ -74,6 +74,37 @@ class XiangqiImmutableWarningPrefixTests(unittest.TestCase):
             self.assertFalse(module.warning_prefix_transition(earlier, warned))
 
 
+class NativePendingTakebackArchiveTests(unittest.TestCase):
+    def payload(self, game):
+        action = {'chess': 'e2e4', 'shogi': '7g7f', 'xiangqi': 'a3a4'}[game]
+        play = {'kind': 'play', 'action': action}
+        if game == 'xiangqi':
+            play = {'kind': 'xiangqi', 'command': play}
+        body = {'controls': [{'sequence': 1, 'command': play}, {'sequence': 2, 'command': {'kind': 'take_back'}}]}
+        if game == 'chess':
+            body.update(game_record_json=json.dumps({'events': []}), takebacks=[{'match_record_json': json.dumps({'events': [{'request': {'command': {'move': action}}}]})}])
+        else:
+            record = {'game_kind': game, 'payload': {'root': {'native_root': game}, 'events': []}}
+            body.update(initial=copy.deepcopy(record), current=copy.deepcopy(record))
+        return action, body
+
+    def test_game_native_lineage_is_retained_without_requiring_chess_only_array(self):
+        for game in ('chess', 'shogi', 'xiangqi'):
+            action, body = self.payload(game)
+            self.assertTrue(module.retained_pending_takeback(game, body, action))
+            if game != 'chess': self.assertNotIn('takebacks', body)
+            body['controls'][0]['sequence'] = 3
+            self.assertFalse(module.retained_pending_takeback(game, body, action))
+
+    def test_an_undo_label_alone_does_not_prove_retained_native_actions_or_root(self):
+        for game in ('chess', 'shogi', 'xiangqi'):
+            action, body = self.payload(game)
+            self.assertFalse(module.retained_pending_takeback(game, body, 'different-action'))
+            if game == 'chess': body['takebacks'] = []
+            else: body['current']['payload']['root'] = {'different': 'root'}
+            self.assertFalse(module.retained_pending_takeback(game, body, action))
+
+
 class SharedPresentationTests(unittest.TestCase):
     def test_inspection_status_uses_exact_shared_copy_and_native_labels(self):
         for label in ('Black pawn', 'Gote pawn', 'Gote pawn in hand', 'Black cannon'):

@@ -130,6 +130,31 @@ def warning_prefix_transition(earlier, warned):
                     and warning['fault'] == 'perpetual_check' for warning in new['warnings']))
 
 
+def retained_pending_takeback(game, body, action):
+    """Inspect native archive lineage without inventing a uniform save schema."""
+    controls = [entry for entry in body['controls'] if entry.get('command')]
+    undos = [entry for entry in controls if entry['command']['kind'] == 'take_back']
+    if not undos:
+        return False
+    def played(entry):
+        command = entry['command']
+        if game == 'xiangqi':
+            command = command.get('command', {}) if command['kind'] == 'xiangqi' else {}
+        return command.get('kind') == 'play' and command.get('action') == action
+    moves = [entry for entry in controls if played(entry)]
+    if not moves or not any(move['sequence'] < undo['sequence'] for move in moves for undo in undos):
+        return False
+    if game == 'chess':
+        retained = body.get('takebacks', [])
+        return bool(retained and not json.loads(body['game_record_json'])['events']
+                    and any(event['request']['command'] == {'move': action}
+                        for lineage in retained
+                        for event in json.loads(lineage['match_record_json'])['events']))
+    return (game in ('shogi', 'xiangqi') and not body['current']['payload']['events']
+            and body['current']['game_kind'] == body['initial']['game_kind'] == game
+            and body['current']['payload']['root'] == body['initial']['payload']['root'])
+
+
 def saved_document_accepted(observation, expected_path):
     """One DOM observation must establish native acceptance, not an old Saved label."""
     return (observation["path"] == str(expected_path)
@@ -1999,7 +2024,9 @@ class Journey:
         point = self.square if game == 'chess' else self.shogi_square if game == 'shogi' else self.xiangqi_point
         w.click(point(origin)); w.click(point(destination))
         wait(lambda: w.has('.shogi-analysis[data-phase="thinking"]') and w.has('.shell-notices button'), 'actual pending engine decision')
-        self.assert_completed_cue(origin + destination, 1, [origin], [destination])
+        # Chess desktop history includes its native Match Start event.
+        human_event, restored_event = (2, 1) if game == 'chess' else (1, 0)
+        self.assert_completed_cue(origin + destination, human_event, [origin], [destination])
         before = self.native_diagnostics()
         assert len(before['context']['payload']['events']) >= 1
         self.capture('real-engine-pending')
@@ -2013,7 +2040,7 @@ class Journey:
         assert returned['context'] == before['context'], 'browsing cannot change the accepted live game'
         w.button('Take back')
         wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == 'true', 'Take back stops pending continuation')
-        wait(lambda: w.read("document.querySelector('.shogi-history').dataset.currentEvent") == '0', 'Take back restores human decision')
+        wait(lambda: w.read("document.querySelector('.shogi-history').dataset.currentEvent") == str(restored_event), 'Take back restores exact native human decision boundary')
         restored = self.native_diagnostics()
         assert restored['token']['version'] > returned['token']['version']
         assert not restored['context']['payload']['events']
@@ -2041,11 +2068,18 @@ class Journey:
         path = self.args.output / f'pending-{game}-complete.mshogi'
         archive = self.save_current(path)
         body = desktop_document_payload(archive, game)
-        assert body['takebacks'], 'abandoned pending continuation retained losslessly'
+        assert retained_pending_takeback(game, body, origin + destination), 'native archive retains abandoned board action before Take back'
+        old_token = cancelled['token']
+        self.file('open', path); self.wait_opened(path)
+        reopened = self.native_diagnostics()
+        assert reopened['context'] == restored['context']
+        assert reopened['token']['document'] > old_token['document']
+        assert w.read("document.querySelector('.game-shell').dataset.paused") == 'true'
+        assert not w.has('.shogi-analysis[data-phase="analyzing"]')
         self.record('Real pending browse Return / Take back / analysis replacement cancellation', {
             'game': game, 'before': before, 'returned': returned, 'restored': restored,
             'first_analysis': first, 'replacement_analysis': replacement, 'cancelled': cancelled,
-            'saved_sha256': digest(path), 'takebacks': len(body['takebacks'])})
+            'saved_sha256': digest(path), 'reopened': reopened, 'native_takeback_controls': sum((entry.get('command') or {}).get('kind') == 'take_back' for entry in body['controls'])})
         self.quit()
 
     def chess_full(self):

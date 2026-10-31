@@ -117,6 +117,13 @@ def retained_document_state(diagnostics):
     }))
 
 
+def never_saved_close_source(diagnostics):
+    """Native close authority includes never-saved, internally clean startup."""
+    return (diagnostics.get('document', {}).get('path') is None
+            and isinstance(diagnostics.get('document', {}).get('dirty'), bool)
+            and diagnostics.get('close_requires_save') is True)
+
+
 def play_limit_matches(text, depth, nodes):
     """Compare actual displayed integers without imposing a WebView locale."""
     match = re.fullmatch(r"Play limit: depth ([0-9]+) · ([0-9,. \u00a0\u202f]+) nodes", text or "")
@@ -663,7 +670,10 @@ class Journey:
         self.wait_moves_controls(live_event, selector)
         for width, height in ((1180, 820), (760, 650)):
             self.viewport(width, height)
-            w.click(selector)
+            # A real rejected Load notice can put the first move below the
+            # sidebar clip even at normal size. Actual Tab revelation establishes
+            # visibility before the single pointer click; no DOM scroll/focus.
+            w.focused_button(notation)
             selected = self.wait_moves_controls(event, selector)
             assert w.read(f"document.querySelector({json.dumps(selector)}).getAttribute('aria-current')") == "step"
             self.assert_completed_cue(action, event, [origin], [destination])
@@ -1032,7 +1042,7 @@ class Journey:
 
         # First-Save cancellation is also tested inside the actual native-close
         # guard, where a false successful receipt would otherwise close the app.
-        assert before['document']['path'] is None and before['document']['dirty'], before
+        assert never_saved_close_source(before), before
         self.record("Native close before first Save", self.native.close_window())
         wait(lambda: w.has('.document-guard'), "unsaved native close opens Save Game")
         guard = w.read("""(() => ({title:document.querySelector('.document-guard h2')?.textContent,
@@ -1047,7 +1057,9 @@ class Journey:
         wait(lambda: not w.has('.document-guard'), "Cancel releases the native close reservation")
         after = self.native_diagnostics()
         assert after['context'] == before['context'], (before, after)
-        assert after['document']['path'] is None and after['document']['dirty'], after
+        assert after['document']['path'] is None, after
+        assert after['document']['dirty'] == before['document']['dirty'], (before, after)
+        assert after['close_requires_save'] is True, after
         assert not (self.args.output / f"never-saved-{game}.mshogi").exists()
         self.record("Cancelled first Save cannot authorize native close; Cancel preserves game", {
             "game": game, "before": before, "after": after, "guard": guard})
@@ -1176,12 +1188,13 @@ class Journey:
 
     def quit(self, synthetic=False, save=False):
         before = None if synthetic else self.native_diagnostics()
-        dirty = synthetic or before["document"]["dirty"]
+        guard_required = synthetic or before["close_requires_save"]
         evidence = self.native.quit_app()
         self.record("Native Quit request", evidence)
-        if not dirty:
+        if not guard_required:
             self.stopped()
-            self.record("Clean native Quit completes without an unsaved guard", {"dirty_before_quit": False})
+            self.record("Clean native Quit completes without an unsaved guard", {
+                "dirty_before_quit": before['document']['dirty'], "close_requires_save": False})
             return
         guard = '[aria-labelledby="synthetic-close-title"]' if synthetic else ".document-guard"
         wait(lambda: self.web.has(guard), "native quit reaches its specific application guard")

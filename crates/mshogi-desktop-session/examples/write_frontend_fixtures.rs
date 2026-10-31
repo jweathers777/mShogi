@@ -32,7 +32,9 @@ fn main() {
         ),
     ] {
         let mut c = chess_controller(fen);
-        send(&mut c, SessionOperation::Resume {});
+        if !c.shared_snapshot().status.concluded {
+            send(&mut c, SessionOperation::Resume {});
+        }
         write_snapshot(
             &directory,
             &format!("shared-chess-{name}"),

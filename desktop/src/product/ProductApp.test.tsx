@@ -145,3 +145,13 @@ it.each(fixtures)("guards newer native $game dirty-close authority after an earl
   expect(await screen.findByRole("dialog", { name: "Save Game" })).toBeTruthy();
   expect(session.finishClose).not.toHaveBeenCalled(); expect(session.file).not.toHaveBeenCalled();
 });
+
+it.each(fixtures)("keeps Save enabled in the never-saved $game native Quit guard even without canonical changes", async fixture => {
+  session.snapshot = { ...fixture, close_requires_save: true, document: { ...fixture.document, dirty: false, path: null } } as GameSnapshot;
+  session.closeRequested = true; vi.mocked(session.file).mockResolvedValue(null);
+  render(<ProductApp />);
+  expect(await screen.findByRole("dialog", { name: "Save Game" })).toBeTruthy();
+  const save = within(screen.getByRole("dialog", { name: "Save Game" })).getByRole("button", { name: "Save" }); expect((save as HTMLButtonElement).disabled).toBe(false);
+  fireEvent.click(save); expect(await screen.findByText("The game was not saved. Your game is still open.")).toBeTruthy();
+  expect(session.finishClose).not.toHaveBeenCalled(); expect(session.snapshot.document.path).toBeNull(); expect(session.snapshot.document.dirty).toBe(false);
+});

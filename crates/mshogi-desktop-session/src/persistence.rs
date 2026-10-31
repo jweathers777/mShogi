@@ -1762,7 +1762,8 @@ impl DesktopController {
     /// Stop the actual native document before host close confirmation. No other
     /// game is constructed and no result is invented.
     pub fn application_pause_for_close(&mut self) -> SharedSnapshot {
-        let dirty_before = self.shared_document().dirty;
+        let document = self.shared_document();
+        let dirty_before = document.dirty || document.path.is_none();
         self.pause_application();
         self.lifecycle
             .record_close_guard(self.shared_open_token(), dirty_before);

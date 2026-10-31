@@ -1,5 +1,4 @@
 {
-  "close_requires_save": false,
   "moves": {
     "root": {
       "label": "Starting position",
@@ -482,6 +481,7 @@
   },
   "historical": true,
   "paused": true,
+  "close_requires_save": false,
   "phase": "paused",
   "execution_purpose": null,
   "diagnostic": "Document reopened with work stopped. Saved observations are historical. Resume play explicitly.",

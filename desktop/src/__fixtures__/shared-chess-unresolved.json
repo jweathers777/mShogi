@@ -1,5 +1,4 @@
 {
-  "close_requires_save": true,
   "moves": {
     "root": {
       "label": "Starting position",
@@ -482,6 +481,7 @@
   },
   "historical": false,
   "paused": false,
+  "close_requires_save": true,
   "phase": "idle",
   "execution_purpose": null,
   "diagnostic": null,

@@ -517,3 +517,26 @@ fn finishing_concluded_chess_full_analysis_retires_work_without_reopening_game()
     );
     retired(&mut c, analysis);
 }
+
+#[test]
+fn untouched_never_saved_chess_requires_guard_without_fabricating_canonical_changes() {
+    let mut c = DesktopController::new("/unused/msh125-initial-engine".into()).unwrap();
+    c.shared.manual_engine = true;
+    let initial = peek(&c);
+    assert!(!initial.document.dirty && initial.document.path.is_none());
+    assert!(initial.close_requires_save);
+    c.lifecycle.request_close().unwrap();
+    let guarded = c.application_pause_for_close();
+    assert!(guarded.close_requires_save);
+    assert_eq!(guarded.context, initial.context);
+    assert_eq!(guarded.document.dirty, initial.document.dirty);
+    c.lifecycle.cancel_close().unwrap();
+    assert!(peek(&c).close_requires_save);
+    let p = path();
+    let id = c.queue_shared_save(p.clone()).unwrap();
+    file(&mut c, id);
+    assert!(!peek(&c).close_requires_save);
+    assert!(!peek(&c).document.dirty);
+    assert!(peek(&c).document.path.is_some());
+    std::fs::remove_file(p).unwrap();
+}

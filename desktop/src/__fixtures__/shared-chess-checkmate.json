@@ -1,5 +1,4 @@
 {
-  "close_requires_save": true,
   "moves": {
     "root": {
       "label": "Starting position",
@@ -10,11 +9,11 @@
   },
   "open_token": {
     "document": 1,
-    "version": 3,
-    "document_revision": 2
+    "version": 2,
+    "document_revision": 1
   },
   "document": {
-    "revision": 2,
+    "revision": 1,
     "dirty": true,
     "path": null,
     "settings": {
@@ -36,15 +35,15 @@
     "resource": null
   },
   "capacity": {
-    "id": 3,
+    "id": 2,
     "status": "available",
     "message": null,
     "resource": null
   },
   "token": {
     "document": 1,
-    "version": 3,
-    "revision": 7,
+    "version": 2,
+    "revision": 5,
     "selection": 2
   },
   "game": "chess",
@@ -474,7 +473,8 @@
     "nodes": 20000
   },
   "historical": false,
-  "paused": false,
+  "paused": true,
+  "close_requires_save": true,
   "phase": "idle",
   "execution_purpose": null,
   "diagnostic": null,

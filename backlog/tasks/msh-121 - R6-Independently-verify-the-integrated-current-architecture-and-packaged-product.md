@@ -7,7 +7,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-10-30T12:06:00Z'
-updated_date: '2026-10-31T17:41:00Z'
+updated_date: '2026-10-31T19:32:00Z'
 labels:
   - architecture-migration
   - planning
@@ -80,4 +80,6 @@ Fresh independent current135source audits PASS: native294checks(45rulesfixtures+
 Fresh independent native/public-API and frontend review confirms warning-prefix verifier correction: selected event8 is immutable intra-command history with live canonical9, event9 is committed warning prefix. Corrected probe checks exact selected events, canonical scope, selection identity and warning visibility;102 independent external checks PASS. No product correction required. Superseded176 Desktop campaign retains its actual outcome; corrected verifier campaign required before closure.
 
 Actual176 packaged GUI Linux/Windows27/31 each;0b169 warning-corrected campaigns28/31 each. Remaining three failures are external pending-probe assumptions: Chess Match Start offsets2/1, Shogi/Xiangqi ordered-control retained lineage rather than Chess takebacks array. Actual saved archives independently replay/open/save losslessly; focused native retired-work testPASS. Corrections plus native Load assertions independently reviewed104testsPASS. No product change. Native0b169 CI41222383083 all3PASS; original176Linux runner exit/Broken-pipe classification failure preserved underMSH112, not fixed by rerun. Final corrected GUIcampaign required; allACremainunchecked.
+
+Final3681579 actualLinux/Windows31/31semanticGUIphasePASS; native41225777111 andDesktop41225777103all3jobsPASS. Independent700Linux/599Windowsfilehash+nativecleanup+lineage/prefix/exactevidenceauditPASS. Linuxall6physicalnormal/minimumviewsPASS. Windowsnormal1180contentrendersfullybutnative1196x879frameclippedby1024x768CI desktop; physicalnormalvisualgateNOTpassed. SeparateexternalWindowsadapterfixselectsenumeratedsupported32bitmode,recordsAPIresults/geometry,andrejectsoffscreenHWNDcapture.110tests+independentsourceReviewPASS; actualWindowsrerunrequired. No productchange; MaccurrentGUIcontinuing; allACremainunchecked.
 <!-- SECTION:NOTES:END -->

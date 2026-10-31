@@ -1,0 +1,165 @@
+{
+  "tested_source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+  "documentation_checkpoint": "be718ee (documentation/evidence only; source versus document revisions remain separate)",
+  "desktop_run": 41240191481,
+  "native_run": 41240191521,
+  "platforms": {
+    "linux": {
+      "artifact_id": 13056899912,
+      "artifact_zip": "/private/tmp/msh121-linux-5a782bf.zip",
+      "artifact_zip_sha256": "a1ffaa96954f4cb56f4764f35db87d6c44aa6472ceaadf24994d2a36d75d6bbe",
+      "audit": "/private/tmp/msh121-linux-5a782bf/audit.json",
+      "raw_gui_report": "/private/tmp/msh121-linux-5a782bf/gui-evidence/gui-report.json",
+      "actual_phases": 31,
+      "required": 31,
+      "checked_file_hashes": 700,
+      "normal_minimum_images": "All12webview+desktop files SHA-identical to independently reviewed d725; /private/tmp/msh121-linux-5a-pixel-identity.json",
+      "qa_geometry_sample": {
+        "phase": "verification-standard",
+        "title": "mShogi Verification \u2014 standard (test state) \u2014 content 1180.0 \u00d7 820.0 logical \u00b7 frame 1182.0 \u00d7 845.0 logical",
+        "observed_x11_client_geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0",
+        "logical_content": {
+          "width": 1180,
+          "height": 820
+        },
+        "logical_outer_frame": {
+          "width": 1182,
+          "height": 845
+        },
+        "source": "ActualLinux5a packagedGUI report nativewindow/title+X11geometry; not inferred for another OS"
+      },
+      "environment": {
+        "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+        "python": "3.12.3",
+        "runner_image": "20261026.354.1",
+        "runner_os": "Linux",
+        "renderer_environment": {
+          "GDK_BACKEND": "x11",
+          "WEBKIT_DISABLE_COMPOSITING_MODE": "1",
+          "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+          "LIBGL_ALWAYS_SOFTWARE": null
+        }
+      },
+      "driver_provenance": "/private/tmp/msh121-linux-5a782bf/gui-driver-provenance.json",
+      "normal_manifest": "/private/tmp/msh121-linux-5a782bf/gui-packages/normal/manifest.json",
+      "verification_manifest": "/private/tmp/msh121-linux-5a782bf/gui-packages/verification/manifest.json",
+      "normal_package_smoke": "/private/tmp/msh121-linux-5a782bf/gui-packages/normal/package-smoke.json",
+      "normal_host_sha256": "a4b487089fa62bb5e07e8b79790bf94886683423245dbec7063048ff299994e1",
+      "verification_host_sha256": "932816b9702e086783579f3f4e6d3b4ff49fcce089c74e52726e0ce4815497af",
+      "real_bundled_engine_sha256": "325157b4d14f21cc39b2f1663ef7eff60f3c79d7b4981a9cefb30c36052ff559",
+      "driver_identity_report": "/private/tmp/msh121-linux-5a782bf/gui-driver-provenance.json",
+      "cleanup": "All31passedphases observeactualnativeQuitbeforeteardown; no matchinghost/engine/gate residual. ForcedcleanupnotcountedasQuit.",
+      "independent_review": "PASS700directZIPhashes/31actualphases/12imagesdirectZIPbyteidenticalreviewedd725",
+      "review_report": "/private/tmp/msh121-linux-final-independent.md"
+    },
+    "windows": {
+      "artifact_id": 13057742169,
+      "artifact_zip": "/private/tmp/msh121-windows-5a782bf.zip",
+      "artifact_zip_sha256": "f0f4f75d3e44cd4a0047d1dae1282c5696aaa0374da3458e47bc50cc6c699266",
+      "audit": "/private/tmp/msh121-windows-5a782bf/audit.json",
+      "raw_gui_report": "/private/tmp/msh121-windows-5a782bf/gui-evidence/gui-report.json",
+      "actual_phases": 31,
+      "required": 31,
+      "checked_file_hashes": 599,
+      "normal_host_sha256": "fcfed353d71a020fb4a5b150e73b1f0d5d86b0d93172ebffaa2d7396401bdc3e",
+      "verification_host_sha256": "fda0adc537646b8665f9e8c830cff25e7cd47022addda834e2eef2f5dffd2484",
+      "real_bundled_engine_sha256": "074953bc3a58d2f542199993bab0c4eb352502094468560fab876020ecea09ba",
+      "normal_manifest": "/private/tmp/msh121-windows-5a782bf/gui-packages/normal/manifest.json",
+      "verification_manifest": "/private/tmp/msh121-windows-5a782bf/gui-packages/verification/manifest.json",
+      "normal_package_smoke": "/private/tmp/msh121-windows-5a782bf/gui-packages/normal/package-smoke.json",
+      "driver_identity_report": "/private/tmp/msh121-windows-5a782bf/webview-driver.json",
+      "environment": {
+        "platform": "Windows-2022Server-10.0.20348-SP0",
+        "python": "3.12.10",
+        "runner_image": "20261026.347.1",
+        "runner_os": "Windows",
+        "renderer_environment": {
+          "GDK_BACKEND": null,
+          "WEBKIT_DISABLE_COMPOSITING_MODE": null,
+          "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+          "LIBGL_ALWAYS_SOFTWARE": null
+        }
+      },
+      "cleanup": "All31passedphases observeactualnativeQuitbeforeteardown; no matchinghost/engine/gate residual. ForcedcleanupnotcountedasQuit.",
+      "display_audit": "/private/tmp/msh121-windows-5a782bf/display-audit.json",
+      "display_result": "31size-preservedinitialplacements;243nativeownedforegroundcapturesallcontained;6normal/minphysicalviewscomplete1920x1080;TEST0/APPLY0",
+      "qa_initial_geometry_sample": {
+        "phase": "verification-standard",
+        "title": "mShogi Verification \u2014 standard (test state) \u2014 content 1180.0 \u00d7 800.0 logical \u00b7 frame 1196.0 \u00d7 859.0 logical",
+        "native_rectangle": [
+          20,
+          20,
+          1216,
+          879
+        ],
+        "logical_content": {
+          "width": 1180,
+          "height": 800
+        },
+        "logical_outer_frame": {
+          "width": 1196,
+          "height": 859
+        },
+        "scope": "ActualinitialQAstandardwindow; notnormalizednormalcomparison"
+      },
+      "normal_comparison_geometry": {
+        "logical_content": {
+          "width": 1180,
+          "height": 820
+        },
+        "native_outer_frame": {
+          "width": 1196,
+          "height": 879
+        },
+        "scope": "Actualexplicitnormaljourneyviewportnormalization; sourcegeometryobservationsandphysicalcaptureboundsindependentfromtitle"
+      },
+      "independent_review": "PASS599directZIPhashes/31actualphases/31sizepreservedplacements/243containedcaptures/fresh6physicalnormal-minviews;6WebViewsbyteidenticald725",
+      "review_report": "/private/tmp/msh121-windows-final-independent.md"
+    }
+  },
+  "native_status": "Completed success all3 exact5a jobs; no MSH112recurrence; historical176failure remains unresolved",
+  "macos_scope": "ActualMacGUI/query evidence rootowned; Macdimensionsmustbesupportedbyitsownnativequeries, notLinuxinference",
+  "prior_accepted_consumer_gui_source": "d725f255339b639cbc7b50bbd95bbbf3344dc459; independentcurrent atthatrevision31/31bothOS",
+  "retained_known_failure": "MSH112 original176 Linux faultclassification unresolved; current pass will not implyfix",
+  "desktop_status": "Completed success all3 exact5a jobs",
+  "ci_urls": {
+    "desktop": "https://github.com/jweathers777/mShogi/actions/runs/41240191481",
+    "native": "https://github.com/jweathers777/mShogi/actions/runs/41240191521"
+  },
+  "raw_ci_status_files": [
+    "/private/tmp/msh121-desktop-5a-status.json",
+    "/private/tmp/msh121-native-5a-status.json"
+  ],
+  "raw_ci_logs": {
+    "desktop-windows": {
+      "original": "/private/tmp/msh121-5a-desktop-windows.log",
+      "ansi_normalized": "/private/tmp/msh121-5a-desktop-windows.txt"
+    },
+    "desktop-linux": {
+      "original": "/private/tmp/msh121-5a-desktop-linux.log",
+      "ansi_normalized": "/private/tmp/msh121-5a-desktop-linux.txt"
+    },
+    "desktop-macos": {
+      "original": "/private/tmp/msh121-5a-desktop-macos.log",
+      "ansi_normalized": "/private/tmp/msh121-5a-desktop-macos.txt"
+    },
+    "native-windows": {
+      "original": "/private/tmp/msh121-5a-native-windows.log",
+      "ansi_normalized": "/private/tmp/msh121-5a-native-windows.txt"
+    },
+    "native-linux": {
+      "original": "/private/tmp/msh121-5a-native-linux.log",
+      "ansi_normalized": "/private/tmp/msh121-5a-native-linux.txt"
+    },
+    "native-macos": {
+      "original": "/private/tmp/msh121-5a-native-macos.log",
+      "ansi_normalized": "/private/tmp/msh121-5a-native-macos.txt"
+    }
+  },
+  "actual_focused_ci_checks": {
+    "linux": "13featureenabledhosttests +114externalGUIboundarytestsPASS",
+    "windows": "13featureenabledhosttests +4actualgateprocesscleanupchecks +8displayadmissionplacementtestsPASS",
+    "macos": "13featureenabledhosttests +11fixedidentityhelpertestsPASS; MacGUIevidencerootowned, notinferredfromCI"
+  },
+  "independent_disposition": "Current5aLinux+WindowsartifactreviewPASS; priorindependentsource/productsemanticassessmentreusedforunchangedcontracts; QAselector/titlemetadataindependentlyreviewed. RootactualMacreportseparate."
+}

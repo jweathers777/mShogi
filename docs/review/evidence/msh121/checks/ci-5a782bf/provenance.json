@@ -1,0 +1,62 @@
+[
+  {
+    "file": "desktop-linux.log.gz",
+    "source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+    "run": 41240191481,
+    "platform": "linux",
+    "result": "success",
+    "original_bytes": 3371062,
+    "original_sha256": "a8e72fad5f9ca3738cfff5bf8f513fa2fd1222418822bcc397900040d916609f",
+    "storage": "exact raw GitHub job log bytes gzip-preserved"
+  },
+  {
+    "file": "desktop-windows.log.gz",
+    "source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+    "run": 41240191481,
+    "platform": "windows",
+    "result": "success",
+    "original_bytes": 3255212,
+    "original_sha256": "2bcf489e4ac405cfbc113192794754a55c2b1f65b9a86a2c11dbe9dd102b0545",
+    "storage": "exact raw GitHub job log bytes gzip-preserved"
+  },
+  {
+    "file": "desktop-macos.log.gz",
+    "source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+    "run": 41240191481,
+    "platform": "macos",
+    "result": "success",
+    "original_bytes": 160538,
+    "original_sha256": "d2403a5be80ab2c57c2de725b03aa8248c0f045f4ce4802958d3e0ee6bf8a465",
+    "storage": "exact raw GitHub job log bytes gzip-preserved"
+  },
+  {
+    "file": "native-linux.log.gz",
+    "source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+    "run": 41240191521,
+    "platform": "linux",
+    "result": "success",
+    "original_bytes": 170105,
+    "original_sha256": "bc22ae09b792ae11176fdcb848a21de4d35a33639733fcc5680bf3f316990b3a",
+    "storage": "exact raw GitHub job log bytes gzip-preserved"
+  },
+  {
+    "file": "native-windows.log.gz",
+    "source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+    "run": 41240191521,
+    "platform": "windows",
+    "result": "success",
+    "original_bytes": 178124,
+    "original_sha256": "930d90530d0c0faa92d654a1a2ac6b512f18fed18de6327137b195c5d10b9258",
+    "storage": "exact raw GitHub job log bytes gzip-preserved"
+  },
+  {
+    "file": "native-macos.log.gz",
+    "source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+    "run": 41240191521,
+    "platform": "macos",
+    "result": "success",
+    "original_bytes": 171150,
+    "original_sha256": "5748b1c189dd0a69c23cf8285d0c18dec5ba03f5f3ae795ed2f27d3e009b5bf0",
+    "storage": "exact raw GitHub job log bytes gzip-preserved"
+  }
+]

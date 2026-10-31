@@ -5,9 +5,11 @@
 MSH-116–119 and122 are Done; their evidence remains historical. MSH-120/R5
 is Done; its [current source and package evidence](review/native-choice-controller-120.md)
 records the surviving interaction owner, independent review, actual packaged
-interaction and precise native/package CI results. MSH-123/124/125 are also Done. MSH-121/R6 is active under root Codex in the
-primary codex/rewrite checkout, with all prerequisites satisfied and criteria
-unchecked until current-source independent and three-platform GUI acceptance. The owner-approved [post-R4 UX contract](desktop/post-r4-ux.md)
+interaction and precise native/package CI results. MSH-123/124/125 are also Done. MSH-121/R6 has now independently accepted the
+integrated current source and actual three-game packaged journeys on all three
+systems; the [final review](review/architecture-acceptance-121.md) preserves exact
+revisions, failures, methods and platform limits. The MSH-121 record identifies
+normal completion/integration in the primary codex/rewrite checkout. The owner-approved [post-R4 UX contract](desktop/post-r4-ux.md)
 adds three bounded product tasks without reopening119 or expanding R5:
 
 | Task | Complete direct prerequisites | Scope |

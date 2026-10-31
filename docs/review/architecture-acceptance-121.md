@@ -1,6 +1,7 @@
 # MSH-121 / R6 integrated architecture acceptance
 
-Status: **In Review — final source CI and acceptance bookkeeping pending**.
+Status: **Accepted — all nine criteria supported.** Final completion and
+integrated revisions are recorded in MSH-121.
 Root Codex owns integration on `codex/rewrite`; startup was clean/aligned at
 `13510da9e24b69a340444f272668ecb59478ddbb`. All eight prerequisites
 116–120/123–125 are Done. M4/46/47 remain open; no subsequent task is started.
@@ -38,9 +39,9 @@ these are not an aggregation of old completion claims:
 | 2 deletion/callers/packages | PASS negative inventory below and independent reports: startup/host registrations/exports/imports/examples/tests/QA/builders inspected. Actual normal package smoke scans instrumentation and retired endpoints. No obsolete executable bridge is retained to satisfy old tests. |
 | 3 native semantics | PASS current independently expected native fixtures/transcripts, actual child queries, exact-prefix/current-envelope/lineage checks and game-specific GUI capabilities. Chess Full cooperative proof/Unknown differs from forced win; Shogi advice differs from declaration; Xiangqi warnings/count claims and natural-win exact meanings retain native authority. |
 | 4 safety/capacity | PASS current native session/workflow/admission tests, real pending cancellation/replacement/Take back, retained abandoned play controls, authoritative Save/Load, fresh stopped reopen and stale identity rejection. Actual byte/event/control/replay/combined ordinary+exact observation bounds, 256→257, and reserved stop/close/identity headroom are tested. Failed or stale I/O cannot install/clean newer work. |
-| 5 actual three-platform GUI | PASS required consumer journeys: Windows/Linux each31 actual installed/packaged phases at `d725f25`; macOS actual normal and separate QA interactions at176/801, with final geometry at5a. No macOS GUI pass is inferred from CI packaging; no remote GUI is attributed to a reviewer who only inspected artifacts. Final CI/current package results are separately indexed. |
+| 5 actual three-platform GUI | PASS required consumer journeys: Windows/Linux each31 actual installed/packaged phases at final `5a782bf` (prior d725 independently preserved); macOS actual normal and separate QA interactions at176/801, with final geometry at5a. No macOS GUI pass is inferred from CI packaging; no remote GUI is attributed to a reviewer who only inspected artifacts. Final CI/current package results are separately indexed. |
 | 6 visual/accessibility/synthetic | PASS independent six normal/minimum cross-game comparisons; complete boards/player/hands/footer, stable shell/order and accessible controls. Actual pointer/keyboard/focus/native-dialog transcripts supplement pixels. Windows physical display/containment correction was actually executed. Synthetic routes remain explicitly invented; normal instrumentation exclusion is separate evidence. No personally operated VoiceOver certification is claimed. |
-| 7 review/current source/integration | Independent findings resolved; exact tested source/package/environment and failed campaigns retained. Current final native/Desktop CI and final integration commit remain the bookkeeping gate before Done. MSH-112 is unresolved and not waived by later green CI. |
+| 7 review/current source/integration | PASS independent findings resolved; final5a native/Desktop CI all three jobs each passed, current packages audited, exact evidence/failures preserved. Normal documentation/task integration and push complete the handoff; MSH-112 remains unresolved. |
 | 8 final architecture | PASS actual consumers and deletion audit; native enum specializations and labeled QA-only synthetic ownership are intentional, not split product applications. Historical evidence is preserved without old executable readers/transports. |
 | 9 approved123/124/125 | PASS source/tests and actual product journeys: native standard two-column Moves/nonmove prefixes/geometry cues; supported-only dropdown/native side buttons; Analysis→Game Actions→Moves; support/license disclosure; first/subsequent Save/Load and intentional replacement/cancel; direct native Resign; concise dirty Quit; one-step ordinary browse Return versus stopped Resume/Retry. |
 
@@ -116,7 +117,8 @@ native/console functionality. Ordinary consumers remain sound-fast-only.
 
 ## Packaged application evidence
 
-[Remote index](evidence/msh121/platforms/d725-index.json) records exact CI/artifact
+[Final source remote index](evidence/msh121/platforms/5a-index.json) and
+[prior accepted index](evidence/msh121/platforms/d725-index.json) record exact CI/artifact
 IDs, package/host/engine hashes, environments, cleanup and archive hashes.
 Exact original reports are gzip-preserved with original SHA256 and selected
 normal/minimum native captures, package manifests and audits. Raw installers
@@ -128,8 +130,8 @@ compressed alongside with SHA256 in
 
 | Platform | Actual execution established |
 | --- | --- |
-| Windows2022Server, WebView2/driver versions in artifact | `d725f25`, Desktop41237789041:31/31 actual installed normal/QA phases;599 hashes verified,31 native initial placements size-preserved,243 native captures contained. Enumerated1920×1080 mode, TEST0/APPLY0, workarea1920×1040. Six normal/minimum physical views independently reviewed. |
-| Ubuntu24.04, WebKit/X11/Openbox | Same source/run:31/31 actual installed normal/separate packaged QA phases;700 hashes verified, actual native cleanup and six normal/minimum views. GDK x11 and WEBKIT_DISABLE_COMPOSITING_MODE=1 are recorded environment qualifications, not a general hardware-driver fix. |
+| Windows2022Server, WebView2/driver versions in artifact | `5a782bf`, Desktop41240191481:31/31 actual installed normal/QA phases;599 hashes verified,31 native initial placements size-preserved,243 native captures contained. Enumerated1920×1080 mode, TEST0/APPLY0, workarea1920×1040. Six normal/minimum physical views independently reviewed. |
+| Ubuntu24.04, WebKit/X11/Openbox | Same final5a source/run:31/31 actual installed normal/separate packaged QA phases;700 hashes verified, actual native cleanup and six normal/minimum views. GDK x11 and WEBKIT_DISABLE_COMPOSITING_MODE=1 are recorded environment qualifications, not a general hardware-driver fix. |
 | Local macOS27.0.1 arm64 | Root CUA-operated normal176 package for all3 games; separate QA176 native special/history/Full/exact/cancel cases, fixed QA801 claim/recovery, final5a six native geometry comparisons. [Campaign summary](evidence/msh121/macos/campaign-summary.json), actual action/AX log, screenshots and package/runtime manifests distinguish each. |
 
 Remote31 phases include normal all3 play, native special choices, current and
@@ -189,8 +191,8 @@ remain historical and qualified. Passing this campaign does not erase them.
 
 ## macOS approval investigation and durable maintenance
 
-The author unnecessarily created20 bundles/IDs for fixture scenarios despite
-identical QA machine code. Actual saved Computer Use approvals contained exact
+The audit found20 scratch bundles/IDs: normal, base QA and18 unnecessary
+per-fixture clones. The19 QA bundles shared identical function code. Actual saved Computer Use approvals contained exact
 approvedBundleIdentifiers for individual clones, not blanket mShogi approval.
 Independent code-signing audit found ad-hoc/no TeamIdentifier signatures and
 hash-specific designated requirements; original base linker signatures did not
@@ -223,10 +225,25 @@ helper, and the native reviewer independently tested both (11 helper tests,
 
 ## Final review, CI and handoff
 
-Current final native/Desktop CI and overall acceptance disposition are pending
-completion of the exact-source runs and final independent report review. Source
-checks and passed d725 campaigns above remain valid evidence for unchanged
-production behavior, not a fabricated pass for a later package.
+Final exact-source [native CI](https://github.com/jweathers777/mShogi/actions/runs/41240191521)
+and [desktop CI](https://github.com/jweathers777/mShogi/actions/runs/41240191481)
+at5a782bf passed all three jobs each. Root independently queried their completed
+conclusions/head SHA. Windows/Linux actual final campaigns passed31/31 each;
+independent reviews verified599/700 ZIP member hashes and Windows31 placements/
+243 contained captures. Six fresh Windows physical comparisons pass; Linux12
+comparison files are byte-identical to the separately reviewed prior views.
+Normal-package smoke explicitly confirms instrumentation exclusion. macOS CI
+establishes packaging,13 QA host tests and11 helper tests; actual local GUI
+remains separately sourced176/801/5a. Exact original job logs are retained under
+[CI evidence](evidence/msh121/checks/ci-5a782bf/provenance.json).
+
+The overall independent reviewer preserved the original conditional assessment
+and reconciled the actual final CI/artifacts. No material finding remains.
+Source5a782bf and evidence checkpointbe718ee are actual integrated revisions;
+subsequent finalization changes documentation/task/evidence only. No further
+expensive correctness, build or GUI campaign is required by those nonbehavior
+changes. Their source difference, Backlog doctor, evidence hashes and diff check
+are the proportionate final checks; normal push remains the established workflow.
 
 No competitive-strength claim, timed desktop delivery, future variant delivery,
 notarization or full screen-reader certification is made. MSH-112 remains open;
@@ -234,3 +251,10 @@ MSH-46/47/M4 and later architecture/game/M5 tasks are not closed or started here
 Normal macOS launch remains the primary checkout's `desktop/src-tauri/target/release/bundle/macos/mShogi.app`;
 build with `npm --prefix desktop run desktop:build -- --bundles app` using the
 recorded Node/Rust versions. QA preparation does not replace the normal app.
+
+The repository has no dependency-satisfied task currently marked Ready. Existing
+unblocked To Do records include Tori profile MSH-81 (the next game planning
+default), Chu/Tenjiku profile research82/83, the separately owned runner issue112
+and future M5 infrastructure48. None is activated by this acceptance. The
+primary checkout stays on codex/rewrite; unrelated worktrees remain untouched,
+and only the fixed reusable application slots have an ongoing launch purpose.

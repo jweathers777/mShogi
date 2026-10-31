@@ -1,0 +1,19 @@
+{
+  "json_parse_files": 73,
+  "raw_original_normalized_view_pairs": 35,
+  "current_gui_reports": {
+    "windows": {
+      "phases": 31,
+      "exact_original_sha256": "0b48cf7cca9c5d1b88dc1fd0ad76bb30089c78c67a5cacf80cf644d39c2138c9"
+    },
+    "linux": {
+      "phases": 31,
+      "exact_original_sha256": "05edbbc2e6ee3839af81399e351cbfb9e6d50afdde66d105dca4732c0a77005c"
+    }
+  },
+  "exact_raw_final_ci_job_logs": 6,
+  "all8_direct_prerequisites_done": true,
+  "at": "2026-10-31T21:09:55.850766+00:00",
+  "reviewed_source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+  "result": "passed"
+}

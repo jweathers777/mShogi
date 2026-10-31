@@ -1,0 +1,8 @@
+{
+  "original_path": "gui-evidence/gui-report.json",
+  "original_bytes": 7682627,
+  "original_sha256": "0b48cf7cca9c5d1b88dc1fd0ad76bb30089c78c67a5cacf80cf644d39c2138c9",
+  "source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+  "actual_phases": 31,
+  "result": "all passed; exact original UTF-8 report bytes gzip-preserved"
+}

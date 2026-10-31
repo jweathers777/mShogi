@@ -1,0 +1,2478 @@
+{
+  "source": "5a782bf78c19ebb31d89eed2c141c6715650f452",
+  "phases": 31,
+  "passed": 31,
+  "preflights": [
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T20:56:42.938526+00:00",
+      "elapsed_ms": 31,
+      "before": {
+        "width": 1024,
+        "height": 768,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1024,
+          768
+        ],
+        "work_area": [
+          0,
+          0,
+          1024,
+          728
+        ]
+      },
+      "supported_modes": [
+        {
+          "width": 640,
+          "height": 480,
+          "bits_per_pixel": 32,
+          "frequency": 64
+        },
+        {
+          "width": 800,
+          "height": 600,
+          "bits_per_pixel": 32,
+          "frequency": 64
+        },
+        {
+          "width": 1024,
+          "height": 768,
+          "bits_per_pixel": 32,
+          "frequency": 64
+        },
+        {
+          "width": 1152,
+          "height": 864,
+          "bits_per_pixel": 32,
+          "frequency": 64
+        },
+        {
+          "width": 1280,
+          "height": 720,
+          "bits_per_pixel": 32,
+          "frequency": 64
+        },
+        {
+          "width": 1280,
+          "height": 800,
+          "bits_per_pixel": 32,
+          "frequency": 64
+        },
+        {
+          "width": 1280,
+          "height": 1024,
+          "bits_per_pixel": 32,
+          "frequency": 64
+        },
+        {
+          "width": 1366,
+          "height": 768,
+          "bits_per_pixel": 32,
+          "frequency": 64
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "bits_per_pixel": 32,
+          "frequency": 64
+        },
+        {
+          "width": 1600,
+          "height": 900,
+          "bits_per_pixel": 32,
+          "frequency": 64
+        },
+        {
+          "width": 1600,
+          "height": 1200,
+          "bits_per_pixel": 32,
+          "frequency": 64
+        },
+        {
+          "width": 1680,
+          "height": 1050,
+          "bits_per_pixel": 32,
+          "frequency": 64
+        },
+        {
+          "width": 1920,
+          "height": 1080,
+          "bits_per_pixel": 32,
+          "frequency": 64
+        }
+      ],
+      "attempts": [
+        {
+          "width": 1920,
+          "height": 1080,
+          "bits_per_pixel": 32,
+          "frequency": 64,
+          "test_result": 0,
+          "apply_result": 0
+        }
+      ],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "enumeration_end": {
+        "index": 13,
+        "diagnostic": "error(6, 'EnumDisplaySettings', 'The handle is invalid.')"
+      },
+      "action": "supported_mode_applied"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T20:57:30.111079+00:00",
+      "elapsed_ms": 0,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T20:58:22.762461+00:00",
+      "elapsed_ms": 16,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T20:58:40.602558+00:00",
+      "elapsed_ms": 0,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T20:59:35.025585+00:00",
+      "elapsed_ms": 0,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T20:59:41.281738+00:00",
+      "elapsed_ms": 16,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T20:59:46.010278+00:00",
+      "elapsed_ms": 16,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T20:59:50.059263+00:00",
+      "elapsed_ms": 16,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T20:59:54.267262+00:00",
+      "elapsed_ms": 0,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:00:00.109345+00:00",
+      "elapsed_ms": 0,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:00:12.344594+00:00",
+      "elapsed_ms": 0,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:00:24.967724+00:00",
+      "elapsed_ms": 15,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:00:35.127566+00:00",
+      "elapsed_ms": 0,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:00:53.752594+00:00",
+      "elapsed_ms": 15,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:01:12.609104+00:00",
+      "elapsed_ms": 0,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:01:32.203169+00:00",
+      "elapsed_ms": 16,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:01:39.368239+00:00",
+      "elapsed_ms": 0,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:01:44.837593+00:00",
+      "elapsed_ms": 0,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:01:50.042408+00:00",
+      "elapsed_ms": 0,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:02:03.169356+00:00",
+      "elapsed_ms": 0,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:02:10.029264+00:00",
+      "elapsed_ms": 0,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:02:23.431217+00:00",
+      "elapsed_ms": 0,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:02:36.125325+00:00",
+      "elapsed_ms": 0,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:02:46.482870+00:00",
+      "elapsed_ms": 16,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:02:59.201755+00:00",
+      "elapsed_ms": 0,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:03:09.953280+00:00",
+      "elapsed_ms": 0,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:03:20.546241+00:00",
+      "elapsed_ms": 0,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:03:31.377543+00:00",
+      "elapsed_ms": 15,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:03:42.054721+00:00",
+      "elapsed_ms": 15,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:04:01.871419+00:00",
+      "elapsed_ms": 0,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    },
+    {
+      "event": "interactive_display_preflight",
+      "utc": "2026-10-31T21:04:13.436381+00:00",
+      "elapsed_ms": 0,
+      "before": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "supported_modes": [],
+      "attempts": [],
+      "after": {
+        "width": 1920,
+        "height": 1080,
+        "bits_per_pixel": 32,
+        "frequency": 64,
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "action": "existing_sufficient_desktop"
+    }
+  ],
+  "placements": [
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T20:56:51.269445+00:00",
+      "elapsed_ms": 8359,
+      "pid": 6352,
+      "hwnd": 131588,
+      "before": [
+        52,
+        52,
+        1248,
+        911
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T20:57:31.507418+00:00",
+      "elapsed_ms": 1390,
+      "pid": 4440,
+      "hwnd": 131652,
+      "before": [
+        182,
+        182,
+        1378,
+        1041
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T20:58:23.975831+00:00",
+      "elapsed_ms": 1219,
+      "pid": 7372,
+      "hwnd": 262704,
+      "before": [
+        78,
+        78,
+        1274,
+        937
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T20:58:41.850540+00:00",
+      "elapsed_ms": 1250,
+      "pid": 2460,
+      "hwnd": 262706,
+      "before": [
+        208,
+        208,
+        1404,
+        1067
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T20:59:36.255767+00:00",
+      "elapsed_ms": 1218,
+      "pid": 1228,
+      "hwnd": 590450,
+      "before": [
+        104,
+        104,
+        1300,
+        963
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T20:59:42.537757+00:00",
+      "elapsed_ms": 1266,
+      "pid": 1432,
+      "hwnd": 393822,
+      "before": [
+        234,
+        221,
+        1430,
+        1080
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T20:59:47.224656+00:00",
+      "elapsed_ms": 1219,
+      "pid": 2488,
+      "hwnd": 524708,
+      "before": [
+        130,
+        130,
+        1326,
+        989
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T20:59:51.287202+00:00",
+      "elapsed_ms": 1235,
+      "pid": 2324,
+      "hwnd": 655930,
+      "before": [
+        26,
+        26,
+        1222,
+        885
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T20:59:55.459406+00:00",
+      "elapsed_ms": 1188,
+      "pid": 5716,
+      "hwnd": 2359752,
+      "before": [
+        156,
+        156,
+        1352,
+        1015
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:00:01.880024+00:00",
+      "elapsed_ms": 1765,
+      "pid": 3300,
+      "hwnd": 852380,
+      "before": [
+        26,
+        26,
+        1222,
+        885
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:00:15.833236+00:00",
+      "elapsed_ms": 3485,
+      "pid": 3400,
+      "hwnd": 1638480,
+      "before": [
+        156,
+        156,
+        1352,
+        1015
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:00:26.209341+00:00",
+      "elapsed_ms": 1250,
+      "pid": 3636,
+      "hwnd": 1180120,
+      "before": [
+        52,
+        52,
+        1248,
+        911
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:00:36.677628+00:00",
+      "elapsed_ms": 1547,
+      "pid": 6208,
+      "hwnd": 1114738,
+      "before": [
+        182,
+        182,
+        1378,
+        1041
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:00:55.209322+00:00",
+      "elapsed_ms": 1469,
+      "pid": 2112,
+      "hwnd": 1245604,
+      "before": [
+        78,
+        78,
+        1274,
+        937
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:01:14.084604+00:00",
+      "elapsed_ms": 1469,
+      "pid": 6104,
+      "hwnd": 1966160,
+      "before": [
+        208,
+        208,
+        1404,
+        1067
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:01:33.380371+00:00",
+      "elapsed_ms": 1187,
+      "pid": 1684,
+      "hwnd": 1507800,
+      "before": [
+        104,
+        104,
+        1300,
+        963
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:01:40.553087+00:00",
+      "elapsed_ms": 1187,
+      "pid": 3400,
+      "hwnd": 1442362,
+      "before": [
+        234,
+        221,
+        1430,
+        1080
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:01:46.115130+00:00",
+      "elapsed_ms": 1266,
+      "pid": 6544,
+      "hwnd": 1245766,
+      "before": [
+        130,
+        130,
+        1326,
+        989
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:01:51.271721+00:00",
+      "elapsed_ms": 1219,
+      "pid": 5192,
+      "hwnd": 2293840,
+      "before": [
+        26,
+        26,
+        1222,
+        885
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:02:04.395223+00:00",
+      "elapsed_ms": 1219,
+      "pid": 8056,
+      "hwnd": 1835480,
+      "before": [
+        156,
+        156,
+        1352,
+        1015
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:02:12.967223+00:00",
+      "elapsed_ms": 2937,
+      "pid": 2804,
+      "hwnd": 1573436,
+      "before": [
+        52,
+        52,
+        1248,
+        911
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:02:24.708721+00:00",
+      "elapsed_ms": 1266,
+      "pid": 2472,
+      "hwnd": 1770072,
+      "before": [
+        182,
+        182,
+        1378,
+        1041
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:02:37.303131+00:00",
+      "elapsed_ms": 1172,
+      "pid": 4336,
+      "hwnd": 1638990,
+      "before": [
+        78,
+        78,
+        1274,
+        937
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:02:47.708585+00:00",
+      "elapsed_ms": 1235,
+      "pid": 5264,
+      "hwnd": 3473864,
+      "before": [
+        208,
+        208,
+        1404,
+        1067
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:03:00.442963+00:00",
+      "elapsed_ms": 1234,
+      "pid": 1396,
+      "hwnd": 2752864,
+      "before": [
+        104,
+        104,
+        1300,
+        963
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:03:11.130225+00:00",
+      "elapsed_ms": 1171,
+      "pid": 7376,
+      "hwnd": 2228794,
+      "before": [
+        234,
+        221,
+        1430,
+        1080
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:03:21.806744+00:00",
+      "elapsed_ms": 1266,
+      "pid": 7476,
+      "hwnd": 2097738,
+      "before": [
+        130,
+        130,
+        1326,
+        989
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:03:32.599096+00:00",
+      "elapsed_ms": 1234,
+      "pid": 3984,
+      "hwnd": 3080290,
+      "before": [
+        26,
+        26,
+        1222,
+        885
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:03:45.959598+00:00",
+      "elapsed_ms": 3922,
+      "pid": 7708,
+      "hwnd": 3146080,
+      "before": [
+        156,
+        156,
+        1352,
+        1015
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:04:03.067434+00:00",
+      "elapsed_ms": 1188,
+      "pid": 4540,
+      "hwnd": 2294336,
+      "before": [
+        52,
+        52,
+        1248,
+        911
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    },
+    {
+      "event": "native_initial_placement",
+      "utc": "2026-10-31T21:04:14.691601+00:00",
+      "elapsed_ms": 1250,
+      "pid": 8116,
+      "hwnd": 2621852,
+      "before": [
+        182,
+        182,
+        1378,
+        1041
+      ],
+      "after": [
+        20,
+        20,
+        1216,
+        879
+      ],
+      "work_area": [
+        0,
+        0,
+        1920,
+        1040
+      ],
+      "size_preserved": true
+    }
+  ],
+  "validated_native_captures": 243,
+  "normal_minimum_views": [
+    {
+      "path": "/private/tmp/msh121-windows-5a782bf/gui-evidence/normal-initial-chess-normal-size.desktop.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "geometry": {
+        "target_rectangle": [
+          20,
+          20,
+          1216,
+          899
+        ],
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "foreground": {
+        "hwnd": 131588,
+        "pid": 6352,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "mShogi",
+        "class": "Tauri Window"
+      }
+    },
+    {
+      "path": "/private/tmp/msh121-windows-5a782bf/gui-evidence/normal-initial-chess-minimum-size.desktop.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "geometry": {
+        "target_rectangle": [
+          20,
+          20,
+          796,
+          729
+        ],
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "foreground": {
+        "hwnd": 131588,
+        "pid": 6352,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "mShogi",
+        "class": "Tauri Window"
+      }
+    },
+    {
+      "path": "/private/tmp/msh121-windows-5a782bf/gui-evidence/normal-shogi-initial-sente.desktop.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "geometry": {
+        "target_rectangle": [
+          20,
+          20,
+          1216,
+          899
+        ],
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "foreground": {
+        "hwnd": 131652,
+        "pid": 4440,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "mShogi",
+        "class": "Tauri Window"
+      }
+    },
+    {
+      "path": "/private/tmp/msh121-windows-5a782bf/gui-evidence/normal-shogi-minimum-size.desktop.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "geometry": {
+        "target_rectangle": [
+          20,
+          20,
+          796,
+          729
+        ],
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "foreground": {
+        "hwnd": 131652,
+        "pid": 4440,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "mShogi",
+        "class": "Tauri Window"
+      }
+    },
+    {
+      "path": "/private/tmp/msh121-windows-5a782bf/gui-evidence/normal-xiangqi-initial-red-normal-size.desktop.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "geometry": {
+        "target_rectangle": [
+          20,
+          20,
+          1216,
+          899
+        ],
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "foreground": {
+        "hwnd": 262706,
+        "pid": 2460,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "mShogi",
+        "class": "Tauri Window"
+      }
+    },
+    {
+      "path": "/private/tmp/msh121-windows-5a782bf/gui-evidence/normal-xiangqi-initial-red-minimum-size.desktop.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "geometry": {
+        "target_rectangle": [
+          20,
+          20,
+          796,
+          729
+        ],
+        "monitor": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "work_area": [
+          0,
+          0,
+          1920,
+          1040
+        ]
+      },
+      "foreground": {
+        "hwnd": 262706,
+        "pid": 2460,
+        "image": "D:\\a\\_temp\\mshogi-package-smoke\\mshogi-desktop.exe",
+        "title": "mShogi",
+        "class": "Tauri Window"
+      }
+    }
+  ]
+}

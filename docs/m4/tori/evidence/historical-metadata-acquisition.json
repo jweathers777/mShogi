@@ -1,0 +1,29 @@
+[
+  {
+    "file": "/private/tmp/msh81-historical/tohoku-use-of-materials.html",
+    "url": "https://touda.tohoku.ac.jp/collection/database/library/use_of_materials",
+    "retrieved_utc": "2026-10-31T21:34:34.836986+00:00",
+    "curl_exit": 0,
+    "http_status": "200",
+    "stderr": "",
+    "sha256": "f33270232adacad3b09eedb3876ee92856c5089080d042f8b65aef625a971204"
+  },
+  {
+    "file": "/private/tmp/msh81-historical/kagawa-volume-513862.html",
+    "url": "https://opac.lib.kagawa-u.ac.jp/opac/volume/513862",
+    "retrieved_utc": "2026-10-31T21:34:37.155375+00:00",
+    "curl_exit": 0,
+    "http_status": "200",
+    "stderr": "",
+    "sha256": "9d3c250f05d4f2fb12cdd1353b1f258c1423d214e5323a726408fa44b8e68f9c"
+  },
+  {
+    "file": "/private/tmp/msh81-historical/kagawa-digital-search-tori.html",
+    "url": "https://digarc.kagawa-u.ac.jp/search?kywd=%E7%A6%BD&title=&alt_title=&creator=&publish_name=&date=&photocopy=&resource=All&asset_num=",
+    "retrieved_utc": "2026-10-31T21:34:38.302519+00:00",
+    "curl_exit": 22,
+    "http_status": "403",
+    "stderr": "curl: (22) The requested URL returned error: 403\n",
+    "sha256": null
+  }
+]

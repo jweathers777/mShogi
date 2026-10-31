@@ -1,0 +1,90 @@
+{
+  "retrieved_date": "2026-10-31",
+  "environment": "macOS; curl; Python3; Codex view_image",
+  "primary_facsimile": "https://touda.tohoku.ac.jp/portal/item/10010000019229",
+  "attribution": "『禽象戲圖解』（東北大学附属図書館所蔵） 請求記号5/17701/1",
+  "image_license": "CC BY 4.0; per item badge and institutional use conditions",
+  "metadata_license": "CC0",
+  "all_images_visually_inspected": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "rules_and_diagrams_read": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "author_title_date_read": [
+    1,
+    3,
+    9,
+    10
+  ],
+  "appendix_no_full_translation": [
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "image_manifest": "acquisition-images.json",
+  "other_files": [
+    {
+      "file": "acquisition-images.json",
+      "bytes": 5364,
+      "sha256": "bf7850a1ce102ef1a1cf31b4f4ff4f555f7fa850a753c895a5a1ef0c1897b5b1"
+    },
+    {
+      "file": "acquisition-metadata-additional.json",
+      "bytes": 1146,
+      "sha256": "b5c40841343258bc867f51a7ca606bc8fcb5478c22c3f0f82fc8c1d234be5591"
+    },
+    {
+      "file": "cinii-BB11784195.html",
+      "bytes": 51100,
+      "sha256": "3d5b87b153074881fd08b58ec5df6e8460a71a5cfb4d2edb5775b89e28800efc"
+    },
+    {
+      "file": "kagawa-art-catalogue.html",
+      "bytes": 66765,
+      "sha256": "e98698b72ca6e8c7e11687dc0b491c006f3ef8782ec48a7504adb84becc8845e"
+    },
+    {
+      "file": "kagawa-volume-513862.html",
+      "bytes": 49477,
+      "sha256": "9d3c250f05d4f2fb12cdd1353b1f258c1423d214e5323a726408fa44b8e68f9c"
+    },
+    {
+      "file": "tohoku-10010000019229-manifest.json",
+      "bytes": 38811,
+      "sha256": "4d10d6738db42c1d88ded282b77ccb53433544095eef394844b24c14e54b0716"
+    },
+    {
+      "file": "tohoku-10010000019229-record.html",
+      "bytes": 28968,
+      "sha256": "a2754dce1eba2d5430335c316e0293831f366f4af7b6355c88ead2b5e0327b69"
+    },
+    {
+      "file": "tohoku-use-of-materials.html",
+      "bytes": 24249,
+      "sha256": "f33270232adacad3b09eedb3876ee92856c5089080d042f8b65aef625a971204"
+    }
+  ],
+  "excluded_incomplete_conversion_file": "kagawa-art-catalogue-utf8.html"
+}

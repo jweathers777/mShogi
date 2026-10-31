@@ -1,0 +1,194 @@
+{
+  "schema": "msh81-source-manifest-v1",
+  "recorded_at_utc": "2026-10-31T21:33:43.804762+00:00",
+  "worker": "tori_modern_sources",
+  "sole_integrator": "root @codex on codex/rewrite",
+  "report": "/private/tmp/msh81-modern-report.md",
+  "permissions": "No institution contact, purchases, profile adoption or repository mutation. Public retrieval is not redistribution permission.",
+  "files": [
+    {
+      "path": "/private/tmp/msh81-modern/hamburg-p1.txt",
+      "bytes": 5766,
+      "sha256": "ec82f71b7f4ba7d0caed46ed96a6e16129db91dccf53bbccbb1373451f08e428",
+      "kind": "research_derivative"
+    },
+    {
+      "path": "/private/tmp/msh81-modern/hamburg-p2.txt",
+      "bytes": 1853,
+      "sha256": "2a67f1d4ca9cb13897c67531686a37a8d28a8324a6ab0ccfc4a46ac1ee73b120",
+      "kind": "research_derivative"
+    },
+    {
+      "path": "/private/tmp/msh81-modern/hamburg-page-1.png",
+      "bytes": 592292,
+      "sha256": "4818c9cdbde69a52a72a991b1a960a0d3d05201de181a72bd8ccf9d7f8fe268f",
+      "kind": "research_derivative"
+    },
+    {
+      "path": "/private/tmp/msh81-modern/hamburg-page-2.png",
+      "bytes": 348639,
+      "sha256": "0b571556354193d3787523f615f6ed2dc304fb27e660bbc81ee7ee821e8262a2",
+      "kind": "research_derivative"
+    },
+    {
+      "path": "/private/tmp/msh81-modern/hamburg-post.html",
+      "bytes": 110050,
+      "sha256": "f6308363827e94f9a1136a578e5181297113c222bc6f93499e1d553c94dc38e6",
+      "kind": "public_source",
+      "url": "https://www.shogihamburg.de/2019/09/06/tori-shogi-%E7%A6%BD%E5%B0%86%E6%A3%8B-spielregeln/",
+      "status": "download_success",
+      "retrieval": "curl -L --fail; HTTPS; read only"
+    },
+    {
+      "path": "/private/tmp/msh81-modern/hamburg-tori.pdf",
+      "bytes": 425899,
+      "sha256": "50438753f012b01cd4b6eb905e9efaf61bd30ce2d26c3deb1abed758d128d9c5",
+      "kind": "public_source",
+      "url": "https://www.shogihamburg.de/wp-content/uploads/2019/09/Tori-Sh%C3%B4gi-Spielregeln-Sh%C3%B4gi-Hamburg.pdf",
+      "status": "download_success",
+      "retrieval": "curl -L --fail; HTTPS; read only",
+      "pages": 2,
+      "actual_read": "Both complete rendered pages visually inspected; full pypdf text extracted",
+      "pdf_metadata": {
+        "author": "Fabian Krahe",
+        "created": "2019-09-08",
+        "modified": "2019-09-08",
+        "footer": "2019"
+      },
+      "classification": "Named modern author presentation; no historical edition cited"
+    },
+    {
+      "path": "/private/tmp/msh81-modern/jmapps-T008141.html",
+      "bytes": 42972,
+      "sha256": "cd1c89bdeedf986ae9ff6ec33da146f467e7a6de7445215a9cf1c59d5c8f8cc0",
+      "kind": "public_source",
+      "url": "https://jmapps.ne.jp/ams_labo/det.html?data_id=22509",
+      "status": "download_success",
+      "retrieval": "curl -L --fail; HTTPS; read only",
+      "actual_read": "Complete record fields; no source book images/folios"
+    },
+    {
+      "path": "/private/tmp/msh81-modern/jmapps-T008141.txt",
+      "bytes": 5133,
+      "sha256": "41b54a25202afe96d108ad98de60d5963d2be8523dcb977f63ad05c4e8d2a584",
+      "kind": "research_derivative",
+      "actual_read": "Complete record fields; no source book images/folios"
+    },
+    {
+      "path": "/private/tmp/msh81-modern/jmapps-T010299.html",
+      "bytes": 42964,
+      "sha256": "0f451fc1cbe5d31fc5b09e2dbdc2865be90603b71c636b150397e04e5e425635",
+      "kind": "public_source",
+      "url": "https://jmapps.ne.jp/ams_labo/det.html?data_id=47770",
+      "status": "download_success",
+      "retrieval": "curl -L --fail; HTTPS; read only",
+      "actual_read": "Complete record fields; no source book images/folios"
+    },
+    {
+      "path": "/private/tmp/msh81-modern/jmapps-T010299.txt",
+      "bytes": 5123,
+      "sha256": "1891c17766082d6691f11ef595014b8d0e770b015daccc1e27d8a9481d5c85ce",
+      "kind": "research_derivative",
+      "actual_read": "Complete record fields; no source book images/folios"
+    },
+    {
+      "path": "/private/tmp/msh81-modern/jmapps-home.html",
+      "bytes": 397992,
+      "sha256": "72262f466d3f8154a1cd7ccc7bcaaa982f70ff58070913321ae0dfac6b6adcc1",
+      "kind": "public_source",
+      "url": "https://jmapps.ne.jp/ams_labo/",
+      "status": "download_success",
+      "retrieval": "curl -L --fail; HTTPS; read only"
+    },
+    {
+      "path": "/private/tmp/msh81-modern/jmapps-tori.html",
+      "bytes": 398558,
+      "sha256": "4190c25b1f9503a801782d6bffca6f7db8376c42df39ad224adba4d9e60068d0",
+      "kind": "public_source",
+      "url": "https://jmapps.ne.jp/ams_labo/list.html?keywords=%E7%A6%BD&kwd_and_or=and&list_type=LLA001&list_count=50&title_query=yes",
+      "status": "download_success",
+      "retrieval": "curl -L --fail; HTTPS; read only"
+    },
+    {
+      "path": "/private/tmp/msh81-modern/jmapps-tori.txt",
+      "bytes": 51971,
+      "sha256": "654fffec684ecaf39787cfad43fdae19b2fb3d70cfe932f4e4617b86a613046c",
+      "kind": "research_derivative"
+    },
+    {
+      "path": "/private/tmp/msh81-modern/jsa-event.html",
+      "bytes": 34919,
+      "sha256": "6cf6046a82fc77e5470b8b5de9893a86ecc2c2be2807cffa1730d4928afa0890",
+      "kind": "research_derivative"
+    },
+    {
+      "path": "/private/tmp/msh81-modern/ndl-okano.html",
+      "bytes": 207373,
+      "sha256": "891828984cf7797020fe3857d57ed4395d3f46ee68ec597d3b11e74af43c71bb",
+      "kind": "public_source",
+      "url": "https://ndlsearch.ndl.go.jp/books/R000000004-I9501307",
+      "status": "download_success",
+      "retrieval": "curl -L --fail; HTTPS; read only",
+      "actual_read": "Article catalogue metadata only; zero article pages acquired/read"
+    },
+    {
+      "path": "/private/tmp/msh81-modern/ndl-okano.txt",
+      "bytes": 101365,
+      "sha256": "fb145bd5176268e8e58ac4b68db576df2e1ace261bd5c4a9196a215ccfa28e65",
+      "kind": "research_derivative"
+    },
+    {
+      "path": "/private/tmp/msh81-modern/ouc-bulletin-policy.html",
+      "bytes": 15998,
+      "sha256": "05dc400754ed8beafd2d38841a0bbd37086a22f2403cb755faae8c5e822fb9ee",
+      "kind": "public_source",
+      "url": "https://ouc.daishodai.ac.jp/ams_labo/publication/bulletin/",
+      "status": "download_success",
+      "retrieval": "curl -L --fail; HTTPS; read only"
+    },
+    {
+      "path": "/private/tmp/msh81-modern/ouc-contents.html",
+      "bytes": 29604,
+      "sha256": "d8a115cb8481e531f4fa9e4a2146df9f5a969f8d35f23e843e6871d11e6530f7",
+      "kind": "public_source",
+      "url": "https://ouc.daishodai.ac.jp/ams_labo/publication/bulletin/info2004-2008.html",
+      "status": "download_success",
+      "retrieval": "curl -L --fail; HTTPS; read only"
+    },
+    {
+      "path": "/private/tmp/msh81-modern/ouc-contents.txt",
+      "bytes": 9343,
+      "sha256": "555cf77612949cc5b2cfbb5797d73bf231a771d7ec201462adaf0e73af4faefb",
+      "kind": "research_derivative"
+    }
+  ],
+  "unavailable": [
+    {
+      "url": "https://ouc.repo.nii.ac.jp/",
+      "status": "curl HTTP503; web HTTP429",
+      "contents_read": false
+    },
+    {
+      "url": "https://ouc.repo.nii.ac.jp/search?page=1&size=20&sort=custom_sort&search_type=2&q=504",
+      "status": "curl HTTP503",
+      "contents_read": false
+    },
+    {
+      "url": "https://ouc.repo.nii.ac.jp/search?page=1&size=20&sort=custom_sort&search_type=2&q=%E7%A6%BD%E5%B0%86%E6%A3%8B",
+      "status": "curl HTTP503; web access error",
+      "contents_read": false
+    },
+    {
+      "title": "Okano 2008 禽将棋 pp241-265",
+      "status": "No article file acquired; publisher policy repository begins no16 June2014",
+      "article_pages_read": []
+    }
+  ],
+  "failed_initial_method": {
+    "source": "Hamburg PDF",
+    "sandbox_curl": "DNS unavailable",
+    "resolution": "Public read-only download succeeded through reviewed network escalation"
+  },
+  "rendering": "pdftoppm -scale-to 1800 -png; both pages inspected with view_image",
+  "text_extraction": "bundled Python pypdf; source copy preserved"
+}

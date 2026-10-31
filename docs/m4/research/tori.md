@@ -1,3 +1,9 @@
+> Current follow-up,2026-10-31: [MSH-81 dossier](../tori/README.md) now records
+> an acquired15-image Tohoku facsimile with internally dated1828 rules, newOUC
+> holdings, actual modernPDF comparisons and independent seeds. The copy date,
+> complete promotion/history/endings and profile selection remain unresolved.
+> The original2026-10-27 report below is preserved as historical evidence.
+
 # MSH-81 bounded Tori research handoff — 2026-10-27
 
 Research worker: msh81_research. Root @codex remains sole task owner/integrator on `codex/rewrite`. This pass edits no repository record, profile, implementation or acceptance criteria. It does not adopt rules, authorize institutional contact, complete MSH-81, or change the provisional xiangqi → tori → chu → tenjiku delivery order.

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "kanare2022-en",
+    "url": "https://c.tabletopia.com/games/tori-shogi/rules/rules-en-2/en",
+    "final_url": "https://c.tabletopia.com/games/tori-shogi/rules/rules-en-2/en",
+    "status": 200,
+    "content_type": "application/pdf",
+    "bytes": 608058,
+    "sha256": "e857b7ff324982d31b22bddf5cf54f45ac9f96fe3d18958f1855041a1f6fc3d7",
+    "retrieved_at": "2026-10-31T21:31:54.680442+00:00"
+  },
+  {
+    "id": "kanare2022-jp",
+    "url": "https://c.tabletopia.com/games/tori-shogi/rules/rules-jp-2/oth",
+    "final_url": "https://c.tabletopia.com/games/tori-shogi/rules/rules-jp-2/oth",
+    "status": 200,
+    "content_type": "application/pdf",
+    "bytes": 733352,
+    "sha256": "441fec002f50b8c090a43da5b401f085fef3f19d1dffdc06b7ba1031f21aef93",
+    "retrieved_at": "2026-10-31T21:31:51.481514+00:00"
+  },
+  {
+    "id": "kanare2022-pieces",
+    "url": "https://c.tabletopia.com/games/tori-shogi/rules/pieces-en/en",
+    "final_url": "https://c.tabletopia.com/games/tori-shogi/rules/pieces-en/en",
+    "status": 200,
+    "content_type": "application/pdf",
+    "bytes": 772094,
+    "sha256": "0fb04ce3c803284fb4b61870b5d7691b1bfb967ed5e9d72f622ef847795e3c56",
+    "retrieved_at": "2026-10-31T21:32:36.453413+00:00"
+  }
+]

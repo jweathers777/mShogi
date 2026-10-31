@@ -44,6 +44,17 @@ MSH-81–83 partial acquisition/reconciliation reports are linked from the dossi
 They remain unfinished, do not gate80 and establish no reason to reorder games.
 The rest of this document retains the historical Shogi planning and evidence.
 
+## Current Tori source checkpoint (2026-10-31)
+
+[MSH-81](tori/README.md) acquires an actual historical witness and modern
+comparisons while preserving the prior research. A complete ratified profile
+remains blocked by its named source/interpretation gates. [The current native
+handoff](tori/handoff.md) targets the accepted R1–R6 execution/document/runtime/
+frontend owners, not the obsolete development bridges described in older
+planning text.81/85/77/42 prerequisites and original criteria are unchanged;
+85/77/42 remain To Do and no game implementation begins. Research has not
+changed the Tori→Chu→Tenjiku planning default or closed M4.
+
 ## Standard shogi components and original acceptance coverage
 
 Each component's task contains scope, observable acceptance, dependencies and

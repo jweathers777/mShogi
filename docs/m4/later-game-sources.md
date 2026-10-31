@@ -21,6 +21,13 @@ and separates the Tenjiku catalogue/translation witnesses in
 [MSH-83](research/tenjiku.md). None is a completed profile or a new dependency
 between games. Provisional delivery order is unchanged.
 
+**Current Tori acquisition checkpoint,2026-10-31:** the
+[MSH-81 dossier](tori/README.md) supersedes the old absence-of-facsimile status:
+Tohoku15images acquired; internal1828 text date distinguished from undated
+physical copy; separateOUC1828 metadata identified. Kagawa1833 and Okano2008
+remain unread. Complete profile/promotion/repetition/endings are still gated;
+no Tori implementation, ratification or task completion follows from acquisition.
+
 ## Authority and evidence policy
 
 Keep four categories separate in every future profile and fixture manifest:

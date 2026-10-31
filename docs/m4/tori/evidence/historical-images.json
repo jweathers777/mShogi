@@ -1,0 +1,122 @@
+[
+  {
+    "page": "1",
+    "url": "https://touda.tohoku.ac.jp/iiif/2/public%2Flibrary%2Fkano%2Fkokusho%2FTHKK-52120%2FTHKK-52120-0001.tif/full/max/0/default.jpg",
+    "file": "/private/tmp/msh81-historical/tohoku-THKK-52120-0001.jpg",
+    "status": 0,
+    "sha256": "ca653c94a51c0bd01e2439d5f57b0061cf8e32373c178b4032340f53def4a2c5",
+    "bytes": 668892
+  },
+  {
+    "page": "2",
+    "url": "https://touda.tohoku.ac.jp/iiif/2/public%2Flibrary%2Fkano%2Fkokusho%2FTHKK-52120%2FTHKK-52120-0002.tif/full/max/0/default.jpg",
+    "file": "/private/tmp/msh81-historical/tohoku-THKK-52120-0002.jpg",
+    "status": 0,
+    "sha256": "1a977e8e4cbe6d5bade1bb475f70948a0427063533b562ceecdff160547e06b3",
+    "bytes": 765356
+  },
+  {
+    "page": "3",
+    "url": "https://touda.tohoku.ac.jp/iiif/2/public%2Flibrary%2Fkano%2Fkokusho%2FTHKK-52120%2FTHKK-52120-0003.tif/full/max/0/default.jpg",
+    "file": "/private/tmp/msh81-historical/tohoku-THKK-52120-0003.jpg",
+    "status": 0,
+    "sha256": "9a0555056c3c8dddaf59f71d2d34b60133ec4d3c8ab287bac61e996bcb11a9cd",
+    "bytes": 757831
+  },
+  {
+    "page": "4",
+    "url": "https://touda.tohoku.ac.jp/iiif/2/public%2Flibrary%2Fkano%2Fkokusho%2FTHKK-52120%2FTHKK-52120-0004.tif/full/max/0/default.jpg",
+    "file": "/private/tmp/msh81-historical/tohoku-THKK-52120-0004.jpg",
+    "status": 0,
+    "sha256": "71c5f9836548674d3d0d8798c27b9ba8d59481c9b0749a6787e6991f3bfb3625",
+    "bytes": 805344
+  },
+  {
+    "page": "5",
+    "url": "https://touda.tohoku.ac.jp/iiif/2/public%2Flibrary%2Fkano%2Fkokusho%2FTHKK-52120%2FTHKK-52120-0005.tif/full/max/0/default.jpg",
+    "file": "/private/tmp/msh81-historical/tohoku-THKK-52120-0005.jpg",
+    "status": 0,
+    "sha256": "edad5772a2d0319d320fe3423a06640f4fe80c23274ec9aff5a0f35cb2abb3d9",
+    "bytes": 707282
+  },
+  {
+    "page": "6",
+    "url": "https://touda.tohoku.ac.jp/iiif/2/public%2Flibrary%2Fkano%2Fkokusho%2FTHKK-52120%2FTHKK-52120-0006.tif/full/max/0/default.jpg",
+    "file": "/private/tmp/msh81-historical/tohoku-THKK-52120-0006.jpg",
+    "status": 0,
+    "sha256": "b0d4ff2ab198aef97186b02670163bdb1c1727ca00094f8d6e734db0c738a50d",
+    "bytes": 732218
+  },
+  {
+    "page": "7",
+    "url": "https://touda.tohoku.ac.jp/iiif/2/public%2Flibrary%2Fkano%2Fkokusho%2FTHKK-52120%2FTHKK-52120-0007.tif/full/max/0/default.jpg",
+    "file": "/private/tmp/msh81-historical/tohoku-THKK-52120-0007.jpg",
+    "status": 0,
+    "sha256": "3f09fdc1727970c8033813d7cfccc6f7c60d0237fa6c6e0909481a776aa4fb50",
+    "bytes": 741210
+  },
+  {
+    "page": "8",
+    "url": "https://touda.tohoku.ac.jp/iiif/2/public%2Flibrary%2Fkano%2Fkokusho%2FTHKK-52120%2FTHKK-52120-0008.tif/full/max/0/default.jpg",
+    "file": "/private/tmp/msh81-historical/tohoku-THKK-52120-0008.jpg",
+    "status": 0,
+    "sha256": "e16e4dc42882baf3b7a84ada98182cef7ad53dd616afe7c986e06fbf64adbeed",
+    "bytes": 745558
+  },
+  {
+    "page": "9",
+    "url": "https://touda.tohoku.ac.jp/iiif/2/public%2Flibrary%2Fkano%2Fkokusho%2FTHKK-52120%2FTHKK-52120-0009.tif/full/max/0/default.jpg",
+    "file": "/private/tmp/msh81-historical/tohoku-THKK-52120-0009.jpg",
+    "status": 0,
+    "sha256": "556c8b3a5038695a1fbf5a288c0f672666255e749fb926ec904a664b99aff899",
+    "bytes": 786831
+  },
+  {
+    "page": "10",
+    "url": "https://touda.tohoku.ac.jp/iiif/2/public%2Flibrary%2Fkano%2Fkokusho%2FTHKK-52120%2FTHKK-52120-0010.tif/full/max/0/default.jpg",
+    "file": "/private/tmp/msh81-historical/tohoku-THKK-52120-0010.jpg",
+    "status": 0,
+    "sha256": "6df6b109c4742f38f2081e2248af643a7816223b73014ba969fcddaf8a6ae10c",
+    "bytes": 715587
+  },
+  {
+    "page": "11",
+    "url": "https://touda.tohoku.ac.jp/iiif/2/public%2Flibrary%2Fkano%2Fkokusho%2FTHKK-52120%2FTHKK-52120-0011.tif/full/max/0/default.jpg",
+    "file": "/private/tmp/msh81-historical/tohoku-THKK-52120-0011.jpg",
+    "status": 0,
+    "sha256": "fedb1818be084fe324d54a9ad89add504efb4ea94e4ec386583b3248875d5f8d",
+    "bytes": 707668
+  },
+  {
+    "page": "12",
+    "url": "https://touda.tohoku.ac.jp/iiif/2/public%2Flibrary%2Fkano%2Fkokusho%2FTHKK-52120%2FTHKK-52120-0012.tif/full/max/0/default.jpg",
+    "file": "/private/tmp/msh81-historical/tohoku-THKK-52120-0012.jpg",
+    "status": 0,
+    "sha256": "5b8f9a2fd645dff97c4539b89791282a0c5f7237d1dda5519802f2e8b53d0c14",
+    "bytes": 700836
+  },
+  {
+    "page": "13",
+    "url": "https://touda.tohoku.ac.jp/iiif/2/public%2Flibrary%2Fkano%2Fkokusho%2FTHKK-52120%2FTHKK-52120-0013.tif/full/max/0/default.jpg",
+    "file": "/private/tmp/msh81-historical/tohoku-THKK-52120-0013.jpg",
+    "status": 0,
+    "sha256": "803cad2f9d9ee3708e643472ab15e30af8b8c842de9c14ee0a37313f869f2c62",
+    "bytes": 592146
+  },
+  {
+    "page": "14",
+    "url": "https://touda.tohoku.ac.jp/iiif/2/public%2Flibrary%2Fkano%2Fkokusho%2FTHKK-52120%2FTHKK-52120-0014.tif/full/max/0/default.jpg",
+    "file": "/private/tmp/msh81-historical/tohoku-THKK-52120-0014.jpg",
+    "status": 0,
+    "sha256": "2b358885f880805456d74c8fce707e77d3576bcad28994e5bfe72ac4655e89cc",
+    "bytes": 714992
+  },
+  {
+    "page": "15",
+    "url": "https://touda.tohoku.ac.jp/iiif/2/public%2Flibrary%2Fkano%2Fkokusho%2FTHKK-52120%2FTHKK-52120-0015.tif/full/max/0/default.jpg",
+    "file": "/private/tmp/msh81-historical/tohoku-THKK-52120-0015.jpg",
+    "status": 0,
+    "sha256": "2dbc322cb3d1fdb4cf9f3a52c55169272cf317bbdedc4d0479b32edc715c8e13",
+    "bytes": 645415
+  }
+]

@@ -129,7 +129,7 @@ class Native:
             if expanded == wanted:
                 break
             wanted = expanded
-        paths = {str(self.host), str(self.engine)}
+        paths = {str(self.host), str(self.engine), *(str(Path(path).resolve()) for path in getattr(self, "verification_paths", []))}
         return [item for item in table if item["pid"] in wanted or item["executable"] in paths]
 
     @staticmethod

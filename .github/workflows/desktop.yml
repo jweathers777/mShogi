@@ -124,6 +124,8 @@ jobs:
         run: |
           python -m venv "$env:RUNNER_TEMP/mshogi-gui-venv"
           & "$env:RUNNER_TEMP/mshogi-gui-venv/Scripts/python.exe" -m pip install -r desktop/scripts/requirements-gui-windows.txt
+          & "$env:RUNNER_TEMP/mshogi-gui-venv/Scripts/python.exe" -m unittest discover -s desktop/scripts -p test_gui_engine_gate.py
+          if ($LASTEXITCODE -ne 0) { throw "External verification engine gate tests failed" }
           ./desktop/scripts/prepare-webview-driver.ps1 -OutputDirectory "$env:RUNNER_TEMP/mshogi-webview-driver" -ReportPath webview-driver.json
       - name: Build separately labeled packaged verification application
         if: runner.os != 'macOS'

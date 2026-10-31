@@ -29,7 +29,7 @@ for marker in (b'MSHOGI_DESKTOP_FIXTURE', b'MSHOGI_VERIFICATION_ENGINE', b'Nativ
                b'synthetic_snapshot', b'synthetic_command', b'desktop_verification_mode',
                b'native_contract_snapshot', b'native_contract_command', b'native_contract_file',
                b'mshogi.synthetic.strider16.v1', b'mshogi-verification-window-size',
-               b'Verification window size', b'xiangqi-capacity', b'xiangqi-warning', b'xiangqi-control-capacity', b'shogi-control-capacity'):
+               b'Verification window size', b'xiangqi-exact-evidence', b'MSHOGI_R6_REAL_ENGINE', b'MSHOGI_R6_DELAY_MS', b'xiangqi-capacity', b'xiangqi-warning', b'xiangqi-control-capacity', b'shogi-control-capacity'):
     assert marker not in host_bytes, f'verification marker entered a normal host: {marker!r}'
 engine = engines[0].resolve()
 version = subprocess.run([str(engine), '--version'], check=True, capture_output=True, text=True, timeout=10)

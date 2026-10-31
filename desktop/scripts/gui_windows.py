@@ -275,6 +275,7 @@ class Native:
 
     def processes(self) -> list[dict]:
         wanted = {path for path in (self.host, self.engine) if path is not None}
+        wanted.update(_canonical(path) for path in getattr(self, "verification_paths", []))
         values = []
         names = {Path(path).name.casefold() for path in wanted}
         for row in _process_rows():
@@ -283,7 +284,7 @@ class Native:
             image = _image(row["pid"])
             if image is not None and _canonical(image) in wanted:
                 values.append({**row, "path": image,
-                               "role": "host" if _canonical(image) == self.host else "engine"})
+                               "role": "host" if _canonical(image) == self.host else "engine" if _canonical(image) == self.engine else "external-verification-gate"})
         return values
 
     def alive(self) -> bool:

@@ -7,7 +7,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-10-30T12:06:00Z'
-updated_date: '2026-10-31T16:46:00Z'
+updated_date: '2026-10-31T17:00:00Z'
 labels:
   - architecture-migration
   - planning
@@ -76,4 +76,6 @@ Owner-approved post-R4 UX planning2026-10-31: complete direct dependency set ret
 Startup13510da9e24b69a340444f272668ecb59478ddbb clean codex/rewrite, fetched origin0/0. Dependencies116/117/118/119/120/123/124/125 allDone; no active task owner displaced. Unrelated3worktrees preserved. GlobalBacklog1.55.0 mismatch resolved using existing pinned1.55.1; overview/execution read. Owner attachment explicitly requires fresh integrated source challenge and actual all3game/all3OS GUI, current normal/minimum views, native capability and lifecycle evidence. Existing125 production58a5d7a and verification8de evidence is baseline context, not automatic R6acceptance.
 
 Fresh independent current135source audits PASS: native294checks(45rulesfixtures+22execution+15actualsubprocess+212session), frontend158+strictTS. No materialproductionfinding. Identified requiredGUIcoveragegaps in old15phases, so externalQA verifier now31phases plus100unit/gatechecks, native QA-only5exact-report fixture(1PASS) with independent Save/Open5reports PASS. InitialQAauthoring Clone compilefailure and wrongselected-prefix attachment rejection corrected without weakening nativeadmission. Independentverifier findings event8selector/newnativeack/Windowsjobownership/Winexecution-suffix addressed. Newgate5secbound stayswithin unchangedwatchdog, executesrealengine andrecordsidentities. Productdefaultsource unchanged; QAfixture/hostbranch/externaltools only. Currentstatus remainsInProgress with everyAC/DoD unchecked; actualfreshall3platformGUI/CI nowrequired.
+
+Fresh independent native/public-API and frontend review confirms warning-prefix verifier correction: selected event8 is immutable intra-command history with live canonical9, event9 is committed warning prefix. Corrected probe checks exact selected events, canonical scope, selection identity and warning visibility;102 independent external checks PASS. No product correction required. Superseded176 Desktop campaign retains its actual outcome; corrected verifier campaign required before closure.
 <!-- SECTION:NOTES:END -->

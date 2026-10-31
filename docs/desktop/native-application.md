@@ -161,10 +161,10 @@ view-only; explicitly finishing existing Chess Full/ordinary analysis retires
 analysis without changing its conclusion or permitting a board action.
 
 Native close first stops execution. `close_requires_save` distinguishes the
-current document's dirty state from a stop-only close journal: an otherwise
+current document's dirty or never-saved state from a stop-only close journal: an otherwise
 saved game may close without an unnecessary prompt only at that exact native
 post-stop token. This never marks new canonical controls as saved or writes
-the file. A newer dirty token, cancelled guard or genuine unsaved document
+the file. A never-saved path, newer dirty token, cancelled guard or genuine unsaved document
 requires protection. Save/Discard/Cancel retain exact receipt/reservation
 checks, native menu/window/macOS termination handling and bounded shutdown.
 Resign submits one complete native action under the rendered token, without

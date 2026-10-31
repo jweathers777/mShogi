@@ -533,6 +533,18 @@ class CurrentFileWorkflowTests(unittest.TestCase):
                 journey.save_current(evidence)
             self.assertFalse(evidence.exists())
 
+    def test_never_saved_startup_requires_native_close_authority_even_when_internally_clean(self):
+        for dirty in (False, True):
+            with self.subTest(dirty=dirty):
+                native = {'document': {'path': None, 'dirty': dirty}, 'close_requires_save': True}
+                self.assertTrue(module.never_saved_close_source(native))
+                for wrong in (
+                        {**native, 'close_requires_save': False},
+                        {'document': native['document']},
+                        {**native, 'document': {'path': '/games/saved.mshogi', 'dirty': dirty}},
+                        {**native, 'document': {'path': None, 'dirty': None}}):
+                    self.assertFalse(module.never_saved_close_source(wrong))
+
     def test_replacement_comparison_preserves_native_history_and_runtime_authority(self):
         for fixture in ('shared-chess-standard.json', 'shared-shogi-standard.json', 'shared-xiangqi-played.json'):
             path = Path(__file__).parents[1] / 'src' / '__fixtures__' / fixture

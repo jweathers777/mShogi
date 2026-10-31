@@ -7,7 +7,7 @@ import fontLicense from "../assets/fonts/OFL.txt?raw";
 import fontNotice from "../assets/fonts/NOTICE.txt?raw";
 
 export function SupportDialog({ snapshot, session, close }: { snapshot: GameSnapshot; session: GameSession; close: () => void }) {
-  const diagnostics = { token: snapshot.token, profile: snapshot.profile, document: snapshot.document,
+  const diagnostics = { token: snapshot.token, profile: snapshot.profile, document: snapshot.document, close_requires_save: snapshot.close_requires_save,
     context: snapshot.context, moves: snapshot.moves, capacity: snapshot.capacity, diagnostic: snapshot.diagnostic,
     io: snapshot.io, error: session.error, analysis: snapshot.game === "chess" ? snapshot.chess.analysis : snapshot.analysis,
     observations: snapshot.observations, ...(snapshot.game === "xiangqi" ? { xiangqi: snapshot.xiangqi } : snapshot.game === "chess" ? { chess: snapshot.chess, chess_match: snapshot.chess_match } : {}) };

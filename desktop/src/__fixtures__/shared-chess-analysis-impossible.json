@@ -1,5 +1,4 @@
 {
-  "close_requires_save": true,
   "moves": {
     "root": {
       "label": "Starting position",
@@ -236,6 +235,7 @@
   },
   "historical": false,
   "paused": true,
+  "close_requires_save": true,
   "phase": "paused",
   "execution_purpose": null,
   "diagnostic": "Play paused for analysis. Resume play explicitly to continue.",

@@ -1113,8 +1113,11 @@ pub struct DesktopController {
 }
 impl DesktopController {
     fn close_requires_save(&self) -> bool {
-        self.lifecycle
-            .close_requires_save(self.shared_open_token(), self.shared_document().dirty)
+        let document = self.shared_document();
+        self.lifecycle.close_requires_save(
+            self.shared_open_token(),
+            document.dirty || document.path.is_none(),
+        )
     }
     /// Native application lifecycle authority, shared with host reservation guards.
     pub fn lifecycle(&self) -> std::sync::Arc<ApplicationLifecycle> {

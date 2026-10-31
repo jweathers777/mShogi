@@ -142,7 +142,7 @@
  .game-shell.game-shell .shell-game-area { grid-template-rows:45px minmax(0,1fr) 45px 48px; }
  .game-shell.game-shell .shell-player { height:42px; }
  .game-shell .shell-player small { display:none; }
- .game-shell .shell-analysis { min-height:200px; }
+ .game-shell .shell-analysis { min-height:232px; }
 }
 
 /* The empty notice slot retains its existing eight-pixel separation in every game. */

@@ -878,5 +878,23 @@ class PublicSupportDiagnosticsTests(unittest.TestCase):
         journey.web.click.assert_not_called();journey.web.key.assert_not_called()
 
 
+class CurrentShellCopyEvidenceTests(unittest.TestCase):
+    def test_historical_copy_requires_native_selected_prefix_and_return_control(self):
+        observed={'heading':'Historical position','meaning':'Your live game is unchanged.',
+                  'historical':'true','event':'2','returnLiveEnabled':True}
+        self.assertTrue(module.historical_notice_matches(observed,2))
+        for field,value in (('heading','History'),('meaning','This game is read only.'),
+                            ('historical','false'),('event','3'),('returnLiveEnabled',False)):
+            self.assertFalse(module.historical_notice_matches({**observed,field:value},2),field)
+        self.assertFalse(module.historical_notice_matches(None,2))
+
+    def test_saved_evidence_summary_preserves_exact_capacity_transition_count(self):
+        for count in (255,256):
+            self.assertTrue(module.saved_chess_evidence_count(f'Saved analysis evidence ({count})',count))
+            self.assertFalse(module.saved_chess_evidence_count(f'Saved analysis evidence ({count+1})',count))
+            self.assertFalse(module.saved_chess_evidence_count(f'Recorded native evidence ({count})',count))
+        self.assertFalse(module.saved_chess_evidence_count(None,256))
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

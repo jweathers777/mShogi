@@ -153,6 +153,19 @@ def focus_outline_visible(observed):
             and rect["top"] >= clip["top"] - .5 and rect["bottom"] <= clip["bottom"] + .5)
 
 
+def historical_notice_matches(observed, event):
+    """Validate the current shared copy together with actual native selection."""
+    return (isinstance(observed, dict) and observed.get("heading") == "Historical position"
+            and observed.get("meaning") == "Your live game is unchanged."
+            and observed.get("historical") == "true" and observed.get("event") == str(event)
+            and observed.get("returnLiveEnabled") is True)
+
+
+def saved_chess_evidence_count(text, count):
+    """Require the current player-facing summary and exact accepted count."""
+    return text == f"Saved analysis evidence ({count})"
+
+
 def terminal_transport_closed(error):
     """Only meaningful after dispatching the known native-close guard action."""
     if isinstance(error, (http.client.RemoteDisconnected, ConnectionResetError, BrokenPipeError)):
@@ -908,6 +921,16 @@ class Journey:
         self.shell_layouts[key]=layout
         self.record('Observe one dark application shell, shared physical slots and initial cards',layout)
 
+    def assert_historical_notice(self, event):
+        observed=self.web.read("""(() => {
+            const root=document.querySelector('.game-shell'),notice=document.querySelector('.historical-notice');
+            const back=[...(notice?.querySelectorAll('button')??[])].find(e=>e.textContent==='Return to live');
+            return {heading:notice?.querySelector('strong')?.textContent,meaning:notice?.querySelector('p')?.textContent,
+                historical:root?.dataset.historical,event:root?.dataset.currentEvent,returnLiveEnabled:!!back&&!back.disabled};
+        })()""")
+        assert historical_notice_matches(observed,event),observed
+        self.record('Historical notice preserves exact native prefix and explicit Return to live',observed)
+
     def inspection_state(self):
         return self.web.read("""(() => {
             const text=s=>document.querySelector(s)?.textContent??null;
@@ -1155,7 +1178,7 @@ class Journey:
         self.record("Reopen complete document without resuming work", w.text(".document-card"))
         w.click('.shogi-history [data-event="2"]')
         self.plies(1, historical=True)
-        assert "read only" in w.text(".historical-notice")
+        self.assert_historical_notice(2)
         self.inspect_piece('chess','b8','c6','Black knight')
         w.button("Analyze position")
         w.set('.shogi-analysis input[name="depth"]', 1)
@@ -1798,9 +1821,9 @@ class Journey:
             self.record("Optional intended-move claim concludes without playing intention", w.text(".outcome-card"))
         elif name == "capacity":
             w.button("Analyze position")
-            assert "Recorded native evidence (255)" in w.text(".recorded-chess-evidence")
+            assert saved_chess_evidence_count(w.text(".recorded-chess-evidence summary"),255)
             w.click('[data-analysis-start="chess"]')
-            wait(lambda: "Recorded native evidence (256)" in w.text(".recorded-chess-evidence"), "accept observation 256")
+            wait(lambda:saved_chess_evidence_count(w.text(".recorded-chess-evidence summary"),256), "accept observation 256")
             w.click('[data-analysis-start="chess"]')
             wait(lambda: "Application limit reached" in w.text(".capacity-notice"), "reject operation before observation 257")
             wait(lambda: w.read("""(() => {
@@ -1810,7 +1833,7 @@ class Journey:
                 const rect = notice.getBoundingClientRect(), box = sidebar.getBoundingClientRect();
                 return rect.top >= Math.max(0, box.top) && rect.bottom <= Math.min(innerHeight, box.bottom);
             })()"""), "new capacity pause is focused and visible in the actual inspector")
-            assert "Recorded native evidence (256)" in w.text(".recorded-chess-evidence")
+            assert saved_chess_evidence_count(w.text(".recorded-chess-evidence summary"),256)
             assert not w.has(".outcome-card")
             self.capture("capacity-pause")
             self.save(self.args.output / "capacity-complete.mshogi", 256)

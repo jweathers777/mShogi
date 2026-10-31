@@ -67,10 +67,14 @@ fn verification_window_size(menu_id: &str) -> Option<tauri::LogicalSize<f64>> {
     }
 }
 #[cfg(feature = "desktop-verification")]
-fn verification_window_title(fixture: &str, size: tauri::LogicalSize<f64>) -> String {
+fn verification_window_title(
+    fixture: &str,
+    size: tauri::LogicalSize<f64>,
+    frame: tauri::LogicalSize<f64>,
+) -> String {
     format!(
-        "mShogi Verification — {fixture} (test state) — content {:.1} × {:.1} logical",
-        size.width, size.height
+        "mShogi Verification — {fixture} (test state) — content {:.1} × {:.1} logical · frame {:.1} × {:.1} logical",
+        size.width, size.height, frame.width, frame.height
     )
 }
 #[cfg(feature = "desktop-verification")]
@@ -83,7 +87,14 @@ fn update_verification_window_title(app: &AppHandle) -> tauri::Result<()> {
         let size = window
             .inner_size()?
             .to_logical::<f64>(window.scale_factor()?);
-        window.set_title(&verification_window_title(&verification.fixture, size))?;
+        let frame = window
+            .outer_size()?
+            .to_logical::<f64>(window.scale_factor()?);
+        window.set_title(&verification_window_title(
+            &verification.fixture,
+            size,
+            frame,
+        ))?;
     }
     Ok(())
 }
@@ -886,13 +897,13 @@ mod tests {
         );
         assert_eq!(verification_window_size("mshogi-quit"), None);
         assert_eq!(
-            verification_window_title("synthetic", measured),
-            "mShogi Verification — synthetic (test state) — content 760.0 × 650.0 logical"
+            verification_window_title("synthetic", measured, tauri::LogicalSize::new(760.0, 678.0)),
+            "mShogi Verification — synthetic (test state) — content 760.0 × 650.0 logical · frame 760.0 × 678.0 logical"
         );
         let constrained = tauri::LogicalSize::new(1000.0, 700.0);
         assert!(
-            verification_window_title("claim", constrained)
-                .ends_with("content 1000.0 × 700.0 logical")
+            verification_window_title("claim", constrained, tauri::LogicalSize::new(1000.0, 728.0))
+                .contains("content 1000.0 × 700.0 logical · frame 1000.0 × 728.0 logical")
         );
     }
 

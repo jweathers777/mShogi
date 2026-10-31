@@ -223,6 +223,13 @@ on them and retains final three-platform packaged acceptance. This records
 approved direction and future work only; MSH-119 remains Done, R5/R6 unstarted,
 and M4 open. No later variant or M5 gate changes.
 
+Current delivery handoff (MSH-123, 2026-10-31): R5 is complete; the native
+Moves projection and readonly completed-action cues are implemented for Chess,
+Shogi and Xiangqi. The [MSH-123 review](review/moves-123.md) records exact
+history boundaries, sourced notation, the owner-approved WXF ordinal+file
+extension and packaged evidence. The preceding approval paragraph remains the
+historical planning record. MSH-124/125 and R6 remain open; M4 remains open.
+
 ## 4. First milestones
 
 ### M0. Repository workflow bootstrap

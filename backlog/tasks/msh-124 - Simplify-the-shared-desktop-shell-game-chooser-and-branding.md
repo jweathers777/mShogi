@@ -4,6 +4,7 @@ title: Simplify the shared desktop shell game chooser and branding
 status: Ready
 assignee: []
 created_date: '2026-10-31T09:02:00Z'
+updated_date: '2026-10-31T12:33:00Z'
 labels:
   - desktop
   - owner-approved-ux
@@ -42,3 +43,9 @@ Owner-approved post-MSH-119 product presentation refinement (2026-10-31), preser
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MSH-123 final platform visual handoff (planning note only; task remains Ready/unstarted): at760x650 the lower edge of the focused Moves button gold outline can clip at the scrollable sidebar viewport in Windows all3 and Linux Xiangqi. Top/sides, label and selected-position state remain clear; actual Tab/Enter succeeds and independent123review classifies this nonmaterial. Consider edge spacing/scroll reveal during this existing shell-layout/accessibility scope. Exact unchanged captures and reviewer rationale: docs/review/evidence/msh123/final-platform-visual.md (recorded on123finalization). No dependency/AC/ownership change or implementation begins.
+<!-- SECTION:NOTES:END -->

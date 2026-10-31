@@ -5,8 +5,9 @@
 MSH-116–119 and122 are Done; their evidence remains historical. MSH-120/R5
 is Done; its [current source and package evidence](review/native-choice-controller-120.md)
 records the surviving interaction owner, independent review, actual packaged
-interaction and precise native/package CI results. MSH-121/R6 remains unassigned Ready work
-with unchecked criteria and unsatisfied prerequisites. The owner-approved [post-R4 UX contract](desktop/post-r4-ux.md)
+interaction and precise native/package CI results. MSH-123/124/125 are also Done. MSH-121/R6 is active under root Codex in the
+primary codex/rewrite checkout, with all prerequisites satisfied and criteria
+unchecked until current-source independent and three-platform GUI acceptance. The owner-approved [post-R4 UX contract](desktop/post-r4-ux.md)
 adds three bounded product tasks without reopening119 or expanding R5:
 
 | Task | Complete direct prerequisites | Scope |
@@ -16,8 +17,9 @@ adds three bounded product tasks without reopening119 or expanding R5:
 | MSH-125 | MSH-119 | Save/Load/New/Quit, direct Resign and one-step native browse Return while preserving intentional stops |
 | MSH-121 / R6 | MSH-116, MSH-117, MSH-118, MSH-119, MSH-120, MSH-123, MSH-124, MSH-125 | Existing independent integrated architecture/platform acceptance plus approved final product journeys |
 
-All three new tasks remain unassigned Ready future work with unchecked AC/DoD,
-not started implementation. R5's complete prerequisite stays MSH-119, and its
+All three product tasks are now Done, with their source/package evidence in
+Moves123, shell124 and workflows125 reviews. R6 independently challenges their
+combined current implementation rather than inheriting an automatic pass. R5's complete prerequisite stays MSH-119, and its
 existing criteria are unchanged. Last-move rendering is123's dependent product
 work, consuming R5's surviving controller/renderers. Suggested integration order
 is120,123,124,125,121;124/125 are independently dependency-ready and one integrator
@@ -25,7 +27,9 @@ serializes their overlapping application files. No artificial123→124→125 gra
 chain or variant/M5 prerequisite is introduced. A-11/D-19 refines visible sidebar
 order and document workflows; technical evidence/native semantic safety remains.
 
-The original creation baseline below and later R1–R4 handoffs retain their
+Current R6 findings/checks/platform acceptance are recorded in
+[the integration review](review/architecture-acceptance-121.md). The original
+creation baseline below and later R1–R4 handoffs retain their
 then-current wording and evidence. Use this current overlay for task status,
 additional R6 prerequisites and approved post-R4 presentation requirements.
 

@@ -15,6 +15,34 @@ module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
 
 
+class ReplacementAnalysisAuthorityTests(unittest.TestCase):
+    def source(self, game='chess'):
+        return {'token': {'document': 7, 'version': 8}, 'context': {'native_history': [1, 2]},
+                'analysis': {'context': {'purpose': {'kind': 'move_analysis'}, 'request_id': 10,
+                             'session_version': 8, 'process_generation': 4}}}
+
+    def test_existing_thinking_state_is_not_replacement_evidence(self):
+        before = self.source()
+        self.assertFalse(module.replacement_analysis_accepted('chess', before, copy.deepcopy(before), True))
+        after = copy.deepcopy(before); after['token']['version'] += 1
+        self.assertFalse(module.replacement_analysis_accepted('chess', before, after, True))
+        after['analysis']['context']['request_id'] += 1
+        self.assertTrue(module.replacement_analysis_accepted('chess', before, after, True))
+        self.assertFalse(module.replacement_analysis_accepted('chess', before, after, False))
+        after['analysis']['context']['purpose']['kind'] = 'engine_turn'
+        self.assertFalse(module.replacement_analysis_accepted('chess', before, after, True))
+
+    def test_changed_game_history_or_document_never_establishes_same_target_replacement(self):
+        for game in ('chess', 'shogi', 'xiangqi'):
+            before = self.source(game); after = copy.deepcopy(before)
+            after['token']['version'] += 1; after['analysis']['context']['request_id'] += 1
+            self.assertTrue(module.replacement_analysis_accepted(game, before, after, True))
+            after['context']['native_history'].append(3)
+            self.assertFalse(module.replacement_analysis_accepted(game, before, after, True))
+            after = copy.deepcopy(before); after['token']['document'] += 1; after['token']['version'] += 1
+            self.assertFalse(module.replacement_analysis_accepted(game, before, after, True))
+
+
 class SharedPresentationTests(unittest.TestCase):
     def test_inspection_status_uses_exact_shared_copy_and_native_labels(self):
         for label in ('Black pawn', 'Gote pawn', 'Gote pawn in hand', 'Black cannon'):
@@ -332,18 +360,24 @@ class XiangqiRuntimeEvidenceTests(unittest.TestCase):
         return {key: copy.deepcopy(snapshot[key]) for key in
                 ('token', 'profile', 'context', 'xiangqi', 'document', 'io', 'observations')}
 
-    def test_all_retains_previous_fourteen_phases_and_adds_normal_xiangqi(self):
-        previous = [None, 'normal-shogi', 'normal-shogi-reopened', 'standard', 'promotion',
-                    'claim', 'capacity', 'synthetic', 'shogi-hands', 'shogi-promotion',
-                    'shogi-forced', 'shogi-declaration', 'shogi-concluded', 'shogi-capacity']
+    def test_r6_keeps_prior_campaign_and_requires_real_game_native_capabilities(self):
+        previous = [None, 'normal-shogi', 'normal-shogi-reopened', 'normal-xiangqi',
+                    'standard', 'promotion', 'claim', 'capacity', 'synthetic', 'shogi-hands',
+                    'shogi-promotion', 'shogi-forced', 'shogi-declaration', 'shogi-concluded', 'shogi-capacity']
         actual = module.selected_gui_phases('all')
-        self.assertEqual(len(actual), 15)
-        self.assertEqual([phase for phase in actual if phase != 'normal-xiangqi'], previous)
-        self.assertEqual(module.selected_gui_phases('normal-xiangqi'), ['normal-xiangqi'])
-        self.assertEqual(module.selected_gui_phases('normal'), previous[:3] + ['normal-xiangqi'])
+        self.assertEqual(len(actual), len(set(actual)))
+        self.assertTrue(set(previous) <= set(actual))
+        self.assertTrue({'current-claim', 'concluded', 'full-unknown', 'pending-chess',
+                         'pending-shogi', 'pending-xiangqi'} <= set(actual))
+        xiangqi = module.selected_gui_phases('verification-xiangqi')
+        self.assertEqual(set(xiangqi), {'xiangqi-warning', 'xiangqi-fourth', 'xiangqi-count',
+            'xiangqi-offer', 'xiangqi-agreed', 'xiangqi-fast-proof', 'xiangqi-resigned',
+            'xiangqi-capacity', 'xiangqi-failure', 'xiangqi-exact-evidence'})
+        self.assertTrue(set(xiangqi) <= set(actual))
+        self.assertEqual(module.selected_gui_phases('normal'), previous[:4])
         self.assertEqual(module.selected_gui_phases('normal-shogi'), previous[1:3])
-        self.assertEqual(module.selected_gui_phases('verification'), previous[3:])
-        self.assertEqual(module.selected_gui_phases('verification-shogi'), previous[8:])
+        self.assertEqual(module.selected_gui_phases('normal-xiangqi'), ['normal-xiangqi'])
+        self.assertEqual(set(module.selected_gui_phases('verification')), set(actual) - set(previous[:4]))
 
     def test_rejected_open_may_report_io_failure_without_changing_native_authority(self):
         before = self.diagnostics()

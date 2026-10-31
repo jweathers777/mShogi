@@ -1,0 +1,6 @@
+{
+  "raw": "exact-qa-fixture.log.gz",
+  "raw_sha256": "216912327aab3db19ab0b361cb30c7d33f4aa6260236df354f22b4911d645a52",
+  "normalized_sha256": "d858dcb8ea436c0d3ac3565de6db46d5f1309ccde0ac1b2bfbe320c86d86fe5c",
+  "change": "Readable log trims final blank line only; compressed original is byte exact."
+}

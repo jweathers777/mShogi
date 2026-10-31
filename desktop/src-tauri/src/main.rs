@@ -500,7 +500,10 @@ fn initial_controller(fixture: &str) -> Result<DesktopController, Box<dyn std::e
         .unwrap_or(engine);
     let engine = if matches!(fixture, "shogi-failure" | "xiangqi-failure") {
         // Deliberately absent child only in the separately labeled QA package.
-        engine.with_file_name("mshogi-verification-missing-engine")
+        engine.with_file_name(format!(
+            "mshogi-verification-missing-engine{}",
+            std::env::consts::EXE_SUFFIX
+        ))
     } else {
         engine
     };

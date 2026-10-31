@@ -74,14 +74,35 @@ def xiangqi_retained_state(diagnostics):
 
 def selected_gui_phases(choice):
     """Keep independent native-process journeys explicit and individually runnable."""
-    chess = ["standard", "promotion", "claim", "capacity", "synthetic"]
+    chess = ["standard", "promotion", "claim", "current-claim", "concluded", "full-unknown", "capacity", "synthetic", "pending-chess", "pending-shogi", "pending-xiangqi"]
     shogi = ["shogi-hands", "shogi-promotion", "shogi-forced", "shogi-declaration",
              "shogi-concluded", "shogi-capacity"]
+    xiangqi = ["xiangqi-warning", "xiangqi-fourth", "xiangqi-count", "xiangqi-offer", "xiangqi-agreed", "xiangqi-fast-proof", "xiangqi-resigned", "xiangqi-capacity", "xiangqi-failure", "xiangqi-exact-evidence"]
     normal = [None, "normal-shogi", "normal-shogi-reopened", "normal-xiangqi"]
     return {"normal": normal, "normal-shogi": normal[1:3],
             "normal-xiangqi": ["normal-xiangqi"],
-            "verification": [*chess, *shogi], "verification-shogi": shogi,
-            "all": [*normal, *chess, *shogi]}[choice]
+            "verification": [*chess, *shogi, *xiangqi], "verification-shogi": shogi,
+            "verification-xiangqi": xiangqi, "all": [*normal, *chess, *shogi, *xiangqi]}[choice]
+
+
+def replacement_analysis_accepted(game, before, after, analyzing):
+    """Require newly admitted native work, not the prior already-thinking UI.
+
+    Chess exposes the pending full context; other native games expose pending
+    purpose through the analysis phase and exact source through Support. Their
+    completed observations retain full execution identities separately.
+    """
+    if not (analyzing and after['token']['document'] == before['token']['document']
+            and after['token']['version'] > before['token']['version']
+            and after['context'] == before['context']):
+        return False
+    if game == 'chess':
+        old, new = before['analysis'].get('context'), after['analysis'].get('context')
+        return bool(old and new and new['purpose']['kind'] == 'move_analysis'
+                    and old['purpose']['kind'] == 'move_analysis'
+                    and (new['request_id'], new['session_version'], new['process_generation'])
+                    != (old['request_id'], old['session_version'], old['process_generation']))
+    return game in ('shogi', 'xiangqi')
 
 
 def saved_document_accepted(observation, expected_path):
@@ -535,10 +556,11 @@ class Journey:
             "inputs": self.web.read("[...document.querySelectorAll('input,select')].map(e=>({tag:e.tagName,type:e.type,value:e.value,min:e.min,max:e.max,disabled:e.disabled}))")
         }, indent=2), encoding="utf-8")
 
-    def start(self, fixture=None, product=None):
+    def start(self, fixture=None, product=None, gated=False, phase_name=None):
         host = self.args.normal_host if fixture is None else self.args.verification_host
         engine = self.args.normal_engine if fixture is None else self.args.verification_engine
         self.phase = ("normal" if product is None else f"normal-{product}") if fixture is None else f"verification-{fixture}"
+        self.phase = phase_name or self.phase
         self.phase_report = {"phase": self.phase, "status": "running",
             "fixture": fixture, "host": str(host), "host_sha256": digest(host),
             "engine": str(engine), "engine_sha256": digest(engine),
@@ -552,6 +574,15 @@ class Journey:
         env.pop("MSHOGI_DESKTOP_FIXTURE", None)
         if fixture is not None:
             env["MSHOGI_DESKTOP_FIXTURE"] = fixture
+        if gated:
+            assert fixture is not None, "external gate is QA-only"
+            source = Path(__file__).with_name("verification") / "engine-gate.rs"
+            gate = self.args.output / ("r6-engine-gate.exe" if platform.system() == "Windows" else "r6-engine-gate")
+            compile_command = ["rustc", "--edition=2024", str(source), "-o", str(gate)]
+            subprocess.run(compile_command, check=True, capture_output=True, timeout=60)
+            self.native.verification_paths = [gate]
+            env.update(MSHOGI_VERIFICATION_ENGINE=str(gate), MSHOGI_R6_REAL_ENGINE=str(engine), MSHOGI_R6_DELAY_MS="5000")
+            self.phase_report["external_gate"] = {"source": str(source), "source_sha256": digest(source), "path": str(gate), "sha256": digest(gate), "real_engine_sha256": digest(engine), "delay_ms": 5000, "compile_command": compile_command, "compiler": subprocess.check_output(["rustc", "--version"], text=True).strip(), "mechanism": "External bounded startup delay then unchanged real bundled engine; Unix exec / Windows kill-on-close job; no fabricated response."}
         command = [self.args.driver, "--port", "4444", "--native-port", "4445"]
         if self.args.native_driver:
             command += ["--native-driver", self.args.native_driver]
@@ -1934,6 +1965,205 @@ class Journey:
         self.capture("result")
         self.quit()
 
+    def pending(self, game):
+        """Actual QA supervisor with bounded external delay; no fake responses."""
+        fixture = 'standard' if game == 'chess' else f'{game}-standard'
+        self.start(fixture, gated=True, phase_name=f'verification-pending-{game}')
+        w = self.web
+        origin, destination = {'chess': ('e2', 'e4'), 'shogi': ('7g', '7f'), 'xiangqi': ('a3', 'a4')}[game]
+        point = self.square if game == 'chess' else self.shogi_square if game == 'shogi' else self.xiangqi_point
+        w.click(point(origin)); w.click(point(destination))
+        wait(lambda: w.has('.shogi-analysis[data-phase="thinking"]') and w.has('.shell-notices button'), 'actual pending engine decision')
+        self.assert_completed_cue(origin + destination, 1, [origin], [destination])
+        before = self.native_diagnostics()
+        assert len(before['context']['payload']['events']) >= 1
+        self.capture('real-engine-pending')
+        w.click('.moves-root')
+        wait(lambda: w.read("document.querySelector('.game-shell').dataset.historical") == 'true', 'browse retires actual engine work')
+        w.button('Return to live')
+        wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == 'false', 'browse Return authorizes fresh engine work')
+        wait(lambda: w.has('.shogi-analysis[data-phase="thinking"]'), 'fresh real engine turn after Return')
+        returned = self.native_diagnostics()
+        assert returned['token']['selection'] != before['token']['selection'], (before['token'], returned['token'])
+        assert returned['context'] == before['context'], 'browsing cannot change the accepted live game'
+        w.button('Take back')
+        wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == 'true', 'Take back stops pending continuation')
+        wait(lambda: w.read("document.querySelector('.shogi-history').dataset.currentEvent") == '0', 'Take back restores human decision')
+        restored = self.native_diagnostics()
+        assert restored['token']['version'] > returned['token']['version']
+        assert not restored['context']['payload']['events']
+        time.sleep(5.2)
+        assert self.native_diagnostics()['context'] == restored['context'], 'retired engine work never reappears'
+        self.capture('takeback-pending-stopped')
+        w.button('Resume play')
+        w.button('Analyze position')
+        w.set('.shogi-analysis input[name="depth"]', 1)
+        w.set('.shogi-analysis input[name="nodes"]', 128 if game == 'xiangqi' else 1000)
+        w.click(f'[data-analysis-start="{game}"]')
+        wait(lambda: w.has('.shogi-analysis[data-phase="analyzing"]'), 'actual delayed read-only analysis')
+        first = self.native_diagnostics()
+        w.click(f'[data-analysis-start="{game}"]')
+        def accepted_replacement():
+            observed = self.native_diagnostics()
+            return observed if replacement_analysis_accepted(game, first, observed, w.has('.shogi-analysis[data-phase="analyzing"]')) else None
+        replacement = wait(accepted_replacement, 'new native replacement authority and read-only purpose admitted')
+        w.button('Cancel analysis')
+        wait(lambda: 'cancelled' in w.text('[aria-label="Analysis status"]').lower() if game == 'chess' else 'Search stopped' in w.text('.shogi-analysis-state'), 'cancelled analysis is unscored')
+        assert not w.has('.outcome-card')
+        cancelled = self.native_diagnostics()
+        assert cancelled['context'] == restored['context'], 'no analysis move was played'
+        self.capture('analysis-replaced-cancelled')
+        path = self.args.output / f'pending-{game}-complete.mshogi'
+        archive = self.save_current(path)
+        body = desktop_document_payload(archive, game)
+        assert body['takebacks'], 'abandoned pending continuation retained losslessly'
+        self.record('Real pending browse Return / Take back / analysis replacement cancellation', {
+            'game': game, 'before': before, 'returned': returned, 'restored': restored,
+            'first_analysis': first, 'replacement_analysis': replacement, 'cancelled': cancelled,
+            'saved_sha256': digest(path), 'takebacks': len(body['takebacks'])})
+        self.quit()
+
+    def chess_full(self):
+        """The terminal QA root already satisfies the cooperative mate goal."""
+        w = self.web
+        assert w.has('.outcome-card')
+        before = self.native_diagnostics()
+        w.button('Analyze position')
+        w.click('.advanced-analysis > summary')
+        # Native inputs are identified by their containing labels, not numerical DOM positions.
+        w.set('.advanced-analysis .shogi-analysis-fields label:first-child input', 10)
+        w.set('.advanced-analysis .shogi-analysis-fields label:last-child input', 10)
+        w.click('[data-analysis-start="full"]')
+        wait(lambda: 'cooperative mating route exists' in w.text('.reachability-result').lower(), 'actual Full cooperative proof on already-mated root')
+        assert 'not forced-win search or a live-game outcome' in w.text('[aria-label="Analysis status"]')
+        after = self.native_diagnostics()
+        assert after['context'] == before['context']
+        assert after['chess']['live_conclusion'] == before['chess']['live_conclusion']
+        evidence = after['chess']['analysis']
+        assert evidence['context']['purpose']['kind'] == 'chess_full_reachability'
+        assert 'possible' in evidence['result']['result']
+        self.capture('full-cooperative-proof-concluded')
+        self.record('Actual bounded Chess Full proof remains read-only', {'before': before, 'after': after})
+
+    def full_unknown(self):
+        self.start('standard', gated=True, phase_name='verification-full-unknown-cancel')
+        w = self.web
+        before = self.native_diagnostics()
+        w.button('Analyze position'); w.click('.advanced-analysis > summary')
+        w.set('.advanced-analysis .shogi-analysis-fields label:first-child input', 0)
+        w.set('.advanced-analysis .shogi-analysis-fields label:last-child input', 0)
+        w.click('[data-analysis-start="full"]')
+        wait(lambda: 'Unknown' in w.text('.reachability-result'), 'actual zero-budget Full Unknown')
+        unknown = self.native_diagnostics()
+        assert 'unknown' in unknown['chess']['analysis']['result']['result']
+        assert unknown['context'] == before['context'] and not w.has('.outcome-card')
+        self.capture('full-budget-unknown')
+        w.set('.advanced-analysis .shogi-analysis-fields label:first-child input', 100000)
+        w.set('.advanced-analysis .shogi-analysis-fields label:last-child input', 1000000)
+        w.click('[data-analysis-start="full"]')
+        wait(lambda: w.has('.shogi-analysis[data-phase="analyzing"]'), 'actual independently terminable Full work')
+        w.button('Cancel analysis')
+        wait(lambda: 'cancelled' in w.text('[aria-label="Analysis status"]').lower(), 'Full cancellation establishes no result')
+        cancelled = self.native_diagnostics()
+        assert cancelled['context'] == before['context'] and not w.has('.outcome-card')
+        self.capture('full-cancelled-unscored')
+        self.record('Actual Full Unknown and independently terminated execution', {'unknown': unknown, 'cancelled': cancelled})
+        self.quit()
+
+    def xiangqi_fixture(self, name):
+        self.start(name)
+        w = self.web
+        self.viewport(1180, 820); self.xiangqi_board_fits()
+        before = self.xiangqi_diagnostics()
+        if name == 'xiangqi-warning':
+            assert 'Repetition warning' in w.text('.shell-notices')
+            assert 'Red must vary perpetual check' in w.text('.shell-notices')
+            assert not w.has('.outcome-card')
+            assert len(before['moves']['entries']) == 8
+            if not w.read("document.querySelector('.moves-events').open"):
+                w.click('.moves-events summary')
+            w.keyboard_activate('.moves-table [data-event="8"]')
+            wait(lambda: w.read("document.querySelector('.game-shell').dataset.currentEvent") == '8', 'select exact prefix before warning')
+            earlier = self.xiangqi_diagnostics()
+            if not w.read("document.querySelector('.moves-events').open"):
+                w.click('.moves-events summary')
+            w.keyboard_activate('.moves-events [data-event="9"]')
+            wait(lambda: w.read("document.querySelector('.game-shell').dataset.currentEvent") == '9', 'select exact warning prefix')
+            warned = self.xiangqi_diagnostics()
+            assert earlier['context'] != warned['context'], 'same board does not erase warning event identity'
+            assert len(earlier['context']['payload']['events']) + 1 == len(warned['context']['payload']['events'])
+            self.capture('warning-exact-event-prefix')
+            w.button('Return to live')
+        elif name == 'xiangqi-count':
+            assert before['xiangqi']['count_advice'][0]['claimant'] in ('red', 'black')
+            assert 'available to Red' in w.text('.shogi-game-actions')
+            w.button('Claim natural-count draw…')
+            wait(lambda: w.has('[aria-label="Claim a natural-count draw?"]'), 'native claimant confirmation')
+            w.button('Claim draw')
+            wait(lambda: 'natural' in w.text('.outcome-card').lower(), 'native natural-count claim concludes')
+            after = self.xiangqi_diagnostics()
+            assert len(after['moves']['entries']) == len(before['moves']['entries'])
+            command = after['context']['payload']['commands'][-1]
+            assert command['actor'] == 'red' and command['command']['kind'] == 'claim_natural_count'
+        elif name == 'xiangqi-offer':
+            assert not w.has('.outcome-card') and 'Draw offered by Black' in w.text('.shell-notices')
+            w.button('Accept draw…'); w.button('Accept draw')
+            wait(lambda: 'agreement' in w.text('.outcome-card'), 'native agreement ends game')
+        elif name in ('xiangqi-fourth', 'xiangqi-agreed', 'xiangqi-fast-proof', 'xiangqi-resigned'):
+            expected = {'xiangqi-fourth': 'Black wins · perpetual check', 'xiangqi-agreed': 'Draw · agreement', 'xiangqi-fast-proof': 'Draw · neither side can win', 'xiangqi-resigned': 'Black wins · resignation'}[name]
+            assert expected in w.text('.outcome-card'), w.text('.outcome-card')
+            if name == 'xiangqi-fast-proof':
+                w.click('.position-assessment > summary')
+                assert 'Sound fast proof' in w.text('.position-assessment')
+        elif name == 'xiangqi-failure':
+            wait(lambda: 'Engine connection failed' in w.text('.shell-notices'), 'genuine missing engine failure')
+            assert not w.has('.outcome-card')
+            missing = self.args.verification_engine.with_name('mshogi-verification-missing-engine' + ('.exe' if platform.system() == 'Windows' else ''))
+            assert not missing.exists()
+            try:
+                shutil.copy2(self.args.verification_engine, missing)
+                w.button('Retry engine turn')
+                wait(lambda: len(self.xiangqi_diagnostics()['moves']['entries']) == 1, 'real engine retry completes')
+                assert not w.has('.outcome-card')
+            finally:
+                missing.unlink(missing_ok=True)
+        elif name == 'xiangqi-capacity':
+            assert len(before['observations']) == 255
+            self.xiangqi_analysis(nodes=1)
+            wait(lambda: 'Recorded searches (256)' in w.text('.recorded-searches'), 'combined observation256 accepted')
+            self.xiangqi_analysis(nodes=1)
+            wait(lambda: 'Application limit reached' in w.text('.capacity-notice'), 'observation257 refused')
+            assert not w.has('.outcome-card')
+        elif name == 'xiangqi-exact-evidence':
+            reports = before['xiangqi']['exact_observations']
+            kinds = {item['report']['verdict']['kind'] for item in reports}
+            assert {'neither_can_win', 'natural_win', 'unknown', 'failure'} <= kinds, kinds
+            assert any(item['report']['verdict'].get('reason') == 'cancelled' for item in reports), reports
+            w.click('.position-assessment > summary')
+            w.click('.position-assessment details > summary')
+            for expected in ('Exact proof: neither side', 'possible natural board win', 'not a forced win', 'Unknown · exploration incomplete', 'Cancelled · Unknown', 'Analysis failed. No conclusion was established.', 'Historical results for their recorded positions'):
+                assert expected in w.text('.position-assessment'), expected
+            assert before['context']['payload']['conclusion'] == self.xiangqi_diagnostics()['context']['payload']['conclusion'], 'saved exact observations cannot alter the native game outcome'
+            self.capture('saved-native-exact-proof-witness-unknown')
+        else:
+            raise AssertionError(name)
+        after = self.xiangqi_diagnostics()
+        self.capture('native-capability-result')
+        path = self.args.output / f'{name}-complete.mshogi'
+        archive = self.xiangqi_save(path)
+        old_token = after['token']
+        self.file('open', path); self.wait_opened(path)
+        reopened = self.xiangqi_diagnostics()
+        assert reopened['context'] == after['context']
+        assert reopened['token']['document'] > old_token['document']
+        assert w.read("document.querySelector('.game-shell').dataset.paused") == 'true'
+        assert not w.has('.shogi-analysis[data-phase="analyzing"]')
+        self.record('Actual native Xiangqi capability, complete Save/Load and fresh stopped runtime', {
+            'name': name, 'before': before, 'after': after, 'reopened': reopened,
+            'archive_sha256': digest(path), 'archive_bytes': path.stat().st_size,
+            'exact_observations': len(archive['payload']['exact_observations'])})
+        self.quit()
+
     def fixture(self, name):
         self.start(name)
         w = self.web
@@ -1973,14 +2203,16 @@ class Journey:
             self.plies(1)
             wait(lambda: "proven dead position" in w.text(".outcome-card"), "native underpromotion outcome")
             self.record("Cancel promotion then commit complete Knight promotion", w.text(".outcome-card"))
-        elif name == "claim":
+        elif name in ("claim", "current-claim"):
             self.plies(0)
             assert "An opportunity to claim" in w.text()
             assert not w.has(".outcome-card")
             w.button("Claim selected draw")
             wait(lambda: "claimed fifty-move rule" in w.text(".outcome-card"), "native claim conclusion")
             self.plies(0)
-            self.record("Optional intended-move claim concludes without playing intention", w.text(".outcome-card"))
+            self.record("Optional current/intended claim concludes without playing intention", w.text(".outcome-card"))
+        elif name == "concluded":
+            self.chess_full()
         elif name == "capacity":
             w.button("Analyze position")
             assert saved_chess_evidence_count(w.text(".recorded-chess-evidence summary"),255)
@@ -2096,7 +2328,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--driver", default="tauri-driver")
     parser.add_argument("--native-driver")
-    parser.add_argument("--phase", choices=["normal", "normal-shogi", "normal-xiangqi", "verification", "verification-shogi", "all"], default="all")
+    parser.add_argument("--phase", choices=["normal", "normal-shogi", "normal-xiangqi", "verification", "verification-shogi", "verification-xiangqi", "all"], default="all")
     args = parser.parse_args()
     args.output = args.output.resolve()
     args.output.mkdir(parents=True, exist_ok=True)
@@ -2133,6 +2365,12 @@ def main():
                     journey.normal_shogi_reopened()
                 elif fixture == "normal-xiangqi":
                     journey.normal_xiangqi()
+                elif fixture == "full-unknown":
+                    journey.full_unknown()
+                elif fixture.startswith("pending-"):
+                    journey.pending(fixture.removeprefix("pending-"))
+                elif fixture.startswith("xiangqi-"):
+                    journey.xiangqi_fixture(fixture)
                 elif fixture.startswith("shogi-"):
                     journey.shogi_fixture(fixture)
                 else:

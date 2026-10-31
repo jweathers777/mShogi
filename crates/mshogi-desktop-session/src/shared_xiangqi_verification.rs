@@ -89,6 +89,12 @@ impl DesktopController {
                 x::ClaimPolicy::Explicit,
             )
             .map_err(|e| e.to_string())?,
+            "xiangqi-exact-evidence" => x::Game::from_root(
+                x::PositionRoot::from_fen("5k3/R8/9/9/9/9/9/9/9/3K5 b - - 0 1")
+                    .map_err(|e| e.to_string())?,
+                x::ClaimPolicy::Explicit,
+            )
+            .map_err(|e| e.to_string())?,
             _ => return Err("Unknown Xiangqi verification fixture.".into()),
         };
         if matches!(fixture, "xiangqi-offer" | "xiangqi-agreed") {
@@ -101,6 +107,14 @@ impl DesktopController {
         }
         if fixture == "xiangqi-resigned" {
             submit(&mut game, x::Side::Red, x::GameCommand::Resign)?;
+        }
+        if fixture == "xiangqi-exact-evidence" {
+            // Existing independently reviewed two-ply natural-win witness root.
+            // This separate cooperative line instead sacrifices the sole Rook:
+            // Black f9-e9, Red a8-e8+, Black e9xe8. Only Generals remain.
+            for action in ["f9e9", "a8e8", "e9e8"] {
+                play(&mut game, action)?;
+            }
         }
         let human = if fixture == "xiangqi-failure" {
             x::Side::Black
@@ -120,6 +134,76 @@ impl DesktopController {
             true,
         )?;
         self.finish_verification_admission(receipt)?;
+        if fixture == "xiangqi-exact-evidence" {
+            let source = game;
+            let before = x::GameRecord::from_game(&source).map_err(|e| e.to_string())?;
+            let bounds = x::ExactLimits {
+                states: 5_000,
+                transitions: 50_000,
+                millis: 60_000,
+                traversal: x::ExactTraversal::BreadthFirst,
+                ..x::ExactLimits::default()
+            };
+            for (target, limits, cancelled) in [
+                (x::ExactTarget::History { event_count: 0 }, bounds, false),
+                (x::ExactTarget::Live, bounds, false),
+                (
+                    x::ExactTarget::History { event_count: 0 },
+                    x::ExactLimits {
+                        states: 0,
+                        ..bounds
+                    },
+                    false,
+                ),
+                (x::ExactTarget::History { event_count: 0 }, bounds, true),
+                (
+                    x::ExactTarget::History { event_count: 0 },
+                    x::ExactLimits {
+                        states: x::MAX_EXACT_STATES + 1,
+                        ..bounds
+                    },
+                    false,
+                ),
+            ] {
+                let selection = match target {
+                    x::ExactTarget::History { event_count } => SessionOperation::Inspect {
+                        event_index: event_count,
+                    },
+                    x::ExactTarget::Live => SessionOperation::ReturnLive {},
+                };
+                let receipt = self.queue_xiangqi_candidate(
+                    archive::XiangqiDraft::capture(self.session.xiangqi().unwrap()),
+                    Some(selection),
+                    None,
+                    None,
+                    false,
+                )?;
+                self.finish_verification_admission(receipt)?;
+                let mut analysis = x::ExactAnalysis::new().map_err(|e| e.to_string())?;
+                analysis.select(target).map_err(|e| e.to_string())?;
+                let observation = analysis
+                    .begin(&source, limits)
+                    .map_err(|e| e.to_string())?
+                    .run(|| cancelled);
+                let receipt =
+                    self.retain_xiangqi_exact_evidence(self.shared_token(), &observation)?;
+                self.finish_verification_admission(receipt)?;
+                if x::GameRecord::from_game(&self.session.xiangqi().unwrap().game)
+                    .map_err(|e| e.to_string())?
+                    != before
+                {
+                    return Err("Read-only exact evidence changed the native game.".into());
+                }
+            }
+            let receipt = self.queue_xiangqi_candidate(
+                archive::XiangqiDraft::capture(self.session.xiangqi().unwrap()),
+                Some(SessionOperation::ReturnLive {}),
+                None,
+                None,
+                false,
+            )?;
+            self.finish_verification_admission(receipt)?;
+        }
         if fixture == "xiangqi-control-capacity" {
             self.session
                 .xiangqi_mut()
@@ -171,6 +255,49 @@ impl DesktopController {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn exact_evidence_fixture_has_native_historical_meanings_without_changing_the_game() {
+        let mut controller = DesktopController::verification(
+            "/unused/verification-engine".into(),
+            "xiangqi-exact-evidence",
+        )
+        .unwrap();
+        controller.shared.manual_engine = true;
+        let snapshot = controller.shared_snapshot();
+        assert_eq!(snapshot.board_ply, 3);
+        assert!(snapshot.status.concluded);
+        let state = controller.session.xiangqi().unwrap();
+        assert!(state.pending.is_none());
+        assert_eq!(state.exact_observations.len(), 5);
+        let reports = &state.exact_observations;
+        assert!(matches!(reports[0].report().verdict,
+            x::ExactVerdict::NaturalWin { winner: x::Side::Red, ref witness, .. } if witness.len() == 2));
+        assert_eq!(reports[0].event_count(), 0);
+        assert_eq!(reports[1].report().verdict, x::ExactVerdict::NeitherCanWin);
+        assert_eq!(reports[1].event_count(), state.game.events().len());
+        assert_eq!(
+            reports[2].report().verdict,
+            x::ExactVerdict::Unknown {
+                reason: x::ExactStop::States
+            }
+        );
+        assert_eq!(
+            reports[3].report().verdict,
+            x::ExactVerdict::Unknown {
+                reason: x::ExactStop::Cancelled
+            }
+        );
+        assert_eq!(
+            reports[4].report().verdict,
+            x::ExactVerdict::Failure {
+                reason: x::ExactFailure::UnsupportedLimits
+            }
+        );
+        for report in reports {
+            assert_eq!(report.source(), &snapshot.context);
+        }
+        archive::check_capacity(state, &mut || false).unwrap();
+    }
     #[test]
     fn labeled_capacity_fixture_retains_real_observations_and_one_remaining_slot() {
         let mut controller = DesktopController::verification(

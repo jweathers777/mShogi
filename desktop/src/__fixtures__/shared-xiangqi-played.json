@@ -1,4 +1,44 @@
 {
+  "moves": {
+    "root": {
+      "label": "Starting position",
+      "numbering": "FEN fullmove 1; only known actions are shown"
+    },
+    "entries": [
+      {
+        "event_index": 1,
+        "board_ply": 1,
+        "number": 1,
+        "column": 0,
+        "notation": "C8+7",
+        "action": "b2b9",
+        "command_start": 0,
+        "command_end": 1
+      },
+      {
+        "event_index": 2,
+        "board_ply": 2,
+        "number": 1,
+        "column": 1,
+        "notation": "R1=2",
+        "action": "a9b9",
+        "command_start": 1,
+        "command_end": 2
+      }
+    ],
+    "last_action": {
+      "action": "a9b9",
+      "event_index": 2,
+      "origin": {
+        "kind": "intersection",
+        "point": "a9"
+      },
+      "steps": [
+        "b9"
+      ],
+      "effects": []
+    }
+  },
   "xiangqi": {
     "terminal_actions": {
       "offer_draw": false,

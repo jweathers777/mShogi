@@ -55,6 +55,8 @@ pub struct SyntheticRecord {
 /// Immutable native fixture view; one action completes the demonstration.
 #[derive(Clone, Debug, Serialize)]
 pub struct SyntheticSnapshot {
+    /// Native completed route; partial selections never change it.
+    pub last_action: Option<crate::CompletedActionGeometry>,
     /// Explicit invented profile, distinct from chess and actual variants.
     pub profile: &'static str,
     /// Monotonic session identity, preserved across Reset.
@@ -132,6 +134,19 @@ impl SyntheticController {
             })
             .collect();
         SyntheticSnapshot {
+            last_action: self
+                .actions
+                .last()
+                .and_then(|id| fixture::decode(id))
+                .map(|action| crate::CompletedActionGeometry {
+                    action: fixture::encode(&action),
+                    event_index: self.actions.len(),
+                    origin: crate::ChoiceOrigin::Board {
+                        square: coordinate(action.from),
+                    },
+                    steps: action.route.into_iter().map(coordinate).collect(),
+                    effects: vec![],
+                }),
             profile: SYNTHETIC_PROFILE,
             version: self.version,
             geometry: SyntheticGeometry {

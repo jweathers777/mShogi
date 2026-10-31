@@ -223,6 +223,7 @@ it("keeps completed-history geometry separate from current selection and inspect
   rerender(<Board {...props} completedAction={{ origin: { kind: "board", square: "b8" }, steps: ["c6"] }} />);
   expect(square("e4").getAttribute("aria-label")).toContain("legal destination");
   expect(square("b8").getAttribute("aria-pressed")).toBe("false");
-  expect(document.querySelector('[data-last-move]')).toBeNull();
+  expect(document.querySelector('[data-last-move="origin"]')?.getAttribute("data-location")).toBe("b8");
+  expect(document.querySelector('[data-last-move="destination"]')?.getAttribute("data-location")).toBe("c6");
   fireEvent.click(square("e4")); expect(onPlay).toHaveBeenCalledExactlyOnceWith("e2e4");
 });

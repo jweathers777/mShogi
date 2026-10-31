@@ -1,0 +1,204 @@
+{
+  "package_root": "/private/tmp/msh123-packages/normal/mShogi.app",
+  "engine": "Contents/MacOS/mshogi",
+  "sha256": "92592cb2a4f5ed57ed1b62498b7d288e2a4bc01cb4f0f87827eedf762f9ca5d7",
+  "host_sha256": "3ba1d8a55d88eb802a7fcd8279b565480cf0685e93cfb204d26e21a5532c7286",
+  "version": "mshogi 0.1.0",
+  "uci_observations": [
+    "id name mShogi 0.1.0",
+    "id author John Weathers",
+    "option name ClaimPolicy type combo default explicit var explicit var auto",
+    "uciok",
+    "readyok",
+    "info depth 1 nodes 21 time 5 score cp 0 pv a2a3",
+    "bestmove a2a3"
+  ],
+  "internal_response": {
+    "protocol": 4,
+    "observation": {
+      "schema_version": 1,
+      "context": {
+        "purpose": {
+          "kind": "engine_turn"
+        },
+        "request_id": 1,
+        "session_version": 1,
+        "process_generation": 1,
+        "game": {
+          "envelope_version": 1,
+          "game_kind": "chess",
+          "rules_profile": "mshogi.chess.match.v1",
+          "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+          "native_schema_version": 1,
+          "payload": {
+            "schema_version": 1,
+            "rules_profile": "mshogi.chess.match.v1",
+            "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+            "history_origin": "standard_start",
+            "claim_policy": "explicit_only",
+            "events": []
+          }
+        },
+        "limits": {
+          "depth": 1,
+          "nodes": 1000
+        }
+      },
+      "result": {
+        "kind": "chess",
+        "result": {
+          "kind": "move",
+          "action": "a2a3",
+          "telemetry": {
+            "score": 0,
+            "completed_depth": 1,
+            "nodes": 21,
+            "principal_variation": [
+              {
+                "kind": "move",
+                "action": "a2a3"
+              }
+            ],
+            "status": "complete"
+          }
+        }
+      }
+    }
+  },
+  "analysis_response": {
+    "protocol": 4,
+    "observation": {
+      "schema_version": 1,
+      "context": {
+        "purpose": {
+          "kind": "move_analysis",
+          "target": {
+            "selection_id": 1,
+            "event_index": 0,
+            "board_ply": 0,
+            "session_version": 1,
+            "label": "Package verification: standard start",
+            "turn": {
+              "game_kind": "chess",
+              "side": "white"
+            }
+          }
+        },
+        "request_id": 2,
+        "session_version": 1,
+        "process_generation": 2,
+        "game": {
+          "envelope_version": 1,
+          "game_kind": "chess",
+          "rules_profile": "mshogi.chess.match.v1",
+          "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+          "native_schema_version": 1,
+          "payload": {
+            "schema_version": 1,
+            "rules_profile": "mshogi.chess.match.v1",
+            "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+            "history_origin": "standard_start",
+            "claim_policy": "explicit_only",
+            "events": []
+          }
+        },
+        "limits": {
+          "depth": 1,
+          "nodes": 1000
+        }
+      },
+      "result": {
+        "kind": "chess",
+        "result": {
+          "kind": "move",
+          "action": "a2a3",
+          "telemetry": {
+            "score": 0,
+            "completed_depth": 1,
+            "nodes": 21,
+            "principal_variation": [
+              {
+                "kind": "move",
+                "action": "a2a3"
+              }
+            ],
+            "status": "complete"
+          }
+        }
+      }
+    }
+  },
+  "full_response": {
+    "protocol": 4,
+    "observation": {
+      "schema_version": 1,
+      "context": {
+        "purpose": {
+          "kind": "chess_full_reachability",
+          "target": {
+            "selection_id": 1,
+            "event_index": 0,
+            "board_ply": 0,
+            "session_version": 1,
+            "label": "Package verification: standard start",
+            "turn": {
+              "game_kind": "chess",
+              "side": "white"
+            }
+          },
+          "mate": "either",
+          "limits": {
+            "max_positions": 1,
+            "max_transitions": 1
+          }
+        },
+        "request_id": 3,
+        "session_version": 1,
+        "process_generation": 3,
+        "game": {
+          "envelope_version": 1,
+          "game_kind": "chess",
+          "rules_profile": "mshogi.chess.match.v1",
+          "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+          "native_schema_version": 1,
+          "payload": {
+            "schema_version": 1,
+            "rules_profile": "mshogi.chess.match.v1",
+            "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+            "history_origin": "standard_start",
+            "claim_policy": "explicit_only",
+            "events": []
+          }
+        },
+        "limits": {
+          "depth": 1,
+          "nodes": 0
+        }
+      },
+      "result": {
+        "kind": "chess",
+        "result": {
+          "kind": "reachability",
+          "result": {
+            "unknown": {
+              "reason": "position_limit",
+              "work": {
+                "positions": 1,
+                "expanded": 1,
+                "transitions": 1,
+                "static_leaves": 0
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "files": [
+    "Contents/Info.plist",
+    "Contents/MacOS/mshogi",
+    "Contents/MacOS/mshogi-desktop",
+    "Contents/Resources/icon.icns"
+  ],
+  "scope": "Package inventory and actual UCI, engine-turn, move-analysis and bounded Full reachability queries. Host acceptance and installed UI interaction are separate evidence."
+}

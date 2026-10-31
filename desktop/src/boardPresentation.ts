@@ -23,6 +23,9 @@ export interface NativeHand { origin: string; owner: string; kind: string; count
 // MSH-123 supplies this from exact native history. It is deliberately not input
 // to the interaction controller. R5 does not derive, remember or draw last moves.
 export interface CompletedActionGeometry {
+  readonly action?: string;
+  readonly event_index?: number;
   readonly origin: NativeOrigin;
   readonly steps: readonly string[];
+  readonly effects?: readonly { readonly from: string; readonly to: string }[];
 }

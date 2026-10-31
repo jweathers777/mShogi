@@ -4,6 +4,7 @@ import { gridNeighbor, useNativeChoiceController } from "../interaction/useNativ
 import type { XiangqiSnapshot as GameSnapshot } from "./native";
 import { inspectionStatus, type InspectMovement } from "./movementInspection";
 import { GameFrame } from "./GameFrame";
+import { CompletedActionCue } from "../CompletedActionCue";
 import "../movement-inspection.css";
 import "./xiangqi.css";
 
@@ -16,7 +17,7 @@ export function xiangqiGlyph(kind: string, red: boolean): string {
   return glyphs[kind]?.[red ? 0 : 1] ?? "?";
 }
 
-export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDisabled = disabled }: {
+export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDisabled = disabled, completedAction }: {
   snapshot: GameSnapshot; disabled: boolean; onPlay: (action: string) => void;
   onInspect?: InspectMovement; inspectionDisabled?: boolean;
   // Separate read-only presentation input for MSH-123; never controller state.
@@ -88,6 +89,7 @@ export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspection
           <circle className="xiangqi-focus" r="49" aria-hidden="true" />
         </g>;
       })}
+      <CompletedActionCue action={completedAction} center={key => points.includes(key) ? position(key) : null} radius={47} />
     </svg>
     {completions.length > 0 && <div ref={interaction.completionRef} role="dialog" aria-modal="true" aria-label="Choose complete action" className="shogi-promotion xiangqi-completion" style={{ top: `${Math.floor(points.indexOf(interaction.completionTarget) / columns) < orientation.ranks.length / 2 ? 28 : 54}%` }} onKeyDown={interaction.completionKey}>
       <strong>Complete action</strong><p>Choose the native action for this route.</p><div>{completions.map((choice) => <button key={choice.action} className="primary" onClick={() => interaction.chooseCompletion(choice.action)}>{choice.completion?.label ?? "Complete action"}</button>)}</div><button className="quiet" onClick={interaction.cancel}>Cancel selection</button>

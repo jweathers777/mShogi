@@ -1,4 +1,12 @@
 {
+  "moves": {
+    "root": {
+      "label": "Starting position",
+      "numbering": "Known move pairs · SFEN declares move 1; earlier history is unknown"
+    },
+    "entries": [],
+    "last_action": null
+  },
   "open_token": {
     "document": 2,
     "version": 5,

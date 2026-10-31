@@ -1,6 +1,7 @@
 import type { ResourceFailure } from "../resources";
 import type { AnalysisOperation, AnalysisState, Claim, ChessResult, Color, MatchConclusion, ExecutionObservation } from "../native";
 import type { NativeBoardSnapshot } from "../NativeBoard";
+import type { CompletedActionGeometry } from "../boardPresentation";
 export type GameKind = "chess" | "shogi" | "xiangqi";
 export type NativeSide = { game_kind: "chess"; side: "white" | "black" }
   | { game_kind: "shogi"; side: "sente" | "gote" }
@@ -11,6 +12,11 @@ export interface SearchView {
   selected: boolean; observation_index: number; purpose: string; event_index: number; board_ply: number;
   perspective: string; engine: string; score: string | null; completed_depth: number | null;
   nodes: number | null; variation: string[]; status: string; historical: boolean;
+}
+export interface MovesPresentation {
+  root: { label: string; numbering: string };
+  entries: { event_index: number; board_ply: number; number: number; column: 0 | 1; notation: string; action: string; command_start: number; command_end: number }[];
+  last_action: CompletedActionGeometry | null;
 }
 interface GameSnapshotBase extends Omit<NativeBoardSnapshot, "game" | "orientations" | "sides" | "capabilities"> {
   edition: string;
@@ -24,6 +30,7 @@ interface GameSnapshotBase extends Omit<NativeBoardSnapshot, "game" | "orientati
   capabilities: { board_action: boolean; declaration: boolean; claims: boolean; resign: boolean; undo: boolean; take_back: boolean; move_analysis: boolean; chess_full: boolean; save: boolean; drops: boolean; promotion: boolean; engine_turn: boolean; hands: boolean; history: boolean };
   status: { concluded: boolean; label: string; score_half_points: number[] | null };
   events: { index: number; board_ply: number; label: string }[];
+  moves: MovesPresentation;
   event_index: number; board_ply: number; play_limits: { depth: number; nodes: number }; historical: boolean; paused: boolean;
   phase: "idle" | "thinking" | "cancelled" | "failed" | "incomplete" | "paused";
   diagnostic: string | null;

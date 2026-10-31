@@ -1,4 +1,12 @@
 {
+  "moves": {
+    "root": {
+      "label": "Starting position",
+      "numbering": "FEN fullmove 1; only known actions are shown"
+    },
+    "entries": [],
+    "last_action": null
+  },
   "xiangqi": {
     "terminal_actions": {
       "offer_draw": false,

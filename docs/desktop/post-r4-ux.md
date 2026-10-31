@@ -152,6 +152,34 @@ The FIDE Handbook retrieval timed out and the indexed RCC PDF returned404;
 neither is represented as a successfully read source. No notation implementation,
 fixture execution or GUI verification is claimed here.
 
+### MSH-123 selected notation completion (2026-10-31)
+
+The planning text above is retained as the original contract. The owner has now
+approved the rare-soldier display completion after independent inspection of
+both English and Chinese WXF2018 Article7.5: extend ordinal+file to stacks of
+three through five soldiers, and to paired soldier stacks on multiple files
+where front/rear would be ambiguous. Count from the mover’s front within the
+file, then use the mover-relative file number. Red soldiers c5/c6 and g5/g6 give
+c6→d6 `17=6` and g6→f6 `13=4`. This is an **owner-approved source-consistent
+display extension**, not an assertion that WXF explicitly specifies these rare
+cases. The three-soldier FigureB strings remain `36=5`, `26=5`, `16=5`.
+Neither selected rules profile nor native canonical action/history changes.
+
+MSH-123's native projection owns notation, exact post-action event prefixes,
+separate command boundaries, imported-root numbering provenance and selected
+completed-action geometry. A Xiangqi action at prefix8 and its derived warning
+at9 remain separately selectable; execution at the intra-command action prefix
+is explicitly unsupported rather than silently retargeted. Position events stay
+in a disclosure, outside the two-player move rows. Selected move and event
+access remains through native admission, with no frontend replay.
+
+The completed destination uses strong corners plus two underline strokes;
+origins use smaller dashed corners. This separates completed movement from
+Shogi capture targets, legal dots, inspection rings and keyboard focus without
+relying only on color. Castling secondary movement and ordered compound routes
+come from native geometry; drops have destination only. See the bounded
+[implementation and evidence review](../review/moves-123.md).
+
 ## Document, resignation and historical return behavior
 
 Ordinary controls are **Save** and **Load**. First Save chooses a path; later

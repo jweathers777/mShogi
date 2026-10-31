@@ -54,7 +54,7 @@ pub struct PresentedSide {
     /// Whether this is the native first-moving side.
     pub first_mover: bool,
 }
-fn side(id: NativeSide) -> PresentedSide {
+pub(super) fn side(id: NativeSide) -> PresentedSide {
     let (profile, name, first) = match id {
         NativeSide::Chess(Color::White) => (RulesProfile::ChessMatchV1, "White", true),
         NativeSide::Chess(Color::Black) => (RulesProfile::ChessMatchV1, "Black", false),
@@ -475,6 +475,8 @@ fn display_chess_observation(
 /// Typed shared desktop view with exact runtime identity and native context.
 #[derive(Clone, Debug, Serialize)]
 pub struct SharedSnapshot {
+    /// Native standard notation, exact move/event mapping and selected cue.
+    pub moves: MovesProjection,
     /// Native Xiangqi-only warnings, claims and assessment; no square-game inference.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub xiangqi: Option<XiangqiPresentation>,
@@ -806,6 +808,7 @@ type ShogiRollback = (
 );
 #[derive(Default)]
 pub(super) struct SharedState {
+    pub moves_cache: std::cell::RefCell<crate::moves::Cache>,
     pub admission: Option<(u64, bool)>,
     pub admission_consumes_response: bool,
     pub rollback: Option<ShogiRollback>,
@@ -1518,6 +1521,7 @@ impl DesktopController {
             .collect();
         let record = state.record();
         SharedSnapshot {
+            moves: self.present_moves(game.events().len()),
             xiangqi: None,
             open_token: self.shared_open_token(),
             document: self.shared_document(),
@@ -1703,6 +1707,7 @@ impl DesktopController {
             })
             .collect();
         SharedSnapshot {
+            moves: self.present_moves(snapshot.view.event_index),
             xiangqi: None,
             open_token: self.shared_open_token(),
             document: self.shared_document(),
@@ -1936,3 +1941,25 @@ fn decode_execution_observation(bytes: &[u8]) -> ExecutionObservation {
     assert_eq!(response.protocol, mshogi_engine::PROTOCOL_VERSION);
     response.observation
 }
+
+impl DesktopController {
+    pub(super) fn present_moves(&self, selected: usize) -> MovesProjection {
+        // Native identity is monotonic across undo/reopen; this transient cache
+        // owns no live/canonical state. Polling never replays game adjudication.
+        let key = (self.session.document_epoch, self.session.version);
+        self.shared
+            .moves_cache
+            .borrow_mut()
+            .get(key, selected, || match &self.session {
+                ActiveDocument::Chess(state) => crate::moves::chess_projection(state),
+                ActiveDocument::Shogi { state, .. } => crate::moves::shogi_projection(&state.game),
+                ActiveDocument::Xiangqi { state, .. } => {
+                    crate::moves::xiangqi_projection(&state.game)
+                }
+            })
+    }
+}
+
+#[cfg(test)]
+#[path = "shared_moves_tests.rs"]
+mod moves_tests;

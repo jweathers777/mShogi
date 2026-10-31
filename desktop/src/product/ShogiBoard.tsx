@@ -3,6 +3,7 @@ import { gridNeighbor, useNativeChoiceController } from "../interaction/useNativ
 import type { ShogiSnapshot as GameSnapshot, Side } from "./native";
 import { inspectionStatus, type InspectMovement } from "./movementInspection";
 import { GameFrame } from "./GameFrame";
+import { CompletedActionCue } from "../CompletedActionCue";
 import "../movement-inspection.css";
 
 // Decoration only. Native kind/promotion/owner remain the action and identity data.
@@ -25,7 +26,7 @@ function pieceName(piece: NativePiece, sides: Side[]) {
   const owner = sides.find((s) => s.key === piece.owner)?.label ?? "Player";
   return `${piece.square}, ${owner} ${piece.promoted ? "promoted " : ""}${piece.kind}`;
 }
-export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDisabled = disabled, inspectionContextKey }: {
+export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDisabled = disabled, inspectionContextKey, completedAction }: {
   snapshot: GameSnapshot; disabled: boolean; onPlay: (action: string) => void;
   onInspect?: InspectMovement; inspectionDisabled?: boolean; inspectionContextKey?: string;
   // Separate read-only presentation input for MSH-123; never controller state.
@@ -85,6 +86,7 @@ export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDi
         })}
         {orientation.files.map((file, i) => <text className="shogi-coordinate" key={file} x={78 + i * 100} y={height - 7} textAnchor="middle" aria-hidden="true">{file}</text>)}
         {orientation.ranks.map((rank, i) => <text className="shogi-coordinate" key={rank} x={width - 13} y={87 + i * 100} textAnchor="middle" aria-hidden="true">{rank}</text>)}
+        <CompletedActionCue action={completedAction} center={key => { const index = squares.indexOf(key); return index < 0 ? null : [78 + index % columns * 100, 78 + Math.floor(index / columns) * 100]; }} />
       </svg>
       {completions.length > 0 && <div ref={interaction.completionRef} role="dialog" aria-modal="true" aria-label="Choose promotion" className="shogi-promotion" style={{ top: `${Math.floor(destinationIndex / columns) < rows / 2 ? 28 : 54}%` }} onKeyDown={interaction.completionKey}><strong>Promotion</strong><p>Choose how this piece completes its move.</p><div>{completions.map((c) => <button key={c.action} className="primary" onClick={() => interaction.chooseCompletion(c.action)}>{c.completion?.label ?? "Complete move"}</button>)}</div><button className="quiet" onClick={interaction.cancel}>Cancel promotion</button></div>}
     </div>;

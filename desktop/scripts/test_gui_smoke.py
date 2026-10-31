@@ -565,6 +565,39 @@ class CurrentFileWorkflowTests(unittest.TestCase):
                     self.assertNotEqual(module.retained_document_state(before), module.retained_document_state(changed))
 
 
+class ChessMatchResignationEvidenceTests(unittest.TestCase):
+    def setUp(self):
+        fixture = json.loads((Path(__file__).with_name('fixtures') /
+                              'msh125-chess-resignation-actual.json').read_text())
+        self.before, self.after = fixture['before'], fixture['after']
+        self.conclusion = {'unresolved': {'trigger': 'resignation', 'actor': 'white'}}
+
+    def test_actual_linux_match_terminal_event_preserves_board_record_and_is_unscored(self):
+        self.assertEqual(self.before['context'], self.after['context'])
+        self.assertTrue(module.chess_resignation_matches(self.before, self.after, 'white', self.conclusion))
+        self.assertFalse(module.chess_resignation_matches(self.before, self.after, 'black', self.conclusion))
+        self.assertFalse(module.chess_resignation_matches(self.before, self.after, 'white',
+                         {'win': {'winner': 'black', 'trigger': 'resignation'}}))
+
+    def test_wrong_actor_stale_rejected_duplicate_or_invented_board_action_cannot_pass(self):
+        changes = [
+            lambda d: d['chess_match']['events'][-1]['request'].update(actor='black'),
+            lambda d: d['chess_match']['events'][-1]['request'].update(version=0),
+            lambda d: d['chess_match']['events'][-1]['reply'].update(rejection='stale'),
+            lambda d: d['chess_match']['events'][-1]['reply'].update(active='black'),
+            lambda d: d['chess_match']['events'].append(copy.deepcopy(d['chess_match']['events'][-1])),
+            lambda d: d['context']['payload']['events'].append({'event': {'kind': 'move', 'action': 'e4e5'}, 'ply': 2}),
+            lambda d: d['chess'].update(live_conclusion={'win': {'winner': 'black', 'trigger': 'resignation'}}),
+            lambda d: d['token'].update(document=d['token']['document']+1),
+            lambda d: d['token'].update(version=self.before['token']['version']),
+        ]
+        for index, change in enumerate(changes):
+            with self.subTest(index=index):
+                after = copy.deepcopy(self.after)
+                change(after)
+                self.assertFalse(module.chess_resignation_matches(self.before, after, 'white', self.conclusion))
+
+
 class KeyboardControlReadinessTests(unittest.TestCase):
     def setUp(self):
         self.web = object.__new__(module.Webview)

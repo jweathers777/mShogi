@@ -124,6 +124,29 @@ def never_saved_close_source(diagnostics):
             and diagnostics.get('close_requires_save') is True)
 
 
+def chess_resignation_matches(before, after, actor, expected_conclusion):
+    """Chess terminal authority is the match ledger, separate from board moves."""
+    old, new = before['chess_match'], after['chess_match']
+    if len(new['events']) != len(old['events']) + 1 or new['events'][:-1] != old['events']:
+        return False
+    event = new['events'][-1]
+    request, reply = event['request'], event['reply']
+    return (before['profile'] == after['profile'] == 'mshogi.chess.match.v1'
+            and before['context'] == after['context']
+            and before['moves'] == after['moves']
+            and before['token']['document'] == after['token']['document']
+            and after['token']['version'] > before['token']['version']
+            and all(old[key] == new[key] for key in ('rules_profile', 'schema_version', 'time_control', 'initial_record_json'))
+            and request['actor'] == actor
+            and request['command'] == {'resign': {'witness': None}}
+            and request['version'] == old['events'][-1]['reply']['version']
+            and request['at_ns'] >= old['events'][-1]['request']['at_ns']
+            and reply['version'] == request['version'] + 1
+            and reply['rejection'] is None and reply['active'] is None
+            and reply['conclusion'] == expected_conclusion
+            and after['chess']['live_conclusion'] == after['chess']['selected_conclusion'] == expected_conclusion)
+
+
 def play_limit_matches(text, depth, nodes):
     """Compare actual displayed integers without imposing a WebView locale."""
     match = re.fullmatch(r"Play limit: depth ([0-9]+) · ([0-9,. \u00a0\u202f]+) nodes", text or "")
@@ -1074,10 +1097,21 @@ class Journey:
         wait(lambda: not w.has('.resign-button'), "direct authoritative resignation settles")
         assert not w.has('.confirmation-dialog'), "Resign must not open another confirmation"
         after = self.native_diagnostics()
-        assert after['context'] != before['context'], (before, after)
-        assert 'resign' in json.dumps(after['context']).casefold(), after
+        if game == 'chess':
+            # Ordinary M2 play has not established an exact mate witness. The
+            # native match records an honest unscored resignation, without
+            # inventing another board move or altering the canonical game.
+            expected = {'unresolved': {'trigger': 'resignation', 'actor': 'white'}}
+            assert chess_resignation_matches(before, after, 'white', expected), (before, after)
+        else:
+            assert after['context'] != before['context'], (before, after)
+            assert 'resign' in json.dumps(after['context']).casefold(), after
         status = w.text('[data-game-status]')
         assert 'native rules determine' not in status.casefold()
+        if game == 'chess':
+            assert status == 'Unresolved — unscored', status
+            assert 'White resigned.' in w.text('.outcome-card')
+            assert 'no score is assigned' in w.text('.outcome-card')
         self.record("Direct Resign submits native actor once and presents actual result", {
             "game": game, "before": before, "after": after, "visible_result": status})
         self.capture(f"workflow-{game}-direct-resign")

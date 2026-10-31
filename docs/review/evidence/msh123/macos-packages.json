@@ -1,0 +1,25 @@
+{
+  "source_revision": "fc7a6ae9e7499c40999c5a0396bc31e87d4e07e4",
+  "note": "Normal and separately labeled feature package built from this production source before the source commit; subsequent changes were test/evidence only. Full source diff clean at capture.",
+  "platform": "macOS arm64",
+  "packages": {
+    "normal": {
+      "path": "/private/tmp/msh123-packages/normal/mShogi.app",
+      "files": {
+        "Contents/Info.plist": "343be4b5b0ce533854424094072924e4695b92c95e1c220e1cd7ec09b5a8ce90",
+        "Contents/MacOS/mshogi": "92592cb2a4f5ed57ed1b62498b7d288e2a4bc01cb4f0f87827eedf762f9ca5d7",
+        "Contents/MacOS/mshogi-desktop": "3ba1d8a55d88eb802a7fcd8279b565480cf0685e93cfb204d26e21a5532c7286",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+      }
+    },
+    "verification": {
+      "path": "/private/tmp/msh123-packages/verification/mShogi Verification.app",
+      "files": {
+        "Contents/Info.plist": "166a320e22c63d1fea58096a8b4e25432753d73fe439fe3797b738473f828172",
+        "Contents/MacOS/mshogi": "92592cb2a4f5ed57ed1b62498b7d288e2a4bc01cb4f0f87827eedf762f9ca5d7",
+        "Contents/MacOS/mshogi-desktop": "c419e682718927ffb3c8e5d179e87bc2ac71586f2ae3e30cb882dee4c54eb3e6",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+      }
+    }
+  }
+}

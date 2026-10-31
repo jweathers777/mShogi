@@ -1,0 +1,84 @@
+{
+  "source_revision": "fc7a6ae9e7499c40999c5a0396bc31e87d4e07e4",
+  "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/41199352841",
+  "report_sha256": "f585243e640a7e6134a3891372b8380d74088cb0039bf9c17e277f952baf4a0e",
+  "status": "failed",
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "failed",
+      "error": "('.moves-root', {'enabled': False, 'visible': True, 'matches': 1, 'focused': False})"
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "failed",
+      "error": "('.moves-root', {'enabled': False, 'visible': True, 'matches': 1, 'focused': False})"
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "failed",
+      "error": "Timed out: fresh normal Chess launch dispatches shogi archive; last observation: False"
+    },
+    {
+      "phase": "normal-xiangqi",
+      "status": "failed",
+      "error": "('.moves-root', {'enabled': False, 'visible': True, 'matches': 1, 'focused': False})"
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed",
+      "error": null
+    }
+  ],
+  "finding": "New verifier issued keyboard input while native Flip capacity admission was pending. Product controls truthfully disabled. All3normal journeys failed, reopened phase missing prerequisite save secondary failure. Eleven separately labeled fixture phases passed. Verification-only readiness correction waits exact orientation/event and enabled controls; production unchanged."
+}

@@ -1,0 +1,5 @@
+    Checking mshogi-core v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-core)
+    Checking mshogi-search v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-search)
+    Checking mshogi-engine v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-engine)
+    Checking mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.34s

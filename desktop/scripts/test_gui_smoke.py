@@ -114,6 +114,53 @@ class MovesKeyboardEvidenceTests(unittest.TestCase):
         self.web.key.assert_called_once_with("\ue007")
 
 
+class MovesAdmissionReadinessTests(unittest.TestCase):
+    def state(self):
+        return {"event": "2", "orientation": "Flip board; currently Black at bottom",
+                "rootEnabled": True, "flipEnabled": True, "targetEnabled": True, "checkingCapacity": False}
+
+    def test_changed_label_without_settled_admission_does_not_authorize_next_input(self):
+        state = self.state()
+        self.assertTrue(module.moves_controls_settled(state, 2, changed_from="Flip board; currently White at bottom"))
+        for field, value in (("rootEnabled", False), ("flipEnabled", False), ("targetEnabled", False),
+                             ("checkingCapacity", True), ("event", "3"), ("orientation", None)):
+            with self.subTest(field=field):
+                self.assertFalse(module.moves_controls_settled({**state, field: value}, 2))
+        self.assertFalse(module.moves_controls_settled(state, 2, changed_from=state["orientation"]))
+        self.assertFalse(module.moves_controls_settled(state, 2, orientation="Flip board; currently White at bottom"))
+
+    def test_flip_is_sent_once_then_only_readonly_pending_observations_are_polled(self):
+        journey = object.__new__(module.Journey)
+        journey.web, journey.record = Mock(), Mock()
+        before = {**self.state(), "orientation": "Flip board; currently White at bottom"}
+        after = self.state()
+        journey.web.read.side_effect = [before, {**after, "rootEnabled": False, "checkingCapacity": True}, after]
+        with patch.object(module.time, "sleep"):
+            self.assertEqual(journey.flip_moves_board(2, '.moves-table [data-event="2"]'), after)
+        journey.web.click.assert_called_once_with(".flip-button")
+        journey.web.key.assert_not_called()
+        expression = journey.web.read.call_args.args[0]
+        for forbidden in (".focus(", ".click(", "scrollIntoView(", "dispatchEvent(", "invoke("):
+            self.assertNotIn(forbidden, expression)
+
+    def test_return_flip_requires_restored_label_and_does_not_repeat_failed_input(self):
+        journey = object.__new__(module.Journey)
+        journey.web, journey.record = Mock(), Mock()
+        before = self.state()
+        restored = {**before, "orientation": "Flip board; currently White at bottom"}
+        journey.web.read.side_effect = [before, before, restored]
+        with patch.object(module.time, "sleep"):
+            self.assertEqual(journey.flip_moves_board(2, ".moves-root", restored["orientation"]), restored)
+        journey.web.click.assert_called_once_with(".flip-button")
+        journey.web.read.side_effect = None
+        journey.web.read.return_value = before
+        journey.web.click.reset_mock()
+        journey.web.click.side_effect = http.client.RemoteDisconnected("flip delivery unknown")
+        with self.assertRaises(http.client.RemoteDisconnected):
+            journey.flip_moves_board(2, ".moves-root")
+        journey.web.click.assert_called_once_with(".flip-button")
+
+
 class XiangqiBoardGeometryTests(unittest.TestCase):
     def geometry(self, points=90, visible=True):
         return {"viewport": {"width": 760, "height": 650}, "points": points, "allVisible": visible,

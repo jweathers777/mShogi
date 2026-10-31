@@ -1,0 +1,10 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-72dbb958aa69b860)
+
+running 3 tests
+test shared::moves_tests::shared_moves_chess_real_admission_reopen_and_takeback_do_not_fabricate_cues ... ok
+test shared::moves_tests::shared_moves_shogi_exact_prefix_analysis_reopen_and_replacement_keep_identity ... ok
+test shared::moves_tests::shared_moves_xiangqi_action_plus_warning_preserves_exact_eight_and_nine_prefixes ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 196 filtered out; finished in 0.09s
+

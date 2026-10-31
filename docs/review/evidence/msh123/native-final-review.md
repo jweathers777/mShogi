@@ -27,3 +27,13 @@ SHA256 final reviewed source/docs (prior future evidence-only append):
 | core xiangqi/game.rs | 8b06419d5abad306b9fb73a8075a186b6fe495444835a77a50f771593a8278ec |
 | docs/review/moves-123.md | 7838c66c2999b946b20df0f309f6ac183de1ccb372b77c93415ecf0bdf782d44 |
 | docs/desktop/post-r4-ux.md | 91ce15c7944f365ce040c6c535d1047e4e42f2e09d175e349dfcc7c2606ae8fb |
+
+## Final narrow cancellation-test reconciliation
+
+Read-only review at source commit `fc7a6ae9e7499c40999c5a0396bc31e87d4e07e4`. The original full verification-feature run's **198 passed /1 failed** is retained as an actual author-reported result: the new Chess consumer test assumed the shared manual-engine flag suppressed Chess execution. Source inspection confirms `SharedState::auto_submit` gates only Shogi/Xiangqi; `poll_chess` still launches the real supervisor against the deliberately absent executable.
+
+The corrected assertion is meaningful and appropriately bounded. `ChessMutationCommand::Cancel` admits only pending Thinking work and publishes Cancelled; otherwise it returns exactly `There is no active engine search to cancel.` The shared native admission error path cancels the bridge and calls `retire_execution`, which clears pending/analysis, sets paused and publishes Paused. The test now accepts only these two supported race orderings, checks the precise phase and (for rejection) stopped execution, then independently asserts unchanged canonical context, complete move entries and selected e2→e4 cue. It does not accept arbitrary errors, invented moves/results or a running failed launch. Save/Open/Take back/stale-token checks remain intact.
+
+**PASS; no material finding.** This changes the test's invalid scheduler assumption rather than production semantics or a native rules oracle. Reviewer inspected the actual cancellation/admission paths and fixed assertion; no expensive suite was rerun. Integrator reports three verification-feature focused runs of3 tests each passed; those are integrator execution evidence, not newly executed reviewer tests. CI remains running and is not claimed passed here.
+
+Updated `shared_moves_tests.rs` SHA256: `8153c0e397dccbca08154812a244346031ec54a23007ac9d736ec3ed921452bc`. Earlier hash in the checkpoint table remains historical, superseded for this test file by this paragraph.

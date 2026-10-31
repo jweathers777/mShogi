@@ -1,0 +1,66 @@
+{
+  "source_revision": "fc7a6ae9e7499c40999c5a0396bc31e87d4e07e4",
+  "environment": {
+    "os": "macOS27.0.1 (26A434)",
+    "arch": "arm64",
+    "interaction": "native CUA, actual packaged applications",
+    "content_sizes": [
+      [
+        1180,
+        820
+      ],
+      [
+        760,
+        650
+      ]
+    ],
+    "minimum_size_method": "separate feature package native Verification window size menu; exact dimensions in title"
+  },
+  "normal_journeys": [
+    "Chess e2e4/bundled a7a5 reply: e4/a5, exact historical event2, flip, Returnlive, Takebackroot",
+    "Shogi7g7f by actualkeyboard/bundled4c4dreply: ７６歩/４４歩; exactevent1",
+    "Xiangqi a3a4/bundledb7b0reply: P9+1/C2+7; exactevent1"
+  ],
+  "verification_journeys": [
+    "All3 actualplay/history/flip at760x650",
+    "Shogi actualTab to Startingposition Enter selects0; nextTabJapanese７６歩Enter selects1 andretainsfocus",
+    "Shogi bishop8h legalcapture4d simultaneouslywithcompletedGote4c4d doubleunderline; Escape cancels selection only",
+    "Shogi-hands nativeP*5e, destinationonly, genuineengine-startfailure bytemporarilyholdingQAengine; restore+Retryactual1a1breply",
+    "Syntheticpartiali9→j10 noacceptedaction; capture-return136>153>136 andalternative136>135>136, distinctroutegeometry/native records; nativeQuitguards"
+  ],
+  "limitations": [
+    "Immediate-action screenshots may show completed replies; do not claim active-thinking captures from these images. Actual native AX reported thinking during Chess/Xiangqi; persistence whilethinking also verified with frontend/controller regressions.",
+    "Two attempted normal native resize drags did not establish minimum size; no minimum-size claim relies on them. ExactminimumQA menu and Linux/Windows driver measurements own that evidence.",
+    "Sandboxed directQAfixture launch exited134 withoutdiagnostics; explicitlyauthorized unsandboxed launch succeeded. No package defect inferred."
+  ],
+  "native_cleanup": "Normal and QA closed through nativeCmd-Q guards; QA engine restored to manifesthash.",
+  "screenshots": {
+    "chess-history-flipped-minimum.png": "ad08fa6ee3063108c7180602511988421bd4e18732fab73b942fbf1c12cbe387",
+    "chess-history-flipped-normal.png": "b35e5202d62585e897cabc1608eaab349072c1f0cff821605364db703331421b",
+    "chess-history-minimum.png": "c34ab3fbdf42392d59b34d60b46b9cfb61d559ab6e899c5ccebb160c93e94116",
+    "chess-history-normal.png": "da2d3816556191abcd5bf5ce2d4c3bf7074740fabdc888aa055bac5489d0a65c",
+    "chess-live-normal.png": "e67e62274c16640f345a45966730600f492f1bdcbbf914f5f3dc2b392f78df21",
+    "chess-minimum-after-action.png": "40d03b7ed2727525ee6c68fd48577cf40baffdf5b3940fc53a89489227050c12",
+    "chess-takeback-root.png": "d20bb0515a576d0c411f1f9e4885024fd94d831a4889e97cb08fc2cbd732154b",
+    "shogi-after-keyboard-admission.png": "9a75ca7abe08373212cdb1582e7d0def4a21b2f2003e69c0c949ff3f7e5b1e2e",
+    "shogi-drop-destination-only-failure.png": "69686c8073dfbc4cb4955d4e754dc091bc2009fa876be9e66e6824438f314cd8",
+    "shogi-drop-retry-real-reply.png": "6a6850253fd8e575325c6c09710b1b22dfedec9be7c86ca540684c6a7cdf8a95",
+    "shogi-history-flipped-minimum.png": "2af6f4d5e0235d5307351bb7c8bd5f4649f4acd7105bddfd8ab8d3c98edfe648",
+    "shogi-history-minimum.png": "7250e1dc3e3b70be8402ef702b0ea76d0350f2a766a4483ae1fc9a4e2a7d983a",
+    "shogi-history-normal.png": "9a32eab436024253cc713e7651c574055376dbd59e4cc8e6756729ec612197fd",
+    "shogi-live-normal.png": "c8d497a2cfe1937a10ede4a81d3410bcdba18d015e00e366bdde1d83f648acc3",
+    "shogi-minimum-capture-and-completed.png": "86a91874d5acce354e537e4e0d5fa4af20d1bb3d25349a4e5c6c5d76fe0bd97e",
+    "shogi-minimum-immediate-action.png": "7c019498b502c1a2b7ccbf49450422f064c83589c16c2d9544279615fa4b955b",
+    "shogi-minimum-keyboard-move.png": "55ee322bc9531d2abf1e4c81100340467338c55621f217ad1994eb9595f97b8a",
+    "synthetic-alternative-return-cue.png": "b5819ede8438b3d8a027f9c710ff53b2386378f271e218aa0cb08ee34437860f",
+    "synthetic-capture-return-cue.png": "6d760336df04ea33113100a56f77374847970604df1d4a17485738f26bcf4875",
+    "synthetic-capture-return-record.png": "467f93cc0f19882117c4ec56d1ee14721cabc70d9795e4e9279da234b6cafba8",
+    "synthetic-partial-no-completed-action.png": "5d09642831182faa2f790b7a5cb8cbd7e809115513cbfc5f867ad214329887d2",
+    "xiangqi-after-native-action.png": "e77e8467c628ac85ff6d18d48db8ed704722bae028bdda34e59380a982d9f9e4",
+    "xiangqi-history-flipped-minimum.png": "3a6e8b9e6d88779913cd6ceedeb42dde4e27a0437fe5930f30869c6cb3229aa7",
+    "xiangqi-history-minimum.png": "88b90de4f495884ed70fcb0b8f790d00bb37a1b91e1a26901f24184ce8ba7b07",
+    "xiangqi-history-normal.png": "0fd21e19cdc927b3d7d1cc40c0c0ee438c97f0ad700c132d2d45e2f722a7d8e2",
+    "xiangqi-live-normal.png": "3d42b2a4c5e9baedaa5512675b201a7522d5542bfd2797daba60eb2ef0dfad37",
+    "xiangqi-minimum-immediate-action.png": "f10b83f6ee36663ef9fc033fb3d235ca6b5a2c04209e12a71e1a184b9c85e9b7"
+  }
+}

@@ -43,6 +43,37 @@ class ReplacementAnalysisAuthorityTests(unittest.TestCase):
             self.assertFalse(module.replacement_analysis_accepted(game, before, after, True))
 
 
+class XiangqiImmutableWarningPrefixTests(unittest.TestCase):
+    def pair(self):
+        events = [{'event': {'kind': 'board_action', 'action': f'independent-{i}'}} for i in range(8)]
+        context = {'native_record': 'complete live command history through warning9'}
+        earlier = {'token': {'document': 7, 'selection': 8}, 'context': copy.deepcopy(context),
+            'xiangqi': {'selected_events': events, 'selected_position': 'same diagram and counters',
+                       'canonical_context_scope': 'live_with_immutable_selection',
+                       'selected_canonical': None, 'warnings': []}}
+        warned = copy.deepcopy(earlier)
+        warned['token']['selection'] = 9
+        warned['xiangqi'].update(canonical_context_scope='selected_committed', selected_canonical=copy.deepcopy(context),
+             selected_events=[*events, {'event': {'kind': 'warning'}}],
+             warnings=[{'active': True, 'side': 'red', 'fault': 'perpetual_check'}])
+        return earlier, warned
+
+    def test_shared_live_canonical_does_not_erase_native_immutable_selection(self):
+        earlier, warned = self.pair()
+        self.assertTrue(module.warning_prefix_transition(earlier, warned))
+        earlier['xiangqi']['selected_canonical'] = copy.deepcopy(earlier['context'])
+        self.assertFalse(module.warning_prefix_transition(earlier, warned), 'cannot fabricate a canonical record for a partial command')
+
+    def test_identical_history_or_wrong_warning_does_not_establish_the_transition(self):
+        for mutate in (lambda old,new: new['token'].update(selection=old['token']['selection']),
+                       lambda old,new: new['xiangqi'].update(selected_events=old['xiangqi']['selected_events']),
+                       lambda old,new: new['xiangqi']['warnings'][0].update(side='black'),
+                       lambda old,new: new['xiangqi'].update(selected_position='different board'),
+                       lambda old,new: old.update(context={'forged': 'short canonical record'})):
+            earlier, warned = self.pair(); mutate(earlier, warned)
+            self.assertFalse(module.warning_prefix_transition(earlier, warned))
+
+
 class SharedPresentationTests(unittest.TestCase):
     def test_inspection_status_uses_exact_shared_copy_and_native_labels(self):
         for label in ('Black pawn', 'Gote pawn', 'Gote pawn in hand', 'Black cannon'):

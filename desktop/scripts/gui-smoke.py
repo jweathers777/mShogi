@@ -105,6 +105,31 @@ def replacement_analysis_accepted(game, before, after, analyzing):
     return game in ('shogi', 'xiangqi')
 
 
+def warning_prefix_transition(earlier, warned):
+    """An intra-command prefix is immutable history, not a forged canonical game.
+
+    Native event8 precedes its derived warning9 within one board command.
+    Both have the same diagram and full live canonical context, but distinct
+    native selected event prefixes, warning state and selection authority.
+    """
+    old, new = earlier['xiangqi'], warned['xiangqi']
+    before_events, after_events = old['selected_events'], new['selected_events']
+    return (earlier['token']['document'] == warned['token']['document']
+            and earlier['token']['selection'] != warned['token']['selection']
+            and earlier['context'] == warned['context']
+            and old['selected_position'] == new['selected_position']
+            and old['canonical_context_scope'] == 'live_with_immutable_selection'
+            and old['selected_canonical'] is None
+            and new['canonical_context_scope'] == 'selected_committed'
+            and new['selected_canonical'] == warned['context']
+            and len(before_events) == 8 and len(after_events) == 9
+            and after_events[:-1] == before_events
+            and after_events[-1]['event']['kind'] == 'warning'
+            and not old['warnings']
+            and any(warning['active'] and warning['side'] == 'red'
+                    and warning['fault'] == 'perpetual_check' for warning in new['warnings']))
+
+
 def saved_document_accepted(observation, expected_path):
     """One DOM observation must establish native acceptance, not an old Saved label."""
     return (observation["path"] == str(expected_path)
@@ -2085,13 +2110,15 @@ class Journey:
             w.keyboard_activate('.moves-table [data-event="8"]')
             wait(lambda: w.read("document.querySelector('.game-shell').dataset.currentEvent") == '8', 'select exact prefix before warning')
             earlier = self.xiangqi_diagnostics()
+            assert 'Repetition warning' not in w.text('.shell-notices'), 'future warning must not appear at immutable prefix8'
             if not w.read("document.querySelector('.moves-events').open"):
                 w.click('.moves-events summary')
             w.keyboard_activate('.moves-events [data-event="9"]')
             wait(lambda: w.read("document.querySelector('.game-shell').dataset.currentEvent") == '9', 'select exact warning prefix')
             warned = self.xiangqi_diagnostics()
-            assert earlier['context'] != warned['context'], 'same board does not erase warning event identity'
-            assert len(earlier['context']['payload']['events']) + 1 == len(warned['context']['payload']['events'])
+            assert warning_prefix_transition(earlier, warned), (earlier, warned)
+            assert 'Repetition warning' in w.text('.shell-notices')
+            self.record('Exact immutable intra-command prefix and committed warning boundary', {'earlier': earlier, 'warned': warned})
             self.capture('warning-exact-event-prefix')
             w.button('Return to live')
         elif name == 'xiangqi-count':

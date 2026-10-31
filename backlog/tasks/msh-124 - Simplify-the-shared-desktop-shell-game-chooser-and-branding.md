@@ -1,11 +1,11 @@
 ---
 id: MSH-124
 title: Simplify the shared desktop shell game chooser and branding
-status: In Progress
+status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-31T09:02:00Z'
-updated_date: '2026-10-31T13:38:00Z'
+updated_date: '2026-10-31T13:54:00Z'
 labels:
   - desktop
   - owner-approved-ux
@@ -62,4 +62,8 @@ MSH-123 final platform visual handoff (planning note only; task remains Ready/un
 Startup: root Codex owns MSH-124 in primary codex/rewrite at97b9470943107ae842c8184081c5e8e4cd26ef32; clean checkout, no active In Progress/In Review owner displaced, unrelated worktrees preserved. PATH Backlog1.55.0 differs; pinned project1.55.1 overview/execution guide used for all mutations. MSH-119 dependency and completed120/123 evidence inspected. User attachment requires correction of123focusedge, not optional deferral. ProductApp currently owns chooser/lifecycle; ApplicationShell orders analysis/history/actions/technical; ApplicationView owns diagnostics/capability composition; Dialog already traps select/buttons and restores invoker. No native or125 lifecycle change planned.
 
 Implementation checkpoint: one shared Analysis → Game Actions → Moves composition; supported-only native HTML game selector retains existing side radio buttons and admission/dirty guards. Shared 歩 header About dialog replaces sidebar diagnostics, retaining raw context/provenance/resource facts/licenses/Quit; Xiangqi fast/exact/Unknown/witness meanings remain readable in Analysis. Non-board nested scroll gutters/reveal preserve outward focus rings; R5 and native code unchanged. Focused tests added; independent source review in progress and actual packaged visual/focus verification still required. Initial frontend failures were obsolete copy/order expectations plus a new About trap regression test: jsdom comma-selector ordering placed visible links before summaries; explicit document order now enforced and rerun pending. No failed check treated as passed.
+
+Implementation integrated/pushed checkpoint de5209d3ac0d987d42396a5b2e3bf4325800784d; final production ead30e672f2a2cf1747c02c8daa508babed3b7c2 adds only support paragraph wrapping found by actual GUI/independent visual review. Author full frontend272/25files PASS, strictTS PASS, external GUI-driver71 PASS. Independent source reviewer shell124_review executed141 focused checks +TS PASS; corrected DOM-order About trap finding resolved. Local actual normal all3 at1180 and separately labeled minimum760 package keyboard/history/full-focus checks PASS; final About normal/min wrapping/focus rechecked. Exact manifests, original failing/settling observations and successful captures preserved under docs/review/evidence/msh124/macos. CI and final independent visual/platform audit pending; AC/DoD remain unchecked until evidence complete.
+
+Initial Desktop CI41206493902 atde5209d: macOSpackagePASS; Linux/Windows12of15GUIphasesPASS/3FAIL. Exact report retained. Two failures were obsolete verification copy (historical read-only prose and Recorded native evidence); corrected probes now also require exact historical event/native mode/Return availability and accepted255/256 counts. Real cross-game minimum Analysis height mismatch: LinuxXq221vsChess200, WindowsXq229.046875vsChess200. Shared minimum232px reserves actual content in all3; strict cross-game geometry comparison unchanged. Root external73PASS; independent reviewer checked measured232correction as in-scope. Fresh actualminimumcaptures and CI required before closing finding.
 <!-- SECTION:NOTES:END -->

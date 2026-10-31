@@ -7,7 +7,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-10-30T12:06:00Z'
-updated_date: '2026-10-31T17:00:00Z'
+updated_date: '2026-10-31T17:41:00Z'
 labels:
   - architecture-migration
   - planning
@@ -78,4 +78,6 @@ Startup13510da9e24b69a340444f272668ecb59478ddbb clean codex/rewrite, fetched ori
 Fresh independent current135source audits PASS: native294checks(45rulesfixtures+22execution+15actualsubprocess+212session), frontend158+strictTS. No materialproductionfinding. Identified requiredGUIcoveragegaps in old15phases, so externalQA verifier now31phases plus100unit/gatechecks, native QA-only5exact-report fixture(1PASS) with independent Save/Open5reports PASS. InitialQAauthoring Clone compilefailure and wrongselected-prefix attachment rejection corrected without weakening nativeadmission. Independentverifier findings event8selector/newnativeack/Windowsjobownership/Winexecution-suffix addressed. Newgate5secbound stayswithin unchangedwatchdog, executesrealengine andrecordsidentities. Productdefaultsource unchanged; QAfixture/hostbranch/externaltools only. Currentstatus remainsInProgress with everyAC/DoD unchecked; actualfreshall3platformGUI/CI nowrequired.
 
 Fresh independent native/public-API and frontend review confirms warning-prefix verifier correction: selected event8 is immutable intra-command history with live canonical9, event9 is committed warning prefix. Corrected probe checks exact selected events, canonical scope, selection identity and warning visibility;102 independent external checks PASS. No product correction required. Superseded176 Desktop campaign retains its actual outcome; corrected verifier campaign required before closure.
+
+Actual176 packaged GUI Linux/Windows27/31 each;0b169 warning-corrected campaigns28/31 each. Remaining three failures are external pending-probe assumptions: Chess Match Start offsets2/1, Shogi/Xiangqi ordered-control retained lineage rather than Chess takebacks array. Actual saved archives independently replay/open/save losslessly; focused native retired-work testPASS. Corrections plus native Load assertions independently reviewed104testsPASS. No product change. Native0b169 CI41222383083 all3PASS; original176Linux runner exit/Broken-pipe classification failure preserved underMSH112, not fixed by rerun. Final corrected GUIcampaign required; allACremainunchecked.
 <!-- SECTION:NOTES:END -->

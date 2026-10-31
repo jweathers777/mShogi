@@ -83,3 +83,17 @@ Synthetic remains clearly labeled invented development/Verification content. In 
 The screenshot named capture-return-record shows the Separate synthetic record disclosure opened near the bottom of the independently scrolling inspector, but its JSON text is below the captured viewport. Therefore this reviewer does **not** claim to have read the exact canonical136>153>136 JSON from that image. Exact native action identity is independently covered by the source/validator assertions and the integrator's actual GUI observations, while these captures establish route/effect and accepted-count visual distinctions.
 
 Personally reviewed27 package screenshots total. Final review is scoped to source/frontend interaction and supplied actual macOS visuals. It does not claim that screenshot inspection executed the UI or proves Linux/Windows behavior; CI/platform artifacts and native/rules/notation evidence have separate provenance. No new visual owner checkpoint is required by this review.
+
+## Actual in-flight engine-work cue captures
+
+Personally opened the final three macOS Verification captures:
+
+- `chess-thinking-real-engine-delayed.png`
+- `shogi-thinking-real-engine-delayed.png`
+- `xiangqi-thinking-real-engine-delayed.png`
+
+All native title bars identify the separate Verification build, standard test state and content1180x820. Each image shows the actual Searching/mShogi-is-thinking phase at one board ply, with Cancel search available, a single genuine human move in Moves, no completed engine evaluation, and the human action's completed cue still visible: Chess e2→e4, Shogi7g→7f, Xiangqi a3→a4. Origin dashed corners and stronger double-underlined destination remain present during pending execution; the pending engine result has not invented another cue or move. This closes the earlier screenshot-only thinking-evidence gap.
+
+Inspected `/private/tmp/msh123-delay-engine`: exact contents are shell `sleep2` followed by `exec` of the actual Verification bundle's native `mshogi` with all original arguments. SHA256 `fe5bbc2c224a8f54be002ce1ec1310c326a9015763b850eb95eabb903f6ada2e`. Integrator used the existing verification-only engine override; this is a controlled startup delay, not a fake engine response, generated telemetry, or a normal-distributable setting. These images establish the honest in-flight UI while native supervised execution waits for the real engine; they do not measure engine compute performance. The integrator separately observed genuine engine replies after startup.
+
+**Final bounded frontend/visual verdict remains PASS**, no unresolved material finding. Personally reviewed30 actual package screenshots total. CI/platform outcomes remain separately audited; no Windows/Linux claim is inferred from these macOS images.

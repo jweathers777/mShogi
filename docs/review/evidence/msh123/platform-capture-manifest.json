@@ -1,0 +1,66 @@
+{
+  "linux": [
+    {
+      "path": "docs/review/evidence/msh123/linux/normal-moves-chess-1180-pointer-history.webview.png",
+      "sha256": "707001fe6a86173f1c6afb8ad5d93178b0c6f02b548b41990b9138e762631b9a",
+      "artifact_source": "/private/tmp/msh123-ci-linux-final/gui-evidence/normal-moves-chess-1180-pointer-history.webview.png"
+    },
+    {
+      "path": "docs/review/evidence/msh123/linux/normal-moves-chess-760-keyboard-history.webview.png",
+      "sha256": "bb1ecf9ec5b2c509fbb7b0733a5d40f91a417983d670af91eaf5c1fc088ae1ab",
+      "artifact_source": "/private/tmp/msh123-ci-linux-final/gui-evidence/normal-moves-chess-760-keyboard-history.webview.png"
+    },
+    {
+      "path": "docs/review/evidence/msh123/linux/normal-shogi-moves-shogi-1180-pointer-history.webview.png",
+      "sha256": "8fb21adbdcc2783c874d3753a4f78617ded0fdd5a28d8b052ffc64caa2a5ea84",
+      "artifact_source": "/private/tmp/msh123-ci-linux-final/gui-evidence/normal-shogi-moves-shogi-1180-pointer-history.webview.png"
+    },
+    {
+      "path": "docs/review/evidence/msh123/linux/normal-shogi-moves-shogi-760-keyboard-history.webview.png",
+      "sha256": "c849ff5905edeb57fdc9fb3723814b676914cc3bb90a00113238ff58f7e7641a",
+      "artifact_source": "/private/tmp/msh123-ci-linux-final/gui-evidence/normal-shogi-moves-shogi-760-keyboard-history.webview.png"
+    },
+    {
+      "path": "docs/review/evidence/msh123/linux/normal-xiangqi-moves-xiangqi-1180-pointer-history.webview.png",
+      "sha256": "c8096837c51da7c723f58b350d4aebb29de69074cca7be8831d9270e3de561e5",
+      "artifact_source": "/private/tmp/msh123-ci-linux-final/gui-evidence/normal-xiangqi-moves-xiangqi-1180-pointer-history.webview.png"
+    },
+    {
+      "path": "docs/review/evidence/msh123/linux/normal-xiangqi-moves-xiangqi-760-keyboard-history.webview.png",
+      "sha256": "b6cd8743770568a99bd9f08636816d8eed8a9d45b0b82c09c2d340b082514d1f",
+      "artifact_source": "/private/tmp/msh123-ci-linux-final/gui-evidence/normal-xiangqi-moves-xiangqi-760-keyboard-history.webview.png"
+    }
+  ],
+  "windows": [
+    {
+      "path": "docs/review/evidence/msh123/windows/normal-moves-chess-1180-pointer-history.webview.png",
+      "sha256": "847c5282496e8bf284d13479b48e8904bb574344aacd0c679ae600e72b95eebc",
+      "artifact_source": "/private/tmp/msh123-ci-windows-final/gui-evidence/normal-moves-chess-1180-pointer-history.webview.png"
+    },
+    {
+      "path": "docs/review/evidence/msh123/windows/normal-moves-chess-760-keyboard-history.webview.png",
+      "sha256": "e7267cde352ad6c8a82fa2a94ccf95ea55eb2517099abccda9abc2d3318c2f9a",
+      "artifact_source": "/private/tmp/msh123-ci-windows-final/gui-evidence/normal-moves-chess-760-keyboard-history.webview.png"
+    },
+    {
+      "path": "docs/review/evidence/msh123/windows/normal-shogi-moves-shogi-1180-pointer-history.webview.png",
+      "sha256": "a2ebcd912a7586d67a74e464d98758883581e6401302254deaef971b13643eac",
+      "artifact_source": "/private/tmp/msh123-ci-windows-final/gui-evidence/normal-shogi-moves-shogi-1180-pointer-history.webview.png"
+    },
+    {
+      "path": "docs/review/evidence/msh123/windows/normal-shogi-moves-shogi-760-keyboard-history.webview.png",
+      "sha256": "f4dff29bdd3e2c6b92fa359ce13c39b7cde1a8d69ddc7b710405ae7ad8d184a3",
+      "artifact_source": "/private/tmp/msh123-ci-windows-final/gui-evidence/normal-shogi-moves-shogi-760-keyboard-history.webview.png"
+    },
+    {
+      "path": "docs/review/evidence/msh123/windows/normal-xiangqi-moves-xiangqi-1180-pointer-history.webview.png",
+      "sha256": "0cd26066e8e932ea1eecdf544c4a7cda7582a17f2ed1150c3d1754d298997a5c",
+      "artifact_source": "/private/tmp/msh123-ci-windows-final/gui-evidence/normal-xiangqi-moves-xiangqi-1180-pointer-history.webview.png"
+    },
+    {
+      "path": "docs/review/evidence/msh123/windows/normal-xiangqi-moves-xiangqi-760-keyboard-history.webview.png",
+      "sha256": "919b7420cf9f85dbf21fec9bc5262f9589a105831efc7876dea4f207e39b5c8f",
+      "artifact_source": "/private/tmp/msh123-ci-windows-final/gui-evidence/normal-xiangqi-moves-xiangqi-760-keyboard-history.webview.png"
+    }
+  ]
+}

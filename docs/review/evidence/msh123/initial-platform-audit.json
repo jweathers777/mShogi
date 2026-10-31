@@ -1,0 +1,490 @@
+{
+  "audit_method": "Independent read-only artifact/hash/source-contract audit and fresh gh run status reads; no new GUI journey or binary execution",
+  "reviewer": "/root/notation_sources",
+  "source_revision": "fc7a6ae9e7499c40999c5a0396bc31e87d4e07e4",
+  "native_ci": {
+    "run": 41199352911,
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": {
+      "ubuntu-24.04": "success",
+      "windows-2022": "success",
+      "macos-15": "success"
+    },
+    "provenance": "Independently read via gh run view; includes format/lint/test/isolated QA/snapshot fixtures/build/console steps"
+  },
+  "initial_desktop_ci": {
+    "run": 41199352841,
+    "conclusion": "failure",
+    "jobs": {
+      "macos-15": "success",
+      "ubuntu-24.04": "failure: actual packaged GUI step",
+      "windows-2022": "failure: actual packaged GUI step"
+    },
+    "macos_qualification": "Package construction/smoke evidence only in this CI artifact; no macOS GUI interaction inferred"
+  },
+  "macos": {
+    "artifact_path": "/private/tmp/msh123-ci-macos/gui-packages/normal/manifest.json",
+    "artifact_sha256": "28197106f1d01b1faaf90e25a821d2a9a1b2ac4fa2dd50fae617b5d76aa7b6fc",
+    "source_revision": "fc7a6ae9e7499c40999c5a0396bc31e87d4e07e4",
+    "declared_files": 5,
+    "hash_mismatches": [],
+    "missing_files": [],
+    "host_sha256": "251a87ebc74247602f2c173f99adfbff8c774519f126a609204928e7822c14fb",
+    "engine_sha256": "d4fa9358c8976e4e30dc402e7223e6edf939e092ae8c3951144055491222a764",
+    "normal_instrumentation_audit": "All16 current package-smoke forbidden host markers independently scanned and absent; all4 bundle files match manifest (fifth file is smoke report)",
+    "smoke_observations": [
+      "UCI ready/bestmove",
+      "internal protocol4 engine-turn",
+      "read-only move-analysis",
+      "bounded Full Unknown position_limit"
+    ],
+    "qualification": "Smoke observations reused from hash-verified CI report, not rerun by reviewer; actual GUI remains separate evidence"
+  },
+  "linux": {
+    "artifact_path": "/private/tmp/msh123-ci-linux/gui-evidence/gui-report.json",
+    "artifact_sha256": "f585243e640a7e6134a3891372b8380d74088cb0039bf9c17e277f952baf4a0e",
+    "source_revision": "fc7a6ae9e7499c40999c5a0396bc31e87d4e07e4",
+    "declared_files": 239,
+    "hash_mismatches": [],
+    "missing_files": [],
+    "status": "failed",
+    "passed_phase_count": 11,
+    "passed_phases": [
+      "verification-standard",
+      "verification-promotion",
+      "verification-claim",
+      "verification-capacity",
+      "verification-synthetic",
+      "verification-shogi-hands",
+      "verification-shogi-promotion",
+      "verification-shogi-forced",
+      "verification-shogi-declaration",
+      "verification-shogi-concluded",
+      "verification-shogi-capacity"
+    ],
+    "failed_phase_count": 4,
+    "failed_phases": [
+      {
+        "phase": "normal",
+        "error": "('.moves-root', {'enabled': False, 'visible': True, 'matches': 1, 'focused': False})"
+      },
+      {
+        "phase": "normal-shogi",
+        "error": "('.moves-root', {'enabled': False, 'visible': True, 'matches': 1, 'focused': False})"
+      },
+      {
+        "phase": "normal-shogi-reopened",
+        "error": "Timed out: fresh normal Chess launch dispatches shogi archive; last observation: False"
+      },
+      {
+        "phase": "normal-xiangqi",
+        "error": "('.moves-root', {'enabled': False, 'visible': True, 'matches': 1, 'focused': False})"
+      }
+    ],
+    "failure_observations": {
+      "three_normal_games": ".moves-root visible, exactly1 match, disabled when keyboard_activate asserts; captured DOM already has correct historical prefix and standard Moves rows/cues. Driver did not wait for admission/control enabled. This supports a driver timing diagnosis but original runs remain failed.",
+      "normal_shogi_reopened": "Dependent archive was absent (native picker filesystem_observation.is_file=false) after preceding Shogi phase failed; reopen timed out. Not successful reopening evidence."
+    },
+    "passed_native_cleanup": [
+      {
+        "phase": "verification-standard",
+        "native_exit_observation": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "verification-promotion",
+        "native_exit_observation": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "verification-claim",
+        "native_exit_observation": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "verification-capacity",
+        "native_exit_observation": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "verification-synthetic",
+        "native_exit_observation": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "verification-shogi-hands",
+        "native_exit_observation": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "verification-shogi-promotion",
+        "native_exit_observation": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "verification-shogi-forced",
+        "native_exit_observation": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "verification-shogi-declaration",
+        "native_exit_observation": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "verification-shogi-concluded",
+        "native_exit_observation": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "verification-shogi-capacity",
+        "native_exit_observation": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      }
+    ],
+    "failed_phase_cleanup_qualification": "Four failed phases only record adapter/Openbox cleanup; do not claim graceful native Quit or final host/engine absence for those failed phases. All11 passed fixture phases record host_alive=false and empty immediate/final matching process sets before driver teardown.",
+    "overall_pass": false,
+    "environment": {
+      "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+      "python": "3.12.3",
+      "runner_image": "20261026.354.1",
+      "runner_os": "Linux",
+      "renderer_environment": {
+        "GDK_BACKEND": "x11",
+        "WEBKIT_DISABLE_COMPOSITING_MODE": "1",
+        "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+        "LIBGL_ALWAYS_SOFTWARE": null
+      }
+    },
+    "driver_identity": {
+      "path": "/home/runner/work/_temp/mshogi-gui-driver/tauri-driver",
+      "sha256": "94e7345a51842e7a3f78bbd2194b1675cc02f86a9b7ae7ca986b0bf447b754ab",
+      "version": ""
+    },
+    "qualification": "11 fixture passes do not substitute for4 failed normal journeys. No corrected-run outcome claimed in this audit."
+  },
+  "windows_initial": {
+    "artifact_path": "/private/tmp/msh123-ci-windows-initial",
+    "source_revision": "fc7a6ae9e7499c40999c5a0396bc31e87d4e07e4",
+    "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/41199352841",
+    "status": "failed",
+    "overall_pass": false,
+    "hash_verification": {
+      "normal_manifest": {
+        "path": "/private/tmp/msh123-ci-windows-initial/gui-packages/normal/manifest.json",
+        "sha256": "f321f3a1feb72094e3c18cf66fb1636b90e198c15e1964514e7a80b8be7aa69d",
+        "declared_files": 2,
+        "missing": [],
+        "mismatches": []
+      },
+      "gui_report": {
+        "path": "/private/tmp/msh123-ci-windows-initial/gui-evidence/gui-report.json",
+        "sha256": "0a79189e7f37fa99a71cda727ccb32888f4d6701d7cf3857b8a9d0524253e51b",
+        "declared_files": 295,
+        "missing": [],
+        "mismatches": []
+      }
+    },
+    "verification_installer_sha256": "273f9db1f1c01e3a7bc4fed63925f9427c863e638b26bb569a5ba474aa75b833",
+    "verification_installer_matches_manifest": true,
+    "normal_host_sha256": "71b401d8c6a8afe0ff3061f3b9f17d596a46c9e88bb3d09f6c988f3a18947d1c",
+    "normal_engine_sha256": "3a9a6ab009005faa9ee115eff6bcf5aa88ee4005e6da74f0c60ce17b6f4ba9d8",
+    "normal_host_matches_launched_phase": true,
+    "passed_phases": 14,
+    "failed_phases": [
+      {
+        "phase": "normal-xiangqi",
+        "error": "('.moves-root', {'enabled': False, 'focused': False, 'matches': 1, 'visible': True})"
+      }
+    ],
+    "completed_native_cleanup": [
+      {
+        "phase": "normal",
+        "native_cleanup": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "normal-shogi",
+        "native_cleanup": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "normal-shogi-reopened",
+        "native_cleanup": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "verification-standard",
+        "native_cleanup": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "verification-promotion",
+        "native_cleanup": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "verification-claim",
+        "native_cleanup": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "verification-capacity",
+        "native_cleanup": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "verification-synthetic",
+        "native_cleanup": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "verification-shogi-hands",
+        "native_cleanup": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "verification-shogi-promotion",
+        "native_cleanup": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "verification-shogi-forced",
+        "native_cleanup": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "verification-shogi-declaration",
+        "native_cleanup": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "verification-shogi-concluded",
+        "native_cleanup": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      },
+      {
+        "phase": "verification-shogi-capacity",
+        "native_cleanup": {
+          "host_alive": false,
+          "immediate_matching_processes": [],
+          "final_matching_processes": []
+        }
+      }
+    ],
+    "moves_observations": [
+      {
+        "phase": "normal",
+        "phase_status": "passed",
+        "completed_geometry_observation_count": 6,
+        "first_completed_geometry": {
+          "action": "e2e4",
+          "destinationSignatures": [
+            "double-underline"
+          ],
+          "destinations": [
+            "e4"
+          ],
+          "event": "2",
+          "hidden": "true",
+          "origins": [
+            "e2"
+          ],
+          "pointerEvents": "none",
+          "route": null
+        },
+        "completed_pointer_keyboard_sizes_aggregate": [
+          {
+            "game": "chess",
+            "action": "e2e4",
+            "notation": "e4",
+            "event": 2,
+            "live_cue": {
+              "action": "a7a5",
+              "destinationSignatures": [
+                "double-underline"
+              ],
+              "destinations": [
+                "a5"
+              ],
+              "event": "3",
+              "hidden": "true",
+              "origins": [
+                "a7"
+              ],
+              "pointerEvents": "none",
+              "route": null
+            },
+            "sizes": [
+              [
+                1180,
+                820
+              ],
+              [
+                760,
+                650
+              ]
+            ]
+          }
+        ],
+        "qualification": "Both1180x820 and760x650 pointer/keyboard historical navigation completed; exact native event and origin/destination observations recorded"
+      },
+      {
+        "phase": "normal-shogi",
+        "phase_status": "passed",
+        "completed_geometry_observation_count": 6,
+        "first_completed_geometry": {
+          "action": "7g7f",
+          "destinationSignatures": [
+            "double-underline"
+          ],
+          "destinations": [
+            "7f"
+          ],
+          "event": "1",
+          "hidden": "true",
+          "origins": [
+            "7g"
+          ],
+          "pointerEvents": "none",
+          "route": null
+        },
+        "completed_pointer_keyboard_sizes_aggregate": [
+          {
+            "game": "shogi",
+            "action": "7g7f",
+            "notation": "\uff17\uff16\u6b69",
+            "event": 1,
+            "live_cue": {
+              "action": "4c4d",
+              "destinationSignatures": [
+                "double-underline"
+              ],
+              "destinations": [
+                "4d"
+              ],
+              "event": "2",
+              "hidden": "true",
+              "origins": [
+                "4c"
+              ],
+              "pointerEvents": "none",
+              "route": null
+            },
+            "sizes": [
+              [
+                1180,
+                820
+              ],
+              [
+                760,
+                650
+              ]
+            ]
+          }
+        ],
+        "qualification": "Both1180x820 and760x650 pointer/keyboard historical navigation completed; exact native event and origin/destination observations recorded"
+      },
+      {
+        "phase": "normal-xiangqi",
+        "phase_status": "failed",
+        "completed_geometry_observation_count": 2,
+        "first_completed_geometry": {
+          "action": "a3a4",
+          "destinationSignatures": [
+            "double-underline"
+          ],
+          "destinations": [
+            "a4"
+          ],
+          "event": "1",
+          "hidden": "true",
+          "origins": [
+            "a3"
+          ],
+          "pointerEvents": "none",
+          "route": null
+        },
+        "completed_pointer_keyboard_sizes_aggregate": [],
+        "qualification": "Xiangqi reached pointer-history and flipped-history action1 cue but failed before keyboard/root/minimum-size completion"
+      }
+    ],
+    "normal_shogi_reopen": "Actually passed from the prior normal Shogi saved archive, including exact historical analysis and stopped/reopened state; unlike initial Linux dependent-file failure",
+    "instrumentation_qualification": "Normal installer and smoke report hashes verified; smoke report records existing normal instrumentation exclusion. Installed host binary is not in downloaded artifact, so reviewer did not independently repeat marker scan for Windows. Separate verification installer hash matches its own manifest.",
+    "failure_qualification": "Only normal-Xiangqi failed on a visible single .moves-root match still disabled at immediate keyboard activation. No normal-Xiangqi full navigation, Save/Open or graceful native shutdown claim from this initial run; no Windows overall pass.",
+    "method": "Read-only report/manifest/filehash audit, actual native-process absence observations for14 completed phases, exact action/cue observation and DOM capture review; no new GUI run"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "source_revision": "fc7a6ae9e7499c40999c5a0396bc31e87d4e07e4",
+  "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/41199352841",
+  "report_sha256": "0a79189e7f37fa99a71cda727ccb32888f4d6701d7cf3857b8a9d0524253e51b",
+  "status": "failed",
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "normal-xiangqi",
+      "status": "failed",
+      "error": "('.moves-root', {'enabled': False, 'focused': False, 'matches': 1, 'visible': True})"
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed",
+      "error": null
+    }
+  ]
+}

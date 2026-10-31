@@ -26,14 +26,15 @@
     "Shogi actualTab to Startingposition Enter selects0; nextTabJapanese７６歩Enter selects1 andretainsfocus",
     "Shogi bishop8h legalcapture4d simultaneouslywithcompletedGote4c4d doubleunderline; Escape cancels selection only",
     "Shogi-hands nativeP*5e, destinationonly, genuineengine-startfailure bytemporarilyholdingQAengine; restore+Retryactual1a1breply",
-    "Syntheticpartiali9→j10 noacceptedaction; capture-return136>153>136 andalternative136>135>136, distinctroutegeometry/native records; nativeQuitguards"
+    "Syntheticpartiali9→j10 noacceptedaction; capture-return136>153>136 andalternative136>135>136, distinctroutegeometry/native records; nativeQuitguards",
+    "All3 controlledthinking: existingQA-onlyengineoverride executesexternal2second-delaywrapper, thenexecsrealbundledengine unchanged. ActualAXSearching1ply/noevaluation andcompletedhumanmoveatcapture; subsequentactualnativeenginemoveobserved. No generatedtelemetry orresponses."
   ],
   "limitations": [
-    "Immediate-action screenshots may show completed replies; do not claim active-thinking captures from these images. Actual native AX reported thinking during Chess/Xiangqi; persistence whilethinking also verified with frontend/controller regressions.",
+    "Immediate-action images show completed replies; separately named *-thinking-real-engine-delayed images establish actualpendingrequest/cuewithdeclaredexternaldelay, not an inference from completed screenshots.",
     "Two attempted normal native resize drags did not establish minimum size; no minimum-size claim relies on them. ExactminimumQA menu and Linux/Windows driver measurements own that evidence.",
     "Sandboxed directQAfixture launch exited134 withoutdiagnostics; explicitlyauthorized unsandboxed launch succeeded. No package defect inferred."
   ],
-  "native_cleanup": "Normal and QA closed through nativeCmd-Q guards; QA engine restored to manifesthash.",
+  "native_cleanup": "AllthreeownedQAfixtureprocessesexitedcode0throughnativeguards; finalprocessinventoryconfirmednoownedhost/engine/delaywrapperremained. QAenginerecoveredtomanifesthash.",
   "screenshots": {
     "chess-history-flipped-minimum.png": "ad08fa6ee3063108c7180602511988421bd4e18732fab73b942fbf1c12cbe387",
     "chess-history-flipped-normal.png": "b35e5202d62585e897cabc1608eaab349072c1f0cff821605364db703331421b",
@@ -42,6 +43,7 @@
     "chess-live-normal.png": "e67e62274c16640f345a45966730600f492f1bdcbbf914f5f3dc2b392f78df21",
     "chess-minimum-after-action.png": "40d03b7ed2727525ee6c68fd48577cf40baffdf5b3940fc53a89489227050c12",
     "chess-takeback-root.png": "d20bb0515a576d0c411f1f9e4885024fd94d831a4889e97cb08fc2cbd732154b",
+    "chess-thinking-real-engine-delayed.png": "38903bd38746798f76922ae60802f39f213f49ba231bb9a6356f8d685574b00a",
     "shogi-after-keyboard-admission.png": "9a75ca7abe08373212cdb1582e7d0def4a21b2f2003e69c0c949ff3f7e5b1e2e",
     "shogi-drop-destination-only-failure.png": "69686c8073dfbc4cb4955d4e754dc091bc2009fa876be9e66e6824438f314cd8",
     "shogi-drop-retry-real-reply.png": "6a6850253fd8e575325c6c09710b1b22dfedec9be7c86ca540684c6a7cdf8a95",
@@ -52,6 +54,7 @@
     "shogi-minimum-capture-and-completed.png": "86a91874d5acce354e537e4e0d5fa4af20d1bb3d25349a4e5c6c5d76fe0bd97e",
     "shogi-minimum-immediate-action.png": "7c019498b502c1a2b7ccbf49450422f064c83589c16c2d9544279615fa4b955b",
     "shogi-minimum-keyboard-move.png": "55ee322bc9531d2abf1e4c81100340467338c55621f217ad1994eb9595f97b8a",
+    "shogi-thinking-real-engine-delayed.png": "4b55a0169bc5bc7f78b5c58003317b0c3d38adab236adcb9735a9d4c7beff0be",
     "synthetic-alternative-return-cue.png": "b5819ede8438b3d8a027f9c710ff53b2386378f271e218aa0cb08ee34437860f",
     "synthetic-capture-return-cue.png": "6d760336df04ea33113100a56f77374847970604df1d4a17485738f26bcf4875",
     "synthetic-capture-return-record.png": "467f93cc0f19882117c4ec56d1ee14721cabc70d9795e4e9279da234b6cafba8",
@@ -61,6 +64,13 @@
     "xiangqi-history-minimum.png": "88b90de4f495884ed70fcb0b8f790d00bb37a1b91e1a26901f24184ce8ba7b07",
     "xiangqi-history-normal.png": "0fd21e19cdc927b3d7d1cc40c0c0ee438c97f0ad700c132d2d45e2f722a7d8e2",
     "xiangqi-live-normal.png": "3d42b2a4c5e9baedaa5512675b201a7522d5542bfd2797daba60eb2ef0dfad37",
-    "xiangqi-minimum-immediate-action.png": "f10b83f6ee36663ef9fc033fb3d235ca6b5a2c04209e12a71e1a184b9c85e9b7"
+    "xiangqi-minimum-immediate-action.png": "f10b83f6ee36663ef9fc033fb3d235ca6b5a2c04209e12a71e1a184b9c85e9b7",
+    "xiangqi-thinking-real-engine-delayed.png": "e11f97abb284d5aead1ba0855c63d5cef5dd2b618ed8b1e4f7d06040275d32f2"
+  },
+  "delay_wrapper": {
+    "path": "/private/tmp/msh123-delay-engine",
+    "sha256": "fe5bbc2c224a8f54be002ce1ec1310c326a9015763b850eb95eabb903f6ada2e",
+    "contents": "#!/bin/sh\nsleep 2\nexec \"/private/tmp/msh123-packages/verification/mShogi Verification.app/Contents/MacOS/mshogi\" \"$@\"\n",
+    "mechanism": "existingdesktop-verification-onlyMSHOGI_VERIFICATION_ENGINE; absentfromnormalhost"
   }
 }

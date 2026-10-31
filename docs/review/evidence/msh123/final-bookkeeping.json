@@ -1,0 +1,11 @@
+{
+  "source_revision": "65975d8ea4f232883ceeb559be9b3cdb677c6e47",
+  "checks": {
+    "backlog_1_55_1_doctor": "PASS: no duplicate IDs, self dependencies or cycles",
+    "git_diff_check": "PASS",
+    "all_evidence_json": "PASS",
+    "retained_capture_hashes": 42,
+    "shipped_source_delta_since_verified_revision": []
+  },
+  "scope": "Task/design/review/evidence-only completion; no additional correctness or GUI campaign required for unchanged product source."
+}

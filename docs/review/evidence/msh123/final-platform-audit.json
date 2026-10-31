@@ -1,0 +1,742 @@
+{
+  "reviewer": "/root/notation_sources",
+  "method": "Independent read-only hash/manifest/report/source-diff audit; fresh gh CI status; spot inspection of two final minimum-size screenshots; no rerun of production tests or GUI driver",
+  "source_revision": "65975d8ea4f232883ceeb559be9b3cdb677c6e47",
+  "production_source": "fc7a6ae9e7499c40999c5a0396bc31e87d4e07e4",
+  "production_delta_fc_to_659": [],
+  "ci": {
+    "native": {
+      "run": 41200359910,
+      "source": "65975d8ea4f232883ceeb559be9b3cdb677c6e47",
+      "conclusion": "success",
+      "jobs": [
+        "Rust (macos-15):success",
+        "Rust (windows-2022):success",
+        "Rust (ubuntu-24.04):success"
+      ]
+    },
+    "desktop": {
+      "run": 41200359930,
+      "source": "65975d8ea4f232883ceeb559be9b3cdb677c6e47",
+      "conclusion": "success",
+      "jobs": [
+        "Desktop (windows-2022):success",
+        "Desktop (ubuntu-24.04):success",
+        "Desktop (macos-15):success"
+      ]
+    },
+    "qualification": "Statuses independently read using gh run view; macOS CI is package/check evidence, actual macOS interaction comes from separately identified CUA records/review."
+  },
+  "platforms": {
+    "linux": {
+      "report": {
+        "path": "/private/tmp/msh123-ci-linux-final/gui-evidence/gui-report.json",
+        "sha256": "0daf12f4e806a6c250bb2a6859642e2918473c5e989ab7877cfc6acacacf01fb",
+        "declared_files": 381,
+        "missing": [],
+        "mismatches": []
+      },
+      "normal_manifest": {
+        "path": "/private/tmp/msh123-ci-linux-final/gui-packages/normal/manifest.json",
+        "sha256": "cce4e4ad9561e2c847f3232410117d5d430cecefec33b827048415b82606ff56",
+        "declared_files": 13,
+        "missing": [],
+        "mismatches": []
+      },
+      "status": "passed",
+      "phases_passed": 15,
+      "phases_failed": 0,
+      "source_revision": "65975d8ea4f232883ceeb559be9b3cdb677c6e47",
+      "environment": {
+        "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+        "python": "3.12.3",
+        "runner_image": "20261026.354.1",
+        "runner_os": "Linux",
+        "renderer_environment": {
+          "GDK_BACKEND": "x11",
+          "WEBKIT_DISABLE_COMPOSITING_MODE": "1",
+          "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+          "LIBGL_ALWAYS_SOFTWARE": null
+        }
+      },
+      "method": "Actual installed/packaged GUI via W3C pointer/keyboard and native OS dialogs/close, external to distributables. Read-only DOM inspection; no direct IPC or injected input events.",
+      "driver_identity": {
+        "path": "/home/runner/work/_temp/mshogi-gui-driver/tauri-driver",
+        "sha256": "94e7345a51842e7a3f78bbd2194b1675cc02f86a9b7ae7ca986b0bf447b754ab",
+        "version": ""
+      },
+      "normal_host_sha256": "4c62df6229b8aa114a0bfd3e67147b0998bc7857681c43f03d4c0562a4545560",
+      "engine_sha256": "325157b4d14f21cc39b2f1663ef7eff60f3c79d7b4981a9cefb30c36052ff559",
+      "normal_launches_match_smoke": true,
+      "qa_host_sha256": "c101b7d0c6fad0a83f534b98007518925606f413dbce9df65ebdf7e1423a5193",
+      "all_qa_launches_same_host_and_normal_engine": true,
+      "verification_manifest_source": "65975d8ea4f232883ceeb559be9b3cdb677c6e47",
+      "verification_installer_sha256": "634e7dea89046850828bedcddd76535a52560ba049e4415d6f33005692957b33",
+      "verification_installer_matches_manifest": true,
+      "actual_native_exit_before_driver_teardown": [
+        "normal",
+        "normal-shogi",
+        "normal-shogi-reopened",
+        "normal-xiangqi",
+        "verification-standard",
+        "verification-promotion",
+        "verification-claim",
+        "verification-capacity",
+        "verification-synthetic",
+        "verification-shogi-hands",
+        "verification-shogi-promotion",
+        "verification-shogi-forced",
+        "verification-shogi-declaration",
+        "verification-shogi-concluded",
+        "verification-shogi-capacity"
+      ],
+      "moves": [
+        {
+          "phase": "normal",
+          "aggregate": {
+            "game": "chess",
+            "action": "e2e4",
+            "notation": "e4",
+            "event": 2,
+            "live_cue": {
+              "action": "a7a5",
+              "destinations": [
+                "a5"
+              ],
+              "route": null,
+              "pointerEvents": "none",
+              "hidden": "true",
+              "origins": [
+                "a7"
+              ],
+              "event": "3",
+              "destinationSignatures": [
+                "double-underline"
+              ]
+            },
+            "sizes": [
+              [
+                1180,
+                820
+              ],
+              [
+                760,
+                650
+              ]
+            ]
+          },
+          "selected_cue": {
+            "action": "e2e4",
+            "destinations": [
+              "e4"
+            ],
+            "route": null,
+            "pointerEvents": "none",
+            "hidden": "true",
+            "origins": [
+              "e2"
+            ],
+            "event": "2",
+            "destinationSignatures": [
+              "double-underline"
+            ]
+          },
+          "exact_selected_cue_checks": 6,
+          "settled_native_controls_observations": 19,
+          "root_and_return_qualification": "Driver source checks root0/no cue, actual Tab+Enter, changed/restored orientation, exact native prefix and Return-to-live equal genuine engine cue, at each size; all assertions completed",
+          "takeback_verified": true
+        },
+        {
+          "phase": "normal-shogi",
+          "aggregate": {
+            "game": "shogi",
+            "action": "7g7f",
+            "notation": "\uff17\uff16\u6b69",
+            "event": 1,
+            "live_cue": {
+              "action": "4c4d",
+              "destinations": [
+                "4d"
+              ],
+              "route": null,
+              "pointerEvents": "none",
+              "hidden": "true",
+              "origins": [
+                "4c"
+              ],
+              "event": "2",
+              "destinationSignatures": [
+                "double-underline"
+              ]
+            },
+            "sizes": [
+              [
+                1180,
+                820
+              ],
+              [
+                760,
+                650
+              ]
+            ]
+          },
+          "selected_cue": {
+            "action": "7g7f",
+            "destinations": [
+              "7f"
+            ],
+            "route": null,
+            "pointerEvents": "none",
+            "hidden": "true",
+            "origins": [
+              "7g"
+            ],
+            "event": "1",
+            "destinationSignatures": [
+              "double-underline"
+            ]
+          },
+          "exact_selected_cue_checks": 6,
+          "settled_native_controls_observations": 19,
+          "root_and_return_qualification": "Driver source checks root0/no cue, actual Tab+Enter, changed/restored orientation, exact native prefix and Return-to-live equal genuine engine cue, at each size; all assertions completed",
+          "takeback_verified": true
+        },
+        {
+          "phase": "normal-xiangqi",
+          "aggregate": {
+            "game": "xiangqi",
+            "action": "a3a4",
+            "notation": "P9+1",
+            "event": 1,
+            "live_cue": {
+              "action": "b7b0",
+              "destinations": [
+                "b0"
+              ],
+              "route": null,
+              "pointerEvents": "none",
+              "hidden": "true",
+              "origins": [
+                "b7"
+              ],
+              "event": "2",
+              "destinationSignatures": [
+                "double-underline"
+              ]
+            },
+            "sizes": [
+              [
+                1180,
+                820
+              ],
+              [
+                760,
+                650
+              ]
+            ]
+          },
+          "selected_cue": {
+            "action": "a3a4",
+            "destinations": [
+              "a4"
+            ],
+            "route": null,
+            "pointerEvents": "none",
+            "hidden": "true",
+            "origins": [
+              "a3"
+            ],
+            "event": "1",
+            "destinationSignatures": [
+              "double-underline"
+            ]
+          },
+          "exact_selected_cue_checks": 6,
+          "settled_native_controls_observations": 19,
+          "root_and_return_qualification": "Driver source checks root0/no cue, actual Tab+Enter, changed/restored orientation, exact native prefix and Return-to-live equal genuine engine cue, at each size; all assertions completed",
+          "takeback_verified": true
+        }
+      ],
+      "synthetic": {
+        "native_records": {
+          "terminal_prefix": {
+            "rules_profile": "mshogi.synthetic.strider16.v1",
+            "schema_version": 1,
+            "initial_fixture": "strider16-capture-and-return-v1",
+            "actions": [
+              "136>153"
+            ]
+          },
+          "capture_and_return": {
+            "rules_profile": "mshogi.synthetic.strider16.v1",
+            "schema_version": 1,
+            "initial_fixture": "strider16-capture-and-return-v1",
+            "actions": [
+              "136>153>136"
+            ]
+          },
+          "alternate_return": {
+            "rules_profile": "mshogi.synthetic.strider16.v1",
+            "schema_version": 1,
+            "initial_fixture": "strider16-capture-and-return-v1",
+            "actions": [
+              "136>135>136"
+            ]
+          },
+          "native_expectation": "136>153 ends on j10; both return routes end on i9; only the j10 route removes its stone."
+        },
+        "completed_geometries": [
+          {
+            "action": "136>153",
+            "destinations": [
+              "j10"
+            ],
+            "route": null,
+            "pointerEvents": "none",
+            "hidden": "true",
+            "origins": [
+              "i9"
+            ],
+            "event": "1",
+            "destinationSignatures": [
+              "double-underline"
+            ]
+          },
+          {
+            "action": "136>153>136",
+            "destinations": [
+              "i9"
+            ],
+            "route": "i9>j10>i9",
+            "pointerEvents": "none",
+            "hidden": "true",
+            "origins": [
+              "i9"
+            ],
+            "event": "1",
+            "destinationSignatures": [
+              "double-underline"
+            ]
+          },
+          {
+            "action": "136>135>136",
+            "destinations": [
+              "i9"
+            ],
+            "route": "i9>h9>i9",
+            "pointerEvents": "none",
+            "hidden": "true",
+            "origins": [
+              "i9"
+            ],
+            "event": "1",
+            "destinationSignatures": [
+              "double-underline"
+            ]
+          }
+        ],
+        "empty_native_acceptance_checks": 9,
+        "full256_fit_observations": 7,
+        "sizes": [
+          [
+            1180,
+            820
+          ],
+          [
+            760,
+            650
+          ]
+        ],
+        "orientation": "Both native orientations exercised"
+      },
+      "drop": {
+        "action": "P*5e",
+        "destinations": [
+          "5e"
+        ],
+        "route": null,
+        "pointerEvents": "none",
+        "hidden": "true",
+        "origins": [],
+        "event": "3",
+        "destinationSignatures": [
+          "double-underline"
+        ]
+      },
+      "smoke_scope": "Package inventory and actual UCI, engine-turn, move-analysis and bounded Full reachability queries. Host acceptance and installed UI interaction are separate evidence.",
+      "extracted_normal_host_matches_launch": true,
+      "extracted_qa_host_matches_launch": true,
+      "normal_forbidden_markers_present": [],
+      "qa_fixture_marker_present": true
+    },
+    "windows": {
+      "report": {
+        "path": "/private/tmp/msh123-ci-windows-final/gui-evidence/gui-report.json",
+        "sha256": "3f83b88438ddddf7d26aa20d463f1290dbb7e19265c4cca123077c3edf8e01ce",
+        "declared_files": 342,
+        "missing": [],
+        "mismatches": []
+      },
+      "normal_manifest": {
+        "path": "/private/tmp/msh123-ci-windows-final/gui-packages/normal/manifest.json",
+        "sha256": "42979e7b7aa274b07aa003646199247ad832c16dcdc6b8eb9435e1de04cc157b",
+        "declared_files": 2,
+        "missing": [],
+        "mismatches": []
+      },
+      "status": "passed",
+      "phases_passed": 15,
+      "phases_failed": 0,
+      "source_revision": "65975d8ea4f232883ceeb559be9b3cdb677c6e47",
+      "environment": {
+        "platform": "Windows-2022Server-10.0.20348-SP0",
+        "python": "3.12.10",
+        "runner_image": "20261026.347.1",
+        "runner_os": "Windows",
+        "renderer_environment": {
+          "GDK_BACKEND": null,
+          "WEBKIT_DISABLE_COMPOSITING_MODE": null,
+          "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+          "LIBGL_ALWAYS_SOFTWARE": null
+        }
+      },
+      "method": "Actual installed/packaged GUI via W3C pointer/keyboard and native OS dialogs/close, external to distributables. Read-only DOM inspection; no direct IPC or injected input events.",
+      "driver_identity": {
+        "path": "C:\\Users\\runneradmin\\.cargo\\bin\\tauri-driver.EXE",
+        "sha256": "6a92c851d5fa2f5ff0f3c11e6ffb42cdee7c25cba57face4092b7d01a592a50e",
+        "version": ""
+      },
+      "normal_host_sha256": "e15c6a2929845c999549379111852a01a3e8cda15b80533f032076dddbea357c",
+      "engine_sha256": "07c81d7a1eeb324ba81456a91fa541b5f00bb2bb9c35a7b429d149e433326ab7",
+      "normal_launches_match_smoke": true,
+      "qa_host_sha256": "39a6b8459b71f5b605b4a67e7ee3f995ec9ab8a19245e52e1324e018aef0c5ca",
+      "all_qa_launches_same_host_and_normal_engine": true,
+      "verification_manifest_source": "65975d8ea4f232883ceeb559be9b3cdb677c6e47",
+      "verification_installer_sha256": "06b8c8e05d7fb8b8ab2a1c0d72931579b59615f7b558ed1678772cbf24df753f",
+      "verification_installer_matches_manifest": true,
+      "actual_native_exit_before_driver_teardown": [
+        "normal",
+        "normal-shogi",
+        "normal-shogi-reopened",
+        "normal-xiangqi",
+        "verification-standard",
+        "verification-promotion",
+        "verification-claim",
+        "verification-capacity",
+        "verification-synthetic",
+        "verification-shogi-hands",
+        "verification-shogi-promotion",
+        "verification-shogi-forced",
+        "verification-shogi-declaration",
+        "verification-shogi-concluded",
+        "verification-shogi-capacity"
+      ],
+      "moves": [
+        {
+          "phase": "normal",
+          "aggregate": {
+            "game": "chess",
+            "action": "e2e4",
+            "notation": "e4",
+            "event": 2,
+            "live_cue": {
+              "action": "a7a5",
+              "destinationSignatures": [
+                "double-underline"
+              ],
+              "destinations": [
+                "a5"
+              ],
+              "event": "3",
+              "hidden": "true",
+              "origins": [
+                "a7"
+              ],
+              "pointerEvents": "none",
+              "route": null
+            },
+            "sizes": [
+              [
+                1180,
+                820
+              ],
+              [
+                760,
+                650
+              ]
+            ]
+          },
+          "selected_cue": {
+            "action": "e2e4",
+            "destinationSignatures": [
+              "double-underline"
+            ],
+            "destinations": [
+              "e4"
+            ],
+            "event": "2",
+            "hidden": "true",
+            "origins": [
+              "e2"
+            ],
+            "pointerEvents": "none",
+            "route": null
+          },
+          "exact_selected_cue_checks": 6,
+          "settled_native_controls_observations": 19,
+          "root_and_return_qualification": "Driver source checks root0/no cue, actual Tab+Enter, changed/restored orientation, exact native prefix and Return-to-live equal genuine engine cue, at each size; all assertions completed",
+          "takeback_verified": true
+        },
+        {
+          "phase": "normal-shogi",
+          "aggregate": {
+            "game": "shogi",
+            "action": "7g7f",
+            "notation": "\uff17\uff16\u6b69",
+            "event": 1,
+            "live_cue": {
+              "action": "4c4d",
+              "destinationSignatures": [
+                "double-underline"
+              ],
+              "destinations": [
+                "4d"
+              ],
+              "event": "2",
+              "hidden": "true",
+              "origins": [
+                "4c"
+              ],
+              "pointerEvents": "none",
+              "route": null
+            },
+            "sizes": [
+              [
+                1180,
+                820
+              ],
+              [
+                760,
+                650
+              ]
+            ]
+          },
+          "selected_cue": {
+            "action": "7g7f",
+            "destinationSignatures": [
+              "double-underline"
+            ],
+            "destinations": [
+              "7f"
+            ],
+            "event": "1",
+            "hidden": "true",
+            "origins": [
+              "7g"
+            ],
+            "pointerEvents": "none",
+            "route": null
+          },
+          "exact_selected_cue_checks": 6,
+          "settled_native_controls_observations": 19,
+          "root_and_return_qualification": "Driver source checks root0/no cue, actual Tab+Enter, changed/restored orientation, exact native prefix and Return-to-live equal genuine engine cue, at each size; all assertions completed",
+          "takeback_verified": true
+        },
+        {
+          "phase": "normal-xiangqi",
+          "aggregate": {
+            "game": "xiangqi",
+            "action": "a3a4",
+            "notation": "P9+1",
+            "event": 1,
+            "live_cue": {
+              "action": "b7b0",
+              "destinationSignatures": [
+                "double-underline"
+              ],
+              "destinations": [
+                "b0"
+              ],
+              "event": "2",
+              "hidden": "true",
+              "origins": [
+                "b7"
+              ],
+              "pointerEvents": "none",
+              "route": null
+            },
+            "sizes": [
+              [
+                1180,
+                820
+              ],
+              [
+                760,
+                650
+              ]
+            ]
+          },
+          "selected_cue": {
+            "action": "a3a4",
+            "destinationSignatures": [
+              "double-underline"
+            ],
+            "destinations": [
+              "a4"
+            ],
+            "event": "1",
+            "hidden": "true",
+            "origins": [
+              "a3"
+            ],
+            "pointerEvents": "none",
+            "route": null
+          },
+          "exact_selected_cue_checks": 6,
+          "settled_native_controls_observations": 19,
+          "root_and_return_qualification": "Driver source checks root0/no cue, actual Tab+Enter, changed/restored orientation, exact native prefix and Return-to-live equal genuine engine cue, at each size; all assertions completed",
+          "takeback_verified": true
+        }
+      ],
+      "synthetic": {
+        "native_records": {
+          "terminal_prefix": {
+            "actions": [
+              "136>153"
+            ],
+            "initial_fixture": "strider16-capture-and-return-v1",
+            "rules_profile": "mshogi.synthetic.strider16.v1",
+            "schema_version": 1
+          },
+          "capture_and_return": {
+            "actions": [
+              "136>153>136"
+            ],
+            "initial_fixture": "strider16-capture-and-return-v1",
+            "rules_profile": "mshogi.synthetic.strider16.v1",
+            "schema_version": 1
+          },
+          "alternate_return": {
+            "actions": [
+              "136>135>136"
+            ],
+            "initial_fixture": "strider16-capture-and-return-v1",
+            "rules_profile": "mshogi.synthetic.strider16.v1",
+            "schema_version": 1
+          },
+          "native_expectation": "136>153 ends on j10; both return routes end on i9; only the j10 route removes its stone."
+        },
+        "completed_geometries": [
+          {
+            "action": "136>153",
+            "destinationSignatures": [
+              "double-underline"
+            ],
+            "destinations": [
+              "j10"
+            ],
+            "event": "1",
+            "hidden": "true",
+            "origins": [
+              "i9"
+            ],
+            "pointerEvents": "none",
+            "route": null
+          },
+          {
+            "action": "136>153>136",
+            "destinationSignatures": [
+              "double-underline"
+            ],
+            "destinations": [
+              "i9"
+            ],
+            "event": "1",
+            "hidden": "true",
+            "origins": [
+              "i9"
+            ],
+            "pointerEvents": "none",
+            "route": "i9>j10>i9"
+          },
+          {
+            "action": "136>135>136",
+            "destinationSignatures": [
+              "double-underline"
+            ],
+            "destinations": [
+              "i9"
+            ],
+            "event": "1",
+            "hidden": "true",
+            "origins": [
+              "i9"
+            ],
+            "pointerEvents": "none",
+            "route": "i9>h9>i9"
+          }
+        ],
+        "empty_native_acceptance_checks": 9,
+        "full256_fit_observations": 7,
+        "sizes": [
+          [
+            1180,
+            820
+          ],
+          [
+            760,
+            650
+          ]
+        ],
+        "orientation": "Both native orientations exercised"
+      },
+      "drop": {
+        "action": "P*5e",
+        "destinationSignatures": [
+          "double-underline"
+        ],
+        "destinations": [
+          "5e"
+        ],
+        "event": "3",
+        "hidden": "true",
+        "origins": [],
+        "pointerEvents": "none",
+        "route": null
+      },
+      "smoke_scope": "Package inventory and actual UCI, engine-turn, move-analysis and bounded Full reachability queries. Host acceptance and installed UI interaction are separate evidence.",
+      "instrumentation_qualification": "Normal package-smoke records marker exclusion and normal/verification installers independently hash-match manifests. Installed Windows host bytes are not included in artifact, so binary scan is reused CI evidence rather than repeated by reviewer."
+    },
+    "macos_ci": {
+      "manifest": {
+        "path": "/private/tmp/msh123-ci-macos-final/gui-packages/normal/manifest.json",
+        "sha256": "08b59616e3c1f2f907ec4db74a1dc3638e1275cd1ac9de7b1c8463db1d7100db",
+        "declared_files": 5,
+        "missing": [],
+        "mismatches": []
+      },
+      "source_revision": "65975d8ea4f232883ceeb559be9b3cdb677c6e47",
+      "all5_manifest_files_byte_identical_to_fc_artifact": [
+        "package-smoke.json",
+        "bundle/macos/mShogi.app/Contents/Info.plist",
+        "bundle/macos/mShogi.app/Contents/MacOS/mshogi-desktop",
+        "bundle/macos/mShogi.app/Contents/MacOS/mshogi",
+        "bundle/macos/mShogi.app/Contents/Resources/icon.icns"
+      ],
+      "normal_forbidden_markers_present": [],
+      "qualification": "Actual CUA normal/QA interaction uses separately pinned local fc source packages, not implied from CI. Previous independent30-capture visual review reused; final Windows Shogi760 and Linux Xiangqi760 keyboard-history images additionally inspected by this reviewer."
+    }
+  },
+  "acceptance_review": {
+    "verdict": "All7 substantive criteria supported by combined existing source/independent/native/frontend/macOS interaction evidence plus final verified Linux/Windows package journeys. No remaining material requirement gap identified. Final task/DoD bookkeeping, durable final CI verdict and actual final integration commit remain integrator work.",
+    "AC1": "Native imported-second-side/empty/odd numbering fixtures and sharedfrontend tests; actual3game paired Moves selection and keyboard root target at both sizes.",
+    "AC2": "Independently reviewed primary SAN/JSA/WXF interpretation/fixtures and owner-approved rare-stack display completion; native rules/canonical formats unchanged.",
+    "AC3": "F022 action8/warning9 command-boundary tests and actualshared-native selection/analysis rejection/prefix provenance; independently selectable Position events and no extra move rows.",
+    "AC4": "Native origin/steps/effects/drop/castle/root/nonmove fixtures; actual3game normal/min/flip/history/Returnlive; macOS pending-work captures and synthetic distinct-return exact records.",
+    "AC5": "Readonly aria-hidden decorative geometry with pointerEventsnone; doubleunderline shape and dashedorigin; actualTakeback/reopen plusnative/frontend stale protections and previously reviewed R5 singular owner.",
+    "AC6": "Existing focused264frontend, native/featureCI and3nativeconsumer journeys reused; final15/15Linux+15/15Windows actualGUI; independently verified normal-package exclusion and separate fixture packages.",
+    "AC7": "Independent source/native, frontend/visual and this platform audit resolve material findings. Original198/199native test assumption and firstplatformdriver failures remain historical; final corrected campaigns independently confirmed.",
+    "documentation_followup": "docs/review/moves-123.md still uses pending/current checkpoint language and ACtablepending; update final verdict with these exact runs/hashes and retain initial failures. This is final documentation reconciliation, not a production blocker.",
+    "scope": "No124/125/R6, future variant, M5 or new rules work began."
+  }
+}

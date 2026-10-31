@@ -220,6 +220,16 @@ Chess observer failures remain preserved in their separate directories/reports.
 Cargo.lock .github/workflows` is empty. Final documentation/task/evidence changes
 reuse these passed source/package checks rather than repeating an unchanged
 production campaign. Final Backlog doctor, evidence links and diff checks pass.
+Completion4733f6a initially exposed CRLF and captured-log trailing whitespace
+in16 imported text artifacts during the staged diff check; the shell continued
+the commit despite that failed check. Preserve those byte-exact originals in
+[raw text archive](evidence/msh125/raw-text-artifacts.tar.gz), with original and
+normalized SHA256 values in [provenance](evidence/msh125/text-evidence-provenance.json).
+Repository text views normalize line endings/trailing whitespace only; all JSON
+views parse identically. Original CI ZIP/package/capture hashes and reported
+observations remain unchanged. Corrected final diff checks pass; no product
+code, assertions or CI outcomes changed.
+
 The primary checkout stays `codex/rewrite`; no temporary task worktree was created,
 and unrelated existing worktrees were preserved. Normal integration/push records
 are in MSH-125 and Git history; no published history was rewritten.

@@ -145,3 +145,13 @@ All seven original MSH-125 criteria now have supporting bounded source/test/pack
 7. Actual identified all3-game packages/journeys, separate QA/normal instrumentation exclusion, independent source/pixel/provenance review and applicable final CI supported.
 
 The aggregate Mac evidence wording was clarified as requested. No remaining material review finding or acceptance evidence gap. Recommend completing MSH-125 after root records final task/docs and actual normal integration/push (DoD4); reviewer does not fabricate a future integration hash. Existing MSH-112 remains independently owned/unresolved, MSH-121 is the next integrated architecture/product acceptance, and no M4/variant/M5 completion is implied. No new campaign or product change is requested.
+
+## Evidence text-format follow-up after completion4733f6a
+
+Root reported that the completion commit proceeded after a nonzero diff-check caused by imported CRLF/trailing whitespace in evidence text. This was a real finalization/check-handling failure, not a production defect; the failing check must remain acknowledged. Reviewed the bounded corrective treatment without modifying product or task files.
+
+Independently opened `raw-text-artifacts.tar.gz` without extracting to the filesystem. Archive SHA256 matches provenance `b55992f54f684ffa9449649e24ca23c0a2fd529e7cd2420887935dab428d393b`. Exactly16 regular members match all16 provenance paths. Every retained original matches its declared SHA256/byte count **and** the actual byte-exact file committed at `4733f6a2b6f1e05be4b6fb9a98b4f93081606ab4`. Every normalized view matches its declared SHA256/byte count and independently recomputed LF/trailing-whitespace-only transformation. All9 JSON files also compare identically using duplicate-preserving ordered object pairs; no field/value/order information changed.
+
+Independently ran `git diff --check` and `git diff --check 8de41e4`: PASS. `git diff --exit-code 8de41e4 -- crates desktop/src desktop/src-tauri Cargo.toml Cargo.lock desktop/scripts`: empty/PASS. Production, verifier source, PNG/package/ZIP identities and original auditor hashes remain unchanged. Original audited hashes refer to the byte-exact archive members, with normalized text views explicitly mapped; no original evidence silently discarded or falsely relabeled.
+
+Correction disposition: **PASS**, proportional evidence-format follow-up; no product regression suite required for whitespace-only views with retained originals. Finalization should retain the failure acknowledgment and provenance explanation, record this independent check and actual follow-up integration/push. No remaining material acceptance issue identified.

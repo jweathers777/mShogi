@@ -1,0 +1,119 @@
+{
+  "purpose": "Byte-exact originals retained; repository text views normalize CRLF/trailing whitespace only. All JSON views parse identically. PNG, package, artifact and original audit hashes are unchanged.",
+  "raw_archive": "raw-text-artifacts.tar.gz",
+  "raw_archive_sha256": "b55992f54f684ffa9449649e24ca23c0a2fd529e7cd2420887935dab428d393b",
+  "files": [
+    {
+      "path": "checkpoint58-windows/gui-report.json",
+      "original_sha256": "824db0e06227717648912d3180a5cec038223e5884b6752b746d2f498ae73e33",
+      "normalized_sha256": "3e1c607864a5422b0f5d8cf62c59566226787fe72727abd532d09cc97b1aa57d",
+      "original_bytes": 1819934,
+      "normalized_bytes": 1771609
+    },
+    {
+      "path": "checkpoint58-windows/normal-failure.dom.json",
+      "original_sha256": "90015708fd6238f3ee617db91e1041697566f520c19bdbf3b3c9183b55ed154a",
+      "normalized_sha256": "3076857ebc76a9787d16950c799b62656049dabf8edcb97400b42d8c0dde8ad8",
+      "original_bytes": 2340,
+      "normalized_bytes": 2286
+    },
+    {
+      "path": "checkpoint58-windows/normal-manifest.json",
+      "original_sha256": "4e5f862c690d396d6b36c70761c17bb200b361da911d427f8e49369b8d3afbc1",
+      "normalized_sha256": "bef8b3070a86d37c4e40039655f9364c86260647fb896494de7065a5ee8f131e",
+      "original_bytes": 300,
+      "normalized_bytes": 295
+    },
+    {
+      "path": "checkpoint58-windows/verification-manifest.json",
+      "original_sha256": "218e5d852255b80aed06c79776d66cb9a49658205daee6c111e33bbc461f5580",
+      "normalized_sha256": "d3975e4f6d619ff7111632f519de304495f0c984254375a1cb6a15cca1b382f4",
+      "original_bytes": 345,
+      "normalized_bytes": 339
+    },
+    {
+      "path": "checks/final-source-native-linux-attempt1-failure.log",
+      "original_sha256": "a03442b92bacb3d6d435faa880cd6effc6fba3b0b62f016646a8dbbd18bf4552",
+      "normalized_sha256": "fffd029b9eae1da9891af7411ffc005de91af335d443f76f3bcffe3e1020628d",
+      "original_bytes": 112375,
+      "normalized_bytes": 112206
+    },
+    {
+      "path": "checks/frontend322.log",
+      "original_sha256": "a5bea414a1003377c5bc2f43d3d35f414dbf65e4044ebf46910b438926f30637",
+      "normalized_sha256": "f932f722ac9d812159e0e9179dcad81a3cfb66f8fb7d49b778f86c7f81a5cc0a",
+      "original_bytes": 476,
+      "normalized_bytes": 475
+    },
+    {
+      "path": "checks/host12.log",
+      "original_sha256": "35cd7fa85a25298d772de9d65165741cac39040740f45d75efb996b3d0fd5064",
+      "normalized_sha256": "89b831bb096b71e976eb837259db47d4739423f953fee1341698d74c0f2a4fcc",
+      "original_bytes": 7562,
+      "normalized_bytes": 7561
+    },
+    {
+      "path": "checks/initial-native-linux-failure.log",
+      "original_sha256": "56b7eb50f4e2127163251fa334ddbc400fd3ef58a452b294206b7e14975b9ab2",
+      "normalized_sha256": "26c3a65026d08ed8bd513b641cb7777380583c11091d7d366f0bc010fe1498ee",
+      "original_bytes": 156972,
+      "normalized_bytes": 156756
+    },
+    {
+      "path": "checks/native212.log",
+      "original_sha256": "906fd21e45934995844e3d341088f380678055230b4cac5e34a9883ce8d73578",
+      "normalized_sha256": "a0abd63126d441eec31335aa888d262d3cd6938eb02454b39ba793a04363c307",
+      "original_bytes": 23080,
+      "normalized_bytes": 23079
+    },
+    {
+      "path": "checks/native58-linux-attempt2-passed.log",
+      "original_sha256": "8bc67727bed70ca26a29b7f054cdc2ab1eeabb26387e75bd54b886f22eb469a9",
+      "normalized_sha256": "bdfbdf10f6bea135540396ec186cf1c5ddccf9796bc5741497ddc1cafa93ec94",
+      "original_bytes": 169628,
+      "normalized_bytes": 169410
+    },
+    {
+      "path": "checks/typescript.log",
+      "original_sha256": "dfddfa5b4e517837513b4b9397053cbd1a8be7aac5f23d8b7d8cb3618e5f5e89",
+      "normalized_sha256": "cb1964a8cf067a2bad7416fabb0ce59646f7fc87f24bb09f8e7732f214707ca8",
+      "original_bytes": 46,
+      "normalized_bytes": 45
+    },
+    {
+      "path": "initial-windows/normal-failure.dom.json",
+      "original_sha256": "4f56d69d5fad25910c0742ac52c0cf0f1ded10a03bdf45ed1078fc5283ac580d",
+      "normalized_sha256": "0d6e298cdc9bc73edb0f60f240c77f4f150b85be9203be1b7395edaf18f34715",
+      "original_bytes": 1326,
+      "normalized_bytes": 1313
+    },
+    {
+      "path": "windows/gui-report.json",
+      "original_sha256": "ed7898e369c3e1167f8e1a8828290c62dc4f28e36ad99c6da5fb24cc52cfdea6",
+      "normalized_sha256": "b4d68c362f445b9e341e86aa40857f57e70e9c20c2ff2b6badbde975ad3b293d",
+      "original_bytes": 1769851,
+      "normalized_bytes": 1720452
+    },
+    {
+      "path": "windows/normal-manifest.json",
+      "original_sha256": "ac85e7864d6de73a2909f21b9d66291dbbafae8eb4f2b86b15deb17b0f145578",
+      "normalized_sha256": "a402ad8eed8164c8d6fe63f51d066df78d034f7c36e2960342acf7f5d3c1d227",
+      "original_bytes": 300,
+      "normalized_bytes": 295
+    },
+    {
+      "path": "windows/package-smoke.json",
+      "original_sha256": "04306ec116ac3f4878b1209a470ea58a8758f7141413fc3ccfec867ca16b687f",
+      "normalized_sha256": "fdff0cbae78bfbcbb76047e5d5ef3eead0ac7dcf0d9d5d11205560d01cc6564b",
+      "original_bytes": 5891,
+      "normalized_bytes": 5688
+    },
+    {
+      "path": "windows/verification-manifest.json",
+      "original_sha256": "c1ee4c6c21292913fd498cb40fbccf4b65fa200ff798d1b093dd7bdbc0b21eff",
+      "normalized_sha256": "77fd6c37eb7cf19b98ba4684fd178390b6eb230e34ed7c8d194066ace4ae74ff",
+      "original_bytes": 345,
+      "normalized_bytes": 339
+    }
+  ]
+}

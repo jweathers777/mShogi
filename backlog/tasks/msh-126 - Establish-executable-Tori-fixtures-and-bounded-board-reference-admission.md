@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-01T12:21:00Z'
-updated_date: '2026-11-01T14:05:00Z'
+updated_date: '2026-11-01T14:12:00Z'
 labels:
   - m4
   - owner-msh-85
@@ -68,4 +68,6 @@ Self-contained executable fixture infrastructure owned by coordinating MSH-85. S
 Owner2026-11-01 withdraws mandatory Fairy-Stockfish build/admission and all engine-oracle gates. Original tasktitle/5AC at0422504 are preserved in Git/history and documented supersession, not completion evidence. No Fairy/cshogi/Pikafish/python-chess build or invocation authorized/needed. Selectedrulesprofile and independently reviewed103expectations/provenance remainauthority. Explicit projectwidepolicy now requires independently expected fixtures/history, deterministic/property/metamorphic/negative/reversal/replay tests and independentreview, with optionalnonauthoritative externalinvestigation only. Dependenciesunchanged126→Done81; futurechain127→126→... remains. ActualownerrootCodex primarycodex/rewrite; startupclean/noactiveotherowner; no taskworktree needed.
 
 Implemented engine-independent Rust development crate mshogi-conformance, embedded immutable103-ID corpus/hash/provenance/ownership, recursive duplicate-preserving boundedJSON admission, actualowner-qualified observation projections and sixboundaries. DefaultactualCLI:103fixtures,0executed/pass,727pending,0failed,4documentaryannotations,83pendingconsumerrequirements; no nativeconformance claim.18focusedtestsPASS, packageclippy-DwarningsPASS, workspacefmtPASS. Deliberatewrongactions/destinations/capture/promotion/demotion/quail/hand/history/malformed cases detected; 2000generatedsnapshotmutations,49square transforms,35authoredrotationpairs andactualclosurebadundo/mutatingreject tested. Independentconformance126_review PASS afterownerexchange/supplementalfacets/terminalclassification corrections; actualcommandsandhistoricalinitialfailures in docs/m4/tori/harness-evidence.md. Selectedprofile/corpus/manifestunchanged; full129task344edgegraph/doctor/links/deps/futureplans/completedtaskscheckPASS. No externalenginebuilt/run; normalnativeCIpendingactualsourcecommit. Current126ACexplicitlyrevisedunderownerdecision;128AC5externalgateoptional;otherfuturetasksnotes/policycurrentwithoutactivation orplanrewrite.
+
+Firstreviewedsourceintegrated/pushed134f81ba67ef81918734ed1ed1acb5de7532fb99. NativeCI41314482706 Windowsjob124871524762failed13of18harnesstests with corpusSHA mismatch after format/lintpassed. Scoped.gitattributes LF rules forthe2auditedJSONfiles correct checkoutidentity without changingbytes/hash/comparison/tests. ActualWindows-styleGitexportmatchesoriginal141871BcorpusSHA3f9e... and85731BownershipSHA044a...; independentreviewerrepeatedfreshprobePASS. ActualWindowsCIrerunstillrequired; no passingplatformclaimfromlocalprobe. Existingfailurepreservedinharness-evidence.md. TwoactualconstructedCLInegativeprobes exit1 withusefuldiagnostics recorded. Noexternalenginebuilt/run; taskremainsInReview pendingfinalnativeCI.
 <!-- SECTION:NOTES:END -->

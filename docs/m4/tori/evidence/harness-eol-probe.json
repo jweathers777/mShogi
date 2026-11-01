@@ -1,0 +1,30 @@
+{
+  "kind": "Git export probe under Windows-style core.autocrlf=true/core.eol=crlf; not a Windows runtime test",
+  "command": [
+    "git",
+    "-c",
+    "core.autocrlf=true",
+    "-c",
+    "core.eol=crlf",
+    "checkout-index",
+    "--prefix",
+    "/private/tmp/msh126-eol-u6rh9fkc/",
+    "--",
+    "docs/m4/tori/fixtures.json",
+    "docs/m4/tori/native-fixture-ownership.json"
+  ],
+  "observations": [
+    {
+      "path": "docs/m4/tori/fixtures.json",
+      "bytes": 141871,
+      "sha256": "3f9e5ca3b541fc72f562ddd8231408e17e7bd5ba3ccee118e643ce0f543731e3",
+      "CRLF": false
+    },
+    {
+      "path": "docs/m4/tori/native-fixture-ownership.json",
+      "bytes": 85731,
+      "sha256": "044a5d0fc72e355e705d12f6b7b1c328a043aa67b321a2c897d0e790f242b8d5",
+      "CRLF": false
+    }
+  ]
+}

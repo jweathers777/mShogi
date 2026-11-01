@@ -38,6 +38,8 @@ are supplied; actual consumer adapters/contracts remain MSH-77/42 work.
 
 The exact corpus remains MSH-81 SHA256
 `3f9e5ca3b541fc72f562ddd8231408e17e7bd5ba3ccee118e643ce0f543731e3`.
+Git checkout attributes force canonical LF for the corpus/ownership on Windows
+as well as Unix; hash comparison is never normalized or weakened.
 All103 IDs, source citations, method, given input, expected values, original39seed
 identities and reviewed ownership are embedded/read-only. Optional `--corpus`
 and `--ownership` paths verify identical audited definitions/bytes, not replacement

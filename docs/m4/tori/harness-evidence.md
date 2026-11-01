@@ -90,3 +90,25 @@ plans, unchanged completed tasks and selected profile/corpus/ownership, local
 links and no changes to existing product crates/desktop/workflows. Reproduce with
 `python3 docs/m4/tori/evidence/verify-harness-integrity.py`; this optional metadata
 check uses standard Python only and is not a native conformance dependency.
+
+## Actual first integration and Windows CI correction
+
+Reviewed Rust source integrated and pushed at
+`134f81ba67ef81918734ed1ed1acb5de7532fb99`. The first native CI run
+[41314482706](https://github.com/jweathers777/mShogi/actions/runs/41314482706)
+passed format/lint on all three systems, but Windows job124871524762 failed the
+new harness tests (5passed/13failed): embedded corpus SHA differed from audited
+LF bytes. This failure remains historical evidence, not a passed platform check.
+
+The correction is two scoped `.gitattributes` entries enforcing `text eol=lf`
+for the corpus and ownership JSON. No hash normalization, changed constant,
+expected-data edit or test weakening. [Actual Git export probe](evidence/harness-eol-probe.json)
+with `core.autocrlf=true`/`core.eol=crlf` retains exact141871-byte corpus/hash and
+85731-byte ownership/hash. A separate reviewer repeated the export and compared
+both against source134f81b Git blobs; PASS. That is a Git portability probe,
+not Windows runtime verification. Actual final-source CI is recorded below when
+available.
+
+[Executed CLI counterexamples](evidence/harness-negative-probes.json) at134f81b
+return1 for a constructed wrong hand count and missing eight Phoenix destinations,
+with input/expected/observed diagnostics. These are assertion-machine tests only.

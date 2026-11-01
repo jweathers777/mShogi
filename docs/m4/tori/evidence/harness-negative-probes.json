@@ -1,0 +1,56 @@
+[
+  {
+    "name": "wrong-hand-count",
+    "source_revision": "134f81ba67ef81918734ed1ed1acb5de7532fb99",
+    "kind": "deliberately constructed observation, not native behavior",
+    "command": [
+      "target/debug/mshogi-conformance",
+      "--observations",
+      "/private/tmp/msh126-wrong-hand-count.json"
+    ],
+    "exit_code": 1,
+    "executed": 1,
+    "pending": 726,
+    "failure": {
+      "predicate": "equal",
+      "fixture_id": "TORI-CAPTURE-OWNER",
+      "field": "hand_delta",
+      "owner": "MSH-127",
+      "boundary": "transition",
+      "status": "failed",
+      "diagnostic": {
+        "expected": "{\"s:Cr\":1}",
+        "input_context": "{\"command\":{\"from\":\"4e\",\"kind\":\"move\",\"result_face\":\"Cr\",\"to\":\"4d\"},\"root\":{\"board\":[\"s:Ph:7g\",\"g:Ph:1a\",\"s:Cr:4e\",\"g:Cr:4d\"],\"declared_completed_plies\":0,\"hands\":{\"g\":{},\"s\":{}},\"known_events\":[],\"provenance\":{\"earlier_history\":\"unknown\",\"historical_reachability\":\"not_asserted\",\"missing_material\":\"permitted_custom_diagram\"},\"root_kind\":\"diagram\",\"side_to_move\":\"sente\"}}",
+        "message": "expected/observed mismatch",
+        "observed": "{\"s:Cr\":2}"
+      }
+    }
+  },
+  {
+    "name": "missing-movement-destinations",
+    "source_revision": "134f81ba67ef81918734ed1ed1acb5de7532fb99",
+    "kind": "deliberately constructed observation, not native behavior",
+    "command": [
+      "target/debug/mshogi-conformance",
+      "--observations",
+      "/private/tmp/msh126-missing-movement-destinations.json"
+    ],
+    "exit_code": 1,
+    "executed": 1,
+    "pending": 726,
+    "failure": {
+      "predicate": "complete_set",
+      "fixture_id": "TORI-G-HO",
+      "field": "complete_steps",
+      "owner": "MSH-127",
+      "boundary": "geometry",
+      "status": "failed",
+      "diagnostic": {
+        "expected": "[[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]]",
+        "input_context": "{\"axes\":\"x=mover-right,f=mover-forward\",\"occupancy\":[],\"origin\":\"4d\",\"owner\":\"s\",\"piece\":\"Ph\"}",
+        "message": "missing=8 extra=0",
+        "observed": "[]"
+      }
+    }
+  }
+]

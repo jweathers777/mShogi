@@ -60,3 +60,12 @@ for all IDs,127/128/129 implement structural/local/game assertions. Real process
 acceptance, desktop preservation and human notation assertions remain explicit
 77/42 obligations; a native-only pass cannot claim those future journeys. The
 selected fixture bytes and independently expected outcomes are unchanged.
+
+## Executable machinery — MSH-126
+
+[The engine-independent Rust harness](harness.md) now loads this unchanged corpus
+and the full owner manifest. Fixture-data admission passes separately from native
+assertions: without actual native observations all727 assertions are pending,
+with0executed/passed; four prose proofs are annotations and83 consumer requirements
+remain pending. Selected property/mutation/rotation machinery is executable now;
+that does not claim native legality or replay. No external comparator is required.

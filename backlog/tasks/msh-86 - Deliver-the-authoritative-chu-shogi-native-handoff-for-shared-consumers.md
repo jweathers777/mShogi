@@ -4,7 +4,7 @@ title: Deliver the authoritative chu shogi native handoff for shared consumers
 status: To Do
 assignee: []
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-26T07:44:00Z'
+updated_date: '2026-11-01T13:44:00Z'
 labels:
   - m4
   - owner-msh-43
@@ -18,6 +18,7 @@ references:
 documentation:
   - docs/m4/later-game-sources.md
   - docs/m4/delivery-plan.md
+  - docs/testing/conformance-policy.md
 type: task
 ordinal: 86000
 ---
@@ -47,3 +48,9 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner2026-11-01 testing-policy supersession: rules-profile-derived independently expected fixtures/history, deterministic regression, exact reversal/replay, meaningful property/metamorphic/adversarial tests and independent review establish conformance without any external engine. External comparisons are optional investigative evidence, not build/test/CI/milestone/release gates. Historical observations/source audits retained; no completed-game campaign reopened. For Tori,126 is now the self-contained executable harness; no Fairy build/admission prerequisite. Existing task dependencies and implementation plans unchanged; no activation by this note. Apply game-specific properties where meaningful, never expected outputs copied from the implementation. See docs/testing/conformance-policy.md.
+<!-- SECTION:NOTES:END -->

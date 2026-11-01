@@ -1,3 +1,10 @@
+> **Owner testing-policy correction2026-11-01:** all six games must be independently
+> verifiable under the [project conformance policy](../testing/conformance-policy.md).
+> External game engines are optional investigations, never ordinary test/CI/
+> conformance/release gates. The former Tori126 comparator-build requirement is
+> withdrawn; its [self-contained harness](tori/harness.md) preserves all independent
+> expectations. Historical comparison results below remain at their original scope.
+
 > **Current prospective owner direction — 2026-11-01:** historical reconstruction
 > is not a product requirement. For Tori/Chu/Tenjiku, select a coherent sourced
 > modern playing profile, document necessary software conventions and independent

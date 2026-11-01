@@ -1,3 +1,9 @@
+> Historical planning assessment for13210d1, preserved below. Owner2026-11-01
+> subsequently withdrew the mandatory external-reference build/admission gate.
+> Current [engine-independent policy](../../testing/conformance-policy.md) and
+> [MSH-126 implementation](harness.md) supersede that requirement, without
+> changing the original review observations or selected fixture expectations.
+
 # Independent MSH-85 planning review and checks
 
 2026-11-01. Planning baseline/integration branch:

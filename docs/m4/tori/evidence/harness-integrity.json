@@ -1,0 +1,13 @@
+{
+  "baseline": "04225043545a7219fbbad6024eb2398c5f68aaf2",
+  "task_records": 129,
+  "dependency_edges": 344,
+  "graph_unique_resolved_acyclic": true,
+  "all_dependencies_unchanged": true,
+  "completed_tasks_unchanged": true,
+  "future_implementation_plans_unchanged": true,
+  "profile_corpus_ownership_unchanged": true,
+  "local_document_links": 50,
+  "existing_product_and_workflows_unchanged": true,
+  "kind": "metadata integrity, not native conformance"
+}

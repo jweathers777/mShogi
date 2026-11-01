@@ -31,7 +31,7 @@ only with actual consumers. No current format/transport change is made by81.
 - **85** remains the coordinating native handoff, now depending on81 and its
   four bounded components126/127/128/129. [Native refinement](native-plan.md)
   satisfies original AC4 only; AC1–3/DoD require delivered native behavior and a
-  real core consumer probe. **126** fixture/reference harness depends81;
+  real core consumer probe. **126** self-contained fixture harness depends81;
   **127** structure/actions/reversal depends126; **128** full local legality/
   inspection depends127; **129** history/adjudication/records/typed native
   dispatch depends128. No component depends on85,77 or final42. All are scoped
@@ -47,11 +47,21 @@ only with actual consumers. No current format/transport change is made by81.
 - **88/89/46/47** retain all-game/platform/shared/M4 closure; no task closes here.
   **82/83** remain inactive; no dependency chain through other final game deliveries.
 
-First implementation slice is **MSH-126**, dependency-satisfied Ready. MSH-85's
+Current execution is **MSH-126**, the self-contained fixture harness; its mandatory
+external-engine build/admission requirement was withdrawn by the owner2026-11-01. MSH-85's
 pre-Ready refinement is now recorded;85 itself remains blocked on actual native
-components. This planning assignment starts none of them. Actual execution,
+components. The earlier planning assignment started none of them. Actual execution,
 desktop archive/runtime acceptance and notation facets remain77/42, without
 making85 depend on its own consumers.
 Provisional Tori→Chu→Tenjiku priority unchanged. M2/M3, completed Chess/Shogi/
 Xiangqi and current R6 evidence, MSH-61 capacity guarantee and future M5 ownership
 remain intact.
+
+## Owner testing-policy correction — MSH-126
+
+External comparators are optional and nonauthoritative, never kernel/CI/delivery
+gates. Native127–129 must use the [self-contained harness](harness.md), independent
+expectations, meaningful properties/metamorphisms/adversarial cases and exact
+reversal/replay with review under [project policy](../../testing/conformance-policy.md).
+The selected profile,103 expectations and all native/consumer ownership remain
+unchanged. No native kernel or shared integration begins in126.

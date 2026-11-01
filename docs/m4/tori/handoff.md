@@ -1,5 +1,18 @@
 # Modern Tori native/shared handoff — MSH-81
 
+## Current native acceptance — MSH-85
+
+[Independent native acceptance](native-acceptance.md) confirms the complete
+`mshogi.tori.modern.v1` kernel and real typed core-consumer handoff at production
+994521bec0637d6f8f17103f1106c0025d950753. Components126–129 are Done;
+713native assertions pass, with14actual-consumer assertions and83requirements
+still pending under77/42. Both exact-source native and package CI runs completed
+successfully. This accepts native behavior only: no Tori engine, session/document,
+console/notation or desktop play capability is claimed.77 remains the next shared
+consumer owner,42 full game delivery; M4 remains open. Earlier dated readiness and
+pending counts below are historical checkpoints, preserved rather than rewritten.
+
+
 Selected contract `mshogi.tori.modern.v1`, edition2026-11-01; no native Tori
 implementation in this planning task. Inspected actual surviving source owners
 at `26a2fa9ce8165b6e7ae713d12f16548b65c110da`, whose production code is unchanged

@@ -69,3 +69,14 @@ assertions: without actual native observations all727 assertions are pending,
 with0executed/passed; four prose proofs are annotations and83 consumer requirements
 remain pending. Selected property/mutation/rotation machinery is executable now;
 that does not claim native legality or replay. No external comparator is required.
+
+
+## Current native local execution — MSH-128
+
+The immutable specification file and its original data-only metadata remain
+unchanged. Actual execution is recorded separately in [native local evidence](native-local-evidence.md):
+483fields pass across83rows (all14primary127 and69primary128),244history/record/
+consumer assertions pending,83later-consumer requirements pending. The four prose
+proof annotations are not automatic passes. Local status and legal choices are
+implemented; actual full-game conclusions/history/records and real consumers
+remain129/85/77/42. No expectation was generated from native or external output.

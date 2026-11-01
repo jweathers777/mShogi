@@ -27,14 +27,16 @@ also remains unchanged. Current sources/handoff supersede their readiness claims
 127state/transitions,128locallegality/inspection and129history/records/native
 dispatch.126 is Done with [actual harness evidence](harness-evidence.md);
 127 is Done with [native structural evidence](native-structural-evidence.md);
-128 is now the first dependency-satisfied Ready implementation slice;
+128 is Done with [native local-rule and inspection evidence](native-local-evidence.md);
+129 is now the first dependency-satisfied Ready implementation slice;
 85 stays open/blocked as coordinator, with only its planning AC4 satisfied.
 The [103-ID ownership manifest](native-fixture-ownership.json) preserves native
 and later consumer assertion boundaries. MSH-77 consumes the real native handoff;
 MSH-42 retains complete delivery and MSH-51/M5 measured strength. No native Tori
 implementation/capability/selector/format or later task started in the planning
-refinement. MSH-127 now supplies structural state/transitions only; full local
-legality and playable support remain incomplete.
+refinement. MSH-127/128 now supply structural state/transitions and complete local
+legality/inspection. History/records/native dispatch and playable support remain
+incomplete under129/85/77/42; no product capability or selector was added.
 M4 and shared/platform closure remain open.
 
 Owner2026-11-01 removes mandatory external-engine admission. The executable

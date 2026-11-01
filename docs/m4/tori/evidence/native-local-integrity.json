@@ -10,6 +10,6 @@
   "existing_games_consumers_workflows_dependencies_unchanged": true,
   "structural_geometry_transition_semantics_and_tests_unchanged": true,
   "prior_structural_adapter_only_visibility_changes": true,
-  "local_links_checked": 37,
+  "local_links_checked": 42,
   "kind": "metadata integrity, not native conformance"
 }

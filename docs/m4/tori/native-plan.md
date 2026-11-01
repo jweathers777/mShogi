@@ -24,9 +24,9 @@ on its aggregate85, shared consumer77 or final42.
 | **MSH-42** | Complete Tori console, functional engine/search/supervision, notation, desktop, persistence and independent game delivery; MSH-51/M5 owns measured strength. |39,72,73,77,81,85 |
 
 126 is Done ([harness evidence](harness-evidence.md));127 is Done
-([structural evidence](native-structural-evidence.md)).128 is the first
-dependency-satisfied Ready slice;129 remains blocked by128.85 is scoped Ready
-and blocked on remaining components,
+([structural evidence](native-structural-evidence.md));128 is Done
+([local legality and inspection evidence](native-local-evidence.md)).129 is the first
+dependency-satisfied Ready slice.85 is scoped Ready and blocked on129,
 **not Done**; only original AC4 may be checked by this planning pass. No later
 implementation/consumer task is activated by this handoff update. Serial order keeps the independent corpus/harness
 contract settled before transition testing, transitions before full legality, and
@@ -164,3 +164,17 @@ legality/safety/drop rules/status/inspection and rerun structural evidence throu
 that public legal boundary.129 retains history/outcomes/strict records/replay/
 native dispatch;85 remains coordinating acceptance,77/42 remain later consumers.
 No future implementation plan or dependency was changed, and no next task started.
+
+
+## Completed MSH-128 handoff
+
+Source5c60ac65dc03a7f9afcaa796a2babb252329d361 adds the complete checked local
+LocalPosition API and immutable native inspection. [Evidence](native-local-evidence.md)
+records all281128assertions plus202127passes, independent rules/property/adversarial
+review and actual nativeCI PASS on Windows/macOS/Linux. Structural helpers stay
+private; existing game consumers and profile/fixture/ownership bytes are unchanged.
+129 consumes local status/complete actions/effects/reversal and retains all T06
+history/departure obligations, commands/conclusions, strict records/replay and core
+dispatch/capacity measurement. It must preserve exact local inspection on historical
+prefixes and separate full-game permission from board membership. No future
+implementation plan, dependency, ownership or status was changed by this handoff.

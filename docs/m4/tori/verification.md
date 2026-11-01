@@ -55,3 +55,12 @@ and later all-game/platform ownership are unchanged.
 Integration/push references are recorded in MSH-81 after actual commits. MSH-85
 becomes dependency-unblocked but remains To Do pending required pre-Ready native
 slice refinement. No implementation of85/77/42/82/83 occurs. M4 remains open.
+
+Reviewed profile/fixture/planning integration actually committed and pushed at
+`ec1ce01680800327eb155d7b790650eb294d4bd6` on `codex/rewrite`.
+All four original AC and four DoD were then checked through pinned Backlog CLI,
+MSH-81 marked Done, and static integrity/doctor/diff checks rerun successfully.
+Actual `gh run list --commit ec1ce01680800327eb155d7b790650eb294d4bd6` returned
+`[]`; no new CI run/pass is claimed. The first restricted-network query failed;
+the authorized network retry succeeded. Final task/evidence bookkeeping changes
+no reviewed profile, fixture expectation or production behavior.

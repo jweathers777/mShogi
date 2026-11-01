@@ -1,0 +1,53 @@
+---
+id: MSH-131
+title: Integrate Tori into the single native desktop runtime and lifecycle
+status: Ready
+assignee: []
+created_date: '2026-11-01T21:28:00Z'
+updated_date: '2026-11-01T21:32:00Z'
+labels:
+  - m4
+  - owner-msh-77
+milestone: m-4
+dependencies:
+  - MSH-130
+references:
+  - >-
+    backlog/tasks/msh-77 -
+    Extend-shared-contracts-for-real-tori-shogi-consumers.md
+documentation:
+  - docs/m4/tori/shared-plan.md
+  - docs/m4/tori/shared-consumer-ownership.json
+  - docs/m4/tori/native-acceptance.md
+  - docs/testing/conformance-policy.md
+type: task
+ordinal: 131000
+---
+
+## Description
+
+<!-- SECTION:DESCRIPTION:BEGIN -->
+Consume the completed Tori codec/admission slice before accepting live Tori work. Actual surviving owners are lib.rs DesktopController/ActiveDocument/RuntimeMetadata, shared.rs SharedDesktopCommand/SessionOperation/SessionToken/SharedSnapshot, shared_inspection.rs, persistence.rs sole install_document, lifecycle.rs, takeback.rs and shared_archive.rs worker/receipts. Extend their tagged native adapters only. Use native::Tori identities, tori::Game/GameRequest/GameCommand/GameContext/GameUndo and native prefix/inspection APIs; Shogi Play is concretely shogi::Action and cannot admit Tori. MSH-42 later supplies the real engine; this slice must be verifiable against actual native games before it exists.
+
+Component of MSH-77 shared integration under MSH-46, not complete Tori delivery MSH-42. Accepted source994521bec0637d6f8f17103f1106c0025d950753/profile mshogi.tori.modern.v1, native acceptance a3677e1e862fdf3877c784f12f56a99c4bfbf167. Original103 independently expected fixtures and713 native assertions remain fixed; external engines are optional nonauthoritative investigations, never gates. See shared-plan.md and shared-consumer-ownership.json for exact consumer obligations. No rules, search/evaluation, console/notation, product Tori artwork/page, selector entry, other variant or M5 implementation. Future worker records its current implementation plan only after activation.
+
+Verification: focused real native/candidate/controller tests appropriate to this boundary, exact-source commands/outcomes, independent completed-diff review, relevant existing-game regressions and applicable native/desktop CI for actual changed production. Distinguish source/controller/frontend/package/GUI evidence; no fake Tori engine or product-capability claim.
+<!-- SECTION:DESCRIPTION:END -->
+
+## Acceptance Criteria
+<!-- AC:BEGIN -->
+- [ ] #1 Exactly one ActiveDocument::Tori variant holds authoritative tori::Game state in the existing DesktopController and RuntimeMetadata. Explicit native Tori operation/side/settings dispatch constructs context-checked GameRequest at the serialized admission boundary; complete moves/drops, out-of-turn resignation, Stop and unsupported agreement/impasse preserve native semantics. All mutations/observations/preferences/undo/takeback/close operations use the prerequisite complete document admission from their first accepted state.
+- [ ] #2 Actual controller tests execute the82 MSH-77 consumer requirements and13 MSH-77 pending fields from the supplemental mapping, with exact independently expected fixtures and owner rotations. Rejected board/root/Open/stale/unsupported/resource requests preserve the complete accepted native document/settings/observations and cannot install a new document or grant stale execution authority. Diagnostic/progress revisions and explicit cancellation retirement may change as specified. Resource refusal is not illegality or an invented game result; the saved complete prior state remains available.
+- [ ] #3 Native read-only board/hand inspection uses selected prefix LocalPosition::inspect; complete live choices use Game::legal_actions and Game::submit. Exact event-index selection, Return to live, Undo and atomic Take back restore correct root/history/obligation/conclusion and native-derived geometry while retiring execution permanently. No future moves or repetition information leak into a prefix; same-board/different-history and return-to-same-diagram never revive old work.
+- [ ] #4 Bind the surviving ExecutionContext/Target/Observation family to full native record/purpose/request/session/process-generation/limits and selected event. Actual existing internal subprocess UnsupportedMode and bounded termination/cancellation/replacement tests prove unscored handling, distinct administrative reasons and cross-game stale rejection. All six identity dimensions are negatively tested; no Tori success/result family, search, telemetry, draw or fallback move is invented. engine_turn/move_analysis/Chess Full/Xiangqi exact capabilities remain false; unsupported Analyze/Resume/Retry execution is explicit.
+- [ ] #5 Install validated Tori candidates through sole persistence::install_document and the existing bounded worker, receipts and lifecycle guards. Failed/corrupt/cancelled/resource-limited Open/Replace leaves live state and execution intact; successful reopen swaps atomically with fresh runtime identities, historical observations only and work stopped. Unsaved replacement/quit and native close reservations remain protected; Resume cannot advertise or launch nonexistent Tori work.
+- [ ] #6 A minimal correct SharedSnapshot accompanies the new runtime for real boundary tests; no fake Shogi placeholder or frontend rules. Verify actual current file Save/Load, interrupted-save dirty state, historical prefixes, takeback/save/reopen,256-to257 refusal, reserved close and stale installation races. Focused current Chess/Shogi/Xiangqi controller/document/lifecycle/actual subprocess regressions pass; independent runtime/admission review and applicable CI are recorded. No Tori supported-game selector entry or final product board. Native controller Save/Open is exercised through the real contract/verification path; normal host New Game/Open must explicitly refuse Tori before a real product renderer is available under42, rather than send an unsupported snapshot to a Chess/Shogi fallback.
+<!-- AC:END -->
+
+## Definition of Done
+<!-- DOD:BEGIN -->
+- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [ ] #2 Applicable independent review is recorded and material findings are resolved.
+- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+<!-- DOD:END -->

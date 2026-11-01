@@ -1,4 +1,20 @@
 > **Owner testing-policy correction2026-11-01:** all six games must be independently
+
+## Current Tori shared refinement — MSH-77, 2026-11-01
+
+Completed85/126–129 now supply the accepted modern native kernel. The
+[source-grounded current refinement](tori/shared-plan.md) creates130document
+codec/admission→131single runtime/session/sole installation→132semantic
+presentation/consumer verification.77 retains original criteria and final
+integration; complete direct prerequisites69/72/73/85/130/131/132. Only130 is
+dependency-ready; no implementation is authorized by this planning pass.42 and46
+retain their original gates, no cycle through full game delivery. Tori engine,
+console/notation, final board/artwork and actual human-engine product journeys
+stay42;51strength and88/89six-game verification remain separate. No supported
+selector entry before playable delivery. The [exhaustive supplemental map](tori/shared-consumer-ownership.json)
+keeps13/82runtime obligations under131 and notation1/1under42, with130/132
+support; all713native assertions and historical evidence stay intact.
+
 > verifiable under the [project conformance policy](../testing/conformance-policy.md).
 > External game engines are optional investigations, never ordinary test/CI/
 > conformance/release gates. The former Tori126 comparator-build requirement is

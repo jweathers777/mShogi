@@ -1,0 +1,202 @@
+{
+  "baseline": "e1f7ed407f360ef7b4267225c6921e73ddd1417d",
+  "environment": "macOS arm64, Rust1.99.1, debug native tests",
+  "counts": {
+    "fixtures_validated": 103,
+    "executed": 713,
+    "passed": 713,
+    "pending": 14,
+    "failed": 0,
+    "documentary_annotations": 4
+  },
+  "owners": {
+    "MSH-127": {
+      "passed": 202,
+      "failed": 0,
+      "pending": 0
+    },
+    "MSH-128": {
+      "passed": 281,
+      "failed": 0,
+      "pending": 0
+    },
+    "MSH-129": {
+      "passed": 230,
+      "failed": 0,
+      "pending": 0
+    },
+    "MSH-77": {
+      "passed": 0,
+      "failed": 0,
+      "pending": 13
+    },
+    "MSH-42": {
+      "passed": 0,
+      "failed": 0,
+      "pending": 1
+    }
+  },
+  "pending_assertions": [
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-C-IDENTITY",
+      "field": "accept_late_A_for_B",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-C-IDENTITY",
+      "field": "undo_back_to_same_diagram_does_not_restore_A",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-C-NOTATION",
+      "field": "display_is_not_action_authority",
+      "owner": "MSH-42",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-O-ADMIN",
+      "field": "native_conclusion",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-O-ADMIN",
+      "field": "record_reason_separately",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-O-ADMIN",
+      "field": "scored",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-H-REPLAY-UNDO",
+      "field": "runtime_work_never_revived",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-REJECT-DUPLICATE-SQUARE",
+      "field": "live_document_unchanged",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-REJECT-MISSING-ROYAL",
+      "field": "live_document_unchanged",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-REJECT-ADJACENT-ROYALS",
+      "field": "live_document_unchanged",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-REJECT-DEAD-SWALLOW",
+      "field": "live_document_unchanged",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-REJECT-THREE-SWALLOWS",
+      "field": "live_document_unchanged",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-REJECT-EXCESS-INVENTORY",
+      "field": "live_document_unchanged",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-REJECT-STRICT",
+      "field": "live_document_unchanged",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    }
+  ],
+  "later_consumer_requirements_pending": 83,
+  "capacity": {
+    "board_actions": 360,
+    "captures": 104,
+    "drops": 103,
+    "encoded_bytes": 156573,
+    "events": 360,
+    "generation_with_candidate_probes_ms": 4474,
+    "promotions": 16,
+    "replay_work": 65341,
+    "resignation_bytes": 157044,
+    "seed": "0x129ca11ab1e5",
+    "stop_bytes": 156804,
+    "strict_parse_plus_two_replays_ms": 2638,
+    "normalized_record_value_sha256": "b710ab5de4ea53641bfdad621e20e709510236ff456edf6df87e911d73b6c709"
+  },
+  "source_sha256": {
+    "crates/mshogi-core/src/tori/game.rs": "a3987b9276971f424f191ff28d9f4ee979bdedae604afb546c159e170d0c92c6",
+    "crates/mshogi-core/src/tori/record.rs": "f7ed551fff72f67d47d502f9570a00404f547f167b92fba1094f3f24a6027548",
+    "crates/mshogi-core/src/tori/game_tests.rs": "02ccdeb74d40692c6a0d689fc7cf8e8929c3907c93362ea0d8ad2acc746463a0",
+    "crates/mshogi-core/src/tori/game_conformance.rs": "089d8a59362bc2ade201b643e67c40e085cbc1703c3a5e1a94b5934d98b1114f",
+    "crates/mshogi-core/src/native.rs": "ff5263e4bc8444dea3596041bb8456a4daa88f5b04f73d4e6334804e5687c28e"
+  },
+  "local_checks": {
+    "native_tori_unit_tests": 38,
+    "core_conformance_regressions": 278,
+    "existing_chess_deep_opt_ins_not_run": 2,
+    "engine_regressions": 41,
+    "desktop_session_tests": 201,
+    "selected_real_subprocess_regressions": 19,
+    "tori_envelope_tests": 3,
+    "workspace_clippy": "PASS",
+    "workspace_format": "PASS",
+    "desktop_doc_tests": "initial E0463 artifact failure; focused serial rerun PASS0tests"
+  }
+}

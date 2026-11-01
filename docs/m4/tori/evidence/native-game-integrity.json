@@ -1,0 +1,15 @@
+{
+  "baseline": "e1f7ed407f360ef7b4267225c6921e73ddd1417d",
+  "task_records": 129,
+  "dependency_edges": 344,
+  "unique_resolved_acyclic": true,
+  "all_dependencies_unchanged": true,
+  "all_previously_completed_tasks_unchanged": true,
+  "other_implementation_plans_unchanged": true,
+  "profile_corpus_manifest_bytes_unchanged": true,
+  "existing_rules_search_runner_frontend_workflows_dependencies_unchanged": true,
+  "prior_tori_geometry_local_legality_perft_and_tests_unchanged": true,
+  "only_typed_native_and_unsupported_consumer_adaptations": true,
+  "local_links_checked": 46,
+  "kind": "metadata integrity, not native conformance"
+}

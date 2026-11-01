@@ -1102,6 +1102,7 @@ pub(crate) fn execute(
             let bytes = read(&path, stopped)?;
             let value = crate::document::DocumentEnvelope::parse(&bytes)?;
             let game = match value.game_kind {
+                GameKind::Tori => return Err("Tori desktop documents are not implemented.".into()),
                 GameKind::Chess => OpenedNative::Chess(Box::new(
                     persistence::decode_chess_payload(value.payload.get().as_bytes(), stopped)?,
                 )),

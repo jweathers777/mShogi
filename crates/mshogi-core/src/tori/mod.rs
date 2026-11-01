@@ -2,9 +2,14 @@
 //!
 //! Public positions are structurally validated diagrams, NOT admitted live games.
 //! LocalPosition owns complete local rules/admission/inspection, distinct from
-//! structural Position. History/records/commands remain MSH-129. Structural mutation and
+//! structural Position. Game owns history/records/commands; LocalPosition remains independent of game permission. Structural mutation and
 //! geometric candidates are crate-private and cannot admit a public game action.
+use serde::{Deserialize, Serialize};
 use std::{error::Error, fmt, str::FromStr, sync::Arc};
+mod game;
+mod record;
+pub use game::*;
+pub use record::{GAME_RECORD_SCHEMA_VERSION, GameRecord, MAX_GAME_RECORD_BYTES, RecordError};
 
 #[cfg(test)]
 mod conformance;
@@ -27,7 +32,8 @@ pub const PROFILE_ID: &str = "mshogi.tori.modern.v1";
 pub const PROFILE_EDITION: &str = "MSH81-MODERN-2026-11-01";
 
 /// Native ownership and orientation, independent of other games.
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
 pub enum Side {
     /// First player; forward is toward rank a.
     Sente,
@@ -127,7 +133,8 @@ impl fmt::Display for Square {
 }
 
 /// All native board faces; invalid base/promotion combinations are unrepresentable.
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
 pub enum Face {
     /// Royal Phoenix.
     Phoenix,
@@ -246,7 +253,8 @@ impl Face {
     }
 }
 /// Owned native face. Handedness belongs to the face, never to the owner.
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Piece {
     /// Native owner.
     pub side: Side,
@@ -284,7 +292,8 @@ impl Hand {
     }
 }
 /// Declared origin category, not evidence of reachability.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
 pub enum RootKind {
     /// Exact standard arrangement/counter/turn.
     Standard,
@@ -563,7 +572,8 @@ impl Position {
 }
 /// A complete structural action. Captures/effects are always derived from native state.
 /// This type alone does not grant legal admission or live-game permission.
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Serialize, Deserialize)]
+#[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum Action {
     /// Exact source, destination and mandatory resulting face; no caller-supplied victim.
     Move {
@@ -587,3 +597,21 @@ pub enum Action {
 mod local_conformance;
 #[cfg(test)]
 mod local_tests;
+
+impl Serialize for Square {
+    fn serialize<S: serde::Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
+        s.serialize_str(&self.to_string())
+    }
+}
+impl<'de> Deserialize<'de> for Square {
+    fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        String::deserialize(d)?
+            .parse()
+            .map_err(serde::de::Error::custom)
+    }
+}
+
+#[cfg(test)]
+mod game_conformance;
+#[cfg(test)]
+mod game_tests;

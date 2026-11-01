@@ -705,6 +705,7 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
         assert!(current.document.dirty);
         assert_eq!(current.open_token, c.shared_open_token());
         match human {
+            NativeSide::Tori(_) => unreachable!("Tori desktop is unsupported"),
             NativeSide::Xiangqi(side) => {
                 use mshogi_core::xiangqi as x;
                 assert_eq!(current.profile.id(), x::PROFILE_ID);
@@ -925,4 +926,32 @@ fn current_wire_frame_is_checked_before_a_durable_native_observation_is_admitted
         OBSERVATION_SCHEMA_VERSION
     );
     assert_eq!(saved.record(), before);
+}
+
+#[test]
+fn native_tori_tags_do_not_create_a_desktop_session_or_replace_a_live_document() {
+    use mshogi_core::tori;
+    let mut c = controller();
+    let before = c.shared_snapshot().context;
+    let token = c.shared_token();
+    let open = c.shared_open_token();
+    let error = c
+        .shared_new_game(open, GameKind::Tori, NativeSide::Tori(tori::Side::Sente))
+        .unwrap_err();
+    assert!(error.contains("not implemented"));
+    assert_eq!(c.shared_token(), token);
+    assert_eq!(c.shared_snapshot().context, before);
+    let error = send(
+        &mut c,
+        SessionOperation::Replace {
+            record: CanonicalRecord::tori(
+                tori::GameRecord::from_game(&tori::Game::standard()).unwrap(),
+            ),
+            human: NativeSide::Tori(tori::Side::Sente),
+        },
+    )
+    .unwrap_err();
+    assert!(error.contains("not implemented"));
+    assert_eq!(c.shared_token(), token);
+    assert_eq!(c.shared_snapshot().context, before);
 }

@@ -178,3 +178,19 @@ history/departure obligations, commands/conclusions, strict records/replay and c
 dispatch/capacity measurement. It must preserve exact local inspection on historical
 prefixes and separate full-game permission from board membership. No future
 implementation plan, dependency, ownership or status was changed by this handoff.
+
+
+## MSH-129 native Game handoff
+
+The [native game evidence](native-game-evidence.md) records the actual authoritative
+T05/T06 Game, exact full context/retirement/reversal, immutable history and complete
+prefix records, strict native schema1 replay and typed core dispatch. All713native
+assertions execute and pass (202127+281128+230129),14genuinely later assertions and
+83real-consumer requirements remain pending. Selected profile/corpus/ownership are
+unchanged. Native bounds are measured separately from later desktop quotas;
+ordinary admission preserves complete encoding and reserved Stop/Resign headroom.
+Tori execution remains explicitly unsupported/unscored and unadvertised; no Tori
+session, engine, console, desktop codec/UI or chooser is supplied.85 retains separate
+native acceptance;77/42 remain real shared/product consumers. Earlier handoff sections
+above are historical checkpoints, superseded only as to delivered native129 behavior.
+No later task is started or closed by this evidence update.

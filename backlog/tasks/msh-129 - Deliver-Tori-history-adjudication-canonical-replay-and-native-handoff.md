@@ -1,10 +1,11 @@
 ---
 id: MSH-129
 title: Deliver Tori history adjudication canonical replay and native handoff
-status: Ready
-assignee: []
+status: In Review
+assignee:
+  - '@codex'
 created_date: '2026-11-01T12:21:00Z'
-updated_date: '2026-11-01T13:44:00Z'
+updated_date: '2026-11-01T19:49:00Z'
 labels:
   - m4
   - owner-msh-85
@@ -22,6 +23,7 @@ documentation:
   - docs/m4/tori/native-plan.md
   - docs/m4/tori/native-fixture-ownership.json
   - docs/testing/conformance-policy.md
+  - docs/m4/tori/native-game-evidence.md
 type: task
 ordinal: 129000
 ---
@@ -53,8 +55,27 @@ Verification: focused reproducible commands at exact tested source, independent 
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Root Codex is sole builder/integrator in clean primary codex/rewrite e1f7ed4; pinned Backlog1.55.1, Done128 prerequisite, origin alignment and no competing active owner verified. Preserve unrelated worktrees, selected profile, all103 expectations/ownership and completed evidence.
+2. Add native Game over LocalPosition, exact board/hands/turn repetition keys and latest-three departure obligations. Install board-terminal outcomes before repetition; context-checked board/resignation/unsupported/control commands separate concluded from incomplete unscored administration. Use full semantic context and independent monotonic native runtime authority.
+3. Implement exact full-game undo/redo and immutable prefix views with retired authority. Add strict versioned native root/game records, duplicate-preserving parsing before normalization and authoritative replay comparison of all redundant prefixes/effects/obligations/conclusions. Measure real native encoded sizes/work and enforce bounded precommit admission plus terminal/stop headroom.
+4. Extend native.rs typed game/profile/schema/side/command/CanonicalRecord routing with real Tori payloads and a core consumer probe. Adapt only necessary exhaustive consumers to explicit unsupported/unscored Tori branches; no engine/session/document/frontend implementation or capability advertisement.
+5. Execute every129 native harness assertion with actual results while retaining127/128 passes and genuinely later77/42 facets pending. Add independent full forced8/unequal16 sequences, unit/adversarial/metamorphic/reversal/context/record/capacity tests and existing-game routing regressions.
+6. Obtain independent completed-boundary review, resolve findings, run focused/native/shared checks plus applicable three-platform native CI. Record exact measured source/evidence, integrate/push normally, finalize129 only with all7AC/4DoD supported; stop before85/77/42/other variants/M5.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 Owner2026-11-01 testing-policy supersession: rules-profile-derived independently expected fixtures/history, deterministic regression, exact reversal/replay, meaningful property/metamorphic/adversarial tests and independent review establish conformance without any external engine. External comparisons are optional investigative evidence, not build/test/CI/milestone/release gates. Historical observations/source audits retained; no completed-game campaign reopened. For Tori,126 is now the self-contained executable harness; no Fairy build/admission prerequisite. Existing task dependencies and implementation plans unchanged; no activation by this note. Apply game-specific properties where meaningful, never expected outputs copied from the implementation. See docs/testing/conformance-policy.md.
+
+Owner request2026-11-01 authorizes129only. Startup clean primarycodex/rewrite e1f7ed407f360ef7b4267225c6921e73ddd1417d aligned with origin; no other InProgress/InReview task owner. Local128 API is complete and native repetition/record/dispatch remains129. RootCodex builds; separate read-only fixture-contract research underway, completed-diff independent review required. No external engine orGUI campaign and no later task activation.
+
+Native Game/T06 obligations/context-lineage, exact reversal/prefix, strict native schema1 RawValue replay and typed dispatch implemented. Actual immutable-corpus adapter713executed/713passed/14pending/0failed;83later-consumer requirements staypending. Complete forced8/unequal16 and40board+2resignation fullGame reversal pass. Initial adapter mate projection used winner rather than expected loser; corrected equivalent native projection, no fixture/rule change. Real360board record156573B/65341replayunits includes104captures/103drops/16promotions; nextboard refused beforemutation, stop+resign stillencode/replay. Real510event path refusesordinary; reserved stop511/resign512 fit165930B. Native512KiB/512event/65536unit bounds and4096B/nonboard reserve are independently checked at exactpolicy/parser/admission boundaries. Core/engine/desktop regressions and separate readonlyreview running; nativeCI notyetclaimed. No later task activation.
+
+Independent tori129_review finalPASS on frozen nativeboundary; no unresolvedmaterial findings. Actualmethod separate readonlysemantic/API/profile/fixture/diff review plus independently13nativegame/713assertions,3Tori+10existing envelope,2engine routing and1actualsubprocess checks. Eventlimit/longredo/prefix test challenges addressed; minor forgeableview panic risk resolved by private native state/getter. Reviewedgame.rs SHAa3987b9276971f424f191ff28d9f4ee979bdedae604afb546c159e170d0c92c6. Finalfocus38ToriPASS; all-targetworkspaceclippy-Dwarnings/formatPASS; existing41engine/201desktop-session/19selectedsubprocesschecksPASS. Initial desktoprustdocE0463artifactfailure retained; focusedserialdoctest rerunPASS0tests. NativeGameprefix records preserve complete root/historywithoutfuture; real360sequence covers104captures/103drops/16promotions andfullundo+redo everyprefix. Fullgraph129/344doctor/integrityPASS withdeps/oldDone/tasks/profile/fixtures/localrules/existingrules/search/runner/frontend/workflows unchanged. NativeCI stillpending actualsourcecommit; remainInReview.
+
+Final core/conformance rerun278PASS/0failed across34reported suites;2existingdeepChessoptinsnotrun. New38Tori+3coreconsumer+2engineunsupported+1actualsubprocess checksPASS, noignoredTori. No code changes after independentreviewhash; current docs/evidence finalized for sourcecommit and real3platformnativeCI. TaskInReview untilactualCI/integration evidence.
 <!-- SECTION:NOTES:END -->

@@ -1,7 +1,7 @@
 ---
 id: MSH-81
 title: Acquire and ratify sourced tori shogi profile and fixtures
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
@@ -39,18 +39,18 @@ Verification expectations: modern source/clause reconciliation, independently ex
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 A bounded source acquisition/reconciliation record resolves historical source attribution/edition,7x7 setup,piece geometry/promotions,swallow drops/nifu-like restrictions,repetition and endings,with primary editions,translation limits and adopted rules versus proposed/software conventions explicit.
-- [ ] #2 Material owner choices have concrete sourced options/recommendation and recorded decisions before affected behavior; unresolved required rules remain blocking named obligations,not silently omitted.
-- [ ] #3 A named/versioned complete profile and initial independent fixture expectations cover state,complete actions,history/conclusions and notation/consumer constraints without importing chess semantics.
-- [ ] #4 The native consumer handoff and necessary shared extension scope are refined into actionable acceptance/dependencies without requiring another game final delivery or closing this game.
+- [x] #1 A bounded source acquisition/reconciliation record resolves historical source attribution/edition,7x7 setup,piece geometry/promotions,swallow drops/nifu-like restrictions,repetition and endings,with primary editions,translation limits and adopted rules versus proposed/software conventions explicit.
+- [x] #2 Material owner choices have concrete sourced options/recommendation and recorded decisions before affected behavior; unresolved required rules remain blocking named obligations,not silently omitted.
+- [x] #3 A named/versioned complete profile and initial independent fixture expectations cover state,complete actions,history/conclusions and notation/consumer constraints without importing chess semantics.
+- [x] #4 The native consumer handoff and necessary shared extension scope are refined into actionable acceptance/dependencies without requiring another game final delivery or closing this game.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -89,6 +89,8 @@ Modern selection current2026-11-01: mshogi.tori.modern.v1 / MSH81-MODERN-2026-11
 Independent review now assesses completed modern profile/103fixture-spec/currenthandoff boundary. Focused static verification passed: all39 original IDs preserved, nine exhaustive geometry tables,35 owner-rotated transition cases, allacceptedtransitions require exactapply/undo/redo, full8plyforcedcheck and16plyunequalcycle independently hand-checked. Graph125records/336edges unique/resolved/acyclic; originalAC/DoDwording/dependencies and completed62/121/45 plusinactive82/83 unchanged. Historical checkpoint bytes match26a2fa9 exactly; current local links resolve; production/build/workflow/AGENTSdiffempty; backlogdoctor/diffcheckPASS. This is planning integrity, not executed native rules/reference/app conformance.
 
 Fresh independent tori_modern_review PASS confirmed on finalfixtureSHA3f9e5ca3b541fc72f562ddd8231408e17e7bd5ba3ccee118e643ce0f543731e3. Actual method: independent modernsource reading, actualpinnedFairy source spotcheck, hand-calculated criticalboard/history cases, allfixturegroups/originalcriteria/currenthandoff review and independent readonly graph/rootgeometry checks. Four findingsresolved: rootterminalinstallation, immutabledeclaredcounter, full42acceptedtransition reversal, Eagle-block invalidroyalroot corrected GPh1a→1b / rotatedSPh7g→7f. Initialreview missedlastfixtureissue; followupindependentrootattack audit70admission/78directnonrejectionroots foundnone remaining. Final103specs/39seedIDs/9geometrytables/35rotations/125tasks/336edges; no unresolvedmaterialownerchoice. docs/m4/tori/review.md records actual methods/limits. No nativeconformance,comparatorexecution,GUI orCIpassclaimed. All4originalAC supported underownerclarifiedobjective; result readyfornormalintegration, then finalDonebookkeeping.
+
+Reviewed modern profile/fixture/handoff integrated and normally pushed on codex/rewrite at ec1ce01680800327eb155d7b790650eb294d4bd6 (origin26a2fa9→ec1ce01). All4 originalAC and4DoD now checked with docs/m4/tori/verification.md and independentreview evidence. Actual gh run list --commit ec1ce01680800327eb155d7b790650eb294d4bd6 returned [] after successful network retry: planning-only [skip ci], no newCIpassclaimed. Initial gh query failed restrictednetwork and was not counted as an executedcheck; authorizednetworkquerysucceeded. No required native/appcampaign for unchangedproduction. Complete MSH81 only;85dependencyunblockedbutToDo/preReadyrefinementstillrequired;Ready --ready query currentlyreturnsnone. No85/77/42/82/83activation, allothercompletedandfuturetasks preserved. No taskworktreecreated; unrelated3worktreesuntouched.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary
@@ -99,4 +101,6 @@ Selected complete modern playing contract mshogi.tori.modern.v1 / MSH81-MODERN-2
 Independent modern source and pinned Fairy53c1f2b source audits distinguish rules authority from comparator behavior; Fairy fourth repetition and raw Legal drop-mate mismatch exclude whole-profile admission. No comparator build/run claimed.103 concrete independent fixture specs preserve all39 IDs, cover both owners/all9 faces and42 accepted transitions with exact reversal, full forced/unequal histories, mate/stalemate/drop defenses, malformed/illegal atomic rejection and exact context. No native Tori conformance is claimed before implementation.
 
 Fresh independent peer review PASS after four resolved findings; actual source reading, hand geometry/history and read-only integrity/root-threat checks recorded in docs/m4/tori/review.md. Static fixture/archive/link and125task/336edge dependency checks, backlogdoctor and diff whitespace pass. No production/build/workflow/AGENTS change, native build, GUI or new CI pass; planning-only CI-skip convention applies. R1-R6 handoff and85/77/42 notes current, all original AC/DoD wording and dependencies preserved. Prospective modern-playing principle recorded for Tori/Chu/Tenjiku; completed Xiangqi and closed M2/M3 untouched. Normal codex/rewrite integration references and final completion bookkeeping follow after actual push. MSH85 is next dependency-unblocked native handoff, still To Do until its original pre-Ready refinement; no implementation or later task started, M4 remains open.
+
+Completed all original criteria and completion items after independent review and actual integration/push ec1ce01680800327eb155d7b790650eb294d4bd6 on codex/rewrite. MSH-81 Done. Subsequent task/evidence-only finalization commit records this actual integrated revision; no future hash is fabricated.
 <!-- SECTION:FINAL_SUMMARY:END -->

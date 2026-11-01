@@ -115,7 +115,7 @@ fn hands(p: &Position) -> Value {
 pub(super) fn snapshot(p: &Position) -> Value {
     json!({"profile":p.profile_id(),"edition":p.profile_edition(),"board":board(p),"hands":hands(p),"side":name(p.side_to_move()),"root":format!("{:?}",p.root()),"accepted_plies":p.accepted_plies(),"declared_total":p.declared_total_plies()})
 }
-struct StructuralAdapter;
+pub(super) struct StructuralAdapter;
 impl NativeAdapter for StructuralAdapter {
     fn observe(&self, f: &Fixture, a: &Assertion) -> Result<Option<Value>, String> {
         if a.owner != "MSH-127" {
@@ -243,7 +243,7 @@ impl NativeAdapter for StructuralAdapter {
         }
     }
 }
-fn transition_field(
+pub(super) fn transition_field(
     before: &Position,
     after: &Position,
     effects: Effects,

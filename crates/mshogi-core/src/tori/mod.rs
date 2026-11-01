@@ -1,18 +1,25 @@
-//! Structural foundation for `mshogi.tori.modern.v1`.
+//! Native structural and complete position-local rules for `mshogi.tori.modern.v1`.
 //!
 //! Public positions are structurally validated diagrams, NOT admitted live games.
-//! Royal safety, Swallow drop restrictions and complete local choices belong to
-//! MSH-128; history/records/commands belong to MSH-129. Structural mutation and
+//! LocalPosition owns complete local rules/admission/inspection, distinct from
+//! structural Position. History/records/commands remain MSH-129. Structural mutation and
 //! geometric candidates are crate-private and cannot admit a public game action.
 use std::{error::Error, fmt, str::FromStr, sync::Arc};
 
-// These entry points become production consumers only in the next native slice.
 #[cfg(test)]
 mod conformance;
+mod legal;
 #[cfg(test)]
 mod tests;
-#[allow(dead_code)]
 mod transition;
+pub use legal::{
+    ActionError, AdmissionError, Effects, InspectedChoice, InspectionOrigin, LocalPosition,
+    LocalRedo, LocalStatus, LocalUndo, ReversalError,
+};
+mod perft;
+pub use perft::{
+    DivideEntry, DivideReport, MAX_PERFT_DEPTH, MAX_PERFT_VISITS, PerftError, PerftReport,
+};
 
 /// Selected immutable rules identity.
 pub const PROFILE_ID: &str = "mshogi.tori.modern.v1";
@@ -575,3 +582,8 @@ pub enum Action {
         to: Square,
     },
 }
+
+#[cfg(test)]
+mod local_conformance;
+#[cfg(test)]
+mod local_tests;

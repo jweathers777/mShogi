@@ -67,12 +67,17 @@ pub(crate) enum TransitionError {
 }
 /// Native derived facts, with the actual captured promoted face preserved.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) struct Effects {
-    pub(crate) actor: Side,
-    pub(crate) action: Action,
-    pub(crate) resulting_piece: Piece,
-    pub(crate) captured: Option<Piece>,
-    pub(crate) hand_change: Option<(Face, i8)>,
+pub struct Effects {
+    /// Mover on the checked/hypothetical turn.
+    pub actor: Side,
+    /// Exact complete action.
+    pub action: Action,
+    /// Owned face on the endpoint, including compulsory promotion.
+    pub resulting_piece: Piece,
+    /// Actual destination victim before demotion, if any.
+    pub captured: Option<Piece>,
+    /// Exact base resource and signed count change for the mover.
+    pub hand_change: Option<(Face, i8)>,
 }
 /// Position-bound, single-use, LIFO reversal authority; not a canonical record.
 #[derive(Debug)]

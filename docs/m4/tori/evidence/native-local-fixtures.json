@@ -1,0 +1,945 @@
+{
+  "profile": "mshogi.tori.modern.v1",
+  "corpus_sha256": "3f9e5ca3b541fc72f562ddd8231408e17e7bd5ba3ccee118e643ce0f543731e3",
+  "fixtures_validated": 103,
+  "native_conformance_claimed": false,
+  "executed": 483,
+  "passed": 483,
+  "pending": 244,
+  "failed": 0,
+  "documentary_annotations": 4,
+  "baseline": "4710a4d9c1c188293fc89870cef68b2d0232e6c7",
+  "kind": "actual structural and complete local assertions; history/records/consumer assertions pending",
+  "owner_accounting": {
+    "MSH-127": {
+      "passed": 202,
+      "failed": 0,
+      "pending": 0
+    },
+    "MSH-128": {
+      "passed": 281,
+      "failed": 0,
+      "pending": 0
+    },
+    "MSH-129": {
+      "passed": 0,
+      "failed": 0,
+      "pending": 230
+    },
+    "MSH-77": {
+      "passed": 0,
+      "failed": 0,
+      "pending": 13
+    },
+    "MSH-42": {
+      "passed": 0,
+      "failed": 0,
+      "pending": 1
+    }
+  },
+  "passed_fixture_fields": {
+    "TORI-I01": {
+      "MSH-127": [
+        "board",
+        "hands",
+        "per_side",
+        "side_to_move"
+      ]
+    },
+    "TORI-G-HO": {
+      "MSH-127": [
+        "complete_jumps",
+        "complete_limited_rays",
+        "complete_rays",
+        "complete_steps",
+        "other_geometry"
+      ]
+    },
+    "TORI-G-TSURU": {
+      "MSH-127": [
+        "complete_jumps",
+        "complete_limited_rays",
+        "complete_rays",
+        "complete_steps",
+        "other_geometry"
+      ]
+    },
+    "TORI-G-KIJI": {
+      "MSH-127": [
+        "complete_jumps",
+        "complete_limited_rays",
+        "complete_rays",
+        "complete_steps",
+        "other_geometry"
+      ]
+    },
+    "TORI-G-LEFT-QUAIL": {
+      "MSH-127": [
+        "complete_jumps",
+        "complete_limited_rays",
+        "complete_rays",
+        "complete_steps",
+        "other_geometry"
+      ]
+    },
+    "TORI-G-RIGHT-QUAIL": {
+      "MSH-127": [
+        "complete_jumps",
+        "complete_limited_rays",
+        "complete_rays",
+        "complete_steps",
+        "other_geometry"
+      ]
+    },
+    "TORI-G-TAKA": {
+      "MSH-127": [
+        "complete_jumps",
+        "complete_limited_rays",
+        "complete_rays",
+        "complete_steps",
+        "other_geometry"
+      ]
+    },
+    "TORI-G-SWALLOW": {
+      "MSH-127": [
+        "complete_jumps",
+        "complete_limited_rays",
+        "complete_rays",
+        "complete_steps",
+        "other_geometry"
+      ]
+    },
+    "TORI-G-EAGLE": {
+      "MSH-127": [
+        "complete_jumps",
+        "complete_limited_rays",
+        "complete_rays",
+        "complete_steps",
+        "other_geometry"
+      ]
+    },
+    "TORI-G-GOOSE": {
+      "MSH-127": [
+        "complete_jumps",
+        "complete_limited_rays",
+        "complete_rays",
+        "complete_steps",
+        "other_geometry"
+      ]
+    },
+    "TORI-G-ROTATION": {
+      "MSH-127": [
+        "gote_board_offsets",
+        "native_handed_kind_unchanged",
+        "rotated_squares"
+      ]
+    },
+    "TORI-G-KIJI-BLOCK": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "board_removed",
+        "intermediate_unchanged",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "board_removed",
+        "intermediate_unchanged",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-G-GOOSE-BLOCK": {
+      "MSH-128": [
+        "accepted",
+        "intermediate_unchanged",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "intermediate_unchanged",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-G-EAGLE-BLOCK": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-S-TWO": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-S-THREE": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-S-GOOSE": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-S-ENEMY": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-S-LAST": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-S-DROP-MATE": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-D-EMPTY": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-D-UNPROMOTED": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "hand_delta",
+        "promotion_timer",
+        "side_to_move",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "hand_delta",
+        "side_to_move",
+        "promotion_timer",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-P-ENTRY": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "board_removed",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "board_removed",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-P-DROP-EXIT": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "board_removed",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "board_removed",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-P-DROP-OTHER": {
+      "MSH-128": [
+        "accepted",
+        "board_unchanged",
+        "promotion_timer",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_unchanged",
+        "promotion_timer",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-P-HEAD": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "no_extra_promotion_privilege",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "no_extra_promotion_privilege",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-O-QUIET": {
+      "MSH-128": [
+        "complete_legal_actions",
+        "in_check"
+      ]
+    },
+    "TORI-O-ROYAL": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-CAPTURE-OWNER": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "board_removed",
+        "hand_delta",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "board_removed",
+        "hand_delta",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-CAPTURE-DEMOTION": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "board_removed",
+        "hand_delta",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "board_removed",
+        "hand_delta",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-CAPTURE-QUAIL": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "board_removed",
+        "hand_delta",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "board_removed",
+        "hand_delta",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-P-WITHIN": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-P-NO-OPTION": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-P-SWALLOW-AFTER-DROP": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "resulting_goose_does_not_attack_straight_forward_one",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "resulting_goose_does_not_attack_straight_forward_one",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-CAPTURE-GOOSE": {
+      "MSH-128": [
+        "accepted",
+        "hand_delta",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "hand_delta",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-D-QUAIL-OWNER": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "native_movement_probes",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-D-LEGAL-DEFENSE": {
+      "MSH-128": [
+        "accepted",
+        "check",
+        "legal_defense",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-O-MATE": {
+      "MSH-128": [
+        "complete_legal_actions",
+        "in_check"
+      ]
+    },
+    "TORI-CHECK-EVASION": {
+      "MSH-128": [
+        "accepted",
+        "own_phoenix_in_check_after",
+        "own_phoenix_in_check_before",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-CHECK-PIN": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-G-RAY-CAPTURE": {
+      "MSH-128": [
+        "accepted",
+        "board_unchanged",
+        "hand_delta",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_unchanged",
+        "hand_delta",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-G-RAY-NO-BYPASS": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-G-FRIEND-BLOCK": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-D-NO-HAND": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-D-PROMOTED": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-REJECT-DUPLICATE-SQUARE": {
+      "MSH-127": [
+        "reason",
+        "root_admitted"
+      ]
+    },
+    "TORI-REJECT-MISSING-ROYAL": {
+      "MSH-127": [
+        "reason",
+        "root_admitted"
+      ]
+    },
+    "TORI-REJECT-ADJACENT-ROYALS": {
+      "MSH-128": [
+        "reason",
+        "root_admitted"
+      ]
+    },
+    "TORI-REJECT-DEAD-SWALLOW": {
+      "MSH-128": [
+        "reason",
+        "root_admitted"
+      ]
+    },
+    "TORI-REJECT-THREE-SWALLOWS": {
+      "MSH-128": [
+        "reason",
+        "root_admitted"
+      ]
+    },
+    "TORI-REJECT-EXCESS-INVENTORY": {
+      "MSH-127": [
+        "reason",
+        "root_admitted"
+      ]
+    },
+    "TORI-G-KIJI-BLOCK-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "board_removed",
+        "intermediate_unchanged",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "board_removed",
+        "intermediate_unchanged",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-G-GOOSE-BLOCK-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "intermediate_unchanged",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "intermediate_unchanged",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-G-EAGLE-BLOCK-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-S-TWO-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-S-THREE-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-S-GOOSE-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-S-ENEMY-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-S-LAST-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-S-DROP-MATE-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-D-EMPTY-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-D-UNPROMOTED-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "hand_delta",
+        "promotion_timer",
+        "side_to_move",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "hand_delta",
+        "side_to_move",
+        "promotion_timer",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-P-ENTRY-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "board_removed",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "board_removed",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-P-DROP-EXIT-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "board_removed",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "board_removed",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-P-DROP-OTHER-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "board_unchanged",
+        "promotion_timer",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_unchanged",
+        "promotion_timer",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-P-HEAD-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "no_extra_promotion_privilege",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "no_extra_promotion_privilege",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-O-ROYAL-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-CAPTURE-OWNER-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "board_removed",
+        "hand_delta",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "board_removed",
+        "hand_delta",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-CAPTURE-DEMOTION-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "board_removed",
+        "hand_delta",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "board_removed",
+        "hand_delta",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-CAPTURE-QUAIL-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "board_removed",
+        "hand_delta",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "board_removed",
+        "hand_delta",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-P-WITHIN-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-P-NO-OPTION-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-P-SWALLOW-AFTER-DROP-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "resulting_goose_does_not_attack_straight_forward_one",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "resulting_goose_does_not_attack_straight_forward_one",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-CAPTURE-GOOSE-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "hand_delta",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "hand_delta",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-D-QUAIL-OWNER-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "board_added",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_added",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-D-LEGAL-DEFENSE-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "check",
+        "legal_defense",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-CHECK-EVASION-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "own_phoenix_in_check_after",
+        "own_phoenix_in_check_before",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-CHECK-PIN-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-G-RAY-CAPTURE-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "board_unchanged",
+        "hand_delta",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ],
+      "MSH-127": [
+        "board_unchanged",
+        "hand_delta",
+        "reversal_contract/apply_then_undo",
+        "reversal_contract/redo"
+      ]
+    },
+    "TORI-G-RAY-NO-BYPASS-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-G-FRIEND-BLOCK-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-D-NO-HAND-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    },
+    "TORI-D-PROMOTED-ROTATED": {
+      "MSH-128": [
+        "accepted",
+        "reason",
+        "rejection/local_state"
+      ]
+    }
+  },
+  "later_consumer_requirements_pending": 83,
+  "independently_reviewed_files_sha256": {
+    "crates/mshogi-core/src/tori/legal.rs": "95800dd60f9da1991de97c8e1e46439614d679314952aad48c03b4e7276799df",
+    "crates/mshogi-core/src/tori/perft.rs": "91b8ec3058117a9b58dd81e82d1cac027a5d263c82e469f1c7fdfa0653f07917",
+    "crates/mshogi-core/src/tori/local_conformance.rs": "4e7b691a539431f04ef8ebc4cfc006745c0b433cbf63bfaf93c63be9846295ec",
+    "crates/mshogi-core/src/tori/local_tests.rs": "84abdcd11ea3bb53875c4dd68917222cddbc778e060215ee4aa6e7cf162ef4b9",
+    "crates/mshogi-core/tests/tori_local.rs": "dbbf25e4efa5358f37403210658cfb5ce18c135eeebbf410b51e75e9e541404a"
+  }
+}

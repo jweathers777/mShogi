@@ -1,10 +1,11 @@
 ---
 id: MSH-128
 title: Complete Tori local legality native inspection and conformance diagnostics
-status: Ready
-assignee: []
+status: In Review
+assignee:
+  - '@codex'
 created_date: '2026-11-01T12:21:00Z'
-updated_date: '2026-11-01T13:44:00Z'
+updated_date: '2026-11-01T17:20:00Z'
 labels:
   - m4
   - owner-msh-85
@@ -51,8 +52,27 @@ Verification: focused reproducible commands at exact tested source, independent 
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Root Codex is sole builder/integrator in clean primary codex/rewrite4710a4d; pinnedBacklog1.55.1 and origin alignment verified, Done127 dependency and no active other task owner. Preserve unrelated worktrees, existing games, profile/103fixtures/manifest and completed evidence.
+2. Add one public LocalPosition boundary admitting structural Position only after T07 royal/drop-root checks. Reuse private127 geometry/effects/transitions; expose checked complete legal choices/apply/reversal, native attack/check/status observations and explicit capacity errors. Keep structural helpers crate-private and full Game permission/history/records129 unimplemented.
+3. Implement exact Swallow file/last-rank and direct-drop-mate rules. Test complete safety-valid defender actions; direct adjacent Swallow check admits no drop evasion, so mate validation has no recursive drop-mate cycle. Use capacity-neutral private rule probes for hypothetical defenses/inspection, preserving actual counters/provenance and honest capacity failures at live admission.
+4. Add immutable native board/hand inspection for either owner, complete actions/effects on a private hypothetical turn; deterministic bounded perft/divide with explicit work errors and no invented counts.
+5. Extend actual126 adapters to all281 planned128assertions while preserving202127passes and honest pending history/record/consumer work. Recheck40 accepted board transitions through public local admission, all negative/root/terminal/drop-defense cases; add independently hand-enumerated complete action sets, threats/pins/check evasion, rotation, material/reversal, rejection, inspection and capacity tests.
+6. Obtain separate independent review, resolve findings, run focused conformance/native and relevant existing-game regressions, format/lint and3platform nativeCI. Record actual source/results/limits, finalize128only after supportedAC/DoD, integrate/push and stop before129/85final/77/42.
+
+Board-rule query clarification: legal_actions/is_legal/status and hypothetical inspection use private counter-neutral copies, consistent with existing native board-query semantics; actual checked apply preserves declared counters and returns explicit Capacity on unrepresentable work. Queries never infer zero choices or a game result from counter exhaustion.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 Owner2026-11-01 testing-policy supersession: rules-profile-derived independently expected fixtures/history, deterministic regression, exact reversal/replay, meaningful property/metamorphic/adversarial tests and independent review establish conformance without any external engine. External comparisons are optional investigative evidence, not build/test/CI/milestone/release gates. Historical observations/source audits retained; no completed-game campaign reopened. For Tori,126 is now the self-contained executable harness; no Fairy build/admission prerequisite. Existing task dependencies and implementation plans unchanged; no activation by this note. Apply game-specific properties where meaningful, never expected outputs copied from the implementation. See docs/testing/conformance-policy.md.
+
+Owner request2026-11-01 authorizes128only. Clean primary4710a4d aligned withorigin, no InProgress/InReview task owner at startup; existing111/100/98worktrees preserved.127Done sourcece1801d supplies fixed structural foundation. Root/safety/drop local admission differs from129history/terminal-command permission. No externalengine orGUI campaign authorized/required; no productselector/capability/runtime changes.
+
+Implemented one public LocalPosition admission/legality/inspection API over127 structuralPosition. Native geometry/effects/reversal reused; all T07 local roots, T05 geometric threats/royal safety and T04 Swallow rules enforced. Direct checking Swallow drops examine all safety-valid responses without recursion; any defending drop necessarily leaves the adjacent check. Actual126adapter483executed/483PASS/244pending/0failed, including202existing127 and281new128 fields;83consumerrequirements pending.40accepted board-transition fixtures pass through checked local apply/undo/redo; history/records/conclusions remain129pending. Focused25Toriunit +1externalpublictoken +2ToriAPI/doctestsPASS, noToriignored. Independent tori128_review PASS, no materialfindings; optional publicwrapper stale/clone/branch test recommendation addressed and independently rerun. Meaningful source-derived complete-choice/pin/check/drop/capture/root/rotation/reversal/property tests, boundedperft3/9hand-derivedcounts and actualfailpaths covered. Initial focus run had unusedimportwarning; removed before final lint. No fixture/profile/manifest/selectedrule change, no externalengine orGUI. Fullcore/conformance regressions and nativeCI pending; taskInReview until actualintegration/evidence.
+
+Final local verification:262core/conformance checksPASS across33reported suites,0failed;2existing release-only deepChess opt-ins notrun (deep_independent_divides_match_in_order and deep_fixed_seed_sequences). Focused25Toriunit/1externalpublictoken/2ToriAPItestsPASS; all127structural tests retained. Deterministic legal sequence actually192moves twice with exactreverse/redo at everyprefix. Final all-targetcore/conformanceClippy-Dwarnings and workspaceformatPASS. Independent reviewer finalPASS independentlyreran25+1+2tests and reviewed source/API/fixture logic, no remainingfindings; exacthashes in native-local-fixtures.json. Fullgraph129tasks344edges, deps, oldDone records/otherplans, selectedprofile/corpus/manifest and existinggames/consumers/workflows/dependencies unchanged;127geometry/transitionsemantics byteunchanged, onlyEffectspublicdata+testhelpervisibility adapted. Readyfor reviewedsourceintegration and3platformnativeCI; no later task started.
 <!-- SECTION:NOTES:END -->

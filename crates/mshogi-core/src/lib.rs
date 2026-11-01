@@ -27,5 +27,5 @@ pub mod xiangqi;
 /// Small tagged native-record and command dispatch for actual chess/shogi consumers.
 pub mod native;
 
-/// Native Tori structural primitives; not complete legality or playable support.
+/// Native Tori structural/local rules and inspection; full-game consumers remain later.
 pub mod tori;

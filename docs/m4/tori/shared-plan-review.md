@@ -65,3 +65,11 @@ original criteria and DoD remain unchecked; this completed refinement cannot
 establish implementation acceptance. No child,42,82,83orM5implementation starts.
 Normal integration/push and actual commit references are recorded in77; its
 subsequent planning-handoff bookkeeping does not alter this reviewed boundary.
+
+## Actual integration
+
+Reviewed planning was committed and normally pushed to `codex/rewrite` at
+`8977a4b9c749e46146255861d1ead10f744e5b97` (prior `a3677e1`). Subsequent
+handoff bookkeeping records this actual reference, without fabricating a future
+commit hash. Production remains unchanged at accepted `994521b`; existing native
+and platform evidence remains valid, with no new execution or GUI claim.

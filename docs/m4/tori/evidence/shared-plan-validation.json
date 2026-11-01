@@ -1,0 +1,45 @@
+{
+  "kind": "planning-only metadata/ownership validation, not executed consumer conformance",
+  "baseline": "a3677e1e862fdf3877c784f12f56a99c4bfbf167",
+  "tasks": 132,
+  "edges": 353,
+  "unique_resolved_acyclic": true,
+  "original77criteria_and_other129_records_except77_unchanged": true,
+  "complete_dependencies": {
+    "MSH-77": [
+      "MSH-69",
+      "MSH-72",
+      "MSH-73",
+      "MSH-85",
+      "MSH-130",
+      "MSH-131",
+      "MSH-132"
+    ],
+    "MSH-130": [
+      "MSH-69",
+      "MSH-72",
+      "MSH-73",
+      "MSH-85"
+    ],
+    "MSH-131": [
+      "MSH-130"
+    ],
+    "MSH-132": [
+      "MSH-131"
+    ]
+  },
+  "only_new_dependency_ready": "MSH-130",
+  "all_children_ready_unassigned_unchecked_no_plans": true,
+  "pending_assertions": 14,
+  "consumer_requirements": 83,
+  "native_assertions_reused_not_rerun": 713,
+  "pending_native": 0,
+  "native_profile_corpus_manifest_acceptance_pins": {
+    "docs/m4/tori/profile.md": "5e20ea1a355f1d2dfc91ab930687437a3aa8cf34a78353b80076b4173fd1e81a",
+    "docs/m4/tori/fixtures.json": "3f9e5ca3b541fc72f562ddd8231408e17e7bd5ba3ccee118e643ce0f543731e3",
+    "docs/m4/tori/native-fixture-ownership.json": "044a5d0fc72e355e705d12f6b7b1c328a043aa67b321a2c897d0e790f242b8d5",
+    "docs/m4/tori/evidence/native-acceptance-audit.json": "402749df73c43792744037251461b6f02ff60e1b55290caa7c0a734e1c1c3e12"
+  },
+  "production_unchanged": true,
+  "links_checked": 39
+}

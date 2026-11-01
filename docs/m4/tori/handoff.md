@@ -1,5 +1,21 @@
 # Modern Tori native/shared handoff — MSH-81
 
+## Current shared-integration refinement — MSH-77
+
+The accepted native handoff is integrated at
+`a3677e1e862fdf3877c784f12f56a99c4bfbf167`. The current
+[shared integration refinement](shared-plan.md) now sequences **MSH-130** current
+document codec/admission → **MSH-131** single runtime/session/sole installation →
+**MSH-132** semantic presentation and real-consumer verification.130 is the first
+dependency-ready slice; no implementation starts in this planning pass.77 remains
+coordinator with all original criteria unchecked. The [supplemental map](shared-consumer-ownership.json)
+retains all14pending assertions/83consumer requirements and exact original owners;
+131 owns final actual runtime evidence for13/82,42 retains notation1/1.130 and132
+supply supporting checks without double counting.42 still owns engine, console,
+notation and final product Tori board/play. No selector or execution capability is
+advertised. Earlier checkpoints below remain historical, not current blockers.
+
+
 ## Current native acceptance — MSH-85
 
 [Independent native acceptance](native-acceptance.md) confirms the complete

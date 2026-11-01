@@ -1,5 +1,22 @@
 # M4 implementation map: chess and standard shogi first
 
+## Current R1–R6 Tori consumer boundary — MSH-77, 2026-11-01
+
+The source table below is the preserved pre-R1 historical proposal. The actual
+current integration map is [Tori shared refinement](tori/shared-plan.md):
+130current DocumentEnvelope/RawValue native codec and candidate admission first;
+131DesktopController/ActiveDocument/RuntimeMetadata and sole install_document;
+132SharedSnapshot metadata and existing useGameSession/ApplicationView/
+useNativeChoiceController verification. Accepted native source994521b and
+profilemshogi.tori.modern.v1 stay authoritative. One execution4/observation1
+family and one current desktop document envelope1 suffice. No second runtime,
+frontend owner, record/rules model or development compatibility framework.
+All14pending fields/83consumer requirements have [explicit current owners](tori/shared-consumer-ownership.json).
+MSH-77 final acceptance waits on all3components;42retains engine/console/notation/
+final product and46all-game gates remain unchanged.130 alone is ready to execute
+after a separate authorization; this record is planning only.
+
+
 Planning proposal for MSH-62, 2026-10-26. No game implementation is part of this
 batch. Baseline is closed-M3 integration `6f29713795804eed3605114d90fed37aa5f554a0`.
 The reused builder has identical product sources; it still excludes the preserved

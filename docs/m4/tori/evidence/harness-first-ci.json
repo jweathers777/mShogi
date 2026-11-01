@@ -1,0 +1,43 @@
+{
+  "conclusion": "failure",
+  "jobs": [
+    {
+      "conclusion": "failure",
+      "id": 124871524762,
+      "name": "Rust (windows-2022)",
+      "status": "completed",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/41314482706/job/124871524762"
+    },
+    {
+      "conclusion": "success",
+      "id": 124871525125,
+      "name": "Rust (ubuntu-24.04)",
+      "status": "completed",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/41314482706/job/124871525125"
+    },
+    {
+      "conclusion": "failure",
+      "id": 124871525333,
+      "name": "Rust (macos-15)",
+      "status": "completed",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/41314482706/job/124871525333"
+    }
+  ],
+  "source": "134f81ba67ef81918734ed1ed1acb5de7532fb99",
+  "status": "completed",
+  "url": "https://github.com/jweathers777/mShogi/actions/runs/41314482706",
+  "failure_notes": [
+    {
+      "platform": "windows-2022",
+      "test": "mshogi-conformance18test suite",
+      "passed": 5,
+      "failed": 13,
+      "reason": "audited corpus byte hash mismatch; corrected by scoped LF checkout attributes at d5f98a2; no expected-byte or logic change"
+    },
+    {
+      "platform": "macos-15",
+      "test": "mshogi-runner missing_retirement_eof_cannot_hide_a_delayed_duplicate_bestmove",
+      "reason": "LateReply observed versus ResourceLimit expected at shogi_runner.rs355; runner source unchanged; not the same test as existing MSH-112; no fix claimed"
+    }
+  ]
+}

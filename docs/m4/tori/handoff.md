@@ -35,7 +35,7 @@ only with actual consumers. No current format/transport change is made by81.
   **127** structure/actions/reversal depends126; **128** full local legality/
   inspection depends127; **129** history/adjudication/records/typed native
   dispatch depends128. No component depends on85,77 or final42. All are scoped
-  Ready after review, but only126 has satisfied dependencies.85 is blocked,
+  Ready after review.126 is now Done;127 has satisfied dependencies.85 is blocked,
   never Done on planning alone. All103 specifications have [explicit owners](native-fixture-ownership.json).
 - **77**, depends69/72/73/85, owns the shared real-consumer extension; no dependency
   on aggregate42 or final46. Current R1–R6 owners replace obsolete early bridges.
@@ -47,7 +47,8 @@ only with actual consumers. No current format/transport change is made by81.
 - **88/89/46/47** retain all-game/platform/shared/M4 closure; no task closes here.
   **82/83** remain inactive; no dependency chain through other final game deliveries.
 
-Current execution is **MSH-126**, the self-contained fixture harness; its mandatory
+Completed **MSH-126** supplies the self-contained fixture harness
+([actual evidence](harness-evidence.md)); **MSH-127** is next Ready. The former MSH-126 mandatory
 external-engine build/admission requirement was withdrawn by the owner2026-11-01. MSH-85's
 pre-Ready refinement is now recorded;85 itself remains blocked on actual native
 components. The earlier planning assignment started none of them. Actual execution,

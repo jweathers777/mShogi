@@ -23,8 +23,9 @@ on its aggregate85, shared consumer77 or final42.
 | **MSH-77** | Real shared execution/session/document/presentation integration consuming85, retaining original scope/dependencies. |69,72,73,85 |
 | **MSH-42** | Complete Tori console, functional engine/search/supervision, notation, desktop, persistence and independent game delivery; MSH-51/M5 owns measured strength. |39,72,73,77,81,85 |
 
-126 is the first dependency-satisfied Ready slice.127–129 are scoped Ready but
-blocked by their actual predecessor.85 is scoped Ready and blocked on components,
+126 is now Done ([actual harness evidence](harness-evidence.md));127 is the first
+dependency-satisfied Ready slice.128–129 remain blocked by their actual
+predecessor.85 is scoped Ready and blocked on components,
 **not Done**; only original AC4 may be checked by this planning pass. No native
 implementation/consumer task is activated. Serial order keeps the independent corpus/harness
 contract settled before transition testing, transitions before full legality, and
@@ -94,8 +95,8 @@ native checks and later actual consumer facets. Corpus SHA256 remains
   rejection/replay is129. Actual human notation adapter belongs42. The manifest
   retains these consumer obligations rather than marking them passed in85.
 
-126's harness reports field/boundary-level executed, pending and excluded-reference
-status, with explicit owners; no ignored/stub native assertion may support85Done.
+126's harness reports field/boundary-level executed, passed, pending and failed
+assertions with documentary annotations and later consumer requirements, with explicit owners; no ignored/stub native assertion may support85Done.
 85 completion does not wait on its own consumer77: a real **core** consumer probe
 verifies the stable native handoff; actual shared/product acceptance stays77/42.
 This preserves original85AC3 without a circular dependency or pretend desktop.
@@ -138,7 +139,7 @@ fixture assignment, preserved criteria and acyclic dependency sets. No kernel
 implementation or product verification is claimed. Final integration references
 are recorded in MSH-85 after normal commit/push.
 
-## Current MSH-126 execution handoff
+## Completed MSH-126 handoff
 
 The owner superseded mandatory comparator admission. [Executable harness](harness.md)
 provides independent fixture admission, structured observations, staged native

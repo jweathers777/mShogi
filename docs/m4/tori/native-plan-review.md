@@ -75,3 +75,11 @@ planning-only changes. Normal planning commits use the existing `[skip ci]`
 convention; this is not a new CI pass. Actual commit/push references are recorded
 in85 after integration, without fabricating a future hash. Original unrelated
 worktrees are preserved; no task worktree was needed. Stop after this refinement.
+
+Actual reviewed planning integration was committed and normally pushed at
+`13210d13638666e41be202c5f949a32f37c4d196` on `codex/rewrite`.
+MSH-85 remains Ready/blocked with AC4 alone checked, not Done. MSH-126 is the
+first dependency-satisfied Ready slice. No native implementation started.
+The exact-source GitHub Actions query returned `[]` for this `[skip ci]`
+planning commit; no native or application CI success is claimed. Subsequent
+handoff bookkeeping changes only integration references, not the reviewed scope.

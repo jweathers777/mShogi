@@ -1,61 +1,57 @@
-# MSH-81 research verification and unfinished acceptance
+# MSH-81 modern profile acceptance evidence
 
-Research against `6a9d24dbff8e883fdc23dabf74216b91cc194ac0`, primary
-`codex/rewrite`, root Codex sole durable integrator, 2026-10-31. Temporary
-researchers wrote isolated files only; unrelated worktrees are preserved and
-no new worktree/application identity was created. Global Backlog1.55.0 was
-replaced for task operations by the existing pinned1.55.1 binary, without
-changing the global installation. Overview/execution/finalization guides read.
+Baseline `26a2fa9ce8165b6e7ae713d12f16548b65c110da`, primary `codex/rewrite`,
+2026-11-01, root Codex sole durable integrator. No task worktree or application
+launch needed; unrelated worktrees preserved. Pinned Backlog1.55.1 used (global
+1.55.0 deliberately not used for mutations). Overview/execution/finalization read.
 
-| Original MSH-81 criterion | Current disposition |
+The [modern independent assessment](review.md) supports all original four criteria;
+the archived [earlier blocked assessment](archive/2026-10-31/verification.md) remains
+historical evidence. New owner direction supersedes its historical-first gates,
+not its source acquisition/read facts. No original AC/DoD wording/dependency was
+weakened or deleted.
+
+| Original criterion | Supporting current artifacts |
 | --- | --- |
-| AC1 complete source/rule reconciliation | Unchecked. Historical text now acquired and many clauses directly supported, but complete promotion/history/endings and edition reconciliation claims remain limited. |
-| AC2 owner choices resolved before affected behavior | Unchecked. TORI-P1 alternatives/recommendation and exact gates recorded; no owner selection or invented supplement adopted. |
-| AC3 named complete profile and independent expectations | Unchecked. Reserved identity is not a complete ratified profile.39 research seeds include12 blocked cases; neither a fixture inventory nor geometry establishes full legality. |
-| AC4 actionable native/shared handoff | Unchecked. Current consumers and existing85/77/42 ownership/dependencies are mapped, but selected-rule/native-slice readiness still waits for the profile decisions. |
+| AC1 source/rule reconciliation | sources.md exact read/edition limits, profileT01–T08 and resolved P01–P06/category ledger; Wikipedia1373875456, actual Hamburg/Kanare and contemporary cross-check. |
+| AC2 owner choices/conventions | Owner's practical modern direction explicitly recorded; profile basis, immutable identity and named software conventions; no unresolved material ordinary-play choice. |
+| AC3 complete profile/independent expectations | mshogi.tori.modern.v1,103 declarative fixture specs with all39 preserved seed IDs,9 exhaustive geometry tables,35 rotated transition probes,42 accepted transitions with full reversal, complete forced/unequal histories and strict admission contracts. |
+| AC4 actionable handoff | Current native/module/execution/controller/document/frontend/choice owners and concrete acceptance/dependency mapping in handoff.md;85/77/42 original scope retained, no implementation activation. |
 
-All four completion checklist items remain unchecked for the unfinished task.
-The [independent review](review.md) **passes integrating the partial handoff**,
-not completing81. Actual methods include direct critical historical/modern image
-reading and hash checks; these are not merely an author's reread or an engine
-agreement check. Findings corrected/rechecked: impossible swallow exit seed→hawk,
-missing capture seeds→ownership plus blocked demotion/handed-quail cases,
-incorrect institutional URL→acquired URL, and overstated historical file-count
-predicate→explicit modern drop/owner/unpromoted corroboration. The Kanare quail
-panel's prose/diagram distinction remains clearly attributed as source evidence.
-
-Executed proportionate commands:
+Actual focused checks:
 
 ```sh
-python3 docs/m4/tori/evidence/verify-research.py
-# pinned Backlog1.55.1:
+python3 docs/m4/tori/evidence/verify-modern.py
+# explicit pinned1.55.1 binary:
 backlog doctor
 git diff --check
 git diff --cached --check
 ```
 
-[Actual integrity results](evidence/validation.json):39 unique sourced seeds,
-27 supported partial/contract and12 blocked/null;15 original historical-image
-hashes,3 retained unaltered images,3 Kanare PDF hashes;125 unique/resolved task
-records/336 edges/no cycles or self-dependencies; original AC/DoD and dependencies
-preserved; completed62/121 byte-unchanged; local Markdown links resolve. The
-verifier uses the documented temporary source caches for original-byte checks;
-reacquire from the manifests if those caches have expired. These checks do not
-execute Tori rules or prove whole-position legality. The independent reviewer
-additionally checked19 modern-ledger artifacts and all nine movement rows.
+[Machine-readable validation](evidence/modern-validation.json) checks103 unique
+fixture specifications,39 retained IDs, expected-output/reversal/source/clause
+integrity, original checkpoint bytes,125 unique task records/336 edges/no missing
+or self dependencies/cycles, original criteria/dependencies, completed62/121/45
+and inactive82/83 unchanged, current local links and empty production/build/
+workflow/AGENTS diff. It is static planning integrity, **not executed Tori native
+conformance**. Archived Markdown retains original relative paths/bytes and should
+be read in its original document context; the current link check excludes those
+immutable historical snapshots.
 
-Product/native/frontend/host/build/workflow/AGENTS diff from baseline is empty.
-No native correctness, reference engine, performance, package or GUI campaign
-was run for this research-only assignment. Planning commits use the project's
-recorded `[skip ci]` convention to avoid unrelated broad application campaigns;
-this is not a new CI pass or a change to workflow/security policy. Original
-completed-game evidence remains valid at its stated source, including R6 and
-the unresolved independent MSH-112 issue.
+Separate fresh reviewer hand-computed critical positions and histories, reviewed
+all fixture groups, checked root threats and rechecked four corrected findings.
+Independent modern researcher reread modern texts and rechecked four cached PDF
+hashes. Independent comparator worker audited actual pinned Fairy source only;
+root confirmed its commit and five file hashes. No comparator was built, executed
+or admitted. Upstream perft numbers remain observations, not expected results.
 
-Next bounded assignment is source/profile continuation **within81**: review
-TORI-P1's governing basis, then resolve the specific P02–P04/P06 clauses through
-targeted period-Japanese/source work and, if separately authorized, lawful
-Okano/Kagawa access. An unavailable book is not assumed to contain the answer
-and is not an artificial all-corpus gate. No native85/42 implementation or later
-game task begins from this partial result. Normal integration references are
-recorded in the authoritative Backlog task after successful commit/push.
+No native/product behavior changed. No correctness suite, native build, GUI,
+platform or strength campaign was run or claimed for these research/planning
+changes. Planning-only commits use the existing `[skip ci]` convention; this is
+not a new CI pass or workflow alteration. Completed R6 and accepted Chess/Shogi/
+Xiangqi evidence remain at their exact original provenance. MSH-111/112 failures
+and later all-game/platform ownership are unchanged.
+
+Integration/push references are recorded in MSH-81 after actual commits. MSH-85
+becomes dependency-unblocked but remains To Do pending required pre-Ready native
+slice refinement. No implementation of85/77/42/82/83 occurs. M4 remains open.

@@ -19,6 +19,27 @@ Full product scope is distinct from milestone scope. An early milestone may supp
 
 The initial product can operate locally. A hosted service, mobile application, public online play service, arbitrary user-defined variant language, and distributed training platform are outside the initial delivery plan. They are not prerequisites for the requested desktop product.
 
+## Prospective variant completeness — owner clarification 2026-11-01
+
+mShogi is a game-playing engine, not a historical reconstruction project. Tori,
+Chu and Tenjiku delivery means a clearly identified, coherent, complete playable
+rules profile, independently verified rules/history, a functional native engine
+and integration into the accepted application. Historical research resolves
+material gameplay uncertainty; acquiring every historical edition or scholarly
+article is not an independent product requirement. Distinguish sourced modern
+rules from explicit necessary software conventions. Material ordinary-play or
+outcome conflicts return to John; coherent rare-edge conventions may be selected
+within authorized scope with distinguishing fixtures and honest attribution.
+
+Uncommon adjudication must have explicit semantics. Expensive optional analysis
+or exact proofs do not automatically become delivery gates for intellectual
+completeness. This applies prospectively to Tori/Chu/Tenjiku planning; it does not
+remove or reinterpret completed Xiangqi's selected WXF profile, exact verifier,
+fixtures, evidence or product capabilities. Existing complete-delivery acceptance,
+six-game scope, R1–R6 ownership, saveability and shared shell remain required.
+See [modern Tori profile](m4/tori/profile.md). This authorizes no implementation
+of inactive variant tasks.
+
 ## 2. Accepted technology direction
 
 | Layer | Direction |

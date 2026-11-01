@@ -1,52 +1,52 @@
-# Tori native/shared handoff — planning only
+# Modern Tori native/shared handoff — MSH-81
 
-Inspected current source at `6a9d24dbff8e883fdc23dabf74216b91cc194ac0`, after R6.
-No executable source, format, profile enum, game selector or dependency changed.
-MSH-42 remains the complete delivery record; MSH-51/M5 owns measured strength.
+Selected contract `mshogi.tori.modern.v1`, edition2026-11-01; no native Tori
+implementation in this planning task. Inspected actual surviving source owners
+at `26a2fa9ce8165b6e7ae713d12f16548b65c110da`, whose production code is unchanged
+from completed R6. The historical [handoff](archive/2026-10-31/handoff.md) remains
+a dated record; its unratified-profile gates are superseded by [T01–T08](profile.md).
 
-## Actual surviving consumers
+## Concrete ownership, scope and observable acceptance
 
-| Current owner | Concrete Tori requirement / boundary |
+| Owner / actual current consumer | Minimum extension and independently verifiable acceptance |
 | --- | --- |
-| `mshogi-core/src/native.rs` GameKind/RulesProfile/CanonicalRecord/NativeSide; strict RawValue native replay | Future explicit Tori dispatch with its selected immutable edition and game-owned parser. Keep left/right quail kinds, own side, hands, promotions, root provenance and full obligations; no Shogi/Chess fallback. Native implementation owns legality and history. |
-| `mshogi-engine/src/shared.rs` ExecutionContext/Purpose/Result; current transport4 | Reuse exact purpose/history/request/session/process/limits acceptance and the supervised child. Add a native result specialization only with an actual Tori engine. Board actions, concluded/incomplete/failure stay distinct. No CSA declaration, Chess Full or Xiangqi exact operation inferred from another game. |
-| `mshogi-desktop-session/src/lib.rs` one DesktopController/RuntimeMetadata/ActiveDocument | Add one native-tagged Tori document, never another global session/controller. Native command admission and work retirement preserve history browsing, Take back lineage, fresh stopped reopen and stale result safety. |
-| `document.rs` current `mshogi.desktop.document.v1`, `persistence.rs` sole installation | Future Tori payload remains game-owned and replay-authoritative. Duplicate-preserving dispatch, exact event prefixes, retained observations and actual-byte/event/control/observation/replay/headroom admission apply before acceptance. Measure real Tori records before choosing capacities or any version change; no format change here. |
-| `shared.rs` BoardDescriptor/Orientation/ChoiceOrigin/PresentedChoice/Completion | Existing metadata already supports7×7 square geometry and distinct hand origins. Supply native handed-piece identities and complete move/drop/promotion choices; range/jump paths are native facts, not a TS rules engine or invented compound capture. Resolve P02 before exposing completion alternatives. |
-| `shared_inspection.rs`, one `useNativeChoiceController`, ProductApp/ApplicationView | Extend native read-only movement inspection/semantic renderer, preserving the shared shell, supported-only chooser and exact common inspection wording. Full board visible at normal/minimum sizes, native hands/kanji/owner orientation, actual two-column Moves and selected history. No generic layout redesign or per-game frontend owner. |
+| MSH-85 / `mshogi-core/src/native.rs` GameKind/RulesProfile/CanonicalRecord/NativeSide and game-owned module | Explicit Tori/profile dispatch and native parser;7×7 state, all9faces, quail handed kinds, hands, forced promotion and complete move/drop actions. Native effects/caches undo exactly; original39 seed coverage plus modern corpus implemented. Invalid/malformed/stale/resource requests leave state unchanged. Structural root/counter is not proven reachability. |
+| MSH-85 / native history/adjudication/record | Implement T05/T06 including quiet immobility loss, third occurrence/latest-three/departure responsibility, forced-cycle loss, optional native resignation and unscored admin stop. Root terminal assessment and exact event prefixes; replay recomputes every derived obligation/conclusion. Demonstrate complete forced/unequal cycles, same-board/different-history, capture/drop/promotion undo and strict duplicate rejection. |
+| Later MSH-42-owned functional engine / `mshogi-engine/src/shared.rs` ExecutionContext/Purpose/Result, transport4 | Real native history-aware evaluator/search with full context and measured bounded work, cancellation, distinct actions/conclusions/incomplete/failure. Existing supervised process and exact purpose/history/request/session/generation/limits acceptance. No Tori capability advertised before consumer exists; no CSA declaration, Chess Full or Xiangqi exact operation inferred. MSH-51 owns measured strength. |
+| MSH-77 / `mshogi-desktop-session/src/lib.rs` DesktopController/RuntimeMetadata/ActiveDocument | Add tagged native Tori document in the one runtime/controller. Preserve explicit command admission, retired work, exact historical prefix, read-only analysis, Take back lineage, fresh stopped reopen/explicit Resume. Cross-game cancellation/replacement cannot accept old results. |
+| MSH-77 / `document.rs` and sole `persistence.rs::install_document` | Use current document envelope and native strict replay; choose actual schema/version from real payload, not a speculative second save system. Before acceptance measure encoded bytes, native/control events, observations, replay cost and stop/close reservation using long real Tori histories. Boundaries preserve complete Save/Load and no data loss, including256→257 observation rejection; no unjustified constant increase. |
+| MSH-77 / `shared.rs` BoardDescriptor/ChoiceOrigin/PresentedChoice/Completion and native inspection | Existing7×7 square geometry/Board/Hand origins already suffice. Supply native Sente/Gote, allfaces/promotions, handed inventory/counts, exact board/drop choices and forced-result completion. No optional promotion when compulsory. Native read-only opponent inspection, no frontend movement rules. |
+| Later MSH-42-owned desktop / ProductApp/useGameSession/ApplicationView/shared shell/one useNativeChoiceController | Game-specific Tori board/pieces/hands in existing slots and theme; complete7×7 visible at supported sizes. Supported-only chooser after playable delivery. Native labels, common inspection wording, two-column actual Moves, exact history-event mapping and origin/destination last-move cues. Shared controls retain positions; no second frontend owner or new application architecture. |
 
-## Existing task ownership and gates
+No universal rules framework, common board representation, plugin ABI or future
+Chu/Tenjiku mechanism is needed. Existing geometry and choice mechanisms are
+reused; new native identities and concrete dispatch/capability cases are added
+only with actual consumers. No current format/transport change is made by81.
 
-- **MSH-81** owns source/profile/independent seed resolution. P01–P06 in
-  [profile](profile.md) name unfinished obligations. No complete profile is claimed.
-- **MSH-85** depends only on81. It owns future native state/actions/reversal,
-  legality, history/adjudication and canonical record handoff. Before Ready,
-  refine/split useful independent native slices from the *selected* rules,
-  preserving independently expected fixtures. Do not begin42's implementation
-  or create speculative implementation tickets from unresolved interpretations.
-- **MSH-77** retains full dependencies69/72/73/85; shared ownership belongs to46.
-  It consumes the real Tori handoff through the current R1–R6 contracts above.
-  It must not resurrect obsolete context transports, archive readers, parallel
-  frontend/session owners or Standard-Shogi-coded legality in shared code.
-- **MSH-42** retains39/72/73/77/81/85 and all eight original criteria. Later
-  refinement must visibly cover console/notation, functional search/adapter,
-  archives, actual desktop and independent complete-game review;85 alone is
-  insufficient. No dependency on another later game's final delivery is added.
-- **MSH-88/89/46/47** retain final six-game/platform/integration closure; M4 stays
-  open. No task's completion is inferred from this handoff.
+## Preserved task/dependency mapping
 
-## Independent fixture contract
+- **81** owns the selected complete playing profile and independently expected
+  fixtures/source reconciliation. No Kagawa/Okano acquisition or historical
+  edition-equivalence gate remains for this modern identity.
+- **85**, depends only81, owns the native handoff. Its original AC4 still requires
+  useful native slice refinement/splitting **before Ready**. Suggested bounded
+  ownership boundaries for that refinement are independent fixtures/comparator
+  admission; state/actions/reversal; complete legality; history/adjudication/record.
+  These are acceptance groupings, not new tasks or a detailed future implementation
+  plan. Preserve native/fixture independence and define actual child dependencies
+  when85 is authorized. Do not claim native conformance from81's static checks.
+- **77**, depends69/72/73/85, owns the shared real-consumer extension; no dependency
+  on aggregate42 or final46. Current R1–R6 owners replace obsolete early bridges.
+- **42**, depends39/72/73/77/81/85, retains **all eight** original delivery criteria.
+  Later refinement must cover its standalone console/notation, functional native
+  engine/supervision/interoperability, canonical replay, desktop play/analysis/
+  outcomes/recovery/inspection/saveability and independent complete-game review.
+  Explicit current native handoff alone does not deliver those consumers.
+- **88/89/46/47** retain all-game/platform/shared/M4 closure; no task closes here.
+  **82/83** remain inactive; no dependency chain through other final game deliveries.
 
-`fixtures.json` is research data, not runnable engine conformance. Supported rows
-have direct source locators and independently expected geometry/restrictions;
-gated rows state alternatives or required missing evidence. Neither legal-set
-counts/perft nor a comparator's output are fabricated. Only a later ratified
-kernel may turn reviewed seeds into complete positions and apply/undo/history
-fixtures. Include both orientations, captures/demotion, distinct quail hand
-identities, jump blockers, complete promotion effects, atomic rejection and
-same-diagram/different-history pairs. No external implementation is admitted by
-this research; audit a pinned comparator's exact operations/profile first.
-
-First bounded continuation: complete81's targeted P02–P04 source reconciliation
-and TORI-P1 owner checkpoint. Only after81 is genuinely Done can85's native
-implementation planning become dependency-ready.77 and aggregate42 remain gated.
+First dependency-unblocked native assignment after81 is **MSH-85**, still To Do
+pending its original refinement-before-Ready obligation. Do not start it in81.
+Provisional Tori→Chu→Tenjiku priority unchanged. M2/M3, completed Chess/Shogi/
+Xiangqi and current R6 evidence, MSH-61 capacity guarantee and future M5 ownership
+remain intact.

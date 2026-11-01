@@ -1,0 +1,20 @@
+{
+  "baseline": "6a9d24dbff8e883fdc23dabf74216b91cc194ac0",
+  "kind": "research artifact integrity; not rule conformance or product tests",
+  "fixtures": 39,
+  "supported_partial_or_contract": 27,
+  "blocked": 12,
+  "fixture_sha256": "c122560a85c8fee3af5d08eea6a86a2fa36cb213882141c436ab8ceaa7f60bae",
+  "historical_image_hashes": 15,
+  "retained_original_images": 3,
+  "kanare_original_pdf_hashes": 3,
+  "task_records": 125,
+  "dependency_edges": 336,
+  "unique_resolved_acyclic_graph": true,
+  "protected_criteria_and_dod_unchanged": true,
+  "completed62_and121_byte_unchanged": true,
+  "local_markdown_links": 11,
+  "product_build_workflow_instructions_diff": [],
+  "at": "2026-10-31T21:49:52.871563+00:00",
+  "result": "passed"
+}

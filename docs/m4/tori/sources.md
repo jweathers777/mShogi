@@ -1,3 +1,7 @@
+> Current authority/readiness: see the superseding modern-playing selection at
+> the end of this ledger and [selected profile](profile.md). Historical-first
+> gates below are dated research findings, not current delivery prerequisites.
+
 # Tori acquisition and authority ledger
 
 Retrieved 2026-10-31. Source IDs below are stable fixture references. Exact public
@@ -125,3 +129,54 @@ those temporary files are later cleared. No broad native/build/GUI suite ran.
 `docs/design.md` A-01/A-02/A-06/A-10/A-11 and the actual R6 consumers at
 6a9d24d supply future-consumer-only invariants in the fixture ledger. These
 rows do not establish a Tori rule or assert that Tori execution already exists.
+
+## Superseding modern-playing selection — 2026-11-01
+
+The preceding 2026-10-31 acquisition ledger remains a dated read/provenance record.
+Its 'Wikipedia discovery only' and historical-acquisition continuation posture is
+superseded for this profile by explicit owner direction: use a coherent modern
+playing convention, not historical reconstruction. No rule currently depends on
+acquiring T-H2 or T-M1. They remain unread, not failed delivery requirements.
+
+**T-M5 — initial selected modern description.** Wikipedia contributors,
+[Tori shogi, revision1373875456](https://en.wikipedia.org/w/index.php?title=Tori_shogi&oldid=1373875456),
+last edited2026-09-08 13:21UTC, ordinary page retrieved2026-11-01. The web reader
+exposed the exact oldid/date in its live rendering; direct oldid cache fetch
+failed in the researcher's tool, so do not claim a separately acquired oldid HTML.
+Sections Setup, Movement and capture, Promotion, Individual pieces, Drops,
+Check and mate, Repetition, Game end and Game notation were read. Material
+ordinary rules are cross-checked against T-M3/T-M4/T-M6; this is a named modern
+candidate, not a federation code or primary historical edition. Concise independent
+specifications in profile/fixtures do not reproduce the article wholesale.
+
+**T-M6 — independent modern rule description.** Steve Evans/Hans Bodlaender,
+[Chess Variant Pages Tori](https://www.chessvariants.org/shogivariants.dir/tori.html),
+created1997-11-13, displayed file timestamp2023-02-13. Actual page read by the
+independent modern researcher; root web reader returned an access error, not a
+successful second retrieval. Explicit compulsory zone promotion, delayed zone-drop
+promotion and nonjumping Eagle corroborate T-M5. Color wording is inconsistent
+with standard setup naming; diagrams/native side coordinates resolve this, with
+no change to geometry. H.G.Muller's first-person2014-05-08 comment documents
+creator-versus-departure responsibility and check-evasion interpretation differences;
+that is comparator-convention evidence, not an adopted association rule.
+
+T-M4's [publisher explanation](https://note.com/kanare_abstract/n/n9a5bd275417d)
+was reread by the independent modern researcher: its labelled quail prose agrees
+with the selected pair, resolving the pieces-sheet diagram/text ambiguity without
+requiring historical reconstruction. All four modern PDF hashes were rechecked
+against the previous manifests; bytes unchanged.
+
+**T-S1 — comparator source audit only.** Fairy-Stockfish source commit
+`53c1f2bd14a2d3b685904ccf8ec9dec8401800ff`, inspected2026-11-01 in isolated
+`/private/tmp/msh81-comparator-fairy`. Actual config and implementation were read;
+see [audit](comparator-audit.md). No build, run, reference admission or differential
+result is claimed. PyChess's FAQ identifies this engine as its rules dependency,
+so its public description is not a second independent implementation.
+
+| Category | Concrete disagreement/omission | Resolution |
+| --- | --- | --- |
+| Apparent A ordinary promotion | Hamburg's ambiguous *kann*; Kanare entry-only summary | Use explicit mandatory origin-or-destination-zone T-M5/T-M6; no coherent sourced optional alternative established. |
+| Apparent A handed geometry | Kanare quail image versus own prose | Use labelled modern publisher/Wikipedia/Hamburg pair; retain image caveat. |
+| B rare cycles | Creator/departure responsibility, evasion exemption,3/4 occurrence and sanction vary between software descriptions | T06 explicitly selects departure algorithm at third occurrence; no whole-profile comparator admission. |
+| B endings/admission | Modern summaries omit quiet immobility, exact root/command behavior | Explicit T05/T07 software conventions; no Chess draw or CSA declaration imported. |
+| C historical bibliography | Unread1833/2008, physical edition relations | Nonblocking supporting research; no additional search/contact/purchase. |

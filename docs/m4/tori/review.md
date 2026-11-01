@@ -1,53 +1,85 @@
-# MSH-81 independent source/profile review — 2026-10-31
+# Independent modern Tori profile review — 2026-11-01
 
-Reviewer: `tori_profile_review`, separate from the primary integrator and both acquisition workers. Scope: read-only repository/source review; report written only under `/private/tmp`. No source adoption, implementation, task mutation, external contact, purchase, or GUI campaign.
+**Disposition: PASS for MSH-81's complete modern planning contract.** No unresolved
+material owner rule decision or acquisition gate remains. This does not approve
+native implementation, comparator admission or complete Tori game delivery.
 
-## Method and inspected evidence
+Primary builder/integrator: root Codex. Separate read-only reviewer:
+`tori_modern_review`. Independent bounded source researchers:
+`tori_modern_audit`, `tori_comparator_audit`. They did not edit repository records
+or build competing product implementations. The earlier partial-only assessment
+and failing readiness verdict are preserved [unchanged](archive/2026-10-31/review.md).
+The new verdict follows the owner's changed product objective, not a retroactive
+claim that earlier incomplete historical research was a ratified profile.
 
-Read current AGENTS.md, Backlog overview, authoritative MSH-81 (In Progress, root `@codex`), owner attachment, relevant Tori/architecture passages in design/delivery/source documents, prior 2026-10-27 research handoff and modern worker report. Repository base observed: `codex/rewrite` at `6a9d24d`; only MSH-81 task record was dirty at startup. Did not claim or alter ownership.
+## Actual review method
 
-Independently opened actual Tohoku JPEGs **4, 5, 6, 7, 8, 9, 10**, not OCR alone. Inspected setup4, every movement diagram5–8, general rules8L/9R/9L, dated conclusion9L and authorship10R. `L/R` means displayed left/right half of the numbered institutional image, not invented foliation. Made a temporary crop of7R for enlarged eagle diagram inspection. Did not inspect images1–3 or11–15 for this review and do not claim a complete critical transcription of the book. Read the saved institution IIIF manifest and independently recomputed all15 recorded JPEG SHA256 values and lengths; all matched acquisition-images.json and manifest contains15 canvases.
+The fresh reviewer read the owner redirection, original four AC/four DoD items,
+T01–T08 modern contract, every fixture group/all39 retained seed identities,
+source/authority and comparator ledgers, current R1–R6 handoff and prospective
+planning/task diffs. Independently opened live Wikipedia and verified exposed
+oldid1373875456; reread acquired Hamburgp1; inspected pinned Fairy configuration,
+generation and scoring source. No engine build/run is claimed.
 
-Independently visually read both complete Hamburg rendered PDF pages and saved extracted German text. Visually read Kanare2022 EN, JP and pieces sheets. Recomputed all3 Kanare PDF SHA256/lengths against root manifest and all19 file hashes/lengths in modern-worker manifest: all passed. These checks establish acquired bytes match the workers' ledgers, not that a catalogue proves source contents. Reviewed modern worker report and its explicit Okano/OUC access limitations. Did not independently inspect every acquired metadata HTML; bibliographic assertions beyond the manifest and reviewed passages remain the acquisition workers' evidence.
+Hand-calculated geometry, quail ownership, compulsory promotion, capture/drop,
+pins/evasion, mate/stalemate and drop-mate-versus-one-escape positions. In particular:
 
-## Primary reading checks passed, with limits
+- Forced-check cycle: SentePh4a; GotePh4g,Ea4d,Cr2b,Cr3c,Cr6c,Cr7b.
+  Only5a evades Ea4d's backward ray; Ea4d→5d checks, only4a evades.
+  The stationary Cranes exclude3a/3b/4b/5b/6a/6b. Two four-ply cycles give
+  the third root occurrence at8 and no allowed variation: explicit T06 forfeit.
+- Unequal king loops4/6/6 plies give root occurrences0/4/10/16; the legal
+  variation at10 avoids the two previous departures; latest-three at16 drops
+  the oldest departure. No invented repetition counters or engine oracle.
+- Quiet immobility rootGPh1a/SPh3b/SCr2c:1a is not attacked, but2a/1b/2b
+  are. It installs stalemate loss under the explicit software convention.
 
-- 8L directly gives seven by seven and32 pieces. Setup4 corroborates extra central-rank swallows and mirrored, handed quails. Its picture is printed sideways; modern coordinate conversion must be a declared adapter.
-- 5R royal diagram has eight adjacent directions.5L crane has six adjacent directions excluding horizontal; pheasant has a two-square forward destination plus backward diagonals.6R labelled quails distinguish their forward ray, opposing backward diagonal ray and other backward diagonal single step.6L hawk excludes directly backward.7R eagle shows forward diagonal and backward straight rays, forward/lateral single steps and backward diagonal destinations at one/two. Enlarged7R shows a continuous backward straight ray, not a two-square backward jump.7L swallow advances one;8R goose leaps two forward diagonal or two backward straight. Pheasant/goose have hollow intermediate markers absent from the eagle diagram. Kanare pieces expressly says eagle cannot jump; treating its two-square backward diagonal as a limited ray is supported modern clarification, not an unsupported leap.
-- 8L states captured-piece reuse by reference to small shogi.9R says quail reverse-side left/right labels identify differing movement, not promotion.
-- 9L unmistakably prohibits remaining unpromoted when entering the marked enemy area. Captures/royal-head wording follows within that enemy-area context. This passage does **not securely establish** promotion on an out-of-zone capture or an out-of-zone move in front of the opposing royal. The normalized transcription should preserve the context rather than introduce a new privilege.
-- 9L says enemy-area drops of hawk/swallow use the front/native face and then promote subsequently (`表ノ方ヲ打次ニ成ル`). It does not provide a formal state machine specifying whether "next" means this piece's next move, the player's next turn, or only a later in-zone move; do not silently answer those questions from modern shogi.
-- 8L permits the double-swallow analogue and limits it to two.9R forbids swallow drop mate and permits advancing-swallow mate, with an immediately following promotion-mark-area qualification.9R's promotion-area language must remain visible when proposing a plain modern drop-mate clause. JSA2010 and modern sources corroborate the broad double/triple distinction but do not retroactively settle every old-text scope question.
-- 8L→9R says same moves reaching three times require the initiating side to change (`同手三度...仕掛ケ方ヨリ手ヲ換ヘ`). It does not prescribe board+hands+side-to-move equality, a modern occurrence counter, exact cycle responsibility, forced-cycle outcome, perpetual-check precedence, or draw/loss adjudication. Kanare's English/Japanese keeps the move-cycle framing; Hamburg instead specifies repeated position and board/hands identity. This difference is consequential.
-- 9L date is `文政十一年 戊子孟春` (1828 textual date).10R names `豊田四郎兵衞安親撰`. Institution metadata says publication year/place/publisher unknown. Correct result: an institution-hosted undated copy containing an1828 dated text, not a verified first-edition publication in1828 and not proof of identity with Kagawa1833.
+Reviewer independently ran read-only integrity checks:103 unique specifications,
+all39 original IDs,42 accepted transition reversal contracts, six archived files
+byte-identical,125 task records/336 resolved acyclic edges, original task criterion
+wording preserved, no production/build/workflow/AGENTS diff, and diff whitespace.
+After the final Eagle correction, additionally checked all70 admission roots and
+all78 non-rejection direct-root cases with a temporary geometry/blocker attack
+sanity calculation against the published movement definitions. This checks root
+threat consistency only; it is not an executed native legality/history engine.
 
-## Findings requiring explicit treatment
+## Findings and resolution
 
-1. **Material unresolved rules:** promotion capture/royal-head scope, subsequent promotion after zone drop/in-zone departure, exact repetition and perpetual-check enforcement, no-legal-action without check, entering royals and exceptional draw/administrative outcomes remain decision/acquisition gates. General small-shogi deference in the book is genuine historical wording, but cannot uniquely select today's Standard Shogi code.
-2. **Modern source conflict:** Hamburg p1 uses `kann` for moves wholly/partly within or leaving zone, while Kanare2022 EN/JP expressly requires promotion on entry. Historical9L supports compulsory entry. Present Hamburg as a distinct modern account; do not cite it as corroboration of mandatory entry.
-3. **Kanare quail panel ambiguity:** pieces-sheet prose describes the **left** quail (single backward-left; ray backward-right), but the adjacent unlabelled diagram depicts single backward-right/ray backward-left, which matches the **right** quail. This may be a generic/right illustration rather than a false diagram, but it is unsafe as a left-quail expected oracle. Historical6R explicitly labelled pair and Hamburg p2 are the stronger side-specific checks.
-4. **Terminal consistency:** Hamburg separately defines checkmate loss, royal-capture win and resignation. A software profile must reconcile when play stops. Kanare directly says mate loses. Neither text resolves all exceptional endings. Rejecting an illegal submitted UI action without ending the native game is a software/application policy separate from Hamburg's over-the-board foul loss.
-5. **Acquired versus unread:** Okano2008 pp241–265 and Kagawa1833 remain metadata/holdings acquisition, not inspected rules. OUC1828 holding metadata is not a second acquired historical text. Future documents must distinguish all three from Tohoku facsimile pages actually read.
+1. Root installation originally lacked explicit terminal assessment. T05 now
+   derives immediate mate/stalemate for imported terminal diagrams, with root
+   occurrence1 and no inferred earlier cycle. Concrete terminal fixtures checked.
+2. Declared counter advancement was ambiguous. T07 now makes it immutable root
+   metadata, accepted board plies separately counted from zero; display total is
+   their sum. Non-board events increment neither. This imports no SFEN semantics.
+3. Reversal fixture initially moved only Phoenixes. All42 accepted transition
+   specs now require exact apply/undo/redo including captures/demotion/hands,
+   forced promotion and drops, both owners, without reviving execution work.
+4. Final author audit found Eagle blocker fixture's oldGPh1a already attacked
+   by SEa4d. Moved it to1b (rotated SPh7f), independently rechecked root safety
+   and intended blocked path. Original reviewer missed this in the first pass;
+   final root-threat audit found no remaining instance. Both old and final hash
+   progression is recorded in the task/evidence rather than claiming first pass
+   was perfect.
 
-## Profile/fixture draft review
+Final reviewed corpus SHA256:
+`3f9e5ca3b541fc72f562ddd8231408e17e7bd5ba3ccee118e643ce0f543731e3`.
+No remaining material finding prevents the original MSH-81 criteria under the
+explicit modern-playing objective. Historical Kagawa/Okano access no longer gates
+this selected identity. Contemporary summaries agree ordinary gameplay; exact
+cycle/rare-ending/digital conventions are honestly identified, not attributed
+as universally sourced rules. Fairy repetition/raw-drop-mate mismatches remain
+excluded comparator scope, not unresolved profile semantics.
 
-Independently read the complete `docs/m4/tori/{README.md,sources.md,profile.md,handoff.md,fixtures.json}` drafts and copied acquisition reports/manifests after the source pass. Final fixture revision inspected has SHA256 `c122560a85c8fee3af5d08eea6a86a2fa36cb213882141c436ab8ceaa7f60bae`. There are **39 rows:27 supported source/partial/contract seeds and12 blocked null expectations**. Parsed JSON, checked unique IDs, declared source IDs/nonempty locators, and blocked/null/gate consistency. No implementation output supplies an expectation.
+## Acceptance disposition
 
-Independently rotated setup image4 by90° for orientation inspection: proposed lower home files7g→1g correctly map left quail,pheasant,crane,royal,crane,pheasant,right quail; hawk4f, seven swallows1e–7e, extra3d.180° opposing map gives extra5d. Original book numerals differ from this modern convention; profile explicitly declares the adapter. All nine geometry rows, including distinct handed quails and both promoted kinds, match the inspected diagrams. Exact byte comparison confirms retained historical evidence images04/07/09 are unchanged acquisition bytes.
+| Original criterion | Independent disposition |
+| --- | --- |
+| AC1 source/reconciliation | Supported: exact historical read/edition limits retained; complete modern clauses/cross-checks and selected software conventions replace unsupported historical claims. |
+| AC2 consequential choices | Supported: owner explicitly redirects basis and authorizes coherent rare-edge conventions; all adopted decisions and distinguishing tests explicit, no material unresolved ordinary-play conflict. |
+| AC3 complete versioned profile/expectations | Supported: native identities, state/actions/history/endings/record/notation semantics and103 independently expected fixture specs, no Chess defaults or implementation-generated expected output. |
+| AC4 native/shared handoff | Supported: current single-owner R1–R6 consumers, minimum dispatch extensions and observable acceptance/dependency map;85 pre-Ready refinement remains its own obligation. |
 
-The candidate ledger keeps the1828 internal date separate from edition/publication claims; distinguishes unread Kagawa/Okano and metadata-only OUC; preserves Hamburg promotion ambiguity and Kanare quail image/prose distinction; reserves rather than adopts the profile identity. P01–P06 identify incomplete contracts. Whole-action/history/terminal/canonical grammar is not falsely approved by partial geometry seeds.
-
-Read current MSH85/77 task dependencies/criteria. Spot-checked surviving native source owners/types in core/native.rs, engine/shared.rs, desktop-session/lib.rs and shared.rs against handoff. Game/profile dispatch, one ActiveDocument/controller, exact ExecutionContext, board/hand origins, completions and metadata exist as described; they advertise no current Tori support. The handoff follows R1–R6 and does not add an aggregate42/46 dependency. Its future requirements are bounded; no universal rules framework or frontend legality is proposed. This is source inspection, not native consumer execution.
-
-### Findings raised and resolved in the draft
-
-1. **Invalid blocked-case premise:** initial TORI-P-DROP-EXIT used a swallow leaving the enemy promotion area, impossible under its forward-only geometry. Root replaced it with lower hawk4b→3c, a geometrically possible backward diagonal exit. Rechecked; resolved.
-2. **Missing capture evidence:** initial seeds omitted the requested capture family. Root added a publication-derived captured-piece ownership partial effect and explicitly blocked promoted demotion and handed-quail transfer cases under P06. They do not claim complete transitions; rechecked; resolved.
-3. **Source link mismatch:** sources T-H1 hyperlink did not use the acquired record's URL. Root changed it to verified acquisition-ledger `/portal/item/10010000019229`; rechecked; resolved. Exposed manifest URL legitimately omits `/0/` while its internal ID includes it; this distinction was already documented by the historical researcher. Independent web-tool opens of both manifest forms returned tool errors and were not counted as new successful access checks.
-4. **Multiplicity provenance/scope:** initial TORI-S-TWO/THREE cited only old-text two/limit-two while asserting friendly/unpromoted/file predicates and unspecified added action. Root added Kanare Japanese own/file and Hamburg unpromoted/goose corroboration, specified drop, marked the scope modern-corroborated drop restriction, and retained any extension to other actions/imported diagrams as unresolved. Final rows and B13/P06 rechecked; resolved.
-
-**Disposition: PASS for integration as an explicitly partial research handoff. No remaining material finding prevents that bounded integration. This is not completion approval or ratification of a complete Tori profile.**
-
-## Current criterion verdict
-
-This review passes bounded acquisition-integrity, critical-page comparison and partial draft/fixture checks above. It does **not** approve MSH-81 completion. AC1 remains incomplete on reconciliation/complete consequential rule coverage; AC2 requires material owner decisions; AC3 requires an adopted complete profile plus whole-action/history/notation expectations. AC4 has a useful concrete current-architecture handoff and dependency audit, but no claim that downstream profile-dependent refinement is complete. Keeping all original AC unchecked and MSH81 unfinished is appropriate. No native correctness, execution-performance, playing-strength, app-integration or platform testing was run or claimed.
+No native correctness execution, differential/reference run, performance/strength,
+GUI/platform campaign or new CI success is claimed. Those require later actual
+implementation/consumers. Independent review approves closing this planning task
+only, with original complete-game and M4 closure obligations preserved.

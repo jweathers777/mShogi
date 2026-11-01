@@ -1,33 +1,30 @@
-# Tori source/profile checkpoint — MSH-81
+# Modern Tori Shogi planning contract — MSH-81
 
-Research revision **MSH81-DRAFT-2026-10-31**, against application integration
-`6a9d24dbff8e883fdc23dabf74216b91cc194ac0`. This is an independently reviewed
-research handoff, **not a ratified complete profile or native implementation**.
-MSH-81 remains unfinished; MSH-42/85/77 remain To Do. R6 is not reopened.
+Current profile **`mshogi.tori.modern.v1`**, edition **MSH81-MODERN-2026-11-01**.
+John's modern-playing redirection replaces the earlier historical-first gate.
+The complete [profile](profile.md) supplies ordinary rules plus explicitly named
+software conventions, not a claim of already implemented Tori support.
 
-The prior [2026-10-27 report](../research/tori.md) remains historical evidence.
-This pass acquired Tohoku's public 15-image *禽象戲圖解* facsimile, including an
-internally dated 1828 rules passage. It also found institutional metadata for
-a separate 1828 OUC holding, acquired/read Hamburg's actual two-page rule sheet,
-and acquired/read Kanare Kato's 2022 bilingual rules and movement companion.
-Kagawa's 1833 copy and Okano's 2008 article remain **unread**.
+- [Sources and authority distinctions](sources.md).
+- [Independent concrete fixture specifications](fixtures.json), with [format and scope](fixtures.md).
+- [Audited comparator limitations](comparator-audit.md).
+- [Current R1–R6 native/shared handoff](handoff.md).
+- [Independent modern-profile review](review.md) and [verification](verification.md).
 
-- [Sources, exact copies and acquisition limits](sources.md).
-- [Clause matrix, candidate basis and unresolved rules](profile.md).
-- [Independent declarative seeds](fixtures.json): geometry/restriction expectations
-  are distinct from complete legal-action or history/outcome conformance.
-- [Current native/shared handoff and dependency gates](handoff.md).
-- [Independent source/profile/fixture review](review.md).
+Wikipedia's pinned modern description is the initial playing basis. Actual
+Hamburg/Kanare materials cross-check geometry, captures, compulsory promotion and
+drops. Exact repetition responsibility, forced-cycle sanction, quiet immobility,
+root provenance and digital command admission are documented software conventions.
+Historical reconstruction, Kagawa1833 and Okano2008 acquisition are not delivery
+gates. No scholarly text is claimed read when it was not.
 
-Recommended basis for further reconciliation: the actual Tohoku witness, with
-explicit modern supplements only after the remaining clauses are resolved.
-Proposed identity `mshogi.tori.bunsei11.v1` is **reserved/unapproved** and is not
-recognized by a parser, advertised capability or New Game entry. The internal
-date is not proof of this copy's printing date or equivalence to Kagawa's 1833
-copy. A modern Kanare-based reconstruction would need a separately named
-profile and its own gap decisions; neither availability nor software consensus
-ratifies it. No institutional message, purchase or permission change occurred.
+The [2026-10-31 checkpoint](archive/2026-10-31/README.md), original39 seeds and
+partial independent review remain historical evidence. Its reserved historical
+profile was never selected. The older [2026-10-27 report](../research/tori.md)
+also remains unchanged. Current sources/handoff supersede their readiness claims.
 
-The bounded continuation is targeted source/translation reconciliation and owner
-review of the resulting complete profile. Do not begin game implementation or
-silently substitute current Standard Shogi for missing historical semantics.
+MSH-85 is the next native-handoff owner after81; it still needs its required
+bounded slice refinement before Ready. MSH-77 consumes that real native handoff.
+MSH-42 retains the entire game delivery; MSH-51/M5 owns measured strength. No native
+Tori implementation, capability, selector entry or format has been added here.
+M4 and shared/platform closure remain open. Stop after81.

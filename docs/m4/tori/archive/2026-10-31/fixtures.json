@@ -1,0 +1,1102 @@
+{
+  "research_revision": "MSH81-DRAFT-2026-10-31",
+  "profile_status": "unratified",
+  "executable_conformance": false,
+  "method": "Hand-transcribed source facts and explicit unresolved gates; no implementation/reference output used as expected oracle. Mathematical rotation is a convention, not proof of full legality.",
+  "source_ids": [
+    "T-H1",
+    "T-H2",
+    "T-H3",
+    "T-H4",
+    "T-M1",
+    "T-M2",
+    "T-M3",
+    "T-M4",
+    "PROJECT"
+  ],
+  "local_axes": "x=mover-right,f=mover-forward; rotate180forotherowner",
+  "fixtures": [
+    {
+      "id": "TORI-I01",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img4; img8L"
+        }
+      ],
+      "kind": "initial_diagram",
+      "scope": "diagram_transcription",
+      "given": {
+        "coordinate_convention": "proposed1a-upper-right; lower faces forward to decreasing rank letter"
+      },
+      "expected": {
+        "board": [
+          7,
+          7
+        ],
+        "per_side": {
+          "鵬": 1,
+          "鷹": 1,
+          "鶴": 2,
+          "雉": 2,
+          "左鶉": 1,
+          "右鶉": 1,
+          "燕": 8
+        },
+        "lower_home_7g_to_1g": [
+          "左鶉",
+          "雉",
+          "鶴",
+          "鵬",
+          "鶴",
+          "雉",
+          "右鶉"
+        ],
+        "lower_hawk": "4f",
+        "lower_swallows": [
+          "1e",
+          "2e",
+          "3e",
+          "4e",
+          "5e",
+          "6e",
+          "7e",
+          "3d"
+        ],
+        "upper": "rotate180includingownership"
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-G-HO",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img5R"
+        }
+      ],
+      "kind": "piece_geometry",
+      "scope": "geometry_only",
+      "given": {
+        "piece": "鵬",
+        "origin": "interior",
+        "local_axes": "x=mover-right,f=mover-forward",
+        "occupancy": "empty; not a legal whole position"
+      },
+      "expected": {
+        "destinations": [
+          [
+            -1,
+            -1
+          ],
+          [
+            -1,
+            0
+          ],
+          [
+            -1,
+            1
+          ],
+          [
+            0,
+            -1
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "jumps": [],
+        "rays": [],
+        "other_geometry": false
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-G-TSURU",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img5L"
+        }
+      ],
+      "kind": "piece_geometry",
+      "scope": "geometry_only",
+      "given": {
+        "piece": "鶴",
+        "origin": "interior",
+        "local_axes": "x=mover-right,f=mover-forward",
+        "occupancy": "empty; not a legal whole position"
+      },
+      "expected": {
+        "destinations": [
+          [
+            -1,
+            1
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            -1,
+            -1
+          ],
+          [
+            0,
+            -1
+          ],
+          [
+            1,
+            -1
+          ]
+        ],
+        "jumps": [],
+        "rays": [],
+        "other_geometry": false
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-G-KIJI",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img5L"
+        }
+      ],
+      "kind": "piece_geometry",
+      "scope": "geometry_only",
+      "given": {
+        "piece": "雉",
+        "origin": "interior",
+        "local_axes": "x=mover-right,f=mover-forward",
+        "occupancy": "empty; not a legal whole position"
+      },
+      "expected": {
+        "destinations": [
+          [
+            -1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ]
+        ],
+        "jumps": [
+          [
+            0,
+            2
+          ]
+        ],
+        "rays": [],
+        "other_geometry": false
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-G-LEFT-QUAIL",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img6Rleft-labelled"
+        }
+      ],
+      "kind": "piece_geometry",
+      "scope": "geometry_only",
+      "given": {
+        "piece": "左鶉",
+        "origin": "interior",
+        "local_axes": "x=mover-right,f=mover-forward",
+        "occupancy": "empty; not a legal whole position"
+      },
+      "expected": {
+        "destinations": [
+          [
+            -1,
+            -1
+          ]
+        ],
+        "jumps": [],
+        "rays": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            -1
+          ]
+        ],
+        "other_geometry": false
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-G-RIGHT-QUAIL",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img6Rright-labelled"
+        }
+      ],
+      "kind": "piece_geometry",
+      "scope": "geometry_only",
+      "given": {
+        "piece": "右鶉",
+        "origin": "interior",
+        "local_axes": "x=mover-right,f=mover-forward",
+        "occupancy": "empty; not a legal whole position"
+      },
+      "expected": {
+        "destinations": [
+          [
+            1,
+            -1
+          ]
+        ],
+        "jumps": [],
+        "rays": [
+          [
+            0,
+            1
+          ],
+          [
+            -1,
+            -1
+          ]
+        ],
+        "other_geometry": false
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-G-TAKA",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img6L"
+        }
+      ],
+      "kind": "piece_geometry",
+      "scope": "geometry_only",
+      "given": {
+        "piece": "鷹",
+        "origin": "interior",
+        "local_axes": "x=mover-right,f=mover-forward",
+        "occupancy": "empty; not a legal whole position"
+      },
+      "expected": {
+        "destinations": [
+          [
+            -1,
+            1
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            -1,
+            0
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            -1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ]
+        ],
+        "jumps": [],
+        "rays": [],
+        "other_geometry": false
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-G-SWALLOW",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img7L"
+        }
+      ],
+      "kind": "piece_geometry",
+      "scope": "geometry_only",
+      "given": {
+        "piece": "燕",
+        "origin": "interior",
+        "local_axes": "x=mover-right,f=mover-forward",
+        "occupancy": "empty; not a legal whole position"
+      },
+      "expected": {
+        "destinations": [
+          [
+            0,
+            1
+          ]
+        ],
+        "jumps": [],
+        "rays": [],
+        "other_geometry": false
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-G-EAGLE",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img7R"
+        }
+      ],
+      "kind": "piece_geometry",
+      "scope": "geometry_only",
+      "given": {
+        "piece": "鵰",
+        "origin": "interior",
+        "local_axes": "x=mover-right,f=mover-forward",
+        "occupancy": "empty; not a legal whole position"
+      },
+      "expected": {
+        "destinations": [
+          [
+            -1,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            -1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            -2,
+            -2
+          ],
+          [
+            2,
+            -2
+          ]
+        ],
+        "jumps": [],
+        "rays": [
+          [
+            -1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            -1
+          ]
+        ],
+        "other_geometry": false
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-G-GOOSE",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img8R"
+        }
+      ],
+      "kind": "piece_geometry",
+      "scope": "geometry_only",
+      "given": {
+        "piece": "鳫",
+        "origin": "interior",
+        "local_axes": "x=mover-right,f=mover-forward",
+        "occupancy": "empty; not a legal whole position"
+      },
+      "expected": {
+        "destinations": [],
+        "jumps": [
+          [
+            -2,
+            2
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            0,
+            -2
+          ]
+        ],
+        "rays": [],
+        "other_geometry": false
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-G-ROTATION",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img4opposingorientation; imgs5–8"
+        }
+      ],
+      "kind": "opposing_geometry",
+      "scope": "orientation_geometry",
+      "given": {
+        "same_native_piece": "upper vs lower owner",
+        "input_offset": [
+          1,
+          1
+        ]
+      },
+      "expected": {
+        "board_offset_rotation": [
+          -1,
+          -1
+        ],
+        "native_piece_kind_unchanged": true
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-G-KIJI-BLOCK",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img5Lhollowmark/間飛"
+        }
+      ],
+      "kind": "jump_restriction",
+      "scope": "restriction_only",
+      "given": {
+        "piece": "雉",
+        "intermediate_occupied": true,
+        "destination": "forward2empty"
+      },
+      "expected": {
+        "intermediate_does_not_block_this_geometry": true
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-G-GOOSE-BLOCK",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img8R間飛"
+        }
+      ],
+      "kind": "jump_restriction",
+      "scope": "restriction_only",
+      "given": {
+        "piece": "鳫",
+        "intermediate_occupied": true,
+        "destination": "backward2empty"
+      },
+      "expected": {
+        "intermediate_does_not_block_this_geometry": true
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-G-EAGLE-BLOCK",
+      "sources": [
+        {
+          "id": "T-M4",
+          "locator": "piecesp1eagletext; T-H1img7Rnonleapcontrast"
+        }
+      ],
+      "kind": "blocking_restriction",
+      "scope": "modern_restriction_only",
+      "given": {
+        "piece": "鵰",
+        "destination": "backward-right2",
+        "intermediate_occupied": true
+      },
+      "expected": {
+        "not_a_jump": true,
+        "path_blocked_under_modern_explicit_rule": true,
+        "no_intermediate_capture_action_proved": true
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-S-TWO",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img8Ltwo/limit2"
+        },
+        {
+          "id": "T-M4",
+          "locator": "JPrulesp1自分の燕/同じ縦列"
+        },
+        {
+          "id": "T-M3",
+          "locator": "p1unpromotedswallow/gooseexception"
+        }
+      ],
+      "kind": "multiplicity",
+      "scope": "modern_corroborated_drop_restriction",
+      "given": {
+        "friendly_unpromoted_swallows_on_file": 1,
+        "added_swallow": 1,
+        "added_action": "drop"
+      },
+      "expected": {
+        "multiplicity_restriction_passes": true
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-S-THREE",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img8Ltwo/limit2"
+        },
+        {
+          "id": "T-M4",
+          "locator": "JPrulesp1自分の燕/同じ縦列"
+        },
+        {
+          "id": "T-M3",
+          "locator": "p1unpromotedswallow/gooseexception"
+        }
+      ],
+      "kind": "multiplicity",
+      "scope": "modern_corroborated_drop_restriction",
+      "given": {
+        "friendly_unpromoted_swallows_on_file": 2,
+        "added_swallow": 1,
+        "added_action": "drop"
+      },
+      "expected": {
+        "multiplicity_restriction_passes": false
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-S-GOOSE",
+      "sources": [
+        {
+          "id": "T-M3",
+          "locator": "p1dropfileparagraph"
+        }
+      ],
+      "kind": "multiplicity",
+      "scope": "modern_restriction_only",
+      "given": {
+        "friendly_unpromoted_swallows_on_file": 1,
+        "friendly_goose": 1,
+        "drop_swallow": 1
+      },
+      "expected": {
+        "multiplicity_restriction_passes": true
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-S-ENEMY",
+      "sources": [
+        {
+          "id": "T-M4",
+          "locator": "JPrulesp1自分の燕"
+        }
+      ],
+      "kind": "multiplicity",
+      "scope": "modern_restriction_only",
+      "given": {
+        "friendly_unpromoted_swallows_on_file": 1,
+        "enemy_unpromoted_swallows_on_file": 1,
+        "drop_swallow": 1
+      },
+      "expected": {
+        "multiplicity_restriction_passes": true
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-S-LAST",
+      "sources": [
+        {
+          "id": "T-M4",
+          "locator": "JPrulesp1prohibitedmoves"
+        }
+      ],
+      "kind": "drop_restriction",
+      "scope": "modern_restriction_only",
+      "given": {
+        "piece": "燕",
+        "target": "lastenemyrow"
+      },
+      "expected": {
+        "drop_restriction_passes": false
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-S-DROP-MATE",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img9R"
+        }
+      ],
+      "kind": "drop_mate_restriction",
+      "scope": "restriction_only",
+      "given": {
+        "piece": "燕",
+        "otherwise_immediate_mate": "stipulated premise, not implementation-generated mate proof"
+      },
+      "expected": {
+        "drop_mate_restriction_passes": false
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-D-EMPTY",
+      "sources": [
+        {
+          "id": "T-M4",
+          "locator": "rulesp1gameplay"
+        }
+      ],
+      "kind": "drop_restriction",
+      "scope": "modern_restriction_only",
+      "given": {
+        "hand_piece": "unpromotednonroyal",
+        "target_occupied": true
+      },
+      "expected": {
+        "empty_square_restriction_passes": false
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-D-UNPROMOTED",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img9Ldropclause"
+        }
+      ],
+      "kind": "zone_drop",
+      "scope": "partial_effect",
+      "given": {
+        "hand_piece": "鷹or燕",
+        "target": "insideenemymarks"
+      },
+      "expected": {
+        "immediate_piece_face": "unpromoted",
+        "subsequent_promotion_timing": "unresolvedP02"
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-P-ENTRY",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img9L不成...禁"
+        }
+      ],
+      "kind": "promotion_entry",
+      "scope": "promotion_restriction_only",
+      "given": {
+        "piece": "鷹or燕",
+        "from": "outsideenemymarks",
+        "to": "insideenemymarks",
+        "ordinary_move": true
+      },
+      "expected": {
+        "unpromoted_entry_forbidden": true,
+        "promoted_kind": {
+          "鷹": "鵰",
+          "燕": "鳫"
+        }
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-P-DROP-EXIT",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img8L→9R/9L; missingformalization"
+        }
+      ],
+      "kind": "unresolved_profile_case",
+      "scope": "no_outcome_expected",
+      "given": {
+        "drop": "lower鷹at4binsidezone",
+        "next_action": "samepiece4b→3cleaveszone; diagonal-backward geometry is admitted byB07"
+      },
+      "expected": null,
+      "status": "blocked",
+      "gate": "P02"
+    },
+    {
+      "id": "TORI-P-DROP-OTHER",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img8L→9R/9L; missingformalization"
+        }
+      ],
+      "kind": "unresolved_profile_case",
+      "scope": "no_outcome_expected",
+      "given": {
+        "drop": "鷹insidezone",
+        "next_action": "differentpiece"
+      },
+      "expected": null,
+      "status": "blocked",
+      "gate": "P02"
+    },
+    {
+      "id": "TORI-P-HEAD",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img8L→9R/9L; missingformalization"
+        }
+      ],
+      "kind": "unresolved_profile_case",
+      "scope": "no_outcome_expected",
+      "given": {
+        "piece": "鷹or燕",
+        "target": "royalheadoutsidezone",
+        "question": "promotionprivilege"
+      },
+      "expected": null,
+      "status": "blocked",
+      "gate": "P02"
+    },
+    {
+      "id": "TORI-H-COUNT",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img8L→9R/9L; missingformalization"
+        }
+      ],
+      "kind": "unresolved_profile_case",
+      "scope": "no_outcome_expected",
+      "given": {
+        "symbolic_key_occurrences": [
+          0,
+          4,
+          8,
+          12
+        ],
+        "question": "thirdpositionvs3completecycles; notlegaltranscript"
+      },
+      "expected": null,
+      "status": "blocked",
+      "gate": "P03"
+    },
+    {
+      "id": "TORI-H-INITIATOR",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img8L→9R/9L; missingformalization"
+        }
+      ],
+      "kind": "unresolved_profile_case",
+      "scope": "no_outcome_expected",
+      "given": {
+        "same_diagram": "yes",
+        "cycle_initiator": [
+          "lower",
+          "upper"
+        ],
+        "question": "whochanges/when"
+      },
+      "expected": null,
+      "status": "blocked",
+      "gate": "P03"
+    },
+    {
+      "id": "TORI-H-CHECK",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img8L→9R/9L; missingformalization"
+        }
+      ],
+      "kind": "unresolved_profile_case",
+      "scope": "no_outcome_expected",
+      "given": {
+        "sequence": "checkingcycle",
+        "cycle_initiator": "checkedside",
+        "question": "checkerpriorityandforcedcycle"
+      },
+      "expected": null,
+      "status": "blocked",
+      "gate": "P03"
+    },
+    {
+      "id": "TORI-O-QUIET",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img8L→9R/9L; missingformalization"
+        }
+      ],
+      "kind": "unresolved_profile_case",
+      "scope": "no_outcome_expected",
+      "given": {
+        "in_check": false,
+        "legal_board_actions": "noneunderotherwise_selectedrules"
+      },
+      "expected": null,
+      "status": "blocked",
+      "gate": "P04"
+    },
+    {
+      "id": "TORI-O-IMPASSE",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img8L→9R/9L; missingformalization"
+        }
+      ],
+      "kind": "unresolved_profile_case",
+      "scope": "no_outcome_expected",
+      "given": {
+        "both_royals": "enemyzones",
+        "question": "draw/points/declaration/continue"
+      },
+      "expected": null,
+      "status": "blocked",
+      "gate": "P04"
+    },
+    {
+      "id": "TORI-O-AGREEMENT",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img8L→9R/9L; missingformalization"
+        }
+      ],
+      "kind": "unresolved_profile_case",
+      "scope": "no_outcome_expected",
+      "given": {
+        "command": "drawagreement",
+        "modern_Hamburg": "forbidsagreement"
+      },
+      "expected": null,
+      "status": "blocked",
+      "gate": "P04"
+    },
+    {
+      "id": "TORI-O-ROYAL",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img8L→9R/9L; missingformalization"
+        }
+      ],
+      "kind": "unresolved_profile_case",
+      "scope": "no_outcome_expected",
+      "given": {
+        "question": "selfcheck/royalcapture/mateprecedence"
+      },
+      "expected": null,
+      "status": "blocked",
+      "gate": "P04"
+    },
+    {
+      "id": "TORI-C-HISTORY",
+      "sources": [
+        {
+          "id": "PROJECT",
+          "locator": "designA01/A02/A06/A10; R6contracts"
+        }
+      ],
+      "kind": "future_consumer",
+      "scope": "future_contract_only",
+      "given": {
+        "board": "same",
+        "known_history_or_hands": "different"
+      },
+      "expected": {
+        "must_not_collapse_context": true
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-C-IDENTITY",
+      "sources": [
+        {
+          "id": "PROJECT",
+          "locator": "currentExecutionContext/RuntimeMetadata"
+        }
+      ],
+      "kind": "future_consumer",
+      "scope": "future_contract_only",
+      "given": {
+        "old_result": "cancelledorreplaced",
+        "reopen_or_undo": "sameboard"
+      },
+      "expected": {
+        "old_execution_must_stay_retired": true
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-C-NOTATION",
+      "sources": [
+        {
+          "id": "PROJECT",
+          "locator": "designA01/A11"
+        }
+      ],
+      "kind": "future_consumer",
+      "scope": "future_contract_only",
+      "given": {
+        "notation": "visiblemove",
+        "action": "nativecompletechoice"
+      },
+      "expected": {
+        "notation_not_action_authority": true,
+        "canonical_native_payload_lossless": true,
+        "no_assumed9x9SFENorUSI": true
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-CAPTURE-OWNER",
+      "sources": [
+        {
+          "id": "T-M4",
+          "locator": "EN/JPp1gameplaycapture"
+        }
+      ],
+      "kind": "capture_effect",
+      "scope": "partial_capture_effect",
+      "given": {
+        "mover": [
+          "lower",
+          "upper"
+        ],
+        "capture": "otherwiseadmittedenemyunpromotednonroyalpiece"
+      },
+      "expected": {
+        "captured_piece_removed_from_target": true,
+        "captured_piece_owned_in_hand_by_mover": true
+      },
+      "status": "source_supported_seed",
+      "gate": null
+    },
+    {
+      "id": "TORI-CAPTURE-DEMOTION",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img8Lcapture/reuse;img9promotion"
+        },
+        {
+          "id": "T-M3",
+          "locator": "p1unpromoteddrops"
+        }
+      ],
+      "kind": "capture_effect",
+      "scope": "no_complete_transition_expected",
+      "given": {
+        "captured_kind": "鵰or鳫",
+        "question": "exactdemotioneffect/nativehandidentity/provenance"
+      },
+      "expected": null,
+      "status": "blocked",
+      "gate": "P06"
+    },
+    {
+      "id": "TORI-CAPTURE-QUAIL",
+      "sources": [
+        {
+          "id": "T-H1",
+          "locator": "img6R/9Rleft-rightidentifiers"
+        }
+      ],
+      "kind": "capture_effect",
+      "scope": "no_complete_transition_expected",
+      "given": {
+        "captured_kind": "左鶉",
+        "new_owner": "opponent",
+        "question": "handkindremainsleftortransforms; owner-relativemovementmustremainexplicit"
+      },
+      "expected": null,
+      "status": "blocked",
+      "gate": "P06"
+    }
+  ]
+}

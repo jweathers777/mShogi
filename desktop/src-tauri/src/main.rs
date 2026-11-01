@@ -288,6 +288,9 @@ async fn game_file(
                         mshogi_desktop_session::GameKind::Chess => "chess.mshogi",
                         mshogi_desktop_session::GameKind::Shogi => "shogi.mshogi",
                         mshogi_desktop_session::GameKind::Xiangqi => "xiangqi.mshogi",
+                        mshogi_desktop_session::GameKind::Tori => {
+                            return Err("Tori desktop documents are not implemented.".into());
+                        }
                     })
                     .blocking_save_file()
             };

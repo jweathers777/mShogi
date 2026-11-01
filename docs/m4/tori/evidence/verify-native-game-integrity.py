@@ -26,7 +26,7 @@ def visit(i):
 for i in records:visit(i)
 for f in ['profile.md','fixtures.json','native-fixture-ownership.json']:
  p=Path('docs/m4/tori')/f;assert p.read_bytes()==subprocess.check_output(['git','show',baseline+':'+str(p)])
-paths=['.github/workflows','desktop','Cargo.toml','Cargo.lock','crates/mshogi-core/Cargo.toml','crates/mshogi-core/src/chess','crates/mshogi-core/src/shogi','crates/mshogi-core/src/xiangqi','crates/mshogi-search','crates/mshogi-runner','crates/mshogi-conformance']
+paths=['.github/workflows','desktop/src','desktop/package.json','desktop/package-lock.json','desktop/src-tauri/Cargo.toml','desktop/src-tauri/Cargo.lock','Cargo.toml','Cargo.lock','crates/mshogi-core/Cargo.toml','crates/mshogi-core/src/chess','crates/mshogi-core/src/shogi','crates/mshogi-core/src/xiangqi','crates/mshogi-search','crates/mshogi-runner','crates/mshogi-conformance']
 assert not subprocess.check_output(['git','diff','--name-only',baseline,'--',*paths],text=True).strip()
 for f in ['legal.rs','perft.rs','tests.rs','local_tests.rs','conformance.rs']:
  p=Path('crates/mshogi-core/src/tori')/f;assert p.read_text()==old(p)

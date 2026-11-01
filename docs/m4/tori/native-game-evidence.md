@@ -222,3 +222,14 @@ MSH-129 can be marked Done.
 Final core/conformance regression run:278checks PASS across34reported suites,0failed;
 2existing deep Chess opt-ins not run. No production changes after the independent
 reviewed source hashes.
+
+First reviewed native source integrated/pushed at
+`e1cc89d454db5e0ce98da34bf4cda7960d395413`; nativeCI41343664138 and automatic
+Desktop packages41343664148 started. A post-workspace scan found the separately
+built Tauri host's exhaustive save-filename match also needed an explicit Tori
+unsupported arm. The additive correction returns before a picker/save queue and
+adds no UI/document capability. Independent reviewer follow-up PASS; local
+`cargo check --locked --manifest-path desktop/src-tauri/Cargo.toml --all-targets`
+PASS, with20existing vendored Tao warnings. Core/engine review hashes are unchanged.
+The corrected integrated source and actual finalCI disposition are recorded below;
+no success is inferred for the earlier package run or a different platform.

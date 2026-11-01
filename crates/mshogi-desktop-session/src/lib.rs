@@ -11,6 +11,8 @@ mod capacity;
 pub use capacity::*;
 mod document;
 mod resource;
+/// Immutable Tori document codec/admission; no live runtime installation.
+pub mod tori_document;
 pub use resource::*;
 mod lifecycle;
 pub use lifecycle::*;

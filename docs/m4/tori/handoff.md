@@ -1,5 +1,19 @@
 # Modern Tori native/shared handoff — MSH-81
 
+## MSH-130 immutable document handoff
+
+[Current Tori document/admission contract](desktop-document.md) and
+[actual codec evidence](desktop-document-evidence.md) now supply the130boundary:
+current envelope1, native strict replay, exact retained branches/observations,
+measured aggregate262,144work policy and existing FileWorker/atomic-file path.
+No live Tori session, normal Open/New Game, renderer or engine is enabled.
+MSH-131 still owns the sole runtime/install and all13/82actual consumer verdicts;
+132semantic/frontend and42playable delivery remain separate. The original
+14pending assertions/83requirements and713native assertions are unchanged.
+Earlier planning/evidence below remains historical. Actual integration and CI
+references are recorded in130and the codec evidence rather than invented here.
+
+
 ## Current shared-integration refinement — MSH-77
 
 The accepted native handoff is integrated at

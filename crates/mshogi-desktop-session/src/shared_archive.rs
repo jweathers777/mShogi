@@ -111,6 +111,7 @@ pub(crate) enum ShogiSeed {
     },
 }
 pub(crate) enum NativeWork {
+    Tori(crate::tori_document::CandidateWork),
     Xiangqi(xiangqi::archive::XiangqiWork),
     Admit {
         candidate: ShogiSeed,
@@ -143,6 +144,7 @@ pub(crate) enum OpenedNative {
     },
 }
 pub(crate) enum NativeCompleted {
+    ToriValidated(Box<crate::tori_document::ValidatedToriDocument>),
     Xiangqi(xiangqi::archive::XiangqiCompleted),
     Admitted {
         state: Box<ShogiSession>,
@@ -1010,6 +1012,7 @@ pub(crate) fn execute(
     stopped: &mut impl FnMut() -> bool,
 ) -> Result<NativeCompleted, OperationFailure> {
     match work {
+        NativeWork::Tori(work) => crate::tori_document::execute(work, stopped),
         NativeWork::Xiangqi(work) => xiangqi::archive::execute(work, stopped),
         NativeWork::Admit {
             candidate,
@@ -1102,7 +1105,11 @@ pub(crate) fn execute(
             let bytes = read(&path, stopped)?;
             let value = crate::document::DocumentEnvelope::parse(&bytes)?;
             let game = match value.game_kind {
-                GameKind::Tori => return Err("Tori desktop documents are not implemented.".into()),
+                GameKind::Tori => {
+                    return Err(
+                        "Tori live desktop document installation is not implemented.".into(),
+                    );
+                }
                 GameKind::Chess => OpenedNative::Chess(Box::new(
                     persistence::decode_chess_payload(value.payload.get().as_bytes(), stopped)?,
                 )),
@@ -1273,7 +1280,9 @@ impl DesktopController {
         completed: NativeCompleted,
     ) -> Result<String, String> {
         match completed {
-            NativeCompleted::Admitted { .. } | NativeCompleted::Xiangqi(_) => {
+            NativeCompleted::Admitted { .. }
+            | NativeCompleted::Xiangqi(_)
+            | NativeCompleted::ToriValidated(_) => {
                 unreachable!("dedicated admission worker")
             }
             NativeCompleted::Saved {

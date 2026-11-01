@@ -10,7 +10,7 @@ export interface ResourceFact {
   observations: { ordinary: number; exact: number } | null;
   reserved: number | null;
   limit: number | null;
-  scope: "application" | "chess" | "shogi" | "xiangqi" | null;
+  scope: "application" | "chess" | "shogi" | "xiangqi" | "tori" | null;
   unit: "bytes" | "events" | "controls" | "observations" | "replay_units"
     | "identities" | "milliseconds" | null;
 }

@@ -25,7 +25,8 @@ also remains unchanged. Current sources/handoff supersede their readiness claims
 
 [MSH-85 native refinement](native-plan.md) creates126self-contained fixture harness,
 127state/transitions,128locallegality/inspection and129history/records/native
-dispatch.126 is the first dependency-satisfied Ready implementation slice;
+dispatch.126 is Done with [actual harness evidence](harness-evidence.md);
+127 is now the first dependency-satisfied Ready implementation slice;
 85 stays open/blocked as coordinator, with only its planning AC4 satisfied.
 The [103-ID ownership manifest](native-fixture-ownership.json) preserves native
 and later consumer assertion boundaries. MSH-77 consumes the real native handoff;

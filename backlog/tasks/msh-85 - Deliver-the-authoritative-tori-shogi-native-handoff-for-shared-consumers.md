@@ -4,7 +4,7 @@ title: Deliver the authoritative tori shogi native handoff for shared consumers
 status: Ready
 assignee: []
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-01T13:44:00Z'
+updated_date: '2026-11-01T14:13:00Z'
 labels:
   - m4
   - owner-msh-42
@@ -35,7 +35,7 @@ ordinal: 85000
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-Coordinating native-handoff task under MSH-42 complete Tori delivery. MSH-81 is Done and selects mshogi.tori.modern.v1; no historical reconstruction/acquisition gate remains. The independently reviewed bounded components are MSH-126 executablefixtures/reference, MSH-127 nativestate/transitions/reversal, MSH-128 completelocallegality/inspection, and MSH-129 history/adjudication/canonicalreplay/native dispatch. See docs/m4/tori/native-plan.md and the103-ID ownership manifest.
+Coordinating native-handoff task under MSH-42 complete Tori delivery. MSH-81 is Done and selects mshogi.tori.modern.v1; no historical reconstruction/acquisition gate remains. The independently reviewed bounded components are MSH-126 self-contained executable fixtures, MSH-127 nativestate/transitions/reversal, MSH-128 completelocallegality/inspection, and MSH-129 history/adjudication/canonicalreplay/native dispatch. See docs/m4/tori/native-plan.md and the103-ID ownership manifest.
 
 This coordinating task is not completed by planning. Original AC1-3 and all DoD require delivered native behavior, component verification and a real core consumer probe; AC4 records the reviewed pre-Ready refinement. MSH-77 later owns real shared execution/session/document/presentation integration; MSH-42 retains console, functional engine/search, UI, notation, persistence and independent complete-game acceptance. Detailed implementation plans belong only to the then-active worker. No native implementation is authorized by this planning assignment.
 <!-- SECTION:DESCRIPTION:END -->

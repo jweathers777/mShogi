@@ -77,8 +77,7 @@ as optional/nonauthoritative observations. Existing external-engine interoperabi
 product capabilities were not removed. No packaged GUI campaign is required.
 
 Normal Rust workspace CI includes the new crate automatically; no external engine
-or workflow dependency added. Actual native CI outcomes will be recorded by exact
-source. Desktop workflow construction, if automatically triggered, is supporting
+or workflow dependency added. Final native CI outcomes are recorded below by exact source. Desktop workflow construction, if automatically triggered, is supporting
 unchanged-product evidence, not a new GUI verification claim or126requirement.
 MSH-127 becomes dependency-ready only after126 closes.128/129/85kernel/77/42 and
 other variants remain unstarted.83pending consumer obligations and --require-complete
@@ -106,9 +105,40 @@ expected-data edit or test weakening. [Actual Git export probe](evidence/harness
 with `core.autocrlf=true`/`core.eol=crlf` retains exact141871-byte corpus/hash and
 85731-byte ownership/hash. A separate reviewer repeated the export and compared
 both against source134f81b Git blobs; PASS. That is a Git portability probe,
-not Windows runtime verification. Actual final-source CI is recorded below when
-available.
+not Windows runtime verification. Actual final-source CI is recorded below.
 
 [Executed CLI counterexamples](evidence/harness-negative-probes.json) at134f81b
 return1 for a constructed wrong hand count and missing eight Phoenix destinations,
 with input/expected/observed diagnostics. These are assertion-machine tests only.
+
+[First CI dispositions](evidence/harness-first-ci.json) at134f81b: Linux workspace
+passed; Windows failed the harness SHA check; macOS passed the new harness but
+later failed unchanged `mshogi-runner` test
+`missing_retirement_eof_cannot_hide_a_delayed_duplicate_bestmove` at
+`shogi_runner.rs:355` (LateReply versus expected ResourceLimit). Runner sources
+are unchanged. This differs from MSH-112's early-exit test; no common root cause
+or runner fix is asserted. Required final-source outcomes remain separate below.
+
+## Final integrated source and completion
+
+Final tested source **`d5f98a2af9e38ae690e2fd5c4940a4d26d12407b`**, integrated
+and pushed on `codex/rewrite`, includes the scoped LF checkout correction.
+[Native workspace CI41315037374](https://github.com/jweathers777/mShogi/actions/runs/41315037374)
+**PASS on Ubuntu24.04, macOS15 and Windows2022**, including formatting, lint,
+workspace tests (all18 harness checks), isolated QA constructors, native snapshot
+fixtures, build and console smoke. [Exact run/job/step evidence](evidence/harness-final-ci.json)
+records actual source, environments and results. The prior Windows failure and
+unchanged macOS runner failure above remain historical; the passing rerun is not
+evidence of a runner fix.
+
+MSH-126 is complete under its owner-revised five criteria and four completion
+items. Final task/document-only bookkeeping introduces no code change and uses
+the established `[skip ci]` convention rather than rerunning unchanged campaigns.
+The automatically triggered Desktop packages workflow is outside this harness
+boundary; no new packaged GUI verification is claimed. No external game engine
+was built or invoked, and none is required for ordinary conformance, tests, CI,
+packaging or release. MSH-127 is the next dependency-ready bounded task; it must
+supply real native observations and properties. MSH-128/129, MSH-85 final native
+acceptance, MSH-77/42 and other variant implementation remain unstarted. The103
+specifications are admitted data, not executed native rules conformance; all727
+native assertions and83 later-consumer requirements remain honestly pending.

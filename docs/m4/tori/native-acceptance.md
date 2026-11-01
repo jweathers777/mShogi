@@ -264,3 +264,18 @@ wording finding was corrected to make clear that a board move captures at most o
 endpoint victim and drops never capture. No rule, fixture, acceptance requirement
 or production code changed. Final task completion uses the same original criteria;
 MSH-77/42 remain unchanged and no subsequent work starts.
+
+## Recorded integration and finalization
+
+Reviewed acceptance and evidence were integrated and normally pushed to
+`codex/rewrite` at `2d4737603bd851534ee24c4b21cd70f4dc3229d2`.
+Production remains `994521bec0637d6f8f17103f1106c0025d950753`; no product
+source, immutable fixture/profile or other task record changed. All four original
+MSH-85 acceptance criteria and four completion items are supported and checked;
+MSH-85 is Done. This final documentation/task bookkeeping follows that actual
+integration, without inventing a future commit reference.
+
+MSH-77 remains To Do and unassigned: its dependencies are now satisfied, but its
+implementation/refinement has not started. MSH-42 and M4 remain open. The primary
+checkout stays on `codex/rewrite`; no temporary worktree was created for this
+acceptance and unrelated worktrees were preserved.

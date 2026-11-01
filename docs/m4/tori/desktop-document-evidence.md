@@ -59,6 +59,10 @@ bounded; no structural failure is fixed by increasing a constant.
 
 ## Commands, actual local results and limitations
 
+[Actual local command output](evidence/desktop-document-local.txt) preserves the
+full230test checkpoint, native38/713, final fast16, actual child and measured
+worker outputs, with source-checkpoint distinctions.
+
 Local executed commands (workspace root unless specified):
 
 ```text
@@ -167,3 +171,61 @@ checked the complete16test checkpoint plus added identity/precharge test and
 changed counter/mode coverage. All17codec checks have supported focused evidence.
 Final Clippy/format passed. Only normal exact-source integration/CI and completion
 bookkeeping remain; this checkpoint itself does not mark the task Done.
+
+## Exact source integration
+
+Reviewed implementation is integrated and normally pushed to `codex/rewrite` at
+`8fd12f953beeacac46fdd417b2054bedeafe2d6e`. Source hashes match the reviewed static
+validation. [Rust workspace41355796434](https://github.com/jweathers777/mShogi/actions/runs/41355796434)
+and [Desktop packages41355796473](https://github.com/jweathers777/mShogi/actions/runs/41355796473)
+were dispatched for that exact revision. At dispatch they are pending, not passing;
+final actual results are appended below. Task remains In Review until required
+checks support all criteria. No additional Tori GUI campaign is inferred.
+
+## Final exact-source acceptance and CI disposition
+
+**MSH-130 acceptance PASS.** Native Rust workflow41355796434 completed SUCCESS on
+Ubuntu24.04, macOS15 and Windows2022 at exact integrated source
+`8fd12f953beeacac46fdd417b2054bedeafe2d6e`. Completed logs on **each** platform
+establish218default session tests and231all-feature session tests, all17new
+codec tests in both runs (34passing lines), and1actual Tori child→codec roundtrip.
+Format/lint, native snapshots, build and console smoke also passed. The two older
+deep Chess opt-ins are not newly claimed here.
+
+[Actual CI metadata and verified log counts](evidence/desktop-document-ci.json)
+preserve the captured state. Desktop workflow41355796473 has completed SUCCESS
+on macOS and Linux. Windows locked frontend/native checks, normal package,
+bundled-engine inspection and separate QA package all passed; **Windows's existing
+Chess/Shogi/Xiangqi GUI stage is still running at this capture**, so neither its
+GUI result nor the whole desktop workflow is described as passed. No Tori GUI
+campaign or product acceptance is required or inferred for this codec-only task.
+
+Separate final independent acceptance/CI reconciliation PASS: all six original
+criteria and four completion requirements have evidence, no unresolved material
+finding. The pending unrelated existing-game GUI stage is accurately preserved,
+not added as a new Tori gate. Any subsequent concrete failure attributable to
+this source must still be assessed; historical failures are not rewritten.
+The final task/document bookkeeping is documentation-only and reuses this exact
+reviewed production/CI evidence. All source hashes remain unchanged.
+
+MSH-130 is Done;131is the next dependency-ready Ready slice and remains unassigned
+and unstarted. Its required installation/runtime checks remain pending.132,77final
+acceptance,42playing delivery, future variants and M4closure are not started or
+closed by this task. Primary checkout remains `codex/rewrite`; no task worktree
+was created and unrelated worktrees were preserved. Stop after130.
+
+## Completed desktop CI follow-up
+
+The final GitHub snapshot now establishes **SUCCESS for the entire Desktop
+packages workflow41355796473**, including all macOS15, Ubuntu24.04 and
+Windows2022 jobs at unchanged source`8fd12f953beeacac46fdd417b2054bedeafe2d6e`.
+The Windows existing-game GUI stage completed successfully after the earlier
+pending capture above. Updated actual CI metadata preserves that capture
+provenance and the final completed jobs/steps. This is existing-game CI evidence,
+not a claim that Tori live installation or Tori GUI play exists. No source change
+or repeated campaign was needed.
+
+Final bookkeeping checks: pinned Backlog1.55.1 doctor PASS; static scope audit
+PASS (132tasks/353edges, unchanged dependencies and original criteria, matching
+source hashes,23valid local links); git diff --check PASS. Ready dependency query
+returns only MSH-131, which remains unassigned and unstarted.

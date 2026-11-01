@@ -25,7 +25,7 @@
     "desktop/src/resources.ts": "857ec7a2af74d31902cab71bd92414036be0334f679f8db3811a683027034590",
     "desktop/src/product/resourcePresentation.test.ts": "83a5d6a17656b9777c20e937c102d85941e5a0c468a5602e18338a3e6d7211bb"
   },
-  "links_checked": 21,
+  "links_checked": 23,
   "pending_assertions_unchanged": 14,
   "consumer_requirements_unchanged": 83
 }

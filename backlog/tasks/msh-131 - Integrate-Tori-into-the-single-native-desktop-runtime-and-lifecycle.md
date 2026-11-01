@@ -4,7 +4,7 @@ title: Integrate Tori into the single native desktop runtime and lifecycle
 status: Ready
 assignee: []
 created_date: '2026-11-01T21:28:00Z'
-updated_date: '2026-11-01T22:09:00Z'
+updated_date: '2026-11-01T22:31:00Z'
 labels:
   - m4
   - owner-msh-77
@@ -58,4 +58,6 @@ Verification: focused real native/candidate/controller tests appropriate to this
 
 <!-- SECTION:NOTES:BEGIN -->
 MSH130 implementation handoff (not131activation): immutable ValidatedToriDocument/currentenvelope1, ToriControl/Settings, exactnative initial/current/retiredbranches/observations/floor getters, pureCandidateWork inexistingNativeWork/FileWorker and exactSavedreceipt. ExistingpublicOpen/ActiveDocument/install_documentTori remainunsupported.131must useonecontroller/soleinstall withcompletecandidateadmission beforeacceptance, expensiveprep offUI, positivefreshstoppedruntimeIDs, nativeactorcontext/inspection, actualprefix/Takeback andSavedreceiptidentity+revisionchecks. WholeTori budget262144 differsfromnative65536 andothergames16000; actualusage/reservedStopResignClose and256to257fixtures documented. Historicalobservationsnorequest, Tori executionunsupported/unadvertised; no normalchooser/productrenderer. All13pendingruntimeassertions/82requirements remain131pending. This notechanges no131status/criteria/dependencies/implementationplan.
+
+MSH-130 is Done, reviewed implementation integrated/pushed at8fd12f953beeacac46fdd417b2054bedeafe2d6e. Native CI41355796434 PASS all3; exact17codec checks and actual UnsupportedMode child→codec roundtrip passed perplatform. Relevant normal package/host/frontend checks pass all3; pending Windows existing-game GUI snapshot remains accurately recorded separately. Use documented immutable codec/candidate/worker API and measured reservations; no live Tori install or new engine yet.131now dependency-ready Ready/unassigned, not activated; all13/82runtime assertions remain pending.
 <!-- SECTION:NOTES:END -->

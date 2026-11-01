@@ -1,0 +1,681 @@
+{
+  "kind": "MSH-85 exhaustive metadata/ownership acceptance; native execution remains the separate report",
+  "baseline": "558402b4426a1d8faff3931f65643bcda95dd2fe",
+  "tested_production": "994521bec0637d6f8f17103f1106c0025d950753",
+  "live_report_sha256": "e292588d2498cb8177d105e574ebd03673169c58c2528e9c0b0da838ceb072fb",
+  "counts": {
+    "fixtures_validated": 103,
+    "executed": 713,
+    "passed": 713,
+    "pending": 14,
+    "failed": 0,
+    "documentary_annotations": 4
+  },
+  "native_pending": 0,
+  "pending_assertions": [
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-C-IDENTITY",
+      "field": "accept_late_A_for_B",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-C-IDENTITY",
+      "field": "undo_back_to_same_diagram_does_not_restore_A",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-C-NOTATION",
+      "field": "display_is_not_action_authority",
+      "owner": "MSH-42",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-O-ADMIN",
+      "field": "native_conclusion",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-O-ADMIN",
+      "field": "record_reason_separately",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-O-ADMIN",
+      "field": "scored",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-H-REPLAY-UNDO",
+      "field": "runtime_work_never_revived",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-REJECT-DUPLICATE-SQUARE",
+      "field": "live_document_unchanged",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-REJECT-MISSING-ROYAL",
+      "field": "live_document_unchanged",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-REJECT-ADJACENT-ROYALS",
+      "field": "live_document_unchanged",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-REJECT-DEAD-SWALLOW",
+      "field": "live_document_unchanged",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-REJECT-THREE-SWALLOWS",
+      "field": "live_document_unchanged",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-REJECT-EXCESS-INVENTORY",
+      "field": "live_document_unchanged",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    },
+    {
+      "predicate": "equal",
+      "fixture_id": "TORI-REJECT-STRICT",
+      "field": "live_document_unchanged",
+      "owner": "MSH-77",
+      "boundary": "consumer",
+      "status": "pending",
+      "diagnostic": null
+    }
+  ],
+  "later_consumer_requirements": [
+    {
+      "fixture_id": "TORI-G-KIJI-BLOCK",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-G-GOOSE-BLOCK",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-G-EAGLE-BLOCK",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-S-TWO",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-S-THREE",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-S-GOOSE",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-S-ENEMY",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-S-LAST",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-S-DROP-MATE",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-D-EMPTY",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-D-UNPROMOTED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-P-ENTRY",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-P-DROP-EXIT",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-P-DROP-OTHER",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-P-HEAD",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-O-IMPASSE",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-O-AGREEMENT",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-O-ROYAL",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-C-HISTORY",
+      "owner": "MSH-77",
+      "scope": "native exact history/prefix and identity carried through current shared execution/document contracts; fresh stopped reopen/old-result retirement",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-C-IDENTITY",
+      "owner": "MSH-77",
+      "scope": "full given purpose/request/session/process-generation/limits acceptance, replacement, historical selection and late engine results through actual shared execution; coordinate real Tori engine under MSH-42",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-C-NOTATION",
+      "owner": "MSH-42",
+      "scope": "actual human console/notation/display adapter later; MSH-129 supplies typed action coordinates/quail identities/strict native profile only",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-CAPTURE-OWNER",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-CAPTURE-DEMOTION",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-CAPTURE-QUAIL",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-P-WITHIN",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-P-NO-OPTION",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-P-SWALLOW-AFTER-DROP",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-CAPTURE-GOOSE",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-D-QUAIL-OWNER",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-D-LEGAL-DEFENSE",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-CHECK-EVASION",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-CHECK-PIN",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-G-RAY-CAPTURE",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-G-RAY-NO-BYPASS",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-G-FRIEND-BLOCK",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-D-NO-HAND",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-D-PROMOTED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-O-RESIGN",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-O-ADMIN",
+      "owner": "MSH-77",
+      "scope": "actual desktop supervised execution cancellation/failure/work exhaustion observation remains incomplete/unscored; native game alone has no subprocess",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-H-IDENTITY",
+      "owner": "MSH-77",
+      "scope": "native exact history/prefix and identity carried through current shared execution/document contracts; fresh stopped reopen/old-result retirement",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-H-REPLAY-UNDO",
+      "owner": "MSH-77",
+      "scope": "native exact history/prefix and identity carried through current shared execution/document contracts; fresh stopped reopen/old-result retirement",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-REJECT-DUPLICATE-SQUARE",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-REJECT-MISSING-ROYAL",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-REJECT-ADJACENT-ROYALS",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-REJECT-DEAD-SWALLOW",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-REJECT-THREE-SWALLOWS",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-REJECT-EXCESS-INVENTORY",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-REJECT-STRICT",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-G-KIJI-BLOCK-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-G-GOOSE-BLOCK-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-G-EAGLE-BLOCK-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-S-TWO-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-S-THREE-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-S-GOOSE-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-S-ENEMY-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-S-LAST-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-S-DROP-MATE-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-D-EMPTY-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-D-UNPROMOTED-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-P-ENTRY-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-P-DROP-EXIT-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-P-DROP-OTHER-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-P-HEAD-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-O-IMPASSE-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-O-AGREEMENT-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-O-ROYAL-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-CAPTURE-OWNER-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-CAPTURE-DEMOTION-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-CAPTURE-QUAIL-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-P-WITHIN-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-P-NO-OPTION-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-P-SWALLOW-AFTER-DROP-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-CAPTURE-GOOSE-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-D-QUAIL-OWNER-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-D-LEGAL-DEFENSE-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-CHECK-EVASION-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-CHECK-PIN-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-G-RAY-CAPTURE-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-G-RAY-NO-BYPASS-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-G-FRIEND-BLOCK-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-D-NO-HAND-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-D-PROMOTED-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    },
+    {
+      "fixture_id": "TORI-O-RESIGN-ROTATED",
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "native_handoff_verdict": "available; actual consumer verification remains pending"
+    }
+  ],
+  "consumer_groups": [
+    {
+      "owner": "MSH-77",
+      "scope": "actual desktop document/token/execution preservation or retirement; native local reversal does not establish this",
+      "count": 77
+    },
+    {
+      "owner": "MSH-77",
+      "scope": "native exact history/prefix and identity carried through current shared execution/document contracts; fresh stopped reopen/old-result retirement",
+      "count": 3
+    },
+    {
+      "owner": "MSH-77",
+      "scope": "full given purpose/request/session/process-generation/limits acceptance, replacement, historical selection and late engine results through actual shared execution; coordinate real Tori engine under MSH-42",
+      "count": 1
+    },
+    {
+      "owner": "MSH-42",
+      "scope": "actual human console/notation/display adapter later; MSH-129 supplies typed action coordinates/quail identities/strict native profile only",
+      "count": 1
+    },
+    {
+      "owner": "MSH-77",
+      "scope": "actual desktop supervised execution cancellation/failure/work exhaustion observation remains incomplete/unscored; native game alone has no subprocess",
+      "count": 1
+    }
+  ],
+  "task_records": 129,
+  "dependency_edges": 344,
+  "dependencies_unique_resolved_acyclic_and_unchanged": true,
+  "all_other_task_records_and_original85criteria_unchanged": true,
+  "production_unchanged_from_tested_revision": true,
+  "immutable_profile_corpus_manifest_sha256": {
+    "docs/m4/tori/profile.md": "5e20ea1a355f1d2dfc91ab930687437a3aa8cf34a78353b80076b4173fd1e81a",
+    "docs/m4/tori/fixtures.json": "3f9e5ca3b541fc72f562ddd8231408e17e7bd5ba3ccee118e643ce0f543731e3",
+    "docs/m4/tori/native-fixture-ownership.json": "044a5d0fc72e355e705d12f6b7b1c328a043aa67b321a2c897d0e790f242b8d5"
+  },
+  "links_checked": 54
+}

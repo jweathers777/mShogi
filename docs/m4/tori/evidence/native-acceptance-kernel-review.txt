@@ -1,0 +1,76 @@
+Independent MSH-85 kernel review
+Source HEAD: 558402b4426a1d8faff3931f65643bcda95dd2fe
+Production baseline: 994521bec0637d6f8f17103f1106c0025d950753
+Review method: separate read-only agent, actual source/fixture/profile inspection and independent focused existing-test execution. No source edits.
+
+Command: cargo test --locked -p mshogi-core tori:: --lib -- --nocapture
+Exit: 0
+The following stdout/stderr is transcribed from actual tool session 53390 (initial and completion chunks), preserving observed values rather than rerunning tests:
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.11s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_core-b1b2044b7a2395ed)
+
+running 38 tests
+test tori::game::capacity_tests::exact_production_capacity_and_reservation_policy_boundaries ... ok
+test tori::game::reservation_bound_test::constructed_metadata_upper_bound_proves_each_reserved_nonboard_event_fits ... ok
+TORI-127 actual fixture assertions: 202 executed / 202 passed / 525 pending / 0 failed; 83 later-consumer obligations pending
+test tori::conformance::real_structural_fixture_observations ... ok
+test tori::game_tests::counter_refusal_is_unscored_saveable_and_does_not_manufacture_no_actions ... ok
+test tori::game_tests::undo_redo_reject_foreign_used_out_of_order_and_retired_branches_atomically ... ok
+test tori::game_tests::native_commands_are_atomic_out_of_turn_resignation_and_unscored_stops_preserve_board_identity ... ok
+test tori::game_tests::repetition_equality_and_semantic_context_are_distinct_and_root_counters_are_not_history ... ok
+TORI-128 native assertions: 483 executed / 483 passed / 244 pending / 0 failed; 83 later consumer requirements pending
+test tori::local_conformance::actual_local_and_structural_fixture_observations ... ok
+test tori::local_tests::bounded_perft_and_divide_use_independent_counts_and_preserve_native_paths ... ok
+test tori::game_tests::native_rotation_metamorphism_preserves_repetition_responsibility_and_forced_loss ... ok
+test tori::game_tests::exact_reversal_every_prefix_replay_and_selection_never_restore_native_authority ... ok
+test tori::local_tests::independent_complete_choices_single_double_check_capture_and_block ... ok
+test tori::game_tests::independent_forced8_and_unequal16_integrate_board_choices_history_and_precedence ... ok
+test tori::local_tests::exact_legal_apply_undo_redo_material_and_atomic_capacity ... ok
+test tori::local_tests::inspection_is_owner_specific_immutable_complete_and_not_live_permission ... ok
+test tori::local_tests::only_swallow_has_last_rank_drop_ban_and_inspection_keeps_forced_faces ... ok
+TORI-128 deterministic legal sequence: 192 accepted actions
+test tori::local_tests::complete_generator_membership_and_rotated_effects_properties ... ok
+test tori::local_tests::source_derived_attack_tables_match_native_threats_for_all_faces_and_owners ... ok
+test tori::tests::actual_zone_drop_wait_exit_within_and_swallow_promotion ... ok
+test tori::game_conformance::actual_complete_native_fixture_observations ... ok
+TORI129 actual native:713 executed/713 passed/14 pending/0 failed; 83 later consumer requirements pending
+test tori::local_tests::pinned_attackers_still_defend_squares_and_discovered_self_check_rejects ... ok
+test tori::tests::all_nonroyal_faces_capture_demote_and_preserve_handed_inventory ... ok
+test tori::tests::coordinate_domains_and_both_owner_axes ... ok
+test tori::tests::all_40_accepted_board_transitions_execute_reversal_two_resignations_stay_pending ... ok
+test tori::tests::explicit_capacity_boundaries_preserve_state_and_tokens ... ok
+test tori::local_tests::local_root_checks_preserve_custom_provenance_and_allow_moving_side_check ... ok
+test tori::tests::basic_invalid_actions_reject_all_state_and_runtime_atomically ... ok
+test tori::tests::roots_preserve_identity_inventory_and_counter_provenance ... ok
+test tori::tests::undo_redo_are_single_use_bound_lifo_and_branch_safe ... ok
+test tori::local_tests::swallow_drop_mate_uses_all_safe_capture_escape_and_drop_defenses_without_recursion ... ok
+test tori::tests::incomplete_legality_boundary_is_explicit_not_silently_partial ... ok
+test tori::local_tests::terminal_root_observations_are_native_not_match_conclusions ... ok
+test tori::tests::native_rotation_symmetry_for_every_face_square_and_fixture_transition ... ok
+TORI-128 deterministic legal sequence: 192 accepted actions
+test tori::local_tests::deterministic_legal_sequences_restore_every_prefix_and_inspection_is_nonmutating ... ok
+test tori::tests::deterministic_generated_structural_sequences_restore_all_native_state ... ok
+test tori::game_tests::strict_record_all_fields_nested_duplicates_missing_tampering_and_resources ... ok
+TORI129 real event boundary:CapacityUsage { encoded_bytes: 165461, events: 510, replay_work: 33151 }; final CapacityUsage { encoded_bytes: 165930, events: 512, replay_work: 33153 }
+test tori::game_tests::real_event_limit_preserves_two_slots_for_stop_and_resignation ... ok
+TORI129 capacity real: 360board/360events/156573bytes/65341units; captures104/drops103/promotions16; generation+candidate probes 4726ms; strict parse+two replays 2662ms; stopped CapacityUsage { encoded_bytes: 156804, events: 361, replay_work: 65342 }; resigned CapacityUsage { encoded_bytes: 157044, events: 362, replay_work: 65343 }
+test tori::game_tests::long_deterministic_real_history_reaches_replay_admission_bound_and_retains_stop_resign_headroom ... ok
+
+test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 44 filtered out; finished in 15.06s
+
+Command: cargo test --locked -p mshogi-core --test native_tori_envelope --test tori_local
+Exit:0. Native envelope3PASS; external public token1PASS; zero failures/ignored. Elapsed suites0.01s+0.00s.
+
+Command: cargo test --locked -p mshogi-core --doc
+Exit:0. Seven normal doctests PASS, including Tori LocalPosition example; one Tori Position structural mutation compile-fail PASS. Zero failed/ignored. Tool session6783.
+
+Failed invocation retained: cargo test --locked -p mshogi-core --test native_tori_envelope --test tori_local --doc
+Exit101: error: can't mix --doc with other target selecting options. No test executed; replaced by the separate successful commands above.
+
+Hash checks:
+fixtures.json SHA256 3f9e5ca3b541fc72f562ddd8231408e17e7bd5ba3ccee118e643ce0f543731e3
+native-fixture-ownership.json SHA256 044a5d0fc72e355e705d12f6b7b1c328a043aa67b321a2c897d0e790f242b8d5
+game.rs SHA256 a3987b9276971f424f191ff28d9f4ee979bdedae604afb546c159e170d0c92c6
+Git production diff994521b..558402b under crates: empty.
+
+Verdict: PASS AC1,AC2 and native AC3 boundary. No material native findings. No product GUI, engine/search/console, desktop/archive/runtime ownership or M5 strength acceptance inferred. MSH77/42 remain owners of14pending assertions and83real consumer requirements. Historical planning status in handoff.md needs clear current-status annotation, not history deletion.

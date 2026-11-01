@@ -4,7 +4,7 @@ title: Deliver the authoritative tori shogi native handoff for shared consumers
 status: Ready
 assignee: []
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-01T12:27:00Z'
+updated_date: '2026-11-01T12:28:00Z'
 labels:
   - m4
   - owner-msh-42
@@ -77,4 +77,6 @@ Owner2026-11-01 authorizes planning/refinement only from clean primarycodex/rewr
 Bounded native refinement2026-11-01 (planning only): coordinating85 now owns flat component126fixture/reference admission→127structuralstate/transitions→128locallegality/inspection→129history/records/nativehandoff;126dependsDone81 and no componentdepends85/77/42. All103immutablefixtures explicitly mapped in native-fixture-ownership.json (126dataownerall;127/128/129primary14/69/20), with lateractualprocess/document/notation facets preserved under77/42. Original85AC4 is satisfied only by reviewedplanning, not kernelimplementation;85cannotclose before nativecomponents and coreconsumerprobe. Native GameKind addition may require minimal explicitunsupported exhaustivearms; real engine/session/archive/frontend remainlaterownership. Preserveprofile/oldresearch/alloriginalAC/DoD; nohistoricalacquisition or optionalexactproof gate. See native-plan.md for actual inspectedboundaries, verification and currentdependencysets.
 
 Independent tori_native_plan_review PASS2026-11-01, no materialfindings. Fresh readonlyreview inspected actualcore/native/Shogi/Xq/GameContext/engine boundary and allnewtasks/plan/103-fixtureownership, then independentlychecked unchangedSHA/expectedfields,129records/344edges,resolvedacyclicgraph, exact85deps andpreserved77/42ACDoD. Actualreview method/limits in native-plan-review.md; no nativebuild/referenceexecution/GUIclaimed. Firstsandboxedcreateattemptsfailedbeforeallocation; authorizedmetadata-accessCLIretrycreated126-129once, finaldoctor/graphpassed. Original85AC4 supported; AC1-3/allDoD remainnative-deliveryobligations. Finalstatus scopedReadyblocked/unassigned afterreview; allnewcomponents scopedReady, only126dependency-satisfied. Nootherworkstarted.
+
+Reviewed planning integrated and normally pushed to codex/rewrite at13210d13638666e41be202c5f949a32f37c4d196 (origin6893f12→13210d1). MSH85 remainsReady/unassigned and blocked on126-129, onlyAC4checked; originalAC1-3/allDoDunchecked. Fourcomponents have no activeowner or implementationplan;126alone dependency-satisfiedReady. All103originalfixture/profilebytes unchanged and fullgraph129tasks/344edges validated; native-plan-review.md records independentPASSandactualchecks. No production/native/engine/desktop/format/workflow/instructions changes and no native/reference/GUIcampaign. Planningcommit usesexisting [skip ci] convention; no newCIpassclaimed. Primarycheckoutretainedcodex/rewrite, no taskworktreecreated and unrelatedworktreesuntouched. Stopafterplanning; nextauthorizedimplementationrequestshouldtarget126.
 <!-- SECTION:NOTES:END -->

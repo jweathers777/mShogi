@@ -1,0 +1,363 @@
+{
+  "profile": "mshogi.tori.modern.v1",
+  "corpus_sha256": "3f9e5ca3b541fc72f562ddd8231408e17e7bd5ba3ccee118e643ce0f543731e3",
+  "fixtures_validated": 103,
+  "native_conformance_claimed": false,
+  "executed": 202,
+  "passed": 202,
+  "pending": 525,
+  "failed": 0,
+  "documentary_annotations": 4,
+  "baseline": "62825dd77576ac2d3b8e18d1d3080a9c08112e82",
+  "kind": "actual native structural observations only, not complete local legality",
+  "owner_accounting": {
+    "MSH-127": {
+      "passed": 202,
+      "failed": 0,
+      "pending": 0
+    },
+    "MSH-128": {
+      "passed": 0,
+      "failed": 0,
+      "pending": 281
+    },
+    "MSH-129": {
+      "passed": 0,
+      "failed": 0,
+      "pending": 230
+    },
+    "MSH-77": {
+      "passed": 0,
+      "failed": 0,
+      "pending": 13
+    },
+    "MSH-42": {
+      "passed": 0,
+      "failed": 0,
+      "pending": 1
+    }
+  },
+  "passed_fixture_fields": {
+    "TORI-I01": [
+      "board",
+      "hands",
+      "per_side",
+      "side_to_move"
+    ],
+    "TORI-G-HO": [
+      "complete_jumps",
+      "complete_limited_rays",
+      "complete_rays",
+      "complete_steps",
+      "other_geometry"
+    ],
+    "TORI-G-TSURU": [
+      "complete_jumps",
+      "complete_limited_rays",
+      "complete_rays",
+      "complete_steps",
+      "other_geometry"
+    ],
+    "TORI-G-KIJI": [
+      "complete_jumps",
+      "complete_limited_rays",
+      "complete_rays",
+      "complete_steps",
+      "other_geometry"
+    ],
+    "TORI-G-LEFT-QUAIL": [
+      "complete_jumps",
+      "complete_limited_rays",
+      "complete_rays",
+      "complete_steps",
+      "other_geometry"
+    ],
+    "TORI-G-RIGHT-QUAIL": [
+      "complete_jumps",
+      "complete_limited_rays",
+      "complete_rays",
+      "complete_steps",
+      "other_geometry"
+    ],
+    "TORI-G-TAKA": [
+      "complete_jumps",
+      "complete_limited_rays",
+      "complete_rays",
+      "complete_steps",
+      "other_geometry"
+    ],
+    "TORI-G-SWALLOW": [
+      "complete_jumps",
+      "complete_limited_rays",
+      "complete_rays",
+      "complete_steps",
+      "other_geometry"
+    ],
+    "TORI-G-EAGLE": [
+      "complete_jumps",
+      "complete_limited_rays",
+      "complete_rays",
+      "complete_steps",
+      "other_geometry"
+    ],
+    "TORI-G-GOOSE": [
+      "complete_jumps",
+      "complete_limited_rays",
+      "complete_rays",
+      "complete_steps",
+      "other_geometry"
+    ],
+    "TORI-G-ROTATION": [
+      "gote_board_offsets",
+      "native_handed_kind_unchanged",
+      "rotated_squares"
+    ],
+    "TORI-G-KIJI-BLOCK": [
+      "board_added",
+      "board_removed",
+      "intermediate_unchanged",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-G-GOOSE-BLOCK": [
+      "intermediate_unchanged",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-S-TWO": [
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-S-GOOSE": [
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-S-ENEMY": [
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-D-UNPROMOTED": [
+      "board_added",
+      "hand_delta",
+      "side_to_move",
+      "promotion_timer",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-P-ENTRY": [
+      "board_added",
+      "board_removed",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-P-DROP-EXIT": [
+      "board_added",
+      "board_removed",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-P-DROP-OTHER": [
+      "board_unchanged",
+      "promotion_timer",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-P-HEAD": [
+      "board_added",
+      "no_extra_promotion_privilege",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-CAPTURE-OWNER": [
+      "board_added",
+      "board_removed",
+      "hand_delta",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-CAPTURE-DEMOTION": [
+      "board_added",
+      "board_removed",
+      "hand_delta",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-CAPTURE-QUAIL": [
+      "board_added",
+      "board_removed",
+      "hand_delta",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-P-WITHIN": [
+      "board_added",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-P-SWALLOW-AFTER-DROP": [
+      "board_added",
+      "resulting_goose_does_not_attack_straight_forward_one",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-CAPTURE-GOOSE": [
+      "hand_delta",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-D-QUAIL-OWNER": [
+      "board_added",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-D-LEGAL-DEFENSE": [
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-CHECK-EVASION": [
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-G-RAY-CAPTURE": [
+      "board_unchanged",
+      "hand_delta",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-REJECT-DUPLICATE-SQUARE": [
+      "reason",
+      "root_admitted"
+    ],
+    "TORI-REJECT-MISSING-ROYAL": [
+      "reason",
+      "root_admitted"
+    ],
+    "TORI-REJECT-EXCESS-INVENTORY": [
+      "reason",
+      "root_admitted"
+    ],
+    "TORI-G-KIJI-BLOCK-ROTATED": [
+      "board_added",
+      "board_removed",
+      "intermediate_unchanged",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-G-GOOSE-BLOCK-ROTATED": [
+      "intermediate_unchanged",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-S-TWO-ROTATED": [
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-S-GOOSE-ROTATED": [
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-S-ENEMY-ROTATED": [
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-D-UNPROMOTED-ROTATED": [
+      "board_added",
+      "hand_delta",
+      "side_to_move",
+      "promotion_timer",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-P-ENTRY-ROTATED": [
+      "board_added",
+      "board_removed",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-P-DROP-EXIT-ROTATED": [
+      "board_added",
+      "board_removed",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-P-DROP-OTHER-ROTATED": [
+      "board_unchanged",
+      "promotion_timer",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-P-HEAD-ROTATED": [
+      "board_added",
+      "no_extra_promotion_privilege",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-CAPTURE-OWNER-ROTATED": [
+      "board_added",
+      "board_removed",
+      "hand_delta",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-CAPTURE-DEMOTION-ROTATED": [
+      "board_added",
+      "board_removed",
+      "hand_delta",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-CAPTURE-QUAIL-ROTATED": [
+      "board_added",
+      "board_removed",
+      "hand_delta",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-P-WITHIN-ROTATED": [
+      "board_added",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-P-SWALLOW-AFTER-DROP-ROTATED": [
+      "board_added",
+      "resulting_goose_does_not_attack_straight_forward_one",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-CAPTURE-GOOSE-ROTATED": [
+      "hand_delta",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-D-QUAIL-OWNER-ROTATED": [
+      "board_added",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-D-LEGAL-DEFENSE-ROTATED": [
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-CHECK-EVASION-ROTATED": [
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ],
+    "TORI-G-RAY-CAPTURE-ROTATED": [
+      "board_unchanged",
+      "hand_delta",
+      "reversal_contract/apply_then_undo",
+      "reversal_contract/redo"
+    ]
+  },
+  "later_consumer_requirements_pending": 83,
+  "accepted_specification_partition": {
+    "board_transitions_executed": 40,
+    "resignation_specifications_pending_MSH129": 2
+  },
+  "independently_reviewed_files_sha256": {
+    "mod.rs": "abf65ddb33cb8ed29f986108b62389f4dba41da2ddaa713d2472da91b44514e7",
+    "transition.rs": "13d2e50a4a98c33357cfc6a520d8d992fc1686d29298db6a38ed1bfd4cc435bd",
+    "conformance.rs": "c5d32f3bf8d010c30bd9dd36baa2052a11a9e1b0e8e76fff77fe7f10152bf2d8",
+    "tests.rs": "ed0a411139e88740c5fa4b509a00e7d64dac09cb206cd15fc2a2eb09c30a3259"
+  }
+}

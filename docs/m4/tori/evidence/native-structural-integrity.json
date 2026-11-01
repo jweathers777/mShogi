@@ -1,0 +1,13 @@
+{
+  "baseline": "62825dd77576ac2d3b8e18d1d3080a9c08112e82",
+  "task_records": 129,
+  "dependency_edges": 344,
+  "unique_resolved_acyclic": true,
+  "all_dependencies_unchanged": true,
+  "all_previously_completed_tasks_unchanged": true,
+  "other_implementation_plans_unchanged": true,
+  "profile_corpus_manifest_bytes_unchanged": true,
+  "existing_game_consumers_harness_workflows_unchanged": true,
+  "local_links_checked": 33,
+  "kind": "metadata integrity, not native conformance"
+}

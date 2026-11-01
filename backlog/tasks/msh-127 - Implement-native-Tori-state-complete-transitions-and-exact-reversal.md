@@ -1,10 +1,11 @@
 ---
 id: MSH-127
 title: Implement native Tori state complete transitions and exact reversal
-status: Ready
-assignee: []
+status: In Review
+assignee:
+  - '@codex'
 created_date: '2026-11-01T12:21:00Z'
-updated_date: '2026-11-01T13:44:00Z'
+updated_date: '2026-11-01T16:07:00Z'
 labels:
   - m4
   - owner-msh-85
@@ -51,8 +52,24 @@ Verification: focused reproducible commands at exact tested source, independent 
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Root Codex is sole builder/integrator in clean primary codex/rewrite62825dd; pinned Backlog1.55.1, Done126 prerequisite and no active task owner verified. Preserve unrelated worktrees and all selected profile/103 corpus/ownership bytes.
+2. Add game-owned tori Rust primitives, immutable structural root/provenance/counters and validated standard/custom/imported position. Implement native movement geometry and complete move/drop effect resolution; keep structural application/candidates crate-private and explicitly incomplete (royal safety/drop restrictions remain128).
+3. Add atomic checked transitions with compulsory origin-or-destination-zone promotion, capture/demotion/handed identities and exact logical snapshot undo/redo with non-rewound token lineage; explicit overflow rejection. No native dispatch, record, engine, console or desktop capability.
+4. Connect real core unit-test adapters to mshogi-conformance for all127 primary and applicable supplemental assertions; run independent expected geometry/effect/root fixtures and42 accepted transitions, with honest pending128/129/consumer accounting. Add deterministic capture/drop/promotion sequences, rejection/material/reversal and native rotation properties using shared helpers.
+5. Obtain separate independent source/test review, resolve findings, run focused core/conformance plus relevant native regressions, format/lint and three-platform native CI. Record exact source/results and handoff, finalize127only via CLI after supported acceptance, integrate/push and stop before128.
+
+Verification clarification: the original42 accepted specifications comprise40 board transitions plus2 resignation cases owned129. Execute all40 structural transitions and preserve the2 terminal-command cases as pending; no expectation, AC or dependency change.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 Owner2026-11-01 testing-policy supersession: rules-profile-derived independently expected fixtures/history, deterministic regression, exact reversal/replay, meaningful property/metamorphic/adversarial tests and independent review establish conformance without any external engine. External comparisons are optional investigative evidence, not build/test/CI/milestone/release gates. Historical observations/source audits retained; no completed-game campaign reopened. For Tori,126 is now the self-contained executable harness; no Fairy build/admission prerequisite. Existing task dependencies and implementation plans unchanged; no activation by this note. Apply game-specific properties where meaningful, never expected outputs copied from the implementation. See docs/testing/conformance-policy.md.
+
+Owner request2026-11-01 authorizes127only. Primary checkout clean62825dd, origin aligned;126Done,127Ready/unassigned before activation; no InProgress/InReview other owner. Existing unrelated111/100/98 worktrees preserved. Native structural facts are not full legal admission; selected profile, independently authored fixtures and engine-independent policy remain authoritative. No external-engine/GUI campaign required.
+
+Implemented native tori primitives/root metadata and private structural geometry/apply/undo/redo; no game dispatch/capability/UI. Real126 adapter executes202 assertions assigned127,202PASS/525pending/0failed;83consumer obligations pending. All40 accepted board-transition fixtures pass exact effects/undo/redo;2 remaining accepted specs are resignation129. Initial12-test suite had11PASS/1failure because test counted42 board transitions; corrected independently verified partition without fixture changes. Initial adapter royal-error label differed from independently expected royal_inventory; adapter spelling corrected, native behavior/fixture unchanged. Initial test compile failed on private token-field assertion, removed in favor of behavior checks. Independent tori127_review PASS after strengthening14 negative structural fixtures to assert exact rejection/nonmutation; earlier conditional-only checks were insufficient. Reviewer independently12focusedPASS,56corelibPASS,1compilefailPASS,clippyPASS; source hashes and full evidence recorded in native-structural-evidence.md. All profile/corpus/manifest bytes unchanged, external engines and GUI not invoked. Platform nativeCI/integration pending; task remainsInReview.
 <!-- SECTION:NOTES:END -->

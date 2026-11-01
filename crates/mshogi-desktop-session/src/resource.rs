@@ -53,6 +53,8 @@ pub enum ResourceScope {
     Shogi,
     /// A Xiangqi-owned native resource.
     Xiangqi,
+    /// A Tori-owned native/document resource.
+    Tori,
 }
 
 /// Unit of a count or allowance; no conversion is implied between units.

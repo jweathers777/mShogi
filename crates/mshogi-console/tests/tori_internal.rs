@@ -56,4 +56,21 @@ fn real_subprocess_preserves_tori_context_but_supplies_no_move_score_or_outcome(
             }
         }
     ));
+    // The actual child failure is valid historical evidence in the current
+    // desktop document, while it supplies no Tori execution capability.
+    use mshogi_desktop_session::tori_document::ValidatedToriDocument;
+    let document = ValidatedToriDocument::new(
+        tori::GameRecord::from_game(&game).unwrap(),
+        tori::Side::Sente,
+    )
+    .unwrap()
+    .with_observation(response.observation.clone(), &mut || false)
+    .unwrap();
+    let reopened = ValidatedToriDocument::decode(document.bytes(), &mut || false).unwrap();
+    assert_eq!(reopened.observations(), &[response.observation]);
+    assert_eq!(
+        reopened.record().to_json(),
+        tori::GameRecord::from_game(&game).unwrap().to_json()
+    );
+    assert!(reopened.record().conclusion().is_none());
 }

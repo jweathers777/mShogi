@@ -1,0 +1,31 @@
+{
+  "kind": "MSH-130 static scope/dependency/hash/link audit; actual execution separate",
+  "baseline": "1e51ea51b3ba6997b75a7c11a25df0c7f4eeaad5",
+  "tasks": 132,
+  "edges": 353,
+  "graph_unique_resolved_acyclic_unchanged": true,
+  "original130_131criteria_unchanged": true,
+  "131_unstarted": true,
+  "all_other_task_records_unchanged": true,
+  "native_rules_search_engine_runner_design_policy_workflows_unchanged": true,
+  "immutable_pins": {
+    "docs/m4/tori/profile.md": "5e20ea1a355f1d2dfc91ab930687437a3aa8cf34a78353b80076b4173fd1e81a",
+    "docs/m4/tori/fixtures.json": "3f9e5ca3b541fc72f562ddd8231408e17e7bd5ba3ccee118e643ce0f543731e3",
+    "docs/m4/tori/native-fixture-ownership.json": "044a5d0fc72e355e705d12f6b7b1c328a043aa67b321a2c897d0e790f242b8d5",
+    "docs/m4/tori/shared-consumer-ownership.json": "7dc4e4aed4a3d8977b6dc0c9befbfe732825f5cf68d7dc02cf0c09dab403104e",
+    "docs/m4/tori/evidence/native-acceptance-audit.json": "402749df73c43792744037251461b6f02ff60e1b55290caa7c0a734e1c1c3e12"
+  },
+  "source_sha256": {
+    "crates/mshogi-desktop-session/src/tori_document.rs": "baab25e3d5474bc1225ccf752acbd3ac84a0d177cbb0c5a9f1f123b6012984d8",
+    "crates/mshogi-desktop-session/src/tori_document/tests.rs": "64d6f1199f89abea6378009a0cc0237205364803d0170dede0127e7a4c7b0525",
+    "crates/mshogi-desktop-session/src/shared_archive.rs": "0166eac0390637d345948b8baa03b5c26a62dba368e301d95c8b4cedc8a94546",
+    "crates/mshogi-desktop-session/src/lib.rs": "a890ae726811c1d27f2c412d9494790162cf061e277c713744df881ac23495d3",
+    "crates/mshogi-desktop-session/src/resource.rs": "f9e985eaf79e389cdce9520e996d164e212913ad62bf1f229345337a087772ac",
+    "crates/mshogi-console/tests/tori_internal.rs": "6031d0efab36596eb3945e7422bff82300f54abb427f885b417122eb1c9b37a7",
+    "desktop/src/resources.ts": "857ec7a2af74d31902cab71bd92414036be0334f679f8db3811a683027034590",
+    "desktop/src/product/resourcePresentation.test.ts": "83a5d6a17656b9777c20e937c102d85941e5a0c468a5602e18338a3e6d7211bb"
+  },
+  "links_checked": 21,
+  "pending_assertions_unchanged": 14,
+  "consumer_requirements_unchanged": 83
+}

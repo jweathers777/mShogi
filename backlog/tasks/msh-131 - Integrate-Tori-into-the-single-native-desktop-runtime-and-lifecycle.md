@@ -4,7 +4,7 @@ title: Integrate Tori into the single native desktop runtime and lifecycle
 status: Ready
 assignee: []
 created_date: '2026-11-01T21:28:00Z'
-updated_date: '2026-11-01T21:32:00Z'
+updated_date: '2026-11-01T22:09:00Z'
 labels:
   - m4
   - owner-msh-77
@@ -20,6 +20,8 @@ documentation:
   - docs/m4/tori/shared-consumer-ownership.json
   - docs/m4/tori/native-acceptance.md
   - docs/testing/conformance-policy.md
+  - docs/m4/tori/desktop-document.md
+  - docs/m4/tori/desktop-document-evidence.md
 type: task
 ordinal: 131000
 ---
@@ -51,3 +53,9 @@ Verification: focused real native/candidate/controller tests appropriate to this
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MSH130 implementation handoff (not131activation): immutable ValidatedToriDocument/currentenvelope1, ToriControl/Settings, exactnative initial/current/retiredbranches/observations/floor getters, pureCandidateWork inexistingNativeWork/FileWorker and exactSavedreceipt. ExistingpublicOpen/ActiveDocument/install_documentTori remainunsupported.131must useonecontroller/soleinstall withcompletecandidateadmission beforeacceptance, expensiveprep offUI, positivefreshstoppedruntimeIDs, nativeactorcontext/inspection, actualprefix/Takeback andSavedreceiptidentity+revisionchecks. WholeTori budget262144 differsfromnative65536 andothergames16000; actualusage/reservedStopResignClose and256to257fixtures documented. Historicalobservationsnorequest, Tori executionunsupported/unadvertised; no normalchooser/productrenderer. All13pendingruntimeassertions/82requirements remain131pending. This notechanges no131status/criteria/dependencies/implementationplan.
+<!-- SECTION:NOTES:END -->

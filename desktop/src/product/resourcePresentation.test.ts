@@ -23,3 +23,12 @@ it.each([
 it.each([undefined, failure([]), failure([control, { ...control, category: "combined_observations" }]), { ...failure([control]), omitted_facts: 1 }, failure([{ ...control, category: "unknown" }])])("uses a truthful generic fallback for missing/multiple/omitted/unknown facts", (payload) => {
   expect(resourceExplanation(payload)).toBe("Your current game can still be saved.");
 });
+it("presents native Tori replay and observation refusals without inventing a game or engine result", () => {
+  const nativeReplay: ResourceFact = { category: "replay_work", measurement: "candidate", count: 262618, observations: null, reserved: 1040, limit: 262144, scope: "tori", unit: "replay_units" };
+  const text = resourceExplanation(failure([nativeReplay], "Application capacity reached. The complete previously accepted document remains saveable."));
+  expect(text).toContain("replay-work capacity"); expect(text).toContain("can still be saved");
+  expect(text).not.toMatch(/illegal|win|loss|draw|engine failure|256/);
+  const observations: ResourceFact = { ...nativeReplay, category: "ordinary_observations", count: 257, reserved: 0, limit: 256, unit: "observations" };
+  expect(resourceExplanation(failure([observations]))).toContain("would exceed");
+  expect(resourceExplanation(failure([observations]))).not.toContain("257 recorded");
+});

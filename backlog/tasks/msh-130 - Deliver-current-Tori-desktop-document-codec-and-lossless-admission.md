@@ -1,10 +1,11 @@
 ---
 id: MSH-130
 title: Deliver current Tori desktop document codec and lossless admission
-status: Ready
-assignee: []
+status: In Review
+assignee:
+  - '@codex'
 created_date: '2026-11-01T21:28:00Z'
-updated_date: '2026-11-01T21:33:00Z'
+updated_date: '2026-11-01T22:09:00Z'
 labels:
   - m4
   - owner-msh-77
@@ -23,6 +24,8 @@ documentation:
   - docs/m4/tori/shared-consumer-ownership.json
   - docs/m4/tori/native-acceptance.md
   - docs/testing/conformance-policy.md
+  - docs/m4/tori/desktop-document.md
+  - docs/m4/tori/desktop-document-evidence.md
 type: task
 ordinal: 130000
 ---
@@ -54,3 +57,22 @@ Verification: focused real native/candidate/controller tests appropriate to this
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Sole builder/integrator rootCodex in clean primarycodex/rewrite1e51ea5; pinnedBacklog1.55.1, no other activeowner and Done69/72/73/85 verified. Preserve unrelatedworktrees, nativeprofile/103fixtures/713assertions and acceptedR1-R6.
+2. Add immutable Tori current-envelope candidate payload: native initial/current records, exact command/control journal, settings/side, retained rewind lineage and current-family historical observations. Strict raw duplicate-preserving preflight and authoritative native replay validate all semantics; no live runtime/controller/installable Tori capability.
+3. Derive bounded aggregate replay charges from actual raw command counts/kinds before expensive native parsing (never trust saved replay_work), charge repeated native parses/reconstruction/observations/prefixes; measure real complete long records and choose documented bounded whole-document budget. Apply actual encoded bytes/events/controls/observations/IDs and Stop/Resign/close reservation before accepting immutable candidate.
+4. Reuse existing FileWorker/atomic_write with pure Tori validation/save work and typed resource facts including Tori scope. Keep public Open/ActiveDocument/NewGame unsupported; failed/cancelled/stale jobs cannot yield success/clean acknowledgement.
+5. Execute independent native fixture/strict negative/boundary/headroom/long-record/atomic-file/current-game regressions; independent read-only source/security/capacity/persistence review, resolve findings, formatting/lint/applicable native+desktopCI. Record actual measurements/revisions/failures and131handoff.
+6. Finalize130only after all6AC/4DoD supported, normalintegration/push; stop before131/132/77acceptance/42.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Authorized130only. Startup clean/aligned1e51ea51b3ba6997b75a7c11a25df0c7f4eeaad5 on primarycodex/rewrite; globalBacklog1.55.0 notusedformutations, pinned1.55.1 used. Separate tori130_review read-only reviewer inspects actual codecs/strict replay/resource/atomicfile, rootsolebuilder. No taskworktree orGUIcampaignneeded. Native parser has bounded but not cancellable per-record replay; aggregate admission must precharge before native deserialization and check worker cancellation between operations; no trust in unvalidated saved replay_work.
+
+Immutable current-envelope Tori codec/admission implemented, not runtime installation. New tori_document module supplies strictduplicatepreserving wholecandidate preflight, authoritative native parser+journal replay, retainedbranches/settings/observations, perrecord+aggregate bounds and consumedStop/Resign/close reservation. Existing16MiB/4096events/8192controls/256observations/native512KiB512events65536units unchanged; measured newaggregatebudget262144 with root128 and allrepeatpasses. Actual360board doc206796B/131424units, oneobs364006B/197021, secondrefuses262618+1040>262144; StopResignClose364641B/197026stillstrictreplaysandactualexistingworkerSave4022msPASS. Retained180prefix287206B/213815, root256obs1316178B/66176. Real4096event,8192control,256obsboundariesPASS. Fullsessionallfeatures230PASScheckpoint plusfinal16fastnewchecks/1longmeasurement; core38PASS713nativeassertions, actualchildUnsupported→codecreopen1PASS; clippy/format/TauriCheckPASS(20oldTaowarnings); Node24tsc+36frontendPASS afterknownbrokenHomebrewNode26failure. Independenttori130_review source/security/capacity/persistence PASS and independently16focused+child+lasttargetedchecks; selectionfloor/cancellation/reservation/strictboundaryfindingsresolved. Initialtestinclude/capabilitynames andnativepaddedRawtestfailures corrected withoutnative/expectationchange; fullactualevidence docs. ExactsourceCI/integrationstillpending, remainInReview. No app/GUI/externalengine ornexttaskimplementation.
+<!-- SECTION:NOTES:END -->

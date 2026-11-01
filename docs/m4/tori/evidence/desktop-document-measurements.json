@@ -1,0 +1,127 @@
+{
+  "complete_document": {
+    "controls": 360,
+    "encoded_bytes": 206796,
+    "observations": 0,
+    "replay_work": 131424,
+    "retained_events": 360
+  },
+  "forced8": {
+    "controls": 8,
+    "encoded_bytes": 8500,
+    "observations": 0,
+    "replay_work": 480,
+    "retained_events": 8
+  },
+  "generated_ms": 2795,
+  "initial_validation_ms": 2648,
+  "native": {
+    "bytes": 156573,
+    "events": 360,
+    "work": 65341
+  },
+  "one_observation": {
+    "controls": 361,
+    "encoded_bytes": 364006,
+    "observations": 1,
+    "replay_work": 197021,
+    "retained_events": 720
+  },
+  "resigned_closed": {
+    "controls": 364,
+    "encoded_bytes": 364641,
+    "observations": 1,
+    "replay_work": 197026,
+    "retained_events": 722
+  },
+  "retained_branch": {
+    "controls": 361,
+    "encoded_bytes": 287206,
+    "observations": 0,
+    "replay_work": 213815,
+    "retained_events": 540
+  },
+  "root256": {
+    "controls": 256,
+    "encoded_bytes": 1316178,
+    "observations": 256,
+    "replay_work": 66176,
+    "retained_events": 0
+  },
+  "root_observations_ms": 678,
+  "second_observation_refusal": {
+    "resource": {
+      "diagnostic": "Application capacity reached. The complete previously accepted document remains saveable.",
+      "facts": [
+        {
+          "category": "replay_work",
+          "count": 262618,
+          "limit": 262144,
+          "measurement": "candidate",
+          "observations": null,
+          "reserved": 1040,
+          "scope": "tori",
+          "unit": "replay_units"
+        }
+      ],
+      "omitted_facts": 0
+    }
+  },
+  "seed": "0x129ca11ab1e5",
+  "stopped": {
+    "controls": 362,
+    "encoded_bytes": 364323,
+    "observations": 1,
+    "replay_work": 197023,
+    "retained_events": 721
+  },
+  "unequal16": {
+    "controls": 16,
+    "encoded_bytes": 12033,
+    "observations": 0,
+    "replay_work": 704,
+    "retained_events": 16
+  },
+  "worker_save_ms": 4022,
+  "environment": {
+    "os": "macOS27.0.1 (26A434)",
+    "architecture": "arm64",
+    "rust": "1.99.1",
+    "node": "24.19.0 (bundled; frontend only)",
+    "planning_baseline": "1e51ea51b3ba6997b75a7c11a25df0c7f4eeaad5",
+    "native_source_unchanged": "994521bec0637d6f8f17103f1106c0025d950753"
+  },
+  "evidence_kind": "Actual pure codec/native FileWorker measurements; no Tori live installation or GUI claim",
+  "policy": {
+    "document_bytes": 16777216,
+    "retained_events": 4096,
+    "controls": 8192,
+    "observations": 256,
+    "whole_document_work": 262144,
+    "root_work": 128,
+    "native_reserved_bytes": 8192,
+    "native_reserved_work": 512,
+    "close_reserved_bytes": 1024,
+    "close_reserved_work": 16,
+    "native_record_bytes": 524288,
+    "native_events": 512,
+    "native_work": 65536,
+    "existing_worker_budget_seconds": 15
+  },
+  "boundary_evidence": {
+    "controls": {
+      "ordinary_accepted": 8189,
+      "ordinary_plus_one_refused": 8190,
+      "stop_resign_close_accepted": 8192
+    },
+    "retained_events": {
+      "accepted": 4096,
+      "next16event_observation_refused": 4112
+    },
+    "observations": {
+      "accepted": 256,
+      "next_refused": 257
+    },
+    "byte_and_work_ceiling_note": "Exact isolated policy limits with actual ending deltas.16MiB padding probe is input capacity, not claimed stored payload maximum."
+  }
+}

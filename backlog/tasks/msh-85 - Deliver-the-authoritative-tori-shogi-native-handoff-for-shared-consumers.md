@@ -4,7 +4,7 @@ title: Deliver the authoritative tori shogi native handoff for shared consumers
 status: Ready
 assignee: []
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-01T12:28:00Z'
+updated_date: '2026-11-01T13:44:00Z'
 labels:
   - m4
   - owner-msh-42
@@ -27,6 +27,7 @@ documentation:
   - docs/m4/tori/native-plan.md
   - docs/m4/tori/native-fixture-ownership.json
   - docs/m4/tori/native-plan-review.md
+  - docs/testing/conformance-policy.md
 type: task
 ordinal: 85000
 ---
@@ -79,4 +80,6 @@ Bounded native refinement2026-11-01 (planning only): coordinating85 now owns fla
 Independent tori_native_plan_review PASS2026-11-01, no materialfindings. Fresh readonlyreview inspected actualcore/native/Shogi/Xq/GameContext/engine boundary and allnewtasks/plan/103-fixtureownership, then independentlychecked unchangedSHA/expectedfields,129records/344edges,resolvedacyclicgraph, exact85deps andpreserved77/42ACDoD. Actualreview method/limits in native-plan-review.md; no nativebuild/referenceexecution/GUIclaimed. Firstsandboxedcreateattemptsfailedbeforeallocation; authorizedmetadata-accessCLIretrycreated126-129once, finaldoctor/graphpassed. Original85AC4 supported; AC1-3/allDoD remainnative-deliveryobligations. Finalstatus scopedReadyblocked/unassigned afterreview; allnewcomponents scopedReady, only126dependency-satisfied. Nootherworkstarted.
 
 Reviewed planning integrated and normally pushed to codex/rewrite at13210d13638666e41be202c5f949a32f37c4d196 (origin6893f12→13210d1). MSH85 remainsReady/unassigned and blocked on126-129, onlyAC4checked; originalAC1-3/allDoDunchecked. Fourcomponents have no activeowner or implementationplan;126alone dependency-satisfiedReady. All103originalfixture/profilebytes unchanged and fullgraph129tasks/344edges validated; native-plan-review.md records independentPASSandactualchecks. No production/native/engine/desktop/format/workflow/instructions changes and no native/reference/GUIcampaign. Planningcommit usesexisting [skip ci] convention; no newCIpassclaimed. Primarycheckoutretainedcodex/rewrite, no taskworktreecreated and unrelatedworktreesuntouched. Stopafterplanning; nextauthorizedimplementationrequestshouldtarget126.
+
+Owner2026-11-01 testing-policy supersession: rules-profile-derived independently expected fixtures/history, deterministic regression, exact reversal/replay, meaningful property/metamorphic/adversarial tests and independent review establish conformance without any external engine. External comparisons are optional investigative evidence, not build/test/CI/milestone/release gates. Historical observations/source audits retained; no completed-game campaign reopened. For Tori,126 is now the self-contained executable harness; no Fairy build/admission prerequisite. Existing task dependencies and implementation plans unchanged; no activation by this note. Apply game-specific properties where meaningful, never expected outputs copied from the implementation. See docs/testing/conformance-policy.md.
 <!-- SECTION:NOTES:END -->

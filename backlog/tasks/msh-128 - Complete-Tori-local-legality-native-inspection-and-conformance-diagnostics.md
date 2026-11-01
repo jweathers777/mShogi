@@ -4,6 +4,7 @@ title: Complete Tori local legality native inspection and conformance diagnostic
 status: Ready
 assignee: []
 created_date: '2026-11-01T12:21:00Z'
+updated_date: '2026-11-01T13:44:00Z'
 labels:
   - m4
   - owner-msh-85
@@ -20,6 +21,7 @@ documentation:
   - docs/m4/tori/fixtures.md
   - docs/m4/tori/native-plan.md
   - docs/m4/tori/native-fixture-ownership.json
+  - docs/testing/conformance-policy.md
 type: task
 ordinal: 128000
 ---
@@ -38,7 +40,7 @@ Verification: focused reproducible commands at exact tested source, independent 
 - [ ] #2 Admitted local roots enforce nonmoving Phoenix safety, nonadjacent royals, no stranded last-rank Swallow and at most two own unpromoted Swallows/file, in addition to B structural checks. Standard and custom/imported roots stay distinct from proven reachability. Local status truthfully reports ongoing/check/checkmate or quiet no-action; D owns installing the corresponding native game conclusion.
 - [ ] #3 Swallow drops reject third own unpromoted/file, last rank and direct Swallow-drop mate; friendly Goose/enemy Swallow do not count. Full defense tests distinguish forbidden immediate mate from legal escape/capture, and use board-legal defenses before repetition sanctions. Other-kind mate drops and permitted last-rank drops remain available. Every originally assigned local admission case and its owner rotation is executed; transition effects and exact reversal from B are rerun through public local admission.
 - [ ] #4 Native immutable inspection yields complete locally legal move/drop choices for a selected piece/hand owner on a private hypothetical turn, with handed kind/forced-result face and authoritative geometry. Both orientations/owners and board/hand choices are checked, including enemy pieces; inspection never mutates state/history, grants live admission, starts work or duplicates movement in TypeScript. MSH-77 later projects these facts into presentation metadata.
-- [ ] #5 Independent complete-choice fixtures, deterministic sequences and apply/undo checks establish local conformance, including the two reviewed root-terminal positions, checks/pins/evasions and drop-mate/defense pair. Run scoped differential comparisons only against A-admitted compatible operations; retain independent coverage for excluded drop-mate cases. Provide deterministic perft/divide diagnostics and expected counts only where independently established; mismatches retain root/action path and reviewed resolution rather than changing expectations to match an engine.
+- [ ] #5 Independent complete-choice fixtures, deterministic sequences and apply/undo checks establish local conformance, including the two reviewed root-terminal positions, checks/pins/evasions and drop-mate/defense pair. Meaningful deterministic, property, metamorphic and adversarial native tests must establish behavior independently, including drop-mate. External comparisons are optional investigative checks only and never a conformance/CI/completion dependency. Provide deterministic perft/divide diagnostics and expected counts only where independently established; mismatches retain root/action path and reviewed resolution rather than changing expectations to match an engine.
 <!-- AC:END -->
 
 ## Definition of Done
@@ -48,3 +50,9 @@ Verification: focused reproducible commands at exact tested source, independent 
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner2026-11-01 testing-policy supersession: rules-profile-derived independently expected fixtures/history, deterministic regression, exact reversal/replay, meaningful property/metamorphic/adversarial tests and independent review establish conformance without any external engine. External comparisons are optional investigative evidence, not build/test/CI/milestone/release gates. Historical observations/source audits retained; no completed-game campaign reopened. For Tori,126 is now the self-contained executable harness; no Fairy build/admission prerequisite. Existing task dependencies and implementation plans unchanged; no activation by this note. Apply game-specific properties where meaningful, never expected outputs copied from the implementation. See docs/testing/conformance-policy.md.
+<!-- SECTION:NOTES:END -->

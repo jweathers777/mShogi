@@ -64,6 +64,12 @@ Record the actual commands, outcomes, environment, and code revision used for ve
 
 Backlog.md allows a task to be marked Done with unchecked criteria. Project policy does not. Check only criteria supported by evidence; leave the task unfinished if required verification is unavailable.
 
+Conformance must follow `docs/testing/conformance-policy.md`: selected rules and
+independently established expectations, meaningful property/metamorphic/negative
+checks and independent review. External game engines are optional investigations,
+never ordinary build/test/CI/conformance/milestone/release prerequisites. Preserve
+historical observations without requiring another engine for future variants.
+
 For macOS GUI verification, reuse the fixed normal/QA/synthetic application slots
 and identities documented in `docs/desktop/packaged-gui-verification.md`, using
 the helper in the primary integration checkout even for worktree builds. Never

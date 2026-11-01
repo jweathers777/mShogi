@@ -4,7 +4,7 @@ title: Reconcile adopted chu shogi and historical rules profile
 status: To Do
 assignee: []
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-27T15:14:00Z'
+updated_date: '2026-11-01T13:44:00Z'
 labels:
   - m4
   - owner-msh-43
@@ -19,6 +19,7 @@ documentation:
   - docs/m4/later-game-sources.md
   - docs/m4/delivery-plan.md
   - docs/m4/research/chu.md
+  - docs/testing/conformance-policy.md
 type: task
 ordinal: 82000
 ---
@@ -63,4 +64,6 @@ Owner2026-10-27 permits independent research in parallel with primaryMSH80 only 
 Bounded independent research2026-10-27 by msh82_research, root soleintegrator: acquired currentJCSA2019general/2004supplement/movement texts; directly inspected NDL1915雑芸叢書第一 pp212–217 witness DOI10.11501/1869566, not original1703facsimile.32sourceGETs hash/time/status recorded in chu-provenance.json. Setup/movement and compound-lion/promotion/royal seeds are preliminary translations, not ratified expectations. Royal self-exposure/no-action, repetition responsibility, material-win/immediate-recapture and edition/diagram review remain named obligations; no complete profile. AC1–4unchecked, no implementation/adoption/reorder/dependency on80. Research pass ended; To Do/unassigned pending these source/interpretation gates.
 
 Partial independent research report/provenance integrated and pushed with MSH-80 planning at f4e564b66ccecca6d76cadea5a354bb1e366a77d on codex/rewrite. No criterion checked, no full profile/fixture or product completion; exact remaining acquisition/interpretation gates stay in this task and its report. No dependency blocks unaffected Xiangqi.
+
+Owner2026-11-01 testing-policy supersession: rules-profile-derived independently expected fixtures/history, deterministic regression, exact reversal/replay, meaningful property/metamorphic/adversarial tests and independent review establish conformance without any external engine. External comparisons are optional investigative evidence, not build/test/CI/milestone/release gates. Historical observations/source audits retained; no completed-game campaign reopened. For Tori,126 is now the self-contained executable harness; no Fairy build/admission prerequisite. Existing task dependencies and implementation plans unchanged; no activation by this note. Apply game-specific properties where meaningful, never expected outputs copied from the implementation. See docs/testing/conformance-policy.md.
 <!-- SECTION:NOTES:END -->

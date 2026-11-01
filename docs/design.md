@@ -486,6 +486,17 @@ acceptance, and create no current refactor obligation.
 
 ## 6. Verification contract
 
+Owner correction2026-11-01: all six games must be independently verifiable from
+their selected profiles and independently established expectations. Required
+fixtures/history, deterministic regression, exact reversal/replay, meaningful
+property/metamorphic/adversarial tests and independent review cannot depend on
+another game engine. External engines are optional investigative aids, never
+normal build/test/CI/conformance/milestone/release dependencies or rules oracles.
+Preserve historical comparisons without reopening completed games. This
+supersedes earlier mandatory prospective comparator wording; see the binding
+[conformance policy](testing/conformance-policy.md).
+
+
 | Evidence category | What it establishes |
 | --- | --- |
 | Curated rules fixtures | A selected interpretation is implemented correctly in a specific case. |

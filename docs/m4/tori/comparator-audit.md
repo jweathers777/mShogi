@@ -1,3 +1,9 @@
+> Owner supersession2026-11-01: this source audit is historical, optional and
+> nonauthoritative. MSH-126 no longer builds/adopts this engine; no external
+> implementation is required for ordinary conformance, CI or delivery. Preserve
+> the observations below; suggested future admission is not a mandatory gate.
+> See [project policy](../../testing/conformance-policy.md).
+
 # Tori comparator audit — source only
 
 Independent worker `tori_comparator_audit`,2026-11-01; root sole integrator.

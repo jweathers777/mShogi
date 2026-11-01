@@ -85,3 +85,19 @@ structural Position remain crate-private.483native assertions pass (202127+28112
 pending. Source5c60ac65dc03a7f9afcaa796a2babb252329d361 passed nativeCI on all three
 systems.129 must own actual full-game permission/conclusions/history/replay/dispatch;
 85/77/42 retain final native and real consumer acceptance. No later task started.
+
+
+## MSH-129 native Game handoff
+
+The [native game evidence](native-game-evidence.md) records the actual authoritative
+T05/T06 Game, exact full context/retirement/reversal, immutable history and complete
+prefix records, strict native schema1 replay and typed core dispatch. All713native
+assertions execute and pass (202127+281128+230129),14genuinely later assertions and
+83real-consumer requirements remain pending. Selected profile/corpus/ownership are
+unchanged. Native bounds are measured separately from later desktop quotas;
+ordinary admission preserves complete encoding and reserved Stop/Resign headroom.
+Tori execution remains explicitly unsupported/unscored and unadvertised; no Tori
+session, engine, console, desktop codec/UI or chooser is supplied.85 retains separate
+native acceptance;77/42 remain real shared/product consumers. Earlier handoff sections
+above are historical checkpoints, superseded only as to delivered native129 behavior.
+No later task is started or closed by this evidence update.

@@ -66,7 +66,8 @@ pub(crate) enum TransitionError {
     InvalidToken,
 }
 /// Native derived facts, with the actual captured promoted face preserved.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, serde::Serialize, serde::Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Effects {
     /// Mover on the checked/hypothetical turn.
     pub actor: Side,

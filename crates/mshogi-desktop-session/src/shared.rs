@@ -56,6 +56,12 @@ pub struct PresentedSide {
 }
 pub(super) fn side(id: NativeSide) -> PresentedSide {
     let (profile, name, first) = match id {
+        NativeSide::Tori(mshogi_core::tori::Side::Sente) => {
+            (RulesProfile::ToriModernV1, "Sente", true)
+        }
+        NativeSide::Tori(mshogi_core::tori::Side::Gote) => {
+            (RulesProfile::ToriModernV1, "Gote", false)
+        }
         NativeSide::Chess(Color::White) => (RulesProfile::ChessMatchV1, "White", true),
         NativeSide::Chess(Color::Black) => (RulesProfile::ChessMatchV1, "Black", false),
         NativeSide::Shogi(s::Side::Sente) => (RulesProfile::ShogiCsa36V1, "Sente", true),
@@ -974,6 +980,7 @@ impl DesktopController {
             return Err("Application capacity: document identity exhausted.".into());
         }
         let receipt = match human {
+            NativeSide::Tori(_) => return Err("Tori desktop sessions are not implemented.".into()),
             NativeSide::Xiangqi(human) => {
                 use mshogi_core::xiangqi as x;
                 let game =
@@ -1082,6 +1089,9 @@ impl DesktopController {
         if let SessionOperation::Replace { record, human } = command.operation {
             if record.game_kind() != human.game() {
                 return Err("Replacement side and game disagree.".into());
+            }
+            if record.game_kind() == GameKind::Tori {
+                return Err("Tori desktop sessions are not implemented.".into());
             }
             // Validate before retiring any current state or work.
             if let CanonicalRecord::Xiangqi(record) = &record {

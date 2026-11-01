@@ -21,6 +21,7 @@ pub enum ExecutionOperation {
 /// Advertise only real native execution consumers. Shogi has no chess Full operation.
 pub fn execution_capabilities(game: GameKind) -> &'static [ExecutionOperation] {
     match game {
+        GameKind::Tori => &[],
         GameKind::Chess => &[
             ExecutionOperation::EngineTurn,
             ExecutionOperation::MoveAnalysis,
@@ -106,6 +107,9 @@ impl ExecutionContext {
                 && target.board_ply == self.game.known_board_actions() as u64
                 && target.turn.game() == self.game.game_kind()
                 && match &self.game {
+                    CanonicalRecord::Tori(record) => {
+                        target.turn == NativeSide::Tori(record.side_to_move())
+                    }
                     CanonicalRecord::Xiangqi(record) => {
                         target.turn == NativeSide::Xiangqi(record.side_to_move())
                     }
@@ -115,6 +119,13 @@ impl ExecutionContext {
                 && target.label.len() <= 256
         };
         let ordinary_limits_valid = |analysis: bool| match self.game.game_kind() {
+            // Native routing support does not advertise a Tori engine. Keep ordinary
+            // bounded requests parseable so the real entry point returns Unsupported.
+            GameKind::Tori => {
+                (1..=MAX_ANALYSIS_DEPTH).contains(&self.limits.depth)
+                    && self.limits.nodes > 0
+                    && self.limits.nodes <= MAX_ANALYSIS_NODES
+            }
             GameKind::Chess if analysis => {
                 (1..=MAX_ANALYSIS_DEPTH).contains(&self.limits.depth)
                     && self.limits.nodes <= MAX_ANALYSIS_NODES

@@ -45,7 +45,7 @@ fn rejection_reason(error: ActionError, source: Option<Piece>) -> &'static str {
         _ => "unmapped_native_error",
     }
 }
-struct LocalAdapter;
+pub(super) struct LocalAdapter;
 impl NativeAdapter for LocalAdapter {
     fn observe(&self, f: &Fixture, a: &Assertion) -> Result<Option<Value>, String> {
         if a.owner == "MSH-127" {

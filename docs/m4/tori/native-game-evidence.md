@@ -233,3 +233,57 @@ adds no UI/document capability. Independent reviewer follow-up PASS; local
 PASS, with20existing vendored Tao warnings. Core/engine review hashes are unchanged.
 The corrected integrated source and actual finalCI disposition are recorded below;
 no success is inferred for the earlier package run or a different platform.
+
+Actual earlier automatic Desktop packages41343664148 **FAILED** on all three
+platforms at the locked frontend/native check: E0004 for the standalone Tauri
+save-filename match's new Tori variant (with a cascading unused-variable diagnostic).
+[Original job/step evidence](evidence/native-game-first-desktop-ci.json) is preserved.
+The explicit unsupported arm was corrected at
+`994521bec0637d6f8f17103f1106c0025d950753`, independently reviewed and checked locally;
+final-source nativeCI41343787560 and automatic Desktop41343787588 are separate runs.
+No failed check is claimed passed and no package workflow is GUI interaction evidence.
+
+## Final current-source acceptance — MSH-129
+
+Final corrected production source **994521bec0637d6f8f17103f1106c0025d950753** is
+integrated and normally pushed to `codex/rewrite`. Required native Rust workspace
+CI **41343787560 PASS** on Ubuntu24.04,macOS15 andWindows2022: format, all-target
+lint, workspace tests, isolated QA constructors, snapshot fixture consistency,
+build and console smoke. [Actual run/job/step metadata](evidence/native-game-ci.json).
+The earlier native run's actual disposition is retained separately in
+[first native metadata](evidence/native-game-first-native-ci.json); the failed
+first package run remains preserved above.
+
+All three corrected package jobs have passed locked frontend/native checks and
+normal package construction. At the latest metadata capture, macOS and Linux
+package workflows are complete PASS; the automatic Windows existing-game GUI stage remains pending,
+not passed or Tori GUI evidence. [Actual package status](evidence/native-game-desktop-ci.json).
+Those unrelated GUI journeys are not this native-only task's completion gate;
+no Tori play/UI or new owner desktop verification is claimed. No app was launched
+through Computer Use. Local environment: macOS27.0.1 build26A434 arm64,
+Rust1.99.1(58cf8f9c3), LLVM23.1.1; debug Cargo tests.
+
+| Original129 criterion | Supporting actual evidence / verdict |
+| --- | --- |
+| AC1 | T06 exact key/latest-three/responsibility/forced-cycle; full8/full16, explicit-choice units and root-terminal precedence PASS. |
+| AC2 | Full native context/runtime checks, local/history permission, out-of-turn resignation, unsupported/stale/concluded atomic refusals, unscored Stop/resource behavior PASS. |
+| AC3 | Schema1 roots/provenance/counters/events, strict recursive duplicate rejection before maps, every-prefix authoritative replay and malformed/tampered/missing/capacity negatives PASS. |
+| AC4 | All40board+2resignation fullGame reversal facets,360real-action full-prefix undo/redo/cache restoration, prefix-only records, fresh replay and retired runtime PASS. |
+| AC5 | Measured156573B360board record and165930B512event final record, exact byte/event/work guards and actual refusal, Stop/Resign reservations PASS. Later desktop quotas/atomic files remain77. |
+| AC6 | Real typed core consumer3tests, native envelopes/qualified sides/history/context, unadvertised unsupported2routing+1subprocess checks and existing-game regressions PASS. Tauri unsupported adaptation compiled on all3package platforms. |
+| AC7 | All103specs/ownership unchanged;713native assertions PASS,14later assertions/83consumer requirements honestly pending; native docs, independent final review and required3platformCI PASS. |
+
+All seven criteria and four applicable completion items are supported. Independent
+review has no unresolved material findings. Two old deep Chess opt-ins remain not
+run; initial adapter/build/rustdoc/first package failures are retained with their
+corrections or focused rerun, not erased. No profile, expectation, dependency or
+existing game rules changed. Task completion changes documentation/Backlog only,
+so unchanged reviewed/tested source and CI are reused with the repository's normal
+`[skip ci]` bookkeeping convention. No task worktree was created; primary checkout
+stays `codex/rewrite`, unrelated worktrees preserved.
+
+**Next bounded queue: MSH-85 separate native-handoff acceptance**, now with its
+four implementation components delivered. Do not close85 in this129assignment.
+MSH-77 still waits85 and owns real shared/runtime/document consumers;42 retains
+engine/console/product integration. Other variants and M5 are unstarted by this
+batch, and M4 remains open.

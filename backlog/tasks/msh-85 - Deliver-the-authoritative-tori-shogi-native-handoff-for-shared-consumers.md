@@ -1,11 +1,11 @@
 ---
 id: MSH-85
 title: Deliver the authoritative tori shogi native handoff for shared consumers
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-01T20:55:00Z'
+updated_date: '2026-11-01T20:56:00Z'
 labels:
   - m4
   - owner-msh-42
@@ -44,18 +44,18 @@ This coordinating task is not completed by planning. Original AC1-3 and all DoD 
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 After profile refinement,a native game-owned kernel exposes authoritative state,complete legal actions/derived effects,exact reversal,history/adjudication and canonical record contracts needed by its named shared consumer.
-- [ ] #2 Independent rule/transition/history fixtures establish the handoff,including relevant board topology,hands/promotions,compound routes,royal identity and non-chess terminal behavior; no unverified rule convention becomes an interface default.
-- [ ] #3 The shared extension consumes stable documented native payloads/capabilities without frontend rules or duplicate ownership; further game-specific engine/console/desktop work remains visible in its complete delivery record.
+- [x] #1 After profile refinement,a native game-owned kernel exposes authoritative state,complete legal actions/derived effects,exact reversal,history/adjudication and canonical record contracts needed by its named shared consumer.
+- [x] #2 Independent rule/transition/history fixtures establish the handoff,including relevant board topology,hands/promotions,compound routes,royal identity and non-chess terminal behavior; no unverified rule convention becomes an interface default.
+- [x] #3 The shared extension consumes stable documented native payloads/capabilities without frontend rules or duplicate ownership; further game-specific engine/console/desktop work remains visible in its complete delivery record.
 - [x] #4 Before Ready,the game owner splits this native scope further where useful and records all child dependencies/verification. No implementation plan is prescribed by this planning task and no dependency on its own aggregate delivery is introduced.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -97,4 +97,18 @@ Owner authorizes final independent native acceptance only. Startup clean558402b4
 Independent native acceptance now ready for final document review. Separate readonly tori85_kernel_review directly inspected T01-T08, private structural/public local/Game/record APIs, actual independently expected fixtures and native consumer; actual38Tori tests PASS including713native assertions and both capacity histories,3native envelope+1publictoken PASS,7normal+1compilefail doctests PASS. Separate readonly tori85_pending_review reran GameAdapter713PASS/14pending/0failed and exhaustively matched all103manifest rows/all14pending fields/all83consumer requirements;13native+existing envelope checks and1real internal subprocess PASS. No native assertion pending and no material native deficiency. Counts14=13owned77+1owned42;83=82owned77+1owned42, all exact entries in native-acceptance-audit.json. Native caps512KiB/512events/65536units and reservedStop/Resign independently reproduced; no outerarchive/observation quota change. Actualcurrent CI41343787560 and41343787588 bothSUCCESS3platforms at unchanged994521b; no expensive campaign orGUIlaunch rerun. Acceptance doc/approvedAC3 interpretation and concrete77handoff prepared; original85AC text/deps and allother taskrecords unchanged. Audit129tasks344edges/doctor/hash/source/link/diff checksPASS. First metadata audit hit a self-output-link bootstrap check before output existed; corrected self-link handling, no rules/test/result change. Reviewer initially mixed --doc/--test (Cargo rejected before execution); valid separate commands passed, transcript retained. Await final readonlydocument verdict before checking remaining85criteria.
 
 Final independent acceptance/document reviews PASS from tori85_kernel_review and tori85_pending_review; no material findings or native deficiency. Source/native expectations and all14pending assertions/83requirements directly inspected; latter reviewer independently reproduced exact audit object without repository edits. One minor wording correction explicitly states at most one endpoint capture per board move, drops never capture. Original4AC/4DoD wording unchanged; AC3 remains approved real core-consumer handoff, no false77desktop acceptance. Current-status docs supersede dated readiness notes without deleting any history. All metadata/source/hash/link/doctor checks pass; only85/docs/evidence changes. Ready to integrate reviewed acceptance before final Done bookkeeping; no later task started.
+
+Reviewed acceptance integrated and normally pushed on codex/rewrite at 2d4737603bd851534ee24c4b21cd70f4dc3229d2 (origin558402b→2d47376). All original4AC/4DoD now supported by native-acceptance.md and exhaustive audit; production remains unchanged994521bec0637d6f8f17103f1106c0025d950753. Both independent source/document reviews PASS, no unresolved native finding. Native38tests plus public API/envelope/doctests and actual subprocess checks PASS;713native assertions PASS/0fail,14pending and83consumer requirements individually mapped to77/42, zero native pending. Actual native41343787560/package41343787588 completedSUCCESS on all3platforms reused, no ToriGUI claim. Native measured caps/headroom accepted; no outerdesktop capacity promise. Dependency/immutable/source/link/doctor/diff checks PASS. No worktree created; unrelated checkouts untouched. MSH77 becomes dependency-unblocked but remains unchanged To Do/unassigned, needs its own refinement;42/M4 remain open. Stop after85; final bookkeeping commit records this actual acceptance integration reference.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Accepted the complete authoritative Tori native kernel and real typed core-consumer handoff under the original four criteria. Reviewed acceptance is integrated and pushed at 2d4737603bd851534ee24c4b21cd70f4dc3229d2 on codex/rewrite; unchanged tested production is 994521bec0637d6f8f17103f1106c0025d950753.
+
+Authoritative state, complete local actions/effects, exact reversal, selected modern-profile history/adjudication, strict replay and native tagged admission are supported. AC3 is the owner-approved real core-consumer probe and documented payload/capability boundary; it does not claim the later MSH-77 desktop integration. Native 512KiB/512-event/65536-work-unit admission and Stop/Resign reservation were independently measured and challenged.
+
+Two separate read-only independent reviewers directly assessed source/fixtures and all pending/consumer obligations, then reviewed the final acceptance document: PASS, no unresolved material finding. Focused native tests passed with 713/713 assertions and zero failures; all14pending fields and83later-consumer requirements are exhaustively recorded with77/42 ownership, none are native gaps. Existing three-platform nativeCI41343787560 and packageCI41343787588 both completedSUCCESS at unchanged production; no new Tori GUI or engine capability is claimed. Actual commands, failed invocations, historical failures, source pins, measured limits and review provenance are preserved in docs/m4/tori/native-acceptance.md and linked evidence.
+
+No production or immutable expected-data changes. Original criteria/dependencies and all other task records preserved. MSH-77 is dependency-unblocked but stays To Do/unassigned and requires its own bounded refinement; MSH-42 retains full product delivery, MSH-51 measured strength and M4 stays open. No later implementation started.
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -20,3 +20,15 @@ bytes/hash and retrieval time for three publisher PDFs. These modern copyrighted
 PDFs/HTML are not reproduced here. Their original URLs/locators and read limits
 are in the source ledger and researchers' reports. Neither report is a complete
 scholarly translation or authority to adopt unresolved rules.
+
+## Current modern planning evidence
+
+The earlier manifests/reports and `verify-research.py` retain their historical
+scope (the old checker targets the old unratified working tree, not current task
+completion). Current static verification is `verify-modern.py` with
+`modern-validation.json`; it verifies selected-profile fixture/task integrity,
+not native conformance. The immutable2026-10-31 checkpoint lives in
+`../archive/2026-10-31`, including its original validation result. Contemporary
+source/cross-check and comparator limits are in current sources/profile/review
+and comparator-audit documents. No current rule depends on unread historical
+books. No modern copyright PDF was added to Git.

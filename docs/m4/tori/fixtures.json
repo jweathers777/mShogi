@@ -1,91 +1,160 @@
 {
-  "research_revision": "MSH81-DRAFT-2026-10-31",
-  "profile_status": "unratified",
-  "executable_conformance": false,
-  "method": "Hand-transcribed source facts and explicit unresolved gates; no implementation/reference output used as expected oracle. Mathematical rotation is a convention, not proof of full legality.",
+  "revision": "MSH81-MODERN-2026-11-01",
+  "profile": "mshogi.tori.modern.v1",
+  "profile_status": "selected_modern_planning_contract",
+  "native_conformance_executed": false,
+  "fixture_schema": "mshogi.tori.fixture-spec.v1",
+  "notation": {
+    "s": "sente",
+    "g": "gote",
+    "board_entry": "owner:kind:square",
+    "kinds": [
+      "Ph",
+      "Fa",
+      "Ea",
+      "Cr",
+      "Pt",
+      "LQ",
+      "RQ",
+      "Sw",
+      "Go"
+    ]
+  },
   "source_ids": [
-    "T-H1",
-    "T-H2",
-    "T-H3",
-    "T-H4",
-    "T-M1",
     "T-M2",
     "T-M3",
     "T-M4",
-    "PROJECT"
+    "T-M5",
+    "T-M6",
+    "PROJECT",
+    "PROFILE:T05",
+    "PROFILE:T06",
+    "PROFILE:T07"
   ],
-  "local_axes": "x=mover-right,f=mover-forward; rotate180forotherowner",
+  "preserved_seed_ids": [
+    "TORI-I01",
+    "TORI-G-HO",
+    "TORI-G-TSURU",
+    "TORI-G-KIJI",
+    "TORI-G-LEFT-QUAIL",
+    "TORI-G-RIGHT-QUAIL",
+    "TORI-G-TAKA",
+    "TORI-G-SWALLOW",
+    "TORI-G-EAGLE",
+    "TORI-G-GOOSE",
+    "TORI-G-ROTATION",
+    "TORI-G-KIJI-BLOCK",
+    "TORI-G-GOOSE-BLOCK",
+    "TORI-G-EAGLE-BLOCK",
+    "TORI-S-TWO",
+    "TORI-S-THREE",
+    "TORI-S-GOOSE",
+    "TORI-S-ENEMY",
+    "TORI-S-LAST",
+    "TORI-S-DROP-MATE",
+    "TORI-D-EMPTY",
+    "TORI-D-UNPROMOTED",
+    "TORI-P-ENTRY",
+    "TORI-P-DROP-EXIT",
+    "TORI-P-DROP-OTHER",
+    "TORI-P-HEAD",
+    "TORI-H-COUNT",
+    "TORI-H-INITIATOR",
+    "TORI-H-CHECK",
+    "TORI-O-QUIET",
+    "TORI-O-IMPASSE",
+    "TORI-O-AGREEMENT",
+    "TORI-O-ROYAL",
+    "TORI-C-HISTORY",
+    "TORI-C-IDENTITY",
+    "TORI-C-NOTATION",
+    "TORI-CAPTURE-OWNER",
+    "TORI-CAPTURE-DEMOTION",
+    "TORI-CAPTURE-QUAIL"
+  ],
   "fixtures": [
     {
       "id": "TORI-I01",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img4; img8L"
-        }
+      "clauses": [
+        "T01"
       ],
-      "kind": "initial_diagram",
-      "scope": "diagram_transcription",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "initial_position",
       "given": {
-        "coordinate_convention": "proposed1a-upper-right; lower faces forward to decreasing rank letter"
+        "root_kind": "standard"
       },
       "expected": {
+        "side_to_move": "sente",
+        "hands": {
+          "s": {},
+          "g": {}
+        },
         "board": [
-          7,
-          7
+          "s:LQ:7g",
+          "s:Pt:6g",
+          "s:Cr:5g",
+          "s:Ph:4g",
+          "s:Cr:3g",
+          "s:Pt:2g",
+          "s:RQ:1g",
+          "s:Fa:4f",
+          "s:Sw:1e",
+          "s:Sw:2e",
+          "s:Sw:3e",
+          "s:Sw:4e",
+          "s:Sw:5e",
+          "s:Sw:6e",
+          "s:Sw:7e",
+          "s:Sw:3d",
+          "g:RQ:7a",
+          "g:Pt:6a",
+          "g:Cr:5a",
+          "g:Ph:4a",
+          "g:Cr:3a",
+          "g:Pt:2a",
+          "g:LQ:1a",
+          "g:Fa:4b",
+          "g:Sw:1c",
+          "g:Sw:2c",
+          "g:Sw:3c",
+          "g:Sw:4c",
+          "g:Sw:5c",
+          "g:Sw:6c",
+          "g:Sw:7c",
+          "g:Sw:5d"
         ],
         "per_side": {
-          "鵬": 1,
-          "鷹": 1,
-          "鶴": 2,
-          "雉": 2,
-          "左鶉": 1,
-          "右鶉": 1,
-          "燕": 8
-        },
-        "lower_home_7g_to_1g": [
-          "左鶉",
-          "雉",
-          "鶴",
-          "鵬",
-          "鶴",
-          "雉",
-          "右鶉"
-        ],
-        "lower_hawk": "4f",
-        "lower_swallows": [
-          "1e",
-          "2e",
-          "3e",
-          "4e",
-          "5e",
-          "6e",
-          "7e",
-          "3d"
-        ],
-        "upper": "rotate180includingownership"
+          "Ph": 1,
+          "Fa": 1,
+          "Cr": 2,
+          "Pt": 2,
+          "LQ": 1,
+          "RQ": 1,
+          "Sw": 8
+        }
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-G-HO",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img5R"
-        }
+      "clauses": [
+        "T02"
       ],
-      "kind": "piece_geometry",
-      "scope": "geometry_only",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "exhaustive_local_geometry",
       "given": {
-        "piece": "鵬",
-        "origin": "interior",
-        "local_axes": "x=mover-right,f=mover-forward",
-        "occupancy": "empty; not a legal whole position"
+        "piece": "Ph",
+        "owner": "s",
+        "origin": "4d",
+        "occupancy": [],
+        "axes": "x=mover-right,f=mover-forward"
       },
       "expected": {
-        "destinations": [
+        "complete_steps": [
           [
             -1,
             -1
@@ -119,31 +188,31 @@
             1
           ]
         ],
-        "jumps": [],
-        "rays": [],
+        "complete_jumps": [],
+        "complete_rays": [],
+        "complete_limited_rays": [],
         "other_geometry": false
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-G-TSURU",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img5L"
-        }
+      "clauses": [
+        "T02"
       ],
-      "kind": "piece_geometry",
-      "scope": "geometry_only",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "exhaustive_local_geometry",
       "given": {
-        "piece": "鶴",
-        "origin": "interior",
-        "local_axes": "x=mover-right,f=mover-forward",
-        "occupancy": "empty; not a legal whole position"
+        "piece": "Cr",
+        "owner": "s",
+        "origin": "4d",
+        "occupancy": [],
+        "axes": "x=mover-right,f=mover-forward"
       },
       "expected": {
-        "destinations": [
+        "complete_steps": [
           [
             -1,
             1
@@ -169,31 +238,31 @@
             -1
           ]
         ],
-        "jumps": [],
-        "rays": [],
+        "complete_jumps": [],
+        "complete_rays": [],
+        "complete_limited_rays": [],
         "other_geometry": false
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-G-KIJI",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img5L"
-        }
+      "clauses": [
+        "T02"
       ],
-      "kind": "piece_geometry",
-      "scope": "geometry_only",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "exhaustive_local_geometry",
       "given": {
-        "piece": "雉",
-        "origin": "interior",
-        "local_axes": "x=mover-right,f=mover-forward",
-        "occupancy": "empty; not a legal whole position"
+        "piece": "Pt",
+        "owner": "s",
+        "origin": "4d",
+        "occupancy": [],
+        "axes": "x=mover-right,f=mover-forward"
       },
       "expected": {
-        "destinations": [
+        "complete_steps": [
           [
             -1,
             -1
@@ -203,43 +272,43 @@
             -1
           ]
         ],
-        "jumps": [
+        "complete_jumps": [
           [
             0,
             2
           ]
         ],
-        "rays": [],
+        "complete_rays": [],
+        "complete_limited_rays": [],
         "other_geometry": false
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-G-LEFT-QUAIL",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img6Rleft-labelled"
-        }
+      "clauses": [
+        "T02"
       ],
-      "kind": "piece_geometry",
-      "scope": "geometry_only",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "exhaustive_local_geometry",
       "given": {
-        "piece": "左鶉",
-        "origin": "interior",
-        "local_axes": "x=mover-right,f=mover-forward",
-        "occupancy": "empty; not a legal whole position"
+        "piece": "LQ",
+        "owner": "s",
+        "origin": "4d",
+        "occupancy": [],
+        "axes": "x=mover-right,f=mover-forward"
       },
       "expected": {
-        "destinations": [
+        "complete_steps": [
           [
             -1,
             -1
           ]
         ],
-        "jumps": [],
-        "rays": [
+        "complete_jumps": [],
+        "complete_rays": [
           [
             0,
             1
@@ -249,36 +318,36 @@
             -1
           ]
         ],
+        "complete_limited_rays": [],
         "other_geometry": false
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-G-RIGHT-QUAIL",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img6Rright-labelled"
-        }
+      "clauses": [
+        "T02"
       ],
-      "kind": "piece_geometry",
-      "scope": "geometry_only",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "exhaustive_local_geometry",
       "given": {
-        "piece": "右鶉",
-        "origin": "interior",
-        "local_axes": "x=mover-right,f=mover-forward",
-        "occupancy": "empty; not a legal whole position"
+        "piece": "RQ",
+        "owner": "s",
+        "origin": "4d",
+        "occupancy": [],
+        "axes": "x=mover-right,f=mover-forward"
       },
       "expected": {
-        "destinations": [
+        "complete_steps": [
           [
             1,
             -1
           ]
         ],
-        "jumps": [],
-        "rays": [
+        "complete_jumps": [],
+        "complete_rays": [
           [
             0,
             1
@@ -288,29 +357,29 @@
             -1
           ]
         ],
+        "complete_limited_rays": [],
         "other_geometry": false
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-G-TAKA",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img6L"
-        }
+      "clauses": [
+        "T02"
       ],
-      "kind": "piece_geometry",
-      "scope": "geometry_only",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "exhaustive_local_geometry",
       "given": {
-        "piece": "鷹",
-        "origin": "interior",
-        "local_axes": "x=mover-right,f=mover-forward",
-        "occupancy": "empty; not a legal whole position"
+        "piece": "Fa",
+        "owner": "s",
+        "origin": "4d",
+        "occupancy": [],
+        "axes": "x=mover-right,f=mover-forward"
       },
       "expected": {
-        "destinations": [
+        "complete_steps": [
           [
             -1,
             1
@@ -340,92 +409,76 @@
             -1
           ]
         ],
-        "jumps": [],
-        "rays": [],
+        "complete_jumps": [],
+        "complete_rays": [],
+        "complete_limited_rays": [],
         "other_geometry": false
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-G-SWALLOW",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img7L"
-        }
+      "clauses": [
+        "T02"
       ],
-      "kind": "piece_geometry",
-      "scope": "geometry_only",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "exhaustive_local_geometry",
       "given": {
-        "piece": "燕",
-        "origin": "interior",
-        "local_axes": "x=mover-right,f=mover-forward",
-        "occupancy": "empty; not a legal whole position"
+        "piece": "Sw",
+        "owner": "s",
+        "origin": "4d",
+        "occupancy": [],
+        "axes": "x=mover-right,f=mover-forward"
       },
       "expected": {
-        "destinations": [
+        "complete_steps": [
           [
             0,
             1
           ]
         ],
-        "jumps": [],
-        "rays": [],
+        "complete_jumps": [],
+        "complete_rays": [],
+        "complete_limited_rays": [],
         "other_geometry": false
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-G-EAGLE",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img7R"
-        }
+      "clauses": [
+        "T02"
       ],
-      "kind": "piece_geometry",
-      "scope": "geometry_only",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "exhaustive_local_geometry",
       "given": {
-        "piece": "鵰",
-        "origin": "interior",
-        "local_axes": "x=mover-right,f=mover-forward",
-        "occupancy": "empty; not a legal whole position"
+        "piece": "Ea",
+        "owner": "s",
+        "origin": "4d",
+        "occupancy": [],
+        "axes": "x=mover-right,f=mover-forward"
       },
       "expected": {
-        "destinations": [
-          [
-            -1,
-            0
-          ],
+        "complete_steps": [
           [
             0,
             1
           ],
           [
-            1,
+            -1,
             0
           ],
           [
-            -1,
-            -1
-          ],
-          [
             1,
-            -1
-          ],
-          [
-            -2,
-            -2
-          ],
-          [
-            2,
-            -2
+            0
           ]
         ],
-        "jumps": [],
-        "rays": [
+        "complete_jumps": [],
+        "complete_rays": [
           [
             -1,
             1
@@ -438,31 +491,52 @@
             0,
             -1
           ]
+        ],
+        "complete_limited_rays": [
+          {
+            "direction": [
+              -1,
+              -1
+            ],
+            "lengths": [
+              1,
+              2
+            ]
+          },
+          {
+            "direction": [
+              1,
+              -1
+            ],
+            "lengths": [
+              1,
+              2
+            ]
+          }
         ],
         "other_geometry": false
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-G-GOOSE",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img8R"
-        }
+      "clauses": [
+        "T02"
       ],
-      "kind": "piece_geometry",
-      "scope": "geometry_only",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "exhaustive_local_geometry",
       "given": {
-        "piece": "鳫",
-        "origin": "interior",
-        "local_axes": "x=mover-right,f=mover-forward",
-        "occupancy": "empty; not a legal whole position"
+        "piece": "Go",
+        "owner": "s",
+        "origin": "4d",
+        "occupancy": [],
+        "axes": "x=mover-right,f=mover-forward"
       },
       "expected": {
-        "destinations": [],
-        "jumps": [
+        "complete_steps": [],
+        "complete_jumps": [
           [
             -2,
             2
@@ -476,627 +550,4998 @@
             -2
           ]
         ],
-        "rays": [],
+        "complete_rays": [],
+        "complete_limited_rays": [],
         "other_geometry": false
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-G-ROTATION",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img4opposingorientation; imgs5–8"
-        }
+      "clauses": [
+        "T01",
+        "T02"
       ],
-      "kind": "opposing_geometry",
+      "sources": [
+        "T-M5"
+      ],
       "scope": "orientation_geometry",
       "given": {
-        "same_native_piece": "upper vs lower owner",
-        "input_offset": [
-          1,
-          1
-        ]
+        "sente_local_offsets": [
+          [
+            1,
+            2
+          ],
+          [
+            -1,
+            -1
+          ]
+        ],
+        "sente_squares": [
+          "4d",
+          "3b",
+          "5e"
+        ],
+        "opposite_owner": "g"
       },
       "expected": {
-        "board_offset_rotation": [
-          -1,
-          -1
+        "gote_board_offsets": [
+          [
+            -1,
+            -2
+          ],
+          [
+            1,
+            1
+          ]
         ],
-        "native_piece_kind_unchanged": true
+        "rotated_squares": [
+          "4d",
+          "5f",
+          "3c"
+        ],
+        "native_handed_kind_unchanged": true
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-G-KIJI-BLOCK",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img5Lhollowmark/間飛"
-        }
+      "clauses": [
+        "T02"
       ],
-      "kind": "jump_restriction",
-      "scope": "restriction_only",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
       "given": {
-        "piece": "雉",
-        "intermediate_occupied": true,
-        "destination": "forward2empty"
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:Pt:4e",
+            "s:Cr:4d"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4e",
+          "to": "4c",
+          "result_face": "Pt"
+        }
       },
       "expected": {
-        "intermediate_does_not_block_this_geometry": true
+        "accepted": true,
+        "board_removed": [
+          "s:Pt:4e"
+        ],
+        "board_added": [
+          "s:Pt:4c"
+        ],
+        "intermediate_unchanged": [
+          "s:Cr:4d"
+        ],
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-G-GOOSE-BLOCK",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img8R間飛"
-        }
+      "clauses": [
+        "T02"
       ],
-      "kind": "jump_restriction",
-      "scope": "restriction_only",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
       "given": {
-        "piece": "鳫",
-        "intermediate_occupied": true,
-        "destination": "backward2empty"
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:Go:4c",
+            "g:Cr:4d"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4c",
+          "to": "4e",
+          "result_face": "Go"
+        }
       },
       "expected": {
-        "intermediate_does_not_block_this_geometry": true
+        "accepted": true,
+        "intermediate_unchanged": [
+          "g:Cr:4d"
+        ],
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-G-EAGLE-BLOCK",
-      "sources": [
-        {
-          "id": "T-M4",
-          "locator": "piecesp1eagletext; T-H1img7Rnonleapcontrast"
-        }
+      "clauses": [
+        "T02"
       ],
-      "kind": "blocking_restriction",
-      "scope": "modern_restriction_only",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
       "given": {
-        "piece": "鵰",
-        "destination": "backward-right2",
-        "intermediate_occupied": true
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1b",
+            "s:Ea:4d",
+            "g:Cr:3e"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4d",
+          "to": "2f",
+          "result_face": "Ea"
+        }
       },
       "expected": {
-        "not_a_jump": true,
-        "path_blocked_under_modern_explicit_rule": true,
-        "no_intermediate_capture_action_proved": true
+        "accepted": false,
+        "reason": "blocked_path",
+        "state_events_and_runtime_unchanged": true
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-S-TWO",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img8Ltwo/limit2"
-        },
-        {
-          "id": "T-M4",
-          "locator": "JPrulesp1自分の燕/同じ縦列"
-        },
-        {
-          "id": "T-M3",
-          "locator": "p1unpromotedswallow/gooseexception"
-        }
+      "clauses": [
+        "T04"
       ],
-      "kind": "multiplicity",
-      "scope": "modern_corroborated_drop_restriction",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
       "given": {
-        "friendly_unpromoted_swallows_on_file": 1,
-        "added_swallow": 1,
-        "added_action": "drop"
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:Sw:4e"
+          ],
+          "hands": {
+            "s": {
+              "Sw": 1
+            },
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Sw",
+          "to": "4d"
+        }
       },
       "expected": {
-        "multiplicity_restriction_passes": true
+        "accepted": true,
+        "reason": "admitted",
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-S-THREE",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img8Ltwo/limit2"
-        },
-        {
-          "id": "T-M4",
-          "locator": "JPrulesp1自分の燕/同じ縦列"
-        },
-        {
-          "id": "T-M3",
-          "locator": "p1unpromotedswallow/gooseexception"
-        }
+      "clauses": [
+        "T04"
       ],
-      "kind": "multiplicity",
-      "scope": "modern_corroborated_drop_restriction",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
       "given": {
-        "friendly_unpromoted_swallows_on_file": 2,
-        "added_swallow": 1,
-        "added_action": "drop"
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:Sw:4e",
+            "s:Sw:4f"
+          ],
+          "hands": {
+            "s": {
+              "Sw": 1
+            },
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Sw",
+          "to": "4d"
+        }
       },
       "expected": {
-        "multiplicity_restriction_passes": false
+        "accepted": false,
+        "reason": "third_own_unpromoted_swallow_on_file",
+        "state_events_and_runtime_unchanged": true
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-S-GOOSE",
-      "sources": [
-        {
-          "id": "T-M3",
-          "locator": "p1dropfileparagraph"
-        }
+      "clauses": [
+        "T04"
       ],
-      "kind": "multiplicity",
-      "scope": "modern_restriction_only",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
       "given": {
-        "friendly_unpromoted_swallows_on_file": 1,
-        "friendly_goose": 1,
-        "drop_swallow": 1
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:Sw:4e",
+            "s:Go:4f"
+          ],
+          "hands": {
+            "s": {
+              "Sw": 1
+            },
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Sw",
+          "to": "4d"
+        }
       },
       "expected": {
-        "multiplicity_restriction_passes": true
+        "accepted": true,
+        "reason": "admitted",
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-S-ENEMY",
-      "sources": [
-        {
-          "id": "T-M4",
-          "locator": "JPrulesp1自分の燕"
-        }
+      "clauses": [
+        "T04"
       ],
-      "kind": "multiplicity",
-      "scope": "modern_restriction_only",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
       "given": {
-        "friendly_unpromoted_swallows_on_file": 1,
-        "enemy_unpromoted_swallows_on_file": 1,
-        "drop_swallow": 1
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:Sw:4e",
+            "g:Sw:4f"
+          ],
+          "hands": {
+            "s": {
+              "Sw": 1
+            },
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Sw",
+          "to": "4d"
+        }
       },
       "expected": {
-        "multiplicity_restriction_passes": true
+        "accepted": true,
+        "reason": "admitted",
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-S-LAST",
-      "sources": [
-        {
-          "id": "T-M4",
-          "locator": "JPrulesp1prohibitedmoves"
-        }
+      "clauses": [
+        "T04"
       ],
-      "kind": "drop_restriction",
-      "scope": "modern_restriction_only",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
       "given": {
-        "piece": "燕",
-        "target": "lastenemyrow"
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a"
+          ],
+          "hands": {
+            "s": {
+              "Sw": 1
+            },
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Sw",
+          "to": "4a"
+        }
       },
       "expected": {
-        "drop_restriction_passes": false
+        "accepted": false,
+        "reason": "immobile_swallow_drop",
+        "state_events_and_runtime_unchanged": true
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-S-DROP-MATE",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img9R"
-        }
+      "clauses": [
+        "T04",
+        "T05"
       ],
-      "kind": "drop_mate_restriction",
-      "scope": "restriction_only",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
       "given": {
-        "piece": "燕",
-        "otherwise_immediate_mate": "stipulated premise, not implementation-generated mate proof"
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:4a",
+            "s:Pt:4d",
+            "g:Sw:3a",
+            "g:Sw:5a",
+            "g:Sw:3b",
+            "g:Sw:5b"
+          ],
+          "hands": {
+            "s": {
+              "Sw": 1
+            },
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Sw",
+          "to": "4b"
+        }
       },
       "expected": {
-        "drop_mate_restriction_passes": false
+        "accepted": false,
+        "reason": "direct_swallow_drop_mate",
+        "independent_defense_check": {
+          "escape_3a_5a_3b_5b": "occupied_by_gote",
+          "capture_4b": "attacked_by_pheasant4d",
+          "other_swallow_moves": "do_not_remove_check",
+          "hands": "empty"
+        },
+        "state_events_and_runtime_unchanged": true
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-D-EMPTY",
-      "sources": [
-        {
-          "id": "T-M4",
-          "locator": "rulesp1gameplay"
-        }
+      "clauses": [
+        "T04"
       ],
-      "kind": "drop_restriction",
-      "scope": "modern_restriction_only",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
       "given": {
-        "hand_piece": "unpromotednonroyal",
-        "target_occupied": true
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "g:Cr:4d"
+          ],
+          "hands": {
+            "s": {
+              "Cr": 1
+            },
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Cr",
+          "to": "4d"
+        }
       },
       "expected": {
-        "empty_square_restriction_passes": false
+        "accepted": false,
+        "reason": "occupied_drop_square",
+        "state_events_and_runtime_unchanged": true
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-D-UNPROMOTED",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img9Ldropclause"
-        }
+      "clauses": [
+        "T03",
+        "T04"
       ],
-      "kind": "zone_drop",
-      "scope": "partial_effect",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
       "given": {
-        "hand_piece": "鷹or燕",
-        "target": "insideenemymarks"
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a"
+          ],
+          "hands": {
+            "s": {
+              "Fa": 1
+            },
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Fa",
+          "to": "4b"
+        }
       },
       "expected": {
-        "immediate_piece_face": "unpromoted",
-        "subsequent_promotion_timing": "unresolvedP02"
+        "accepted": true,
+        "board_added": [
+          "s:Fa:4b"
+        ],
+        "hand_delta": {
+          "s:Fa": -1
+        },
+        "side_to_move": "gote",
+        "promotion_timer": null,
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-P-ENTRY",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img9L不成...禁"
-        }
+      "clauses": [
+        "T03"
       ],
-      "kind": "promotion_entry",
-      "scope": "promotion_restriction_only",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
       "given": {
-        "piece": "鷹or燕",
-        "from": "outsideenemymarks",
-        "to": "insideenemymarks",
-        "ordinary_move": true
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:Fa:4c"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4c",
+          "to": "4b",
+          "result_face": "Ea"
+        }
       },
       "expected": {
-        "unpromoted_entry_forbidden": true,
-        "promoted_kind": {
-          "鷹": "鵰",
-          "燕": "鳫"
+        "accepted": true,
+        "board_added": [
+          "s:Ea:4b"
+        ],
+        "board_removed": [
+          "s:Fa:4c"
+        ],
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
         }
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-P-DROP-EXIT",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img8L→9R/9L; missingformalization"
-        }
+      "clauses": [
+        "T03"
       ],
-      "kind": "unresolved_profile_case",
-      "scope": "no_outcome_expected",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
       "given": {
-        "drop": "lower鷹at4binsidezone",
-        "next_action": "samepiece4b→3cleaveszone; diagonal-backward geometry is admitted byB07"
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:Fa:4b"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4b",
+          "to": "3c",
+          "result_face": "Ea"
+        }
       },
-      "expected": null,
-      "status": "blocked",
-      "gate": "P02"
+      "expected": {
+        "accepted": true,
+        "board_added": [
+          "s:Ea:3c"
+        ],
+        "board_removed": [
+          "s:Fa:4b"
+        ],
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-P-DROP-OTHER",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img8L→9R/9L; missingformalization"
-        }
+      "clauses": [
+        "T03"
       ],
-      "kind": "unresolved_profile_case",
-      "scope": "no_outcome_expected",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
       "given": {
-        "drop": "鷹insidezone",
-        "next_action": "differentpiece"
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:Fa:4b",
+            "s:Cr:6e"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "6e",
+          "to": "6d",
+          "result_face": "Cr"
+        }
       },
-      "expected": null,
-      "status": "blocked",
-      "gate": "P02"
+      "expected": {
+        "accepted": true,
+        "board_unchanged": [
+          "s:Fa:4b"
+        ],
+        "promotion_timer": null,
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-P-HEAD",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img8L→9R/9L; missingformalization"
-        }
+      "clauses": [
+        "T03"
       ],
-      "kind": "unresolved_profile_case",
-      "scope": "no_outcome_expected",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
       "given": {
-        "piece": "鷹or燕",
-        "target": "royalheadoutsidezone",
-        "question": "promotionprivilege"
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:4d",
+            "s:Fa:3f"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "3f",
+          "to": "4e",
+          "result_face": "Fa"
+        }
       },
-      "expected": null,
-      "status": "blocked",
-      "gate": "P02"
+      "expected": {
+        "accepted": true,
+        "board_added": [
+          "s:Fa:4e"
+        ],
+        "no_extra_promotion_privilege": true,
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-H-COUNT",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img8L→9R/9L; missingformalization"
-        }
+      "clauses": [
+        "T06"
       ],
-      "kind": "unresolved_profile_case",
-      "scope": "no_outcome_expected",
+      "sources": [
+        "PROFILE:T06"
+      ],
+      "scope": "complete_history_sequence",
       "given": {
-        "symbolic_key_occurrences": [
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:4g",
+            "g:Ph:4a"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "actions": [
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "5g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4a",
+            "to": "5a",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "5g",
+            "to": "4g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "5a",
+            "to": "4a",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "5g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4a",
+            "to": "5a",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "5g",
+            "to": "4g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "5a",
+            "to": "4a",
+            "result_face": "Ph"
+          }
+        ]
+      },
+      "expected": {
+        "accepted_board_plies": 8,
+        "root_key_occurrences": [
           0,
           4,
-          8,
-          12
+          8
         ],
-        "question": "thirdpositionvs3completecycles; notlegaltranscript"
+        "obligation": {
+          "side": "sente",
+          "at_ply": 8,
+          "forbidden_departures": [
+            {
+              "kind": "move",
+              "from": "4g",
+              "to": "5g",
+              "result_face": "Ph"
+            }
+          ]
+        },
+        "conclusion": null,
+        "next_forbidden_attempt": {
+          "action": {
+            "kind": "move",
+            "from": "4g",
+            "to": "5g",
+            "result_face": "Ph"
+          },
+          "accepted": false,
+          "unchanged": true
+        }
       },
-      "expected": null,
-      "status": "blocked",
-      "gate": "P03"
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-H-INITIATOR",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img8L→9R/9L; missingformalization"
-        }
+      "clauses": [
+        "T06"
       ],
-      "kind": "unresolved_profile_case",
-      "scope": "no_outcome_expected",
+      "sources": [
+        "PROFILE:T06"
+      ],
+      "scope": "complete_history_sequence",
       "given": {
-        "same_diagram": "yes",
-        "cycle_initiator": [
-          "lower",
-          "upper"
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:4g",
+            "g:Ph:4a"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "actions": [
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "5g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4a",
+            "to": "5a",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "5g",
+            "to": "4g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "5a",
+            "to": "4a",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "5g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4a",
+            "to": "5a",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "5g",
+            "to": "4g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "5a",
+            "to": "4a",
+            "result_face": "Ph"
+          }
         ],
-        "question": "whochanges/when"
+        "creator_of_third_root_key": "gote",
+        "next_action": {
+          "kind": "move",
+          "from": "4g",
+          "to": "3g",
+          "result_face": "Ph"
+        }
       },
-      "expected": null,
-      "status": "blocked",
-      "gate": "P03"
+      "expected": {
+        "responsible": "sente",
+        "creator_not_responsible": true,
+        "accepted": true,
+        "obligation_consumed": true,
+        "conclusion": null
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-H-CHECK",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img8L→9R/9L; missingformalization"
-        }
+      "clauses": [
+        "T06"
       ],
-      "kind": "unresolved_profile_case",
-      "scope": "no_outcome_expected",
+      "sources": [
+        "PROFILE:T06"
+      ],
+      "scope": "history_adjudication_unit_with_explicit_choice_input",
       "given": {
-        "sequence": "checkingcycle",
-        "cycle_initiator": "checkedside",
-        "question": "checkerpriorityandforcedcycle"
+        "occurrences": [
+          0,
+          4,
+          8
+        ],
+        "key_side": "sente",
+        "departures_at_0_and_4": [
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "5g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "5g",
+            "result_face": "Ph"
+          }
+        ],
+        "continuous_checker": "gote",
+        "safety_drop_legal_choices": [
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "5g",
+            "result_face": "Ph"
+          }
+        ]
       },
-      "expected": null,
-      "status": "blocked",
-      "gate": "P03"
+      "expected": {
+        "responsible": "sente",
+        "conclusion": {
+          "kind": "repetition_forfeit",
+          "loser": "sente"
+        },
+        "no_check_evasion_exemption": true,
+        "no_suicide_action_committed": true
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-O-QUIET",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img8L→9R/9L; missingformalization"
-        }
+      "clauses": [
+        "T05"
       ],
-      "kind": "unresolved_profile_case",
-      "scope": "no_outcome_expected",
+      "sources": [
+        "PROFILE:T05"
+      ],
+      "scope": "terminal_position",
       "given": {
-        "in_check": false,
-        "legal_board_actions": "noneunderotherwise_selectedrules"
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:3b",
+            "s:Cr:2c"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        }
       },
-      "expected": null,
-      "status": "blocked",
-      "gate": "P04"
+      "expected": {
+        "in_check": false,
+        "complete_legal_actions": [],
+        "conclusion": {
+          "kind": "stalemate_loss",
+          "loser": "gote"
+        },
+        "escape_proof": {
+          "2a": "attacked_by_Phoenix3b",
+          "1b": "attacked_by_Crane2c",
+          "2b": "attacked_by_both"
+        }
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-O-IMPASSE",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img8L→9R/9L; missingformalization"
-        }
+      "clauses": [
+        "T05"
       ],
-      "kind": "unresolved_profile_case",
-      "scope": "no_outcome_expected",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
       "given": {
-        "both_royals": "enemyzones",
-        "question": "draw/points/declaration/continue"
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:4a",
+            "g:Ph:4g"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "declare_impasse"
+        }
       },
-      "expected": null,
-      "status": "blocked",
-      "gate": "P04"
+      "expected": {
+        "accepted": false,
+        "reason": "unsupported_command",
+        "conclusion": null,
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-O-AGREEMENT",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img8L→9R/9L; missingformalization"
-        }
+      "clauses": [
+        "T05"
       ],
-      "kind": "unresolved_profile_case",
-      "scope": "no_outcome_expected",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
       "given": {
-        "command": "drawagreement",
-        "modern_Hamburg": "forbidsagreement"
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "agree_draw",
+          "actor": "sente"
+        }
       },
-      "expected": null,
-      "status": "blocked",
-      "gate": "P04"
+      "expected": {
+        "accepted": false,
+        "reason": "unsupported_command",
+        "conclusion": null,
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-O-ROYAL",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img8L→9R/9L; missingformalization"
-        }
+      "clauses": [
+        "T05"
       ],
-      "kind": "unresolved_profile_case",
-      "scope": "no_outcome_expected",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
       "given": {
-        "question": "selfcheck/royalcapture/mateprecedence"
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:4g",
+            "g:Ph:4e"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4g",
+          "to": "4f",
+          "result_face": "Ph"
+        }
       },
-      "expected": null,
-      "status": "blocked",
-      "gate": "P04"
+      "expected": {
+        "accepted": false,
+        "reason": "own_phoenix_attacked",
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-C-HISTORY",
-      "sources": [
-        {
-          "id": "PROJECT",
-          "locator": "designA01/A02/A06/A10; R6contracts"
-        }
+      "clauses": [
+        "T06",
+        "T07"
       ],
-      "kind": "future_consumer",
-      "scope": "future_contract_only",
+      "sources": [
+        "PROFILE:T06"
+      ],
+      "scope": "canonical_context_pair",
       "given": {
-        "board": "same",
-        "known_history_or_hands": "different"
+        "record_A": {
+          "root": {
+            "root_kind": "diagram",
+            "provenance": {
+              "earlier_history": "unknown",
+              "historical_reachability": "not_asserted",
+              "missing_material": "permitted_custom_diagram"
+            },
+            "side_to_move": "sente",
+            "declared_completed_plies": 0,
+            "board": [
+              "s:Ph:4g",
+              "g:Ph:4a"
+            ],
+            "hands": {
+              "s": {},
+              "g": {}
+            },
+            "known_events": []
+          },
+          "actions": []
+        },
+        "record_B": {
+          "root": {
+            "root_kind": "diagram",
+            "provenance": {
+              "earlier_history": "unknown",
+              "historical_reachability": "not_asserted",
+              "missing_material": "permitted_custom_diagram"
+            },
+            "side_to_move": "sente",
+            "declared_completed_plies": 0,
+            "board": [
+              "s:Ph:4g",
+              "g:Ph:4a"
+            ],
+            "hands": {
+              "s": {},
+              "g": {}
+            },
+            "known_events": []
+          },
+          "actions": [
+            {
+              "kind": "move",
+              "from": "4g",
+              "to": "5g",
+              "result_face": "Ph"
+            },
+            {
+              "kind": "move",
+              "from": "4a",
+              "to": "5a",
+              "result_face": "Ph"
+            },
+            {
+              "kind": "move",
+              "from": "5g",
+              "to": "4g",
+              "result_face": "Ph"
+            },
+            {
+              "kind": "move",
+              "from": "5a",
+              "to": "4a",
+              "result_face": "Ph"
+            },
+            {
+              "kind": "move",
+              "from": "4g",
+              "to": "5g",
+              "result_face": "Ph"
+            },
+            {
+              "kind": "move",
+              "from": "4a",
+              "to": "5a",
+              "result_face": "Ph"
+            },
+            {
+              "kind": "move",
+              "from": "5g",
+              "to": "4g",
+              "result_face": "Ph"
+            },
+            {
+              "kind": "move",
+              "from": "5a",
+              "to": "4a",
+              "result_face": "Ph"
+            }
+          ]
+        }
       },
       "expected": {
-        "must_not_collapse_context": true
+        "same_board_hands_turn": true,
+        "different_event_and_execution_context": true,
+        "A_obligation": null,
+        "B_obligation_side": "sente",
+        "same_action_4g5g_A_accepted_B_rejected": true
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-C-IDENTITY",
-      "sources": [
-        {
-          "id": "PROJECT",
-          "locator": "currentExecutionContext/RuntimeMetadata"
-        }
+      "clauses": [
+        "T07",
+        "T08"
       ],
-      "kind": "future_consumer",
-      "scope": "future_contract_only",
+      "sources": [
+        "PROJECT"
+      ],
+      "scope": "execution_contract",
       "given": {
-        "old_result": "cancelledorreplaced",
-        "reopen_or_undo": "sameboard"
+        "context_A": {
+          "profile": "mshogi.tori.modern.v1",
+          "event_prefix": 8,
+          "purpose": "engine_turn",
+          "request": 10,
+          "session": 2,
+          "process_generation": 3,
+          "nodes": 100
+        },
+        "retire_by": [
+          "cancel",
+          "replace",
+          "historical_selection",
+          "undo",
+          "open"
+        ],
+        "context_B": {
+          "profile": "mshogi.tori.modern.v1",
+          "event_prefix": 0,
+          "purpose": "move_analysis",
+          "request": 11,
+          "session": 3,
+          "process_generation": 4,
+          "nodes": 100
+        }
       },
       "expected": {
-        "old_execution_must_stay_retired": true
+        "accept_late_A_for_B": false,
+        "undo_back_to_same_diagram_does_not_restore_A": true
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-C-NOTATION",
-      "sources": [
-        {
-          "id": "PROJECT",
-          "locator": "designA01/A11"
-        }
+      "clauses": [
+        "T07",
+        "T08"
       ],
-      "kind": "future_consumer",
-      "scope": "future_contract_only",
+      "sources": [
+        "PROJECT"
+      ],
+      "scope": "notation_contract",
       "given": {
-        "notation": "visiblemove",
-        "action": "nativecompletechoice"
+        "native": {
+          "kind": "move",
+          "from": "4c",
+          "to": "4b",
+          "result_face": "Ea"
+        },
+        "display": "Fa4c-4b+",
+        "profile": "mshogi.tori.modern.v1",
+        "native_schema": "future_explicit_version",
+        "transport": "future_explicit_version"
       },
       "expected": {
-        "notation_not_action_authority": true,
-        "canonical_native_payload_lossless": true,
-        "no_assumed9x9SFENorUSI": true
+        "display_is_not_action_authority": true,
+        "unknown_profile_rejected_atomically": true,
+        "seven_file_coordinate_roundtrip": "4c→4b",
+        "quail_labels_distinct": [
+          "LQ",
+          "RQ"
+        ]
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-CAPTURE-OWNER",
-      "sources": [
-        {
-          "id": "T-M4",
-          "locator": "EN/JPp1gameplaycapture"
-        }
+      "clauses": [
+        "T02",
+        "T03"
       ],
-      "kind": "capture_effect",
-      "scope": "partial_capture_effect",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
       "given": {
-        "mover": [
-          "lower",
-          "upper"
-        ],
-        "capture": "otherwiseadmittedenemyunpromotednonroyalpiece"
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:Cr:4e",
+            "g:Cr:4d"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4e",
+          "to": "4d",
+          "result_face": "Cr"
+        }
       },
       "expected": {
-        "captured_piece_removed_from_target": true,
-        "captured_piece_owned_in_hand_by_mover": true
+        "accepted": true,
+        "board_removed": [
+          "s:Cr:4e",
+          "g:Cr:4d"
+        ],
+        "board_added": [
+          "s:Cr:4d"
+        ],
+        "hand_delta": {
+          "s:Cr": 1
+        },
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
       },
-      "status": "source_supported_seed",
-      "gate": null
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-CAPTURE-DEMOTION",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img8Lcapture/reuse;img9promotion"
-        },
-        {
-          "id": "T-M3",
-          "locator": "p1unpromoteddrops"
-        }
+      "clauses": [
+        "T02",
+        "T03"
       ],
-      "kind": "capture_effect",
-      "scope": "no_complete_transition_expected",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
       "given": {
-        "captured_kind": "鵰or鳫",
-        "question": "exactdemotioneffect/nativehandidentity/provenance"
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:Cr:4e",
+            "g:Ea:4d"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4e",
+          "to": "4d",
+          "result_face": "Cr"
+        }
       },
-      "expected": null,
-      "status": "blocked",
-      "gate": "P06"
+      "expected": {
+        "accepted": true,
+        "board_removed": [
+          "s:Cr:4e",
+          "g:Ea:4d"
+        ],
+        "board_added": [
+          "s:Cr:4d"
+        ],
+        "hand_delta": {
+          "s:Fa": 1
+        },
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
     },
     {
       "id": "TORI-CAPTURE-QUAIL",
-      "sources": [
-        {
-          "id": "T-H1",
-          "locator": "img6R/9Rleft-rightidentifiers"
-        }
+      "clauses": [
+        "T02",
+        "T03"
       ],
-      "kind": "capture_effect",
-      "scope": "no_complete_transition_expected",
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
       "given": {
-        "captured_kind": "左鶉",
-        "new_owner": "opponent",
-        "question": "handkindremainsleftortransforms; owner-relativemovementmustremainexplicit"
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:Cr:4e",
+            "g:LQ:4d"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4e",
+          "to": "4d",
+          "result_face": "Cr"
+        }
       },
-      "expected": null,
-      "status": "blocked",
-      "gate": "P06"
+      "expected": {
+        "accepted": true,
+        "board_removed": [
+          "s:Cr:4e",
+          "g:LQ:4d"
+        ],
+        "board_added": [
+          "s:Cr:4d"
+        ],
+        "hand_delta": {
+          "s:LQ": 1
+        },
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-P-WITHIN",
+      "clauses": [
+        "T03"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:Fa:4b"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4b",
+          "to": "3b",
+          "result_face": "Ea"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "board_added": [
+          "s:Ea:3b"
+        ],
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-P-NO-OPTION",
+      "clauses": [
+        "T03"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:Fa:4c"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4c",
+          "to": "4b",
+          "result_face": "Fa"
+        }
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "forced_promotion_required",
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-P-SWALLOW-AFTER-DROP",
+      "clauses": [
+        "T03"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:Sw:4b"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4b",
+          "to": "4a",
+          "result_face": "Go"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "board_added": [
+          "s:Go:4a"
+        ],
+        "resulting_goose_does_not_attack_straight_forward_one": true,
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-CAPTURE-GOOSE",
+      "clauses": [
+        "T03"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:Cr:4e",
+            "g:Go:4d"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4e",
+          "to": "4d",
+          "result_face": "Cr"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "hand_delta": {
+          "s:Sw": 1
+        },
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-D-QUAIL-OWNER",
+      "clauses": [
+        "T02",
+        "T04"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a"
+          ],
+          "hands": {
+            "s": {
+              "LQ": 1
+            },
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "LQ",
+          "to": "4d"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "board_added": [
+          "s:LQ:4d"
+        ],
+        "native_movement_probes": {
+          "4d2f": true,
+          "4d6f": false,
+          "4d5e": true
+        },
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-D-LEGAL-DEFENSE",
+      "clauses": [
+        "T04",
+        "T05"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:4a",
+            "s:Pt:4d",
+            "g:Sw:3a",
+            "g:Sw:5a",
+            "g:Sw:3b"
+          ],
+          "hands": {
+            "s": {
+              "Sw": 1
+            },
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Sw",
+          "to": "4b"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "check": true,
+        "legal_defense": {
+          "kind": "move",
+          "from": "4a",
+          "to": "5b",
+          "result_face": "Ph"
+        },
+        "conclusion": null,
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-O-MATE",
+      "clauses": [
+        "T05"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "terminal_position",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:4a",
+            "s:Pt:4d",
+            "g:Sw:3a",
+            "g:Sw:5a",
+            "g:Sw:3b",
+            "g:Sw:5b",
+            "s:Ea:4b"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        }
+      },
+      "expected": {
+        "in_check": true,
+        "complete_legal_actions": [],
+        "conclusion": {
+          "kind": "checkmate",
+          "loser": "gote"
+        },
+        "defense_proof": "Own blockers3a5a3b5b; capture4b attacked by Pheasant4d; other Swallow moves cannot remove adjacent check."
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-CHECK-EVASION",
+      "clauses": [
+        "T05"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:4g",
+            "g:Ph:1a",
+            "g:LQ:4a"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4g",
+          "to": "5g",
+          "result_face": "Ph"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "own_phoenix_in_check_before": true,
+        "own_phoenix_in_check_after": false,
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-CHECK-PIN",
+      "clauses": [
+        "T05"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:4g",
+            "g:Ph:1a",
+            "g:LQ:4a",
+            "s:Cr:4f"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4f",
+          "to": "5e",
+          "result_face": "Cr"
+        }
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "exposes_own_phoenix",
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-G-RAY-CAPTURE",
+      "clauses": [
+        "T02",
+        "T03"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:LQ:4f",
+            "g:Cr:4d",
+            "g:Pt:4c"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4f",
+          "to": "4d",
+          "result_face": "LQ"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "hand_delta": {
+          "s:Cr": 1
+        },
+        "board_unchanged": [
+          "g:Pt:4c"
+        ],
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-G-RAY-NO-BYPASS",
+      "clauses": [
+        "T02"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:LQ:4f",
+            "g:Cr:4d",
+            "g:Pt:4c"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4f",
+          "to": "4c",
+          "result_face": "LQ"
+        }
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "blocked_path",
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-G-FRIEND-BLOCK",
+      "clauses": [
+        "T02"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:LQ:4f",
+            "s:Cr:4d"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4f",
+          "to": "4c",
+          "result_face": "LQ"
+        }
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "blocked_path",
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-D-NO-HAND",
+      "clauses": [
+        "T04"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Fa",
+          "to": "4d"
+        }
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "piece_not_in_hand",
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-D-PROMOTED",
+      "clauses": [
+        "T04"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a"
+          ],
+          "hands": {
+            "s": {
+              "Fa": 1
+            },
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Ea",
+          "to": "4d"
+        }
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "promoted_drop_not_admitted",
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-O-RESIGN",
+      "clauses": [
+        "T05",
+        "T07"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "resign",
+          "actor": "gote"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "conclusion": {
+          "kind": "resignation",
+          "winner": "sente"
+        },
+        "board_ply_delta": 0,
+        "repetition_occurrence_delta": 0,
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-O-ADMIN",
+      "clauses": [
+        "T05",
+        "T07"
+      ],
+      "sources": [
+        "PROFILE:T05"
+      ],
+      "scope": "match_contract",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:4g",
+            "g:Ph:4a"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "runner_termination": [
+          "resource_limit",
+          "cancel",
+          "engine_failure",
+          "work_limit"
+        ]
+      },
+      "expected": {
+        "native_conclusion": null,
+        "scored": false,
+        "record_reason_separately": true
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-H-FORCED-QUIET",
+      "clauses": [
+        "T06"
+      ],
+      "sources": [
+        "PROFILE:T06"
+      ],
+      "scope": "history_adjudication_unit_with_explicit_choice_input",
+      "given": {
+        "occurrences": [
+          0,
+          4,
+          8
+        ],
+        "key_side": "sente",
+        "departures_at_0_and_4": [
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "5g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "5g",
+            "result_face": "Ph"
+          }
+        ],
+        "safety_drop_legal_choices": [
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "5g",
+            "result_face": "Ph"
+          }
+        ],
+        "in_check": false
+      },
+      "expected": {
+        "conclusion": {
+          "kind": "repetition_forfeit",
+          "loser": "sente"
+        },
+        "not_stalemate": true
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-H-OVERLAP",
+      "clauses": [
+        "T06"
+      ],
+      "sources": [
+        "PROFILE:T06"
+      ],
+      "scope": "history_adjudication_unit",
+      "given": {
+        "occurrences": [
+          0,
+          4,
+          10,
+          16
+        ],
+        "key_side": "sente",
+        "departures": {
+          "0": {
+            "kind": "move",
+            "from": "4g",
+            "to": "3g",
+            "result_face": "Ph"
+          },
+          "4": {
+            "kind": "move",
+            "from": "4g",
+            "to": "5g",
+            "result_face": "Ph"
+          },
+          "10": {
+            "kind": "move",
+            "from": "4g",
+            "to": "4f",
+            "result_face": "Ph"
+          }
+        }
+      },
+      "expected": {
+        "latest_three": [
+          4,
+          10,
+          16
+        ],
+        "forbidden_departures": [
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "5g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "4f",
+            "result_face": "Ph"
+          }
+        ],
+        "departure_4g3g_allowed": true
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-H-IDENTITY",
+      "clauses": [
+        "T06",
+        "T07"
+      ],
+      "sources": [
+        "PROFILE:T06"
+      ],
+      "scope": "key_contract",
+      "given": {
+        "base": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:4g",
+            "g:Ph:4a"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "differences": [
+          {
+            "side_to_move": "gote"
+          },
+          {
+            "hands": {
+              "s": {
+                "LQ": 1
+              },
+              "g": {}
+            }
+          },
+          {
+            "replace_piece": [
+              "s:LQ:4d",
+              "s:RQ:4d"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "each_difference_changes_repetition_key": true,
+        "counter_or_observation_only_changes_key": false
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-H-REPLAY-UNDO",
+      "clauses": [
+        "T06",
+        "T07"
+      ],
+      "sources": [
+        "PROFILE:T07"
+      ],
+      "scope": "complete_history_sequence",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:4g",
+            "g:Ph:4a"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "actions": [
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "5g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4a",
+            "to": "5a",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "5g",
+            "to": "4g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "5a",
+            "to": "4a",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "5g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4a",
+            "to": "5a",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "5g",
+            "to": "4g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "5a",
+            "to": "4a",
+            "result_face": "Ph"
+          }
+        ],
+        "operations": [
+          "encode_native_record",
+          "strict_replay",
+          "undo_last",
+          "redo_last",
+          "select_prefix4",
+          "return_live"
+        ]
+      },
+      "expected": {
+        "strict_replay_equals_original": true,
+        "undo_at7_obligation": null,
+        "redo_at8_obligation_side": "sente",
+        "prefix4_occurrences": [
+          0,
+          4
+        ],
+        "prefix4_obligation": null,
+        "live_occurrences": [
+          0,
+          4,
+          8
+        ],
+        "all_native_fields_and_caches_exactly_restored": true,
+        "runtime_work_never_revived": true
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-REJECT-DUPLICATE-SQUARE",
+      "clauses": [
+        "T07"
+      ],
+      "sources": [
+        "PROFILE:T07"
+      ],
+      "scope": "root_admission",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:Cr:4d",
+            "g:Pt:4d"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        }
+      },
+      "expected": {
+        "root_admitted": false,
+        "reason": "duplicate_square",
+        "live_document_unchanged": true
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-REJECT-MISSING-ROYAL",
+      "clauses": [
+        "T07"
+      ],
+      "sources": [
+        "PROFILE:T07"
+      ],
+      "scope": "root_admission",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        }
+      },
+      "expected": {
+        "root_admitted": false,
+        "reason": "royal_inventory",
+        "live_document_unchanged": true
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-REJECT-ADJACENT-ROYALS",
+      "clauses": [
+        "T07"
+      ],
+      "sources": [
+        "PROFILE:T07"
+      ],
+      "scope": "root_admission",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:4d",
+            "g:Ph:4c"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        }
+      },
+      "expected": {
+        "root_admitted": false,
+        "reason": "royal_safety",
+        "live_document_unchanged": true
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-REJECT-DEAD-SWALLOW",
+      "clauses": [
+        "T07"
+      ],
+      "sources": [
+        "PROFILE:T07"
+      ],
+      "scope": "root_admission",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:Sw:4a"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        }
+      },
+      "expected": {
+        "root_admitted": false,
+        "reason": "immobile_unpromoted_swallow",
+        "live_document_unchanged": true
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-REJECT-THREE-SWALLOWS",
+      "clauses": [
+        "T07"
+      ],
+      "sources": [
+        "PROFILE:T07"
+      ],
+      "scope": "root_admission",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:Sw:4c",
+            "s:Sw:4d",
+            "s:Sw:4e"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        }
+      },
+      "expected": {
+        "root_admitted": false,
+        "reason": "third_own_swallow",
+        "live_document_unchanged": true
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-REJECT-EXCESS-INVENTORY",
+      "clauses": [
+        "T07"
+      ],
+      "sources": [
+        "PROFILE:T07"
+      ],
+      "scope": "root_admission",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:7g",
+            "g:Ph:1a",
+            "s:LQ:3c",
+            "s:LQ:4d",
+            "g:LQ:5e"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        }
+      },
+      "expected": {
+        "root_admitted": false,
+        "reason": "base_inventory_exceeded",
+        "live_document_unchanged": true
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-REJECT-STRICT",
+      "clauses": [
+        "T07"
+      ],
+      "sources": [
+        "PROFILE:T07"
+      ],
+      "scope": "strict_dispatch_contract",
+      "given": {
+        "raw_payloads": [
+          "{\"game\":\"tori\",\"game\":\"shogi\"}",
+          "{\"game\":\"tori\",\"profile\":\"mshogi.tori.bunsei11.v1\"}",
+          "{\"kind\":\"move\",\"from\":\"4c\",\"from\":\"3c\",\"to\":\"4b\"}",
+          "{\"kind\":\"move\",\"from\":\"4c\",\"to\":\"4b\",\"invented\":true}",
+          "{\"kind\":\"move\",\"from\":\"4c\"}"
+        ]
+      },
+      "expected": {
+        "all_rejected": true,
+        "no_intermediate_map_erases_duplicates": true,
+        "live_document_unchanged": true
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-H-FORCED-FULL",
+      "clauses": [
+        "T02",
+        "T05",
+        "T06"
+      ],
+      "sources": [
+        "PROFILE:T06"
+      ],
+      "scope": "complete_history_sequence",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:4a",
+            "g:Ph:4g",
+            "g:Ea:4d",
+            "g:Cr:2b",
+            "g:Cr:3c",
+            "g:Cr:6c",
+            "g:Cr:7b"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "actions": [
+          {
+            "kind": "move",
+            "from": "4a",
+            "to": "5a",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4d",
+            "to": "5d",
+            "result_face": "Ea"
+          },
+          {
+            "kind": "move",
+            "from": "5a",
+            "to": "4a",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "5d",
+            "to": "4d",
+            "result_face": "Ea"
+          },
+          {
+            "kind": "move",
+            "from": "4a",
+            "to": "5a",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4d",
+            "to": "5d",
+            "result_face": "Ea"
+          },
+          {
+            "kind": "move",
+            "from": "5a",
+            "to": "4a",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "5d",
+            "to": "4d",
+            "result_face": "Ea"
+          }
+        ]
+      },
+      "expected": {
+        "accepted_board_plies": 8,
+        "root_key_occurrences": [
+          0,
+          4,
+          8
+        ],
+        "in_check_at8": true,
+        "complete_board_legal_choices_at8": [
+          {
+            "kind": "move",
+            "from": "4a",
+            "to": "5a",
+            "result_face": "Ph"
+          }
+        ],
+        "conclusion": {
+          "kind": "repetition_forfeit",
+          "loser": "sente"
+        },
+        "independent_escape_proof": {
+          "3a": "Cr2b",
+          "3b": "Cr3c",
+          "4b": "Cr3c",
+          "5b": "Cr6c",
+          "6a": "Cr7b",
+          "6b": "Cr6c",
+          "4a": "checked_by_Ea4d",
+          "5a_after_Sente_move": "safe_until_Gote_Eagle_moves"
+        }
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-H-UNEQUAL-FULL",
+      "clauses": [
+        "T06",
+        "T07"
+      ],
+      "sources": [
+        "PROFILE:T06"
+      ],
+      "scope": "complete_history_sequence",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "sente",
+          "declared_completed_plies": 0,
+          "board": [
+            "s:Ph:4g",
+            "g:Ph:4a"
+          ],
+          "hands": {
+            "s": {},
+            "g": {}
+          },
+          "known_events": []
+        },
+        "actions": [
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "5g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4a",
+            "to": "5a",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "5g",
+            "to": "4g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "5a",
+            "to": "4a",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "4f",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4a",
+            "to": "5a",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4f",
+            "to": "5f",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "5a",
+            "to": "5b",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "5f",
+            "to": "4g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "5b",
+            "to": "4a",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "3f",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4a",
+            "to": "3a",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "3f",
+            "to": "3g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "3a",
+            "to": "3b",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "3g",
+            "to": "4g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "3b",
+            "to": "4a",
+            "result_face": "Ph"
+          }
+        ]
+      },
+      "expected": {
+        "accepted_board_plies": 16,
+        "root_key_occurrences": [
+          0,
+          4,
+          10,
+          16
+        ],
+        "latest_three_at16": [
+          4,
+          10,
+          16
+        ],
+        "forbidden_at10": [
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "5g",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "4f",
+            "result_face": "Ph"
+          }
+        ],
+        "chosen_3f_at10_accepted": true,
+        "forbidden_at16": [
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "4f",
+            "result_face": "Ph"
+          },
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "3f",
+            "result_face": "Ph"
+          }
+        ],
+        "next_5g_accepted": true,
+        "conclusion": null
+      },
+      "expectation_method": "Independent source geometry or explicit selected software clause; hand-derived, not engine output."
+    },
+    {
+      "id": "TORI-G-KIJI-BLOCK-ROTATED",
+      "clauses": [
+        "T02"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g",
+            "g:Pt:4c",
+            "g:Cr:4d"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4c",
+          "to": "4e",
+          "result_face": "Pt"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "board_removed": [
+          "g:Pt:4c"
+        ],
+        "board_added": [
+          "g:Pt:4e"
+        ],
+        "intermediate_unchanged": [
+          "g:Cr:4d"
+        ],
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-G-KIJI-BLOCK"
+    },
+    {
+      "id": "TORI-G-GOOSE-BLOCK-ROTATED",
+      "clauses": [
+        "T02"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g",
+            "g:Go:4e",
+            "s:Cr:4d"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4e",
+          "to": "4c",
+          "result_face": "Go"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "intermediate_unchanged": [
+          "s:Cr:4d"
+        ],
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-G-GOOSE-BLOCK"
+    },
+    {
+      "id": "TORI-G-EAGLE-BLOCK-ROTATED",
+      "clauses": [
+        "T02"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7f",
+            "g:Ea:4d",
+            "s:Cr:5c"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4d",
+          "to": "6b",
+          "result_face": "Ea"
+        }
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "blocked_path",
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-G-EAGLE-BLOCK"
+    },
+    {
+      "id": "TORI-S-TWO-ROTATED",
+      "clauses": [
+        "T04"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g",
+            "g:Sw:4c"
+          ],
+          "hands": {
+            "g": {
+              "Sw": 1
+            },
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Sw",
+          "to": "4d"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "reason": "admitted",
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-S-TWO"
+    },
+    {
+      "id": "TORI-S-THREE-ROTATED",
+      "clauses": [
+        "T04"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g",
+            "g:Sw:4c",
+            "g:Sw:4b"
+          ],
+          "hands": {
+            "g": {
+              "Sw": 1
+            },
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Sw",
+          "to": "4d"
+        }
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "third_own_unpromoted_swallow_on_file",
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-S-THREE"
+    },
+    {
+      "id": "TORI-S-GOOSE-ROTATED",
+      "clauses": [
+        "T04"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g",
+            "g:Sw:4c",
+            "g:Go:4b"
+          ],
+          "hands": {
+            "g": {
+              "Sw": 1
+            },
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Sw",
+          "to": "4d"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "reason": "admitted",
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-S-GOOSE"
+    },
+    {
+      "id": "TORI-S-ENEMY-ROTATED",
+      "clauses": [
+        "T04"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g",
+            "g:Sw:4c",
+            "s:Sw:4b"
+          ],
+          "hands": {
+            "g": {
+              "Sw": 1
+            },
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Sw",
+          "to": "4d"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "reason": "admitted",
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-S-ENEMY"
+    },
+    {
+      "id": "TORI-S-LAST-ROTATED",
+      "clauses": [
+        "T04"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g"
+          ],
+          "hands": {
+            "g": {
+              "Sw": 1
+            },
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Sw",
+          "to": "4g"
+        }
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "immobile_swallow_drop",
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-S-LAST"
+    },
+    {
+      "id": "TORI-S-DROP-MATE-ROTATED",
+      "clauses": [
+        "T04",
+        "T05"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:4g",
+            "g:Pt:4d",
+            "s:Sw:5g",
+            "s:Sw:3g",
+            "s:Sw:5f",
+            "s:Sw:3f"
+          ],
+          "hands": {
+            "g": {
+              "Sw": 1
+            },
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Sw",
+          "to": "4f"
+        }
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "direct_swallow_drop_mate",
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-S-DROP-MATE"
+    },
+    {
+      "id": "TORI-D-EMPTY-ROTATED",
+      "clauses": [
+        "T04"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g",
+            "s:Cr:4d"
+          ],
+          "hands": {
+            "g": {
+              "Cr": 1
+            },
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Cr",
+          "to": "4d"
+        }
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "occupied_drop_square",
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-D-EMPTY"
+    },
+    {
+      "id": "TORI-D-UNPROMOTED-ROTATED",
+      "clauses": [
+        "T03",
+        "T04"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g"
+          ],
+          "hands": {
+            "g": {
+              "Fa": 1
+            },
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Fa",
+          "to": "4f"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "board_added": [
+          "g:Fa:4f"
+        ],
+        "hand_delta": {
+          "g:Fa": -1
+        },
+        "side_to_move": "sente",
+        "promotion_timer": null,
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-D-UNPROMOTED"
+    },
+    {
+      "id": "TORI-P-ENTRY-ROTATED",
+      "clauses": [
+        "T03"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g",
+            "g:Fa:4e"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4e",
+          "to": "4f",
+          "result_face": "Ea"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "board_added": [
+          "g:Ea:4f"
+        ],
+        "board_removed": [
+          "g:Fa:4e"
+        ],
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-P-ENTRY"
+    },
+    {
+      "id": "TORI-P-DROP-EXIT-ROTATED",
+      "clauses": [
+        "T03"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g",
+            "g:Fa:4f"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4f",
+          "to": "5e",
+          "result_face": "Ea"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "board_added": [
+          "g:Ea:5e"
+        ],
+        "board_removed": [
+          "g:Fa:4f"
+        ],
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-P-DROP-EXIT"
+    },
+    {
+      "id": "TORI-P-DROP-OTHER-ROTATED",
+      "clauses": [
+        "T03"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g",
+            "g:Fa:4f",
+            "g:Cr:2c"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "2c",
+          "to": "2d",
+          "result_face": "Cr"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "board_unchanged": [
+          "g:Fa:4f"
+        ],
+        "promotion_timer": null,
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-P-DROP-OTHER"
+    },
+    {
+      "id": "TORI-P-HEAD-ROTATED",
+      "clauses": [
+        "T03"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:4d",
+            "g:Fa:5b"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "5b",
+          "to": "4c",
+          "result_face": "Fa"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "board_added": [
+          "g:Fa:4c"
+        ],
+        "no_extra_promotion_privilege": true,
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-P-HEAD"
+    },
+    {
+      "id": "TORI-O-IMPASSE-ROTATED",
+      "clauses": [
+        "T05"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:4g",
+            "s:Ph:4a"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "declare_impasse"
+        }
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "unsupported_command",
+        "conclusion": null,
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-O-IMPASSE"
+    },
+    {
+      "id": "TORI-O-AGREEMENT-ROTATED",
+      "clauses": [
+        "T05"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "agree_draw",
+          "actor": "gote"
+        }
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "unsupported_command",
+        "conclusion": null,
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-O-AGREEMENT"
+    },
+    {
+      "id": "TORI-O-ROYAL-ROTATED",
+      "clauses": [
+        "T05"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:4a",
+            "s:Ph:4c"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4a",
+          "to": "4b",
+          "result_face": "Ph"
+        }
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "own_phoenix_attacked",
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-O-ROYAL"
+    },
+    {
+      "id": "TORI-CAPTURE-OWNER-ROTATED",
+      "clauses": [
+        "T02",
+        "T03"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g",
+            "g:Cr:4c",
+            "s:Cr:4d"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4c",
+          "to": "4d",
+          "result_face": "Cr"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "board_removed": [
+          "g:Cr:4c",
+          "s:Cr:4d"
+        ],
+        "board_added": [
+          "g:Cr:4d"
+        ],
+        "hand_delta": {
+          "g:Cr": 1
+        },
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-CAPTURE-OWNER"
+    },
+    {
+      "id": "TORI-CAPTURE-DEMOTION-ROTATED",
+      "clauses": [
+        "T02",
+        "T03"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g",
+            "g:Cr:4c",
+            "s:Ea:4d"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4c",
+          "to": "4d",
+          "result_face": "Cr"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "board_removed": [
+          "g:Cr:4c",
+          "s:Ea:4d"
+        ],
+        "board_added": [
+          "g:Cr:4d"
+        ],
+        "hand_delta": {
+          "g:Fa": 1
+        },
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-CAPTURE-DEMOTION"
+    },
+    {
+      "id": "TORI-CAPTURE-QUAIL-ROTATED",
+      "clauses": [
+        "T02",
+        "T03"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g",
+            "g:Cr:4c",
+            "s:LQ:4d"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4c",
+          "to": "4d",
+          "result_face": "Cr"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "board_removed": [
+          "g:Cr:4c",
+          "s:LQ:4d"
+        ],
+        "board_added": [
+          "g:Cr:4d"
+        ],
+        "hand_delta": {
+          "g:LQ": 1
+        },
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-CAPTURE-QUAIL"
+    },
+    {
+      "id": "TORI-P-WITHIN-ROTATED",
+      "clauses": [
+        "T03"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g",
+            "g:Fa:4f"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4f",
+          "to": "5f",
+          "result_face": "Ea"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "board_added": [
+          "g:Ea:5f"
+        ],
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-P-WITHIN"
+    },
+    {
+      "id": "TORI-P-NO-OPTION-ROTATED",
+      "clauses": [
+        "T03"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g",
+            "g:Fa:4e"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4e",
+          "to": "4f",
+          "result_face": "Fa"
+        }
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "forced_promotion_required",
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-P-NO-OPTION"
+    },
+    {
+      "id": "TORI-P-SWALLOW-AFTER-DROP-ROTATED",
+      "clauses": [
+        "T03"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g",
+            "g:Sw:4f"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4f",
+          "to": "4g",
+          "result_face": "Go"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "board_added": [
+          "g:Go:4g"
+        ],
+        "resulting_goose_does_not_attack_straight_forward_one": true,
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-P-SWALLOW-AFTER-DROP"
+    },
+    {
+      "id": "TORI-CAPTURE-GOOSE-ROTATED",
+      "clauses": [
+        "T03"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g",
+            "g:Cr:4c",
+            "s:Go:4d"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4c",
+          "to": "4d",
+          "result_face": "Cr"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "hand_delta": {
+          "g:Sw": 1
+        },
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-CAPTURE-GOOSE"
+    },
+    {
+      "id": "TORI-D-QUAIL-OWNER-ROTATED",
+      "clauses": [
+        "T02",
+        "T04"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g"
+          ],
+          "hands": {
+            "g": {
+              "LQ": 1
+            },
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "LQ",
+          "to": "4d"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "board_added": [
+          "g:LQ:4d"
+        ],
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-D-QUAIL-OWNER"
+    },
+    {
+      "id": "TORI-D-LEGAL-DEFENSE-ROTATED",
+      "clauses": [
+        "T04",
+        "T05"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:4g",
+            "g:Pt:4d",
+            "s:Sw:5g",
+            "s:Sw:3g",
+            "s:Sw:5f"
+          ],
+          "hands": {
+            "g": {
+              "Sw": 1
+            },
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Sw",
+          "to": "4f"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "check": true,
+        "legal_defense": {
+          "kind": "move",
+          "from": "4g",
+          "to": "3f",
+          "result_face": "Ph"
+        },
+        "conclusion": null,
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-D-LEGAL-DEFENSE"
+    },
+    {
+      "id": "TORI-CHECK-EVASION-ROTATED",
+      "clauses": [
+        "T05"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:4a",
+            "s:Ph:7g",
+            "s:LQ:4g"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4a",
+          "to": "3a",
+          "result_face": "Ph"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "own_phoenix_in_check_before": true,
+        "own_phoenix_in_check_after": false,
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-CHECK-EVASION"
+    },
+    {
+      "id": "TORI-CHECK-PIN-ROTATED",
+      "clauses": [
+        "T05"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:4a",
+            "s:Ph:7g",
+            "s:LQ:4g",
+            "g:Cr:4b"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4b",
+          "to": "3c",
+          "result_face": "Cr"
+        }
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "exposes_own_phoenix",
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-CHECK-PIN"
+    },
+    {
+      "id": "TORI-G-RAY-CAPTURE-ROTATED",
+      "clauses": [
+        "T02",
+        "T03"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g",
+            "g:LQ:4b",
+            "s:Cr:4d",
+            "s:Pt:4e"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4b",
+          "to": "4d",
+          "result_face": "LQ"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "hand_delta": {
+          "g:Cr": 1
+        },
+        "board_unchanged": [
+          "s:Pt:4e"
+        ],
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-G-RAY-CAPTURE"
+    },
+    {
+      "id": "TORI-G-RAY-NO-BYPASS-ROTATED",
+      "clauses": [
+        "T02"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g",
+            "g:LQ:4b",
+            "s:Cr:4d",
+            "s:Pt:4e"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4b",
+          "to": "4e",
+          "result_face": "LQ"
+        }
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "blocked_path",
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-G-RAY-NO-BYPASS"
+    },
+    {
+      "id": "TORI-G-FRIEND-BLOCK-ROTATED",
+      "clauses": [
+        "T02"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g",
+            "g:LQ:4b",
+            "g:Cr:4d"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "move",
+          "from": "4b",
+          "to": "4e",
+          "result_face": "LQ"
+        }
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "blocked_path",
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-G-FRIEND-BLOCK"
+    },
+    {
+      "id": "TORI-D-NO-HAND-ROTATED",
+      "clauses": [
+        "T04"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Fa",
+          "to": "4d"
+        }
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "piece_not_in_hand",
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-D-NO-HAND"
+    },
+    {
+      "id": "TORI-D-PROMOTED-ROTATED",
+      "clauses": [
+        "T04"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g"
+          ],
+          "hands": {
+            "g": {
+              "Fa": 1
+            },
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "drop",
+          "piece": "Ea",
+          "to": "4d"
+        }
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "promoted_drop_not_admitted",
+        "state_events_and_runtime_unchanged": true
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-D-PROMOTED"
+    },
+    {
+      "id": "TORI-O-RESIGN-ROTATED",
+      "clauses": [
+        "T05",
+        "T07"
+      ],
+      "sources": [
+        "T-M5"
+      ],
+      "scope": "native_admission_rotated",
+      "given": {
+        "root": {
+          "root_kind": "diagram",
+          "provenance": {
+            "earlier_history": "unknown",
+            "historical_reachability": "not_asserted",
+            "missing_material": "permitted_custom_diagram"
+          },
+          "side_to_move": "gote",
+          "declared_completed_plies": 0,
+          "board": [
+            "g:Ph:1a",
+            "s:Ph:7g"
+          ],
+          "hands": {
+            "g": {},
+            "s": {}
+          },
+          "known_events": []
+        },
+        "command": {
+          "kind": "resign",
+          "actor": "sente"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "conclusion": {
+          "kind": "resignation",
+          "winner": "gote"
+        },
+        "board_ply_delta": 0,
+        "repetition_occurrence_delta": 0,
+        "reversal_contract": {
+          "apply_then_undo": "byte_or_semantic_exact_original_native_state_and_history_including_caches",
+          "redo": "same_transition_effects_and_history",
+          "retired_execution": "not_revived"
+        }
+      },
+      "expectation_method": "Exact180-degree symmetry of independently reviewed base fixture; no rules implementation executed.",
+      "rotation_of": "TORI-O-RESIGN"
     }
   ]
 }

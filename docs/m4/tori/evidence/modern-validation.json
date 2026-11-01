@@ -1,0 +1,21 @@
+{
+  "kind": "static profile/fixture/document/task integrity; not native conformance",
+  "baseline": "26a2fa9ce8165b6e7ae713d12f16548b65c110da",
+  "profile": "mshogi.tori.modern.v1",
+  "fixtures": 103,
+  "preserved_original_seed_ids": 39,
+  "original_checkpoint_bytes_preserved": true,
+  "rotated_native_admission_cases": 35,
+  "exhaustive_geometry_tables": 9,
+  "native_conformance_executed": false,
+  "fixture_sha256": "3f9e5ca3b541fc72f562ddd8231408e17e7bd5ba3ccee118e643ce0f543731e3",
+  "task_records": 125,
+  "dependency_edges": 336,
+  "unique_resolved_acyclic_graph": true,
+  "original_criteria_and_dependencies_preserved": true,
+  "completed62_121_45_and_inactive82_83_byte_unchanged": true,
+  "current_local_markdown_links": 22,
+  "production_build_workflow_instructions_diff": [],
+  "at": "2026-11-01T12:06:58.386197+00:00",
+  "result": "passed"
+}

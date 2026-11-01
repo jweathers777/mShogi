@@ -1,3 +1,14 @@
+> **Current prospective owner direction — 2026-11-01:** historical reconstruction
+> is not a product requirement. For Tori/Chu/Tenjiku, select a coherent sourced
+> modern playing profile, document necessary software conventions and independent
+> fixtures; historical acquisition is required only for an actual unresolved
+> material rule. This supersedes historical-first acquisition gates in the dated
+> planning snapshots below. No completed Xiangqi rule/capability/evidence changes.
+> MSH-81 now supplies the [modern Tori contract](tori/profile.md) and
+> [current native/shared handoff](tori/handoff.md); its earlier historical
+> checkpoint is preserved separately.85 remains To Do/refinement-before-Ready;
+> no native implementation or activation of82/83 occurs here.
+
 # Later-game source and unresolved-rules inventory
 
 Planning snapshot: 2026-10-26, MSH-62. This is a bounded research inventory,

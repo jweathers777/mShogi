@@ -6,8 +6,10 @@
 > planning snapshots below. No completed Xiangqi rule/capability/evidence changes.
 > MSH-81 now supplies the [modern Tori contract](tori/profile.md) and
 > [current native/shared handoff](tori/handoff.md); its earlier historical
-> checkpoint is preserved separately.85 remains To Do/refinement-before-Ready;
-> no native implementation or activation of82/83 occurs here.
+> checkpoint is preserved separately. [MSH-85 refinement](tori/native-plan.md)
+> now creates bounded126→127→128→129 components, with126 dependency-ready and85
+> open/blocked on native delivery; only85AC4 is satisfied by planning. No native
+> implementation or activation of77/42/82/83 or M5 occurs here.
 
 # Later-game source and unresolved-rules inventory
 

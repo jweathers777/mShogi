@@ -1,0 +1,28 @@
+{
+  "kind": "MSH-85 static planning/task/fixture ownership checks; not implementation evidence",
+  "baseline": "6893f1249dff0414cdbe81ce99fac3a3c0c0e7dc",
+  "profile": "mshogi.tori.modern.v1",
+  "fixture_specs": 103,
+  "fixture_and_profile_bytes_unchanged": true,
+  "corpus_sha256": "3f9e5ca3b541fc72f562ddd8231408e17e7bd5ba3ccee118e643ce0f543731e3",
+  "corpus_owner": "MSH-126",
+  "primary_native_owners": {
+    "MSH-127": 14,
+    "MSH-128": 69,
+    "MSH-129": 20
+  },
+  "all_expected_fields_owned": true,
+  "consumer_facets_explicit": true,
+  "task_records": 129,
+  "dependency_edges": 344,
+  "unique_resolved_acyclic_graph": true,
+  "original_criteria_preserved": true,
+  "first_dependency_ready_task": [
+    "MSH-126"
+  ],
+  "native_implementation_started": false,
+  "production_build_workflow_instructions_diff": [],
+  "current_local_links": 35,
+  "at": "2026-11-01T12:27:21.253610+00:00",
+  "result": "passed"
+}

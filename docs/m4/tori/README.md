@@ -23,8 +23,12 @@ partial independent review remain historical evidence. Its reserved historical
 profile was never selected. The older [2026-10-27 report](../research/tori.md)
 also remains unchanged. Current sources/handoff supersede their readiness claims.
 
-MSH-85 is the next native-handoff owner after81; it still needs its required
-bounded slice refinement before Ready. MSH-77 consumes that real native handoff.
-MSH-42 retains the entire game delivery; MSH-51/M5 owns measured strength. No native
-Tori implementation, capability, selector entry or format has been added here.
-M4 and shared/platform closure remain open. Stop after81.
+[MSH-85 native refinement](native-plan.md) creates126fixture/reference harness,
+127state/transitions,128locallegality/inspection and129history/records/native
+dispatch.126 is the first dependency-satisfied Ready implementation slice;
+85 stays open/blocked as coordinator, with only its planning AC4 satisfied.
+The [103-ID ownership manifest](native-fixture-ownership.json) preserves native
+and later consumer assertion boundaries. MSH-77 consumes the real native handoff;
+MSH-42 retains complete delivery and MSH-51/M5 measured strength. No native Tori
+implementation/capability/selector/format or later task starts in this refinement.
+M4 and shared/platform closure remain open.

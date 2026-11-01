@@ -51,3 +51,12 @@ Next native fixture work is to instantiate these specs in the real kernel and
 add legal-set/perft expectations only where independently established. Comparator
 source audit is not a substitute. Canonical raw duplicate snippets are targeted
 malformed boundary probes; no otherwise valid current Tori envelope is claimed.
+
+## Native implementation ownership after MSH-85 refinement
+
+The103 immutable specs now have an explicit [ownership manifest](native-fixture-ownership.json)
+and [bounded native queue](native-plan.md).126 supplies executable infrastructure
+for all IDs,127/128/129 implement structural/local/game assertions. Real process
+acceptance, desktop preservation and human notation assertions remain explicit
+77/42 obligations; a native-only pass cannot claim those future journeys. The
+selected fixture bytes and independently expected outcomes are unchanged.

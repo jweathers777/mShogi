@@ -32,3 +32,10 @@ not native conformance. The immutable2026-10-31 checkpoint lives in
 source/cross-check and comparator limits are in current sources/profile/review
 and comparator-audit documents. No current rule depends on unread historical
 books. No modern copyright PDF was added to Git.
+
+MSH-85's later planning refinement is checked by `verify-native-plan.py` and
+`native-plan-validation.json`. The earlier modern checker intentionally protects
+its earlier task-dependency snapshot; its historical success is not a claim that
+it validates later component additions. Current native planning verifies the
+profile and all103 fixture bytes remain unchanged while85 gains the four actual
+component dependencies. Neither checker executes a native Tori rules kernel.

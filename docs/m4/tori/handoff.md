@@ -23,18 +23,20 @@ Chu/Tenjiku mechanism is needed. Existing geometry and choice mechanisms are
 reused; new native identities and concrete dispatch/capability cases are added
 only with actual consumers. No current format/transport change is made by81.
 
-## Preserved task/dependency mapping
+## Refined native task/dependency mapping — MSH-85,2026-11-01
 
 - **81** owns the selected complete playing profile and independently expected
   fixtures/source reconciliation. No Kagawa/Okano acquisition or historical
   edition-equivalence gate remains for this modern identity.
-- **85**, depends only81, owns the native handoff. Its original AC4 still requires
-  useful native slice refinement/splitting **before Ready**. Suggested bounded
-  ownership boundaries for that refinement are independent fixtures/comparator
-  admission; state/actions/reversal; complete legality; history/adjudication/record.
-  These are acceptance groupings, not new tasks or a detailed future implementation
-  plan. Preserve native/fixture independence and define actual child dependencies
-  when85 is authorized. Do not claim native conformance from81's static checks.
+- **85** remains the coordinating native handoff, now depending on81 and its
+  four bounded components126/127/128/129. [Native refinement](native-plan.md)
+  satisfies original AC4 only; AC1–3/DoD require delivered native behavior and a
+  real core consumer probe. **126** fixture/reference harness depends81;
+  **127** structure/actions/reversal depends126; **128** full local legality/
+  inspection depends127; **129** history/adjudication/records/typed native
+  dispatch depends128. No component depends on85,77 or final42. All are scoped
+  Ready after review, but only126 has satisfied dependencies.85 is blocked,
+  never Done on planning alone. All103 specifications have [explicit owners](native-fixture-ownership.json).
 - **77**, depends69/72/73/85, owns the shared real-consumer extension; no dependency
   on aggregate42 or final46. Current R1–R6 owners replace obsolete early bridges.
 - **42**, depends39/72/73/77/81/85, retains **all eight** original delivery criteria.
@@ -45,8 +47,11 @@ only with actual consumers. No current format/transport change is made by81.
 - **88/89/46/47** retain all-game/platform/shared/M4 closure; no task closes here.
   **82/83** remain inactive; no dependency chain through other final game deliveries.
 
-First dependency-unblocked native assignment after81 is **MSH-85**, still To Do
-pending its original refinement-before-Ready obligation. Do not start it in81.
+First implementation slice is **MSH-126**, dependency-satisfied Ready. MSH-85's
+pre-Ready refinement is now recorded;85 itself remains blocked on actual native
+components. This planning assignment starts none of them. Actual execution,
+desktop archive/runtime acceptance and notation facets remain77/42, without
+making85 depend on its own consumers.
 Provisional Tori→Chu→Tenjiku priority unchanged. M2/M3, completed Chess/Shogi/
 Xiangqi and current R6 evidence, MSH-61 capacity guarantee and future M5 ownership
 remain intact.

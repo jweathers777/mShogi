@@ -5,6 +5,16 @@ Baseline `62825dd77576ac2d3b8e18d1d3080a9c08112e82`, primary `codex/rewrite`,
 active task owner at startup. Existing111/100/98 worktrees were preserved; no
 new task worktree, external engine or GUI campaign was used.
 
+## Acceptance coverage
+
+| MSH-127 criterion | Supported evidence |
+| --- | --- |
+| AC1 native representation/root invariants | Standard setup and three independently expected structural rejection roots; both owner axes, domain/inventory/provenance tests. |
+| AC2 complete structural actions/effects | Nine-face tables,40accepted board fixtures, actual drop/wait/exit sequences and all nonroyal capture/demotion tests;14explicit rejected fixture cases. |
+| AC3 executable independent fixtures | Real MSH-126 adapter202/202 fields across54rows, all14primary127rows; remaining layers explicitly pending. |
+| AC4 exact reversal and atomic resource rejection | Full before/after snapshots,512-action reverse/redo chains twice, stale/wrong-owner/order/branch tests and checked counter/token capacity. |
+| AC5 bounded incomplete-legality boundary | Crate-private mutation/geometry, public compile-fail check, explicit structural-only acceptance tests; no dispatch/capability or consumer changes. |
+
 ## Actual implemented boundary
 
 `mshogi-core::tori` owns native Sente/Gote, bounded7×7 Square, nine Face values,
@@ -65,7 +75,7 @@ All103data definitions/provenance/profile and the full ownership manifest remain
 byte-identical to the independent MSH-81 expectations and MSH-126 anchor.
 **202 executed /202 passed /525 pending /0 failed**, four documentary annotations
 and83pending later-consumer requirements. All14primary127rows and every202planned
-127assertion execute; no128/129/77/42assertion is certified by structural acceptance.
+127assertion execute across54fixture rows; no128/129/77/42assertion is certified by structural acceptance.
 The default standalone conformance CLI still has no native adapter and correctly
 reports0executed/727pending; the core test below supplies actual native operations.
 
@@ -100,7 +110,10 @@ git diff --check
 With cached dependencies, local runs used `--offline`. Focused native suite:
 **12passed,0failed,0ignored**; public-boundary compile-fail doctest **1passed**.
 Full core/conformance regression command passed 247checks across32reported
-suites,0failed/0ignored; lint and format passed.
+suites,0failed and2existing deep Chess checks ignored by their established
+release-only opt-in policy (`deep_independent_divides_match_in_order` and
+`deep_fixed_seed_sequences`). These were not run anew for an additive Tori
+module; no Tori check is ignored. Lint and format passed.
 Native properties execute512deterministically selected structural actions twice,
 full reverse/forward restoration at every prefix, normalized material conservation,
 real apply/undo and rejection closures, capture/demotion of every nonroyal face,
@@ -134,9 +147,20 @@ included TORI-O-ROYAL; its actual expected failure is own-Phoenix safety and rem
 
 ## Integration, CI and handoff
 
-Actual source/CI results are appended after integration; no future hash or platform
-pass is assumed. Existing Chess/Shogi/Xiangqi rules and consumers are unchanged;
+Reviewed source integrated and pushed at
+`ce1801d7801f12e447b625739acd6a0c53aa2640`. Native workspace CI
+[41324873187](https://github.com/jweathers777/mShogi/actions/runs/41324873187)
+**PASS** at that exact source on Ubuntu24.04, macOS15 and Windows2022.
+[Exact job/step metadata](evidence/native-structural-ci.json) records successful
+format, lint, workspace tests, isolated QA constructors, snapshot fixtures, build
+and console smoke. No platform result is inferred from another system. Existing Chess/Shogi/Xiangqi rules and consumers are unchanged;
 core/conformance regressions and normal native CI provide compatibility evidence.
-No packaged GUI or engine-strength evidence is claimed. MSH-127 remains In Review
-until applicable platform CI/integration supports all criteria. MSH-128 is next
-after127closes;129/85final acceptance/77/42/other variants stay unstarted. M4 open.
+The automatically dispatched Desktop packages workflow is not this task's
+required GUI evidence, and no new GUI journey is claimed from its construction.
+No packaged GUI or engine-strength evidence is claimed. MSH-127 is **Done**
+under all five original acceptance criteria and four completion items; there
+are no unresolved material review findings or profile decisions. Final task/doc
+bookkeeping changes no reviewed code and uses the established `[skip ci]`
+convention; the tested production source remains ce1801d. MSH-128 is now the
+first dependency-ready slice, unassigned and unstarted.129/85final acceptance/
+77/42/other variants remain unstarted. M4 stays open.

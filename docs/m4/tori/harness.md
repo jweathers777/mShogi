@@ -126,8 +126,9 @@ Current18 tests include missing/extra/duplicate actions, wrong movement/capture/
 promotion/demotion/quail/hand count/owner/history, strict malformed/conflicting
 fixtures/observations, CLI nonzero failures, bounded adapter errors,2000deterministic
 generated snapshot mutations, bad undo/rejection and valid-data transformations.
-Constructed observations exercise assertion machinery only. Actual Tori apply,
-legality, repetition, replay and native properties remain pending127–129.
+Constructed observations exercise assertion machinery only. At MSH-126 completion, native apply/legality/history properties were pending.
+MSH-127 now executes structural apply/undo/redo and native properties as recorded
+below; complete legality, repetition and canonical replay remain128–129.
 
 ## Integration and evidence
 
@@ -137,3 +138,15 @@ it. No GUI journey or other engine is needed. See [MSH-126 evidence](harness-evi
 for exact revisions, independent review, failures/corrections and CI disposition.
 MSH-127 is the next task only after126 actually completes; nothing starts it
 automatically. All downstream complete-game/shared/M4 obligations remain open.
+
+
+## MSH-127 native structural execution
+
+The [actual core adapter and evidence](native-structural-evidence.md) now execute
+202MSH-127assertions across54fixture rows:202pass,0fail,525assertions pending,
+83later-consumer requirements pending. Run `cargo test --locked -p mshogi-core --lib tori:: -- --nocapture`. All14primary127rows and40accepted board transitions
+are covered; the2accepted resignation specifications remain129. The default CLI
+without a native adapter still truthfully reports0executed/727pending. Geometry/
+structural transitions and token reversal do not establish complete legality,
+history or playable delivery. Native128/129 and consumer77/42 remain incomplete;
+none is automatically activated by127completion.

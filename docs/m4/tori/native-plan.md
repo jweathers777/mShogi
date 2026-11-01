@@ -23,19 +23,21 @@ on its aggregate85, shared consumer77 or final42.
 | **MSH-77** | Real shared execution/session/document/presentation integration consuming85, retaining original scope/dependencies. |69,72,73,85 |
 | **MSH-42** | Complete Tori console, functional engine/search/supervision, notation, desktop, persistence and independent game delivery; MSH-51/M5 owns measured strength. |39,72,73,77,81,85 |
 
-126 is now Done ([actual harness evidence](harness-evidence.md));127 is the first
-dependency-satisfied Ready slice.128–129 remain blocked by their actual
-predecessor.85 is scoped Ready and blocked on components,
-**not Done**; only original AC4 may be checked by this planning pass. No native
-implementation/consumer task is activated. Serial order keeps the independent corpus/harness
+126 is Done ([harness evidence](harness-evidence.md));127 is Done
+([structural evidence](native-structural-evidence.md)).128 is the first
+dependency-satisfied Ready slice;129 remains blocked by128.85 is scoped Ready
+and blocked on remaining components,
+**not Done**; only original AC4 may be checked by this planning pass. No later
+implementation/consumer task is activated by this handoff update. Serial order keeps the independent corpus/harness
 contract settled before transition testing, transitions before full legality, and
 complete local choices before repetition/record replay. Future bounded execution
 can use one integrator without competing owners of the same kernel boundary.
 
 ## Actual architecture inspected and smallest native extension
 
-Current `crates/mshogi-core/src/lib.rs` exports only chess/shogi/xiangqi and native
-dispatch. Shogi's `action.rs` makes structural application private; `legal.rs`
+At the planning source, `crates/mshogi-core/src/lib.rs` exported only
+chess/shogi/xiangqi and native dispatch. MSH-127 now also exports the structural
+`tori` module, while native game dispatch remains unchanged. Shogi's `action.rs` makes structural application private; `legal.rs`
 exports complete board legality/inspection and separate repetition identity.
 Xiangqi's `legal.rs` separates local root/status from `game.rs` admission/history/
 monotonic runtime token and `record.rs` strict replay. Reuse these **ownership
@@ -147,3 +149,18 @@ assertions and property/metamorphic interfaces without any external engine. All
 103 expected specifications/profile/ownership remain unchanged.126 completion
 evidence is separate from the historical planning review and from pending native
 127–129 implementation; see [evidence](harness-evidence.md).
+
+
+## Completed MSH-127 handoff
+
+Native `mshogi-core::tori` structural state/actions/effects and private exact
+apply/undo/redo are integrated at ce1801d7801f12e447b625739acd6a0c53aa2640;
+[execution, review and three-platform CI evidence](native-structural-evidence.md).
+All202127assertions pass across54rows, including all14primary rows;525assertions
+and83consumer requirements remain pending. The original42accepted specifications
+contain40board transitions and2resignations; the latter stay129. All profile,
+fixture and ownership bytes remain unchanged.128 must implement complete local
+legality/safety/drop rules/status/inspection and rerun structural evidence through
+that public legal boundary.129 retains history/outcomes/strict records/replay/
+native dispatch;85 remains coordinating acceptance,77/42 remain later consumers.
+No future implementation plan or dependency was changed, and no next task started.

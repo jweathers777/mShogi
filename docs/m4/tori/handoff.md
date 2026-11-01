@@ -35,7 +35,7 @@ only with actual consumers. No current format/transport change is made by81.
   **127** structure/actions/reversal depends126; **128** full local legality/
   inspection depends127; **129** history/adjudication/records/typed native
   dispatch depends128. No component depends on85,77 or final42. All are scoped
-  Ready after review.126/127 are now Done;128 has satisfied dependencies.85 is blocked,
+  Ready after review.126/127/128 are now Done;129 has satisfied dependencies.85 is blocked,
   never Done on planning alone. All103 specifications have [explicit owners](native-fixture-ownership.json).
 - **77**, depends69/72/73/85, owns the shared real-consumer extension; no dependency
   on aggregate42 or final46. Current R1–R6 owners replace obsolete early bridges.
@@ -50,7 +50,9 @@ only with actual consumers. No current format/transport change is made by81.
 Completed **MSH-126** supplies the self-contained fixture harness
 ([actual evidence](harness-evidence.md)); completed **MSH-127** supplies native
 structural state/transitions/reversal ([evidence](native-structural-evidence.md)).
-**MSH-128** is next Ready, with full legal admission still pending. The former MSH-126 mandatory
+Completed **MSH-128** supplies complete local legal choices, root/status rules,
+checked apply/reversal and immutable native inspection ([evidence](native-local-evidence.md)).
+**MSH-129** is next Ready; full-game history/commands/records/dispatch remain pending. The former MSH-126 mandatory
 external-engine build/admission requirement was withdrawn by the owner2026-11-01. MSH-85's
 pre-Ready refinement is now recorded;85 itself remains blocked on actual native
 components. The earlier planning assignment started none of them. Actual execution,
@@ -68,3 +70,18 @@ expectations, meaningful properties/metamorphisms/adversarial cases and exact
 reversal/replay with review under [project policy](../../testing/conformance-policy.md).
 The selected profile,103 expectations and all native/consumer ownership remain
 unchanged. No native kernel or shared integration begins in126.
+
+
+## MSH-128 local handoff
+
+`mshogi-core::tori::LocalPosition` is the one checked local boundary over structural
+Position, with complete choices, native effects, root admission, check/status,
+read-only board/hand inspection and bounded perft/divide. `legal_actions` and
+`is_legal` are board facts independent of counters/history; actual `apply` retains
+counter/token capacity errors. Native inspection is advisory on a private owner
+turn and never authorizes a live Game command. All mutation/geometry helpers of
+structural Position remain crate-private.483native assertions pass (202127+281128),
+244history/record/consumer assertions and83later-consumer requirements remain
+pending. Source5c60ac65dc03a7f9afcaa796a2babb252329d361 passed nativeCI on all three
+systems.129 must own actual full-game permission/conclusions/history/replay/dispatch;
+85/77/42 retain final native and real consumer acceptance. No later task started.

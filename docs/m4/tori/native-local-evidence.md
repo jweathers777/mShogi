@@ -163,15 +163,26 @@ in the execution evidence. No review agent edited source or task records.
 
 ## Integration and remaining scope
 
-Actual integrated revision, native CI and final status are recorded below after
-execution; no future commit or platform result is assumed. MSH-128 remains In Review
-until all original criteria/completion items have supporting integration/CI evidence.
+Reviewed source integrated and pushed at
+`5c60ac65dc03a7f9afcaa796a2babb252329d361`. Native Rust workspace CI
+[41331055051](https://github.com/jweathers777/mShogi/actions/runs/41331055051)
+**PASS at that exact revision on Ubuntu24.04, macOS15 and Windows2022**.
+[Exact run/job/step metadata](evidence/native-local-ci.json) records successful
+format, lint, full workspace tests, isolated QA constructors, native snapshot
+fixtures, build and console smoke. No platform result is inferred from another
+system. MSH-128 is **Done** under all five original acceptance criteria and four
+completion items. There are no unresolved material review findings or rule
+questions. Final task/document bookkeeping introduces no code change and uses
+the established `[skip ci]` convention; the tested source remains5c60ac6.
 Existing Chess/Shogi/Xiangqi rules, consumers, current execution/archive/frontend
 architecture and MSH-61 saveability guarantee are unchanged. Normal native CI is
-required; no packaged GUI or strength campaign is required or claimed here.
+required; no packaged GUI or strength campaign is required or claimed here. The
+automatically triggered Desktop packages workflow does not establish new Tori
+application interaction or playable delivery.
 
 MSH-129 owns repetition/departure obligations, full-game command permission,
 conclusions/resignation, canonical records/strict replay, capacity measurement and
 native dispatch/context. MSH-85 remains final native acceptance, MSH-77 shared
 runtime/document/inspection presentation and MSH-42 complete engine/console/desktop
-delivery. None is automatically activated; M4 remains open.
+delivery. MSH-129 is now the first dependency-ready task, unassigned and unstarted.
+None is automatically activated; M4 remains open.

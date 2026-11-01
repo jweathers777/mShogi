@@ -136,7 +136,8 @@ The crate is part of normal Rust workspace format/lint/test/build CI, but no
 product crate depends on it and no Tauri bundle/resource configuration references
 it. No GUI journey or other engine is needed. See [MSH-126 evidence](harness-evidence.md)
 for exact revisions, independent review, failures/corrections and CI disposition.
-MSH-127 is the next task only after126 actually completes; nothing starts it
+At MSH-126 completion, MSH-127 was the next bounded task; its completion
+and the subsequent MSH-128 evidence are recorded below. No later task starts
 automatically. All downstream complete-game/shared/M4 obligations remain open.
 
 
@@ -150,3 +151,16 @@ without a native adapter still truthfully reports0executed/727pending. Geometry/
 structural transitions and token reversal do not establish complete legality,
 history or playable delivery. Native128/129 and consumer77/42 remain incomplete;
 none is automatically activated by127completion.
+
+
+## MSH-128 complete local execution
+
+The [actual local adapter and evidence](native-local-evidence.md) execute483native
+assertions across83fixture rows:202MSH-127 and281MSH-128 pass,0fail,244remain
+pending under history/record/consumer ownership;83later-consumer requirements
+are separately pending. Run `cargo test --locked -p mshogi-core --lib tori::local_conformance -- --nocapture`.
+All69primary128rows have actual local evidence. The default standalone data CLI
+still has no native adapter and reports727pending, not a complete native pass.
+Local board legality/inspection does not satisfy129Game permission/conclusions/
+replay or77/42execution, document, notation and product obligations. None starts
+automatically. Prior126/127counts above remain evidence for their dated boundaries.

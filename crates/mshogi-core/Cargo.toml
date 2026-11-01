@@ -11,3 +11,6 @@ workspace = true
 [dependencies]
 serde_json = { version = "=1.0.145", features = ["raw_value"] }
 serde = { version = "=1.0.229", features = ["derive"] }
+
+[dev-dependencies]
+mshogi-conformance = { path = "../mshogi-conformance" }

@@ -98,6 +98,7 @@ dependencies = [
 name = "mshogi-core"
 version = "0.1.0"
 dependencies = [
+ "mshogi-conformance",
  "serde",
  "serde_json",
 ]

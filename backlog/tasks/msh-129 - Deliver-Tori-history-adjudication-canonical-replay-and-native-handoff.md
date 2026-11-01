@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-01T12:21:00Z'
-updated_date: '2026-11-01T19:49:00Z'
+updated_date: '2026-11-01T19:50:00Z'
 labels:
   - m4
   - owner-msh-85
@@ -78,4 +78,6 @@ Native Game/T06 obligations/context-lineage, exact reversal/prefix, strict nativ
 Independent tori129_review finalPASS on frozen nativeboundary; no unresolvedmaterial findings. Actualmethod separate readonlysemantic/API/profile/fixture/diff review plus independently13nativegame/713assertions,3Tori+10existing envelope,2engine routing and1actualsubprocess checks. Eventlimit/longredo/prefix test challenges addressed; minor forgeableview panic risk resolved by private native state/getter. Reviewedgame.rs SHAa3987b9276971f424f191ff28d9f4ee979bdedae604afb546c159e170d0c92c6. Finalfocus38ToriPASS; all-targetworkspaceclippy-Dwarnings/formatPASS; existing41engine/201desktop-session/19selectedsubprocesschecksPASS. Initial desktoprustdocE0463artifactfailure retained; focusedserialdoctest rerunPASS0tests. NativeGameprefix records preserve complete root/historywithoutfuture; real360sequence covers104captures/103drops/16promotions andfullundo+redo everyprefix. Fullgraph129/344doctor/integrityPASS withdeps/oldDone/tasks/profile/fixtures/localrules/existingrules/search/runner/frontend/workflows unchanged. NativeCI stillpending actualsourcecommit; remainInReview.
 
 Final core/conformance rerun278PASS/0failed across34reported suites;2existingdeepChessoptinsnotrun. New38Tori+3coreconsumer+2engineunsupported+1actualsubprocess checksPASS, noignoredTori. No code changes after independentreviewhash; current docs/evidence finalized for sourcecommit and real3platformnativeCI. TaskInReview untilactualCI/integration evidence.
+
+Reviewednative source integrated/pushed e1cc89d454db5e0ce98da34bf4cda7960d395413, nativeCI41343664138 andautomaticDesktop41343664148started. Postworkspaceinspection foundseparatelybuiltTauri exhaustive defaultsavefilename match needed explicitToriunsupportedarm. AddedreturnErr beforepicker/savequeue, noUIcapability; independentfollowupPASS and localTauri all-targetcheckPASS with20existingTao warnings. Core/engine/testhashesunchanged. Additive normalcommit/push retainsfirstsource and CIhistory; finalnativeCIrequired beforeDone.
 <!-- SECTION:NOTES:END -->

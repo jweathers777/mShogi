@@ -86,8 +86,12 @@ impl Corpus {
         {
             return Err("expected 240 native and 10 consumer Chu fixtures".into());
         }
-        if format!("{:x}", Sha256::digest(input.as_bytes())) != CORPUS_SHA256 {
-            return Err("Chu corpus differs from independently audited bytes".into());
+        let digest = format!("{:x}", Sha256::digest(input.as_bytes()));
+        if digest != CORPUS_SHA256 {
+            return Err(format!(
+                "Chu corpus differs from independently audited bytes: expected {CORPUS_SHA256}, observed {digest}, bytes {}",
+                input.len()
+            ));
         }
         Ok(Self {
             fixtures: wire.fixtures,
@@ -388,5 +392,15 @@ mod tests {
             assert!(assertions::compare_set(&json!([1, 2]), &observed).is_err());
         }
         assert!(assertions::compare_set(&json!([1, 2]), &json!([2, 1])).is_ok());
+    }
+    #[test]
+    fn byte_identity_does_not_silently_normalize_changed_line_endings() {
+        let crlf = FIXTURES.replace('\n', "\r\n");
+        let error = Corpus::load(&crlf)
+            .err()
+            .expect("changed bytes must reject");
+        assert!(error.contains("expected "));
+        assert!(error.contains("observed "));
+        assert!(error.contains("bytes "));
     }
 }

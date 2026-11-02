@@ -1,3 +1,6 @@
 # Conformance identity hashes the reviewed LF bytes on every checkout platform.
 /docs/m4/tori/fixtures.json text eol=lf
 /docs/m4/tori/native-fixture-ownership.json text eol=lf
+/docs/m4/chu/fixtures.json text eol=lf
+/docs/m4/chu/profile.json text eol=lf
+/docs/m4/chu/sources.json text eol=lf

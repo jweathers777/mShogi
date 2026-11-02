@@ -5,6 +5,7 @@ import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { invoke } from "@tauri-apps/api/core";
+import { ShogiBoard as ShogiBoardForTori } from "./ShogiBoard";
 import { GameBoard } from "./GameBoard";
 import { ApplicationView } from "./ApplicationView";
 import { NativeHistory } from "./NativeSessionPanels";
@@ -35,7 +36,7 @@ const inspections = inspectionJson as unknown as MovementInspection[];
 function board(snapshot = root, command = vi.fn()) { return { ...render(<GameBoard snapshot={snapshot} disabled={false} inspectionDisabled={false} command={command} />), command }; }
 function session(snapshot: GameSnapshot): GameSession { return { snapshot, busy: false, error: "", command: vi.fn(), file: vi.fn(), newGame: vi.fn(), closeRequested: false, cancelClose: vi.fn(), finishClose: vi.fn(), requestClose: vi.fn() }; }
 function app(snapshot: ToriSnapshot) { const native = session(snapshot); return { ...render(<ApplicationView snapshot={snapshot} session={native} onNewGame={vi.fn()} onOpen={vi.fn()} blocked={false} />), native }; }
-it("presents all nine native faces, handed resources, exact7x7 orientations and technical status", () => {
+it("presents all nine native faces, handed resources, exact7x7 orientations and player presentation", () => {
   board();
   for (const piece of root.pieces) expect(screen.getByRole("button", { name: piece.label })).toBeTruthy();
   expect(new Set(root.pieces.map(p => p.kind)).size).toBe(9);
@@ -43,7 +44,8 @@ it("presents all nine native faces, handed resources, exact7x7 orientations and 
   expect(screen.getByRole("button", { name: "Sente Right Quail in hand, 1" })).toBeTruthy();
   expect(screen.getByRole("button", { name: "Gote Left Quail in hand, 1" })).toBeTruthy();
   expect(screen.getByRole("group", { name: /7×7.*Sente at bottom/ })).toBeTruthy();
-  expect(screen.getByText(/Development contract verification/)).toBeTruthy();
+  expect(screen.queryByText(/Development contract verification/)).toBeNull();
+  expect(document.querySelectorAll(".shogi-square")).toHaveLength(49);
   cleanup(); board(goteJson as unknown as ToriSnapshot);
   expect(screen.getByRole("group", { name: /7×7.*Gote at bottom/ })).toBeTruthy();
 });
@@ -180,4 +182,36 @@ it.each([capacityDeadlineJson, fileDeadlineJson])("renders the real native elaps
   expect(screen.queryByRole("button", { name: /Retry engine/ })).toBeNull();
   if ((fixture as unknown as ToriSnapshot).capacity.status === "paused") expect(screen.queryByRole("button", { name: /Resume play/ })).toBeNull();
   else expect(screen.getByRole("button", { name: /Resume play/ })).toBeTruthy();
+});
+
+it("renders native face and owner orientation on the production shared board, with native name aids", () => {
+  const { container, rerender } = board();
+  for (const piece of root.pieces) {
+    const square = container.querySelector(`[data-square="${piece.square}"]`)!;
+    const artwork = square.querySelector(".tori-piece")!;
+    expect(artwork.getAttribute("data-tori-face")).toBe(piece.kind);
+    expect(artwork.classList.contains("promoted")).toBe(piece.promoted);
+    expect(artwork.getAttribute("transform")).toBe(piece.owner === root.sides[0]!.key ? null : "rotate(180 50 50)");
+    expect(square.querySelector("title")?.textContent).toBe(piece.label);
+  }
+  rerender(<GameBoard snapshot={goteJson as unknown as ToriSnapshot} disabled={false} inspectionDisabled={false} command={vi.fn()} />);
+  expect(container.querySelector(".shogi-square")?.getAttribute("data-square")).toBe("1g");
+  expect(container.querySelector('[data-square="4a"] .tori-piece')?.getAttribute("transform")).toBeNull();
+  expect(container.querySelector('[data-square="4g"] .tori-piece')?.getAttribute("transform")).toBe("rotate(180 50 50)");
+});
+it("keeps finished Tori in the common shell without engineering prose, encoded PV or misplaced controls", async () => {
+  const { container } = app(analysisJson as unknown as ToriSnapshot);
+  expect(container.querySelector('[data-theme="mshogi-dark"]')).toBeTruthy();
+  expect([...container.querySelectorAll('[data-shell-section]')].map(node => node.getAttribute('data-shell-section'))).toEqual(['analysis','actions','history']);
+  expect(screen.queryByText(/Native Tori verification|technical pieces|not final Tori/)).toBeNull();
+  expect(container.querySelector('[data-position-status]')?.textContent).toContain('Live position');
+  await userEvent.click(screen.getByRole('button', { name: 'Analyze position' }));
+  expect(screen.queryByText(/"result_face"|"from":|"kind":"move"/)).toBeNull();
+  expect(screen.getAllByText('No move was played.').length).toBeGreaterThan(0);
+});
+it("preserves historical native labels and read-only inspection on the actual production renderer", async () => {
+  const native = historyJson as unknown as ToriSnapshot, onPlay = vi.fn(), onInspect = vi.fn().mockResolvedValue(null);
+  render(<ShogiBoardForTori snapshot={native} disabled={false} inspectionDisabled={false} onInspect={onInspect} onPlay={onPlay} />);
+  await userEvent.click(screen.getByRole('button', { name: '4g, Sente Phoenix' }));
+  expect(onPlay).not.toHaveBeenCalled(); expect(onInspect).toHaveBeenCalledWith('4g');
 });

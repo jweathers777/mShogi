@@ -85,7 +85,7 @@ export function ApplicationShell({ game, runtime, document, actions, heading, bo
   return <main className={`game-shell shell-${game} ${game === "chess" ? "application" : "shogi-application"}`} data-theme="mshogi-dark" data-historical={historical} {...attributes} onFocusCapture={onFocusCapture}>
     <div className="shell-content" inert={blocked}>
       <header className="shell-header app-header shogi-header">
-        <div className="product-brand brand"><span className="brand-mark" aria-hidden="true">歩</span><div><div className="brand-name"><h1>mShogi</h1>{support}</div><p>{game.toUpperCase()}</p><span className="shell-runtime" role="status">{runtime}</span></div></div>
+        <div className="product-brand brand"><span className="brand-mark" aria-hidden="true">歩</span><div><div className="brand-name"><h1>mShogi</h1>{support}</div><p>{game === "tori" ? "TORI SHOGI" : game.toUpperCase()}</p><span className="shell-runtime" role="status">{runtime}</span></div></div>
         <div className="shell-document document-card" aria-label="Game file">{document}</div><div className="product-file-actions shell-file-actions">{actions}</div>
       </header>
       <div className="shell-workspace workspace shogi-workspace">

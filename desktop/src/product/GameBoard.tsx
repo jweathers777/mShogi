@@ -1,6 +1,5 @@
 import { useState } from "react";
 import type { CompletedActionGeometry } from "../boardPresentation";
-import { NativeBoard } from "../NativeBoard";
 import type { ToriAction } from "./native";
 import { Board } from "../Board";
 import { ShogiBoard } from "./ShogiBoard";
@@ -15,14 +14,12 @@ export function GameBoard({ snapshot, disabled, inspectionDisabled, command, com
   const lastAction = completedAction === undefined ? snapshot.moves.last_action : completedAction;
   const inspect = useMovementInspection({ token: snapshot.token, game: snapshot.game });
   const [help, setHelp] = useState<HTMLDivElement | null>(null);
-  if (snapshot.game === "tori") {
-    const bottom = snapshot.orientations.find(o => o.side.id.side === snapshot.document.settings.settings.orientation)!.side;
-    return <GameFrame snapshot={snapshot} bottom={bottom} help={<p>Development contract verification · technical pieces and action identifiers · not final Tori UI</p>}
-      board={<NativeBoard snapshot={snapshot} bottomSide={bottom.key} disabled={disabled} inspectionDisabled={inspectionDisabled} onInspect={inspect}
-        completedAction={lastAction} onPlay={action => { void command({ kind: "tori", actor: snapshot.human.id.side as "sente" | "gote", command: { kind: "play", action: JSON.parse(action) as ToriAction } }); }} />} />;
-  }
-  if (snapshot.game === "shogi") return <ShogiBoard completedAction={lastAction} snapshot={snapshot} disabled={disabled} inspectionDisabled={inspectionDisabled}
-    inspectionContextKey={JSON.stringify(snapshot.token)} onInspect={inspect} onPlay={action => { void command({ kind: "play", action }); }} />;
+  if (snapshot.game === "shogi" || snapshot.game === "tori") return <ShogiBoard completedAction={lastAction} snapshot={snapshot} disabled={disabled} inspectionDisabled={inspectionDisabled}
+    inspectionContextKey={JSON.stringify(snapshot.token)} onInspect={inspect} onPlay={action => {
+      void command(snapshot.game === "tori"
+        ? { kind: "tori", actor: snapshot.human.id.side as "sente" | "gote", command: { kind: "play", action: JSON.parse(action) as ToriAction } }
+        : { kind: "play", action });
+    }} />;
   if (snapshot.game === "xiangqi") return <XiangqiBoard completedAction={lastAction} snapshot={snapshot} disabled={disabled} inspectionDisabled={inspectionDisabled}
     onInspect={inspect} onPlay={action => { void command({ kind: "xiangqi", command: { kind: "play", action } }); }} />;
   const side = snapshot.document.settings.settings.orientation;

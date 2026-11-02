@@ -35,7 +35,7 @@ export function ApplicationView({ snapshot, session, onNewGame, onOpen, blocked 
   const defaults = snapshot.game === "tori" ? snapshot.play_limits : snapshot.game === "xiangqi" ? snapshot.document.settings.analysis_defaults : snapshot.document.settings.settings.analysis_defaults;
   const exactPrefix = snapshot.game !== "xiangqi" || snapshot.xiangqi.canonical_context_scope === "selected_committed";
   return <ApplicationShell game={snapshot.game} historical={snapshot.historical} blocked={confirmation !== null || supportOpen} onFocusCapture={focus}
-    runtime={thinking ? "mShogi is thinking" : analyzing ? "Analyzing selected position" : snapshot.game === "tori" ? "Native Tori verification" : "Local engine"}
+    runtime={thinking ? "mShogi is thinking" : analyzing ? "Analyzing selected position" : "Local engine"}
     attributes={{ "data-current-event": snapshot.event_index, "data-live-events": snapshot.events.filter(event => event.index !== 0).length, "data-paused": snapshot.paused, "data-orientation": orientation }}
     document={<><DocumentState document={snapshot.document} /><h2 title={snapshot.document.path ?? undefined}>{snapshot.document.path?.split(/[\\/]/).at(-1) ?? "Untitled game"}</h2>
       {["saving", "opening", "viewing"].includes(snapshot.io.phase) && <p role="status">{snapshot.io.phase === "saving" ? "Saving your game…" : snapshot.io.phase === "opening" ? "Opening your game…" : "Opening the selected position…"}</p>}</>}
@@ -44,7 +44,7 @@ export function ApplicationView({ snapshot, session, onNewGame, onOpen, blocked 
       <button className="quiet" onClick={onOpen} disabled={disabled}>Load</button></>}
     heading={<LiveGameHeading eyebrow={snapshot.historical ? "HISTORY · READ ONLY" : snapshot.status.concluded ? "GAME CONCLUDED" : "YOUR GAME"}
       status={snapshot.historical ? "Viewing history" : thinking ? "mShogi is thinking" : (snapshot.game === "chess" ? gameStatus({ conclusion: snapshot.chess.selected_conclusion, turn: snapshot.turn.id.side, in_check: snapshot.chess.in_check }) : snapshot.status.label)}
-      player={<>{snapshot.game === "tori" ? `Native Tori verification · ${snapshot.human.label} against mShogi` : <>You play {snapshot.human.label} against mShogi</>}</>}
+      player={<>You play {snapshot.human.label} against mShogi</>}
       flip={<button className="quiet flip-button" disabled={disabled} aria-label={`Flip board; currently ${side.label} at bottom`} onClick={() => { void flip(); }}>↕ <span>Flip board</span></button>} />}
     positionNotice={snapshot.historical && <HistoricalNotice action={<button disabled={disabled} onClick={() => { void command({ kind: "return_live" }); }}>Return to live</button>}>
       <p>Your live game is unchanged.</p></HistoricalNotice>}

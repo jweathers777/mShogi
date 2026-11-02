@@ -292,6 +292,17 @@ def moves_controls_settled(observed, event, orientation=None, changed_from=None)
             and (changed_from is None or observed["orientation"] != changed_from))
 
 
+def dirty_close_controls_settled(observed, previous_orientation, event):
+    """A dispatched Flip is not yet an accepted dirty document."""
+    return (isinstance(observed, dict) and observed.get("documentState") == "modified"
+            and observed.get("event") == str(event)
+            and observed.get("orientation") in ("sente", "gote")
+            and observed["orientation"] != previous_orientation
+            and observed.get("flipEnabled") is True and observed.get("supportEnabled") is True
+            and observed.get("fileControlsEnabled") is True
+            and observed.get("checkingCapacity") is False)
+
+
 def focus_outline_visible(observed):
     """Require the actual focused outline inside every scroll clip and viewport."""
     if not isinstance(observed, dict) or not observed.get("focused") or not observed.get("focusVisible"):
@@ -2235,7 +2246,7 @@ class Journey:
         self.record('Bounded complete ordinary Tori game', {'root':'standard', 'accepted_board_actions':4,
             'retired_board_actions':2, 'current_board_actions':2, 'final_native_conclusion':concluded['context']['payload']['conclusion'],
             'evidence':'Human capture / real engine capture / human drop / real engine reply / Take back / Save Load / analysis / native resignation. Functional play, not strength evidence.'})
-        w.click('.flip-button')
+        self.dirty_tori_close_source()
         self.record('Native Tori dirty window-close request', self.native.close_window())
         wait(lambda: w.has('.document-guard'), 'native dirty Tori close protected')
         w.button('Cancel'); wait(lambda: not w.has('.document-guard'), 'Cancel protects concluded Tori game')
@@ -2243,6 +2254,43 @@ class Journey:
         assert self.native_diagnostics()['context'] == concluded['context']
         self.capture('normal-dirty-quit-cancel-preserves-game')
         self.quit(save=True)
+
+    def dirty_tori_close_source(self):
+        """Flip once, then prove its native admission before testing dirty Quit.
+
+        WM_CLOSE may correctly retire an unaccepted candidate while the current
+        accepted document is clean. Do not mistake dispatched pointer input for
+        the accepted unsaved document this journey is required to protect.
+        """
+        w = self.web
+        before = self.native_diagnostics()
+        assert before['document']['path'] and before['document']['dirty'] is False, before
+        orientation = before['document']['settings']['settings']['orientation']
+        event = len(before['context']['payload']['events'])
+        w.click('.flip-button')
+        def admitted():
+            observed = w.read("""(() => {
+                const root=document.querySelector('.game-shell'),flip=document.querySelector('.flip-button'),
+                    support=document.querySelector('[data-support-trigger]'),files=[...document.querySelectorAll('.shell-file-actions button')];
+                return {documentState:document.querySelector('[data-document-state]')?.dataset.documentState,
+                    event:root?.dataset.currentEvent,orientation:root?.dataset.orientation,
+                    flipEnabled:!!flip&&!flip.disabled,supportEnabled:!!support&&!support.disabled,
+                    fileControlsEnabled:files.length===3&&files.every(e=>!e.disabled),
+                    checkingCapacity:[...document.querySelectorAll('[role="status"]')].some(e=>e.textContent.includes('Checking complete save capacity'))};
+            })()""")
+            return observed if dirty_close_controls_settled(observed, orientation, event) else None
+        observed = wait(admitted, 'accepted dirty Tori orientation and settled controls before native Close')
+        after = self.native_diagnostics()
+        assert after['document']['dirty'] is True and after['close_requires_save'] is True, after
+        assert after['document']['path'] == before['document']['path']
+        assert after['document']['revision'] > before['document']['revision']
+        assert after['document']['settings']['settings']['orientation'] == observed['orientation']
+        assert after['token']['document'] == before['token']['document']
+        assert after['token']['version'] > before['token']['version']
+        assert after['context'] == before['context'], 'Flip changes preferences, never the concluded game'
+        self.record('Native accepted dirty orientation before actual window-close request',
+                    {'before':before, 'settled_controls':observed, 'after':after})
+        return after
 
     def normal_tori_native(self):
         """Difficult independently expected states through ordinary normal Load."""

@@ -1236,5 +1236,82 @@ class ToriNormalProductEvidenceTests(unittest.TestCase):
         journey.web.command.assert_not_called()
 
 
+class ToriDirtyCloseAdmissionTests(unittest.TestCase):
+    """No native Close may be inferred from an unacknowledged preference input."""
+    def controls(self):
+        return {'documentState':'modified', 'event':'3', 'orientation':'gote',
+                'flipEnabled':True, 'supportEnabled':True, 'fileControlsEnabled':True,
+                'checkingCapacity':False}
+
+    def native(self):
+        before = {'document':{'path':'current.mshogi','dirty':False,'revision':14,
+                   'settings':{'game_kind':'tori','settings':{'orientation':'sente'}}},
+                  'context':{'payload':{'events':[{'exact':i} for i in range(3)],
+                                       'conclusion':{'kind':'resignation','winner':'gote'}}},
+                  'token':{'document':4,'version':40},'close_requires_save':False}
+        after = copy.deepcopy(before)
+        after['document'].update(dirty=True, revision=15)
+        after['document']['settings']['settings']['orientation']='gote'
+        after['token']['version']=41
+        after['close_requires_save']=True
+        return before, after
+
+    def journey(self, observations, native=None):
+        journey = object.__new__(module.Journey)
+        journey.web, journey.record, journey.native = Mock(), Mock(), Mock()
+        journey.web.read.side_effect=observations
+        journey.native_diagnostics=Mock(side_effect=self.native() if native is None else native)
+        return journey
+
+    def test_clean_and_busy_snapshots_cannot_establish_accepted_dirty_close_source(self):
+        ready = self.controls()
+        self.assertTrue(module.dirty_close_controls_settled(ready, 'sente', 3))
+        for field, value in (('documentState','unmodified'),('orientation','sente'),
+                             ('orientation',None),('event','2'),('flipEnabled',False),
+                             ('supportEnabled',False),('fileControlsEnabled',False),('checkingCapacity',True)):
+            with self.subTest(field=field,value=value):
+                self.assertFalse(module.dirty_close_controls_settled({**ready,field:value},'sente',3))
+
+    def test_flip_dispatched_once_then_clean_busy_dirty_pending_and_dirty_settled_are_observed(self):
+        ready = self.controls()
+        clean = {**ready,'documentState':'unmodified','orientation':'sente'}
+        busy = {**clean,'flipEnabled':False,'supportEnabled':False,'checkingCapacity':True}
+        pending = {**ready,'supportEnabled':False}
+        journey = self.journey([clean,busy,pending,ready])
+        with patch.object(module.time,'sleep'):
+            self.assertEqual(journey.dirty_tori_close_source(),self.native()[1])
+        journey.web.click.assert_called_once_with('.flip-button')
+        self.assertEqual(journey.web.read.call_count,4)
+        self.assertEqual(journey.native_diagnostics.call_count,2)
+        journey.native.close_window.assert_not_called()
+        expression=journey.web.read.call_args.args[0]
+        for mutation in ('invoke(', 'dispatchEvent(', '.click(', '.focus(', 'scrollIntoView('):
+            self.assertNotIn(mutation,expression)
+
+    def test_visible_dirty_without_authoritative_native_admission_cannot_pass(self):
+        before,after=self.native()
+        for mutate in (lambda a:a['document'].update(dirty=False),
+                       lambda a:a.update(close_requires_save=False),
+                       lambda a:a['token'].update(version=40),
+                       lambda a:a['token'].update(document=5),
+                       lambda a:a['document'].update(revision=14),
+                       lambda a:a['document']['settings']['settings'].update(orientation='sente'),
+                       lambda a:a['context']['payload']['events'].append({'unexpected':'move'})):
+            changed=copy.deepcopy(after);mutate(changed)
+            journey=self.journey([self.controls()],[before,changed])
+            with self.assertRaises(AssertionError):
+                journey.dirty_tori_close_source()
+            journey.native.close_window.assert_not_called()
+
+    def test_unknown_input_delivery_is_never_replayed(self):
+        journey=self.journey([self.controls()])
+        journey.web.click.side_effect=ConnectionResetError('delivery unknown')
+        with self.assertRaises(ConnectionResetError):
+            journey.dirty_tori_close_source()
+        journey.web.click.assert_called_once_with('.flip-button')
+        journey.web.read.assert_not_called()
+        journey.native.close_window.assert_not_called()
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

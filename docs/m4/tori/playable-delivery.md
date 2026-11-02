@@ -1,5 +1,7 @@
 # Direct MSH-42 playable Tori delivery handoff
 
+Current product continuation: [MSH-42 delivery reconciliation](delivery-review.md) records normal Tori activation at `cb1e162`, owner-approved traditional presentation and final platform acceptance status. The dated checkpoints and former gate descriptions below retain their historical scope.
+
 Source inspected for MSH-77 acceptance: production
 `52b0390cac09faf727a0c5ed74c1fd673f468a11`, integration `febf4d2`.
 The [shared acceptance](shared-acceptance.md) completes the77prerequisite.

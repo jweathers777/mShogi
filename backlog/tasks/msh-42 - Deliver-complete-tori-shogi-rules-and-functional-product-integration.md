@@ -1,11 +1,11 @@
 ---
 id: MSH-42
 title: Deliver complete tori shogi rules and functional product integration
-status: In Review
+status: Done
 assignee:
   - '@Codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-02T20:13:00Z'
+updated_date: '2026-11-02T20:42:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -41,22 +41,22 @@ Open design questions (D-07/D-08): Resolve the authoritative historical rule sou
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 A sourced, identified and versioned tori shogi rules profile covers the complete game: initial state, every piece/action category, captures and derived effects, promotions and any drops/special choices, turn progression, legality, automatic/claimable outcomes and history-dependent adjudication. Consequential interpretations are recorded; unresolved required rules block conformance rather than disappearing from scope.
-- [ ] #2 The reusable rules library owns authoritative position, complete actions and atomic rejection, exact apply/undo, rules-relevant history and match/adjudication state. Saved-state, repetition and search identities are specified separately; clients and training tools do not duplicate legality or outcomes.
-- [ ] #3 Independent sourced tori shogi fixtures cover legal and illegal choices, transitions, special cases, history and outcomes. Exact reversal, sequence and record round trips, applicable perft/divide and differential/reference comparisons have reproducible evidence and provenance; self-consistency or legacy agreement alone is insufficient.
-- [ ] #4 The independently usable console can select and inspect tori shogi, list and apply complete actions, undo, report history/outcomes and run appropriate diagnostics with honest coverage and separate human/machine output. Game-specific command/notation adapters preserve the authoritative semantics.
-- [ ] #5 The native mShogi engine can search and play tori shogi using the same authoritative rules/history, with legal complete results, correct terminal/claim handling, request identity, limits, cancellation and stale-result safety. A functional baseline and reproducible self-play/match smoke evidence are recorded without claiming competitive strength.
-- [ ] #6 Canonical saved tori shogi records preserve profile/version, initial state, necessary history, complete actions and applicable match policies/settings/events. Replay restores semantics exactly, and unsupported profiles or lossy notation/adapters fail explicitly. This ticket owns game-specific encoding/replay coverage; common schema migration belongs to MSH-46.
-- [ ] #7 The desktop supports actual tori shogi human/engine play and bounded inspection/analysis, complete action entry, readable accessible presentation, outcomes/recovery, save/reopen and history inspection through the authoritative native session. Game-specific end-to-end evidence exists; common infrastructure, cross-game regression and packaged three-platform acceptance are owned by MSH-46 and verified at MSH-47.
-- [ ] #8 The game coverage ledger and independent review show all required tori shogi scope satisfied, with no required behavior relabeled as optional or deferred to M5. Shared integration findings remain visible in MSH-46 and block M4 closure in MSH-47.
+- [x] #1 A sourced, identified and versioned tori shogi rules profile covers the complete game: initial state, every piece/action category, captures and derived effects, promotions and any drops/special choices, turn progression, legality, automatic/claimable outcomes and history-dependent adjudication. Consequential interpretations are recorded; unresolved required rules block conformance rather than disappearing from scope.
+- [x] #2 The reusable rules library owns authoritative position, complete actions and atomic rejection, exact apply/undo, rules-relevant history and match/adjudication state. Saved-state, repetition and search identities are specified separately; clients and training tools do not duplicate legality or outcomes.
+- [x] #3 Independent sourced tori shogi fixtures cover legal and illegal choices, transitions, special cases, history and outcomes. Exact reversal, sequence and record round trips, applicable perft/divide and differential/reference comparisons have reproducible evidence and provenance; self-consistency or legacy agreement alone is insufficient.
+- [x] #4 The independently usable console can select and inspect tori shogi, list and apply complete actions, undo, report history/outcomes and run appropriate diagnostics with honest coverage and separate human/machine output. Game-specific command/notation adapters preserve the authoritative semantics.
+- [x] #5 The native mShogi engine can search and play tori shogi using the same authoritative rules/history, with legal complete results, correct terminal/claim handling, request identity, limits, cancellation and stale-result safety. A functional baseline and reproducible self-play/match smoke evidence are recorded without claiming competitive strength.
+- [x] #6 Canonical saved tori shogi records preserve profile/version, initial state, necessary history, complete actions and applicable match policies/settings/events. Replay restores semantics exactly, and unsupported profiles or lossy notation/adapters fail explicitly. This ticket owns game-specific encoding/replay coverage; common schema migration belongs to MSH-46.
+- [x] #7 The desktop supports actual tori shogi human/engine play and bounded inspection/analysis, complete action entry, readable accessible presentation, outcomes/recovery, save/reopen and history inspection through the authoritative native session. Game-specific end-to-end evidence exists; common infrastructure, cross-game regression and packaged three-platform acceptance are owned by MSH-46 and verified at MSH-47.
+- [x] #8 The game coverage ledger and independent review show all required tori shogi scope satisfied, with no required behavior relabeled as optional or deferred to M5. Shared integration findings remain visible in MSH-46 and block M4 closure in MSH-47.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -130,12 +130,18 @@ Actual cb1e162 campaigns failed: native generated-snapshot check differs in only
 Corrected verification4b02dfb38e3db485f2c4035b820a4da61e413d6d is pushed; production remainscb1e162 byte-for-source unchanged. Linux Desktop41513057801 all35actualGUIphases PASS; independent source/artifact/hash/screens/nativearchives review PASS. Current artifacts and compressed lossless rawreports in evidence/playable-product-linux; normalmacOS22capture/nativegame evidence remainsvalid. GitHub cancelled both4bMacjobs before runner acquisition after15min; exactannotations say hostedarm64capacityconstraints, recorded in main evidence. Other requiredresults stillreconciling: WindowsDesktop hasnewactualfailure awaitingartifact; nativeLinuxPASS/Windowsfinishing. No originalcriterionweakened orchecked;42remainsInReview. One primary integrator, independentGUIverifier/reviewer read-only outsideownedfiles; no laterwork started.
 
 4bWindows actualGUI34/35PASS; finalnormalTori dirtycloseprobe lacked authoritativeprecondition: nativeUnmodified/saveComplete20:01:13.768380 thenFlipinput andWM_CLOSE13.841868 withnoacceptedDirtyack. ExistingClose retiresunacceptedcandidate; noaccepteddirtylossestablished. Verification-onlyhelper nowawaits changedorientation/Modified/settledcontrols PLUSnative dirty+closeauthority,newversion/revision,samecanonicalgame/path/doc beforeONEWM_CLOSE.98units/syntaxPASS; independentactualtrace/nativeclose/source/negative-testreviewPASS. Preserve playable-product-ci-4b-windows-failure.json/rawgzip. No product/rules/host/frontend/manifests/workflow change. Required evidence now reuses actual4bRustWin/LinuxwholejobPASS with targetedMacnativeattempt2 (hostedcapacityretry) and unchangedcbMacwholeDesktopPASS+actualnormalCUA; newverificationDesktopWin/LinuxfullGUIrun required. Separate reviewer endorses source-equivalentreuse explicitly, no waivedcheck. Cancel redundant automaticRustcampaign for Python-onlyfix; do not claim capacity-cancelledMacjobs passed. No criteria checked before finalrequiredcompletion.
+
+Final independent all8AC/evidence review PASS. Exact required six-job condition and both final35phase GUI reports passed; single monitor stopped immediately at completion. Actual final source/package/platform/failure/limitation provenance is centralized in docs/m4/tori/evidence/playable-product.json and delivery-review.md; historical failed assessments retained. Original8AC/4DoD unchanged, now checked with evidence. Normal activation remains productioncb1e162; subsequent4b/8f changes are verification-only. Stop after42.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary
 
 <!-- SECTION:FINAL_SUMMARY:BEGIN -->
-Desktop visual checkpoint: production31cd776 (native7b114da) delivers shared 7×7 Tori board/hands with traditional native kanji default; dormant bird alternative retained. Actual macOS packaged play/engine/drop/promotion/history/SaveLoad/Takeback/analysis/outcome/quit journeys and20 responsive captures documented. Independent source/visual/evidence review PASS; required three-platform native and final-source desktop package checks PASS. See docs/m4/tori/desktop-visual-checkpoint.md and evidence/desktop-visual-checkpoint.json for exact source/package/CI/failure provenance. Owner visual approval, normal activation and final Tori platform/complete-game acceptance remain pending; MSH42 stays In Progress with original criteria intact.
+Complete Tori Shogi product delivered on codex/rewrite: production cb1e162d9fa689e00643f2b09e334c121d611819; native verification 4b02dfb38e3db485f2c4035b820a4da61e413d6d; external GUI verification 8fed8ffb1ed1291aa52518ac3d84613ff43d2cb4. Normal fourth-game New/Load, Sente/Gote/Random, actual engine play, read-only analysis/cancel, Resume/Retry, complete Save/Load, exact history, Take back, native outcomes and dirty Quit use existing shared owners. Owner explicitly approves traditional kanji/layout checkpoint5a6ec9f/production31cd776; desktop Take back retained, event Undo remains native/console.
 
-Full Desktop workflow later FAILED on the same obsolete reopen-caption assertion in Linux/Windows normal GUI; failed evidence preserved. Reviewed verification-only05ceba4 correction passes syntax and assertions against both actual failed-run DOM/archives; no new platform GUI rerun claimed. Required native/package steps passed; owner visual approval and final platform acceptance remain pending.
+All original8AC/4DoD supported by docs/m4/tori/delivery-review.md and single evidence/playable-product.json. Separate read-only source/fixture/screenshot/archive/final eight-criterion review PASS, no material finding. Six dependencies Done; immutable103fixtures/713native assertions and14consumer fields/83requirements preserved, final notation obligation completed.
+
+Actual normal macOS journeys plus separately labeled cancel/recovery QA pass;22original captures/native saved game retained. Final Windows/Linux actual installed GUI each35/35PASS at8fed8ff. Required Rust41513058128 all3wholejobsPASS at4b; Desktop8f Windows/Linux wholejobsPASS; unchanged cb MacDesktop125497603293PASS and actual cb normal MacGUI supply explicit required Mac evidence. Extra8fMac never acquired/capacity-cancelled, overall Desktop41517295932 FAILURE accurately preserved; no invented workflow pass. Prior caption/golden/JSON-order/close-precondition failures remain historical failures; reviewed verification-only corrections now have successful actual execution. Local full workspace/session262/host14/frontend384, focused86, driver98, TypeScript/Clippy/format and actual admission regression PASS at qualified checkpoints.
+
+Untimed and bounded functional engine only (default2/2000, max3/10000); no competitive-strength claim. Representative complete standard-root resignation and independent mate/quiet-loss/repetition scenarios pass. Fifteen-second replay/resource limits and complete saveability retained; normal Mac development ad-hoc bundle lacks a strict resource seal, not notarized distribution. MSH-46/47/88/89, M4 closure and historical111/112 remain separately owned/open. No Chu/Tenjiku/M5 started. No Ready dependency-ready task; next planned game is dependency-unblocked To Do MSH-82, requiring its existing refinement/decision process. Final completion commit contains this record; supporting production/verification commits already integrated and pushed.
 <!-- SECTION:FINAL_SUMMARY:END -->

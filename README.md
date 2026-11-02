@@ -130,7 +130,7 @@ Standard error (exit status 1, because line 4 failed and changed nothing):
 error: line 4: e1g1 (action 1 of 1): action rejected: castling right, rook or empty path is missing; no actions applied
 ```
 
-## Native Tori console checkpoint
+## Tori Shogi
 
 `cargo run --release --locked --bin mshogi -- --game tori shell` now provides
 native Tori play/inspection, complete legal actions and drops, readable notation,
@@ -138,8 +138,11 @@ event undo/history, outcomes, bounded diagnostics/analysis and canonical Save/Lo
 Type `help`. The functional bounded native engine uses the same complete history;
 this is not a playing-strength claim. See [notation and commands](docs/m4/tori/notation.md)
 and the [MSH-42 native checkpoint](docs/m4/tori/native-playable-checkpoint.md).
-The finished Tori desktop board/artwork and normal player activation are pending;
-Tori remains absent from the normal desktop chooser.
+The normal desktop now supports Tori Shogi as its fourth playable game. Choose
+**New game → Tori Shogi → Sente/Gote/Random → Start game**. Traditional kanji,
+hands, native promotion, real engine play, bounded analysis, Take back and complete
+Save/Load use the shared application. Loaded games wait for **Resume play**. See
+[complete product acceptance, platform evidence and launch instructions](docs/m4/tori/delivery-review.md).
 
 ## Standalone shogi console
 

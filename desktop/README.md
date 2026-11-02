@@ -22,12 +22,21 @@ Windows). The frontend has no shell or filesystem plugin. Vite listens on
 127.0.0.1:1420 during development; production web assets are embedded and do not
 require a web server.
 
-## Playing Chess and Shogi
+## Playing Chess, Shogi, Xiangqi and Tori Shogi
 
-Press **New game**, explicitly choose **Chess** or **Shogi**, then choose your
-native side (White/Black or Sente/Gote), or Random. Games are untimed. Your side
-starts at the bottom; **Flip board** remains explicit. The initial application
-opens Chess, and the same normal application opens either game's native archive.
+Press **New game**, choose one of the four supported games, then choose your
+native side (White/Black, Sente/Gote or Red/Black), or Random. Games are untimed.
+Your side starts at the bottom; **Flip board** remains explicit. The initial
+application opens Chess; the same normal application loads each game's native archive.
+
+Tori Shogi uses the approved traditional kanji, a complete 7×7 board and native
+hands/promotion. Its functional engine defaults to depth2 /2,000 visits, with
+maximum3 /10,000; this is not a competitive-strength claim. Read-only analysis,
+cancellation/Retry, exact history, Take back, native outcomes and Save/Load share
+the existing owners. Load stops work until explicit **Resume play**. The desktop
+exposes Take back; one-event Undo remains in the native API and console.
+[MSH-42 acceptance](../docs/m4/tori/delivery-review.md) records actual normal
+macOS/Windows/Linux gameplay, separate QA instrumentation and exact limits.
 
 For chess:
 Click a piece and a highlighted destination. Promotion opens explicit native

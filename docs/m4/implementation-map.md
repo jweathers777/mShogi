@@ -1,3 +1,5 @@
+> Current MSH-42 product continuation: [Tori delivery reconciliation](tori/delivery-review.md) records normal fourth-game activation and the final acceptance status. Earlier planning snapshots below preserve their original scope. M4 and broader shared six-game acceptance remain open.
+
 # M4 implementation map: chess and standard shogi first
 
 Current MSH-42 native follow-up: [playable-consumer checkpoint](tori/native-playable-checkpoint.md)

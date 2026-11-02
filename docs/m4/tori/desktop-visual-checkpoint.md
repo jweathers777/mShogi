@@ -9,6 +9,7 @@ approval authorizes the remaining normal-product activation and complete
 MSH-42 acceptance. The pending-approval/gated-product statements below preserve
 the historical visual checkpoint; they are superseded by this owner decision.
 Final functional/platform acceptance remains separate from visual approval.
+Current activation and acceptance status: [MSH-42 delivery reconciliation](delivery-review.md).
 
 
 This continues the [native playable checkpoint](native-playable-checkpoint.md)

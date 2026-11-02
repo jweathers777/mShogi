@@ -1,11 +1,11 @@
 ---
 id: MSH-42
 title: Deliver complete tori shogi rules and functional product integration
-status: In Progress
+status: In Review
 assignee:
   - '@Codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-02T19:23:00Z'
+updated_date: '2026-11-02T19:46:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -120,6 +120,10 @@ Verification-only correction05ceba4161a77d15633069d183a211992e0a0ff1 now additio
 Owner explicitly visually approves the running macOS Tori traditional kanji pieces, board, hands, promotion treatment and layouts at checkpoint5a6ec9f94c2b1dd3995d3f96d3b874f30e272090 / packagedproduction31cd776e2bde2997b1d87f4e5215749892b8bcfb. Preserve this design except a concrete functional/accessibility defect. Final activation and complete original42acceptance authorized now; no further visual checkpoint required. Prior Windows/Linux GUI failures remain failed historical evidence; verification-only05ceba4 is integrated and must receive real successful affected platform execution in this continuation. CLI1.55.0 mismatch resolved via pinned1.55.1 before mutations; no competing active owner, primary aligned, unrelated worktrees preserved.
 
 Owner resolves desktop/native Undo distinction: preserve the accepted shared desktop Take back UI; retain one-event Undo in native sessions and console. No new desktop Undo control. Reviewed final activation includes normal Tori New/Open, running-browse return intent and typed capacity refusal precedence. Latest independent exact-diff re-review confirms actual Open/Resume/Inspect/control-exhaustion/Return test preserves exact accepted bytes, pauses unscored and keeps Stop/Resign/Close reservations; no material source finding. Final exact-source full three-platform native and desktop GUI CI plus normal macOS packaged interaction remain required before acceptance.
+
+Reviewed production checkpoint cb1e162d9fa689e00643f2b09e334c121d611819 integrated/pushed. Normal fourth-game activation and fresh stopped Open use the same owners. Local full workspace PASS, session262, host14, frontend384, driver92, TypeScript/Clippy/format and focused final actual control-worker regression PASS; broad precommit revision qualifications retained in single evidence/playable-product.json. Actual cb normal macOS GUI exercised Sente/Gote/Random, keyboard capture/real engine/drop/Takeback/history/SaveOpen/Resume/read-only analysis/nativeQuit/Resign and native terminal/repetition fixtures. Separately labeled fixed QA external startup gate establishes active cancel/replace, genuine missing executable failure and successful identical restored Retry. Independent source/fixture/representative JPEG+AX review PASS, final evidence review pending. Required full Rust41509573560 and Desktop41509573239 six whole jobs still running; no Windows/Linux pass yet claimed. All original8AC/4DoD remain unchecked until evidence complete.
+
+Actual cb1e162 campaigns failed: native generated-snapshot check differs in only3Tori diagnostic strings after browse-stop restoration; regenerated actualDTOs preserve all semantic/native fields. Both Windows/Linux35GUIphases had33PASS; normal-tori and pending-tori fail only because the external cue comparator used raw JSON object key order. Actual equivalent complete actions differ serialization order; pendingtimeout allows realengine tofinish and remains correctlyrejected aswrong event. Narrow verification-only correction compares duplicate-free exact complete move/drop fields+values; geometry/event/routes/nonactionable markers unchanged.94driverunits, actualbothfailedpayload comparisons and focused regeneratedfrontend tests PASS; nativeDTOrepeat byte-identical. Separate exactdiff/actualreport review PASS. No productsource or immutable rulesfixture change; macOScb package/GUI evidence remains valid. Preserve playable-product-ci-cb1-failure.json and original31cd failures. New exactverification revision/full requiredCI will establish successful finalplatformresults before42closure.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

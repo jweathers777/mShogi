@@ -158,6 +158,40 @@ class CompletedCueEvidenceTests(unittest.TestCase):
                 self.assertFalse(module.completed_action_matches({**cue, field: value}, "e2e4", 2, ["e2"], ["e4"]))
         self.assertFalse(module.completed_action_matches(None, "e2e4", 2, ["e2"], ["e4"]))
 
+    def test_actual_linux_and_windows_tori_action_member_order_is_not_identity(self):
+        # Exact expected/observed member orders retained from failed cb1e162
+        # Linux and Windows GUI reports. These were native-identical actions.
+        expected = ('{"result_face":"swallow","from":"3d","kind":"move","to":"3c"}',
+                    '{"from":"3d","kind":"move","result_face":"swallow","to":"3c"}')
+        observed = '{"kind":"move","from":"3d","to":"3c","result_face":"swallow"}'
+        cue = self.cue(observed, 1, ["3d"], ["3c"])
+        for action in expected:
+            self.assertTrue(module.completed_action_matches(cue, action, 1, ["3d"], ["3c"]))
+            for field, value in (("event", "2"), ("origins", ["4b"]), ("destinations", ["4b"]),
+                                 ("hidden", "false"), ("pointerEvents", "auto"),
+                                 ("destinationSignatures", ["solid-corners"]), ("route", "3d>4c>3c")):
+                self.assertFalse(module.completed_action_matches({**cue,field:value}, action, 1, ["3d"], ["3c"]))
+        move = json.loads(observed)
+        for field, value in (("kind", "drop"), ("from", "4b"), ("to", "3d"),
+                             ("result_face", "goose"), ("invented_victim", "swallow")):
+            changed = json.dumps({**move,field:value})
+            self.assertFalse(module.completed_action_matches({**cue,"action":changed}, expected[0], 1, ["3d"], ["3c"]))
+        for malformed in ('{"kind":"move","from":"3d","to":"3c","result_face":"swallow","to":"3c"}',
+                          '{"kind":"move","from":"3d","to":"3c"}', '["3d","3c"]', '{broken'):
+            self.assertFalse(module.native_action_identity_matches(malformed, expected[0]))
+            self.assertFalse(module.native_action_identity_matches(observed, malformed))
+
+    def test_complete_drop_identity_preserves_face_without_invented_origin(self):
+        expected = '{"to":"3d","face":"swallow","kind":"drop"}'
+        actual = '{"kind":"drop","face":"swallow","to":"3d"}'
+        self.assertTrue(module.completed_action_matches(self.cue(actual,3,[],["3d"]), expected,3,[],["3d"]))
+        for changed in ({"kind":"drop","face":"falcon","to":"3d"},
+                        {"kind":"drop","face":"swallow","to":"4d"},
+                        {"kind":"drop","face":"swallow","to":"3d","from":"3c"}):
+            self.assertFalse(module.native_action_identity_matches(json.dumps(changed), expected))
+        self.assertFalse(module.native_action_identity_matches('e2e4', 'e2e3'))
+        self.assertTrue(module.native_action_identity_matches('e2e4', 'e2e4'))
+
     def test_drop_requires_no_invented_origin_and_equal_endpoint_routes_remain_distinct(self):
         self.assertTrue(module.completed_action_matches(self.cue("P*5e", 3, [], ["5e"]), "P*5e", 3, [], ["5e"]))
         self.assertFalse(module.completed_action_matches(self.cue("P*5e", 3, ["5d"], ["5e"]), "P*5e", 3, [], ["5e"]))

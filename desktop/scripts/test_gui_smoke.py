@@ -33,7 +33,7 @@ class ReplacementAnalysisAuthorityTests(unittest.TestCase):
         self.assertFalse(module.replacement_analysis_accepted('chess', before, after, True))
 
     def test_changed_game_history_or_document_never_establishes_same_target_replacement(self):
-        for game in ('chess', 'shogi', 'xiangqi'):
+        for game in ('chess', 'shogi', 'xiangqi', 'tori'):
             before = self.source(game); after = copy.deepcopy(before)
             after['token']['version'] += 1; after['analysis']['context']['request_id'] += 1
             self.assertTrue(module.replacement_analysis_accepted(game, before, after, True))
@@ -385,19 +385,20 @@ class CurrentDocumentInspectionTests(unittest.TestCase):
             "chess": ("mshogi.chess.match.v1", "FIDE-2023-01-01+mshogi.chess.match.v1"),
             "shogi": ("mshogi.shogi.csa36.v1", "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026"),
             "xiangqi": ("mshogi.xiangqi.wxf2018.v1", "WXF-2018+XIANGQI-P1-2026-10-27"),
+            "tori": ("mshogi.tori.modern.v1", "MSH81-MODERN-2026-11-01"),
         }[game]
         return {"envelope_version": 1, "format": "mshogi.desktop.document.v1",
                 "game_kind": game, "rules_profile": profile, "profile_edition": edition,
                 "native_schema_version": 1, "payload": {"observations": []}}
 
     def test_current_envelopes_expose_native_payload_without_reconstruction(self):
-        for game in ("chess", "shogi", "xiangqi"):
+        for game in ("chess", "shogi", "xiangqi", "tori"):
             with self.subTest(game=game):
                 document = self.document(game)
                 self.assertIs(module.desktop_document_payload(document, game), document["payload"])
 
     def test_old_or_conflicting_envelopes_are_not_accepted_as_gui_evidence(self):
-        for game in ("chess", "shogi", "xiangqi"):
+        for game in ("chess", "shogi", "xiangqi", "tori"):
             for field, value in (("envelope_version", 2), ("format", "mshogi.desktop.archive.v2"),
                                  ("game_kind", "unknown"), ("rules_profile", "unapproved"),
                                  ("profile_edition", "unapproved"), ("native_schema_version", 2),
@@ -436,10 +437,12 @@ class XiangqiRuntimeEvidenceTests(unittest.TestCase):
             'xiangqi-offer', 'xiangqi-agreed', 'xiangqi-fast-proof', 'xiangqi-resigned',
             'xiangqi-capacity', 'xiangqi-failure', 'xiangqi-exact-evidence'})
         self.assertTrue(set(xiangqi) <= set(actual))
-        self.assertEqual(module.selected_gui_phases('normal'), previous[:4])
+        self.assertEqual(module.selected_gui_phases('normal'), previous[:4] + ['normal-tori', 'normal-tori-native'])
+        self.assertEqual(module.selected_gui_phases('normal-tori'), ['normal-tori', 'normal-tori-native'])
+        self.assertEqual(module.selected_gui_phases('verification-tori'), ['pending-tori', 'tori-recovery'])
         self.assertEqual(module.selected_gui_phases('normal-shogi'), previous[1:3])
         self.assertEqual(module.selected_gui_phases('normal-xiangqi'), ['normal-xiangqi'])
-        self.assertEqual(set(module.selected_gui_phases('verification')), set(actual) - set(previous[:4]))
+        self.assertEqual(set(module.selected_gui_phases('verification')), set(actual) - set(module.selected_gui_phases('normal')))
 
     def test_rejected_open_may_report_io_failure_without_changing_native_authority(self):
         before = self.diagnostics()
@@ -1116,6 +1119,87 @@ class CurrentShellCopyEvidenceTests(unittest.TestCase):
             self.assertFalse(module.saved_chess_evidence_count(f'Saved analysis evidence ({count+1})',count))
             self.assertFalse(module.saved_chess_evidence_count(f'Recorded native evidence ({count})',count))
         self.assertFalse(module.saved_chess_evidence_count(None,256))
+
+
+
+class ToriNormalProductEvidenceTests(unittest.TestCase):
+    """Observer tests only; actual packaged journeys are separate CI evidence."""
+    def test_normal_tori_phases_use_normal_package_not_qa_activation(self):
+        self.assertEqual(module.selected_gui_phases('normal-tori'),
+                         ['normal-tori', 'normal-tori-native'])
+        for method, product in ((module.Journey.normal_tori, 'tori'),
+                                (module.Journey.normal_tori_native, 'tori-native')):
+            journey = object.__new__(module.Journey)
+            journey.start = Mock(side_effect=RuntimeError('launch boundary'))
+            with self.assertRaisesRegex(RuntimeError, 'launch boundary'):
+                method(journey)
+            journey.start.assert_called_once_with(product=product)
+        self.assertTrue({'normal-tori', 'normal-tori-native', 'pending-tori',
+                         'tori-recovery'} <= set(module.selected_gui_phases('all')))
+
+    def test_tori_archive_lineage_requires_exact_complete_action_and_native_rewind(self):
+        action = {'kind':'move', 'from':'3d', 'to':'3c', 'result_face':'swallow'}
+        record = {'game_kind':'tori', 'payload':{'root':{'native':'root'}, 'events':[]}}
+        body = {'initial':copy.deepcopy(record), 'current':copy.deepcopy(record),
+                'controls':[{'kind':'native','actor':'sente','command':{'kind':'play','action':action}},
+                            {'kind':'rewind','event_index':0,'reason':'take_back'}],
+                'retired':[{'control_index':1,'record':{'payload':{'events':[
+                    {'command':{'kind':'play','action':action}}]}}}]}
+        self.assertTrue(module.retained_pending_takeback('tori', body, action))
+        for mutate in (lambda b: b['controls'].reverse(),
+                       lambda b: b['controls'][1].update(reason='undo'),
+                       lambda b: b['current']['payload'].update(events=[{'not':'root'}]),
+                       lambda b: b['current']['payload'].update(root={'different':'root'}),
+                       lambda b: b.update(retired=[]),
+                       lambda b: b['controls'][0].update(command={'kind':'resign'})):
+            changed = copy.deepcopy(body); mutate(changed)
+            self.assertFalse(module.retained_pending_takeback('tori', changed, action))
+        self.assertFalse(module.retained_pending_takeback('tori', body,
+                        {**action, 'result_face':'goose'}), 'promotion is part of complete native action identity')
+
+    def test_native_generated_normal_documents_retain_known_prefix_and_independent_outcomes(self):
+        fixtures = Path(__file__).with_name('fixtures')
+        bodies = {name: module.desktop_document_payload(json.loads(
+            (fixtures / f'tori-{name}.mshogi').read_text()), 'tori')
+            for name in ('contract','mate-in-one','quiet-loss','forced-prefix7','obligation8')}
+        for body in bodies.values():
+            self.assertEqual(body['initial'], body['current'])
+            self.assertEqual(body['observations'], [])
+            self.assertEqual(body['controls'], [])
+            self.assertFalse(body['current']['payload']['root']['historical_reachability_proven'])
+            self.assertTrue(body['current']['payload']['root']['earlier_history_unknown'])
+        forced = bodies['forced-prefix7']['current']['payload']
+        self.assertEqual(len(forced['events']), 7)
+        self.assertIsNone(forced['conclusion'])
+        self.assertEqual(forced['events'][-1]['command']['action'],
+                         {'kind':'move','from':'5a','to':'4a','result_face':'phoenix'})
+        obligation = bodies['obligation8']['current']['payload']
+        self.assertEqual(len(obligation['events']), 8)
+        self.assertIsNone(obligation['conclusion'])
+        self.assertEqual(obligation['obligation']['side'], 'sente')
+        self.assertEqual(obligation['obligation']['occurrences'], [0,4,8])
+        self.assertEqual(obligation['obligation']['forbidden_departures'],
+                         [{'kind':'move','from':'4g','to':'5g','result_face':'phoenix'}])
+        self.assertEqual(bodies['quiet-loss']['current']['payload']['conclusion'],
+                         {'kind':'stalemate_loss','loser':'gote'})
+        mate = bodies['mate-in-one']['current']['payload']
+        self.assertIsNone(mate['conclusion'])
+        self.assertIn({'square':'4c','piece':{'side':'sente','face':'falcon'}}, mate['root']['board'])
+        self.assertEqual(mate['root']['side_to_move'], 'sente')
+
+    def test_tori_font_and49_square_probe_is_distinct_from_shogi81(self):
+        journey = object.__new__(module.Journey)
+        journey.web, journey.record = Mock(), Mock()
+        geometry = {'allSquaresVisible':True, 'bothPlayerAreasVisible':True,
+                    'essentialControlsVisible':True, 'pageWidth':760,
+                    'viewport':{'width':760,'height':650}, 'board':{'width':380}}
+        journey.web.read.side_effect = [True, geometry]
+        self.assertEqual(journey.shogi_board_fits(tori=True), geometry)
+        font_expression, geometry_expression = [call.args[0] for call in journey.web.read.call_args_list]
+        self.assertIn('mShogi Tori Pieces', font_expression)
+        self.assertIn('squares.length===49', geometry_expression)
+        self.assertNotIn('squares.length===81', geometry_expression)
+        journey.web.command.assert_not_called()
 
 
 if __name__ == '__main__':

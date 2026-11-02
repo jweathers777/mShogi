@@ -1,5 +1,16 @@
 # Tori desktop visual checkpoint — MSH-42
 
+**Owner visual approval — 2026-11-02:** John reviewed the running macOS
+application and approved the traditional kanji, board, hands, promotion treatment
+and layouts at integration `5a6ec9f94c2b1dd3995d3f96d3b874f30e272090`
+(packaged production `31cd776e2bde2997b1d87f4e5215749892b8bcfb`). Preserve
+that design except for a concrete functional or accessibility defect. This
+approval authorizes the remaining normal-product activation and complete
+MSH-42 acceptance. The pending-approval/gated-product statements below preserve
+the historical visual checkpoint; they are superseded by this owner decision.
+Final functional/platform acceptance remains separate from visual approval.
+
+
 This continues the [native playable checkpoint](native-playable-checkpoint.md)
 with the production Tori board in the existing mShogi application. MSH-42 remains
 In Progress. The owner must review the actual presentation before normal product

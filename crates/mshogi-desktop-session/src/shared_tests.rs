@@ -693,6 +693,9 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
         NativeSide::Chess(Color::White),
         NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Red),
         NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Black),
+        NativeSide::Tori(mshogi_core::tori::Side::Sente),
+        NativeSide::Tori(mshogi_core::tori::Side::Gote),
+        NativeSide::Chess(Color::White),
     ] {
         let current = new_product_game(&mut c, human.game(), human);
         assert_eq!(current.game, human.game());
@@ -705,7 +708,24 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
         assert!(current.document.dirty);
         assert_eq!(current.open_token, c.shared_open_token());
         match human {
-            NativeSide::Tori(_) => unreachable!("Tori desktop is unsupported"),
+            NativeSide::Tori(side) => {
+                use mshogi_core::tori as t;
+                assert_eq!(current.profile.id(), t::PROFILE_ID);
+                assert_eq!(current.pieces.len(), 32);
+                assert_eq!(current.board.files.len(), 7);
+                assert_eq!(current.board.ranks.len(), 7);
+                assert_eq!(current.turn.id, NativeSide::Tori(t::Side::Sente));
+                assert!(current.capabilities.engine_turn && current.capabilities.move_analysis);
+                assert!(
+                    current.capabilities.hands
+                        && current.capabilities.drops
+                        && current.capabilities.promotion
+                );
+                let state = c.session.tori().unwrap();
+                assert_eq!(state.document.settings().orientation, side);
+                assert_eq!(current.capabilities.board_action, side == t::Side::Sente);
+                assert_eq!(state.pending.is_some(), side == t::Side::Gote);
+            }
             NativeSide::Xiangqi(side) => {
                 use mshogi_core::xiangqi as x;
                 assert_eq!(current.profile.id(), x::PROFILE_ID);
@@ -929,16 +949,16 @@ fn current_wire_frame_is_checked_before_a_durable_native_observation_is_admitted
 }
 
 #[test]
-fn native_tori_product_gate_stays_closed_while_explicit_contract_admission_is_supported() {
+fn native_tori_rejects_conflicting_player_before_admission_and_accepts_native_records() {
     use mshogi_core::tori;
     let mut c = controller();
     let before = c.shared_snapshot().context;
     let token = c.shared_token();
     let open = c.shared_open_token();
     let error = c
-        .shared_new_game(open, GameKind::Tori, NativeSide::Tori(tori::Side::Sente))
+        .shared_new_game(open, GameKind::Tori, NativeSide::Shogi(s::Side::Sente))
         .unwrap_err();
-    assert!(error.contains("not implemented"));
+    assert!(error.contains("side does not belong"));
     assert_eq!(c.shared_token(), token);
     assert_eq!(c.shared_snapshot().context, before);
     let snapshot = send(

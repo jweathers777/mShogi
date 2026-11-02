@@ -3,7 +3,7 @@ import type { AnalysisOperation, AnalysisState, Claim, ChessResult, Color, Match
 import type { NativeBoardSnapshot } from "../NativeBoard";
 import type { CompletedActionGeometry } from "../boardPresentation";
 export type GameKind = "chess" | "shogi" | "xiangqi" | "tori";
-export type PlayableGameKind = Exclude<GameKind, "tori">;
+export type PlayableGameKind = GameKind;
 export type NativeSide = { game_kind: "chess"; side: "white" | "black" }
   | { game_kind: "shogi"; side: "sente" | "gote" }
   | { game_kind: "xiangqi"; side: "red" | "black" }

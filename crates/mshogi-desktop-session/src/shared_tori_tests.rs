@@ -913,14 +913,14 @@ fn stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_conte
     );
     assert!(c.queue_product_open(path, c.shared_open_token()).is_ok());
     let id = c.io_state.id;
-    assert!(matches!(wait_file(&mut c, id).io.phase, IoPhase::Failed));
-    assert!(
-        c.shared_new_game(
-            c.shared_open_token(),
-            GameKind::Tori,
-            NativeSide::Tori(t::Side::Sente)
-        )
-        .is_err()
+    let opened = wait_file(&mut c, id);
+    assert!(matches!(opened.io.phase, IoPhase::Complete));
+    assert!(opened.paused && current(&c).pending.is_none());
+    assert_eq!(
+        current(&c).document.record(),
+        ValidatedToriDocument::decode(&before, &mut || false)
+            .unwrap()
+            .record()
     );
     fs::remove_dir_all(dir).unwrap();
 }
@@ -1739,4 +1739,76 @@ fn reopened_human_turn_manual_action_cannot_resume_engine_until_explicit_resume(
     assert!(!current(&c).paused);
     send(&mut c, SessionOperation::Cancel {}).unwrap();
     fs::remove_dir_all(dir).unwrap();
+}
+
+#[test]
+fn normal_tori_browse_return_preserves_running_intent_but_never_revives_work() {
+    for human in [t::Side::Sente, t::Side::Gote] {
+        let mut c = controller();
+        let (_, receipt) = c
+            .shared_new_game(
+                c.shared_open_token(),
+                GameKind::Tori,
+                NativeSide::Tori(human),
+            )
+            .unwrap();
+        let initial = settle(&mut c, receipt).unwrap();
+        let old = current(&c).pending.clone();
+        for _ in 0..2 {
+            send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
+        }
+        assert!(current(&c).paused && current(&c).pending.is_none());
+        let before_return = c.shared_token();
+        let live = send(&mut c, SessionOperation::ReturnLive {}).unwrap();
+        assert!(!live.historical && !live.paused);
+        assert_eq!(live.context, initial.context);
+        assert!(live.token.selection > before_return.selection);
+        if let Some(old) = old {
+            let fresh = current(&c).pending.clone().unwrap();
+            assert!(
+                fresh.request_id > old.request_id
+                    && fresh.process_generation > old.process_generation
+                    && fresh.session_version > old.session_version
+            );
+            assert!(fresh.game == old.game && fresh.limits == old.limits);
+            assert!(!submit_observation(&mut c, searched(old)));
+        } else {
+            assert!(live.capabilities.board_action);
+        }
+    }
+}
+#[test]
+fn tori_historical_analysis_preserves_only_browse_intent_and_explicit_stops_win() {
+    for stop in 0..5 {
+        let mut c = controller();
+        replace(&mut c, &t::Game::standard(), t::Side::Sente);
+        send(&mut c, SessionOperation::Resume {}).unwrap();
+        send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
+        send(
+            &mut c,
+            SessionOperation::Analyze {
+                operation: AnalysisOperation::Moves {
+                    depth: 1,
+                    nodes: 10000,
+                },
+            },
+        )
+        .unwrap();
+        let old = current(&c).pending.clone().unwrap();
+        match stop {
+            0 => {
+                assert!(submit_observation(&mut c, searched(old.clone())));
+            }
+            1 => {
+                send(&mut c, SessionOperation::Cancel {}).unwrap();
+            }
+            2 => c.pause_native_failure("native operation failed".into()),
+            3 => c.pause_native_capacity("Application capacity: no observation slot".into()),
+            _ => {} // Still-running historical analysis must retire on Return.
+        }
+        let live = send(&mut c, SessionOperation::ReturnLive {}).unwrap();
+        assert_eq!(live.paused, matches!(stop, 1..=3), "stop {stop}");
+        assert!(!live.historical && live.board_ply == 0);
+        assert!(!submit_observation(&mut c, searched(old)));
+    }
 }

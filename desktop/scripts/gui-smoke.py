@@ -39,6 +39,7 @@ def desktop_document_payload(document, game_kind):
         "chess": ("mshogi.chess.match.v1", "FIDE-2023-01-01+mshogi.chess.match.v1"),
         "shogi": ("mshogi.shogi.csa36.v1", "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026"),
         "xiangqi": ("mshogi.xiangqi.wxf2018.v1", "WXF-2018+XIANGQI-P1-2026-10-27"),
+        "tori": ("mshogi.tori.modern.v1", "MSH81-MODERN-2026-11-01"),
     }
     profile, edition = profiles[game_kind]
     assert set(document) == {
@@ -74,15 +75,15 @@ def xiangqi_retained_state(diagnostics):
 
 def selected_gui_phases(choice):
     """Keep independent native-process journeys explicit and individually runnable."""
-    chess = ["standard", "promotion", "claim", "current-claim", "concluded", "full-unknown", "capacity", "synthetic", "pending-chess", "pending-shogi", "pending-xiangqi"]
+    chess = ["standard", "promotion", "claim", "current-claim", "concluded", "full-unknown", "capacity", "synthetic", "pending-chess", "pending-shogi", "pending-xiangqi", "pending-tori", "tori-recovery"]
     shogi = ["shogi-hands", "shogi-promotion", "shogi-forced", "shogi-declaration",
              "shogi-concluded", "shogi-capacity"]
     xiangqi = ["xiangqi-warning", "xiangqi-fourth", "xiangqi-count", "xiangqi-offer", "xiangqi-agreed", "xiangqi-fast-proof", "xiangqi-resigned", "xiangqi-capacity", "xiangqi-failure", "xiangqi-exact-evidence"]
-    normal = [None, "normal-shogi", "normal-shogi-reopened", "normal-xiangqi"]
+    normal = [None, "normal-shogi", "normal-shogi-reopened", "normal-xiangqi", "normal-tori", "normal-tori-native"]
     return {"normal": normal, "normal-shogi": normal[1:3],
-            "normal-xiangqi": ["normal-xiangqi"],
+            "normal-xiangqi": ["normal-xiangqi"], "normal-tori": normal[4:],
             "verification": [*chess, *shogi, *xiangqi], "verification-shogi": shogi,
-            "verification-xiangqi": xiangqi, "all": [*normal, *chess, *shogi, *xiangqi]}[choice]
+            "verification-xiangqi": xiangqi, "verification-tori": ["pending-tori", "tori-recovery"], "all": [*normal, *chess, *shogi, *xiangqi]}[choice]
 
 
 def replacement_analysis_accepted(game, before, after, analyzing):
@@ -102,7 +103,7 @@ def replacement_analysis_accepted(game, before, after, analyzing):
                     and old['purpose']['kind'] == 'move_analysis'
                     and (new['request_id'], new['session_version'], new['process_generation'])
                     != (old['request_id'], old['session_version'], old['process_generation']))
-    return game in ('shogi', 'xiangqi')
+    return game in ('shogi', 'xiangqi', 'tori')
 
 
 def warning_prefix_transition(earlier, warned):
@@ -132,6 +133,18 @@ def warning_prefix_transition(earlier, warned):
 
 def retained_pending_takeback(game, body, action):
     """Inspect native archive lineage without inventing a uniform save schema."""
+    if game == 'tori':
+        controls = body['controls']
+        rewind = next((i for i, item in enumerate(controls)
+                       if item.get('kind') == 'rewind' and item.get('reason') == 'take_back'), None)
+        return bool(rewind is not None
+            and any(item.get('kind') == 'native' and item.get('command') == {'kind':'play','action':action}
+                    for item in controls[:rewind])
+            and not body['current']['payload']['events']
+            and body['current']['game_kind'] == body['initial']['game_kind'] == 'tori'
+            and body['current']['payload']['root'] == body['initial']['payload']['root']
+            and any(any(event['command'] == {'kind':'play','action':action}
+                        for event in entry['record']['payload']['events']) for entry in body['retired']))
     controls = [entry for entry in body['controls'] if entry.get('command')]
     undos = [entry for entry in controls if entry['command']['kind'] == 'take_back']
     if not undos:
@@ -822,8 +835,8 @@ class Journey:
             requested_height += height - observed["height"]
         raise AssertionError(f"Native resize did not establish requested content size {width}x{height}: {observations}")
 
-    def shogi_board_fits(self):
-        wait(lambda: self.web.read("[...document.fonts].some(f=>f.family.replaceAll('\"','').replaceAll(\"'\",'')==='mShogi Pieces' && f.status==='loaded')"),
+    def shogi_board_fits(self, tori=False):
+        wait(lambda: self.web.read("[...document.fonts].some(f=>f.family.replaceAll('\"','').replaceAll(\"'\",'')===FONT && f.status==='loaded')".replace("FONT", json.dumps("mShogi Tori Pieces" if tori else "mShogi Pieces"))),
              "bundled Japanese piece font loaded in actual platform webview")
         geometry = self.web.read("""(() => {
             const board = document.querySelector('.shogi-board');
@@ -835,19 +848,19 @@ class Journey:
             const visible = e => {const r=e.getBoundingClientRect();
                 return r.width>0 && r.height>0 && r.left>=-1 && r.top>=-1 && r.right<=innerWidth+1 && r.bottom<=innerHeight+1;};
             return {viewport:{width:innerWidth,height:innerHeight}, board:board ? rect(board):null,
-                squares:squares.length, allSquaresVisible:squares.length===81 && squares.every(visible),
+                squares:squares.length, allSquaresVisible:squares.length===EXPECTED && squares.every(visible),
                 players:players.map(rect), bothPlayerAreasVisible:players.length===2 && players.every(visible),
                 essentialControlsVisible:essential.length>0 && essential.every(visible),
                 pageWidth:document.documentElement.scrollWidth,
                 fonts:document.fonts.status,
                 loadedFontFaces:[...document.fonts].map(f=>({family:f.family,status:f.status})),
                 pieceFonts:[...new Set([...document.querySelectorAll('.shogi-board text')].map(e=>getComputedStyle(e).fontFamily))]};
-        })()""")
+        })()""".replace("EXPECTED", str(49 if tori else 81)))
         assert geometry["allSquaresVisible"], geometry
         assert geometry["bothPlayerAreasVisible"] and geometry["essentialControlsVisible"], geometry
         assert geometry["pageWidth"] <= geometry["viewport"]["width"] + 1, geometry
         assert geometry["board"]["width"] > 300, geometry
-        self.record("Observe complete 9x9 native product board without scrolling", geometry)
+        self.record(f"Observe complete {7 if tori else 9}x{7 if tori else 9} native product board without scrolling", geometry)
         return geometry
 
     def synthetic_board_fits(self, orientation):
@@ -946,9 +959,9 @@ class Journey:
     def choose_game(self, game):
         """Actual native-select/radio keys, at normal and minimum dimensions."""
         w=self.web
-        expected=['chess','shogi','xiangqi']
+        expected=['chess','shogi','xiangqi','tori']
         observed=w.read("[...document.querySelector('[data-game-select]').options].map(e=>({value:e.value,label:e.textContent,disabled:e.disabled}))")
-        assert observed==[{'value':k,'label':label,'disabled':False} for k,label in zip(expected,['Chess','Shogi','Xiangqi'])],observed
+        assert observed==[{'value':k,'label':label,'disabled':False} for k,label in zip(expected,['Chess','Shogi','Xiangqi','Tori Shogi'])],observed
         def select(kind):
             w.click('[data-game-select]');w.key('\ue011')  # Home
             for _ in range(expected.index(kind)):w.key('\ue015')  # ArrowDown
@@ -958,7 +971,7 @@ class Journey:
             self.viewport(width,height)
             for kind in expected:
                 select(kind)
-                sides={'chess':['White','Black','Random'],'shogi':['Sente','Gote','Random'],'xiangqi':['Red','Black','Random']}[kind]
+                sides={'chess':['White','Black','Random'],'shogi':['Sente','Gote','Random'],'xiangqi':['Red','Black','Random'],'tori':['Sente','Gote','Random']}[kind]
                 buttons=w.read("[...document.querySelectorAll('.side-choices button')].map(e=>({label:e.textContent,role:e.getAttribute('role'),selected:e.getAttribute('aria-checked'),chosen:e.classList.contains('chosen')}))")
                 assert [e['label'] for e in buttons]==sides and all(e['role']=='radio' for e in buttons),buttons
                 assert sum(e['chosen'] and e['selected']=='true' for e in buttons)==1,buttons
@@ -982,7 +995,7 @@ class Journey:
             const theme=s=>{const e=document.querySelector(s);if(!e)return null;const c=getComputedStyle(e);return Object.fromEntries(['backgroundColor','color','borderTopColor','borderTopWidth','borderRadius','fontSize','fontFamily','colorScheme'].map(k=>[k,c[k]]));};
             const visible=e=>{if(!e)return false;const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&r.left>=-1&&r.top>=-1&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1;};
             const squares=[...document.querySelectorAll('.square,.shogi-square,.xiangqi-point')];
-            return {game:root?.classList.contains('shell-xiangqi')?'xiangqi':root?.classList.contains('shell-shogi')?'shogi':'chess',viewport:{width:innerWidth,height:innerHeight},
+            return {game:root?.classList.contains('shell-tori')?'tori':root?.classList.contains('shell-xiangqi')?'xiangqi':root?.classList.contains('shell-shogi')?'shogi':'chess',viewport:{width:innerWidth,height:innerHeight},
                 themeIdentity:root?.dataset.theme,
                 themes:Object.fromEntries(['.game-shell','.shell-header','.shell-card','.shell-section-title','.shell-file-actions .primary','.shell-file-actions .quiet','.inspector-switch button[aria-pressed="true"]'].map(s=>[s,theme(s)])),
                 header:rect('.shell-header'),document:rect('.shell-document'),actions:rect('.shell-file-actions'),
@@ -1008,16 +1021,16 @@ class Journey:
         })()""")
         assert layout['game'] == game and layout['sections'] == ['analysis','actions','history'], layout
         assert layout['themeIdentity'] == 'mshogi-dark' and all(layout['themes'].values()), layout
-        assert layout['squareCount']=={'chess': 64, 'shogi': 81, 'xiangqi': 90}[game] and layout['allSquaresVisible'] and layout['pageWidth']<=layout['viewport']['width']+1, layout
+        assert layout['squareCount']=={'chess': 64, 'shogi': 81, 'xiangqi': 90, 'tori': 49}[game] and layout['allSquaresVisible'] and layout['pageWidth']<=layout['viewport']['width']+1, layout
         assert layout['inspectorButtons'] == [{'label':'Play details','pressed':'true'}, {'label':'Analyze position','pressed':'false'}], layout
         assert [slot['name'] for slot in layout['slots']] == ['upper-player','board','lower-player','footer'], layout
         assert layout['help'] and layout['help']['height'] > 0 and layout['helpVisible'] and layout['footnoteVisible'], ('live help belongs visibly in the shared footer',layout)
         assert layout['documentState'] == 'unsaved', layout
         assert layout['positionStatus'] == 'Your turnLive position · 0 plies', layout
-        expected_depth, expected_nodes = {'chess': (2, 20000), 'shogi': (2, 5000), 'xiangqi': (1, 128)}[game]
+        expected_depth, expected_nodes = {'chess': (2, 20000), 'shogi': (2, 5000), 'xiangqi': (1, 128), 'tori': (2, 2000)}[game]
         assert play_limit_matches(layout['playLimits'], expected_depth, expected_nodes), layout
         assert layout['documentInHeader'] and layout['flipInHeading'] and layout['supportOutsideSidebar'] and layout['rawDiagnosticsAbsent'], layout
-        assert layout['brand'] == '歩' and layout['gameLabel'] == game.upper(), layout
+        assert layout['brand'] == '歩' and layout['gameLabel'] == ('TORI SHOGI' if game == 'tori' else game.upper()), layout
         self.support_access(game)
         assert layout['headerButtons'] == ['New game','Save','Load'], layout
         assert layout['boardPanel']['left'] < layout['sidebar']['left'], layout
@@ -2032,19 +2045,285 @@ class Journey:
         self.capture("result")
         self.quit()
 
+    def tori_events(self, count, selected=None, historical=False):
+        root = "document.querySelector('.game-shell')"
+        wait(lambda: self.web.read(root + "?.dataset.liveEvents") == str(count),
+             f"native Tori history has {count} exact events")
+        if selected is not None:
+            wait(lambda: self.web.read(root + "?.dataset.currentEvent") == str(selected),
+                 f"native Tori selected event {selected}")
+        wait(lambda: self.web.read(root + "?.dataset.historical") == str(historical).lower(),
+             f"Tori historical viewing {historical}")
+
+    def new_tori(self, side):
+        w = self.web
+        w.button('New game')
+        wait(lambda: w.has('[aria-label="New game"]'), 'ordinary New Game chooser')
+        self.choose_game('tori')
+        w.click(f'[data-side="{side}"]')
+        w.click('[data-start-game]')
+        wait(lambda: w.has('.shell-tori') and not w.has('[aria-label="New game"]'),
+             'normal product installs native Tori session')
+        wait(lambda: not w.has('.shogi-analysis[data-phase="thinking"]'), 'initial Tori engine turn settles', 45)
+        # Ownership is native presentation data, not guessed from random's coin.
+        orientation = w.read("document.querySelector('.game-shell').dataset.orientation")
+        assert orientation in ('sente', 'gote'), orientation
+        if side != 'random':
+            assert orientation == side, (side, orientation)
+        self.tori_events(0 if orientation == 'sente' else 1)
+        native = self.native_diagnostics()
+        assert native['context']['game_kind'] == 'tori', native
+        assert native['profile'] == 'mshogi.tori.modern.v1', native
+        if orientation == 'gote':
+            assert any(item['observation']['context']['purpose']['kind'] == 'engine_turn'
+                       for item in native['observations']), native
+        self.record('Ordinary New Game / Tori / native player assignment and real engine',
+                    {'requested_side': side, 'actual_orientation': orientation, 'native': native})
+        return orientation
+
+    def tori_save(self, path):
+        archive = self.save_current(path)
+        body = desktop_document_payload(archive, 'tori')
+        assert body['current']['game_kind'] == body['initial']['game_kind'] == 'tori'
+        self.record('Save complete native Tori document with no lossy reconstruction', {
+            'path': str(path), 'sha256': digest(path), 'bytes': path.stat().st_size,
+            'native_events': len(body['current']['payload']['events']),
+            'observations': len(body['observations']), 'controls': len(body['controls']),
+            'retired': len(body['retired']), 'root': body['current']['payload']['root']})
+        return body
+
+    def tori_analysis(self, depth=1, nodes=1000):
+        w = self.web
+        if not w.has('[data-analysis-start="tori"]'):
+            w.button('Analyze position')
+        wait(lambda: w.has('[data-analysis-start="tori"]'), 'native bounded Tori analysis controls')
+        w.set('.shogi-analysis input[name="depth"]', depth)
+        w.set('.shogi-analysis input[name="nodes"]', nodes)
+        w.click('[data-analysis-start="tori"]')
+        wait(lambda: 'Analysis result available' in w.text('.shogi-analysis-state'),
+             'real native Tori read-only result', 45)
+        assert 'No move was played.' in w.text('.shogi-analysis')
+        assert 'perspective' in w.text('.analysis-perspective')
+        assert not w.has('.outcome-card')
+
+    def tori_load_fixture(self, name):
+        source = Path(__file__).with_name('fixtures') / f'tori-{name}.mshogi'
+        path = self.args.output / f'normal-tori-{name}-source.mshogi'
+        shutil.copyfile(source, path)
+        before = self.native_diagnostics()
+        self.file('open', path); self.wait_opened(path)
+        wait(lambda: self.web.has('.shell-tori'), 'normal Load dispatches native Tori document')
+        after = self.native_diagnostics()
+        assert after['token']['document'] > before['token']['document'], (before, after)
+        assert self.web.read("document.querySelector('.game-shell').dataset.paused") == 'true'
+        assert not self.web.has('.shogi-analysis[data-phase="thinking"],.shogi-analysis[data-phase="analyzing"]')
+        expected = desktop_document_payload(json.loads(source.read_text(encoding='utf-8')), 'tori')
+        assert after['context'] == expected['current'], (after['context'], expected['current'])
+        self.record('Ordinary normal-package Load of native-generated admitted document', {
+            'fixture': name, 'source': str(source), 'source_sha256': digest(source),
+            'opened_copy': str(path), 'before_token': before['token'], 'after': after,
+            'qualification': 'Current native envelope admitted and saved by external Rust example; no host fixture activation or injected IPC.'})
+        return after
+
+    def normal_tori(self):
+        """Ordinary installed product, real native rules and unchanged sidecar."""
+        self.start(product='tori')
+        w = self.web
+        self.new_tori('gote'); self.shogi_board_fits(tori=True)
+        self.capture('normal-gote-real-first-engine-move')
+        self.new_tori('random'); self.shogi_board_fits(tori=True)
+        self.new_tori('sente')
+        self.viewport(1180, 820); self.shared_shell('tori'); self.shogi_board_fits(tori=True)
+        self.capture('normal-sente-standard')
+        self.viewport(760, 650); self.shogi_board_fits(tori=True); self.shared_shell('tori')
+        self.capture('normal-minimum-standard'); self.viewport(1180, 820)
+        self.inspect_piece('tori', '5d', '5e', 'Gote Swallow')
+        self.intentional_replacement_failures('tori')
+        w.click(self.shogi_square('3d'))
+        assert w.read(f"document.querySelector({json.dumps(self.shogi_square('3c'))}).classList.contains('target')")
+        w.key('\ue00c'); self.tori_events(0)
+        assert w.read('document.activeElement?.dataset.square') == '3d'
+        for key in ('\ue007', '\ue013', '\ue007'):
+            w.key(key)  # Actual Enter / Up / Enter commits one native complete capture.
+        self.tori_events(2)
+        wait(lambda: w.has('[data-search-purpose="engine_turn"]'), 'actual bundled Tori reply', 45)
+        for side in ('sente', 'gote'):
+            assert '1' in w.text(f'.shogi-player[data-player="{side}"] .hand-piece[data-hand="Sw"]')
+        self.capture('normal-captures-both-hands')
+        w.click('.shogi-player[data-player="sente"] .hand-piece[data-hand="Sw"]')
+        assert w.read(f"document.querySelector({json.dumps(self.shogi_square('3d'))}).classList.contains('target')")
+        self.capture('normal-native-drop-choices')
+        w.key('\ue00c'); self.tori_events(2)
+        w.click('.shogi-player[data-player="sente"] .hand-piece[data-hand="Sw"]')
+        w.click(self.shogi_square('3d')); self.tori_events(4)
+        full = self.native_diagnostics()
+        events = full['context']['payload']['events']
+        assert events[0]['command']['action'] == {'kind':'move','from':'3d','to':'3c','result_face':'swallow'}
+        assert events[2]['command']['action'] == {'kind':'drop','face':'swallow','to':'3d'}
+        self.capture('normal-complete-drop-and-engine-reply')
+        w.focused_button('Take back'); self.tori_events(2)
+        assert w.read("document.querySelector('.game-shell').dataset.paused") == 'true'
+        taken = self.native_diagnostics()
+        assert taken['context']['payload']['events'] == events[:2]
+        assert 'Earlier engine searches are retained as historical observations.' in w.text('.shell-sidebar')
+        assert 'Last engine turn' not in w.text('.shell-sidebar')
+        self.capture('normal-takeback-historical-observations')
+        w.click('.shogi-history [data-event="1"]'); self.tori_events(2, selected=1, historical=True)
+        self.assert_historical_notice(1)
+        self.assert_completed_cue(json.dumps(events[0]['command']['action'], separators=(',', ':')), 1, ['3d'], ['3c'])
+        self.tori_analysis()
+        selected = self.native_diagnostics()
+        assert len(selected['context']['payload']['events']) == 1
+        assert selected['context']['payload']['events'] == events[:1]
+        self.capture('normal-exact-history-readonly-analysis')
+        w.button('Return to live'); self.tori_events(2, selected=2)
+        assert w.has('.play-paused')
+        path = self.args.output / 'normal-tori-complete.mshogi'
+        body = self.tori_save(path)
+        assert body['retired'] and len(body['observations']) >= 3
+        analysis = [item for item in body['observations'] if item['context']['purpose']['kind'] == 'move_analysis']
+        assert analysis and analysis[-1]['context']['game']['payload']['events'] == events[:1]
+        before = self.native_diagnostics()
+        self.file('open', path); self.wait_opened(path)
+        reopened = self.native_diagnostics()
+        assert reopened['context'] == before['context']
+        assert reopened['token']['document'] > before['token']['document']
+        assert reopened['token']['selection'] != before['token']['selection']
+        assert all(item['historical'] for item in reopened['observations'])
+        assert w.has('.play-paused') and not w.has('.shogi-analysis[data-phase="thinking"]')
+        self.capture('normal-reopened-work-stopped')
+        w.button('Resume play')
+        wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == 'false', 'explicit Tori Resume')
+        self.tori_analysis()
+        after_analysis = self.native_diagnostics()
+        assert after_analysis['context'] == reopened['context'], 'normal read-only analysis never plays a result'
+        w.button('Play details')
+        self.direct_resign('tori')
+        concluded = self.native_diagnostics()
+        assert concluded['context']['payload']['conclusion'] == {'kind':'resignation','winner':'gote'}
+        assert len(concluded['context']['payload']['events']) == 3
+        final = self.tori_save(self.args.output / 'normal-tori-concluded.mshogi')
+        assert final['current']['payload']['conclusion'] == {'kind':'resignation','winner':'gote'}
+        self.record('Bounded complete ordinary Tori game', {'root':'standard', 'accepted_board_actions':4,
+            'retired_board_actions':2, 'current_board_actions':2, 'final_native_conclusion':concluded['context']['payload']['conclusion'],
+            'evidence':'Human capture / real engine capture / human drop / real engine reply / Take back / Save Load / analysis / native resignation. Functional play, not strength evidence.'})
+        w.click('.flip-button')
+        self.record('Native Tori dirty window-close request', self.native.close_window())
+        wait(lambda: w.has('.document-guard'), 'native dirty Tori close protected')
+        w.button('Cancel'); wait(lambda: not w.has('.document-guard'), 'Cancel protects concluded Tori game')
+        assert self.native.alive()
+        assert self.native_diagnostics()['context'] == concluded['context']
+        self.capture('normal-dirty-quit-cancel-preserves-game')
+        self.quit(save=True)
+
+    def normal_tori_native(self):
+        """Difficult independently expected states through ordinary normal Load."""
+        self.start(product='tori-native')
+        w = self.web
+        self.tori_load_fixture('contract'); self.tori_events(0)
+        self.shogi_board_fits(tori=True)
+        self.capture('all-nine-traditional-faces-and-native-hands')
+        w.click(self.shogi_square('7c')); w.click(self.shogi_square('7b'))
+        self.tori_events(1)
+        assert not w.has('.shogi-promotion'), 'Tori promotion is compulsory, never an optional choice'
+        assert w.read(f"document.querySelector({json.dumps(self.shogi_square('7b'))})?.querySelector('[data-tori-face=Ea]')!==null")
+        promoted = self.native_diagnostics()
+        assert promoted['context']['payload']['events'][0]['command']['action'] == {'kind':'move','from':'7c','to':'7b','result_face':'eagle'}
+        assert w.has('.play-paused'), 'manual action after Load preserves stopped execution'
+        self.capture('normal-load-compulsory-promotion-and-captured-hand')
+        self.tori_save(self.args.output / 'normal-tori-promoted.mshogi')
+        self.tori_load_fixture('mate-in-one'); self.tori_events(0)
+        assert not w.has('.outcome-card')
+        w.click(self.shogi_square('4c')); w.click(self.shogi_square('4b'))
+        self.tori_events(1)
+        mate = self.native_diagnostics()
+        assert mate['context']['payload']['conclusion'] == {'kind':'checkmate','winner':'sente'}
+        assert w.has('.outcome-card') and not w.has('.resign-button')
+        self.capture('TORI-O-MATE-natural-complete-game')
+        self.tori_save(self.args.output / 'normal-tori-checkmate.mshogi')
+        self.tori_load_fixture('quiet-loss')
+        assert w.has('.outcome-card')
+        quiet = self.native_diagnostics()
+        assert quiet['context']['payload']['conclusion'] == {'kind':'stalemate_loss','loser':'gote'}
+        self.capture('TORI-O-QUIET-native-stalemate-loss')
+        self.tori_load_fixture('forced-prefix7'); self.tori_events(7)
+        w.click(self.shogi_square('5d')); w.click(self.shogi_square('4d'))
+        self.tori_events(8)
+        forced = self.native_diagnostics()
+        assert forced['context']['payload']['conclusion'] == {'kind':'repetition_forfeit','loser':'sente'}
+        assert forced['context']['payload']['events'][-1]['occurrences'] == [0,4,8]
+        assert w.has('.outcome-card')
+        self.capture('TORI-H-FORCED-FULL-terminal-third-occurrence')
+        self.tori_save(self.args.output / 'normal-tori-repetition-forfeit.mshogi')
+        self.tori_load_fixture('obligation8'); self.tori_events(8)
+        obligation = self.native_diagnostics()
+        assert obligation['context']['payload']['obligation']['occurrences'] == [0,4,8]
+        assert obligation['context']['payload']['conclusion'] is None
+        assert 'Repetition obligation' in w.text('.shell-notices')
+        w.click(self.shogi_square('4g'))
+        assert not w.read(f"document.querySelector({json.dumps(self.shogi_square('5g'))}).classList.contains('target')"), 'native forbidden departure cannot be entered'
+        w.key('\ue00c'); self.tori_events(8)
+        w.click('.shogi-history [data-event="4"]'); self.tori_events(8, selected=4, historical=True)
+        prefix = self.native_diagnostics()
+        assert len(prefix['context']['payload']['events']) == 4
+        assert prefix['context']['payload']['obligation'] is None
+        self.capture('TORI-H-COUNT-exact-prefix-without-future-obligation')
+        w.button('Return to live'); self.tori_events(8, selected=8)
+        assert self.native_diagnostics()['context'] == obligation['context']
+        path = self.args.output / 'normal-tori-obligation.mshogi'
+        self.tori_save(path)
+        self.file('open', path); self.wait_opened(path)
+        assert self.native_diagnostics()['context'] == obligation['context']
+        assert w.has('.play-paused')
+        self.record('Native independent terminal and repetition expectations through normal product', {
+            'fixtures':['TORI-O-MATE','TORI-O-QUIET','TORI-H-FORCED-FULL','TORI-H-COUNT'],
+            'mate':mate, 'quiet':quiet, 'forfeit':forced, 'obligation':obligation,
+            'qualification':'Immutable independently reviewed fixture expectations; native-generated admitted normal files, actual pointer actions, no external rules engine.'})
+        self.quit()
+
+    def tori_recovery(self):
+        self.start('tori-standard', phase_name='verification-tori-recovery')
+        w = self.web
+        engine = self.args.verification_engine
+        held = engine.with_name(engine.name + '.gui-verification-held')
+        original = digest(engine)
+        assert not held.exists()
+        try:
+            engine.rename(held)
+            w.button('Resume play')
+            w.click(self.shogi_square('3d')); w.click(self.shogi_square('3c'))
+            wait(lambda: 'Engine connection failed' in w.text('.shell-notices'), 'genuine Tori sidecar startup failure')
+            self.tori_events(1)
+            assert not w.has('.outcome-card')
+            self.capture('actual-missing-sidecar-unscored')
+        finally:
+            if held.exists(): held.rename(engine)
+        assert digest(engine) == original
+        w.button('Retry engine turn'); self.tori_events(2)
+        wait(lambda: w.has('[data-search-purpose="engine_turn"]'), 'real Tori engine retry after identical binary restored', 45)
+        assert not w.has('.outcome-card')
+        self.tori_save(self.args.output / 'tori-recovery-complete.mshogi')
+        self.record('Actual missing native Tori engine / unchanged document / identical restored sidecar / explicit Retry', {'engine_sha256':original,'native':self.native_diagnostics()})
+        self.capture('actual-retry-retains-native-history')
+        self.quit()
+
     def pending(self, game):
         """Actual QA supervisor with bounded external delay; no fake responses."""
         fixture = 'standard' if game == 'chess' else f'{game}-standard'
         self.start(fixture, gated=True, phase_name=f'verification-pending-{game}')
         w = self.web
-        origin, destination = {'chess': ('e2', 'e4'), 'shogi': ('7g', '7f'), 'xiangqi': ('a3', 'a4')}[game]
-        point = self.square if game == 'chess' else self.shogi_square if game == 'shogi' else self.xiangqi_point
+        if game == 'tori':
+            w.button('Resume play')
+        origin, destination = {'chess': ('e2', 'e4'), 'shogi': ('7g', '7f'), 'xiangqi': ('a3', 'a4'), 'tori': ('3d', '3c')}[game]
+        point = self.square if game == 'chess' else self.shogi_square if game in ('shogi', 'tori') else self.xiangqi_point
         w.click(point(origin)); w.click(point(destination))
         wait(lambda: w.has('.shogi-analysis[data-phase="thinking"]') and w.has('.shell-notices button'), 'actual pending engine decision')
         # Chess desktop history includes its native Match Start event.
         human_event, restored_event = (2, 1) if game == 'chess' else (1, 0)
-        self.assert_completed_cue(origin + destination, human_event, [origin], [destination])
         before = self.native_diagnostics()
+        cue_action = (json.dumps(before['context']['payload']['events'][-1]['command']['action'], separators=(',', ':'))
+                      if game == 'tori' else origin + destination)
+        self.assert_completed_cue(cue_action, human_event, [origin], [destination])
         assert len(before['context']['payload']['events']) >= 1
         self.capture('real-engine-pending')
         w.click('.moves-root')
@@ -2085,7 +2364,7 @@ class Journey:
         path = self.args.output / f'pending-{game}-complete.mshogi'
         archive = self.save_current(path)
         body = desktop_document_payload(archive, game)
-        assert retained_pending_takeback(game, body, origin + destination), 'native archive retains abandoned board action before Take back'
+        assert retained_pending_takeback(game, body, {'kind':'move','from':origin,'to':destination,'result_face':'swallow'} if game == 'tori' else origin + destination), 'native archive retains abandoned board action before Take back'
         old_token = cancelled['token']
         self.file('open', path); self.wait_opened(path)
         reopened = self.native_diagnostics()
@@ -2406,7 +2685,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--driver", default="tauri-driver")
     parser.add_argument("--native-driver")
-    parser.add_argument("--phase", choices=["normal", "normal-shogi", "normal-xiangqi", "verification", "verification-shogi", "verification-xiangqi", "all"], default="all")
+    parser.add_argument("--phase", choices=["normal", "normal-shogi", "normal-xiangqi", "normal-tori", "verification", "verification-shogi", "verification-xiangqi", "verification-tori", "all"], default="all")
     args = parser.parse_args()
     args.output = args.output.resolve()
     args.output.mkdir(parents=True, exist_ok=True)
@@ -2443,6 +2722,12 @@ def main():
                     journey.normal_shogi_reopened()
                 elif fixture == "normal-xiangqi":
                     journey.normal_xiangqi()
+                elif fixture == "normal-tori":
+                    journey.normal_tori()
+                elif fixture == "normal-tori-native":
+                    journey.normal_tori_native()
+                elif fixture == "tori-recovery":
+                    journey.tori_recovery()
                 elif fixture == "full-unknown":
                     journey.full_unknown()
                 elif fixture.startswith("pending-"):

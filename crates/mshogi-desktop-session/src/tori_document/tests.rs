@@ -589,6 +589,72 @@ fn actual_control_limit_consumes_stop_resign_close_reservations_without_resettin
         })
         .collect();
     let d = validate_payload(p, &mut || false).unwrap();
+    // Exercise the actual runtime worker's typed refusal, not only its codec.
+    // Browsing began while play was running; exhausted control capacity must
+    // retire that permission without discarding the exact admitted document.
+    {
+        use crate::shared::{SessionOperation, SharedDesktopCommand};
+        fn send(
+            c: &mut DesktopController,
+            operation: SessionOperation,
+        ) -> Result<crate::SharedSnapshot, String> {
+            let (_, receipt) = c.shared_command_with_receipt(SharedDesktopCommand {
+                expected: c.shared_token(),
+                game: GameKind::Tori,
+                operation,
+            })?;
+            let deadline = Instant::now() + Duration::from_secs(20);
+            loop {
+                let snapshot = c.shared_snapshot();
+                if let Some(result) = receipt.completion() {
+                    return result.map(|_| snapshot);
+                }
+                assert!(Instant::now() < deadline);
+                std::thread::sleep(Duration::from_millis(1));
+            }
+        }
+        let file = path();
+        fs::write(&file, d.bytes()).unwrap();
+        let mut c = DesktopController::new("/unused-control-limit-engine".into()).unwrap();
+        c.shared.manual_engine = true;
+        let id = c
+            .queue_product_open(file.clone(), c.shared_open_token())
+            .unwrap();
+        let deadline = Instant::now() + Duration::from_secs(20);
+        loop {
+            let snapshot = c.shared_snapshot();
+            if snapshot.io.id == id && snapshot.io.phase == crate::IoPhase::Complete {
+                break;
+            }
+            assert!(Instant::now() < deadline, "{:?}", snapshot.io);
+            std::thread::sleep(Duration::from_millis(1));
+        }
+        send(&mut c, SessionOperation::Resume {}).unwrap();
+        send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
+        let before = c.session.tori().unwrap().document.bytes().to_vec();
+        assert!(c.session.tori().unwrap().browse_stop.is_some());
+        assert!(
+            send(
+                &mut c,
+                SessionOperation::ToriPreferences {
+                    settings: ToriSettings {
+                        orientation: t::Side::Gote
+                    }
+                }
+            )
+            .is_err()
+        );
+        assert_eq!(
+            c.session.capacity.resource.as_ref().unwrap().facts()[0].category,
+            ResourceCategory::Controls
+        );
+        assert!(c.session.tori().unwrap().browse_stop.is_none());
+        assert_eq!(c.session.tori().unwrap().document.bytes(), before);
+        let live = send(&mut c, SessionOperation::ReturnLive {}).unwrap();
+        assert!(live.paused && !live.historical && live.status.score_half_points.is_none());
+        assert_eq!(c.session.tori().unwrap().document.record(), d.record());
+        fs::remove_file(file).unwrap();
+    }
     assert!(
         d.with_control(
             ToriControl::Settings {
@@ -722,20 +788,36 @@ fn actual_file_worker_first_save_replacement_failure_interruption_and_stale_rece
     fs::remove_file(file).unwrap();
 }
 #[test]
-fn no_tori_normal_play_capability_is_enabled() {
+fn normal_tori_new_game_uses_the_admitted_native_document() {
     assert!(!mshogi_engine::execution_capabilities(GameKind::Tori).is_empty());
     let mut c = DesktopController::new("/unused-engine".into()).unwrap();
-    let before = c.shared_snapshot().context;
-    // MSH-131 now admits native verification documents; normal New Game stays gated.
-    assert!(
-        c.shared_new_game(
+    c.shared.manual_engine = true;
+    let before = c.shared_snapshot().token;
+    let (_, receipt) = c
+        .shared_new_game(
             c.shared_open_token(),
             GameKind::Tori,
-            NativeSide::Tori(t::Side::Sente)
+            NativeSide::Tori(t::Side::Sente),
         )
-        .is_err()
-    );
-    assert_eq!(c.shared_snapshot().context, before);
+        .unwrap();
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(20);
+    loop {
+        let snapshot = c.shared_snapshot();
+        if let Some(result) = receipt.completion() {
+            result.unwrap();
+            assert_eq!(snapshot.game, GameKind::Tori);
+            assert!(snapshot.token.document > before.document);
+            assert!(
+                !snapshot.paused
+                    && snapshot.capabilities.board_action
+                    && snapshot.capabilities.save
+            );
+            assert!(snapshot.capabilities.engine_turn && snapshot.capabilities.move_analysis);
+            break;
+        }
+        assert!(std::time::Instant::now() < deadline);
+        std::thread::sleep(std::time::Duration::from_millis(1));
+    }
 }
 
 #[test]

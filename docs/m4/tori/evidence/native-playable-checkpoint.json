@@ -1,0 +1,331 @@
+{
+  "schema": "mshogi.tori.native-playable-checkpoint.v1",
+  "task": "MSH-42",
+  "status": "In Progress; native playable-consumer checkpoint only",
+  "tested_source": "Pending reviewed source commit; source CI not yet run",
+  "integration_branch": "codex/rewrite",
+  "basis": {
+    "accepted_shared_source": "52b0390cac09faf727a0c5ed74c1fd673f468a11",
+    "accepted_MSH77_integration": "2f8709613cae1cb921452cd38b167707dd8a77f7",
+    "profile": "mshogi.tori.modern.v1",
+    "profile_edition": "MSH81-MODERN-2026-11-01",
+    "immutable_sha256": {
+      "docs/m4/tori/fixtures.json": "3f9e5ca3b541fc72f562ddd8231408e17e7bd5ba3ccee118e643ce0f543731e3",
+      "docs/m4/tori/native-fixture-ownership.json": "044a5d0fc72e355e705d12f6b7b1c328a043aa67b321a2c897d0e790f242b8d5",
+      "docs/m4/tori/shared-consumer-ownership.json": "7dc4e4aed4a3d8977b6dc0c9befbfe732825f5cf68d7dc02cf0c09dab403104e",
+      "docs/m4/tori/profile.md": "5e20ea1a355f1d2dfc91ab930687437a3aa8cf34a78353b80076b4173fd1e81a"
+    }
+  },
+  "compatibility": {
+    "execution_protocol": 4,
+    "observation_schema": 1,
+    "native_record_schema": 1,
+    "strategy": "Additive native Tori result family. Preserve old unscored Failure observations and generic transport limits; actual new Tori results and server execution enforce native 3/10000 limits. Current desktop envelope unchanged. No constants raised."
+  },
+  "search": {
+    "algorithm": "deterministic iterative full-width native Game minimax; private admitted record reconstruction; no board-only TT/pruning",
+    "evaluator": "mshogi.tori.material.v1",
+    "search": "mshogi.tori.full-width.v1",
+    "default": {
+      "depth": 2,
+      "nodes": 2000
+    },
+    "maximum": {
+      "depth": 3,
+      "nodes": 10000
+    },
+    "release_measurements": [
+      {
+        "case": "standard",
+        "legal_choices": 17,
+        "nodes": 324,
+        "completed_depth": 2,
+        "milliseconds": 9
+      },
+      {
+        "case": "drop-heavy",
+        "legal_choices": 281,
+        "nodes": 1847,
+        "completed_depth": 2,
+        "milliseconds": 62
+      }
+    ],
+    "strength_claim": false
+  },
+  "capacity": {
+    "constants_unchanged": true,
+    "actual_256_observations": {
+      "encoded_bytes": 1386066,
+      "retained_events": 0,
+      "controls": 256,
+      "observations": 256,
+      "replay_work": 197504,
+      "local_decode_ms": 1950,
+      "result": "PASS;257 refusal;accepted bytes unchanged;Stop/Resign/Close+roundtrip succeed"
+    },
+    "actual_long_record": {
+      "board_actions": 64,
+      "encoded_bytes": 556736,
+      "retained_events": 1088,
+      "controls": 80,
+      "observations": 16,
+      "replay_work": 155296,
+      "local_total_16_admissions_and_roundtrip_ms": 47796,
+      "result": "PASS; aggregate charge and replay preserve complete contexts"
+    },
+    "operational_deadline_seconds": 15,
+    "qualification": "Individual native replays remain bounded but not internally interruptible; near-limit workers may return typed ValidationBudget and preserve live state. The total16-admission measurement is not a single-operation latency."
+  },
+  "focused": [
+    {
+      "command": "cargo test --locked -p mshogi-search tori:: -- --nocapture",
+      "passed": 8,
+      "ignored": 1,
+      "ignored_meaning": "explicit release performance probe separately run and passed"
+    },
+    {
+      "command": "cargo test --release --locked -p mshogi-search tori::tests::measure_default_standard_and_drop_heavy -- --ignored --nocapture",
+      "result": "PASS; explicit release probe"
+    },
+    {
+      "command": "cargo test --locked -p mshogi-engine --test tori_protocol --test tori_routing -- --nocapture",
+      "passed": 8
+    },
+    {
+      "command": "cargo test --locked -p mshogi-core tori::notation",
+      "passed": 3
+    },
+    {
+      "command": "cargo test --locked -p mshogi-console --test tori_cli --test tori_internal --test desktop_tori --test tori_selfplay -- --nocapture",
+      "passed": 13
+    },
+    {
+      "command": "cargo test --locked -p mshogi-desktop-session tori --all-features -- --nocapture",
+      "passed": 55,
+      "qualification": "Before the two additional real controller tests; both separately passed and included in final broad suites"
+    },
+    {
+      "command": "cargo test --locked -p mshogi-desktop-session actual_engine_turns_both_assignments_and_exact_historical_analysis_have_separate_admission --all-features -- --nocapture",
+      "passed": 1
+    },
+    {
+      "command": "cargo test --locked -p mshogi-desktop-session real_completed_choice_cancel_replace_and_worker_refusal_cannot_mutate_current_game --all-features -- --nocapture",
+      "passed": 1
+    },
+    {
+      "command": "Node24 npm run check; npm test -- --run src/product/ToriContract.test.tsx",
+      "passed": 19,
+      "typescript": "PASS"
+    }
+  ],
+  "notation": {
+    "field": "TORI-C-NOTATION.expected.display_is_not_action_authority",
+    "field_count": 1,
+    "consumer_requirement_count": 1,
+    "result": "PASS; independent native capture/compulsory Ea and RQ drop examples; malformed labels rejected; T06 local-parse/live-admission separation",
+    "source": "docs/m4/tori/notation.md",
+    "fixtures_or_inventory_modified": false,
+    "historical_MSH132_pending_rows": "Preserved in original audit, superseded by this implemented consumer evidence"
+  },
+  "selfplay": {
+    "record": "native-playable-selfplay.json",
+    "actual_process": "mshogi internal-search",
+    "deterministic_repetitions_per_scenario": 2,
+    "scenarios": [
+      "standard8 board actions+unscored WorkLimit Stop",
+      "independently expected mate-in-one complete custom game+actual Finished response"
+    ],
+    "not_established": [
+      "competitive strength",
+      "complete standard-start game",
+      "external-opponent interoperability",
+      "final packaged Tori UI"
+    ]
+  },
+  "independent_review": {
+    "method": "Separate Codex agent read-only source, independent expectations, tests and actual evidence inspection; reviewer did not execute tests",
+    "reviewer": "tori42_review",
+    "verdict": "Native source boundary PASS; final exact-source CI/evidence reconciliation pending",
+    "resolved_findings": [
+      "Remove native replay from bridge/poll matches; full validation only on bounded worker",
+      "Safe telemetry visit minimum for terminal leaves",
+      "Charge repeated observation/PV validation before acceptance",
+      "Immediate cancellation and consumed-result refusal pause scheduling",
+      "Tori QA form minimum agrees with native positive node limit",
+      "A consumed matching response that cannot enter the admission queue retires Thinking and pauses without mutating the document."
+    ],
+    "verified_risks": [
+      "Native terminal scores derive the actual native conclusion winner, including out-of-turn resignation; this was a preflight requirement, not an observed defect."
+    ]
+  },
+  "failed_checks_preserved": [
+    "Search early compile E0599: assumed nonexistent public Position.board/Game.cache_snapshot; corrected to public pieces and semantic snapshot/token distinction.",
+    "Initial desktop focused compiled before obsolete unsupported expectations updated:47 passed/5 failed; actual engine capability and readable notation now replace those old assertions.",
+    "Author compile fixes: actual Analyze::Moves fields, immutable/mutable state borrow, native record known_board_actions, ResourceFailure facts accessor; no semantic criteria weakened.",
+    "Console early compile Box<GameRecord> comparison corrected; first focused runtime campaign exposed qualified-side key and test-only PID-label assumption; isolated fixture marker now uses explicit test root metadata, no production PID labels.",
+    "Frontend first focused16/18: outdated technical label and failed-file Resume expectation; assertions corrected to actual native move and existing capacity-vs-I/O distinction.",
+    "Clippy two early pre-regression stops: collapsible_if and fixture needless_return; mechanically corrected; failed logs retained locally.",
+    "Standalone Tauri feature tests first13PASS/1FAIL: old !engine_turn assertion; corrected to real native capability while normal product Open stays blocked, final14PASS."
+  ],
+  "broad_local": {
+    "status": "PASS; source push/CI still pending",
+    "checks": [
+      {
+        "name": "format",
+        "command": [
+          "cargo",
+          "fmt",
+          "--all",
+          "--",
+          "--check"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.684,
+        "log": "/private/tmp/msh42-format.log"
+      },
+      {
+        "name": "clippy",
+        "command": [
+          "cargo",
+          "clippy",
+          "--locked",
+          "--workspace",
+          "--all-targets",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.304,
+        "log": "/private/tmp/msh42-clippy.log"
+      },
+      {
+        "name": "workspace-tests",
+        "command": [
+          "cargo",
+          "test",
+          "--locked",
+          "--workspace"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 347.623,
+        "log": "/private/tmp/msh42-workspace-tests.log"
+      },
+      {
+        "name": "desktop-features",
+        "command": [
+          "cargo",
+          "test",
+          "--locked",
+          "-p",
+          "mshogi-desktop-session",
+          "--all-features"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 181.995,
+        "log": "/private/tmp/msh42-desktop-features.log"
+      },
+      {
+        "name": "frontend-fixtures",
+        "command": [
+          "cargo",
+          "run",
+          "--locked",
+          "-p",
+          "mshogi-desktop-session",
+          "--features",
+          "desktop-verification",
+          "--example",
+          "write_tori_frontend_fixtures",
+          "--",
+          "desktop/src/__fixtures__"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 4.601,
+        "log": "/private/tmp/msh42-frontend-fixtures.log"
+      },
+      {
+        "name": "host-clippy",
+        "command": [
+          "cargo",
+          "clippy",
+          "--locked",
+          "--manifest-path",
+          "desktop/src-tauri/Cargo.toml",
+          "--all-targets",
+          "--all-features",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 4.366,
+        "log": "/private/tmp/msh42-host-clippy.log"
+      },
+      {
+        "name": "host-tests",
+        "command": [
+          "cargo",
+          "test",
+          "--locked",
+          "--manifest-path",
+          "desktop/src-tauri/Cargo.toml",
+          "--all-features"
+        ],
+        "exit_code": 101,
+        "elapsed_seconds": 10.292,
+        "log": "/private/tmp/msh42-host-tests.log",
+        "qualification": "First standalone host test run13PASS/1obsolete unsupported-capability assertion failed; corrected assertion, final14PASS"
+      }
+    ],
+    "frontend_final": {
+      "command": "Node24 npm test",
+      "files": 27,
+      "passed": 344
+    },
+    "frontend_normal_build": {
+      "command": "Node24 npm run build",
+      "result": "PASS; verification modules/markers excluded"
+    },
+    "early_consumers": {
+      "workspace_all_targets_check": "PASS",
+      "standalone_Tauri_all_targets_all_features_check": "PASS; inherited vendor Tao warnings",
+      "strict_TypeScript": "PASS"
+    },
+    "qualification": "Workspace broad suite completed before final admission-ID edge fix. Its new focused regression plus final all-feature/CI source checks cover that change; no unrelated campaign repeated.",
+    "standalone_host_final": {
+      "command": "cargo test --locked --manifest-path desktop/src-tauri/Cargo.toml --all-features",
+      "passed": 14,
+      "result": "PASS"
+    },
+    "desktop_features_passed": 259,
+    "workspace_clippy_after_final_guard": "PASS",
+    "required_native_suites": "PASS; workspace plus desktop all-feature suite, including final consumed-response regression"
+  },
+  "required_ci": {
+    "Rust workspace": [
+      "ubuntu-24.04",
+      "macos-15",
+      "windows-2022"
+    ],
+    "Desktop packages": [
+      "ubuntu-24.04",
+      "macos-15",
+      "windows-2022"
+    ],
+    "status": "Pending source push",
+    "method": "One completion-aware CI monitor; exact source hash. Existing-game GUI jobs are supporting compatibility, not final Tori visual acceptance.",
+    "completion_condition": "All3 Rust workspace jobs successful; Desktop jobs on all3 platforms have successful Locked frontend and native checks, Build normal native package, and actual normal bundled-engine inspection steps. Later automatic GUI/verification-build campaigns are supporting existing-game evidence, not this native-only checkpoint gate. Stop waiting when required condition is available."
+  },
+  "gui_evidence": {
+    "new_local_packaged_GUI": "Not run; native checkpoint does not claim finished product exposure/artwork",
+    "reused": "MSH77/130/131/132 unchanged earlier native/shared/technical GUI evidence; no new platform GUI inference"
+  },
+  "remaining": [
+    "Finished Tori board/artwork and owner visual approval",
+    "Normal product chooser/New Game/Open activation together with complete player journeys",
+    "Actual packaged Tori human-engine/analysis/recovery/history/SaveLoad/Takeback/quit verification",
+    "Final eight-criterion MSH42 complete-delivery review",
+    "MSH51 measured strength remains future; no later variants started"
+  ]
+}

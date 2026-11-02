@@ -2,7 +2,7 @@
   "moves": {
     "root": {
       "label": "Starting position",
-      "numbering": "Technical native actions · not final Tori notation. Declared root counter 0 · Known standard starting history"
+      "numbering": "Tori action notation · Declared root counter 0 · Known standard starting history"
     },
     "entries": [],
     "last_action": null
@@ -761,8 +761,8 @@
     "promotion": true,
     "take_back": false,
     "undo": false,
-    "engine_turn": false,
-    "move_analysis": false,
+    "engine_turn": true,
+    "move_analysis": true,
     "chess_full": false,
     "claims": false,
     "declaration": false,
@@ -780,15 +780,15 @@
   "event_index": 0,
   "board_ply": 0,
   "play_limits": {
-    "depth": 0,
-    "nodes": 0
+    "depth": 2,
+    "nodes": 2000
   },
   "historical": false,
   "paused": true,
   "close_requires_save": true,
   "phase": "paused",
   "execution_purpose": null,
-  "diagnostic": "Tori native document ready. Engine execution is unsupported; saved observations are historical.",
+  "diagnostic": "Tori document ready. Saved observations are historical; Resume starts native play.",
   "declaration_advice": [],
   "context": {
     "envelope_version": 1,
@@ -801,7 +801,7 @@
   "analysis": null,
   "observations": [],
   "search_observations": [],
-  "score_meaning": "No Tori evaluation or search implementation. Failures and incomplete work are unscored.",
+  "score_meaning": "Native root-side evaluation in hundredths of a Swallow. Win/loss distances count board actions; failures and incomplete work are unscored.",
   "chess": null,
   "chess_match": null
 }

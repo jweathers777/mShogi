@@ -1,4 +1,4 @@
-//! Technical complete-action display only. Final Tori notation belongs MSH-42.
+//! Native complete-action Tori notation, subordinate to admitted event history.
 use super::*;
 use mshogi_core::tori as t;
 pub(super) fn project(game: &t::Game) -> MovesProjection {
@@ -6,7 +6,7 @@ pub(super) fn project(game: &t::Game) -> MovesProjection {
     let mut view = projection(
         "Starting position".into(),
         format!(
-            "Technical native actions · not final Tori notation. Declared root counter {} · {}",
+            "Tori action notation · Declared root counter {} · {}",
             root.declared_completed_plies(),
             if root.earlier_history_unknown() {
                 "Earlier history is unknown"
@@ -21,17 +21,17 @@ pub(super) fn project(game: &t::Game) -> MovesProjection {
         let t::GameCommand::Play { action } = event.command else {
             continue;
         };
-        let (origin, to, label) = match action {
-            t::Action::Move {
-                from,
-                to,
-                result_face,
-            } => (
+        let label = t::notation::format_history_action(
+            &game.event_prefix(event.index).expect("admitted prefix"),
+            action,
+        )
+        .expect("admitted complete action");
+        let (origin, to) = match action {
+            t::Action::Move { from, to, .. } => (
                 ChoiceOrigin::Board {
                     square: from.to_string(),
                 },
                 to,
-                format!("Technical: {from} → {to} ({})", result_face.code()),
             ),
             t::Action::Drop { face, to } => (
                 ChoiceOrigin::Hand {
@@ -39,7 +39,6 @@ pub(super) fn project(game: &t::Game) -> MovesProjection {
                     piece_kind: face.code().into(),
                 },
                 to,
-                format!("Technical: {} drop → {to}", face.code()),
             ),
         };
         let column = u8::from(event.actor == t::Side::Gote);

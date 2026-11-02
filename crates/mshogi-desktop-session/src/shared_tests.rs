@@ -953,6 +953,6 @@ fn native_tori_product_gate_stays_closed_while_explicit_contract_admission_is_su
     .unwrap();
     assert_eq!(snapshot.game, GameKind::Tori);
     assert!(snapshot.token.document > token.document);
-    assert!(!snapshot.capabilities.engine_turn);
-    assert!(!snapshot.capabilities.move_analysis);
+    assert!(snapshot.capabilities.engine_turn);
+    assert!(snapshot.capabilities.move_analysis);
 }

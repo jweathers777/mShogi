@@ -10,6 +10,7 @@ mod bridge;
 mod server;
 mod shared;
 mod shogi;
+mod tori;
 mod xiangqi;
 pub use bridge::{BridgeOptions, EngineBridge, SubmitError};
 use mshogi_core::chess::{Action, ChessOutcome, ClaimRequest, Color, DrawClaim};
@@ -18,6 +19,7 @@ use serde::{Deserialize, Serialize};
 pub use server::serve_once;
 pub use shared::*;
 pub use shogi::*;
+pub use tori::*;
 pub use xiangqi::*;
 
 /// Current internal protocol version.

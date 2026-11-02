@@ -236,7 +236,7 @@ async fn game_command(
                 && (command.game == mshogi_desktop_session::GameKind::Tori
                     || matches!(&command.operation, mshogi_desktop_session::SessionOperation::Replace { record, .. } if record.game_kind() == mshogi_desktop_session::GameKind::Tori))
             {
-                return Err("Tori product activation is unavailable until its renderer and functional engine are delivered.".into());
+                return Err("Tori product activation is unavailable until its finished renderer and player journeys are delivered.".into());
             }
             let (initial, receipt) = controller.shared_command_with_receipt(command)?;
             Ok::<_, String>((initial, receipt, reservation))
@@ -1151,7 +1151,7 @@ mod tests {
         assert!(opened.paused);
         assert_ne!(opened.open_token.document, before.document);
         assert!(opened.observations.is_empty());
-        assert!(!opened.capabilities.engine_turn);
+        assert!(opened.capabilities.engine_turn);
         assert!(
             c.shared_new_game(opened.open_token, GameKind::Tori, opened.human.id)
                 .is_err()

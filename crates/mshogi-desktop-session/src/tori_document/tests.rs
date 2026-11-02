@@ -723,7 +723,7 @@ fn actual_file_worker_first_save_replacement_failure_interruption_and_stale_rece
 }
 #[test]
 fn no_tori_normal_play_capability_is_enabled() {
-    assert!(mshogi_engine::execution_capabilities(GameKind::Tori).is_empty());
+    assert!(!mshogi_engine::execution_capabilities(GameKind::Tori).is_empty());
     let mut c = DesktopController::new("/unused-engine".into()).unwrap();
     let before = c.shared_snapshot().context;
     // MSH-131 now admits native verification documents; normal New Game stays gated.
@@ -1179,4 +1179,171 @@ fn runtime_floor_width_reservation_survives_consumed_close_and_exact_byte_bounda
     // No additional width is needed once the maximum safe spelling is present.
     doc.usage.encoded_bytes = MAX_ARCHIVE_BYTES;
     assert!(check_runtime_bytes(&doc.usage, MAX_SAFE_ID - 65, reserve).is_ok());
+}
+
+fn actual_observation(doc: &ValidatedToriDocument, n: u64, analysis: bool) -> ExecutionObservation {
+    let mut context = observation(doc, n).context;
+    context.limits = WorkLimits {
+        depth: 1,
+        nodes: 1000,
+    };
+    if !analysis {
+        context.purpose = ExecutionPurpose::EngineTurn {};
+    }
+    let request = mshogi_engine::ExecutionRequest {
+        protocol: mshogi_engine::PROTOCOL_VERSION,
+        context,
+    };
+    let mut output = vec![];
+    mshogi_engine::serve_once(
+        std::io::Cursor::new(format!("{}\n", serde_json::to_string(&request).unwrap())),
+        &mut output,
+    )
+    .unwrap();
+    let response: mshogi_engine::ExecutionResponse = serde_json::from_slice(&output).unwrap();
+    assert!(response.matches(&request));
+    response.observation
+}
+#[test]
+fn actual_tori_choice_is_atomic_with_native_action_while_analysis_is_read_only() {
+    let original = standard();
+    let analysis = actual_observation(&original, 42, true);
+    assert!(matches!(
+        analysis.result,
+        ExecutionResult::Tori {
+            result: mshogi_engine::ToriResult::Choice { .. }
+        }
+    ));
+    let read = original
+        .with_observation(analysis.clone(), &mut || false)
+        .unwrap();
+    assert_eq!(read.record(), original.record());
+    assert_eq!(read.controls().len(), 1);
+    roundtrip(&read);
+    let turn = actual_observation(&original, 43, false);
+    let moved = original.with_observation(turn, &mut || false).unwrap();
+    assert_eq!(moved.record().known_board_actions(), 1);
+    assert!(matches!(
+        moved.controls(),
+        [
+            ToriControl::Observation { index: 0 },
+            ToriControl::Native {
+                command: t::GameCommand::Play { .. },
+                ..
+            }
+        ]
+    ));
+    roundtrip(&moved);
+    let mut forged = moved.payload.clone();
+    forged.controls.pop();
+    forged.current = original.payload.current.clone();
+    assert!(validate_payload(forged, &mut || false).is_err());
+    let mut forged = read.payload.clone();
+    if let ExecutionResult::Tori {
+        result: mshogi_engine::ToriResult::Choice { telemetry, .. },
+    } = &mut forged.observations[0].result
+    {
+        telemetry.score = Some(99999);
+    }
+    assert!(validate_payload(forged, &mut || false).is_err());
+    assert_eq!(original.record().event_count(), 0);
+}
+#[test]
+fn actual_search_observation_256_to_257_measures_archive_and_reserves_native_endings() {
+    let d = standard();
+    let o = actual_observation(&d, 1, true);
+    let mut p = d.payload.clone();
+    for n in 1..=256 {
+        let mut o = o.clone();
+        o.context.request_id = n;
+        o.context.session_version = n;
+        o.context.process_generation = n;
+        if let ExecutionPurpose::MoveAnalysis { target } = &mut o.context.purpose {
+            target.selection_id = n;
+            target.session_version = n;
+        }
+        p.controls.push(ToriControl::Observation {
+            index: p.observations.len(),
+        });
+        p.observations.push(o);
+    }
+    p.retired_execution_floor = 256;
+    let start = Instant::now();
+    let accepted = validate_payload(p, &mut || false).unwrap();
+    eprintln!(
+        "MSH42_REAL_OBSERVATIONS {} decode_ms={}",
+        serde_json::to_string(accepted.usage()).unwrap(),
+        start.elapsed().as_millis()
+    );
+    let bytes = accepted.bytes().to_vec();
+    let e = accepted
+        .with_observation(actual_observation(&d, 257, true), &mut || false)
+        .unwrap_err();
+    assert_eq!(
+        e.resource.unwrap().facts()[0].category,
+        ResourceCategory::OrdinaryObservations
+    );
+    assert_eq!(accepted.bytes(), bytes);
+    let stopped = accepted
+        .with_control(
+            ToriControl::Native {
+                actor: t::Side::Sente,
+                command: t::GameCommand::Stop {
+                    reason: t::StopReason::Cancelled,
+                },
+            },
+            &mut || false,
+        )
+        .unwrap();
+    let resigned = stopped
+        .with_control(
+            ToriControl::Native {
+                actor: t::Side::Sente,
+                command: t::GameCommand::Resign,
+            },
+            &mut || false,
+        )
+        .unwrap();
+    let closed = resigned
+        .with_control(ToriControl::Close {}, &mut || false)
+        .unwrap();
+    roundtrip(&closed);
+    assert_eq!(closed.observations().len(), 256);
+    assert!(closed.record().conclusion().is_some());
+}
+#[test]
+fn real_observations_with_long_history_charge_replay_before_acceptance() {
+    let mut game = t::Game::standard();
+    let mut seed = 0x42b0_0c1eu64;
+    for _ in 0..64 {
+        if game.conclusion().is_some() {
+            break;
+        }
+        seed = seed.wrapping_mul(6364136223846793005).wrapping_add(1);
+        let legal = game.legal_actions();
+        let a = legal[(seed as usize) % legal.len()];
+        play(&mut game, a).unwrap();
+    }
+    let base = document(&game);
+    let mut candidate = base.clone();
+    let start = Instant::now();
+    for n in 1..=16 {
+        let o = actual_observation(&candidate, n, true);
+        match candidate.with_observation(o, &mut || false) {
+            Ok(next) => candidate = next,
+            Err(e) => {
+                assert!(e.resource.is_some());
+                break;
+            }
+        }
+    }
+    assert!(!candidate.observations().is_empty());
+    roundtrip(&candidate);
+    eprintln!(
+        "MSH42_LONG_REAL_OBSERVATIONS board_actions={} {} journey_ms={}",
+        game.events().len(),
+        serde_json::to_string(candidate.usage()).unwrap(),
+        start.elapsed().as_millis()
+    );
+    assert!(candidate.usage().replay_work <= MAX_TORI_DOCUMENT_WORK);
 }

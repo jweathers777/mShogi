@@ -108,10 +108,7 @@ fn execute_chess(context: &ExecutionContext) -> ChessResult {
 
 pub(crate) fn execute(context: &ExecutionContext) -> ExecutionResult {
     match context.game.game_kind() {
-        mshogi_core::native::GameKind::Tori => ExecutionResult::failure(
-            FailureKind::UnsupportedMode,
-            "Tori engine execution is not implemented",
-        ),
+        mshogi_core::native::GameKind::Tori => execute_tori(context),
         mshogi_core::native::GameKind::Xiangqi => execute_xiangqi(context),
         mshogi_core::native::GameKind::Shogi => execute_shogi(context),
         mshogi_core::native::GameKind::Chess => ExecutionResult::Chess {
@@ -190,5 +187,47 @@ fn execute_xiangqi(context: &ExecutionContext) -> ExecutionResult {
             Err(error) => ExecutionResult::failure(FailureKind::Search, error),
         },
         Err(error) => ExecutionResult::failure(FailureKind::Search, error),
+    }
+}
+
+fn execute_tori(context: &ExecutionContext) -> ExecutionResult {
+    if !matches!(
+        context.purpose,
+        ExecutionPurpose::EngineTurn {} | ExecutionPurpose::MoveAnalysis { .. }
+    ) {
+        return ExecutionResult::failure(
+            FailureKind::UnsupportedMode,
+            "Chess Full reachability is not a Tori operation; no declarations or exact analysis are advertised.",
+        );
+    }
+    if !(mshogi_search::tori::Limits {
+        depth: context.limits.depth,
+        nodes: context.limits.nodes,
+    })
+    .valid()
+    {
+        return ExecutionResult::failure(
+            FailureKind::InvalidRequest,
+            "Tori execution limits exceed the bounded native search profile",
+        );
+    }
+    let mshogi_core::native::CanonicalRecord::Tori(record) = &context.game else {
+        unreachable!()
+    };
+    let game = match record.to_game() {
+        Ok(game) => game,
+        Err(e) => return ExecutionResult::failure(FailureKind::InvalidRequest, e),
+    };
+    match mshogi_search::tori::search(
+        &game,
+        mshogi_search::tori::Limits {
+            depth: context.limits.depth,
+            nodes: context.limits.nodes,
+        },
+    ) {
+        Ok(result) => ExecutionResult::Tori {
+            result: ToriResult::searched(result),
+        },
+        Err(e) => ExecutionResult::failure(FailureKind::Search, e),
     }
 }

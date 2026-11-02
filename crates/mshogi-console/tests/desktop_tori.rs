@@ -1,4 +1,4 @@
-//! Actual controller and supervised child; no Tori search or gameplay GUI claim.
+//! Actual native controller and supervised Tori child; no gameplay GUI claim.
 use mshogi_core::{native::*, tori};
 use mshogi_desktop_session::*;
 use mshogi_engine::*;
@@ -28,7 +28,20 @@ fn command(c: &mut DesktopController, operation: SessionOperation) -> SharedSnap
 }
 fn controller(path: &str) -> DesktopController {
     let mut c = DesktopController::new(path.into()).unwrap();
-    let mut game = tori::Game::standard();
+    // Explicit test-root provenance supplies a marker namespace to the separate
+    // slow-process fixture. Product target labels contain no test instrumentation.
+    let standard = tori::Position::standard();
+    let position = tori::Position::from_diagram(
+        &tori::Square::all()
+            .filter_map(|square| standard.piece(square).map(|piece| (square, piece)))
+            .collect::<Vec<_>>(),
+        [tori::Hand::empty(); 2],
+        tori::Side::Sente,
+        tori::RootMetadata::imported(format!("msh42-controller-{}", std::process::id()), 0)
+            .unwrap(),
+    )
+    .unwrap();
+    let mut game = tori::Game::from_root(position).unwrap();
     let action = game.legal_actions()[0];
     game.submit(tori::GameRequest {
         expected: game.context(),
@@ -57,7 +70,7 @@ fn observation(c: &mut DesktopController) -> ExecutionObservation {
     }
 }
 #[test]
-fn real_internal_tori_unsupported_controller_observation_save_reopen_stays_stopped() {
+fn real_internal_tori_analysis_save_reopen_stopped_then_explicit_analysis_and_resume() {
     let mut c = controller(env!("CARGO_BIN_EXE_mshogi"));
     let before = c.shared_snapshot().context;
     let context = c
@@ -71,15 +84,14 @@ fn real_internal_tori_unsupported_controller_observation_save_reopen_stays_stopp
         .unwrap();
     let observed = observation(&mut c);
     assert_eq!(observed.context, context);
-    assert!(matches!(
-        &observed.result,
-        ExecutionResult::Failure {
-            failure: EngineFailure {
-                kind: FailureKind::UnsupportedMode,
-                ..
-            }
-        }
-    ));
+    let ExecutionResult::Tori { result } = &observed.result else {
+        panic!("actual child must execute Tori")
+    };
+    let ToriResult::Choice { telemetry, .. } = result else {
+        panic!("complete native analysis")
+    };
+    assert_eq!(telemetry.completed_depth, 1);
+    assert!(telemetry.score.is_some());
     assert_eq!(c.shared_snapshot().context, before);
     let path =
         std::env::temp_dir().join(format!("msh131-real-child-{}.mshogi", std::process::id()));
@@ -99,34 +111,38 @@ fn real_internal_tori_unsupported_controller_observation_save_reopen_stays_stopp
         protocol: PROTOCOL_VERSION,
         observation: observed
     }));
-    for operation in [
-        SessionOperation::Resume {},
-        SessionOperation::Retry {},
+    command(
+        &mut c,
         SessionOperation::Analyze {
             operation: AnalysisOperation::Moves {
                 depth: 1,
                 nodes: 100,
             },
         },
-    ] {
+    );
+    let deadline = Instant::now() + Duration::from_secs(20);
+    loop {
         let s = c.shared_snapshot();
-        let (_, r) = c
-            .shared_command_with_receipt(SharedDesktopCommand {
-                expected: s.token,
-                game: s.game,
-                operation,
-            })
-            .unwrap();
-        let deadline = Instant::now() + Duration::from_secs(20);
-        loop {
-            c.shared_snapshot();
-            if let Some(result) = r.completion() {
-                assert!(result.is_err());
-                break;
-            }
-            assert!(Instant::now() < deadline);
-            thread::sleep(Duration::from_millis(1));
+        if s.observations.len() == 2 {
+            assert_eq!(s.context, before);
+            break;
         }
+        assert!(Instant::now() < deadline, "{s:?}");
+        thread::sleep(Duration::from_millis(1));
+    }
+    command(&mut c, SessionOperation::Cancel {});
+    assert_eq!(c.shared_snapshot().context, before);
+    command(&mut c, SessionOperation::Resume {});
+    let deadline = Instant::now() + Duration::from_secs(20);
+    loop {
+        let s = c.shared_snapshot();
+        if s.context.known_board_actions() == before.known_board_actions() + 1 {
+            assert_eq!(s.context.event_count(), before.event_count() + 1);
+            assert_eq!(s.turn.id, NativeSide::Tori(tori::Side::Sente));
+            break;
+        }
+        assert!(Instant::now() < deadline, "{s:?}");
+        thread::sleep(Duration::from_millis(1));
     }
     std::fs::remove_file(path).unwrap();
     c.begin_shutdown();

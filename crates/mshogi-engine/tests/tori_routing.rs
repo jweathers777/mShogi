@@ -1,4 +1,4 @@
-//! Native routing is real, execution is explicitly unimplemented and unscored.
+//! Native routing and actual bounded Tori execution retain complete identities.
 use mshogi_core::{native::*, tori as t};
 use mshogi_engine::*;
 use std::io::Cursor;
@@ -32,8 +32,14 @@ fn run(context: &ExecutionContext) -> ExecutionResponse {
     serde_json::from_slice(&bytes).unwrap()
 }
 #[test]
-fn real_internal_entry_point_returns_explicit_unscored_unsupported_without_advertising_tori() {
-    assert!(execution_capabilities(GameKind::Tori).is_empty());
+fn real_internal_entry_point_supports_bounded_tori_without_foreign_operations() {
+    assert_eq!(
+        execution_capabilities(GameKind::Tori),
+        &[
+            ExecutionOperation::EngineTurn,
+            ExecutionOperation::MoveAnalysis
+        ]
+    );
     let mut c = context();
     for analysis in [false, true] {
         if analysis {
@@ -54,18 +60,20 @@ fn real_internal_entry_point_returns_explicit_unscored_unsupported_without_adver
             protocol: PROTOCOL_VERSION,
             context: c.clone()
         }));
-        assert!(matches!(
-            response.observation.result,
-            ExecutionResult::Failure {
-                failure: EngineFailure {
-                    kind: FailureKind::UnsupportedMode,
-                    ..
-                }
-            }
-        ));
-        let wire = serde_json::to_string(&response).unwrap();
-        assert!(!wire.contains("\"score\""));
-        assert!(!wire.contains("\"choice\""));
+        let ExecutionResult::Tori {
+            result: ToriResult::Choice { action, telemetry },
+        } = &response.observation.result
+        else {
+            panic!("{response:?}")
+        };
+        let game = match &c.game {
+            CanonicalRecord::Tori(r) => r.to_game().unwrap(),
+            _ => unreachable!(),
+        };
+        assert!(game.legal_actions().contains(action));
+        assert_eq!(telemetry.perspective, t::Side::Sente);
+        assert_eq!(telemetry.completed_depth, 1);
+        assert!(telemetry.score.is_some());
         for index in 0..4 {
             let mut wrong = c.clone();
             match index {

@@ -1151,7 +1151,7 @@ pub(crate) fn execute(
             let game = match value.game_kind {
                 GameKind::Tori => {
                     if product {
-                        return Err("Tori product activation is unavailable until its renderer and functional engine are delivered.".into());
+                        return Err("Tori product activation is unavailable until its finished renderer and player journeys are delivered.".into());
                     }
                     OpenedNative::Tori(Box::new(tori::ToriSession::restore(
                         crate::tori_document::ValidatedToriDocument::decode(&bytes, stopped)?,
@@ -1550,7 +1550,13 @@ impl DesktopController {
                 if tori_admission {
                     if consumes_response && let Some(state) = self.session.tori_mut() {
                         state.retire();
-                        state.diagnostic = Some("Completed work refused by document admission; the accepted document is preserved and saveable.".into());
+                        state.paused = true;
+                        state.phase = if error.resource.is_some() {
+                            EnginePhase::Paused
+                        } else {
+                            EnginePhase::Failed
+                        };
+                        state.diagnostic = Some("Completed work refused by document admission; the accepted document is preserved and saveable. See Technical Details for the refusal.".into());
                     }
                     // Rejected candidates cannot alter accepted game or execution.
                     self.session.capacity = CapacityState {
@@ -1654,6 +1660,10 @@ impl DesktopController {
             state.paused = true;
         }
         if let Some(state) = self.session.xiangqi_mut() {
+            state.retire();
+            state.paused = true;
+        }
+        if let Some(state) = self.session.tori_mut() {
             state.retire();
             state.paused = true;
         }

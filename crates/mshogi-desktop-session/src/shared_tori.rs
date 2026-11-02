@@ -12,6 +12,11 @@ pub(crate) struct ToriSession {
     pub(crate) browse_stop: Option<BrowseStop>,
     pub(crate) pending: Option<ExecutionContext>,
     pub(crate) phase: EnginePhase,
+    pub(crate) paused: bool,
+    submitted: bool,
+    requested_analysis: Option<WorkLimits>,
+    analysis: Option<ExecutionObservation>,
+    current_observations: Vec<u64>,
     pub(crate) diagnostic: Option<String>,
 }
 impl ToriSession {
@@ -25,13 +30,16 @@ impl ToriSession {
         let close_document =
             Arc::new(document.with_reserved_close(document.retired_execution_floor())?);
         Ok(Self { document: Arc::new(document), close_document, game, viewed: None, browse_stop: None, pending: None,
-            phase: EnginePhase::Paused, diagnostic: Some("Tori native document ready. Engine execution is unsupported; saved observations are historical.".into()) })
+            phase: EnginePhase::Paused, paused: true, submitted: false, requested_analysis: None, analysis: None, current_observations: vec![], diagnostic: Some("Tori document ready. Saved observations are historical; Resume starts native play.".into()) })
     }
     pub(crate) fn selected(&self) -> &t::Game {
         self.viewed.as_ref().unwrap_or(&self.game)
     }
     pub(crate) fn retire(&mut self) {
         self.pending = None;
+        self.submitted = false;
+        self.requested_analysis = None;
+        self.analysis = None;
         self.browse_stop = None;
         self.phase = EnginePhase::Paused;
         // The native context is never recovered by restoring a canonical record.
@@ -76,6 +84,7 @@ impl ToriSession {
                         command,
                     })
                     .map_err(crate::tori_document::native_error)?;
+                self.paused = !matches!(command, t::GameCommand::Play { .. });
                 Some(ToriControl::Native { actor, command })
             }
             SessionOperation::Resign {} => {
@@ -110,6 +119,7 @@ impl ToriSession {
                         RewindKind::TakeBack,
                     )
                 };
+                self.paused = true;
                 Some(ToriControl::Rewind {
                     event_index,
                     reason,
@@ -122,27 +132,49 @@ impl ToriSession {
                     .map_err(|e| e.to_string())?;
                 self.viewed = Some(record.to_game().map_err(|e| e.to_string())?);
                 self.retire();
-                self.diagnostic = Some("Historical position. Return to live explicitly; Tori engine execution is unsupported.".into());
+                self.paused = true;
+                self.diagnostic = Some(
+                    "Historical position. Analysis is read-only. Return to live explicitly.".into(),
+                );
                 return Ok(false);
             }
             SessionOperation::ReturnLive {} => {
                 self.viewed = None;
                 self.retire();
-                self.diagnostic =
-                    Some("Live position. Tori engine execution is unsupported.".into());
+                self.paused = true;
+                self.diagnostic = Some("Live position. Resume to continue native play.".into());
                 return Ok(false);
             }
             SessionOperation::Cancel {} => {
                 self.retire();
+                self.paused = true;
+                self.phase = EnginePhase::Cancelled;
                 self.diagnostic = Some(
-                    "Work cancelled. No chess-family outcome or Tori score was created.".into(),
+                    "Work cancelled. The game is unchanged; Resume or start another analysis."
+                        .into(),
                 );
                 return Ok(false);
             }
-            SessionOperation::Analyze { .. }
-            | SessionOperation::Resume {}
-            | SessionOperation::Retry {} => {
-                return Err("Unsupported Tori execution: no engine turn, move analysis, Chess Full or Xiangqi exact operation is available. No move, score or outcome was created.".into());
+            SessionOperation::Analyze { operation } => {
+                let AnalysisOperation::Moves { depth, nodes } = operation else {
+                    return Err("Unsupported Tori analysis operation; no Chess Full or Xiangqi exact operation is available.".into());
+                };
+                let limits = WorkLimits { depth, nodes };
+                validate_limits(limits)?;
+                self.retire();
+                self.paused = true;
+                self.requested_analysis = Some(limits);
+                self.diagnostic = None;
+                return Ok(false);
+            }
+            SessionOperation::Resume {} | SessionOperation::Retry {} => {
+                if self.viewed.is_some() {
+                    return Err("Return to live before resuming play.".into());
+                }
+                self.retire();
+                self.paused = false;
+                self.diagnostic = None;
+                return Ok(false);
             }
             _ => return Err("Unsupported operation for the native Tori profile.".into()),
         };
@@ -168,6 +200,11 @@ pub(crate) struct ToriDraft {
     selected: Option<usize>,
     pending: Option<ExecutionContext>,
     phase: EnginePhase,
+    paused: bool,
+    submitted: bool,
+    requested_analysis: Option<WorkLimits>,
+    analysis: Option<ExecutionObservation>,
+    current_observations: Vec<u64>,
     diagnostic: Option<String>,
 }
 impl ToriSession {
@@ -177,6 +214,11 @@ impl ToriSession {
             selected: self.viewed.as_ref().map(|g| g.events().len()),
             pending: self.pending.clone(),
             phase: self.phase,
+            paused: self.paused,
+            submitted: self.submitted,
+            requested_analysis: self.requested_analysis,
+            analysis: self.analysis.clone(),
+            current_observations: self.current_observations.clone(),
             diagnostic: self.diagnostic.clone(),
         }
     }
@@ -215,6 +257,11 @@ pub(crate) fn execute(
             }
             state.pending = draft.pending;
             state.phase = draft.phase;
+            state.paused = draft.paused;
+            state.submitted = draft.submitted;
+            state.requested_analysis = draft.requested_analysis;
+            state.analysis = draft.analysis;
+            state.current_observations = draft.current_observations;
             state.diagnostic = draft.diagnostic;
             state
         }
@@ -228,20 +275,51 @@ pub(crate) fn execute(
         durable = state.apply(operation, stopped)?;
     }
     if let Some(response) = work.response {
-        let pending = state
-            .pending
-            .as_ref()
-            .ok_or("No current Tori verification execution.")?;
-        if !response.matches(pending) || !matches!(response.result, ExecutionResult::Failure { .. })
+        let pending = state.pending.as_ref().ok_or("No current Tori execution.")?;
+        if !response.matches(pending)
+            || !matches!(
+                response.result,
+                ExecutionResult::Failure { .. } | ExecutionResult::Tori { .. }
+            )
         {
             return Err("Stale or unsupported Tori observation.".into());
         }
-        state.document = Arc::new(state.document.with_observation(response, stopped)?);
-        state.retire();
-        state.phase = EnginePhase::Failed;
-        state.diagnostic = Some(
-            "Tori execution ended unscored. See the retained native failure observation.".into(),
+        let analysis = matches!(pending.purpose, ExecutionPurpose::MoveAnalysis { .. });
+        let failed = matches!(response.result, ExecutionResult::Failure { .. });
+        let incomplete = matches!(
+            response.result,
+            ExecutionResult::Tori {
+                result: mshogi_engine::ToriResult::Incomplete { .. }
+            }
         );
+        // One worker-owned candidate validates the observation, native continuation,
+        // engine action and all persistence headroom before the live state changes.
+        state.document = Arc::new(state.document.with_observation(response.clone(), stopped)?);
+        state.game = state
+            .document
+            .record()
+            .to_game()
+            .map_err(|e| e.to_string())?;
+        state.retire();
+        state.current_observations.push(response.context.request_id);
+        if analysis {
+            state.analysis = Some(response);
+        }
+        state.paused = analysis || failed || incomplete;
+        state.phase = if failed {
+            EnginePhase::Failed
+        } else if incomplete {
+            EnginePhase::Incomplete
+        } else {
+            EnginePhase::Paused
+        };
+        state.diagnostic = if failed {
+            Some("Engine failure. The game is unchanged; Retry is explicit.".into())
+        } else if incomplete {
+            Some("Incomplete search. No move, score or game outcome was created.".into())
+        } else {
+            None
+        };
         durable = true;
     }
     state.document = Arc::new(state.document.with_runtime_floor(work.floor)?);
@@ -320,6 +398,7 @@ impl DesktopController {
             self.retire_admission();
             self.bridge.cancel();
             self.session.tori_mut().unwrap().retire();
+            self.session.tori_mut().unwrap().paused = true;
             self.session.version += 1;
             self.session.selection_id += 1;
             self.session.revision += 1;
@@ -403,17 +482,87 @@ impl DesktopController {
         if !response.matches(pending)
             || pending.session_version != self.session.version
             || pending.game != selected
-            || !matches!(response.result, ExecutionResult::Failure { .. })
+            || !matches!(
+                response.result,
+                ExecutionResult::Failure { .. } | ExecutionResult::Tori { .. }
+            )
         {
             return false;
         }
-        self.queue_tori_candidate(
-            RuntimeSeed::Current(Box::new(state.capture())),
-            None,
-            Some(response),
-            false,
-        )
-        .is_ok()
+        let seed = RuntimeSeed::Current(Box::new(state.capture()));
+        if self
+            .queue_tori_candidate(seed, None, Some(response), false)
+            .is_err()
+        {
+            // The bridge already consumed this exact response. Even enqueue
+            // headroom refusal must not leave Thinking with no deliverable work.
+            self.bridge.cancel();
+            let capacity = self.session.capacity.resource.is_some();
+            let state = self.session.tori_mut().unwrap();
+            state.retire();
+            state.paused = true;
+            state.phase = if capacity {
+                EnginePhase::Paused
+            } else {
+                EnginePhase::Failed
+            };
+            return false;
+        }
+        true
+    }
+    fn start_tori(&mut self, limits: WorkLimits, analysis: bool) -> Result<(), OperationFailure> {
+        validate_limits(limits)?;
+        self.ensure_runtime_capacity()?;
+        let state = self.session.tori().unwrap();
+        let count = state.document.observations().len();
+        if count >= MAX_ARCHIVE_OBSERVATIONS {
+            return Err(OperationFailure::resource(ResourceFailure::new(
+                ResourceFact::measured(
+                    ResourceCategory::OrdinaryObservations,
+                    count as u64,
+                    MAX_ARCHIVE_OBSERVATIONS as u64,
+                )
+                .with_scope(ResourceScope::Tori)
+                .with_unit(ResourceUnit::Observations),
+                "Application limit reached: all 256 observation slots are occupied. The complete current game can still be saved.",
+            )));
+        }
+        let game = CanonicalRecord::tori(
+            t::GameRecord::from_game(state.selected()).map_err(|e| e.to_string())?,
+        );
+        let turn = state.selected().position().side_to_move();
+        let historical = state.viewed.is_some();
+        self.session.next_request += 1;
+        let context = ExecutionContext {
+            purpose: if analysis {
+                ExecutionPurpose::MoveAnalysis {
+                    target: ExecutionTarget {
+                        selection_id: self.session.selection_id,
+                        event_index: game.event_count() as u64,
+                        board_ply: game.known_board_actions() as u64,
+                        session_version: self.session.version,
+                        label: format!(
+                            "Tori event {}{}",
+                            game.event_count(),
+                            if historical { " (history)" } else { " (live)" }
+                        ),
+                        turn: NativeSide::Tori(turn),
+                    },
+                }
+            } else {
+                ExecutionPurpose::EngineTurn {}
+            },
+            request_id: self.session.next_request,
+            process_generation: self.session.next_request,
+            session_version: self.session.version,
+            game,
+            limits,
+        };
+        let state = self.session.tori_mut().unwrap();
+        state.pending = Some(context);
+        state.submitted = false;
+        state.phase = EnginePhase::Thinking;
+        Ok(())
     }
     pub(super) fn poll_tori(&mut self) -> SharedSnapshot {
         if self.admission_token.is_none()
@@ -421,7 +570,52 @@ impl DesktopController {
         {
             self.accept_shared(response);
         }
+        if self.admission_token.is_none() {
+            let state = self.session.tori_mut().unwrap();
+            let analysis = state.requested_analysis.take();
+            let play = state.pending.is_none()
+                && !state.paused
+                && state.viewed.is_none()
+                && state.game.conclusion().is_none()
+                && state.game.position().side_to_move() != state.document.human();
+            if let Some(limits) = analysis {
+                if let Err(e) = self.start_tori(limits, true) {
+                    self.pause_native_failure(e);
+                }
+            } else if play && let Err(e) = self.start_tori(play_limits(), false) {
+                self.pause_native_failure(e);
+            }
+            if self.shared.auto_submit()
+                && let Some(context) = self.session.tori().unwrap().pending.clone()
+                && !self.session.tori().unwrap().submitted
+            {
+                self.session.tori_mut().unwrap().submitted = true;
+                if let Err(e) = self.bridge.submit(execution_request(context.clone())) {
+                    self.accept_tori_observation(ExecutionObservation::new(
+                        context,
+                        ExecutionResult::Failure {
+                            failure: mshogi_engine::EngineFailure {
+                                kind: mshogi_engine::FailureKind::Start,
+                                message: format!("Cannot start native work: {e:?}"),
+                            },
+                        },
+                    ));
+                }
+            }
+        }
         self.tori_snapshot()
+    }
+    /// Hold technical fixture play; excluded from ordinary distributables.
+    #[cfg(feature = "desktop-verification")]
+    pub fn verify_tori_pause_play(&mut self) -> Result<(), String> {
+        self.bridge.cancel();
+        let state = self
+            .session
+            .tori_mut()
+            .ok_or("Requires native Tori document.")?;
+        state.retire();
+        state.paused = true;
+        Ok(())
     }
     /// Project the actual submitted pending state without polling completion.
     #[cfg(feature = "desktop-verification")]
@@ -455,7 +649,7 @@ impl DesktopController {
         self.session.revision += 1;
         Ok(self.tori_snapshot())
     }
-    /// Verification-only supervised unsupported request, never an advertised Tori engine.
+    /// Verification entry into the same real native supervised request path.
     #[cfg(any(test, feature = "desktop-verification"))]
     pub fn verify_tori_execution(
         &mut self,
@@ -465,52 +659,13 @@ impl DesktopController {
         if self.admission_token.is_some() || self.lifecycle.close_requested() {
             return Err("Wait for native operation/close.".into());
         }
-        self.ensure_runtime_capacity()?;
-        let state = self
-            .session
-            .tori()
-            .ok_or("Requires native Tori document.")?;
-        let game = CanonicalRecord::tori(
-            t::GameRecord::from_game(state.selected()).map_err(|e| e.to_string())?,
-        );
-        self.session.next_request += 1;
-        let target = ExecutionTarget {
-            selection_id: self.session.selection_id,
-            event_index: game.event_count() as u64,
-            board_ply: game.known_board_actions() as u64,
-            session_version: self.session.version,
-            label: format!(
-                "Tori verification target (not product analysis) host {}",
-                std::process::id()
-            ),
-            turn: NativeSide::Tori(
-                self.session
-                    .tori()
-                    .unwrap()
-                    .selected()
-                    .position()
-                    .side_to_move(),
-            ),
-        };
-        let context = ExecutionContext {
-            purpose: if analysis {
-                ExecutionPurpose::MoveAnalysis { target }
-            } else {
-                ExecutionPurpose::EngineTurn {}
-            },
-            request_id: self.session.next_request,
-            process_generation: self.session.next_request,
-            session_version: self.session.version,
-            game,
-            limits,
-        };
-        // Real bounded wire admission; errors leave no accepted pending request.
+        self.start_tori(limits, analysis)
+            .map_err(|e| e.diagnostic)?;
+        let context = self.session.tori().unwrap().pending.clone().unwrap();
         self.bridge
             .submit(execution_request(context.clone()))
-            .map_err(|e| format!("Cannot submit verification work: {e:?}"))?;
-        let state = self.session.tori_mut().unwrap();
-        state.pending = Some(context.clone());
-        state.phase = EnginePhase::Thinking;
+            .map_err(|e| format!("Cannot submit native work: {e:?}"))?;
+        self.session.tori_mut().unwrap().submitted = true;
         Ok(context)
     }
     pub(super) fn close_tori(&mut self) {
@@ -716,8 +871,8 @@ impl DesktopController {
                 promotion: true,
                 take_back: !historical && state.take_back_target().is_some(),
                 undo: !historical && !state.game.events().is_empty(),
-                engine_turn: false,
-                move_analysis: false,
+                engine_turn: true,
+                move_analysis: true,
                 chess_full: false,
                 claims: false,
                 declaration: false,
@@ -755,9 +910,9 @@ impl DesktopController {
                 .collect(),
             event_index: game.events().len(),
             board_ply: record.known_board_actions() as u64,
-            play_limits: WorkLimits { depth: 0, nodes: 0 },
+            play_limits: play_limits(),
             historical,
-            paused: true,
+            paused: state.paused,
             close_requires_save: self.close_requires_save(),
             phase: state.phase,
             execution_purpose: state.pending.as_ref().map(|p| {
@@ -770,19 +925,29 @@ impl DesktopController {
             diagnostic: state.diagnostic.clone(),
             declaration_advice: vec![],
             context: record,
-            analysis: None,
+            analysis: state.analysis.as_ref().map(|o| PresentedObservation {
+                observation: o.clone(),
+                historical: false,
+                application_error: None,
+            }),
             observations: state
                 .document
                 .observations()
                 .iter()
                 .map(|o| PresentedObservation {
                     observation: o.clone(),
-                    historical: true,
+                    historical: !state.current_observations.contains(&o.context.request_id),
                     application_error: None,
                 })
                 .collect(),
-            search_observations: vec![],
-            score_meaning: "No Tori evaluation or search implementation. Failures and incomplete work are unscored.",
+            search_observations: state
+                .document
+                .observations()
+                .iter()
+                .enumerate()
+                .map(|(index, o)| display_observation(index, o, state))
+                .collect(),
+            score_meaning: "Native root-side evaluation in hundredths of a Swallow. Win/loss distances count board actions; failures and incomplete work are unscored.",
             chess: None,
             chess_match: None,
         }
@@ -796,3 +961,65 @@ mod tests;
 mod presentation;
 pub use presentation::ToriPresentation;
 use presentation::{event_label, face_name, status_label};
+
+fn play_limits() -> WorkLimits {
+    mshogi_engine::TORI_PLAY_LIMITS
+}
+fn validate_limits(limits: WorkLimits) -> Result<(), OperationFailure> {
+    if limits.depth == 0
+        || limits.depth > mshogi_engine::TORI_MAX_DEPTH
+        || limits.nodes == 0
+        || limits.nodes > mshogi_engine::TORI_MAX_NODES
+    {
+        return Err(
+            "Unsupported Tori work limits. Use a positive bounded native depth and visit limit."
+                .into(),
+        );
+    }
+    Ok(())
+}
+
+fn display_observation(
+    index: usize,
+    o: &ExecutionObservation,
+    state: &ToriSession,
+) -> PresentedSearchObservation {
+    let CanonicalRecord::Tori(record) = &o.context.game else {
+        unreachable!("validated Tori observation")
+    };
+    let telemetry = match &o.result {
+        ExecutionResult::Tori { result } => Some(result.telemetry()),
+        _ => None,
+    };
+    PresentedSearchObservation {
+        observation_index: index,
+        purpose: if matches!(o.context.purpose, ExecutionPurpose::EngineTurn {}) {
+            "engine_turn"
+        } else {
+            "move_analysis"
+        },
+        event_index: record.event_count(),
+        board_ply: record.known_board_actions(),
+        perspective: side(NativeSide::Tori(record.side_to_move())).label,
+        engine: "mShogi",
+        score: telemetry.and_then(|t| t.score_label()),
+        completed_depth: telemetry.map(|t| t.completed_depth),
+        nodes: telemetry.map(|t| t.nodes),
+        // Complete native encodings remain honest technical continuation data;
+        // readable action notation is projected by the native Moves adapter.
+        variation: telemetry.map_or_else(Vec::new, |t| {
+            t.principal_variation
+                .iter()
+                .map(|a| serde_json::to_string(a).expect("native action"))
+                .collect()
+        }),
+        status: match telemetry.map(|t| t.status) {
+            Some(mshogi_engine::StopReason::Complete) => "Complete",
+            Some(mshogi_engine::StopReason::NodeLimit) => "Node limit reached",
+            Some(mshogi_engine::StopReason::Stopped) => "Search stopped",
+            None => "Engine failure",
+        },
+        historical: !state.current_observations.contains(&o.context.request_id),
+        selected: state.analysis.as_ref() == Some(o),
+    }
+}

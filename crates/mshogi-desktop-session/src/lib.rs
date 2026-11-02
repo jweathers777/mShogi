@@ -476,6 +476,7 @@ impl ActiveDocument {
             }
             Self::Tori { state, .. } => {
                 state.retire();
+                state.paused = true;
             }
             Self::Xiangqi { state, .. } => {
                 state.retire();

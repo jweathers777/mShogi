@@ -51,13 +51,20 @@ fn write(dir: &Path, name: &str, s: &SharedSnapshot) {
     .unwrap();
 }
 fn submit(c: &mut DesktopController, command: t::GameCommand) -> SharedSnapshot {
-    send(
+    let _snapshot = send(
         c,
         SessionOperation::Tori {
             actor: t::Side::Sente,
             command,
         },
-    )
+    );
+    #[cfg(feature = "desktop-verification")]
+    {
+        c.verify_tori_pause_play().unwrap();
+        c.shared_snapshot()
+    }
+    #[cfg(not(feature = "desktop-verification"))]
+    _snapshot
 }
 fn play(g: &mut t::Game, from: &str, to: &str, face: t::Face) {
     g.submit(t::GameRequest {
@@ -105,10 +112,43 @@ pub fn write_all(dir: &Path) {
         let deadline = Instant::now() + Duration::from_secs(10);
         loop {
             let snapshot = probe.shared_snapshot();
-            if snapshot.phase == mshogi_desktop_session::EnginePhase::Failed
-                && snapshot.observations.len() == 1
-            {
+            // Historical filename retained for fixture compatibility: this is now
+            // actual bounded incomplete native work, not UnsupportedMode.
+            if snapshot.observations.len() == 1 {
                 write(dir, "unsupported", &snapshot);
+                break;
+            }
+            assert!(Instant::now() < deadline);
+            std::thread::sleep(Duration::from_millis(1));
+        }
+    }
+
+    #[cfg(feature = "desktop-verification")]
+    {
+        let mut probe = DesktopController::new(std::env::current_exe().unwrap()).unwrap();
+        send(
+            &mut probe,
+            SessionOperation::Replace {
+                record: CanonicalRecord::tori(
+                    t::GameRecord::from_game(&roots::contract_game()).unwrap(),
+                ),
+                human: NativeSide::Tori(t::Side::Sente),
+            },
+        );
+        probe
+            .verify_tori_execution(
+                mshogi_engine::WorkLimits {
+                    depth: 1,
+                    nodes: 1000,
+                },
+                true,
+            )
+            .unwrap();
+        let deadline = Instant::now() + Duration::from_secs(10);
+        loop {
+            let snapshot = probe.shared_snapshot();
+            if snapshot.analysis.is_some() {
+                write(dir, "analysis-complete", &snapshot);
                 break;
             }
             assert!(Instant::now() < deadline);

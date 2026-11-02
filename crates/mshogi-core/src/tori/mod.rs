@@ -7,6 +7,7 @@
 use serde::{Deserialize, Serialize};
 use std::{error::Error, fmt, str::FromStr, sync::Arc};
 mod game;
+pub mod notation;
 mod record;
 pub use game::*;
 pub use record::{GAME_RECORD_SCHEMA_VERSION, GameRecord, MAX_GAME_RECORD_BYTES, RecordError};

@@ -48,8 +48,8 @@ export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDi
   const interaction = useNativeChoiceController({
     contextKey: JSON.stringify([snapshot.game, snapshot.profile, snapshot.edition, snapshot.token, bottom, inspectionContextKey]),
     choices: snapshot.choices,
-    origins: [...snapshot.pieces.map((piece) => ({ key: piece.square, owner: piece.owner, inspectable: true })),
-      ...nonzeroHands.map((hand) => ({ key: hand.origin, owner: hand.owner, inspectable: true }))],
+    origins: [...snapshot.pieces.map((piece) => ({ key: piece.square, label: piece.label, owner: piece.owner, inspectable: true })),
+      ...nonzeroHands.map((hand) => ({ key: hand.origin, label: hand.label, owner: hand.owner, inspectable: true }))],
     humanOwner: snapshot.human.key, disabled: disabled || !snapshot.capabilities.board_action, inspectionDisabled, onInspect, onPlay,
     initialFocus: snapshot.board.initial_focus, boardKeys: squares,
     neighbor: (key, direction) => gridNeighbor(squares, columns, key, direction),

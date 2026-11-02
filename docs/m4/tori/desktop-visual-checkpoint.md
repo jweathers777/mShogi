@@ -13,13 +13,16 @@ is no Tori application page, frontend rules implementation or alternate session.
 The native snapshot supplies complete actions, names, face/promotion/owner,
 hand counts, history, outcomes and exact completed-action geometry.
 
-[Original vector bird engravings](piece-artwork.md) distinguish all nine native
-faces. Warm pentagonal tiles relate to Shogi; original bird images and engraved
-notation aids give Tori its own presentation. Whole-tile rotation shows ownership.
-Eagle/Goose use their actual native face, red engraving and a non-color promotion
-cue. Left/Right Quail retain distinct artwork and identity aids after capture.
-Native full names are available through accessible labels, selection text and
-pointer name aids. Artwork has no operating-system font dependency.
+The default [traditional Tori glyphs](piece-artwork.md) are the selected profile's
+鵬, 鷹, 鵰, 鶴, 雉, 左鶉, 右鶉, 燕 and 鴈. A separate pinned, licensed Noto Serif
+CJK JP subset supplies every glyph, independent of installed fonts. Warm
+pentagonal tiles and whole-tile ownership rotation relate to the existing Shogi
+presentation. Eagle/Goose retain their native face, red engraving and a non-color
+promotion cue. Left/Right Quail remain distinct after capture. Full native names
+are available through accessible labels, selection text and pointer name aids.
+Traditional variant-native glyphs are the owner-approved default for all shogi
+variants. Original bird artwork is preserved as an inactive future alternative;
+no piece-set chooser is implemented or activated.
 
 Hands occupy the existing player slots. Legal moves and drops, forced promotion,
 readonly opponent inspection, keyboard focus and Escape use the existing native
@@ -57,7 +60,9 @@ The fixed bundle ID is
 Changing the selector does not rewrite or re-sign the bundle. A rebuild can still
 trigger a platform-controlled approval prompt; no security settings are changed.
 
-Actual normal/narrow/minimum application captures and a structured verification
+A QA-only native menu sets exact 1180×820, 960×720 and 760×650 logical content
+sizes and reports measured content/frame dimensions. It is excluded from normal
+distributables. Actual normal/narrow/minimum application captures and a structured verification
 record will identify the tested source, package, interactions and limitations.
 Component tests and package inspection are distinct from those GUI journeys.
 No owner visual approval, three-platform Tori gameplay acceptance or completed

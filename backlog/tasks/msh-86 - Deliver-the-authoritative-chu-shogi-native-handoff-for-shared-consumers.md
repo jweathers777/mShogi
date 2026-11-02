@@ -1,11 +1,11 @@
 ---
 id: MSH-86
 title: Deliver the authoritative chu shogi native handoff for shared consumers
-status: In Review
+status: Done
 assignee:
   - '@Codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-02T22:45:00Z'
+updated_date: '2026-11-02T23:08:00Z'
 labels:
   - m4
   - owner-msh-43
@@ -41,18 +41,18 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 After profile refinement,a native game-owned kernel exposes authoritative state,complete legal actions/derived effects,exact reversal,history/adjudication and canonical record contracts needed by its named shared consumer.
-- [ ] #2 Independent rule/transition/history fixtures establish the handoff,including relevant board topology,hands/promotions,compound routes,royal identity and non-chess terminal behavior; no unverified rule convention becomes an interface default.
-- [ ] #3 The shared extension consumes stable documented native payloads/capabilities without frontend rules or duplicate ownership; further game-specific engine/console/desktop work remains visible in its complete delivery record.
-- [ ] #4 Before Ready,the game owner splits this native scope further where useful and records all child dependencies/verification. No implementation plan is prescribed by this planning task and no dependency on its own aggregate delivery is introduced.
+- [x] #1 After profile refinement,a native game-owned kernel exposes authoritative state,complete legal actions/derived effects,exact reversal,history/adjudication and canonical record contracts needed by its named shared consumer.
+- [x] #2 Independent rule/transition/history fixtures establish the handoff,including relevant board topology,hands/promotions,compound routes,royal identity and non-chess terminal behavior; no unverified rule convention becomes an interface default.
+- [x] #3 The shared extension consumes stable documented native payloads/capabilities without frontend rules or duplicate ownership; further game-specific engine/console/desktop work remains visible in its complete delivery record.
+- [x] #4 Before Ready,the game owner splits this native scope further where useful and records all child dependencies/verification. No implementation plan is prescribed by this planning task and no dependency on its own aggregate delivery is introduced.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -78,3 +78,15 @@ SupersededCI41536948188 Linuxjob125591097628 also failed an unchangedrunner test
 
 Final native API audit found that removing Deserialize alone left HistorySnapshot state/protection publicly replaceable, allowing invalid external state to reach local_position expect. Narrow correction makes trusted fields private with immutable getters; serialized record/snapshot payloads and rules unchanged. Independent read-only review PASS; reviewer independently ran two E0616 compile-fail checks and two external consumer tests. Root reran 35 Chu library tests, three core compile-fail doctests, two consumer tests, fmt and focused Clippy: PASS. Source19166e3 native campaign41538750357 cancelled as superseded by this real source correction; all-platform format/lint passed but no full campaign success claimed. Final corrected source requires its own three-platform native CI.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Delivered the complete native Chu Shogi kernel for mshogi.chu.jcsa2019.v1. Tested production source: f44e0b9673bbbe1cc57a8a45522b04948d1c69bb on codex/rewrite (implementation commits 136f892, 19166e3 and f44e0b9). The accepted profile, independent corpus and source hashes are unchanged.
+
+The game-owned Rust API supplies 12×12 state, original/promoted identities, complete ordered routes and discarded captures, full local legality and Lion laws, immutable inspection, capture-based royalty and finite mate, pre-fourth repetition admission, narrow material awards, draw agreement, resignation and unscored Stop. Game owns history, exact prefixes, monotonic runtime authority and exact logical undo/redo. Strict native record schema 1 replays every command and verifies derived facts. Measured admission enforces 512 KiB, 512 events and 4M work units while preserving actual Stop+Resign headroom.
+
+Evidence is consolidated in docs/m4/chu/native-verification.json and native-v1.md: 1,076 checks across all 240 native rows pass; zero failed or pending native assertions. Accounting separately retains 37 annotations and 10 future consumer rows. Complete action sets 88/41/42, perft/divide 7/42 and 583 rotation/reversal checks pass. Focused native, external-consumer, compile-fail and framework tests pass. Independent reviewers inspected actual rules, Game, records and adapters, executed focused tests and re-reviewed material corrections. Required Rust CI 41539884098 passed every step on Linux, macOS and Windows at exact f44e0b9, including existing-game regressions, QA constructors, fixture regeneration, build and console smoke. Failed earlier attempts remain recorded; the unchanged runner race remains owned by MSH-112 and is not claimed fixed.
+
+All four original acceptance criteria and four DoD items are supported. MSH-78 is dependency-ready for shared routing, document/session and compound consumers with measured outer capacity; its implementation has not started. No Chu engine, console, notation or desktop capability is advertised. MSH-43 and M4 remain open. Final task/evidence integration preserves identical tested production source.
+<!-- SECTION:FINAL_SUMMARY:END -->

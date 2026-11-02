@@ -58,7 +58,7 @@ it("routes bounded analysis through the read-only operation and cancellation pat
   expect(session.command).toHaveBeenLastCalledWith(analyzing, { kind: "cancel" });
 });
 it("keeps engine-turn cancellation distinct from analysis and invents no progress", () => {
-  const snapshot = { ...standard, phase: "thinking" as const, execution_purpose: "engine_turn" };
+  const snapshot = { ...standard, human: standard.sides[1]!, phase: "thinking" as const, execution_purpose: "engine_turn", capabilities: { ...standard.capabilities, engine_turn: true, board_action: false } };
   const { session } = app(snapshot);
   expect(screen.getByRole("button", { name: "Cancel search" })).toBeTruthy();
   expect(screen.queryByRole("button", { name: "Cancel analysis" })).toBeNull();

@@ -22,19 +22,20 @@ export function ApplicationView({ snapshot, session, onNewGame, onOpen, blocked 
   useEffect(() => { if (blocked) { setConfirmation(null); setSupportOpen(false); } }, [blocked]);
   const command = (operation: Operation) => session.command(snapshot, operation);
   const capacity = nativeCapacityReached(snapshot);
-  const thinking = snapshot.phase === "thinking" && snapshot.execution_purpose === "engine_turn";
-  const analyzing = snapshot.execution_purpose === "move_analysis" || snapshot.game === "chess" && snapshot.chess.analysis.status === "thinking";
+  const thinking = snapshot.capabilities.engine_turn && snapshot.phase === "thinking" && snapshot.execution_purpose === "engine_turn";
+  const analyzing = snapshot.capabilities.move_analysis && snapshot.execution_purpose === "move_analysis" || snapshot.game === "chess" && snapshot.chess.analysis.status === "thinking";
   const orientation = snapshot.game === "xiangqi" ? snapshot.document.settings.orientation : snapshot.document.settings.settings.orientation;
   const side = snapshot.sides.find(s => s.id.side === orientation)!;
   function flip() {
     if (snapshot.game === "chess") return command({ kind: "chess_preferences", orientation: orientation === "white" ? "black" : "white", analysis_defaults: snapshot.document.settings.settings.analysis_defaults });
+    if (snapshot.game === "tori") return command({ kind: "tori_preferences", settings: { orientation: orientation === "sente" ? "gote" : "sente" } });
     if (snapshot.game === "shogi") return command({ kind: "shogi_preferences", settings: { ...snapshot.document.settings.settings, orientation: orientation === "sente" ? "gote" : "sente" } });
     return command({ kind: "xiangqi_preferences", settings: { analysis_defaults: snapshot.document.settings.analysis_defaults, orientation: orientation === "red" ? "black" : "red" } });
   }
-  const defaults = snapshot.game === "xiangqi" ? snapshot.document.settings.analysis_defaults : snapshot.document.settings.settings.analysis_defaults;
+  const defaults = snapshot.game === "tori" ? { depth: 0, nodes: 0 } : snapshot.game === "xiangqi" ? snapshot.document.settings.analysis_defaults : snapshot.document.settings.settings.analysis_defaults;
   const exactPrefix = snapshot.game !== "xiangqi" || snapshot.xiangqi.canonical_context_scope === "selected_committed";
   return <ApplicationShell game={snapshot.game} historical={snapshot.historical} blocked={confirmation !== null || supportOpen} onFocusCapture={focus}
-    runtime={thinking ? "mShogi is thinking" : analyzing ? "Analyzing selected position" : "Local engine"}
+    runtime={snapshot.game === "tori" ? "Tori verification · engine unavailable" : thinking ? "mShogi is thinking" : analyzing ? "Analyzing selected position" : "Local engine"}
     attributes={{ "data-current-event": snapshot.event_index, "data-live-events": snapshot.events.filter(event => event.index !== 0).length, "data-paused": snapshot.paused, "data-orientation": orientation }}
     document={<><DocumentState document={snapshot.document} /><h2 title={snapshot.document.path ?? undefined}>{snapshot.document.path?.split(/[\\/]/).at(-1) ?? "Untitled game"}</h2>
       {["saving", "opening", "viewing"].includes(snapshot.io.phase) && <p role="status">{snapshot.io.phase === "saving" ? "Saving your game…" : snapshot.io.phase === "opening" ? "Opening your game…" : "Opening the selected position…"}</p>}</>}
@@ -43,7 +44,7 @@ export function ApplicationView({ snapshot, session, onNewGame, onOpen, blocked 
       <button className="quiet" onClick={onOpen} disabled={disabled}>Load</button></>}
     heading={<LiveGameHeading eyebrow={snapshot.historical ? "HISTORY · READ ONLY" : snapshot.status.concluded ? "GAME CONCLUDED" : "YOUR GAME"}
       status={snapshot.historical ? "Viewing history" : thinking ? "mShogi is thinking" : (snapshot.game === "chess" ? gameStatus({ conclusion: snapshot.chess.selected_conclusion, turn: snapshot.turn.id.side, in_check: snapshot.chess.in_check }) : snapshot.status.label)}
-      player={<>You play {snapshot.human.label} against mShogi</>}
+      player={<>{snapshot.game === "tori" ? `Native Tori verification · ${snapshot.human.label} · no engine play` : <>You play {snapshot.human.label} against mShogi</>}</>}
       flip={<button className="quiet flip-button" disabled={disabled} aria-label={`Flip board; currently ${side.label} at bottom`} onClick={() => { void flip(); }}>↕ <span>Flip board</span></button>} />}
     positionNotice={snapshot.historical && <HistoricalNotice action={<button disabled={disabled} onClick={() => { void command({ kind: "return_live" }); }}>Return to live</button>}>
       <p>Your live game is unchanged.</p></HistoricalNotice>}

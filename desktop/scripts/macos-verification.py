@@ -20,7 +20,7 @@ IDENTITIES = {
     "qa": ("mShogi Verification.app", "org.mshogi.desktop.verification.r6.shogipromotion"),
     "synthetic": ("mShogi Synthetic.app", "org.mshogi.desktop.verification.r6.synthetic"),
 }
-FIXTURES = frozenset("""standard shared-contract promotion claim current-claim
+FIXTURES = frozenset("""standard shared-contract tori-standard tori-contract promotion claim current-claim
 concluded incomplete capacity shogi-standard shogi-gote shogi-failure shogi-capacity
 shogi-control-capacity shogi-hands shogi-promotion shogi-forced shogi-declaration
 shogi-concluded xiangqi-standard xiangqi-failure xiangqi-capacity

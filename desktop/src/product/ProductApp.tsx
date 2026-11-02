@@ -2,9 +2,9 @@ import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { ApplicationView } from "./ApplicationView";
 import { Dialog } from "./Dialog";
 import { useGameSession } from "./useGameSession";
-import type { GameKind, GameSnapshot, NativeSide, OpenToken } from "./native";
+import type { PlayableGameKind, GameSnapshot, NativeSide, OpenToken } from "./native";
 import "./shogi.css";
-const games: { key: GameKind; label: string; first: string; second: string }[] = [
+const games: { key: PlayableGameKind; label: string; first: string; second: string }[] = [
   { key: "chess", label: "Chess", first: "White", second: "Black" },
   { key: "shogi", label: "Shogi", first: "Sente", second: "Gote" },
   { key: "xiangqi", label: "Xiangqi", first: "Red", second: "Black" },
@@ -23,14 +23,14 @@ const same = (a: OpenToken, b: OpenToken) => a.document === b.document && a.vers
 export function ProductApp() {
   const session = useGameSession(), { snapshot } = session;
   const [pending, setPending] = useState<{ source: GameSnapshot } | null>(null);
-  const [choice, setChoice] = useState<{ source: GameSnapshot; game: GameKind; side: "first" | "second" | "random" } | null>(null);
+  const [choice, setChoice] = useState<{ source: GameSnapshot; game: PlayableGameKind; side: "first" | "second" | "random" } | null>(null);
   const [message, setMessage] = useState("");
   const deciding = useRef(false), handledClose = useRef(false);
   function begin(intent: "new" | "open" | "quit", source = snapshot) {
     if (!source) return; setMessage("");
     // New/Load are deliberate replacement requests. Merely opening either
     // chooser leaves the current native document installed until admission.
-    if (intent === "new") { setChoice({ source, game: source.game, side: source.human.first_mover ? "first" : "second" }); return; }
+    if (intent === "new") { setChoice({ source, game: source.game === "tori" ? "chess" : source.game, side: source.human.first_mover ? "first" : "second" }); return; }
     if (intent === "open") { void session.file(source, "open"); return; }
     if (source.close_requires_save) setPending({ source });
     else void session.finishClose(source).then(closed => { if (!closed) void session.cancelClose(); });
@@ -74,6 +74,6 @@ export function ProductApp() {
   const selectedGame = games.find((g) => g.key === choice?.game) ?? games[0]!;
   return <><div inert={blocked}><ApplicationView key={snapshot.token.document} snapshot={snapshot} session={session} onNewGame={() => begin("new")} onOpen={() => begin("open")} blocked={blocked} /></div>
     {pending && <Dialog title="Save Game" className="document-guard" cancel={() => { if (!session.busy) void cancelGuard(); }}>{stale && <p role="alert">The game changed. Cancel and review the current position.</p>}{message && <p role="alert">{message}</p>}<div className="dialog-actions"><button className="secondary" disabled={session.busy || stale || !snapshot.close_requires_save} onClick={() => { void decide(true); }}>Save</button><button className="danger" disabled={session.busy || stale} onClick={() => { void decide(false); }}>Discard</button><button data-cancel className="quiet" disabled={session.busy} onClick={() => { void cancelGuard(); }}>Cancel</button></div></Dialog>}
-    {choice && <Dialog title="New game" cancel={() => { if (!session.busy) setChoice(null); }} className="new-game-dialog"><label className="game-select-label">Game<select data-game-select value={choice.game} disabled={session.busy} onChange={event => setChoice({ ...choice, game: event.target.value as GameKind })}>{games.map(game => <option key={game.key} value={game.key}>{game.label}</option>)}</select></label><h3>Your side</h3><div className="side-choices" role="radiogroup" aria-label="Your side" onKeyDown={radioKeys}>{(["first", "second", "random"] as const).map((side) => <button key={side} role="radio" tabIndex={choice.side === side ? 0 : -1} aria-checked={choice.side === side} data-side={side === "random" ? "random" : (side === "first" ? selectedGame.first : selectedGame.second).toLowerCase()} className={choice.side === side ? "chosen" : ""} disabled={session.busy} onClick={() => setChoice({ ...choice, side })}>{side === "first" ? selectedGame.first : side === "second" ? selectedGame.second : "Random"}</button>)}</div>{!same(choice.source.open_token, snapshot.open_token) && <p role="alert">The current game changed. Cancel and review it before starting another game.</p>}{session.error && <p role="alert">The new game could not start. Your current game is retained.</p>}<div className="dialog-actions"><button className="quiet" data-cancel onClick={() => setChoice(null)} disabled={session.busy}>Cancel</button><button className="primary" data-start-game disabled={session.busy || !same(choice.source.open_token, snapshot.open_token)} onClick={() => { void start(); }}>Start game</button></div></Dialog>}
+    {choice && <Dialog title="New game" cancel={() => { if (!session.busy) setChoice(null); }} className="new-game-dialog"><label className="game-select-label">Game<select data-game-select value={choice.game} disabled={session.busy} onChange={event => setChoice({ ...choice, game: event.target.value as PlayableGameKind })}>{games.map(game => <option key={game.key} value={game.key}>{game.label}</option>)}</select></label><h3>Your side</h3><div className="side-choices" role="radiogroup" aria-label="Your side" onKeyDown={radioKeys}>{(["first", "second", "random"] as const).map((side) => <button key={side} role="radio" tabIndex={choice.side === side ? 0 : -1} aria-checked={choice.side === side} data-side={side === "random" ? "random" : (side === "first" ? selectedGame.first : selectedGame.second).toLowerCase()} className={choice.side === side ? "chosen" : ""} disabled={session.busy} onClick={() => setChoice({ ...choice, side })}>{side === "first" ? selectedGame.first : side === "second" ? selectedGame.second : "Random"}</button>)}</div>{!same(choice.source.open_token, snapshot.open_token) && <p role="alert">The current game changed. Cancel and review it before starting another game.</p>}{session.error && <p role="alert">The new game could not start. Your current game is retained.</p>}<div className="dialog-actions"><button className="quiet" data-cancel onClick={() => setChoice(null)} disabled={session.busy}>Cancel</button><button className="primary" data-start-game disabled={session.busy || !same(choice.source.open_token, snapshot.open_token)} onClick={() => { void start(); }}>Start game</button></div></Dialog>}
   </>;
 }

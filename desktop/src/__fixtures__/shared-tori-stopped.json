@@ -1,0 +1,2411 @@
+{
+  "moves": {
+    "root": {
+      "label": "Starting position",
+      "numbering": "Technical native actions · not final Tori notation. Declared root counter 31 · Earlier history is unknown"
+    },
+    "entries": [
+      {
+        "event_index": 1,
+        "board_ply": 1,
+        "number": 1,
+        "column": 0,
+        "notation": "Technical: RQ drop → 5e",
+        "action": "{\"kind\":\"drop\",\"face\":\"right_quail\",\"to\":\"5e\"}",
+        "command_start": 0,
+        "command_end": 1
+      }
+    ],
+    "last_action": {
+      "action": "{\"kind\":\"drop\",\"face\":\"right_quail\",\"to\":\"5e\"}",
+      "event_index": 1,
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:sente",
+        "piece_kind": "RQ"
+      },
+      "steps": [
+        "5e"
+      ],
+      "effects": []
+    }
+  },
+  "tori": {
+    "root_kind": "diagram",
+    "root_source": null,
+    "declared_root_plies": "31",
+    "earlier_history_unknown": true,
+    "historical_reachability_proven": false,
+    "selected": {
+      "event_index": 2,
+      "board_ply": 1,
+      "in_check": false,
+      "occurrences": [
+        1
+      ],
+      "obligation": null,
+      "conclusion": null,
+      "incomplete": "cancelled"
+    },
+    "live": {
+      "event_index": 2,
+      "board_ply": 1,
+      "in_check": false,
+      "occurrences": [
+        1
+      ],
+      "obligation": null,
+      "conclusion": null,
+      "incomplete": "cancelled"
+    }
+  },
+  "open_token": {
+    "document": 1,
+    "version": 11,
+    "document_revision": 7
+  },
+  "document": {
+    "revision": 7,
+    "dirty": true,
+    "path": null,
+    "settings": {
+      "game_kind": "tori",
+      "settings": {
+        "orientation": "sente"
+      }
+    }
+  },
+  "io": {
+    "id": 0,
+    "phase": "idle",
+    "message": null,
+    "resource": null
+  },
+  "capacity": {
+    "id": 9,
+    "status": "available",
+    "message": null,
+    "resource": null
+  },
+  "token": {
+    "document": 1,
+    "version": 11,
+    "revision": 19,
+    "selection": 11
+  },
+  "game": "tori",
+  "profile": "mshogi.tori.modern.v1",
+  "edition": "MSH81-MODERN-2026-11-01",
+  "human": {
+    "id": {
+      "game_kind": "tori",
+      "side": "sente"
+    },
+    "key": "mshogi.tori.modern.v1:sente",
+    "label": "Sente",
+    "first_mover": true
+  },
+  "turn": {
+    "id": {
+      "game_kind": "tori",
+      "side": "gote"
+    },
+    "key": "mshogi.tori.modern.v1:gote",
+    "label": "Gote",
+    "first_mover": false
+  },
+  "sides": [
+    {
+      "id": {
+        "game_kind": "tori",
+        "side": "sente"
+      },
+      "key": "mshogi.tori.modern.v1:sente",
+      "label": "Sente",
+      "first_mover": true
+    },
+    {
+      "id": {
+        "game_kind": "tori",
+        "side": "gote"
+      },
+      "key": "mshogi.tori.modern.v1:gote",
+      "label": "Gote",
+      "first_mover": false
+    }
+  ],
+  "board": {
+    "files": [
+      "7",
+      "6",
+      "5",
+      "4",
+      "3",
+      "2",
+      "1"
+    ],
+    "ranks": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g"
+    ],
+    "label": "Tori native 7×7 verification contract",
+    "initial_focus": "4e"
+  },
+  "orientations": [
+    {
+      "side": {
+        "id": {
+          "game_kind": "tori",
+          "side": "sente"
+        },
+        "key": "mshogi.tori.modern.v1:sente",
+        "label": "Sente",
+        "first_mover": true
+      },
+      "files": [
+        "7",
+        "6",
+        "5",
+        "4",
+        "3",
+        "2",
+        "1"
+      ],
+      "ranks": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g"
+      ]
+    },
+    {
+      "side": {
+        "id": {
+          "game_kind": "tori",
+          "side": "gote"
+        },
+        "key": "mshogi.tori.modern.v1:gote",
+        "label": "Gote",
+        "first_mover": false
+      },
+      "files": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
+      "ranks": [
+        "g",
+        "f",
+        "e",
+        "d",
+        "c",
+        "b",
+        "a"
+      ]
+    }
+  ],
+  "pieces": [
+    {
+      "square": "4a",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Ph",
+      "promoted": false,
+      "text": "Ph",
+      "label": "4a, Gote Phoenix"
+    },
+    {
+      "square": "7b",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Sw",
+      "promoted": false,
+      "text": "Sw",
+      "label": "7b, Gote Swallow"
+    },
+    {
+      "square": "7c",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Fa",
+      "promoted": false,
+      "text": "Fa",
+      "label": "7c, Sente Falcon"
+    },
+    {
+      "square": "2d",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Sw",
+      "promoted": false,
+      "text": "Sw",
+      "label": "2d, Sente Swallow"
+    },
+    {
+      "square": "5e",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "RQ",
+      "promoted": false,
+      "text": "RQ",
+      "label": "5e, Sente Right Quail"
+    },
+    {
+      "square": "7f",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Ea",
+      "promoted": true,
+      "text": "Ea",
+      "label": "7f, Sente Eagle (promoted Falcon)"
+    },
+    {
+      "square": "1f",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Go",
+      "promoted": true,
+      "text": "Go",
+      "label": "1f, Sente Goose (promoted Swallow)"
+    },
+    {
+      "square": "7g",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "LQ",
+      "promoted": false,
+      "text": "LQ",
+      "label": "7g, Sente Left Quail"
+    },
+    {
+      "square": "6g",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Cr",
+      "promoted": false,
+      "text": "Cr",
+      "label": "6g, Sente Crane"
+    },
+    {
+      "square": "4g",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Ph",
+      "promoted": false,
+      "text": "Ph",
+      "label": "4g, Sente Phoenix"
+    },
+    {
+      "square": "2g",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Pt",
+      "promoted": false,
+      "text": "Pt",
+      "label": "2g, Sente Pheasant"
+    },
+    {
+      "square": "1g",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "RQ",
+      "promoted": false,
+      "text": "RQ",
+      "label": "1g, Sente Right Quail"
+    }
+  ],
+  "hands": [
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:Fa",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Fa",
+      "count": 0,
+      "text": "Fa",
+      "label": "Sente Falcon in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:Cr",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Cr",
+      "count": 1,
+      "text": "Cr",
+      "label": "Sente Crane in hand, 1"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:Pt",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Pt",
+      "count": 0,
+      "text": "Pt",
+      "label": "Sente Pheasant in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:LQ",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "LQ",
+      "count": 0,
+      "text": "LQ",
+      "label": "Sente Left Quail in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:RQ",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "RQ",
+      "count": 0,
+      "text": "RQ",
+      "label": "Sente Right Quail in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:Sw",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Sw",
+      "count": 2,
+      "text": "Sw",
+      "label": "Sente Swallow in hand, 2"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:Fa",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Fa",
+      "count": 0,
+      "text": "Fa",
+      "label": "Gote Falcon in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Cr",
+      "count": 1,
+      "text": "Cr",
+      "label": "Gote Crane in hand, 1"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Pt",
+      "count": 1,
+      "text": "Pt",
+      "label": "Gote Pheasant in hand, 1"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "LQ",
+      "count": 1,
+      "text": "LQ",
+      "label": "Gote Left Quail in hand, 1"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:RQ",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "RQ",
+      "count": 0,
+      "text": "RQ",
+      "label": "Gote Right Quail in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Sw",
+      "count": 1,
+      "text": "Sw",
+      "label": "Gote Swallow in hand, 1"
+    }
+  ],
+  "choices": [
+    {
+      "origin": {
+        "kind": "board",
+        "square": "4a"
+      },
+      "action": "{\"kind\":\"move\",\"from\":\"4a\",\"to\":\"3a\",\"result_face\":\"phoenix\"}",
+      "from": "4a",
+      "steps": [
+        "3a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "4a"
+      },
+      "action": "{\"kind\":\"move\",\"from\":\"4a\",\"to\":\"4b\",\"result_face\":\"phoenix\"}",
+      "from": "4a",
+      "steps": [
+        "4b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "7b"
+      },
+      "action": "{\"kind\":\"move\",\"from\":\"7b\",\"to\":\"7c\",\"result_face\":\"swallow\"}",
+      "from": "7b",
+      "steps": [
+        "7c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"7a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "7a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"6a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "6a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"5a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "5a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"3a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "3a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"2a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "2a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"1a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "1a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"6b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "6b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"5b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "5b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"4b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "4b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"3b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "3b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"2b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "2b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"1b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "1b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"6c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "6c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"5c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "5c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"4c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "4c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"3c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "3c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"2c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "2c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"1c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "1c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"7d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "7d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"6d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "6d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"5d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "5d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"4d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "4d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"3d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "3d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"1d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "1d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"7e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "7e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"6e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "6e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"4e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "4e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"3e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "3e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"2e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "2e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"1e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "1e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"6f\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "6f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"5f\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "5f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"4f\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "4f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"3f\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "3f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"2f\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "2f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"5g\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "5g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Cr"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"crane\",\"to\":\"3g\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "steps": [
+        "3g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"7a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "7a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"6a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "6a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"5a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "5a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"3a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "3a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"2a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "2a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"1a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "1a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"6b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "6b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"5b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "5b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"4b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "4b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"3b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "3b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"2b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "2b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"1b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "1b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"6c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "6c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"5c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "5c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"4c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "4c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"3c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "3c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"2c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "2c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"1c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "1c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"7d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "7d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"6d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "6d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"5d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "5d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"4d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "4d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"3d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "3d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"1d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "1d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"7e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "7e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"6e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "6e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"4e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "4e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"3e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "3e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"2e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "2e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"1e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "1e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"6f\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "6f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"5f\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "5f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"4f\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "4f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"3f\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "3f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"2f\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "2f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"5g\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "5g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Pt"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"pheasant\",\"to\":\"3g\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "steps": [
+        "3g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"7a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "7a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"6a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "6a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"5a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "5a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"3a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "3a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"2a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "2a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"1a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "1a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"6b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "6b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"5b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "5b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"4b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "4b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"3b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "3b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"2b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "2b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"1b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "1b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"6c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "6c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"5c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "5c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"4c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "4c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"3c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "3c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"2c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "2c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"1c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "1c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"7d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "7d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"6d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "6d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"5d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "5d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"4d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "4d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"3d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "3d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"1d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "1d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"7e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "7e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"6e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "6e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"4e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "4e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"3e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "3e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"2e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "2e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"1e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "1e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"6f\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "6f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"5f\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "5f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"4f\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "4f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"3f\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "3f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"2f\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "2f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"5g\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "5g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "LQ"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"left_quail\",\"to\":\"3g\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "steps": [
+        "3g"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"7a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "7a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"6a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "6a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"5a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "5a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"3a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "3a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"2a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "2a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"1a\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "1a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"6b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "6b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"5b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "5b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"4b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "4b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"3b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "3b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"2b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "2b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"1b\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "1b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"6c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "6c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"5c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "5c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"4c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "4c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"3c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "3c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"2c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "2c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"1c\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "1c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"7d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "7d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"6d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "6d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"5d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "5d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"4d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "4d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"3d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "3d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"1d\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "1d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"7e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "7e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"6e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "6e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"4e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "4e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"3e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "3e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"2e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "2e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"1e\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "1e"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"6f\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "6f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"5f\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "5f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"4f\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "4f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"3f\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "3f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "hand",
+        "owner": "mshogi.tori.modern.v1:gote",
+        "piece_kind": "Sw"
+      },
+      "action": "{\"kind\":\"drop\",\"face\":\"swallow\",\"to\":\"2f\"}",
+      "from": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "steps": [
+        "2f"
+      ],
+      "completion": null
+    }
+  ],
+  "capabilities": {
+    "board_action": false,
+    "drops": true,
+    "promotion": true,
+    "take_back": true,
+    "undo": true,
+    "engine_turn": false,
+    "move_analysis": false,
+    "chess_full": false,
+    "claims": false,
+    "declaration": false,
+    "resign": true,
+    "hands": true,
+    "history": true,
+    "save": true
+  },
+  "status": {
+    "concluded": false,
+    "label": "Work cancelled · unscored",
+    "score_half_points": null
+  },
+  "events": [
+    {
+      "index": 1,
+      "board_ply": 1,
+      "label": "Sente · Technical action {\"kind\":\"drop\",\"face\":\"right_quail\",\"to\":\"5e\"}"
+    },
+    {
+      "index": 2,
+      "board_ply": 1,
+      "label": "Work cancelled · unscored"
+    }
+  ],
+  "event_index": 2,
+  "board_ply": 1,
+  "play_limits": {
+    "depth": 0,
+    "nodes": 0
+  },
+  "historical": false,
+  "paused": true,
+  "close_requires_save": true,
+  "phase": "paused",
+  "execution_purpose": null,
+  "diagnostic": "Live position. Tori engine execution is unsupported.",
+  "declaration_advice": [],
+  "context": {
+    "envelope_version": 1,
+    "game_kind": "tori",
+    "rules_profile": "mshogi.tori.modern.v1",
+    "profile_edition": "MSH81-MODERN-2026-11-01",
+    "native_schema_version": 1,
+    "payload": {"format":"mshogi.tori.game","game":"tori","profile":"mshogi.tori.modern.v1","edition":"MSH81-MODERN-2026-11-01","schema_version":1,"mode":"untimed","root":{"root_kind":"diagram","source":null,"earlier_history_unknown":true,"historical_reachability_proven":false,"declared_completed_plies":31,"accepted_plies":0,"declared_total_plies":31,"side_to_move":"sente","board":[{"square":"4a","piece":{"side":"gote","face":"phoenix"}},{"square":"7b","piece":{"side":"gote","face":"swallow"}},{"square":"7c","piece":{"side":"sente","face":"falcon"}},{"square":"2d","piece":{"side":"sente","face":"swallow"}},{"square":"7f","piece":{"side":"sente","face":"eagle"}},{"square":"1f","piece":{"side":"sente","face":"goose"}},{"square":"7g","piece":{"side":"sente","face":"left_quail"}},{"square":"6g","piece":{"side":"sente","face":"crane"}},{"square":"4g","piece":{"side":"sente","face":"phoenix"}},{"square":"2g","piece":{"side":"sente","face":"pheasant"}},{"square":"1g","piece":{"side":"sente","face":"right_quail"}}],"hands":[[0,1,0,0,1,2],[0,1,1,1,0,1]]},"root_conclusion":null,"events":[{"index":0,"board_ply":1,"actor":"sente","command":{"kind":"play","action":{"kind":"drop","face":"right_quail","to":"5e"}},"effects":{"actor":"sente","action":{"kind":"drop","face":"right_quail","to":"5e"},"resulting_piece":{"side":"sente","face":"right_quail"},"captured":null,"hand_change":["right_quail",-1]},"occurrences":[1],"obligation":null,"conclusion":null,"incomplete":null,"replay_work":3},{"index":1,"board_ply":1,"actor":"sente","command":{"kind":"stop","reason":"cancelled"},"effects":null,"occurrences":[1],"obligation":null,"conclusion":null,"incomplete":"cancelled","replay_work":4}],"current_position":{"root_kind":"diagram","source":null,"earlier_history_unknown":true,"historical_reachability_proven":false,"declared_completed_plies":31,"accepted_plies":1,"declared_total_plies":32,"side_to_move":"gote","board":[{"square":"4a","piece":{"side":"gote","face":"phoenix"}},{"square":"7b","piece":{"side":"gote","face":"swallow"}},{"square":"7c","piece":{"side":"sente","face":"falcon"}},{"square":"2d","piece":{"side":"sente","face":"swallow"}},{"square":"5e","piece":{"side":"sente","face":"right_quail"}},{"square":"7f","piece":{"side":"sente","face":"eagle"}},{"square":"1f","piece":{"side":"sente","face":"goose"}},{"square":"7g","piece":{"side":"sente","face":"left_quail"}},{"square":"6g","piece":{"side":"sente","face":"crane"}},{"square":"4g","piece":{"side":"sente","face":"phoenix"}},{"square":"2g","piece":{"side":"sente","face":"pheasant"}},{"square":"1g","piece":{"side":"sente","face":"right_quail"}}],"hands":[[0,1,0,0,0,2],[0,1,1,1,0,1]]},"conclusion":null,"obligation":null,"incomplete":"cancelled"}
+  },
+  "analysis": null,
+  "observations": [],
+  "search_observations": [],
+  "score_meaning": "No Tori evaluation or search implementation. Failures and incomplete work are unscored.",
+  "chess": null,
+  "chess_match": null
+}

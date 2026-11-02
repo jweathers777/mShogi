@@ -1,0 +1,807 @@
+{
+  "moves": {
+    "root": {
+      "label": "Starting position",
+      "numbering": "Technical native actions · not final Tori notation. Declared root counter 0 · Known standard starting history"
+    },
+    "entries": [],
+    "last_action": null
+  },
+  "tori": {
+    "root_kind": "standard",
+    "root_source": null,
+    "declared_root_plies": "0",
+    "earlier_history_unknown": false,
+    "historical_reachability_proven": true,
+    "selected": {
+      "event_index": 0,
+      "board_ply": 0,
+      "in_check": false,
+      "occurrences": [
+        0
+      ],
+      "obligation": null,
+      "conclusion": null,
+      "incomplete": null
+    },
+    "live": {
+      "event_index": 0,
+      "board_ply": 0,
+      "in_check": false,
+      "occurrences": [
+        0
+      ],
+      "obligation": null,
+      "conclusion": null,
+      "incomplete": null
+    }
+  },
+  "open_token": {
+    "document": 1,
+    "version": 3,
+    "document_revision": 1
+  },
+  "document": {
+    "revision": 1,
+    "dirty": true,
+    "path": null,
+    "settings": {
+      "game_kind": "tori",
+      "settings": {
+        "orientation": "sente"
+      }
+    }
+  },
+  "io": {
+    "id": 0,
+    "phase": "idle",
+    "message": null,
+    "resource": null
+  },
+  "capacity": {
+    "id": 1,
+    "status": "available",
+    "message": null,
+    "resource": null
+  },
+  "token": {
+    "document": 1,
+    "version": 3,
+    "revision": 3,
+    "selection": 3
+  },
+  "game": "tori",
+  "profile": "mshogi.tori.modern.v1",
+  "edition": "MSH81-MODERN-2026-11-01",
+  "human": {
+    "id": {
+      "game_kind": "tori",
+      "side": "sente"
+    },
+    "key": "mshogi.tori.modern.v1:sente",
+    "label": "Sente",
+    "first_mover": true
+  },
+  "turn": {
+    "id": {
+      "game_kind": "tori",
+      "side": "sente"
+    },
+    "key": "mshogi.tori.modern.v1:sente",
+    "label": "Sente",
+    "first_mover": true
+  },
+  "sides": [
+    {
+      "id": {
+        "game_kind": "tori",
+        "side": "sente"
+      },
+      "key": "mshogi.tori.modern.v1:sente",
+      "label": "Sente",
+      "first_mover": true
+    },
+    {
+      "id": {
+        "game_kind": "tori",
+        "side": "gote"
+      },
+      "key": "mshogi.tori.modern.v1:gote",
+      "label": "Gote",
+      "first_mover": false
+    }
+  ],
+  "board": {
+    "files": [
+      "7",
+      "6",
+      "5",
+      "4",
+      "3",
+      "2",
+      "1"
+    ],
+    "ranks": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g"
+    ],
+    "label": "Tori native 7×7 verification contract",
+    "initial_focus": "4e"
+  },
+  "orientations": [
+    {
+      "side": {
+        "id": {
+          "game_kind": "tori",
+          "side": "sente"
+        },
+        "key": "mshogi.tori.modern.v1:sente",
+        "label": "Sente",
+        "first_mover": true
+      },
+      "files": [
+        "7",
+        "6",
+        "5",
+        "4",
+        "3",
+        "2",
+        "1"
+      ],
+      "ranks": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g"
+      ]
+    },
+    {
+      "side": {
+        "id": {
+          "game_kind": "tori",
+          "side": "gote"
+        },
+        "key": "mshogi.tori.modern.v1:gote",
+        "label": "Gote",
+        "first_mover": false
+      },
+      "files": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
+      "ranks": [
+        "g",
+        "f",
+        "e",
+        "d",
+        "c",
+        "b",
+        "a"
+      ]
+    }
+  ],
+  "pieces": [
+    {
+      "square": "7a",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "RQ",
+      "promoted": false,
+      "text": "RQ",
+      "label": "7a, Gote Right Quail"
+    },
+    {
+      "square": "6a",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Pt",
+      "promoted": false,
+      "text": "Pt",
+      "label": "6a, Gote Pheasant"
+    },
+    {
+      "square": "5a",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Cr",
+      "promoted": false,
+      "text": "Cr",
+      "label": "5a, Gote Crane"
+    },
+    {
+      "square": "4a",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Ph",
+      "promoted": false,
+      "text": "Ph",
+      "label": "4a, Gote Phoenix"
+    },
+    {
+      "square": "3a",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Cr",
+      "promoted": false,
+      "text": "Cr",
+      "label": "3a, Gote Crane"
+    },
+    {
+      "square": "2a",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Pt",
+      "promoted": false,
+      "text": "Pt",
+      "label": "2a, Gote Pheasant"
+    },
+    {
+      "square": "1a",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "LQ",
+      "promoted": false,
+      "text": "LQ",
+      "label": "1a, Gote Left Quail"
+    },
+    {
+      "square": "4b",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Fa",
+      "promoted": false,
+      "text": "Fa",
+      "label": "4b, Gote Falcon"
+    },
+    {
+      "square": "7c",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Sw",
+      "promoted": false,
+      "text": "Sw",
+      "label": "7c, Gote Swallow"
+    },
+    {
+      "square": "6c",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Sw",
+      "promoted": false,
+      "text": "Sw",
+      "label": "6c, Gote Swallow"
+    },
+    {
+      "square": "5c",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Sw",
+      "promoted": false,
+      "text": "Sw",
+      "label": "5c, Gote Swallow"
+    },
+    {
+      "square": "4c",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Sw",
+      "promoted": false,
+      "text": "Sw",
+      "label": "4c, Gote Swallow"
+    },
+    {
+      "square": "3c",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Sw",
+      "promoted": false,
+      "text": "Sw",
+      "label": "3c, Gote Swallow"
+    },
+    {
+      "square": "2c",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Sw",
+      "promoted": false,
+      "text": "Sw",
+      "label": "2c, Gote Swallow"
+    },
+    {
+      "square": "1c",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Sw",
+      "promoted": false,
+      "text": "Sw",
+      "label": "1c, Gote Swallow"
+    },
+    {
+      "square": "5d",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Sw",
+      "promoted": false,
+      "text": "Sw",
+      "label": "5d, Gote Swallow"
+    },
+    {
+      "square": "3d",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Sw",
+      "promoted": false,
+      "text": "Sw",
+      "label": "3d, Sente Swallow"
+    },
+    {
+      "square": "7e",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Sw",
+      "promoted": false,
+      "text": "Sw",
+      "label": "7e, Sente Swallow"
+    },
+    {
+      "square": "6e",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Sw",
+      "promoted": false,
+      "text": "Sw",
+      "label": "6e, Sente Swallow"
+    },
+    {
+      "square": "5e",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Sw",
+      "promoted": false,
+      "text": "Sw",
+      "label": "5e, Sente Swallow"
+    },
+    {
+      "square": "4e",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Sw",
+      "promoted": false,
+      "text": "Sw",
+      "label": "4e, Sente Swallow"
+    },
+    {
+      "square": "3e",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Sw",
+      "promoted": false,
+      "text": "Sw",
+      "label": "3e, Sente Swallow"
+    },
+    {
+      "square": "2e",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Sw",
+      "promoted": false,
+      "text": "Sw",
+      "label": "2e, Sente Swallow"
+    },
+    {
+      "square": "1e",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Sw",
+      "promoted": false,
+      "text": "Sw",
+      "label": "1e, Sente Swallow"
+    },
+    {
+      "square": "4f",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Fa",
+      "promoted": false,
+      "text": "Fa",
+      "label": "4f, Sente Falcon"
+    },
+    {
+      "square": "7g",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "LQ",
+      "promoted": false,
+      "text": "LQ",
+      "label": "7g, Sente Left Quail"
+    },
+    {
+      "square": "6g",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Pt",
+      "promoted": false,
+      "text": "Pt",
+      "label": "6g, Sente Pheasant"
+    },
+    {
+      "square": "5g",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Cr",
+      "promoted": false,
+      "text": "Cr",
+      "label": "5g, Sente Crane"
+    },
+    {
+      "square": "4g",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Ph",
+      "promoted": false,
+      "text": "Ph",
+      "label": "4g, Sente Phoenix"
+    },
+    {
+      "square": "3g",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Cr",
+      "promoted": false,
+      "text": "Cr",
+      "label": "3g, Sente Crane"
+    },
+    {
+      "square": "2g",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Pt",
+      "promoted": false,
+      "text": "Pt",
+      "label": "2g, Sente Pheasant"
+    },
+    {
+      "square": "1g",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "RQ",
+      "promoted": false,
+      "text": "RQ",
+      "label": "1g, Sente Right Quail"
+    }
+  ],
+  "hands": [
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:Fa",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Fa",
+      "count": 0,
+      "text": "Fa",
+      "label": "Sente Falcon in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:Cr",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Cr",
+      "count": 0,
+      "text": "Cr",
+      "label": "Sente Crane in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:Pt",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Pt",
+      "count": 0,
+      "text": "Pt",
+      "label": "Sente Pheasant in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:LQ",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "LQ",
+      "count": 0,
+      "text": "LQ",
+      "label": "Sente Left Quail in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:RQ",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "RQ",
+      "count": 0,
+      "text": "RQ",
+      "label": "Sente Right Quail in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:Sw",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Sw",
+      "count": 0,
+      "text": "Sw",
+      "label": "Sente Swallow in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:Fa",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Fa",
+      "count": 0,
+      "text": "Fa",
+      "label": "Gote Falcon in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Cr",
+      "count": 0,
+      "text": "Cr",
+      "label": "Gote Crane in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Pt",
+      "count": 0,
+      "text": "Pt",
+      "label": "Gote Pheasant in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "LQ",
+      "count": 0,
+      "text": "LQ",
+      "label": "Gote Left Quail in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:RQ",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "RQ",
+      "count": 0,
+      "text": "RQ",
+      "label": "Gote Right Quail in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Sw",
+      "count": 0,
+      "text": "Sw",
+      "label": "Gote Swallow in hand, 0"
+    }
+  ],
+  "choices": [
+    {
+      "origin": {
+        "kind": "board",
+        "square": "3d"
+      },
+      "action": "{\"kind\":\"move\",\"from\":\"3d\",\"to\":\"3c\",\"result_face\":\"swallow\"}",
+      "from": "3d",
+      "steps": [
+        "3c"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "7e"
+      },
+      "action": "{\"kind\":\"move\",\"from\":\"7e\",\"to\":\"7d\",\"result_face\":\"swallow\"}",
+      "from": "7e",
+      "steps": [
+        "7d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "6e"
+      },
+      "action": "{\"kind\":\"move\",\"from\":\"6e\",\"to\":\"6d\",\"result_face\":\"swallow\"}",
+      "from": "6e",
+      "steps": [
+        "6d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "5e"
+      },
+      "action": "{\"kind\":\"move\",\"from\":\"5e\",\"to\":\"5d\",\"result_face\":\"swallow\"}",
+      "from": "5e",
+      "steps": [
+        "5d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "4e"
+      },
+      "action": "{\"kind\":\"move\",\"from\":\"4e\",\"to\":\"4d\",\"result_face\":\"swallow\"}",
+      "from": "4e",
+      "steps": [
+        "4d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "2e"
+      },
+      "action": "{\"kind\":\"move\",\"from\":\"2e\",\"to\":\"2d\",\"result_face\":\"swallow\"}",
+      "from": "2e",
+      "steps": [
+        "2d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "1e"
+      },
+      "action": "{\"kind\":\"move\",\"from\":\"1e\",\"to\":\"1d\",\"result_face\":\"swallow\"}",
+      "from": "1e",
+      "steps": [
+        "1d"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "4f"
+      },
+      "action": "{\"kind\":\"move\",\"from\":\"4f\",\"to\":\"5f\",\"result_face\":\"falcon\"}",
+      "from": "4f",
+      "steps": [
+        "5f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "4f"
+      },
+      "action": "{\"kind\":\"move\",\"from\":\"4f\",\"to\":\"3f\",\"result_face\":\"falcon\"}",
+      "from": "4f",
+      "steps": [
+        "3f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "7g"
+      },
+      "action": "{\"kind\":\"move\",\"from\":\"7g\",\"to\":\"7f\",\"result_face\":\"left_quail\"}",
+      "from": "7g",
+      "steps": [
+        "7f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "5g"
+      },
+      "action": "{\"kind\":\"move\",\"from\":\"5g\",\"to\":\"6f\",\"result_face\":\"crane\"}",
+      "from": "5g",
+      "steps": [
+        "6f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "5g"
+      },
+      "action": "{\"kind\":\"move\",\"from\":\"5g\",\"to\":\"5f\",\"result_face\":\"crane\"}",
+      "from": "5g",
+      "steps": [
+        "5f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "4g"
+      },
+      "action": "{\"kind\":\"move\",\"from\":\"4g\",\"to\":\"5f\",\"result_face\":\"phoenix\"}",
+      "from": "4g",
+      "steps": [
+        "5f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "4g"
+      },
+      "action": "{\"kind\":\"move\",\"from\":\"4g\",\"to\":\"3f\",\"result_face\":\"phoenix\"}",
+      "from": "4g",
+      "steps": [
+        "3f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "3g"
+      },
+      "action": "{\"kind\":\"move\",\"from\":\"3g\",\"to\":\"3f\",\"result_face\":\"crane\"}",
+      "from": "3g",
+      "steps": [
+        "3f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "3g"
+      },
+      "action": "{\"kind\":\"move\",\"from\":\"3g\",\"to\":\"2f\",\"result_face\":\"crane\"}",
+      "from": "3g",
+      "steps": [
+        "2f"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "1g"
+      },
+      "action": "{\"kind\":\"move\",\"from\":\"1g\",\"to\":\"1f\",\"result_face\":\"right_quail\"}",
+      "from": "1g",
+      "steps": [
+        "1f"
+      ],
+      "completion": null
+    }
+  ],
+  "capabilities": {
+    "board_action": true,
+    "drops": true,
+    "promotion": true,
+    "take_back": false,
+    "undo": false,
+    "engine_turn": false,
+    "move_analysis": false,
+    "chess_full": false,
+    "claims": false,
+    "declaration": false,
+    "resign": true,
+    "hands": true,
+    "history": true,
+    "save": true
+  },
+  "status": {
+    "concluded": false,
+    "label": "Sente to move",
+    "score_half_points": null
+  },
+  "events": [],
+  "event_index": 0,
+  "board_ply": 0,
+  "play_limits": {
+    "depth": 0,
+    "nodes": 0
+  },
+  "historical": false,
+  "paused": true,
+  "close_requires_save": true,
+  "phase": "paused",
+  "execution_purpose": null,
+  "diagnostic": "Tori native document ready. Engine execution is unsupported; saved observations are historical.",
+  "declaration_advice": [],
+  "context": {
+    "envelope_version": 1,
+    "game_kind": "tori",
+    "rules_profile": "mshogi.tori.modern.v1",
+    "profile_edition": "MSH81-MODERN-2026-11-01",
+    "native_schema_version": 1,
+    "payload": {"format":"mshogi.tori.game","game":"tori","profile":"mshogi.tori.modern.v1","edition":"MSH81-MODERN-2026-11-01","schema_version":1,"mode":"untimed","root":{"root_kind":"standard","source":null,"earlier_history_unknown":false,"historical_reachability_proven":true,"declared_completed_plies":0,"accepted_plies":0,"declared_total_plies":0,"side_to_move":"sente","board":[{"square":"7a","piece":{"side":"gote","face":"right_quail"}},{"square":"6a","piece":{"side":"gote","face":"pheasant"}},{"square":"5a","piece":{"side":"gote","face":"crane"}},{"square":"4a","piece":{"side":"gote","face":"phoenix"}},{"square":"3a","piece":{"side":"gote","face":"crane"}},{"square":"2a","piece":{"side":"gote","face":"pheasant"}},{"square":"1a","piece":{"side":"gote","face":"left_quail"}},{"square":"4b","piece":{"side":"gote","face":"falcon"}},{"square":"7c","piece":{"side":"gote","face":"swallow"}},{"square":"6c","piece":{"side":"gote","face":"swallow"}},{"square":"5c","piece":{"side":"gote","face":"swallow"}},{"square":"4c","piece":{"side":"gote","face":"swallow"}},{"square":"3c","piece":{"side":"gote","face":"swallow"}},{"square":"2c","piece":{"side":"gote","face":"swallow"}},{"square":"1c","piece":{"side":"gote","face":"swallow"}},{"square":"5d","piece":{"side":"gote","face":"swallow"}},{"square":"3d","piece":{"side":"sente","face":"swallow"}},{"square":"7e","piece":{"side":"sente","face":"swallow"}},{"square":"6e","piece":{"side":"sente","face":"swallow"}},{"square":"5e","piece":{"side":"sente","face":"swallow"}},{"square":"4e","piece":{"side":"sente","face":"swallow"}},{"square":"3e","piece":{"side":"sente","face":"swallow"}},{"square":"2e","piece":{"side":"sente","face":"swallow"}},{"square":"1e","piece":{"side":"sente","face":"swallow"}},{"square":"4f","piece":{"side":"sente","face":"falcon"}},{"square":"7g","piece":{"side":"sente","face":"left_quail"}},{"square":"6g","piece":{"side":"sente","face":"pheasant"}},{"square":"5g","piece":{"side":"sente","face":"crane"}},{"square":"4g","piece":{"side":"sente","face":"phoenix"}},{"square":"3g","piece":{"side":"sente","face":"crane"}},{"square":"2g","piece":{"side":"sente","face":"pheasant"}},{"square":"1g","piece":{"side":"sente","face":"right_quail"}}],"hands":[[0,0,0,0,0,0],[0,0,0,0,0,0]]},"root_conclusion":null,"events":[],"current_position":{"root_kind":"standard","source":null,"earlier_history_unknown":false,"historical_reachability_proven":true,"declared_completed_plies":0,"accepted_plies":0,"declared_total_plies":0,"side_to_move":"sente","board":[{"square":"7a","piece":{"side":"gote","face":"right_quail"}},{"square":"6a","piece":{"side":"gote","face":"pheasant"}},{"square":"5a","piece":{"side":"gote","face":"crane"}},{"square":"4a","piece":{"side":"gote","face":"phoenix"}},{"square":"3a","piece":{"side":"gote","face":"crane"}},{"square":"2a","piece":{"side":"gote","face":"pheasant"}},{"square":"1a","piece":{"side":"gote","face":"left_quail"}},{"square":"4b","piece":{"side":"gote","face":"falcon"}},{"square":"7c","piece":{"side":"gote","face":"swallow"}},{"square":"6c","piece":{"side":"gote","face":"swallow"}},{"square":"5c","piece":{"side":"gote","face":"swallow"}},{"square":"4c","piece":{"side":"gote","face":"swallow"}},{"square":"3c","piece":{"side":"gote","face":"swallow"}},{"square":"2c","piece":{"side":"gote","face":"swallow"}},{"square":"1c","piece":{"side":"gote","face":"swallow"}},{"square":"5d","piece":{"side":"gote","face":"swallow"}},{"square":"3d","piece":{"side":"sente","face":"swallow"}},{"square":"7e","piece":{"side":"sente","face":"swallow"}},{"square":"6e","piece":{"side":"sente","face":"swallow"}},{"square":"5e","piece":{"side":"sente","face":"swallow"}},{"square":"4e","piece":{"side":"sente","face":"swallow"}},{"square":"3e","piece":{"side":"sente","face":"swallow"}},{"square":"2e","piece":{"side":"sente","face":"swallow"}},{"square":"1e","piece":{"side":"sente","face":"swallow"}},{"square":"4f","piece":{"side":"sente","face":"falcon"}},{"square":"7g","piece":{"side":"sente","face":"left_quail"}},{"square":"6g","piece":{"side":"sente","face":"pheasant"}},{"square":"5g","piece":{"side":"sente","face":"crane"}},{"square":"4g","piece":{"side":"sente","face":"phoenix"}},{"square":"3g","piece":{"side":"sente","face":"crane"}},{"square":"2g","piece":{"side":"sente","face":"pheasant"}},{"square":"1g","piece":{"side":"sente","face":"right_quail"}}],"hands":[[0,0,0,0,0,0],[0,0,0,0,0,0]]},"conclusion":null,"obligation":null,"incomplete":null}
+  },
+  "analysis": null,
+  "observations": [],
+  "search_observations": [],
+  "score_meaning": "No Tori evaluation or search implementation. Failures and incomplete work are unscored.",
+  "chess": null,
+  "chess_match": null
+}

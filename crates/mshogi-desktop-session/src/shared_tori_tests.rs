@@ -1523,3 +1523,6 @@ fn rejected_outgoing_replacements_preserve_tori_document_and_accepted_execution(
     assert_eq!(current(&c).pending.as_ref(), Some(&pending));
     assert_eq!(c.session.version, version);
 }
+
+#[path = "shared_tori_presentation_tests.rs"]
+mod presentation_tests;

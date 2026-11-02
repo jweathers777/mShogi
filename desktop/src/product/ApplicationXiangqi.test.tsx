@@ -60,7 +60,7 @@ it("flips using native Xiangqi preferences while preserving existing document an
   fireEvent.click(screen.getByRole("button", { name: "Load" })); expect(props.onOpen).toHaveBeenCalledOnce();
 });
 it("shows real engine work and cancellation without fabricated telemetry or analysis execution", () => {
-  const snapshot = { ...standard, phase: "thinking" as const, execution_purpose: "engine_turn", capabilities: { ...standard.capabilities, board_action: false } };
+  const snapshot = { ...standard, human: standard.sides[1]!, phase: "thinking" as const, execution_purpose: "engine_turn", capabilities: { ...standard.capabilities, engine_turn: true, board_action: false } };
   const { session } = app(snapshot);
   expect(screen.getByRole("status", { name: "Engine turn status" }).textContent).toBe("Searching");
   expect(screen.queryByText("Completed depth")).toBeNull();

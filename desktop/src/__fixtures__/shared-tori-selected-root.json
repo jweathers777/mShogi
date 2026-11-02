@@ -1,0 +1,451 @@
+{
+  "moves": {
+    "root": {
+      "label": "Starting position",
+      "numbering": "Technical native actions · not final Tori notation. Declared root counter 31 · Earlier history is unknown"
+    },
+    "entries": [
+      {
+        "event_index": 1,
+        "board_ply": 1,
+        "number": 1,
+        "column": 0,
+        "notation": "Technical: RQ drop → 5e",
+        "action": "{\"kind\":\"drop\",\"face\":\"right_quail\",\"to\":\"5e\"}",
+        "command_start": 0,
+        "command_end": 1
+      }
+    ],
+    "last_action": null
+  },
+  "tori": {
+    "root_kind": "diagram",
+    "root_source": null,
+    "declared_root_plies": "31",
+    "earlier_history_unknown": true,
+    "historical_reachability_proven": false,
+    "selected": {
+      "event_index": 0,
+      "board_ply": 0,
+      "in_check": false,
+      "occurrences": [
+        0
+      ],
+      "obligation": null,
+      "conclusion": null,
+      "incomplete": null
+    },
+    "live": {
+      "event_index": 1,
+      "board_ply": 1,
+      "in_check": false,
+      "occurrences": [
+        1
+      ],
+      "obligation": null,
+      "conclusion": null,
+      "incomplete": null
+    }
+  },
+  "open_token": {
+    "document": 1,
+    "version": 9,
+    "document_revision": 6
+  },
+  "document": {
+    "revision": 6,
+    "dirty": true,
+    "path": null,
+    "settings": {
+      "game_kind": "tori",
+      "settings": {
+        "orientation": "sente"
+      }
+    }
+  },
+  "io": {
+    "id": 0,
+    "phase": "idle",
+    "message": null,
+    "resource": null
+  },
+  "capacity": {
+    "id": 7,
+    "status": "available",
+    "message": null,
+    "resource": null
+  },
+  "token": {
+    "document": 1,
+    "version": 9,
+    "revision": 15,
+    "selection": 9
+  },
+  "game": "tori",
+  "profile": "mshogi.tori.modern.v1",
+  "edition": "MSH81-MODERN-2026-11-01",
+  "human": {
+    "id": {
+      "game_kind": "tori",
+      "side": "sente"
+    },
+    "key": "mshogi.tori.modern.v1:sente",
+    "label": "Sente",
+    "first_mover": true
+  },
+  "turn": {
+    "id": {
+      "game_kind": "tori",
+      "side": "sente"
+    },
+    "key": "mshogi.tori.modern.v1:sente",
+    "label": "Sente",
+    "first_mover": true
+  },
+  "sides": [
+    {
+      "id": {
+        "game_kind": "tori",
+        "side": "sente"
+      },
+      "key": "mshogi.tori.modern.v1:sente",
+      "label": "Sente",
+      "first_mover": true
+    },
+    {
+      "id": {
+        "game_kind": "tori",
+        "side": "gote"
+      },
+      "key": "mshogi.tori.modern.v1:gote",
+      "label": "Gote",
+      "first_mover": false
+    }
+  ],
+  "board": {
+    "files": [
+      "7",
+      "6",
+      "5",
+      "4",
+      "3",
+      "2",
+      "1"
+    ],
+    "ranks": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g"
+    ],
+    "label": "Tori native 7×7 verification contract",
+    "initial_focus": "4e"
+  },
+  "orientations": [
+    {
+      "side": {
+        "id": {
+          "game_kind": "tori",
+          "side": "sente"
+        },
+        "key": "mshogi.tori.modern.v1:sente",
+        "label": "Sente",
+        "first_mover": true
+      },
+      "files": [
+        "7",
+        "6",
+        "5",
+        "4",
+        "3",
+        "2",
+        "1"
+      ],
+      "ranks": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g"
+      ]
+    },
+    {
+      "side": {
+        "id": {
+          "game_kind": "tori",
+          "side": "gote"
+        },
+        "key": "mshogi.tori.modern.v1:gote",
+        "label": "Gote",
+        "first_mover": false
+      },
+      "files": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
+      "ranks": [
+        "g",
+        "f",
+        "e",
+        "d",
+        "c",
+        "b",
+        "a"
+      ]
+    }
+  ],
+  "pieces": [
+    {
+      "square": "4a",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Ph",
+      "promoted": false,
+      "text": "Ph",
+      "label": "4a, Gote Phoenix"
+    },
+    {
+      "square": "7b",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Sw",
+      "promoted": false,
+      "text": "Sw",
+      "label": "7b, Gote Swallow"
+    },
+    {
+      "square": "7c",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Fa",
+      "promoted": false,
+      "text": "Fa",
+      "label": "7c, Sente Falcon"
+    },
+    {
+      "square": "2d",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Sw",
+      "promoted": false,
+      "text": "Sw",
+      "label": "2d, Sente Swallow"
+    },
+    {
+      "square": "7f",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Ea",
+      "promoted": true,
+      "text": "Ea",
+      "label": "7f, Sente Eagle (promoted Falcon)"
+    },
+    {
+      "square": "1f",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Go",
+      "promoted": true,
+      "text": "Go",
+      "label": "1f, Sente Goose (promoted Swallow)"
+    },
+    {
+      "square": "7g",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "LQ",
+      "promoted": false,
+      "text": "LQ",
+      "label": "7g, Sente Left Quail"
+    },
+    {
+      "square": "6g",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Cr",
+      "promoted": false,
+      "text": "Cr",
+      "label": "6g, Sente Crane"
+    },
+    {
+      "square": "4g",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Ph",
+      "promoted": false,
+      "text": "Ph",
+      "label": "4g, Sente Phoenix"
+    },
+    {
+      "square": "2g",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Pt",
+      "promoted": false,
+      "text": "Pt",
+      "label": "2g, Sente Pheasant"
+    },
+    {
+      "square": "1g",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "RQ",
+      "promoted": false,
+      "text": "RQ",
+      "label": "1g, Sente Right Quail"
+    }
+  ],
+  "hands": [
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:Fa",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Fa",
+      "count": 0,
+      "text": "Fa",
+      "label": "Sente Falcon in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:Cr",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Cr",
+      "count": 1,
+      "text": "Cr",
+      "label": "Sente Crane in hand, 1"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:Pt",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Pt",
+      "count": 0,
+      "text": "Pt",
+      "label": "Sente Pheasant in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:LQ",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "LQ",
+      "count": 0,
+      "text": "LQ",
+      "label": "Sente Left Quail in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:RQ",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "RQ",
+      "count": 1,
+      "text": "RQ",
+      "label": "Sente Right Quail in hand, 1"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:Sw",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Sw",
+      "count": 2,
+      "text": "Sw",
+      "label": "Sente Swallow in hand, 2"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:Fa",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Fa",
+      "count": 0,
+      "text": "Fa",
+      "label": "Gote Falcon in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Cr",
+      "count": 1,
+      "text": "Cr",
+      "label": "Gote Crane in hand, 1"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Pt",
+      "count": 1,
+      "text": "Pt",
+      "label": "Gote Pheasant in hand, 1"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "LQ",
+      "count": 1,
+      "text": "LQ",
+      "label": "Gote Left Quail in hand, 1"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:RQ",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "RQ",
+      "count": 0,
+      "text": "RQ",
+      "label": "Gote Right Quail in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Sw",
+      "count": 1,
+      "text": "Sw",
+      "label": "Gote Swallow in hand, 1"
+    }
+  ],
+  "choices": [],
+  "capabilities": {
+    "board_action": false,
+    "drops": true,
+    "promotion": true,
+    "take_back": false,
+    "undo": false,
+    "engine_turn": false,
+    "move_analysis": false,
+    "chess_full": false,
+    "claims": false,
+    "declaration": false,
+    "resign": false,
+    "hands": true,
+    "history": true,
+    "save": true
+  },
+  "status": {
+    "concluded": false,
+    "label": "Sente to move",
+    "score_half_points": null
+  },
+  "events": [
+    {
+      "index": 1,
+      "board_ply": 1,
+      "label": "Sente · Technical action {\"kind\":\"drop\",\"face\":\"right_quail\",\"to\":\"5e\"}"
+    }
+  ],
+  "event_index": 0,
+  "board_ply": 0,
+  "play_limits": {
+    "depth": 0,
+    "nodes": 0
+  },
+  "historical": true,
+  "paused": true,
+  "close_requires_save": true,
+  "phase": "paused",
+  "execution_purpose": null,
+  "diagnostic": "Historical position. Return to live explicitly; Tori engine execution is unsupported.",
+  "declaration_advice": [],
+  "context": {
+    "envelope_version": 1,
+    "game_kind": "tori",
+    "rules_profile": "mshogi.tori.modern.v1",
+    "profile_edition": "MSH81-MODERN-2026-11-01",
+    "native_schema_version": 1,
+    "payload": {"format":"mshogi.tori.game","game":"tori","profile":"mshogi.tori.modern.v1","edition":"MSH81-MODERN-2026-11-01","schema_version":1,"mode":"untimed","root":{"root_kind":"diagram","source":null,"earlier_history_unknown":true,"historical_reachability_proven":false,"declared_completed_plies":31,"accepted_plies":0,"declared_total_plies":31,"side_to_move":"sente","board":[{"square":"4a","piece":{"side":"gote","face":"phoenix"}},{"square":"7b","piece":{"side":"gote","face":"swallow"}},{"square":"7c","piece":{"side":"sente","face":"falcon"}},{"square":"2d","piece":{"side":"sente","face":"swallow"}},{"square":"7f","piece":{"side":"sente","face":"eagle"}},{"square":"1f","piece":{"side":"sente","face":"goose"}},{"square":"7g","piece":{"side":"sente","face":"left_quail"}},{"square":"6g","piece":{"side":"sente","face":"crane"}},{"square":"4g","piece":{"side":"sente","face":"phoenix"}},{"square":"2g","piece":{"side":"sente","face":"pheasant"}},{"square":"1g","piece":{"side":"sente","face":"right_quail"}}],"hands":[[0,1,0,0,1,2],[0,1,1,1,0,1]]},"root_conclusion":null,"events":[],"current_position":{"root_kind":"diagram","source":null,"earlier_history_unknown":true,"historical_reachability_proven":false,"declared_completed_plies":31,"accepted_plies":0,"declared_total_plies":31,"side_to_move":"sente","board":[{"square":"4a","piece":{"side":"gote","face":"phoenix"}},{"square":"7b","piece":{"side":"gote","face":"swallow"}},{"square":"7c","piece":{"side":"sente","face":"falcon"}},{"square":"2d","piece":{"side":"sente","face":"swallow"}},{"square":"7f","piece":{"side":"sente","face":"eagle"}},{"square":"1f","piece":{"side":"sente","face":"goose"}},{"square":"7g","piece":{"side":"sente","face":"left_quail"}},{"square":"6g","piece":{"side":"sente","face":"crane"}},{"square":"4g","piece":{"side":"sente","face":"phoenix"}},{"square":"2g","piece":{"side":"sente","face":"pheasant"}},{"square":"1g","piece":{"side":"sente","face":"right_quail"}}],"hands":[[0,1,0,0,1,2],[0,1,1,1,0,1]]},"conclusion":null,"obligation":null,"incomplete":null}
+  },
+  "analysis": null,
+  "observations": [],
+  "search_observations": [],
+  "score_meaning": "No Tori evaluation or search implementation. Failures and incomplete work are unscored.",
+  "chess": null,
+  "chess_match": null
+}

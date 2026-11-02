@@ -40,7 +40,7 @@ it("restores a button blurred by WebKit while disabled, without overriding newly
   rerender(<ApplicationView {...props} />); expect(document.activeElement).toBe(input);
 });
 it("recovers engine cancellation to Retry, then to the board after the control disappears", () => {
-  const working = { ...standard, human: standard.sides[1]!, phase: "thinking" as const, execution_purpose: "engine_turn" };
+  const working = { ...standard, human: standard.sides[1]!, phase: "thinking" as const, execution_purpose: "engine_turn", capabilities: { ...standard.capabilities, engine_turn: true, board_action: false } };
   const { props, rerender } = app(working); screen.getByRole("button", { name: "Cancel search" }).focus();
   rerender(<ApplicationView {...props} snapshot={{ ...working, phase: "cancelled" }} />);
   const retry = screen.getByRole("button", { name: "Retry engine turn" }); expect(document.activeElement).toBe(retry);

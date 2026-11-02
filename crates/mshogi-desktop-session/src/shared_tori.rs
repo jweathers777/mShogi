@@ -423,6 +423,38 @@ impl DesktopController {
         }
         self.tori_snapshot()
     }
+    /// Project the actual submitted pending state without polling completion.
+    #[cfg(feature = "desktop-verification")]
+    pub fn verify_tori_pending_snapshot(&self) -> Result<SharedSnapshot, String> {
+        if self.session.tori().is_none_or(|s| s.pending.is_none()) {
+            return Err("Requires actual pending Tori verification work.".into());
+        }
+        Ok(self.tori_snapshot())
+    }
+    /// Verification-only elapsed-clock injection; canonical state is unchanged.
+    #[cfg(feature = "desktop-verification")]
+    pub fn verify_tori_validation_deadline(
+        &mut self,
+        file: bool,
+    ) -> Result<SharedSnapshot, String> {
+        if self.session.tori().is_none() || self.admission_token.is_some() {
+            return Err("Requires an idle native Tori document.".into());
+        }
+        let failure = persistence::verification_deadline_failure();
+        if file {
+            self.io_state.id += 1;
+            self.io_state.phase = IoPhase::Failed;
+            self.io_state.message = Some(failure.diagnostic);
+            self.io_state.resource = failure.resource;
+        } else {
+            self.session.capacity.id += 1;
+            self.session.capacity.status = CapacityPhase::Paused;
+            self.session.capacity.message = Some(failure.diagnostic);
+            self.session.capacity.resource = failure.resource;
+        }
+        self.session.revision += 1;
+        Ok(self.tori_snapshot())
+    }
     /// Verification-only supervised unsupported request, never an advertised Tori engine.
     #[cfg(any(test, feature = "desktop-verification"))]
     pub fn verify_tori_execution(
@@ -497,7 +529,7 @@ impl DesktopController {
     }
 }
 
-pub(super) fn choice(action: t::Action, actor: t::Side) -> PresentedChoice {
+pub(super) fn choice(action: t::Action, actor: t::Side, position: &t::Position) -> PresentedChoice {
     let (origin, from, to, completion) = match action {
         t::Action::Move {
             from,
@@ -509,10 +541,13 @@ pub(super) fn choice(action: t::Action, actor: t::Side) -> PresentedChoice {
             },
             from.to_string(),
             to,
-            Some(Completion {
-                label: format!("Result: {}", result_face.code()),
-                glyph: None,
-            }),
+            position
+                .piece(from)
+                .filter(|p| p.face != result_face)
+                .map(|_| Completion {
+                    label: format!("Compulsory promotion to {}", face_name(result_face)),
+                    glyph: None,
+                }),
         ),
         t::Action::Drop { face, to } => (
             ChoiceOrigin::Hand {
@@ -559,7 +594,7 @@ pub(super) fn inspect(game: &t::Game, origin: &str) -> Result<inspection::Inspec
         .local_position()
         .inspect(native)
         .into_iter()
-        .map(|c| choice(c.action, actor))
+        .map(|c| choice(c.action, actor, game.position()))
         .collect();
     Ok((
         GameKind::Tori,
@@ -567,7 +602,7 @@ pub(super) fn inspect(game: &t::Game, origin: &str) -> Result<inspection::Inspec
         format!(
             "{} {}{}",
             side(NativeSide::Tori(actor)).label,
-            face.code(),
+            face_name(face),
             if matches!(native, t::InspectionOrigin::Hand { .. }) {
                 " in hand"
             } else {
@@ -598,7 +633,11 @@ impl DesktopController {
                     kind: p.face.code().into(),
                     promoted: p.face.is_promoted(),
                     text: p.face.code().into(),
-                    label: format!("{:?} {:?}", p.side, p.face),
+                    label: format!(
+                        "{square}, {} {}",
+                        side(NativeSide::Tori(p.side)).label,
+                        face_name(p.face)
+                    ),
                 })
             })
             .collect();
@@ -614,27 +653,146 @@ impl DesktopController {
                         kind: face.code().into(),
                         count: position.hand(actor).count(face),
                         text: face.code().into(),
-                        label: format!("{actor:?} {face:?}"),
+                        label: format!(
+                            "{} {} in hand, {}",
+                            side(NativeSide::Tori(actor)).label,
+                            face_name(face),
+                            position.hand(actor).count(face)
+                        ),
                     })
             })
             .collect();
         let historical = state.viewed.is_some();
         let ended = game.conclusion().is_some();
         SharedSnapshot {
-            moves: crate::moves::MovesProjection { root: crate::moves::MovesRoot { label: "Tori native known root".into(), numbering: "Technical native events only; full Moves projection belongs MSH-132 and notation MSH-42.".into() }, entries: vec![], last_action: None },
-            xiangqi: None, open_token: self.shared_open_token(), document: self.shared_document(), io: self.io_state.clone(), capacity: self.session.capacity.clone(), token: self.shared_token(), game: GameKind::Tori, profile: RulesProfile::ToriModernV1, edition: t::PROFILE_EDITION,
-            human: side(NativeSide::Tori(state.document.human())), turn: side(NativeSide::Tori(position.side_to_move())), sides: sides.clone(),
-            board: BoardDescriptor { intersections: None, files: files.clone(), ranks: ranks.clone(), label: "Tori native 7×7 verification contract".into(), initial_focus: "4e".into() },
-            orientations: vec![Orientation { side: sides[0].clone(), files: files.clone(), ranks: ranks.clone() }, Orientation { side: sides[1].clone(), files: files.into_iter().rev().collect(), ranks: ranks.into_iter().rev().collect() }],
-            pieces, hands, choices: game.legal_actions().into_iter().map(|a| choice(a,position.side_to_move())).collect(),
-            capabilities: CommandCapabilities { board_action: !historical && !ended && position.side_to_move() == state.document.human(), drops: true, promotion: true, take_back: !historical && state.take_back_target().is_some(), undo: !historical && !state.game.events().is_empty(), engine_turn: false, move_analysis: false, chess_full: false, claims: false, declaration: false, resign: !historical && !ended, hands: true, history: true, save: true },
-            status: PresentedStatus { concluded: ended, label: game.conclusion().map_or_else(|| format!("{:?} to move{}",position.side_to_move(),game.snapshot().incomplete.map_or(String::new(),|r| format!(" · incomplete {r:?}"))), |c| format!("{c:?}")), score_half_points: game.conclusion().map(|c| { let winner = match c { t::Conclusion::Checkmate { winner } | t::Conclusion::Resignation { winner } => winner, t::Conclusion::StalemateLoss { loser } | t::Conclusion::RepetitionForfeit { loser } => loser.opponent() }; if winner == t::Side::Sente { [2,0] } else { [0,2] } }) },
-            events: state.game.events().iter().map(|e| PresentedEvent { index: e.index+1, board_ply: e.board_ply, label: format!("{:?}: {:?}",e.actor,e.command) }).collect(), event_index: game.events().len(), board_ply: record.known_board_actions() as u64, play_limits: WorkLimits { depth: 0, nodes: 0 }, historical, paused: true, close_requires_save: self.close_requires_save(), phase: state.phase,
-            execution_purpose: state.pending.as_ref().map(|p| if matches!(p.purpose,ExecutionPurpose::EngineTurn {}) { "engine_turn" } else { "move_analysis" }), diagnostic: state.diagnostic.clone(), declaration_advice: vec![], context: record, analysis: None,
-            observations: state.document.observations().iter().map(|o| PresentedObservation { observation: o.clone(), historical: true, application_error: None }).collect(), search_observations: vec![], score_meaning: "No Tori evaluation or search implementation. Failures and incomplete work are unscored.", chess: None, chess_match: None,
+            moves: self.present_moves(game.events().len()),
+            xiangqi: None,
+            tori: Some(ToriPresentation::new(game, &state.game)),
+            open_token: self.shared_open_token(),
+            document: self.shared_document(),
+            io: self.io_state.clone(),
+            capacity: self.session.capacity.clone(),
+            token: self.shared_token(),
+            game: GameKind::Tori,
+            profile: RulesProfile::ToriModernV1,
+            edition: t::PROFILE_EDITION,
+            human: side(NativeSide::Tori(state.document.human())),
+            turn: side(NativeSide::Tori(position.side_to_move())),
+            sides: sides.clone(),
+            board: BoardDescriptor {
+                intersections: None,
+                files: files.clone(),
+                ranks: ranks.clone(),
+                label: "Tori native 7×7 verification contract".into(),
+                initial_focus: "4e".into(),
+            },
+            orientations: vec![
+                Orientation {
+                    side: sides[0].clone(),
+                    files: files.clone(),
+                    ranks: ranks.clone(),
+                },
+                Orientation {
+                    side: sides[1].clone(),
+                    files: files.into_iter().rev().collect(),
+                    ranks: ranks.into_iter().rev().collect(),
+                },
+            ],
+            pieces,
+            hands,
+            choices: if historical {
+                vec![]
+            } else {
+                game.legal_actions()
+                    .into_iter()
+                    .map(|a| choice(a, position.side_to_move(), position))
+                    .collect()
+            },
+            capabilities: CommandCapabilities {
+                board_action: !historical
+                    && !ended
+                    && position.side_to_move() == state.document.human(),
+                drops: true,
+                promotion: true,
+                take_back: !historical && state.take_back_target().is_some(),
+                undo: !historical && !state.game.events().is_empty(),
+                engine_turn: false,
+                move_analysis: false,
+                chess_full: false,
+                claims: false,
+                declaration: false,
+                resign: !historical && !ended,
+                hands: true,
+                history: true,
+                save: true,
+            },
+            status: PresentedStatus {
+                concluded: ended,
+                label: status_label(game),
+                score_half_points: game.conclusion().map(|c| {
+                    let winner = match c {
+                        t::Conclusion::Checkmate { winner }
+                        | t::Conclusion::Resignation { winner } => winner,
+                        t::Conclusion::StalemateLoss { loser }
+                        | t::Conclusion::RepetitionForfeit { loser } => loser.opponent(),
+                    };
+                    if winner == t::Side::Sente {
+                        [2, 0]
+                    } else {
+                        [0, 2]
+                    }
+                }),
+            },
+            events: state
+                .game
+                .events()
+                .iter()
+                .map(|e| PresentedEvent {
+                    index: e.index + 1,
+                    board_ply: e.board_ply,
+                    label: event_label(e),
+                })
+                .collect(),
+            event_index: game.events().len(),
+            board_ply: record.known_board_actions() as u64,
+            play_limits: WorkLimits { depth: 0, nodes: 0 },
+            historical,
+            paused: true,
+            close_requires_save: self.close_requires_save(),
+            phase: state.phase,
+            execution_purpose: state.pending.as_ref().map(|p| {
+                if matches!(p.purpose, ExecutionPurpose::EngineTurn {}) {
+                    "engine_turn"
+                } else {
+                    "move_analysis"
+                }
+            }),
+            diagnostic: state.diagnostic.clone(),
+            declaration_advice: vec![],
+            context: record,
+            analysis: None,
+            observations: state
+                .document
+                .observations()
+                .iter()
+                .map(|o| PresentedObservation {
+                    observation: o.clone(),
+                    historical: true,
+                    application_error: None,
+                })
+                .collect(),
+            search_observations: vec![],
+            score_meaning: "No Tori evaluation or search implementation. Failures and incomplete work are unscored.",
+            chess: None,
+            chess_match: None,
         }
     }
 }
 #[cfg(test)]
 #[path = "shared_tori_tests.rs"]
 mod tests;
+
+#[path = "shared_tori_presentation.rs"]
+mod presentation;
+pub use presentation::ToriPresentation;
+use presentation::{event_label, face_name, status_label};

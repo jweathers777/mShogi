@@ -1,4 +1,4 @@
-ACTUAL LOCAL OUTPUT: Full native session checkpoint242: before last3controller and floor tests
+ACTUAL LOCAL OUTPUT: Full native session checkpoint242: before last4controller and floor tests
 
    Compiling mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
     Finished `test` profile [unoptimized + debuginfo] target(s) in 2.42s
@@ -258,27 +258,29 @@ running 0 tests
 
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-ACTUAL LOCAL OUTPUT: Final13fastcontroller checks; long test deliberately skipped
+ACTUAL LOCAL OUTPUT: Final14fastcontroller checks; long test deliberately skipped
 
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s
      Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-72dbb958aa69b860)
 
-running 13 tests
+running 14 tests
 test shared::tori::tests::history_identity_distinguishes_native_owners_hands_handed_faces_and_counter_provenance ... ok
 test shared::tori::tests::rejected_outgoing_replacements_preserve_tori_document_and_accepted_execution ... ok
 test shared::tori::tests::all_identity_dimensions_wrong_game_and_return_to_same_diagram_reject ... ok
-test shared::tori::tests::historical_failure_observation_saves_exact_prefix_without_future_knowledge_or_pending_work ... ok
 test shared::tori::tests::distinct_administrative_stops_and_unsupported_commands_are_unscored ... ok
+test shared::tori::tests::historical_failure_observation_saves_exact_prefix_without_future_knowledge_or_pending_work ... ok
 test shared::tori::tests::typed_identity_refusal_and_interrupted_save_keep_complete_accepted_document_dirty ... ok
-test shared::tori::tests::stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_content ... ok
 test shared::tori::tests::history_prefix_obligations_takeback_and_reopen_are_exact_and_fresh ... ok
+test shared::tori::tests::stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_content ... ok
 test shared::tori::tests::seven_reject_fixtures_actual_open_preserves_live_document_and_execution ... ok
 test shared::tori::tests::byte_control_native_event_and_replay_limited_open_preserves_current_authority ... ok
 test shared::tori::tests::forced8_conclusion_and_unequal16_obligation_are_derived_by_final_controller_action ... ok
 test shared::tori::tests::actual_controller_seventy_native_admission_cases_and_rotations ... ok
 test shared::tori::tests::capacity_256_to257_and_reserved_close_save_reopen_do_not_reset_usage ... ok
+MSH131_LONG {"actions":180,"boundary":"actual DesktopController+existing bounded worker","close_and_snapshot_ms":3,"document_budget":262144,"enqueue_save_ms":0,"extra_native_replays_per_operation_upper_bound":4,"extra_replay_units_upper_bound":263168,"final_usage":{"controls":3,"encoded_bytes":161714,"observations":0,"replay_work":49799,"retained_events":362},"generated_ms":882,"initial_usage":{"controls":0,"encoded_bytes":161080,"observations":0,"replay_work":49794,"retained_events":360},"installation_ms":1773,"reopen_ms":1631,"resign_ms":2068,"result":"complete journey","save_ms":1239,"saved_floor":9,"saved_usage":{"controls":3,"encoded_bytes":161714,"observations":0,"replay_work":49799,"retained_events":362},"seed":"0x129ca11ab1e5","stop_ms":2098,"worker_deadline_seconds":15}
+test shared::tori::tests::representative_long_native_runtime_journey_completes ... ok
 
-test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 233 filtered out; finished in 3.75s
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 233 filtered out; finished in 11.01s
 
 ACTUAL LOCAL OUTPUT: Native Tori38tests/713assertions (same native source)
 
@@ -613,15 +615,14 @@ test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 
 ACTUAL LOCAL OUTPUT: Isolated final long controller check
 
-   Compiling mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.06s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
      Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-72dbb958aa69b860)
 
 running 1 test
-MSH131_LONG {"boundary":"actual DesktopController+existing bounded worker","close_and_snapshot_ms":6,"document_budget":262144,"enqueue_save_ms":0,"extra_native_replays_per_operation_upper_bound":4,"extra_replay_units_upper_bound":263168,"final_usage":{"controls":3,"encoded_bytes":314540,"observations":0,"replay_work":196409,"retained_events":722},"generated_ms":2719,"initial_usage":{"controls":0,"encoded_bytes":313906,"observations":0,"replay_work":196404,"retained_events":720},"installation_ms":5451,"resign_ms":6868,"save_ms":4142,"saved_floor":11,"saved_usage":{"controls":3,"encoded_bytes":314541,"observations":0,"replay_work":196409,"retained_events":722},"seed":"0x129ca11ab1e5","stop_ms":6907,"worker_deadline_seconds":15}
+MSH131_LONG {"actions":360,"boundary":"actual DesktopController+existing bounded worker","close_and_snapshot_ms":6,"document_budget":262144,"enqueue_save_ms":0,"extra_native_replays_per_operation_upper_bound":4,"extra_replay_units_upper_bound":263168,"final_usage":{"controls":3,"encoded_bytes":314540,"observations":0,"replay_work":196409,"retained_events":722},"generated_ms":2771,"initial_usage":{"controls":0,"encoded_bytes":313906,"observations":0,"replay_work":196404,"retained_events":720},"installation_ms":5455,"reopen_ms":5704,"resign_ms":6882,"result":"complete journey","save_ms":4141,"saved_floor":11,"saved_usage":{"controls":3,"encoded_bytes":314541,"observations":0,"replay_work":196409,"retained_events":722},"seed":"0x129ca11ab1e5","stop_ms":6869,"worker_deadline_seconds":15}
 test shared::tori::tests::measured_long_native_runtime_admission_stop_end_save_and_prepared_close ... ok
 
-test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 244 filtered out; finished in 31.50s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 246 filtered out; finished in 37.24s
 
 ACTUAL LOCAL OUTPUT: Floor-width exact scalar boundary1check
 

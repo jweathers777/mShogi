@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@Codex'
 created_date: '2026-11-01T21:28:00Z'
-updated_date: '2026-11-02T08:50:00Z'
+updated_date: '2026-11-02T09:03:00Z'
 labels:
   - m4
   - owner-msh-77
@@ -83,4 +83,8 @@ Implementation ready for final independent acceptance and exact-source CI. Curre
 Final completed-source independent review PASS: separate tori131_review independently reproduced controller long/admission checks, typed identity/interrupted Save, outgoing failed-replacement preservation and exact floor-width boundary; exact82 requirements/13 fields independently reconciled. Final frozen fast controller13PASS plus isolated long1PASS; floor1PASS; six actual subprocess targets15PASS after atomic publication of test-only child PID marker resolved an intermediate instrumentation race. Full session242PASS is a checkpoint before the last3 controller/floor tests; final source expected246 tests, exact-source CI pending. Final lint/format/diff PASS. Outgoing Tori replacement admission now preserves current pending work until successful commit; failure leaves complete accepted state intact. No normal Tori product or engine activation. Task remains In Review pending exact-source native/desktop CI and final integration evidence.
 
 Initial source253e4c949614d133b5295f6a362e3d5279adcef3 integrated/pushed. NativeCI41415490915 running; desktopCI41415490841 macOS failed standalone Tauri cargo fmt at newly added host product gate before package construction. Root workspace fmt did not cover separate Tauri workspace. Applied standalone cargo fmt and verified both manifests locally; purely formatting, no behavior change. Preserve original failure and rerun exact-source CI after correction; no package/GUI pass claimed for initial failed run.
+
+InitialUbuntu nativeCI41415490915:245PASS/1FAIL at long360Resignunwrap: existing authoritative15sValidationBudget expired underconcurrentdebugload. Production correctly refused withoutacceptance; invalid wallclocktestassumption corrected afterindependentreview: mandatory180completecontrollerStop/Resign/Close/Save/freshstoppedOpen plus360near-limitprobe, onlyexactValidationBudget/Application/Milliseconds limit15000 count>=15000 alternate refusal, completeacceptedstate/pending/dirty preserved andstrictretained/closeencoding verified, oldfilepreservedonSavefailure. Othererrorsstillfail. No productionlimit/rule/fixturechanges. Mandatory180localPASS10.73s, everyoperation<=2.1s;360rerun andindependentfinaldiffreviewpending. Finalsessionexpected247checks; initialfailure retained as evidence.
+
+Final bounded test correction independently reviewed PASS, including stable open/sessiondocument-version-selection authority, phase andpurpose preservation (progressrevision allowed). Local14fastPASS including mandatory180actualSave/freshstoppedOpen,360completeactualSave/OpenPASS37.24s, lint/bothfmt/diffPASS. Test-only correction preserves selectedprofile/native713/independentfixtureexpectations, production15sdeadline andallcapacitylimits. Applicable exact-source CI rerun required; finalsuite247tests. No newtaskactivation.
 <!-- SECTION:NOTES:END -->

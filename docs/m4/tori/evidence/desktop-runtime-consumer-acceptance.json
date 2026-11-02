@@ -612,9 +612,9 @@
   },
   "supporting_scope": "MSH-132 semantic/frontend checks and MSH-77 final acceptance remain pending; supporting evidence is not counted twice",
   "local_evidence_basis": {
-    "final_fast_controller": 13,
+    "final_fast_controller": 14,
     "long_runtime": 1,
-    "whole_session_checkpoint_before_last4tests": 242,
+    "whole_session_checkpoint_before_last5tests": 242,
     "actual_tori_process": 2,
     "native_tori_tests": 38,
     "host_tests": 8

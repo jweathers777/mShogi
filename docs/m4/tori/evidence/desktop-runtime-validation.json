@@ -27,12 +27,12 @@
     "crates/mshogi-desktop-session/src/shared_inspection.rs": "6a1ffddc26787b48ce019c99345a86d8c2c0cdbb1d85815ff1b30777ef977f32",
     "crates/mshogi-desktop-session/src/shared_tests.rs": "b1f0cbffd095d3bd026291fdaf5adb69506aa6a3e0874358db76d29c0a351f3f",
     "crates/mshogi-desktop-session/src/shared_tori.rs": "0ec9ff0f0c5009647bae68b7d6b2e89ca6403d7919a054d47b4c0da936f912e8",
-    "crates/mshogi-desktop-session/src/shared_tori_tests.rs": "ece4a1f35943333d2feec56dc4c5fd4bfc8aa554651d2deb51e70c9556805dc8",
+    "crates/mshogi-desktop-session/src/shared_tori_tests.rs": "1ab223ebd6ffcf2829dfd9a26d98e18b38abcd36bb3a52698ee38a2927bbd3ff",
     "crates/mshogi-desktop-session/src/shared_xiangqi_archive.rs": "1fb237e56d768235532279e32e9feaa5ea8c0310974add35385dd5420c69d630",
     "crates/mshogi-desktop-session/src/tori_document.rs": "24dd41b6d976cfba64cf695c8469f855d86c4b942f396d707da4869fe9592ee9",
     "crates/mshogi-desktop-session/src/tori_document/tests.rs": "2e1cf2516ed5bf52b18da41748caef9523f6380a51b46669ab2184153e2d5372",
     "crates/mshogi-desktop-session/src/workflow_tests.rs": "91c4ba8bf6f68fddf7fe720313725bc7c646f1a1349b81158552a24a67686c34",
-    "desktop/src-tauri/src/main.rs": "f70dc4a74028ca1f0a32933ba38b9fca98a31b0ba0e470a955b4c479e37c3909"
+    "desktop/src-tauri/src/main.rs": "da7d6d0ed788b32beb46c9b408f2709719c079595197741620dd12932baedf30"
   },
   "immutable_sha256": {
     "docs/design.md": "343de193a37b24632d2fcaebe8e0ed0057a1b620222ecac932b2c77cb494c7ba",

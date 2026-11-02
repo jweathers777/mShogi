@@ -1,5 +1,29 @@
 # Modern Tori native/shared handoff — MSH-81
 
+## MSH-131 single native runtime handoff
+
+Reviewed source `ce48e84e64b9631343416acec865505dbbab570d` extends the sole
+DesktopController/ActiveDocument/RuntimeMetadata and sole install_document,
+using MSH-130 complete admission and the existing file worker from the first
+accepted state. Native commands, exact prefix inspection, Undo/Take back,
+retained branches/observations, Save/Open, fresh stopped identities and close
+reservations now operate on actual Tori games. [Runtime contract](desktop-runtime.md)
+and [actual controller/process evidence](desktop-runtime-evidence.md) record the
+82 runtime requirements/13 fields, exact resource bounds and independent review.
+Exact-source CI/final task disposition is recorded there after completion.
+
+The unchanged native adapter still has713passing assertions and reports14consumer
+fields pending; actual controller evidence separately satisfies13of those fields
+and82requirements. C-NOTATION's1field/1requirement remains MSH-42. MSH-132 remains
+Ready/unassigned/unstarted and owns complete semantic snapshot/native Moves and
+last-action projection, frontend types and real interaction verification; it must
+use this installed native owner, not a replacement session. Runtime-only browse
+reopens at live; saved observation targets retain exact historical prefixes.
+Engine capabilities stay false and normal product New Game/Open remains gated:
+there is no Tori playable engine, final renderer, artwork or chooser entry.
+MSH-77 final acceptance,42complete delivery andM4 remain open. Earlier handoffs
+below are historical checkpoints, not current unsupported-native-runtime claims.
+
 ## MSH-130 immutable document handoff
 
 [Current Tori document/admission contract](desktop-document.md) and

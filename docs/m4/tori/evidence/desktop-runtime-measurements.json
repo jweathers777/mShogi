@@ -1,4 +1,5 @@
 {
+  "actions": 360,
   "boundary": "actual DesktopController+existing bounded worker",
   "close_and_snapshot_ms": 6,
   "document_budget": 262144,
@@ -12,7 +13,7 @@
     "replay_work": 196409,
     "retained_events": 722
   },
-  "generated_ms": 2719,
+  "generated_ms": 2771,
   "initial_usage": {
     "controls": 0,
     "encoded_bytes": 313906,
@@ -20,9 +21,11 @@
     "replay_work": 196404,
     "retained_events": 720
   },
-  "installation_ms": 5451,
-  "resign_ms": 6868,
-  "save_ms": 4142,
+  "installation_ms": 5455,
+  "reopen_ms": 5704,
+  "resign_ms": 6882,
+  "result": "complete journey",
+  "save_ms": 4141,
   "saved_floor": 11,
   "saved_usage": {
     "controls": 3,
@@ -32,6 +35,6 @@
     "retained_events": 722
   },
   "seed": "0x129ca11ab1e5",
-  "stop_ms": 6907,
+  "stop_ms": 6869,
   "worker_deadline_seconds": 15
 }

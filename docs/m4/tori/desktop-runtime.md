@@ -5,8 +5,10 @@ The current native contract integrates `mshogi.tori.modern.v1` through the sole
 worker and `persistence::install_document`. [MSH-130's immutable document](desktop-document.md)
 remains the persistence authority. There is no second controller, file format,
 execution family or frontend owner. This is native integration, **not playable
-Tori desktop delivery**. MSH-132 owns complete semantic and frontend presentation;
-MSH-42 owns notation, engine and final product rendering and play.
+Tori desktop delivery**. MSH-132 now supplies [complete semantic and frontend
+presentation](shared-presentation.md); the minimal snapshot description below
+records the MSH-131 handoff. MSH-42 owns notation, engine and final product
+rendering and play.
 
 ## Admission and authority
 
@@ -111,3 +113,11 @@ file is 314,541 bytes after the runtime-only retired floor widens to11. This dif
 from MSH-130's root-plus360-command journal measurement. No earlier observation or
 history is discarded. [Evidence](desktop-runtime-evidence.md) records timings,
 actual controller checks and source/CI provenance.
+
+
+## Presentation successor
+
+MSH-132 production52b0390 supersedes the initial empty Moves/minimal labels with
+[complete native semantic presentation](shared-presentation.md) and the existing
+shared frontend contract. The historical131scope/evidence above remains valid.
+Normal product admission and execution remain gated; final Tori delivery stays42.

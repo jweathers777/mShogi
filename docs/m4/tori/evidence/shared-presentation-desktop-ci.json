@@ -1,0 +1,418 @@
+{
+  "source": "52b0390cac09faf727a0c5ed74c1fd673f468a11",
+  "run": 41427942000,
+  "name": "Desktop packages",
+  "scope": "All three native/frontend/host/normal and verification packaging checks; actual installed/packaged Chess/Shogi/Xiangqi GUI regressions on Linux and Windows. macOS CI packages/host only; local macOS Tori QA GUI separately recorded. Not three-platform Tori product GUI acceptance.",
+  "jobs": [
+    {
+      "id": 125219021756,
+      "name": "Desktop (windows-2022)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-02T10:19:59Z",
+      "completed_at": "2026-11-02T10:41:23Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Linux native build dependencies",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Install desktop toolchain",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Locked frontend and native checks",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify stable macOS QA identities and external fixture selection",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Build normal native package",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Inspect macOS application package and run bundled engine",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Inspect extracted Debian package and run bundled engine",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Install Windows package and run bundled engine",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Preserve normal package identity before separate verification build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install actual Linux application for GUI interaction",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Prepare external native GUI driver",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare bounded Linux verification proxy and test actual transport boundary",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Pin external Windows GUI Python runtime",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare matching Windows WebView2 driver and native UI tools",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build separately labeled packaged verification application",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Extract Linux verification package with separate identity",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Interact with actual installed and packaged Chess Shogi and Xiangqi on Linux",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Install separate Windows verification package and interact with actual Chess Shogi and Xiangqi",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload native package and observations",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Pin external Windows GUI Python runtime",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 125219022009,
+      "name": "Desktop (ubuntu-24.04)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-02T10:20:00Z",
+      "completed_at": "2026-11-02T10:37:17Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Linux native build dependencies",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install desktop toolchain",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Locked frontend and native checks",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify stable macOS QA identities and external fixture selection",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Build normal native package",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Inspect macOS application package and run bundled engine",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Inspect extracted Debian package and run bundled engine",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install Windows package and run bundled engine",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Preserve normal package identity before separate verification build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install actual Linux application for GUI interaction",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare external native GUI driver",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Prepare bounded Linux verification proxy and test actual transport boundary",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Pin external Windows GUI Python runtime",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Prepare matching Windows WebView2 driver and native UI tools",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Build separately labeled packaged verification application",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Extract Linux verification package with separate identity",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Interact with actual installed and packaged Chess Shogi and Xiangqi on Linux",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install separate Windows verification package and interact with actual Chess Shogi and Xiangqi",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Upload native package and observations",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 125219022174,
+      "name": "Desktop (macos-15)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-02T10:20:12Z",
+      "completed_at": "2026-11-02T10:29:14Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Linux native build dependencies",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Install desktop toolchain",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Locked frontend and native checks",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify stable macOS QA identities and external fixture selection",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build normal native package",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Inspect macOS application package and run bundled engine",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Inspect extracted Debian package and run bundled engine",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Install Windows package and run bundled engine",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Preserve normal package identity before separate verification build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install actual Linux application for GUI interaction",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Prepare external native GUI driver",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Prepare bounded Linux verification proxy and test actual transport boundary",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Pin external Windows GUI Python runtime",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Prepare matching Windows WebView2 driver and native UI tools",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Build separately labeled packaged verification application",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Extract Linux verification package with separate identity",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Interact with actual installed and packaged Chess Shogi and Xiangqi on Linux",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Install separate Windows verification package and interact with actual Chess Shogi and Xiangqi",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Upload native package and observations",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ]
+}

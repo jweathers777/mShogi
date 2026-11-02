@@ -1,0 +1,295 @@
+{
+  "source": "52b0390cac09faf727a0c5ed74c1fd673f468a11",
+  "environment": {
+    "os": "27.0.1",
+    "architecture": "arm64",
+    "node": "24.19.0",
+    "rust": "1.99.1"
+  },
+  "scope": "Actual packaged QA semantic interaction only; not final Tori visual design, human-engine play or broad three-platform Tori GUI acceptance.",
+  "qa_identity": {
+    "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app",
+    "bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+    "expected_bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+    "environment": {
+      "MSHOGI_DESKTOP_FIXTURE_FILE": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/qa.fixture"
+    },
+    "files": {
+      "Contents/Info.plist": "0a16e98931910a2e976eeffe0fdb563ca73ceaf7e60af2548c944d9bc86131da",
+      "Contents/MacOS/mshogi": "feba12a3e6c5a4ebc03b41f5a6fd5a553dafc93be61fd24772ec360ed17b2236",
+      "Contents/MacOS/mshogi-desktop": "c0441f13a3043570a82a2d3e10f6051a0416fcda1468703b8b1086fc560facce",
+      "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc",
+      "Contents/_CodeSignature/CodeResources": "c9f96f3be95976309c97429d1281a3ccf902a2864b7e2a87f6b0a1582da7f567"
+    },
+    "signatures": {
+      "display": {
+        "exit_code": 0,
+        "output": "# designated => cdhash H\"dbc9d85411410b7adbf4414413b36094d3ad59d1\"\nExecutable=/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.shogipromotion\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=33226 flags=0x2(adhoc) hashes=1031+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=dbc9d85411410b7adbf4414413b36094d3ad59d1\nCandidateCDHashFull sha256=dbc9d85411410b7adbf4414413b36094d3ad59d190b332e77bd6a4b1d00e4f3a\nHash choices=sha256\nCMSDigest=dbc9d85411410b7adbf4414413b36094d3ad59d190b332e77bd6a4b1d00e4f3a\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=11010048\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=dbc9d85411410b7adbf4414413b36094d3ad59d1\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n"
+      },
+      "strict_verify": {
+        "exit_code": 0,
+        "output": "--prepared:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n--validated:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: valid on disk\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: satisfies its Designated Requirement\n"
+      }
+    },
+    "qualification": "Ad-hoc signatures may change on rebuild; no approval persistence is inferred"
+  },
+  "normal_package": {
+    "package_root": "desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+    "engine": "Contents/MacOS/mshogi",
+    "sha256": "ea9f45869db96bc448db4a6cf7d7d8f522171b6bbe28bd275902aec5fccba0e3",
+    "host_sha256": "be4361ff87c2e4af2ef40dcb33578f8aa32e03bcd92372f74557f11655611a04",
+    "version": "mshogi 0.1.0",
+    "uci_observations": [
+      "id name mShogi 0.1.0",
+      "id author John Weathers",
+      "option name ClaimPolicy type combo default explicit var explicit var auto",
+      "uciok",
+      "readyok",
+      "info depth 1 nodes 21 time 5 score cp 0 pv a2a3",
+      "bestmove a2a3"
+    ],
+    "internal_response": {
+      "protocol": 4,
+      "observation": {
+        "schema_version": 1,
+        "context": {
+          "purpose": {
+            "kind": "engine_turn"
+          },
+          "request_id": 1,
+          "session_version": 1,
+          "process_generation": 1,
+          "game": {
+            "envelope_version": 1,
+            "game_kind": "chess",
+            "rules_profile": "mshogi.chess.match.v1",
+            "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+            "native_schema_version": 1,
+            "payload": {
+              "schema_version": 1,
+              "rules_profile": "mshogi.chess.match.v1",
+              "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+              "history_origin": "standard_start",
+              "claim_policy": "explicit_only",
+              "events": []
+            }
+          },
+          "limits": {
+            "depth": 1,
+            "nodes": 1000
+          }
+        },
+        "result": {
+          "kind": "chess",
+          "result": {
+            "kind": "move",
+            "action": "a2a3",
+            "telemetry": {
+              "score": 0,
+              "completed_depth": 1,
+              "nodes": 21,
+              "principal_variation": [
+                {
+                  "kind": "move",
+                  "action": "a2a3"
+                }
+              ],
+              "status": "complete"
+            }
+          }
+        }
+      }
+    },
+    "analysis_response": {
+      "protocol": 4,
+      "observation": {
+        "schema_version": 1,
+        "context": {
+          "purpose": {
+            "kind": "move_analysis",
+            "target": {
+              "selection_id": 1,
+              "event_index": 0,
+              "board_ply": 0,
+              "session_version": 1,
+              "label": "Package verification: standard start",
+              "turn": {
+                "game_kind": "chess",
+                "side": "white"
+              }
+            }
+          },
+          "request_id": 2,
+          "session_version": 1,
+          "process_generation": 2,
+          "game": {
+            "envelope_version": 1,
+            "game_kind": "chess",
+            "rules_profile": "mshogi.chess.match.v1",
+            "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+            "native_schema_version": 1,
+            "payload": {
+              "schema_version": 1,
+              "rules_profile": "mshogi.chess.match.v1",
+              "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+              "history_origin": "standard_start",
+              "claim_policy": "explicit_only",
+              "events": []
+            }
+          },
+          "limits": {
+            "depth": 1,
+            "nodes": 1000
+          }
+        },
+        "result": {
+          "kind": "chess",
+          "result": {
+            "kind": "move",
+            "action": "a2a3",
+            "telemetry": {
+              "score": 0,
+              "completed_depth": 1,
+              "nodes": 21,
+              "principal_variation": [
+                {
+                  "kind": "move",
+                  "action": "a2a3"
+                }
+              ],
+              "status": "complete"
+            }
+          }
+        }
+      }
+    },
+    "full_response": {
+      "protocol": 4,
+      "observation": {
+        "schema_version": 1,
+        "context": {
+          "purpose": {
+            "kind": "chess_full_reachability",
+            "target": {
+              "selection_id": 1,
+              "event_index": 0,
+              "board_ply": 0,
+              "session_version": 1,
+              "label": "Package verification: standard start",
+              "turn": {
+                "game_kind": "chess",
+                "side": "white"
+              }
+            },
+            "mate": "either",
+            "limits": {
+              "max_positions": 1,
+              "max_transitions": 1
+            }
+          },
+          "request_id": 3,
+          "session_version": 1,
+          "process_generation": 3,
+          "game": {
+            "envelope_version": 1,
+            "game_kind": "chess",
+            "rules_profile": "mshogi.chess.match.v1",
+            "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+            "native_schema_version": 1,
+            "payload": {
+              "schema_version": 1,
+              "rules_profile": "mshogi.chess.match.v1",
+              "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+              "history_origin": "standard_start",
+              "claim_policy": "explicit_only",
+              "events": []
+            }
+          },
+          "limits": {
+            "depth": 1,
+            "nodes": 0
+          }
+        },
+        "result": {
+          "kind": "chess",
+          "result": {
+            "kind": "reachability",
+            "result": {
+              "unknown": {
+                "reason": "position_limit",
+                "work": {
+                  "positions": 1,
+                  "expanded": 1,
+                  "transitions": 1,
+                  "static_leaves": 0
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "files": [
+      "Contents/Info.plist",
+      "Contents/MacOS/mshogi",
+      "Contents/MacOS/mshogi-desktop",
+      "Contents/Resources/icon.icns"
+    ],
+    "scope": "Package inventory and actual UCI, engine-turn, move-analysis and bounded Full reachability queries. Host acceptance and installed UI interaction are separate evidence."
+  },
+  "normal_exclusion": {
+    "specific_native_markers_absent": [
+      "tori-contract",
+      "tori-standard",
+      "verify_tori_validation_deadline",
+      "verify_tori_pending_snapshot",
+      "MSHOGI_DESKTOP_FIXTURE_FILE"
+    ],
+    "generated_fixture_payloads_absent": true,
+    "qualification": "Shared production Tori semantic DTO/render-dispatch strings legitimately remain; fixture data/bootstrap and host activation are excluded. Normal product Open/NewGame are separately refused by tested native host gates."
+  },
+  "actual_gui": {
+    "method": "CUA native app API; pointer/keyboard and actual native file pickers; no IPC-injected commands",
+    "dimensions": "1180x820 logical",
+    "sequence": [
+      "Native Falcon7c\u21927b capture with compulsory Eagle, no promotion menu; Swallow hand2\u21923; origin+destination cue",
+      "Opponent Gote LeftQuail hand native readonly inspection, destination click no action, Esc restores source focus",
+      "Native Takeback\u2192root0; retained capture lineage",
+      "RQ hand Enter/Esc focus then complete native RQdrop5e; destination-only cue",
+      "Starting position selects exact0 prefix, readonly GotePhoenix inspection; explicitReturntolive restoresdrop",
+      "FlipGote, atomicSave actualnativepicker\u2192tori.mshogi, UNMODIFIED",
+      "Load samefile through actualnativepicker, exactorientation/drop/root, stopped, no Resume/search/analysis capability",
+      "NewGame lists exactlyChess/Shogi/Xiangqi, startsChess in same shell",
+      "ActualChess e2e4\u2192bundledengine a7a5;2plies;depth2/nodes642/score0 observation",
+      "NativeCmdQdirtyguardCancel preservesgame; secondCmdQDiscard quits"
+    ],
+    "launch_identity_count": 1,
+    "new_permission_prompt_observed": false,
+    "quit": "Native Discard ended app (CUA App quit); independent CUA app inventory subsequently confirms stable QA isRunning=false. No further launch."
+  },
+  "saved_archive": {
+    "bytes": 8287,
+    "sha256": "9ba3a32ebc64703f716e8b49f79240a063aefd2a360ebf640e31ab8a4a45266e",
+    "game_kind": "tori",
+    "rules_profile": "mshogi.tori.modern.v1",
+    "edition": "MSH81-MODERN-2026-11-01",
+    "current_events": 1,
+    "retired_branches": 1,
+    "controls": [
+      "native",
+      "rewind",
+      "native",
+      "settings"
+    ],
+    "orientation": "gote",
+    "root_declared_plies": 31,
+    "observations": 0,
+    "qualification": "External readback corroborates actual GUI Save and retained branch; authoritative native replay/install was performed by application Load and controller tests."
+  },
+  "screenshots": {
+    "04-history.png": "692e85f8a9acee3ae90ab494aa1fe8fb93486c0360b2979cdc8a4271fd4023d0",
+    "02-capture.png": "b33894337f00ee3c423a49a0faf996a7976dd142a866aef3245e967baea967a0",
+    "05-reopened.png": "08a59a322f72d6725835f753bf9a298aefa9cb566dc9ad4852620b39ca7930a3",
+    "01-root.png": "e465ccba40315a7ca6adf4cd89ababd88582c128d333664179fcb928734cb1eb"
+  }
+}

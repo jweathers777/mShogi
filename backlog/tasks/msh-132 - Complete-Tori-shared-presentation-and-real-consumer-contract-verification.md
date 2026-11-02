@@ -1,11 +1,11 @@
 ---
 id: MSH-132
 title: Complete Tori shared presentation and real-consumer contract verification
-status: In Progress
+status: Done
 assignee:
   - '@Codex'
 created_date: '2026-11-01T21:28:00Z'
-updated_date: '2026-11-02T10:19:00Z'
+updated_date: '2026-11-02T10:45:00Z'
 labels:
   - m4
   - owner-msh-77
@@ -23,6 +23,8 @@ documentation:
   - docs/testing/conformance-policy.md
   - docs/m4/tori/desktop-runtime.md
   - docs/m4/tori/desktop-runtime-evidence.md
+  - docs/m4/tori/shared-presentation.md
+  - docs/m4/tori/shared-presentation-evidence.md
 type: task
 ordinal: 132000
 ---
@@ -39,20 +41,20 @@ Verification: focused real native/candidate/controller tests appropriate to this
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Native metadata provides7x7 square coordinates/orientations, Sente/Gote profile-qualified identities, all9faces with forced promotion state, LeftQuail/RightQuail distinction before/after capture/drop and native hand counts/origins. Complete choices/effects derive from actual Game permission, inspection from immutable native local queries. No optional promotion/CSA declaration, frontend legality or imposed shared native board model.
-- [ ] #2 Extend strict frontend Tori snapshot/side/settings/operation and resource scope types only as required by actual native payloads. One useGameSession, ApplicationView/shared shell and useNativeChoiceController remain owners. Contract tests use real native-generated payloads, click/keyboard/drop/forced completion/cancellation, distinct non-actionable opponent board/hand inspection and delayed replies after selection/game changes. Native full token guards and duplicate submission protection remain intact; no second Tori application page.
-- [ ] #3 Exact selected prefix/context/provenance, board-ply versus same-ply native event, current/selected conclusion and incomplete administrative status are presented honestly. Native event/move projection supplies actual board entries and origin/destination/drop cues; Stop/resignation do not become move rows. Native action identifiers may be labeled technical in this bounded contract, not passed off as final game notation; C-NOTATION remains MSH-42. No engine score/analysis progress is shown without a real observation.
-- [ ] #4 Every MSH-77 supplemental consumer row has final integration evidence from the prior slices and appropriate semantic/frontend checks;713 original native assertions and all103 immutable expectations remain supported, not rewritten. Explicitly retain the one pending assertion and one consumer requirement of C-NOTATION under MSH-42. No pending native/consumer requirement may be silently passed; material within-scope findings block coordinating77closure.
-- [ ] #5 Focused frontend/native snapshot, resource presentation and current existing-game shared owner/board/inspection/history/Moves/Take back/Save/Load/lifecycle regressions pass, with source-tagged native and frontend evidence and independent review. Use separately labeled verification instrumentation only when needed, reuse stable QA identity; no broad three-platform GUI or product acceptance claim from contract tests. Normal distributables exclude fixtures.
-- [ ] #6 Tori execution capabilities remain unsupported/unadvertised and playable-game selector unchanged. Durable handoff reconciles all original77criteria, actual limitations and required42engine/console/notation/product/archive/complete-game evidence plus46/88/89all-game acceptance. Coordinating77 performs final integrated review/integration after all slices; this component alone cannot close77,42orM4. Normal product Open/New Game remains explicitly gated until42supplies the actual product renderer/playable consumer; contract/verification access uses this same native controller, never a second implementation.
+- [x] #1 Native metadata provides7x7 square coordinates/orientations, Sente/Gote profile-qualified identities, all9faces with forced promotion state, LeftQuail/RightQuail distinction before/after capture/drop and native hand counts/origins. Complete choices/effects derive from actual Game permission, inspection from immutable native local queries. No optional promotion/CSA declaration, frontend legality or imposed shared native board model.
+- [x] #2 Extend strict frontend Tori snapshot/side/settings/operation and resource scope types only as required by actual native payloads. One useGameSession, ApplicationView/shared shell and useNativeChoiceController remain owners. Contract tests use real native-generated payloads, click/keyboard/drop/forced completion/cancellation, distinct non-actionable opponent board/hand inspection and delayed replies after selection/game changes. Native full token guards and duplicate submission protection remain intact; no second Tori application page.
+- [x] #3 Exact selected prefix/context/provenance, board-ply versus same-ply native event, current/selected conclusion and incomplete administrative status are presented honestly. Native event/move projection supplies actual board entries and origin/destination/drop cues; Stop/resignation do not become move rows. Native action identifiers may be labeled technical in this bounded contract, not passed off as final game notation; C-NOTATION remains MSH-42. No engine score/analysis progress is shown without a real observation.
+- [x] #4 Every MSH-77 supplemental consumer row has final integration evidence from the prior slices and appropriate semantic/frontend checks;713 original native assertions and all103 immutable expectations remain supported, not rewritten. Explicitly retain the one pending assertion and one consumer requirement of C-NOTATION under MSH-42. No pending native/consumer requirement may be silently passed; material within-scope findings block coordinating77closure.
+- [x] #5 Focused frontend/native snapshot, resource presentation and current existing-game shared owner/board/inspection/history/Moves/Take back/Save/Load/lifecycle regressions pass, with source-tagged native and frontend evidence and independent review. Use separately labeled verification instrumentation only when needed, reuse stable QA identity; no broad three-platform GUI or product acceptance claim from contract tests. Normal distributables exclude fixtures.
+- [x] #6 Tori execution capabilities remain unsupported/unadvertised and playable-game selector unchanged. Durable handoff reconciles all original77criteria, actual limitations and required42engine/console/notation/product/archive/complete-game evidence plus46/88/89all-game acceptance. Coordinating77 performs final integrated review/integration after all slices; this component alone cannot close77,42orM4. Normal product Open/New Game remains explicitly gated until42supplies the actual product renderer/playable consumer; contract/verification access uses this same native controller, never a second implementation.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -76,4 +78,24 @@ Final131handoff: reviewed source6a2edd71b3136a9c2043f9137eb6d3fb8abf120d (produc
 Started132only at clean c89802e; origin ls-remote matches,131Done dependency satisfied; no active competing task. Current source gap: emptyToriMoves, technicalFaceDebug labels andeverymoveResultcompletion, noToriTSdispatch. Root owns all edits/integration; reviewer read-only. No normalproductTori activation or nativeprofile/rules/corpus/limit changes.
 
 Implementation boundary complete. Sole-builder root changes native Tori metadata/Play-only projection and existing shared frontend; generated18actualDesktopController DTOs, fixed normal admission gate retained. Independent native reviewer6presentationchecksPASS and exact13/82auditPASS; independent frontend27files342checks+Node24TS PASS. Resolved validation-budget Save promise, unsupported thinking UI and native board capability override. Working primary gained unrelated docs-only0f8b390 (forensic timing report); preserved unchanged. Packaged stableQA build succeeds; actualGUI verification underway, source CI and completion evidence pending. Initial helper compile errors, test type/import/copy/mock failures corrected; native fixture expectations unchanged.
+
+Reviewed production52b0390cac09faf727a0c5ed74c1fd673f468a11 integrated/pushed. Actual macOS stableQA1180x820 CUA: forcedcapture/handtransfer/drop, nativeopponenthand+historicalinspection/Escfocus, Takeback/history/Returnlive/Goteflip, actualSaveLoad8287Bwithretainedcapturebranch, only3playablechooserentries, Chessrealengine642nodes, dirtyQuitCancel/Discard. No newidentity/prompt. Normalpackagebuild/smoke/exclusion and11stablehelperchecksPASS; no normalGUIlaunch or ToriWindows/Linuxcampaign claimed. Sixindependentnative+342independentfrontend+TSreviewPASS; whole-session252checkpointPASS plus6focusedcurrent/253discovered, native38PASS/713assertions. Applicable52b0390 nativeCI41427941953/Desktop41427942000 underway. docs/m4/tori/shared-presentation*.md andcomplete97-rowaudit handoff preserve42notation1/1 and replaydeadlinequalification. Await actualCI/finaldocsreview, then closure132only.
+
+Final CI reconciliation: exact-source52b0390 native41427941953/Desktop41427942000 completed SUCCESS, all6platformjobs. Current source unchanged after tested revision. All6AC/all4DoD supported by independent reviews/tests/actualQA/package/CI and durable97rowhandoff. Final completion commit contains task/docs/evidence only; production integrated/pushed before closure. Stop132only.
+
+Final independent CI/documentation reconciliation by tori77_boundary_review PASS: bothindices exact52b0390, all6jobsSUCCESS, actualLinux/Windows existing3gameGUI versus macOSpackage/host/localToriQA scopes accurately separated; bindingT06description/nodecommandpaths corrected. No productiondiff after testedsource, no material findings.132closure supported,77Ready/unstarted. Doctor/dependencyready/diff and currentrefs checksPASS.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Completed shared semantic presentation for real mshogi.tori.modern.v1 through the existing DesktopController and shared frontend. Native metadata preserves7x7/both orientations, all9faces/promoted states, handed quails/hands, complete native actions/forced promotion, selected/live exact event/history/provenance and typed conclusions/incomplete/resource facts. Native Play-only Moves and complete last-action geometry remain explicitly technical; final notation1field/1requirement stays MSH-42.
+
+One ProductApp/useGameSession/ApplicationView/shared shell/choice controller remains. Real native-generated18DTOs cover pointer/keyboard/drop/completion/cancellation, read-only board/hand inspection/freshness, history/Take back/Return, resource and actual UnsupportedMode behavior. Zero Tori engine capabilities, no fake score/thinking/progress. Normal NewGame/Load remain gated and chooser onlyChess/Shogi/Xiangqi; separately labeled QA uses same runtime/shell and existing stable app identity.
+
+Tested/integrated production52b0390cac09faf727a0c5ed74c1fd673f468a11, normally pushed to codex/rewrite. Native CI41427941953 and Desktop CI41427942000 SUCCESS/all3platforms each.253sessionchecks perplatform (workspace+isolatedfeatures), native38/713assertions, frontend342+TS, host14features, Clippy/format/fixturefreshness/normalpackages/bundledengine passed. Independent read-only native6checks and frontendfull342/TS reviews PASS; material findings resolved. Complete97-row audit reuses131actual13fields/82requirements, without duplicate counting or changing103native fixtures.
+
+Actual macOS27.0.1arm64 stableQA CUA verified forcedcapture/handtransfer/drop, Esc/focus/opponent+historicalinspection, Takeback/Return/flip, nativeSaveLoad8287B withretainedcapturebranch, supported3gamechooser, Chessrealengine reply and guarded nativeQuit. Normal packageexcludes fixturedata/bootstrap/nativeactivation. Linux/Windows CI actualexisting-gameGUI passed; not a Tori three-platform/product acceptance claim.
+
+Unchanged15s replay deadline can refuse bounded operations on slower/contended hosts. Corrected shared ValidationBudget recovery preserves accepted state and does not guarantee Save completion or imply reopening resets structural capacity. Actual131measurements reused; new elapsed-classifier DTOs are clock injection, not timing proof. MSH77 final independent acceptance remains Ready/unstarted, alloriginalAC/DoDunchecked; MSH42 owns notation/console/search/artwork/playable delivery;46/88/89 own broader all-game acceptance. No other task started. Contract/evidence/CI/package/audit handoff: docs/m4/tori/shared-presentation.md and shared-presentation-evidence.md.
+<!-- SECTION:FINAL_SUMMARY:END -->

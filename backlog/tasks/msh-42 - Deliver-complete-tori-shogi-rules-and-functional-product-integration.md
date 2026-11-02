@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@Codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-02T14:50:00Z'
+updated_date: '2026-11-02T15:11:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -87,4 +87,6 @@ Native checkpoint implementation is coherent: native Game-owned deterministic To
 Coherent local verification completed: cargo fmt/workspace Clippy PASS; cargo test --locked --workspace PASS; desktop-session all-features259PASS including final consumed-response headroom regression; standalone Tauri all-target/all-feature check+Clippy PASS and final14host tests PASS; strictNode24TypeScript,344frontend tests and normal frontend build/exclusion checks PASS. First host run13/14 exposed obsolete unsupported-engine assertion; corrected without changing normal product gate, raw failed log retained. Complete immutable profile/corpus/ownership hashes unchanged. Independent separate-agent source/test/evidence review PASS, no unresolved material finding; reviewer did not execute tests. Actual release9/62ms and real256obs/64move capacities plus subprocess traces indexed in native-playable-checkpoint.json. Ready for reviewed source commit and exact-source requiredCI; do not interpret these local results as platform GUI evidence.42 remains In Progress.
 
 Final stopped-reopen audit corrected implicit engine Resume after paused human Play: manual native actions preserve paused intent; only explicit Resume starts engine work after Open/Cancel/Return.25focused Tori controller tests PASS including actual Save/Open human-turn move staying stopped across polls and later explicit Resume; both assignments and running-play admission remain correct. Corrected actual subprocess/controller/selfplay7tests PASS, final344frontend tests and workspace Clippy PASS; source fixtures regenerated. Separate reviewer re-reviewed exact correction PASS; earlier search/protocol/codec/notation review/evidence remain valid.035c35c campaigns41463115080/41463115085 intentionally cancelled as superseded (partial state retained in evidence/native-playable-ci-superseded-035c35c.json), not claimed completed. Corrected source will receive required exact-source CI; no scope/criteria/profile/limits/product-activation changes.
+
+Required D4b macOS nativeCI job125346153190 failed existing unmodified Shogi retirement test: LateReply observed versus timing-assumed ResourceLimit. Investigation confirms productionget_or_insert legitimately preserves observed retired duplicate before missingEOF fallback when schedulerwake passes draincutoff. Narrow verification-only correction now requires exact retired diagnostic; LateReply additionally requires actual initial7g7f and retired2g2f replies from sameengine/generation. All incomplete/no acceptedturn/no conclusion/no score/reaped/nativeReplay assertions preserved.14focused runner tests PASS and independent exactdiff/log review PASS; no production or deadline/order changes. Actual D4b failure retained. New native3 CI will test verification revision; D4b Desktop locked/normalpackage/bundledengine checks reused for byte-identical production source, not claimed as a new GUI campaign.
 <!-- SECTION:NOTES:END -->

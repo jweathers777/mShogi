@@ -1,7 +1,7 @@
 //! Immutable Tori candidates for the one current desktop envelope.
 //!
 //! This is not an active document or an execution owner. The native game admits
-//! every board/terminal command. Public installation remains a later runtime task.
+//! every board/terminal command. Installation is owned solely by DesktopController/persistence, not this codec.
 use crate::{document, persistence, *};
 use mshogi_core::{
     native::{CanonicalRecord, GameKind, RulesProfile},
@@ -311,6 +311,39 @@ impl ValidatedToriDocument {
         payload.controls.push(control);
         validate_payload(payload, stopped)
     }
+    /// Refresh retired runtime high-water evidence without changing game semantics.
+    /// Only validated immutable fields change; there is no new native replay.
+    pub(crate) fn with_runtime_floor(&self, floor: u64) -> Result<Self, ToriDocumentError> {
+        let mut doc = self.clone();
+        doc.payload.retired_execution_floor = doc.payload.retired_execution_floor.max(floor);
+        doc.bytes = document::encode(RulesProfile::ToriModernV1, &doc.payload).map_err(invalid)?;
+        doc.usage.encoded_bytes = doc.bytes.len();
+        // A later Save may widen only this monotonic decimal field. Reserve its
+        // maximum supported spelling even after close/terminal space is consumed.
+        check_runtime_bytes(
+            &doc.usage,
+            doc.payload.retired_execution_floor,
+            reservation(&doc.payload),
+        )?;
+        check_limits(
+            &doc.usage,
+            doc.payload.retired_execution_floor,
+            reservation(&doc.payload),
+        )?;
+        Ok(doc)
+    }
+    /// Consume already admitted close headroom. No rules/history reconstruction or
+    /// native action runs on the close path; unchanged native validation is reused.
+    pub(crate) fn with_reserved_close(&self, floor: u64) -> Result<Self, ToriDocumentError> {
+        if matches!(self.payload.controls.last(), Some(ToriControl::Close {})) {
+            return self.with_runtime_floor(floor);
+        }
+        let mut doc = self.clone();
+        doc.payload.controls.push(ToriControl::Close {});
+        doc.usage.controls += 1;
+        doc.usage.replay_work += 1;
+        doc.with_runtime_floor(floor)
+    }
     /// Atomically retain an actual unscored result with its exact submitted native history.
     pub fn with_observation(
         &self,
@@ -342,7 +375,7 @@ fn native(record: &CanonicalRecord) -> Result<&t::GameRecord, ToriDocumentError>
         Err(invalid("record game must be Tori"))
     }
 }
-fn native_error(e: t::GameError) -> ToriDocumentError {
+pub(crate) fn native_error(e: t::GameError) -> ToriDocumentError {
     if let t::GameError::Capacity(r) = e {
         let (cat, cap, unit) = match r {
             t::Resource::EncodedBytes => (
@@ -408,6 +441,29 @@ fn reserve_for(raw: &RawValue, close: bool) -> Result<Reserve, ToriDocumentError
         controls: native + usize::from(!close),
         native,
     })
+}
+fn check_runtime_bytes(
+    u: &ToriDocumentUsage,
+    floor: u64,
+    reserve: Reserve,
+) -> Result<(), ToriDocumentError> {
+    let width = (MAX_SAFE_ID - 65)
+        .to_string()
+        .len()
+        .saturating_sub(floor.to_string().len());
+    let extra = reserve.native * NATIVE_RESERVED_BYTES
+        + (reserve.controls - reserve.native) * CLOSE_RESERVED_BYTES
+        + width;
+    if u.encoded_bytes.saturating_add(extra) > MAX_ARCHIVE_BYTES {
+        return Err(limit(
+            ResourceCategory::EncodedDocumentBytes,
+            u.encoded_bytes as u64,
+            MAX_ARCHIVE_BYTES as u64,
+            extra as u64,
+            ResourceUnit::Bytes,
+        ));
+    }
+    Ok(())
 }
 fn check_limits(
     u: &ToriDocumentUsage,

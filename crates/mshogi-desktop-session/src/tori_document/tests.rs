@@ -722,19 +722,17 @@ fn actual_file_worker_first_save_replacement_failure_interruption_and_stale_rece
     fs::remove_file(file).unwrap();
 }
 #[test]
-fn no_tori_live_installation_or_normal_play_capability_is_enabled() {
+fn no_tori_normal_play_capability_is_enabled() {
     assert!(mshogi_engine::execution_capabilities(GameKind::Tori).is_empty());
     let mut c = DesktopController::new("/unused-engine".into()).unwrap();
     let before = c.shared_snapshot().context;
+    // MSH-131 now admits native verification documents; normal New Game stays gated.
     assert!(
-        c.shared_command(SharedDesktopCommand {
-            expected: c.shared_token(),
-            game: GameKind::Chess,
-            operation: SessionOperation::Replace {
-                record: standard().payload.current,
-                human: mshogi_core::native::NativeSide::Tori(t::Side::Sente)
-            }
-        })
+        c.shared_new_game(
+            c.shared_open_token(),
+            GameKind::Tori,
+            NativeSide::Tori(t::Side::Sente)
+        )
         .is_err()
     );
     assert_eq!(c.shared_snapshot().context, before);
@@ -1156,4 +1154,29 @@ fn every_native_record_is_precharged_and_wrong_inner_identity_never_falls_throug
         assert_eq!(f.facts()[0].category, ResourceCategory::ReplayWork);
         assert_eq!(f.facts()[0].limit, Some(t::MAX_REPLAY_WORK));
     }
+}
+#[test]
+fn runtime_floor_width_reservation_survives_consumed_close_and_exact_byte_boundary() {
+    let mut doc = standard();
+    let reserve = Reserve {
+        controls: 0,
+        native: 0,
+    };
+    let extra = (MAX_SAFE_ID - 65).to_string().len() - 1;
+    doc.usage.encoded_bytes = MAX_ARCHIVE_BYTES - extra;
+    assert!(check_runtime_bytes(&doc.usage, 1, reserve).is_ok());
+    doc.usage.encoded_bytes += 1;
+    let refused = check_runtime_bytes(&doc.usage, 1, reserve).unwrap_err();
+    assert!(
+        refused
+            .resource
+            .unwrap()
+            .facts()
+            .iter()
+            .any(|f| f.category == ResourceCategory::EncodedDocumentBytes
+                && f.reserved == Some(extra as u64))
+    );
+    // No additional width is needed once the maximum safe spelling is present.
+    doc.usage.encoded_bytes = MAX_ARCHIVE_BYTES;
+    assert!(check_runtime_bytes(&doc.usage, MAX_SAFE_ID - 65, reserve).is_ok());
 }

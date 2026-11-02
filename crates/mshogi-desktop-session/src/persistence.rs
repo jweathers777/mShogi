@@ -1664,6 +1664,7 @@ impl DesktopController {
                 value.archive.document_revision,
             ),
             OpenedNative::Shogi { floor, .. } | OpenedNative::Xiangqi { floor, .. } => (*floor, 0),
+            OpenedNative::Tori(state) => (state.document.retired_execution_floor(), 0),
         };
         let next = self
             .runtime_floor()
@@ -1734,6 +1735,10 @@ impl DesktopController {
                 state.reopened(floor);
                 (ActiveDocument::Shogi { runtime, state }, 0)
             }
+            OpenedNative::Tori(mut state) => {
+                state.retire();
+                (ActiveDocument::Tori { runtime, state }, 0)
+            }
             OpenedNative::Xiangqi { mut state, .. } => {
                 state.reopened();
                 (ActiveDocument::Xiangqi { runtime, state }, 0)
@@ -1762,8 +1767,8 @@ impl DesktopController {
     /// Stop the actual native document before host close confirmation. No other
     /// game is constructed and no result is invented.
     pub fn application_pause_for_close(&mut self) -> SharedSnapshot {
-        let document = self.shared_document();
-        let dirty_before = document.dirty || document.path.is_none();
+        // Repeated close must retain an existing exact stop-only exemption.
+        let dirty_before = self.close_requires_save();
         self.pause_application();
         self.lifecycle
             .record_close_guard(self.shared_open_token(), dirty_before);

@@ -6,6 +6,8 @@ pub(super) mod archive;
 pub use archive::{NativeDesktopSettings, SharedDocumentState, SharedOpenToken, ShogiSettings};
 #[path = "shared_inspection.rs"]
 mod inspection;
+#[path = "shared_tori.rs"]
+pub(super) mod tori;
 #[path = "shared_xiangqi.rs"]
 pub(super) mod xiangqi;
 pub use inspection::{MovementInspection, MovementInspectionQuery};
@@ -653,6 +655,18 @@ pub enum SessionOperation {
         /// Persisted orientation and ordinary analysis defaults.
         settings: XiangqiSettings,
     },
+    /// Complete native Tori command; actor retains native terminal semantics.
+    Tori {
+        /// Explicit participant/administrative actor.
+        actor: mshogi_core::tori::Side,
+        /// Authoritative complete native command.
+        command: mshogi_core::tori::GameCommand,
+    },
+    /// Native Tori document preferences, with no invented engine defaults.
+    ToriPreferences {
+        /// Persisted native orientation.
+        settings: crate::tori_document::ToriSettings,
+    },
     /// Shogi complete action is admitted by Game::submit, never reconstructed in JS.
     Play {
         /// Opaque complete native action identifier.
@@ -721,6 +735,13 @@ enum OperationWire {
     },
     XiangqiPreferences {
         settings: XiangqiSettings,
+    },
+    Tori {
+        actor: mshogi_core::tori::Side,
+        command: mshogi_core::tori::GameCommand,
+    },
+    ToriPreferences {
+        settings: crate::tori_document::ToriSettings,
     },
     // Shogi complete action is admitted by Game::submit, never reconstructed in JS.
     Play {
@@ -821,6 +842,7 @@ pub(super) struct SharedState {
     pub moves_cache: std::cell::RefCell<crate::moves::Cache>,
     pub admission: Option<(u64, bool)>,
     pub admission_consumes_response: bool,
+    pub tori_admission: bool,
     pub rollback: Option<ShogiRollback>,
     #[cfg(test)]
     pub manual_engine: bool,
@@ -1022,10 +1044,13 @@ impl DesktopController {
         human: Color,
         paused: bool,
     ) -> Result<AdmissionReceipt, String> {
+        let preserve_tori = self.session.tori().is_some();
         self.retire_admission();
-        self.bridge.cancel();
-        self.retire_native_files()?;
-        self.session.retire_execution();
+        if !preserve_tori {
+            self.bridge.cancel();
+            self.retire_native_files()?;
+            self.session.retire_execution();
+        }
         let mut candidate = DesktopSession::new();
         candidate.runtime = std::ops::Deref::deref(&self.session).clone();
         self.queue_chess_candidate(
@@ -1037,6 +1062,7 @@ impl DesktopController {
             }),
         )?;
         self.shared.admission = Some((self.session.document_epoch, false));
+        self.shared.tori_admission = preserve_tori;
         Ok(self
             .admission_receipt
             .clone()
@@ -1050,7 +1076,10 @@ impl DesktopController {
         self.session.archive_revision = self.session.revision.min(MAX_SAFE_ID - 65);
     }
     pub(super) fn require_chess(&self) -> Result<(), String> {
-        if self.session.shogi().is_some() || self.session.xiangqi().is_some() {
+        if self.session.shogi().is_some()
+            || self.session.xiangqi().is_some()
+            || self.session.tori().is_some()
+        {
             Err("Wrong game: a Chess mutation cannot act on another active native game.".into())
         } else {
             Ok(())
@@ -1072,7 +1101,9 @@ impl DesktopController {
                 "The session or selected event changed; use its current native snapshot.".into(),
             );
         }
-        let active = if self.session.xiangqi().is_some() {
+        let active = if self.session.tori().is_some() {
+            GameKind::Tori
+        } else if self.session.xiangqi().is_some() {
             GameKind::Xiangqi
         } else if self.session.shogi().is_some() {
             GameKind::Shogi
@@ -1090,8 +1121,11 @@ impl DesktopController {
             if record.game_kind() != human.game() {
                 return Err("Replacement side and game disagree.".into());
             }
-            if record.game_kind() == GameKind::Tori {
-                return Err("Tori desktop sessions are not implemented.".into());
+            if let CanonicalRecord::Tori(record) = record {
+                let NativeSide::Tori(human) = human else {
+                    unreachable!()
+                };
+                return self.replace_tori(*record, human);
             }
             // Validate before retiring any current state or work.
             if let CanonicalRecord::Xiangqi(record) = &record {
@@ -1125,6 +1159,9 @@ impl DesktopController {
                 return Err("Unsupported desktop game; the current document was preserved.".into());
             }
             return Ok(self.shared_snapshot());
+        }
+        if self.session.tori().is_some() {
+            return self.tori_command(command.operation);
         }
         if self.session.xiangqi().is_some() {
             if self.admission_token.is_some() {
@@ -1286,6 +1323,9 @@ impl DesktopController {
         self.accept_observation(response.observation)
     }
     pub(crate) fn accept_observation(&mut self, response: ExecutionObservation) -> bool {
+        if self.session.tori().is_some() {
+            return self.accept_tori_observation(response);
+        }
         if self.session.xiangqi().is_some() {
             return self.accept_xiangqi_observation(response);
         }
@@ -1312,6 +1352,9 @@ impl DesktopController {
     pub fn shared_snapshot(&mut self) -> SharedSnapshot {
         self.poll_native_admission();
         self.poll_files();
+        if self.session.tori().is_some() {
+            return self.poll_tori();
+        }
         if self.session.xiangqi().is_some() {
             return if self.shared.admission.is_some() {
                 self.xiangqi_snapshot()
@@ -1367,7 +1410,10 @@ impl DesktopController {
         // The native poll may commit a cross-game Open. Never publish its Chess
         // projection with the replacement Shogi epoch: equal-token freshness
         // rejection would then hide the correct Shogi view indefinitely.
-        if self.session.shogi().is_some() || self.session.xiangqi().is_some() {
+        if self.session.shogi().is_some()
+            || self.session.xiangqi().is_some()
+            || self.session.tori().is_some()
+        {
             return self.shared_snapshot();
         }
         let mut snapshot = self.session.snapshot();
@@ -1376,6 +1422,9 @@ impl DesktopController {
     }
     pub(super) fn pause_shared_for_close(&mut self) {
         self.retire_admission();
+        if self.session.tori().is_some() {
+            self.close_tori();
+        }
         if let Some(state) = self.session.xiangqi_mut()
             && state.close_pause()
         {
@@ -1969,6 +2018,9 @@ impl DesktopController {
             .moves_cache
             .borrow_mut()
             .get(key, selected, || match &self.session {
+                ActiveDocument::Tori { .. } => {
+                    unreachable!("Tori Moves projection belongs MSH-132")
+                }
                 ActiveDocument::Chess(state) => crate::moves::chess_projection(state),
                 ActiveDocument::Shogi { state, .. } => crate::moves::shogi_projection(&state.game),
                 ActiveDocument::Xiangqi { state, .. } => {

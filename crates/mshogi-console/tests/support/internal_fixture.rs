@@ -11,6 +11,31 @@ fn main() {
     io::stdin().lock().read_line(&mut text).unwrap();
     let request: ExecutionRequest = serde_json::from_str(&text).unwrap();
     let mut context = request.context;
+    // Separately compiled test helper, never a bundled product engine.
+    if context.game.game_kind() == GameKind::Tori {
+        if context.limits.nodes == 7 {
+            if let ExecutionPurpose::MoveAnalysis { target } = &context.purpose {
+                let host = target
+                    .label
+                    .rsplit(' ')
+                    .next()
+                    .and_then(|s| s.parse::<u32>().ok())
+                    .expect("verification-only numeric host identity");
+                let marker = std::env::temp_dir()
+                    .join(format!("msh131-started-{host}-{}.txt", context.request_id));
+                let temporary = marker.with_extension("tmp");
+                std::fs::write(&temporary, std::process::id().to_string()).unwrap();
+                std::fs::rename(temporary, marker).unwrap();
+            }
+            thread::sleep(Duration::from_secs(30));
+            return;
+        }
+        if context.limits.nodes == 1 {
+            eprintln!("Tori supervised forced process failure");
+            std::process::exit(17);
+        }
+    }
+
     match context.request_id {
         1 => return,
         2 => {

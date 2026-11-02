@@ -4,6 +4,7 @@ use crate::*;
 use mshogi_core::{shogi as s, xiangqi as x};
 mod chess;
 mod shogi;
+mod tori;
 mod xiangqi;
 
 /// Additional movement derived from native before/after effects (e.g. rook).
@@ -309,3 +310,7 @@ pub(super) fn xiangqi_projection(game: &x::Game) -> MovesProjection {
 
 #[cfg(test)]
 mod tests;
+
+pub(super) fn tori_projection(game: &mshogi_core::tori::Game) -> MovesProjection {
+    tori::project(game)
+}

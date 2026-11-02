@@ -488,6 +488,9 @@ pub struct SharedSnapshot {
     /// Native Xiangqi-only warnings, claims and assessment; no square-game inference.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub xiangqi: Option<XiangqiPresentation>,
+    /// Tori-native exact prefix, outcome and provenance; no cross-game inference.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tori: Option<tori::ToriPresentation>,
     /// Exact native replacement precondition for New Game and Open.
     pub open_token: SharedOpenToken,
     /// Authoritative document metadata and game-native settings.
@@ -1588,6 +1591,7 @@ impl DesktopController {
         SharedSnapshot {
             moves: self.present_moves(game.events().len()),
             xiangqi: None,
+            tori: None,
             open_token: self.shared_open_token(),
             document: self.shared_document(),
             io: self.io_state.clone(),
@@ -1775,6 +1779,7 @@ impl DesktopController {
         SharedSnapshot {
             moves: self.present_moves(snapshot.view.event_index),
             xiangqi: None,
+            tori: None,
             open_token: self.shared_open_token(),
             document: self.shared_document(),
             io: self.io_state.clone(),
@@ -2018,9 +2023,7 @@ impl DesktopController {
             .moves_cache
             .borrow_mut()
             .get(key, selected, || match &self.session {
-                ActiveDocument::Tori { .. } => {
-                    unreachable!("Tori Moves projection belongs MSH-132")
-                }
+                ActiveDocument::Tori { state, .. } => crate::moves::tori_projection(&state.game),
                 ActiveDocument::Chess(state) => crate::moves::chess_projection(state),
                 ActiveDocument::Shogi { state, .. } => crate::moves::shogi_projection(&state.game),
                 ActiveDocument::Xiangqi { state, .. } => {

@@ -19,5 +19,6 @@ export function GameFrame({ snapshot, bottom, board, help, upperContent, lowerCo
     lowerPlayer={player(bottom, lowerContent)} board={board} {...(onFocusCapture ? { onFocusCapture } : {})} {...(onBlurCapture ? { onBlurCapture } : {})}
     footer={<>{help}<GamePositionStatus historical={snapshot.historical} concluded={snapshot.status.concluded}
       paused={snapshot.paused} humanTurn={snapshot.human.key === snapshot.turn.key}
-      thinking={snapshot.phase === "thinking" && snapshot.execution_purpose === "engine_turn"} ply={snapshot.board_ply} /></>} />;
+      {...(snapshot.game === "tori" ? { stateLabel: snapshot.historical ? "Historical native position · read only" : snapshot.status.label } : {})}
+      thinking={snapshot.capabilities.engine_turn && snapshot.phase === "thinking" && snapshot.execution_purpose === "engine_turn"} ply={snapshot.board_ply} /></>} />;
 }

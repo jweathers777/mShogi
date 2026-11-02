@@ -17,11 +17,11 @@ export function NativeEnginePanel({ status, limits, children }: {
   </section>;
 }
 
-export function GamePositionStatus({ historical, concluded, paused, humanTurn, thinking, ply }: {
-  historical: boolean; concluded: boolean; paused: boolean; humanTurn: boolean; thinking: boolean; ply: number;
+export function GamePositionStatus({ historical, concluded, paused, humanTurn, thinking, ply, stateLabel }: {
+  historical: boolean; concluded: boolean; paused: boolean; humanTurn: boolean; thinking: boolean; ply: number; stateLabel?: string;
 }) {
   return <div className="game-footnote" data-position-status>
-    <span>{historical ? "History · return to live to play" : concluded ? "Game concluded" : paused ? "Play paused · resume explicitly to continue" : humanTurn ? "Your turn" : thinking ? "mShogi is searching within fixed work limits" : "Engine turn paused"}</span>
+    <span>{stateLabel ?? (historical ? "History · return to live to play" : concluded ? "Game concluded" : paused ? "Play paused · resume explicitly to continue" : humanTurn ? "Your turn" : thinking ? "mShogi is searching within fixed work limits" : "Engine turn paused")}</span>
     <span>{historical ? "Selected position" : "Live position"} · {ply} {ply === 1 ? "ply" : "plies"}</span>
   </div>;
 }
@@ -76,7 +76,7 @@ export function AnalysisActions({ children }: { children: ReactNode }) {
 }
 
 export function ApplicationShell({ game, runtime, document, actions, heading, board, positionNotice, notices, analysis, history, gameActions, support, overlays, blocked, historical, attributes = {}, onFocusCapture }: {
-  game: "chess" | "shogi" | "xiangqi"; runtime: string; document: ReactNode; actions: ReactNode;
+  game: "chess" | "shogi" | "xiangqi" | "tori"; runtime: string; document: ReactNode; actions: ReactNode;
   heading: ReactNode; board: ReactNode; positionNotice?: ReactNode; notices?: ReactNode; analysis: ReactNode;
   history: ReactNode; gameActions: ReactNode; support: ReactNode; overlays?: ReactNode;
   blocked?: boolean; historical?: boolean; attributes?: Record<string, string | number | boolean>;

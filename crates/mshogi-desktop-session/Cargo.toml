@@ -21,3 +21,7 @@ serde = { version = "=1.0.229", features = ["derive"] }
 [[example]]
 name = "xiangqi_session_probe"
 required-features = ["desktop-verification"]
+
+[[example]]
+name = "write_tori_frontend_fixtures"
+required-features = ["desktop-verification"]

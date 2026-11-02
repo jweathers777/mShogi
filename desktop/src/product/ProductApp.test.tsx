@@ -6,6 +6,7 @@ import { useGameSession, type GameSession } from "./useGameSession";
 import type { GameSnapshot, ShogiSnapshot } from "./native";
 import shogiJson from "../__fixtures__/shared-shogi-standard.json";
 import xiangqiJson from "../__fixtures__/shared-xiangqi-standard.json";
+import toriJson from "../__fixtures__/shared-tori-contract.json";
 import chessJson from "../__fixtures__/shared-chess-standard.json";
 vi.mock("./useGameSession", () => ({ useGameSession: vi.fn() }));
 const standard = shogiJson as ShogiSnapshot;
@@ -154,4 +155,11 @@ it.each(fixtures)("keeps Save enabled in the never-saved $game native Quit guard
   const save = within(screen.getByRole("dialog", { name: "Save Game" })).getByRole("button", { name: "Save" }); expect((save as HTMLButtonElement).disabled).toBe(false);
   fireEvent.click(save); expect(await screen.findByText("The game was not saved. Your game is still open.")).toBeTruthy();
   expect(session.finishClose).not.toHaveBeenCalled(); expect(session.snapshot.document.path).toBeNull(); expect(session.snapshot.document.dirty).toBe(false);
+});
+
+it("keeps the product chooser limited to three actually playable games even in the Tori contract fixture", () => {
+  session.snapshot = toriJson as unknown as GameSnapshot;
+  render(<ProductApp />); fireEvent.click(screen.getByRole("button", { name: "New game" }));
+  expect(screen.getAllByRole("option").map(option => option.textContent)).toEqual(["Chess", "Shogi", "Xiangqi"]);
+  expect((screen.getByRole("combobox", { name: "Game" }) as HTMLSelectElement).value).toBe("chess");
 });

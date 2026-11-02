@@ -390,6 +390,19 @@ fn finish_validation_budget(
         result
     }
 }
+/// Deterministic clock injection into the actual worker deadline classifier.
+/// Verification payloads only: this does not measure replay performance.
+#[cfg(feature = "desktop-verification")]
+pub(super) fn verification_deadline_failure() -> OperationFailure {
+    finish_validation_budget(
+        Err("Verification: interrupted validation before commit.".into()),
+        VALIDATION_BUDGET,
+        VALIDATION_BUDGET,
+        false,
+    )
+    .err()
+    .expect("injected elapsed validation budget")
+}
 pub(super) fn check(stopped: &mut impl FnMut() -> bool) -> Result<(), String> {
     if stopped() {
         Err("Document operation cancelled or exceeded its 15-second validation budget.".into())

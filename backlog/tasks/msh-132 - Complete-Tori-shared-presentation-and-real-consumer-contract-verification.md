@@ -1,10 +1,11 @@
 ---
 id: MSH-132
 title: Complete Tori shared presentation and real-consumer contract verification
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@Codex'
 created_date: '2026-11-01T21:28:00Z'
-updated_date: '2026-11-02T09:26:00Z'
+updated_date: '2026-11-02T10:19:00Z'
 labels:
   - m4
   - owner-msh-77
@@ -54,10 +55,25 @@ Verification: focused real native/candidate/controller tests appropriate to this
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Root Codex is sole builder/integrator in clean aligned primary codex/rewrite c89802e; preserve unrelated worktrees. Use pinned Backlog1.55.1 instead of global1.55.0. Separate read-only tori131_review performs native preflight and independent completed-boundary review. Preserve native profile/corpus/713assertions and prior13113fields/82requirements.
+2. Complete native Tori presentation in existing shared_tori/shared presentation and moves projection/cache: nine readable native face identities, handed quails/hands, true forced result changes only, exact Play-only rows and native completed geometry. Add minimal tagged Tori selected/live/root/obligation/conclusion/incomplete metadata from actual Game getters; no rendering replay, new archive/limits or rules changes.
+3. Extend strict frontend DTOs/operations/resource scopes and existing GameBoard/NativeBoard/ApplicationView/shared panels only where real Tori payloads require. Keep one useGameSession/choice controller/shell, native read-only inspection and exact token freshness. Clearly label technical move identifiers and unsupported engine/analysis; never expose Tori in normal playable chooser/Open/NewGame.
+4. Generate deterministic real Tori DesktopController fixtures for standard/custom roots, both orientations/allfaces/quails/hands, capture/drop/forced promotion, prefixes/repetition/Stop/resign/Takeback/SaveOpen/observations/resource refusal. Test native mapping and shared frontend pointer/keyboard/drop/completion/Esc/focus/inspection delays/history/cues, capacity and unsupported observations. Audit every supplemental consumer row without double counting, preserve42notation1/1.
+5. Use existing verification-only host/fixture bootstrap and stable QA identity if actual packaged Tori semantic interaction is needed; no Tori page/artwork/pretendengine. Normal distributions exclude fixture data/activation. Reuse131 native/persistence/process evidence as unaffected; review deadline UI as typed operational refusal, no new timing promise or architecture redesign.
+6. Focused Rust/controller/frontend/type checks, both workspace and standalone Tauri format/lint, applicable exact-source native/desktopCI and existing-game regressions; independent semantic/interaction/resource/ownership review, resolve findings, record actual package/GUI scope and failures. Complete132only with sixAC/fourDoD supported, normal commit/integration/push, durable77handoff; stop before77/42/otherwork.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 MSH131 implementation handoff only, not132activation: reviewed source253e4c949614d133b5295f6a362e3d5279adcef3 supplies actual ActiveDocumentTori in sole DesktopController/RuntimeMetadata/install_document, immutable complete admission, existing FileWorker Save/Open/receipts, native exactprefix/inspection/Undo/Takeback and retained lineage. Runtime actual82requirements/13fields execute separately from unchanged713native adapter; C-NOTATION1/1remains42. Minimal native SharedSnapshot is real but Moves/complete frontend metadata remain132. Use native owner and exact event/history/selected target, no second session. Normal productNewGame/Open gated, zero advertised engine capabilities; only verification supervised request returns real unscoredUnsupportedMode. Runtime-only browse reopenslive; saved observations preserveexactprefix. Exact-source131CI/finaldisposition in desktop-runtime-evidence.md.132remainsReady/unassigned/unstarted, all originalcriteria/dependencies unchanged.
 
 Final131handoff: reviewed source6a2edd71b3136a9c2043f9137eb6d3fb8abf120d (productionce48e84) integrated/pushed; nativeCI41417589059 andDesktop41417589127 SUCCESS all3.247sessiontests inworkspace+allfeaturesperplatform; actualToriunsupported/failure/cancel/replacementprocesschecksPASS, existinggameLinux/WindowsinstalledGUIregressionsPASS, macpackage/hostonly(no newGUIcampaign). Actual13fields/82requirements established bycontroller; immutable713nativeassertions preserved, notation1/1remains42. docs/m4/tori/desktop-runtime.md anddesktop-runtime-evidence.md are current API/evidence handoff.132now nextdependency-readypending131finalization, stillReady/unassigned/unstarted; no plan/productactivation/criterion/dependencychange.
+
+Started132only at clean c89802e; origin ls-remote matches,131Done dependency satisfied; no active competing task. Current source gap: emptyToriMoves, technicalFaceDebug labels andeverymoveResultcompletion, noToriTSdispatch. Root owns all edits/integration; reviewer read-only. No normalproductTori activation or nativeprofile/rules/corpus/limit changes.
+
+Implementation boundary complete. Sole-builder root changes native Tori metadata/Play-only projection and existing shared frontend; generated18actualDesktopController DTOs, fixed normal admission gate retained. Independent native reviewer6presentationchecksPASS and exact13/82auditPASS; independent frontend27files342checks+Node24TS PASS. Resolved validation-budget Save promise, unsupported thinking UI and native board capability override. Working primary gained unrelated docs-only0f8b390 (forensic timing report); preserved unchanged. Packaged stableQA build succeeds; actualGUI verification underway, source CI and completion evidence pending. Initial helper compile errors, test type/import/copy/mock failures corrected; native fixture expectations unchanged.
 <!-- SECTION:NOTES:END -->

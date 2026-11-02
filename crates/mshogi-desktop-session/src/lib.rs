@@ -1179,7 +1179,7 @@ impl DesktopController {
         let mut controller = Self::new(engine_path).map_err(|error| error.to_string())?;
         controller.session = ActiveDocument::Chess(Box::new(match fixture {
             "standard" | "shared-contract" => DesktopSession::new(),
-            fixture if fixture.starts_with("shogi-") || fixture.starts_with("xiangqi-") => DesktopSession::new(),
+            fixture if fixture.starts_with("shogi-") || fixture.starts_with("xiangqi-") || fixture.starts_with("tori-") => DesktopSession::new(),
             "capacity" => DesktopSession::verification_capacity()?,
             "promotion" => {
                 let game = AdjudicatedGame::from_fen("7k/P7/8/8/8/8/8/7K w - - 0 1", ClaimPolicy::ExplicitOnly).map_err(|error| error.to_string())?;
@@ -1202,6 +1202,29 @@ impl DesktopController {
             }
             _ => return Err("Unknown desktop verification fixture. Use standard, promotion, claim, current-claim, concluded, incomplete or capacity.".into()),
         }));
+        if fixture.starts_with("tori-") {
+            let game = match fixture {
+                "tori-contract" => tori_fixture_roots::contract_game(),
+                "tori-standard" => mshogi_core::tori::Game::standard(),
+                _ => return Err("Unknown Tori verification fixture".into()),
+            };
+            let (_, receipt) = controller.shared_command_with_receipt(SharedDesktopCommand {
+                expected: controller.shared_token(),
+                game: GameKind::Chess,
+                operation: SessionOperation::Replace {
+                    record: CanonicalRecord::tori(
+                        mshogi_core::tori::GameRecord::from_game(&game)
+                            .map_err(|e| e.to_string())?,
+                    ),
+                    human: NativeSide::Tori(mshogi_core::tori::Side::Sente),
+                },
+            })?;
+            while receipt.completion().is_none() {
+                controller.shared_snapshot();
+                std::thread::sleep(std::time::Duration::from_millis(1));
+            }
+            receipt.completion().unwrap()?;
+        }
         if fixture.starts_with("shogi-") {
             controller.verification_shogi(fixture)?;
         }
@@ -2085,3 +2108,7 @@ mod tests {
 
 #[cfg(test)]
 mod runtime_tests;
+
+#[cfg(any(test, feature = "desktop-verification"))]
+#[path = "../examples/support/tori.rs"]
+mod tori_fixture_roots;

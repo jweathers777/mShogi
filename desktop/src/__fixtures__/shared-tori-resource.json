@@ -1,0 +1,528 @@
+{
+  "moves": {
+    "root": {
+      "label": "Starting position",
+      "numbering": "Technical native actions · not final Tori notation. Declared root counter 0 · Earlier history is unknown"
+    },
+    "entries": [
+      {
+        "event_index": 1,
+        "board_ply": 1,
+        "number": 1,
+        "column": 0,
+        "notation": "Technical: 4g → 5g (Ph)",
+        "action": "{\"kind\":\"move\",\"from\":\"4g\",\"to\":\"5g\",\"result_face\":\"phoenix\"}",
+        "command_start": 0,
+        "command_end": 1
+      },
+      {
+        "event_index": 2,
+        "board_ply": 2,
+        "number": 1,
+        "column": 1,
+        "notation": "Technical: 4a → 5a (Ph)",
+        "action": "{\"kind\":\"move\",\"from\":\"4a\",\"to\":\"5a\",\"result_face\":\"phoenix\"}",
+        "command_start": 1,
+        "command_end": 2
+      },
+      {
+        "event_index": 3,
+        "board_ply": 3,
+        "number": 2,
+        "column": 0,
+        "notation": "Technical: 5g → 4g (Ph)",
+        "action": "{\"kind\":\"move\",\"from\":\"5g\",\"to\":\"4g\",\"result_face\":\"phoenix\"}",
+        "command_start": 2,
+        "command_end": 3
+      },
+      {
+        "event_index": 4,
+        "board_ply": 4,
+        "number": 2,
+        "column": 1,
+        "notation": "Technical: 5a → 4a (Ph)",
+        "action": "{\"kind\":\"move\",\"from\":\"5a\",\"to\":\"4a\",\"result_face\":\"phoenix\"}",
+        "command_start": 3,
+        "command_end": 4
+      },
+      {
+        "event_index": 5,
+        "board_ply": 5,
+        "number": 3,
+        "column": 0,
+        "notation": "Technical: 4g → 5g (Ph)",
+        "action": "{\"kind\":\"move\",\"from\":\"4g\",\"to\":\"5g\",\"result_face\":\"phoenix\"}",
+        "command_start": 4,
+        "command_end": 5
+      },
+      {
+        "event_index": 6,
+        "board_ply": 6,
+        "number": 3,
+        "column": 1,
+        "notation": "Technical: 4a → 5a (Ph)",
+        "action": "{\"kind\":\"move\",\"from\":\"4a\",\"to\":\"5a\",\"result_face\":\"phoenix\"}",
+        "command_start": 5,
+        "command_end": 6
+      },
+      {
+        "event_index": 7,
+        "board_ply": 7,
+        "number": 4,
+        "column": 0,
+        "notation": "Technical: 5g → 4g (Ph)",
+        "action": "{\"kind\":\"move\",\"from\":\"5g\",\"to\":\"4g\",\"result_face\":\"phoenix\"}",
+        "command_start": 6,
+        "command_end": 7
+      },
+      {
+        "event_index": 8,
+        "board_ply": 8,
+        "number": 4,
+        "column": 1,
+        "notation": "Technical: 5a → 4a (Ph)",
+        "action": "{\"kind\":\"move\",\"from\":\"5a\",\"to\":\"4a\",\"result_face\":\"phoenix\"}",
+        "command_start": 7,
+        "command_end": 8
+      }
+    ],
+    "last_action": {
+      "action": "{\"kind\":\"move\",\"from\":\"5a\",\"to\":\"4a\",\"result_face\":\"phoenix\"}",
+      "event_index": 4,
+      "origin": {
+        "kind": "board",
+        "square": "5a"
+      },
+      "steps": [
+        "4a"
+      ],
+      "effects": []
+    }
+  },
+  "tori": {
+    "root_kind": "diagram",
+    "root_source": null,
+    "declared_root_plies": "0",
+    "earlier_history_unknown": true,
+    "historical_reachability_proven": false,
+    "selected": {
+      "event_index": 4,
+      "board_ply": 4,
+      "in_check": false,
+      "occurrences": [
+        0,
+        4
+      ],
+      "obligation": null,
+      "conclusion": null,
+      "incomplete": null
+    },
+    "live": {
+      "event_index": 8,
+      "board_ply": 8,
+      "in_check": false,
+      "occurrences": [
+        0,
+        4,
+        8
+      ],
+      "obligation": {
+        "side": "sente",
+        "occurrences": [
+          0,
+          4,
+          8
+        ],
+        "forbidden_departures": [
+          {
+            "kind": "move",
+            "from": "4g",
+            "to": "5g",
+            "result_face": "phoenix"
+          }
+        ]
+      },
+      "conclusion": null,
+      "incomplete": null
+    }
+  },
+  "open_token": {
+    "document": 1,
+    "version": 4,
+    "document_revision": 1
+  },
+  "document": {
+    "revision": 1,
+    "dirty": true,
+    "path": null,
+    "settings": {
+      "game_kind": "tori",
+      "settings": {
+        "orientation": "sente"
+      }
+    }
+  },
+  "io": {
+    "id": 1,
+    "phase": "failed",
+    "message": "Application capacity: encoded desktop archive exceeds16MiB.",
+    "resource": {
+      "facts": [
+        {
+          "category": "encoded_document_bytes",
+          "measurement": "candidate",
+          "count": 16777217,
+          "observations": null,
+          "reserved": 0,
+          "limit": 16777216,
+          "scope": "application",
+          "unit": "bytes"
+        }
+      ],
+      "omitted_facts": 0,
+      "diagnostic": "Application capacity: encoded desktop archive exceeds16MiB."
+    }
+  },
+  "capacity": {
+    "id": 2,
+    "status": "available",
+    "message": null,
+    "resource": null
+  },
+  "token": {
+    "document": 1,
+    "version": 4,
+    "revision": 7,
+    "selection": 4
+  },
+  "game": "tori",
+  "profile": "mshogi.tori.modern.v1",
+  "edition": "MSH81-MODERN-2026-11-01",
+  "human": {
+    "id": {
+      "game_kind": "tori",
+      "side": "sente"
+    },
+    "key": "mshogi.tori.modern.v1:sente",
+    "label": "Sente",
+    "first_mover": true
+  },
+  "turn": {
+    "id": {
+      "game_kind": "tori",
+      "side": "sente"
+    },
+    "key": "mshogi.tori.modern.v1:sente",
+    "label": "Sente",
+    "first_mover": true
+  },
+  "sides": [
+    {
+      "id": {
+        "game_kind": "tori",
+        "side": "sente"
+      },
+      "key": "mshogi.tori.modern.v1:sente",
+      "label": "Sente",
+      "first_mover": true
+    },
+    {
+      "id": {
+        "game_kind": "tori",
+        "side": "gote"
+      },
+      "key": "mshogi.tori.modern.v1:gote",
+      "label": "Gote",
+      "first_mover": false
+    }
+  ],
+  "board": {
+    "files": [
+      "7",
+      "6",
+      "5",
+      "4",
+      "3",
+      "2",
+      "1"
+    ],
+    "ranks": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g"
+    ],
+    "label": "Tori native 7×7 verification contract",
+    "initial_focus": "4e"
+  },
+  "orientations": [
+    {
+      "side": {
+        "id": {
+          "game_kind": "tori",
+          "side": "sente"
+        },
+        "key": "mshogi.tori.modern.v1:sente",
+        "label": "Sente",
+        "first_mover": true
+      },
+      "files": [
+        "7",
+        "6",
+        "5",
+        "4",
+        "3",
+        "2",
+        "1"
+      ],
+      "ranks": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g"
+      ]
+    },
+    {
+      "side": {
+        "id": {
+          "game_kind": "tori",
+          "side": "gote"
+        },
+        "key": "mshogi.tori.modern.v1:gote",
+        "label": "Gote",
+        "first_mover": false
+      },
+      "files": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
+      "ranks": [
+        "g",
+        "f",
+        "e",
+        "d",
+        "c",
+        "b",
+        "a"
+      ]
+    }
+  ],
+  "pieces": [
+    {
+      "square": "4a",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Ph",
+      "promoted": false,
+      "text": "Ph",
+      "label": "4a, Gote Phoenix"
+    },
+    {
+      "square": "4g",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Ph",
+      "promoted": false,
+      "text": "Ph",
+      "label": "4g, Sente Phoenix"
+    }
+  ],
+  "hands": [
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:Fa",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Fa",
+      "count": 0,
+      "text": "Fa",
+      "label": "Sente Falcon in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:Cr",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Cr",
+      "count": 0,
+      "text": "Cr",
+      "label": "Sente Crane in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:Pt",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Pt",
+      "count": 0,
+      "text": "Pt",
+      "label": "Sente Pheasant in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:LQ",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "LQ",
+      "count": 0,
+      "text": "LQ",
+      "label": "Sente Left Quail in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:RQ",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "RQ",
+      "count": 0,
+      "text": "RQ",
+      "label": "Sente Right Quail in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:sente:Sw",
+      "owner": "mshogi.tori.modern.v1:sente",
+      "kind": "Sw",
+      "count": 0,
+      "text": "Sw",
+      "label": "Sente Swallow in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:Fa",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Fa",
+      "count": 0,
+      "text": "Fa",
+      "label": "Gote Falcon in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:Cr",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Cr",
+      "count": 0,
+      "text": "Cr",
+      "label": "Gote Crane in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:Pt",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Pt",
+      "count": 0,
+      "text": "Pt",
+      "label": "Gote Pheasant in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:LQ",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "LQ",
+      "count": 0,
+      "text": "LQ",
+      "label": "Gote Left Quail in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:RQ",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "RQ",
+      "count": 0,
+      "text": "RQ",
+      "label": "Gote Right Quail in hand, 0"
+    },
+    {
+      "origin": "hand:mshogi.tori.modern.v1:gote:Sw",
+      "owner": "mshogi.tori.modern.v1:gote",
+      "kind": "Sw",
+      "count": 0,
+      "text": "Sw",
+      "label": "Gote Swallow in hand, 0"
+    }
+  ],
+  "choices": [],
+  "capabilities": {
+    "board_action": false,
+    "drops": true,
+    "promotion": true,
+    "take_back": false,
+    "undo": false,
+    "engine_turn": false,
+    "move_analysis": false,
+    "chess_full": false,
+    "claims": false,
+    "declaration": false,
+    "resign": false,
+    "hands": true,
+    "history": true,
+    "save": true
+  },
+  "status": {
+    "concluded": false,
+    "label": "Sente to move",
+    "score_half_points": null
+  },
+  "events": [
+    {
+      "index": 1,
+      "board_ply": 1,
+      "label": "Sente · Technical action {\"kind\":\"move\",\"from\":\"4g\",\"to\":\"5g\",\"result_face\":\"phoenix\"}"
+    },
+    {
+      "index": 2,
+      "board_ply": 2,
+      "label": "Gote · Technical action {\"kind\":\"move\",\"from\":\"4a\",\"to\":\"5a\",\"result_face\":\"phoenix\"}"
+    },
+    {
+      "index": 3,
+      "board_ply": 3,
+      "label": "Sente · Technical action {\"kind\":\"move\",\"from\":\"5g\",\"to\":\"4g\",\"result_face\":\"phoenix\"}"
+    },
+    {
+      "index": 4,
+      "board_ply": 4,
+      "label": "Gote · Technical action {\"kind\":\"move\",\"from\":\"5a\",\"to\":\"4a\",\"result_face\":\"phoenix\"}"
+    },
+    {
+      "index": 5,
+      "board_ply": 5,
+      "label": "Sente · Technical action {\"kind\":\"move\",\"from\":\"4g\",\"to\":\"5g\",\"result_face\":\"phoenix\"}"
+    },
+    {
+      "index": 6,
+      "board_ply": 6,
+      "label": "Gote · Technical action {\"kind\":\"move\",\"from\":\"4a\",\"to\":\"5a\",\"result_face\":\"phoenix\"}"
+    },
+    {
+      "index": 7,
+      "board_ply": 7,
+      "label": "Sente · Technical action {\"kind\":\"move\",\"from\":\"5g\",\"to\":\"4g\",\"result_face\":\"phoenix\"}"
+    },
+    {
+      "index": 8,
+      "board_ply": 8,
+      "label": "Gote · Technical action {\"kind\":\"move\",\"from\":\"5a\",\"to\":\"4a\",\"result_face\":\"phoenix\"}"
+    }
+  ],
+  "event_index": 4,
+  "board_ply": 4,
+  "play_limits": {
+    "depth": 0,
+    "nodes": 0
+  },
+  "historical": true,
+  "paused": true,
+  "close_requires_save": true,
+  "phase": "paused",
+  "execution_purpose": null,
+  "diagnostic": "Historical position. Return to live explicitly; Tori engine execution is unsupported.",
+  "declaration_advice": [],
+  "context": {
+    "envelope_version": 1,
+    "game_kind": "tori",
+    "rules_profile": "mshogi.tori.modern.v1",
+    "profile_edition": "MSH81-MODERN-2026-11-01",
+    "native_schema_version": 1,
+    "payload": {"format":"mshogi.tori.game","game":"tori","profile":"mshogi.tori.modern.v1","edition":"MSH81-MODERN-2026-11-01","schema_version":1,"mode":"untimed","root":{"root_kind":"diagram","source":null,"earlier_history_unknown":true,"historical_reachability_proven":false,"declared_completed_plies":0,"accepted_plies":0,"declared_total_plies":0,"side_to_move":"sente","board":[{"square":"4a","piece":{"side":"gote","face":"phoenix"}},{"square":"4g","piece":{"side":"sente","face":"phoenix"}}],"hands":[[0,0,0,0,0,0],[0,0,0,0,0,0]]},"root_conclusion":null,"events":[{"index":0,"board_ply":1,"actor":"sente","command":{"kind":"play","action":{"kind":"move","from":"4g","to":"5g","result_face":"phoenix"}},"effects":{"actor":"sente","action":{"kind":"move","from":"4g","to":"5g","result_face":"phoenix"},"resulting_piece":{"side":"sente","face":"phoenix"},"captured":null,"hand_change":null},"occurrences":[1],"obligation":null,"conclusion":null,"incomplete":null,"replay_work":3},{"index":1,"board_ply":2,"actor":"gote","command":{"kind":"play","action":{"kind":"move","from":"4a","to":"5a","result_face":"phoenix"}},"effects":{"actor":"gote","action":{"kind":"move","from":"4a","to":"5a","result_face":"phoenix"},"resulting_piece":{"side":"gote","face":"phoenix"},"captured":null,"hand_change":null},"occurrences":[2],"obligation":null,"conclusion":null,"incomplete":null,"replay_work":6},{"index":2,"board_ply":3,"actor":"sente","command":{"kind":"play","action":{"kind":"move","from":"5g","to":"4g","result_face":"phoenix"}},"effects":{"actor":"sente","action":{"kind":"move","from":"5g","to":"4g","result_face":"phoenix"},"resulting_piece":{"side":"sente","face":"phoenix"},"captured":null,"hand_change":null},"occurrences":[3],"obligation":null,"conclusion":null,"incomplete":null,"replay_work":10},{"index":3,"board_ply":4,"actor":"gote","command":{"kind":"play","action":{"kind":"move","from":"5a","to":"4a","result_face":"phoenix"}},"effects":{"actor":"gote","action":{"kind":"move","from":"5a","to":"4a","result_face":"phoenix"},"resulting_piece":{"side":"gote","face":"phoenix"},"captured":null,"hand_change":null},"occurrences":[0,4],"obligation":null,"conclusion":null,"incomplete":null,"replay_work":15}],"current_position":{"root_kind":"diagram","source":null,"earlier_history_unknown":true,"historical_reachability_proven":false,"declared_completed_plies":0,"accepted_plies":4,"declared_total_plies":4,"side_to_move":"sente","board":[{"square":"4a","piece":{"side":"gote","face":"phoenix"}},{"square":"4g","piece":{"side":"sente","face":"phoenix"}}],"hands":[[0,0,0,0,0,0],[0,0,0,0,0,0]]},"conclusion":null,"obligation":null,"incomplete":null}
+  },
+  "analysis": null,
+  "observations": [],
+  "search_observations": [],
+  "score_meaning": "No Tori evaluation or search implementation. Failures and incomplete work are unscored.",
+  "chess": null,
+  "chess_match": null
+}

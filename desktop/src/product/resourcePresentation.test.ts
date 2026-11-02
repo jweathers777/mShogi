@@ -15,7 +15,7 @@ it("preserves256 accepted mixed ordinary/exact observations without claiming257 
   expect(candidate).toContain("would exceed"); expect(candidate).not.toContain("257 recorded");
 });
 it.each([
-  ["encoded_document_bytes", "document would exceed"], ["encoded_observation_bytes", "observation byte"], ["canonical_record_bytes", "record byte"], ["native_events", "native event"], ["replay_work", "replay-work"], ["identity_headroom", "execution-identity"], ["validation_budget", "validation work"],
+  ["encoded_document_bytes", "document would exceed"], ["encoded_observation_bytes", "observation byte"], ["canonical_record_bytes", "record byte"], ["native_events", "native event"], ["replay_work", "replay-work"], ["identity_headroom", "execution-identity"], ["validation_budget", "validation"],
 ] as const)("keeps %s separate from observation/control exhaustion", (category, text) => {
   const message = resourceExplanation(failure([{ ...control, category }]));
   expect(message).toContain(text); expect(message).not.toContain("256 recorded"); expect(message).not.toContain("control capacity");

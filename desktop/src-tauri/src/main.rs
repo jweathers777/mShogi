@@ -150,6 +150,7 @@ fn desktop_verification_mode(verification: State<'_, VerificationState>) -> &'st
         "shared-contract"
     } else if verification.fixture.starts_with("shogi-")
         || verification.fixture.starts_with("xiangqi-")
+        || verification.fixture.starts_with("tori-")
     {
         "product"
     } else {
@@ -206,6 +207,18 @@ fn game_snapshot(
 ) -> Result<mshogi_desktop_session::SharedSnapshot, String> {
     with_controller(&controller, &shutdown, DesktopController::shared_snapshot)
 }
+fn allows_tori_contract(app: &AppHandle) -> bool {
+    #[cfg(feature = "desktop-verification")]
+    {
+        app.try_state::<VerificationState>()
+            .is_some_and(|s| matches!(s.fixture.as_str(), "tori-standard" | "tori-contract"))
+    }
+    #[cfg(not(feature = "desktop-verification"))]
+    {
+        let _ = app;
+        false
+    }
+}
 #[tauri::command]
 async fn game_command(
     app: AppHandle,
@@ -219,8 +232,9 @@ async fn game_command(
         &shutdown,
         |controller| {
             let reservation = controller.lifecycle().reserve_command()?;
-            if command.game == mshogi_desktop_session::GameKind::Tori
-                || matches!(&command.operation, mshogi_desktop_session::SessionOperation::Replace { record, .. } if record.game_kind() == mshogi_desktop_session::GameKind::Tori)
+            if !allows_tori_contract(&app)
+                && (command.game == mshogi_desktop_session::GameKind::Tori
+                    || matches!(&command.operation, mshogi_desktop_session::SessionOperation::Replace { record, .. } if record.game_kind() == mshogi_desktop_session::GameKind::Tori))
             {
                 return Err("Tori product activation is unavailable until its renderer and functional engine are delivered.".into());
             }
@@ -293,8 +307,11 @@ async fn game_file(
                         mshogi_desktop_session::GameKind::Chess => "chess.mshogi",
                         mshogi_desktop_session::GameKind::Shogi => "shogi.mshogi",
                         mshogi_desktop_session::GameKind::Xiangqi => "xiangqi.mshogi",
+                        mshogi_desktop_session::GameKind::Tori if allows_tori_contract(&app) => {
+                            "tori.mshogi"
+                        }
                         mshogi_desktop_session::GameKind::Tori => {
-                            return Err("Tori desktop documents are not implemented.".into());
+                            return Err("Tori product activation is unavailable.".into());
                         }
                     })
                     .blocking_save_file()
@@ -315,7 +332,7 @@ async fn game_file(
         let id = with_controller(
             &app.state::<Mutex<DesktopController>>(),
             &app.state::<Arc<ShutdownState>>(),
-            |c| queue_game_file(c, &action, path, expected),
+            |c| queue_game_file_with_gate(c, &action, path, expected, allows_tori_contract(&app)),
         )??;
         loop {
             let snapshot = current_contract_snapshot(&app)?;
@@ -340,11 +357,21 @@ async fn game_file(
 
 // Called after native picker completion under controller serialization. The
 // picker itself grants no authority to replace a document or bypass close.
+#[cfg(test)]
 fn queue_game_file(
     controller: &mut DesktopController,
     action: &str,
     path: PathBuf,
     expected: SharedOpenToken,
+) -> Result<u64, String> {
+    queue_game_file_with_gate(controller, action, path, expected, false)
+}
+fn queue_game_file_with_gate(
+    controller: &mut DesktopController,
+    action: &str,
+    path: PathBuf,
+    expected: SharedOpenToken,
+    tori_contract: bool,
 ) -> Result<u64, String> {
     // The engine/close callback may change authoritative content while the OS
     // picker is open. A path grants no authority to save that newer document.
@@ -357,7 +384,11 @@ fn queue_game_file(
             if controller.lifecycle().close_requested() {
                 return Err("Finish or cancel the close request before opening.".into());
             }
-            controller.queue_product_open(path, expected)
+            if tori_contract {
+                controller.queue_shared_open(path, expected)
+            } else {
+                controller.queue_product_open(path, expected)
+            }
         }
         "save" | "save_as" => controller.queue_shared_save(path),
         _ => Err("Unknown native file operation.".into()),
@@ -1095,6 +1126,48 @@ mod tests {
     fn picker_save_and_open_recheck_every_source_identity_before_queuing() {
         let mut controller = DesktopController::new(PathBuf::from("unused-test-engine")).unwrap();
         assert_picker_source_authority(&mut controller);
+    }
+
+    #[cfg(feature = "desktop-verification")]
+    #[test]
+    fn tori_contract_file_gate_uses_the_same_worker_and_keeps_product_open_blocked() {
+        use mshogi_desktop_session::GameKind;
+        let path = file_path("tori-contract");
+        let mut fixture =
+            DesktopController::verification(PathBuf::from("unused-test-engine"), "tori-standard")
+                .unwrap();
+        let token = fixture.shared_open_token();
+        let id =
+            queue_game_file_with_gate(&mut fixture, "save", path.clone(), token, true).unwrap();
+        wait_file(&mut fixture, id).unwrap();
+        let mut c = DesktopController::new(PathBuf::from("unused-test-engine")).unwrap();
+        let before = c.shared_open_token();
+        let id = queue_game_file_with_gate(&mut c, "open", path.clone(), before, false).unwrap();
+        assert!(wait_file(&mut c, id).unwrap_err().contains("Tori"));
+        assert_eq!(c.shared_open_token(), before);
+        let id = queue_game_file_with_gate(&mut c, "open", path.clone(), before, true).unwrap();
+        let opened = wait_file(&mut c, id).unwrap();
+        assert_eq!(opened.game, GameKind::Tori);
+        assert!(opened.paused);
+        assert_ne!(opened.open_token.document, before.document);
+        assert!(opened.observations.is_empty());
+        assert!(!opened.capabilities.engine_turn);
+        assert!(
+            c.shared_new_game(opened.open_token, GameKind::Tori, opened.human.id)
+                .is_err()
+        );
+        assert!(queue_game_file_with_gate(&mut c, "open", path.clone(), before, true).is_err());
+        let id = queue_game_file_with_gate(&mut c, "save", path.clone(), opened.open_token, true)
+            .unwrap();
+        let saved = wait_file(&mut c, id).unwrap();
+        assert!(!saved.document.dirty);
+        c.lifecycle().request_close().unwrap();
+        assert!(
+            queue_game_file_with_gate(&mut c, "open", path.clone(), saved.open_token, true)
+                .unwrap_err()
+                .contains("close request")
+        );
+        std::fs::remove_file(path).unwrap();
     }
 
     fn assert_file_completion_authority(controller: &mut DesktopController) {

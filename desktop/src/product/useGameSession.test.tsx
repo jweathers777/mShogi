@@ -6,6 +6,8 @@ import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { useGameSession } from "./useGameSession";
 import type { GameSnapshot, ShogiSnapshot } from "./native";
+import toriJson from "../__fixtures__/shared-tori-contract.json";
+import selectedToriJson from "../__fixtures__/shared-tori-selected-root.json";
 import chessJson from "../__fixtures__/shared-chess-standard.json";
 import xiangqiJson from "../__fixtures__/shared-xiangqi-standard.json";
 import standardJson from "../__fixtures__/shared-shogi-standard.json";
@@ -166,7 +168,7 @@ it.each([chessJson, standardJson, xiangqiJson])("keeps exact $game Save authorit
   expect(result.current.snapshot).toBe(saved); expect(result.current.error).toBe("Atomic write interrupted.");
 });
 it.each([chessJson, standardJson, xiangqiJson])("keeps dirty $game during cancelled/malformed/resource/stale Load and rejected New Game", async fixture => {
-  const source = fixture as unknown as GameSnapshot;
+  const source = fixture as unknown as Exclude<GameSnapshot, { game: "tori" }>;
   vi.mocked(invoke).mockResolvedValueOnce(source).mockRejectedValueOnce("Load cancelled.").mockRejectedValueOnce("Malformed record.").mockRejectedValueOnce("Replay capacity exceeded.").mockRejectedValueOnce("Stale document token.").mockRejectedValueOnce("New Game admission failed.");
   const { result } = renderHook(useGameSession); await flush();
   for (const reason of ["Load cancelled.", "Malformed record.", "Replay capacity exceeded.", "Stale document token."]) {
@@ -188,4 +190,18 @@ it.each([chessJson, standardJson, xiangqiJson])("does not turn delayed clean $ga
   await act(async () => { await vi.advanceTimersByTimeAsync(180); poll.resolve(changed); await Promise.resolve(); });
   await act(async () => { save.resolve(clean); expect(await pending).toBe(changed); });
   expect(result.current.snapshot).toBe(changed); expect(result.current.snapshot?.document.dirty).toBe(true);
+});
+
+it("uses the same owner for real Tori DTOs and retires old file receipts after exact selection/replacement", async () => {
+  const source = toriJson as unknown as GameSnapshot, selected = selectedToriJson as unknown as GameSnapshot;
+  const oldSave = deferred<GameSnapshot>(), nextPoll = deferred<GameSnapshot>();
+  vi.mocked(invoke).mockResolvedValueOnce(source).mockReturnValueOnce(oldSave.promise).mockReturnValueOnce(nextPoll.promise);
+  const { result } = renderHook(useGameSession); await flush();
+  let pending!: Promise<GameSnapshot | null>;
+  act(() => { pending = result.current.file(source, "save"); });
+  expect(invoke).toHaveBeenLastCalledWith("game_file", { action: "save", expected: source.open_token });
+  await act(async () => { await vi.advanceTimersByTimeAsync(180); nextPoll.resolve(selected); await Promise.resolve(); });
+  let returned: GameSnapshot | null = source;
+  await act(async () => { oldSave.resolve(source); returned = await pending; });
+  expect(result.current.snapshot).toBe(selected); expect(returned).not.toBe(source);
 });

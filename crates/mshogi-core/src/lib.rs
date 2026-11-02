@@ -29,3 +29,6 @@ pub mod native;
 
 /// Native Tori structural/local rules and inspection; full-game consumers remain later.
 pub mod tori;
+
+/// Native modern JCSA Chu Shogi rules and complete-action admission.
+pub mod chu;

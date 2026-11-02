@@ -1,5 +1,6 @@
 //! Development-only, engine-independent conformance machinery. No game rules run here.
 pub mod assertions;
+pub mod chu;
 pub mod properties;
 mod strict;
 

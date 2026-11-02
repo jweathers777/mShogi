@@ -2,7 +2,9 @@
 
 Current MSH-42 native follow-up: [native playable checkpoint](native-playable-checkpoint.md)
 now supplies real engine turns/analysis, native limits/observations and the shared
-Rust action notation. Normal product exposure and finished artwork remain gated.
+Rust action notation. The [desktop visual checkpoint](desktop-visual-checkpoint.md)
+now renders the production board and traditional kanji. Owner visual approval,
+normal product exposure and final acceptance remain pending.
 The source52b0390 descriptions below preserve the accepted MSH-132 checkpoint,
 including its then-unsupported execution and pending notation; those two facets
 are superseded by the linked native implementation evidence.

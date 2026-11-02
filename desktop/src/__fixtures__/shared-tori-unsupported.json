@@ -2505,9 +2505,9 @@
           "purpose": {
             "kind": "engine_turn"
           },
-          "request_id": 5,
+          "request_id": 4,
           "session_version": 4,
-          "process_generation": 5,
+          "process_generation": 4,
           "game": {
             "envelope_version": 1,
             "game_kind": "tori",

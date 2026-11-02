@@ -27,7 +27,7 @@ identifies this search. There is no playing-strength claim; MSH-51 owns that wor
 
 Default interactive native play is depth2/2,000 visits; supported maxima are
 3/10,000. Local release probes completed depth2: starting position 17 choices,
-324 visits, 9ms; drop-heavy position 281 choices, 1,847 visits, 62ms. These are
+324 visits, 9ms; drop-heavy position 281 choices, 1,847 visits, 71ms at committed source035c35c (an earlier local probe was62ms). These are
 observations from this machine, not latency guarantees. The existing supervised
 child watchdog/cleanup and independently terminable process remain authoritative.
 No timed game or new search time-control protocol is introduced.
@@ -52,8 +52,9 @@ native diagnostics; typed document resource admission remains a separate owner.
 
 ## Native document and session
 
-The one desktop controller/runtime schedules native engine turns after an admitted
-human action or explicit Resume. Ordinary analysis is read-only and targets the
+The one desktop controller/runtime schedules native engine turns after explicit
+Resume and subsequent admitted human actions. A manual native verification move
+while paused never authorizes engine work; reopening stays stopped until Resume. Ordinary analysis is read-only and targets the
 exact selected event prefix. It shares the same replaceable execution resource;
 starting/replacing/cancelling analysis retires prior work. Historical selection,
 Return to live, Undo/Take back, replacement and close retire execution. Stopped

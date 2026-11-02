@@ -1,10 +1,11 @@
 ---
 id: MSH-77
 title: Extend shared contracts for real tori shogi consumers
-status: Ready
-assignee: []
+status: Done
+assignee:
+  - '@Codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-02T10:44:00Z'
+updated_date: '2026-11-02T11:38:00Z'
 labels:
   - m4
   - owner-msh-46
@@ -33,6 +34,8 @@ documentation:
   - docs/m4/tori/shared-plan-review.md
   - docs/m4/tori/shared-presentation.md
   - docs/m4/tori/shared-presentation-evidence.md
+  - docs/m4/tori/shared-acceptance.md
+  - docs/m4/tori/playable-delivery.md
 type: task
 ordinal: 77000
 ---
@@ -49,18 +52,18 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 The real game-owned native handoff is consumed through explicit typed profile/record/session/engine dispatch and supported capabilities; existing chess/shogi contexts remain compatible and stale/cancelled results cannot cross profiles.
-- [ ] #2 Shared mechanisms accommodate 7x7 square-board/hands,piece promotion/ownership and native game-specific history/action/outcome payloads through native metadata and complete choices,with no frontend legality or mandatory common board representation.
-- [ ] #3 Canonical envelope/history/admission supports the concrete game payload and documented resource policy without losing prior accepted data; unsupported profiles/conversions remain explicit.
-- [ ] #4 Real authoritative game-generated fixtures and interaction tests establish the extension; synthetic M3 fixtures alone do not prove real-game support. Required cross-game regression and ownership boundaries are recorded.
+- [x] #1 The real game-owned native handoff is consumed through explicit typed profile/record/session/engine dispatch and supported capabilities; existing chess/shogi contexts remain compatible and stale/cancelled results cannot cross profiles.
+- [x] #2 Shared mechanisms accommodate 7x7 square-board/hands,piece promotion/ownership and native game-specific history/action/outcome payloads through native metadata and complete choices,with no frontend legality or mandatory common board representation.
+- [x] #3 Canonical envelope/history/admission supports the concrete game payload and documented resource policy without losing prior accepted data; unsupported profiles/conversions remain explicit.
+- [x] #4 Real authoritative game-generated fixtures and interaction tests establish the extension; synthetic M3 fixtures alone do not prove real-game support. Required cross-game regression and ownership boundaries are recorded.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -72,6 +75,11 @@ Planning-only refinement at a3677e1e862fdf3877c784f12f56a99c4bfbf167; root Codex
 3. Create only source-justified flat component tasks with complete dependencies and executable acceptance/verification expectations, no speculative child implementation plans. Exhaustively map14pending fields and83consumer requirements to slices plus retained42duties.
 4. Obtain separate read-only review of current source grounding, boundaries and graph; resolve findings. Validate unchanged713assertion inputs/native source, original criteria, all fixture owners/links/dependencies, backlog doctor and diff.
 5. Integrate reviewed planning normally and push. Leave77 open/blocked on components, first dependency-satisfied sliceReady/unassigned; stop before implementation.
+
+1. Root Codex is sole integrator in clean primary codex/rewrite febf4d2, origin aligned; preserve unrelated worktrees. Use compatible pinned Backlog1.55.1 (global1.55.0 is read-only). All seven direct dependencies Done; no other active task. This is final acceptance/documentation only, not MSH42 implementation.
+2. Independently reconcile original77AC1–4/DoD against actual native/runtime/document/shared frontend source and accepted130–132 evidence. Launch one fresh read-only integrated reviewer early; audit97supplementalrows,13runtimefields/82requirements/713nativeassertions/103immutableexpectations and retained42notation1/1. Assess mandatory180action success versus bounded360action precise refusal and state integrity; no replay/limit changes.
+3. Required verification gate: reuse exact52b0390 Native41427941953 andDesktop41427942000 all3platform PASS, source identity and package/GUI evidence at its real scope; newly execute only dependency/immutable/source/evidence/link/doctor/diff audits unless a material gap requires focused testing. No new CI jobs or GUI campaign for unchanged production; no redundant monitor/wait. One structured77acceptance record references prior per-source results instead of copying them.
+4. Inspect actual MSH42 search/execution/console/native presentation/document/desktop exposure boundaries and record an executable small-boundary next assignment, preserving its eightAC, final owner visual approval and broader46/47/88/89ownership. Independent acceptance/handoff review, resolve findings, close77only if supported, normal documentation-only integration/push, stop before42implementation. Preserve historical planning notes using append rather than replacing them.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -94,4 +102,27 @@ Reviewed planning integrated and normally pushed to codex/rewrite at8977a4b9c749
 MSH132 component handoff (no77activation/closure): production52b0390cac09faf727a0c5ed74c1fd673f468a11 adds complete nativeTori7x7/faces/quails/hands/forcedchoices/selected-liveprefix/status/provenance andPlay-onlyMoves/nativecues to existing sharedFrontendowner. docs/m4/tori/shared-presentation.md and shared-presentation-evidence.md map all4original77AC for its later independentacceptance; evidence/shared-presentation-audit.json reconciles every97supplementalrow to131actual13fields/82requirements, original713/103unchanged;42notation1/1stillpending. Actual stableQA CUAcontractjourneys and normalpackageexclusion recorded, notToriengine/finalUI/threeplatformGUIapproval. NormalNewGame/Open staygated; native15sdeadline/whole-documentlimitsunchanged and truthfulSave/Loadtime-budgetrefusal noted. Independentnative+frontendreviewsPASS;132finalCI/closurepending atthisnote.77remainsReady/unassigned andallAC/DoDunchecked;42/46/88/89ownershipunchanged, no nextimplementation started.
 
 Final132handoff: all6AC/4DoD supported; production52b0390 source and bothCI41427941953/41427942000 SUCCESS acrossall3systems. Native253/frontend342/TS/host14features and normalpackagechecksPASS; actualexisting-gameLinux/WindowsGUI compatibilityPASS, localmacOSToriQA contractjourneys only. Independentnative/frontend/docreviewsPASS,97rowaudit retains131actual13/82 andnative713/103,42notation1/1pending. docs/m4/tori/shared-presentation-evidence.md contains finalactualdispositions/limits.132Done, so77nowdependency-readyReady/unassigned; no activation, currentplan or criterion/DoD checks applied. Originalfourcriteria await77ownfinalintegratedindependentreview.42/46/M4remainopen.
+
+Final integrated acceptance activated at febf4d2; all7direct dependenciesDone, current production identical to tested52b0390. Owner-approved within-assignment efficiency guidance applied: one acceptance record, early independent read-only review, reuse all required exact-source CI/platform evidence, no new broad tests/CI/GUI absent concrete gap. Root owns primary integration; unrelated worktrees preserved.
+
+Integrated source/evidence acceptance review PASS AC1–4 by fresh independent read-only accept77_review: actual single native/runtime/worker/UI owners, lossless admission, exact history/identities, real fixtures and product gates verified. Newly executed static97row/hash/test-reference/source/dependency/CI-index auditsPASS. Existing52b0390 native41427941953/Desktop41427942000all3platform evidence reused; no new product tests/build/GUI/CI campaign. One structured acceptance index docs/m4/tori/evidence/shared-acceptance.json references existing per-source records. Mandatory180success/360typedelapsedrefusal reviewed; no new ordinary-workload blocker. Final docs/handoff/efficiency-policy review underway; no42implementation.
+
+Fresh integrated acceptance and final documentation review by accept77_review PASS; finalsourceidentity/liveCIconfirmations and97rowauditPASS. All4AC/4DoD supported; no production/source/workflow/test change or newplatformcampaign. Completion record references structured evidence;42handoff/AGENTSownerpractices current. Ready for normal documentation-only integration/push; stop77only.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Accepted the integrated Tori shared application support without production changes. Reviewed integration febf4d2aa51c7e803a4f7d8d8345a72ac6f66086; production remains exact tested 52b0390cac09faf727a0c5ed74c1fd673f468a11. Original criteria:
+
+AC1: PASS. Actual typed profile/record/native context and sole controller/install; full execution identity retirement, honest unsupported capabilities.
+AC2: PASS. Native7x7/ninefaces/handedquails/hands/forced complete choices/history/outcomes; same frontend/session/choice owners, no frontend rules.
+AC3: PASS. Current duplicate-preserving envelope, authoritative native+journal replay, complete precommit quotas/reservations, atomic SaveOpen/fresh stopped identities.
+AC4: PASS. Real native/controller/frontend/packaged QA fixtures and exact-source cross-game CI;97rows reconciled with retained42notation1/1.
+
+Verification reused: Native41427941953 andDesktop41427942000all6platformjobsPASS at the exactsource;253session/342frontend/14verificationhost checks,713native assertions and actualmacOSToriQA plus existing-gameWindows/LinuxGUI scopes retain their original provenance. New read-only source/dependency/hash/97row/expected-value/test-resolution/CIidentity/link/doctor/diff auditsPASS. No new test/build/GUI/CIcampaign or timed monitoring needed. Fresh independent accept77_review actual integrated-source/row/hash/test/deadline and finaldocumentation reviewPASS; no unresolvedmaterialfinding. One structured acceptance index references existing per-source records: docs/m4/tori/evidence/shared-acceptance.json; verdict docs/m4/tori/shared-acceptance.md.
+
+15sdeadline accepted as documented operational limitation: mandatory180-action fulljourney succeeds;360near-limit canonlyrefuse via exacttyped elapsedfacts while preserving complete acceptedstate/dirty/priorfile. No new ordinary-workload blocker, no guaranteed near-limitSave timing, no limit/replay/rules/fixture change. NormalproductToriNewGame/Load still gated; engine/console/finalnotation/artwork/playablejourneys and owner visualapproval remainMSH42.13runtimefields/82requirements retained; notation1/1still42, not another passedsharedrequirement.
+
+Updated MSH42handoff identifies real-result engine/archive/controller boundary plus console together, then desktop play and independent complete-game verification, preserving its eight originalcriteria; no new tasks/planningcampaign or42implementation. AGENTS now records the owner-approved within-assignment efficiency practices without weakening acceptance/platform gates. MSH42 remainsToDo/unassigned/unstarted, dependencies satisfied after77; M4/46/47/88/89stayopen. Root soleintegrator in primarycodex/rewrite, unrelatedworktrees/historypreserved; normal metadata-onlycommit/push, stopafter77.
+<!-- SECTION:FINAL_SUMMARY:END -->

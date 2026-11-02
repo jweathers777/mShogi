@@ -4,7 +4,7 @@ title: Deliver complete tori shogi rules and functional product integration
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-01T12:24:00Z'
+updated_date: '2026-11-02T11:38:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -22,6 +22,8 @@ documentation:
   - docs/m4/tori/profile.md
   - docs/m4/tori/native-plan.md
   - docs/m4/tori/native-fixture-ownership.json
+  - docs/m4/tori/shared-acceptance.md
+  - docs/m4/tori/playable-delivery.md
 ordinal: 42000
 ---
 
@@ -63,4 +65,6 @@ MSH81 currentresearch2026-10-31 supplies docs/m4/tori source/profile-gate ledger
 Superseding owner-approved modern direction2026-11-01: MSH81 now supplies complete mshogi.tori.modern.v1 in docs/m4/tori/profile.md, concrete independent fixture specs and current R1-R6 handoff. Earlier historical acquisition/P01-P06 blocking notes remain dated evidence but do not gate this selected modern identity. T06 explicitly formalizes third-occurrence departure responsibility and forced cycles; T05/T07 specify rare endings/root/admission. No native conformance already claimed. MSH85 remains To Do and must perform original AC4 bounded native-slice refinement before Ready; MSH77 waits actual85handoff;42 retains complete console/functional-engine/archive/desktop/review obligations. All original dependencies and AC/DoD preserved; no activation or implementation by this note.
 
 Bounded native refinement2026-11-01 (planning only): coordinating85 now owns flat component126fixture/reference admission→127structuralstate/transitions→128locallegality/inspection→129history/records/nativehandoff;126dependsDone81 and no componentdepends85/77/42. All103immutablefixtures explicitly mapped in native-fixture-ownership.json (126dataownerall;127/128/129primary14/69/20), with lateractualprocess/document/notation facets preserved under77/42. Original85AC4 is satisfied only by reviewedplanning, not kernelimplementation;85cannotclose before nativecomponents and coreconsumerprobe. Native GameKind addition may require minimal explicitunsupported exhaustivearms; real engine/session/archive/frontend remainlaterownership. Preserveprofile/oldresearch/alloriginalAC/DoD; nohistoricalacquisition or optionalexactproof gate. See native-plan.md for actual inspectedboundaries, verification and currentdependencysets.
+
+MSH77 final integrated acceptance at tested production52b0390 is PASS all4originalcriteria;130/131/132Done,713nativeassertions/103fixedexpectations and actual13runtimefields/82requirements preserved. Current direct implementation handoff docs/m4/tori/playable-delivery.md: first native history-aware evaluator/search + actual supervised Tori result/real observation codec/controller admission + bounded console/notation/selfplay, then actual product board/artwork/hands/shared UI play/analysis/SaveLoad/recovery and independent eight-criterion acceptance. No extra planning-only assignment or new implementation tickets created. NormalproductTori activation remains gated until actualplayableconsumer; finishedvisuals requireownerapproval. C-NOTATION1field/1requirement remains42. All8AC/DoD/dependencies preserved,42ToDo/unassigned/unstarted; no implementation plan or activation applied.15sreplay operational qualification and46/47/88/89shared-platform ownership retained; MSH51ownsstrength.
 <!-- SECTION:NOTES:END -->

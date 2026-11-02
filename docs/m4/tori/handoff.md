@@ -1,5 +1,28 @@
 # Modern Tori native/shared handoff — MSH-81
 
+## Current integrated shared acceptance — MSH-77 (2026-11-02)
+
+MSH-130/131/132 are Done. Final [MSH-77 acceptance](shared-acceptance.md)
+reconciles all four original shared criteria against tested production52b0390
+and complete native/desktop CI41427941953/41427942000. The real native/controller/
+semantic/frontend foundation is accepted; notation1field/1requirement and the
+actual playable product remain MSH-42. All97supplementalrows,13runtimefields/
+82requirements and unchanged713nativeassertions/103expectations are reconciled.
+The15-second replay deadline remains an explicit operational limitation with
+mandatory representative success and exact near-limit refusal/state preservation.
+
+The next work is the [direct MSH-42 playable delivery handoff](playable-delivery.md):
+functional native search/execution/real-result admission plus console/notation,
+then the actual board/artwork/player journeys and independent complete-game
+acceptance. Normal Tori New Game/Load stay gated for now. Finished visuals require
+owner approval. No42implementation or later variant is started by this handoff.
+All original42eightcriteria and46/47/88/89platform/shared ownership remain.
+
+**Sections below preserve historical checkpoints.** Earlier statements that132
+is Ready/unstarted or that native/shared installation is absent describe those
+older revisions, not the accepted current implementation above.
+
+
 ## MSH-131 single native runtime handoff
 
 Reviewed source `ce48e84e64b9631343416acec865505dbbab570d` extends the sole

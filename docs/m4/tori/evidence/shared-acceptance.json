@@ -1,0 +1,105 @@
+{
+  "schema": "mshogi.tori.shared-acceptance.v1",
+  "scope": "MSH-77 final acceptance only; no new product test campaign",
+  "reviewed_integration": "febf4d2aa51c7e803a4f7d8d8345a72ac6f66086",
+  "tested_production": "52b0390cac09faf727a0c5ed74c1fd673f468a11",
+  "checks": {
+    "production_same_as_tested": "PASS",
+    "native_profile_and_103_expectations_unchanged": "PASS",
+    "original77_and42_acceptance_text_unchanged": "PASS",
+    "supplemental_inventory": {
+      "rows": 97,
+      "runtime_fields_reused": 13,
+      "runtime_requirements_reused": 82,
+      "notation42_pending_fields": 1,
+      "notation42_pending_requirements": 1
+    },
+    "native_reused": {
+      "fixtures": 103,
+      "assertions": 713
+    },
+    "required_source_ci_reused": [
+      {
+        "record": "evidence/shared-presentation-native-ci.json",
+        "run": 41427941953,
+        "verdict": "PASS all three recorded platform jobs; reused"
+      },
+      {
+        "record": "evidence/shared-presentation-desktop-ci.json",
+        "run": 41427942000,
+        "verdict": "PASS all three recorded platform jobs; reused"
+      }
+    ],
+    "dependencies": {
+      "MSH-69": "Done",
+      "MSH-72": "Done",
+      "MSH-73": "Done",
+      "MSH-85": "Done",
+      "MSH-130": "Done",
+      "MSH-131": "Done",
+      "MSH-132": "Done"
+    },
+    "final_document_links_doctor_diff": "PASS; production working tree unchanged; original77/42acceptance text retained"
+  },
+  "new_execution": "Read-only source/dependency/hash/expected-value/test-resolution/CI-index audits only; no Cargo/frontend/build/GUI/CI run",
+  "evidence_roots": [
+    "desktop-document-evidence.md",
+    "desktop-runtime-evidence.md",
+    "shared-presentation-evidence.md"
+  ],
+  "deadline_verdict": "Accept shared integration with documented operational limitation. Mandatory180-action success remains required; near-limit360 may only refuse with typed ValidationBudget/Application/Milliseconds15000 and complete state/prior-file preservation. No new ordinary-workload failure found. No timing or guaranteed Save-completion promise.",
+  "independent_review": {
+    "agent": "accept77_review",
+    "method": "Fresh read-only integrated source/evidence, exact row/hash/test-resolution audit; no broad campaign",
+    "verdict": "PASS AC1-4 and final acceptance/handoff/AGENTS documentation; no unresolved material findings"
+  },
+  "product_scope": "No Tori engine/console/finalnotation/artwork/playableproduct or Windows/LinuxToriGUI acceptance. MSH42 retained; MSH46/47/88/89 broader acceptance remains open.",
+  "criteria": {
+    "AC1": {
+      "verdict": "PASS",
+      "basis": "Actual typed profile/record/native context and sole controller/install; full execution identity retirement, honest unsupported capabilities.",
+      "references": [
+        "desktop-runtime-evidence.md",
+        "shared-presentation-evidence.md"
+      ]
+    },
+    "AC2": {
+      "verdict": "PASS",
+      "basis": "Native7x7/ninefaces/handedquails/hands/forced complete choices/history/outcomes; same frontend/session/choice owners, no frontend rules.",
+      "references": [
+        "shared-presentation.md",
+        "shared-presentation-evidence.md"
+      ]
+    },
+    "AC3": {
+      "verdict": "PASS",
+      "basis": "Current duplicate-preserving envelope, authoritative native+journal replay, complete precommit quotas/reservations, atomic SaveOpen/fresh stopped identities.",
+      "references": [
+        "desktop-document-evidence.md",
+        "desktop-runtime-evidence.md"
+      ]
+    },
+    "AC4": {
+      "verdict": "PASS",
+      "basis": "Real native/controller/frontend/packaged QA fixtures and exact-source cross-game CI;97rows reconciled with retained42notation1/1.",
+      "references": [
+        "shared-presentation-evidence.md",
+        "evidence/shared-presentation-audit.json"
+      ]
+    }
+  },
+  "live_ci_confirmation": [
+    {
+      "run": 41427941953,
+      "source": "52b0390cac09faf727a0c5ed74c1fd673f468a11",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "run": 41427942000,
+      "source": "52b0390cac09faf727a0c5ed74c1fd673f468a11",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ]
+}

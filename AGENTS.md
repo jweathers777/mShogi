@@ -81,6 +81,35 @@ approval stores or security policy, self-grant access, or promise that an app
 rebuild cannot trigger a platform-controlled prompt. Record actual identity,
 signature and reuse observations.
 
+## Execution efficiency within an assignment
+
+Apply the owner-approved improvements in
+`docs/review/tori-codex-execution-bottlenecks.md` without weakening correctness,
+independent review, acceptance criteria or required platform evidence.
+
+- Before broad tests or CI, inspect affected production consumers and separate
+  workspaces. Check tagged dispatch exhaustiveness, the standalone Tauri host,
+  relevant frontend consumers and changed test assertions early.
+- Use focused checks during implementation, then broad relevant regressions at
+  a coherent source checkpoint. Minor changes need only their affected checks
+  unless they invalidate the broader evidence.
+- Separate mandatory successful representative resource journeys from near-limit
+  operations whose contract permits precise typed refusal. Always assert accepted
+  state, history, identities, dirty state and prior-file integrity as applicable.
+- Start independent review early when useful; re-review substantive changes and
+  final source evidence while other required work proceeds.
+- Declare the task's required CI jobs explicitly. Preserve all required platform
+  verification; full packaged GUI campaigns belong at relevant application
+  integration boundaries, not automatically at unrelated native-only checkpoints.
+- Use one completion-aware CI monitor. Stop when the required condition is met;
+  check available completion before another timed wait. Cancel superseded
+  campaigns when appropriate and preserve their failures and provenance.
+- Maintain one structured verification record per tested source revision and
+  reference it from concise Backlog notes and acceptance summaries. Reuse prior
+  records rather than copying their results into competing evidence ledgers.
+- Before completion, establish that the exact tested revision passed its required
+  checks. Reuse unchanged source/scope evidence; never infer unperformed checks.
+
 ## Git and routine autonomy
 
 The established workflow permits ordinary local commits, non-destructive integration, normal pushes to the configured project remote, and cleanup of the agent's own completed disposable branches/worktrees. Use the designated rewrite branch as the integration target. Keep the original project history and default branch intact unless John explicitly changes that instruction.

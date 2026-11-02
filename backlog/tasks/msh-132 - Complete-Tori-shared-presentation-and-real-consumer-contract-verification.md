@@ -4,7 +4,7 @@ title: Complete Tori shared presentation and real-consumer contract verification
 status: Ready
 assignee: []
 created_date: '2026-11-01T21:28:00Z'
-updated_date: '2026-11-02T08:47:00Z'
+updated_date: '2026-11-02T09:26:00Z'
 labels:
   - m4
   - owner-msh-77
@@ -58,4 +58,6 @@ Verification: focused real native/candidate/controller tests appropriate to this
 
 <!-- SECTION:NOTES:BEGIN -->
 MSH131 implementation handoff only, not132activation: reviewed source253e4c949614d133b5295f6a362e3d5279adcef3 supplies actual ActiveDocumentTori in sole DesktopController/RuntimeMetadata/install_document, immutable complete admission, existing FileWorker Save/Open/receipts, native exactprefix/inspection/Undo/Takeback and retained lineage. Runtime actual82requirements/13fields execute separately from unchanged713native adapter; C-NOTATION1/1remains42. Minimal native SharedSnapshot is real but Moves/complete frontend metadata remain132. Use native owner and exact event/history/selected target, no second session. Normal productNewGame/Open gated, zero advertised engine capabilities; only verification supervised request returns real unscoredUnsupportedMode. Runtime-only browse reopenslive; saved observations preserveexactprefix. Exact-source131CI/finaldisposition in desktop-runtime-evidence.md.132remainsReady/unassigned/unstarted, all originalcriteria/dependencies unchanged.
+
+Final131handoff: reviewed source6a2edd71b3136a9c2043f9137eb6d3fb8abf120d (productionce48e84) integrated/pushed; nativeCI41417589059 andDesktop41417589127 SUCCESS all3.247sessiontests inworkspace+allfeaturesperplatform; actualToriunsupported/failure/cancel/replacementprocesschecksPASS, existinggameLinux/WindowsinstalledGUIregressionsPASS, macpackage/hostonly(no newGUIcampaign). Actual13fields/82requirements established bycontroller; immutable713nativeassertions preserved, notation1/1remains42. docs/m4/tori/desktop-runtime.md anddesktop-runtime-evidence.md are current API/evidence handoff.132now nextdependency-readypending131finalization, stillReady/unassigned/unstarted; no plan/productactivation/criterion/dependencychange.
 <!-- SECTION:NOTES:END -->

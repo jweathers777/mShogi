@@ -213,9 +213,10 @@ lineage, Save/Open and unsupported supervised execution have
 [controller/process evidence](desktop-runtime-evidence.md). Thirteen mapped
 runtime fields and82requirements execute in the actual DesktopController;
 C-NOTATION remains1/1under42. Native713assertions and immutable ownership mapping
-are unchanged. Exact-source CI and final disposition are recorded in the evidence.
+are unchanged. Final source6a2edd71b3136a9c2043f9137eb6d3fb8abf120d passed native/desktop CI
+on all three platforms;131is complete. Final disposition is recorded in the evidence.
 
-MSH-132 remains the next component after131completion; this handoff is neither its
+MSH-132 is the dependency-ready next component; this handoff is neither its
 activation nor77final acceptance. Complete semantic metadata, native Moves/event
 and last-action projection, frontend types and shared interaction verification
 remain132. Actual engine/console/notation/product Tori rendering/play remains42.

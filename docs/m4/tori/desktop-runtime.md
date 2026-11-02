@@ -5,8 +5,8 @@ The current native contract integrates `mshogi.tori.modern.v1` through the sole
 worker and `persistence::install_document`. [MSH-130's immutable document](desktop-document.md)
 remains the persistence authority. There is no second controller, file format,
 execution family or frontend owner. This is native integration, **not playable
-Tori desktop delivery**. MSH-132 owns complete semantic/frontend presentation;
-MSH-42 owns notation, engine and final product rendering/play.
+Tori desktop delivery**. MSH-132 owns complete semantic and frontend presentation;
+MSH-42 owns notation, engine and final product rendering and play.
 
 ## Admission and authority
 
@@ -81,10 +81,10 @@ MSH-130 native/document quotas and ending reservations remain unchanged, includi
 **262,144 whole-document replay units**. That figure measures complete immutable
 validation, not total CPU work for an entire runtime operation. Additional runtime
 preparation has a finite source-backed bound: at most four native reconstructions
-(each at most65,536 native units plus128 root charge), plus at most512 units for
+(each at most 65,536 native units plus 128 root charge), plus at most 512 units for
 the extra direct native command admission. Thus additional preparation is bounded
-by263,168 units; it does not increase the accepted document budget. Every path
-runs under the existing15-second worker deadline, checking cancellation between
+by 263,168 units; it does not increase the accepted document budget. Every path
+runs under the existing 15-second worker deadline, checking cancellation between
 bounded native calls. A single native replay is bounded but not internally
 interruptible; the deadline may be observed after that call returns.
 
@@ -102,12 +102,12 @@ current document identity and revision. Open failure/cancellation/staleness cann
 replace the document; successful Open is stopped and all saved observations are
 historical evidence.
 
-The actual imported360-action record contains104captures,103drops and16promotions.
+The actual imported 360-action record contains 104 captures, 103 drops and 16 promotions.
 Its native charge is65,341. Because this test imports the complete history as the
 initial record, the desktop stores that initial record **and** current record:
-313,906 bytes,720retained events,196,404 document units. Stop/Resign/Close reaches
-314,540candidate bytes,722retained events,3controls and196,409units. The saved
-file is314,541bytes after the runtime-only retired floor widens to11. This differs legitimately
+313,906 bytes,720 retained events,196,404 document units. Stop/Resign/Close reaches
+314,540 candidate bytes,722 retained events,3 controls and196,409units. The saved
+file is 314,541 bytes after the runtime-only retired floor widens to11. This differs legitimately
 from MSH-130's root-plus360-command journal measurement. No earlier observation or
 history is discarded. [Evidence](desktop-runtime-evidence.md) records timings,
 actual controller checks and source/CI provenance.

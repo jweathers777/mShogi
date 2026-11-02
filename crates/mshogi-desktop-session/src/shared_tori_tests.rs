@@ -1049,14 +1049,80 @@ fn byte_control_native_event_and_replay_limited_open_preserves_current_authority
     fs::remove_dir_all(dir).unwrap();
 }
 
+// The elapsed validation cap is a product refusal, not a wall-clock performance
+// guarantee for an otherwise structurally admissible near-limit record. Keep a
+// mandatory representative full journey and measure the 360-action boundary;
+// only its precise authoritative elapsed-budget refusal is an alternate result.
+fn long_retained_state(c: &mut DesktopController) -> Value {
+    let snapshot = c.shared_snapshot();
+    json!({"record":snapshot.context,"document":snapshot.document,
+        "open_token":snapshot.open_token,
+        "authority":[snapshot.token.document,snapshot.token.version,snapshot.token.selection],
+        "phase":snapshot.phase,"purpose":snapshot.execution_purpose,
+        "observations":snapshot.observations,"analysis":snapshot.analysis,
+        "event":snapshot.event_index,"historical":snapshot.historical,
+        "close_requires_save":snapshot.close_requires_save,
+        "canonical":c.session.tori().map(|s|s.document.bytes()),
+        "pending":c.session.tori().and_then(|s|s.pending.as_ref())})
+}
+fn long_result(
+    c: &mut DesktopController,
+    result: Result<SharedSnapshot, String>,
+    before: Value,
+    allow_deadline: bool,
+    actions: usize,
+    stage: &str,
+) -> bool {
+    if result.is_ok() {
+        return true;
+    }
+    assert!(allow_deadline, "mandatory long journey {stage}: {result:?}");
+    let resource = if stage == "save" || stage == "open" {
+        c.io_state.resource.clone()
+    } else {
+        c.session.capacity.resource.clone()
+    }
+    .expect("typed elapsed-budget refusal");
+    let facts = resource.facts();
+    assert_eq!(facts.len(), 1);
+    let fact = &facts[0];
+    assert_eq!(fact.category, ResourceCategory::ValidationBudget);
+    assert_eq!(fact.scope, Some(ResourceScope::Application));
+    assert_eq!(fact.unit, Some(ResourceUnit::Milliseconds));
+    assert_eq!(fact.limit, Some(15000));
+    assert!(fact.count.unwrap() >= 15000);
+    assert_eq!(long_retained_state(c), before);
+    // Revalidate complete retained bytes without imposing a machine-speed promise;
+    // the accepted canonical state still has a lossless supported encoding.
+    if let Some(state) = c.session.tori() {
+        let record = native(c);
+        ValidatedToriDocument::decode(state.document.bytes(), &mut || false).unwrap();
+        let closed = c.application_pause_for_close();
+        assert_eq!(native(c), record);
+        assert!(closed.close_requires_save);
+        ValidatedToriDocument::decode(current(c).document.bytes(), &mut || false).unwrap();
+    }
+    eprintln!(
+        "MSH131_LONG_DEADLINE {}",
+        json!({"actions":actions,"stage":stage,"resource":resource,"complete_prior_state_preserved":true,"result":"typed elapsed-budget refusal; not a completed long journey"})
+    );
+    false
+}
+#[test]
+fn representative_long_native_runtime_journey_completes() {
+    long_native_runtime(180, false);
+}
 #[test]
 fn measured_long_native_runtime_admission_stop_end_save_and_prepared_close() {
+    long_native_runtime(360, true);
+}
+fn long_native_runtime(actions: usize, allow_deadline: bool) {
     // Same documented deterministic native history generator as MSH-129/130;
     // this measures the additional actual controller/worker boundary, not new rules.
     let start = Instant::now();
     let mut g = t::Game::standard();
     let mut seed = 0x129c_a11a_b1e5u64;
-    for _ in 0..360 {
+    for _ in 0..actions {
         let choices = g.legal_actions();
         seed ^= seed << 13;
         seed ^= seed >> 7;
@@ -1095,28 +1161,48 @@ fn measured_long_native_runtime_admission_stop_end_save_and_prepared_close() {
     }
 
     let generated_ms = start.elapsed().as_millis();
-    assert_eq!(g.events().len(), 360);
-    assert_eq!(g.capacity_usage().unwrap().replay_work, 65341);
+    assert_eq!(g.events().len(), actions);
+    if actions == 360 {
+        assert_eq!(g.capacity_usage().unwrap().replay_work, 65341);
+    }
     let mut c = controller();
     let start = Instant::now();
-    replace(&mut c, &g, t::Side::Sente);
+    let before = long_retained_state(&mut c);
+    let game = c.shared_snapshot().game;
+    let (_, receipt) = c
+        .shared_command_with_receipt(SharedDesktopCommand {
+            expected: c.shared_token(),
+            game,
+            operation: SessionOperation::Replace {
+                record: CanonicalRecord::tori(t::GameRecord::from_game(&g).unwrap()),
+                human: NativeSide::Tori(t::Side::Sente),
+            },
+        })
+        .unwrap();
+    let result = settle(&mut c, receipt);
+    if !long_result(&mut c, result, before, allow_deadline, actions, "install") {
+        return;
+    }
     let installation_ms = start.elapsed().as_millis();
     let initial_usage = current(&c).document.usage().clone();
-    let next = current(&c).game.legal_actions()[0];
-    let prior = exact(&c);
-    assert!(
-        send(
-            &mut c,
-            SessionOperation::Tori {
-                actor: t::Side::Sente,
-                command: t::GameCommand::Play { action: next }
-            }
-        )
-        .is_err()
-    );
-    assert_eq!(exact(&c), prior);
+    if actions == 360 {
+        let next = current(&c).game.legal_actions()[0];
+        let prior = exact(&c);
+        assert!(
+            send(
+                &mut c,
+                SessionOperation::Tori {
+                    actor: t::Side::Sente,
+                    command: t::GameCommand::Play { action: next }
+                }
+            )
+            .is_err()
+        );
+        assert_eq!(exact(&c), prior);
+    }
     let start = Instant::now();
-    send(
+    let before = long_retained_state(&mut c);
+    let result = send(
         &mut c,
         SessionOperation::Tori {
             actor: t::Side::Sente,
@@ -1124,30 +1210,81 @@ fn measured_long_native_runtime_admission_stop_end_save_and_prepared_close() {
                 reason: t::StopReason::ResourceLimit,
             },
         },
-    )
-    .unwrap();
+    );
+    if !long_result(&mut c, result, before, allow_deadline, actions, "stop") {
+        return;
+    }
     let stop_ms = start.elapsed().as_millis();
     let start = Instant::now();
-    send(&mut c, SessionOperation::Resign {}).unwrap();
+    let before = long_retained_state(&mut c);
+    let result = send(&mut c, SessionOperation::Resign {});
+    if !long_result(&mut c, result, before, allow_deadline, actions, "resign") {
+        return;
+    }
     let resign_ms = start.elapsed().as_millis();
     let start = Instant::now();
     let snapshot = c.application_pause_for_close();
     let close_snapshot_ms = start.elapsed().as_millis();
     assert!(snapshot.status.concluded);
-    assert_eq!(current(&c).game.events().len(), 362);
-    let dir = directory("long");
+    assert_eq!(current(&c).game.events().len(), actions + 2);
+    let dir = directory(&format!("long-{actions}"));
     let path = dir.join("complete.mshogi");
+    // A refused/interrupted Save must preserve the complete previous file too.
+    let previous = exact(&c);
+    fs::write(&path, &previous).unwrap();
+    let before = long_retained_state(&mut c);
     let start = Instant::now();
     let id = c.queue_shared_save(path.clone()).unwrap();
     let enqueue_save_ms = start.elapsed().as_millis();
     let result = wait_file(&mut c, id);
+    if matches!(result.io.phase, IoPhase::Failed) {
+        assert_eq!(fs::read(&path).unwrap(), previous);
+        let error = result.io.message.clone().unwrap();
+        assert!(!long_result(
+            &mut c,
+            Err(error),
+            before,
+            allow_deadline,
+            actions,
+            "save"
+        ));
+        fs::remove_dir_all(dir).unwrap();
+        return;
+    }
     assert!(matches!(result.io.phase, IoPhase::Complete));
     let save_ms = start.elapsed().as_millis();
     let readback = ValidatedToriDocument::decode(&fs::read(&path).unwrap(), &mut || false).unwrap();
     assert_eq!(readback.record(), &native(&c));
-    let report = json!({"boundary":"actual DesktopController+existing bounded worker", "seed":"0x129ca11ab1e5", "generated_ms":generated_ms,"installation_ms":installation_ms,"stop_ms":stop_ms,"resign_ms":resign_ms,"close_and_snapshot_ms":close_snapshot_ms,"enqueue_save_ms":enqueue_save_ms,"save_ms":save_ms,"initial_usage":initial_usage,"final_usage":current(&c).document.usage(),"saved_usage":readback.usage(),"saved_floor":readback.retired_execution_floor(),"document_budget":262144,"extra_native_replays_per_operation_upper_bound":4,"extra_replay_units_upper_bound":4*(65536+128)+512,"worker_deadline_seconds":15});
+    let mut reopened = controller();
+    let before = long_retained_state(&mut reopened);
+    let start = Instant::now();
+    let id = reopened
+        .queue_shared_open(path.clone(), reopened.shared_open_token())
+        .unwrap();
+    let result = wait_file(&mut reopened, id);
+    if matches!(result.io.phase, IoPhase::Failed) {
+        let error = result.io.message.clone().unwrap();
+        assert!(!long_result(
+            &mut reopened,
+            Err(error),
+            before,
+            allow_deadline,
+            actions,
+            "open"
+        ));
+        fs::remove_dir_all(dir).unwrap();
+        return;
+    }
+    assert!(matches!(result.io.phase, IoPhase::Complete));
+    assert_eq!(native(&reopened), native(&c));
+    assert!(result.paused);
+    assert!(current(&reopened).pending.is_none());
+    let reopen_ms = start.elapsed().as_millis();
+    let report = json!({"boundary":"actual DesktopController+existing bounded worker", "seed":"0x129ca11ab1e5", "actions":actions, "result":"complete journey", "generated_ms":generated_ms,"installation_ms":installation_ms,"stop_ms":stop_ms,"resign_ms":resign_ms,"close_and_snapshot_ms":close_snapshot_ms,"enqueue_save_ms":enqueue_save_ms,"save_ms":save_ms,"reopen_ms":reopen_ms,"initial_usage":initial_usage,"final_usage":current(&c).document.usage(),"saved_usage":readback.usage(),"saved_floor":readback.retired_execution_floor(),"document_budget":262144,"extra_native_replays_per_operation_upper_bound":4,"extra_replay_units_upper_bound":4*(65536+128)+512,"worker_deadline_seconds":15});
     eprintln!("MSH131_LONG {}", report);
-    if let Ok(path) = std::env::var("MSH_TORI_131_LONG_REPORT") {
+    if actions == 360
+        && let Ok(path) = std::env::var("MSH_TORI_131_LONG_REPORT")
+    {
         fs::write(path, serde_json::to_vec_pretty(&report).unwrap()).unwrap();
     }
     fs::remove_dir_all(dir).unwrap();

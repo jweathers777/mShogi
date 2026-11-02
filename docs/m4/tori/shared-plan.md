@@ -201,3 +201,23 @@ facility is required.
 Planning validation and independent disposition are recorded in
 [the review](shared-plan-review.md); actual integration references are recorded in
 77 after commit/push. Stop after this refinement; no child implementation begins.
+
+
+## Implemented runtime boundary — MSH-131
+
+[The native runtime](desktop-runtime.md), reviewed source
+`ce48e84e64b9631343416acec865505dbbab570d`, now consumes the immutable MSH-130
+codec in the existing single controller/install/worker lifecycle. Actual native
+commands, inspection, exact event-prefix selection, Undo/Take back, retained
+lineage, Save/Open and unsupported supervised execution have
+[controller/process evidence](desktop-runtime-evidence.md). Thirteen mapped
+runtime fields and82requirements execute in the actual DesktopController;
+C-NOTATION remains1/1under42. Native713assertions and immutable ownership mapping
+are unchanged. Exact-source CI and final disposition are recorded in the evidence.
+
+MSH-132 remains the next component after131completion; this handoff is neither its
+activation nor77final acceptance. Complete semantic metadata, native Moves/event
+and last-action projection, frontend types and shared interaction verification
+remain132. Actual engine/console/notation/product Tori rendering/play remains42.
+Normal product New Game/Open remains gated; no new chooser or engine capability.
+The earlier planning sequence and original acceptance criteria remain preserved.

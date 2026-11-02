@@ -4,7 +4,7 @@ title: Complete Tori shared presentation and real-consumer contract verification
 status: Ready
 assignee: []
 created_date: '2026-11-01T21:28:00Z'
-updated_date: '2026-11-01T21:32:00Z'
+updated_date: '2026-11-02T08:47:00Z'
 labels:
   - m4
   - owner-msh-77
@@ -20,6 +20,8 @@ documentation:
   - docs/m4/tori/shared-consumer-ownership.json
   - docs/m4/tori/native-acceptance.md
   - docs/testing/conformance-policy.md
+  - docs/m4/tori/desktop-runtime.md
+  - docs/m4/tori/desktop-runtime-evidence.md
 type: task
 ordinal: 132000
 ---
@@ -51,3 +53,9 @@ Verification: focused real native/candidate/controller tests appropriate to this
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MSH131 implementation handoff only, not132activation: reviewed source253e4c949614d133b5295f6a362e3d5279adcef3 supplies actual ActiveDocumentTori in sole DesktopController/RuntimeMetadata/install_document, immutable complete admission, existing FileWorker Save/Open/receipts, native exactprefix/inspection/Undo/Takeback and retained lineage. Runtime actual82requirements/13fields execute separately from unchanged713native adapter; C-NOTATION1/1remains42. Minimal native SharedSnapshot is real but Moves/complete frontend metadata remain132. Use native owner and exact event/history/selected target, no second session. Normal productNewGame/Open gated, zero advertised engine capabilities; only verification supervised request returns real unscoredUnsupportedMode. Runtime-only browse reopenslive; saved observations preserveexactprefix. Exact-source131CI/finaldisposition in desktop-runtime-evidence.md.132remainsReady/unassigned/unstarted, all originalcriteria/dependencies unchanged.
+<!-- SECTION:NOTES:END -->

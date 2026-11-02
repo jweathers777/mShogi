@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@Codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-02T16:14:00Z'
+updated_date: '2026-11-02T16:47:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -25,6 +25,7 @@ documentation:
   - docs/m4/tori/native-fixture-ownership.json
   - docs/m4/tori/shared-acceptance.md
   - docs/m4/tori/playable-delivery.md
+  - docs/m4/tori/desktop-visual-checkpoint.md
 ordinal: 42000
 ---
 
@@ -99,4 +100,26 @@ Owner authorizes finished production Tori desktop presentation and working visua
 Owner visual clarification supersedes initial516ec8artwork choice: traditionalvariant-nativekanji are default for everyshogifamilygame; preserve originalbirdengravings only as dormantfuturealternative, nochooserimplementation. ProfileT02alreadyidentifies all9Toriglyphs; use separatelybundledpinnedOFLNotoJPsubset, keep acceptedShogi/Xiangqifonts unchanged. InitialactualGUI verifiednativekeyboardSw3dx3c, realengineFa4bx3c, bothcapturedSwallowhands, legaldropselection/Escape and completeSave/nativeQuit; screenshots source516ec8 retained as superseded, not finalvisualevidence. Its CI41476516226/41476516181 cancelled as superseded; preserveactualpartialstates. Small actualGUIclarity corrections accompanykanji: nativehumanlabel for qualifiedhand announcements and Ready for inactiveengine phase whenplaynotpaused; identities/actionsunchanged.
 
 ActualkanjiQA73febf0journeyfound post-Takeback presentation bug: gamecorrectlyrewound4→2plies withstoredobservations/retiredlineage intact,but runtimecurrent_observations retainedabandonedrequestIDs, soLastenginecouldshowevent3ascurrent. Focusedactualengine/controllerregressionREDconfirmedallhistoricalassertionfailure. NarrowfixclearcurrentobservationIDs onlyafter successfulcandidateRewind+native reconstruction; keepallcanonicalobs/branches. RegressioncoversSenteTakeback/GoteUndo,retainedobsidentical,allviewshistorical/notselected,paused/pendingretirement,lateobsrefusal,codecvalid; GREEN+reviewrecordedinevidence. No profile/rules/engine/schema/capacitychange. CI41478166246/41478166224 cancelledassuperseded; partialrecordpreserved. RebuildsamefixedQAidentity andrecapturefinalsourcebeforeownervisualcheckpoint.
+
+Visual checkpoint integrated production 31cd776e2bde2997b1d87f4e5215749892b8bcfb (native rewind fix/test 7b114daf04bb142c2d71f7883e970c116e7e5669). Production Tori uses the shared Shogi square/hand renderer, one native-choice controller/session and accepted shell; all nine profile-native traditional kanji are default, original bird artwork dormant. Global owner convention recorded in docs/design.md; no alternative selector or normal Tori activation added. Separate pinned OFL font subset is reproducible; existing Shogi/Xiangqi fonts unchanged.
+
+Actual final-source macOS27.0.1 arm64 QA package verified keyboard capture, real engine replies, both captured hands, complete native drop, forced Falcon→Eagle promotion, historical board/opponent-hand inspection, exact history/cues/Return, Take back, OS Save/Load with stopped reopen/Resume, real read-only analysis, native resignation and QuitCancel/Discard. All49 squares/hands/footer visible at1180×820,960×720 and760×650, both orientations. Twenty original JPEG captures with paired AX/hashes and the actual29,590-byte saved document are linked from docs/m4/tori/desktop-visual-checkpoint.md and its single structured evidence index. Same stable QA identity/path reused; external fixture selections left signed bytes unchanged. Normal package excludes instrumentation; no new Windows/Linux Tori GUI claim.
+
+Focused native rewind regression RED→GREEN preserves stored observations/retired lineage, rejects old replies and stops work; runtime current IDs clear only after successful rewind. Final ToriContract25PASS, strictTypeScript, both Cargo workspace checks, native Clippy, host14 tests and normal/QA builds passed; earlier368 frontend campaign had one capitalization-only assertion failure before focused correction, retained in evidence. Required Rust CI41479565886 all3 jobs PASS at7b; final-source Desktop41480632062 all3 locked/frontend/native checks+normal packages+actual bundled-engine inspection steps PASS at31cd. Only two frontend wording/test files differ; native/host/workflows identical. Supporting existing-game Windows/Linux GUI jobs still running at required-condition snapshot; no final Tori platform acceptance inferred. Superseded campaigns and red probes preserved. No redundant timed wait after required completion.
+
+Independent separate-agent read-only source/test/provenance/JPEG/AX review and final evidence audit PASS, no material finding; reviewer did not execute tests/GUI/CI. Evidence audit repaired mistaken PNG extension/dimension metadata while preserving original JPEG bytes. At minimum long move notation may wrap, with full accessible label preserved. GUI search completed before active Cancel could be exercised: no GUI search-cancellation claim; native/controller cancellation/stale evidence reused.
+
+MSH42 remains In Progress, all original8AC/4DoD and dependencies unchanged. STOP for owner visual approval of actual traditional pieces/board/hands/promotion/layout. Normal product exposure, final three-platform Tori player acceptance and independent complete-game review remain after approval. No subsequent variant or M5 work started. Documentation-only final integration records this tested checkpoint; primary codex/rewrite and unrelated worktrees preserved.
+
+Final supporting CI reconciliation: Desktop41480632062 completed FAILURE after all required locked checks/normal packages/bundled-engine inspection steps passed. Linux125397672572 and Windows normal GUI phases both failed gui-smoke.py1412, an obsolete “No engine search has completed” assertion. Actual saved DOM/native archives on BOTH systems show UNMODIFIED stopped2ply reopen and correct “Earlier engine searches are retained as historical observations.” All other recorded phases retain their actual outcomes; normal-phase later steps were not reached. This is not attributed to MSH111/122 driver failures. Preserve both original traces/DOM/hashes/artifact references in desktop-visual-linux-gui-failure.json and desktop-visual-windows-gui-failure.json.
+
+Verification-only correction05ceba4161a77d15633069d183a211992e0a0ff1 now additionally requires a real saved engine-turn observation, truthful historical wording and absence of current Last engine turn. Independent exact diff/Linux-artifact review PASS; Python syntax and new assertions against BOTH actual failed-run DOM/archives PASS. Product/native/frontend/package source remains31cd776, unchanged by this test-only commit. No rerun/full Desktop workflow PASS is claimed. Required Rust3 and desktop locked/package/engine steps remain accurately PASS; full platform GUI acceptance remains open after owner visual approval. No new campaign or timed wait was started after required completion. Latest docs/structured record supersede the earlier supporting-jobs-running snapshot while preserving it. MSH42 remains In Progress with all8AC/4DoD unchanged; stop at owner visual checkpoint.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Desktop visual checkpoint: production31cd776 (native7b114da) delivers shared 7×7 Tori board/hands with traditional native kanji default; dormant bird alternative retained. Actual macOS packaged play/engine/drop/promotion/history/SaveLoad/Takeback/analysis/outcome/quit journeys and20 responsive captures documented. Independent source/visual/evidence review PASS; required three-platform native and final-source desktop package checks PASS. See docs/m4/tori/desktop-visual-checkpoint.md and evidence/desktop-visual-checkpoint.json for exact source/package/CI/failure provenance. Owner visual approval, normal activation and final Tori platform/complete-game acceptance remain pending; MSH42 stays In Progress with original criteria intact.
+
+Full Desktop workflow later FAILED on the same obsolete reopen-caption assertion in Linux/Windows normal GUI; failed evidence preserved. Reviewed verification-only05ceba4 correction passes syntax and assertions against both actual failed-run DOM/archives; no new platform GUI rerun claimed. Required native/package steps passed; owner visual approval and final platform acceptance remain pending.
+<!-- SECTION:FINAL_SUMMARY:END -->

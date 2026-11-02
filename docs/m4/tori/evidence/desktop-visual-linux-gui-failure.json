@@ -1,0 +1,157 @@
+{
+  "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+  "run": 41480632062,
+  "job": 125397672572,
+  "url": "https://github.com/jweathers777/mShogi/actions/runs/41480632062/job/125397672572",
+  "artifact": 13159024858,
+  "artifact_url": "https://github.com/jweathers777/mShogi/actions/runs/41480632062/artifacts/13159024858",
+  "phase": "normal",
+  "status": "failed",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 2434, in main\n    journey.normal()\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 1412, in normal\n    assert \"No engine search has completed\" in w.text(\".sidebar\")\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "actual_DOM": {
+    "text": "歩\nmShogi\n\nCHESS\nLocal engine\nUNMODIFIED\nnormal-complete.mshogi\nNew game\nSave\nLoad\nYOUR GAME\n\nWhite to move\nYou play White against mShogi\n↕\nFlip board\nm\nmShogiBlack\nYour opponent\n♜\n8\n♞\n♝\n♛\n♚\n♝\n♞\n♜\n7\n♟\n♟\n♟\n♟\n♟\n♟\n♟\n6\n♟\n5\n4\n♟\n3\n♟\n2\n♟\n♟\n♟\n♟\n♟\n♟\n♜\n1\na\n♞\nb\n♝\nc\n♛\nd\n♚\ne\n♝\nf\n♞\ng\n♜\nh\nY\nYouWhite\nHuman player\nTo move\nArrows: move focus · Enter/Space: select · Esc: cancel\nPlay paused · resume explicitly to continue\nLive position · 2 plies\nPlay is paused.\nResume play\nAnalysis\n\nPlay details\nAnalyze position\nEngine\nPlay Paused\nPlay limit: depth 2 · 20000 nodes\nEarlier engine searches are retained as historical observations.\nGame Actions\n\nTake backResign\nMoves\n2 moves\nStarting position\nMoves from the starting position\nMove number\tWhite\tBlack\n1.\te4\ta5\nPosition events (1)\n",
+    "focus": {
+      "label": null,
+      "text": "Play details",
+      "tag": "BUTTON"
+    },
+    "dimensions": {
+      "dpr": 1,
+      "height": 820,
+      "width": 1180
+    },
+    "common_actions": [],
+    "inputs": []
+  },
+  "actual_DOM_sha256": "5f5581dfacef0eb6d33d48c5f3a5238ac02d954612cae7cfa3b1d29164cda505",
+  "saved_archive_sha256": "0156dfc8635ab2183abc98d1ad4c52e7e0016fff2fd8ba36ad7bba26fcebfe11",
+  "saved_observations": 3,
+  "saved_engine_turns": 2,
+  "correction": "Verification-only expectation now requires a real saved engine-turn observation, truthful historical wording and absence of a current Last engine turn. Actual saved failure DOM/archive satisfy those assertions. Python syntax check passed. No new Linux GUI rerun or full-workflow pass claimed.",
+  "phase_results": [
+    {
+      "phase": "normal",
+      "status": "failed"
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "passed"
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "passed"
+    },
+    {
+      "phase": "normal-xiangqi",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-current-claim",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-concluded",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-full-unknown-cancel",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-pending-chess",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-pending-shogi",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-pending-xiangqi",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-warning",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-fourth",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-count",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-offer",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-agreed",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-fast-proof",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-resigned",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-capacity",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-failure",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-exact-evidence",
+      "status": "passed"
+    }
+  ]
+}

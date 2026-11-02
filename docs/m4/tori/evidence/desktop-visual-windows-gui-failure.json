@@ -1,0 +1,154 @@
+{
+  "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+  "run": 41480632062,
+  "job": 125397673427,
+  "artifact": 13162420042,
+  "phase": "normal",
+  "status": "failed",
+  "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2434, in main\n    journey.normal()\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 1412, in normal\n    assert \"No engine search has completed\" in w.text(\".sidebar\")\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "actual_DOM": {
+    "text": "歩\nmShogi\n\nCHESS\n\nLocal engine\nUNMODIFIED\nnormal-complete.mshogi\nNew game\nSave\nLoad\n\nYOUR GAME\n\nWhite to move\n\nYou play White against mShogi\n\n↕\nFlip board\nm\nmShogiBlack\nYour opponent\n♜\n8\n♞\n♝\n♛\n♚\n♝\n♞\n♜\n7\n♟\n♟\n♟\n♟\n♟\n♟\n♟\n6\n♟\n5\n4\n♟\n3\n♟\n2\n♟\n♟\n♟\n♟\n♟\n♟\n♜\n1\na\n♞\nb\n♝\nc\n♛\nd\n♚\ne\n♝\nf\n♞\ng\n♜\nh\nY\nYouWhite\nHuman player\nTo move\n\nArrows: move focus · Enter/Space: select · Esc: cancel\n\nPlay paused · resume explicitly to continue\nLive position · 2 plies\n\nPlay is paused.\n\nResume play\nAnalysis\nPlay details\nAnalyze position\nEngine\nPlay Paused\n\nPlay limit: depth 2 · 20,000 nodes\n\nEarlier engine searches are retained as historical observations.\n\nGame Actions\nTake backResign\nMoves\n2 moves\nStarting position\n\nMoves from the starting position\n\nMove number\n\tWhite\tBlack\n1.\te4\ta5\nPosition events (1)",
+    "focus": {
+      "label": null,
+      "tag": "BUTTON",
+      "text": "Play details"
+    },
+    "dimensions": {
+      "dpr": 1,
+      "height": 820,
+      "width": 1180
+    },
+    "common_actions": [],
+    "inputs": []
+  },
+  "actual_DOM_sha256": "301d9847b4edd5ab97837717a5332d0c52527532ac1582994a0ed80fa32fe839",
+  "saved_archive_sha256": "72730aec6bf4b912b69173c0cb14018761cbe5a7548e90cbe630d129cd2c43a1",
+  "saved_observations": 3,
+  "correction": "Same obsolete1412 wording assertion as Linux. New assertions checked against this actual Windows failure DOM/archive PASS; no new Windows GUI rerun or whole-workflow PASS claimed.",
+  "phase_results": [
+    {
+      "phase": "normal",
+      "status": "failed"
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "passed"
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "passed"
+    },
+    {
+      "phase": "normal-xiangqi",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-current-claim",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-concluded",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-full-unknown-cancel",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-pending-chess",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-pending-shogi",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-pending-xiangqi",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-warning",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-fourth",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-count",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-offer",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-agreed",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-fast-proof",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-resigned",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-capacity",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-failure",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-exact-evidence",
+      "status": "passed"
+    }
+  ]
+}

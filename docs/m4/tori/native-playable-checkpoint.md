@@ -1,5 +1,11 @@
 # Tori native playable-consumer checkpoint (MSH-42)
 
+Current continuation: [desktop visual checkpoint](desktop-visual-checkpoint.md).
+The native-only descriptions below preserve this earlier checkpoint; finished
+kanji presentation and actual macOS journeys now have separate evidence. Owner
+visual approval and final product acceptance remain pending.
+
+
 This checkpoint adds a functional computer opponent and its native consumers to
 `mshogi.tori.modern.v1`. It does not complete MSH-42 or approve Tori desktop artwork.
 The eight original delivery criteria remain intact. The normal player chooser,
@@ -133,6 +139,10 @@ both bounded scenarios, work limits, observations and complete native records.
 Normal Tori product exposure and packaged Tori GUI verification remain pending.
 
 ## Remaining finished-product work
+
+Historical handoff at the native checkpoint. The board/artwork and macOS player
+journeys are now implemented in the [visual checkpoint](desktop-visual-checkpoint.md);
+owner approval, normal activation and final packaged acceptance remain open.
 
 Continue under MSH-42 with the actual Tori board/piece artwork, integrated hands,
 clear compulsory promotion and handed quail presentation in the accepted shell.

@@ -1,0 +1,852 @@
+{
+  "schema": "mshogi.tori.desktop-visual-checkpoint.v1",
+  "task": "MSH-42",
+  "status": "In Progress; verified visual checkpoint, owner approval pending",
+  "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+  "basis": "29abd7ba8248ab4bc9667b22efa42b2b639c6e07",
+  "profile": "mshogi.tori.modern.v1",
+  "normal_activation": false,
+  "local_checks": [
+    {
+      "command": "cargo check --locked --workspace --all-targets",
+      "result": "PASS",
+      "qualification": "Earlier visual implementation campaign; final checkpoints below and CI identify exact revisions."
+    },
+    {
+      "command": "cargo check --locked --manifest-path desktop/src-tauri/Cargo.toml --all-targets --all-features",
+      "result": "PASS; inherited Tao warnings",
+      "qualification": "Earlier visual implementation campaign; final checkpoints below and CI identify exact revisions."
+    },
+    {
+      "command": "Node24 npm run check",
+      "result": "PASS",
+      "qualification": "Earlier visual implementation campaign; final checkpoints below and CI identify exact revisions."
+    },
+    {
+      "command": "Node24 npm test",
+      "result": "PASS",
+      "files": 28,
+      "tests": 356,
+      "qualification": "Earlier visual implementation campaign; final checkpoints below and CI identify exact revisions."
+    },
+    {
+      "command": "Node24 npm run build",
+      "result": "PASS; normal build verification exclusion checks passed",
+      "qualification": "Earlier visual implementation campaign; final checkpoints below and CI identify exact revisions."
+    },
+    {
+      "command": "cargo test --locked -p mshogi-desktop-session shared::tori::tests:: --all-features",
+      "result": "PASS",
+      "tests": 25,
+      "qualification": "Earlier visual implementation campaign; final checkpoints below and CI identify exact revisions."
+    },
+    {
+      "command": "cargo test --locked --manifest-path desktop/src-tauri/Cargo.toml --all-features",
+      "result": "PASS",
+      "tests": 14,
+      "qualification": "Earlier visual implementation campaign; final checkpoints below and CI identify exact revisions."
+    },
+    {
+      "command": "cargo fmt --all -- --check; standalone host fmt; git diff --check",
+      "result": "PASS",
+      "qualification": "Earlier visual implementation campaign; final checkpoints below and CI identify exact revisions."
+    },
+    {
+      "command": "Final coherent frontend campaign",
+      "result": "367PASS/1capitalization-only assertion failure, then affected ToriContract24PASS after mechanical correction; final exact-source CI required",
+      "qualification": "Earlier visual implementation campaign; final checkpoints below and CI identify exact revisions."
+    },
+    {
+      "command": "Final standalone host all-target/all-feature check and all-feature tests",
+      "result": "PASS",
+      "tests": 14,
+      "qualification": "Earlier visual implementation campaign; final checkpoints below and CI identify exact revisions."
+    }
+  ],
+  "review": {
+    "method": "Independent agent read-only source/test/provenance/JPEG/accessibility-text review; no reviewer execution",
+    "source_verdict": "PASS final31cd independent source/test/provenance/UI-contract plus nativefix re-review",
+    "actual_screenshot_review": "PASS JPEG01,02,04–11,18,19 +AX18/19 independentlyviewed; no materialfinding; full49squares/allnativefaces/quails/rotation/promotion/markers/history/sharedshell supported.",
+    "limitations": "Minimum long Fa7cx7b=Ea wraps within playercolumn; completeAXlabel retained. Reviewer didnot execute tests, app interactions orCI; ownerapproval/WindowsLinuxToriGUI notestablished.",
+    "final_evidence_audit": "PASS after repairing JPEG extensions/metadata and historical handoff notes; reviewer independently checked all20 actual dimensions/native AXsizes/image+AXhashes/49unique squares and reread latest01/02YourturnReady. Earlier paused image read superseded by recapture; no material finding remains.",
+    "verification_only_review": "PASS independent exact gui-smoke.py diff + actual Linux failure DOM/archive/trace review. Real engine-turn evidence is required before historical wording, and current Last engine turn must be absent. No acceptance weakening or production change; reviewer did not execute tests/GUI/CI.",
+    "ci_audit": "Independent read-only saved-CI/localdiff audit supports limited required-step PASS, not a full Desktop workflow pass. Later completed Linux/Windows failures and actual traces are separately preserved."
+  },
+  "reused_evidence": "native-playable-checkpoint.json remains valid for native rules/history/search/engine/codec/capacity, including256→257 admission, reserved endings and stopped reopen. The runtime current-observation classification was changed by the independently reviewed7b rewind fix and its red/green regression; no new strength claim.",
+  "packages": {
+    "normal": {
+      "package_root": "desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+      "engine": "Contents/MacOS/mshogi",
+      "sha256": "7fae5c348388e132b8c7d2c6e409c777db09f147b98475eca1ce67b21b006e4f",
+      "host_sha256": "6a6bacf0cc5206b6a5329d3a21c414fe5b9129f771b447f222272898a8f1e952",
+      "version": "mshogi 0.1.0",
+      "uci_observations": [
+        "id name mShogi 0.1.0",
+        "id author John Weathers",
+        "option name ClaimPolicy type combo default explicit var explicit var auto",
+        "uciok",
+        "readyok",
+        "info depth 1 nodes 21 time 5 score cp 0 pv a2a3",
+        "bestmove a2a3"
+      ],
+      "internal_response": {
+        "protocol": 4,
+        "observation": {
+          "schema_version": 1,
+          "context": {
+            "purpose": {
+              "kind": "engine_turn"
+            },
+            "request_id": 1,
+            "session_version": 1,
+            "process_generation": 1,
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "chess",
+              "rules_profile": "mshogi.chess.match.v1",
+              "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+              "native_schema_version": 1,
+              "payload": {
+                "schema_version": 1,
+                "rules_profile": "mshogi.chess.match.v1",
+                "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                "history_origin": "standard_start",
+                "claim_policy": "explicit_only",
+                "events": []
+              }
+            },
+            "limits": {
+              "depth": 1,
+              "nodes": 1000
+            }
+          },
+          "result": {
+            "kind": "chess",
+            "result": {
+              "kind": "move",
+              "action": "a2a3",
+              "telemetry": {
+                "score": 0,
+                "completed_depth": 1,
+                "nodes": 21,
+                "principal_variation": [
+                  {
+                    "kind": "move",
+                    "action": "a2a3"
+                  }
+                ],
+                "status": "complete"
+              }
+            }
+          }
+        }
+      },
+      "analysis_response": {
+        "protocol": 4,
+        "observation": {
+          "schema_version": 1,
+          "context": {
+            "purpose": {
+              "kind": "move_analysis",
+              "target": {
+                "selection_id": 1,
+                "event_index": 0,
+                "board_ply": 0,
+                "session_version": 1,
+                "label": "Package verification: standard start",
+                "turn": {
+                  "game_kind": "chess",
+                  "side": "white"
+                }
+              }
+            },
+            "request_id": 2,
+            "session_version": 1,
+            "process_generation": 2,
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "chess",
+              "rules_profile": "mshogi.chess.match.v1",
+              "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+              "native_schema_version": 1,
+              "payload": {
+                "schema_version": 1,
+                "rules_profile": "mshogi.chess.match.v1",
+                "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                "history_origin": "standard_start",
+                "claim_policy": "explicit_only",
+                "events": []
+              }
+            },
+            "limits": {
+              "depth": 1,
+              "nodes": 1000
+            }
+          },
+          "result": {
+            "kind": "chess",
+            "result": {
+              "kind": "move",
+              "action": "a2a3",
+              "telemetry": {
+                "score": 0,
+                "completed_depth": 1,
+                "nodes": 21,
+                "principal_variation": [
+                  {
+                    "kind": "move",
+                    "action": "a2a3"
+                  }
+                ],
+                "status": "complete"
+              }
+            }
+          }
+        }
+      },
+      "full_response": {
+        "protocol": 4,
+        "observation": {
+          "schema_version": 1,
+          "context": {
+            "purpose": {
+              "kind": "chess_full_reachability",
+              "target": {
+                "selection_id": 1,
+                "event_index": 0,
+                "board_ply": 0,
+                "session_version": 1,
+                "label": "Package verification: standard start",
+                "turn": {
+                  "game_kind": "chess",
+                  "side": "white"
+                }
+              },
+              "mate": "either",
+              "limits": {
+                "max_positions": 1,
+                "max_transitions": 1
+              }
+            },
+            "request_id": 3,
+            "session_version": 1,
+            "process_generation": 3,
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "chess",
+              "rules_profile": "mshogi.chess.match.v1",
+              "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+              "native_schema_version": 1,
+              "payload": {
+                "schema_version": 1,
+                "rules_profile": "mshogi.chess.match.v1",
+                "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                "history_origin": "standard_start",
+                "claim_policy": "explicit_only",
+                "events": []
+              }
+            },
+            "limits": {
+              "depth": 1,
+              "nodes": 0
+            }
+          },
+          "result": {
+            "kind": "chess",
+            "result": {
+              "kind": "reachability",
+              "result": {
+                "unknown": {
+                  "reason": "position_limit",
+                  "work": {
+                    "positions": 1,
+                    "expanded": 1,
+                    "transitions": 1,
+                    "static_leaves": 0
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "files": [
+        "Contents/Info.plist",
+        "Contents/MacOS/mshogi",
+        "Contents/MacOS/mshogi-desktop",
+        "Contents/Resources/icon.icns"
+      ],
+      "scope": "Package inventory and actual UCI, engine-turn, move-analysis and bounded Full reachability queries. Host acceptance and installed UI interaction are separate evidence."
+    },
+    "qa": {
+      "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+      "expected_bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+      "environment": {
+        "MSHOGI_DESKTOP_FIXTURE_FILE": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/qa.fixture"
+      },
+      "files": {
+        "Contents/Info.plist": "0a16e98931910a2e976eeffe0fdb563ca73ceaf7e60af2548c944d9bc86131da",
+        "Contents/MacOS/mshogi": "46fd766abb1998670a7975118164fafee96545226b535fd2099fffab7a651d9c",
+        "Contents/MacOS/mshogi-desktop": "f1476915c84807c3f03bc9e9d9eceda3c27584c2a825f2c67d9a090255e68325",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc",
+        "Contents/_CodeSignature/CodeResources": "05aeea2e2b276e96c261591829473befbe07afe90536b2167cbc51f034ce87e2"
+      },
+      "signatures": {
+        "display": {
+          "exit_code": 0,
+          "output": "# designated => cdhash H\"9265a13065e0d1ab2301899d778d3db0e45f1b94\"\nExecutable=/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.shogipromotion\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=33898 flags=0x2(adhoc) hashes=1052+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=9265a13065e0d1ab2301899d778d3db0e45f1b94\nCandidateCDHashFull sha256=9265a13065e0d1ab2301899d778d3db0e45f1b94b77b2f47dcbfd65ac9a08a39\nHash choices=sha256\nCMSDigest=9265a13065e0d1ab2301899d778d3db0e45f1b94b77b2f47dcbfd65ac9a08a39\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=11255808\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=9265a13065e0d1ab2301899d778d3db0e45f1b94\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n"
+        },
+        "strict_verify": {
+          "exit_code": 0,
+          "output": "--prepared:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n--validated:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: valid on disk\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: satisfies its Designated Requirement\n"
+        }
+      },
+      "qualification": "Ad-hoc signatures may change on rebuild; no approval persistence is inferred",
+      "selector_integrity": "Signed file hashes identical before/after standard→contract→standard selections. CUA reused fixed identity/path across rebuilds/scenarios without another approval prompt observed; no platform permission guarantee inferred."
+    }
+  },
+  "gui": {
+    "status": "PASS actual packaged macOS interaction; owner visual approval pending",
+    "application_slot": "qa",
+    "bundle_identifier": "org.mshogi.desktop.verification.r6.shogipromotion",
+    "path": "desktop/src-tauri/target/verification/macos/mShogi Verification.app",
+    "screenshots": [
+      {
+        "file": "desktop-visual/01-standard-1180.jpg",
+        "accessibility": "desktop-visual/01-standard-1180.ax.txt",
+        "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+        "physical_pixels": [
+          2360,
+          1640
+        ],
+        "logical_content": [
+          1180,
+          820
+        ],
+        "distinct_board_squares_in_AX": 49,
+        "sha256": "d27750b67a5f9de9a32bf4fb82cf3e6516913921dd4738b60e6da6359a7064b6",
+        "AX_sha256": "7a8db837495a45b1d501f36f7755360906da99d7914cacf4b1046a55b7b3b8d8",
+        "captured_UTC": "2026-11-02T16:30:13.925084+00:00",
+        "establishes": "Standard known root; explicitResume/humanturn:Yourturn/Ready.",
+        "format": "image/jpeg (original CUA bytes, unchanged)"
+      },
+      {
+        "file": "desktop-visual/02-gote-1180.jpg",
+        "accessibility": "desktop-visual/02-gote-1180.ax.txt",
+        "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+        "physical_pixels": [
+          2360,
+          1640
+        ],
+        "logical_content": [
+          1180,
+          820
+        ],
+        "distinct_board_squares_in_AX": 49,
+        "sha256": "e5b3c65ecdf540a6381d3a82827fb32b8dc546ed252d91e16e749d55c3c3977c",
+        "AX_sha256": "915061109f6dd7a9d49917d417ad44ccec2b04a48f6f2342fa146bf147fe6b1b",
+        "captured_UTC": "2026-11-02T16:30:14.751878+00:00",
+        "establishes": "Standardroot Gote-bottom, nativecoordinates/whole-pieceownershiprotation.",
+        "format": "image/jpeg (original CUA bytes, unchanged)"
+      },
+      {
+        "file": "desktop-visual/03-selected-board-1180.jpg",
+        "accessibility": "desktop-visual/03-selected-board-1180.ax.txt",
+        "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+        "physical_pixels": [
+          2360,
+          1640
+        ],
+        "logical_content": [
+          1180,
+          820
+        ],
+        "distinct_board_squares_in_AX": 49,
+        "sha256": "35c36e7ad1847549601d6a052b1e6b3f3e0d08c38e7194cbdc7a1a4188c5cd85",
+        "AX_sha256": "a7407d43ce04de6715bc799ea96c881bceff774c75f17bd4d8084781398a3bde",
+        "captured_UTC": "2026-11-02T16:26:22.200941+00:00",
+        "establishes": "Selected Swallow3d/nativecapture3c; Escape restoresfocus.",
+        "format": "image/jpeg (original CUA bytes, unchanged)"
+      },
+      {
+        "file": "desktop-visual/04-both-hands-after-captures-1180.jpg",
+        "accessibility": "desktop-visual/04-both-hands-after-captures-1180.ax.txt",
+        "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+        "physical_pixels": [
+          2360,
+          1640
+        ],
+        "logical_content": [
+          1180,
+          820
+        ],
+        "distinct_board_squares_in_AX": 49,
+        "sha256": "76bfabad86a65fbc326605ac0147868c2683c255573565deba5c85bca7ac4e11",
+        "AX_sha256": "d62034340ab390c4b00592f1df825cb42ee070f99b7d4030f05511477989d234",
+        "captured_UTC": "2026-11-02T16:26:34.134913+00:00",
+        "establishes": "Actualkeyboard Sw3dx3c→realengine Fa4bx3c; bothhandsSw1; depth2/nodes560/-2.00Swallows/Goteperspective.",
+        "format": "image/jpeg (original CUA bytes, unchanged)"
+      },
+      {
+        "file": "desktop-visual/05-selected-drop-1180.jpg",
+        "accessibility": "desktop-visual/05-selected-drop-1180.ax.txt",
+        "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+        "physical_pixels": [
+          2360,
+          1640
+        ],
+        "logical_content": [
+          1180,
+          820
+        ],
+        "distinct_board_squares_in_AX": 49,
+        "sha256": "dad020453d7629d987ba9cec71dadfbab8b26fa845113e0ed0da47776ac833e9",
+        "AX_sha256": "dca6f655fe3595714f879d4b5d95a16e50f5248d8cfc331b9dc8b09c591455a8",
+        "captured_UTC": "2026-11-02T16:26:35.017105+00:00",
+        "establishes": "SelectedownSwallowhand/nativelegaldrops; Escape restoreshandfocus/no partialaction.",
+        "format": "image/jpeg (original CUA bytes, unchanged)"
+      },
+      {
+        "file": "desktop-visual/06-compulsory-promotion-1180.jpg",
+        "accessibility": "desktop-visual/06-compulsory-promotion-1180.ax.txt",
+        "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+        "physical_pixels": [
+          2360,
+          1640
+        ],
+        "logical_content": [
+          1180,
+          820
+        ],
+        "distinct_board_squares_in_AX": 49,
+        "sha256": "c05ec8d5bf8f7e77cf7ab1b3ef1e51129e0c5fe149d53cf0f4d5db08c59c924a",
+        "AX_sha256": "60fcfec9dfb7640a915ecaf5f92f052fc580f2e0938921d689f2b208aecf19e6",
+        "captured_UTC": "2026-11-02T16:28:08.611211+00:00",
+        "establishes": "NativeFa7cx7b=Ea compulsorypromotion/no dialog; red鵰+noncolorcue/Swallowhand3.",
+        "format": "image/jpeg (original CUA bytes, unchanged)"
+      },
+      {
+        "file": "desktop-visual/07-history-and-last-move-1180.jpg",
+        "accessibility": "desktop-visual/07-history-and-last-move-1180.ax.txt",
+        "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+        "physical_pixels": [
+          2360,
+          1640
+        ],
+        "logical_content": [
+          1180,
+          820
+        ],
+        "distinct_board_squares_in_AX": 49,
+        "sha256": "55901874ba4a95bc3f8e24367b7e7178830c6ef8845856449c7e1983cf9c551c",
+        "AX_sha256": "49c5a93ddb8882e797969a89925b45f037d9f3dde00a7b6a8110c29546033274",
+        "captured_UTC": "2026-11-02T16:26:45.692899+00:00",
+        "establishes": "Exactevent1historicalprefix/live2pliesunchanged;origin3d/emphasizeddestination3c.",
+        "format": "image/jpeg (original CUA bytes, unchanged)"
+      },
+      {
+        "file": "desktop-visual/08-narrow-960.jpg",
+        "accessibility": "desktop-visual/08-narrow-960.ax.txt",
+        "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+        "physical_pixels": [
+          1920,
+          1440
+        ],
+        "logical_content": [
+          960,
+          720
+        ],
+        "distinct_board_squares_in_AX": 49,
+        "sha256": "2e758bc13228b6a8a7a2f4fedbb0141b672b37ee12aa58b387c11bc998dab88e",
+        "AX_sha256": "3f4c1e0176811a9fec920ad9055ea51663ee8721a9697f6cce10aa493e57cb2c",
+        "captured_UTC": "2026-11-02T16:28:17.244119+00:00",
+        "establishes": "960×720narrow:49squares/hands/promotedfaces/footer/noboardscroll.",
+        "format": "image/jpeg (original CUA bytes, unchanged)"
+      },
+      {
+        "file": "desktop-visual/09-minimum-760.jpg",
+        "accessibility": "desktop-visual/09-minimum-760.ax.txt",
+        "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+        "physical_pixels": [
+          1520,
+          1300
+        ],
+        "logical_content": [
+          760,
+          650
+        ],
+        "distinct_board_squares_in_AX": 49,
+        "sha256": "c4791301546e0369e8cf5beaf9a2be96b2919bef8e92215486020c4ee5f17d8c",
+        "AX_sha256": "eb6ab6705a368344cd105449f5c8e02681c161135f028f4a4a2d5aedeaf635d8",
+        "captured_UTC": "2026-11-02T16:28:18.493604+00:00",
+        "establishes": "760×650minimum:49squares/hands/promotedfaces/footer/noboardscroll.",
+        "format": "image/jpeg (original CUA bytes, unchanged)"
+      },
+      {
+        "file": "desktop-visual/10-gote-minimum-760.jpg",
+        "accessibility": "desktop-visual/10-gote-minimum-760.ax.txt",
+        "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+        "physical_pixels": [
+          1520,
+          1300
+        ],
+        "logical_content": [
+          760,
+          650
+        ],
+        "distinct_board_squares_in_AX": 49,
+        "sha256": "3ca2dfb3d2b8ea4653ec2c4d0b88dc2218386a7ea9acfceb53918dd0cf154ad8",
+        "AX_sha256": "1f7845047fc19bcb59a1f3c570458a91f76ab476bf002a36ac5fd9960529185d",
+        "captured_UTC": "2026-11-02T16:28:29.214530+00:00",
+        "establishes": "Gote-bottomminimum/nativehandownership/rotation.",
+        "format": "image/jpeg (original CUA bytes, unchanged)"
+      },
+      {
+        "file": "desktop-visual/11-all-nine-faces-hands-1180.jpg",
+        "accessibility": "desktop-visual/11-all-nine-faces-hands-1180.ax.txt",
+        "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+        "physical_pixels": [
+          2360,
+          1640
+        ],
+        "logical_content": [
+          1180,
+          820
+        ],
+        "distinct_board_squares_in_AX": 49,
+        "sha256": "6a66549526657deb7a2980d16986c07103fd76ad27442c56182bb4e8f55ae2a7",
+        "AX_sha256": "4a2ae39894cec076abe2e72d7d7d12d4f521b6e57aca9cf35165adc6d889f3ce",
+        "captured_UTC": "2026-11-02T16:28:06.866597+00:00",
+        "establishes": "All9nativefaces/bothhands; admissiblecontractdiagram/rootcounter31/earlierhistoryunknown.",
+        "format": "image/jpeg (original CUA bytes, unchanged)"
+      },
+      {
+        "file": "desktop-visual/12-drop-and-engine-reply.jpg",
+        "accessibility": "desktop-visual/12-drop-and-engine-reply.ax.txt",
+        "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+        "physical_pixels": [
+          2360,
+          1640
+        ],
+        "logical_content": [
+          1180,
+          820
+        ],
+        "distinct_board_squares_in_AX": 49,
+        "sha256": "d3e8b15a40b209b205d9b81748dbd1f43a116de78c114d2f34e97f1ca6b2740e",
+        "AX_sha256": "9350f602365700c87219cc2097a2bc07f33ca7915746ca947b844644841670a5",
+        "captured_UTC": "2026-11-02T16:26:43.899693+00:00",
+        "establishes": "ActualSw*3d→realengineFa3c-4b;4plies/nodes723.",
+        "format": "image/jpeg (original CUA bytes, unchanged)"
+      },
+      {
+        "file": "desktop-visual/13-historical-inspection.jpg",
+        "accessibility": "desktop-visual/13-historical-inspection.ax.txt",
+        "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+        "physical_pixels": [
+          2360,
+          1640
+        ],
+        "logical_content": [
+          1180,
+          820
+        ],
+        "distinct_board_squares_in_AX": 49,
+        "sha256": "b4505c4443b9f90e5fce251a43652708878a643b237f2b8a34dab8a56987099f",
+        "AX_sha256": "e81ac28a9246481bfa5c87f02a1cb91fa0d24235ce998690fdc81e5709e9b1a6",
+        "captured_UTC": "2026-11-02T16:26:46.583720+00:00",
+        "establishes": "HistoricalGoteFalcon/native readonlyinspection/commonwording/hollowmarkers/Escape.",
+        "format": "image/jpeg (original CUA bytes, unchanged)"
+      },
+      {
+        "file": "desktop-visual/14-reopened-stopped.jpg",
+        "accessibility": "desktop-visual/14-reopened-stopped.ax.txt",
+        "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+        "physical_pixels": [
+          2360,
+          1640
+        ],
+        "logical_content": [
+          1180,
+          820
+        ],
+        "distinct_board_squares_in_AX": 49,
+        "sha256": "c013a7c86b46b6b06f00b5b027d799c30be8d57741a734e0e9d11511b3051f7c",
+        "AX_sha256": "955263fbbce565942495fc55b1b61c59f6cc95bb10226ed9e6200d78e999cb2d",
+        "captured_UTC": "2026-11-02T16:27:09.111939+00:00",
+        "establishes": "ActualSave/Load:UNMODIFIED/live2plies/completehistory/retainedobservations/stoppeduntilResume.",
+        "format": "image/jpeg (original CUA bytes, unchanged)"
+      },
+      {
+        "file": "desktop-visual/15-take-back-historical-observations.jpg",
+        "accessibility": "desktop-visual/15-take-back-historical-observations.ax.txt",
+        "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+        "physical_pixels": [
+          2360,
+          1640
+        ],
+        "logical_content": [
+          1180,
+          820
+        ],
+        "distinct_board_squares_in_AX": 49,
+        "sha256": "0627b513de8f5a12fc56249fd1ad0ddb24cc1ef38136b568d19bc49423b517e3",
+        "AX_sha256": "8009ddd252f81ede8686273d672b5ed5dd38c85b731f83228bd3b782222e0dd0",
+        "captured_UTC": "2026-11-02T16:26:44.791494+00:00",
+        "establishes": "Takeback4→2plies/stopped/abandonedobservationshistorical/truthfulmessage.",
+        "format": "image/jpeg (original CUA bytes, unchanged)"
+      },
+      {
+        "file": "desktop-visual/16-readonly-analysis.jpg",
+        "accessibility": "desktop-visual/16-readonly-analysis.ax.txt",
+        "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+        "physical_pixels": [
+          2360,
+          1640
+        ],
+        "logical_content": [
+          1180,
+          820
+        ],
+        "distinct_board_squares_in_AX": 49,
+        "sha256": "d0fac1d9e055bb5e00b1fb340a6175bd364df66f96409981c015e7e6014badce",
+        "AX_sha256": "5fe4c2592f01ef4d1e10d22b3c1e4feeb3042bc50586de59db0e5242658a25d3",
+        "captured_UTC": "2026-11-02T16:27:20.463741+00:00",
+        "establishes": "Actualreadonlyanalysis:event2/Sente/depth2/nodes1427/+0.00Swallows/No move was played.",
+        "format": "image/jpeg (original CUA bytes, unchanged)"
+      },
+      {
+        "file": "desktop-visual/17-quit-cancel-preserves-game.jpg",
+        "accessibility": "desktop-visual/17-quit-cancel-preserves-game.ax.txt",
+        "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+        "physical_pixels": [
+          2360,
+          1640
+        ],
+        "logical_content": [
+          1180,
+          820
+        ],
+        "distinct_board_squares_in_AX": 49,
+        "sha256": "fd42ac20f25f77ce02448b471b2f3bac17d87eb9bedd275a3ff95f2563d676bc",
+        "AX_sha256": "ade9a870cfd7da29775d675d7f012ee9d9f0a058538abce435341d88059647c6",
+        "captured_UTC": "2026-11-02T16:27:27.363723+00:00",
+        "establishes": "NativeCmdQCancel preserves2plygame/unsavedobservation; notpendingwork.",
+        "format": "image/jpeg (original CUA bytes, unchanged)"
+      },
+      {
+        "file": "desktop-visual/18-opponent-hand-inspection.jpg",
+        "accessibility": "desktop-visual/18-opponent-hand-inspection.ax.txt",
+        "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+        "physical_pixels": [
+          2360,
+          1640
+        ],
+        "logical_content": [
+          1180,
+          820
+        ],
+        "distinct_board_squares_in_AX": 49,
+        "sha256": "a1e1047f90f5c7a4791cca6ef717275d11ff7a502a3116184cee9fa21fe9f8be",
+        "AX_sha256": "e6f174e73c59c12c4529e29be062e8b8d3cfcd0ae634194fa1115f2278ea6f99",
+        "captured_UTC": "2026-11-02T16:28:09.494432+00:00",
+        "establishes": "OpponentLeftQuailhand/native readonlyinspection/hollowmarkers/qualifiedidentity/Escape.",
+        "format": "image/jpeg (original CUA bytes, unchanged)"
+      },
+      {
+        "file": "desktop-visual/19-minimum-sidebar-moves.jpg",
+        "accessibility": "desktop-visual/19-minimum-sidebar-moves.ax.txt",
+        "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+        "physical_pixels": [
+          1520,
+          1300
+        ],
+        "logical_content": [
+          760,
+          650
+        ],
+        "distinct_board_squares_in_AX": 49,
+        "sha256": "e4fcf98b00c9da647f9a38ffa173c66ef611a7b6889fd9cb942af3f44b1375dc",
+        "AX_sha256": "a701bb940fd42401903f8cdd9b6f655993dcad553884e0bbe3d221a811aebd28",
+        "captured_UTC": "2026-11-02T16:28:53.516585+00:00",
+        "establishes": "Minimumhistorynavigation exposesMovesinsharedsidebar;49squares/hands/footerremainvisible.",
+        "format": "image/jpeg (original CUA bytes, unchanged)"
+      },
+      {
+        "file": "desktop-visual/20-native-resignation.jpg",
+        "accessibility": "desktop-visual/20-native-resignation.ax.txt",
+        "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+        "physical_pixels": [
+          2360,
+          1640
+        ],
+        "logical_content": [
+          1180,
+          820
+        ],
+        "distinct_board_squares_in_AX": 49,
+        "sha256": "140226e7cadda987ee1ce71da94ceda04d80125f349e950b9f98717b6719a4bf",
+        "AX_sha256": "434db3cbb1b5eba63d0d6a6cd38a9c20289932b840935a3fee4fb2df308bfbb3",
+        "captured_UTC": "2026-11-02T16:29:11.943945+00:00",
+        "establishes": "NativeSenteresignation/Gotewin;1boardmoverow+separateevent2.",
+        "format": "image/jpeg (original CUA bytes, unchanged)"
+      }
+    ],
+    "journeys": [
+      "Selected Swallow3d/nativecapture3c; Escape restoresfocus.",
+      "Actualkeyboard Sw3dx3c→realengine Fa4bx3c; bothhandsSw1; depth2/nodes560/-2.00Swallows/Goteperspective.",
+      "SelectedownSwallowhand/nativelegaldrops; Escape restoreshandfocus/no partialaction.",
+      "ActualSw*3d→realengineFa3c-4b;4plies/nodes723.",
+      "Takeback4→2plies/stopped/abandonedobservationshistorical/truthfulmessage.",
+      "Exactevent1historicalprefix/live2pliesunchanged;origin3d/emphasizeddestination3c.",
+      "HistoricalGoteFalcon/native readonlyinspection/commonwording/hollowmarkers/Escape.",
+      "ActualSave/Load:UNMODIFIED/live2plies/completehistory/retainedobservations/stoppeduntilResume.",
+      "Actualreadonlyanalysis:event2/Sente/depth2/nodes1427/+0.00Swallows/No move was played.",
+      "NativeCmdQCancel preserves2plygame/unsavedobservation; notpendingwork.",
+      "All9nativefaces/bothhands; admissiblecontractdiagram/rootcounter31/earlierhistoryunknown.",
+      "NativeFa7cx7b=Ea compulsorypromotion/no dialog; red鵰+noncolorcue/Swallowhand3.",
+      "OpponentLeftQuailhand/native readonlyinspection/hollowmarkers/qualifiedidentity/Escape.",
+      "960×720narrow:49squares/hands/promotedfaces/footer/noboardscroll.",
+      "760×650minimum:49squares/hands/promotedfaces/footer/noboardscroll.",
+      "Gote-bottomminimum/nativehandownership/rotation.",
+      "Minimumhistorynavigation exposesMovesinsharedsidebar;49squares/hands/footerremainvisible.",
+      "NativeSenteresignation/Gotewin;1boardmoverow+separateevent2."
+    ],
+    "environment": {
+      "os": "macOS27.0.1",
+      "build": "26A434",
+      "architecture": "arm64",
+      "method": "CUA native App accessibility/input; original JPEG screenshot bytes, no image editing"
+    },
+    "source_revision": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+    "cancellation_scope": "Escape selection cancellation/nativeQuitCancel exercised inGUI. Search completed before activeCancel could be exercised; no GUI-searchcancellation claim. Native/controller cancellation/stale-result tests and priorcheckpoint evidence reused."
+  },
+  "required_ci": {
+    "Rust workspace": "all3jobs",
+    "Desktop packages": "all3locked/frontend/native checks + normal package + bundled-engine inspection; later existing-game GUI supporting only",
+    "status": "All3 native jobs and all3 desktop locked checks/normal packages/bundled-engine inspections PASS. Full Desktop workflow FAILED: Linux/Windows normal GUI phase expected obsolete No engine search has completed text. Both actual failed-run DOM/archives validate the independently reviewed replacement assertions. No new platform GUI rerun/full-workflow PASS claimed.",
+    "native_source": "7b114daf04bb142c2d71f7883e970c116e7e5669",
+    "desktop_source": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+    "record": "desktop-visual-ci.json",
+    "runs": {
+      "native": "https://github.com/jweathers777/mShogi/actions/runs/41479565886",
+      "desktop": "https://github.com/jweathers777/mShogi/actions/runs/41480632062"
+    }
+  },
+  "limitations": [
+    "Owner visual approval required before normal activation",
+    "Final three-platform packaged Tori gameplay and complete MSH42 acceptance remain pending",
+    "Ordinary Tori observations omit raw PV encoding; raw complete telemetry retained in About/technical evidence",
+    "Existing15second off-path validation deadline and bounded noninterruptible native replay qualification preserved",
+    "Supporting existing-game Desktop workflow is not green: Linux/Windows normal GUI failed an obsolete historical-search text assertion; independently reviewed verification-only correction applied, full platform GUI rerun remains pending."
+  ],
+  "superseded_attempt": {
+    "source": "516ec8e6facc62818192d8a71dcb654e6fb181fd",
+    "artwork": "Original bird engravings; owner clarified traditional glyphs must be the default. Preserved as inactive alternative, not selected default or approved final presentation.",
+    "actual_gui": "Native keyboard Sw3dx3c; Resume→realengineFa4bx3c; bothhandsSw1; own legal drops and Escape/focus; nativeSave /private/tmp/msh42-visual-captures.mshogi; UNMODIFIED and nativeQuit observed. This is earlier-source evidence, finalkanji captures/journeys stillrequired.",
+    "screenshots": "Local initial captures preserved /private/tmp/msh42-visual-engraving-attempt; final review images will be recaptured from kanji package.",
+    "ci": "41476516226/41476516181 cancelled as superseded, not claimed passed.",
+    "ci_record": "desktop-visual-ci-superseded-516ec8e.json"
+  },
+  "failed_checks": [
+    "QA staging initially refused sandbox process inspection; authorized normal staging rerun succeeded, no approval/security policy altered.",
+    "Dormant bird CSS import was initially missing during component split; corrected before18artwork tests passed.",
+    "Final frontend367PASS/1FAIL: author expected CSS-capitalized Play Paused rather than actual DOM Play paused. Mechanical assertion corrected; final focused check/CI recorded separately.",
+    "Actual kanji73febf0 Takeback4→2plies kept abandoned event3 observation labelled current. Focused native regression failed before narrow runtime classification fix; observations/history were preserved.",
+    "After intentional nativeQuitDiscard, CUA observation returned procNotFound because application exited. Not an unexpected crash; subsequentlaunch succeeded.",
+    "Independent evidence audit found original CUA screenshots were JPEG despite .png names; a fixed-offset PNG metadata parser gave incorrect dimensions. Original bytes preserved, renamed .jpg, SOF dimensions checked against native AX window titles, links/index repaired. No product or screenshot pixels changed.",
+    "Desktop41480632062 full workflow FAILED: Linux/Windows normal GUI phase stopped at identical obsolete1412 historical-search caption assertion. Both actual DOM/archives preserve stopped UNMODIFIED2ply game/history/observations and satisfy corrected checks; no new GUI rerun claimed."
+  ],
+  "default_artwork": "Traditional native Tori kanji; inactive bird alternative preserved in source only",
+  "font": {
+    "file": "desktop/src/assets/fonts/mshogi-tori-pieces.woff2",
+    "sha256": "aab996838bb6b9291206064fa4587f538877ce5a1192929224a29b45ff2a00b6",
+    "bytes": 7472,
+    "codepoints": 10,
+    "glyphs": 14,
+    "repeat_generation": "byte-identical; subset-tori.py asserts pinned source, coverage, nonempty outlines, names and OFL metadata",
+    "unchanged_fonts": "existing Shogi/Xiangqi subsets and OFL identical to29abd7b",
+    "provenance": "../piece-artwork.md"
+  },
+  "superseded_kanji_attempt": {
+    "source": "73febf0075c6a0be5274b05d2185fa0f73ecc14b",
+    "ci_record": "desktop-visual-ci-superseded-73febf0.json",
+    "reason": "ActualGUIidentifiedretired-observationclassification;requirescorrectednativeprojectionbeforefinalcheckpoint",
+    "status": "CIcancelledassuperseded;notclaimedpassed"
+  },
+  "native_test_revision": "7b114daf04bb142c2d71f7883e970c116e7e5669",
+  "source_equivalence": "Only two frontend files differ7b→31cd: historical-observation wording+regression. Rust/native/host/workflow sources are identical.",
+  "final_checks": [
+    {
+      "source": "7b114daf04bb142c2d71f7883e970c116e7e5669",
+      "command": "cargo check --locked --workspace --all-targets",
+      "result": "PASS"
+    },
+    {
+      "source": "7b114daf04bb142c2d71f7883e970c116e7e5669",
+      "command": "cargo check --locked --manifest-path desktop/src-tauri/Cargo.toml --all-targets --all-features",
+      "result": "PASS; inherited20 Tao warnings"
+    },
+    {
+      "source": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+      "command": "PATH=Node24 npm --prefix desktop run check",
+      "result": "PASS"
+    },
+    {
+      "source": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+      "command": "PATH=Node24 npm --prefix desktop test -- src/product/ToriContract.test.tsx",
+      "result": "25PASS"
+    },
+    {
+      "source": "73febf0 + added regression assertions",
+      "command": "cargo test --locked -p mshogi-desktop-session actual_engine_turns_both_assignments_and_exact_historical_analysis_have_separate_admission --all-features",
+      "result": "RED: retired observations wrongly current;0PASS/1FAIL",
+      "log": "desktop-visual/rewind-regression-red.txt"
+    },
+    {
+      "source": "7b114daf04bb142c2d71f7883e970c116e7e5669",
+      "command": "cargo test --locked -p mshogi-desktop-session actual_engine_turns_both_assignments_and_exact_historical_analysis_have_separate_admission --all-features",
+      "result": "GREEN:1PASS covering SenteTakeback/GoteUndo, identicalstoredobservations,retiredbranch,paused/no pending,oldreply refused,canonicaldecode",
+      "log": "desktop-visual/rewind-regression-green.txt"
+    },
+    {
+      "source": "7b114daf04bb142c2d71f7883e970c116e7e5669",
+      "command": "cargo clippy --locked -p mshogi-desktop-session --all-targets --all-features -- -D warnings",
+      "result": "PASS"
+    },
+    {
+      "source": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+      "command": "PATH=Node24 npm --prefix desktop run desktop:build -- --bundles app; same with --features desktop-verification --config src-tauri/tauri.verification.conf.json",
+      "result": "PASS normal and separatelylabeledQA apps"
+    },
+    {
+      "source": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+      "command": "python3 desktop/scripts/package-smoke.py desktop/src-tauri/target/release/bundle/macos/mShogi.app --report ...",
+      "result": "PASS inventory/exclusion and actualbundledengine UCI/internalplay/analysis/Full; distinct fromToriGUI"
+    },
+    {
+      "source": "7b114daf04bb142c2d71f7883e970c116e7e5669",
+      "command": "cargo fmt --all -- --check; standalonehost fmt; git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "saved_gui_document": {
+    "file": "desktop-visual/saved-gui-game.mshogi",
+    "bytes": 29590,
+    "sha256": "58913dd3fc37a8de9a876b5664b5e31b89a75b710eee05dfd41e0b3bb416deba",
+    "envelope": {
+      "envelope_version": 1,
+      "format": "mshogi.desktop.document.v1",
+      "game_kind": "tori",
+      "rules_profile": "mshogi.tori.modern.v1",
+      "profile_edition": "MSH81-MODERN-2026-11-01",
+      "native_schema_version": 1
+    },
+    "observations": 2,
+    "retired_lineages": 1,
+    "scope": "ActualGUI Saveafter4→2plyTakeback; nativeLoadaccepted/stoppeduntilResume, allobservationshistorical."
+  },
+  "verification_only_revision": "05ceba4161a77d15633069d183a211992e0a0ff1",
+  "verification_only_scope": "Only desktop/scripts/gui-smoke.py differs after tested production31cd; correction committed05ceba4. Python syntax and replacement assertions checked against actual Linux and Windows failed-run DOM/archives PASS. Product/package/screenshots/native/frontend sources unchanged; full platform GUI rerun remains pending."
+}

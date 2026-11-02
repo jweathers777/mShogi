@@ -1,0 +1,140 @@
+Window: "mShogi Verification — tori-standard (test state) — content 1180.0 × 820.0 logical · frame 1180.0 × 820.0 logical", App: mShogi Verification.
+0 standard window Secondary Actions: Raise, mShogi Verification — tori-standard (test state) — content 1180.0 × 820.0 logical · frame 1180.0 × 820.0 logical
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 container
+				4 heading mShogi, Value: 1
+					5 text mShogi
+				6 button About mShogi
+				7 text TORI SHOGI
+				8 text Local engine
+				9 container Game file
+					10 text UNSAVED CHANGES
+					11 heading msh42-visual-final.mshogi, Help: /private/tmp/msh42-visual-final.mshogi, Value: 2
+						12 text msh42-visual-final.mshogi
+				13 button New game
+				14 button Save
+				15 button Load
+				16 container Live game
+					17 text YOUR GAME
+					18 text Sente to move
+					19 text You play Sente against mShogi
+					20 button Flip board; currently Sente at bottom
+					21 text mShogiGote
+					22 text Your opponent
+					23 container Gote pieces in hand
+						24 toggle button Gote Swallow in hand, 1, Value: off
+					25 container Tori Shogi 7×7 board, Sente at bottom
+						26 image
+						27 toggle button Description: 7a, Gote Right Quail, Value: off
+						28 toggle button Description: 6a, Gote Pheasant, Value: off
+						29 toggle button Description: 5a, Gote Crane, Value: off
+						30 toggle button Description: 4a, Gote Phoenix, Value: off
+						31 toggle button Description: 3a, Gote Crane, Value: off
+						32 toggle button Description: 2a, Gote Pheasant, Value: off
+						33 toggle button Description: 1a, Gote Left Quail, Value: off
+						34 toggle button Description: 7b, empty, Value: off
+						35 toggle button Description: 6b, empty, Value: off
+						36 toggle button Description: 5b, empty, Value: off
+						37 toggle button Description: 4b, empty, Value: off
+						38 toggle button Description: 3b, empty, Value: off
+						39 toggle button Description: 2b, empty, Value: off
+						40 toggle button Description: 1b, empty, Value: off
+						41 toggle button Description: 7c, Gote Swallow, Value: off
+						42 toggle button Description: 6c, Gote Swallow, Value: off
+						43 toggle button Description: 5c, Gote Swallow, Value: off
+						44 toggle button Description: 4c, Gote Swallow, Value: off
+						45 toggle button Description: 3c, Gote Falcon, Value: off
+						46 toggle button Description: 2c, Gote Swallow, Value: off
+						47 toggle button Description: 1c, Gote Swallow, Value: off
+						48 toggle button Description: 7d, empty, Value: off
+						49 toggle button Description: 6d, empty, Value: off
+						50 toggle button Description: 5d, Gote Swallow, Value: off
+						51 toggle button Description: 4d, empty, Value: off
+						52 toggle button Description: 3d, empty, Value: off
+						53 toggle button Description: 2d, empty, Value: off
+						54 toggle button Description: 1d, empty, Value: off
+						55 toggle button Description: 7e, Sente Swallow, Value: off
+						56 toggle button Description: 6e, Sente Swallow, Value: off
+						57 toggle button Description: 5e, Sente Swallow, Value: off
+						58 toggle button Description: 4e, Sente Swallow, Value: off
+						59 toggle button Description: 3e, Sente Swallow, Value: off
+						60 toggle button Description: 2e, Sente Swallow, Value: off
+						61 toggle button Description: 1e, Sente Swallow, Value: off
+						62 toggle button Description: 7f, empty, Value: off
+						63 toggle button Description: 6f, empty, Value: off
+						64 toggle button Description: 5f, empty, Value: off
+						65 toggle button Description: 4f, Sente Falcon, Value: off
+						66 toggle button Description: 3f, empty, Value: off
+						67 toggle button Description: 2f, empty, Value: off
+						68 toggle button Description: 1f, empty, Value: off
+						69 toggle button Description: 7g, Sente Left Quail, Value: off
+						70 toggle button Description: 6g, Sente Pheasant, Value: off
+						71 toggle button Description: 5g, Sente Crane, Value: off
+						72 toggle button Description: 4g, Sente Phoenix, Value: off
+						73 toggle button Description: 3g, Sente Crane, Value: off
+						74 toggle button Description: 2g, Sente Pheasant, Value: off
+						75 toggle button Description: 1g, Sente Right Quail, Value: off
+					76 text YouSente
+					77 text Human player To move
+					78 container Sente pieces in hand
+						79 toggle button Sente Swallow in hand, 1, Value: off
+					80 text Arrows: move focus · Enter/Space: select · Esc: cancel
+					81 text Play paused · resume explicitly to continue Live position · 2 plies
+				82 container Game controls and inspection
+					83 text Play is paused.
+					84 button Resume play
+					85 heading Analysis, Value: 2
+						86 text Analysis
+					87 container Inspector view
+						88 toggle button Play details, Value: off
+						89 toggle button Analyze position, Value: on
+					90 container Engine analysis
+						91 text Move analysis
+						92 text Selected event 2 · Sente perspective
+						93 container
+							94 text Depth
+							95 number field (settable) Depth, Value: 2
+								96 stepper 0
+									97 unknown
+									98 unknown
+							99 text Node limit
+							100 number field (settable) Node limit, Value: 2000
+								101 stepper 0
+									102 unknown
+									103 unknown
+							104 button Start move analysis
+						105 text Set work limits and start analysis.
+						106 summary Recorded searches (3), Value: off
+							107 text Recorded searches (3)
+					108 heading Game Actions, Value: 2
+						109 text Game Actions
+					110 container
+						111 button Take back
+						112 button Resign
+					113 container Moves
+						114 heading Moves, Value: 2
+							115 text Moves
+						116 text 2 moves
+						117 button Starting position
+						118 text Tori action notation · Declared root counter 0 · Known standard starting history
+						119 table
+							120 row (selectable) Move number
+Sente
+Gote
+							121 row (selectable)
+								122 cell (selectable) 1.
+								123 cell (selectable) 1. Sente: Sw3dx3c
+								124 cell (selectable) 1. Gote: Fa4bx3c
+	125 close button
+	126 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	127 minimize button
+	128 text mShogi Verification — tori-standard (test state) — content 1180.0 × 820.0 logical · frame 1180.0 × 820.0 logical
+129 menu bar
+	130 mShogi Verification
+	131 Edit
+	132 View
+	133 Window
+	134 Verification window size
+
+The focused UI element is 2 HTML content Description: mShogi, URL: tauri://localhost

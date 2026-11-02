@@ -7,11 +7,13 @@ This is an executable handoff within **existing MSH-42**, not another research
 campaign, new task hierarchy or authorization to start implementation now.
 All eight original MSH-42 criteria remain intact and unchecked.
 
-Current follow-up: the [native playable-consumer checkpoint](native-playable-checkpoint.md)
-implements the native engine/execution/console/notation and real observation
-admission described below. MSH-42 is In Progress; final board/artwork and normal
-product activation remain its next bounded implementation boundary. Earlier source
-inspection and the recommendation section are retained as the original handoff.
+Current MSH-42 follow-up: the [native playable checkpoint](native-playable-checkpoint.md)
+delivers the engine/execution/console/notation and real observation admission.
+The [desktop visual checkpoint](desktop-visual-checkpoint.md) now supplies the
+production 7×7 board, traditional kanji, hands and actual macOS player journeys.
+MSH-42 remains In Progress: owner visual approval, normal product activation,
+final packaged Tori acceptance and the complete-game review remain open. Earlier
+source inspection and recommendations below preserve the original handoff.
 
 ## Delivered foundation and remaining criteria
 
@@ -97,6 +99,11 @@ never fabricate a choice, evaluation or game result from incomplete work.
 Normal product Tori New Game/Load remains gated until the playable desktop exists.
 
 ## Next coherent boundary: the real Tori desktop
+
+Historical implementation recommendation from MSH-77. The production board and
+macOS journeys are now implemented in the [visual checkpoint](desktop-visual-checkpoint.md);
+the technical-renderer statements below describe the earlier inspected source.
+Owner approval, normal activation and final packaged acceptance remain open.
 
 Once native execution/observations are real, implement the product rendering and
 player journeys together in the existing `ProductApp`/`ApplicationView`/

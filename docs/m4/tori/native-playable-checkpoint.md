@@ -1,5 +1,7 @@
 # Tori native playable-consumer checkpoint (MSH-42)
 
+Current product continuation: [MSH-42 delivery reconciliation](delivery-review.md) records normal Tori activation at `cb1e162`, owner-approved traditional presentation and final platform acceptance status. The dated checkpoints and former gate descriptions below retain their historical scope.
+
 Current continuation: [desktop visual checkpoint](desktop-visual-checkpoint.md).
 The native-only descriptions below preserve this earlier checkpoint; finished
 kanji presentation and actual macOS journeys now have separate evidence. Owner

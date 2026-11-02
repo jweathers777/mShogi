@@ -1,0 +1,19 @@
+The following is a diff from the previous accessibility tree for Window: "mShogi" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 138-154
+~	133 scroll area
+~		134 HTML content Description: mShogi, URL: tauri://localhost
+~			135 container New game
+~				136 heading New game, Value: 2
+~					137 text New game
++				138 container
++					139 text Game
++					140 pop up button (collapsed) Game, Value: Chess, Secondary Actions: Expand
++				141 heading Your side, Value: 3
++					142 text Your side
++				143 (settable, unknown) Your side
++					144 radio button White, Value: 1
++					145 radio button Black, Value: 0
++					146 radio button Random, Value: 0
++				147 button Cancel
++				148 button Start game
+The focused UI element is 140 pop up button (collapsed) Game, Value: Chess, Secondary Actions: Expand

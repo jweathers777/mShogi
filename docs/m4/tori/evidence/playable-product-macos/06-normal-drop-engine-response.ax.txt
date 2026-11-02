@@ -1,0 +1,2 @@
+There has been no change in the accessibility tree for Window: "mShogi".
+The focused UI element is 52 toggle button Description: 3d, Sente Swallow, Value: off

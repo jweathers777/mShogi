@@ -1,0 +1,57 @@
+diff --git a/desktop/src/__fixtures__/shared-tori-resigned.json b/desktop/src/__fixtures__/shared-tori-resigned.json
+2026-11-02T19:41:31.0140830Z index 6bcddb7..f6cc49f 100644
+2026-11-02T19:41:31.0141190Z --- a/desktop/src/__fixtures__/shared-tori-resigned.json
+2026-11-02T19:41:31.0141560Z +++ b/desktop/src/__fixtures__/shared-tori-resigned.json
+2026-11-02T19:41:31.0142120Z @@ -471,7 +471,7 @@
+2026-11-02T19:41:31.0142390Z    "close_requires_save": true,
+2026-11-02T19:41:31.0142690Z    "phase": "paused",
+2026-11-02T19:41:31.0145070Z    "execution_purpose": null,
+2026-11-02T19:41:31.0145500Z -  "diagnostic": "Live position. Resume to continue native play.",
+2026-11-02T19:41:31.0146410Z +  "diagnostic": "Tori document ready. Saved observations are historical; Resume starts native play.",
+2026-11-02T19:41:31.0146850Z    "declaration_advice": [],
+2026-11-02T19:41:31.0147150Z    "context": {
+2026-11-02T19:41:31.0147360Z      "envelope_version": 1,
+2026-11-02T19:41:31.0147960Z diff --git a/desktop/src/__fixtures__/shared-tori-return-live.json b/desktop/src/__fixtures__/shared-tori-return-live.json
+2026-11-02T19:41:31.0148540Z index c622d02..d729fc9 100644
+2026-11-02T19:41:31.0148890Z --- a/desktop/src/__fixtures__/shared-tori-return-live.json
+2026-11-02T19:41:31.0149290Z +++ b/desktop/src/__fixtures__/shared-tori-return-live.json
+2026-11-02T19:41:31.0151370Z @@ -2387,7 +2387,7 @@
+2026-11-02T19:41:31.0151750Z    "close_requires_save": true,
+2026-11-02T19:41:31.0152100Z    "phase": "paused",
+2026-11-02T19:41:31.0152450Z    "execution_purpose": null,
+2026-11-02T19:41:31.0152790Z -  "diagnostic": "Live position. Resume to continue native play.",
+2026-11-02T19:41:31.0153430Z +  "diagnostic": "Tori document ready. Saved observations are historical; Resume starts native play.",
+2026-11-02T19:41:31.0153930Z    "declaration_advice": [],
+2026-11-02T19:41:31.0154300Z    "context": {
+2026-11-02T19:41:31.0154560Z      "envelope_version": 1,
+2026-11-02T19:41:31.0155110Z diff --git a/desktop/src/__fixtures__/shared-tori-stopped.json b/desktop/src/__fixtures__/shared-tori-stopped.json
+2026-11-02T19:41:31.0155740Z index 4f8844a..3214142 100644
+2026-11-02T19:41:31.0156070Z --- a/desktop/src/__fixtures__/shared-tori-stopped.json
+2026-11-02T19:41:31.0156700Z +++ b/desktop/src/__fixtures__/shared-tori-stopped.json
+2026-11-02T19:41:31.0157020Z @@ -2392,7 +2392,7 @@
+2026-11-02T19:41:31.0157320Z    "close_requires_save": true,
+2026-11-02T19:41:31.0157570Z    "phase": "paused",
+2026-11-02T19:41:31.0157900Z    "execution_purpose": null,
+2026-11-02T19:41:31.0158280Z -  "diagnostic": "Live position. Resume to continue native play.",
+2026-11-02T19:41:31.0158910Z +  "diagnostic": "Tori document ready. Saved observations are historical; Resume starts native play.",
+2026-11-02T19:41:31.0159960Z    "declaration_advice": [],
+2026-11-02T19:41:31.0160250Z    "context": {
+2026-11-02T19:41:31.0160570Z      "envelope_version": 1,
+2026-11-02T19:41:31.6581890Z ##[error]Process completed with exit code 1.
+2026-11-02T19:41:31.6753830Z Post job cleanup.
+2026-11-02T19:41:31.9524070Z [command]/opt/homebrew/bin/git version
+2026-11-02T19:41:31.9588550Z git version 2.56.0
+2026-11-02T19:41:31.9604570Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/56137324-af0f-4750-b0b1-54c1933dbc94/.gitconfig'
+2026-11-02T19:41:31.9610400Z Temporarily overriding HOME='/Users/runner/work/_temp/56137324-af0f-4750-b0b1-54c1933dbc94' before making global git config changes
+2026-11-02T19:41:31.9611220Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-02T19:41:31.9613350Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/mShogi/mShogi
+2026-11-02T19:41:31.9662550Z Removing SSH command configuration
+2026-11-02T19:41:31.9665990Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-02T19:41:31.9713400Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-02T19:41:32.0448760Z Removing HTTP extra header
+2026-11-02T19:41:32.0451960Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-02T19:41:32.0511960Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-02T19:41:32.1142170Z Removing includeIf entries pointing to credentials config files
+2026-11-02T19:41:32.1143070Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-02T19:41:32.1192040Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-02T19:41:32.1928870Z Cleaning up orphan processes

@@ -1,5 +1,7 @@
 # Modern Tori Shogi planning contract — MSH-81
 
+Current product continuation: [MSH-42 delivery reconciliation](delivery-review.md) records normal Tori activation at `cb1e162`, owner-approved traditional presentation and final platform acceptance status. The dated checkpoints and former gate descriptions below retain their historical scope.
+
 ## Current native acceptance — MSH-85
 
 [Independent native acceptance](native-acceptance.md) confirms the complete

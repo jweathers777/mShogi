@@ -1,5 +1,7 @@
 # Modern Tori native/shared handoff — MSH-81
 
+Current product continuation: [MSH-42 delivery reconciliation](delivery-review.md) records normal Tori activation at `cb1e162`, owner-approved traditional presentation and final platform acceptance status. The dated checkpoints and former gate descriptions below retain their historical scope.
+
 ## Current native playable-consumer checkpoint — MSH-42
 
 [The native checkpoint](native-playable-checkpoint.md) now delivers functional

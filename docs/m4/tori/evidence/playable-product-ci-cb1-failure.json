@@ -1,0 +1,381 @@
+{
+  "schema": "mshogi.tori.product-ci-failure.v1",
+  "source_revision": "cb1e162d9fa689e00643f2b09e334c121d611819",
+  "native_run": 41509573560,
+  "desktop_run": 41509573239,
+  "native_failure": "Generated frontend Tori snapshots differ only in three diagnostic strings after restoring original browse-stop intent. Actual native generator produces Tori document ready/historical observations/explicit Resume, rather than old generic Live position text. Original native rules corpus/expectations unchanged.",
+  "platforms": {
+    "linux": {
+      "artifact_id": 13173431455,
+      "artifact_sha256": "8fcb8c36cd2f2793bc962c085320fe7d262f14b81cbfdba7633f6f55d21cb0b3",
+      "report_sha256": "cb3d9530f198efb8deca7ef9565ebdae9618960548f20c9d59bbaa16fd48b96b",
+      "status": "failed",
+      "phase_counts": {
+        "passed": 33,
+        "failed": 2
+      },
+      "phases": [
+        {
+          "phase": "normal",
+          "status": "passed"
+        },
+        {
+          "phase": "normal-shogi",
+          "status": "passed"
+        },
+        {
+          "phase": "normal-shogi-reopened",
+          "status": "passed"
+        },
+        {
+          "phase": "normal-xiangqi",
+          "status": "passed"
+        },
+        {
+          "phase": "normal-tori",
+          "status": "failed"
+        },
+        {
+          "phase": "normal-tori-native",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-standard",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-promotion",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-claim",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-current-claim",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-concluded",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-full-unknown-cancel",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-capacity",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-synthetic",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-pending-chess",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-pending-shogi",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-pending-xiangqi",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-pending-tori",
+          "status": "failed"
+        },
+        {
+          "phase": "verification-tori-recovery",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-hands",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-promotion",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-forced",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-declaration",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-concluded",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-capacity",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-xiangqi-warning",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-xiangqi-fourth",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-xiangqi-count",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-xiangqi-offer",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-xiangqi-agreed",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-xiangqi-fast-proof",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-xiangqi-resigned",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-xiangqi-capacity",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-xiangqi-failure",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-xiangqi-exact-evidence",
+          "status": "passed"
+        }
+      ],
+      "failures": [
+        {
+          "phase": "normal-tori",
+          "error": "Timed out: exact native completed cue {\"result_face\":\"swallow\",\"from\":\"3d\",\"kind\":\"move\",\"to\":\"3c\"} at event 1; last observation: '{\\'action\\': \\'{\"kind\":\"move\",\"from\":\"3d\",\"to\":\"3c\",\"result_face\":\"swallow\"}\\', \\'destinations\\': [\\'3c\\'], \\'route\\': None, \\'pointerEvents\\': \\'none\\', \\'hidden\\': \\'true\\', \\'origins\\': [\\'3d\\'], \\'event\\': \\'1\\', \\'destinationSignatures\\': [\\'double-underline\\']}'",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 2726, in main\n    journey.normal_tori()\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 2173, in normal_tori\n    self.assert_completed_cue(json.dumps(events[0]['command']['action'], separators=(',', ':')), 1, ['3d'], ['3c'])\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 755, in assert_completed_cue\n    cue = wait(observed, f\"exact native completed cue {action} at event {event}\")\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 323, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: exact native completed cue {\"result_face\":\"swallow\",\"from\":\"3d\",\"kind\":\"move\",\"to\":\"3c\"} at event 1; last observation: '{\\'action\\': \\'{\"kind\":\"move\",\"from\":\"3d\",\"to\":\"3c\",\"result_face\":\"swallow\"}\\', \\'destinations\\': [\\'3c\\'], \\'route\\': None, \\'pointerEvents\\': \\'none\\', \\'hidden\\': \\'true\\', \\'origins\\': [\\'3d\\'], \\'event\\': \\'1\\', \\'destinationSignatures\\': [\\'double-underline\\']}'\n"
+        },
+        {
+          "phase": "verification-pending-tori",
+          "error": "Timed out: exact native completed cue {\"result_face\":\"swallow\",\"from\":\"3d\",\"kind\":\"move\",\"to\":\"3c\"} at event 1; last observation: '{\\'action\\': \\'{\"kind\":\"move\",\"from\":\"4b\",\"to\":\"3c\",\"result_face\":\"falcon\"}\\', \\'destinations\\': [\\'3c\\'], \\'route\\': None, \\'pointerEvents\\': \\'none\\', \\'hidden\\': \\'true\\', \\'origins\\': [\\'4b\\'], \\'event\\': \\'2\\', \\'destinationSignatures\\': [\\'double-underline\\']}'",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 2734, in main\n    journey.pending(fixture.removeprefix(\"pending-\"))\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 2326, in pending\n    self.assert_completed_cue(cue_action, human_event, [origin], [destination])\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 755, in assert_completed_cue\n    cue = wait(observed, f\"exact native completed cue {action} at event {event}\")\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 323, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: exact native completed cue {\"result_face\":\"swallow\",\"from\":\"3d\",\"kind\":\"move\",\"to\":\"3c\"} at event 1; last observation: '{\\'action\\': \\'{\"kind\":\"move\",\"from\":\"4b\",\"to\":\"3c\",\"result_face\":\"falcon\"}\\', \\'destinations\\': [\\'3c\\'], \\'route\\': None, \\'pointerEvents\\': \\'none\\', \\'hidden\\': \\'true\\', \\'origins\\': [\\'4b\\'], \\'event\\': \\'2\\', \\'destinationSignatures\\': [\\'double-underline\\']}'\n"
+        }
+      ]
+    },
+    "windows": {
+      "artifact_id": 13172499438,
+      "artifact_sha256": "6511517407bffd616db2e4de86702bd37f6cb308d5db3d93a9b78442ca546751",
+      "report_sha256": "4e0783c6831ef9b8fabe3cf48f2ec924db870a9910912f1eb22e06be3f43eff1",
+      "status": "failed",
+      "phase_counts": {
+        "passed": 33,
+        "failed": 2
+      },
+      "phases": [
+        {
+          "phase": "normal",
+          "status": "passed"
+        },
+        {
+          "phase": "normal-shogi",
+          "status": "passed"
+        },
+        {
+          "phase": "normal-shogi-reopened",
+          "status": "passed"
+        },
+        {
+          "phase": "normal-xiangqi",
+          "status": "passed"
+        },
+        {
+          "phase": "normal-tori",
+          "status": "failed"
+        },
+        {
+          "phase": "normal-tori-native",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-standard",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-promotion",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-claim",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-current-claim",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-concluded",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-full-unknown-cancel",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-capacity",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-synthetic",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-pending-chess",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-pending-shogi",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-pending-xiangqi",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-pending-tori",
+          "status": "failed"
+        },
+        {
+          "phase": "verification-tori-recovery",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-hands",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-promotion",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-forced",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-declaration",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-concluded",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-shogi-capacity",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-xiangqi-warning",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-xiangqi-fourth",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-xiangqi-count",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-xiangqi-offer",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-xiangqi-agreed",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-xiangqi-fast-proof",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-xiangqi-resigned",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-xiangqi-capacity",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-xiangqi-failure",
+          "status": "passed"
+        },
+        {
+          "phase": "verification-xiangqi-exact-evidence",
+          "status": "passed"
+        }
+      ],
+      "failures": [
+        {
+          "phase": "normal-tori",
+          "error": "Timed out: exact native completed cue {\"from\":\"3d\",\"kind\":\"move\",\"result_face\":\"swallow\",\"to\":\"3c\"} at event 1; last observation: '{\\'action\\': \\'{\"kind\":\"move\",\"from\":\"3d\",\"to\":\"3c\",\"result_face\":\"swallow\"}\\', \\'destinationSignatures\\': [\\'double-underline\\'], \\'destinations\\': [\\'3c\\'], \\'event\\': \\'1\\', \\'hidden\\': \\'true\\', \\'origins\\': [\\'3d\\'], \\'pointerEvents\\': \\'none\\', \\'route\\': None}'",
+          "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2726, in main\n    journey.normal_tori()\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2173, in normal_tori\n    self.assert_completed_cue(json.dumps(events[0]['command']['action'], separators=(',', ':')), 1, ['3d'], ['3c'])\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 755, in assert_completed_cue\n    cue = wait(observed, f\"exact native completed cue {action} at event {event}\")\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 323, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: exact native completed cue {\"from\":\"3d\",\"kind\":\"move\",\"result_face\":\"swallow\",\"to\":\"3c\"} at event 1; last observation: '{\\'action\\': \\'{\"kind\":\"move\",\"from\":\"3d\",\"to\":\"3c\",\"result_face\":\"swallow\"}\\', \\'destinationSignatures\\': [\\'double-underline\\'], \\'destinations\\': [\\'3c\\'], \\'event\\': \\'1\\', \\'hidden\\': \\'true\\', \\'origins\\': [\\'3d\\'], \\'pointerEvents\\': \\'none\\', \\'route\\': None}'\n"
+        },
+        {
+          "phase": "verification-pending-tori",
+          "error": "Timed out: exact native completed cue {\"from\":\"3d\",\"kind\":\"move\",\"result_face\":\"swallow\",\"to\":\"3c\"} at event 1; last observation: '{\\'action\\': \\'{\"kind\":\"move\",\"from\":\"4b\",\"to\":\"3c\",\"result_face\":\"falcon\"}\\', \\'destinationSignatures\\': [\\'double-underline\\'], \\'destinations\\': [\\'3c\\'], \\'event\\': \\'2\\', \\'hidden\\': \\'true\\', \\'origins\\': [\\'4b\\'], \\'pointerEvents\\': \\'none\\', \\'route\\': None}'",
+          "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2734, in main\n    journey.pending(fixture.removeprefix(\"pending-\"))\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2326, in pending\n    self.assert_completed_cue(cue_action, human_event, [origin], [destination])\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 755, in assert_completed_cue\n    cue = wait(observed, f\"exact native completed cue {action} at event {event}\")\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 323, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: exact native completed cue {\"from\":\"3d\",\"kind\":\"move\",\"result_face\":\"swallow\",\"to\":\"3c\"} at event 1; last observation: '{\\'action\\': \\'{\"kind\":\"move\",\"from\":\"4b\",\"to\":\"3c\",\"result_face\":\"falcon\"}\\', \\'destinationSignatures\\': [\\'double-underline\\'], \\'destinations\\': [\\'3c\\'], \\'event\\': \\'2\\', \\'hidden\\': \\'true\\', \\'origins\\': [\\'4b\\'], \\'pointerEvents\\': \\'none\\', \\'route\\': None}'\n"
+        }
+      ]
+    }
+  },
+  "diagnosis": "Both normal-tori and verification-pending-tori expect complete native JSON move semantics but incorrectly compare object member order. Expected canonical record maps and actual native DOM action have identical fields. Pending25s failure allowed actual delayed engine to finish, changing last cue to event2; this is a consequence of failed comparator. No product failure/outcome inferred.",
+  "native_jobs": [
+    {
+      "id": 125497604317,
+      "name": "Rust (windows-2022)",
+      "status": "completed",
+      "conclusion": "failure",
+      "failed_steps": [
+        "Verify native desktop snapshot fixtures"
+      ]
+    },
+    {
+      "id": 125497604626,
+      "name": "Rust (ubuntu-24.04)",
+      "status": "completed",
+      "conclusion": "failure",
+      "failed_steps": [
+        "Verify native desktop snapshot fixtures"
+      ]
+    },
+    {
+      "id": 125497604721,
+      "name": "Rust (macos-15)",
+      "status": "completed",
+      "conclusion": "failure",
+      "failed_steps": [
+        "Verify native desktop snapshot fixtures"
+      ]
+    }
+  ],
+  "completed_campaigns": {
+    "native": {
+      "id": 41509573560,
+      "head_sha": "cb1e162d9fa689e00643f2b09e334c121d611819",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    "desktop": {
+      "id": 41509573239,
+      "head_sha": "cb1e162d9fa689e00643f2b09e334c121d611819",
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  }
+}

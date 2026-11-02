@@ -856,5 +856,7 @@
     "packaged_source": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
     "approved": "Traditional kanji pieces, board, hands, promotion treatment and layouts",
     "preservation": "Preserve approved design except a concrete functional/accessibility defect. Prior pending statuses are historical; final playable-product acceptance is separate."
-  }
+  },
+  "record_scope": "Historical visual/package checkpoint at31cd776. Top-level status and normal_activation describe that checkpoint. Explicit later owner approval is recorded below; current product activation and final acceptance are in playable-product.json.",
+  "current_product_evidence": "playable-product.json"
 }

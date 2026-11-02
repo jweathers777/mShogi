@@ -1,0 +1,75 @@
+The following is a diff from the previous accessibility tree for Window: "mShogi" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 129-136
+~				6 button About mShogi
+~				8 text Local engine
+~				13 button New game
+~				14 button Save
+~				15 button Load
+~					18 text Gote to move
+~					20 button Flip board; currently Gote at bottom
+~					22 text Your opponent
+~						24 toggle button Sente Swallow in hand, 2, Value: off
+~						27 toggle button Description: 1g, Sente Right Quail, Value: off
+~						28 toggle button Description: 2g, Sente Pheasant, Value: off
+~						29 toggle button Description: 3g, Sente Crane, Value: off
+~						30 toggle button Description: 4g, Sente Phoenix, Value: off
+~						31 toggle button Description: 5g, Sente Crane, Value: off
+~						32 toggle button Description: 6g, Sente Pheasant, Value: off
+~						33 toggle button Description: 7g, Sente Left Quail, Value: off
+~						34 toggle button Description: 1f, empty, Value: off
+~						35 toggle button Description: 2f, empty, Value: off
+~						36 toggle button Description: 3f, empty, Value: off
+~						37 toggle button Description: 4f, empty, Value: off
+~						38 toggle button Description: 5f, empty, Value: off
+~						39 toggle button Description: 6f, empty, Value: off
+~						40 toggle button Description: 7f, empty, Value: off
+~						41 toggle button Description: 1e, Sente Swallow, Value: off
+~						42 toggle button Description: 2e, Sente Swallow, Value: off
+~						43 toggle button Description: 3e, Sente Swallow, Value: off
+~						44 toggle button Description: 4e, Sente Swallow, Value: off
+~						45 toggle button Description: 5e, Sente Falcon, Value: off
+~						46 toggle button Description: 6e, Sente Swallow, Value: off
+~						47 toggle button Description: 7e, Sente Swallow, Value: off
+~						48 toggle button Description: 1d, empty, Value: off
+~						49 toggle button Description: 2d, empty, Value: off
+~						50 toggle button Description: 3d, empty, Value: off
+~						51 toggle button Description: 4d, empty, Value: off
+~						52 toggle button Description: 5d, empty, Value: off
+~						53 toggle button Description: 6d, empty, Value: off
+~						54 toggle button Description: 7d, empty, Value: off
+~						55 toggle button Description: 1c, Gote Swallow, Value: off
+~						56 toggle button Description: 2c, Gote Swallow, Value: off
+~						57 toggle button Description: 3c, Sente Swallow, Value: off
+~						58 toggle button Description: 4c, Gote Swallow, Value: off
+~						59 toggle button Description: 5c, Gote Swallow, Value: off
+~						60 toggle button Description: 6c, Gote Swallow, Value: off
+~						61 toggle button Description: 7c, Gote Swallow, Value: off
+~						62 toggle button Description: 1b, empty, Value: off
+~						63 toggle button Description: 2b, empty, Value: off
+~						64 toggle button Description: 3b, empty, Value: off
+~						65 toggle button Description: 4b, Gote Falcon, Value: off
+~						66 toggle button Description: 5b, empty, Value: off
+~						67 toggle button Description: 6b, empty, Value: off
+~						68 toggle button Description: 7b, empty, Value: off
+~						69 toggle button Description: 1a, Gote Left Quail, Value: off
+~						70 toggle button Description: 2a, Gote Pheasant, Value: off
+~						71 toggle button Description: 3a, Gote Crane, Value: off
+~						72 toggle button Description: 4a, Gote Phoenix, Value: off
+~						73 toggle button Description: 5a, Gote Crane, Value: off
+~						74 toggle button Description: 6a, Gote Pheasant, Value: off
+~						75 toggle button Description: 7a, Gote Right Quail, Value: off
+~					77 text Human player To move
+~						128 toggle button Gote Swallow in hand, 1, Value: off
+~					81 text Your turn Live position · 3 plies
+~							92 text Ready
+~						94 text Last engine turn · event 2
+~							101 text 1,143
+~						105 button Take back
+~						106 button Resign
+~						110 text 3 moves
+~						111 button Starting position
++							129 row (selectable)
++								130 cell (selectable) 2.
++								131 cell (selectable) 2. Sente: Fa4fx5e
++								132 cell (selectable)
+The focused UI element is 45 toggle button Description: 5e, Sente Falcon, Value: off

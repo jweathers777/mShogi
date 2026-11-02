@@ -1,0 +1,156 @@
+[
+  {
+    "image": "playable-product-macos/01-four-game-dropdown.jpg",
+    "accessibility": "playable-product-macos/01-four-game-dropdown.ax.txt",
+    "image_sha256": "8f1702b659e3d4d49df035dc672a880e240de418eba45a76e8b623ed11c6d95f",
+    "accessibility_sha256": "49ebf8dedb8041fe3dcc911425c91fcf2be17e99d09d05b02acc9dc7e8ee9f48",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  },
+  {
+    "image": "playable-product-macos/02-normal-gote-engine-opening.jpg",
+    "accessibility": "playable-product-macos/02-normal-gote-engine-opening.ax.txt",
+    "image_sha256": "e0fbc2bc2679af11760dfbe56fc2ebe4280ebb11524347d30920fca478bf1c5e",
+    "accessibility_sha256": "529ca23a0a3a5aed2c39341c44a013e6ab2df87118e78db276357052bc2019a0",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  },
+  {
+    "image": "playable-product-macos/03-gote-capture-real-reply.jpg",
+    "accessibility": "playable-product-macos/03-gote-capture-real-reply.ax.txt",
+    "image_sha256": "c97185bd05358ce3472f8138b0b487f506b1fff3696c5c8e40ad0a477b13338e",
+    "accessibility_sha256": "8b8cc6d3fd06838a2a8745cba36ff8c0368d0dca334a3a58f7271707777b0558",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  },
+  {
+    "image": "playable-product-macos/04-random-native-assignment.jpg",
+    "accessibility": "playable-product-macos/04-random-native-assignment.ax.txt",
+    "image_sha256": "3a8755228cdd8a0ba3de8886bbbd1ac531641b4483f3a1a123c462dc5fe6507d",
+    "accessibility_sha256": "529ca23a0a3a5aed2c39341c44a013e6ab2df87118e78db276357052bc2019a0",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  },
+  {
+    "image": "playable-product-macos/05-sente-capture-engine-hands.jpg",
+    "accessibility": "playable-product-macos/05-sente-capture-engine-hands.ax.txt",
+    "image_sha256": "23e3f0f1fe60f22ba00629f05ced8bf662c6525f9e787e1e05b3bf0031144c41",
+    "accessibility_sha256": "55c1e26eb9469da7bd9b48f1af9c8330244fd41533c6209c530fd1bcd4f86dd7",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  },
+  {
+    "image": "playable-product-macos/06-normal-drop-engine-response.jpg",
+    "accessibility": "playable-product-macos/06-normal-drop-engine-response.ax.txt",
+    "image_sha256": "084489552d2996632a0c9cb1be264fab5faf525632eaed44ca6c289a7fad4bcc",
+    "accessibility_sha256": "952c70674c257ab0b25b0872a29209fa6016a2f924e5bda7e7bd09f4056759c4",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  },
+  {
+    "image": "playable-product-macos/07-take-back-retired-observations.jpg",
+    "accessibility": "playable-product-macos/07-take-back-retired-observations.ax.txt",
+    "image_sha256": "96f8e594deef6e7956d30ed01ac13995dd4c295b3c9f85b124f91fc68ea8b7f8",
+    "accessibility_sha256": "33f040157483c30b43009af4389237deacfbadb68e124294965cbe12187da4aa",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  },
+  {
+    "image": "playable-product-macos/08-normal-reopen-stopped.jpg",
+    "accessibility": "playable-product-macos/08-normal-reopen-stopped.ax.txt",
+    "image_sha256": "0ad9a59fc0e0740c1da48cb05de9f7bbb9902f45c596bf68b4bc94b37942fdda",
+    "accessibility_sha256": "3d0c4098902441dd7e39da7830b3946b96f618ca5dc3a090a24431aa54a533e0",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  },
+  {
+    "image": "playable-product-macos/09-normal-read-only-analysis.jpg",
+    "accessibility": "playable-product-macos/09-normal-read-only-analysis.ax.txt",
+    "image_sha256": "56f4704def1876f764571de58165e3a9af9a6f66a983503ce0670835f2c9e2f7",
+    "accessibility_sha256": "529ca23a0a3a5aed2c39341c44a013e6ab2df87118e78db276357052bc2019a0",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  },
+  {
+    "image": "playable-product-macos/10-normal-native-quit-cancel.jpg",
+    "accessibility": "playable-product-macos/10-normal-native-quit-cancel.ax.txt",
+    "image_sha256": "fcfa1754158c8cb39aa60c9be7bc16784fbd501c1b611180e7811324e2a930d5",
+    "accessibility_sha256": "53f9e63def804f50f519086021b54938c227e93bdb2f9a6323d877adeb13951d",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  },
+  {
+    "image": "playable-product-macos/11-normal-concluded-resignation.jpg",
+    "accessibility": "playable-product-macos/11-normal-concluded-resignation.ax.txt",
+    "image_sha256": "67b1a339d55cc5955df0af1f34e31bf4e127622f6cd91107ec4bab53f1a8f51f",
+    "accessibility_sha256": "529ca23a0a3a5aed2c39341c44a013e6ab2df87118e78db276357052bc2019a0",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  },
+  {
+    "image": "playable-product-macos/12-normal-native-contract-faces.jpg",
+    "accessibility": "playable-product-macos/12-normal-native-contract-faces.ax.txt",
+    "image_sha256": "e55f38562e653e38b64b9acb4cb8b2c5111df492623802f488b9a73e0c6594de",
+    "accessibility_sha256": "3227bffa067df9ed2b6ed5ef330cb3f2fd965b3ea9257b805cef95abab2f1f3a",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  },
+  {
+    "image": "playable-product-macos/13-normal-compulsory-eagle.jpg",
+    "accessibility": "playable-product-macos/13-normal-compulsory-eagle.ax.txt",
+    "image_sha256": "69eacdcc1ed8e45314e1a1f9545666974afa273763c9890dff45f08aea2b049a",
+    "accessibility_sha256": "c4e73fb150eb32a0fbf4a429e3ed8e2f10766567bec2685bed96c15a75b4eeae",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  },
+  {
+    "image": "playable-product-macos/14-normal-native-checkmate.jpg",
+    "accessibility": "playable-product-macos/14-normal-native-checkmate.ax.txt",
+    "image_sha256": "afe17509070ad5d942a62677ce5bc18f86dad467872af21cf4113ffa3b4d69f1",
+    "accessibility_sha256": "7beec0f35fdca45fe9a0b96b99b33599b082347ef31944c7cbf47e2cb11995e9",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  },
+  {
+    "image": "playable-product-macos/15-normal-native-stalemate-loss.jpg",
+    "accessibility": "playable-product-macos/15-normal-native-stalemate-loss.ax.txt",
+    "image_sha256": "7a62f233218adbf8ed20f99621d07fea24761897e6a36c15a6d730d09063176b",
+    "accessibility_sha256": "d8156f1d00b573b88c9ee7cd8fcc54e59a3e8076d876d141b81201698a216998",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  },
+  {
+    "image": "playable-product-macos/16-normal-eighth-action-forfeit.jpg",
+    "accessibility": "playable-product-macos/16-normal-eighth-action-forfeit.ax.txt",
+    "image_sha256": "3e5c16bc6c7226dc5294e8d821140b14789cb4a3888f9654a87ef52e5eb7975f",
+    "accessibility_sha256": "642b673be3e712e90c5e1ee2cd8afc69c6f2a1803b0b109f14b8373022c66439",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  },
+  {
+    "image": "playable-product-macos/17-normal-eighth-action-obligation.jpg",
+    "accessibility": "playable-product-macos/17-normal-eighth-action-obligation.ax.txt",
+    "image_sha256": "c64faa912946fe63f145bc776819895045a952f7c0766f12084c12e4b2ef74ef",
+    "accessibility_sha256": "d8156f1d00b573b88c9ee7cd8fcc54e59a3e8076d876d141b81201698a216998",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  },
+  {
+    "image": "playable-product-macos/18-normal-history-prefix4.jpg",
+    "accessibility": "playable-product-macos/18-normal-history-prefix4.ax.txt",
+    "image_sha256": "f0541135ffe839ba910fe04cf6b9de978758c3781a0116cb10fc8018d9952a8a",
+    "accessibility_sha256": "529ca23a0a3a5aed2c39341c44a013e6ab2df87118e78db276357052bc2019a0",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  },
+  {
+    "image": "playable-product-macos/19-normal-return-live-obligation.jpg",
+    "accessibility": "playable-product-macos/19-normal-return-live-obligation.ax.txt",
+    "image_sha256": "c2fe4758a40de006ee55e65015b2508a62a1ebe61c6f5d7987cbad93d3eab273",
+    "accessibility_sha256": "529ca23a0a3a5aed2c39341c44a013e6ab2df87118e78db276357052bc2019a0",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  },
+  {
+    "image": "playable-product-macos/20-QA-active-analysis-cancel.jpg",
+    "accessibility": "playable-product-macos/20-QA-active-analysis-cancel.ax.txt",
+    "image_sha256": "cc92a4cbe96e3c2ce0273cb9f12e78af211091729884771cf4fa98f0f46a4236",
+    "accessibility_sha256": "23150257d07a7a391fa162e413e67626f8f48ca87faf6799c4429be27e3c4fec",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  },
+  {
+    "image": "playable-product-macos/21-QA-genuine-process-failure.jpg",
+    "accessibility": "playable-product-macos/21-QA-genuine-process-failure.ax.txt",
+    "image_sha256": "682e540b52cd934a9fae07d9f1bfbca6b76f6069b86bc5707d6e221b40f8716f",
+    "accessibility_sha256": "0911b1e397bf6ace3e1009dc4addf75f655f4a007bb96dc3bbd10da063f98a8c",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  },
+  {
+    "image": "playable-product-macos/22-QA-real-engine-retry.jpg",
+    "accessibility": "playable-product-macos/22-QA-real-engine-retry.ax.txt",
+    "image_sha256": "4dfd257361308d479365b5ec0060b8acdb559c4e5b4f2b3b66aa874f6119f4a6",
+    "accessibility_sha256": "d62034340ab390c4b00592f1df825cb42ee070f99b7d4030f05511477989d234",
+    "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+  }
+]

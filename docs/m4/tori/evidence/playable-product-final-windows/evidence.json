@@ -1,0 +1,294 @@
+{
+  "source_revision": "8fed8ffb1ed1291aa52518ac3d84613ff43d2cb4",
+  "production_source": "cb1e162d9fa689e00643f2b09e334c121d611819",
+  "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/41517295932",
+  "artifact_id": 13176439427,
+  "artifact_sha256": "d9c57de7f8a474acecac2365dcb8d2c9a060ac8f5c7cae07c9c05031937c6409",
+  "raw_report": "gui-report.json.gz",
+  "raw_uncompressed_sha256": "2f7733cd6e75bf52154dc756532de125746b07d48b5b9e6214080202cd15e48d",
+  "status": "passed",
+  "method": "Actual installed/packaged GUI via W3C pointer/keyboard and native OS dialogs/close, external to distributables. Read-only DOM inspection; no direct IPC or injected input events.",
+  "environment": {
+    "platform": "Windows-2022Server-10.0.20348-SP0",
+    "python": "3.12.10",
+    "runner_image": "20261026.347.1",
+    "runner_os": "Windows",
+    "renderer_environment": {
+      "GDK_BACKEND": null,
+      "WEBKIT_DISABLE_COMPOSITING_MODE": null,
+      "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+      "LIBGL_ALWAYS_SOFTWARE": null
+    }
+  },
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "passed",
+      "host_sha256": "2b1959d2712d02cba0b2fbec2e4238380d05c79f2e73454adb72eeb9f33e6353",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "passed",
+      "host_sha256": "2b1959d2712d02cba0b2fbec2e4238380d05c79f2e73454adb72eeb9f33e6353",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "passed",
+      "host_sha256": "2b1959d2712d02cba0b2fbec2e4238380d05c79f2e73454adb72eeb9f33e6353",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "normal-xiangqi",
+      "status": "passed",
+      "host_sha256": "2b1959d2712d02cba0b2fbec2e4238380d05c79f2e73454adb72eeb9f33e6353",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "normal-tori",
+      "status": "passed",
+      "host_sha256": "2b1959d2712d02cba0b2fbec2e4238380d05c79f2e73454adb72eeb9f33e6353",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "normal-tori-native",
+      "status": "passed",
+      "host_sha256": "2b1959d2712d02cba0b2fbec2e4238380d05c79f2e73454adb72eeb9f33e6353",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-current-claim",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-concluded",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-full-unknown-cancel",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-pending-chess",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-pending-shogi",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-pending-xiangqi",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-pending-tori",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-tori-recovery",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-xiangqi-warning",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-xiangqi-fourth",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-xiangqi-count",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-xiangqi-offer",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-xiangqi-agreed",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-xiangqi-fast-proof",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-xiangqi-resigned",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-xiangqi-capacity",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-xiangqi-failure",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    },
+    {
+      "phase": "verification-xiangqi-exact-evidence",
+      "status": "passed",
+      "host_sha256": "51f301f2d69ddf6c96e132fa65434ad5c734be157d5505bf2cb0ebcf1fa3d0eb",
+      "engine_sha256": "d911b7a59f9d70567178515e52b2b32dae25712f9816b1d6542230d3deb4de4e"
+    }
+  ],
+  "selected_files": [
+    {
+      "file": "normal-tori-normal-complete-drop-and-engine-reply.webview.png",
+      "artifact_path": "gui-evidence/normal-tori-normal-complete-drop-and-engine-reply.webview.png",
+      "sha256": "40cb3ad2401a4efc3a454a49a104381e612b6e88f0a290c2295442a5e8da0cfb"
+    },
+    {
+      "file": "normal-tori-normal-reopened-work-stopped.webview.png",
+      "artifact_path": "gui-evidence/normal-tori-normal-reopened-work-stopped.webview.png",
+      "sha256": "cc62b3bbd42dadfe2d20f1b5459c16f66c41b9bd252d5ac7fde7862cfe95f86f"
+    },
+    {
+      "file": "normal-tori-native-TORI-O-MATE-natural-complete-game.webview.png",
+      "artifact_path": "gui-evidence/normal-tori-native-TORI-O-MATE-natural-complete-game.webview.png",
+      "sha256": "a5b4a546268e6232dbfd245257d6f2ab0a5eac57a70321835fb523c6bf1a7d0e"
+    },
+    {
+      "file": "verification-pending-tori-analysis-replaced-cancelled.webview.png",
+      "artifact_path": "gui-evidence/verification-pending-tori-analysis-replaced-cancelled.webview.png",
+      "sha256": "7f42ad4ed68dba1385c80223d8ec551d76fd9c2f1f55a7d9c99417ca26d42101"
+    },
+    {
+      "file": "verification-tori-recovery-actual-retry-retains-native-history.webview.png",
+      "artifact_path": "gui-evidence/verification-tori-recovery-actual-retry-retains-native-history.webview.png",
+      "sha256": "7fb8cd1c6ce110a1d974f24853bbaf5b302df1fa45842d740e1b1269c487092f"
+    },
+    {
+      "file": "normal-tori-concluded.mshogi",
+      "artifact_path": "gui-evidence/normal-tori-concluded.mshogi",
+      "sha256": "9e934f621597c5bdec9c963aa39c2c24b0ef5ad6daa79195d04ea8b1bac5a581"
+    },
+    {
+      "file": "pending-tori-complete.mshogi",
+      "artifact_path": "gui-evidence/pending-tori-complete.mshogi",
+      "sha256": "27ec8ebd60919ba3c373bbca92916aac30ecc9a1a5ee35ed5882b6a2365a9a25"
+    },
+    {
+      "file": "tori-recovery-complete.mshogi",
+      "artifact_path": "gui-evidence/tori-recovery-complete.mshogi",
+      "sha256": "cc9a9162c38da3b2219158f4a224bae49f6ca0f0c6ef9599bcbfa11f299b1d05"
+    },
+    {
+      "file": "gui-packages-normal-manifest.json",
+      "artifact_path": "gui-packages/normal/manifest.json",
+      "sha256": "0e025394ac394b7be3b0338a0de305e61b868254e075c8cc092d8e6f881113b0"
+    },
+    {
+      "file": "gui-packages-verification-manifest.json",
+      "artifact_path": "gui-packages/verification/manifest.json",
+      "sha256": "f180c4a1032074a5e61938453c65844aff0338ede4fa80ac29dd2a3b7f05f0d3"
+    },
+    {
+      "file": "gui-packages-normal-package-smoke.json",
+      "artifact_path": "gui-packages/normal/package-smoke.json",
+      "sha256": "e3a12bc9c39c595d7d3cb1609f9c6b89768e956508154ca832bda64cb5907a60"
+    }
+  ],
+  "qualification": "Normal Tori phases use ordinary installed product; active cancellation/replacement and recovery use separate labeled verification package. Original report preserves all native event/action/close acknowledgements. No GUI success is inferred from builds or smoke.",
+  "capture_qualification": "The complete-drop/engine-reply image retains the earlier expected malformed/corrupt Load rejection notice from the same journey. Its accepted current game and unsaved changes were preserved; it does not depict a failed drop or engine reply. Full raw event ordering and later successful Save/Load/Quit are retained."
+}

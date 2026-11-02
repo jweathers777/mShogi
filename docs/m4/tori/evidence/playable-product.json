@@ -1,0 +1,861 @@
+{
+  "schema": "mshogi.tori.playable-product.v1",
+  "task": "MSH-42",
+  "status": "PASS: all eight original criteria independently accepted; completion record for codex/rewrite",
+  "source_revision": "cb1e162d9fa689e00643f2b09e334c121d611819",
+  "integration_branch": "codex/rewrite",
+  "owner_decisions": {
+    "visual_approval": {
+      "integration": "5a6ec9f94c2b1dd3995d3f96d3b874f30e272090",
+      "packaged_production": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+      "approved": "Traditional native kanji, board, hands, promotion and layouts; preserve accepted design."
+    },
+    "undo": "Preserve desktop Take back; retain native/console one-event Undo."
+  },
+  "profile": {
+    "identity": "mshogi.tori.modern.v1",
+    "edition": "MSH81-MODERN-2026-11-01",
+    "unchanged_sha256": {
+      "docs/m4/tori/fixtures.json": "3f9e5ca3b541fc72f562ddd8231408e17e7bd5ba3ccee118e643ce0f543731e3",
+      "docs/m4/tori/native-fixture-ownership.json": "044a5d0fc72e355e705d12f6b7b1c328a043aa67b321a2c897d0e790f242b8d5",
+      "docs/m4/tori/shared-consumer-ownership.json": "7dc4e4aed4a3d8977b6dc0c9befbfe732825f5cf68d7dc02cf0c09dab403104e",
+      "docs/m4/tori/profile.md": "5e20ea1a355f1d2dfc91ab930687437a3aa8cf34a78353b80076b4173fd1e81a"
+    }
+  },
+  "native_evidence_reused": [
+    "native-playable-checkpoint.json",
+    "native-playable-selfplay.json",
+    "shared-acceptance.json",
+    "desktop-runtime-consumer-acceptance.json",
+    "shared-presentation-audit.json"
+  ],
+  "consumer_accounting": {
+    "native_assertions": 713,
+    "native_fixtures": 103,
+    "native_adapter_pending_consumer_fields": 14,
+    "runtime_fields_satisfied_separately": 13,
+    "runtime_requirements_satisfied_separately": 82,
+    "notation_fields_satisfied_in42": 1,
+    "notation_requirements_satisfied_in42": 1,
+    "notation_evidence": "native-playable-checkpoint.json#notation",
+    "policy": "No rewritten expectations or duplicate counting; native-only report remains scoped pending because it does not execute consumers."
+  },
+  "local_checks": [
+    {
+      "command": "cargo check --locked --workspace --all-targets",
+      "result": "PASS",
+      "log_sha256": "ccab09527a8ae9e3c2d174ee0717c2c0aed8e595754c10792cfb4f03b0befa3b",
+      "revision_scope": "Activation working tree before cb1e162; broad suites preceded final tiny browse-stop refusal/phase correction, covered by focused control regression and required exact-source CI."
+    },
+    {
+      "command": "cargo check --locked --manifest-path desktop/src-tauri/Cargo.toml --all-targets --all-features",
+      "result": "PASS; 20 inherited Tao warnings",
+      "log_sha256": "dd779e2b02f78792170d17a1b47a1f1ca2c0c02cb7d5050e399d2f65f9743521",
+      "revision_scope": "Activation working tree before cb1e162; broad suites preceded final tiny browse-stop refusal/phase correction, covered by focused control regression and required exact-source CI."
+    },
+    {
+      "command": "PATH=Node24:$PATH npm --prefix desktop run check",
+      "result": "PASS",
+      "log_sha256": "dfddfa5b4e517837513b4b9397053cbd1a8be7aac5f23d8b7d8cb3618e5f5e89",
+      "revision_scope": "Activation working tree before cb1e162; broad suites preceded final tiny browse-stop refusal/phase correction, covered by focused control regression and required exact-source CI."
+    },
+    {
+      "command": "npm --prefix desktop test",
+      "result": "384PASS /29files",
+      "log_sha256": "2374bb68e37fbf390aa060ff7dc57f90f0b26d911a552beaaedfc0f5522931c1",
+      "revision_scope": "Activation working tree before cb1e162; broad suites preceded final tiny browse-stop refusal/phase correction, covered by focused control regression and required exact-source CI."
+    },
+    {
+      "command": "cargo test --locked --workspace",
+      "result": "PASS",
+      "log_sha256": "6ecfd7530c1a5e6809eabd2d12032a9d7f63aa8b87887cca9f7340940657341a",
+      "revision_scope": "Activation working tree before cb1e162; broad suites preceded final tiny browse-stop refusal/phase correction, covered by focused control regression and required exact-source CI."
+    },
+    {
+      "command": "cargo test --locked -p mshogi-desktop-session --all-features",
+      "result": "262PASS",
+      "log_sha256": "abf9a23422d4b5902cc4cd0bdf79c74903733761e081af7d07b2d338d75c05f0",
+      "revision_scope": "Activation working tree before cb1e162; broad suites preceded final tiny browse-stop refusal/phase correction, covered by focused control regression and required exact-source CI."
+    },
+    {
+      "command": "cargo test --locked --manifest-path desktop/src-tauri/Cargo.toml --all-features --bin mshogi-desktop",
+      "result": "14PASS",
+      "log_sha256": "57dde6713fcb99bd9c25eaf9a02eb587fe894fdf2629358b65c1cf52c1fd4d64",
+      "revision_scope": "Activation working tree before cb1e162; broad suites preceded final tiny browse-stop refusal/phase correction, covered by focused control regression and required exact-source CI."
+    },
+    {
+      "command": "cargo clippy --locked --workspace --all-targets -- -D warnings",
+      "result": "PASS",
+      "log_sha256": "bfe171f1ba4b4ca1bcded7a149d85271d9fdf325935eeab3b5aef0d6326f8c01",
+      "revision_scope": "Activation working tree before cb1e162; broad suites preceded final tiny browse-stop refusal/phase correction, covered by focused control regression and required exact-source CI."
+    },
+    {
+      "command": "actual_control_limit_consumes_stop_resign_close_reservations_without_resetting_them --all-features",
+      "result": "1PASS; actual Open/Resume/Inspect/typedControls refusal/Return, exactbytes and endingreservations",
+      "log_sha256": "cab943d4fc40eb343aa7d9a9f72255d565fb2459e065069e67c55e367945cc5a",
+      "revision_scope": "Activation working tree before cb1e162; broad suites preceded final tiny browse-stop refusal/phase correction, covered by focused control regression and required exact-source CI."
+    }
+  ],
+  "gui_driver": {
+    "unit_result": "98PASS after JSON-member-order and authoritative dirty-close admission regressions; syntax PASS",
+    "native_fixture_generator": "Ran twice, all five actual DesktopController-generated normal documents byte-identical; Clippy -Dwarnings PASS",
+    "fixture_names": [
+      "tori-contract",
+      "tori-mate-in-one",
+      "tori-quiet-loss",
+      "tori-forced-prefix7",
+      "tori-obligation8"
+    ]
+  },
+  "packages": {
+    "normal": {
+      "package_root": "desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+      "engine": "Contents/MacOS/mshogi",
+      "sha256": "7fae5c348388e132b8c7d2c6e409c777db09f147b98475eca1ce67b21b006e4f",
+      "host_sha256": "319d8186102fabaceae3c7828a4f564e0e8e2979f0e4ac738d02a8b00d89f9e2",
+      "version": "mshogi 0.1.0",
+      "uci_observations": [
+        "id name mShogi 0.1.0",
+        "id author John Weathers",
+        "option name ClaimPolicy type combo default explicit var explicit var auto",
+        "uciok",
+        "readyok",
+        "info depth 1 nodes 21 time 5 score cp 0 pv a2a3",
+        "bestmove a2a3"
+      ],
+      "internal_response": {
+        "protocol": 4,
+        "observation": {
+          "schema_version": 1,
+          "context": {
+            "purpose": {
+              "kind": "engine_turn"
+            },
+            "request_id": 1,
+            "session_version": 1,
+            "process_generation": 1,
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "chess",
+              "rules_profile": "mshogi.chess.match.v1",
+              "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+              "native_schema_version": 1,
+              "payload": {
+                "schema_version": 1,
+                "rules_profile": "mshogi.chess.match.v1",
+                "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                "history_origin": "standard_start",
+                "claim_policy": "explicit_only",
+                "events": []
+              }
+            },
+            "limits": {
+              "depth": 1,
+              "nodes": 1000
+            }
+          },
+          "result": {
+            "kind": "chess",
+            "result": {
+              "kind": "move",
+              "action": "a2a3",
+              "telemetry": {
+                "score": 0,
+                "completed_depth": 1,
+                "nodes": 21,
+                "principal_variation": [
+                  {
+                    "kind": "move",
+                    "action": "a2a3"
+                  }
+                ],
+                "status": "complete"
+              }
+            }
+          }
+        }
+      },
+      "analysis_response": {
+        "protocol": 4,
+        "observation": {
+          "schema_version": 1,
+          "context": {
+            "purpose": {
+              "kind": "move_analysis",
+              "target": {
+                "selection_id": 1,
+                "event_index": 0,
+                "board_ply": 0,
+                "session_version": 1,
+                "label": "Package verification: standard start",
+                "turn": {
+                  "game_kind": "chess",
+                  "side": "white"
+                }
+              }
+            },
+            "request_id": 2,
+            "session_version": 1,
+            "process_generation": 2,
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "chess",
+              "rules_profile": "mshogi.chess.match.v1",
+              "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+              "native_schema_version": 1,
+              "payload": {
+                "schema_version": 1,
+                "rules_profile": "mshogi.chess.match.v1",
+                "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                "history_origin": "standard_start",
+                "claim_policy": "explicit_only",
+                "events": []
+              }
+            },
+            "limits": {
+              "depth": 1,
+              "nodes": 1000
+            }
+          },
+          "result": {
+            "kind": "chess",
+            "result": {
+              "kind": "move",
+              "action": "a2a3",
+              "telemetry": {
+                "score": 0,
+                "completed_depth": 1,
+                "nodes": 21,
+                "principal_variation": [
+                  {
+                    "kind": "move",
+                    "action": "a2a3"
+                  }
+                ],
+                "status": "complete"
+              }
+            }
+          }
+        }
+      },
+      "full_response": {
+        "protocol": 4,
+        "observation": {
+          "schema_version": 1,
+          "context": {
+            "purpose": {
+              "kind": "chess_full_reachability",
+              "target": {
+                "selection_id": 1,
+                "event_index": 0,
+                "board_ply": 0,
+                "session_version": 1,
+                "label": "Package verification: standard start",
+                "turn": {
+                  "game_kind": "chess",
+                  "side": "white"
+                }
+              },
+              "mate": "either",
+              "limits": {
+                "max_positions": 1,
+                "max_transitions": 1
+              }
+            },
+            "request_id": 3,
+            "session_version": 1,
+            "process_generation": 3,
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "chess",
+              "rules_profile": "mshogi.chess.match.v1",
+              "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+              "native_schema_version": 1,
+              "payload": {
+                "schema_version": 1,
+                "rules_profile": "mshogi.chess.match.v1",
+                "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                "history_origin": "standard_start",
+                "claim_policy": "explicit_only",
+                "events": []
+              }
+            },
+            "limits": {
+              "depth": 1,
+              "nodes": 0
+            }
+          },
+          "result": {
+            "kind": "chess",
+            "result": {
+              "kind": "reachability",
+              "result": {
+                "unknown": {
+                  "reason": "position_limit",
+                  "work": {
+                    "positions": 1,
+                    "expanded": 1,
+                    "transitions": 1,
+                    "static_leaves": 0
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "files": [
+        "Contents/Info.plist",
+        "Contents/MacOS/mshogi",
+        "Contents/MacOS/mshogi-desktop",
+        "Contents/Resources/icon.icns"
+      ],
+      "scope": "Package inventory and actual UCI, engine-turn, move-analysis and bounded Full reachability queries. Host acceptance and installed UI interaction are separate evidence."
+    },
+    "normal_identity": {
+      "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+      "bundle_id": "org.mshogi.desktop",
+      "expected_bundle_id": "org.mshogi.desktop",
+      "environment": {},
+      "files": {
+        "Contents/Info.plist": "343be4b5b0ce533854424094072924e4695b92c95e1c220e1cd7ec09b5a8ce90",
+        "Contents/MacOS/mshogi": "7fae5c348388e132b8c7d2c6e409c777db09f147b98475eca1ce67b21b006e4f",
+        "Contents/MacOS/mshogi-desktop": "319d8186102fabaceae3c7828a4f564e0e8e2979f0e4ac738d02a8b00d89f9e2",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+      },
+      "signatures": {
+        "display": {
+          "exit_code": 0,
+          "output": "# designated => cdhash H\"c135db2a3a4680026079bebe6c3b52a55bbe761b\"\nExecutable=/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi.app/Contents/MacOS/mshogi-desktop\nIdentifier=mshogi_desktop-5d1fd20094c6a138\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=131704 flags=0x20002(adhoc,linker-signed) hashes=4112+0 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=c135db2a3a4680026079bebe6c3b52a55bbe761b\nCandidateCDHashFull sha256=c135db2a3a4680026079bebe6c3b52a55bbe761bc4e20d4e910b5aeba08581c1\nHash choices=sha256\nCMSDigest=c135db2a3a4680026079bebe6c3b52a55bbe761bc4e20d4e910b5aeba08581c1\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=10944512\nExecutable Segment flags=0x1\nPage size=4096\nCDHash=c135db2a3a4680026079bebe6c3b52a55bbe761b\nSignature=adhoc\nInfo.plist=not bound\nTeamIdentifier=not set\nSealed Resources=none\n"
+        },
+        "strict_verify": {
+          "exit_code": 1,
+          "output": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi.app: code has no resources but signature indicates they must be present\n"
+        }
+      },
+      "qualification": "Ad-hoc signatures may change on rebuild; no approval persistence is inferred"
+    },
+    "qa_identity": {
+      "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+      "expected_bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+      "environment": {
+        "MSHOGI_DESKTOP_FIXTURE_FILE": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/qa.fixture",
+        "MSHOGI_R6_DELAY_MS": "5000",
+        "MSHOGI_R6_REAL_ENGINE": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi",
+        "MSHOGI_VERIFICATION_ENGINE": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/r6-engine-gate"
+      },
+      "files": {
+        "Contents/Info.plist": "2517ef0511d8dd0cab6e176041960c6d1b1a54ae878de47713fa9538774b39ff",
+        "Contents/MacOS/mshogi": "46fd766abb1998670a7975118164fafee96545226b535fd2099fffab7a651d9c",
+        "Contents/MacOS/mshogi-desktop": "78f0f895aa271c381f1d7b5049f1d2f56219e4f21846572b3dc88671e05fdf10",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc",
+        "Contents/_CodeSignature/CodeResources": "05aeea2e2b276e96c261591829473befbe07afe90536b2167cbc51f034ce87e2"
+      },
+      "signatures": {
+        "display": {
+          "exit_code": 0,
+          "output": "# designated => cdhash H\"4b5bd857e40a4472c1f9fbe61467d5528d4c47b5\"\nExecutable=/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.shogipromotion\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=33962 flags=0x2(adhoc) hashes=1054+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=4b5bd857e40a4472c1f9fbe61467d5528d4c47b5\nCandidateCDHashFull sha256=4b5bd857e40a4472c1f9fbe61467d5528d4c47b56c5a129fa5463896f6520bae\nHash choices=sha256\nCMSDigest=4b5bd857e40a4472c1f9fbe61467d5528d4c47b56c5a129fa5463896f6520bae\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=11272192\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=4b5bd857e40a4472c1f9fbe61467d5528d4c47b5\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n"
+        },
+        "strict_verify": {
+          "exit_code": 0,
+          "output": "--prepared:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n--validated:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: valid on disk\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: satisfies its Designated Requirement\n"
+        }
+      },
+      "qualification": "Ad-hoc signatures may change on rebuild; no approval persistence is inferred"
+    },
+    "qa_signed_bytes_unchanged_after_selection_and_actual_interaction": true,
+    "normal_signing_limitation": "Local normal development bundle uses linker ad-hoc signature, no resource seal: strict codesign verification returned1. Actual package inventory/bundledengine and normal GUI PASS. Separately staged QA ad-hoc deep signature strict verification PASS; no distribution/notarization claim.",
+    "normal_bytes_preserved_after_qa_build": true,
+    "stable_launch_practice": "Reused established normal org.mshogi.desktop and QA org.mshogi.desktop.verification.r6.shogipromotion at fixed primary-checkout paths. QA staged once, selector external, signed bytes unchanged. No additional Computer Use prompt encountered in these launches; approval persistence is controlled by the platform and not guaranteed."
+  },
+  "gui": {
+    "macos": {
+      "source_revision": "cb1e162d9fa689e00643f2b09e334c121d611819",
+      "environment": "macOS27.0.1 arm64, normal1180x820; native CUA App interaction",
+      "normal": "PASS normal fourth-game selector; Sente/Gote/Random; real engine both assignments; keyboard capture/drop; Take back4\u21922; exact history/opponent inspection/Esc/Return; atomic OS Save/Open stopped and explicitResume; read-only depth2/2000 analysis; nativeCmdQCancel; resignation/Save; ordinaryLoad all9faces, compulsoryEa, naturalmate, quietloss, actualeighthforfeit, obligation8 vs prefix4; clean nativeQuit",
+      "qa": "PASS separately labeled fixed QA identity; external5s realengine startup gate, replace/cancel active analysis0ply; actual missing executable failure1ply unscored; restoreidenticalgate/explicitRetry/realreply2plies; dirtyQuitDiscard. No forged engine observations or product search limit changes.",
+      "captures": [
+        {
+          "image": "playable-product-macos/01-four-game-dropdown.jpg",
+          "accessibility": "playable-product-macos/01-four-game-dropdown.ax.txt",
+          "image_sha256": "8f1702b659e3d4d49df035dc672a880e240de418eba45a76e8b623ed11c6d95f",
+          "accessibility_sha256": "49ebf8dedb8041fe3dcc911425c91fcf2be17e99d09d05b02acc9dc7e8ee9f48",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        },
+        {
+          "image": "playable-product-macos/02-normal-gote-engine-opening.jpg",
+          "accessibility": "playable-product-macos/02-normal-gote-engine-opening.ax.txt",
+          "image_sha256": "e0fbc2bc2679af11760dfbe56fc2ebe4280ebb11524347d30920fca478bf1c5e",
+          "accessibility_sha256": "529ca23a0a3a5aed2c39341c44a013e6ab2df87118e78db276357052bc2019a0",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        },
+        {
+          "image": "playable-product-macos/03-gote-capture-real-reply.jpg",
+          "accessibility": "playable-product-macos/03-gote-capture-real-reply.ax.txt",
+          "image_sha256": "c97185bd05358ce3472f8138b0b487f506b1fff3696c5c8e40ad0a477b13338e",
+          "accessibility_sha256": "8b8cc6d3fd06838a2a8745cba36ff8c0368d0dca334a3a58f7271707777b0558",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        },
+        {
+          "image": "playable-product-macos/04-random-native-assignment.jpg",
+          "accessibility": "playable-product-macos/04-random-native-assignment.ax.txt",
+          "image_sha256": "3a8755228cdd8a0ba3de8886bbbd1ac531641b4483f3a1a123c462dc5fe6507d",
+          "accessibility_sha256": "529ca23a0a3a5aed2c39341c44a013e6ab2df87118e78db276357052bc2019a0",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        },
+        {
+          "image": "playable-product-macos/05-sente-capture-engine-hands.jpg",
+          "accessibility": "playable-product-macos/05-sente-capture-engine-hands.ax.txt",
+          "image_sha256": "23e3f0f1fe60f22ba00629f05ced8bf662c6525f9e787e1e05b3bf0031144c41",
+          "accessibility_sha256": "55c1e26eb9469da7bd9b48f1af9c8330244fd41533c6209c530fd1bcd4f86dd7",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        },
+        {
+          "image": "playable-product-macos/06-normal-drop-engine-response.jpg",
+          "accessibility": "playable-product-macos/06-normal-drop-engine-response.ax.txt",
+          "image_sha256": "084489552d2996632a0c9cb1be264fab5faf525632eaed44ca6c289a7fad4bcc",
+          "accessibility_sha256": "952c70674c257ab0b25b0872a29209fa6016a2f924e5bda7e7bd09f4056759c4",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        },
+        {
+          "image": "playable-product-macos/07-take-back-retired-observations.jpg",
+          "accessibility": "playable-product-macos/07-take-back-retired-observations.ax.txt",
+          "image_sha256": "96f8e594deef6e7956d30ed01ac13995dd4c295b3c9f85b124f91fc68ea8b7f8",
+          "accessibility_sha256": "33f040157483c30b43009af4389237deacfbadb68e124294965cbe12187da4aa",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        },
+        {
+          "image": "playable-product-macos/08-normal-reopen-stopped.jpg",
+          "accessibility": "playable-product-macos/08-normal-reopen-stopped.ax.txt",
+          "image_sha256": "0ad9a59fc0e0740c1da48cb05de9f7bbb9902f45c596bf68b4bc94b37942fdda",
+          "accessibility_sha256": "3d0c4098902441dd7e39da7830b3946b96f618ca5dc3a090a24431aa54a533e0",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        },
+        {
+          "image": "playable-product-macos/09-normal-read-only-analysis.jpg",
+          "accessibility": "playable-product-macos/09-normal-read-only-analysis.ax.txt",
+          "image_sha256": "56f4704def1876f764571de58165e3a9af9a6f66a983503ce0670835f2c9e2f7",
+          "accessibility_sha256": "529ca23a0a3a5aed2c39341c44a013e6ab2df87118e78db276357052bc2019a0",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        },
+        {
+          "image": "playable-product-macos/10-normal-native-quit-cancel.jpg",
+          "accessibility": "playable-product-macos/10-normal-native-quit-cancel.ax.txt",
+          "image_sha256": "fcfa1754158c8cb39aa60c9be7bc16784fbd501c1b611180e7811324e2a930d5",
+          "accessibility_sha256": "53f9e63def804f50f519086021b54938c227e93bdb2f9a6323d877adeb13951d",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        },
+        {
+          "image": "playable-product-macos/11-normal-concluded-resignation.jpg",
+          "accessibility": "playable-product-macos/11-normal-concluded-resignation.ax.txt",
+          "image_sha256": "67b1a339d55cc5955df0af1f34e31bf4e127622f6cd91107ec4bab53f1a8f51f",
+          "accessibility_sha256": "529ca23a0a3a5aed2c39341c44a013e6ab2df87118e78db276357052bc2019a0",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        },
+        {
+          "image": "playable-product-macos/12-normal-native-contract-faces.jpg",
+          "accessibility": "playable-product-macos/12-normal-native-contract-faces.ax.txt",
+          "image_sha256": "e55f38562e653e38b64b9acb4cb8b2c5111df492623802f488b9a73e0c6594de",
+          "accessibility_sha256": "3227bffa067df9ed2b6ed5ef330cb3f2fd965b3ea9257b805cef95abab2f1f3a",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        },
+        {
+          "image": "playable-product-macos/13-normal-compulsory-eagle.jpg",
+          "accessibility": "playable-product-macos/13-normal-compulsory-eagle.ax.txt",
+          "image_sha256": "69eacdcc1ed8e45314e1a1f9545666974afa273763c9890dff45f08aea2b049a",
+          "accessibility_sha256": "c4e73fb150eb32a0fbf4a429e3ed8e2f10766567bec2685bed96c15a75b4eeae",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        },
+        {
+          "image": "playable-product-macos/14-normal-native-checkmate.jpg",
+          "accessibility": "playable-product-macos/14-normal-native-checkmate.ax.txt",
+          "image_sha256": "afe17509070ad5d942a62677ce5bc18f86dad467872af21cf4113ffa3b4d69f1",
+          "accessibility_sha256": "7beec0f35fdca45fe9a0b96b99b33599b082347ef31944c7cbf47e2cb11995e9",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        },
+        {
+          "image": "playable-product-macos/15-normal-native-stalemate-loss.jpg",
+          "accessibility": "playable-product-macos/15-normal-native-stalemate-loss.ax.txt",
+          "image_sha256": "7a62f233218adbf8ed20f99621d07fea24761897e6a36c15a6d730d09063176b",
+          "accessibility_sha256": "d8156f1d00b573b88c9ee7cd8fcc54e59a3e8076d876d141b81201698a216998",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        },
+        {
+          "image": "playable-product-macos/16-normal-eighth-action-forfeit.jpg",
+          "accessibility": "playable-product-macos/16-normal-eighth-action-forfeit.ax.txt",
+          "image_sha256": "3e5c16bc6c7226dc5294e8d821140b14789cb4a3888f9654a87ef52e5eb7975f",
+          "accessibility_sha256": "642b673be3e712e90c5e1ee2cd8afc69c6f2a1803b0b109f14b8373022c66439",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        },
+        {
+          "image": "playable-product-macos/17-normal-eighth-action-obligation.jpg",
+          "accessibility": "playable-product-macos/17-normal-eighth-action-obligation.ax.txt",
+          "image_sha256": "c64faa912946fe63f145bc776819895045a952f7c0766f12084c12e4b2ef74ef",
+          "accessibility_sha256": "d8156f1d00b573b88c9ee7cd8fcc54e59a3e8076d876d141b81201698a216998",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        },
+        {
+          "image": "playable-product-macos/18-normal-history-prefix4.jpg",
+          "accessibility": "playable-product-macos/18-normal-history-prefix4.ax.txt",
+          "image_sha256": "f0541135ffe839ba910fe04cf6b9de978758c3781a0116cb10fc8018d9952a8a",
+          "accessibility_sha256": "529ca23a0a3a5aed2c39341c44a013e6ab2df87118e78db276357052bc2019a0",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        },
+        {
+          "image": "playable-product-macos/19-normal-return-live-obligation.jpg",
+          "accessibility": "playable-product-macos/19-normal-return-live-obligation.ax.txt",
+          "image_sha256": "c2fe4758a40de006ee55e65015b2508a62a1ebe61c6f5d7987cbad93d3eab273",
+          "accessibility_sha256": "529ca23a0a3a5aed2c39341c44a013e6ab2df87118e78db276357052bc2019a0",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        },
+        {
+          "image": "playable-product-macos/20-QA-active-analysis-cancel.jpg",
+          "accessibility": "playable-product-macos/20-QA-active-analysis-cancel.ax.txt",
+          "image_sha256": "cc92a4cbe96e3c2ce0273cb9f12e78af211091729884771cf4fa98f0f46a4236",
+          "accessibility_sha256": "23150257d07a7a391fa162e413e67626f8f48ca87faf6799c4429be27e3c4fec",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        },
+        {
+          "image": "playable-product-macos/21-QA-genuine-process-failure.jpg",
+          "accessibility": "playable-product-macos/21-QA-genuine-process-failure.ax.txt",
+          "image_sha256": "682e540b52cd934a9fae07d9f1bfbca6b76f6069b86bc5707d6e221b40f8716f",
+          "accessibility_sha256": "0911b1e397bf6ace3e1009dc4addf75f655f4a007bb96dc3bbd10da063f98a8c",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        },
+        {
+          "image": "playable-product-macos/22-QA-real-engine-retry.jpg",
+          "accessibility": "playable-product-macos/22-QA-real-engine-retry.ax.txt",
+          "image_sha256": "4dfd257361308d479365b5ec0060b8acdb559c4e5b4f2b3b66aa874f6119f4a6",
+          "accessibility_sha256": "d62034340ab390c4b00592f1df825cb42ee070f99b7d4030f05511477989d234",
+          "qualification": "Original CUA JPEG screenshot; paired AX may be full or differential. QA20-22 use full state; normal01-19 establish ordinary package interaction."
+        }
+      ],
+      "saved_game": {
+        "file": "playable-product-macos/normal-concluded-game.mshogi",
+        "bytes": 36022,
+        "sha256": "a2a7b0025a7945ca57fa859349bca3e6998a45859ce12456446d75543fa46e3c",
+        "scope": "Actual normal GUI Save after standard-root play/Takeback/history/analysis/resignation; three retained observations, retired lineage, exact current native conclusion."
+      },
+      "capture_qualifications": "01 collapsed chooser, four-entry options established by actual dropdown observation/source/unit tests and normalToriNew; 20 post-cancel image, active sequence established separately by actual native actions/external5s delay gate. AX normal01-19 may be differential/nochange."
+    },
+    "windows": {
+      "status": "PASS: all 35 actual GUI phases",
+      "evidence": "playable-product-final-windows/evidence.json",
+      "source_revision": "8fed8ffb1ed1291aa52518ac3d84613ff43d2cb4",
+      "run": 41517295932,
+      "artifact": 13176439427,
+      "job": 125523992376
+    },
+    "linux": {
+      "status": "PASS: all 35 actual GUI phases",
+      "evidence": "playable-product-final-linux/evidence.json",
+      "source_revision": "8fed8ffb1ed1291aa52518ac3d84613ff43d2cb4",
+      "run": 41517295932,
+      "artifact": 13175739410,
+      "job": 125523992226
+    },
+    "linux_previous": {
+      "status": "PASS all35actualGUIphases",
+      "evidence": "playable-product-linux/evidence.json",
+      "source_revision": "4b02dfb38e3db485f2c4035b820a4da61e413d6d",
+      "run": 41513057801,
+      "artifact": 13174658574
+    }
+  },
+  "required_ci": {
+    "native_run": 41513058128,
+    "native_source": "4b02dfb38e3db485f2c4035b820a4da61e413d6d",
+    "native_macos_retry": "PASS: targeted attempt2 Mac job125522066869 acquired a hosted runner and completed successfully. Original unacquired cancellation remains cancelled.",
+    "desktop_current_run": 41517295932,
+    "desktop_verification_source": "8fed8ffb1ed1291aa52518ac3d84613ff43d2cb4",
+    "status": "PASS: all six explicitly required whole jobs and actual normal macOS GUI; capacity-cancelled and historical failed campaigns remain so recorded",
+    "condition": "All3 latest-attempt source4b nativewholejobsPASS; fresh8f Win/LinuxwholeDesktopjobsPASS+actual35GUIphases each; source-equivalent unchangedcb wholeMacDesktopjob125497603293PASS+actualnormalcbMacCUA. NewMacDesktop onlysupporting, notclaimed ifcancelled.",
+    "initial_macos_capacity_cancellations": [
+      {
+        "workflow": "native",
+        "job": {
+          "id": 125509503051,
+          "run_id": 41513058128,
+          "workflow_name": "Rust workspace",
+          "head_branch": "codex/rewrite",
+          "run_url": "https://api.github.com/repos/jweathers777/mShogi/actions/runs/41513058128",
+          "run_attempt": 1,
+          "node_id": "CR_kwDOAClwqs8AAAAdOPMISw",
+          "head_sha": "4b02dfb38e3db485f2c4035b820a4da61e413d6d",
+          "url": "https://api.github.com/repos/jweathers777/mShogi/actions/jobs/125509503051",
+          "html_url": "https://github.com/jweathers777/mShogi/actions/runs/41513058128/job/125509503051",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-11-02T19:46:32Z",
+          "started_at": "2026-11-02T19:46:32Z",
+          "completed_at": "2026-11-02T20:01:33Z",
+          "name": "Rust (macos-15)",
+          "steps": [],
+          "check_run_url": "https://api.github.com/repos/jweathers777/mShogi/check-runs/125509503051",
+          "labels": [
+            "macos-15"
+          ],
+          "runner_id": 0,
+          "runner_name": "",
+          "runner_group_id": 0,
+          "runner_group_name": ""
+        },
+        "annotations": [
+          {
+            "path": ".github",
+            "blob_href": "https://github.com/jweathers777/mShogi/blob/4b02dfb38e3db485f2c4035b820a4da61e413d6d/.github",
+            "start_line": 1,
+            "start_column": null,
+            "end_line": 1,
+            "end_column": null,
+            "annotation_level": "failure",
+            "title": "",
+            "message": "The job was not acquired by Runner of type hosted even after multiple attempts",
+            "raw_details": ""
+          },
+          {
+            "path": ".github",
+            "blob_href": "https://github.com/jweathers777/mShogi/blob/4b02dfb38e3db485f2c4035b820a4da61e413d6d/.github",
+            "start_line": 1,
+            "start_column": null,
+            "end_line": 1,
+            "end_column": null,
+            "annotation_level": "notice",
+            "title": "",
+            "message": "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times.",
+            "raw_details": ""
+          },
+          {
+            "path": ".github",
+            "blob_href": "https://github.com/jweathers777/mShogi/blob/4b02dfb38e3db485f2c4035b820a4da61e413d6d/.github",
+            "start_line": 1,
+            "start_column": null,
+            "end_line": 1,
+            "end_column": null,
+            "annotation_level": "notice",
+            "title": "",
+            "message": "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times.",
+            "raw_details": ""
+          },
+          {
+            "path": ".github",
+            "blob_href": "https://github.com/jweathers777/mShogi/blob/4b02dfb38e3db485f2c4035b820a4da61e413d6d/.github",
+            "start_line": 1,
+            "start_column": null,
+            "end_line": 1,
+            "end_column": null,
+            "annotation_level": "notice",
+            "title": "",
+            "message": "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times.",
+            "raw_details": ""
+          }
+        ]
+      },
+      {
+        "workflow": "desktop",
+        "job": {
+          "id": 125509503056,
+          "run_id": 41513057801,
+          "workflow_name": "Desktop packages",
+          "head_branch": "codex/rewrite",
+          "run_url": "https://api.github.com/repos/jweathers777/mShogi/actions/runs/41513057801",
+          "run_attempt": 1,
+          "node_id": "CR_kwDOAClwqs8AAAAdOPMIUA",
+          "head_sha": "4b02dfb38e3db485f2c4035b820a4da61e413d6d",
+          "url": "https://api.github.com/repos/jweathers777/mShogi/actions/jobs/125509503056",
+          "html_url": "https://github.com/jweathers777/mShogi/actions/runs/41513057801/job/125509503056",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-11-02T19:46:32Z",
+          "started_at": "2026-11-02T19:46:32Z",
+          "completed_at": "2026-11-02T20:01:33Z",
+          "name": "Desktop (macos-15)",
+          "steps": [],
+          "check_run_url": "https://api.github.com/repos/jweathers777/mShogi/check-runs/125509503056",
+          "labels": [
+            "macos-15"
+          ],
+          "runner_id": 0,
+          "runner_name": "",
+          "runner_group_id": 0,
+          "runner_group_name": ""
+        },
+        "annotations": [
+          {
+            "path": ".github",
+            "blob_href": "https://github.com/jweathers777/mShogi/blob/4b02dfb38e3db485f2c4035b820a4da61e413d6d/.github",
+            "start_line": 1,
+            "start_column": null,
+            "end_line": 1,
+            "end_column": null,
+            "annotation_level": "failure",
+            "title": "",
+            "message": "The job was not acquired by Runner of type hosted even after multiple attempts",
+            "raw_details": ""
+          },
+          {
+            "path": ".github",
+            "blob_href": "https://github.com/jweathers777/mShogi/blob/4b02dfb38e3db485f2c4035b820a4da61e413d6d/.github",
+            "start_line": 1,
+            "start_column": null,
+            "end_line": 1,
+            "end_column": null,
+            "annotation_level": "notice",
+            "title": "",
+            "message": "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times.",
+            "raw_details": ""
+          },
+          {
+            "path": ".github",
+            "blob_href": "https://github.com/jweathers777/mShogi/blob/4b02dfb38e3db485f2c4035b820a4da61e413d6d/.github",
+            "start_line": 1,
+            "start_column": null,
+            "end_line": 1,
+            "end_column": null,
+            "annotation_level": "notice",
+            "title": "",
+            "message": "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times.",
+            "raw_details": ""
+          },
+          {
+            "path": ".github",
+            "blob_href": "https://github.com/jweathers777/mShogi/blob/4b02dfb38e3db485f2c4035b820a4da61e413d6d/.github",
+            "start_line": 1,
+            "start_column": null,
+            "end_line": 1,
+            "end_column": null,
+            "annotation_level": "notice",
+            "title": "",
+            "message": "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times.",
+            "raw_details": ""
+          }
+        ]
+      }
+    ],
+    "snapshot": "playable-product-ci.json",
+    "additional_desktop_macos": [
+      {
+        "id": 125523991851,
+        "run_id": 41517295932,
+        "workflow_name": "Desktop packages",
+        "head_branch": "codex/rewrite",
+        "run_url": "https://api.github.com/repos/jweathers777/mShogi/actions/runs/41517295932",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOAClwqs8AAAAdOdAdKw",
+        "head_sha": "8fed8ffb1ed1291aa52518ac3d84613ff43d2cb4",
+        "url": "https://api.github.com/repos/jweathers777/mShogi/actions/jobs/125523991851",
+        "html_url": "https://github.com/jweathers777/mShogi/actions/runs/41517295932/job/125523991851",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "created_at": "2026-11-02T20:13:51Z",
+        "started_at": "2026-11-02T20:13:51Z",
+        "completed_at": "2026-11-02T20:28:52Z",
+        "name": "Desktop (macos-15)",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/jweathers777/mShogi/check-runs/125523991851",
+        "labels": [
+          "macos-15"
+        ],
+        "runner_id": 0,
+        "runner_name": "",
+        "runner_group_id": 0,
+        "runner_group_name": ""
+      }
+    ],
+    "additional_desktop_macos_annotations": [
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/jweathers777/mShogi/blob/8fed8ffb1ed1291aa52518ac3d84613ff43d2cb4/.github",
+        "start_line": 1,
+        "start_column": null,
+        "end_line": 1,
+        "end_column": null,
+        "annotation_level": "failure",
+        "title": "",
+        "message": "The job was not acquired by Runner of type hosted even after multiple attempts",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/jweathers777/mShogi/blob/8fed8ffb1ed1291aa52518ac3d84613ff43d2cb4/.github",
+        "start_line": 1,
+        "start_column": null,
+        "end_line": 1,
+        "end_column": null,
+        "annotation_level": "notice",
+        "title": "",
+        "message": "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times.",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/jweathers777/mShogi/blob/8fed8ffb1ed1291aa52518ac3d84613ff43d2cb4/.github",
+        "start_line": 1,
+        "start_column": null,
+        "end_line": 1,
+        "end_column": null,
+        "annotation_level": "notice",
+        "title": "",
+        "message": "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times.",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/jweathers777/mShogi/blob/8fed8ffb1ed1291aa52518ac3d84613ff43d2cb4/.github",
+        "start_line": 1,
+        "start_column": null,
+        "end_line": 1,
+        "end_column": null,
+        "annotation_level": "notice",
+        "title": "",
+        "message": "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times.",
+        "raw_details": ""
+      }
+    ],
+    "workflow_qualification": "Rust41513058128 attempt2 overall success. Desktop41517295932 overall failure because extra Mac job was never acquired and cancelled under hosted arm64 capacity; its Windows/Linux whole jobs and all35 GUI phases each passed. Source-equivalent cb Mac whole Desktop125497603293 and actual cb normal Mac CUA are the explicitly required Mac evidence. No overall Desktop workflow success claimed."
+  },
+  "failed_checks": [
+    "Initial local focused native assertions23PASS/2FAIL: obsolete normalTori-gate tests replaced by positive admission and conflicting-side atomic rejection; full262/native suites laterpassed.",
+    "Previous31cd Desktop41480632062 Windows/Linux GUI failure remains failed; obsolete historical-search wording corrected05ceba4 integrated and final actual8fed8ff Windows/Linux reruns now passed; see final-platform reports.",
+    "Native Save filename full path was entered as a literal filename and macOS converted slashes to colons; valid complete file saved in observed remembered directory, opened successfully, copied to evidence. No failed Save or product defect inferred.",
+    "First QA Cancel lookup used engine-turn label instead of actual Cancel analysis; corrected fresh native UI lookup, then actual replacement/cancellation performed.",
+    "Normal strict codesign development-bundle probe returned1 as recorded above; not claimed passed.",
+    "Exact-source cb1 Rust41509573560 generated-snapshot diagnostic goldens failed; Desktop41509573239 Win/Linux33/35 phasesPASS, twoTori phases failed equivalentJSONkeyorder comparator. See playable-product-ci-cb1-failure.json; failures remainfailed.",
+    "Source4b Windows34/35PASS, final normalTori dirtyclose probe failed before proving dispatchedFlip was native accepted/dirty. Last native receipt clean thenWM_CLOSE73mslater. Strengthened verification nowrequires authoritative dirty+version/settings/closeauthority beforeclose; productunchanged. See playable-product-ci-4b-windows-failure.json/rawgzip. Fresh8fed8ff Windows/Linux execution now passed all35phases each; original failed run remains failed."
+  ],
+  "limitations": [
+    "Untimed only; no strength claim (MSH51).",
+    "Default searchdepth2/2000visits, max3/10000; no thresholds raised.",
+    "15s replay worker deadline and bounded noninterruptible replay qualification retained; near-limit operational refusal may occur without corrupting accepted state.",
+    "Diagram root/counter/known history remain distinct from proven historical reachability.",
+    "Shared six-game/package/M4 closure remain46/47/88/89; no later variant orM5 started."
+  ],
+  "independent_review": {
+    "reviewer": "tori42_final_review",
+    "method": "Separate agent read-only source/test/evidence/fixture geometry and actual screenshot review; no independent test/GUI/CI execution claimed",
+    "source_result": "PASS cb1e162 no material source finding; final evidence acceptance pending",
+    "draft_evidence_result": "PASS; separate read-only ledger/notation/source/package/captures audit. Minor literal host command cleanup applied. Final six-job/evidence reconciliation pending.",
+    "dirty_close_fix": "PASS actual4bWindows trace/native close owner/verification-only helper+negative tests; accepted-dirty loss not established; no productchange. Source-equivalentreuseendorsed with exactprovenance.",
+    "final_linux": "PASS: separate read-only audit of final8f report, all12selected hashes, actual accepted dirty close/new native version+revision/same complete game/path, guardCancel/QuitSave, archives and representative PNGs. No material finding; no independent test/GUI/CI execution claimed.",
+    "final_result": "PASS: all8 original AC and applicable DoD; separate read-only final source/evidence/revision/job/immutable ledger/native archive/capture audit. All6 direct dependencies Done; no unresolved material finding. Actual tests, GUI journeys and CI executed by integrator/CI, not reviewer.",
+    "final_windows": "PASS: actual8fed8ff35/35 phases, rawgzip and11selected-file hashes, authoritative accepted-dirty acknowledgement before one WM_CLOSE, Cancel/QuitSave/cleanup, native archives and representative screenshots; no material finding.",
+    "final_documentation": "PASS: separate read-only final README/activation/launch/acceptance/failure qualifications and preserved-limits review, no contradiction/material finding. Windows11selected files+rawreport; Linux12+rawreport."
+  },
+  "bookkeeping_checks": {
+    "format": "cargo fmt --all -- --check; cargo fmt --manifest-path desktop/src-tauri/Cargo.toml --all -- --check PASS",
+    "doctor": "Pinned Backlog1.55.1 doctor PASS",
+    "immutable_inputs": "All four SHA256 match accepted native-playable checkpoint",
+    "links": "Current Tori final handoff local links resolve",
+    "source": "No production changes after cb1e162; only task/docs/evidence reconciliation",
+    "next_queue": "Ready --ready returns none; dependency-unblocked ToDo82 Chu profile is next planned game priority,83/48/112 also report unblocked but not started."
+  },
+  "verification_revision": "8fed8ffb1ed1291aa52518ac3d84613ff43d2cb4",
+  "source_equivalence": "cb\u21924b external GUI verifier/tests plus3 frontend testDTO diagnostic fields/task notes only.4b\u21928f only external GUI verifier/tests/task notes. git diff production crates/host/frontend product+interaction/build manifests/dependencies/workflows is empty. Same cb production and normal/QA macOS bytes/GUI remainvalid.",
+  "verification_correction_checks": {
+    "focused_frontend": "86PASS ProductApp+ToriContract on regenerated DTOs",
+    "native_DTO_regeneration": "Both write_frontend_fixtures and write_tori_frontend_fixtures executed; only3Tori diagnostic fields changed;19Tori DTOs repeatedbyteidentical",
+    "independent_review": "PASS exactcomparator/test/golden diffs and actualbothfailedreports, separate read-only reviewer; no test/CI execution claimed."
+  },
+  "native_verification_revision": "4b02dfb38e3db485f2c4035b820a4da61e413d6d"
+}

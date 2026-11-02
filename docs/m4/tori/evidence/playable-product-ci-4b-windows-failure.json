@@ -1,0 +1,217 @@
+{
+  "schema": "mshogi.tori.product-ci-failure.v1",
+  "source_revision": "4b02dfb38e3db485f2c4035b820a4da61e413d6d",
+  "desktop_run": 41513057801,
+  "artifact_id": 13174368982,
+  "artifact_sha256": "ba32f615401088f3927529998774f60c0a368811c491027f9f78fee69187d3a1",
+  "raw_report": "playable-product-ci-4b-windows-report.json.gz",
+  "raw_uncompressed_sha256": "965dd980524bd08b3cdb2e7ca073aae41c1d61705ea8b94a619d44da6f27e987",
+  "phase_counts": {
+    "passed": 34,
+    "failed": 1
+  },
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "passed"
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "passed"
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "passed"
+    },
+    {
+      "phase": "normal-xiangqi",
+      "status": "passed"
+    },
+    {
+      "phase": "normal-tori",
+      "status": "failed"
+    },
+    {
+      "phase": "normal-tori-native",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-current-claim",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-concluded",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-full-unknown-cancel",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-pending-chess",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-pending-shogi",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-pending-xiangqi",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-pending-tori",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-tori-recovery",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-warning",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-fourth",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-count",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-offer",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-agreed",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-fast-proof",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-resigned",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-capacity",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-failure",
+      "status": "passed"
+    },
+    {
+      "phase": "verification-xiangqi-exact-evidence",
+      "status": "passed"
+    }
+  ],
+  "failure": {
+    "phase": "normal-tori",
+    "error": "{\"value\":{\"error\":\"no such window\",\"message\":\"no such window: target window already closed\\nfrom unknown error: web view not found\\n  (Session info: MicrosoftEdge=131.0.2903.86)\",\"stacktrace\":\"\\t(No symbol) [0x00007FF7B00C6B05]\\n\\tMicrosoft::Applications::Events::EventProperty::empty [0x00007FF7B03EF474+1437348]\\n\\tsqlite3_dbdata_init [0x00007FF7B0492DA6+643174]\\n\\t(No symbol) [0x00007FF7AFF87657]\\n\\t(No symbol) [0x00007FF7B0011CE5]\\n\\t(No symbol) [0x00007FF7B002670A]\\n\\t(No symbol) [0x00007FF7B000BE03]\\n\\t(No symbol) [0x00007FF7AFFE2984]\\n\\t(No symbol) [0x00007FF7AFFE1E30]\\n\\t(No symbol) [0x00007FF7AFFE2571]\\n\\tMicrosoft::Applications::Events::EventProperty::empty [0x00007FF7B039BB04+1094964]\\n\\t(No symbol) [0x00007FF7B01032B8]\\n\\tMicrosoft::Applications::Events::EventProperty::empty [0x00007FF7B039AF43+1091955]\\n\\tMicrosoft::Applications::Events::EventProperty::empty [0x00007FF7B039AAA9+1090777]\\n\\tMicrosoft::Applications::Events::ILogConfiguration::operator* [0x00007FF7B01A0CB1+461569]\\n\\tMicrosoft::Applications::Events::ILogConfiguration::operator* [0x00007FF7B019C9D4+444452]\\n\\tMicrosoft::Applications::Events::ILogConfiguration::operator* [0x00007FF7B019CB19+444777]\\n\\tMicrosoft::Applications::Events::ILogConfiguration::operator* [0x00007FF7B0192196+401382]\\n\\tBaseThreadInitThunk [0x00007FFE5E164F80+16]\\n\\tRtlUserThreadStart [0x00007FFE5EAFEDCB+43]\\n\"}}",
+    "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 389, in _request_once\n    with urllib.request.urlopen(request, timeout=45) as response:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\urllib\\request.py\", line 215, in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\urllib\\request.py\", line 521, in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\n  File \"C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\urllib\\request.py\", line 630, in http_response\n    response = self.parent.error(\n               ^^^^^^^^^^^^^^^^^^\n  File \"C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\urllib\\request.py\", line 559, in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\urllib\\request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\urllib\\request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 404: Not Found\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2754, in main\n    journey.normal_tori()\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2240, in normal_tori\n    wait(lambda: w.has('.document-guard'), 'native dirty Tori close protected')\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 345, in wait\n    last = predicate()\n           ^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2240, in <lambda>\n    wait(lambda: w.has('.document-guard'), 'native dirty Tori close protected')\n                 ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 594, in has\n    return self.read(f\"document.querySelector({json.dumps(selector)}) !== null\")\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 568, in read\n    return self._observe(\"POST\", \"/execute/sync\", {\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 576, in _observe\n    result = self.command(method, path, data)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 399, in command\n    return self.request(method, f\"/session/{self.session}{path}\", data)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 370, in request\n    result = self._request_once(method, path, data)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 392, in _request_once\n    raise RuntimeError(error.read().decode(errors=\"replace\")) from error\nRuntimeError: {\"value\":{\"error\":\"no such window\",\"message\":\"no such window: target window already closed\\nfrom unknown error: web view not found\\n  (Session info: MicrosoftEdge=131.0.2903.86)\",\"stacktrace\":\"\\t(No symbol) [0x00007FF7B00C6B05]\\n\\tMicrosoft::Applications::Events::EventProperty::empty [0x00007FF7B03EF474+1437348]\\n\\tsqlite3_dbdata_init [0x00007FF7B0492DA6+643174]\\n\\t(No symbol) [0x00007FF7AFF87657]\\n\\t(No symbol) [0x00007FF7B0011CE5]\\n\\t(No symbol) [0x00007FF7B002670A]\\n\\t(No symbol) [0x00007FF7B000BE03]\\n\\t(No symbol) [0x00007FF7AFFE2984]\\n\\t(No symbol) [0x00007FF7AFFE1E30]\\n\\t(No symbol) [0x00007FF7AFFE2571]\\n\\tMicrosoft::Applications::Events::EventProperty::empty [0x00007FF7B039BB04+1094964]\\n\\t(No symbol) [0x00007FF7B01032B8]\\n\\tMicrosoft::Applications::Events::EventProperty::empty [0x00007FF7B039AF43+1091955]\\n\\tMicrosoft::Applications::Events::EventProperty::empty [0x00007FF7B039AAA9+1090777]\\n\\tMicrosoft::Applications::Events::ILogConfiguration::operator* [0x00007FF7B01A0CB1+461569]\\n\\tMicrosoft::Applications::Events::ILogConfiguration::operator* [0x00007FF7B019C9D4+444452]\\n\\tMicrosoft::Applications::Events::ILogConfiguration::operator* [0x00007FF7B019CB19+444777]\\n\\tMicrosoft::Applications::Events::ILogConfiguration::operator* [0x00007FF7B0192196+401382]\\n\\tBaseThreadInitThunk [0x00007FFE5E164F80+16]\\n\\tRtlUserThreadStart [0x00007FFE5EAFEDCB+43]\\n\"}}\n",
+    "last_save_ack": {
+      "at_utc": "2026-11-02T20:01:13.768380+00:00",
+      "operation": "Observe native accepted save path and settled file controls",
+      "observation": {
+        "buttons": [
+          {
+            "enabled": true,
+            "label": "New game"
+          },
+          {
+            "enabled": true,
+            "label": "Save"
+          },
+          {
+            "enabled": true,
+            "label": "Load"
+          }
+        ],
+        "dirty": "Unmodified",
+        "path": "D:\\a\\mShogi\\mShogi\\gui-evidence\\normal-tori-complete.mshogi",
+        "statuses": [],
+        "io": {
+          "id": 4,
+          "message": "Saved complete native desktop archive.",
+          "phase": "complete",
+          "resource": null
+        },
+        "after_io_id": 3
+      }
+    },
+    "native_close_request": {
+      "at_utc": "2026-11-02T20:01:13.841868+00:00",
+      "operation": "Native Tori dirty window-close request",
+      "observation": {
+        "event": "native_wm_close",
+        "utc": "2026-11-02T20:01:13.841868+00:00",
+        "elapsed_ms": 46437,
+        "pid": 8304,
+        "hwnd": 721288
+      }
+    }
+  },
+  "actual_concluded_archive": {
+    "sha256": "0de713b2e3a830bfeef902c8127c5b2b1f5bee9e0f17cab3d5b8592bedf5fc9c",
+    "settings": {
+      "orientation": "sente"
+    },
+    "controls": 11,
+    "last_control": {
+      "kind": "native",
+      "actor": "sente",
+      "command": {
+        "kind": "resign"
+      }
+    },
+    "observations": 4
+  },
+  "interpretation": "No post-Flip dirty acknowledgement preceded WM_CLOSE; last native receipt Unmodified/saveComplete, then close about73ms later. Existing close may retire unaccepted candidate while accepted document remains clean. This failure does not establish loss of an accepted dirty preference. Strengthened verifier requires settled changed orientation + native dirty/close authority/version/revision before closing. Actual successful rerun required; original remainsfailed."
+}

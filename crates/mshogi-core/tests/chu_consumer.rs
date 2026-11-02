@@ -81,6 +81,12 @@ fn actual_complete_payloads_choices_effects_prefixes_and_fresh_authority() {
     assert!(prefix.events().is_empty());
     assert_eq!(prefix.position().declared_total_plies(), 120);
     assert_eq!(prefix.royal_squares(Side::Sente), [square(1, 12)]);
+    let historical = reopened.event_prefix(0).unwrap();
+    assert_eq!(historical.state(), prefix.position().state());
+    assert_eq!(
+        historical.protection(),
+        prefix.local_position().protection()
+    );
     assert_eq!(
         reopened
             .submit(GameRequest {

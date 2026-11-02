@@ -174,12 +174,22 @@ pub struct GameEvent {
     pub replay_work: u64,
 }
 /// Immutable logical position/history view with no live command authority.
+/// Untrusted structural data cannot overwrite a native historical view:
+/// ```compile_fail,E0616
+/// let mut view = mshogi_core::chu::Game::standard().event_prefix(0).unwrap();
+/// view.state = serde_json::from_str("{}").unwrap();
+/// ```
+/// Nor can callers install arbitrary Lion rights:
+/// ```compile_fail,E0616
+/// let mut view = mshogi_core::chu::Game::standard().event_prefix(0).unwrap();
+/// view.protection = Default::default();
+/// ```
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct HistorySnapshot {
     /// Complete structural state/provenance/counters.
-    pub state: StructuralState,
+    pub(super) state: StructuralState,
     /// Native next-turn Lion rights.
-    pub protection: LionProtection,
+    pub(super) protection: LionProtection,
     /// Exact event-prefix length, independent of board ply.
     pub event_count: usize,
     /// Complete board-action count.
@@ -196,6 +206,14 @@ pub struct HistorySnapshot {
     pub incomplete: Option<StopReason>,
 }
 impl HistorySnapshot {
+    /// Immutable native-validated structural state at this exact prefix.
+    pub fn state(&self) -> &StructuralState {
+        &self.state
+    }
+    /// Immutable native-derived next-turn Lion protection at this prefix.
+    pub fn protection(&self) -> &LionProtection {
+        &self.protection
+    }
     /// Immutable native local inspection with this prefix's rights and no future history.
     pub fn local_position(&self) -> LocalPosition {
         LocalPosition::from_parts(

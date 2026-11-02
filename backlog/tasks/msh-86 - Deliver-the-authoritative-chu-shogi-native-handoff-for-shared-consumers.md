@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@Codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-02T22:36:00Z'
+updated_date: '2026-11-02T22:45:00Z'
 labels:
   - m4
   - owner-msh-43
@@ -75,4 +75,6 @@ Finalindependentreview chu_native_review PASS actual35Chu libtests+2externalcore
 RequirednativeCI source136f892 campaign41536948188 Windowsjob125591097581failed2frameworkcorpusadmissiontests beforecorenativerulesexecution: newChu auditedJSONnotpinnedLF, unlikeTori. Preservefailure;supersededcampaigncancelled/replaced, notclaimedpassed. ConcreteGitprobe reproduced unpinnedCRLF590654bytes SHA040da84d... versusreviewedLF563575bytes SHA545f23e7... .gitattributes nowpinsfixtures/profile/sourcesJSONLF; expecteddata/hashesandallcorenativeproductionunchanged. Frameworkhashdiagnosticnowreportsactual/expected/bytecountandCRLFnegativecase;5focusedframeworktests+independentreview/filterchecksPASS. Replacementnative3platformCIrequiredoncorrectedsource. Localbroadworkspacebehavior79binaries/855PASS3ignored thenRustdocE0463 afteroverlappingbuilds; originalcommandFAILretained. Focusedserialdesktopdocandallworkspace-doc rerunsPASSwithoutproductionchange. One evidenceJSONkeepspreciseprovenance ratherthanrelabellingthesechecks.
 
 SupersededCI41536948188 Linuxjob125591097628 also failed an unchangedrunner test: process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored expectedUnexpectedExit butobservedMissingResponse/BrokenPipe beforeexitstatus. Neither runnerproductionnoritsassertionschangedby86; preservethisconcretefailureseparately, do notweakenorclaimresolved. Correctedsourcecampaignwillrununchangedregressionsagain; nativeacceptance remainsblockeduntilrequiredchecksactuallypass. Macoldjobcancelled ratherthanclaimedcomplete.
+
+Final native API audit found that removing Deserialize alone left HistorySnapshot state/protection publicly replaceable, allowing invalid external state to reach local_position expect. Narrow correction makes trusted fields private with immutable getters; serialized record/snapshot payloads and rules unchanged. Independent read-only review PASS; reviewer independently ran two E0616 compile-fail checks and two external consumer tests. Root reran 35 Chu library tests, three core compile-fail doctests, two consumer tests, fmt and focused Clippy: PASS. Source19166e3 native campaign41538750357 cancelled as superseded by this real source correction; all-platform format/lint passed but no full campaign success claimed. Final corrected source requires its own three-platform native CI.
 <!-- SECTION:NOTES:END -->

@@ -5,7 +5,7 @@
   "integration_branch": "codex/rewrite",
   "base_revision": "0e649b2e328ac4fc89a9e139d19588937f406751",
   "tested_source_revision": "136f89260090d21bafea3f67b036b3354729e4be",
-  "status": "NativeproductionreviewPASS; Windowscheckoutportabilitycorrectionindependentlyverified; replacementexact-source3platformCIpending",
+  "status": "Native source and snapshot trust correction independently reviewed; final corrected exact-source three-platform CI pending",
   "environment": {
     "platform": "macOS-27.0.1-arm64-arm-64bit",
     "python": "3.11.0",
@@ -17,7 +17,7 @@
   "edition": "JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02",
   "native_schema": 1,
   "artifact_sha256": {
-    "crates/mshogi-core/src/chu/game.rs": "9ccd00612213c9054d842b12eebff48870a39ffefb78f0f72a903111a5b6a818",
+    "crates/mshogi-core/src/chu/game.rs": "5165382f088fc82bc7e8da2669e5851b89ffa6ad9c94ccf424419205edd0b4a7",
     "crates/mshogi-core/src/chu/game_tests.rs": "3c3368c9f4e2dbe572f6b6fe01d83e938b8cd2d87e4d6f6e3b0a4597ecb5b101",
     "crates/mshogi-core/src/chu/legal.rs": "a7edb233637225c5d1f6a40b85547fa7a72a29edaf9dbd8057e892b5ce757b51",
     "crates/mshogi-core/src/chu/game_conformance.rs": "ecc267ea963a6dbf358ce1c9abdfa102945230908077890bed69711cfd1bf9bf",
@@ -27,7 +27,7 @@
     "crates/mshogi-core/src/chu/conformance.rs": "c645fa3e71617052ec396c71270dd480df9c84dd6801e3260400df723c422266",
     "crates/mshogi-core/src/chu/record.rs": "7c79c05c048e60d6a1bbfa90c16528bac6e05b77eb72e09a21a39499645bc066",
     "crates/mshogi-core/src/lib.rs": "4d5a14c8e8c676f2843f1b64f286ded742b1296851da34cbdca37967765c4f7a",
-    "crates/mshogi-core/tests/chu_consumer.rs": "c56174398781c3948094d2e4d1406dfd00c7632f015dbaa63306ea5bfd5e0ce5",
+    "crates/mshogi-core/tests/chu_consumer.rs": "38e1e593fdee42a472119805eb615d5354f48c9bf30839e32765b2ec9634395c",
     "crates/mshogi-conformance/src/chu.rs": "c4dc897d771910c1a24767bdd614988ad1932a7dff3d95e353c5a750359b9672",
     "crates/mshogi-conformance/src/lib.rs": "62f11d0fcc5bcb922f2872d5c4f1fcf7f6099a49f4d6b0d424f7e8648aaa9261",
     ".gitattributes": "fc214eb89786f9a79cc57103f449027698ab24aa549f63cefdc16beee86d6b64"
@@ -141,6 +141,22 @@
     {
       "command": "isolated Gitrepository core.autocrlf=true cat-file --filters probe",
       "result": "PASS unpinned590654bytes/27079CRLF/SHA040da84d9e620e128603ebf9797d0d50466b9c5f754db2cc30478926c3913b82; LFpin restores563575bytes/reviewed545f23e7hash;3actualsourcefilesfilterPASS"
+    },
+    {
+      "command": "cargo test --locked -p mshogi-core --lib chu::",
+      "result": "PASS 35 tests on final snapshot visibility correction"
+    },
+    {
+      "command": "cargo test --locked -p mshogi-core --doc",
+      "result": "PASS 3 compile-fail doctests, including 2 private historical snapshot field checks"
+    },
+    {
+      "command": "cargo test --locked -p mshogi-core --test chu_consumer",
+      "result": "PASS 2 external consumer tests including immutable snapshot getters"
+    },
+    {
+      "command": "cargo fmt --all -- --check; cargo clippy --locked -p mshogi-core --all-targets -- -D warnings",
+      "result": "PASS final snapshot correction"
     }
   ],
   "measurements": {
@@ -180,6 +196,12 @@
       "scope": "Portability-only correction afterWindowsfailure",
       "method": "Read-onlydiff;5frameworktests;Gitcore.autocrlf=truefilter+attributecheckall3sourcehashes",
       "status": "PASS localcorrection; replacementCIpending"
+    },
+    {
+      "reviewer": "chu_native_review",
+      "scope": "Historical snapshot trusted-state visibility correction",
+      "method": "Independent read-only diff and trust-boundary audit; independently executed 2 E0616 compile-fail tests, 2 external consumer tests and diff check",
+      "status": "PASS; no remaining material finding; serialized payload unchanged"
     }
   ],
   "resolved_review_findings": [
@@ -191,7 +213,8 @@
     "Counterless private speculation avoids false material/mate from counter overflow",
     "Actual encoded closing headroom, including longest native actor combination",
     "Fixture source explanations retained rather than echoed; actualtypedLionLaw checked",
-    "Actual occurrence cache and production rotated-anchor responsibility exercised"
+    "Actual occurrence cache and production rotated-anchor responsibility exercised",
+    "Historical snapshot trusted state/protection are private with immutable getters; invalid external replacement can no longer reach local_position expect panic. Compile-fail and external consumer tests establish boundary."
   ],
   "failed_or_corrected_local_attempts": [
     "One independently authored added Pawn-defender test had its owner orientation wrong; corrected testgeometry, no ratifiedfixture or productionrule changed.",
@@ -223,6 +246,12 @@
       "run_id": 41536948130,
       "scope": "automaticdesktoppackages",
       "disposition": "Cancellation requested; out-of-scope native-onlytask, noGUI claims"
+    },
+    {
+      "source_revision": "19166e380142ad059bbb445d87e029a08e3f1d83",
+      "run_id": 41538750357,
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/41538750357",
+      "disposition": "Cancelled as superseded by final snapshot trust correction. Format and lint passed on all three platforms; tests in progress at cancellation. No completed campaign or platform success claimed."
     }
   ]
 }

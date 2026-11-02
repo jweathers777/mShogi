@@ -243,9 +243,37 @@ def inspection_status_matches(text, native_label):
     return text == f"Inspecting {native_label} · Esc clears"
 
 
+def native_action_identity_matches(observed, expected):
+    """Compare complete Tori JSON semantics; object member order is not identity.
+
+    About's native JSON passes through WebView object serialization, whose member
+    order may differ from the native action attribute. Other games' notation
+    remains an exact string. Never discard fields or tolerate duplicate members.
+    """
+    if not isinstance(expected, str) or not expected.lstrip().startswith("{"):
+        return observed == expected
+
+    def unique_object(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError("Duplicate native action field")
+            result[key] = value
+        return result
+
+    try:
+        wanted = json.loads(expected, object_pairs_hook=unique_object)
+        actual = json.loads(observed, object_pairs_hook=unique_object)
+    except (TypeError, ValueError):
+        return False
+    fields = ({"kind", "from", "to", "result_face"} if wanted.get("kind") == "move"
+              else {"kind", "face", "to"} if wanted.get("kind") == "drop" else None)
+    return bool(fields and set(wanted) == fields and actual == wanted)
+
+
 def completed_action_matches(observed, action, event, origins, destinations, route=None):
     """Validate observed native geometry, never derive moves from board rules."""
-    return (isinstance(observed, dict) and observed.get("action") == action
+    return (isinstance(observed, dict) and native_action_identity_matches(observed.get("action"), action)
             and observed.get("event") == str(event)
             and observed.get("hidden") == "true" and observed.get("pointerEvents") == "none"
             and observed.get("origins") == origins and observed.get("destinations") == destinations

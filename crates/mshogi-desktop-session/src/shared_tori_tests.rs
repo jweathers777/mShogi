@@ -1629,6 +1629,32 @@ fn actual_engine_turns_both_assignments_and_exact_historical_analysis_have_separ
         assert!(current(&c).analysis.is_none());
         assert!(!submit_observation(&mut c, observation));
         assert_eq!(native(&c), after);
+        let retained = current(&c).document.observations().to_vec();
+        let retired_reply = searched(pending);
+        send(
+            &mut c,
+            if human == t::Side::Sente {
+                SessionOperation::TakeBack {}
+            } else {
+                SessionOperation::Undo {}
+            },
+        )
+        .unwrap();
+        let rewound = c.shared_snapshot();
+        assert!(rewound.paused);
+        assert!(current(&c).pending.is_none());
+        assert_eq!(current(&c).document.observations(), retained);
+        assert_eq!(current(&c).document.retired_branches().count(), 1);
+        assert!(rewound.observations.iter().all(|view| view.historical));
+        assert!(
+            rewound
+                .search_observations
+                .iter()
+                .all(|view| view.historical && !view.selected)
+        );
+        let exact_rewind = native(&c);
+        assert!(!submit_observation(&mut c, retired_reply));
+        assert_eq!(native(&c), exact_rewind);
         ValidatedToriDocument::decode(current(&c).document.bytes(), &mut || false).unwrap();
     }
 }

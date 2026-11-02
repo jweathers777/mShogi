@@ -28,7 +28,9 @@ Hands occupy the existing player slots. Legal moves and drops, forced promotion,
 readonly opponent inspection, keyboard focus and Escape use the existing native
 choice controller. Origin and emphasized destination cues come from native exact
 history; drops show the destination only. No optional Tori promotion dialog or
-frontend legal-drop calculation is introduced.
+frontend legal-drop calculation is introduced. Undo/Take back preserve every
+abandoned observation and native branch, while marking their observations
+historical so retired work cannot appear as the current engine turn.
 
 The surrounding dark shell, document controls, live/historical footer and
 Analysis → Game Actions → Moves order remain shared. Moves uses the native Rust

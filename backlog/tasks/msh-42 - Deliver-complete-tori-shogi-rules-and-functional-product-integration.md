@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@Codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-02T16:01:00Z'
+updated_date: '2026-11-02T16:14:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -97,4 +97,6 @@ Native playable-consumer checkpoint integrated/pushed: production d4bfeeb491e8e7
 Owner authorizes finished production Tori desktop presentation and working visual checkpoint; primary clean29abd7b/origin verified, installedCLI1.55.0 mismatch resolved by pinned1.55.1 before mutations. Existing6directdeps Done,42ownedCodex remainsactive. Isolated artwork helper owns only new ToriPiece/CSS/provenance/tests; separate read-only source/UI reviewer; root owns shared renderer/session preview/fixtures/tests/build/GUI/integration. Preserve native checkpoint evidence, selectedprofile/corpus and all8criteria.
 
 Owner visual clarification supersedes initial516ec8artwork choice: traditionalvariant-nativekanji are default for everyshogifamilygame; preserve originalbirdengravings only as dormantfuturealternative, nochooserimplementation. ProfileT02alreadyidentifies all9Toriglyphs; use separatelybundledpinnedOFLNotoJPsubset, keep acceptedShogi/Xiangqifonts unchanged. InitialactualGUI verifiednativekeyboardSw3dx3c, realengineFa4bx3c, bothcapturedSwallowhands, legaldropselection/Escape and completeSave/nativeQuit; screenshots source516ec8 retained as superseded, not finalvisualevidence. Its CI41476516226/41476516181 cancelled as superseded; preserveactualpartialstates. Small actualGUIclarity corrections accompanykanji: nativehumanlabel for qualifiedhand announcements and Ready for inactiveengine phase whenplaynotpaused; identities/actionsunchanged.
+
+ActualkanjiQA73febf0journeyfound post-Takeback presentation bug: gamecorrectlyrewound4→2plies withstoredobservations/retiredlineage intact,but runtimecurrent_observations retainedabandonedrequestIDs, soLastenginecouldshowevent3ascurrent. Focusedactualengine/controllerregressionREDconfirmedallhistoricalassertionfailure. NarrowfixclearcurrentobservationIDs onlyafter successfulcandidateRewind+native reconstruction; keepallcanonicalobs/branches. RegressioncoversSenteTakeback/GoteUndo,retainedobsidentical,allviewshistorical/notselected,paused/pendingretirement,lateobsrefusal,codecvalid; GREEN+reviewrecordedinevidence. No profile/rules/engine/schema/capacitychange. CI41478166246/41478166224 cancelledassuperseded; partialrecordpreserved. RebuildsamefixedQAidentity andrecapturefinalsourcebeforeownervisualcheckpoint.
 <!-- SECTION:NOTES:END -->

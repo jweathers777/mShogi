@@ -187,6 +187,9 @@ impl ToriSession {
             let document = self.document.with_control(control.clone(), stopped)?;
             if matches!(control, ToriControl::Rewind { .. }) {
                 self.game = document.record().to_game().map_err(|e| e.to_string())?;
+                // Preserve abandoned observations losslessly, but never present
+                // retired continuation work as the current engine turn.
+                self.current_observations.clear();
             }
             debug_assert_eq!(
                 t::GameRecord::from_game(&self.game).ok().as_ref(),

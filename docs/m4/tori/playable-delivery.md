@@ -7,6 +7,12 @@ This is an executable handoff within **existing MSH-42**, not another research
 campaign, new task hierarchy or authorization to start implementation now.
 All eight original MSH-42 criteria remain intact and unchecked.
 
+Current follow-up: the [native playable-consumer checkpoint](native-playable-checkpoint.md)
+implements the native engine/execution/console/notation and real observation
+admission described below. MSH-42 is In Progress; final board/artwork and normal
+product activation remain its next bounded implementation boundary. Earlier source
+inspection and the recommendation section are retained as the original handoff.
+
 ## Delivered foundation and remaining criteria
 
 | MSH-42 | Present evidence / remaining delivery |
@@ -14,13 +20,13 @@ All eight original MSH-42 criteria remain intact and unchecked.
 | AC1 complete named profile | Selected `mshogi.tori.modern.v1`, edition `MSH81-MODERN-2026-11-01`, T01–T08, owner decisions and independent fixtures are accepted under81/85. No new profile ratification or historical acquisition gate. |
 | AC2 native rules/history/actions | Accepted `tori::Game`, complete Action/Effects, atomic admission, context/reversal, repetition obligations/conclusions and canonical replay. Consumers must use these, preserving known history versus declared counters/reachability. |
 | AC3 independent correctness | Preserve103expected fixtures/713native assertions and native sequence/property/perft/record evidence. Add actual search/console/result/desktop consumer tests; external engines remain optional, not prerequisites. |
-| AC4 independently usable console | Missing: main selector/shell/help currently lists onlyChess/Shogi/Xiangqi. Add Tori native command/notation/diagnostic adapter and readable output without pretending SFEN/USI is Tori notation. |
-| AC5 functional engine | Missing: no Tori search module, engine result family or execution capability. Add actual native history-aware bounded baseline, honest observations, supervised execution/cancel and reproducible bounded self-play/match smoke; MSH-51 owns measured competitive strength. |
-| AC6 complete records | Native/current desktop record, strict replay, settings/history/branches/unsupported observations are delivered. Extend game-specific validation/admission for real new engine observations; retain current saved failures, exact history/provenance and all saveability/atomicity guarantees. |
+| AC4 independently usable console | Delivered in the native checkpoint: Tori selector/shell/profile, native notation, complete moves/drops, atomic batches, hands/history/undo/status, bounded diagnostics/analysis and canonical Save/Load. No SFEN/USI claim. |
+| AC5 functional engine | Delivered in the native checkpoint: actual Game-owned full-history iterative search, transparent material baseline, typed native engine results and observations, supervised cancellation/identity protection and reproducible actual subprocess smoke. MSH-51 owns measured strength. |
+| AC6 complete records | Native/current desktop record, strict replay, settings/history/branches/unsupported observations are delivered. The native checkpoint extends game-specific replay/admission for real observations and atomic engine actions, preserving old failures, exact history/provenance, measured capacity and ending reservations. |
 | AC7 playable desktop | Shared semantic/runtime contract exists, but product admission is gated. Deliver deliberate Tori board/artwork/hands/notation and real human-engine play/analysis/recovery/SaveLoad/history through the same owner/shell. Finished visuals need owner approval. |
 | AC8 full delivery review | Remains open. Independently reconcile all eight criteria and game coverage using actual complete-game evidence; keep46/47all-game/platform gates visible. |
 
-## Recommended next Codex assignment: native playable consumer
+## Original recommendation: native playable consumer (implemented by this checkpoint)
 
 Begin MSH-42 implementation with one coherent native engine/execution/console
 checkpoint under one integrator. These share complete-action/notation/result

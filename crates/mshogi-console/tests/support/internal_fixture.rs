@@ -14,13 +14,19 @@ fn main() {
     // Separately compiled test helper, never a bundled product engine.
     if context.game.game_kind() == GameKind::Tori {
         if context.limits.nodes == 7 {
-            if let ExecutionPurpose::MoveAnalysis { target } = &context.purpose {
-                let host = target
-                    .label
-                    .rsplit(' ')
-                    .next()
+            if let (ExecutionPurpose::MoveAnalysis { .. }, CanonicalRecord::Tori(record)) =
+                (&context.purpose, &context.game)
+            {
+                // This separately compiled fixture reads its explicit test-root
+                // provenance. Real target labels need no verification-only PID.
+                let game = record.to_game().unwrap();
+                let host = game
+                    .position()
+                    .root()
+                    .source()
+                    .and_then(|source| source.strip_prefix("msh42-controller-"))
                     .and_then(|s| s.parse::<u32>().ok())
-                    .expect("verification-only numeric host identity");
+                    .expect("explicit test-root marker namespace");
                 let marker = std::env::temp_dir()
                     .join(format!("msh131-started-{host}-{}.txt", context.request_id));
                 let temporary = marker.with_extension("tmp");

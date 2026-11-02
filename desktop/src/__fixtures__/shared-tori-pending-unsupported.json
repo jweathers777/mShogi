@@ -2,7 +2,7 @@
   "moves": {
     "root": {
       "label": "Starting position",
-      "numbering": "Technical native actions · not final Tori notation. Declared root counter 31 · Earlier history is unknown"
+      "numbering": "Tori action notation · Declared root counter 31 · Earlier history is unknown"
     },
     "entries": [
       {
@@ -10,7 +10,7 @@
         "board_ply": 1,
         "number": 1,
         "column": 0,
-        "notation": "Technical: 7c → 7b (Ea)",
+        "notation": "Fa7cx7b=Ea",
         "action": "{\"kind\":\"move\",\"from\":\"7c\",\"to\":\"7b\",\"result_face\":\"eagle\"}",
         "command_start": 0,
         "command_end": 1
@@ -2453,8 +2453,8 @@
     "promotion": true,
     "take_back": true,
     "undo": true,
-    "engine_turn": false,
-    "move_analysis": false,
+    "engine_turn": true,
+    "move_analysis": true,
     "chess_full": false,
     "claims": false,
     "declaration": false,
@@ -2478,15 +2478,15 @@
   "event_index": 1,
   "board_ply": 1,
   "play_limits": {
-    "depth": 0,
-    "nodes": 0
+    "depth": 2,
+    "nodes": 2000
   },
   "historical": false,
   "paused": true,
   "close_requires_save": true,
   "phase": "thinking",
   "execution_purpose": "engine_turn",
-  "diagnostic": "Tori native document ready. Engine execution is unsupported; saved observations are historical.",
+  "diagnostic": "Tori document ready. Saved observations are historical; Resume starts native play.",
   "declaration_advice": [],
   "context": {
     "envelope_version": 1,
@@ -2499,7 +2499,7 @@
   "analysis": null,
   "observations": [],
   "search_observations": [],
-  "score_meaning": "No Tori evaluation or search implementation. Failures and incomplete work are unscored.",
+  "score_meaning": "Native root-side evaluation in hundredths of a Swallow. Win/loss distances count board actions; failures and incomplete work are unscored.",
   "chess": null,
   "chess_match": null
 }

@@ -1,5 +1,10 @@
 # M4 implementation map: chess and standard shogi first
 
+Current MSH-42 native follow-up: [playable-consumer checkpoint](tori/native-playable-checkpoint.md)
+supplies the actual native search/execution/console/notation and document admission
+consumer. The accepted shared architecture remains; finished Tori UI and normal
+product exposure are still pending within MSH-42.
+
 ## Current R1–R6 Tori consumer boundary — MSH-77, 2026-11-01
 
 The source table below is the preserved pre-R1 historical proposal. The actual

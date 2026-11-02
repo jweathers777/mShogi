@@ -1,10 +1,11 @@
 ---
 id: MSH-42
 title: Deliver complete tori shogi rules and functional product integration
-status: To Do
-assignee: []
+status: In Progress
+assignee:
+  - '@Codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-02T11:38:00Z'
+updated_date: '2026-11-02T14:32:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -55,6 +56,17 @@ Open design questions (D-07/D-08): Resolve the authoritative historical rule sou
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Sole primary integrator root in clean aligned codex/rewrite2f87096; pinnedCLI1.55.1. Activate42only, preserveall8AC and keepInProgress after this native checkpoint. Disjoint helpers own search/engine and native notation/console respectively; independent reviewer read-only, no competing edits/commits or worktree/identity proliferation. Root owns desktop admission/codec, integration and evidence.
+2. Native tori::Game/record reconstruction is sole search authority (no publicClone); finite full-width iterative baseline, deterministic node/depth/stop limits, complete moves/drops/compulsory results, T06conclusions/history, semanticundo. Typed native Tori result/telemetry extends existing execution4/schema1 dispatch with explicit compatibility, history/target/identity validation and actual bridge cancellation; no new protocol or UI engine architecture.
+3. Root extends existing Tori journal/observation validator and native session scheduling/acceptance together: separate engine-turn versus readonlyanalysis, precommit lossless capacity, native re-admission, full stale identity, retained observations/branches, stoppedfreshreopen. Preserve historicalFailureobservations and measure actual new result bytes/replay/256-to257/reservedendings; no cap/deadline increase. ProductNewGame/Load remain gated, no finalartwork/normalToriplayer exposure.
+4. Native Rust readable complete-action notation/parse and console selector/session commands use coreGame; sharedMoves formatter consumes same native display. Canonical import/save, standard/customroots, hands/legal/move/drop/undo/history/status/resign/Stop/perft/divide plus bounded actual subprocess selfplay. C-NOTATION independentfield/requirement becomes actualconsumer evidence without changing immutablecorpus/selectedprofile.
+5. Early exhaustive-result dispatch preflight across workspace and standaloneTauri, Node24strictfrontendchecks, update obsoleteunsupported expectations onlywhere superseded by actualengine. Focusedsearch/engine/codec/controller/console/process/notation tests during edits, then coherent broad regressions. Mandatoryrepresentative success separate from near-limit precise typedrefusal with stateintegrity. Independent review early/final substantiveboundary, resolvefindings.
+6. RequiredexactsourceCI: Rustworkspace all3platformjobs; Desktopworkflow lockedfrontend/nativehost checks and normalpackage/bundledengine consumers all3 (actualGUIcampaigns automatic supportingexisting-gameevidence, not nativeTori visual/productacceptance gate). One completion-aware monitor of requiredgates; cancel supersededruns ifneeded, no redundantsleeps. One structured evidence set pertestedsource references unchanged77/85/130-132 evidence. Normal commit/push, leave42InProgress and8criteria incompletewherefinalproductmissing. Report actual limits/selfplay/reviews/CI and direct finaldesktopartwork/playhandoff; stopthere.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -67,4 +79,10 @@ Superseding owner-approved modern direction2026-11-01: MSH81 now supplies comple
 Bounded native refinement2026-11-01 (planning only): coordinating85 now owns flat component126fixture/reference admission→127structuralstate/transitions→128locallegality/inspection→129history/records/nativehandoff;126dependsDone81 and no componentdepends85/77/42. All103immutablefixtures explicitly mapped in native-fixture-ownership.json (126dataownerall;127/128/129primary14/69/20), with lateractualprocess/document/notation facets preserved under77/42. Original85AC4 is satisfied only by reviewedplanning, not kernelimplementation;85cannotclose before nativecomponents and coreconsumerprobe. Native GameKind addition may require minimal explicitunsupported exhaustivearms; real engine/session/archive/frontend remainlaterownership. Preserveprofile/oldresearch/alloriginalAC/DoD; nohistoricalacquisition or optionalexactproof gate. See native-plan.md for actual inspectedboundaries, verification and currentdependencysets.
 
 MSH77 final integrated acceptance at tested production52b0390 is PASS all4originalcriteria;130/131/132Done,713nativeassertions/103fixedexpectations and actual13runtimefields/82requirements preserved. Current direct implementation handoff docs/m4/tori/playable-delivery.md: first native history-aware evaluator/search + actual supervised Tori result/real observation codec/controller admission + bounded console/notation/selfplay, then actual product board/artwork/hands/shared UI play/analysis/SaveLoad/recovery and independent eight-criterion acceptance. No extra planning-only assignment or new implementation tickets created. NormalproductTori activation remains gated until actualplayableconsumer; finishedvisuals requireownerapproval. C-NOTATION1field/1requirement remains42. All8AC/DoD/dependencies preserved,42ToDo/unassigned/unstarted; no implementation plan or activation applied.15sreplay operational qualification and46/47/88/89shared-platform ownership retained; MSH51ownsstrength.
+
+Owner authorizes coherent native playable-consumer checkpoint at2f87096; all6directdependenciesDone, noactivecompetingtask, cleanprimaryandoriginverified. Preserveoriginal8AC/DoD;42willremainInProgress after nativecheckpoint. RequiredCI and soleintegrator/disjointownership recorded inplan. No newresearch/profile/limit/design change or normalproductToriactivation.
+
+Native checkpoint implementation is coherent: native Game-owned deterministic Tori material/minimax search, protocol4/schema1 additive typed results, real bounded native desktop scheduling/observation/action admission, complete precommit archive capacity, readable Rust notation/console and actual subprocess smoke. Normal product chooser/New Game/Open remain gated and final artwork/GUI acceptance unstarted. Focused search8, engine8, notation3, console/process/selfplay13, desktop55 plus separately two real-context controller tests and frontend final344 passed; full workspace/feature/standalone host campaign and exact-source CI are still pending, not claimed. Independent read-only reviewer resolved host-poll replay, conservative PV charges, early-terminal visit bound, cancellation/refusal pause and positive-node UI agreement; final admission-ID consumed-response edge fixed with focused test pending. Single evidence index docs/m4/tori/evidence/native-playable-checkpoint.json and actual selfplay transcript; all original8AC/DoD preserved,42 stays In Progress.
+
+Coherent local verification completed: cargo fmt/workspace Clippy PASS; cargo test --locked --workspace PASS; desktop-session all-features259PASS including final consumed-response headroom regression; standalone Tauri all-target/all-feature check+Clippy PASS and final14host tests PASS; strictNode24TypeScript,344frontend tests and normal frontend build/exclusion checks PASS. First host run13/14 exposed obsolete unsupported-engine assertion; corrected without changing normal product gate, raw failed log retained. Complete immutable profile/corpus/ownership hashes unchanged. Independent separate-agent source/test/evidence review PASS, no unresolved material finding; reviewer did not execute tests. Actual release9/62ms and real256obs/64move capacities plus subprocess traces indexed in native-playable-checkpoint.json. Ready for reviewed source commit and exact-source requiredCI; do not interpret these local results as platform GUI evidence.42 remains In Progress.
 <!-- SECTION:NOTES:END -->

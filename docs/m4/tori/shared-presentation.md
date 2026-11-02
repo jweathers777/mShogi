@@ -1,5 +1,12 @@
 # Tori shared semantic presentation — MSH-132
 
+Current MSH-42 native follow-up: [native playable checkpoint](native-playable-checkpoint.md)
+now supplies real engine turns/analysis, native limits/observations and the shared
+Rust action notation. Normal product exposure and finished artwork remain gated.
+The source52b0390 descriptions below preserve the accepted MSH-132 checkpoint,
+including its then-unsupported execution and pending notation; those two facets
+are superseded by the linked native implementation evidence.
+
 Production source `52b0390cac09faf727a0c5ed74c1fd673f468a11` extends the
 [accepted runtime](desktop-runtime.md), using the selected `mshogi.tori.modern.v1`
 profile/edition `MSH81-MODERN-2026-11-01`. This is a real native consumer contract,

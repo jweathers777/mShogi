@@ -35,3 +35,13 @@ owner-prefix format from MSH-96. Their task records, source revisions and
 verification evidence remain preserved history. Verbose source-explicit Shogi
 action labels still contain their existing separators; SFEN/FEN, USI/UCI,
 structured engine requests, native records and desktop rendering are unchanged.
+
+## Tori native consumer
+
+MSH-42 applies the multi-character convention to Tori's real human console:
+`sPh gPh sFa gEa sLQ gRQ`, with three-character right-aligned cells and native
+files7–1/ranks a–g. Promoted faces have their own exact identities (`Ea`, `Go`);
+quails retain their handed identities when captured. Hands show native counts
+separately. The [Tori action notation](m4/tori/notation.md) uses complete sources,
+capture/drop markers and compulsory result identity; board abbreviations do not
+grant action admission or replace canonical records.

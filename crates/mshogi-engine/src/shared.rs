@@ -21,7 +21,10 @@ pub enum ExecutionOperation {
 /// Advertise only real native execution consumers. Shogi has no chess Full operation.
 pub fn execution_capabilities(game: GameKind) -> &'static [ExecutionOperation] {
     match game {
-        GameKind::Tori => &[],
+        GameKind::Tori => &[
+            ExecutionOperation::EngineTurn,
+            ExecutionOperation::MoveAnalysis,
+        ],
         GameKind::Chess => &[
             ExecutionOperation::EngineTurn,
             ExecutionOperation::MoveAnalysis,
@@ -119,11 +122,12 @@ impl ExecutionContext {
                 && target.label.len() <= 256
         };
         let ordinary_limits_valid = |analysis: bool| match self.game.game_kind() {
-            // Native routing support does not advertise a Tori engine. Keep ordinary
-            // bounded requests parseable so the real entry point returns Unsupported.
+            // Preserve prior accepted unscored Tori failure observations whose
+            // requests used these generic bounds before search was implemented.
+            // Real Tori execution/result admission separately enforces its much
+            // smaller native limits; transport parsing does not advertise work.
             GameKind::Tori => {
                 (1..=MAX_ANALYSIS_DEPTH).contains(&self.limits.depth)
-                    && self.limits.nodes > 0
                     && self.limits.nodes <= MAX_ANALYSIS_NODES
             }
             GameKind::Chess if analysis => {
@@ -161,6 +165,11 @@ impl ExecutionContext {
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum ExecutionResult {
+    /// Actual native Tori complete action, conclusion or incomplete observation.
+    Tori {
+        /// Tori-owned result and score interpretation.
+        result: crate::ToriResult,
+    },
     /// Real chess result, retaining native action/claim/outcome/incomplete/Full distinctions.
     Chess {
         /// Existing native chess result and score interpretation.
@@ -225,6 +234,7 @@ impl ExecutionObservation {
         }
         match &self.result {
             ExecutionResult::Failure { failure } => failure.message.len() <= MAX_STDERR_BYTES,
+            ExecutionResult::Tori { result } => result.matches(submitted),
             ExecutionResult::Shogi { result } => result.matches(submitted),
             ExecutionResult::Xiangqi { result } => result.matches(submitted),
             ExecutionResult::Chess { result } => {

@@ -29,7 +29,7 @@ pub enum GameKind {
     Shogi,
     /// Xiangqi under the approved WXF profile; execution is separately unavailable.
     Xiangqi,
-    /// Tori native records/rules only; no engine or desktop capability.
+    /// Tori native rules, records and bounded execution; finished desktop play stays gated.
     Tori,
 }
 /// Immutable profile identity, never inferred from board dimensions or sides.

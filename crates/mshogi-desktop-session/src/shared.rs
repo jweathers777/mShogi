@@ -347,7 +347,9 @@ fn display_shogi_observation(
                 | ShogiResult::Incomplete { telemetry },
         } => Some(telemetry),
         ExecutionResult::Failure { .. } => None,
-        ExecutionResult::Chess { .. } | ExecutionResult::Xiangqi { .. } => {
+        ExecutionResult::Chess { .. }
+        | ExecutionResult::Xiangqi { .. }
+        | ExecutionResult::Tori { .. } => {
             unreachable!("native shogi response admission")
         }
     };
@@ -1005,7 +1007,7 @@ impl DesktopController {
             return Err("Application capacity: document identity exhausted.".into());
         }
         let receipt = match human {
-            NativeSide::Tori(_) => return Err("Tori desktop sessions are not implemented.".into()),
+            NativeSide::Tori(_) => return Err("Tori normal player interface is not implemented; native verification sessions are available.".into()),
             NativeSide::Xiangqi(human) => {
                 use mshogi_core::xiangqi as x;
                 let game =

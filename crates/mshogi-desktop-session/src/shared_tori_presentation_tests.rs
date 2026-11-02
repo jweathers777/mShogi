@@ -206,7 +206,7 @@ fn both_quail_owners_keep_native_hand_identity_and_drop_destination_only() {
                 .last()
                 .unwrap()
                 .notation
-                .starts_with("Technical:")
+                .starts_with(face.code())
         );
     }
 }

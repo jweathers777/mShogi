@@ -30,7 +30,7 @@ struct Reserve {
     native: usize,
 }
 
-/// Persisted Tori orientation; execution defaults are absent until a real engine exists.
+/// Persisted Tori orientation. Baseline play limits are fixed by the native engine version.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct ToriSettings {
@@ -240,7 +240,7 @@ impl ValidatedToriDocument {
     pub fn initial_record(&self) -> &t::GameRecord {
         native(&self.payload.initial).expect("validated Tori")
     }
-    /// Assigned native human side; this does not enable engine execution.
+    /// Assigned native human side.
     pub fn human(&self) -> t::Side {
         self.payload.human
     }
@@ -344,7 +344,8 @@ impl ValidatedToriDocument {
         doc.usage.replay_work += 1;
         doc.with_runtime_floor(floor)
     }
-    /// Atomically retain an actual unscored result with its exact submitted native history.
+    /// Atomically retain an actual result and, for an engine turn, its re-admitted action.
+    /// Read-only analysis never appends a native command.
     pub fn with_observation(
         &self,
         observation: ExecutionObservation,
@@ -364,6 +365,28 @@ impl ValidatedToriDocument {
         payload.controls.push(ToriControl::Observation {
             index: payload.observations.len(),
         });
+        if let (
+            ExecutionPurpose::EngineTurn {},
+            ExecutionResult::Tori {
+                result: mshogi_engine::ToriResult::Choice { action, .. },
+            },
+        ) = (&observation.context.purpose, &observation.result)
+        {
+            let mut game = native(&payload.current)?.to_game().map_err(invalid)?;
+            let actor = game.position().side_to_move();
+            let command = t::GameCommand::Play { action: *action };
+            game.submit(t::GameRequest {
+                expected: game.context(),
+                actor,
+                command,
+            })
+            .map_err(native_error)?;
+            payload
+                .controls
+                .push(ToriControl::Native { actor, command });
+            payload.current =
+                CanonicalRecord::tori(t::GameRecord::from_game(&game).map_err(invalid)?);
+        }
         payload.observations.push(observation);
         validate_payload(payload, stopped)
     }
@@ -731,6 +754,7 @@ fn preflight(
     #[derive(Deserialize)]
     struct Obs {
         context: Context,
+        result: Box<RawValue>,
     }
     #[derive(Deserialize)]
     struct Context {
@@ -742,6 +766,37 @@ fn preflight(
         let (n, w) = record_charge(&o.context.game)?;
         usage.retained_events += n;
         usage.replay_work += w + ROOT_WORK; // parse + exact prefix projection
+        // Actual result validation reconstructs its native root and re-admits every
+        // complete PV action. Count this before any expensive typed deserialization.
+        #[derive(Deserialize)]
+        struct ResultProbe {
+            kind: String,
+            result: Option<NativeResultProbe>,
+        }
+        #[derive(Deserialize)]
+        struct NativeResultProbe {
+            telemetry: TelemetryProbe,
+        }
+        #[derive(Deserialize)]
+        struct TelemetryProbe {
+            principal_variation: Vec<Box<RawValue>>,
+        }
+        let result: ResultProbe = serde_json::from_str(o.result.get()).map_err(invalid)?;
+        if result.kind == "tori" {
+            let pv = result
+                .result
+                .ok_or_else(|| invalid("missing Tori result"))?
+                .telemetry
+                .principal_variation
+                .len();
+            if pv > usize::from(mshogi_engine::TORI_MAX_DEPTH) {
+                return Err(invalid("Tori PV exceeds supported depth"));
+            }
+            // Charge native context parse, exact prefix encoding, target reconstruction
+            // and private validation-branch reconstruction conservatively (4 roots
+            // in total). Each PV submit serializes its growing native history.
+            usage.replay_work += 3 * w + (pv as u64) * (n as u64 + pv as u64 + ROOT_WORK);
+        }
         check_limits(&usage, p.retired_execution_floor, reserve)?;
     }
     check_limits(&usage, p.retired_execution_floor, reserve)?;
@@ -820,8 +875,16 @@ fn validate_semantics(
     let mut settings = p.initial_settings.clone();
     let mut retired = 0;
     let mut observation = 0;
+    let mut required_action: Option<(t::Side, t::GameCommand)> = None;
     for (i, c) in p.controls.iter().enumerate() {
         check(stopped)?;
+        if let Some((actor, command)) = required_action.take()
+            && !matches!(c, ToriControl::Native { actor: a, command: b } if *a == actor && *b == command)
+        {
+            return Err(invalid(
+                "engine choice must be followed by its exact native action",
+            ));
+        }
         match c {
             ToriControl::Native { actor, command } => {
                 game.submit(t::GameRequest {
@@ -861,7 +924,12 @@ fn validate_semantics(
                     .observations
                     .get(*index)
                     .ok_or_else(|| invalid("missing observation"))?;
-                if !o.matches(&o.context) || !matches!(o.result, ExecutionResult::Failure { .. }) {
+                if !o.matches(&o.context)
+                    || !matches!(
+                        o.result,
+                        ExecutionResult::Failure { .. } | ExecutionResult::Tori { .. }
+                    )
+                {
                     return Err(invalid("unsupported or invalid Tori observation"));
                 }
                 let n = native(&o.context.game)?;
@@ -874,6 +942,20 @@ fn validate_semantics(
                 };
                 if &game.record_prefix(event_index).map_err(invalid)? != n {
                     return Err(invalid("observation target is not the exact known prefix"));
+                }
+                if let ExecutionResult::Tori { result } = &o.result {
+                    let target_game = n.to_game().map_err(invalid)?;
+                    result.validate(&target_game).map_err(invalid)?;
+                    if let (
+                        ExecutionPurpose::EngineTurn {},
+                        mshogi_engine::ToriResult::Choice { action, .. },
+                    ) = (&o.context.purpose, result)
+                    {
+                        required_action = Some((
+                            game.position().side_to_move(),
+                            t::GameCommand::Play { action: *action },
+                        ));
+                    }
                 }
                 for id in [
                     match &o.context.purpose {
@@ -908,7 +990,8 @@ fn validate_semantics(
             ToriControl::Close {} => {}
         }
     }
-    if observation != p.observations.len()
+    if required_action.is_some()
+        || observation != p.observations.len()
         || retired != p.retired.len()
         || settings != p.settings
         || native(&p.current)? != &t::GameRecord::from_game(&game).map_err(invalid)?

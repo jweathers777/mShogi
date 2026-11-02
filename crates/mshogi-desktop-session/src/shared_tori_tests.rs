@@ -434,22 +434,28 @@ fn history_prefix_obligations_takeback_and_reopen_are_exact_and_fresh() {
     assert!(c.session.version > token.version);
     assert!(c.session.selection_id > token.selection);
     assert!(current(&c).pending.is_none());
-    assert!(!submit_observation(&mut c, response(old)));
-    for op in [
-        SessionOperation::Resume {},
-        SessionOperation::Retry {},
+    assert!(!submit_observation(&mut c, response(old.clone())));
+    // Reopening itself stops work. Explicit Resume/Retry and bounded analysis
+    // now use actual native execution; they do not restore any old pending ID.
+    send(&mut c, SessionOperation::Resume {}).unwrap();
+    assert_ne!(current(&c).pending.as_ref(), Some(&old));
+    send(&mut c, SessionOperation::Cancel {}).unwrap();
+    assert!(current(&c).pending.is_none());
+    send(
+        &mut c,
         SessionOperation::Analyze {
             operation: AnalysisOperation::Moves {
                 depth: 1,
                 nodes: 100,
             },
         },
-    ] {
-        let before = exact(&c);
-        assert!(send(&mut c, op).is_err());
-        assert_eq!(exact(&c), before);
-        assert!(current(&c).pending.is_none());
-    }
+    )
+    .unwrap();
+    assert!(matches!(
+        current(&c).pending.as_ref().unwrap().purpose,
+        ExecutionPurpose::MoveAnalysis { .. }
+    ));
+    send(&mut c, SessionOperation::Cancel {}).unwrap();
     fs::remove_dir_all(dir).unwrap();
 }
 
@@ -803,8 +809,8 @@ fn capacity_256_to257_and_reserved_close_save_reopen_do_not_reset_usage() {
     assert!(matches!(s.io.phase, IoPhase::Complete));
     assert_eq!(current(&reopened).document.observations().len(), 256);
     assert!(s.paused);
-    assert!(!s.capabilities.engine_turn);
-    assert!(!s.capabilities.move_analysis);
+    assert!(s.capabilities.engine_turn);
+    assert!(s.capabilities.move_analysis);
     assert!(!s.capabilities.chess_full);
     assert!(current(&reopened).pending.is_none());
     fs::remove_dir_all(dir).unwrap();
@@ -1526,3 +1532,148 @@ fn rejected_outgoing_replacements_preserve_tori_document_and_accepted_execution(
 
 #[path = "shared_tori_presentation_tests.rs"]
 mod presentation_tests;
+
+fn searched(context: ExecutionContext) -> ExecutionObservation {
+    let mut output = vec![];
+    mshogi_engine::serve_once(
+        std::io::Cursor::new(format!(
+            "{}\n",
+            serde_json::to_string(&execution_request(context)).unwrap()
+        )),
+        &mut output,
+    )
+    .unwrap();
+    serde_json::from_slice::<ExecutionResponse>(&output)
+        .unwrap()
+        .observation
+}
+#[test]
+fn actual_engine_turns_both_assignments_and_exact_historical_analysis_have_separate_admission() {
+    for human in [t::Side::Sente, t::Side::Gote] {
+        let mut c = controller();
+        replace(&mut c, &t::Game::standard(), human);
+        if human == t::Side::Sente {
+            let a = current(&c).game.legal_actions()[0];
+            send(
+                &mut c,
+                SessionOperation::Tori {
+                    actor: human,
+                    command: t::GameCommand::Play { action: a },
+                },
+            )
+            .unwrap();
+        } else {
+            send(&mut c, SessionOperation::Resume {}).unwrap();
+        }
+        let pending = current(&c).pending.clone().unwrap();
+        assert!(matches!(pending.purpose, ExecutionPurpose::EngineTurn {}));
+        assert_eq!(pending.limits, mshogi_engine::TORI_PLAY_LIMITS);
+        let before = native(&c);
+        let result = searched(pending.clone());
+        assert!(matches!(
+            result.result,
+            ExecutionResult::Tori {
+                result: mshogi_engine::ToriResult::Choice { .. }
+            }
+        ));
+        assert!(submit_observation(&mut c, result.clone()));
+        assert_eq!(
+            native(&c).known_board_actions(),
+            before.known_board_actions() + 1
+        );
+        assert_eq!(current(&c).game.position().side_to_move(), human);
+        assert!(!submit_observation(&mut c, result));
+        let after = native(&c);
+        send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
+        send(
+            &mut c,
+            SessionOperation::Analyze {
+                operation: AnalysisOperation::Moves {
+                    depth: 1,
+                    nodes: 1000,
+                },
+            },
+        )
+        .unwrap();
+        let old = current(&c).pending.clone().unwrap();
+        let mut wrong = searched(old.clone());
+        wrong.context.purpose = ExecutionPurpose::EngineTurn {};
+        assert!(!submit_observation(&mut c, wrong));
+        let observation = searched(old.clone());
+        assert!(submit_observation(&mut c, observation.clone()));
+        assert_eq!(native(&c), after); // analysis cannot apply the selected action
+        let snapshot = c.shared_snapshot();
+        assert!(snapshot.historical);
+        assert_eq!(snapshot.event_index, 0);
+        assert_eq!(
+            snapshot
+                .analysis
+                .as_ref()
+                .unwrap()
+                .observation
+                .context
+                .game
+                .event_count(),
+            0
+        );
+        assert_eq!(
+            snapshot
+                .search_observations
+                .iter()
+                .filter(|v| v.selected)
+                .count(),
+            1
+        );
+        send(&mut c, SessionOperation::ReturnLive {}).unwrap();
+        assert!(current(&c).analysis.is_none());
+        assert!(!submit_observation(&mut c, observation));
+        assert_eq!(native(&c), after);
+        ValidatedToriDocument::decode(current(&c).document.bytes(), &mut || false).unwrap();
+    }
+}
+#[test]
+fn real_completed_choice_cancel_replace_and_worker_refusal_cannot_mutate_current_game() {
+    let mut c = controller();
+    replace(&mut c, &t::Game::standard(), t::Side::Gote);
+    send(&mut c, SessionOperation::Resume {}).unwrap();
+    let old = searched(current(&c).pending.clone().unwrap());
+    send(&mut c, SessionOperation::Cancel {}).unwrap();
+    assert!(current(&c).paused);
+    assert!(!submit_observation(&mut c, old));
+    send(&mut c, SessionOperation::Resume {}).unwrap();
+    let mut bad = searched(current(&c).pending.clone().unwrap());
+    if let ExecutionResult::Tori {
+        result: mshogi_engine::ToriResult::Choice { telemetry, .. },
+    } = &mut bad.result
+    {
+        telemetry.score = Some(12345);
+    }
+    let before = exact(&c);
+    assert!(!submit_observation(&mut c, bad));
+    assert_eq!(exact(&c), before);
+    assert!(current(&c).paused);
+    assert!(current(&c).pending.is_none());
+    send(&mut c, SessionOperation::Retry {}).unwrap();
+    let old = searched(current(&c).pending.clone().unwrap());
+    replace(&mut c, &t::Game::standard(), t::Side::Sente);
+    assert!(!submit_observation(&mut c, old));
+    assert_eq!(native(&c).event_count(), 0);
+}
+
+#[test]
+fn consumed_real_response_admission_identity_refusal_retires_thinking_and_preserves_archive() {
+    let mut c = controller();
+    replace(&mut c, &t::Game::standard(), t::Side::Gote);
+    send(&mut c, SessionOperation::Resume {}).unwrap();
+    let response = searched(current(&c).pending.clone().unwrap());
+    let before = exact(&c);
+    c.session.capacity.id = MAX_SAFE_ID - 64;
+    assert!(!c.accept_observation(response.clone()));
+    assert_eq!(exact(&c), before);
+    assert!(current(&c).pending.is_none());
+    assert!(current(&c).paused);
+    assert!(matches!(current(&c).phase, EnginePhase::Paused));
+    assert!(c.session.capacity.resource.is_some());
+    assert!(!c.accept_observation(response));
+    ValidatedToriDocument::decode(current(&c).document.bytes(), &mut || false).unwrap();
+}

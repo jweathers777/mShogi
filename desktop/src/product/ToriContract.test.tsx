@@ -24,6 +24,7 @@ import repetitionJson from "../__fixtures__/shared-tori-repetition.json";
 import prefixJson from "../__fixtures__/shared-tori-repetition-prefix.json";
 import pendingJson from "../__fixtures__/shared-tori-pending-unsupported.json";
 import unsupportedJson from "../__fixtures__/shared-tori-unsupported.json";
+import analysisJson from "../__fixtures__/shared-tori-analysis-complete.json";
 import resourceJson from "../__fixtures__/shared-tori-resource.json";
 import inspectionJson from "../__fixtures__/shared-tori-inspections.json";
 import shogiJson from "../__fixtures__/shared-shogi-standard.json";
@@ -95,7 +96,7 @@ it("cannot override native historical admission with disabled=false, while reado
 it("projects only board rows, native nonmove events and selected completed geometry", () => {
   const ended = resignedJson as unknown as ToriSnapshot; render(<NativeHistory snapshot={ended} disabled={false} command={vi.fn()} />);
   expect(ended.moves.entries).toHaveLength(1); expect(ended.events).toHaveLength(3);
-  expect(screen.getByRole("button", { name: /1. Sente: Technical:/ })).toBeTruthy(); expect(screen.getByText(/Position events \(2\)/)).toBeTruthy();
+  expect(screen.getByRole("button", { name: "1. Sente: RQ*5e" })).toBeTruthy(); expect(screen.getByText(/Position events \(2\)/)).toBeTruthy();
   cleanup(); const { container, rerender } = board(dropJson as unknown as ToriSnapshot);
   expect(container.querySelector(".completed-action-origin")).toBeNull(); expect(container.querySelector(".completed-action-destination")).not.toBeNull();
   rerender(<GameBoard snapshot={historyJson as unknown as ToriSnapshot} disabled={false} inspectionDisabled={false} command={vi.fn()} />);
@@ -107,11 +108,54 @@ it("keeps repetition advice separate from a conclusion and never leaks live obli
   cleanup(); app(prefixJson as unknown as ToriSnapshot); expect(screen.queryByText(/Repetition obligation:/)).toBeNull();
   expect(screen.getByRole("button", { name: "Return to live" })).toBeTruthy();
 });
-it.each([pendingJson, unsupportedJson])("cannot advertise a real unsupported native probe as play, analysis or telemetry", fixture => {
-  app(fixture as unknown as ToriSnapshot);
-  expect(screen.getByText("Engine unavailable")).toBeTruthy();
-  for (const name of [/Resume play/, /Retry engine/, /Start move analysis/, /Cancel search/]) expect(screen.queryByRole("button", { name })).toBeNull();
-  expect(screen.queryByText("mShogi is thinking")).toBeNull(); expect(screen.queryByText(/Completed depth/)).toBeNull();
+it("shows actual pending native engine work and cancellation without inventing telemetry", () => {
+  const native = pendingJson as unknown as ToriSnapshot, { container } = app(native);
+  expect(screen.queryByText("Engine unavailable")).toBeNull();
+  expect(screen.getAllByText("mShogi is thinking").length).toBeGreaterThan(0);
+  expect(screen.getByRole("button", { name: "Cancel search" })).toBeTruthy();
+  expect(container.querySelector("[data-play-limits]")?.textContent).toBe(`Play limit: depth ${native.play_limits.depth} · ${native.play_limits.nodes.toLocaleString()} nodes`);
+  expect(screen.queryByText(/Completed depth/)).toBeNull();
+});
+it("shows real bounded incomplete work without a fallback, score or game outcome", () => {
+  // Historical fixture filename retained; payload now comes from real Tori
+  // depth1/nodes1 work, not the old unsupported-engine contract.
+  const native = unsupportedJson as unknown as ToriSnapshot; app(native);
+  expect(native.phase).toBe("incomplete");
+  expect(screen.getByText("Search incomplete")).toBeTruthy();
+  expect(screen.getByText("No uncompleted move was played.")).toBeTruthy();
+  expect(screen.getByText("No completed evaluation")).toBeTruthy();
+  expect(screen.getByText("Completed depth").nextElementSibling?.textContent).toBe("0");
+  expect(screen.getByText("Nodes").nextElementSibling?.textContent).toBe("1");
+  expect(screen.queryByLabelText("Game outcome")).toBeNull();
+  expect(screen.queryByText("Engine connection failed")).toBeNull();
+});
+it("presents completed native analysis with exact perspective and bounded read-only controls", async () => {
+  const native = analysisJson as unknown as ToriSnapshot, { native: owner } = app(native);
+  await userEvent.click(screen.getByRole("button", { name: "Analyze position" }));
+  const actual = native.search_observations.find(observation => observation.selected)!;
+  expect(actual.purpose).toBe("move_analysis"); expect(actual.score).not.toBeNull();
+  expect(screen.getAllByText(actual.score!).length).toBeGreaterThan(0);
+  expect(screen.getAllByText(`${actual.perspective} perspective · ${actual.status}`).length).toBeGreaterThan(0);
+  expect(screen.getAllByText("No move was played.").length).toBeGreaterThan(0);
+  expect((screen.getByRole("spinbutton", { name: "Depth" }) as HTMLInputElement).value).toBe(String(native.play_limits.depth));
+  expect((screen.getByRole("spinbutton", { name: "Node limit" }) as HTMLInputElement).max).toBe("10000");
+  await userEvent.click(screen.getByRole("button", { name: "Start move analysis" }));
+  expect(owner.command).toHaveBeenCalledWith(native, { kind: "analyze", operation: { kind: "moves", depth: native.play_limits.depth, nodes: native.play_limits.nodes } });
+  expect(screen.queryByRole("button", { name: /Full/ })).toBeNull();
+});
+it("rejects a zero-node Tori desktop analysis request before issuing native work", async () => {
+  const native = analysisJson as unknown as ToriSnapshot, { native: owner } = app(native);
+  const user = userEvent.setup();
+  await user.click(screen.getByRole("button", { name: "Analyze position" }));
+  const nodes = screen.getByRole("spinbutton", { name: "Node limit" }) as HTMLInputElement;
+  expect(nodes.min).toBe("1");
+  await user.clear(nodes); await user.type(nodes, "0");
+  await user.click(screen.getByRole("button", { name: "Start move analysis" }));
+  expect(owner.command).not.toHaveBeenCalled();
+  expect(screen.getByRole("alert").textContent).toContain("node budget from 1 to 10,000");
+  await user.clear(nodes); await user.type(nodes, "1");
+  await user.click(screen.getByRole("button", { name: "Start move analysis" }));
+  expect(owner.command).toHaveBeenCalledExactlyOnceWith(native, { kind: "analyze", operation: { kind: "moves", depth: native.play_limits.depth, nodes: 1 } });
 });
 it("renders actual native oversized-Open refusal, keeps Save available and does not claim an engine or game failure", () => {
   app(resourceJson as unknown as ToriSnapshot);
@@ -119,7 +163,7 @@ it("renders actual native oversized-Open refusal, keeps Save available and does 
   expect((screen.getByRole("button", { name: "Save" }) as HTMLButtonElement).disabled).toBe(false);
 });
 
-it.each([capturedJson, pendingJson])("retains native origin and emphasized destination for capture, including unsupported pending work", fixture => {
+it.each([capturedJson, pendingJson])("retains native origin and emphasized destination for capture, including actual pending work", fixture => {
   const { container } = board(fixture as unknown as ToriSnapshot);
   expect(container.querySelector('.completed-action-origin')).not.toBeNull();
   expect(container.querySelector('.completed-action-destination[data-cue-signature="double-underline"]')).not.toBeNull();
@@ -133,5 +177,7 @@ it.each([capacityDeadlineJson, fileDeadlineJson])("renders the real native elaps
   expect(screen.queryByText(/Engine connection failed/)).toBeNull();
   expect(screen.queryByText(/Save to keep the complete current game, then start a new game/)).toBeNull();
   expect((screen.getByRole("button", { name: "Save" }) as HTMLButtonElement).disabled).toBe(false);
-  for (const name of [/Resume play/, /Retry engine/]) expect(screen.queryByRole("button", { name })).toBeNull();
+  expect(screen.queryByRole("button", { name: /Retry engine/ })).toBeNull();
+  if ((fixture as unknown as ToriSnapshot).capacity.status === "paused") expect(screen.queryByRole("button", { name: /Resume play/ })).toBeNull();
+  else expect(screen.getByRole("button", { name: /Resume play/ })).toBeTruthy();
 });

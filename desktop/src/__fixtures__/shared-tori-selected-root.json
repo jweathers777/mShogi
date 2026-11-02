@@ -2,7 +2,7 @@
   "moves": {
     "root": {
       "label": "Starting position",
-      "numbering": "Technical native actions · not final Tori notation. Declared root counter 31 · Earlier history is unknown"
+      "numbering": "Tori action notation · Declared root counter 31 · Earlier history is unknown"
     },
     "entries": [
       {
@@ -10,7 +10,7 @@
         "board_ply": 1,
         "number": 1,
         "column": 0,
-        "notation": "Technical: RQ drop → 5e",
+        "notation": "RQ*5e",
         "action": "{\"kind\":\"drop\",\"face\":\"right_quail\",\"to\":\"5e\"}",
         "command_start": 0,
         "command_end": 1
@@ -399,8 +399,8 @@
     "promotion": true,
     "take_back": false,
     "undo": false,
-    "engine_turn": false,
-    "move_analysis": false,
+    "engine_turn": true,
+    "move_analysis": true,
     "chess_full": false,
     "claims": false,
     "declaration": false,
@@ -424,15 +424,15 @@
   "event_index": 0,
   "board_ply": 0,
   "play_limits": {
-    "depth": 0,
-    "nodes": 0
+    "depth": 2,
+    "nodes": 2000
   },
   "historical": true,
   "paused": true,
   "close_requires_save": true,
   "phase": "paused",
   "execution_purpose": null,
-  "diagnostic": "Historical position. Return to live explicitly; Tori engine execution is unsupported.",
+  "diagnostic": "Historical position. Analysis is read-only. Return to live explicitly.",
   "declaration_advice": [],
   "context": {
     "envelope_version": 1,
@@ -445,7 +445,7 @@
   "analysis": null,
   "observations": [],
   "search_observations": [],
-  "score_meaning": "No Tori evaluation or search implementation. Failures and incomplete work are unscored.",
+  "score_meaning": "Native root-side evaluation in hundredths of a Swallow. Win/loss distances count board actions; failures and incomplete work are unscored.",
   "chess": null,
   "chess_match": null
 }

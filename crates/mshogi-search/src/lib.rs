@@ -6,6 +6,7 @@
 
 pub mod chess;
 pub mod shogi;
+pub mod tori;
 pub mod xiangqi;
 
 pub mod search;

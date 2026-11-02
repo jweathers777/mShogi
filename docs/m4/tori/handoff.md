@@ -1,6 +1,15 @@
 # Modern Tori native/shared handoff — MSH-81
 
-## Current integrated shared acceptance — MSH-77 (2026-11-02)
+## Current native playable-consumer checkpoint — MSH-42
+
+[The native checkpoint](native-playable-checkpoint.md) now delivers functional
+history-aware search, real supervised Tori results, native desktop observation/
+action admission and lossless records, console/notation and bounded subprocess
+self-play. MSH-42 remains In Progress. The finished board/artwork, owner visual
+approval, normal product activation and actual packaged player journeys remain
+its next implementation boundary. No later variant or strength work is started.
+
+## Preserved integrated shared acceptance — MSH-77 (2026-11-02)
 
 MSH-130/131/132 are Done. Final [MSH-77 acceptance](shared-acceptance.md)
 reconciles all four original shared criteria against tested production52b0390

@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@Codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-02T19:46:00Z'
+updated_date: '2026-11-02T20:13:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -26,6 +26,8 @@ documentation:
   - docs/m4/tori/shared-acceptance.md
   - docs/m4/tori/playable-delivery.md
   - docs/m4/tori/desktop-visual-checkpoint.md
+  - docs/m4/tori/delivery-review.md
+  - docs/m4/tori/evidence/playable-product.json
 ordinal: 42000
 ---
 
@@ -124,6 +126,10 @@ Owner resolves desktop/native Undo distinction: preserve the accepted shared des
 Reviewed production checkpoint cb1e162d9fa689e00643f2b09e334c121d611819 integrated/pushed. Normal fourth-game activation and fresh stopped Open use the same owners. Local full workspace PASS, session262, host14, frontend384, driver92, TypeScript/Clippy/format and focused final actual control-worker regression PASS; broad precommit revision qualifications retained in single evidence/playable-product.json. Actual cb normal macOS GUI exercised Sente/Gote/Random, keyboard capture/real engine/drop/Takeback/history/SaveOpen/Resume/read-only analysis/nativeQuit/Resign and native terminal/repetition fixtures. Separately labeled fixed QA external startup gate establishes active cancel/replace, genuine missing executable failure and successful identical restored Retry. Independent source/fixture/representative JPEG+AX review PASS, final evidence review pending. Required full Rust41509573560 and Desktop41509573239 six whole jobs still running; no Windows/Linux pass yet claimed. All original8AC/4DoD remain unchecked until evidence complete.
 
 Actual cb1e162 campaigns failed: native generated-snapshot check differs in only3Tori diagnostic strings after browse-stop restoration; regenerated actualDTOs preserve all semantic/native fields. Both Windows/Linux35GUIphases had33PASS; normal-tori and pending-tori fail only because the external cue comparator used raw JSON object key order. Actual equivalent complete actions differ serialization order; pendingtimeout allows realengine tofinish and remains correctlyrejected aswrong event. Narrow verification-only correction compares duplicate-free exact complete move/drop fields+values; geometry/event/routes/nonactionable markers unchanged.94driverunits, actualbothfailedpayload comparisons and focused regeneratedfrontend tests PASS; nativeDTOrepeat byte-identical. Separate exactdiff/actualreport review PASS. No productsource or immutable rulesfixture change; macOScb package/GUI evidence remains valid. Preserve playable-product-ci-cb1-failure.json and original31cd failures. New exactverification revision/full requiredCI will establish successful finalplatformresults before42closure.
+
+Corrected verification4b02dfb38e3db485f2c4035b820a4da61e413d6d is pushed; production remainscb1e162 byte-for-source unchanged. Linux Desktop41513057801 all35actualGUIphases PASS; independent source/artifact/hash/screens/nativearchives review PASS. Current artifacts and compressed lossless rawreports in evidence/playable-product-linux; normalmacOS22capture/nativegame evidence remainsvalid. GitHub cancelled both4bMacjobs before runner acquisition after15min; exactannotations say hostedarm64capacityconstraints, recorded in main evidence. Other requiredresults stillreconciling: WindowsDesktop hasnewactualfailure awaitingartifact; nativeLinuxPASS/Windowsfinishing. No originalcriterionweakened orchecked;42remainsInReview. One primary integrator, independentGUIverifier/reviewer read-only outsideownedfiles; no laterwork started.
+
+4bWindows actualGUI34/35PASS; finalnormalTori dirtycloseprobe lacked authoritativeprecondition: nativeUnmodified/saveComplete20:01:13.768380 thenFlipinput andWM_CLOSE13.841868 withnoacceptedDirtyack. ExistingClose retiresunacceptedcandidate; noaccepteddirtylossestablished. Verification-onlyhelper nowawaits changedorientation/Modified/settledcontrols PLUSnative dirty+closeauthority,newversion/revision,samecanonicalgame/path/doc beforeONEWM_CLOSE.98units/syntaxPASS; independentactualtrace/nativeclose/source/negative-testreviewPASS. Preserve playable-product-ci-4b-windows-failure.json/rawgzip. No product/rules/host/frontend/manifests/workflow change. Required evidence now reuses actual4bRustWin/LinuxwholejobPASS with targetedMacnativeattempt2 (hostedcapacityretry) and unchangedcbMacwholeDesktopPASS+actualnormalCUA; newverificationDesktopWin/LinuxfullGUIrun required. Separate reviewer endorses source-equivalentreuse explicitly, no waivedcheck. Cancel redundant automaticRustcampaign for Python-onlyfix; do not claim capacity-cancelledMacjobs passed. No criteria checked before finalrequiredcompletion.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

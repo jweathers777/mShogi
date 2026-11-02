@@ -2,7 +2,7 @@
   "schema": "mshogi.tori.native-playable-checkpoint.v1",
   "task": "MSH-42",
   "status": "In Progress; native playable-consumer checkpoint only",
-  "tested_source": "Pending reviewed source commit; source CI not yet run",
+  "tested_source": "Pending corrected source commit after035c35c",
   "integration_branch": "codex/rewrite",
   "basis": {
     "accepted_shared_source": "52b0390cac09faf727a0c5ed74c1fd673f468a11",
@@ -47,10 +47,13 @@
         "legal_choices": 281,
         "nodes": 1847,
         "completed_depth": 2,
-        "milliseconds": 62
+        "milliseconds": 71
       }
     ],
-    "strength_claim": false
+    "strength_claim": false,
+    "release_measurements_source": "035c35ce4a7041eb1b01d1c29d131bcd4f9b47ce",
+    "earlier_local_drop_heavy_ms": 62,
+    "qualification": "The earlier implementation probe measured62ms; committed-source remeasurement measured71ms with identical281choices/1847visits/completeddepth2. Measurements are not latency guarantees."
   },
   "capacity": {
     "constants_unchanged": true,
@@ -85,7 +88,7 @@
     },
     {
       "command": "cargo test --release --locked -p mshogi-search tori::tests::measure_default_standard_and_drop_heavy -- --ignored --nocapture",
-      "result": "PASS; explicit release probe"
+      "result": "PASS at exact committed035c35c: standard9ms/drop-heavy71ms"
     },
     {
       "command": "cargo test --locked -p mshogi-engine --test tori_protocol --test tori_routing -- --nocapture",
@@ -125,7 +128,13 @@
     "result": "PASS; independent native capture/compulsory Ea and RQ drop examples; malformed labels rejected; T06 local-parse/live-admission separation",
     "source": "docs/m4/tori/notation.md",
     "fixtures_or_inventory_modified": false,
-    "historical_MSH132_pending_rows": "Preserved in original audit, superseded by this implemented consumer evidence"
+    "historical_MSH132_pending_rows": "Preserved in original audit, superseded by this implemented consumer evidence",
+    "tests": [
+      "mshogi_core::tori::notation::tests::independent_complete_examples_capture_compulsory_result_and_handed_drop",
+      "mshogi_core::tori::notation::tests::notation_does_not_resurrect_stale_permission_or_replace_canonical_record",
+      "mshogi-console/tests/tori_cli.rs::malformed_and_locally_legal_but_history_forbidden_requests_are_atomic",
+      "mshogi-console/tests/tori_cli.rs::capture_forced_promotion_quails_drop_undo_and_native_history"
+    ]
   },
   "selfplay": {
     "record": "native-playable-selfplay.json",
@@ -152,7 +161,8 @@
       "Charge repeated observation/PV validation before acceptance",
       "Immediate cancellation and consumed-result refusal pause scheduling",
       "Tori QA form minimum agrees with native positive node limit",
-      "A consumed matching response that cannot enter the admission queue retires Thinking and pauses without mutating the document."
+      "A consumed matching response that cannot enter the admission queue retires Thinking and pauses without mutating the document.",
+      "Final explicit-Resume audit: a manual human Play preserves paused state so it cannot restart engine work in a reopened/cancelled/historical-returned document."
     ],
     "verified_risks": [
       "Native terminal scores derive the actual native conclusion winner, including out-of-turn resignation; this was a preflight requirement, not an observed defect."
@@ -165,7 +175,8 @@
     "Console early compile Box<GameRecord> comparison corrected; first focused runtime campaign exposed qualified-side key and test-only PID-label assumption; isolated fixture marker now uses explicit test root metadata, no production PID labels.",
     "Frontend first focused16/18: outdated technical label and failed-file Resume expectation; assertions corrected to actual native move and existing capacity-vs-I/O distinction.",
     "Clippy two early pre-regression stops: collapsible_if and fixture needless_return; mechanically corrected; failed logs retained locally.",
-    "Standalone Tauri feature tests first13PASS/1FAIL: old !engine_turn assertion; corrected to real native capability while normal product Open stays blocked, final14PASS."
+    "Standalone Tauri feature tests first13PASS/1FAIL: old !engine_turn assertion; corrected to real native capability while normal product Open stays blocked, final14PASS.",
+    "035c35c CI campaigns intentionally cancelled by integrator after final contract audit found implicit Resume on a paused human Play. The source correction and focused regression preserve stopped reopening. Prior CI partial outcomes retained; no completion claimed."
   ],
   "broad_local": {
     "status": "PASS; source push/CI still pending",
@@ -300,7 +311,19 @@
     },
     "desktop_features_passed": 259,
     "workspace_clippy_after_final_guard": "PASS",
-    "required_native_suites": "PASS; workspace plus desktop all-feature suite, including final consumed-response regression"
+    "required_native_suites": "PASS; workspace plus desktop all-feature suite, including final consumed-response regression",
+    "standalone_format": "PASS",
+    "workspace_totals": {
+      "passed": 811,
+      "ignored": 3,
+      "reported_binaries": 82,
+      "qualification": "Sum of separate unit/integration/doctest reports; final desktop all-features additionally259PASS includes admission-ID edge test."
+    },
+    "resume_correction": {
+      "command": "cargo test --locked -p mshogi-desktop-session shared::tori::tests:: --all-features -- --nocapture",
+      "passed": 25,
+      "result": "PASS, includes reopened human-turn manual action remaining stopped and explicit Resume creating a fresh engine request. Unaffected earlier workspace/all-feature results reused; final corrected-source CI required."
+    }
   },
   "required_ci": {
     "Rust workspace": [
@@ -313,9 +336,10 @@
       "macos-15",
       "windows-2022"
     ],
-    "status": "Pending source push",
+    "status": "035c35c workflows cancelled as superseded; corrected source CI pending",
     "method": "One completion-aware CI monitor; exact source hash. Existing-game GUI jobs are supporting compatibility, not final Tori visual acceptance.",
-    "completion_condition": "All3 Rust workspace jobs successful; Desktop jobs on all3 platforms have successful Locked frontend and native checks, Build normal native package, and actual normal bundled-engine inspection steps. Later automatic GUI/verification-build campaigns are supporting existing-game evidence, not this native-only checkpoint gate. Stop waiting when required condition is available."
+    "completion_condition": "All3 Rust workspace jobs successful; Desktop jobs on all3 platforms have successful Locked frontend and native checks, Build normal native package, and actual normal bundled-engine inspection steps. Later automatic GUI/verification-build campaigns are supporting existing-game evidence, not this native-only checkpoint gate. Stop waiting when required condition is available.",
+    "superseded_record": "native-playable-ci-superseded-035c35c.json"
   },
   "gui_evidence": {
     "new_local_packaged_GUI": "Not run; native checkpoint does not claim finished product exposure/artwork",

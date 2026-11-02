@@ -84,7 +84,12 @@ impl ToriSession {
                         command,
                     })
                     .map_err(crate::tori_document::native_error)?;
-                self.paused = !matches!(command, t::GameCommand::Play { .. });
+                // Native verification may admit a manual board action while
+                // engine play is paused. It must never implicitly Resume a
+                // reopened/cancelled/inspected document's execution resource.
+                if !matches!(command, t::GameCommand::Play { .. }) {
+                    self.paused = true;
+                }
                 Some(ToriControl::Native { actor, command })
             }
             SessionOperation::Resign {} => {

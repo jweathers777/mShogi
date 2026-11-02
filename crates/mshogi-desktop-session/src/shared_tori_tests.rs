@@ -1553,6 +1553,7 @@ fn actual_engine_turns_both_assignments_and_exact_historical_analysis_have_separ
         let mut c = controller();
         replace(&mut c, &t::Game::standard(), human);
         if human == t::Side::Sente {
+            send(&mut c, SessionOperation::Resume {}).unwrap();
             let a = current(&c).game.legal_actions()[0];
             send(
                 &mut c,
@@ -1676,4 +1677,40 @@ fn consumed_real_response_admission_identity_refusal_retires_thinking_and_preser
     assert!(c.session.capacity.resource.is_some());
     assert!(!c.accept_observation(response));
     ValidatedToriDocument::decode(current(&c).document.bytes(), &mut || false).unwrap();
+}
+
+#[test]
+fn reopened_human_turn_manual_action_cannot_resume_engine_until_explicit_resume() {
+    let mut c = controller();
+    replace(&mut c, &t::Game::standard(), t::Side::Sente);
+    let dir = directory("explicit-resume");
+    let path = dir.join("paused.mshogi");
+    let id = c.queue_shared_save(path.clone()).unwrap();
+    assert!(matches!(wait_file(&mut c, id).io.phase, IoPhase::Complete));
+    let id = c.queue_shared_open(path, c.shared_open_token()).unwrap();
+    assert!(matches!(wait_file(&mut c, id).io.phase, IoPhase::Complete));
+    assert!(current(&c).paused);
+    let action = current(&c).game.legal_actions()[0];
+    send(
+        &mut c,
+        SessionOperation::Tori {
+            actor: t::Side::Sente,
+            command: t::GameCommand::Play { action },
+        },
+    )
+    .unwrap();
+    assert!(current(&c).paused);
+    assert!(current(&c).pending.is_none());
+    assert_eq!(native(&c).known_board_actions(), 1);
+    for _ in 0..3 {
+        c.shared_snapshot();
+        assert!(current(&c).pending.is_none());
+    }
+    send(&mut c, SessionOperation::Resume {}).unwrap();
+    let pending = current(&c).pending.as_ref().unwrap();
+    assert!(matches!(pending.purpose, ExecutionPurpose::EngineTurn {}));
+    assert_eq!(pending.game.known_board_actions(), 1);
+    assert!(!current(&c).paused);
+    send(&mut c, SessionOperation::Cancel {}).unwrap();
+    fs::remove_dir_all(dir).unwrap();
 }

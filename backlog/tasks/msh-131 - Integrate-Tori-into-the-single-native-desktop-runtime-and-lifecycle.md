@@ -1,10 +1,11 @@
 ---
 id: MSH-131
 title: Integrate Tori into the single native desktop runtime and lifecycle
-status: Ready
-assignee: []
+status: In Review
+assignee:
+  - '@Codex'
 created_date: '2026-11-01T21:28:00Z'
-updated_date: '2026-11-01T22:31:00Z'
+updated_date: '2026-11-02T08:45:00Z'
 labels:
   - m4
   - owner-msh-77
@@ -22,6 +23,8 @@ documentation:
   - docs/testing/conformance-policy.md
   - docs/m4/tori/desktop-document.md
   - docs/m4/tori/desktop-document-evidence.md
+  - docs/m4/tori/desktop-runtime.md
+  - docs/m4/tori/desktop-runtime-evidence.md
 type: task
 ordinal: 131000
 ---
@@ -54,10 +57,28 @@ Verification: focused real native/candidate/controller tests appropriate to this
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Root Codex is sole builder/integrator in clean aligned primary codex/rewrite086579f; independent read-only tori131_review. Preserve unrelated worktrees and immutable native profile/corpus713 assertions. Use pinned Backlog1.55.1.
+2. Add one ActiveDocument::Tori state arm holding actual native Game plus accepted immutable MSH130 document, selection and execution metadata; native typed Tori commands/settings, LocalPosition inspection and minimal truthful SharedSnapshot. Preserve normal host product gates and no engine capabilities.
+3. Extend existing NativeWork admission and sole persistence::install_document. Perform complete codec candidate validation/native reconstruction off-path before swapping; all commands/settings/observations/rewinds/close admitted before acceptance, exact tokens and fresh monotonic retired identities. Reuse existing FileWorker Save/Open receipts and atomic files, with explicit native verification admission distinct from normal product activation.
+4. Execute actual controller fixtures for all82 runtime consumer requirements/13fields, exact history/inspection/Undo/Take back and same-board retirement, actual unsupported internal child/cancellation/failure; strict rejected replacement and capacity including256to257/reserved endings, Save/reopen/stale receipts/dirty close. Preserve42 notation and132 full presentation ownership.
+5. Independent completed diff/runtime/security/admission/stale-result review, resolve findings, focused old-game controller/worker/process regressions, format/lint/standalone Tauri and applicable exact-source native/desktopCI; record honest revisions/results and132handoff. Finalize131only when all6AC/4DoD supported, integrate/push normally then stop.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 MSH130 implementation handoff (not131activation): immutable ValidatedToriDocument/currentenvelope1, ToriControl/Settings, exactnative initial/current/retiredbranches/observations/floor getters, pureCandidateWork inexistingNativeWork/FileWorker and exactSavedreceipt. ExistingpublicOpen/ActiveDocument/install_documentTori remainunsupported.131must useonecontroller/soleinstall withcompletecandidateadmission beforeacceptance, expensiveprep offUI, positivefreshstoppedruntimeIDs, nativeactorcontext/inspection, actualprefix/Takeback andSavedreceiptidentity+revisionchecks. WholeTori budget262144 differsfromnative65536 andothergames16000; actualusage/reservedStopResignClose and256to257fixtures documented. Historicalobservationsnorequest, Tori executionunsupported/unadvertised; no normalchooser/productrenderer. All13pendingruntimeassertions/82requirements remain131pending. This notechanges no131status/criteria/dependencies/implementationplan.
 
 MSH-130 is Done, reviewed implementation integrated/pushed at8fd12f953beeacac46fdd417b2054bedeafe2d6e. Native CI41355796434 PASS all3; exact17codec checks and actual UnsupportedMode child→codec roundtrip passed perplatform. Relevant normal package/host/frontend checks pass all3; pending Windows existing-game GUI snapshot remains accurately recorded separately. Use documented immutable codec/candidate/worker API and measured reservations; no live Tori install or new engine yet.131now dependency-ready Ready/unassigned, not activated; all13/82runtime assertions remain pending.
+
+Started131only at clean primary086579f; remote ls-remote matches.130Done, no other InProgress/InReview tasks. Global CLI mismatch avoided via pinned1.55.1. Source inspection confirms one ActiveDocument/RuntimeMetadata, shared NativeWork workers and sole install_document; explicit Tori branches required to avoid existing Chess fallback. No Tori GUI/engine/chooser implementation authorized.
+
+Current runtime implemented under one ActiveDocumentTori and sole install_document, immutable MSH130 admission off-path beforeacceptedchanges. Ten focused controller testsPASS at firstcompletecheckpoint; actual nativechild+forcedfailure/cancel/replacement/reopen2PASS; native38PASS/713assertions unchanged. Independenttori131_review reproduced10/10 including360history. Arc-backed document snapshots and precomputed closecandidate address synchronousencodingfinding; Save floorrefresh movedexistingFileWorker. Typed identityheadroom finding fixed/tested; repeated stop-only closeguard preserved. Longcontroller imported360record313906B/196404units; StopResignClose314540B/196409; installation5432ms,Stop6872ms,Resign6871ms,Save4152ms,close+snapshot6ms,Saveenqueue0ms (observations,notguarantees). Whole-document262144 unchanged; extra runtime nativepreparation boundedseparately underexisting15sworker. Historical broad241run239PASS/2FAIL solelyold129/130tests expecting nativeToriunsupported; updatingthoseauthorizedcontractgates while preservingnormalproductunsupported, not alteringrulesfixtures. One clippyboolstylefix, initialtestcompile/helperfieldnames andstrictresourceprobe corrected. NoGUI/externalengine ornexttask.
+
+Implementation ready for final independent acceptance and exact-source CI. Current production-source reviewPASS; reviewerindependent10controller checks incllong andidentity/interruptedSavePASS. Fullsessioncheckpoint242PASS/0FAIL/0ignored plusfinal12fastcontrollerPASS and2actualTori processPASS; native38/713PASS, console6targets15PASS, normalTauri8hosttestsPASS, TauriCheck/clippyPASS(20oldTao warnings). Added actualforced8/unequal16 lastaction throughcontroller and exacthistoricalfailureprefix Save/Open; allnative/fixtureinputs preserved. Runtimeonlybrowse reopenslive; observationtargets preserveexactprefix. Additional maximumdecimalfloorwidth reservation protectsSaveafterclosedoc; targetedboundarycheckpending. MSH132stillunstarted. No ToriGUIclaim.
+
+Final completed-source independent review PASS: separate tori131_review independently reproduced controller long/admission checks, typed identity/interrupted Save, outgoing failed-replacement preservation and exact floor-width boundary; exact82 requirements/13 fields independently reconciled. Final frozen fast controller13PASS plus isolated long1PASS; floor1PASS; six actual subprocess targets15PASS after atomic publication of test-only child PID marker resolved an intermediate instrumentation race. Full session242PASS is a checkpoint before the last3 controller/floor tests; final source expected246 tests, exact-source CI pending. Final lint/format/diff PASS. Outgoing Tori replacement admission now preserves current pending work until successful commit; failure leaves complete accepted state intact. No normal Tori product or engine activation. Task remains In Review pending exact-source native/desktop CI and final integration evidence.
 <!-- SECTION:NOTES:END -->

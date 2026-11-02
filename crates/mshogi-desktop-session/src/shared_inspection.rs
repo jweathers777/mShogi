@@ -47,7 +47,9 @@ impl DesktopController {
         if query.expected != self.shared_token() {
             return Err("The position changed. Select the piece again.".into());
         }
-        let (game, owner, label, choices) = if let Some(state) = self.session.xiangqi() {
+        let (game, owner, label, choices) = if let Some(state) = self.session.tori() {
+            tori::inspect(state.selected(), &query.origin)?
+        } else if let Some(state) = self.session.xiangqi() {
             xiangqi::inspect(state.selected_position(), &query.origin)?
         } else if let Some(state) = self.session.shogi() {
             inspect_shogi(state.selected().position(), &query.origin)?

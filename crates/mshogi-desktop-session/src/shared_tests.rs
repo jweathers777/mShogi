@@ -929,7 +929,7 @@ fn current_wire_frame_is_checked_before_a_durable_native_observation_is_admitted
 }
 
 #[test]
-fn native_tori_tags_do_not_create_a_desktop_session_or_replace_a_live_document() {
+fn native_tori_product_gate_stays_closed_while_explicit_contract_admission_is_supported() {
     use mshogi_core::tori;
     let mut c = controller();
     let before = c.shared_snapshot().context;
@@ -941,7 +941,7 @@ fn native_tori_tags_do_not_create_a_desktop_session_or_replace_a_live_document()
     assert!(error.contains("not implemented"));
     assert_eq!(c.shared_token(), token);
     assert_eq!(c.shared_snapshot().context, before);
-    let error = send(
+    let snapshot = send(
         &mut c,
         SessionOperation::Replace {
             record: CanonicalRecord::tori(
@@ -950,8 +950,9 @@ fn native_tori_tags_do_not_create_a_desktop_session_or_replace_a_live_document()
             human: NativeSide::Tori(tori::Side::Sente),
         },
     )
-    .unwrap_err();
-    assert!(error.contains("not implemented"));
-    assert_eq!(c.shared_token(), token);
-    assert_eq!(c.shared_snapshot().context, before);
+    .unwrap();
+    assert_eq!(snapshot.game, GameKind::Tori);
+    assert!(snapshot.token.document > token.document);
+    assert!(!snapshot.capabilities.engine_turn);
+    assert!(!snapshot.capabilities.move_analysis);
 }

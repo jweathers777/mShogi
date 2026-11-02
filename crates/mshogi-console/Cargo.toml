@@ -26,4 +26,4 @@ test = false
 doc = false
 
 [dev-dependencies]
-mshogi-desktop-session = { path = "../mshogi-desktop-session" }
+mshogi-desktop-session = { path = "../mshogi-desktop-session", features = ["desktop-verification"] }

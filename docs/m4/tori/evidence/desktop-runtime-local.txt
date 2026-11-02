@@ -1,0 +1,640 @@
+ACTUAL LOCAL OUTPUT: Full native session checkpoint242: before last3controller and floor tests
+
+   Compiling mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.42s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-72dbb958aa69b860)
+
+running 242 tests
+test document::tests::every_outer_field_is_required_and_duplicate_fields_reject ... ok
+test document::tests::current_outer_identity_is_explicit_for_every_native_game ... ok
+test analysis::tests::cancel_keeps_pause_and_has_no_fabricated_final_observations ... ok
+test document::tests::hostile_identity_diagnostics_are_bounded_and_utf8_safe ... ok
+test analysis::tests::analysis_has_a_read_only_acceptance_path_and_explicit_resume ... ok
+test analysis::tests::analysis_claims_and_failures_are_observations_only_with_exact_context_guards ... ok
+test analysis::tests::same_fen_different_history_and_wrong_purpose_are_rejected ... ok
+test analysis::tests::mixed_turn_analysis_replacement_and_resume_share_one_owner ... ok
+test analysis::tests::resignation_retires_analysis_and_concluded_positions_remain_analyzable ... ok
+test document::tests::raw_payload_bytes_reach_the_native_boundary_without_map_normalization ... ok
+test lifecycle::tests::close_requires_exact_document_version_and_revision_without_aliasing_games ... ok
+test lifecycle::tests::reservations_are_exclusive_release_on_failure_and_block_close_approval ... ok
+test moves::chess::tests::actual_legal_disambiguation_not_attacks ... ok
+test moves::chess::tests::pgn_independent_examples ... ok
+test document::tests::unsupported_conflicting_malformed_and_old_outer_formats_reject ... ok
+test moves::shogi::tests::jsa_dragons_and_horses_never_use_straight ... ok
+test moves::shogi::tests::jsa_five_tokins_need_both_motion_and_location_only_when_necessary ... ok
+test moves::shogi::tests::pinned_pseudo_alternative_does_not_invent_disambiguation ... ok
+test moves::shogi::tests::basic_numeric_coordinates_known_same_target_and_real_promoted_names ... ok
+test moves::shogi::tests::jsa_motion_first_then_mover_relative_left_right_straight ... ok
+test moves::tests::native_shogi_declared_counter_drop_and_terminal_are_not_moves ... ok
+test moves::tests::polling_cache_selected_prefix_and_monotonic_undo_identity ... ok
+test moves::tests::native_chess_pairs_root_counter_geometry_and_nonmove_boundaries ... ok
+test moves::xiangqi::fixture_tests::article7_figure_b_three_soldiers ... ok
+test moves::xiangqi::fixture_tests::approved_four_five_and_multiple_file_extension ... ok
+test moves::shogi::tests::promotion_optional_compulsory_and_contextual_drop_mark ... ok
+test moves::xiangqi::fixture_tests::article7_front_rear_and_distance_both_sides ... ok
+test moves::xiangqi::tests::article7_initial_examples_both_movers ... ok
+test persistence::full_archive_tests::distinct_witnesses_and_same_board_different_history_never_share_certificate_verification ... ok
+test persistence::full_archive_tests::failed_certificates_do_not_enter_operation_cache ... ok
+test persistence::save_commit_budget_tests::committed_saves_remain_successful_when_observed_after_the_validation_deadline ... ok
+test moves::tests::xiangqi_action_warning_exact_prefix_and_command_ranges ... ok
+test persistence::full_archive_tests::later_duplicate_cannot_bypass_context_perspective_goal_limits_or_work_validation ... ok
+test persistence::takeback_tests::takeback_chess_claim_and_checkmate_preserve_correct_history_semantics ... ok
+test document::tests::native_payload_failure_diagnostics_stay_bounded_and_open_is_atomic ... ok
+test persistence::tests::archive_capacity_exact_count_and_byte_boundaries_include_stop_reservations ... ok
+test persistence::tests::cancellation_retires_an_uncommitted_engine_result_candidate ... ok
+test persistence::tests::claims_and_resignation_roundtrip_complete_match_not_just_moves ... ok
+test persistence::full_archive_tests::complete_candidate_admission_rechecks_distinct_prior_full_proofs_past_the_high_watermark ... ok
+test persistence::tests::command_receipts_survive_following_work_and_close_supersedes_pending_admission ... ok
+test persistence::tests::concurrent_save_as_bookkeeping_survives_later_candidate_commit ... ok
+test document::tests::duplicate_native_schema_fields_reject_atomically_after_raw_outer_dispatch ... ok
+test persistence::tests::control_boundary_rejects_unchanged_and_reserved_close_is_saveable ... ok
+test persistence::tests::historical_analysis_excludes_future_claim_and_survives_only_its_selection ... ok
+test persistence::tests::interrupted_atomic_write_keeps_prior_file_and_removes_temporary ... ok
+test capacity::verification_tests::chess_capacity_fixture_retains_current_semantic_observations_from_real_executor ... ok
+test persistence::tests::event_4096_commits_but_engine_event_4097_rejects_before_move_or_observation ... ok
+test persistence::tests::io_and_rejection_revisions_cannot_consume_the_persisted_save_watermark ... ok
+test persistence::tests::oversized_raw_engine_failure_is_rejected_before_observation_or_game_commit ... ok
+test persistence::tests::preflight_rejects_timed_full_identity_and_resource_limits_before_replay ... ok
+test persistence::full_archive_tests::full_certificate_reuse_is_operation_local_cancellable_and_ignores_only_runtime_identity ... ok
+test persistence::tests::observation_corruption_and_future_control_timestamps_are_validated ... ok
+test persistence::tests::save_during_admission_keeps_new_contents_dirty_and_successful_open_retires_candidate ... ok
+test document::tests::real_native_transcripts_roundtrip_current_documents_with_fresh_stopped_runtime ... ok
+test persistence::tests::stored_full_witnesses_require_legal_requested_mate_and_cooperative_budget ... ok
+test persistence::tests::shared_poll_that_commits_shogi_open_publishes_the_matching_game_family ... ok
+test resource::tests::combined_observation_counts_remain_distinct ... ok
+test persistence::validation_budget_tests::elapsed_validation_budget_is_authoritative_and_cancellation_is_not_resource_exhaustion ... ok
+test resource::tests::combined_refusal_preserves_both_components_without_an_extra_cause ... ok
+test resource::tests::control_refusal_does_not_claim_observations ... ok
+test resource::tests::deserialization_rejects_unbounded_unknown_and_duplicate_fields ... ok
+test resource::tests::rejected_candidate_count_is_distinct_from_accepted_observation_count ... ok
+test resource::tests::diagnostic_and_metadata_are_bounded_without_broken_utf8 ... ok
+test resource::tests::unknown_and_simultaneous_causes_do_not_invent_specific_resources ... ok
+test persistence::tests::stale_save_and_stale_open_do_not_mark_or_replace_current_document ... ok
+test runtime_tests::close_authority_rejects_all_native_replacement_commands_and_open_but_keeps_save_available ... ok
+test runtime_tests::current_chess_contract_contains_actual_claims_match_and_search_observations ... ok
+test runtime_tests::current_chess_presentation_has_native_capabilities_without_a_second_application_snapshot ... ok
+test runtime_tests::current_flat_chess_claim_keeps_the_intended_action_unplayed_and_rejects_old_transport ... ok
+test runtime_tests::direct_identity_refusals_publish_native_facts_without_mutating_the_game ... ok
+test runtime_tests::rejected_chess_worker_command_is_not_capacity_engine_failure_or_outcome ... ok
+test runtime_tests::exactly_one_native_document_and_uniform_metadata_survive_cross_game_replacement ... ok
+test runtime_tests::reopened_all_game_identities_exceed_runtime_only_revisions_without_spending_saved_watermarks ... ok
+test shared::archive::capacity_tests::conservative_reconstruction_budget_is_enforced_before_accepting_a_journal ... ok
+test shared::archive::capacity_tests::control_boundary_reserves_the_last_slot_for_close_and_never_truncates ... ok
+test shared::archive::capacity_tests::browse_return_admits_both_resume_control_and_stop_headroom_before_commit ... ok
+test persistence::takeback_tests::takeback_chess_strict_lineage_conflicts_capacity_and_interruption_preserve_current ... ok
+test persistence::takeback_tests::takeback_chess_engine_opening_survives_and_terminal_commands_restore_native_turn ... ok
+test shared::archive::capacity_tests::reopened_active_journal_retains_stop_reservation_across_preferences ... ok
+test shared::archive::capacity_tests::runtime_only_revision_exhaustion_preserves_save_and_fresh_reopen_path ... ok
+test persistence::takeback_tests::takeback_chess_current_replay_boundary_reserves_actual_close_control ... ok
+test shared::archive::tests::canonical_fixture_roundtrips_preserve_native_root_history_and_all_outcomes ... ok
+test shared::archive::tests::concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it ... ok
+test shared::archive::tests::current_chess_preserves_semantics_and_development_formats_reject ... ok
+test shared::archive::tests::durable_observations_have_a_semantic_schema_without_transport_framing ... ok
+test shared::archive::tests::hostile_archives_reject_without_changing_the_current_document ... ok
+test shared::archive::capacity_tests::real_maximum_native_ledger_has_bounded_record_context_response_and_archive_sizes ... ok
+test shared::archive::tests::imported_capture_hand_and_drop_after_reopen_preserve_counter_provenance ... ok
+test shared::archive::tests::inability_to_start_native_execution_is_a_capacity_pause_not_engine_failure ... ok
+test shared::archive::tests::interrupted_and_failed_native_saves_preserve_file_and_dirty_state ... ok
+test shared::archive::capacity_tests::replay_capacity_retains_one_exact_stop_action_of_headroom ... ok
+test shared::archive::tests::persisted_preferences_keep_exact_pending_execution_and_original_limits ... ok
+test shared::archive::tests::pending_runtime_is_not_archived_and_resume_allocates_fresh_identity ... ok
+test shared::archive::tests::raw_nested_observation_fields_remain_strict_and_identity_errors_are_explicit ... ok
+test shared::archive::tests::observations_keep_exact_retired_branch_targets_and_never_resume_on_open ... ok
+test shared::archive::tests::stale_open_and_cross_game_save_completion_never_replace_current_state ... ok
+test shared::archive::tests::same_ply_terminal_history_and_saved_selection_remain_distinct ... ok
+test shared::inspection::tests::chess_pending_engine_work_and_historical_prefix_are_not_touched ... ok
+test shared::inspection::tests::exact_historical_selection_and_conclusion_are_read_only ... ok
+test shared::archive::tests::product_new_game_archive_reopens_native_human_orientation_stopped_and_fresh ... ok
+test shared::inspection::tests::selected_shogi_owner_promotions_hands_and_pending_work_stay_native ... ok
+test shared::inspection::tests::strict_query_rejects_duplicate_nested_unknown_missing_and_oversize ... ok
+test shared::archive::tests::wrong_native_game_and_semantic_journal_or_observation_tampering_reject ... ok
+test shared::inspection::tests::exact_native_chess_query_is_not_a_snapshot_poll_or_mutation ... ok
+test shared::archive::capacity_tests::verification_control_limits_refuse_truthfully_and_keep_complete_save_open ... ok
+test shared::moves_tests::shared_moves_chess_real_admission_reopen_and_takeback_do_not_fabricate_cues ... ok
+test shared::moves_tests::shared_moves_shogi_exact_prefix_analysis_reopen_and_replacement_keep_identity ... ok
+test shared::moves_tests::shared_moves_xiangqi_action_plus_warning_preserves_exact_eight_and_nine_prefixes ... ok
+test shared::takeback_tests::takeback_native_shogi_declaration_and_fourfold_restore_native_history ... ok
+test persistence::tests::final_engine_observation_256_commits_once_then_further_engine_work_resource_pauses ... ok
+test shared::takeback_tests::takeback_native_terminal_only_human_turn_and_off_turn_resignations ... ok
+test persistence::tests::observation_256_is_accepted_257_rejected_and_save_open_preserves_every_observation ... ok
+test shared::tests::actual_complete_drop_promotion_capture_and_atomic_rejection ... ok
+test shared::tests::close_document_preconditions_advance_for_shogi_events_observations_and_replacement ... ok
+test shared::tests::command_diagnostics_are_bounded_without_splitting_utf8 ... ok
+test shared::tests::command_json_strict_native_payload_and_encoded_capacity ... ok
+test persistence::takeback_tests::takeback_chess_pairs_pending_cancelled_results_and_repeated_native_decisions ... ok
+test shared::tests::current_wire_frame_is_checked_before_a_durable_native_observation_is_admitted ... ok
+test shared::tests::exact_analysis_context_retirement_and_same_board_history ... ok
+test shared::tests::identities_native_geometry_and_chess_compatibility ... ok
+test shared::tests::declaration_advice_terminal_history_and_native_wrong_turn_semantics ... ok
+test shared::tests::incomplete_failure_and_retry_preserve_native_history_without_fallback ... ok
+test shared::tests::native_search_presentation_preserves_target_purpose_and_real_terminal_distance ... ok
+test shared::tests::native_tori_product_gate_stays_closed_while_explicit_contract_admission_is_supported ... ok
+test shared::tests::observation_capacity_refuses_new_work_before_changing_session ... ok
+test shared::tests::product_declaration_capability_is_advisory_eligibility_but_native_terminal_semantics_remain ... ok
+test shared::tests::presented_budget_matches_submitted_play_and_board_ply_ignores_terminal_events ... ok
+test shared::tests::product_new_rejects_stale_or_conflicting_choices_before_retiring_live_work ... ok
+test shared::tests::product_verification_fixtures_use_real_native_context_and_choices ... ok
+test shared::tests::replacement_retires_chess_files_and_pending_admission ... ok
+test shared::tests::product_new_games_are_native_qualified_oriented_and_live_with_fresh_identities ... ok
+test shared::tests::semantic_undo_replay_does_not_revive_retired_work ... ok
+test shared::tests::xiangqi_product_creation_retires_prior_work_and_keeps_archive_admission ... ok
+test shared::tori::tests::all_identity_dimensions_wrong_game_and_return_to_same_diagram_reject ... ok
+test shared::tori::tests::byte_control_native_event_and_replay_limited_open_preserves_current_authority ... ok
+test shared::takeback_tests::takeback_native_unavailable_engine_first_refusal_keeps_pending_work_atomic ... ok
+test shared::tori::tests::distinct_administrative_stops_and_unsupported_commands_are_unscored ... ok
+test shared::takeback_tests::takeback_native_history_requires_return_to_live_and_disables_stale_inspection ... ok
+test shared::tori::tests::history_identity_distinguishes_native_owners_hands_handed_faces_and_counter_provenance ... ok
+test shared::tori::tests::history_prefix_obligations_takeback_and_reopen_are_exact_and_fresh ... ok
+test shared::tori::tests::seven_reject_fixtures_actual_open_preserves_live_document_and_execution ... ok
+test shared::tori::tests::stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_content ... ok
+test shared::tori::tests::typed_identity_refusal_and_interrupted_save_keep_complete_accepted_document_dirty ... ok
+test shared::workflow_tests::browse_only_human_return_restores_actions_and_exact_live_context_in_one_admission ... ok
+test shared::tori::tests::actual_controller_seventy_native_admission_cases_and_rotations ... ok
+test shared::workflow_tests::clean_close_stop_is_not_falsely_saved_and_newer_dirty_authority_still_requires_guard ... ok
+test shared::workflow_tests::concluded_return_is_view_only_and_resignation_retains_native_unscored_chess_meaning ... ok
+test shared::workflow_tests::engine_return_allocates_fresh_purpose_version_request_generation_and_rejects_old_work ... ok
+test shared::workflow_tests::finishing_concluded_chess_full_analysis_retires_work_without_reopening_game ... ok
+test shared::workflow_tests::failed_or_cancelled_engine_turn_keeps_explicit_recovery_after_history_navigation ... ok
+test shared::takeback_tests::takeback_native_xiangqi_warning_fourth_and_claim_use_committed_command_boundaries ... ok
+test shared::takeback_tests::takeback_native_shogi_and_xiangqi_pairs_pending_repeated_and_fresh_contexts ... ok
+test shared::workflow_tests::historical_analysis_is_retired_before_return_but_cancel_and_failure_override_browse_intent ... ok
+test shared::workflow_tests::untouched_never_saved_chess_requires_guard_without_fabricating_canonical_changes ... ok
+test shared::xiangqi::archive::tests::actual_encoded_canonical_wrapper_overhead_is_bounded_before_acceptance ... ok
+test shared::workflow_tests::reopened_history_never_carries_browse_intent_and_records_fresh_resume_without_format_change ... ok
+test shared::workflow_tests::takeback_and_capacity_stops_cannot_be_overridden_by_browsing ... ok
+test shared::workflow_tests::newer_historical_analysis_stop_supersedes_older_engine_failure ... ok
+test shared::xiangqi::archive::tests::browse_return_reserves_journaled_resume_and_close_without_losing_current_xiangqi_document ... ok
+test shared::takeback_tests::takeback_native_preserves_engine_opening_and_repeated_human_decisions ... ok
+test shared::xiangqi::archive::tests::completed_exact_proof_witness_unknown_cancel_failure_remain_read_only_historical_reports ... ok
+test shared::tori::tests::capacity_256_to257_and_reserved_close_save_reopen_do_not_reset_usage ... ok
+test shared::xiangqi::archive::tests::event_prefix_selection_and_same_board_histories_survive_open_without_future_facts ... ok
+test shared::xiangqi::archive::tests::exact_historical_event_target_and_stale_attachment_are_preserved ... ok
+test shared::xiangqi::archive::tests::actual_native_ledgers_roundtrip_warning_fourth_claim_resignation_agreement_and_fast_proof ... ok
+test shared::xiangqi::archive::tests::failed_and_interrupted_save_open_preserve_file_dirty_state_and_live_document ... ok
+test shared::xiangqi::archive::tests::actual_encoded_open_byte_boundary_and_structural_candidate_byte_guard_are_exact ... ok
+test shared::xiangqi::archive::tests::exact_weighted_replay_threshold_reserves_one_real_close_control ... ok
+test shared::xiangqi::archive::tests::consumed_invalid_pv_is_retained_unscored_without_applying_even_its_first_move ... ok
+test shared::xiangqi::archive::tests::positive_exact_witness_replay_is_charged_before_attachment_and_raw_open ... ok
+test shared::xiangqi::archive::tests::product_open_restores_xiangqi_with_fresh_stopped_identity_and_keeps_stale_failures_atomic ... ok
+test shared::xiangqi::archive::tests::response_admission_refusal_cannot_restore_consumed_execution_as_thinking ... ok
+test shared::xiangqi::archive::tests::reused_validation_never_hides_changed_history_or_malformed_later_observations ... ok
+test shared::archive::capacity_tests::actual_256_observations_save_reopen_and_reject_257_without_changing_accepted_document ... ok
+test shared::xiangqi::archive::tests::strict_duplicates_conflicts_derived_conclusions_and_journal_tampering_are_rejected ... ok
+test shared::xiangqi::label_tests::native_action_labels_distinguish_quiet_capture_and_check_without_debug_payloads ... ok
+test shared::xiangqi::label_tests::native_non_board_events_keep_claimant_warning_pending_and_conclusion_distinct ... ok
+test shared::xiangqi::archive::tests::saved_actual_engine_and_analysis_observations_are_historical_and_old_work_stays_retired ... ok
+test shared::xiangqi::tests::all_event_prefixes_remain_read_only_with_no_future_warning_or_result_inference ... ok
+test shared::xiangqi::tests::cancel_retires_pending_cross_game_admission_and_its_receipt_immediately ... ok
+test shared::xiangqi::archive::tests::distinct_native_variations_pay_reconstruction_before_result_commit_and_still_reopen ... ok
+test shared::xiangqi::tests::actual_read_only_analysis_rejects_every_context_mismatch_and_cannot_apply_choice ... ok
+test shared::xiangqi::tests::handoff::same_board_history_cancel_and_cross_game_replacement_cannot_revive_results ... ok
+test shared::xiangqi::tests::handoff::warning_inspection_archive_reopen_and_resume_preserve_one_native_context ... ok
+test shared::xiangqi::tests::chess_full_and_historical_mutation_are_explicitly_unsupported_without_retiring_work ... ok
+test shared::xiangqi::tests::incomplete_failure_retry_and_limits_are_not_chess_outcomes ... ok
+test shared::xiangqi::tests::native_identity_intersection_palaces_river_and_capability_scope ... ok
+test shared::xiangqi::tests::native_opponent_inspection_is_immutable_nonactionable_and_selection_bound ... ok
+test shared::xiangqi::tests::native_claim_audit_and_nonmoving_resignation_preserve_board_ply_and_atomicity ... ok
+test shared::xiangqi::tests::native_terminal_advice_tracks_human_actor_pause_history_and_pending_engine_retirement ... ok
+test shared::xiangqi::tests::cancellation_replacement_undo_and_replay_never_revive_retired_engine_work ... ok
+test shared::xiangqi::tests::typed_native_command_boundary_rejects_unknown_duplicate_and_conflicting_fields ... ok
+test shared::xiangqi::verification::tests::exact_evidence_fixture_has_native_historical_meanings_without_changing_the_game ... ok
+test shared::archive::capacity_tests::long_history_observations_enforce_both_encoded_byte_and_replay_capacity_without_data_loss ... ok
+test shared::xiangqi::tests::paused_terminal_capabilities_match_admission_without_erasing_claim_advice ... ok
+test synthetic::tests::exact_complete_routes_derive_different_effects_and_replay_without_chess ... ok
+test synthetic::tests::native_geometry_and_complete_choices_include_distinct_return_routes ... ok
+test synthetic::tests::prefix_stale_invalid_and_effect_inputs_are_atomic_and_reset_is_monotonic ... ok
+test synthetic::tests::replay_and_command_decoders_reject_other_profiles_and_raw_board_effects ... ok
+test tests::cancel_wins_even_if_a_complete_response_has_arrived ... ok
+test tests::cancellation_and_retry_reject_invalid_states_atomically ... ok
+test tests::engine_applies_once_and_keeps_actual_observations ... ok
+test tests::engine_claim_remains_a_claim ... ok
+test tests::exact_same_fen_with_different_known_history_cannot_accept ... ok
+test tests::full_mode_restoration_is_explicitly_rejected_before_solver_execution ... ok
+test tests::incomplete_search_never_falls_back_to_a_move ... ok
+test tests::intended_claim_is_an_opportunity_then_conclusion_without_a_move ... ok
+test tests::invalid_engine_choice_is_unscored_and_atomic ... ok
+test tests::native_snapshot_and_atomic_human_rejection ... ok
+test tests::new_game_aba_and_generation_changes_reject_old_results ... ok
+test tests::promotion_choices_and_automatic_checkmate_are_native ... ok
+test tests::recovery_preserves_exact_match_and_game_records_and_retires_old_results ... ok
+test tests::resignation_is_a_draw_only_when_opponents_mate_is_proven_impossible ... ok
+test tests::resignation_is_unresolved_with_no_proof_on_either_players_turn ... ok
+test tests::verification_promotion_has_four_native_choices_and_roundtrips_complete_archive ... ok
+test tests::verification_states_are_native_and_zero_work_retry_restores_play_limits ... ok
+test shared::xiangqi::verification::tests::labeled_native_verification_roots_replay_actual_facts ... ok
+test shared::xiangqi::archive::tests::control_replay_and_native_count_boundaries_reserve_complete_stop_and_terminal_paths ... ok
+test tori_document::tests::actual_file_worker_first_save_replacement_failure_interruption_and_stale_receipts ... ok
+test tori_document::tests::actual_native_histories_preserve_repetition_ending_prefixes_and_declared_provenance ... ok
+test tori_document::tests::every_native_record_is_precharged_and_wrong_inner_identity_never_falls_through ... ok
+test tori_document::tests::exact_scalar_limits_reserves_and_plus_one_report_correct_resource ... ok
+test tori_document::tests::forged_selection_identity_and_all_strict_fixture_payloads_reject_at_desktop_boundary ... ok
+test tori_document::tests::actual_control_limit_consumes_stop_resign_close_reservations_without_resetting_them ... ok
+test tori_document::tests::immutable_journal_retains_rewind_branch_settings_and_exact_observation ... ok
+test tori_document::tests::native_record_byte_ceiling_and_desktop_precharge_reject_forged_work_before_native_replay ... ok
+test tori_document::tests::no_tori_normal_play_capability_is_enabled ... ok
+test shared::xiangqi::archive::tests::ordinary_and_exact_observations_share_capacity_without_discarding_either_kind ... ok
+test tori_document::tests::per_operation_byte_and_work_reservations_cover_real_native_encoding_growth ... ok
+test tori_document::tests::seven_independent_reject_cases_enter_actual_native_record_parser ... ok
+test tori_document::tests::single_unsupported_mode_unknown_fields_and_forged_intermediate_facts_reject ... ok
+test tori_document::tests::observation256_to257_refuses_before_acceptance_and_all_native_ending_headroom_survives ... ok
+test tori_document::tests::strict_outer_payload_commands_and_native_facts_reject_without_normalizing_duplicates ... ok
+test tori_document::tests::unsupported_failure_observations_are_exact_historical_unscored_evidence ... ok
+test tori_document::tests::actual_encoded_input_limit_and_aggregate_event_limit_plus_one ... ok
+test shared::xiangqi::archive::tests::measured_long_warning_claim_and_historical_observations_pause_before_replay_budget ... ok
+test shared::tori::tests::measured_long_native_runtime_admission_stop_end_save_and_prepared_close ... ok
+test persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable has been running for over 60 seconds
+test shared::xiangqi::archive::tests::ordinary_observation_256_to_257_rejects_new_work_and_still_saves_reopens_all_evidence ... ok
+test shared::xiangqi::verification::tests::labeled_capacity_fixture_retains_real_observations_and_one_remaining_slot ... ok
+test tori_document::tests::measured_complete_long_documents_charge_repeated_native_work_and_refuse_before_loss ... ok
+test shared::xiangqi::tests::retained_observation_count_and_byte_limits_reject_new_work_before_mutation has been running for over 60 seconds
+test shared::xiangqi::tests::retained_observation_count_and_byte_limits_reject_new_work_before_mutation ... ok
+test persistence::tests::real_bounded_witness_observations_reach_byte_capacity_and_remain_saveable ... ok
+
+test result: ok. 242 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 185.11s
+
+   Doc-tests mshogi_desktop_session
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+ACTUAL LOCAL OUTPUT: Final13fastcontroller checks; long test deliberately skipped
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-72dbb958aa69b860)
+
+running 13 tests
+test shared::tori::tests::history_identity_distinguishes_native_owners_hands_handed_faces_and_counter_provenance ... ok
+test shared::tori::tests::rejected_outgoing_replacements_preserve_tori_document_and_accepted_execution ... ok
+test shared::tori::tests::all_identity_dimensions_wrong_game_and_return_to_same_diagram_reject ... ok
+test shared::tori::tests::historical_failure_observation_saves_exact_prefix_without_future_knowledge_or_pending_work ... ok
+test shared::tori::tests::distinct_administrative_stops_and_unsupported_commands_are_unscored ... ok
+test shared::tori::tests::typed_identity_refusal_and_interrupted_save_keep_complete_accepted_document_dirty ... ok
+test shared::tori::tests::stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_content ... ok
+test shared::tori::tests::history_prefix_obligations_takeback_and_reopen_are_exact_and_fresh ... ok
+test shared::tori::tests::seven_reject_fixtures_actual_open_preserves_live_document_and_execution ... ok
+test shared::tori::tests::byte_control_native_event_and_replay_limited_open_preserves_current_authority ... ok
+test shared::tori::tests::forced8_conclusion_and_unequal16_obligation_are_derived_by_final_controller_action ... ok
+test shared::tori::tests::actual_controller_seventy_native_admission_cases_and_rotations ... ok
+test shared::tori::tests::capacity_256_to257_and_reserved_close_save_reopen_do_not_reset_usage ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 233 filtered out; finished in 3.75s
+
+ACTUAL LOCAL OUTPUT: Native Tori38tests/713assertions (same native source)
+
+    Blocking waiting for file lock on build directory
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.01s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_core-b1b2044b7a2395ed)
+
+running 38 tests
+test tori::game::capacity_tests::exact_production_capacity_and_reservation_policy_boundaries ... ok
+test tori::game::reservation_bound_test::constructed_metadata_upper_bound_proves_each_reserved_nonboard_event_fits ... ok
+test tori::game_tests::counter_refusal_is_unscored_saveable_and_does_not_manufacture_no_actions ... ok
+test tori::game_tests::repetition_equality_and_semantic_context_are_distinct_and_root_counters_are_not_history ... ok
+test tori::game_tests::undo_redo_reject_foreign_used_out_of_order_and_retired_branches_atomically ... ok
+TORI-127 actual fixture assertions: 202 executed / 202 passed / 525 pending / 0 failed; 83 later-consumer obligations pending
+test tori::conformance::real_structural_fixture_observations ... ok
+test tori::game_tests::native_commands_are_atomic_out_of_turn_resignation_and_unscored_stops_preserve_board_identity ... ok
+TORI-128 native assertions: 483 executed / 483 passed / 244 pending / 0 failed; 83 later consumer requirements pending
+test tori::local_conformance::actual_local_and_structural_fixture_observations ... ok
+test tori::game_tests::native_rotation_metamorphism_preserves_repetition_responsibility_and_forced_loss ... ok
+test tori::local_tests::bounded_perft_and_divide_use_independent_counts_and_preserve_native_paths ... ok
+test tori::game_tests::independent_forced8_and_unequal16_integrate_board_choices_history_and_precedence ... ok
+test tori::game_tests::exact_reversal_every_prefix_replay_and_selection_never_restore_native_authority ... ok
+test tori::local_tests::independent_complete_choices_single_double_check_capture_and_block ... ok
+test tori::local_tests::exact_legal_apply_undo_redo_material_and_atomic_capacity ... ok
+test tori::local_tests::inspection_is_owner_specific_immutable_complete_and_not_live_permission ... ok
+test tori::local_tests::only_swallow_has_last_rank_drop_ban_and_inspection_keeps_forced_faces ... ok
+test tori::local_tests::complete_generator_membership_and_rotated_effects_properties ... ok
+TORI-128 deterministic legal sequence: 192 accepted actions
+test tori::local_tests::source_derived_attack_tables_match_native_threats_for_all_faces_and_owners ... ok
+test tori::tests::actual_zone_drop_wait_exit_within_and_swallow_promotion ... ok
+test tori::tests::all_40_accepted_board_transitions_execute_reversal_two_resignations_stay_pending ... ok
+test tori::tests::all_nonroyal_faces_capture_demote_and_preserve_handed_inventory ... ok
+TORI129 actual native:713 executed/713 passed/14 pending/0 failed; 83 later consumer requirements pending
+test tori::game_conformance::actual_complete_native_fixture_observations ... ok
+test tori::tests::coordinate_domains_and_both_owner_axes ... ok
+test tori::local_tests::pinned_attackers_still_defend_squares_and_discovered_self_check_rejects ... ok
+test tori::tests::explicit_capacity_boundaries_preserve_state_and_tokens ... ok
+test tori::local_tests::swallow_drop_mate_uses_all_safe_capture_escape_and_drop_defenses_without_recursion ... ok
+test tori::local_tests::local_root_checks_preserve_custom_provenance_and_allow_moving_side_check ... ok
+test tori::tests::roots_preserve_identity_inventory_and_counter_provenance ... ok
+test tori::tests::undo_redo_are_single_use_bound_lifo_and_branch_safe ... ok
+test tori::tests::incomplete_legality_boundary_is_explicit_not_silently_partial ... ok
+test tori::tests::basic_invalid_actions_reject_all_state_and_runtime_atomically ... ok
+test tori::local_tests::terminal_root_observations_are_native_not_match_conclusions ... ok
+test tori::tests::native_rotation_symmetry_for_every_face_square_and_fixture_transition ... ok
+TORI-128 deterministic legal sequence: 192 accepted actions
+test tori::local_tests::deterministic_legal_sequences_restore_every_prefix_and_inspection_is_nonmutating ... ok
+test tori::tests::deterministic_generated_structural_sequences_restore_all_native_state ... ok
+test tori::game_tests::strict_record_all_fields_nested_duplicates_missing_tampering_and_resources ... ok
+TORI129 real event boundary:CapacityUsage { encoded_bytes: 165461, events: 510, replay_work: 33151 }; final CapacityUsage { encoded_bytes: 165930, events: 512, replay_work: 33153 }
+test tori::game_tests::real_event_limit_preserves_two_slots_for_stop_and_resignation ... ok
+TORI129 capacity real: 360board/360events/156573bytes/65341units; captures104/drops103/promotions16; generation+candidate probes 4517ms; strict parse+two replays 2657ms; stopped CapacityUsage { encoded_bytes: 156804, events: 361, replay_work: 65342 }; resigned CapacityUsage { encoded_bytes: 157044, events: 362, replay_work: 65343 }
+test tori::game_tests::long_deterministic_real_history_reaches_replay_admission_bound_and_retains_stop_resign_headroom ... ok
+
+test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 44 filtered out; finished in 17.07s
+
+ACTUAL LOCAL OUTPUT: Existing and actual Tori process regressions15checks final
+
+   Compiling mshogi-console v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-console)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.38s
+     Running tests/desktop_analysis.rs (target/debug/deps/desktop_analysis-9764056d7d821260)
+
+running 2 tests
+test actual_full_budget_exhaustion_and_cancelled_replacement_leave_match_unchanged ... ok
+test actual_analysis_suggestions_never_commit_a_turn_and_resume_is_explicit ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.78s
+
+     Running tests/desktop_persistence.rs (target/debug/deps/desktop_persistence-474982e15613677d)
+
+running 3 tests
+test failed_save_and_corrupt_open_preserve_the_valid_file_and_live_document ... ok
+test reopening_retains_unscored_resignation_but_an_earlier_same_ply_view_does_not ... ok
+test complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.41s
+
+     Running tests/desktop_play.rs (target/debug/deps/desktop_play-97b8f142619fa749)
+
+running 4 tests
+test actual_missing_response_and_failed_process_pause_without_a_chess_score ... ok
+test human_black_gets_an_automatic_native_opening_and_can_answer_it ... ok
+test cancel_new_game_stale_commands_and_retry_protect_the_live_game ... ok
+test human_white_plays_two_turns_against_actual_bounded_native_replies ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.62s
+
+     Running tests/desktop_shared.rs (target/debug/deps/desktop_shared-0bd48409d44be690)
+
+running 3 tests
+test actual_engine_declaration_is_a_terminal_command_and_analysis_cannot_apply_it ... ok
+test real_chess_shogi_chess_execution_uses_one_supervisor_and_fresh_ids ... ok
+test product_new_gote_real_engine_play_analysis_archive_and_resume_use_native_paths ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.72s
+
+     Running tests/desktop_tori.rs (target/debug/deps/desktop_tori-b3ebd631cbbb4e6d)
+
+running 2 tests
+test real_supervised_tori_failure_cancel_replace_cleanup_and_cross_game_retirement ... ok
+test real_internal_tori_unsupported_controller_observation_save_reopen_stays_stopped ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests/tori_internal.rs (target/debug/deps/tori_internal-c7dc3e8ceb3b0832)
+
+running 1 test
+test real_subprocess_preserves_tori_context_but_supplies_no_move_score_or_outcome ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+ACTUAL LOCAL OUTPUT: Final actual process rerun including Tori child-start publication correction
+
+   Compiling mshogi-console v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-console)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.38s
+     Running tests/desktop_analysis.rs (target/debug/deps/desktop_analysis-9764056d7d821260)
+
+running 2 tests
+test actual_full_budget_exhaustion_and_cancelled_replacement_leave_match_unchanged ... ok
+test actual_analysis_suggestions_never_commit_a_turn_and_resume_is_explicit ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.78s
+
+     Running tests/desktop_persistence.rs (target/debug/deps/desktop_persistence-474982e15613677d)
+
+running 3 tests
+test failed_save_and_corrupt_open_preserve_the_valid_file_and_live_document ... ok
+test reopening_retains_unscored_resignation_but_an_earlier_same_ply_view_does_not ... ok
+test complete_archive_reopens_paused_and_historical_analysis_uses_only_its_prefix ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.41s
+
+     Running tests/desktop_play.rs (target/debug/deps/desktop_play-97b8f142619fa749)
+
+running 4 tests
+test actual_missing_response_and_failed_process_pause_without_a_chess_score ... ok
+test human_black_gets_an_automatic_native_opening_and_can_answer_it ... ok
+test cancel_new_game_stale_commands_and_retry_protect_the_live_game ... ok
+test human_white_plays_two_turns_against_actual_bounded_native_replies ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.62s
+
+     Running tests/desktop_shared.rs (target/debug/deps/desktop_shared-0bd48409d44be690)
+
+running 3 tests
+test actual_engine_declaration_is_a_terminal_command_and_analysis_cannot_apply_it ... ok
+test real_chess_shogi_chess_execution_uses_one_supervisor_and_fresh_ids ... ok
+test product_new_gote_real_engine_play_analysis_archive_and_resume_use_native_paths ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.72s
+
+     Running tests/desktop_tori.rs (target/debug/deps/desktop_tori-b3ebd631cbbb4e6d)
+
+running 2 tests
+test real_supervised_tori_failure_cancel_replace_cleanup_and_cross_game_retirement ... ok
+test real_internal_tori_unsupported_controller_observation_save_reopen_stays_stopped ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests/tori_internal.rs (target/debug/deps/tori_internal-c7dc3e8ceb3b0832)
+
+running 1 test
+test real_subprocess_preserves_tori_context_but_supplies_no_move_score_or_outcome ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+ACTUAL LOCAL OUTPUT: Normal Tauri host8tests;20existing Tao warnings
+
+warning: use of deprecated static `objc2_app_kit::NSKeyUp`
+  --> vendor/tao/src/platform_impl/macos/app.rs:41:30
+   |
+41 |     if event_type == appkit::NSKeyUp
+   |                              ^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated static `objc2_app_kit::NSWindowFullScreenButton`: The standard window button for NSWindowFullScreenButton is always nil; use NSWindowZoomButton instead
+  --> vendor/tao/src/platform_impl/macos/window.rs:51:47
+   |
+51 |   NSWindowButton, NSWindowCollectionBehavior, NSWindowFullScreenButton, NSWindowOrderingMode,
+   |                                               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: use of deprecated static `objc2_app_kit::NSWindowFullScreenButton`: The standard window button for NSWindowFullScreenButton is always nil; use NSWindowZoomButton instead
+   --> vendor/tao/src/platform_impl/macos/window.rs:261:9
+    |
+261 |         NSWindowFullScreenButton,
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: use of deprecated static `objc2_app_kit::NSFilenamesPboardType`: Create multiple pasteboard items with NSPasteboardTypeFileURL or kUTTypeFileURL instead
+   --> vendor/tao/src/platform_impl/macos/window.rs:552:75
+    |
+552 |       ns_window.registerForDraggedTypes(&NSArray::arrayWithObject(appkit::NSFilenamesPboardType));
+    |                                                                           ^^^^^^^^^^^^^^^^^^^^^
+
+warning: use of deprecated static `objc2_app_kit::NSFilenamesPboardType`: Create multiple pasteboard items with NSPasteboardTypeFileURL or kUTTypeFileURL instead
+   --> vendor/tao/src/platform_impl/macos/window_delegate.rs:173:72
+    |
+173 |   let Some(filenames) = NSPasteboard::propertyListForType(&pb, appkit::NSFilenamesPboardType)
+    |                                                                        ^^^^^^^^^^^^^^^^^^^^^
+
+warning: unnecessary `unsafe` block
+   --> vendor/tao/src/platform_impl/macos/app_delegate.rs:173:14
+    |
+173 |   let urls = unsafe {
+    |              ^^^^^^ unnecessary `unsafe` block
+    |
+    = note: `#[warn(unused_unsafe)]` (part of `#[warn(unused)]`) on by default
+
+warning: unnecessary `unsafe` block
+ --> vendor/tao/src/platform_impl/macos/badge.rs:8:3
+  |
+8 |   unsafe { NSApp(mtm).dockTile().setBadgeLabel(label.as_deref()) };
+  |   ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> vendor/tao/src/platform_impl/macos/event.rs:114:20
+    |
+114 |   let characters = unsafe { ns_event.charactersIgnoringModifiers().unwrap_or_default() };
+    |                    ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> vendor/tao/src/platform_impl/macos/event.rs:142:24
+    |
+142 |       let characters = unsafe { ns_event.characters().unwrap_or_default() };
+    |                        ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> vendor/tao/src/platform_impl/macos/event.rs:165:21
+    |
+165 |     let modifiers = unsafe { NSEvent::modifierFlags(ns_event) };
+    |                     ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> vendor/tao/src/platform_impl/macos/event.rs:307:15
+    |
+307 |   let flags = unsafe { NSEvent::modifierFlags(event) };
+    |               ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> vendor/tao/src/platform_impl/macos/event.rs:333:3
+    |
+333 |   unsafe { event.keyCode() }
+    |   ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> vendor/tao/src/platform_impl/macos/progress_bar.rs:161:3
+    |
+161 |   unsafe { NSBezierPath::bezierPathWithRoundedRect_xRadius_yRadius(rect, radius, radius).fill() };
+    |   ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> vendor/tao/src/platform_impl/macos/util/mod.rs:102:15
+    |
+102 |   let point = unsafe { NSEvent::mouseLocation() };
+    |               ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> vendor/tao/src/platform/macos.rs:419:5
+    |
+419 |     unsafe { objc2_app_kit::NSApplication::sharedApplication(mtm).unhide(None) }
+    |     ^^^^^^ unnecessary `unsafe` block
+
+warning: methods `set_badge_count` and `set_badge_label` are never used
+   --> vendor/tao/src/platform_impl/macos/event_loop.rs:127:10
+    |
+ 86 | impl<T: 'static> EventLoopWindowTarget<T> {
+    | ----------------------------------------- methods in this implementation
+...
+127 |   pub fn set_badge_count(&self, count: Option<i64>, _desktop_filename: Option<String>) {
+    |          ^^^^^^^^^^^^^^^
+...
+132 |   pub fn set_badge_label(&self, label: Option<String>) {
+    |          ^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `0` is never read
+ --> vendor/tao/src/platform_impl/macos/icon.rs:8:25
+  |
+8 | pub struct PlatformIcon(RgbaIcon);
+  |            ------------ ^^^^^^^^
+  |            |
+  |            field in this struct
+  |
+  = help: consider removing this field
+  = note: `PlatformIcon` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: function `yes` is never used
+   --> vendor/tao/src/platform_impl/macos/util/mod.rs:126:26
+    |
+126 | pub extern "C-unwind" fn yes(_: &Object, _: Sel) -> BOOL {
+    |                          ^^^
+
+warning: field `saved_desktop_display_mode` is never read
+   --> vendor/tao/src/platform_impl/macos/window.rs:450:7
+    |
+430 | pub struct SharedState {
+    |            ----------- field in this struct
+...
+450 |   pub saved_desktop_display_mode: Option<(CGDisplay, CGDisplayMode)>,
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: field `inner_rect` is never read
+   --> vendor/tao/src/platform_impl/macos/window.rs:487:7
+    |
+479 | pub struct UnownedWindow {
+    |            ------------- field in this struct
+...
+487 |   pub inner_rect: Option<PhysicalSize<u32>>,
+    |       ^^^^^^^^^^
+
+warning: `tao` (lib) generated 20 warnings
+   Compiling mshogi-core v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-core)
+   Compiling mshogi-desktop v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri)
+   Compiling mshogi-search v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-search)
+   Compiling mshogi-engine v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-engine)
+   Compiling mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 15.11s
+     Running unittests src/main.rs (desktop/src-tauri/target/debug/deps/mshogi_desktop-3a66ff309a5f19f5)
+
+running 8 tests
+test tests::stale_or_unrequested_close_cannot_authorize_shutdown ... ok
+test tests::native_file_reservation_blocks_close_then_approval_blocks_every_host_entry ... ok
+test tests::normal_movement_inspection_is_strict_atomic_and_does_not_poll ... ok
+test tests::native_command_reservation_releases_after_rejection_and_excludes_file_work ... ok
+test tests::picker_result_cannot_open_during_same_token_close_confirmation ... ok
+test tests::shogi_product_close_uses_current_document_identity_and_stops_execution ... ok
+test tests::picker_save_and_open_recheck_every_source_identity_before_queuing ... ok
+test tests::accepted_file_work_preserves_path_content_and_close_reservations_on_failure ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+ACTUAL LOCAL OUTPUT: Isolated final long controller check
+
+   Compiling mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.06s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-72dbb958aa69b860)
+
+running 1 test
+MSH131_LONG {"boundary":"actual DesktopController+existing bounded worker","close_and_snapshot_ms":6,"document_budget":262144,"enqueue_save_ms":0,"extra_native_replays_per_operation_upper_bound":4,"extra_replay_units_upper_bound":263168,"final_usage":{"controls":3,"encoded_bytes":314540,"observations":0,"replay_work":196409,"retained_events":722},"generated_ms":2719,"initial_usage":{"controls":0,"encoded_bytes":313906,"observations":0,"replay_work":196404,"retained_events":720},"installation_ms":5451,"resign_ms":6868,"save_ms":4142,"saved_floor":11,"saved_usage":{"controls":3,"encoded_bytes":314541,"observations":0,"replay_work":196409,"retained_events":722},"seed":"0x129ca11ab1e5","stop_ms":6907,"worker_deadline_seconds":15}
+test shared::tori::tests::measured_long_native_runtime_admission_stop_end_save_and_prepared_close ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 244 filtered out; finished in 31.50s
+
+ACTUAL LOCAL OUTPUT: Floor-width exact scalar boundary1check
+
+   Compiling mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.84s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-72dbb958aa69b860)
+
+running 1 test
+test tori_document::tests::runtime_floor_width_reservation_survives_consumed_close_and_exact_byte_boundary ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 244 filtered out; finished in 0.01s
+
+ACTUAL LOCAL OUTPUT: Final Clippy checkpoint
+
+    Checking mshogi-console v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-console)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.89s

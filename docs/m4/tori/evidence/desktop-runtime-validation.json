@@ -1,0 +1,45 @@
+{
+  "kind": "static audit, not test/GUI execution",
+  "baseline": "086579f7361c5e1e395ea8f766779688446441b2",
+  "tasks": 132,
+  "edges": 353,
+  "graph_unique_resolved_acyclic": true,
+  "original_criteria_dependencies_unchanged": true,
+  "132_unstarted": true,
+  "all_other_task_records_unchanged": true,
+  "native_rules_execution_design_policy_frontend_workflows_unchanged": true,
+  "runtime_fields": 13,
+  "runtime_requirements": 82,
+  "remaining_42_fields_requirements": [
+    1,
+    1
+  ],
+  "links_checked": 7,
+  "source_sha256": {
+    "crates/mshogi-console/Cargo.toml": "d7bd68fa7b2b78b762dd747e9b6830cb2fce509e932f47446f6458659eef0205",
+    "crates/mshogi-console/tests/desktop_tori.rs": "c3f32bf25912038b8970914daa8d6ac5f6808317346a3797792864db2668b6db",
+    "crates/mshogi-console/tests/support/internal_fixture.rs": "11d2225419a42e00be8d1892cae513cd9bd92eae10333f82f2c6195777efc0df",
+    "crates/mshogi-desktop-session/src/capacity.rs": "556551d2599ca1c73003d73cd2715aad6913af3bc91d1d9e1ae870745a33d4e9",
+    "crates/mshogi-desktop-session/src/lib.rs": "fe258af8b0540ff452cf92067e899059dea15253f3d44c313d03d9a9f0e19a10",
+    "crates/mshogi-desktop-session/src/persistence.rs": "5e081dacf3c27b9a48eb6a3dafa31ab1a716cf89409c7f3362f0438c7d97389b",
+    "crates/mshogi-desktop-session/src/shared.rs": "2c34f62de46194039bb7af23033315c4014840fd15225c0be4fbd67403e7c651",
+    "crates/mshogi-desktop-session/src/shared_archive.rs": "e170d72456cb223bdbb955ac26290b19ab0e800d68a0f08fecda676cb5f68534",
+    "crates/mshogi-desktop-session/src/shared_inspection.rs": "6a1ffddc26787b48ce019c99345a86d8c2c0cdbb1d85815ff1b30777ef977f32",
+    "crates/mshogi-desktop-session/src/shared_tests.rs": "b1f0cbffd095d3bd026291fdaf5adb69506aa6a3e0874358db76d29c0a351f3f",
+    "crates/mshogi-desktop-session/src/shared_tori.rs": "0ec9ff0f0c5009647bae68b7d6b2e89ca6403d7919a054d47b4c0da936f912e8",
+    "crates/mshogi-desktop-session/src/shared_tori_tests.rs": "ece4a1f35943333d2feec56dc4c5fd4bfc8aa554651d2deb51e70c9556805dc8",
+    "crates/mshogi-desktop-session/src/shared_xiangqi_archive.rs": "1fb237e56d768235532279e32e9feaa5ea8c0310974add35385dd5420c69d630",
+    "crates/mshogi-desktop-session/src/tori_document.rs": "24dd41b6d976cfba64cf695c8469f855d86c4b942f396d707da4869fe9592ee9",
+    "crates/mshogi-desktop-session/src/tori_document/tests.rs": "2e1cf2516ed5bf52b18da41748caef9523f6380a51b46669ab2184153e2d5372",
+    "crates/mshogi-desktop-session/src/workflow_tests.rs": "91c4ba8bf6f68fddf7fe720313725bc7c646f1a1349b81158552a24a67686c34",
+    "desktop/src-tauri/src/main.rs": "f70dc4a74028ca1f0a32933ba38b9fca98a31b0ba0e470a955b4c479e37c3909"
+  },
+  "immutable_sha256": {
+    "docs/design.md": "343de193a37b24632d2fcaebe8e0ed0057a1b620222ecac932b2c77cb494c7ba",
+    "docs/testing/conformance-policy.md": "e2507473d94bde4e39c2803575a405427fb486106ffe166d60e4adb6eed56892",
+    "docs/m4/tori/profile.md": "5e20ea1a355f1d2dfc91ab930687437a3aa8cf34a78353b80076b4173fd1e81a",
+    "docs/m4/tori/fixtures.json": "3f9e5ca3b541fc72f562ddd8231408e17e7bd5ba3ccee118e643ce0f543731e3",
+    "docs/m4/tori/native-fixture-ownership.json": "044a5d0fc72e355e705d12f6b7b1c328a043aa67b321a2c897d0e790f242b8d5",
+    "docs/m4/tori/shared-consumer-ownership.json": "7dc4e4aed4a3d8977b6dc0c9befbfe732825f5cf68d7dc02cf0c09dab403104e"
+  }
+}

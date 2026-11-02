@@ -1,0 +1,37 @@
+{
+  "boundary": "actual DesktopController+existing bounded worker",
+  "close_and_snapshot_ms": 6,
+  "document_budget": 262144,
+  "enqueue_save_ms": 0,
+  "extra_native_replays_per_operation_upper_bound": 4,
+  "extra_replay_units_upper_bound": 263168,
+  "final_usage": {
+    "controls": 3,
+    "encoded_bytes": 314540,
+    "observations": 0,
+    "replay_work": 196409,
+    "retained_events": 722
+  },
+  "generated_ms": 2719,
+  "initial_usage": {
+    "controls": 0,
+    "encoded_bytes": 313906,
+    "observations": 0,
+    "replay_work": 196404,
+    "retained_events": 720
+  },
+  "installation_ms": 5451,
+  "resign_ms": 6868,
+  "save_ms": 4142,
+  "saved_floor": 11,
+  "saved_usage": {
+    "controls": 3,
+    "encoded_bytes": 314541,
+    "observations": 0,
+    "replay_work": 196409,
+    "retained_events": 722
+  },
+  "seed": "0x129ca11ab1e5",
+  "stop_ms": 6907,
+  "worker_deadline_seconds": 15
+}

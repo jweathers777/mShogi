@@ -33,6 +33,11 @@ impl ShogiSettings {
 #[derive(Clone, Debug, Serialize)]
 #[serde(tag = "game_kind", rename_all = "snake_case")]
 pub enum NativeDesktopSettings {
+    /// Native Tori settings; no search capabilities implied.
+    Tori {
+        /// Persisted native orientation without engine defaults.
+        settings: crate::tori_document::ToriSettings,
+    },
     /// Native Xiangqi document preferences.
     Xiangqi {
         /// Explicit native board orientation.
@@ -111,6 +116,14 @@ pub(crate) enum ShogiSeed {
     },
 }
 pub(crate) enum NativeWork {
+    ToriSave {
+        document: std::sync::Arc<crate::tori_document::ValidatedToriDocument>,
+        floor: u64,
+        path: PathBuf,
+        revision: u64,
+        identity: u64,
+    },
+    ToriRuntime(Box<tori::RuntimeWork>),
     Tori(crate::tori_document::CandidateWork),
     Xiangqi(xiangqi::archive::XiangqiWork),
     Admit {
@@ -130,9 +143,11 @@ pub(crate) enum NativeWork {
     Open {
         path: PathBuf,
         token: SharedOpenToken,
+        product: bool,
     },
 }
 pub(crate) enum OpenedNative {
+    Tori(Box<tori::ToriSession>),
     Xiangqi {
         state: Box<xiangqi::XiangqiSession>,
         floor: u64,
@@ -144,6 +159,11 @@ pub(crate) enum OpenedNative {
     },
 }
 pub(crate) enum NativeCompleted {
+    ToriRuntime {
+        state: Box<tori::ToriSession>,
+        replacement: bool,
+        durable: bool,
+    },
     ToriValidated(Box<crate::tori_document::ValidatedToriDocument>),
     Xiangqi(xiangqi::archive::XiangqiCompleted),
     Admitted {
@@ -1012,6 +1032,26 @@ pub(crate) fn execute(
     stopped: &mut impl FnMut() -> bool,
 ) -> Result<NativeCompleted, OperationFailure> {
     match work {
+        NativeWork::ToriSave {
+            document,
+            floor,
+            path,
+            revision,
+            identity,
+        } => {
+            let doc = document.with_runtime_floor(floor)?;
+            // Authoritative full validation and atomic write stay on existing worker.
+            crate::tori_document::execute(
+                crate::tori_document::CandidateWork::Save {
+                    bytes: doc.bytes().to_vec(),
+                    path,
+                    revision,
+                    identity,
+                },
+                stopped,
+            )
+        }
+        NativeWork::ToriRuntime(work) => tori::execute(*work, stopped),
         NativeWork::Tori(work) => crate::tori_document::execute(work, stopped),
         NativeWork::Xiangqi(work) => xiangqi::archive::execute(work, stopped),
         NativeWork::Admit {
@@ -1101,14 +1141,22 @@ pub(crate) fn execute(
                 identity,
             })
         }
-        NativeWork::Open { path, token } => {
+        NativeWork::Open {
+            path,
+            token,
+            product,
+        } => {
             let bytes = read(&path, stopped)?;
             let value = crate::document::DocumentEnvelope::parse(&bytes)?;
             let game = match value.game_kind {
                 GameKind::Tori => {
-                    return Err(
-                        "Tori live desktop document installation is not implemented.".into(),
-                    );
+                    if product {
+                        return Err("Tori product activation is unavailable until its renderer and functional engine are delivered.".into());
+                    }
+                    OpenedNative::Tori(Box::new(tori::ToriSession::restore(
+                        crate::tori_document::ValidatedToriDocument::decode(&bytes, stopped)?,
+                        stopped,
+                    )?))
                 }
                 GameKind::Chess => OpenedNative::Chess(Box::new(
                     persistence::decode_chess_payload(value.payload.get().as_bytes(), stopped)?,
@@ -1143,7 +1191,11 @@ impl DesktopController {
         }
     }
     pub(crate) fn shared_document(&self) -> SharedDocumentState {
-        let settings = if let Some(state) = self.session.xiangqi() {
+        let settings = if let Some(state) = self.session.tori() {
+            NativeDesktopSettings::Tori {
+                settings: state.document.settings().clone(),
+            }
+        } else if let Some(state) = self.session.xiangqi() {
             NativeDesktopSettings::Xiangqi {
                 orientation: state.settings.orientation,
                 analysis_defaults: state.settings.analysis_defaults,
@@ -1170,6 +1222,9 @@ impl DesktopController {
     }
     /// Queue a complete current-format document using native payload encoding.
     pub fn queue_shared_save(&mut self, path: PathBuf) -> Result<u64, String> {
+        if self.session.tori().is_some() {
+            return self.queue_tori_save(path);
+        }
         if let Some(state) = self.session.xiangqi() {
             let work = xiangqi::archive::XiangqiWork::Save {
                 draft: Box::new(xiangqi::archive::XiangqiDraft::capture(state)),
@@ -1209,7 +1264,7 @@ impl DesktopController {
         path: PathBuf,
         token: SharedOpenToken,
     ) -> Result<u64, String> {
-        self.queue_open_admission(path, token)
+        self.queue_open_admission(path, token, false)
     }
     /// Product Open uses the same strict native dispatch and stopped restoration.
     pub fn queue_product_open(
@@ -1217,12 +1272,13 @@ impl DesktopController {
         path: PathBuf,
         token: SharedOpenToken,
     ) -> Result<u64, String> {
-        self.queue_open_admission(path, token)
+        self.queue_open_admission(path, token, true)
     }
     fn queue_open_admission(
         &mut self,
         path: PathBuf,
         token: SharedOpenToken,
+        product: bool,
     ) -> Result<u64, String> {
         if self.lifecycle.close_requested() {
             return Err("Close is pending. Cancel close before opening another document.".into());
@@ -1231,8 +1287,14 @@ impl DesktopController {
             return Err("Stale Open: review the current document again.".into());
         }
         let id = self.next_native_io(IoPhase::Opening)?;
-        self.files
-            .submit(id, Work::Native(Box::new(NativeWork::Open { path, token })));
+        self.files.submit(
+            id,
+            Work::Native(Box::new(NativeWork::Open {
+                path,
+                token,
+                product,
+            })),
+        );
         Ok(id)
     }
     pub(crate) fn retire_native_files(&mut self) -> Result<(), String> {
@@ -1280,7 +1342,8 @@ impl DesktopController {
         completed: NativeCompleted,
     ) -> Result<String, String> {
         match completed {
-            NativeCompleted::Admitted { .. }
+            NativeCompleted::ToriRuntime { .. }
+            | NativeCompleted::Admitted { .. }
             | NativeCompleted::Xiangqi(_)
             | NativeCompleted::ToriValidated(_) => {
                 unreachable!("dedicated admission worker")
@@ -1337,6 +1400,7 @@ impl DesktopController {
                 "Application capacity: admission identity headroom exhausted.",
             ));
         }
+        let preserve_tori = replacement && self.session.tori().is_some();
         let preferences = matches!(command, Some(SessionOperation::ShogiPreferences { .. }));
         let rollback = self.session.shogi().map(|s| {
             (
@@ -1348,11 +1412,12 @@ impl DesktopController {
             )
         });
         self.retire_admission();
+        self.shared.tori_admission = preserve_tori;
         self.shared.rollback = rollback;
-        if replacement {
+        if replacement && !preserve_tori {
             self.retire_native_files()?;
         }
-        if !preferences {
+        if !preferences && !preserve_tori {
             if let Some(state) = self.session.xiangqi_mut() {
                 state.retire();
                 state.paused = true;
@@ -1400,6 +1465,7 @@ impl DesktopController {
         let Some((epoch, preferences)) = self.shared.admission.take() else {
             return;
         };
+        let tori_admission = std::mem::take(&mut self.shared.tori_admission);
         let consumes_response = std::mem::take(&mut self.shared.admission_consumes_response);
         let rollback = self.shared.rollback.take();
         let token = self.admission_token.take();
@@ -1412,6 +1478,13 @@ impl DesktopController {
         }
         match result {
             Ok(Completed::Native(value)) => match *value {
+                NativeCompleted::ToriRuntime {
+                    state,
+                    replacement,
+                    durable,
+                } => {
+                    self.finish_tori_admission(state, replacement, durable, id, receipt);
+                }
                 NativeCompleted::Xiangqi(completed) => {
                     self.finish_xiangqi_admission(completed, id, receipt)
                 }
@@ -1420,6 +1493,9 @@ impl DesktopController {
                     analysis,
                     replacement,
                 } => {
+                    if replacement && self.session.tori().is_some() {
+                        self.bridge.cancel();
+                    }
                     self.session.install_shogi(state);
                     if preferences {
                         self.session.document_revision += 1;
@@ -1450,6 +1526,9 @@ impl DesktopController {
                 _ => unreachable!("dedicated admission worker"),
             },
             Ok(Completed::Admitted(mut candidate)) => {
+                if self.session.tori().is_some() {
+                    self.bridge.cancel();
+                }
                 if candidate.document_identity == self.session.document_identity {
                     candidate.document_path = self.session.document_path.clone();
                     candidate.saved_revision = self.session.saved_revision;
@@ -1468,7 +1547,24 @@ impl DesktopController {
                 }
             }
             Err(error) => {
-                if error.resource.is_some() {
+                if tori_admission {
+                    if consumes_response && let Some(state) = self.session.tori_mut() {
+                        state.retire();
+                        state.diagnostic = Some("Completed work refused by document admission; the accepted document is preserved and saveable.".into());
+                    }
+                    // Rejected candidates cannot alter accepted game or execution.
+                    self.session.capacity = CapacityState {
+                        id,
+                        status: if error.resource.is_some() {
+                            CapacityPhase::Paused
+                        } else {
+                            CapacityPhase::Available
+                        },
+                        message: Some(error.diagnostic.clone()),
+                        resource: error.resource.clone(),
+                    };
+                    self.session.revision += 1;
+                } else if error.resource.is_some() {
                     self.pause_native_capacity(error.diagnostic.clone());
                     self.session.capacity.resource = error.resource.clone();
                 } else {
@@ -1543,6 +1639,7 @@ impl DesktopController {
                 ActiveDocument::Chess(state) => state.engine.message = Some(error.diagnostic),
                 ActiveDocument::Shogi { state, .. } => state.diagnostic = Some(error.diagnostic),
                 ActiveDocument::Xiangqi { state, .. } => state.diagnostic = Some(error.diagnostic),
+                ActiveDocument::Tori { state, .. } => state.diagnostic = Some(error.diagnostic),
             }
         }
     }

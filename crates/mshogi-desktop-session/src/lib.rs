@@ -11,7 +11,7 @@ mod capacity;
 pub use capacity::*;
 mod document;
 mod resource;
-/// Immutable Tori document codec/admission; no live runtime installation.
+/// Immutable Tori document codec/admission; installation belongs to the sole native controller.
 pub mod tori_document;
 pub use resource::*;
 mod lifecycle;
@@ -344,6 +344,11 @@ pub(crate) enum ActiveDocument {
         runtime: RuntimeMetadata,
         state: Box<shared::ShogiSession>,
     },
+    /// Authoritative Tori game and admitted immutable document.
+    Tori {
+        runtime: RuntimeMetadata,
+        state: Box<shared::tori::ToriSession>,
+    },
     /// Native Xiangqi WXF game journal and observations.
     Xiangqi {
         runtime: RuntimeMetadata,
@@ -355,7 +360,9 @@ impl std::ops::Deref for ActiveDocument {
     fn deref(&self) -> &Self::Target {
         match self {
             Self::Chess(state) => &state.runtime,
-            Self::Shogi { runtime, .. } | Self::Xiangqi { runtime, .. } => runtime,
+            Self::Shogi { runtime, .. }
+            | Self::Xiangqi { runtime, .. }
+            | Self::Tori { runtime, .. } => runtime,
         }
     }
 }
@@ -363,7 +370,9 @@ impl std::ops::DerefMut for ActiveDocument {
     fn deref_mut(&mut self) -> &mut Self::Target {
         match self {
             Self::Chess(state) => &mut state.runtime,
-            Self::Shogi { runtime, .. } | Self::Xiangqi { runtime, .. } => runtime,
+            Self::Shogi { runtime, .. }
+            | Self::Xiangqi { runtime, .. }
+            | Self::Tori { runtime, .. } => runtime,
         }
     }
 }
@@ -404,6 +413,18 @@ impl ActiveDocument {
             _ => None,
         }
     }
+    fn tori(&self) -> Option<&shared::tori::ToriSession> {
+        match self {
+            Self::Tori { state, .. } => Some(state),
+            _ => None,
+        }
+    }
+    fn tori_mut(&mut self) -> Option<&mut shared::tori::ToriSession> {
+        match self {
+            Self::Tori { state, .. } => Some(state),
+            _ => None,
+        }
+    }
     fn install_shogi(&mut self, state: Box<shared::ShogiSession>) {
         let runtime = std::ops::Deref::deref(self).clone();
         *self = Self::Shogi { runtime, state };
@@ -431,6 +452,9 @@ impl ActiveDocument {
                 state.browse_running = false;
                 state.browse_stop = None;
             }
+            Self::Tori { state, .. } => {
+                state.browse_stop = None;
+            }
             Self::Xiangqi { state, .. } => {
                 state.browse_running = false;
                 state.browse_stop = None;
@@ -450,6 +474,9 @@ impl ActiveDocument {
                 state.retire();
                 state.paused = true;
             }
+            Self::Tori { state, .. } => {
+                state.retire();
+            }
             Self::Xiangqi { state, .. } => {
                 state.retire();
                 state.paused = true;
@@ -467,6 +494,7 @@ impl ActiveDocument {
             Self::Chess(s) => s.retire_analysis(),
             Self::Shogi { state, .. } => state.retire(),
             Self::Xiangqi { state, .. } => state.retire(),
+            Self::Tori { state, .. } => state.retire(),
         }
     }
     fn capacity_pause(&mut self, error: String) {

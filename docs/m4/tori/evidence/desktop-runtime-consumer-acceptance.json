@@ -1,0 +1,622 @@
+{
+  "kind": "Actual-test acceptance evidence index, not native adapter observations or GUI evidence",
+  "baseline": "086579f7361c5e1e395ea8f766779688446441b2",
+  "native_adapter": {
+    "executed": 713,
+    "passed": 713,
+    "consumer_fields_reported_pending": 14,
+    "note": "unchanged native adapter does not operate DesktopController"
+  },
+  "runtime_assertions": {
+    "executed": 13,
+    "passed": 13,
+    "failed": 0,
+    "fields": [
+      {
+        "fixture_id": "TORI-C-IDENTITY",
+        "field": "accept_late_A_for_B",
+        "status": "passed actual runtime assertion",
+        "test": "all_identity_dimensions_wrong_game_and_return_to_same_diagram_reject",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-C-IDENTITY.expected.accept_late_A_for_B"
+      },
+      {
+        "fixture_id": "TORI-C-IDENTITY",
+        "field": "undo_back_to_same_diagram_does_not_restore_A",
+        "status": "passed actual runtime assertion",
+        "test": "all_identity_dimensions_wrong_game_and_return_to_same_diagram_reject",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-C-IDENTITY.expected.undo_back_to_same_diagram_does_not_restore_A"
+      },
+      {
+        "fixture_id": "TORI-O-ADMIN",
+        "field": "native_conclusion",
+        "status": "passed actual runtime assertion",
+        "test": "distinct_administrative_stops_and_unsupported_commands_are_unscored",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-O-ADMIN.expected.native_conclusion"
+      },
+      {
+        "fixture_id": "TORI-O-ADMIN",
+        "field": "record_reason_separately",
+        "status": "passed actual runtime assertion",
+        "test": "distinct_administrative_stops_and_unsupported_commands_are_unscored",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-O-ADMIN.expected.record_reason_separately"
+      },
+      {
+        "fixture_id": "TORI-O-ADMIN",
+        "field": "scored",
+        "status": "passed actual runtime assertion",
+        "test": "distinct_administrative_stops_and_unsupported_commands_are_unscored",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-O-ADMIN.expected.scored"
+      },
+      {
+        "fixture_id": "TORI-H-REPLAY-UNDO",
+        "field": "runtime_work_never_revived",
+        "status": "passed actual runtime assertion",
+        "test": "history_prefix_obligations_takeback_and_reopen_are_exact_and_fresh",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-H-REPLAY-UNDO.expected.runtime_work_never_revived"
+      },
+      {
+        "fixture_id": "TORI-REJECT-DUPLICATE-SQUARE",
+        "field": "live_document_unchanged",
+        "status": "passed actual runtime assertion",
+        "test": "seven_reject_fixtures_actual_open_preserves_live_document_and_execution",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-REJECT-DUPLICATE-SQUARE.expected.live_document_unchanged"
+      },
+      {
+        "fixture_id": "TORI-REJECT-MISSING-ROYAL",
+        "field": "live_document_unchanged",
+        "status": "passed actual runtime assertion",
+        "test": "seven_reject_fixtures_actual_open_preserves_live_document_and_execution",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-REJECT-MISSING-ROYAL.expected.live_document_unchanged"
+      },
+      {
+        "fixture_id": "TORI-REJECT-ADJACENT-ROYALS",
+        "field": "live_document_unchanged",
+        "status": "passed actual runtime assertion",
+        "test": "seven_reject_fixtures_actual_open_preserves_live_document_and_execution",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-REJECT-ADJACENT-ROYALS.expected.live_document_unchanged"
+      },
+      {
+        "fixture_id": "TORI-REJECT-DEAD-SWALLOW",
+        "field": "live_document_unchanged",
+        "status": "passed actual runtime assertion",
+        "test": "seven_reject_fixtures_actual_open_preserves_live_document_and_execution",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-REJECT-DEAD-SWALLOW.expected.live_document_unchanged"
+      },
+      {
+        "fixture_id": "TORI-REJECT-THREE-SWALLOWS",
+        "field": "live_document_unchanged",
+        "status": "passed actual runtime assertion",
+        "test": "seven_reject_fixtures_actual_open_preserves_live_document_and_execution",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-REJECT-THREE-SWALLOWS.expected.live_document_unchanged"
+      },
+      {
+        "fixture_id": "TORI-REJECT-EXCESS-INVENTORY",
+        "field": "live_document_unchanged",
+        "status": "passed actual runtime assertion",
+        "test": "seven_reject_fixtures_actual_open_preserves_live_document_and_execution",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-REJECT-EXCESS-INVENTORY.expected.live_document_unchanged"
+      },
+      {
+        "fixture_id": "TORI-REJECT-STRICT",
+        "field": "live_document_unchanged",
+        "status": "passed actual runtime assertion",
+        "test": "seven_reject_fixtures_actual_open_preserves_live_document_and_execution",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-REJECT-STRICT.expected.live_document_unchanged"
+      }
+    ]
+  },
+  "runtime_consumer_requirements": {
+    "executed": 82,
+    "passed": 82,
+    "failed": 0,
+    "rows": [
+      {
+        "fixture_id": "TORI-G-KIJI-BLOCK",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-G-KIJI-BLOCK.expected"
+      },
+      {
+        "fixture_id": "TORI-G-GOOSE-BLOCK",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-G-GOOSE-BLOCK.expected"
+      },
+      {
+        "fixture_id": "TORI-G-EAGLE-BLOCK",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-G-EAGLE-BLOCK.expected"
+      },
+      {
+        "fixture_id": "TORI-S-TWO",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-S-TWO.expected"
+      },
+      {
+        "fixture_id": "TORI-S-THREE",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-S-THREE.expected"
+      },
+      {
+        "fixture_id": "TORI-S-GOOSE",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-S-GOOSE.expected"
+      },
+      {
+        "fixture_id": "TORI-S-ENEMY",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-S-ENEMY.expected"
+      },
+      {
+        "fixture_id": "TORI-S-LAST",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-S-LAST.expected"
+      },
+      {
+        "fixture_id": "TORI-S-DROP-MATE",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-S-DROP-MATE.expected"
+      },
+      {
+        "fixture_id": "TORI-D-EMPTY",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-D-EMPTY.expected"
+      },
+      {
+        "fixture_id": "TORI-D-UNPROMOTED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-D-UNPROMOTED.expected"
+      },
+      {
+        "fixture_id": "TORI-P-ENTRY",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-P-ENTRY.expected"
+      },
+      {
+        "fixture_id": "TORI-P-DROP-EXIT",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-P-DROP-EXIT.expected"
+      },
+      {
+        "fixture_id": "TORI-P-DROP-OTHER",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-P-DROP-OTHER.expected"
+      },
+      {
+        "fixture_id": "TORI-P-HEAD",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-P-HEAD.expected"
+      },
+      {
+        "fixture_id": "TORI-O-IMPASSE",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-O-IMPASSE.expected"
+      },
+      {
+        "fixture_id": "TORI-O-AGREEMENT",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-O-AGREEMENT.expected"
+      },
+      {
+        "fixture_id": "TORI-O-ROYAL",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-O-ROYAL.expected"
+      },
+      {
+        "fixture_id": "TORI-C-HISTORY",
+        "status": "passed actual runtime facet",
+        "test": "history_prefix_obligations_takeback_and_reopen_are_exact_and_fresh",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-C-HISTORY.expected"
+      },
+      {
+        "fixture_id": "TORI-C-IDENTITY",
+        "status": "passed actual runtime facet",
+        "test": "all_identity_dimensions_wrong_game_and_return_to_same_diagram_reject",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-C-IDENTITY.expected"
+      },
+      {
+        "fixture_id": "TORI-CAPTURE-OWNER",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-CAPTURE-OWNER.expected"
+      },
+      {
+        "fixture_id": "TORI-CAPTURE-DEMOTION",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-CAPTURE-DEMOTION.expected"
+      },
+      {
+        "fixture_id": "TORI-CAPTURE-QUAIL",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-CAPTURE-QUAIL.expected"
+      },
+      {
+        "fixture_id": "TORI-P-WITHIN",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-P-WITHIN.expected"
+      },
+      {
+        "fixture_id": "TORI-P-NO-OPTION",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-P-NO-OPTION.expected"
+      },
+      {
+        "fixture_id": "TORI-P-SWALLOW-AFTER-DROP",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-P-SWALLOW-AFTER-DROP.expected"
+      },
+      {
+        "fixture_id": "TORI-CAPTURE-GOOSE",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-CAPTURE-GOOSE.expected"
+      },
+      {
+        "fixture_id": "TORI-D-QUAIL-OWNER",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-D-QUAIL-OWNER.expected"
+      },
+      {
+        "fixture_id": "TORI-D-LEGAL-DEFENSE",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-D-LEGAL-DEFENSE.expected"
+      },
+      {
+        "fixture_id": "TORI-CHECK-EVASION",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-CHECK-EVASION.expected"
+      },
+      {
+        "fixture_id": "TORI-CHECK-PIN",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-CHECK-PIN.expected"
+      },
+      {
+        "fixture_id": "TORI-G-RAY-CAPTURE",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-G-RAY-CAPTURE.expected"
+      },
+      {
+        "fixture_id": "TORI-G-RAY-NO-BYPASS",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-G-RAY-NO-BYPASS.expected"
+      },
+      {
+        "fixture_id": "TORI-G-FRIEND-BLOCK",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-G-FRIEND-BLOCK.expected"
+      },
+      {
+        "fixture_id": "TORI-D-NO-HAND",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-D-NO-HAND.expected"
+      },
+      {
+        "fixture_id": "TORI-D-PROMOTED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-D-PROMOTED.expected"
+      },
+      {
+        "fixture_id": "TORI-O-RESIGN",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-O-RESIGN.expected"
+      },
+      {
+        "fixture_id": "TORI-O-ADMIN",
+        "status": "passed actual runtime facet",
+        "test": "distinct_administrative_stops_and_unsupported_commands_are_unscored",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-O-ADMIN.expected"
+      },
+      {
+        "fixture_id": "TORI-H-IDENTITY",
+        "status": "passed actual runtime facet",
+        "test": "history_identity_distinguishes_native_owners_hands_handed_faces_and_counter_provenance",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-H-IDENTITY.expected"
+      },
+      {
+        "fixture_id": "TORI-H-REPLAY-UNDO",
+        "status": "passed actual runtime facet",
+        "test": "history_prefix_obligations_takeback_and_reopen_are_exact_and_fresh",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-H-REPLAY-UNDO.expected"
+      },
+      {
+        "fixture_id": "TORI-REJECT-DUPLICATE-SQUARE",
+        "status": "passed actual runtime facet",
+        "test": "seven_reject_fixtures_actual_open_preserves_live_document_and_execution",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-REJECT-DUPLICATE-SQUARE.expected"
+      },
+      {
+        "fixture_id": "TORI-REJECT-MISSING-ROYAL",
+        "status": "passed actual runtime facet",
+        "test": "seven_reject_fixtures_actual_open_preserves_live_document_and_execution",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-REJECT-MISSING-ROYAL.expected"
+      },
+      {
+        "fixture_id": "TORI-REJECT-ADJACENT-ROYALS",
+        "status": "passed actual runtime facet",
+        "test": "seven_reject_fixtures_actual_open_preserves_live_document_and_execution",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-REJECT-ADJACENT-ROYALS.expected"
+      },
+      {
+        "fixture_id": "TORI-REJECT-DEAD-SWALLOW",
+        "status": "passed actual runtime facet",
+        "test": "seven_reject_fixtures_actual_open_preserves_live_document_and_execution",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-REJECT-DEAD-SWALLOW.expected"
+      },
+      {
+        "fixture_id": "TORI-REJECT-THREE-SWALLOWS",
+        "status": "passed actual runtime facet",
+        "test": "seven_reject_fixtures_actual_open_preserves_live_document_and_execution",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-REJECT-THREE-SWALLOWS.expected"
+      },
+      {
+        "fixture_id": "TORI-REJECT-EXCESS-INVENTORY",
+        "status": "passed actual runtime facet",
+        "test": "seven_reject_fixtures_actual_open_preserves_live_document_and_execution",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-REJECT-EXCESS-INVENTORY.expected"
+      },
+      {
+        "fixture_id": "TORI-REJECT-STRICT",
+        "status": "passed actual runtime facet",
+        "test": "seven_reject_fixtures_actual_open_preserves_live_document_and_execution",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-REJECT-STRICT.expected"
+      },
+      {
+        "fixture_id": "TORI-G-KIJI-BLOCK-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-G-KIJI-BLOCK-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-G-GOOSE-BLOCK-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-G-GOOSE-BLOCK-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-G-EAGLE-BLOCK-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-G-EAGLE-BLOCK-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-S-TWO-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-S-TWO-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-S-THREE-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-S-THREE-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-S-GOOSE-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-S-GOOSE-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-S-ENEMY-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-S-ENEMY-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-S-LAST-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-S-LAST-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-S-DROP-MATE-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-S-DROP-MATE-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-D-EMPTY-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-D-EMPTY-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-D-UNPROMOTED-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-D-UNPROMOTED-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-P-ENTRY-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-P-ENTRY-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-P-DROP-EXIT-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-P-DROP-EXIT-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-P-DROP-OTHER-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-P-DROP-OTHER-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-P-HEAD-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-P-HEAD-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-O-IMPASSE-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-O-IMPASSE-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-O-AGREEMENT-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-O-AGREEMENT-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-O-ROYAL-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-O-ROYAL-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-CAPTURE-OWNER-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-CAPTURE-OWNER-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-CAPTURE-DEMOTION-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-CAPTURE-DEMOTION-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-CAPTURE-QUAIL-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-CAPTURE-QUAIL-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-P-WITHIN-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-P-WITHIN-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-P-NO-OPTION-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-P-NO-OPTION-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-P-SWALLOW-AFTER-DROP-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-P-SWALLOW-AFTER-DROP-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-CAPTURE-GOOSE-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-CAPTURE-GOOSE-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-D-QUAIL-OWNER-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-D-QUAIL-OWNER-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-D-LEGAL-DEFENSE-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-D-LEGAL-DEFENSE-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-CHECK-EVASION-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-CHECK-EVASION-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-CHECK-PIN-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-CHECK-PIN-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-G-RAY-CAPTURE-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-G-RAY-CAPTURE-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-G-RAY-NO-BYPASS-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-G-RAY-NO-BYPASS-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-G-FRIEND-BLOCK-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-G-FRIEND-BLOCK-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-D-NO-HAND-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-D-NO-HAND-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-D-PROMOTED-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-D-PROMOTED-ROTATED.expected"
+      },
+      {
+        "fixture_id": "TORI-O-RESIGN-ROTATED",
+        "status": "passed actual runtime facet",
+        "test": "actual_controller_seventy_native_admission_cases_and_rotations",
+        "expected_source": "docs/m4/tori/fixtures.json#TORI-O-RESIGN-ROTATED.expected"
+      }
+    ]
+  },
+  "still_pending": {
+    "fixture_id": "TORI-C-NOTATION",
+    "implementation_owner": "MSH-42",
+    "fields": 1,
+    "consumer_requirements": 1
+  },
+  "supporting_scope": "MSH-132 semantic/frontend checks and MSH-77 final acceptance remain pending; supporting evidence is not counted twice",
+  "local_evidence_basis": {
+    "final_fast_controller": 13,
+    "long_runtime": 1,
+    "whole_session_checkpoint_before_last4tests": 242,
+    "actual_tori_process": 2,
+    "native_tori_tests": 38,
+    "host_tests": 8
+  }
+}

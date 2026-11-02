@@ -3,7 +3,7 @@
   "task": "MSH-82",
   "date": "2026-11-02",
   "base_revision": "78f8d6cbf260cb06611fea24ebfb933a57e6afac",
-  "tested_source_revision": null,
+  "tested_source_revision": "df5083fdfdd840d0655b9f3ef725c54ccac641d2",
   "integration_branch": "codex/rewrite",
   "scope": "Source/profile/data and direct implementation handoff only; no native Chu execution",
   "environment": {
@@ -65,28 +65,33 @@
     {
       "command": "PYTHONDONTWRITEBYTECODE=1 python3 docs/m4/chu/validate.py",
       "result": "PASS",
-      "details": "Strict duplicate-preserving data admission, coverage/root inventory/rotation/reference validation,3audit hashes;250rows,0native executed/passed"
+      "details": "Strict duplicate-preserving data admission, coverage/root inventory/rotation/reference validation,3audit hashes;250rows,0native executed/passed",
+      "tested_revision": "df5083fdfdd840d0655b9f3ef725c54ccac641d2"
     },
     {
       "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s docs/m4/chu -p 'test_validate.py'",
       "result": "PASS",
       "tests": 17,
-      "category": "development data admission/negative mutations, not rules conformance"
+      "category": "development data admission/negative mutations, not rules conformance",
+      "tested_revision": "df5083fdfdd840d0655b9f3ef725c54ccac641d2"
     },
     {
       "command": "python3 /private/tmp/msh82-handoff-check.py",
-      "result": "PASS before source checkpoint; exact checkpoint rerun pending",
+      "result": "PASS",
       "details": "27 source local SHA/size matches;3primary HTML unchanged from original research; local Markdown links; all-task YAML ID/dependency graph; original82/86/78/43AC+DoD+dependencies; reviewed JSON differs only status;111relative links,132tasks allresolved/no cycles, no original criterion/dependency changes",
-      "script_sha256": "e954b13a107f672a9b26e4b7f70aa4a3c9316d233fe8d36bf875f65d3b78bbc9"
+      "script_sha256": "e954b13a107f672a9b26e4b7f70aa4a3c9316d233fe8d36bf875f65d3b78bbc9",
+      "tested_revision": "df5083fdfdd840d0655b9f3ef725c54ccac641d2"
     },
     {
       "command": "pinned backlog1.55.1 doctor",
       "result": "PASS",
-      "details": "No duplicate IDs/self-dependencies/cycles"
+      "details": "No duplicate IDs/self-dependencies/cycles",
+      "tested_revision": "df5083fdfdd840d0655b9f3ef725c54ccac641d2"
     },
     {
-      "command": "git diff --check",
-      "result": "PASS before source checkpoint; exact checkpoint rerun pending"
+      "command": "git diff 78f8d6cbf260cb06611fea24ebfb933a57e6afac --check",
+      "result": "PASS",
+      "tested_revision": "df5083fdfdd840d0655b9f3ef725c54ccac641d2"
     }
   ],
   "required_ci_jobs": [],
@@ -106,5 +111,14 @@
     "MSH-86 coherent authoritative native kernel/history/record batch",
     "MSH-78 real shared consumer extension after86",
     "MSH-43 complete functional product after its existing dependencies"
-  ]
+  ],
+  "production_scope_check": "git diff --name-only baseline..df5083f: only docs/** and four Backlog records; no production or existing harness changes",
+  "integration_evidence": "Source/profile/data checkpoint is already committed on primary codex/rewrite. Final evidence/task-only commit follows; obtain actual integration hash from Git history rather than a fabricated self-reference.",
+  "finalization_checks": {
+    "result": "PASS",
+    "completion": "MSH82Done with4AC+4DoD checked;86Ready/unassigned depends82Done;78/43ToDo; CLI Ready/ready list contains86only",
+    "source_delta": "Only82task/evidence metadata differ from tested checkpoint; profile/fixtures/validators/handoff unchanged",
+    "diff_check": "PASS",
+    "remote_before_push": "origin/codex/rewrite=78f8d6cbf260cb06611fea24ebfb933a57e6afac; no remote overlap"
+  }
 }

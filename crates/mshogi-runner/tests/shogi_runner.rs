@@ -352,10 +352,33 @@ fn missing_retirement_eof_cannot_hide_a_delayed_duplicate_bestmove() {
     let report = shogi::run(&c).unwrap();
     for game in &report.games {
         assert_eq!(game.stop, Stop::Failure);
-        assert_eq!(
-            game.failure.as_ref().unwrap().kind,
-            FailureKind::ResourceLimit
-        );
+        let failure = game.failure.as_ref().unwrap();
+        assert_eq!(failure.phase, "retired");
+        // The fixture emits at390ms, beyond the375ms drain cutoff. A delayed
+        // host wakeup can still receive the queued duplicate before observing
+        // that cutoff. Require evidence for the actual first refusal; neither
+        // classification authorizes its candidate or complete retirement.
+        match failure.kind {
+            FailureKind::ResourceLimit => assert_eq!(
+                failure.detail,
+                "retirement capture did not establish EOF within deadline; candidate not accepted"
+            ),
+            FailureKind::LateReply => {
+                assert_eq!(failure.detail, "reply after generation retired");
+                for (phase, text) in [("search", "bestmove 7g7f"), ("retired", "bestmove 2g2f")] {
+                    assert!(
+                        game.traffic
+                            .iter()
+                            .any(|event| event.direction == "response"
+                                && event.phase == phase
+                                && event.text == text
+                                && event.engine == failure.engine
+                                && event.generation == failure.generation)
+                    );
+                }
+            }
+            ref other => panic!("unexpected retirement refusal: {other:?}"),
+        }
         assert!(!game.traffic_complete);
         assert!(game.turns.is_empty() && game.conclusion.is_none() && game.score.is_none());
         assert!(game.processes.iter().all(|p| p.observation.exit.is_some()));

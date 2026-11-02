@@ -2,7 +2,7 @@
   "schema": "mshogi.tori.native-playable-checkpoint.v1",
   "task": "MSH-42",
   "status": "In Progress; native playable-consumer checkpoint only",
-  "tested_source": "Pending corrected source commit after035c35c",
+  "tested_source": "Pending verification-only test correction commit; production remains d4bfeeb491e8e7f5a731b3bf64e199cc744ce0bb",
   "integration_branch": "codex/rewrite",
   "basis": {
     "accepted_shared_source": "52b0390cac09faf727a0c5ed74c1fd673f468a11",
@@ -53,7 +53,8 @@
     "strength_claim": false,
     "release_measurements_source": "035c35ce4a7041eb1b01d1c29d131bcd4f9b47ce",
     "earlier_local_drop_heavy_ms": 62,
-    "qualification": "The earlier implementation probe measured62ms; committed-source remeasurement measured71ms with identical281choices/1847visits/completeddepth2. Measurements are not latency guarantees."
+    "qualification": "The earlier implementation probe measured62ms; committed-source remeasurement measured71ms with identical281choices/1847visits/completeddepth2. Measurements are not latency guarantees.",
+    "unchanged_components_after_measured_source": "git diff035c35c..d4bfeeb --crates/mshogi-search crates/mshogi-core crates/mshogi-engine is empty"
   },
   "capacity": {
     "constants_unchanged": true,
@@ -154,7 +155,7 @@
   "independent_review": {
     "method": "Separate Codex agent read-only source, independent expectations, tests and actual evidence inspection; reviewer did not execute tests",
     "reviewer": "tori42_review",
-    "verdict": "Native source boundary PASS; final exact-source CI/evidence reconciliation pending",
+    "verdict": "Source boundary PASS; explicit-Resume correction independently re-reviewed PASS; final CI/evidence reconciliation pending",
     "resolved_findings": [
       "Remove native replay from bridge/poll matches; full validation only on bounded worker",
       "Safe telemetry visit minimum for terminal leaves",
@@ -162,7 +163,8 @@
       "Immediate cancellation and consumed-result refusal pause scheduling",
       "Tori QA form minimum agrees with native positive node limit",
       "A consumed matching response that cannot enter the admission queue retires Thinking and pauses without mutating the document.",
-      "Final explicit-Resume audit: a manual human Play preserves paused state so it cannot restart engine work in a reopened/cancelled/historical-returned document."
+      "Final explicit-Resume audit: a manual human Play preserves paused state so it cannot restart engine work in a reopened/cancelled/historical-returned document.",
+      "Existing Shogi retirement test scheduler assumption replaced with exact authoritative refusal facts, preserving every state-integrity assertion; production unchanged."
     ],
     "verified_risks": [
       "Native terminal scores derive the actual native conclusion winner, including out-of-turn resignation; this was a preflight requirement, not an observed defect."
@@ -176,7 +178,8 @@
     "Frontend first focused16/18: outdated technical label and failed-file Resume expectation; assertions corrected to actual native move and existing capacity-vs-I/O distinction.",
     "Clippy two early pre-regression stops: collapsible_if and fixture needless_return; mechanically corrected; failed logs retained locally.",
     "Standalone Tauri feature tests first13PASS/1FAIL: old !engine_turn assertion; corrected to real native capability while normal product Open stays blocked, final14PASS.",
-    "035c35c CI campaigns intentionally cancelled by integrator after final contract audit found implicit Resume on a paused human Play. The source correction and focused regression preserve stopped reopening. Prior CI partial outcomes retained; no completion claimed."
+    "035c35c CI campaigns intentionally cancelled by integrator after final contract audit found implicit Resume on a paused human Play. The source correction and focused regression preserve stopped reopening. Prior CI partial outcomes retained; no completion claimed.",
+    "D4b macOS Rust Test step failed existing Shogi retirement assertion: observed LateReply instead of ResourceLimit. Native code correctly rejected work. Test-only correction requires exact retired diagnostic and same-engine/generation actual duplicate traffic for LateReply; preserves incomplete capture, no accepted actions/result/score and reaping/replay. Failure evidence retained, not relabeled passed."
   ],
   "broad_local": {
     "status": "PASS; source push/CI still pending",
@@ -322,7 +325,24 @@
     "resume_correction": {
       "command": "cargo test --locked -p mshogi-desktop-session shared::tori::tests:: --all-features -- --nocapture",
       "passed": 25,
-      "result": "PASS, includes reopened human-turn manual action remaining stopped and explicit Resume creating a fresh engine request. Unaffected earlier workspace/all-feature results reused; final corrected-source CI required."
+      "result": "PASS, includes reopened human-turn manual action remaining stopped and explicit Resume creating a fresh engine request. Unaffected earlier workspace/all-feature results reused; final corrected-source CI required.",
+      "console_followup": {
+        "passed": 7,
+        "command": "cargo test --locked -p mshogi-console --test desktop_tori --test tori_internal --test tori_selfplay",
+        "result": "PASS"
+      },
+      "frontend_followup": {
+        "passed": 344,
+        "command": "Node24 npm test",
+        "result": "PASS"
+      },
+      "workspace_clippy": "PASS"
+    },
+    "retirement_verification_correction": {
+      "command": "cargo test --locked -p mshogi-runner --test shogi_runner -- --nocapture",
+      "passed": 14,
+      "review": "Separate independent read-only exact-diff and actual-log review PASS",
+      "production_change": false
     }
   },
   "required_ci": {
@@ -336,10 +356,12 @@
       "macos-15",
       "windows-2022"
     ],
-    "status": "035c35c workflows cancelled as superseded; corrected source CI pending",
+    "status": "D4b macOS native job failed an unchanged timing-sensitive Shogi test. Corrected test revision native3 CI pending; unchanged D4b desktop required checks reused when complete.",
     "method": "One completion-aware CI monitor; exact source hash. Existing-game GUI jobs are supporting compatibility, not final Tori visual acceptance.",
     "completion_condition": "All3 Rust workspace jobs successful; Desktop jobs on all3 platforms have successful Locked frontend and native checks, Build normal native package, and actual normal bundled-engine inspection steps. Later automatic GUI/verification-build campaigns are supporting existing-game evidence, not this native-only checkpoint gate. Stop waiting when required condition is available.",
-    "superseded_record": "native-playable-ci-superseded-035c35c.json"
+    "superseded_record": "native-playable-ci-superseded-035c35c.json",
+    "first_corrected_source_record": "native-playable-ci-d4bfeeb-first.json",
+    "desktop_reused_source": "d4bfeeb491e8e7f5a731b3bf64e199cc744ce0bb"
   },
   "gui_evidence": {
     "new_local_packaged_GUI": "Not run; native checkpoint does not claim finished product exposure/artwork",

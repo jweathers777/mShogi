@@ -66,3 +66,5 @@ match-request ownership. Take back does not cross that boundary. Normal desktop
 New Game and Save/Open retain the complete actor-qualified `MatchRecord` and
 preserve the human decisions described above. Shogi and Xiangqi initial native
 records already carry accepted command actors. This adds no new import feature.
+
+MSH-42 owner clarification (2026-11-02): preserve the shared desktop Take back control; one-event Undo remains available through the native session and console. Tori activation does not add a separate desktop Undo control.

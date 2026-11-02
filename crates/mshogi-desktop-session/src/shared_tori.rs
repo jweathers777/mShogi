@@ -135,8 +135,18 @@ impl ToriSession {
                     .game
                     .record_prefix(event_index)
                     .map_err(|e| e.to_string())?;
+                let stop = if self.viewed.is_none() {
+                    Some(BrowseStop {
+                        paused: self.paused,
+                        phase: self.phase,
+                        diagnostic: self.diagnostic.clone(),
+                    })
+                } else {
+                    self.browse_stop.clone()
+                };
                 self.viewed = Some(record.to_game().map_err(|e| e.to_string())?);
                 self.retire();
+                self.browse_stop = stop;
                 self.paused = true;
                 self.diagnostic = Some(
                     "Historical position. Analysis is read-only. Return to live explicitly.".into(),
@@ -144,10 +154,30 @@ impl ToriSession {
                 return Ok(false);
             }
             SessionOperation::ReturnLive {} => {
+                let was_viewed = self.viewed.is_some();
+                let stop = self.browse_stop.take().unwrap_or(BrowseStop {
+                    paused: true,
+                    phase: self.phase,
+                    diagnostic: self.diagnostic.clone(),
+                });
                 self.viewed = None;
                 self.retire();
                 self.paused = true;
-                self.diagnostic = Some("Live position. Resume to continue native play.".into());
+                if was_viewed
+                    && !stop.paused
+                    && self.game.conclusion().is_none()
+                    && self.game.snapshot().incomplete.is_none()
+                {
+                    // Use the same worker-owned Resume admission; a browse intent
+                    // never contains or restores an execution request.
+                    return self.apply(SessionOperation::Resume {}, stopped);
+                }
+                self.phase = if matches!(stop.phase, EnginePhase::Idle | EnginePhase::Thinking) {
+                    EnginePhase::Paused
+                } else {
+                    stop.phase
+                };
+                self.diagnostic = stop.diagnostic;
                 return Ok(false);
             }
             SessionOperation::Cancel {} => {
@@ -166,7 +196,13 @@ impl ToriSession {
                 };
                 let limits = WorkLimits { depth, nodes };
                 validate_limits(limits)?;
+                let stop = if self.viewed.is_some() {
+                    self.browse_stop.clone()
+                } else {
+                    None
+                };
                 self.retire();
+                self.browse_stop = stop;
                 self.paused = true;
                 self.requested_analysis = Some(limits);
                 self.diagnostic = None;
@@ -206,6 +242,7 @@ impl ToriSession {
 pub(crate) struct ToriDraft {
     document: Arc<ValidatedToriDocument>,
     selected: Option<usize>,
+    browse_stop: Option<BrowseStop>,
     pending: Option<ExecutionContext>,
     phase: EnginePhase,
     paused: bool,
@@ -220,6 +257,7 @@ impl ToriSession {
         ToriDraft {
             document: self.document.clone(),
             selected: self.viewed.as_ref().map(|g| g.events().len()),
+            browse_stop: self.browse_stop.clone(),
             pending: self.pending.clone(),
             phase: self.phase,
             paused: self.paused,
@@ -263,6 +301,7 @@ pub(crate) fn execute(
                         .map_err(|e| e.to_string())?,
                 );
             }
+            state.browse_stop = draft.browse_stop;
             state.pending = draft.pending;
             state.phase = draft.phase;
             state.paused = draft.paused;
@@ -308,7 +347,13 @@ pub(crate) fn execute(
             .record()
             .to_game()
             .map_err(|e| e.to_string())?;
+        let browse_stop = if analysis && !failed && !incomplete {
+            state.browse_stop.clone()
+        } else {
+            None
+        };
         state.retire();
+        state.browse_stop = browse_stop;
         state.current_observations.push(response.context.request_id);
         if analysis {
             state.analysis = Some(response);
@@ -341,7 +386,7 @@ pub(crate) fn execute(
 }
 
 impl DesktopController {
-    fn queue_tori_candidate(
+    pub(super) fn queue_tori_candidate(
         &mut self,
         seed: RuntimeSeed,
         operation: Option<SessionOperation>,

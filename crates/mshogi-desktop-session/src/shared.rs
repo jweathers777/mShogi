@@ -1007,7 +1007,20 @@ impl DesktopController {
             return Err("Application capacity: document identity exhausted.".into());
         }
         let receipt = match human {
-            NativeSide::Tori(_) => return Err("Tori normal player interface is not implemented; native verification sessions are available.".into()),
+            NativeSide::Tori(human) => {
+                let record =
+                    mshogi_core::tori::GameRecord::from_game(&mshogi_core::tori::Game::standard())
+                        .map_err(|e| e.to_string())?;
+                self.queue_tori_candidate(
+                    tori::RuntimeSeed::Record {
+                        record: Box::new(record),
+                        human,
+                    },
+                    Some(SessionOperation::Resume {}),
+                    None,
+                    true,
+                )?
+            }
             NativeSide::Xiangqi(human) => {
                 use mshogi_core::xiangqi as x;
                 let game =

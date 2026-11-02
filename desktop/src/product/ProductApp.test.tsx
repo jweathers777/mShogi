@@ -10,7 +10,7 @@ import toriJson from "../__fixtures__/shared-tori-contract.json";
 import chessJson from "../__fixtures__/shared-chess-standard.json";
 vi.mock("./useGameSession", () => ({ useGameSession: vi.fn() }));
 const standard = shogiJson as ShogiSnapshot;
-const fixtures = [chessJson, shogiJson, xiangqiJson] as GameSnapshot[];
+const fixtures = [chessJson, shogiJson, xiangqiJson, toriJson] as GameSnapshot[];
 let session: GameSession;
 function deferred<T>() { let resolve!: (value: T) => void; const promise = new Promise<T>(done => { resolve = done; }); return { resolve, promise }; }
 function dirty(fixture: GameSnapshot) { return { ...fixture, close_requires_save: true, document: { ...fixture.document, dirty: true } } as GameSnapshot; }
@@ -19,7 +19,7 @@ beforeEach(() => {
   vi.mocked(useGameSession).mockImplementation(() => session);
 });
 afterEach(cleanup);
-it.each([["Shogi", "Sente", "shogi", "sente"], ["Shogi", "Gote", "shogi", "gote"], ["Chess", "White", "chess", "white"], ["Chess", "Black", "chess", "black"], ["Xiangqi", "Red", "xiangqi", "red"], ["Xiangqi", "Black", "xiangqi", "black"]])("chooses %s / %s directly from dirty work with exact native identity", async (_gameLabel, sideLabel, game, side) => {
+it.each([["Shogi", "Sente", "shogi", "sente"], ["Shogi", "Gote", "shogi", "gote"], ["Chess", "White", "chess", "white"], ["Chess", "Black", "chess", "black"], ["Xiangqi", "Red", "xiangqi", "red"], ["Xiangqi", "Black", "xiangqi", "black"], ["Tori Shogi", "Sente", "tori", "sente"], ["Tori Shogi", "Gote", "tori", "gote"]])("chooses %s / %s directly from dirty work with exact native identity", async (_gameLabel, sideLabel, game, side) => {
   render(<ProductApp />); fireEvent.click(screen.getByRole("button", { name: "New game" }));
   fireEvent.change(screen.getByRole("combobox", { name: "Game" }), { target: { value: game } });
   fireEvent.click(screen.getByRole("radio", { name: sideLabel }));
@@ -120,7 +120,7 @@ it("replaces an uncommitted New Game chooser with the dirty native quit guard", 
 it("offers only implemented games and preserves side radio keyboard navigation", async () => {
   render(<ProductApp />); fireEvent.click(screen.getByRole("button", { name: "New game" }));
   expect(screen.getByRole("combobox", { name: "Game" }).tagName).toBe("SELECT");
-  expect(screen.getAllByRole("option").map(option => [option.textContent, (option as HTMLOptionElement).value])).toEqual([["Chess", "chess"], ["Shogi", "shogi"], ["Xiangqi", "xiangqi"]]);
+  expect(screen.getAllByRole("option").map(option => [option.textContent, (option as HTMLOptionElement).value])).toEqual([["Chess", "chess"], ["Shogi", "shogi"], ["Xiangqi", "xiangqi"], ["Tori Shogi", "tori"]]);
   expect(screen.getAllByRole("radio").map(radio => radio.textContent)).toEqual(["Sente", "Gote", "Random"]);
   const sente = screen.getByRole("radio", { name: "Sente" }); sente.focus(); fireEvent.keyDown(sente, { key: "ArrowRight" });
   const gote = screen.getByRole("radio", { name: "Gote" }); expect(document.activeElement).toBe(gote); expect(gote.getAttribute("aria-checked")).toBe("true");
@@ -157,9 +157,20 @@ it.each(fixtures)("keeps Save enabled in the never-saved $game native Quit guard
   expect(session.finishClose).not.toHaveBeenCalled(); expect(session.snapshot.document.path).toBeNull(); expect(session.snapshot.document.dirty).toBe(false);
 });
 
-it("keeps the product chooser limited to three actually playable games even in the Tori contract fixture", () => {
+it("keeps the approved Tori game selected when opening New game", () => {
   session.snapshot = toriJson as unknown as GameSnapshot;
   render(<ProductApp />); fireEvent.click(screen.getByRole("button", { name: "New game" }));
-  expect(screen.getAllByRole("option").map(option => option.textContent)).toEqual(["Chess", "Shogi", "Xiangqi"]);
-  expect((screen.getByRole("combobox", { name: "Game" }) as HTMLSelectElement).value).toBe("chess");
+  expect(screen.getAllByRole("option").map(option => option.textContent)).toEqual(["Chess", "Shogi", "Xiangqi", "Tori Shogi"]);
+  expect((screen.getByRole("combobox", { name: "Game" }) as HTMLSelectElement).value).toBe("tori");
+});
+
+it.each([[0, "sente"], [1, "gote"]] as const)("records actual Tori Random assignment %s in the native request", async (random, side) => {
+  const entropy = vi.spyOn(crypto, "getRandomValues").mockImplementation(array => { (array as Uint8Array)[0] = random; return array; });
+  try {
+    render(<ProductApp />); fireEvent.click(screen.getByRole("button", { name: "New game" }));
+    fireEvent.change(screen.getByRole("combobox", { name: "Game" }), { target: { value: "tori" } });
+    fireEvent.click(screen.getByRole("radio", { name: "Random" }));
+    fireEvent.click(screen.getByRole("button", { name: "Start game" }));
+    await waitFor(() => expect(session.newGame).toHaveBeenCalledExactlyOnceWith(standard.open_token, "tori", { game_kind: "tori", side }));
+  } finally { entropy.mockRestore(); }
 });

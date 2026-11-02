@@ -848,5 +848,13 @@
     "scope": "ActualGUI Saveafter4→2plyTakeback; nativeLoadaccepted/stoppeduntilResume, allobservationshistorical."
   },
   "verification_only_revision": "05ceba4161a77d15633069d183a211992e0a0ff1",
-  "verification_only_scope": "Only desktop/scripts/gui-smoke.py differs after tested production31cd; correction committed05ceba4. Python syntax and replacement assertions checked against actual Linux and Windows failed-run DOM/archives PASS. Product/package/screenshots/native/frontend sources unchanged; full platform GUI rerun remains pending."
+  "verification_only_scope": "Only desktop/scripts/gui-smoke.py differs after tested production31cd; correction committed05ceba4. Python syntax and replacement assertions checked against actual Linux and Windows failed-run DOM/archives PASS. Product/package/screenshots/native/frontend sources unchanged; full platform GUI rerun remains pending.",
+  "owner_visual_approval": {
+    "date": "2026-11-02",
+    "authority": "John, explicit user direction following review of running macOS application",
+    "integration_revision": "5a6ec9f94c2b1dd3995d3f96d3b874f30e272090",
+    "packaged_source": "31cd776e2bde2997b1d87f4e5215749892b8bcfb",
+    "approved": "Traditional kanji pieces, board, hands, promotion treatment and layouts",
+    "preservation": "Preserve approved design except a concrete functional/accessibility defect. Prior pending statuses are historical; final playable-product acceptance is separate."
+  }
 }

@@ -1,12 +1,10 @@
-/* Original vector engraving; no dependency on installed piece fonts or raster assets. */
+@font-face { font-family:"mShogi Tori Pieces"; src:url("../assets/fonts/mshogi-tori-pieces.woff2") format("woff2"); font-style:normal; font-weight:400; font-display:swap; }
+/* Selected Tori bird names on the shared warm pentagonal tile treatment. */
 .tori-piece { pointer-events:none; }
 .tori-piece-shadow { fill:#87613680; }
 .tori-piece-body { fill:#f6deb0; stroke:#8c6433; stroke-width:2; }
 .tori-piece-bevel { fill:none; stroke:#fff0cb; stroke-width:1.2; }
-.tori-bird,.tori-identity,.tori-promotion-mark { fill:none; stroke:#29251e; stroke-linecap:round; stroke-linejoin:round; }
-.tori-bird { stroke-width:2.8; }
-.tori-eye { fill:#29251e; stroke:none; }
-.tori-identity { stroke-width:3; }
-.tori-promotion-mark { stroke-width:3; }
-.tori-piece.promoted .tori-bird,.tori-piece.promoted .tori-identity,.tori-piece.promoted .tori-promotion-mark { stroke:#8b2d25; }
-.tori-piece.promoted .tori-eye { fill:#8b2d25; }
+.tori-face text { font-family:"mShogi Tori Pieces",serif; font-size:58px; font-weight:400; fill:#29251e; stroke:none; }
+.tori-face-pair text { font-size:35px; }
+.tori-promotion-mark { fill:none; stroke:#8b2d25; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; }
+.tori-piece.promoted .tori-face text { fill:#8b2d25; }

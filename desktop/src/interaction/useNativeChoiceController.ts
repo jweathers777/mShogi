@@ -3,7 +3,7 @@ import type { NativeChoice } from "../boardPresentation";
 import type { InspectMovement, MovementInspection } from "../product/movementInspection";
 
 export type Direction = "ArrowLeft" | "ArrowRight" | "ArrowUp" | "ArrowDown";
-export interface SelectionOrigin { key: string; owner: string | undefined; inspectable: boolean }
+export interface SelectionOrigin { key: string; label?: string; owner: string | undefined; inspectable: boolean }
 export interface ChoiceControllerOptions {
   contextKey: string;
   choices: NativeChoice[];
@@ -136,7 +136,7 @@ export function useNativeChoiceController(options: ChoiceControllerOptions) {
     const actionable = canSelectOrigin(key);
     function selectActionOrigin() {
       clear(); returnFocus.current = key;
-      transition({ ...empty(context), selected: key, announcement: `${key} selected. Choose a highlighted destination.` });
+      transition({ ...empty(context), selected: key, announcement: `${origins.find(origin => origin.key === key)?.label ?? key} selected. Choose a highlighted destination.` });
     }
     // Complete native routes take precedence over occupied enemy inspection and
     // toggling the origin (a valid route may return to that very origin).
@@ -146,7 +146,7 @@ export function useNativeChoiceController(options: ChoiceControllerOptions) {
       returnFocus.current = key;
       const terminal = next.filter(choice => choice.steps.length === route.length);
       if (next.some(choice => choice.steps.length > route.length)) {
-        transition({ ...state, prefix: route, announcement: `${state.selected} → ${route.join(" → ")} selected. Continue to a highlighted square${terminal.length && !state.inspection ? ", or choose Complete action here" : ""}. No action has been submitted.` });
+        transition({ ...state, prefix: route, announcement: `${origins.find(origin => origin.key === state.selected)?.label ?? state.selected} → ${route.join(" → ")} selected. Continue to a highlighted square${terminal.length && !state.inspection ? ", or choose Complete action here" : ""}. No action has been submitted.` });
       } else if (state.inspection) {
         transition({ ...state, prefix: route, announcement: `Inspection route complete. ${terminal.map(choice => choice.completion?.label ?? "Complete route").join(" or ")}. Read-only; no action submitted.` });
       } else finish(terminal, route);

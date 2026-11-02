@@ -1,0 +1,12 @@
+/* Original vector engraving; no dependency on installed piece fonts or raster assets. */
+.tori-bird-piece { pointer-events:none; }
+.tori-bird-piece-shadow { fill:#87613680; }
+.tori-bird-piece-body { fill:#f6deb0; stroke:#8c6433; stroke-width:2; }
+.tori-bird-piece-bevel { fill:none; stroke:#fff0cb; stroke-width:1.2; }
+.tori-bird-emblem,.tori-bird-identity,.tori-bird-promotion-mark { fill:none; stroke:#29251e; stroke-linecap:round; stroke-linejoin:round; }
+.tori-bird-emblem { stroke-width:2.8; }
+.tori-bird-eye { fill:#29251e; stroke:none; }
+.tori-bird-identity { stroke-width:3; }
+.tori-bird-promotion-mark { stroke-width:3; }
+.tori-bird-piece.promoted .tori-bird-emblem,.tori-bird-piece.promoted .tori-bird-identity,.tori-bird-piece.promoted .tori-bird-promotion-mark { stroke:#8b2d25; }
+.tori-bird-piece.promoted .tori-bird-eye { fill:#8b2d25; }

@@ -122,6 +122,15 @@ Do not append Read-only/Hollow rings explanations to this visible status.
 Native non-actionable inspection, distinct hollow markers, accessible read-only
 announcements, token freshness and keyboard/Escape behavior remain required.
 
+Owner-approved piece presentation (2026-11-02, MSH-42 visual checkpoint):
+**Traditional, variant-appropriate kanji are the default for every shogi-family
+game.** Use the selected variant's actual native glyphs, not an assumption that
+standard Shogi characters name every variant piece. Bundle licensed glyph assets
+for consistent cross-platform rendering. Original bird artwork may be retained
+as an inactive alternative for a future piece-set option; this does not require
+a new chooser or preference system now, and does not change native identities,
+promotion, ownership or rules.
+
 Human console board diagrams follow the owner-selected
 [compact presentation convention](console-presentation.md): case-based ownership
 for Chess, Standard Shogi and Xiangqi, with aligned Shogi promotion markers.

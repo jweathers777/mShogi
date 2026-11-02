@@ -215,3 +215,23 @@ it("preserves historical native labels and read-only inspection on the actual pr
   await userEvent.click(screen.getByRole('button', { name: '4g, Sente Phoenix' }));
   expect(onPlay).not.toHaveBeenCalled(); expect(onInspect).toHaveBeenCalledWith('4g');
 });
+
+it("announces native human hand names without qualified origin encodings, while submitting the exact native key", async () => {
+  const { command } = board();
+  await userEvent.click(screen.getByRole('button', { name: 'Sente Right Quail in hand, 1' }));
+  const announcement = screen.getByRole('status').textContent;
+  expect(announcement).toContain('Sente Right Quail in hand, 1 selected.');
+  expect(announcement).not.toContain('hand:mshogi');
+  await userEvent.click(screen.getByRole('button', { name: /5e, empty.*legal destination/ }));
+  expect(command).toHaveBeenCalledExactlyOnceWith({ kind: 'tori', actor: 'sente', command: { kind: 'play', action: { kind: 'drop', face: 'right_quail', to: '5e' } } });
+});
+
+it("distinguishes an available idle Tori engine from paused play without fabricating work", () => {
+  const { container } = app({ ...root, paused: false, phase: 'paused', execution_purpose: null });
+  expect(screen.getByLabelText('Engine turn status').textContent).toBe('Ready');
+  expect(container.querySelector('[data-position-status]')?.textContent).toContain('Your turn');
+  expect(screen.queryByText('mShogi is thinking')).toBeNull();
+  cleanup(); app(root);
+  expect(screen.getByLabelText('Engine turn status').textContent).toBe('Play paused');
+  expect(screen.getByRole('button', { name: 'Resume play' })).toBeTruthy();
+});

@@ -122,3 +122,16 @@ it("contains rejected inspection and preserves historical read-only route traver
   await act(async () => result.current.select("e7")); expect(result.current.inspection?.read_only).toBe(true);
   act(() => result.current.select("e6")); expect(props.onPlay).not.toHaveBeenCalled(); expect(result.current.completions).toEqual([]);
 });
+
+it("uses an optional native display label only for announcements, preserving opaque action identity and coordinate fallback", () => {
+  const props = options();
+  const { result, rerender } = renderHook(value => useNativeChoiceController(value), { initialProps: props });
+  act(() => result.current.select("e2"));
+  expect(result.current.announcement).toBe("e2 selected. Choose a highlighted destination.");
+  rerender({ ...props, origins: props.origins.map(origin => origin.key === "e2" ? { ...origin, label: "White pawn" } : origin) });
+  act(() => result.current.select("e2"));
+  expect(result.current.selected).toBe("e2");
+  expect(result.current.announcement).toBe("White pawn selected. Choose a highlighted destination.");
+  act(() => result.current.select("e4"));
+  expect(props.onPlay).toHaveBeenCalledExactlyOnceWith("e2e4");
+});

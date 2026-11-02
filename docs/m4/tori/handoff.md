@@ -10,7 +10,8 @@ retained branches/observations, Save/Open, fresh stopped identities and close
 reservations now operate on actual Tori games. [Runtime contract](desktop-runtime.md)
 and [actual controller/process evidence](desktop-runtime-evidence.md) record the
 82 runtime requirements/13 fields, exact resource bounds and independent review.
-Exact-source CI/final task disposition is recorded there after completion.
+Final tested source6a2edd71b3136a9c2043f9137eb6d3fb8abf120d passed native and desktop
+CI on all three platforms; MSH-131 is complete. Exact evidence is recorded there.
 
 The unchanged native adapter still has713passing assertions and reports14consumer
 fields pending; actual controller evidence separately satisfies13of those fields

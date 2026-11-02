@@ -14,7 +14,7 @@
     1,
     1
   ],
-  "links_checked": 7,
+  "links_checked": 8,
   "source_sha256": {
     "crates/mshogi-console/Cargo.toml": "d7bd68fa7b2b78b762dd747e9b6830cb2fce509e932f47446f6458659eef0205",
     "crates/mshogi-console/tests/desktop_tori.rs": "c3f32bf25912038b8970914daa8d6ac5f6808317346a3797792864db2668b6db",

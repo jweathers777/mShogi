@@ -3,7 +3,8 @@
 Baseline `086579f7361c5e1e395ea8f766779688446441b2`; unchanged native implementation
 `994521bec0637d6f8f17103f1106c0025d950753`. [Runtime contract](desktop-runtime.md).
 This is actual native/controller/process evidence, not a Tori GUI campaign.
-Exact integrated source and CI results are appended after actual commits/runs.
+Final tested source is `6a2edd71b3136a9c2043f9137eb6d3fb8abf120d`; all applicable
+three-platform native and desktop CI passed. Integrated source/provenance below.
 
 ## Original acceptance matrix
 
@@ -127,39 +128,59 @@ MSH-42 complete Tori and M4 remain open. Stop after MSH-131.
 
 ## Integrated source and exact-source CI
 
-Implementation integrated/pushed in `253e4c949614d133b5295f6a362e3d5279adcef3`.
+Implementation integrated/pushed at `253e4c949614d133b5295f6a362e3d5279adcef3`;
+final production formatting at `ce48e84e64b9631343416acec865505dbbab570d`;
+final reviewed test/evidence source **`6a2edd71b3136a9c2043f9137eb6d3fb8abf120d`**.
+Production is unchanged between the last two revisions. Final task/evidence
+bookkeeping changes no production, tests, workflows, fixture inputs or expectations.
+
+- [Native run41417589059](https://github.com/jweathers777/mShogi/actions/runs/41417589059):
+  **PASS** on Ubuntu24.04, macOS15 and Windows2022. Each passed **247 session tests**
+  in both workspace and separate all-features invocations, with zero failed or
+  ignored tests. Actual Tori subprocess tests, lint/format, snapshot regeneration,
+  build and console smoke passed.
+- [Desktop run41417589127](https://github.com/jweathers777/mShogi/actions/runs/41417589127):
+  **PASS** on all three platforms:323frontend tests,8normal and13verification-host
+  tests per platform, normal package construction, instrumentation exclusion and
+  bundled-engine/package checks. macOS also passed11stable-QA infrastructure tests.
+  Linux and Windows passed actual installed/packaged Chess/Shogi/Xiangqi GUI
+  journeys. macOS has package/host evidence here, **no new macOS GUI campaign**.
+- [Actual CI metadata and package hashes](evidence/desktop-runtime-ci.json) records
+  exact source, jobs/steps, test log counts, normal host/engine SHA256 and artifact
+  links. Normal packages are Debian, macOS app and Windows NSIS; separately labeled
+  Linux/Windows verification packages are distinct from normal distributions.
+  None of these results claims Tori gameplay GUI, final artwork or engine delivery.
+
+### Preserved failed and superseded attempts
+
 Initial [Desktop41415490841](https://github.com/jweathers777/mShogi/actions/runs/41415490841)
-failed the separate Tauri workspace format check at the host product gate before
-package construction. Root workspace formatting had passed but did not cover that
-separate manifest. Corrected by standalone `cargo fmt` in
-**`ce48e84e64b9631343416acec865505dbbab570d`**, a formatting-only production diff.
-Both format checks now pass locally. No package or GUI pass is claimed for the
-initial failed workflow. Final exact-source runs:
+failed the separate Tauri workspace format check at the newly added host gate
+before package construction. Root workspace formatting passed but omitted that
+separate manifest. Standalone formatting fixed it in `ce48e84`; both checks then
+passed. No package/GUI success is claimed for the failed attempt.
+
+Initial [Native41415490915](https://github.com/jweathers777/mShogi/actions/runs/41415490915)
+reported245PASS/1FAIL on each platform: Ubuntu125178184982 and macOS125178184540
+reached the existing elapsed budget at Resign; Windows125178184817 reached it at
+initial installation. The360-action test wrongly required success despite the
+unchanged15-second deadline. The test correction changes neither production,
+rules, independent fixtures nor the262144-unit document budget.
+
+A mandatory180-action journey now unconditionally requires Stop, Resign, prepared
+Close, actual Save and fresh stopped Open. Only the separate360-action near-limit
+probe permits an alternate refusal with exactly one authoritative
+ValidationBudget/Application/Milliseconds fact: limit15000, measured count at
+least15000. It must preserve canonical bytes, native context, settings/metadata,
+observations, selected history, pending work, stable authority tokens, phase and
+dirty/close state. Retained bytes and prepared close remain strictly decodable;
+failed Save also preserves the prior valid file. Other errors still fail.
+Independent bounded test review PASS; local14fast checks and360complete Save/Open
+journey passed (37.24s total). Intermediate
 [Rust41415982048](https://github.com/jweathers777/mShogi/actions/runs/41415982048) and
-[Desktop41415982022](https://github.com/jweathers777/mShogi/actions/runs/41415982022).
-Their actual results are appended after completion.
+[Desktop41415982022](https://github.com/jweathers777/mShogi/actions/runs/41415982022)
+were cancelled/superseded after this correction to avoid duplicate campaigns.
 
-
-### Near-limit elapsed-budget test correction
-
-Initial Ubuntu native job125178184982 in run41415490915 reported245PASS/1FAIL:
-the360-action test unconditionally required Resign to succeed despite concurrent
-debug load reaching the unchanged15-second validation deadline. This was an
-invalid wall-clock test assumption, not evidence that a refused candidate was
-committed. The production deadline, native rules, independently expected fixtures
-and whole-document262144-unit budget remain unchanged.
-
-The regression is split into a mandatory180-action complete controller journey
-(Stop, Resign, prepared Close, actual Save and fresh stopped Open), and the360-action
-near-limit probe. Only the latter permits an alternate refusal with exactly one
-authoritative ValidationBudget/Application/Milliseconds fact, limit15000 and
-measured count at least15000. Such refusal must preserve canonical bytes, native
-context, settings/document metadata, observations, selected history, pending work
-and dirty/close state. Retained bytes and prepared close remain strictly decodable;
-failed Save must also retain the prior valid file. The explicit deadline report
-is labeled refusal, never a completed360-action journey. Other errors fail the
-test. The earlier isolated successful360journey remains genuine evidence, not a
-promise of identical wall-clock outcomes on a loaded runner. Final actual branch
-outcomes are recorded with CI below.
-
-Final local corrected tests:14fastPASS (including mandatory180), near-limit360full Save/Open journeyPASS37.24s, Clippy/fmtPASS. Independent review requested stable authority-token and execution-phase preservation in the deadline branch; those assertions were added. No production behavior changed. The later exact-source native suite contains247tests.
+Normal CI captures passing stdout: a passing near-limit probe establishes its
+success-or-precise-refusal assertions, not which branch ran or a completed360-action
+journey on each platform. The local uncaptured measurement establishes actual360
+completion. No wall-clock rerun guarantee is inferred from either result.

@@ -1,11 +1,11 @@
 ---
 id: MSH-131
 title: Integrate Tori into the single native desktop runtime and lifecycle
-status: In Review
+status: Done
 assignee:
   - '@Codex'
 created_date: '2026-11-01T21:28:00Z'
-updated_date: '2026-11-02T09:03:00Z'
+updated_date: '2026-11-02T09:27:00Z'
 labels:
   - m4
   - owner-msh-77
@@ -25,6 +25,7 @@ documentation:
   - docs/m4/tori/desktop-document-evidence.md
   - docs/m4/tori/desktop-runtime.md
   - docs/m4/tori/desktop-runtime-evidence.md
+  - docs/m4/tori/evidence/desktop-runtime-ci.json
 type: task
 ordinal: 131000
 ---
@@ -41,20 +42,20 @@ Verification: focused real native/candidate/controller tests appropriate to this
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Exactly one ActiveDocument::Tori variant holds authoritative tori::Game state in the existing DesktopController and RuntimeMetadata. Explicit native Tori operation/side/settings dispatch constructs context-checked GameRequest at the serialized admission boundary; complete moves/drops, out-of-turn resignation, Stop and unsupported agreement/impasse preserve native semantics. All mutations/observations/preferences/undo/takeback/close operations use the prerequisite complete document admission from their first accepted state.
-- [ ] #2 Actual controller tests execute the82 MSH-77 consumer requirements and13 MSH-77 pending fields from the supplemental mapping, with exact independently expected fixtures and owner rotations. Rejected board/root/Open/stale/unsupported/resource requests preserve the complete accepted native document/settings/observations and cannot install a new document or grant stale execution authority. Diagnostic/progress revisions and explicit cancellation retirement may change as specified. Resource refusal is not illegality or an invented game result; the saved complete prior state remains available.
-- [ ] #3 Native read-only board/hand inspection uses selected prefix LocalPosition::inspect; complete live choices use Game::legal_actions and Game::submit. Exact event-index selection, Return to live, Undo and atomic Take back restore correct root/history/obligation/conclusion and native-derived geometry while retiring execution permanently. No future moves or repetition information leak into a prefix; same-board/different-history and return-to-same-diagram never revive old work.
-- [ ] #4 Bind the surviving ExecutionContext/Target/Observation family to full native record/purpose/request/session/process-generation/limits and selected event. Actual existing internal subprocess UnsupportedMode and bounded termination/cancellation/replacement tests prove unscored handling, distinct administrative reasons and cross-game stale rejection. All six identity dimensions are negatively tested; no Tori success/result family, search, telemetry, draw or fallback move is invented. engine_turn/move_analysis/Chess Full/Xiangqi exact capabilities remain false; unsupported Analyze/Resume/Retry execution is explicit.
-- [ ] #5 Install validated Tori candidates through sole persistence::install_document and the existing bounded worker, receipts and lifecycle guards. Failed/corrupt/cancelled/resource-limited Open/Replace leaves live state and execution intact; successful reopen swaps atomically with fresh runtime identities, historical observations only and work stopped. Unsaved replacement/quit and native close reservations remain protected; Resume cannot advertise or launch nonexistent Tori work.
-- [ ] #6 A minimal correct SharedSnapshot accompanies the new runtime for real boundary tests; no fake Shogi placeholder or frontend rules. Verify actual current file Save/Load, interrupted-save dirty state, historical prefixes, takeback/save/reopen,256-to257 refusal, reserved close and stale installation races. Focused current Chess/Shogi/Xiangqi controller/document/lifecycle/actual subprocess regressions pass; independent runtime/admission review and applicable CI are recorded. No Tori supported-game selector entry or final product board. Native controller Save/Open is exercised through the real contract/verification path; normal host New Game/Open must explicitly refuse Tori before a real product renderer is available under42, rather than send an unsupported snapshot to a Chess/Shogi fallback.
+- [x] #1 Exactly one ActiveDocument::Tori variant holds authoritative tori::Game state in the existing DesktopController and RuntimeMetadata. Explicit native Tori operation/side/settings dispatch constructs context-checked GameRequest at the serialized admission boundary; complete moves/drops, out-of-turn resignation, Stop and unsupported agreement/impasse preserve native semantics. All mutations/observations/preferences/undo/takeback/close operations use the prerequisite complete document admission from their first accepted state.
+- [x] #2 Actual controller tests execute the82 MSH-77 consumer requirements and13 MSH-77 pending fields from the supplemental mapping, with exact independently expected fixtures and owner rotations. Rejected board/root/Open/stale/unsupported/resource requests preserve the complete accepted native document/settings/observations and cannot install a new document or grant stale execution authority. Diagnostic/progress revisions and explicit cancellation retirement may change as specified. Resource refusal is not illegality or an invented game result; the saved complete prior state remains available.
+- [x] #3 Native read-only board/hand inspection uses selected prefix LocalPosition::inspect; complete live choices use Game::legal_actions and Game::submit. Exact event-index selection, Return to live, Undo and atomic Take back restore correct root/history/obligation/conclusion and native-derived geometry while retiring execution permanently. No future moves or repetition information leak into a prefix; same-board/different-history and return-to-same-diagram never revive old work.
+- [x] #4 Bind the surviving ExecutionContext/Target/Observation family to full native record/purpose/request/session/process-generation/limits and selected event. Actual existing internal subprocess UnsupportedMode and bounded termination/cancellation/replacement tests prove unscored handling, distinct administrative reasons and cross-game stale rejection. All six identity dimensions are negatively tested; no Tori success/result family, search, telemetry, draw or fallback move is invented. engine_turn/move_analysis/Chess Full/Xiangqi exact capabilities remain false; unsupported Analyze/Resume/Retry execution is explicit.
+- [x] #5 Install validated Tori candidates through sole persistence::install_document and the existing bounded worker, receipts and lifecycle guards. Failed/corrupt/cancelled/resource-limited Open/Replace leaves live state and execution intact; successful reopen swaps atomically with fresh runtime identities, historical observations only and work stopped. Unsaved replacement/quit and native close reservations remain protected; Resume cannot advertise or launch nonexistent Tori work.
+- [x] #6 A minimal correct SharedSnapshot accompanies the new runtime for real boundary tests; no fake Shogi placeholder or frontend rules. Verify actual current file Save/Load, interrupted-save dirty state, historical prefixes, takeback/save/reopen,256-to257 refusal, reserved close and stale installation races. Focused current Chess/Shogi/Xiangqi controller/document/lifecycle/actual subprocess regressions pass; independent runtime/admission review and applicable CI are recorded. No Tori supported-game selector entry or final product board. Native controller Save/Open is exercised through the real contract/verification path; normal host New Game/Open must explicitly refuse Tori before a real product renderer is available under42, rather than send an unsupported snapshot to a Chess/Shogi fallback.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -87,4 +88,22 @@ Initial source253e4c949614d133b5295f6a362e3d5279adcef3 integrated/pushed. Native
 InitialUbuntu nativeCI41415490915:245PASS/1FAIL at long360Resignunwrap: existing authoritative15sValidationBudget expired underconcurrentdebugload. Production correctly refused withoutacceptance; invalid wallclocktestassumption corrected afterindependentreview: mandatory180completecontrollerStop/Resign/Close/Save/freshstoppedOpen plus360near-limitprobe, onlyexactValidationBudget/Application/Milliseconds limit15000 count>=15000 alternate refusal, completeacceptedstate/pending/dirty preserved andstrictretained/closeencoding verified, oldfilepreservedonSavefailure. Othererrorsstillfail. No productionlimit/rule/fixturechanges. Mandatory180localPASS10.73s, everyoperation<=2.1s;360rerun andindependentfinaldiffreviewpending. Finalsessionexpected247checks; initialfailure retained as evidence.
 
 Final bounded test correction independently reviewed PASS, including stable open/sessiondocument-version-selection authority, phase andpurpose preservation (progressrevision allowed). Local14fastPASS including mandatory180actualSave/freshstoppedOpen,360completeactualSave/OpenPASS37.24s, lint/bothfmt/diffPASS. Test-only correction preserves selectedprofile/native713/independentfixtureexpectations, production15sdeadline andallcapacitylimits. Applicable exact-source CI rerun required; finalsuite247tests. No newtaskactivation.
+
+Final independent acceptance/evidence reconciliation PASS: sixAC/fourDoD supported, exact13/82 mapping and sixcompleted-success CI jobs independently checked at6a2edd7. Native41417589059/Desktop41417589127 SUCCESS all3; frontend/host/normalpackages all3, Linux/Windows actual existinggameGUI, macpackage/hostonly. Failed initial attempts and conditional360probe limitations preserved. No production/tests/workflows changed after6a2edd7. Final task/evidence bookkeeping commit/push follows;132Ready/unassigned/unstarted,77/42/M4open.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Integrated Tori into the existing single DesktopController/ActiveDocument/RuntimeMetadata, sole persistence::install_document and existing bounded worker. Uses the accepted mshogi.tori.modern.v1 native Game and immutable MSH-130 admission before accepted changes; no second owner, format, rules implementation or execution family.
+
+AC1–3: Native complete moves/drops, compulsory results, actor/turn admission, out-of-turn resignation, four unscored Stop reasons and atomic unsupported-command rejection; exact event-prefix inspection, Undo, Take back, retained branches/observations and permanent execution retirement. Actual controller fixtures establish all 13 runtime fields and 82 consumer requirements; native 713 assertions/profile/corpus remain unchanged. MSH-42 notation remains 1 field/1 requirement pending.
+
+AC4–6: Real supervised UnsupportedMode, forced failure, running-child cancellation/replacement/cleanup and full identity/history/purpose/limits rejection; no Tori engine capabilities or invented score/outcome. Existing atomic Save/Open worker/receipts, fresh stopped reopening, historical observations, dirty Quit/close reservations, failed replacement preservation and exact capacity admission including 256-to-257 are verified. Normal host New Game/Open explicitly gate Tori until real product rendering/play exists.
+
+Source integration253e4c949614d133b5295f6a362e3d5279adcef3; final production formattingce48e84e64b9631343416acec865505dbbab570d; final tested/reviewed source6a2edd71b3136a9c2043f9137eb6d3fb8abf120d, all pushed to codex/rewrite. Native41417589059 and Desktop41417589127 CI PASS Ubuntu24.04/macOS15/Windows2022. Each native platform passed247session tests in workspace and all-features runs. Actual subprocess regressions,323frontend tests/platform,8normal+13verification host tests/platform, packages and bundled engines passed; Linux/Windows actual existing-game GUI passed, macOS package/host only (no new GUI campaign). Local14fast controller checks+360-action full Save/Open, floor boundary and native38tests/713assertions passed. Independent separate read-only tori131_review source/runtime/admission/stale-result review, independent test execution and final acceptance/evidence reconciliation PASS; findings resolved.
+
+Limits unchanged: native65536work, whole-document262144units,16MiB/4096retained events/8192controls/256observations, existing15sdeadline and ending/identity reservations. Measured360-action installed document313906B/196404units; after Stop/Resign/Close314540B/196409units, saved314541B (floor widening). Single bounded native replay is not internally interruptible. Initial formatting failure and245PASS/1FAIL timing-assumption failures preserved; corrected tests require an unconditional180-action full journey while360may only refuse via exact typed elapsed-budget facts with complete-state preservation. No runtime limit or independent expectation was weakened.
+
+MSH-132 is the next dependency-ready component, Ready/unassigned/unstarted: full semantic metadata/Moves-event-last-action projection, frontend types and shared interaction verification. MSH-77 final acceptance, MSH-42 engine/console/notation/product delivery and M4 remain open. Full contract, six-criterion evidence matrix, measurements, package hashes and CI metadata: docs/m4/tori/desktop-runtime.md and desktop-runtime-evidence.md. No unresolved material finding. Stop after131.
+<!-- SECTION:FINAL_SUMMARY:END -->

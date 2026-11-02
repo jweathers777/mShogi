@@ -4,7 +4,7 @@ title: Deliver complete chu shogi rules and functional product integration
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-01T13:44:00Z'
+updated_date: '2026-11-02T21:47:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -19,6 +19,9 @@ documentation:
   - docs/m4/delivery-plan.md
   - docs/m4/implementation-map.md
   - docs/testing/conformance-policy.md
+  - docs/m4/chu/profile.md
+  - docs/m4/chu/fixtures.md
+  - docs/m4/chu/handoff.md
 ordinal: 43000
 ---
 
@@ -27,7 +30,7 @@ ordinal: 43000
 <!-- SECTION:DESCRIPTION:BEGIN -->
 P-01, P-03, P-04 and A-01 through A-07 require a complete chu shogi implementation, not a piece-movement demonstration. This scope owns the game-specific rules, adapters and conformance evidence across the product. Shared mechanisms and cross-game integration are owned once by MSH-46; coordinate their delivery without duplicating ownership here. Functional mShogi engine support is required in M4; measured strength targets and tuning belong to MSH-52 in M5.
 
-Open design questions (D-07/D-08): Resolve the authoritative historical conventions for compound/lion actions and capture restrictions, promotions, royal pieces, repetition and game endings; do not impose chess check semantics. Select the necessary state/action, notation and adapter contracts against the actual consumers, preserving complete actions and history; no speculative universal representation or protocol is prescribed. This To Do scope is not authorization to begin implementation or a change to the current M3 batch.
+Current MSH-82 profile/handoff: mshogi.chu.jcsa2019.v1 adopts modern JCSA2019 with compatible2004 supplement/movement sources, explicit owner direction and independently expected fixtures. docs/m4/chu/profile.md and handoff.md refine existing86(native)→78(shared)→43(product) without changing original8AC/DoD/dependencies. Preserve capture-based movement, full compound actions/derived effects, native before-fourth admission, finite immediate mate, narrow exhaustion/actual reply and agreed draw. Historical alternatives remain evidence, not a reconstruction gate. Select routine actual Rust/action/notation adapters against real consumers; no universal framework. Native/shared handoff does not itself deliver console, bounded functional engine, finished traditional-kanji12×12 UI or actual playable-product/platform journeys. No implementation begins under this profile-only assignment.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
@@ -56,4 +59,6 @@ Open design questions (D-07/D-08): Resolve the authoritative historical conventi
 MSH62 planning refinement2026-10-26: original identity,status,AC and DoD remain intact. This complete-delivery record now depends explicitly on its required bounded component/shared work; docs/m4/delivery-plan.md traces each original criterion and single ownership. No game implementation or delivery completion occurred. Earlier M3-context wording remains historical; current authorization is planning-only.
 
 Owner2026-11-01 testing-policy supersession: rules-profile-derived independently expected fixtures/history, deterministic regression, exact reversal/replay, meaningful property/metamorphic/adversarial tests and independent review establish conformance without any external engine. External comparisons are optional investigative evidence, not build/test/CI/milestone/release gates. Historical observations/source audits retained; no completed-game campaign reopened. For Tori,126 is now the self-contained executable harness; no Fairy build/admission prerequisite. Existing task dependencies and implementation plans unchanged; no activation by this note. Apply game-specific properties where meaningful, never expected outputs copied from the implementation. See docs/testing/conformance-policy.md.
+
+MSH82 current modern-profile handoff2026-11-02 supersedes original open-historical-question wording without deleting the old planning/research evidence. No original AC weakened:250 independently expected data rows precede native execution; actual conformance remains86, shared78 and full game43. Complete12×12 traditional-kanji board visible without scroll/zoom in accepted common shell; native inspection wording and full routes/royals retained.52 owns competitive strength;46/47/88/89 and107 retain shared/platform/diagnostic ownership. Original dependencies preserved; this record remains To Do/open.
 <!-- SECTION:NOTES:END -->

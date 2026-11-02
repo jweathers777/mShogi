@@ -1,10 +1,10 @@
 ---
 id: MSH-86
 title: Deliver the authoritative chu shogi native handoff for shared consumers
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-01T13:44:00Z'
+updated_date: '2026-11-02T21:47:00Z'
 labels:
   - m4
   - owner-msh-43
@@ -19,6 +19,9 @@ documentation:
   - docs/m4/later-game-sources.md
   - docs/m4/delivery-plan.md
   - docs/testing/conformance-policy.md
+  - docs/m4/chu/profile.md
+  - docs/m4/chu/fixtures.md
+  - docs/m4/chu/handoff.md
 type: task
 ordinal: 86000
 ---
@@ -53,4 +56,6 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 
 <!-- SECTION:NOTES:BEGIN -->
 Owner2026-11-01 testing-policy supersession: rules-profile-derived independently expected fixtures/history, deterministic regression, exact reversal/replay, meaningful property/metamorphic/adversarial tests and independent review establish conformance without any external engine. External comparisons are optional investigative evidence, not build/test/CI/milestone/release gates. Historical observations/source audits retained; no completed-game campaign reopened. For Tori,126 is now the self-contained executable harness; no Fairy build/admission prerequisite. Existing task dependencies and implementation plans unchanged; no activation by this note. Apply game-specific properties where meaningful, never expected outputs copied from the implementation. See docs/testing/conformance-policy.md.
+
+MSH82 modern-profile refinement2026-11-02: mshogi.chu.jcsa2019.v1 and docs/m4/chu supply complete sourced clauses,250 independently expected rows and direct native/shared handoff. Dependency82 unchanged; Ready is actionable scope, not permission to start before82Done. Original4AC/DoD preserved/unmet. AC4 refinement: no child split is useful now; one coherent native state→complete legality/Lion→Game/history/canonical-record batch with internal independent checkpoints avoids redispatch fragmentation. No extra dependencies. Required native work:12×12/original+once-promoted identities, ordered compound routes/derived discarded captures, capture-based royalty/finite mate, native pre-fourth last-opportunity admission, narrow exhaustion/immediate response/actual draw agreement, strict authoritative replay and exact reversal. Reuse generic conformance infrastructure with a real Chu adapter/corpus; current data validation is0native executed. Require complete LegalAll, all native fixture assertions,7/42 divide, deterministic sequences, meaningful properties/negative mutations/replay/undo, independent code review and applicable native CI. External engines/historical facsimile not gates; product GUI43/shared78 remain separate. No implementation plan prescribed or work started.
 <!-- SECTION:NOTES:END -->

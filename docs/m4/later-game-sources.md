@@ -149,6 +149,17 @@ treating it as an adopted authority. Preserve disagreements as profile questions
 
 ## Chu shogi — MSH-43
 
+### Current adopted modern profile — MSH-82, 2026-11-02
+
+The [complete JCSA contract](chu/profile.md), identity
+`mshogi.chu.jcsa2019.v1`, reconciles C1/C2/C3 with the preserved historical
+research. [Decisions](chu/decisions.md), [250 independently expected fixture
+rows](chu/fixtures.md) and [source/review evidence](chu/review.md) supersede the
+next-research recommendations below. Native Chu execution remains pending86;
+none of the250 data rows is claimed as an executed native pass. No historical
+facsimile or external comparator gate. The direct [86→78→43 handoff](chu/handoff.md)
+is actionable without another profile-planning phase; complete Chu/M4 stay open.
+
 ### Located association texts
 
 | Reference | Classification and locator | Evidence/status |
@@ -171,7 +182,7 @@ one turn and discuss the priority of capture exceptions. These are evidence of
 JCSA's modern adopted interpretation and reasoning, not direct inspection of
 the cited historical books. [C2](https://www.chushogi-renmei.com/kouza/rule_hosoku2004.htm)
 
-### Bounded next research deliverable
+### Preserved pre-ratification research recommendation
 
 Recommend whether C1 plus reconciled C2 is the initial association profile;
 record any material alternative separately. Acquire exact piece/setup pages and

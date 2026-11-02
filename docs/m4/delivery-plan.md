@@ -1,3 +1,11 @@
+> Current Chu profile handoff — MSH-82, 2026-11-02: the selected
+> [`mshogi.chu.jcsa2019.v1`](chu/profile.md) and independently reviewed
+> [250-row corpus](chu/fixtures.md) refine existing86→78→43 ownership.
+> [Native/shared/product handoff](chu/handoff.md) preserves current one-controller,
+> document, frontend and native-choice owners. No native Chu execution yet;
+> no new planning hierarchy, historical-facsimile gate or external-engine gate.
+> Four delivered games and earlier evidence remain unchanged;43/M4 stay open.
+
 > Current MSH-42 product continuation: [Tori delivery reconciliation](tori/delivery-review.md) records normal fourth-game activation and the final acceptance status. Earlier planning snapshots below preserve their original scope. M4 and broader shared six-game acceptance remain open.
 
 > **Owner testing-policy correction2026-11-01:** all six games must be independently

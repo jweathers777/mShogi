@@ -37,7 +37,13 @@ completeness. This applies prospectively to Tori/Chu/Tenjiku planning; it does n
 remove or reinterpret completed Xiangqi's selected WXF profile, exact verifier,
 fixtures, evidence or product capabilities. Existing complete-delivery acceptance,
 six-game scope, R1–R6 ownership, saveability and shared shell remain required.
-See [modern Tori profile](m4/tori/profile.md). This authorizes no implementation
+See [modern Tori profile](m4/tori/profile.md) and the selected
+[modern JCSA Chu profile](m4/chu/profile.md). Chu uses capture-based admission,
+finite immediate royal-threat mate, native must-vary admission before fourth
+repetition, and narrow material exhaustion with actual replies/agreed draws.
+It adds no Chess self-check, unrestricted forced-mate search, repetition forfeit
+or general bare-royal award. [Owner direction and interpretation](m4/chu/decisions.md)
+separate gameplay decisions from deterministic implementation. This authorizes no implementation
 of inactive variant tasks.
 
 ## 2. Accepted technology direction
@@ -559,6 +565,7 @@ When code reveals a design problem, report the specific conflict and a proposed 
 | D-17 | Accepted pre-release compatibility policy, 2026-10-30 | John: unreleased greenfield rewrite; no external internal-API consumers or development-save compatibility obligation. Obsolete APIs/IPC/adapters/readers and interface-only tests may be replaced/deleted; preserve native semantics/history/atomicity, execution safety, current-format losslessness, shared product consistency, external interoperability and independent conformance. See A-09 and MSH-115. No refactor implementation authorized by this review. |
 | D-18 | Accepted MSH-115 target and shared product UI, 2026-10-30 | John selects coherent R1–R6 migration: one controller/active native document/current execution/current envelope/frontend owner/interaction controller, deletion of obsolete development layers, native semantics independent. One application owns common sections and conventions; game capabilities/renderers supply only genuine native content. See A-10 and the approved migration plan. This assignment creates planning tasks only, with P9 triage intended first and no automatic M4 gate changes. |
 | D-19 | Accepted post-R4 desktop UX, 2026-10-31 | John approves sourced two-column Moves/native event mapping, origin/destination last-move cues, Analysis/Game Actions/Moves order, supported-only dropdown with unchanged native side buttons, Shogi branding, nonintrusive support, Save/Load and intentional atomic replacement, concise Quit, direct Resign and one-step browse-only Return to live. Five supplemental clarifications supersede conflicting attachment wording. See A-11 and the [bounded contract](desktop/post-r4-ux.md);123/124/125 are future tasks and121 gains their completion gates. No implementation starts by recording approval. |
+| D-20 | Accepted Chu direction, 2026-11-02 | John directs faithful modern JCSA `mshogi.chu.jcsa2019.v1`: capture-based movement and finite immediate-threat mate; responsible side must vary before fourth through admission; narrow sourced material exhaustion, immediate response and agreement-based draw. Withdraw automatic-forfeit/automatic-draw/quiet-immobility-loss proposals. Resolve faithful deterministic details from independent sources/fixtures, escalate only material remaining conflicts. See [decision record](m4/chu/decisions.md). MSH-82 ratifies profile/data only;86→78→43 retain actual implementation and delivery ownership. |
 
 Accepted records reflect actual owner direction. Working defaults are implementation proposals consistent with it, not fabricated owner decisions. Deferred questions only block work that depends on their resolution. A routine choice within accepted requirements does not need a new approval ceremony.
 

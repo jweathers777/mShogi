@@ -1,0 +1,9 @@
+{
+  "schema": "mshogi.chu.profile-audit-lock.v1",
+  "scope": "Source-derived data anchor; no native execution",
+  "sha256": {
+    "profile.json": "630b585312e7e0ac63516a4c55f2e8acf5ee96a5e2be71f1f653fc68e9afaf5c",
+    "fixtures.json": "545f23e7c805949e7d67c64c3e2fd39927d5bdae2401065d4d5f5bfc0c9fea2a",
+    "sources.json": "eadecbb96224daecf504af70c3fa96bbad51906369416ab401e8ab2d23ad0fcf"
+  }
+}

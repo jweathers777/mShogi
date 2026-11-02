@@ -1,0 +1,337 @@
+{
+  "schema": "mshogi.chu.sources.v1",
+  "research_date": "2026-11-02",
+  "base_revision": "78f8d6cbf260cb06611fea24ebfb933a57e6afac",
+  "original_research": "../research/chu-provenance.json",
+  "raw_source_bytes_in_repository": false,
+  "records": [
+    {
+      "id": "C1",
+      "url": "https://www.chushogi-renmei.com/kouza/rule2007.htm",
+      "status": 200,
+      "bytes": 25264,
+      "sha256": "f8f4d2474aad76021d06b611569794fa76dac32d9fa3e4d44d45efbec868603f",
+      "content_type": "text/html",
+      "retrieved_utc": "2026-11-02T21:11:34.564459+00:00",
+      "inspected_by": [
+        "root"
+      ],
+      "inspection": "Japanese/English text checked; source authority classified in sources.md"
+    },
+    {
+      "id": "C2",
+      "url": "https://www.chushogi-renmei.com/kouza/rule_hosoku2004.htm",
+      "status": 200,
+      "bytes": 22508,
+      "sha256": "097aea93f27e2d996e794b95d61589051e8fa051861d0a779818081374d43ced",
+      "content_type": "text/html",
+      "retrieved_utc": "2026-11-02T21:11:36.119121+00:00",
+      "inspected_by": [
+        "root"
+      ],
+      "inspection": "Japanese/English text checked; source authority classified in sources.md"
+    },
+    {
+      "id": "C3",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.htm",
+      "status": 200,
+      "bytes": 16369,
+      "sha256": "fd5127eae2d54969e6b57840faf081f4fb7255565eb0231b172b1f05bb1048d6",
+      "content_type": "text/html",
+      "retrieved_utc": "2026-11-02T21:11:37.703579+00:00",
+      "inspected_by": [
+        "root"
+      ],
+      "inspection": "Japanese/English text checked; source authority classified in sources.md"
+    },
+    {
+      "id": "T1",
+      "url": "https://www.chushogi-renmei.com/kouza/Okazaki.htm",
+      "status": 200,
+      "bytes": 23848,
+      "sha256": "83965cb25d5d467f4e8ad3857a97be416374ec8a0630f3587d37c322315d2154",
+      "content_type": "text/html",
+      "retrieved_utc": "2026-11-02T21:11:39.292759+00:00",
+      "inspected_by": [
+        "root"
+      ],
+      "inspection": "Japanese/English text checked; source authority classified in sources.md"
+    },
+    {
+      "id": "L1",
+      "url": "https://lishogi.org/variant/chushogi",
+      "status": 200,
+      "bytes": 15728,
+      "sha256": "537c4471c3ee5b7a555c616915993c3235cb71b3b9d06552afaf24be3aa07571",
+      "content_type": "text/html; charset=UTF-8",
+      "retrieved_utc": "2026-11-02T21:11:40.423110+00:00",
+      "inspected_by": [
+        "root"
+      ],
+      "inspection": "Japanese/English text checked; source authority classified in sources.md"
+    },
+    {
+      "id": "C3-image-0",
+      "url": "https://www.chushogi-renmei.com/kouza/rule/game1.jpg",
+      "status": 200,
+      "bytes": 187557,
+      "sha256": "d9116906820835b5bba975ded577e146975b344dd81c8d8685ffc273cd969826",
+      "retrieved_utc": "2026-11-02T21:11:44.017972+00:00",
+      "inspected_by": [
+        "root"
+      ],
+      "inspection": "actual movement/setup image viewed"
+    },
+    {
+      "id": "C3-image-1",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.files/image005.gif",
+      "status": 200,
+      "bytes": 964,
+      "sha256": "fce81da607d2572315a64747b08f8131d44725dcbe87bd69d60082b8c4759590",
+      "retrieved_utc": "2026-11-02T21:11:41.651140+00:00",
+      "inspected_by": [
+        "root"
+      ],
+      "inspection": "actual movement/setup image viewed"
+    },
+    {
+      "id": "C3-image-2",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.files/image007.gif",
+      "status": 200,
+      "bytes": 4749,
+      "sha256": "a13e9a2a1760db248689614d0bcf395b3101bb548779dc1bec9cb083a69bbc64",
+      "retrieved_utc": "2026-11-02T21:11:41.668249+00:00",
+      "inspected_by": [
+        "root"
+      ],
+      "inspection": "actual movement/setup image viewed"
+    },
+    {
+      "id": "C3-image-3",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.files/image009.gif",
+      "status": 200,
+      "bytes": 1386,
+      "sha256": "a51d7e87bb52d512c808f4e41fac5e934c7fab26844f4198ef1151cb5ae06822",
+      "retrieved_utc": "2026-11-02T21:11:41.660564+00:00",
+      "inspected_by": [
+        "root"
+      ],
+      "inspection": "actual movement/setup image viewed"
+    },
+    {
+      "id": "C3-image-4",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.files/image011.gif",
+      "status": 200,
+      "bytes": 1371,
+      "sha256": "13b563a3a9799b421cff371b3ae22af2db31ac811711777127c5929b84f2a2e9",
+      "retrieved_utc": "2026-11-02T21:11:41.668184+00:00",
+      "inspected_by": [
+        "root"
+      ],
+      "inspection": "actual movement/setup image viewed"
+    },
+    {
+      "id": "C3-image-5",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.files/11.gif",
+      "status": 200,
+      "bytes": 7113,
+      "sha256": "d02c2dc94c17fcdfbf5f404cd1593ffd63ff6aa844fa9add3459dfee0e2de70a",
+      "retrieved_utc": "2026-11-02T21:11:41.714074+00:00",
+      "inspected_by": [
+        "root"
+      ],
+      "inspection": "actual movement/setup image viewed"
+    },
+    {
+      "id": "C3-image-6",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.files/12.gif",
+      "status": 200,
+      "bytes": 8686,
+      "sha256": "4991c100b8e0dafdc51cd8508813ba980fe77fa897ddf7d1be5b1ec285625b6c",
+      "retrieved_utc": "2026-11-02T21:11:42.970799+00:00",
+      "inspected_by": [
+        "root"
+      ],
+      "inspection": "actual movement/setup image viewed"
+    },
+    {
+      "id": "C3-image-7",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.files/13.gif",
+      "status": 200,
+      "bytes": 7235,
+      "sha256": "47be6c5a3b4c5e3be6ad7ffcb9dfe627611a5cda4daf790c2d1eca1020f17196",
+      "retrieved_utc": "2026-11-02T21:11:42.934048+00:00",
+      "inspected_by": [
+        "root",
+        "chu_lion_review"
+      ],
+      "inspection": "actual movement/setup image viewed"
+    },
+    {
+      "id": "C3-image-8",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.files/14.gif",
+      "status": 200,
+      "bytes": 8386,
+      "sha256": "390932dde68c8d14329633a2d2eccc0c9f4ae3797bb7557904f21e5cc0ac7d91",
+      "retrieved_utc": "2026-11-02T21:11:42.912764+00:00",
+      "inspected_by": [
+        "root",
+        "chu_lion_review"
+      ],
+      "inspection": "actual movement/setup image viewed"
+    },
+    {
+      "id": "C3-image-9",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.files/15.gif",
+      "status": 200,
+      "bytes": 3265,
+      "sha256": "4cfa4b7983dc986f7ca55fde4c2159afce1fa842add8af052970b9265d20b64e",
+      "retrieved_utc": "2026-11-02T21:11:42.868207+00:00",
+      "inspected_by": [
+        "root"
+      ],
+      "inspection": "actual movement/setup image viewed"
+    },
+    {
+      "id": "C3-image-10",
+      "url": "https://www.chushogi-renmei.com/kouza/koma.files/image023.gif",
+      "status": 200,
+      "bytes": 2094,
+      "sha256": "c38071f273a29a1ed5fa41caff93ed3f9d9309fad7095921a03e67f3f71f468d",
+      "retrieved_utc": "2026-11-02T21:11:42.972428+00:00",
+      "inspected_by": [
+        "root",
+        "chu_lion_review"
+      ],
+      "inspection": "actual movement/setup image viewed"
+    },
+    {
+      "url": "https://www.chushogi-renmei.com/kouza/Rulegazou.files/image002.gif",
+      "sha256": "b8095b3cc4cd4fda280dbf72b3252354feea8f82a45c80572a20c79fce162a01",
+      "bytes": 1163,
+      "viewed": true,
+      "id": "independent-image-16",
+      "inspected_by": [
+        "chu_lion_review"
+      ],
+      "inspection": "actual source image independently viewed/reconstructed"
+    },
+    {
+      "url": "https://www.chushogi-renmei.com/kouza/Rulegazou.files/image004.gif",
+      "sha256": "89930cbfab3fefec9c6c9140f1bab666800ee6662cf32ce4181721e1523511ac",
+      "bytes": 1553,
+      "viewed": true,
+      "id": "independent-image-17",
+      "inspected_by": [
+        "chu_lion_review"
+      ],
+      "inspection": "actual source image independently viewed/reconstructed"
+    },
+    {
+      "url": "https://www.chushogi-renmei.com/kouza/Rulegazou.files/image006.gif",
+      "sha256": "55debd8ea0ec425b79cc6f816bb721d7cb685d29e498095e5356e5068cb58b0b",
+      "bytes": 1836,
+      "viewed": true,
+      "id": "independent-image-18",
+      "inspected_by": [
+        "chu_lion_review"
+      ],
+      "inspection": "actual source image independently viewed/reconstructed"
+    },
+    {
+      "url": "https://www.chushogi-renmei.com/kouza/Rulegazou.files/image008.gif",
+      "sha256": "217b767200498249c5791ccb12bcbf2daf5eb3c7da81b3f3ca61858d685d0c6d",
+      "bytes": 1520,
+      "viewed": true,
+      "id": "independent-image-19",
+      "inspected_by": [
+        "chu_lion_review"
+      ],
+      "inspection": "actual source image independently viewed/reconstructed"
+    },
+    {
+      "url": "https://www.chushogi-renmei.com/kouza/Rulegazou.files/image010.gif",
+      "sha256": "c7f65d6a0d1ff9f770feb682151979466ee8093705a3e4cd9e1da8beef31e10a",
+      "bytes": 1393,
+      "viewed": true,
+      "id": "independent-image-20",
+      "inspected_by": [
+        "chu_lion_review"
+      ],
+      "inspection": "actual source image independently viewed/reconstructed"
+    },
+    {
+      "url": "https://www.chushogi-renmei.com/kouza/rule/image001.gif",
+      "sha256": "94a2fb963b8171543b58e63ebf1a01a294fd295219a6cde750606c5a8c17a473",
+      "bytes": 4253,
+      "viewed": true,
+      "id": "independent-image-21",
+      "inspected_by": [
+        "chu_lion_review"
+      ],
+      "inspection": "actual source image independently viewed/reconstructed"
+    },
+    {
+      "url": "https://www.chushogi-renmei.com/kouza/rule/image002.gif",
+      "sha256": "3c8ab9f9c60eb835381267480e9d7e65a0d6447cadcdd9c18a90ea621c3215ea",
+      "bytes": 4244,
+      "viewed": true,
+      "id": "independent-image-22",
+      "inspected_by": [
+        "chu_lion_review"
+      ],
+      "inspection": "actual source image independently viewed/reconstructed"
+    },
+    {
+      "url": "https://www.chushogi-renmei.com/kouza/rule/image003.gif",
+      "sha256": "134778115f20beb49e7d9c58fded3ebf17f6a84982dd9c65a2be0bcea09ff67f",
+      "bytes": 3275,
+      "viewed": true,
+      "id": "independent-image-23",
+      "inspected_by": [
+        "chu_lion_review"
+      ],
+      "inspection": "actual source image independently viewed/reconstructed"
+    },
+    {
+      "url": "https://www.chushogi-renmei.com/kouza/rule/image004.gif",
+      "sha256": "9f55ee9bc241386d00713cbef0626fdac410faeed51dd35c815019556fd6c920",
+      "bytes": 2455,
+      "viewed": true,
+      "id": "independent-image-24",
+      "inspected_by": [
+        "chu_lion_review"
+      ],
+      "inspection": "actual source image independently viewed/reconstructed"
+    },
+    {
+      "id": "C1-IX-5",
+      "url": "https://www.chushogi-renmei.com/kouza/rule/image005.gif",
+      "status": 200,
+      "bytes": 2664,
+      "sha256": "e96d09b88839e2c71e44d697bda6c31ce56eedfed73a1beae7948ebc18c33f3c",
+      "retrieved_utc": "2026-11-02T21:41:16.843168+00:00",
+      "inspected_by": [
+        "root",
+        "chu_endings_review"
+      ],
+      "inspection": "Actual material-exhaustion example image; interpret with II.4-6 and IX"
+    },
+    {
+      "id": "C1-IX-6",
+      "url": "https://www.chushogi-renmei.com/kouza/rule/image006.gif",
+      "status": 200,
+      "bytes": 2482,
+      "sha256": "60cbd8500daf6c427c0f10c4cdb6baaf1609819feb4ae54f28523f61f6a8560a",
+      "retrieved_utc": "2026-11-02T21:41:18.111469+00:00",
+      "inspected_by": [
+        "root",
+        "chu_endings_review"
+      ],
+      "inspection": "Actual material-exhaustion example image; interpret with II.4-6 and IX"
+    }
+  ],
+  "historical_acquisition_required": false,
+  "external_engine_required": false,
+  "initial_failed_probe": "First acquisition helper assumed cp932 and failed decoding UTF-8 C3 before diagrams. Corrected to declared HTTP/meta UTF-8, successful acquisition/inspection follows. No failed HTTP or native conformance claim."
+}

@@ -60,7 +60,9 @@ first actual jitto streak and fallback responsibility retain the selected priori
 Non-board events do not add board occurrences or reset cycle history.
 
 `event_prefix` and `record_prefix` preserve exact event prefixes and rights with
-no future knowledge. A historical snapshot cannot submit a live command.
+no future knowledge. Historical snapshot structural state and Lion rights are
+private, exposed through immutable getters; callers cannot replace those trusted
+inputs. A historical snapshot cannot submit a live command.
 `select_prefix`, retirement, semantic undo/redo and record reconstruction cannot
 revive retired runtime authority. Logical state/caches restore exactly while
 runtime revisions advance. Outer request purpose/process generation/execution

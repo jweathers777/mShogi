@@ -1,0 +1,170 @@
+{
+  "schema": "mshogi.chu.native-verification.v1",
+  "task": "MSH-86",
+  "date": "2026-11-02",
+  "integration_branch": "codex/rewrite",
+  "base_revision": "0e649b2e328ac4fc89a9e139d19588937f406751",
+  "tested_source_revision": null,
+  "status": "coherent local checkpoint; final CI pending",
+  "environment": {
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "python": "3.11.0",
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+    "backlog": "pinned1.55.1; global1.55.0 not used for mutations"
+  },
+  "profile": "mshogi.chu.jcsa2019.v1",
+  "edition": "JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02",
+  "native_schema": 1,
+  "artifact_sha256": {
+    "crates/mshogi-core/src/chu/game.rs": "9ccd00612213c9054d842b12eebff48870a39ffefb78f0f72a903111a5b6a818",
+    "crates/mshogi-core/src/chu/game_tests.rs": "3c3368c9f4e2dbe572f6b6fe01d83e938b8cd2d87e4d6f6e3b0a4597ecb5b101",
+    "crates/mshogi-core/src/chu/legal.rs": "a7edb233637225c5d1f6a40b85547fa7a72a29edaf9dbd8057e892b5ce757b51",
+    "crates/mshogi-core/src/chu/game_conformance.rs": "ecc267ea963a6dbf358ce1c9abdfa102945230908077890bed69711cfd1bf9bf",
+    "crates/mshogi-core/src/chu/mod.rs": "7e01176b273e2a1938a864b91650f2a221ed21a81328d04327263789c68d9411",
+    "crates/mshogi-core/src/chu/position.rs": "e41d5fe5377c6cff356954fcc722b9d8bfaf713dd5fb51fe975dcc7b3b8ce6a0",
+    "crates/mshogi-core/src/chu/local_tests.rs": "c9be1c19ebf9d2216840f4975a7d73caab811364fcaa2cd9f1ad0bea7020183b",
+    "crates/mshogi-core/src/chu/conformance.rs": "c645fa3e71617052ec396c71270dd480df9c84dd6801e3260400df723c422266",
+    "crates/mshogi-core/src/chu/record.rs": "7c79c05c048e60d6a1bbfa90c16528bac6e05b77eb72e09a21a39499645bc066",
+    "crates/mshogi-core/src/lib.rs": "4d5a14c8e8c676f2843f1b64f286ded742b1296851da34cbdca37967765c4f7a",
+    "crates/mshogi-core/tests/chu_consumer.rs": "c56174398781c3948094d2e4d1406dfd00c7632f015dbaa63306ea5bfd5e0ce5",
+    "crates/mshogi-conformance/src/chu.rs": "fd7e83822d9311798e442a535098d5769155c02b6a628163b7b26be2019c5c3f",
+    "crates/mshogi-conformance/src/lib.rs": "62f11d0fcc5bcb922f2872d5c4f1fcf7f6099a49f4d6b0d424f7e8648aaa9261"
+  },
+  "immutable_inputs": {
+    "profile.json": "630b585312e7e0ac63516a4c55f2e8acf5ee96a5e2be71f1f653fc68e9afaf5c",
+    "fixtures.json": "545f23e7c805949e7d67c64c3e2fd39927d5bdae2401065d4d5f5bfc0c9fea2a",
+    "sources.json": "eadecbb96224daecf504af70c3fa96bbad51906369416ab401e8ab2d23ad0fcf"
+  },
+  "native_conformance": {
+    "fixtures_validated": 250,
+    "native_rows_executed": 240,
+    "native_rows_passed": 240,
+    "native_rows_failed": 0,
+    "native_rows_pending": 0,
+    "executed_assertions": 1076,
+    "passed": 1076,
+    "failed": 0,
+    "pending_native_assertions": 0,
+    "documentary_annotations": 37,
+    "annotation_accounting": "35 explanatory/derivation fields plus2Lionreason strings retained as annotations; those2 additionally execute typedLionLaw comparisons instead of verbose literal diagnostics",
+    "future_consumer_rows": 10,
+    "geometry_complete_actions": {
+      "Lion": 88,
+      "SoaringEagle": 41,
+      "HornedFalcon": 42
+    },
+    "independent_perft": [
+      7,
+      42
+    ],
+    "rotated_actual_choices_and_exact_reversals": 583
+  },
+  "required_ci_jobs": [
+    "Rust (ubuntu-24.04)",
+    "Rust (macos-15)",
+    "Rust (windows-2022)"
+  ],
+  "ci": {
+    "status": "pending exact source push",
+    "desktop": "Not a task gate: no shared/engine/UI activation. Any automatic desktop campaign is separate supporting work, never inferred GUI evidence."
+  },
+  "local_checks": [
+    {
+      "command": "cargo check --workspace --locked",
+      "result": "PASS; actual affected production consumers compile"
+    },
+    {
+      "command": "cargo check --manifest-path desktop/src-tauri/Cargo.toml --locked",
+      "result": "PASS; standalone macOS host,20 existing vendor Tao warnings preserved"
+    },
+    {
+      "command": "cargo test --locked -p mshogi-core --lib chu::local_tests -- --nocapture",
+      "result": "20PASS"
+    },
+    {
+      "command": "cargo test --locked -p mshogi-conformance chu:: -- --nocapture",
+      "result": "4PASS"
+    },
+    {
+      "command": "cargo test --locked -p mshogi-core --lib chu::game_conformance -- --nocapture",
+      "result": "PASS1076fields/240native rows; no expectations changed"
+    },
+    {
+      "command": "cargo test --locked -p mshogi-core --test chu_consumer",
+      "result": "2PASS real external core payload consumer tests"
+    },
+    {
+      "command": "cargo test --workspace --locked",
+      "result": "running; log/private/tmp/msh86-workspace-tests.log"
+    },
+    {
+      "command": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+      "result": "PASS after local style corrections; exact final checkpoint pending"
+    },
+    {
+      "command": "cargo fmt --all -- --check",
+      "result": "PASS at reviewedsource; exact finalcheckpoint/CI pending"
+    },
+    {
+      "command": "cargo test --locked -p mshogi-core --lib chu:: -- --nocapture",
+      "result": "Independent reviewer35PASS0FAIL,includesfinalbyte/work/privateattackmetadata tests"
+    }
+  ],
+  "measurements": {
+    "long_board_history": {
+      "events": 227,
+      "encoded_bytes": 132199,
+      "replay_units": 3979825,
+      "debug_parse_plus_second_reconstruction_ms": 2505,
+      "next_operation": "atomic ReplayWork refusal; Stop+Resign remain saveable/replayable",
+      "independent_reviewer_concurrent_parse_plus_second_reconstruction_ms": 5327
+    },
+    "control_boundary": {
+      "ordinary_events": 510,
+      "with_stop_and_resign": 512
+    },
+    "byte_boundaries": "actual candidate+reservation exact/one-under comparisons; actual512KiB padded record accepts/one extra byte refuses",
+    "variable_reservation_probe": {
+      "active_obligations": 3,
+      "current_encoded_bytes": 9188,
+      "closing_headroom_bytes": 1277,
+      "method": "allfour Stop/Resign actor combinations; production computes maximum byte payload"
+    }
+  },
+  "independent_reviews": [
+    {
+      "reviewer": "chu_native_review",
+      "method": "Separate read-only agent: full source/profile/corpus comparison and actual local/framework/Game/fullcorpus tests",
+      "status": "Final source review PASS; independently35Chu library+2external core consumer tests PASS,0failed; no remainingmaterialfinding"
+    },
+    {
+      "reviewer": "chu_conformance",
+      "method": "Independent read-only production review of local/Game/records and separately authored GameAdapter; not independent self-review of its own framework/localadapter",
+      "status": "Independent production/GameAdapter review: no remainingmaterialfinding; primary reviewer independently covered this worker's framework/localadapter"
+    }
+  ],
+  "resolved_review_findings": [
+    "LIFO nativeGame undo node restoration without runtime rewind",
+    "Snapshots cannot deserialize invalid trusted historical state",
+    "Read-only threat queries do not mutate replay budget",
+    "Finite mate reply metadata and child work accounting",
+    "Consistent forged standard provenance rejected by exact native root validation",
+    "Counterless private speculation avoids false material/mate from counter overflow",
+    "Actual encoded closing headroom, including longest native actor combination",
+    "Fixture source explanations retained rather than echoed; actualtypedLionLaw checked",
+    "Actual occurrence cache and production rotated-anchor responsibility exercised"
+  ],
+  "failed_or_corrected_local_attempts": [
+    "One independently authored added Pawn-defender test had its owner orientation wrong; corrected testgeometry, no ratifiedfixture or productionrule changed.",
+    "First workspace Clippy reported type complexity/let-and-return/collapsible-if/single-element-loop; ordinary style corrections applied.",
+    "Clippy automatic fix could not bind its local locking TCP listener in sandbox; fixes applied manually."
+  ],
+  "scope_limits": [
+    "No new external engine dependency.",
+    "No Chu sharedGameKind/transport/desktop integration or functional execution advertised.",
+    "No GUI/package/platform functionality inferred from native tests or standalone host check.",
+    "Native bounds do not promise unlimited games or portable timing; resource refusal is unscored and preserves complete saveability.",
+    "MSH78 owns current shared routing/document/session/interaction admission and actual consumer activation;MSH43 owns engine/console/notation/finishedUI;43/M4stayopen."
+  ]
+}

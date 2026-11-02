@@ -1,3 +1,8 @@
+> Current MSH-86 native handoff: [native contract1](native-v1.md) and
+> [actual execution evidence](native-verification.json). The MSH-82 profile/data
+> records below retain their original source-only scope; native execution is now
+> assessed separately. No shared/engine/product activation is claimed.
+
 # Modern Chu Shogi implementation contract — MSH-82
 
 - [Complete JCSA playing profile](profile.md) and [machine setup/pieces](profile.json)

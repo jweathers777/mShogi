@@ -1,3 +1,8 @@
+> MSH-86 implementation follow-through: the [actual native API/record1](native-v1.md)
+> now supplies the handoff described below. Its separate execution evidence does
+> not rewrite the original MSH-82 zero-execution checkpoint. Shared78/product43
+> retain their existing scope and dependencies.
+
 # Direct Chu implementation handoff
 
 MSH-82 refines existing **86 → 78 → 43** ownership with original dependencies

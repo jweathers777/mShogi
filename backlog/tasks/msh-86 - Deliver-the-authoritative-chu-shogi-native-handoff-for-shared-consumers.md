@@ -1,10 +1,11 @@
 ---
 id: MSH-86
 title: Deliver the authoritative chu shogi native handoff for shared consumers
-status: Ready
-assignee: []
+status: In Review
+assignee:
+  - '@Codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-02T21:47:00Z'
+updated_date: '2026-11-02T22:23:00Z'
 labels:
   - m4
   - owner-msh-43
@@ -22,6 +23,8 @@ documentation:
   - docs/m4/chu/profile.md
   - docs/m4/chu/fixtures.md
   - docs/m4/chu/handoff.md
+  - docs/m4/chu/native-v1.md
+  - docs/m4/chu/native-verification.json
 type: task
 ordinal: 86000
 ---
@@ -52,10 +55,20 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+2026-11-02 current assignment: sole root integrator Codex on clean primary codex/rewrite at0e649b2,82Done. Use pinned Backlog1.55.1, preserve original4AC/4DoD and existing ownership. A: native Chu module state/base+promotion/complete ordered actions/derived discarded captures/strict roots/exact transition reversal. B: complete native generation/Lion law/read-only inspection/promotion with focused source-derived fixtures. Isolate movement builder from root-owned Game/records; agree actual small native API, no shared dispatch activation. C: root integrates full-history Game, pre-fourth last-opportunity obligations, finite mate/nonrecursive reply checks, narrow exhaustion/agreement/resignation/Stop, monotonic context, exact prefixes/undo and strict replay with precommit native capacity/reserved headroom. D: actual Chu corpus adapter in existing conformance infrastructure, every applicable240native row executed with field/annotation/future accounting; LegalAll88/41/42 and7/42divide, state/atomicity/rotation/sequence/adversarial/native consumer checks. Independent read-only review of completed movement/Lion and Game/record/adapter boundary; resolve and re-review material changes. Check core/conformance and affected production consumers/separate Tauri workspace early; focused tests first then coherent relevant workspace regressions/fmt/clippy. Required CI: Rust workspace ubuntu24.04/macos15/windows2022 at exact reviewed source; no broad packaged GUI campaign for native-only86. One structured evidence record and exact source refs; refine78handoff without implementing78/43, no native execution advertising. Normal integration/push/CLI finalization only with all evidence; otherwise retainInProgress exact blocker. Stop86;43/M4open.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 Owner2026-11-01 testing-policy supersession: rules-profile-derived independently expected fixtures/history, deterministic regression, exact reversal/replay, meaningful property/metamorphic/adversarial tests and independent review establish conformance without any external engine. External comparisons are optional investigative evidence, not build/test/CI/milestone/release gates. Historical observations/source audits retained; no completed-game campaign reopened. For Tori,126 is now the self-contained executable harness; no Fairy build/admission prerequisite. Existing task dependencies and implementation plans unchanged; no activation by this note. Apply game-specific properties where meaningful, never expected outputs copied from the implementation. See docs/testing/conformance-policy.md.
 
 MSH82 modern-profile refinement2026-11-02: mshogi.chu.jcsa2019.v1 and docs/m4/chu supply complete sourced clauses,250 independently expected rows and direct native/shared handoff. Dependency82 unchanged; Ready is actionable scope, not permission to start before82Done. Original4AC/DoD preserved/unmet. AC4 refinement: no child split is useful now; one coherent native state→complete legality/Lion→Game/history/canonical-record batch with internal independent checkpoints avoids redispatch fragmentation. No extra dependencies. Required native work:12×12/original+once-promoted identities, ordered compound routes/derived discarded captures, capture-based royalty/finite mate, native pre-fourth last-opportunity admission, narrow exhaustion/immediate response/actual draw agreement, strict authoritative replay and exact reversal. Reuse generic conformance infrastructure with a real Chu adapter/corpus; current data validation is0native executed. Require complete LegalAll, all native fixture assertions,7/42 divide, deterministic sequences, meaningful properties/negative mutations/replay/undo, independent code review and applicable native CI. External engines/historical facsimile not gates; product GUI43/shared78 remain separate. No implementation plan prescribed or work started.
+
+Implemented coherent nativeA–D checkpoint onprimarycodex/rewrite. Newgame-ownedChu state/actions/localrules/Game/history/records, no sharedGameKind/engine/console/UIactivation. Actualimmutablecorpusadapter:1076executablechecksPASS,240/240native rowsPASS,0failed/pendingnative;37annotations(including2LionexplanationstringswithseparateactualtypedLionLawchecks),10consumerrowspending78/43. Complete88/41/42sets,7/42divide,583actualchoiceowner-rotation/reversalchecks. Independentfullsource/profile/adapterreview and executed35nativefocusedtestsPASS; reviewfindingscorrected inclLIFOlogicalnodes,read-onlybudget,finite-replymetadata/work,forgedstandardprovenance,counterlessspeculation,dynamicactualencodedStop+Resignheadroom,longestactorpayload,andnativecache/rotatedanchorassertions. EarlyworkspaceandstandaloneTaurihostcheckPASS; workspaceClippyPASSafterordinarylocalstylefixes; coherentworkspacebroadtestsrunonce,finalexactsource/native3platformCIpending. Realcoreconsumer2testsPASS. Measurements:227moves132199bytes3979825unitsbeforetypedworkrefusal;510controlsthenStop+Resign512;3obligationclosingprobe1277bytescomputedfromactualevents. OriginalAC/DoDuncheckeduntilfinalevidence. One structurednative-verification.json recordsactualmethods/limits/corrections;82profile/corpus/researchunchanged.
+
+Finalindependentreview chu_native_review PASS actual35Chu libtests+2externalcoreconsumertests,0failed,withsourcehashes recorded. No remainingmaterialsourcefinding; fullnativecorpus1076/240PASS,37documentaryannotations10futureconsumerrows. Reviewis separateagent fullactualsource+profile/datainspection/realtestexecution,notauthorreread. Coherentbroadworkspaceandnative3platformCI are completion gates pending, neverinferred. Native-v1 describesstableAPI/canonicalrecord1/realcapacitypolicy and unchanged78/43ownership.
 <!-- SECTION:NOTES:END -->

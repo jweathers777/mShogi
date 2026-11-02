@@ -221,7 +221,9 @@ async fn game_command(
             let reservation = controller.lifecycle().reserve_command()?;
             if command.game == mshogi_desktop_session::GameKind::Tori
                 || matches!(&command.operation, mshogi_desktop_session::SessionOperation::Replace { record, .. } if record.game_kind() == mshogi_desktop_session::GameKind::Tori)
-            { return Err("Tori product activation is unavailable until its renderer and functional engine are delivered.".into()); }
+            {
+                return Err("Tori product activation is unavailable until its renderer and functional engine are delivered.".into());
+            }
             let (initial, receipt) = controller.shared_command_with_receipt(command)?;
             Ok::<_, String>((initial, receipt, reservation))
         },

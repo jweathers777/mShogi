@@ -222,3 +222,17 @@ and last-action projection, frontend types and shared interaction verification
 remain132. Actual engine/console/notation/product Tori rendering/play remains42.
 Normal product New Game/Open remains gated; no new chooser or engine capability.
 The earlier planning sequence and original acceptance criteria remain preserved.
+
+
+## Implemented component handoff — MSH-132 (2026-11-02)
+
+The planning status and pending labels above are historical. Components130/131
+are Done;132 production52b0390 completes the native semantic/shared frontend
+boundary, with [contract](shared-presentation.md), [evidence](shared-presentation-evidence.md)
+and [complete97-row consumer audit](evidence/shared-presentation-audit.json).
+Actual13fields/82requirements remain established by131,713native expectations
+unchanged; notation1/1 remains42. Coordinating77still requires its own final
+integrated acceptance. No Tori engine, console/final notation/artwork, normal
+chooser/Load activation or complete-game delivery is supplied by this component.
+The stable QA fixture uses the sole existing runtime and shared shell; it is not
+an approved final visual design. All original77/42/46criteria/dependencies remain.

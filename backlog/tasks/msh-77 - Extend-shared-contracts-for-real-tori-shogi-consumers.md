@@ -4,7 +4,7 @@ title: Extend shared contracts for real tori shogi consumers
 status: Ready
 assignee: []
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-01T21:34:00Z'
+updated_date: '2026-11-02T10:44:00Z'
 labels:
   - m4
   - owner-msh-46
@@ -31,6 +31,8 @@ documentation:
   - docs/m4/tori/shared-plan.md
   - docs/m4/tori/shared-consumer-ownership.json
   - docs/m4/tori/shared-plan-review.md
+  - docs/m4/tori/shared-presentation.md
+  - docs/m4/tori/shared-presentation-evidence.md
 type: task
 ordinal: 77000
 ---
@@ -88,4 +90,8 @@ Source-grounded refinement creates flat components130document/admission→131run
 Planning/refinement complete, not implementation acceptance. Separate read-only tori77_boundary_review finalPASS/no unresolvedmaterialfindings after exactsource main.rs reference correction and explicit native-controller vs normalproductadmission gate. Actual independent source/type/ownership review plus graph132tasks353edges, all14expectedvalues and83originalowner/scope rows, original77ACDoD/unchanged42/46/nativeinputs checksPASS; doctor/diffPASS. Root optionalmetadataaudit confirms37links, immutablepins and productionunchanged. Current plan/shared-consumer map/currenthandoff+deliverymap integrated with concrete130codec/admission→131runtime/lifecycle/soleinstallation→132semantic/frontendverification. Nativecontrolleracceptance never exposes Tori to unsupported normalrenderer; productOpen/NewGame stayexplicitunsupported until42realconsumer. All original77AC/DoD stayunchecked and77open, Ready/unassignedblockedoncomponents;130alone dependency-readyReady, nochildplans/owners/checks. No native/CI/GUIcampaign warranted for planning-onlychanges;713native evidence reused, notrerun. Noapp/worktreecreated, unrelatedworktreesandallhistorypreserved. Ready for normalplanningintegration/push; stopbeforeanyimplementation.
 
 Reviewed planning integrated and normally pushed to codex/rewrite at8977a4b9c749e46146255861d1ead10f744e5b97 (origina3677e1→8977a4b). No production/source/profile/fixture/expectation change; accepted source994521b and85Done evidence untouched. Separate independent planreviewPASS, full132task353edgegraph/39links/fixtureownership/unchangedoriginal77criteria/allotherexistingtaskrecords/doctor/diffPASS. No native/CI/GUIcampaign rerun or newpassclaim; [skip ci] documentation-only convention. MSH77Ready/unassignedblockedon130/131/132, all originalAC/DoDunchecked;130alone dependency-readyReady. Three scopedcomponents contain constraints/observableAC/verification but no implementationplans. NativecontrollerSave/Open uses solearchitecture while normalproductToriadmission staysgatedfor42realrenderer/engine. No taskworktreecreated, unrelated111/100/98worktreesuntouched; primarycodex/rewrite retained. Stopafterrefinement, no implementation or nexttaskactivated.
+
+MSH132 component handoff (no77activation/closure): production52b0390cac09faf727a0c5ed74c1fd673f468a11 adds complete nativeTori7x7/faces/quails/hands/forcedchoices/selected-liveprefix/status/provenance andPlay-onlyMoves/nativecues to existing sharedFrontendowner. docs/m4/tori/shared-presentation.md and shared-presentation-evidence.md map all4original77AC for its later independentacceptance; evidence/shared-presentation-audit.json reconciles every97supplementalrow to131actual13fields/82requirements, original713/103unchanged;42notation1/1stillpending. Actual stableQA CUAcontractjourneys and normalpackageexclusion recorded, notToriengine/finalUI/threeplatformGUIapproval. NormalNewGame/Open staygated; native15sdeadline/whole-documentlimitsunchanged and truthfulSave/Loadtime-budgetrefusal noted. Independentnative+frontendreviewsPASS;132finalCI/closurepending atthisnote.77remainsReady/unassigned andallAC/DoDunchecked;42/46/88/89ownershipunchanged, no nextimplementation started.
+
+Final132handoff: all6AC/4DoD supported; production52b0390 source and bothCI41427941953/41427942000 SUCCESS acrossall3systems. Native253/frontend342/TS/host14features and normalpackagechecksPASS; actualexisting-gameLinux/WindowsGUI compatibilityPASS, localmacOSToriQA contractjourneys only. Independentnative/frontend/docreviewsPASS,97rowaudit retains131actual13/82 andnative713/103,42notation1/1pending. docs/m4/tori/shared-presentation-evidence.md contains finalactualdispositions/limits.132Done, so77nowdependency-readyReady/unassigned; no activation, currentplan or criterion/DoD checks applied. Originalfourcriteria await77ownfinalintegratedindependentreview.42/46/M4remainopen.
 <!-- SECTION:NOTES:END -->

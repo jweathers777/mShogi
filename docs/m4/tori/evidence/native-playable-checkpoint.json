@@ -2,7 +2,7 @@
   "schema": "mshogi.tori.native-playable-checkpoint.v1",
   "task": "MSH-42",
   "status": "In Progress; native playable-consumer checkpoint only",
-  "tested_source": "Pending verification-only test correction commit; production remains d4bfeeb491e8e7f5a731b3bf64e199cc744ce0bb",
+  "tested_source": "e60c2aafcc8f341ec27d7ea7c195d4e1a69b7105",
   "integration_branch": "codex/rewrite",
   "basis": {
     "accepted_shared_source": "52b0390cac09faf727a0c5ed74c1fd673f468a11",
@@ -155,7 +155,7 @@
   "independent_review": {
     "method": "Separate Codex agent read-only source, independent expectations, tests and actual evidence inspection; reviewer did not execute tests",
     "reviewer": "tori42_review",
-    "verdict": "Source boundary PASS; explicit-Resume correction independently re-reviewed PASS; final CI/evidence reconciliation pending",
+    "verdict": "PASS: final committed source boundary, handoff and actual final CI evidence audit; no unresolved material findings.",
     "resolved_findings": [
       "Remove native replay from bridge/poll matches; full validation only on bounded worker",
       "Safe telemetry visit minimum for terminal leaves",
@@ -168,7 +168,9 @@
     ],
     "verified_risks": [
       "Native terminal scores derive the actual native conclusion winner, including out-of-turn resignation; this was a preflight requirement, not an observed defect."
-    ]
+    ],
+    "final_source": "e60c2aafcc8f341ec27d7ea7c195d4e1a69b7105",
+    "final_evidence_audit": "Read-only parsed raw native41469635243/Desktop41465780619 records, source equivalence, immutable hashes, retained failures/cancellations, stopped-reopen/normal Tori gates and remaining scope verified; reviewer ran no tests/builds/GUI/CI polling."
   },
   "failed_checks_preserved": [
     "Search early compile E0599: assumed nonexistent public Position.board/Game.cache_snapshot; corrected to public pieces and semantic snapshot/token distinction.",
@@ -182,7 +184,7 @@
     "D4b macOS Rust Test step failed existing Shogi retirement assertion: observed LateReply instead of ResourceLimit. Native code correctly rejected work. Test-only correction requires exact retired diagnostic and same-engine/generation actual duplicate traffic for LateReply; preserves incomplete capture, no accepted actions/result/score and reaping/replay. Failure evidence retained, not relabeled passed."
   ],
   "broad_local": {
-    "status": "PASS; source push/CI still pending",
+    "status": "PASS; source pushed; required native and reused unchanged-production desktop CI passed",
     "checks": [
       {
         "name": "format",
@@ -356,16 +358,45 @@
       "macos-15",
       "windows-2022"
     ],
-    "status": "D4b macOS native job failed an unchanged timing-sensitive Shogi test. Corrected test revision native3 CI pending; unchanged D4b desktop required checks reused when complete.",
+    "status": "PASS: native41469635243 at e60c2aa all3 jobs; unchanged-production Desktop41465780619 at d4bfeeb all3 jobs.",
     "method": "One completion-aware CI monitor; exact source hash. Existing-game GUI jobs are supporting compatibility, not final Tori visual acceptance.",
     "completion_condition": "All3 Rust workspace jobs successful; Desktop jobs on all3 platforms have successful Locked frontend and native checks, Build normal native package, and actual normal bundled-engine inspection steps. Later automatic GUI/verification-build campaigns are supporting existing-game evidence, not this native-only checkpoint gate. Stop waiting when required condition is available.",
     "superseded_record": "native-playable-ci-superseded-035c35c.json",
     "first_corrected_source_record": "native-playable-ci-d4bfeeb-first.json",
-    "desktop_reused_source": "d4bfeeb491e8e7f5a731b3bf64e199cc744ce0bb"
+    "desktop_reused_source": "d4bfeeb491e8e7f5a731b3bf64e199cc744ce0bb",
+    "native_verification_source": "e60c2aafcc8f341ec27d7ea7c195d4e1a69b7105",
+    "redundant_package_campaign": {
+      "id": 41469635281,
+      "action": "Cancelled as redundant; test/evidence only; complete unchanged-production package campaign41465780619 reused."
+    },
+    "desktop_campaign": {
+      "id": 41465780619,
+      "source": "d4bfeeb491e8e7f5a731b3bf64e199cc744ce0bb",
+      "status": "completed",
+      "conclusion": "success",
+      "platforms": [
+        "macos-15",
+        "ubuntu-24.04",
+        "windows-2022"
+      ]
+    },
+    "record": "native-playable-ci.json",
+    "native_campaign": {
+      "id": 41469635243,
+      "source": "e60c2aafcc8f341ec27d7ea7c195d4e1a69b7105",
+      "status": "completed",
+      "conclusion": "success",
+      "platforms": [
+        "ubuntu-24.04",
+        "macos-15",
+        "windows-2022"
+      ]
+    }
   },
   "gui_evidence": {
     "new_local_packaged_GUI": "Not run; native checkpoint does not claim finished product exposure/artwork",
-    "reused": "MSH77/130/131/132 unchanged earlier native/shared/technical GUI evidence; no new platform GUI inference"
+    "reused": "MSH77/130/131/132 unchanged earlier native/shared/technical GUI evidence; no new platform GUI inference",
+    "current_CI_existing_games": "Desktop41465780619 completed actual installed/packaged Chess/Shogi/Xiangqi GUI steps on Linux and Windows. macOS package/bundled-engine inspection passed; no new macOS GUI or Tori GUI claim."
   },
   "remaining": [
     "Finished Tori board/artwork and owner visual approval",
@@ -373,5 +404,12 @@
     "Actual packaged Tori human-engine/analysis/recovery/history/SaveLoad/Takeback/quit verification",
     "Final eight-criterion MSH42 complete-delivery review",
     "MSH51 measured strength remains future; no later variants started"
-  ]
+  ],
+  "production_source": "d4bfeeb491e8e7f5a731b3bf64e199cc744ce0bb",
+  "bookkeeping_checks": {
+    "backlog_doctor": "PASS: no duplicate IDs, self-dependencies or dependency cycles",
+    "immutable_profile_fixture_ownership_hashes": "PASS: unchanged from accepted MSH77 basis",
+    "production_equivalence_d4bfeeb_to_e60c2aa": "PASS: only existing runner test and evidence/task records changed",
+    "diff_check": "PASS"
+  }
 }

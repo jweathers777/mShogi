@@ -1409,7 +1409,12 @@ class Journey:
         self.plies(2)
         assert w.has(".play-paused")
         w.button("Play details")
-        assert "No engine search has completed" in w.text(".sidebar")
+        # Reopened searches are historical evidence, not a pending engine turn.
+        assert any(entry["observation"]["context"]["purpose"]["kind"] == "engine_turn"
+                   for entry in desktop_document_payload(archive, "chess")["observations"])
+        sidebar = w.text(".sidebar")
+        assert "Earlier engine searches are retained as historical observations." in sidebar
+        assert "Last engine turn" not in sidebar
         self.record("Reopen complete document without resuming work", w.text(".document-card"))
         w.click('.shogi-history [data-event="2"]')
         self.plies(1, historical=True)

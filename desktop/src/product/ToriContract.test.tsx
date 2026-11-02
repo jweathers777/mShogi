@@ -235,3 +235,11 @@ it("distinguishes an available idle Tori engine from paused play without fabrica
   expect(screen.getByLabelText('Engine turn status').textContent).toBe('Play paused');
   expect(screen.getByRole('button', { name: 'Resume play' })).toBeTruthy();
 });
+
+it("describes retained historical engine work honestly after rewind or reopening", () => {
+  const old = unsupportedJson as unknown as ToriSnapshot;
+  app({ ...old, search_observations: old.search_observations.map(view => ({ ...view, historical: true, selected: false })) });
+  expect(screen.getByText('Earlier engine searches are retained as historical observations.')).toBeTruthy();
+  expect(screen.queryByText('No engine search has completed in this game.')).toBeNull();
+  expect(screen.queryByText(/Last engine turn/)).toBeNull();
+});

@@ -843,7 +843,7 @@ impl DesktopController {
                 intersections: None,
                 files: files.clone(),
                 ranks: ranks.clone(),
-                label: "Tori native 7×7 verification contract".into(),
+                label: "Tori Shogi 7×7 board".into(),
                 initial_focus: "4e".into(),
             },
             orientations: vec![

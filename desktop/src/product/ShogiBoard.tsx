@@ -1,8 +1,9 @@
 import type { CompletedActionGeometry, NativePiece } from "../boardPresentation";
 import { gridNeighbor, useNativeChoiceController } from "../interaction/useNativeChoiceController";
-import type { ShogiSnapshot as GameSnapshot, Side } from "./native";
+import type { ShogiSnapshot, ToriSnapshot, Side } from "./native";
 import { inspectionStatus, type InspectMovement } from "./movementInspection";
 import { GameFrame } from "./GameFrame";
+import { ToriPiece } from "./ToriPiece";
 import { CompletedActionCue } from "../CompletedActionCue";
 import "../movement-inspection.css";
 
@@ -26,12 +27,18 @@ function pieceName(piece: NativePiece, sides: Side[]) {
   const owner = sides.find((s) => s.key === piece.owner)?.label ?? "Player";
   return `${piece.square}, ${owner} ${piece.promoted ? "promoted " : ""}${piece.kind}`;
 }
+// Shogi and Tori share square/tray composition, not piece identities or rules.
+// The native choices and existing controller own every admitted interaction.
 export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDisabled = disabled, inspectionContextKey, completedAction }: {
-  snapshot: GameSnapshot; disabled: boolean; onPlay: (action: string) => void;
+  snapshot: ShogiSnapshot | ToriSnapshot; disabled: boolean; onPlay: (action: string) => void;
   onInspect?: InspectMovement; inspectionDisabled?: boolean; inspectionContextKey?: string;
   // Separate read-only presentation input for MSH-123; never controller state.
   completedAction?: CompletedActionGeometry | null;
 }) {
+  const tori = snapshot.game === "tori";
+  const drawPiece = (kind: string, promoted: boolean, rotated: boolean, first: boolean) => tori
+    ? <ToriPiece kind={kind} promoted={promoted} rotated={rotated} />
+    : <ShogiPiece kind={kind} promoted={promoted} rotated={rotated} first={first} />;
   const bottom = snapshot.document.settings.settings.orientation;
   const orientation = snapshot.orientations.find((o) => o.side.id.side === bottom) ?? snapshot.orientations[0]!;
   const topSide = snapshot.sides.find((s) => s.key !== orientation.side.key)!;
@@ -43,7 +50,7 @@ export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDi
     choices: snapshot.choices,
     origins: [...snapshot.pieces.map((piece) => ({ key: piece.square, owner: piece.owner, inspectable: true })),
       ...nonzeroHands.map((hand) => ({ key: hand.origin, owner: hand.owner, inspectable: true }))],
-    humanOwner: snapshot.human.key, disabled, inspectionDisabled, onInspect, onPlay,
+    humanOwner: snapshot.human.key, disabled: disabled || !snapshot.capabilities.board_action, inspectionDisabled, onInspect, onPlay,
     initialFocus: snapshot.board.initial_focus, boardKeys: squares,
     neighbor: (key, direction) => gridNeighbor(squares, columns, key, direction),
     handGroups: [topSide, orientation.side].map((side) => nonzeroHands.filter((hand) => hand.owner === side.key).map((hand) => hand.origin)),
@@ -56,15 +63,17 @@ export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDi
         {!hands.length && <span className="empty-hand">No pieces in hand</span>}
         {hands.map((h) => <button key={h.origin} className={`hand-piece${selected === h.origin ? inspection ? " inspecting" : inspectionPending ? "" : " selected" : ""}`} ref={(node) => interaction.register(h.origin, node)}
           disabled={interaction.interactionDisabled || !interaction.canInteractOrigin(h.origin)}
-          data-hand={h.kind} data-hand-piece={h.kind} data-owner={side.id.side} aria-label={`${side.label} ${h.kind} in hand, ${h.count}${selected === h.origin ? inspection ? `, Inspecting ${inspection.label}` : inspectionPending ? ", loading movement inspection" : ", selected for drop" : ""}`} aria-pressed={selected === h.origin}
-          onFocus={() => interaction.onFocus(h.origin)} onClick={() => interaction.select(h.origin)} onKeyDown={(event) => interaction.keyDown(event, h.origin)}><svg viewBox="0 0 100 100" aria-hidden="true"><ShogiPiece kind={h.kind} first={side.first_mover} rotated={side.key !== orientation.side.key} /></svg><span className="hand-count">{h.count}</span></button>)}
+          title={tori ? h.label : undefined} data-hand={h.kind} data-hand-piece={h.kind} data-owner={side.id.side} aria-label={`${tori ? h.label : `${side.label} ${h.kind} in hand, ${h.count}`}${selected === h.origin ? inspection ? `, Inspecting ${inspection.label}` : inspectionPending ? ", loading movement inspection" : ", selected for drop" : ""}`} aria-pressed={selected === h.origin}
+          onFocus={() => interaction.onFocus(h.origin)} onClick={() => interaction.select(h.origin)} onKeyDown={(event) => interaction.keyDown(event, h.origin)}><svg viewBox="0 0 100 100" aria-hidden="true">{drawPiece(h.kind, false, side.key !== orientation.side.key, side.first_mover)}</svg><span className="hand-count">{h.count}</span></button>)}
       </div>
     </>;
   }
+  const selectedLabel = snapshot.pieces.find(piece => piece.square === selected)?.label
+    ?? nonzeroHands.find(hand => hand.origin === selected)?.label;
   const width = columns * 100 + 56, height = rows * 100 + 56;
   const destinationIndex = squares.indexOf(interaction.completionTarget);
-  const board = <div className="shogi-board-frame">
-      <svg className="shogi-board" viewBox={`0 0 ${width} ${height}`} role="group" aria-label={`Shogi board, ${orientation.side.label} at bottom`}>
+  const board = <div className={`shogi-board-frame${tori ? " tori-board-frame" : ""}`}>
+      <svg className="shogi-board" viewBox={`0 0 ${width} ${height}`} role="group" aria-label={`${tori ? "Tori Shogi 7×7" : "Shogi"} board, ${orientation.side.label} at bottom`}>
         <defs><linearGradient id="shogi-wood" x1="0" x2="1"><stop stopColor="#e4c38d" /><stop offset="0.5" stopColor="#ebd09d" /><stop offset="1" stopColor="#dfbc82" /></linearGradient></defs>
         <rect className="shogi-field" width={width} height={height} rx="7" />
         {squares.map((square, index) => {
@@ -73,11 +82,12 @@ export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDi
           return <g key={square} className={`shogi-square${selected === square && !inspection && !inspectionPending ? " selected" : ""}${target && !inspection ? " target" : ""}`} data-square={square}
             transform={`translate(${28 + column * 100},${28 + row * 100})`} ref={(node) => interaction.register(square, node)}
             role="button" tabIndex={(squares.includes(focused) ? focused : snapshot.board.initial_focus) === square ? 0 : -1} aria-disabled={interaction.interactionDisabled} aria-pressed={selected === square}
-            aria-label={`${piece ? pieceName(piece, snapshot.sides) : `${square}, empty`}${selected === square ? inspection ? `, Inspecting ${inspection.label}` : inspectionPending ? ", loading movement inspection" : ", selected" : ""}${target ? inspection ? ", read-only inspection destination" : ", legal destination" : ""}${prefix.includes(square) ? ", route step" : ""}`}
+            aria-label={`${piece ? tori ? piece.label : pieceName(piece, snapshot.sides) : `${square}, empty`}${selected === square ? inspection ? `, Inspecting ${inspection.label}` : inspectionPending ? ", loading movement inspection" : ", selected" : ""}${target ? inspection ? ", read-only inspection destination" : ", legal destination" : ""}${prefix.includes(square) ? ", route step" : ""}`}
             onFocus={() => interaction.onFocus(square)} onClick={() => interaction.select(square)} onKeyDown={(event) => interaction.keyDown(event, square)}>
+            {tori && piece && <title>{piece.label}</title>}
             <rect className="shogi-cell" width="100" height="100" />
             <rect className="shogi-selection-ring" x="5" y="5" width="90" height="90" rx="3" />
-            {piece && <g transform="translate(5 3) scale(.9)"><ShogiPiece kind={piece.kind} promoted={piece.promoted} first={snapshot.sides.find((s) => s.key === piece.owner)?.first_mover ?? true} rotated={piece.owner !== orientation.side.key} /></g>}
+            {piece && <g transform="translate(5 3) scale(.9)">{drawPiece(piece.kind, piece.promoted, piece.owner !== orientation.side.key, snapshot.sides.find(s => s.key === piece.owner)?.first_mover ?? true)}</g>}
             {target && !inspection && <g className="shogi-destination" aria-hidden="true"><path d="M9 28V9H28 M72 9H91V28 M91 72V91H72 M28 91H9V72" />{!piece && <circle cx="50" cy="50" r="9" />}</g>}
             {inspection?.origin === square && <rect className="inspection-origin-ring" x="5" y="5" width="90" height="90" rx="3" aria-hidden="true" />}
             {target && inspection && <circle className="inspection-marker" cx="50" cy="50" r={piece ? "46" : "19"} aria-hidden="true" />}
@@ -91,11 +101,11 @@ export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDi
       {completions.length > 0 && <div ref={interaction.completionRef} role="dialog" aria-modal="true" aria-label="Choose promotion" className="shogi-promotion" style={{ top: `${Math.floor(destinationIndex / columns) < rows / 2 ? 28 : 54}%` }} onKeyDown={interaction.completionKey}><strong>Promotion</strong><p>Choose how this piece completes its move.</p><div>{completions.map((c) => <button key={c.action} className="primary" onClick={() => interaction.chooseCompletion(c.action)}>{c.completion?.label ?? "Complete move"}</button>)}</div><button className="quiet" onClick={interaction.cancel}>Cancel promotion</button></div>}
     </div>;
   const footer = <>
-    <div className={`shogi-board-help${inspection || inspectionPending ? " movement-inspection-status" : ""}`}><span>{inspection ? inspectionStatus(inspection.label) : inspectionPending ? "Loading read-only movement inspection…" : "Arrows: move focus · Enter/Space: select · Esc: cancel"}</span></div>
+    <div className={`shogi-board-help${inspection || inspectionPending ? " movement-inspection-status" : ""}`}><span>{inspection ? inspectionStatus(inspection.label) : inspectionPending ? "Loading read-only movement inspection…" : tori && selectedLabel ? `${selectedLabel} · Esc clears` : "Arrows: move focus · Enter/Space: select · Esc: cancel"}</span></div>
     {continuation && <div className="shogi-route" onKeyDown={(e) => { if (e.key === "Escape") { e.preventDefault(); interaction.cancel(); } }}><p>{announcement}</p>{terminals.length > 0 && !inspection && <button onClick={interaction.completeHere}>Complete action here</button>}<button onClick={interaction.cancel}>Cancel selection</button></div>}
     <span className="sr-only" role="status" aria-live="polite">{announcement}</span>
   </>;
-  return <GameFrame className="shogi-stage" snapshot={snapshot} bottom={orientation.side} upperContent={tray(topSide)} board={board}
+  return <GameFrame className={`shogi-stage${tori ? " tori-stage" : ""}`} snapshot={snapshot} bottom={orientation.side} upperContent={tray(topSide)} board={board}
     lowerContent={tray(orientation.side)} help={footer}
     onFocusCapture={interaction.onFocusCapture}
     onBlurCapture={interaction.onBlurCapture} />;

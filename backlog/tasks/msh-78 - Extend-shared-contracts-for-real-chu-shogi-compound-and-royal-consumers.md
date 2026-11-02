@@ -4,7 +4,7 @@ title: Extend shared contracts for real chu shogi compound and royal consumers
 status: To Do
 assignee: []
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-26T07:44:00Z'
+updated_date: '2026-11-02T21:47:00Z'
 labels:
   - m4
   - owner-msh-46
@@ -21,6 +21,8 @@ references:
 documentation:
   - docs/m4/implementation-map.md
   - docs/m4/delivery-plan.md
+  - docs/m4/chu/profile.md
+  - docs/m4/chu/handoff.md
 type: task
 ordinal: 78000
 ---
@@ -50,3 +52,9 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MSH82 refinement2026-11-02: consume actual86 payload under mshogi.chu.jcsa2019.v1, no speculative common rules layer. Original dependencies69/72/73/86 and4AC/DoD unchanged. Current native GameKind/profile/schema/RawValue routing, one execution context, DocumentEnvelope/DesktopController/ActiveDocument, frontend session and native-choice controller remain owners. Add real Chu dispatch/codec/replay/royal and admission metadata, complete ordered same-endpoint/return choices and native effects; no hands/self-check/collapsed base origins. Measure long native records/observations/replay before precommit capacity policy; retain complete saveability/stop-close headroom and fresh execution authority. Real native-generated fixtures and current four-game affected-boundary regressions required; synthetic board alone insufficient. Chu execution remains explicitly unsupported/unscored until43. See docs/m4/chu/handoff.md. To Do until actual86 handoff; no implementation started.
+<!-- SECTION:NOTES:END -->

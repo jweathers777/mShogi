@@ -1,0 +1,110 @@
+{
+  "schema": "mshogi.chu.profile-verification.v1",
+  "task": "MSH-82",
+  "date": "2026-11-02",
+  "base_revision": "78f8d6cbf260cb06611fea24ebfb933a57e6afac",
+  "tested_source_revision": null,
+  "integration_branch": "codex/rewrite",
+  "scope": "Source/profile/data and direct implementation handoff only; no native Chu execution",
+  "environment": {
+    "os": "macOS-27.0.1-arm64-arm-64bit",
+    "python": "3.11.0",
+    "PyYAML": "6.0",
+    "backlog": "1.55.1 pinned; installed1.55.0 not used for mutations"
+  },
+  "profile": "mshogi.chu.jcsa2019.v1",
+  "edition": "JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02",
+  "pending_owner_decisions": [],
+  "artifact_sha256": {
+    "profile.md": "0e17f02f1053fcd3bff7f6ec7f7834f5b969f7a3f5550989bd15bf976d6f4a76",
+    "profile.json": "630b585312e7e0ac63516a4c55f2e8acf5ee96a5e2be71f1f653fc68e9afaf5c",
+    "decisions.md": "b56d1aa2d3a7de6c78864bf99f67518dd17ae70b3e76978602497af0f332aef5",
+    "sources.json": "eadecbb96224daecf504af70c3fa96bbad51906369416ab401e8ab2d23ad0fcf",
+    "fixtures.json": "545f23e7c805949e7d67c64c3e2fd39927d5bdae2401065d4d5f5bfc0c9fea2a",
+    "handoff.md": "0e0cdd002d9573c76b5ffac7d5d0e1dea8d87c379d61cdd757347891cde78db1",
+    "validate.py": "2b2a7dd72465430f518cc13f7fa39b9bc6a9ab4c34a0ef0ec9fae668ff942633",
+    "test_validate.py": "1da80fd2f31d94cde76a522eb085d40f5054f072b0ff882688cd4e97372e6f33"
+  },
+  "accounting": {
+    "rows": 250,
+    "authored": 221,
+    "rotated": 29,
+    "native_rows_pending86": 240,
+    "consumer_rows_pending78_43": 10,
+    "top_level_expected_fields_not_executed_assertions": 1141,
+    "native_executed": 0,
+    "native_passed": 0,
+    "encoded_bytes": {
+      "profile.json": 22963,
+      "fixtures.json": 563575,
+      "sources.json": 11850
+    }
+  },
+  "independent_reviews": [
+    {
+      "reviewer": "chu_lion_review",
+      "result": "PASS",
+      "method": "Direct actual JCSA text/diagrams;29movement faces/29rotations/18promotion categories/Lion cases; final separate source-formula Python enumeration171complete actions without profile movement arrays or production implementation",
+      "fixture_anchor_before_status_only": "94bebb2826f9467631f1eca250d0c07b49b77df5dbd17c965a5b28ac55a2662a",
+      "native_execution": false
+    },
+    {
+      "reviewer": "chu_endings_review",
+      "result": "PASS",
+      "method": "Source inspection/actual IX diagram/independent hand calculations all35C06-C08 rows; reviewed final narrow mate, before-fourth last opportunity, first actual passer, material exclusions/actual immediate response/consent",
+      "native_execution": false
+    },
+    {
+      "reviewer": "chu_contract_review",
+      "result": "PASS",
+      "method": "Actual native/execution/runtime/document/presentation/frontend-choice source inspection; representative hand geometry/perft7/42; final diff and independent audit hashes/accounting/original criteria/dependency comparison",
+      "native_execution": false
+    }
+  ],
+  "checks": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 docs/m4/chu/validate.py",
+      "result": "PASS",
+      "details": "Strict duplicate-preserving data admission, coverage/root inventory/rotation/reference validation,3audit hashes;250rows,0native executed/passed"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s docs/m4/chu -p 'test_validate.py'",
+      "result": "PASS",
+      "tests": 17,
+      "category": "development data admission/negative mutations, not rules conformance"
+    },
+    {
+      "command": "python3 /private/tmp/msh82-handoff-check.py",
+      "result": "PASS before source checkpoint; exact checkpoint rerun pending",
+      "details": "27 source local SHA/size matches;3primary HTML unchanged from original research; local Markdown links; all-task YAML ID/dependency graph; original82/86/78/43AC+DoD+dependencies; reviewed JSON differs only status;111relative links,132tasks allresolved/no cycles, no original criterion/dependency changes",
+      "script_sha256": "e954b13a107f672a9b26e4b7f70aa4a3c9316d233fe8d36bf875f65d3b78bbc9"
+    },
+    {
+      "command": "pinned backlog1.55.1 doctor",
+      "result": "PASS",
+      "details": "No duplicate IDs/self-dependencies/cycles"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS before source checkpoint; exact checkpoint rerun pending"
+    }
+  ],
+  "required_ci_jobs": [],
+  "ci_disposition": "Not applicable: no product production changes. Product/native/platform builds and GUI not run; docs/data-only integration uses skip ci.",
+  "failed_or_corrected_probes": [
+    "Initial source helper assumed cp932; actualUTF-8C3 decode failed locally, corrected metadata-based decoding succeeded. No HTTP/rules-test failure inferred.",
+    "Independent exploratory script syntax errors were corrected before successful audit; no native execution.",
+    "Initial final-link check found verification.json not yet created; rerun after creation required."
+  ],
+  "limitations": [
+    "Working independently checked Japanese interpretation, not certified human translation.",
+    "No native Chu implementation, native executed fixtures, engine/reference comparison, package or GUI evidence in82.",
+    "86 owns actual complete LegalAll/Game/replay/undo/property/native CI;78 owns real native consumers and measured archive policy;43 owns functional engine/console/finished12x12 product;52/M5 competitive strength.",
+    "Original historical research preserved; no unacquired historical text presented as inspected."
+  ],
+  "next_queue": [
+    "MSH-86 coherent authoritative native kernel/history/record batch",
+    "MSH-78 real shared consumer extension after86",
+    "MSH-43 complete functional product after its existing dependencies"
+  ]
+}

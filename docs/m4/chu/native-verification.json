@@ -4,8 +4,8 @@
   "date": "2026-11-02",
   "integration_branch": "codex/rewrite",
   "base_revision": "0e649b2e328ac4fc89a9e139d19588937f406751",
-  "tested_source_revision": "136f89260090d21bafea3f67b036b3354729e4be",
-  "status": "Native source and snapshot trust correction independently reviewed; final corrected exact-source three-platform CI pending",
+  "tested_source_revision": "f44e0b9673bbbe1cc57a8a45522b04948d1c69bb",
+  "status": "PASS: native source, independent conformance/review and all three required native CI jobs",
   "environment": {
     "platform": "macOS-27.0.1-arm64-arm-64bit",
     "python": "3.11.0",
@@ -61,7 +61,7 @@
     ],
     "rotated_actual_choices_and_exact_reversals": 583,
     "exact_source_report_sha256": "61b8f8ed277210a593c7b4054ecd79b48cbeada38455d347ad98cb494031b6e9",
-    "exact_source_report_reproduction": "MSHOGI_CHU_CONFORMANCE_REPORT=/private/tmp/msh86-native-report-136f892.json cargo test --locked -p mshogi-core --lib chu::game_conformance::complete_independently_expected_native_corpus -- --nocapture"
+    "exact_source_report_reproduction": "MSHOGI_CHU_CONFORMANCE_REPORT=/private/tmp/msh86-native-report-f44e0b9.json cargo test --locked -p mshogi-core --lib chu::game_conformance::complete_independently_expected_native_corpus -- --nocapture"
   },
   "required_ci_jobs": [
     "Rust (ubuntu-24.04)",
@@ -69,13 +69,187 @@
     "Rust (windows-2022)"
   ],
   "ci": {
-    "status": "pending corrected exact-source push",
+    "status": "success",
+    "source_revision": "f44e0b9673bbbe1cc57a8a45522b04948d1c69bb",
+    "run_id": 41539884098,
+    "url": "https://github.com/jweathers777/mShogi/actions/runs/41539884098",
     "required_jobs": [
-      "Rust (ubuntu-24.04)",
-      "Rust (macos-15)",
-      "Rust (windows-2022)"
+      {
+        "name": "Rust (windows-2022)",
+        "id": 125601034247,
+        "status": "success",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/41539884098/job/125601034247",
+        "started_at": "2026-11-02T22:45:14Z",
+        "completed_at": "2026-11-02T23:06:45Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "success"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "success"
+          },
+          {
+            "name": "Install and identify the pinned toolchain",
+            "status": "success"
+          },
+          {
+            "name": "Format",
+            "status": "success"
+          },
+          {
+            "name": "Lint",
+            "status": "success"
+          },
+          {
+            "name": "Test",
+            "status": "success"
+          },
+          {
+            "name": "Verify isolated desktop QA constructors",
+            "status": "success"
+          },
+          {
+            "name": "Verify native desktop snapshot fixtures",
+            "status": "success"
+          },
+          {
+            "name": "Build",
+            "status": "success"
+          },
+          {
+            "name": "Console smoke",
+            "status": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "name": "Rust (ubuntu-24.04)",
+        "id": 125601034293,
+        "status": "success",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/41539884098/job/125601034293",
+        "started_at": "2026-11-02T22:45:14Z",
+        "completed_at": "2026-11-02T23:04:50Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "success"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "success"
+          },
+          {
+            "name": "Install and identify the pinned toolchain",
+            "status": "success"
+          },
+          {
+            "name": "Format",
+            "status": "success"
+          },
+          {
+            "name": "Lint",
+            "status": "success"
+          },
+          {
+            "name": "Test",
+            "status": "success"
+          },
+          {
+            "name": "Verify isolated desktop QA constructors",
+            "status": "success"
+          },
+          {
+            "name": "Verify native desktop snapshot fixtures",
+            "status": "success"
+          },
+          {
+            "name": "Build",
+            "status": "success"
+          },
+          {
+            "name": "Console smoke",
+            "status": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "name": "Rust (macos-15)",
+        "id": 125601034433,
+        "status": "success",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/41539884098/job/125601034433",
+        "started_at": "2026-11-02T22:45:18Z",
+        "completed_at": "2026-11-02T23:00:53Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "success"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "success"
+          },
+          {
+            "name": "Install and identify the pinned toolchain",
+            "status": "success"
+          },
+          {
+            "name": "Format",
+            "status": "success"
+          },
+          {
+            "name": "Lint",
+            "status": "success"
+          },
+          {
+            "name": "Test",
+            "status": "success"
+          },
+          {
+            "name": "Verify isolated desktop QA constructors",
+            "status": "success"
+          },
+          {
+            "name": "Verify native desktop snapshot fixtures",
+            "status": "success"
+          },
+          {
+            "name": "Build",
+            "status": "success"
+          },
+          {
+            "name": "Console smoke",
+            "status": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "success"
+          }
+        ]
+      }
     ],
-    "monitor": "One completion-aware watcher per activecampaign; old supersededrun cancelled afterfailurediagnosis"
+    "monitor": "One completion-aware gh run watch; superseded campaigns cancelled and retained separately."
   },
   "local_checks": [
     {
@@ -157,6 +331,10 @@
     {
       "command": "cargo fmt --all -- --check; cargo clippy --locked -p mshogi-core --all-targets -- -D warnings",
       "result": "PASS final snapshot correction"
+    },
+    {
+      "command": "gh run watch 41539884098 --exit-status --interval 30; gh run view 41539884098 --json databaseId,headSha,status,conclusion,jobs,url",
+      "result": "PASS: exact f44e0b9 source; all steps in required Windows, Linux and macOS native jobs succeeded. No GUI result inferred."
     }
   ],
   "measurements": {
@@ -202,6 +380,12 @@
       "scope": "Historical snapshot trusted-state visibility correction",
       "method": "Independent read-only diff and trust-boundary audit; independently executed 2 E0616 compile-fail tests, 2 external consumer tests and diff check",
       "status": "PASS; no remaining material finding; serialized payload unchanged"
+    },
+    {
+      "reviewer": "chu_native_review",
+      "scope": "Final original acceptance/DoD and handoff evidence reconciliation",
+      "method": "Read-only source/evidence review, all 14 hashes and exact report hash checked; reused independent actual tests and production audit",
+      "status": "Final acceptance PASS after independent terminal CI metadata reconciliation: all three required jobs/all steps passed on exact reviewed source; no remaining MSH-86 blocker. Terminal task/evidence commit still requires normal integration and push."
     }
   ],
   "resolved_review_findings": [
@@ -252,6 +436,29 @@
       "run_id": 41538750357,
       "url": "https://github.com/jweathers777/mShogi/actions/runs/41538750357",
       "disposition": "Cancelled as superseded by final snapshot trust correction. Format and lint passed on all three platforms; tests in progress at cancellation. No completed campaign or platform success claimed."
+    },
+    {
+      "run_id": 41539884431,
+      "scope": "Automatic desktop packages at final native source",
+      "disposition": "Cancelled as out of scope for native-only86. No packaged GUI claim."
     }
-  ]
+  ],
+  "acceptance_mapping": {
+    "AC1": "Native position/legal/Game/record modules, 35 focused native tests, exact reversal and strict canonical replay; native-v1.md documents actual API.",
+    "AC2": "Immutable MSH-82 corpus: actual production adapters execute all 240 native rows / 1,076 assertions; independent movement/Lion/Game/adapter reviews and 583 rotation/reversal checks.",
+    "AC3": "Actual external native-core consumer tests consume complete actions, ordered captures, raw tagged records, history prefixes and fresh/stale contexts. Stable handoff documented for MSH-78. Shared/desktop execution remains unimplemented and unadvertised, owned by MSH-78/43.",
+    "AC4": "MSH-82 refinement recorded no useful further split before Ready; coherent internal A\u2013D checkpoints and original dependency graph retained. No aggregate self-dependency or artificial external-engine gate."
+  },
+  "known_followups": {
+    "MSH-112": "Existing unstarted owner of unchanged early-exit runner classification race; MSH-86 recurrence appended without changing scope/status.",
+    "MSH-78": "Dependency-ready after MSH-86 completion; shared/document/session/compound consumers, not started.",
+    "MSH-43": "Complete Chu engine, console, notation and finished playable desktop product; remains open."
+  },
+  "completion_date_local": "2026-11-03",
+  "completion_checks": {
+    "task_graph": "PASS: 132 unique/resolved IDs, no missing/self/cyclic dependencies; original MSH-86/78 criterion text and dependencies unchanged (only supported86 checkboxes changed).",
+    "source_identity": "All 14 artifact hashes match reviewed/tested f44e0b9; finalization changes only task/evidence records.",
+    "downstream": "MSH-78 Ready/unassigned with all 69/72/73/86 dependencies Done; no implementation begun. MSH-43 To Do and M4 open.",
+    "independent_acceptance": "chu_native_review cross-checked terminal CI JSON, structured record, all14 hashes and original4AC/4DoD: closure supported after final evidence integration/push."
+  }
 }

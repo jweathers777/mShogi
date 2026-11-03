@@ -2383,6 +2383,32 @@ class Journey:
         self.capture('actual-retry-retains-native-history')
         self.quit()
 
+    def resume_pending_analysis(self, game):
+        """Observe native Resume/layout admission before one inspector click."""
+        w = self.web
+        w.button('Resume play')
+        def resumed():
+            state = w.read("""(() => {const shell=document.querySelector('.game-shell'),root=document.querySelector('.moves-root'),
+                analyze=[...document.querySelectorAll('.inspector-switch button')].find(e=>e.textContent.trim()==='Analyze position');
+                return {paused:shell?.dataset.paused,rootEnabled:!!root&&!root.disabled,
+                    pausedBanner:!!document.querySelector('.play-paused'),analysisEnabled:!!analyze&&!analyze.disabled};})()""")
+            assert state and state.get('paused') == 'false' and state.get('rootEnabled') is True and state.get('pausedBanner') is False and state.get('analysisEnabled') is True, state
+            return state
+        settled = wait(resumed, 'native Resume settled before opening analysis')
+        self.record('Observe resumed play controls before one analysis inspector click', settled)
+        w.button('Analyze position')
+        def analysis_ready():
+            state = w.read("""(() => {const analyze=[...document.querySelectorAll('.inspector-switch button')].find(e=>e.textContent.trim()==='Analyze position'),
+                depth=document.querySelector('.shogi-analysis input[name="depth"]'),nodes=document.querySelector('.shogi-analysis input[name="nodes"]'),
+                start=document.querySelector(START);
+                return {active:analyze?.getAttribute('aria-pressed')==='true',depthEnabled:!!depth&&!depth.disabled,
+                    nodesEnabled:!!nodes&&!nodes.disabled,startEnabled:!!start&&!start.disabled};})()""".replace('START', json.dumps(f'[data-analysis-start="{game}"]')))
+            assert state and all(state.get(field) is True for field in ('active', 'depthEnabled', 'nodesEnabled', 'startEnabled')), state
+            return state
+        ready = wait(analysis_ready, 'active analysis inspector and native inputs ready')
+        self.record('Observe active analysis controls before setting work limits', ready)
+        return ready
+
     def pending(self, game):
         """Actual QA supervisor with bounded external delay; no fake responses."""
         fixture = 'standard' if game == 'chess' else f'{game}-standard'
@@ -2419,8 +2445,7 @@ class Journey:
         time.sleep(5.2)
         assert self.native_diagnostics()['context'] == restored['context'], 'retired engine work never reappears'
         self.capture('takeback-pending-stopped')
-        w.button('Resume play')
-        w.button('Analyze position')
+        self.resume_pending_analysis(game)
         w.set('.shogi-analysis input[name="depth"]', 1)
         w.set('.shogi-analysis input[name="nodes"]', 128 if game == 'xiangqi' else 1000)
         w.click(f'[data-analysis-start="{game}"]')

@@ -26,6 +26,8 @@ pub struct ChuHistory {
     pub event_index: usize,
     /// Known complete board actions.
     pub board_ply: usize,
+    /// Exact declared counter at this prefix, distinct from known board history.
+    pub declared_total_plies: String,
     /// Every original/promoted native identity.
     pub identities: Vec<ChuPieceIdentity>,
     /// All surviving King/Prince pieces.
@@ -93,6 +95,7 @@ impl ChuHistory {
         Self {
             event_index: game.events().len(),
             board_ply: game.snapshot().board_ply,
+            declared_total_plies: game.position().declared_total_plies().to_string(),
             identities,
             royals,
             capture_all_royals_threat,
@@ -112,6 +115,13 @@ impl ChuHistory {
 pub struct ChuPresentation {
     /// Native root category, declared counters and known-history provenance.
     pub root: c::RootMetadata,
+    /// Exact declared root counter as decimal text for JavaScript consumers.
+    /// This is not a claim of known moves before the imported root.
+    pub declared_root_plies: String,
+    /// Native provenance fact; consumers need not infer history from root labels.
+    pub earlier_history_unknown: bool,
+    /// Only native established reachability, never diagram admissibility.
+    pub historical_reachability_proven: bool,
     /// Exact viewed history with no future knowledge.
     pub selected: ChuHistory,
     /// Current authoritative live history.
@@ -123,6 +133,16 @@ impl ChuPresentation {
     pub(super) fn new(selected: &c::Game, live: &c::Game) -> Self {
         Self {
             root: selected.position().root().clone(),
+            declared_root_plies: selected
+                .position()
+                .root()
+                .declared_completed_plies()
+                .to_string(),
+            earlier_history_unknown: selected.position().root().earlier_history_unknown(),
+            historical_reachability_proven: selected
+                .position()
+                .root()
+                .historical_reachability_proven(),
             selected: ChuHistory::new(selected),
             live: ChuHistory::new(live),
             execution_supported: false,

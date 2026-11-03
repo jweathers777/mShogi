@@ -37,9 +37,35 @@ fn main() {
         ("captures", "CHU-LION-C2-1"),
         ("promotion", "CHU-PROMOTE-DE-YES"),
         ("royals", "CHU-ROYAL-BOTH-COMPOUND"),
+        ("counter", "CHU-REP-QUIET"),
     ] {
         let f = roots::fixture(id);
-        let g = if name == "routes" {
+        let g = if name == "counter" {
+            let base = roots::root(&f["given"]["root"]);
+            let mut g = c::Game::from_root(
+                c::Position::from_diagram(
+                    &base.position().pieces().collect::<Vec<_>>(),
+                    c::Side::Sente,
+                    c::RootMetadata::imported("Exact counter fixture".into(), u64::MAX - 1)
+                        .unwrap(),
+                )
+                .unwrap(),
+            )
+            .unwrap();
+            g.submit(c::GameRequest {
+                expected: g.context(),
+                actor: c::Side::Sente,
+                command: c::GameCommand::Play {
+                    action: c::Action {
+                        from: "1l".parse().unwrap(),
+                        route: vec!["1k".parse().unwrap()],
+                        promote: false,
+                    },
+                },
+            })
+            .unwrap();
+            g
+        } else if name == "routes" {
             roots::contract_game()
         } else {
             roots::root(&f["given"]["root"])

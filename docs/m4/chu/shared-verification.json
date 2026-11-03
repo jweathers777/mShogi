@@ -5,7 +5,7 @@
   "integration_branch": "codex/rewrite",
   "base_revision": "73623070114503ec32e169f967ac16fd942531a3",
   "tested_source_revision": null,
-  "status": "Verification in progress; no Done claim",
+  "status": "Counter-precision follow-up verified locally; superseded source CI cancelled, final-source CI pending",
   "profile": "mshogi.chu.jcsa2019.v1",
   "edition": "JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02",
   "identities": {
@@ -16,23 +16,33 @@
   },
   "artifact_sha256": {
     ".github/workflows/rust.yml": "f1d9f9da13d6d0f2b70cb4cae1d775d901a9c416cd741bfe64c6235b96eeadf4",
+    "crates/mshogi-console/tests/chu_internal.rs": "f957f5e3c1c52262f3671d51fa112750021995831a281e326e7acdda8597534e",
     "crates/mshogi-core/src/chu/game.rs": "cf5fe1449389461789dc163ddb79bf07291fa32ef221273fd7d07de89da8c027",
     "crates/mshogi-core/src/chu/record.rs": "509e0b718fab68b0ce64a29f55cc8fe506b3b616c906986ec88302ae1b0b2297",
     "crates/mshogi-core/src/native.rs": "aa7d7080d817eb8e690a281df851001161d7fa237844867d1db1dbb234bd71ea",
+    "crates/mshogi-core/tests/native_chu_envelope.rs": "e35dac59890cda34adae42c27a1231e7ae2f01ec0b2abd979c1b880cc1a48f57",
     "crates/mshogi-core/tests/native_envelope.rs": "6bc50cedbc9419c40c0ba84a1b36d9e0b6a33ec50b9a7dcdd0da7b249f886ba4",
     "crates/mshogi-desktop-session/Cargo.toml": "1467c67d068a7b813ad9d7e47be6fa1b0465b7ede0a1a5f41273980a0918fdce",
+    "crates/mshogi-desktop-session/examples/support/chu.rs": "e64672b442853a63a1ed7f2805abb7f96d41e54ac7603e09e4be860889787573",
+    "crates/mshogi-desktop-session/examples/write_chu_frontend_fixtures.rs": "09c773b5256a16d8b07ed2b98a00695e6ab3c3966d96a9679351618f6d6c8cef",
     "crates/mshogi-desktop-session/src/capacity.rs": "0443cdeec86c0cab7f726c8b785bcfc1d6735316e46997cc5f96c467d15a6e13",
+    "crates/mshogi-desktop-session/src/chu_document.rs": "e1f9488fa034143a6732e4b718e663675c18c772edda49681c977e49a17c0245",
+    "crates/mshogi-desktop-session/src/chu_document/tests.rs": "bffb23d8fc66d7537658fbe170d0a145ae71b2565e7c8d77d54920d4fd4625d4",
     "crates/mshogi-desktop-session/src/document.rs": "72cb640d617a927750f55cf735b9602894e586face2c1f80f66fb7ab0eea6a12",
     "crates/mshogi-desktop-session/src/lib.rs": "3651570f871ed5d999a69a6861f6418238209b09e1ab7916b1c9d0346229c2a6",
-    "crates/mshogi-desktop-session/src/moves.rs": "91731532a162eabbcfcde2199582bf006afa7c1e4c04cea5ab8b80cf38aaad17",
+    "crates/mshogi-desktop-session/src/moves.rs": "082c9c26982c4761ebb057916fe72a53f2c1b618e45def2fead4c6d9e99b4e91",
     "crates/mshogi-desktop-session/src/moves/tori.rs": "cf781a32b1273c8955ca93917106f1c1ff3b1d2cb3f55da9177fffaadd9c4b19",
     "crates/mshogi-desktop-session/src/persistence.rs": "4d651a7a7038f8bbf819f308a14223e6a9dfdad34c6106c81315c5d816105362",
     "crates/mshogi-desktop-session/src/resource.rs": "5ed7823ede9fbd50bcd291dd33d41ec5767f7de38c234f09e9e5eee806f2b8bf",
     "crates/mshogi-desktop-session/src/shared.rs": "82d96036b586869296a7375964143a3ce6c0de62e9328e66c6f2a9d9e3a63e90",
     "crates/mshogi-desktop-session/src/shared_archive.rs": "6a43a876b56cff491533bade6d358759c43bb6538722e3b0a31f804621d23f74",
+    "crates/mshogi-desktop-session/src/shared_chu.rs": "8ac11a7ec0070fbdda1330cbbe99edd5ae279bf566e16fb899f960bff3d9405d",
+    "crates/mshogi-desktop-session/src/shared_chu_presentation.rs": "82f670520761bd5599f6f6f90f4d31d3fc377c46b6b95fe274ba5aef7a9d50b8",
+    "crates/mshogi-desktop-session/src/shared_chu_tests.rs": "412e42e6a8a12ce490d74fa683c3baf3459aa5df5ad9a5818e45d9637600a54b",
     "crates/mshogi-desktop-session/src/shared_inspection.rs": "e939164efab2b8f0a09ad42203751da5e06a86b83cb8d6ac1ac19477f391e48a",
     "crates/mshogi-desktop-session/src/shared_tests.rs": "1a6a35cf4dc2a622ce8e401c32041d5d2d991af8e1a007f545657b5217a3025f",
     "crates/mshogi-desktop-session/src/shared_tori.rs": "64b30f312050dddbe6d0e071af9ba14fc9128864427cdd764760cfe78b5dbfa5",
+    "crates/mshogi-desktop-session/src/shared_transaction.rs": "72acde822deb719df7a7bb9559904eb477280a5a69d311606f6f5e44fe35060a",
     "crates/mshogi-desktop-session/src/shared_xiangqi.rs": "8211e4bf64bb0b051c7cff8e3b77d20a967190b6ea8c0c9ec92be660a715b1c0",
     "crates/mshogi-desktop-session/src/shared_xiangqi_archive.rs": "c62929ccd727b0fd23395331ac6e2621c076b0e6887d37eddf8845804a02e69d",
     "crates/mshogi-desktop-session/src/synthetic.rs": "316c99bbe640b998826760ab9f87212b27f141f240e34c8af97e958b36c66fb9",
@@ -43,35 +53,26 @@
     "desktop/src-tauri/src/main.rs": "1a62c6a5b7afcc568d933de89ce9858d0a38f1f7ef5d203c48675aeef0be6013",
     "desktop/src/CompletedActionCue.tsx": "7024da5df799efdc804dd58ccb412993db77b72e1b66afec87e7d442419b286a",
     "desktop/src/NativeBoard.tsx": "c469d4fdeb87e5a998571a5a96622fdb88c804045f3ec1e666c0d5e012d30458",
+    "desktop/src/__fixtures__/shared-chu-captured.json": "9aafee29f22922cde5aaf161047360eb66e44ae432b29b1a2185f6eaf7429633",
+    "desktop/src/__fixtures__/shared-chu-captures.json": "c1da3d786fce6b9c13d2f8af597f09bdfc71e6c84e5c87039e3240539e9fc112",
+    "desktop/src/__fixtures__/shared-chu-inspection.json": "50764d35edd21f46a0d1892cad3bc04d35b612c5bdc19fab7cbb9f6b60e43fe1",
+    "desktop/src/__fixtures__/shared-chu-promotion.json": "2479e9561ce26f187d2c5ba56b827d17cb29dfb729c3c691ee7ea3fbf69c4d2d",
+    "desktop/src/__fixtures__/shared-chu-routes.json": "b6b88cd4365b1afe98b24d890b60eb867ed76dee19c5dd00884531ee0faf724b",
+    "desktop/src/__fixtures__/shared-chu-royals.json": "85051101ffb3dc886bf3ed0b290940cda4fc92d45297654d648b57852fdebf61",
     "desktop/src/boardPresentation.ts": "e00e04af9824145a8cf7ddc4cf8b8c91daf11fab6eb5cd9a5740679dab82f0ea",
     "desktop/src/completed-action.css": "f6e007cb0bcfedaa670a3b8b4cf3d0677850924c1807e9e6661d495ce8ef84c6",
     "desktop/src/product/ApplicationShell.tsx": "66acfb41a6126cb1784b349f7b3d08aab97c72b4290453c89067c8d994be37cc",
     "desktop/src/product/ApplicationView.tsx": "0abc3a197b981b1270bf8e95845b0e4e27bc91eeac5e7ffd00ff2c24765099d3",
+    "desktop/src/product/ChuContract.test.tsx": "8a15f941e92cd83b5eb766fe50ec2cdd38af32c66763759008ccc3f2b55ddef2",
     "desktop/src/product/GameBoard.tsx": "4e765c960203a7b883cd5784b5ba2200ca10cfc6ca76444c50008daa3988ef2b",
     "desktop/src/product/NativeSessionPanels.tsx": "1866e8992259a26336f7249659df85960feaf9320436e93391e670e63d1db228",
     "desktop/src/product/ProductApp.test.tsx": "993ee0a1248b498841606d295414d6b0912b7ae1a152dc5ecb2489f05c504c89",
     "desktop/src/product/ProductApp.tsx": "c8d894f2a7fdadbbbf86974f45869c9fdced66f63d1c55f850c2d68b0b4f9b54",
     "desktop/src/product/SupportDialog.tsx": "0d0e0ad782bec0987174277ff9fe1dbb2d541a319314174055fb1ca766d345ff",
-    "desktop/src/product/native.ts": "9539d3a180a43bf20708aabe85f002888648846e1da480d03d5c5eea494f4b5a",
+    "desktop/src/product/native.ts": "ecbefb492bf39acc8f5ceb7047f2b30843d80c45ee9e764e0c655ce302c84b45",
     "desktop/src/product/useGameSession.test.tsx": "85dd4116a8882007b365064aa0136037f3e5e523fa50b2c7d698da975513428f",
     "desktop/src/resources.ts": "b87c1e3004d6b005085d59d4bcb1b22bd0dcca3fd631f6c7f82e2cb6fd6fa12a",
-    "crates/mshogi-console/tests/chu_internal.rs": "f957f5e3c1c52262f3671d51fa112750021995831a281e326e7acdda8597534e",
-    "crates/mshogi-core/tests/native_chu_envelope.rs": "e35dac59890cda34adae42c27a1231e7ae2f01ec0b2abd979c1b880cc1a48f57",
-    "crates/mshogi-desktop-session/examples/support/chu.rs": "e64672b442853a63a1ed7f2805abb7f96d41e54ac7603e09e4be860889787573",
-    "crates/mshogi-desktop-session/examples/write_chu_frontend_fixtures.rs": "ba2bcc0a0dcd1cbba7c7cde737604cf1404083652df465c2b09ebf69138ef2c3",
-    "crates/mshogi-desktop-session/src/chu_document.rs": "e1f9488fa034143a6732e4b718e663675c18c772edda49681c977e49a17c0245",
-    "crates/mshogi-desktop-session/src/chu_document/tests.rs": "bffb23d8fc66d7537658fbe170d0a145ae71b2565e7c8d77d54920d4fd4625d4",
-    "crates/mshogi-desktop-session/src/shared_chu.rs": "8ac11a7ec0070fbdda1330cbbe99edd5ae279bf566e16fb899f960bff3d9405d",
-    "crates/mshogi-desktop-session/src/shared_chu_presentation.rs": "b04424a523adf170f015bf0bdc21cae609eead9228b93182718b7c0c720016a8",
-    "crates/mshogi-desktop-session/src/shared_chu_tests.rs": "51840b326f75e6d27a695e8d0a9cc2cf692b3a17abedfa83791fc5ff39356218",
-    "crates/mshogi-desktop-session/src/shared_transaction.rs": "72acde822deb719df7a7bb9559904eb477280a5a69d311606f6f5e44fe35060a",
-    "desktop/src/__fixtures__/shared-chu-captured.json": "f086e4e67261c8800508b66aea202211edc3f61d0a75f29f4cba54a07b6cc11e",
-    "desktop/src/__fixtures__/shared-chu-captures.json": "2747e6df0eccf45f9c515c1903e54833d5a069661e1b6303ff987e8442fbb0e6",
-    "desktop/src/__fixtures__/shared-chu-inspection.json": "50764d35edd21f46a0d1892cad3bc04d35b612c5bdc19fab7cbb9f6b60e43fe1",
-    "desktop/src/__fixtures__/shared-chu-promotion.json": "a1a35858ecef2cac681383e43eeba09a7d5b0e7c2458ac881c1118de1ea3dc7a",
-    "desktop/src/__fixtures__/shared-chu-routes.json": "45a90cb0be170223e3a66d495f358f915ec5e84dca8f475b3c04a5e274f82a54",
-    "desktop/src/__fixtures__/shared-chu-royals.json": "f9d7b4a03c051e2c0db70b75f120156eaa41e480b7ad50cef465e7266301859d",
-    "desktop/src/product/ChuContract.test.tsx": "c178fb0d86efbed5a026893494dbc86b8c42b0dae1c264af74f124995b930e91"
+    "desktop/src/__fixtures__/shared-chu-counter.json": "5286dc8e43e6b9e571bc3739b5bfe4e0e8638b39ab108e1bd77c44345f680a56"
   },
   "environment": {
     "os": "macOS-27.0.1-arm64-arm-64bit",
@@ -136,72 +137,95 @@
   "checks": [
     {
       "command": "cargo test --locked -p mshogi-core --test native_chu_envelope",
-      "result": "PASS1 real routing/history/strict parsing case"
+      "result": "PASS1 real routing/history/strict parsing case",
+      "source_revision": "f41f15e3833788c4072158f3601b4844347418cd"
     },
     {
       "command": "cargo test --locked -p mshogi-desktop-session chu_document::tests -- --nocapture",
-      "result": "PASS8 original codec/measurements cases; added retained-event case PASS1 separately, all included in277 suite"
+      "result": "PASS8 original codec/measurements cases; added retained-event case PASS1 separately, all included in277 suite",
+      "source_revision": "f41f15e3833788c4072158f3601b4844347418cd"
     },
     {
       "command": "cargo test --locked -p mshogi-desktop-session shared::chu_tests -- --nocapture",
-      "result": "PASS6 actual controller cases; independently repeated6PASS"
+      "result": "PASS6 actual controller cases; independently repeated6PASS",
+      "source_revision": "f41f15e3833788c4072158f3601b4844347418cd"
     },
     {
       "command": "cargo test --locked -p mshogi-console --test chu_internal",
-      "result": "PASS2 actual production child/controller tests, including historical observation Save/Open and stale selection/Take back"
+      "result": "PASS2 actual production child/controller tests, including historical observation Save/Open and stale selection/Take back",
+      "source_revision": "f41f15e3833788c4072158f3601b4844347418cd"
     },
     {
       "command": "cargo test --locked -p mshogi-desktop-session --all-features",
-      "result": "PASS277,0failed,182.24s; includes current4game archive/session/capacity/lifecycle/analysis/Take back regressions"
+      "result": "PASS277,0failed,182.24s; includes current4game archive/session/capacity/lifecycle/analysis/Take back regressions",
+      "source_revision": "f41f15e3833788c4072158f3601b4844347418cd"
     },
     {
       "command": "cargo clippy --workspace --all-targets --locked -- -D warnings",
-      "result": "PASS"
+      "result": "PASS",
+      "source_revision": "f41f15e3833788c4072158f3601b4844347418cd"
     },
     {
       "command": "cargo clippy --locked -p mshogi-desktop-session --all-targets --all-features -- -D warnings",
-      "result": "PASS"
+      "result": "PASS",
+      "source_revision": "f41f15e3833788c4072158f3601b4844347418cd"
     },
     {
       "command": "cargo run --locked -p mshogi-desktop-session [--features desktop-verification] --example write_{frontend,tori_frontend,chu_frontend}_fixtures -- desktop/src/__fixtures__",
-      "result": "PASS; old4game fixtures unchanged,6 new Chu native-generated DTOs"
+      "result": "PASS; old4game fixtures unchanged,6 new Chu native-generated DTOs",
+      "source_revision": "f41f15e3833788c4072158f3601b4844347418cd"
     },
     {
       "command": "npm run check (desktop, bundledNode24.19)",
-      "result": "PASS strict TypeScript"
+      "result": "PASS strict TypeScript",
+      "source_revision": "f41f15e3833788c4072158f3601b4844347418cd"
     },
     {
       "command": "npm test -- --reporter=dot (desktop)",
-      "result": "PASS30files391tests"
+      "result": "PASS30files391tests",
+      "source_revision": "f41f15e3833788c4072158f3601b4844347418cd"
     },
     {
       "command": "cargo test --manifest-path desktop/src-tauri/Cargo.toml --locked --features desktop-verification",
-      "result": "PASS15, includes normal4game and QAChu host file gates; actualGUI not claimed"
+      "result": "PASS15, includes normal4game and QAChu host file gates; actualGUI not claimed",
+      "source_revision": "f41f15e3833788c4072158f3601b4844347418cd"
     },
     {
       "command": "cargo clippy --manifest-path desktop/src-tauri/Cargo.toml --locked --all-targets --all-features -- -D warnings",
-      "result": "PASS; unchanged vendorTao20dependencywarnings"
+      "result": "PASS; unchanged vendorTao20dependencywarnings",
+      "source_revision": "f41f15e3833788c4072158f3601b4844347418cd"
     },
     {
       "command": "npm run desktop:build -- --bundles app (desktop, bundledNode24.19)",
-      "result": "PASS normal macOS package20.32MiB; no QA activation"
+      "result": "PASS normal macOS package20.32MiB; no QA activation",
+      "source_revision": "f41f15e3833788c4072158f3601b4844347418cd"
     },
     {
       "command": "python3 desktop/scripts/package-smoke.py desktop/src-tauri/target/release/bundle/macos/mShogi.app --report /private/tmp/msh78-package-smoke.json",
       "result": "PASS package inventory+actual bundled protocols/execution; no GUI interaction claim",
       "host_sha256": "b6d40b5aa58984541eec8beabad78212eb3dbba92ed659f51bc6e241b2eb0414",
-      "engine_sha256": "48f07f3af250b864410a419592d4bca853000632e24c762d0c82da0837ff7ff2"
+      "engine_sha256": "48f07f3af250b864410a419592d4bca853000632e24c762d0c82da0837ff7ff2",
+      "source_revision": "f41f15e3833788c4072158f3601b4844347418cd"
     },
     {
       "command": "cargo fmt --all -- --check; standalone host fmt; git diff --check",
-      "result": "PASS"
+      "result": "PASS",
+      "source_revision": "f41f15e3833788c4072158f3601b4844347418cd"
+    },
+    {
+      "command": "cargo test --locked -p mshogi-desktop-session shared::chu_tests -- --nocapture",
+      "result": "PASS9 final counter/provenance/known-root/Gote-first cases; native/archive capacity implementation unchanged from prior277PASS"
+    },
+    {
+      "command": "npm test -- --reporter=dot src/product/ChuContract.test.tsx src/product/Moves.test.tsx",
+      "result": "PASS2files13tests, exactMAXcounter JSON string/provenance and known-root rows"
     }
   ],
   "independent_reviews": [
     {
       "reviewer": "fresh subagent chu_native_review",
       "method": "read-only source/capacity/lifecycle review and independently executed six shared::chu_tests, git diff --check",
-      "result": "PASS at reviewed working-source hashes; final evidence/CI pending",
+      "result": "Final original4AC source/evidence assessment PASS subject required CI, independently6 controller+2 actual child/controller tests PASS; manifest hash verified",
       "findings_resolved": [
         "null vs numeric selection reservation byte",
         "historical Settings cleared selected prefix",
@@ -211,7 +235,7 @@
     {
       "reviewer": "fresh subagent chu_conformance",
       "method": "read-only native presentation/frontend diff and independently executed39 focused Vitest checks usingNode24.19",
-      "result": "39PASS, no remaining material frontend finding at reviewed working source",
+      "result": "Final39/39 focused tests PASS; no remaining material frontend finding",
       "findings_resolved": [
         "Chu numeric tuple native Action types",
         "unsupported recovery controls without breaking concluded Chess analysis",
@@ -219,6 +243,11 @@
         "advisory capture-all query scope",
         "inspection test uses actual native DTO and correct retired lifetime"
       ]
+    },
+    {
+      "reviewer": "fresh subagent chu_conformance",
+      "method": "final precision source review; independently9/9 Chu controller tests and40/40 frontend Chu+recovery checks",
+      "result": "PASS after exact decimal/provenance and known-root/Gote-first correction; no native rules/schema/product activation change"
     }
   ],
   "ci": {
@@ -270,5 +299,68 @@
     "native_rows_not_recounted": 240
   },
   "gui_scope": "No new actual Chu packaged GUI interaction or finished board visual approval claimed; infrastructure task. Applicable current-four-game CI GUI evidence remains separately labeled.",
-  "future_owner": "MSH-43: functional engine/console/notation, traditional kanji product/full-board UI, activation and packaged product verification; M4 open."
+  "future_owner": "MSH-43: functional engine/console/notation, traditional kanji product/full-board UI, activation and packaged product verification; M4 open.",
+  "acceptance_mapping": {
+    "AC1": "Actual CanonicalRecord/side/command routing, child UnsupportedMode and7 negative context mutations plus cancellation/selection/Take back/reopen/cross-game retirement. Chu execution unsupported until43.",
+    "AC2": "Native12x12 geometry, exact routes/promotion/captures, royal metadata/advisory threat scope and real6 frontend/controller cases; no frontend rules or hands/self-check.",
+    "AC3": "Current envelope1, authoritative native replay, typed counts/work/bytes/reservations, observations and branches, real atomic Save/Open/dirty/stopped identities; immutable rejection.",
+    "AC4": "7 native-generated DTOs;1routing9codec9controller2child7frontend+1chooser cases. Prior277session391frontend15host checks reused where unchanged; final source CI will rerun integration. Native86 assertions not recounted."
+  },
+  "superseded_source_revisions": [
+    {
+      "source": "f41f15e3833788c4072158f3601b4844347418cd",
+      "reason": "Root found Chu u64-to-JavaScript presentation precision gap; add native decimal fields and known-root technical move pairs. No native/archive/rules change.",
+      "ci": [
+        {
+          "id": 41606708598,
+          "workflow": "Rust workspace",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/41606708598",
+          "jobs": [
+            {
+              "name": "Rust (windows-2022)",
+              "conclusion": "cancelled",
+              "url": "https://github.com/jweathers777/mShogi/actions/runs/41606708598/job/125818226108"
+            },
+            {
+              "name": "Rust (ubuntu-24.04)",
+              "conclusion": "cancelled",
+              "url": "https://github.com/jweathers777/mShogi/actions/runs/41606708598/job/125818226486"
+            },
+            {
+              "name": "Rust (macos-15)",
+              "conclusion": "success",
+              "url": "https://github.com/jweathers777/mShogi/actions/runs/41606708598/job/125818226496"
+            }
+          ]
+        },
+        {
+          "id": 41606708574,
+          "workflow": "Desktop packages",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/41606708574",
+          "jobs": [
+            {
+              "name": "Desktop (windows-2022)",
+              "conclusion": "cancelled",
+              "url": "https://github.com/jweathers777/mShogi/actions/runs/41606708574/job/125818225927"
+            },
+            {
+              "name": "Desktop (macos-15)",
+              "conclusion": "success",
+              "url": "https://github.com/jweathers777/mShogi/actions/runs/41606708574/job/125818226529"
+            },
+            {
+              "name": "Desktop (ubuntu-24.04)",
+              "conclusion": "cancelled",
+              "url": "https://github.com/jweathers777/mShogi/actions/runs/41606708574/job/125818226763"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "precision_contract": "Native decimal strings preserve declared root and selected/live totals above JSsafeinteger. Technical Chu move pairs number known actions only; exact declared root counter remains separate, no fabricated prior rows. Native records/archive remain unchanged."
 }

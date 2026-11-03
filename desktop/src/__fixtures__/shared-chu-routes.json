@@ -2,7 +2,7 @@
   "moves": {
     "root": {
       "label": "Starting position",
-      "numbering": "Technical Chu actions · declared root plies 0 · earlier history unknown"
+      "numbering": "Technical Chu actions · known-root move pairs · declared root plies 0 · earlier history unknown"
     },
     "entries": [],
     "last_action": null
@@ -13,9 +13,13 @@
       "source": null,
       "declared_completed_plies": 0
     },
+    "declared_root_plies": "0",
+    "earlier_history_unknown": true,
+    "historical_reachability_proven": false,
     "selected": {
       "event_index": 0,
       "board_ply": 0,
+      "declared_total_plies": "0",
       "identities": [
         {
           "square": "12a",
@@ -119,6 +123,7 @@
     "live": {
       "event_index": 0,
       "board_ply": 0,
+      "declared_total_plies": "0",
       "identities": [
         {
           "square": "12a",

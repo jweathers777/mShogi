@@ -460,3 +460,115 @@ fn actual_native_inspection_is_read_only_and_bound_to_exact_historical_selection
     assert_eq!(view.side.id, NativeSide::Chu(c::Side::Gote));
     assert_eq!(native(&ctl), live);
 }
+
+#[test]
+fn maximum_declared_counter_keeps_exact_native_presentation_and_unknown_history() {
+    let mut ctl = controller();
+    let base = f::root(&f::fixture("CHU-REP-QUIET")["given"]["root"]);
+    let imported = c::Game::from_root(
+        c::Position::from_diagram(
+            &base.position().pieces().collect::<Vec<_>>(),
+            c::Side::Sente,
+            c::RootMetadata::imported("Exact counter fixture".into(), u64::MAX).unwrap(),
+        )
+        .unwrap(),
+    )
+    .unwrap();
+    replace(&mut ctl, &imported, c::Side::Sente);
+    let s = ctl.shared_snapshot();
+    let presented = s.chu.unwrap();
+    assert_eq!(presented.declared_root_plies, "18446744073709551615");
+    assert!(presented.earlier_history_unknown);
+    assert!(!presented.historical_reachability_proven);
+    assert_eq!(presented.selected.board_ply, 0);
+    assert_eq!(
+        presented.selected.declared_total_plies,
+        "18446744073709551615"
+    );
+    assert_eq!(presented.root.source(), Some("Exact counter fixture"));
+    let d = ctl.session.chu().unwrap().document.clone();
+    let reopened =
+        crate::chu_document::ValidatedChuDocument::decode(d.bytes(), &mut || false).unwrap();
+    assert_eq!(
+        reopened
+            .record()
+            .to_game()
+            .unwrap()
+            .position()
+            .root()
+            .declared_completed_plies(),
+        u64::MAX
+    );
+}
+
+#[test]
+fn technical_move_rows_number_known_history_without_rounding_declared_counters() {
+    let mut ctl = controller();
+    let base = f::root(&f::fixture("CHU-REP-QUIET")["given"]["root"]);
+    let root = c::Game::from_root(
+        c::Position::from_diagram(
+            &base.position().pieces().collect::<Vec<_>>(),
+            c::Side::Sente,
+            c::RootMetadata::diagram(u64::MAX - 1),
+        )
+        .unwrap(),
+    )
+    .unwrap();
+    replace(&mut ctl, &root, c::Side::Sente);
+    let s = play(
+        &mut ctl,
+        c::Action {
+            from: "1l".parse().unwrap(),
+            route: vec!["1k".parse().unwrap()],
+            promote: false,
+        },
+    )
+    .unwrap();
+    assert_eq!(s.moves.entries[0].number, 1);
+    assert!(s.moves.root.numbering.contains("18446744073709551614"));
+    let p = s.chu.unwrap();
+    assert_eq!(p.declared_root_plies, "18446744073709551614");
+    assert_eq!(p.live.declared_total_plies, "18446744073709551615");
+}
+
+#[test]
+fn known_root_pair_numbering_preserves_first_gote_action_order() {
+    let mut ctl = controller();
+    let base = f::root(&f::fixture("CHU-REP-QUIET")["given"]["root"]);
+    let root = c::Game::from_root(
+        c::Position::from_diagram(
+            &base.position().pieces().collect::<Vec<_>>(),
+            c::Side::Gote,
+            c::RootMetadata::diagram(17),
+        )
+        .unwrap(),
+    )
+    .unwrap();
+    replace(&mut ctl, &root, c::Side::Gote);
+    play(
+        &mut ctl,
+        c::Action {
+            from: "12a".parse().unwrap(),
+            route: vec!["12b".parse().unwrap()],
+            promote: false,
+        },
+    )
+    .unwrap();
+    let s = play(
+        &mut ctl,
+        c::Action {
+            from: "1l".parse().unwrap(),
+            route: vec!["1k".parse().unwrap()],
+            promote: false,
+        },
+    )
+    .unwrap();
+    assert_eq!(
+        s.moves
+            .entries
+            .iter()
+            .map(|e| (e.number, e.column))
+            .collect::<Vec<_>>(),
+        vec![(1, 1), (2, 0)]
+    );
+}

@@ -342,7 +342,7 @@ pub(super) fn chu_projection(game: &mshogi_core::chu::Game) -> MovesProjection {
     let mut view = projection(
         "Starting position".into(),
         format!(
-            "Technical Chu actions · declared root plies {} · earlier history {}",
+            "Technical Chu actions · known-root move pairs · declared root plies {} · earlier history {}",
             root.declared_completed_plies(),
             if root.earlier_history_unknown() {
                 "unknown"
@@ -351,6 +351,9 @@ pub(super) fn chu_projection(game: &mshogi_core::chu::Game) -> MovesProjection {
             }
         ),
     );
+    // Declared counters do not invent unknown earlier move pairs. Like Tori,
+    // number only known actions; keep the exact declared counter in the caption.
+    let mut number = 1;
     for e in game.events() {
         let Some(effect) = &e.effects else {
             continue;
@@ -391,18 +394,18 @@ pub(super) fn chu_projection(game: &mshogi_core::chu::Game) -> MovesProjection {
                 .join(" → "),
             if action.promote { " · promote" } else { "" }
         );
-        let count = root
-            .declared_completed_plies()
-            .saturating_add(e.board_ply as u64 - 1);
         push(
             &mut view,
-            count / 2 + 1,
+            number,
             u8::from(e.actor == c::Side::Gote),
             notation,
             geometry,
             e.index,
             e.index + 1,
         );
+        if e.actor == c::Side::Gote {
+            number += 1;
+        }
     }
     view
 }

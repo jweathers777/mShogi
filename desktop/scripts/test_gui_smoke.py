@@ -1240,6 +1240,42 @@ class CurrentShellCopyEvidenceTests(unittest.TestCase):
 
 class ChuNormalProductEvidenceTests(unittest.TestCase):
     """Observer checks only; actual packaged GUI evidence must come from each OS."""
+    def test_native_action_card_content_can_grow_without_moving_shared_anchors_or_gaps(self):
+        def cards(action_height):
+            return [{'name':'analysis','rect':{'left':860,'top':116,'width':292,'height':218}},
+                    {'name':'actions','rect':{'left':860,'top':348,'width':292,'height':action_height}},
+                    {'name':'history','rect':{'left':860,'top':362+action_height,'width':292,'height':362-action_height}}]
+        previous=cards(90);current=cards(126)
+        module.assert_shared_native_card_flow(current,previous)
+        module.assert_shared_native_card_flow(previous,current)
+        for index,axis in ((0,'top'),(0,'height'),(1,'top'),(1,'left'),(2,'width'),(2,'top'),(2,'height')):
+            altered=copy.deepcopy(current);altered[index]['rect'][axis]+=10
+            with self.subTest(index=index,axis=axis):
+                with self.assertRaises(AssertionError):module.assert_shared_native_card_flow(altered,previous)
+        altered=copy.deepcopy(current);altered[1]['rect']['height']=0
+        with self.assertRaises(AssertionError):module.assert_shared_native_card_flow(altered,previous)
+        with self.assertRaises(AssertionError):module.assert_shared_native_card_flow(list(reversed(current)),previous)
+
+    def test_chu_reopen_uses_actual_native_saved_path_once_and_checks_evidence_bytes(self):
+        with tempfile.TemporaryDirectory() as temp:
+            actual=Path(temp)/'ordinary-saved.mshogi';evidence=Path(temp)/'external-evidence.mshogi'
+            actual.write_bytes(b'exact native saved archive');evidence.write_bytes(actual.read_bytes())
+            before={'document':{'path':str(actual)}};after={'native':'fresh stopped document'}
+            journey=object.__new__(module.Journey);journey.native_diagnostics=Mock(side_effect=[before,after])
+            journey.file=Mock();journey.wait_opened=Mock();journey.record=Mock()
+            self.assertEqual(journey.chu_reopen_saved(evidence),after)
+            journey.file.assert_called_once_with('open',actual);journey.wait_opened.assert_called_once_with(actual)
+            self.assertEqual(journey.record.call_args.args[1]['evidence_copy'],str(evidence))
+            evidence.write_bytes(b'different archive')
+            journey.native_diagnostics=Mock(return_value=before);journey.file.reset_mock();journey.wait_opened.reset_mock()
+            with self.assertRaises(AssertionError):journey.chu_reopen_saved(evidence)
+            journey.file.assert_not_called();journey.wait_opened.assert_not_called()
+        source=ast.parse(Path(module.__file__).read_text())
+        for name,expected in (('normal_chu',1),('normal_chu_native',3)):
+            method=next(node for node in ast.walk(source) if isinstance(node,ast.FunctionDef) and node.name==name)
+            reopens=[node for node in ast.walk(method) if isinstance(node,ast.Call) and isinstance(node.func,ast.Attribute) and node.func.attr=='chu_reopen_saved']
+            self.assertEqual(len(reopens),expected)
+
     def test_shared_shell_observes_approved_chu_header_without_renaming_the_product(self):
         rect={'left':0,'top':0,'width':100,'height':10}
         layout={'game':'chu','sections':['analysis','actions','history'],

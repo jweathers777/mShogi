@@ -15,7 +15,7 @@ function app(value: unknown) {
  const props = {snapshot,session,onNewGame:vi.fn(),onOpen:vi.fn(),blocked:false};
  return {...render(<ApplicationView {...props}/>),props,session};
 }
-it.each([chess,shogi,xiangqi])("keeps common support outside the sidebar and retains full native evidence and notices", value => {
+it.each([chess,shogi,xiangqi])("keeps common support outside the sidebar and retains full native evidence and notices", async value => {
  const {container,session}=app(value);
  const support=screen.getByRole("button",{name:"About mShogi"});
  expect(support.closest(".shell-header")).toBeTruthy();
@@ -28,6 +28,9 @@ it.each([chess,shogi,xiangqi])("keeps common support outside the sidebar and ret
  const dialog=screen.getByRole("dialog",{name:"About mShogi"});
  expect(container.querySelector(".shell-content")?.hasAttribute("inert")).toBe(true);
  expect(within(dialog).getByText("Diagnostics")).toBeTruthy();
+ expect(dialog.querySelector("[data-native-diagnostics]")).toBeNull();
+ fireEvent.click(within(dialog).getByText("Diagnostics"));
+ await waitFor(() => expect(dialog.querySelector("[data-native-diagnostics]")).toBeTruthy());
  const payload=JSON.parse(dialog.querySelector("[data-native-diagnostics]")!.textContent!);
  expect(payload.context).toEqual(session.snapshot!.context);
  expect(payload.token).toEqual(session.snapshot!.token);

@@ -1098,7 +1098,7 @@ class Journey:
         expected_depth, expected_nodes = {'chess': (2, 20000), 'shogi': (2, 5000), 'xiangqi': (1, 128), 'tori': (2, 2000), 'chu': (1, 512)}[game]
         assert play_limit_matches(layout['playLimits'], expected_depth, expected_nodes), layout
         assert layout['documentInHeader'] and layout['flipInHeading'] and layout['supportOutsideSidebar'] and layout['rawDiagnosticsAbsent'], layout
-        assert layout['brand'] == '歩' and layout['gameLabel'] == ({'tori':'TORI SHOGI','chu':'CHU SHOGI'}.get(game,game.upper())), layout
+        assert layout['brand'] == '歩' and layout['gameLabel'] == ({'tori':'TORI SHOGI'}.get(game,game.upper())), layout
         self.support_access(game)
         assert layout['headerButtons'] == ['New game','Save','Load'], layout
         assert layout['boardPanel']['left'] < layout['sidebar']['left'], layout
@@ -2207,6 +2207,7 @@ class Journey:
         if complete_here: w.focused_button('Complete action here')
         if promote is not None:
             wait(lambda: w.has('.promotion-dialog'), 'native complete promotion alternatives')
+            self.assert_chu_promotion_choices()
             w.button('Promote' if promote else 'Do not promote')
         self.chu_events(count)
         native = self.native_diagnostics()
@@ -2309,7 +2310,7 @@ class Journey:
         assert len([royal for royal in promoted['chu']['live']['royals'] if royal['identity']['piece']['side']=='sente']) == 2
         assert promoted['context']['payload']['conclusion'] is None
         self.capture('normal-promoted-Prince-and-surviving-King'); self.chu_save(self.args.output/'normal-chu-promoted.mshogi')
-        self.chu_load_fixture('royal-survivor'); survived = self.chu_action('12j',['12l'],1)
+        self.chu_load_fixture('royal-survivor'); survived = self.chu_action('12j',['12l'],1,promote=False)
         assert survived['context']['payload']['conclusion'] is None and not w.has('.outcome-card')
         assert [royal['identity']['square'] for royal in survived['chu']['live']['royals'] if royal['identity']['piece']['side']=='sente'] == ['8j']
         self.capture('normal-one-royal-captured-Prince-survives')

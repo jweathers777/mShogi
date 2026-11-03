@@ -1240,6 +1240,50 @@ class CurrentShellCopyEvidenceTests(unittest.TestCase):
 
 class ChuNormalProductEvidenceTests(unittest.TestCase):
     """Observer checks only; actual packaged GUI evidence must come from each OS."""
+    def test_shared_shell_observes_approved_chu_header_without_renaming_the_product(self):
+        rect={'left':0,'top':0,'width':100,'height':10}
+        layout={'game':'chu','sections':['analysis','actions','history'],
+            'themeIdentity':'mshogi-dark','themes':{'shared':'dark'},'squareCount':144,
+            'allSquaresVisible':True,'pageWidth':1180,'viewport':{'width':1180,'height':820},
+            'inspectorButtons':[{'label':'Play details','pressed':'true'},{'label':'Analyze position','pressed':'false'}],
+            'slots':[{'name':name,'rect':{**rect,'top':index*10}} for index,name in enumerate(('upper-player','board','lower-player','footer'))],
+            'help':rect,'helpVisible':True,'footnoteVisible':True,'documentState':'unsaved',
+            'positionStatus':'Your turnLive position · 0 plies','playLimits':'Play limit: depth 1 · 512 nodes',
+            'documentInHeader':True,'flipInHeading':True,'supportOutsideSidebar':True,
+            'rawDiagnosticsAbsent':True,'brand':'歩','gameLabel':'CHU',
+            'headerButtons':['New game','Save','Load'],'boardPanel':rect,'sidebar':{**rect,'left':200},
+            'cards':[]}
+        journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()
+        journey.support_access=Mock();journey.shell_layouts={};journey.web.read.return_value=layout
+        journey.shared_shell('chu')
+        journey.support_access.assert_called_once_with('chu')
+        journey.record.assert_called_once();journey.web.click.assert_not_called()
+        for label in ('CHU SHOGI','TORI SHOGI','SHOGI',''):
+            journey.web.read.return_value={**layout,'gameLabel':label}
+            with self.assertRaises(AssertionError):journey.shared_shell('chu')
+
+    def test_chu_royal_survivor_selects_native_no_promotion_before_committing(self):
+        journey=object.__new__(module.Journey);journey.web=Mock()
+        journey.chu_square=lambda square:square;journey.chu_events=Mock()
+        journey.assert_chu_promotion_choices=Mock();journey.assert_completed_cue=Mock()
+        action={'from':[12,10],'route':[[12,12]],'promote':False}
+        native={'context':{'payload':{'events':[{'command':{'action':action}}]}}}
+        journey.native_diagnostics=Mock(return_value=native)
+        sequence=[]
+        journey.web.button.side_effect=lambda label:sequence.append(('choice',label))
+        journey.chu_events.side_effect=lambda count:sequence.append(('committed',count))
+        with patch.object(module,'wait',side_effect=lambda check,label:check()):
+            self.assertEqual(journey.chu_action('12j',['12l'],1,promote=False),native)
+        self.assertEqual(sequence,[('choice','Do not promote'),('committed',1)])
+        journey.assert_chu_promotion_choices.assert_called_once()
+        self.assertEqual(journey.web.click.call_args_list,[unittest.mock.call('12j'),unittest.mock.call('12l')])
+        journey.web.button.assert_called_once_with('Do not promote')
+        source=ast.parse(Path(module.__file__).read_text())
+        method=next(node for node in ast.walk(source) if isinstance(node,ast.FunctionDef) and node.name=='normal_chu_native')
+        call=next(node for node in ast.walk(method) if isinstance(node,ast.Call) and isinstance(node.func,ast.Attribute)
+                  and node.func.attr=='chu_action' and node.args and isinstance(node.args[0],ast.Constant) and node.args[0].value=='12j')
+        self.assertTrue(any(keyword.arg=='promote' and isinstance(keyword.value,ast.Constant) and keyword.value.value is False for keyword in call.keywords))
+
     def test_all_default_phases_include_normal_chu_and_actual_pending_recovery(self):
         self.assertEqual(module.selected_gui_phases('normal-chu'), ['normal-chu','normal-chu-native'])
         self.assertEqual(module.selected_gui_phases('verification-chu'), ['pending-chu','chu-recovery'])

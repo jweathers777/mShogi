@@ -2308,7 +2308,7 @@ class Journey:
         self.capture('normal-four-ply-progression')
         w.focused_button('Take back'); self.chu_events(2); taken = self.native_diagnostics()
         assert taken['context']['payload']['events'] == events[:2] and w.has('.play-paused')
-        w.click('.shogi-history [data-event="1"]'); self.chu_events(2,selected=1,historical=True); self.assert_historical_notice(1)
+        w.keyboard_activate('.moves-table button[data-event="1"]'); self.chu_events(2,selected=1,historical=True); self.assert_historical_notice(1)
         self.chu_analysis(); selected = self.native_diagnostics()
         assert selected['context']['payload']['events'] == events[:1]
         self.capture('normal-history-exact-prefix-readonly-analysis')

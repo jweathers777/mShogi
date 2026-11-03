@@ -480,7 +480,9 @@ impl ActiveDocument {
             Self::Tori { state, .. } => {
                 state.browse_stop = None;
             }
-            Self::Chu { .. } => {}
+            Self::Chu { state, .. } => {
+                state.browse_stop = None;
+            }
             Self::Xiangqi { state, .. } => {
                 state.browse_running = false;
                 state.browse_stop = None;
@@ -504,7 +506,10 @@ impl ActiveDocument {
                 state.retire();
                 state.paused = true;
             }
-            Self::Chu { state, .. } => state.retire(),
+            Self::Chu { state, .. } => {
+                state.retire();
+                state.paused = true;
+            }
             Self::Xiangqi { state, .. } => {
                 state.retire();
                 state.paused = true;
@@ -1234,7 +1239,51 @@ impl DesktopController {
         if fixture.starts_with("chu-") {
             let game = match fixture {
                 "chu-contract" => chu_fixture_roots::contract_game(),
-                "chu-standard" => mshogi_core::chu::Game::standard(),
+                "chu-standard" | "chu-gote" => mshogi_core::chu::Game::standard(),
+                "chu-captures" | "chu-captured" | "chu-promotion" => {
+                    let f = chu_fixture_roots::fixture(if fixture == "chu-promotion" {
+                        "CHU-PROMOTE-DE-YES"
+                    } else {
+                        "CHU-LION-C2-1"
+                    });
+                    let mut g = chu_fixture_roots::root(&f["given"]["root"]);
+                    if fixture == "chu-captured" {
+                        g.submit(mshogi_core::chu::GameRequest {
+                            expected: g.context(),
+                            actor: g.position().side_to_move(),
+                            command: mshogi_core::chu::GameCommand::Play {
+                                action: chu_fixture_roots::action(&f["given"]["commands"][0]),
+                            },
+                        })
+                        .map_err(|e| e.to_string())?;
+                    }
+                    g
+                }
+                "chu-promoted" | "chu-royals" => {
+                    use mshogi_core::chu as c;
+                    let pieces: Vec<_> = c::Position::standard()
+                        .pieces()
+                        .map(|(at, mut p)| {
+                            if p.side == c::Side::Sente
+                                && p.base.promotable()
+                                && (fixture == "chu-promoted" || p.base == c::Base::Elephant)
+                            {
+                                p.promoted = true;
+                            }
+                            (at, p)
+                        })
+                        .collect();
+                    c::Game::from_root(
+                        c::Position::from_diagram(
+                            &pieces,
+                            c::Side::Sente,
+                            c::RootMetadata::imported("Chu artwork verification diagram".into(), 0)
+                                .map_err(|e| e.to_string())?,
+                        )
+                        .map_err(|e| e.to_string())?,
+                    )
+                    .map_err(|e| e.to_string())?
+                }
                 _ => return Err("Unknown Chu verification fixture".into()),
             };
             let (_, receipt) = controller.shared_command_with_receipt(SharedDesktopCommand {
@@ -1245,7 +1294,11 @@ impl DesktopController {
                         mshogi_core::chu::GameRecord::from_game(&game)
                             .map_err(|e| e.to_string())?,
                     ),
-                    human: NativeSide::Chu(mshogi_core::chu::Side::Sente),
+                    human: NativeSide::Chu(if fixture == "chu-gote" {
+                        mshogi_core::chu::Side::Gote
+                    } else {
+                        mshogi_core::chu::Side::Sente
+                    }),
                 },
             })?;
             while receipt.completion().is_none() {

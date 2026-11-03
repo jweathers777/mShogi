@@ -5,6 +5,7 @@
 //! evaluating a live leaf. Static scores never establish a game outcome.
 
 pub mod chess;
+pub mod chu;
 pub mod shogi;
 pub mod tori;
 pub mod xiangqi;

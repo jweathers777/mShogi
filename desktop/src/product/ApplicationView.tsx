@@ -53,8 +53,8 @@ export function ApplicationView({ snapshot, session, onNewGame, onOpen, blocked 
       inspectionDisabled={disabled} command={command} />}
     notices={<NativeRecovery snapshot={snapshot} error={session.error} disabled={disabled} command={command} />}
     analysis={<NativeAnalysis snapshot={snapshot} defaults={defaults} disabled={disabled || capacity} command={command}
-      maxDepth={snapshot.game === "chess" ? 8 : snapshot.game === "shogi" ? 4 : 3}
-      maxNodes={snapshot.game === "chess" ? 5000000 : snapshot.game === "shogi" ? 20000 : snapshot.game === "tori" ? 10000 : 512} minNodes={snapshot.game === "xiangqi" || snapshot.game === "tori" ? 1 : 0}
+      maxDepth={snapshot.game === "chess" ? 8 : snapshot.game === "shogi" ? 4 : snapshot.game === "chu" ? 2 : 3}
+      maxNodes={snapshot.game === "chess" ? 5000000 : snapshot.game === "shogi" ? 20000 : snapshot.game === "tori" ? 10000 : snapshot.game === "chu" ? 2000 : 512} minNodes={snapshot.game === "xiangqi" || snapshot.game === "tori" || snapshot.game === "chu" ? 1 : 0}
       unavailable={!exactPrefix ? "Analysis is unavailable between a move and its following event. Select a completed event or return to live." : undefined} />}
     history={<NativeHistory snapshot={snapshot} disabled={disabled} command={command} />}
     gameActions={<GameActions snapshot={snapshot} disabled={disabled || capacity} command={command} confirm={setConfirmation} />}

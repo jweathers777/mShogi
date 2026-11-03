@@ -85,8 +85,8 @@ fn real_compound_effects_royals_promotion_outcomes_and_exact_prefixes() {
         assert_eq!(s.board.ranks.len(), 12);
         assert!(s.hands.is_empty());
         assert!(
-            !s.capabilities.engine_turn
-                && !s.capabilities.move_analysis
+            s.capabilities.engine_turn
+                && s.capabilities.move_analysis
                 && !s.capabilities.drops
                 && !s.capabilities.chess_full
         );
@@ -303,11 +303,10 @@ fn atomic_file_reopen_history_branch_and_normal_product_gate() {
     assert!(ctl.session.chu().unwrap().pending.is_none());
     let s = send(&mut ctl, SessionOperation::ReturnLive {}).unwrap();
     assert_eq!(s.event_index, 1);
-    assert!(
-        send(&mut ctl, SessionOperation::Resume {})
-            .unwrap_err()
-            .contains("unsupported")
-    );
+    let resumed = send(&mut ctl, SessionOperation::Resume {}).unwrap();
+    assert!(!resumed.paused);
+    assert_eq!(native(&ctl), record);
+    send(&mut ctl, SessionOperation::Cancel {}).unwrap();
     // Failed replacement/file operations preserve the exact accepted document.
     let exact = ctl.session.chu().unwrap().document.bytes().to_vec();
     fs::write(&path, b"{bad").unwrap();

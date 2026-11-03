@@ -13,9 +13,9 @@ use std::fmt;
 pub const MAX_CHU_DOCUMENT_WORK: u64 = 12_000_000;
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-/// Supported Chu document orientation; engine preferences remain unavailable.
+/// Supported Chu document orientation; bounded execution limits are explicit per request.
 pub struct ChuSettings {
-    /// Native side displayed at the bottom; no search defaults are invented.
+    /// Native side displayed at the bottom.
     pub orientation: c::Side,
 }
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -496,7 +496,8 @@ impl ValidatedChuDocument {
         p.selected_event = event;
         validate(p, stopped)
     }
-    /// Atomically retain an actual unscored result and its exact target.
+    /// Atomically retain a validated result and, for engine play, its exact native action.
+    /// Analysis retains observations only and never commits a board command.
     pub fn with_observation(
         &self,
         observation: ExecutionObservation,
@@ -515,6 +516,29 @@ impl ValidatedChuDocument {
         p.controls.push(ChuControl::Observation {
             index: p.observations.len(),
         });
+        if let (
+            ExecutionPurpose::EngineTurn {},
+            ExecutionResult::Chu {
+                result: mshogi_engine::ChuResult::Choice { action, .. },
+            },
+        ) = (&observation.context.purpose, &observation.result)
+        {
+            let mut game = native(&p.current)?.to_game().map_err(invalid)?;
+            check(stopped)?;
+            let actor = game.position().side_to_move();
+            let command = c::GameCommand::Play {
+                action: action.clone(),
+            };
+            game.submit(c::GameRequest {
+                expected: game.context(),
+                actor,
+                command: command.clone(),
+            })
+            .map_err(native_error)?;
+            p.controls.push(ChuControl::Native { actor, command });
+            p.current = CanonicalRecord::chu(c::GameRecord::from_game(&game).map_err(invalid)?);
+            p.selected_event = None;
+        }
         p.observations.push(observation);
         validate(p, stopped)
     }
@@ -622,8 +646,16 @@ fn validate(
     check(stopped)?;
     let mut settings = p.initial_settings.clone();
     let (mut retired, mut obs) = (0, 0);
+    let mut required_action: Option<(c::Side, c::GameCommand)> = None;
     for (i, control) in p.controls.iter().enumerate() {
         check(stopped)?;
+        if let Some((actor, command)) = required_action.take()
+            && !matches!(control, ChuControl::Native { actor: a, command: b } if *a == actor && *b == command)
+        {
+            return Err(invalid(
+                "engine choice must be followed by its exact complete native action",
+            ));
+        }
         match control {
             ChuControl::Native { actor, command } => {
                 let before = game.replay_work();
@@ -668,10 +700,13 @@ fn validate(
                     .observations
                     .get(obs)
                     .ok_or_else(|| invalid("missing observation"))?;
-                if !o.matches(&o.context) || !matches!(o.result, ExecutionResult::Failure { .. }) {
-                    return Err(invalid(
-                        "Chu execution is unsupported; only unscored failure observations may be retained",
-                    ));
+                if !o.matches(&o.context)
+                    || !matches!(
+                        o.result,
+                        ExecutionResult::Failure { .. } | ExecutionResult::Chu { .. }
+                    )
+                {
+                    return Err(invalid("invalid or unsupported Chu execution observation"));
                 }
                 let event = match &o.context.purpose {
                     ExecutionPurpose::EngineTurn {} => game.events().len(),
@@ -690,6 +725,26 @@ fn validate(
                     return Err(invalid(
                         "observation is not the exact journal history prefix",
                     ));
+                }
+                if let ExecutionResult::Chu { result } = &o.result {
+                    charge(&mut usage.replay_work, prefix.reconstruction_work())?;
+                    let target_game = prefix.to_game().map_err(invalid)?;
+                    check(stopped)?;
+                    let validated = result.validate_with_work(&target_game, stopped);
+                    check(stopped)?;
+                    charge(&mut usage.replay_work, validated.map_err(invalid)?)?;
+                    if let (
+                        ExecutionPurpose::EngineTurn {},
+                        mshogi_engine::ChuResult::Choice { action, .. },
+                    ) = (&o.context.purpose, result)
+                    {
+                        required_action = Some((
+                            game.position().side_to_move(),
+                            c::GameCommand::Play {
+                                action: action.clone(),
+                            },
+                        ));
+                    }
                 }
                 for id in [
                     o.context.request_id,
@@ -725,7 +780,8 @@ fn validate(
         }
     }
     check(stopped)?;
-    if retired != p.retired.len()
+    if required_action.is_some()
+        || retired != p.retired.len()
         || obs != p.observations.len()
         || settings != p.settings
         || native(&p.current)? != &c::GameRecord::from_game(&game).map_err(invalid)?
@@ -866,3 +922,6 @@ fn reserve(
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(test)]
+mod execution_tests;

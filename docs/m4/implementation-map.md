@@ -1,4 +1,11 @@
-> Current Chu profile handoff — MSH-82, 2026-11-02: the selected
+> MSH-43 working visual checkpoint: [functional engine contract](chu/engine-v1.md)
+> and [desktop visual record](chu/desktop-visual-checkpoint.md) consume the completed
+> native86/shared78 handoff. Real native execution, console/notation and traditional
+> Chu rendering are implemented; actual checkpoint verification is in progress.
+> Normal fifth-game activation, owner visual approval and final43 acceptance remain
+> open. Historical planning/evidence below retain their original source scope.
+
+> Historical Chu profile handoff — MSH-82, 2026-11-02: the selected
 > [`mshogi.chu.jcsa2019.v1`](chu/profile.md) and independently reviewed
 > [250-row corpus](chu/fixtures.md) refine existing86→78→43 ownership.
 > [Native/shared/product handoff](chu/handoff.md) preserves current one-controller,

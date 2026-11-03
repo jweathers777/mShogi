@@ -1161,7 +1161,12 @@ mod tests {
         let opened = wait_file(&mut qa, id).unwrap();
         assert_eq!(opened.game, GameKind::Chu);
         assert!(opened.paused);
-        assert!(!opened.capabilities.engine_turn && !opened.capabilities.move_analysis);
+        assert!(opened.capabilities.engine_turn && opened.capabilities.move_analysis);
+        assert_eq!(opened.execution_purpose, None);
+        assert_eq!(
+            (opened.play_limits.depth, opened.play_limits.nodes),
+            (1, 512)
+        );
         assert!(opened.open_token.document > before.document);
         let mut normal = DesktopController::new(PathBuf::from("unused-test-engine")).unwrap();
         let expected = normal.shared_open_token();
@@ -1170,6 +1175,31 @@ mod tests {
         assert_eq!(normal.shared_snapshot().game, GameKind::Chess);
         assert_eq!(normal.shared_open_token(), expected);
         std::fs::remove_file(path).unwrap();
+    }
+
+    #[test]
+    fn all_chu_visual_roots_use_the_same_stopped_native_controller() {
+        for fixture in [
+            "chu-standard",
+            "chu-gote",
+            "chu-contract",
+            "chu-promoted",
+            "chu-royals",
+            "chu-captures",
+            "chu-captured",
+            "chu-promotion",
+        ] {
+            let mut controller =
+                DesktopController::verification(PathBuf::from("unused-test-engine"), fixture)
+                    .unwrap();
+            let s = controller.shared_snapshot();
+            assert_eq!(s.game, mshogi_desktop_session::GameKind::Chu);
+            assert_eq!((s.board.files.len(), s.board.ranks.len()), (12, 12));
+            assert!(s.hands.is_empty() && s.paused && s.execution_purpose.is_none());
+            if fixture == "chu-royals" {
+                assert_eq!(s.chu.unwrap().selected.royals.len(), 3);
+            }
+        }
     }
 
     fn assert_file_completion_authority(controller: &mut DesktopController) {

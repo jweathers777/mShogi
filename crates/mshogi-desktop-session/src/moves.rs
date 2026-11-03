@@ -335,14 +335,14 @@ pub(super) fn tori_projection(game: &mshogi_core::tori::Game) -> MovesProjection
     tori::project(game)
 }
 
-/// Technical native Chu projection; final readable game notation belongs to MSH-43.
+/// Game-owned readable complete Chu action notation and exact event geometry.
 pub(super) fn chu_projection(game: &mshogi_core::chu::Game) -> MovesProjection {
     use mshogi_core::chu as c;
     let root = game.position().root();
     let mut view = projection(
         "Starting position".into(),
         format!(
-            "Technical Chu actions · known-root move pairs · declared root plies {} · earlier history {}",
+            "Chu complete actions · known-root move pairs · declared root plies {} · earlier history {}",
             root.declared_completed_plies(),
             if root.earlier_history_unknown() {
                 "unknown"
@@ -383,17 +383,11 @@ pub(super) fn chu_projection(game: &mshogi_core::chu::Game) -> MovesProjection {
                     .collect(),
             ),
         };
-        let notation = format!(
-            "Technical · {} → {}{}",
-            action.from,
-            action
-                .route
-                .iter()
-                .map(ToString::to_string)
-                .collect::<Vec<_>>()
-                .join(" → "),
-            if action.promote { " · promote" } else { "" }
-        );
+        let before = game
+            .event_prefix(e.index)
+            .expect("accepted native event prefix");
+        let notation = c::notation::format_history_action(&before, action.clone())
+            .expect("accepted complete native action");
         push(
             &mut view,
             number,

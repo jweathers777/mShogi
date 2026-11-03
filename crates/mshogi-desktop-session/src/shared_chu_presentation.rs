@@ -126,7 +126,7 @@ pub struct ChuPresentation {
     pub selected: ChuHistory,
     /// Current authoritative live history.
     pub live: ChuHistory,
-    /// Explicit absence of functional search; never inferred from game tags.
+    /// Functional native execution exists; normal product activation remains separately gated.
     pub execution_supported: bool,
 }
 impl ChuPresentation {
@@ -145,7 +145,7 @@ impl ChuPresentation {
                 .historical_reachability_proven(),
             selected: ChuHistory::new(selected),
             live: ChuHistory::new(live),
-            execution_supported: false,
+            execution_supported: true,
         }
     }
 }
@@ -305,7 +305,7 @@ impl DesktopController {
                 intersections: None,
                 files: files.clone(),
                 ranks: ranks.clone(),
-                label: "Chu Shogi 12×12 native contract board".into(),
+                label: "Chu Shogi 12×12 board".into(),
                 initial_focus: "6g".into(),
             },
             orientations: vec![
@@ -345,8 +345,8 @@ impl DesktopController {
                 promotion: true,
                 take_back: !historical && state.take_back_target().is_some(),
                 undo: !historical && !state.game.events().is_empty(),
-                engine_turn: false,
-                move_analysis: false,
+                engine_turn: true,
+                move_analysis: true,
                 chess_full: false,
                 claims: false,
                 declaration: false,
@@ -368,9 +368,9 @@ impl DesktopController {
                 .collect(),
             event_index: game.events().len(),
             board_ply: game.snapshot().board_ply as u64,
-            play_limits: WorkLimits { depth: 0, nodes: 0 },
+            play_limits: play_limits(),
             historical,
-            paused: true,
+            paused: state.paused,
             close_requires_save: self.close_requires_save(),
             phase: state.phase,
             execution_purpose: state.pending.as_ref().map(|p| {
@@ -385,14 +385,18 @@ impl DesktopController {
             context: CanonicalRecord::chu(
                 c::GameRecord::from_game(game).expect("admitted native game"),
             ),
-            analysis: None,
+            analysis: state.analysis.as_ref().map(|o| PresentedObservation {
+                observation: o.clone(),
+                historical: false,
+                application_error: None,
+            }),
             observations: state
                 .document
                 .observations()
                 .iter()
                 .map(|o| PresentedObservation {
                     observation: o.clone(),
-                    historical: true,
+                    historical: !state.current_observations.contains(&o.context.request_id),
                     application_error: None,
                 })
                 .collect(),
@@ -401,43 +405,11 @@ impl DesktopController {
                 .observations()
                 .iter()
                 .enumerate()
-                .map(|(index, o)| PresentedSearchObservation {
-                    observation_index: index,
-                    purpose: if matches!(o.context.purpose, ExecutionPurpose::EngineTurn {}) {
-                        "engine_turn"
-                    } else {
-                        "move_analysis"
-                    },
-                    event_index: o.context.game.event_count(),
-                    board_ply: o.context.game.known_board_actions(),
-                    perspective: side(NativeSide::Chu(native_turn(&o.context.game))).label,
-                    engine: "mShogi",
-                    score: None,
-                    completed_depth: None,
-                    nodes: None,
-                    variation: vec![],
-                    status: match &o.result {
-                        ExecutionResult::Failure { failure }
-                            if failure.kind == mshogi_engine::FailureKind::UnsupportedMode =>
-                        {
-                            "Unsupported execution · unscored"
-                        }
-                        _ => "Process failure · unscored",
-                    },
-                    historical: true,
-                    selected: false,
-                })
+                .map(|(index, o)| display_observation(index, o, state))
                 .collect(),
-            score_meaning: "Chu execution is unsupported. Native outcomes retain their meaning; failures and incomplete work have no score or variation.",
+            score_meaning: "Native root-side evaluation in hundredths of a Pawn. Win/loss distances count complete board actions, not necessarily mate. Failures and incomplete work are unscored.",
             chess: None,
             chess_match: None,
         }
-    }
-}
-fn native_turn(record: &CanonicalRecord) -> c::Side {
-    if let CanonicalRecord::Chu(r) = record {
-        r.side_to_move()
-    } else {
-        unreachable!("validated Chu observation")
     }
 }

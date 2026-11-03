@@ -24,3 +24,14 @@ Source SHA256: d9854c7a8ef170b5a7932558856fd64eb8de0b007cd823fed6f9f514ad2803d3
 Subset SHA256: aab996838bb6b9291206064fa4587f538877ce5a1192929224a29b45ff2a00b6
 Rebuild: PYTHONPATH=/path/to/brotli python3 subset-tori.py NotoSerifCJKjp-Regular.otf mshogi-tori-pieces.woff2
 Verified with Python3.11, fontTools4.47.2 and Brotli1.1.0: all10 codepoints,14 glyphs, nonempty outlines; repeat generation byte-identical.
+
+
+mShogi Chu Pieces Regular is a separate modified subset of Noto Serif CJK JP Regular 2.003.
+Original font copyright: © 2017-2024 Adobe (http://www.adobe.com/).
+Licensed under the SIL Open Font License, Version 1.1; see OFL.txt.
+Renamed family: mShogi Chu Pieces. All 29 selected-profile traditional face names are bundled locally.
+Pinned source: https://github.com/notofonts/noto-cjk/blob/9b0f1436e455d902de067a2501422e5dc71ad16b/Serif/OTF/Japanese/NotoSerifCJKjp-Regular.otf
+Source SHA256: d9854c7a8ef170b5a7932558856fd64eb8de0b007cd823fed6f9f514ad2803d3
+Subset SHA256: b9b9b3efe3693504839fdb2cb48fb421f5c4a3de8e65f0f53f724525cfe0fbb5
+Rebuild: PYTHONPATH=/path/to/brotli python3 subset-chu.py NotoSerifCJKjp-Regular.otf mshogi-chu-pieces.woff2
+Verified with Python3.11, fontTools4.47.2 and Brotli1.1.0: all43 codepoints,55 glyphs, nonempty outlines; repeat generation byte-identical.

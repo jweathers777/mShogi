@@ -122,7 +122,7 @@ export type ChessResult =
   | { kind: "reachability"; result: MateReachability };
 export type ExecutionResult =
   | { kind: "chess"; result: ChessResult }
-  | { kind: "shogi" | "xiangqi" | "tori"; result: unknown }
+  | { kind: "shogi" | "xiangqi" | "tori" | "chu"; result: unknown }
   | { kind: "failure"; failure: { kind: FailureKind; message: string } };
 export interface ExecutionObservation {
   schema_version: number;

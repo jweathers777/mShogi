@@ -1,5 +1,6 @@
 // Concrete presentation adapter. Native side labels, ordering, hands and complete
 // choices arrive from Rust. No notation, promotion or legality is calculated here.
+import type { ReactNode } from "react";
 import type { InspectMovement } from "./product/movementInspection";
 import { Board } from "./Board";
 import type { CompletedActionGeometry, NativeChoice, NativeHand, NativePiece } from "./boardPresentation";
@@ -21,10 +22,12 @@ export function nativeSnapshotIsNewer(current: NativeBoardSnapshot | null, incom
   if (current === null) return true;
   return incoming.token.document > current.token.document || (incoming.token.document === current.token.document && incoming.token.revision > current.token.revision);
 }
-export function NativeBoard({ snapshot, bottomSide, onPlay, completedAction, onInspect, disabled, inspectionDisabled }: {
+export function NativeBoard({ snapshot, bottomSide, onPlay, completedAction, onInspect, disabled, inspectionDisabled, helpTarget, renderNativePiece }: {
   snapshot: NativeBoardSnapshot; bottomSide: string; onPlay: (action: string) => void;
   completedAction?: CompletedActionGeometry | null;
   onInspect?: InspectMovement; disabled?: boolean; inspectionDisabled?: boolean;
+  helpTarget?: HTMLElement | null;
+  renderNativePiece?: (piece: NativePiece, rotated: boolean) => ReactNode;
 }) {
   if (snapshot.board.intersections) return <p role="alert">This game requires its native intersection renderer.</p>;
   const orientation = snapshot.orientations.find((o) => o.side.key === bottomSide);
@@ -36,5 +39,6 @@ export function NativeBoard({ snapshot, bottomSide, onPlay, completedAction, onI
     orientation="white" version={snapshot.token.selection}
     profile={`${snapshot.profile}:${snapshot.token.document}:${snapshot.token.version}`}
     {...(snapshot.human ? { humanOwner: snapshot.human.key } : {})} onInspect={onInspect} inspectionDisabled={inspectionDisabled ?? disabled ?? !snapshot.capabilities.board_action} inspectionContextKey={JSON.stringify(snapshot.token)}
+    {...(helpTarget !== undefined ? { helpTarget } : {})} {...(renderNativePiece ? { renderNativePiece } : {})}
     disabled={Boolean(disabled) || !snapshot.capabilities.board_action} onPlay={onPlay} />;
 }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { CompletedActionGeometry } from "../boardPresentation";
 import type { ToriAction } from "./native";
-import { NativeBoard } from "../NativeBoard";
+import { ChuBoard } from "./ChuBoard";
 import { Board } from "../Board";
 import { ShogiBoard } from "./ShogiBoard";
 import { XiangqiBoard } from "./XiangqiBoard";
@@ -23,13 +23,9 @@ export function GameBoard({ snapshot, disabled, inspectionDisabled, command, com
     }} />;
   if (snapshot.game === "xiangqi") return <XiangqiBoard completedAction={lastAction} snapshot={snapshot} disabled={disabled} inspectionDisabled={inspectionDisabled}
     onInspect={inspect} onPlay={action => { void command({ kind: "xiangqi", command: { kind: "play", action } }); }} />;
-  if (snapshot.game === "chu") return <section aria-label="Chu shared contract verification" data-development-contract>
-    <p role="status">CHU DEVELOPMENT CONTRACT · native semantics verification, not the finished MSH-43 product design.</p>
-    <NativeBoard snapshot={snapshot} bottomSide={snapshot.sides.find(s => s.id.side === snapshot.document.settings.settings.orientation)!.key}
-      completedAction={lastAction} disabled={disabled} inspectionDisabled={inspectionDisabled} onInspect={inspect}
-      onPlay={action => { void command({ kind: "chu", actor: snapshot.human.id.side as "sente" | "gote", command: { kind: "play", action: JSON.parse(action) } }); }} />
-    <p>Native royals: {snapshot.chu.selected.royals.map(r => `${r.identity.piece.side} ${r.identity.face} ${r.identity.square}`).join(" · ")}. Execution unsupported.</p>
-  </section>;
+  if (snapshot.game === "chu") return <ChuBoard snapshot={snapshot} completedAction={lastAction}
+    disabled={disabled} inspectionDisabled={inspectionDisabled} onInspect={inspect}
+    onPlay={action => { void command({ kind: "chu", actor: snapshot.human.id.side as "sente" | "gote", command: { kind: "play", action: JSON.parse(action) } }); }} />;
   const side = snapshot.document.settings.settings.orientation;
   const bottom = snapshot.sides.find(s => s.id.side === side)!;
   return <GameFrame snapshot={snapshot} bottom={bottom} help={<div ref={setHelp} className="shell-board-help" />}

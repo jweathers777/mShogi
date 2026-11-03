@@ -12,6 +12,26 @@ fn main() {
     let request: ExecutionRequest = serde_json::from_str(&text).unwrap();
     let mut context = request.context;
     // Separately compiled test helper, never a bundled product engine.
+    if context.game.game_kind() == GameKind::Chu && context.limits.nodes == 7 {
+        let CanonicalRecord::Chu(record) = &context.game else {
+            unreachable!()
+        };
+        let game = record.to_game().unwrap();
+        let host = game
+            .position()
+            .root()
+            .source()
+            .and_then(|source| source.strip_prefix("msh43-controller-"))
+            .and_then(|s| s.parse::<u32>().ok())
+            .expect("explicit Chu test-root marker namespace");
+        let marker =
+            std::env::temp_dir().join(format!("msh43-started-{host}-{}.txt", context.request_id));
+        let temporary = marker.with_extension("tmp");
+        std::fs::write(&temporary, std::process::id().to_string()).unwrap();
+        std::fs::rename(temporary, marker).unwrap();
+        thread::sleep(Duration::from_secs(30));
+        return;
+    }
     if context.game.game_kind() == GameKind::Tori {
         if context.limits.nodes == 7 {
             if let (ExecutionPurpose::MoveAnalysis { .. }, CanonicalRecord::Tori(record)) =

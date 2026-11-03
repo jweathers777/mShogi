@@ -1,4 +1,4 @@
-//! Native-generated Chu shared consumers, not a finished playable renderer.
+//! Actual native/controller Chu DTOs; separate development generator, never bundled.
 #[path = "support/chu.rs"]
 mod roots;
 use mshogi_core::{
@@ -29,6 +29,13 @@ fn send(c: &mut DesktopController, operation: SessionOperation) -> SharedSnapsho
     }
 }
 fn main() {
+    if std::env::args().nth(1).as_deref() == Some("internal-search") {
+        use std::io::BufRead;
+        let mut line = String::new();
+        std::io::stdin().lock().read_line(&mut line).unwrap();
+        mshogi_engine::serve_once(std::io::Cursor::new(line), std::io::stdout().lock()).unwrap();
+        return;
+    }
     let dir = std::path::PathBuf::from(std::env::args_os().nth(1).expect("output directory"));
     std::fs::create_dir_all(&dir).unwrap();
     // Use the very same admitted controller snapshots as the live native adapter.
@@ -70,7 +77,7 @@ fn main() {
         } else {
             roots::root(&f["given"]["root"])
         };
-        let mut c = DesktopController::new("/unused/fixture-chu-engine".into()).unwrap();
+        let mut c = DesktopController::new(std::env::current_exe().unwrap()).unwrap();
         let s = send(
             &mut c,
             SessionOperation::Replace {
@@ -98,6 +105,28 @@ fn main() {
                 serde_json::to_string_pretty(&inspection).unwrap() + "\n",
             )
             .unwrap();
+        }
+        if name == "routes" {
+            let before = c.shared_snapshot().context;
+            for (file, nodes) in [("analysis-complete", 512), ("analysis-incomplete", 1)] {
+                let count = c.shared_snapshot().observations.len();
+                c.verify_chu_execution(mshogi_engine::WorkLimits { depth: 1, nodes }, true)
+                    .unwrap();
+                let end = std::time::Instant::now() + std::time::Duration::from_secs(20);
+                let snapshot = loop {
+                    let snapshot = c.shared_snapshot();
+                    if snapshot.observations.len() > count {
+                        break snapshot;
+                    }
+                    assert!(
+                        std::time::Instant::now() < end,
+                        "actual fixture observation deadline"
+                    );
+                    std::thread::sleep(std::time::Duration::from_millis(1));
+                };
+                assert_eq!(snapshot.context, before, "analysis changed native game");
+                write(file, &snapshot);
+            }
         }
         if name == "captures" {
             let s = send(

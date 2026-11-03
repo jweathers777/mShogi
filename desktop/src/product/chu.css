@@ -4,10 +4,10 @@
 .game-shell.game-shell .shell-board-slot .chu-board-frame .board-wrap { width:100%; max-width:none; margin:0; }
 .chu-board-frame .chess-board { filter:none; }
 .chu-board-frame .board-border { fill:#bd945b; }
-.chu-board-frame .square .square-fill { fill:#e5c58d; stroke:#947344; stroke-width:1.5; }
-.chu-board-frame .square.selected .square-fill { fill:#c1c690; }
-.chu-board-frame .square.target .square-fill { fill:#ced29b; }
-.chu-board-frame .coordinate { fill:#513f28; font-size:17px; font-weight:500; }
+.chu-board-frame .square.light .square-fill,.chu-board-frame .square.dark .square-fill { fill:#e5c58d; stroke:#947344; stroke-width:1.5; }
+.chu-board-frame .square.selected.light .square-fill,.chu-board-frame .square.selected.dark .square-fill { fill:#c1c690; }
+.chu-board-frame .square.target.light .square-fill,.chu-board-frame .square.target.dark .square-fill { fill:#ced29b; }
+.chu-board-frame .coordinate { fill:#513f28; font-size:36px; font-weight:500; }
 .chu-board-frame .move-marker { fill:#355e42; }
 .chu-board-frame .capture-marker { fill:none; stroke:#355e42; stroke-width:5; }
 .chu-piece { pointer-events:none; }

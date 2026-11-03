@@ -17,7 +17,7 @@ export function ChuBoard({ snapshot, disabled, inspectionDisabled, onPlay, onIns
   const bottom = snapshot.sides.find(side => side.id.side === snapshot.document.settings.settings.orientation)!;
   const board = <div className="chu-board-frame">
     <NativeBoard snapshot={snapshot} bottomSide={bottom.key} disabled={disabled} inspectionDisabled={inspectionDisabled}
-      onInspect={onInspect} onPlay={onPlay} completedAction={completedAction ?? null} helpTarget={help}
+      coordinateFrame onInspect={onInspect} onPlay={onPlay} completedAction={completedAction ?? null} helpTarget={help}
       renderNativePiece={(piece, rotated) => {
         const nativeIdentity = snapshot.chu.selected.identities.find(identity => identity.square === piece.square);
         return nativeIdentity ? <g transform="translate(3 1) scale(.94)"><ChuPiece face={nativeIdentity.face} promoted={nativeIdentity.piece.promoted} rotated={rotated} /></g> : null;

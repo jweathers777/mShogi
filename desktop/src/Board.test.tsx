@@ -227,3 +227,11 @@ it("keeps completed-history geometry separate from current selection and inspect
   expect(document.querySelector('[data-last-move="destination"]')?.getAttribute("data-location")).toBe("c6");
   fireEvent.click(square("e4")); expect(onPlay).toHaveBeenCalledExactlyOnceWith("e2e4");
 });
+
+it("preserves existing Chess square and coordinate geometry without the optional native frame", () => {
+  const { container } = board();
+  expect(container.querySelector("svg")?.getAttribute("viewBox")).toBe("0 0 840 840");
+  expect(square("a8").getAttribute("transform")).toBe("translate(20, 20)");
+  expect(square("a8").querySelector(".coordinate")?.textContent).toBe("8");
+  expect(container.querySelector(".native-coordinate-frame")).toBeNull();
+});

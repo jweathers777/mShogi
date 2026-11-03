@@ -65,6 +65,8 @@ it("preserves ordered native intermediate captures and complete historical geome
   expect(container.querySelector("[data-route]")?.getAttribute("data-route")).toBe("3c>2b>1b");
   expect(container.querySelector('[data-last-move="origin"]')?.getAttribute("data-location")).toBe("3c");
   expect(container.querySelector('[data-last-move="destination"]')?.getAttribute("data-location")).toBe("1b");
+  expect(container.querySelector('[data-native-capture="2b"]')?.getAttribute("transform")).toBe("translate(1090 190)");
+  expect(container.querySelector('[data-last-move="origin"]')?.getAttribute("d")).toMatch(/^M951 263/);
 });
 
 it("keeps native enemy inspection visibly distinct and non-actionable in the actual Chu renderer", async () => {
@@ -104,4 +106,24 @@ it("commits the sole one-leg native choice from the footer and cancels either fo
     expect(props.onPlay).toHaveBeenCalledTimes(1);
     expect(container.querySelector('[data-game-slot="footer"] [data-position-status]')).toBeTruthy();
   }
+});
+
+it("puts legible coordinate labels outside the Chu grid while retaining native route and cue locations", () => {
+  const { container, props, rerender } = board();
+  expect(container.querySelector("svg")?.getAttribute("viewBox")).toBe("0 0 1280 1280");
+  expect(square("12a").getAttribute("transform")).toBe("translate(40, 40)");
+  expect(container.querySelectorAll(".square .coordinate")).toHaveLength(0);
+  expect(container.querySelectorAll(".native-coordinate-frame .coordinate")).toHaveLength(24);
+  const file = container.querySelector('[data-coordinate-axis="file"]')!, rank = container.querySelector('[data-coordinate-axis="rank"]')!;
+  expect([file.textContent, file.getAttribute("x"), file.getAttribute("y")]).toEqual(["12", "90", "1272"]);
+  expect([rank.textContent, rank.getAttribute("x"), rank.getAttribute("y")]).toEqual(["a", "1260", "102"]);
+  fireEvent.click(square("6f"));fireEvent.click(square("7e"));
+  const displayed = props.snapshot.orientations[0]!.ranks.flatMap(r => props.snapshot.orientations[0]!.files.map(f => `${f}${r}`));
+  const center = (key: string) => { const i = displayed.indexOf(key);return `${90 + i % 12 * 100},${90 + Math.floor(i / 12) * 100}`; };
+  expect(container.querySelector(".native-selected-route polyline")?.getAttribute("points")).toBe(["6f", "7e"].map(center).join(" "));
+  expect(props.onPlay).not.toHaveBeenCalled();
+  const flipped = { ...routes, document: { ...routes.document, settings: { ...routes.document.settings, settings: { orientation: "gote" as const } } } };
+  rerender(<ChuBoard {...props} snapshot={flipped} />);
+  expect(container.querySelector('[data-coordinate-axis="file"]')?.textContent).toBe("1");
+  expect(container.querySelector('[data-coordinate-axis="rank"]')?.textContent).toBe("l");
 });

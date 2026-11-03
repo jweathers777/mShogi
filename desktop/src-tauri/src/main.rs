@@ -1177,6 +1177,7 @@ mod tests {
         std::fs::remove_file(path).unwrap();
     }
 
+    #[cfg(feature = "desktop-verification")]
     #[test]
     fn all_chu_visual_roots_use_the_same_stopped_native_controller() {
         for fixture in [

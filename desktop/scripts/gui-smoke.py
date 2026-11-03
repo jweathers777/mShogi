@@ -33,6 +33,27 @@ def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def assert_shared_native_card_flow(current, previous):
+    """Native actions may add content; shared anchors, width and flow stay fixed."""
+    assert [card['name'] for card in current] == [card['name'] for card in previous] == ['analysis','actions','history']
+    for now, before in zip(current, previous):
+        for axis in ('left','width'):
+            assert abs(now['rect'][axis]-before['rect'][axis]) <= 3, (now,before,axis)
+        assert now['rect']['height'] > 0 and before['rect']['height'] > 0, (now,before)
+    for axis in ('top','height'):
+        assert abs(current[0]['rect'][axis]-previous[0]['rect'][axis]) <= 3, ('analysis',axis,current,previous)
+    assert abs(current[1]['rect']['top']-previous[1]['rect']['top']) <= 3, ('actions anchor',current,previous)
+    for cards in (current,previous):
+        for upper, lower in zip(cards,cards[1:]):
+            assert lower['rect']['top'] >= upper['rect']['top']+upper['rect']['height'], ('overlapping cards',cards)
+    for index in (0,1):
+        def gap(cards):
+            return cards[index+1]['rect']['top']-cards[index]['rect']['top']-cards[index]['rect']['height']
+        assert abs(gap(current)-gap(previous)) <= 3, ('card gap',index,current,previous)
+    def bottom(cards): return cards[-1]['rect']['top']+cards[-1]['rect']['height']
+    assert abs(bottom(current)-bottom(previous)) <= 3, ('history bottom',current,previous)
+
+
 def desktop_document_payload(document, game_kind):
     """Inspect the one current native envelope; this is not a replay validator."""
     profiles = {
@@ -1118,6 +1139,9 @@ class Journey:
             assert layout['themes']==previous['themes'],('shared chrome/panel/control theme differs',previous,layout)
             assert abs(layout['help']['top']-previous['help']['top'])<=3, ('live help moved across games',previous,layout)
             for collection in ['slots','cards']:
+                if collection == 'cards' and 'chu' in (game,previous['game']):
+                    assert_shared_native_card_flow(layout['cards'],previous['cards'])
+                    continue
                 for current,prior in zip(layout[collection],previous[collection]):
                     assert current['name']==prior['name'],(previous,layout)
                     for axis in ['left','top','width','height']:
@@ -2175,6 +2199,16 @@ class Journey:
             'controls':len(body['controls']),'retired':len(body['retired'])})
         return body
 
+    def chu_reopen_saved(self, evidence_path):
+        """Load the actual ordinary Save path; external copies remain evidence only."""
+        before = self.native_diagnostics()
+        actual = Path(before['document']['path'])
+        assert actual.is_absolute() and actual.is_file() and digest(actual) == digest(evidence_path), (actual,evidence_path)
+        self.record('Load actual native Chu Save path, retaining the separate evidence copy',
+            {'saved_path':str(actual),'evidence_copy':str(evidence_path),'sha256':digest(actual)})
+        self.file('open',actual); self.wait_opened(actual)
+        return self.native_diagnostics()
+
     def chu_load_fixture(self, name):
         source = Path(__file__).with_name('fixtures') / f'chu-{name}.mshogi'
         path = self.args.output / f'normal-chu-{name}-source.mshogi'
@@ -2261,7 +2295,7 @@ class Journey:
         path = self.args.output/'normal-chu-complete.mshogi'; body = self.chu_save(path)
         assert body['retired'] and len(body['observations']) >= 3
         assert body['observations'][-1]['context']['game']['payload']['events'] == events[:1]
-        before = self.native_diagnostics(); self.file('open',path); self.wait_opened(path); reopened = self.native_diagnostics()
+        before = self.native_diagnostics(); reopened = self.chu_reopen_saved(path)
         assert reopened['context'] == before['context'] and reopened['token']['document'] > before['token']['document']
         assert reopened['token']['selection'] != before['token']['selection'] and all(item['historical'] for item in reopened['observations'])
         assert w.has('.play-paused') and not w.has('.shogi-analysis[data-phase="thinking"]')
@@ -2337,7 +2371,7 @@ class Journey:
         prefix=self.native_diagnostics(); assert len(prefix['context']['payload']['events'])==4 and not prefix['chu']['selected']['obligations']
         assert prefix['chu']['live']['obligations']; self.capture('normal-history-without-future-repetition-obligation')
         w.button('Return to live'); self.chu_events(10,selected=10); assert self.native_diagnostics()['context']==obligation['context']
-        path=self.args.output/'normal-chu-obligation.mshogi'; self.chu_save(path); self.file('open',path); self.wait_opened(path)
+        path=self.args.output/'normal-chu-obligation.mshogi'; self.chu_save(path); self.chu_reopen_saved(path)
         assert self.native_diagnostics()['context']==obligation['context'] and w.has('.play-paused')
         self.chu_load_fixture('complete-royal-engine'); natural = self.native_diagnostics()
         assert natural['context']['payload']['conclusion'] == {'kind':'royal_capture','winner':'sente'}
@@ -2360,7 +2394,7 @@ class Journey:
         self.capture('normal-256-observation-refusal-remains-saveable')
         path=self.args.output/'normal-chu-capacity-complete.mshogi'; kept = self.chu_save(path)
         assert len(kept['observations']) == 256
-        self.file('open',path); self.wait_opened(path); reopened_capacity=self.native_diagnostics()
+        reopened_capacity=self.chu_reopen_saved(path)
         assert reopened_capacity['context']==capacity_before['context'] and len(reopened_capacity['observations'])==256
         assert w.has('.play-paused')
         w.button('Analyze position'); wait(lambda:w.has('[data-analysis-start="chu"]'),'reopened full Chu ledger analysis controls')
@@ -2375,7 +2409,7 @@ class Journey:
         self.capture('normal-capacity-reserved-resignation-preserves256-observations')
         ended_path=self.args.output/'normal-chu-capacity-resigned.mshogi'; ended_body=self.chu_save(ended_path)
         assert len(ended_body['observations'])==256 and ended_body['current']==capacity_ended['context']
-        self.file('open',ended_path); self.wait_opened(ended_path); ended_reopened=self.native_diagnostics()
+        ended_reopened=self.chu_reopen_saved(ended_path)
         assert ended_reopened['context']==capacity_ended['context'] and len(ended_reopened['observations'])==256
         assert all(item['historical'] for item in ended_reopened['observations'])
         assert ended_reopened['token']['document']>capacity_ended['token']['document']

@@ -1,0 +1,15 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.08s
+     Running tests/chu_consumer.rs (target/debug/deps/chu_consumer-d2e0aad7b5ebe946)
+
+running 2 tests
+test native_handoff_rejects_duplicates_before_an_intermediate_map_can_erase_them ... ok
+test actual_complete_payloads_choices_effects_prefixes_and_fresh_authority ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/native_chu_envelope.rs (target/debug/deps/native_chu_envelope-80dca8768d08d974)
+
+running 1 test
+test real_chu_identity_history_commands_and_duplicate_preserving_routing ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s

@@ -1,0 +1,384 @@
+{
+  "task": "MSH-107",
+  "kind": "diagnostic documentation/task change only",
+  "source_revision": "a8581f09107648d03e3016786b41c267ace88bca",
+  "branch": "codex/rewrite",
+  "date": "2026-11-03",
+  "environment": {
+    "os": "macOS27.0.1 build26A434",
+    "architecture": "arm64",
+    "rustc": "1.99.1 (58cf8f9c3 2026-10-13)",
+    "cargo": "1.99.1 (5f94df478 2026-08-27)",
+    "python": "3.11.0",
+    "node": "24.19.0",
+    "backlog_global": "1.55.0 read-only",
+    "backlog_write": "1.55.1",
+    "backlog_binary": "/private/tmp/mshogi-bootstrap-npm-cache/_npx/749414256ca1c44f/node_modules/backlog.md-darwin-arm64/backlog"
+  },
+  "dependencies": [
+    {
+      "package": "mshogi-core",
+      "dependencies": [
+        {
+          "name": "serde",
+          "kind": "normal"
+        },
+        {
+          "name": "serde_json",
+          "kind": "normal"
+        },
+        {
+          "name": "mshogi-conformance",
+          "kind": "dev"
+        }
+      ]
+    },
+    {
+      "package": "mshogi-conformance",
+      "dependencies": [
+        {
+          "name": "serde",
+          "kind": "normal"
+        },
+        {
+          "name": "serde_json",
+          "kind": "normal"
+        },
+        {
+          "name": "sha2",
+          "kind": "normal"
+        }
+      ]
+    },
+    {
+      "package": "mshogi-console",
+      "dependencies": [
+        {
+          "name": "mshogi-core",
+          "kind": "normal"
+        },
+        {
+          "name": "mshogi-engine",
+          "kind": "normal"
+        },
+        {
+          "name": "mshogi-search",
+          "kind": "normal"
+        },
+        {
+          "name": "serde_json",
+          "kind": "normal"
+        },
+        {
+          "name": "mshogi-desktop-session",
+          "kind": "dev"
+        }
+      ]
+    },
+    {
+      "package": "mshogi-engine",
+      "dependencies": [
+        {
+          "name": "mshogi-core",
+          "kind": "normal"
+        },
+        {
+          "name": "mshogi-search",
+          "kind": "normal"
+        },
+        {
+          "name": "serde",
+          "kind": "normal"
+        },
+        {
+          "name": "serde_json",
+          "kind": "normal"
+        }
+      ]
+    },
+    {
+      "package": "mshogi-search",
+      "dependencies": [
+        {
+          "name": "mshogi-core",
+          "kind": "normal"
+        },
+        {
+          "name": "serde_json",
+          "kind": "dev"
+        }
+      ]
+    },
+    {
+      "package": "mshogi-desktop-session",
+      "dependencies": [
+        {
+          "name": "mshogi-core",
+          "kind": "normal"
+        },
+        {
+          "name": "mshogi-engine",
+          "kind": "normal"
+        },
+        {
+          "name": "serde",
+          "kind": "normal"
+        },
+        {
+          "name": "serde_json",
+          "kind": "normal"
+        }
+      ]
+    },
+    {
+      "package": "mshogi-runner",
+      "dependencies": [
+        {
+          "name": "mshogi-core",
+          "kind": "normal"
+        },
+        {
+          "name": "serde",
+          "kind": "normal"
+        },
+        {
+          "name": "serde_json",
+          "kind": "normal"
+        },
+        {
+          "name": "sha2",
+          "kind": "normal"
+        }
+      ]
+    },
+    {
+      "package": "mshogi-desktop",
+      "dependencies": [
+        {
+          "name": "mshogi-desktop-session",
+          "kind": "normal"
+        },
+        {
+          "name": "tauri",
+          "kind": "normal"
+        },
+        {
+          "name": "tauri-plugin-dialog",
+          "kind": "normal"
+        },
+        {
+          "name": "tauri-build",
+          "kind": "build"
+        }
+      ]
+    }
+  ],
+  "new_checks": [
+    {
+      "command": "cargo metadata --locked --offline --no-deps --format-version 1",
+      "result": "PASS",
+      "scope": "root workspace dependency direction"
+    },
+    {
+      "command": "cargo metadata --locked --offline --no-deps --format-version 1 --manifest-path desktop/src-tauri/Cargo.toml",
+      "result": "PASS",
+      "scope": "separate host workspace"
+    },
+    {
+      "command": "cargo test --locked --offline -p mshogi-core --test native_chu_envelope --test chu_consumer",
+      "result": "PASS",
+      "scope": "native Chu raw identity and complete consumers",
+      "passed": 3,
+      "log": "core.log"
+    },
+    {
+      "command": "cargo test --locked --offline -p mshogi-desktop-session runtime_tests -- --test-threads=1",
+      "result": "PASS",
+      "scope": "original Chess/Shogi/Xiangqi runtime suite, not five-game replacement coverage",
+      "passed": 8,
+      "log": "session.log"
+    },
+    {
+      "command": "cargo test --locked --offline -p mshogi-desktop-session actual_engine_compound_choice_is_journaled_before_exact_native_action_and_roundtrips",
+      "result": "PASS",
+      "scope": "real Chu observation journal/native action",
+      "passed": 1,
+      "log": "session.log"
+    },
+    {
+      "command": "cargo test --locked --offline -p mshogi-desktop-session validation_budget",
+      "result": "PASS",
+      "scope": "deadline versus cancellation classification",
+      "passed": 1,
+      "log": "session.log"
+    },
+    {
+      "command": "cargo test --locked --offline -p mshogi-desktop-session committed_saves_remain_successful_when_observed_after_the_validation_deadline",
+      "result": "PASS",
+      "scope": "atomic successful Save after budget",
+      "passed": 1,
+      "log": "session.log"
+    },
+    {
+      "command": "/Users/johnweathers/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node node_modules/vitest/vitest.mjs run src/interaction/useNativeChoiceController.test.tsx src/product/ChuBoard.test.tsx src/product/ChuExecution.test.tsx src/product/ChuContract.test.tsx",
+      "result": "PASS",
+      "scope": "cwd desktop, four frontend files",
+      "passed": 45,
+      "log": "frontend.log"
+    },
+    {
+      "command": "/private/tmp/mshogi-bootstrap-npm-cache/_npx/749414256ca1c44f/node_modules/backlog.md-darwin-arm64/backlog doctor",
+      "result": "PASS",
+      "scope": "no duplicate IDs, self-dependencies or cycles"
+    },
+    {
+      "command": "git fetch origin",
+      "result": "PASS",
+      "scope": "authorized escalated retry succeeded after sandbox FETCH_HEAD denial; fetched origin/codex/rewrite equals a8581f0"
+    },
+    {
+      "command": "git rev-list --left-right --count HEAD...origin/codex/rewrite",
+      "result": "PASS",
+      "scope": "0 0 at a8581f0 before integration"
+    },
+    {
+      "command": "python3 local Markdown target existence check",
+      "result": "PASS",
+      "scope": "23 links in report and roadmap; initial invalid boundary-stress filename corrected; verification self-link resolved after record creation"
+    },
+    {
+      "command": "Python compare pinned Backlog MSH-108 --json before/after",
+      "result": "PASS",
+      "scope": "only documentation/implementationNotes/updatedAt and derived dependencyGraph differ; original status/assignees/dependencies/acceptance/plan preserved"
+    },
+    {
+      "command": "git diff --name-only a8581f0; git diff --check",
+      "result": "PASS",
+      "scope": "tracked docs/MSH107/MSH108 only; no production/manifests/workflows/old evidence changes"
+    },
+    {
+      "command": "pinned backlog task list --status Ready --ready --plain",
+      "result": "PASS",
+      "observed": "No tasks found while MSH107 In Review; MSH83 remains recommended scoping assignment, unactivated"
+    }
+  ],
+  "focused_test_total": 59,
+  "required_new_ci_jobs": [],
+  "not_run": [
+    "broad full native/platform regressions",
+    "new CI campaign",
+    "new packaged GUI campaign",
+    "new latency/allocation benchmark",
+    "playing-strength matches",
+    "external engine comparisons",
+    "Tenjiku research or implementation"
+  ],
+  "reused_evidence": [
+    {
+      "path": "docs/review/architecture-acceptance-121.md",
+      "purpose": "accepted R1-R6 source/deletion and original three-game packaged evidence"
+    },
+    {
+      "path": "docs/m4/tori/delivery-review.md",
+      "purpose": "accepted Tori conformance/search/consumer/platform evidence at recorded revisions; retained failures/cancellations/source equivalence"
+    },
+    {
+      "path": "docs/m4/chu/delivery-review.md",
+      "purpose": "accepted complete Chu evidence, original Windows f90439-phase/Linux bd439-phase, distinct actual local macOS GUI and package evidence"
+    },
+    {
+      "path": "docs/m4/chu/engine-v1.md",
+      "purpose": "fixture-specific debug replay and release/debug search measurements; no new benchmark or causal attribution"
+    },
+    {
+      "path": "docs/m4/chu/shared-v1.md",
+      "purpose": "historical replay accounting/near-limit refusal/cooperative cancellation qualifications; later capabilities supersede unsupported wording"
+    }
+  ],
+  "independent_review": {
+    "status": "APPROVED; material corrections resolved, final unmeasured-risk wording clarified",
+    "reviewer": "/root/independent_review",
+    "method": "fresh separate read-only source/report assessment, not builder self-review",
+    "research_agents": [
+      "/root/native_map",
+      "/root/shared_map"
+    ],
+    "reviewer_new_tests_or_gui": false,
+    "corrections": [
+      "installation owner persistence.rs::DesktopController::install_document",
+      "qualified repeated growing snapshot retention with unmeasured peak memory",
+      "explicit all-five conformance boundary map",
+      "Xiangqi optional undo-retention precedent and compact Tori undo distinction",
+      "static link check corrected nonexistent boundary-stress path to actual later-game-sources table",
+      "final Tenjiku disposition says risks requiring measurement, not measured risks"
+    ],
+    "independent_checks": [
+      "read all three raw focused test logs and verified 59 total",
+      "Python verified four evidence byte sizes/SHA256s",
+      "inspected bounded report/source/caller maps and documentation-only tracked diff"
+    ]
+  },
+  "findings": [
+    {
+      "id": "F01",
+      "severity": "moderate",
+      "category": "performance risk",
+      "proven_correctness_defect": false,
+      "evidence": "existing replay elapsed measurements; undo allocation contribution unmeasured",
+      "proposal": "P1 measure and separate ordinary reconstruction from retained undo"
+    },
+    {
+      "id": "F02",
+      "severity": "moderate",
+      "category": "latency risk",
+      "proven_correctness_defect": false,
+      "evidence": "source cooperative granularity; no worst-call measurement",
+      "proposal": "P2 measure replay/response decode cooperation before correction"
+    },
+    {
+      "id": "F03",
+      "severity": "moderate",
+      "category": "responsiveness risk",
+      "proven_correctness_defect": false,
+      "evidence": "source inspection/choice costs; no observed inspection stall",
+      "proposal": "P3 measure native inspection and frontend choices"
+    },
+    {
+      "id": "F04",
+      "severity": "low",
+      "category": "maintainability/advisory cleanup",
+      "proven_correctness_defect": false,
+      "proposal": "P4 narrow syntax/projection mechanisms if useful and stale comment cleanup"
+    }
+  ],
+  "no_demonstrated_tenjiku_architectural_blocker": true,
+  "no_refactor_or_new_task_or_gate": true,
+  "logs": [
+    {
+      "path": "core.log",
+      "bytes": 731,
+      "sha256": "09a662c7cabda76fa551cccf4d3c544d03efcafc2326514149d10ea15d8257d2",
+      "original_stdout_sha256": "9c1d0d32b2de681252239b89ec576a2575f3b54935362aee9704ad3c99c7eb97",
+      "normalization": "removed final blank lines only for repository whitespace policy"
+    },
+    {
+      "path": "session.log",
+      "bytes": 2392,
+      "sha256": "86cd1b3d4a1ce06d053287b18bb1a8d3be3cae1bb82a3e87b9751ba0a5d93255",
+      "original_stdout_sha256": "70dc50125b33d077c586ddddca0c9527cd3e79c8a42d144ea53903090942b0a2",
+      "normalization": "removed final blank lines only for repository whitespace policy"
+    },
+    {
+      "path": "frontend.log",
+      "bytes": 221,
+      "sha256": "abf2aa13bfb178af442a2c4be4f6c19da3611db9fbe9a1a1d1562735f70d2055",
+      "original_stdout_sha256": "22ea2f750c8dbf020774ced5ddcaa225902da533e392dd3aa5a2c7acceb3c473",
+      "normalization": "removed final blank lines only for repository whitespace policy"
+    },
+    {
+      "path": "static-checks.json",
+      "bytes": 2793,
+      "sha256": "430109b617572fa577f9e376a8e0075b446ace3f91eceb9bece058d8ac7f50e0"
+    }
+  ]
+}

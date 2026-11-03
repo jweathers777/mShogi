@@ -1,0 +1,38 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-58e2c610622b01d4)
+
+running 8 tests
+test runtime_tests::close_authority_rejects_all_native_replacement_commands_and_open_but_keeps_save_available ... ok
+test runtime_tests::current_chess_contract_contains_actual_claims_match_and_search_observations ... ok
+test runtime_tests::current_chess_presentation_has_native_capabilities_without_a_second_application_snapshot ... ok
+test runtime_tests::current_flat_chess_claim_keeps_the_intended_action_unplayed_and_rejects_old_transport ... ok
+test runtime_tests::direct_identity_refusals_publish_native_facts_without_mutating_the_game ... ok
+test runtime_tests::exactly_one_native_document_and_uniform_metadata_survive_cross_game_replacement ... ok
+test runtime_tests::rejected_chess_worker_command_is_not_capacity_engine_failure_or_outcome ... ok
+test runtime_tests::reopened_all_game_identities_exceed_runtime_only_revisions_without_spending_saved_watermarks ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 266 filtered out; finished in 0.42s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-58e2c610622b01d4)
+
+running 1 test
+test chu_document::execution_tests::actual_engine_compound_choice_is_journaled_before_exact_native_action_and_roundtrips ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 273 filtered out; finished in 0.12s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-58e2c610622b01d4)
+
+running 1 test
+test persistence::validation_budget_tests::elapsed_validation_budget_is_authoritative_and_cancellation_is_not_resource_exhaustion ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 273 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_desktop_session-58e2c610622b01d4)
+
+running 1 test
+test persistence::save_commit_budget_tests::committed_saves_remain_successful_when_observed_after_the_validation_deadline ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 273 filtered out; finished in 0.00s

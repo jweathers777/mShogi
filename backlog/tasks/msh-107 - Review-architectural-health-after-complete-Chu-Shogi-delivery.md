@@ -1,9 +1,11 @@
 ---
 id: MSH-107
 title: Review architectural health after complete Chu Shogi delivery
-status: Ready
-assignee: []
+status: In Review
+assignee:
+  - '@codex'
 created_date: '2026-10-27T20:26:00Z'
+updated_date: '2026-11-03T16:17:00Z'
 labels:
   - architecture-review
   - planning
@@ -13,6 +15,7 @@ dependencies:
 documentation:
   - docs/architecture-health-roadmap.md
   - docs/design.md
+  - docs/review/architecture-health-107.md
 type: task
 ordinal: 107000
 ---
@@ -44,3 +47,22 @@ Future diagnostic work only. Intent, scope, acceptance and verification expectat
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Map current five-game production ownership and real consumers against design, MSH-106/115 and accepted R1–R6 records at a8581f09107648d03e3016786b41c267ace88bca.
+2. Trace Chu integration stress, shared execution/document/frontend boundaries and documented prospective Tenjiku constraints; distinguish demonstrated defects from measured costs and unmeasured risks.
+3. Publish source-anchored architecture map and prioritized diagnostic report with bounded recommendations, acceptable areas, verification and MSH-108 handoff.
+4. Obtain independent read-only assessment, resolve report errors, evaluate all eight AC and DoD, then integrate and push documentation/evidence only to codex/rewrite. Stop after MSH-107.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Startup: clean primary codex/rewrite at a8581f09107648d03e3016786b41c267ace88bca, origin git@github.com:jweathers777/mShogi.git; no active In Progress/In Review owners found. Existing three unrelated worktrees preserved. Owner @codex in primary checkout; diagnostic documentation needs no temporary worktree. Global CLI1.55.0 read only; pinned /private/tmp/mshogi-bootstrap-npm-cache/_npx/749414256ca1c44f/node_modules/backlog.md-darwin-arm64/backlog1.55.1 verified and selected for writes.
+
+Draft map/report published for independent assessment. Source-backed findings F01–F04 are advisory performance/latency/maintenance risks; no proven rule/saveability defect or architectural Tenjiku blocker. Focused checks at unchanged a8581f0: core3, desktop runtime8 + compound observation1 + deadline2, frontend45 all passed. Offline metadata includes separate Tauri workspace. Required new CI jobs none for documentation-only diagnostic; accepted exact-source product/CI evidence reused with platform limits. Fresh independent reviewer requests installation-owner pointer, qualified retention wording and explicit conformance map; these were corrected. Final evidence/review reconciliation pending.
+
+Final independent read-only assessment by /root/independent_review APPROVED: all source/report corrections resolved. Reviewer independently inspected actual source/consumers, read three logs, verified four evidence size/SHA256 entries and59-test total; no reviewer product tests or GUI claimed. Report distinguishes measured existing elapsed costs from unmeasured allocation/cancellation/inspection risks; no correctness/saveability defect, serious architecture blocker or material redesign recommendation. Structured verification record docs/review/evidence/msh107/verification.json; original8AC coverage table in report. MSH108 handoff added without status/owner/dependency/criteria/plan changes; no follow-up tasks created. Pinned doctor and23 local links pass; production/manifests/workflows/accepted evidence remain unchanged. Origin fetched and0/0 at a8581f0 before integration. Ready dependency-satisfied queue empty; next recommended assignment83 needs separate refinement/authorization. Normal diagnostic integration/push and terminal bookkeeping remain.
+<!-- SECTION:NOTES:END -->

@@ -1,0 +1,98 @@
+{
+  "local_links_exist": true,
+  "link_count": 23,
+  "links": [
+    {
+      "document": "docs/review/architecture-health-107.md",
+      "target": "../design.md"
+    },
+    {
+      "document": "docs/review/architecture-health-107.md",
+      "target": "architecture-health-106.md"
+    },
+    {
+      "document": "docs/review/architecture-health-107.md",
+      "target": "architecture-target-115.md"
+    },
+    {
+      "document": "docs/review/architecture-health-107.md",
+      "target": "../architecture-migration-plan.md"
+    },
+    {
+      "document": "docs/review/architecture-health-107.md",
+      "target": "execution-migration-116.md"
+    },
+    {
+      "document": "docs/review/architecture-health-107.md",
+      "target": "desktop-envelope-117.md"
+    },
+    {
+      "document": "docs/review/architecture-health-107.md",
+      "target": "native-application-118.md"
+    },
+    {
+      "document": "docs/review/architecture-health-107.md",
+      "target": "frontend-application-119.md"
+    },
+    {
+      "document": "docs/review/architecture-health-107.md",
+      "target": "native-choice-controller-120.md"
+    },
+    {
+      "document": "docs/review/architecture-health-107.md",
+      "target": "architecture-acceptance-121.md"
+    },
+    {
+      "document": "docs/review/architecture-health-107.md",
+      "target": "../testing/conformance-policy.md"
+    },
+    {
+      "document": "docs/review/architecture-health-107.md",
+      "target": "../m4/chu/engine-v1.md"
+    },
+    {
+      "document": "docs/review/architecture-health-107.md",
+      "target": "../m4/later-game-sources.md"
+    },
+    {
+      "document": "docs/review/architecture-health-107.md",
+      "target": "../m4/research/tenjiku.md"
+    },
+    {
+      "document": "docs/review/architecture-health-107.md",
+      "target": "evidence/msh107/verification.json"
+    },
+    {
+      "document": "docs/review/architecture-health-107.md",
+      "target": "architecture-acceptance-121.md"
+    },
+    {
+      "document": "docs/review/architecture-health-107.md",
+      "target": "../m4/tori/delivery-review.md"
+    },
+    {
+      "document": "docs/review/architecture-health-107.md",
+      "target": "../m4/chu/delivery-review.md"
+    },
+    {
+      "document": "docs/architecture-health-roadmap.md",
+      "target": "review/architecture-health-107.md"
+    },
+    {
+      "document": "docs/architecture-health-roadmap.md",
+      "target": "architecture-migration-plan.md"
+    },
+    {
+      "document": "docs/architecture-health-roadmap.md",
+      "target": "review/architecture-target-115.md"
+    },
+    {
+      "document": "docs/architecture-health-roadmap.md",
+      "target": "review/architecture-health-106.md"
+    },
+    {
+      "document": "docs/architecture-health-roadmap.md",
+      "target": "design.md"
+    }
+  ]
+}

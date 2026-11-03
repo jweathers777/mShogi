@@ -4,6 +4,7 @@ title: Review all-six-game architectural health before M4 closure
 status: Ready
 assignee: []
 created_date: '2026-10-27T20:26:00Z'
+updated_date: '2026-11-03T16:15:00Z'
 labels:
   - architecture-review
   - planning
@@ -15,6 +16,7 @@ dependencies:
 documentation:
   - docs/architecture-health-roadmap.md
   - docs/design.md
+  - docs/review/architecture-health-107.md
 type: task
 ordinal: 108000
 ---
@@ -46,3 +48,9 @@ Future diagnostic work only. Intent, scope, acceptance and verification expectat
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MSH-107 handoff at accepted source a8581f09107648d03e3016786b41c267ace88bca: current five-game map/report docs/review/architecture-health-107.md confirms R1–R6 ownership with real Tori/Chu consumers; no material redesign or demonstrated architectural Tenjiku blocker. Reconcile advisory F01 repeated replay/unused retained undo, F02 cooperative replay/watchdog granularity, F03 synchronous inspection/choice-cost risks and F04 narrow duplication/comment drift against the eventual six-game source. Preserve native semantics, selected profiles, one controller/envelope/frontend/choice lifetime, actual saveability reserves and conformance policy; no automatic refactor or new dependency. Existing MSH-83/87/79/44 own actual Tenjiku profile/actions/effects/native search/capacity/kanji product evidence. Reuse107 exact focused checks and qualified R6/Tori/Chu evidence; Tenjiku readiness is not delivered proof. MSH-108 remains Ready/unassigned/dependency-blocked by46; no activation or plan added.
+<!-- SECTION:NOTES:END -->

@@ -695,6 +695,8 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
         NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Black),
         NativeSide::Tori(mshogi_core::tori::Side::Sente),
         NativeSide::Tori(mshogi_core::tori::Side::Gote),
+        NativeSide::Chu(mshogi_core::chu::Side::Sente),
+        NativeSide::Chu(mshogi_core::chu::Side::Gote),
         NativeSide::Chess(Color::White),
     ] {
         let current = new_product_game(&mut c, human.game(), human);
@@ -708,8 +710,19 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
         assert!(current.document.dirty);
         assert_eq!(current.open_token, c.shared_open_token());
         match human {
-            NativeSide::Chu(_) => {
-                unreachable!("This fixture enumerates the existing playable games")
+            NativeSide::Chu(side) => {
+                use mshogi_core::chu;
+                assert_eq!(current.profile.id(), chu::PROFILE_ID);
+                assert_eq!(current.pieces.len(), 92);
+                assert_eq!(current.board.files.len(), 12);
+                assert_eq!(current.board.ranks.len(), 12);
+                assert_eq!(current.turn.id, NativeSide::Chu(chu::Side::Sente));
+                assert!(current.capabilities.engine_turn && current.capabilities.move_analysis);
+                assert!(!current.capabilities.hands && !current.capabilities.drops);
+                let state = c.session.chu().unwrap();
+                assert_eq!(state.document.settings().orientation, side);
+                assert_eq!(current.capabilities.board_action, side == chu::Side::Sente);
+                assert_eq!(state.pending.is_some(), side == chu::Side::Gote);
             }
             NativeSide::Tori(side) => {
                 use mshogi_core::tori as t;

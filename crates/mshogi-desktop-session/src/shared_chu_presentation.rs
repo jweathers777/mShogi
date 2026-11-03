@@ -126,7 +126,7 @@ pub struct ChuPresentation {
     pub selected: ChuHistory,
     /// Current authoritative live history.
     pub live: ChuHistory,
-    /// Functional native execution exists; normal product activation remains separately gated.
+    /// Functional native execution for the ordinary Chu product.
     pub execution_supported: bool,
 }
 impl ChuPresentation {

@@ -9,6 +9,7 @@ const games: { key: PlayableGameKind; label: string; first: string; second: stri
   { key: "shogi", label: "Shogi", first: "Sente", second: "Gote" },
   { key: "xiangqi", label: "Xiangqi", first: "Red", second: "Black" },
   { key: "tori", label: "Tori Shogi", first: "Sente", second: "Gote" },
+  { key: "chu", label: "Chu Shogi", first: "Sente", second: "Gote" },
 ];
 function radioKeys(event: KeyboardEvent<HTMLDivElement>) {
   const offsets: Record<string, number> = { ArrowLeft: -1, ArrowUp: -1, ArrowRight: 1, ArrowDown: 1 };
@@ -31,7 +32,7 @@ export function ProductApp() {
     if (!source) return; setMessage("");
     // New/Load are deliberate replacement requests. Merely opening either
     // chooser leaves the current native document installed until admission.
-    if (intent === "new") { setChoice({ source, game: source.game === "chu" ? "chess" : source.game, side: source.human.first_mover ? "first" : "second" }); return; }
+    if (intent === "new") { setChoice({ source, game: source.game, side: source.human.first_mover ? "first" : "second" }); return; }
     if (intent === "open") { void session.file(source, "open"); return; }
     if (source.close_requires_save) setPending({ source });
     else void session.finishClose(source).then(closed => { if (!closed) void session.cancelClose(); });
@@ -67,6 +68,7 @@ export function ProductApp() {
     const human: NativeSide = choice.game === "chess" ? { game_kind: "chess", side: first ? "white" : "black" }
       : choice.game === "shogi" ? { game_kind: "shogi", side: first ? "sente" : "gote" }
       : choice.game === "tori" ? { game_kind: "tori", side: first ? "sente" : "gote" }
+      : choice.game === "chu" ? { game_kind: "chu", side: first ? "sente" : "gote" }
       : { game_kind: "xiangqi", side: first ? "red" : "black" };
     const next = await session.newGame(choice.source.open_token, choice.game, human);
     if (next) setChoice(null);

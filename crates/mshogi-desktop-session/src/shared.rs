@@ -1041,7 +1041,20 @@ impl DesktopController {
             return Err("Application capacity: document identity exhausted.".into());
         }
         let receipt = match human {
-            NativeSide::Chu(_) => return Err("Chu is not an implemented playable desktop game; use the separate native verification route.".into()),
+            NativeSide::Chu(human) => {
+                let record =
+                    mshogi_core::chu::GameRecord::from_game(&mshogi_core::chu::Game::standard())
+                        .map_err(|e| e.to_string())?;
+                self.queue_chu_candidate(
+                    chu::RuntimeSeed::Record {
+                        record: Box::new(record),
+                        human,
+                    },
+                    Some(SessionOperation::Resume {}),
+                    None,
+                    true,
+                )?
+            }
             NativeSide::Tori(human) => {
                 let record =
                     mshogi_core::tori::GameRecord::from_game(&mshogi_core::tori::Game::standard())

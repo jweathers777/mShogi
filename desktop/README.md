@@ -22,9 +22,9 @@ Windows). The frontend has no shell or filesystem plugin. Vite listens on
 127.0.0.1:1420 during development; production web assets are embedded and do not
 require a web server.
 
-## Playing Chess, Shogi, Xiangqi and Tori Shogi
+## Playing Chess, Shogi, Xiangqi, Tori Shogi and Chu Shogi
 
-Press **New game**, choose one of the four supported games, then choose your
+Press **New game**, choose one of the five supported games, then choose your
 native side (White/Black, Sente/Gote or Red/Black), or Random. Games are untimed.
 Your side starts at the bottom; **Flip board** remains explicit. The initial
 application opens Chess; the same normal application loads each game's native archive.
@@ -37,6 +37,21 @@ the existing owners. Load stops work until explicit **Resume play**. The desktop
 exposes Take back; one-event Undo remains in the native API and console.
 [MSH-42 acceptance](../docs/m4/tori/delivery-review.md) records actual normal
 macOS/Windows/Linux gameplay, separate QA instrumentation and exact limits.
+
+Chu Shogi uses the owner-approved traditional kanji, King/Prince identities and
+complete 12×12 board in the same shell, without board scrolling or zoom. Select
+**Chu Shogi** in the ordinary dropdown and Sente, Gote or Random. Lion routes
+use native highlighted stages: select a second landing, or **Complete action
+here** when offered. Escape cancels an uncommitted selection. The game has no
+hands. Actual native engine play uses depth1 /512 visits; ordinary read-only
+analysis is capped at depth2 /2,000. This is a functional baseline, not a strength
+claim. Load retains complete native history and observations and stops work
+until **Resume play**. Take back retires execution and preserves its historical
+observations; native/console Undo remains separate. Capacity refusals preserve
+a complete save path and never imply a chess result. See the
+[Chu visual approval](../docs/m4/chu/desktop-visual-checkpoint.md),
+[engine contract](../docs/m4/chu/engine-v1.md) and
+[native notation](../docs/m4/chu/notation.md).
 
 For chess:
 Click a piece and a highlighted destination. Promotion opens explicit native

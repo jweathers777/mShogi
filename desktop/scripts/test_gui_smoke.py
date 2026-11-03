@@ -43,6 +43,87 @@ class ReplacementAnalysisAuthorityTests(unittest.TestCase):
             self.assertFalse(module.replacement_analysis_accepted(game, before, after, True))
 
 
+class PendingResumeAnalysisPreconditionTests(unittest.TestCase):
+    def resumed(self, **changed):
+        return {'paused': 'false', 'rootEnabled': True, 'pausedBanner': False,
+                'analysisEnabled': True, **changed}
+
+    def analysis(self, **changed):
+        return {'active': True, 'depthEnabled': True, 'nodesEnabled': True,
+                'startEnabled': True, **changed}
+
+    def journey(self, states):
+        journey = object.__new__(module.Journey)
+        journey.web = Mock()
+        journey.web.read.side_effect = states
+        journey.record = Mock()
+        return journey
+
+    def test_resume_settles_before_one_analysis_click_then_inputs_are_observed(self):
+        journey = self.journey([self.resumed(paused='true', rootEnabled=False, pausedBanner=True),
+                                self.resumed(), self.analysis(active=False, depthEnabled=False), self.analysis()])
+        observed_buttons = []
+        def observe(check, label):
+            observed_buttons.append([call.args[0] for call in journey.web.button.call_args_list])
+            with self.assertRaises(AssertionError): check()
+            return check()
+        with patch.object(module, 'wait', side_effect=observe):
+            self.assertEqual(journey.resume_pending_analysis('tori'), self.analysis())
+        self.assertEqual(observed_buttons, [['Resume play'], ['Resume play', 'Analyze position']])
+        self.assertEqual(journey.web.button.call_args_list,
+                         [unittest.mock.call('Resume play'), unittest.mock.call('Analyze position')])
+        self.assertEqual(journey.web.read.call_count, 4)
+        for call in journey.web.read.call_args_list:
+            for forbidden in ('.click(', '.focus(', 'scrollIntoView(', 'dispatchEvent(', 'invoke('):
+                self.assertNotIn(forbidden, call.args[0])
+        journey.web.set.assert_not_called()
+        journey.web.click.assert_not_called()
+
+    def test_pending_journey_uses_precondition_before_setting_analysis_limits(self):
+        source = ast.parse(Path(module.__file__).read_text())
+        journey = next(node for node in source.body if isinstance(node, ast.ClassDef) and node.name == 'Journey')
+        pending = next(node for node in journey.body if isinstance(node, ast.FunctionDef) and node.name == 'pending')
+        calls = [node for node in ast.walk(pending) if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)]
+        prepared = [node for node in calls if node.func.attr == 'resume_pending_analysis']
+        settings = [node for node in calls if node.func.attr == 'set']
+        self.assertEqual(len(prepared), 1)
+        self.assertTrue(settings)
+        self.assertTrue(all(node.lineno > prepared[0].lineno for node in settings))
+
+    def test_each_resume_precondition_is_required_without_an_analysis_action(self):
+        for changed in ({'paused':'true'}, {'rootEnabled':False}, {'pausedBanner':True}, {'analysisEnabled':False}):
+            with self.subTest(changed=changed):
+                journey = self.journey([self.resumed(**changed)])
+                with patch.object(module, 'wait', side_effect=lambda check,label: check()):
+                    with self.assertRaises(AssertionError): journey.resume_pending_analysis('tori')
+                journey.web.button.assert_called_once_with('Resume play')
+                journey.web.set.assert_not_called()
+
+    def test_active_inspector_and_all_inputs_are_required_without_click_retries(self):
+        for field in ('active','depthEnabled','nodesEnabled','startEnabled'):
+            with self.subTest(field=field):
+                journey = self.journey([self.resumed(), self.analysis(**{field:False})])
+                with patch.object(module, 'wait', side_effect=lambda check,label: check()):
+                    with self.assertRaises(AssertionError): journey.resume_pending_analysis('tori')
+                self.assertEqual(journey.web.button.call_args_list,
+                                 [unittest.mock.call('Resume play'), unittest.mock.call('Analyze position')])
+                journey.web.set.assert_not_called()
+
+    def test_dispatch_and_observer_failures_propagate_without_action_replay(self):
+        for stage in ('resume', 'resume_observer', 'analysis', 'analysis_observer'):
+            with self.subTest(stage=stage):
+                journey = self.journey([self.resumed(), self.analysis()])
+                failure = ConnectionResetError('delivery or observation failed')
+                if stage == 'resume': journey.web.button.side_effect = failure
+                elif stage == 'analysis': journey.web.button.side_effect = [None, failure]
+                elif stage == 'resume_observer': journey.web.read.side_effect = failure
+                else: journey.web.read.side_effect = [self.resumed(), failure]
+                with patch.object(module, 'wait', side_effect=lambda check,label: check()):
+                    with self.assertRaises(ConnectionResetError): journey.resume_pending_analysis('tori')
+                self.assertEqual(journey.web.button.call_count, 1 if stage in ('resume','resume_observer') else 2)
+                journey.web.set.assert_not_called()
+
+
 class XiangqiImmutableWarningPrefixTests(unittest.TestCase):
     def pair(self):
         events = [{'event': {'kind': 'board_action', 'action': f'independent-{i}'}} for i in range(8)]

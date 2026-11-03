@@ -2,7 +2,7 @@
   "moves": {
     "root": {
       "label": "Starting position",
-      "numbering": "Technical Chu actions · known-root move pairs · declared root plies 0 · earlier history unknown"
+      "numbering": "Chu complete actions · known-root move pairs · declared root plies 0 · earlier history unknown"
     },
     "entries": [],
     "last_action": null
@@ -224,7 +224,7 @@
       "incomplete": null,
       "last_effects": null
     },
-    "execution_supported": false
+    "execution_supported": true
   },
   "open_token": {
     "document": 1,
@@ -330,7 +330,7 @@
       "k",
       "l"
     ],
-    "label": "Chu Shogi 12×12 native contract board",
+    "label": "Chu Shogi 12×12 board",
     "initial_focus": "6g"
   },
   "orientations": [
@@ -1640,8 +1640,8 @@
     "promotion": true,
     "take_back": false,
     "undo": false,
-    "engine_turn": false,
-    "move_analysis": false,
+    "engine_turn": true,
+    "move_analysis": true,
     "chess_full": false,
     "claims": false,
     "declaration": false,
@@ -1659,15 +1659,15 @@
   "event_index": 0,
   "board_ply": 0,
   "play_limits": {
-    "depth": 0,
-    "nodes": 0
+    "depth": 1,
+    "nodes": 512
   },
   "historical": false,
   "paused": true,
   "close_requires_save": true,
   "phase": "paused",
   "execution_purpose": null,
-  "diagnostic": "Chu shared contract. Engine play and analysis are not implemented; saved observations are historical.",
+  "diagnostic": "Saved observations are historical. Resume starts play.",
   "declaration_advice": [],
   "context": {
     "envelope_version": 1,
@@ -1680,7 +1680,7 @@
   "analysis": null,
   "observations": [],
   "search_observations": [],
-  "score_meaning": "Chu execution is unsupported. Native outcomes retain their meaning; failures and incomplete work have no score or variation.",
+  "score_meaning": "Native root-side evaluation in hundredths of a Pawn. Win/loss distances count complete board actions, not necessarily mate. Failures and incomplete work are unscored.",
   "chess": null,
   "chess_match": null
 }

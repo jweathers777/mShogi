@@ -1,10 +1,11 @@
 ---
 id: MSH-43
 title: Deliver complete chu shogi rules and functional product integration
-status: To Do
-assignee: []
+status: In Progress
+assignee:
+  - '@Codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-03T10:18:00Z'
+updated_date: '2026-11-03T10:46:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -24,6 +25,9 @@ documentation:
   - docs/m4/chu/handoff.md
   - docs/m4/chu/shared-v1.md
   - docs/m4/chu/shared-verification.json
+  - docs/m4/chu/engine-v1.md
+  - docs/m4/chu/notation.md
+  - docs/m4/chu/desktop-visual-checkpoint.md
 ordinal: 43000
 ---
 
@@ -55,6 +59,12 @@ Current MSH-82 profile/handoff: mshogi.chu.jcsa2019.v1 adopts modern JCSA2019 wi
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+2026-11-03: Codex sole integrator on clean primary codex/rewrite a5d5bd4; original8AC/4DoD/dependencies preserved. A: consume native Chu Game in concrete transparent material/full-history bounded search and existing supervised protocol4 results; measure standard/tactical costs before interactive defaults, verify exact reversal/terminal/repetition/cancellation/incomplete behavior. B: native Rust route/capture/promotion notation and bounded console in existing application; actual subprocess and reproducible play/ending probes. C: extend current Chu immutable document/session/result admission and existing scheduling, preserving 12M aggregate/4M native/15s limits, complete observations before moves, exact PV/target identities, 256-to257 refusal, reserved endings, stopped reopening and stale retirement. D: real traditional-kanji12x12 renderer via existing GameFrame/choice controller, native routes/royals/effects/inspection, common panels/recovery/analysis, no hands or frontend rules. Normal chooser/Load stays4games; stable QA selector exercises actual functional Chu session for visual checkpoint. Delegate isolated engine, console and renderer files; integrator owns shared desktop/native execution contracts and durable task evidence; independent reviewers challenge completed native execution/admission and actual visual/interaction boundary. Check exhaustive production tags, both Cargo workspaces and strict frontend early, focused tests then coherent relevant4game regressions. Required visual-checkpoint CI:3platform Rust and affected Desktop frontend/host/package checks; distinguish existing4game GUI campaigns from new actual macOS Chu interaction. One structured verification record per tested revision. Capture actual stable-identity macOS app at1180x820,960x720,760x650 bothorientations and significant routes/captures/promotion/royals/history/analysis; integrate/push reviewed source, then STOP for owner visual approval with taskunfinished. No normal5thgameactivation/final3platformChu gameplay/final8ACclosure until approval;43/M4remainopen.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -65,4 +75,8 @@ Owner2026-11-01 testing-policy supersession: rules-profile-derived independently
 MSH82 current modern-profile handoff2026-11-02 supersedes original open-historical-question wording without deleting the old planning/research evidence. No original AC weakened:250 independently expected data rows precede native execution; actual conformance remains86, shared78 and full game43. Complete12×12 traditional-kanji board visible without scroll/zoom in accepted common shell; native inspection wording and full routes/royals retained.52 owns competitive strength;46/47/88/89 and107 retain shared/platform/diagnostic ownership. Original dependencies preserved; this record remains To Do/open.
 
 MSH78 complete shared handoff2026-11-03: tested/integrated native/shared source 250b701efd23dac648ffdb984c83da868fa8840a, nativeCI41615048164 all3jobsPASS; full checkpoint fcccc37 Rust41610001673/Desktop41610001503 all6jobsPASS, unchanged Desktop evidence reused for final native-only diagnostic correction. Actual canonical Chu/immutable document/controller/history/Take back/choices/royals/inspection/capacity contracts and seven real DTOs documented in shared-v1.md. Exact counters remain decimal text; technical Moves number known history only. Execution unsupported/unscored and normal chooser/Load gated until this task delivers actual engine/product. Original dependencies now satisfied; To Do/unassigned remains unchanged, no43implementation begun. Traditional kanji/full12x12 no-scroll product, engine/console/notation, complete games and packaged GUI/platform evidence still owned here; preserve native/shared evidence,12M aggregate and actual ending reserves.
+
+Owner2026-11-03 authorizes coherent functional-engine/console/notation/finished desktop visual checkpoint, then explicit owner aesthetic review. This supersedes old profile-only inactivity notes without deleting them. No additional planning phase or component-ticket split. Current78 source250b701/integrationa5d5bd4 and accepted82/86profile/evidence unchanged. Other3existing worktrees remain unrelated and untouched; no competing43owner.
+
+Functional checkpoint2026-11-03 onprimarycodex/rewrite: actualnativeChu search/result/console/notation and traditional29facekanji renderer implemented with oneexistingcontroller/choiceowner; normalchooser/Load remains4games pendingownercheckpoint. Measuredreleaseplay1/512 standard37visits5ms andLion92visits11-15ms; analysismax2/2000,notstrengthclaim. Independentnativeexecution/console review27focusedtestsPASS; rendererreview44testsPASS plusportedfooterregression6PASS. Actualchild/controller6testsPASS includingbothassignments,cancelledPIDcleanup,history/SaveOpen/stalecontexts. Newactualresultcodec5testsPASS,32plyrealengineprogression32obs651611B/534616aggregateunits/528retainednativeevents;Takebackretainsbranch+allobs675048B/541771units;256actualzero-workobs2601304B,257typedrefusal preservesbytesandStop/Resign/Close. Historical1076nativechecks remain86evidence,notrecounted. Earlyworkspacealltarget/standalonehost/strictTS consumerschecked beforebroadCI. Coherent4gameregressions,finalreviews andactualstableQApackagedmacOSsizes/interactionstillpending;taskremainsInProgress,8AC/DoDunchecked. No owneraestheticapprovalorfinalproductactivationclaimed.
 <!-- SECTION:NOTES:END -->

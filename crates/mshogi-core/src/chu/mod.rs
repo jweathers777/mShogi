@@ -3,6 +3,8 @@
 //! Structural diagrams, position-local admission and history-owned game commands
 //! are separate boundaries. A diagram does not establish historical reachability.
 mod legal;
+/// Complete native human action formatting and local-choice parsing.
+pub mod notation;
 mod position;
 pub use legal::*;
 pub use position::*;

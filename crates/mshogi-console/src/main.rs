@@ -8,6 +8,7 @@ use std::{
 
 use mshogi_core::CHESS_POSITION_PROFILE_ID;
 
+mod chu_session;
 mod record_io;
 mod session;
 mod shogi_session;
@@ -25,6 +26,7 @@ enum Game {
     Shogi,
     Xiangqi,
     Tori,
+    Chu,
 }
 impl Game {
     fn name(self) -> &'static str {
@@ -33,6 +35,7 @@ impl Game {
             Self::Shogi => "shogi",
             Self::Xiangqi => "xiangqi",
             Self::Tori => "tori",
+            Self::Chu => "chu",
         }
     }
 }
@@ -52,15 +55,16 @@ fn arguments(args: impl Iterator<Item = std::ffi::OsString>) -> Result<Invocatio
             }
             let value = args
                 .next()
-                .ok_or("--game requires chess, shogi, xiangqi or tori")?;
+                .ok_or("--game requires chess, shogi, xiangqi, tori or chu")?;
             selected = Some(match value.to_str() {
                 Some("chess") => Game::Chess,
                 Some("shogi") => Game::Shogi,
                 Some("xiangqi") => Game::Xiangqi,
                 Some("tori") => Game::Tori,
+                Some("chu") => Game::Chu,
                 _ => {
                     return Err(
-                        "unknown or missing game; --game requires chess, shogi, xiangqi or tori"
+                        "unknown or missing game; --game requires chess, shogi, xiangqi, tori or chu"
                             .into(),
                     );
                 }
@@ -88,7 +92,7 @@ fn arguments(args: impl Iterator<Item = std::ffi::OsString>) -> Result<Invocatio
         selected.unwrap_or(Game::Chess)
     };
     if mode == "uci" && !matches!(game, Game::Chess | Game::Xiangqi) {
-        return Err("UCI supports chess or xiangqi; select --game shogi usi for shogi; Tori uses shell or structured internal-search".into());
+        return Err("UCI supports chess or xiangqi; select --game shogi usi for shogi; Tori/Chu use shell or structured internal-search".into());
     }
     if !matches!(
         mode.as_str(),
@@ -110,9 +114,9 @@ fn help(game: Game) {
     let game = game.name();
     println!("mShogi headless console — selected game: {game}
 
-Usage: mshogi [--game chess|shogi|xiangqi|tori] [--help | --version | profile | shell | shogi | uci | usi | internal-search]
+Usage: mshogi [--game chess|shogi|xiangqi|tori|chu] [--help | --version | profile | shell | shogi | uci | usi | internal-search]
 
-  --game <game>  Select chess, shogi, xiangqi or tori (default chess)
+  --game <game>  Select chess, shogi, xiangqi, tori or chu (default chess)
   --help, -h     Show selected-game help
   --version, -V  Show the application version
   profile        Show the selected native rules profile and actual coverage
@@ -133,6 +137,8 @@ Xiangqi: native intersections/FEN, Red/Black history/warnings/claims/outcomes,
 canonical replay, local perft/divide0..3 and explicit bounded cancellable no-win diagnostics.
 Tori: native7x7 board/hands, complete history/T06 obligations, readable complete
 actions, canonical standard/custom roots, bounded search and local diagnostics.
+Chu: native12x12 board without hands, King/Prince, complete compound routes,
+ordered captures and returns, actual draw agreements, canonical history and bounded search.
 All: position/show/legal/move/undo/history/status; canonical envelope record
 print/save/load-file/load-json. Saves require a new file. No shared board engine.");
 }
@@ -172,6 +178,13 @@ fn main() -> ExitCode {
                     "Coverage: untimed native7x7 complete moves/drops/compulsory promotion, distinct handed quails, known history/T06 obligations, native outcomes, resignation/unscored Stop, exact event undo, readable action notation and strict canonical standard/custom records. Local diagnostics depth0..3 with explicit visits; bounded native search/structured internal-search. No SFEN/USI adapter or competitive-strength claim."
                 );
             }
+            Game::Chu => {
+                println!("Target rules profile: {}", mshogi_core::chu::PROFILE_ID);
+                println!("Edition: {}", mshogi_core::chu::PROFILE_EDITION);
+                println!(
+                    "Coverage: untimed native12x12 complete one/two-stage actions, ordered captures/returns, promotion, King/Prince survival, Lion protection, pre-fourth repetition admission, native conclusions and actual draw agreements; exact event undo, strict canonical standard/custom records, bounded history-aware search and local perft/divide0..2. No hands, USI/SFEN or competitive-strength claim."
+                );
+            }
         },
         "shell" => match game {
             Game::Chess => {
@@ -196,12 +209,16 @@ fn main() -> ExitCode {
                 let mut session = tori_session::Session::new();
                 return shell(|line, out| session.execute(line, out));
             }
+            Game::Chu => {
+                let mut session = chu_session::Session::new();
+                return shell(|line, out| session.execute(line, out));
+            }
         },
         "uci" => {
             return match game {
                 Game::Chess => uci::run(),
                 Game::Xiangqi => xiangqi_uci::run(),
-                Game::Shogi | Game::Tori => unreachable!("validated protocol"),
+                Game::Shogi | Game::Tori | Game::Chu => unreachable!("validated protocol"),
             };
         }
         "usi" => return usi::run(),

@@ -102,7 +102,7 @@ export type ToriSnapshot = GameSnapshotBase & {
     earlier_history_unknown: boolean; historical_reachability_proven: boolean; selected: ToriHistory; live: ToriHistory };
   document: GameSnapshotBase["document"] & { settings: { game_kind: "tori"; settings: { orientation: ToriSide } } };
 };
-// Native-only shared-contract consumer. This does not advertise a playable game.
+// Real native Chu session; normal chooser/Load remains gated pending owner visual approval.
 export interface ChuHistory {
   event_index: number; board_ply: number; declared_total_plies: string;
   identities: { square: string; piece: { side: ToriSide; base: string; promoted: boolean }; face: string }[];
@@ -115,7 +115,7 @@ export type ChuSquare = [number, number];
 export type ChuAction = { from: ChuSquare; route: ChuSquare[]; promote: boolean };
 export type ChuSnapshot = GameSnapshotBase & {
   game: "chu";
-  chu: { root: unknown; declared_root_plies: string; earlier_history_unknown: boolean; historical_reachability_proven: boolean; selected: ChuHistory; live: ChuHistory; execution_supported: false };
+  chu: { root: unknown; declared_root_plies: string; earlier_history_unknown: boolean; historical_reachability_proven: boolean; selected: ChuHistory; live: ChuHistory; execution_supported: boolean };
   document: GameSnapshotBase["document"] & { settings: { game_kind: "chu"; settings: { orientation: ToriSide } } };
 };
 export type GameSnapshot = ChessSnapshot | ShogiSnapshot | XiangqiSnapshot | ToriSnapshot | ChuSnapshot;

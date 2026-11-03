@@ -70,12 +70,15 @@ it("decorates ordered native captures and full routes independently of selection
   expect(container.querySelector('[data-last-move="origin"]')?.getAttribute("data-location")).toBe("3c");
   expect(container.querySelector('[data-last-move="destination"]')?.getAttribute("data-location")).toBe("1b");
 });
-it("labels the infrastructure surface and never advertises Chu execution or invented scores", () => {
+it("uses the production renderer with bounded native execution and no invented scores", () => {
   const command = vi.fn();render(<><GameBoard snapshot={routes} disabled={false} inspectionDisabled={false} command={command} />
     <NativeRecovery snapshot={routes} error="" disabled={false} command={command} />
     <NativeAnalysis snapshot={routes} defaults={routes.play_limits} disabled={false} command={command} maxDepth={1} minNodes={1} maxNodes={1} /></>);
-  expect(screen.getByText(/CHU DEVELOPMENT CONTRACT/)).toBeTruthy();expect(screen.getByText(/Chu execution is unsupported/)).toBeTruthy();
-  expect(screen.queryByRole("button", { name: /Resume|Retry|Start move analysis/ })).toBeNull();
+  expect(document.querySelector(".chu-board-frame")).toBeTruthy();
+  expect(screen.queryByText(/CHU DEVELOPMENT CONTRACT/)).toBeNull();
+  expect(screen.queryByText(/Chu execution is unsupported/)).toBeNull();
+  expect(screen.getByRole("button", { name: "Resume play" })).toBeTruthy();
+  expect(screen.getByText("No engine search has completed in this game.")).toBeTruthy();
   expect(screen.queryByText(/Play limit: depth 0/)).toBeNull(); expect(command).not.toHaveBeenCalled();
 });
 it("distinguishes native terminal prefix from continued action and invalidates history/inspection work", async () => {

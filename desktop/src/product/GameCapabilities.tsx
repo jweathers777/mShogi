@@ -38,6 +38,13 @@ export function GameActions({ snapshot, disabled, command, confirm }: {
     {terminal?.offer_draw && <button className="quiet" disabled={disabled} onClick={() => ask({ kind: "xiangqi", command: { kind: "offer_draw" } }, "Offer a draw?", "Offer draw", "An offer alone does not end the game. Your opponent must accept it.")}>Offer draw…</button>}
     {terminal?.accept_draw && <button className="secondary" disabled={disabled} onClick={() => ask({ kind: "xiangqi", command: { kind: "accept_draw" } }, "Accept the draw?", "Accept draw", "Accepting the outstanding offer ends this game as a draw.")}>Accept draw…</button>}
     {terminal?.decline_draw && <button className="quiet" disabled={disabled} onClick={() => ask({ kind: "xiangqi", command: { kind: "decline_draw" } }, "Decline the draw?", "Decline draw", "The game will continue without this offer.")}>Decline draw…</button>}
+    {snapshot.game === "chu" && !snapshot.historical && !snapshot.status.concluded && <>
+      {snapshot.chu.live.draw_offer === null && <button className="quiet" disabled={disabled} onClick={() => ask({ kind: "chu", actor: snapshot.human.id.side as "sente" | "gote", command: { kind: "offer_draw" } }, "Offer a draw?", "Offer draw", "An offer alone does not end the game. Your opponent must accept it.")}>Offer draw…</button>}
+      {snapshot.chu.live.draw_offer !== null && snapshot.chu.live.draw_offer !== snapshot.human.id.side && <>
+        <button className="secondary" disabled={disabled} onClick={() => ask({ kind: "chu", actor: snapshot.human.id.side as "sente" | "gote", command: { kind: "accept_draw" } }, "Accept the draw?", "Accept draw", "Accepting the outstanding offer ends this game by agreement.")}>Accept draw…</button>
+        <button className="quiet" disabled={disabled} onClick={() => { void command({ kind: "chu", actor: snapshot.human.id.side as "sente" | "gote", command: { kind: "decline_draw" } }); }}>Decline draw</button>
+      </>}
+    </>}
     {snapshot.capabilities.resign && <button className="quiet resign-button" disabled={disabled} onClick={() => { void resign(); }}>Resign</button>}
   </section>;
 }

@@ -116,3 +116,13 @@ closing reservations, historical observations and fresh stopped restoration.
 The ten consumer-row mapping explicitly separates MSH-78 infrastructure evidence
 from the finished-window obligation still owned by43. Native86 evidence remains
 unchanged historical evidence; shared execution does not recount it.
+
+## MSH-43 working visual checkpoint (2026-11-03)
+
+The [functional engine contract](engine-v1.md) and [visual checkpoint](desktop-visual-checkpoint.md)
+record actual search/results, native notation/console, whole-document result
+admission and traditional piece rendering in the accepted shared shell. This
+continues within43; it creates no new component hierarchy or profile revision.
+Normal fifth-game activation/final packaged three-platform Chu gameplay/final8AC
+closure wait for explicit owner visual approval. Strength52, shared46/47/88/89,
+architecture107, Tenjiku and M5 remain outside this checkpoint.

@@ -108,10 +108,7 @@ fn execute_chess(context: &ExecutionContext) -> ChessResult {
 
 pub(crate) fn execute(context: &ExecutionContext) -> ExecutionResult {
     match context.game.game_kind() {
-        mshogi_core::native::GameKind::Chu => ExecutionResult::failure(
-            FailureKind::UnsupportedMode,
-            "Chu execution is not implemented; no move, score, analysis or game outcome is available.",
-        ),
+        mshogi_core::native::GameKind::Chu => execute_chu(context),
         mshogi_core::native::GameKind::Tori => execute_tori(context),
         mshogi_core::native::GameKind::Xiangqi => execute_xiangqi(context),
         mshogi_core::native::GameKind::Shogi => execute_shogi(context),
@@ -231,6 +228,48 @@ fn execute_tori(context: &ExecutionContext) -> ExecutionResult {
     ) {
         Ok(result) => ExecutionResult::Tori {
             result: ToriResult::searched(result),
+        },
+        Err(e) => ExecutionResult::failure(FailureKind::Search, e),
+    }
+}
+
+fn execute_chu(context: &ExecutionContext) -> ExecutionResult {
+    if !matches!(
+        context.purpose,
+        ExecutionPurpose::EngineTurn {} | ExecutionPurpose::MoveAnalysis { .. }
+    ) {
+        return ExecutionResult::failure(
+            FailureKind::UnsupportedMode,
+            "Chess Full reachability is not a Chu operation; no declarations or exact analysis are advertised.",
+        );
+    }
+    if !(mshogi_search::chu::Limits {
+        depth: context.limits.depth,
+        nodes: context.limits.nodes,
+    })
+    .valid()
+    {
+        return ExecutionResult::failure(
+            FailureKind::InvalidRequest,
+            "Chu execution limits exceed the bounded native search profile",
+        );
+    }
+    let mshogi_core::native::CanonicalRecord::Chu(record) = &context.game else {
+        unreachable!()
+    };
+    let game = match record.to_game() {
+        Ok(game) => game,
+        Err(e) => return ExecutionResult::failure(FailureKind::InvalidRequest, e),
+    };
+    match mshogi_search::chu::search(
+        &game,
+        mshogi_search::chu::Limits {
+            depth: context.limits.depth,
+            nodes: context.limits.nodes,
+        },
+    ) {
+        Ok(result) => ExecutionResult::Chu {
+            result: ChuResult::searched(result),
         },
         Err(e) => ExecutionResult::failure(FailureKind::Search, e),
     }

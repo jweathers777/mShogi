@@ -1632,6 +1632,7 @@ impl DesktopController {
                     }
                     if consumes_response && let Some(state) = self.session.chu_mut() {
                         state.retire();
+                        state.paused = true;
                         state.phase = if error.resource.is_some() {
                             EnginePhase::Paused
                         } else {
@@ -1751,6 +1752,7 @@ impl DesktopController {
         }
         if let Some(state) = self.session.chu_mut() {
             state.retire();
+            state.paused = true;
         }
         self.session.capacity.status = CapacityPhase::Paused;
         self.session.capacity.message = Some(error);

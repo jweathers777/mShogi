@@ -359,7 +359,8 @@ fn display_shogi_observation(
         ExecutionResult::Failure { .. } => None,
         ExecutionResult::Chess { .. }
         | ExecutionResult::Xiangqi { .. }
-        | ExecutionResult::Tori { .. } => {
+        | ExecutionResult::Tori { .. }
+        | ExecutionResult::Chu { .. } => {
             unreachable!("native shogi response admission")
         }
     };

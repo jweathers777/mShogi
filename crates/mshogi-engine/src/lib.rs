@@ -7,12 +7,14 @@
 mod analysis;
 pub use analysis::*;
 mod bridge;
+mod chu;
 mod server;
 mod shared;
 mod shogi;
 mod tori;
 mod xiangqi;
 pub use bridge::{BridgeOptions, EngineBridge, SubmitError};
+pub use chu::*;
 use mshogi_core::chess::{Action, ChessOutcome, ClaimRequest, Color, DrawClaim};
 use mshogi_search::search::{SearchChoice, SearchDecision, SearchResult, SearchStatus};
 use serde::{Deserialize, Serialize};

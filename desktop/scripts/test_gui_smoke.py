@@ -1260,6 +1260,13 @@ class CurrentShellCopyEvidenceTests(unittest.TestCase):
 
 class ChuNormalProductEvidenceTests(unittest.TestCase):
     """Observer checks only; actual packaged GUI evidence must come from each OS."""
+    def test_chu_history_uses_existing_bounded_keyboard_revelation_for_clipped_moves(self):
+        source=ast.parse(Path(module.__file__).read_text())
+        method=next(node for node in ast.walk(source) if isinstance(node,ast.FunctionDef) and node.name=='normal_chu')
+        calls=[node for node in ast.walk(method) if isinstance(node,ast.Call) and isinstance(node.func,ast.Attribute)
+               and node.args and isinstance(node.args[0],ast.Constant) and node.args[0].value=='.moves-table button[data-event="1"]']
+        self.assertEqual([node.func.attr for node in calls],['keyboard_activate'])
+
     def test_native_action_card_content_can_grow_without_moving_shared_anchors_or_gaps(self):
         def cards(action_height):
             return [{'name':'analysis','rect':{'left':860,'top':116,'width':292,'height':218}},

@@ -1029,7 +1029,7 @@ class Journey:
         summaries=w.read("[...document.querySelectorAll('.support-dialog summary')].map(e=>e.textContent)")
         assert summaries==['Diagnostics','Font license'],summaries
         w.keyboard_activate('.support-dialog details:first-of-type summary')
-        native=w.read("[JSON.parse(document.querySelector('[data-native-diagnostics]').textContent)]")[0]
+        native=self.public_diagnostic_pages()
         assert all(k in native for k in ('token','profile','context','document','capacity','diagnostic','io','error','analysis','observations')),native
         assert native['context']['game_kind']==game,native
         w.keyboard_activate('.support-dialog details:first-of-type summary')
@@ -1597,6 +1597,28 @@ class Journey:
         self.record("Complete native Xiangqi intersections, river and palaces without scrolling", geometry)
         return geometry
 
+    def public_diagnostic_pages(self):
+        """Read complete captured diagnostics through bounded public pages."""
+        w=self.web
+        wait(lambda:w.has('[data-native-diagnostics]'), 'captured public diagnostic text')
+        chunks=[]; total=0; pages=None
+        for page in range(512):
+            value=w.read("""(() => {const e=document.querySelector('[data-native-diagnostics]');return {
+                text:e.textContent,page:Number(e.dataset.diagnosticsPage),pages:Number(e.dataset.diagnosticsPages)};})()""")
+            assert isinstance(value,dict) and value['page']==page and isinstance(value['text'],str),value
+            assert len(value['text'].encode('utf-16-le','surrogatepass')) <= 65536*2,value['page']
+            if pages is None: pages=value['pages']
+            assert value['pages']==pages and 1<=pages<=512,value
+            chunks.append(value['text']);total+=len(value['text'])
+            assert total<=32*1024*1024,'diagnostic response exceeds external verification bound'
+            if page+1==pages: break
+            w.button('Next diagnostics page')
+            wait(lambda:w.read("Number(document.querySelector('[data-native-diagnostics]').dataset.diagnosticsPage)")==page+1,
+                 'actual diagnostic page advanced once')
+        else:
+            raise AssertionError('complete public diagnostic pages not observed')
+        return json.loads(''.join(chunks))
+
     def native_diagnostics(self):
         """Open the public support surface with real input; no hidden DOM/IPC."""
         w=self.web
@@ -1605,7 +1627,7 @@ class Journey:
         wait(lambda:w.has('.support-dialog'), "public About dialog")
         try:
             w.click('.support-dialog details summary')
-            observed=w.read("[JSON.parse(document.querySelector('[data-native-diagnostics]').textContent)]")[0]
+            observed=self.public_diagnostic_pages()
             assert isinstance(observed,dict) and observed.get('token') and observed.get('context'), observed
             return observed
         finally:

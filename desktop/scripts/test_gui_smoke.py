@@ -603,12 +603,12 @@ class XiangqiRuntimeEvidenceTests(unittest.TestCase):
         journey = object.__new__(module.Journey)
         journey.web = Mock()
         diagnostics = {**self.diagnostics(), 'error': ''}
-        journey.web.read.side_effect = [True, [diagnostics]]
-        journey.web.has.side_effect = [True, False]
+        journey.web.read.side_effect = [True, {'text':json.dumps(diagnostics),'page':0,'pages':1}]
+        journey.web.has.side_effect = [True, True, False]
         self.assertEqual(journey.xiangqi_diagnostics(), diagnostics)
         expression = journey.web.read.call_args.args[0]
-        self.assertTrue(expression.startswith('[JSON.parse('))
-        self.assertTrue(expression.endswith(')]'))
+        self.assertIn('text:e.textContent',expression)
+        self.assertNotIn('JSON.parse(',expression)
         journey.web.command.assert_not_called()
 
     def test_xiangqi_history_observer_requires_event_prefix_not_only_board_ply(self):
@@ -1196,8 +1196,8 @@ class PublicSupportDiagnosticsTests(unittest.TestCase):
     def test_native_diagnostics_require_public_actual_input_and_always_close(self):
         journey=object.__new__(module.Journey);journey.web=Mock()
         native={'token':{'document':7},'context':{'game_kind':'shogi'}}
-        journey.web.read.side_effect=[True,[native]]
-        journey.web.has.side_effect=[True,False]
+        journey.web.read.side_effect=[True,{'text':json.dumps(native),'page':0,'pages':1}]
+        journey.web.has.side_effect=[True,True,False]
         self.assertEqual(journey.native_diagnostics(),native)
         self.assertEqual(journey.web.click.call_args_list,[unittest.mock.call('[data-support-trigger]'),
             unittest.mock.call('.support-dialog details summary'),unittest.mock.call('.support-dialog [data-cancel]')])
@@ -1207,9 +1207,29 @@ class PublicSupportDiagnosticsTests(unittest.TestCase):
 
     def test_bad_diagnostic_payload_still_closes_public_dialog(self):
         journey=object.__new__(module.Journey);journey.web=Mock()
-        journey.web.read.side_effect=[True,[None]];journey.web.has.side_effect=[True,False]
+        journey.web.read.side_effect=[True,{'text':'null','page':0,'pages':1}];journey.web.has.side_effect=[True,True,False]
         with self.assertRaises(AssertionError):journey.native_diagnostics()
         self.assertEqual(journey.web.click.call_args_list[-1],unittest.mock.call('.support-dialog [data-cancel]'))
+
+    def test_public_diagnostic_pages_reconstruct_exact_context_through_real_buttons(self):
+        journey=object.__new__(module.Journey);journey.web=Mock()
+        native={'token':{'document':7},'context':{'game_kind':'chu','history':['same board','different history']}}
+        text=json.dumps(native);split=len(text)//2
+        journey.web.read.side_effect=[True,{'text':text[:split],'page':0,'pages':2},1,
+            {'text':text[split:],'page':1,'pages':2}]
+        journey.web.has.side_effect=[True,True,False]
+        self.assertEqual(journey.native_diagnostics(),native)
+        journey.web.button.assert_called_once_with('Next diagnostics page')
+        self.assertEqual(journey.web.click.call_args_list[-1],unittest.mock.call('.support-dialog [data-cancel]'))
+
+    def test_public_diagnostic_page_identity_and_size_are_bounded(self):
+        for page in ({'text':'{}','page':1,'pages':2},{'text':'x'*65537,'page':0,'pages':1},
+                     {'text':'{}','page':0,'pages':513}):
+            journey=object.__new__(module.Journey);journey.web=Mock()
+            journey.web.read.side_effect=[True,page];journey.web.has.side_effect=[True,True,False]
+            with self.assertRaises(AssertionError):journey.native_diagnostics()
+            journey.web.button.assert_not_called()
+            self.assertEqual(journey.web.click.call_args_list[-1],unittest.mock.call('.support-dialog [data-cancel]'))
 
     def test_lightweight_inspection_observer_never_opens_support_or_invents_native_token(self):
         journey=object.__new__(module.Journey);journey.web=Mock()

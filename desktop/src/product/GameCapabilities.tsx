@@ -3,14 +3,14 @@ import { claimName } from "../presentation";
 import { TakeBackControl } from "./TakeBackControl";
 import type { GameSnapshot, Operation } from "./native";
 export interface Confirmation { source: GameSnapshot; operation: Operation; title: string; action: string; meaning: string }
-export function GameActions({ snapshot, disabled, command, confirm }: {
-  snapshot: GameSnapshot; disabled: boolean; command: (operation: Operation) => Promise<unknown>;
+export function GameActions({ snapshot, disabled, resignDisabled = disabled, command, confirm }: {
+  snapshot: GameSnapshot; disabled: boolean; resignDisabled?: boolean; command: (operation: Operation) => Promise<unknown>;
   confirm: (value: Confirmation) => void;
 }) {
   const [claimIndex, setClaimIndex] = useState(0);
   const resigning = useRef(false);
   async function resign() {
-    if (disabled || resigning.current) return;
+    if (resignDisabled || resigning.current) return;
     resigning.current = true;
     try { await command(snapshot.game === "xiangqi" ? { kind: "xiangqi", command: { kind: "resign" } } : { kind: "resign" }); }
     finally { resigning.current = false; }
@@ -45,6 +45,6 @@ export function GameActions({ snapshot, disabled, command, confirm }: {
         <button className="quiet" disabled={disabled} onClick={() => { void command({ kind: "chu", actor: snapshot.human.id.side as "sente" | "gote", command: { kind: "decline_draw" } }); }}>Decline draw</button>
       </>}
     </>}
-    {snapshot.capabilities.resign && <button className="quiet resign-button" disabled={disabled} onClick={() => { void resign(); }}>Resign</button>}
+    {snapshot.capabilities.resign && <button className="quiet resign-button" disabled={resignDisabled} onClick={() => { void resign(); }}>Resign</button>}
   </section>;
 }

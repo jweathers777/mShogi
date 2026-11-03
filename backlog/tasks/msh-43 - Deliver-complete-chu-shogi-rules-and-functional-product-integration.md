@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@Codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-03T12:15:00Z'
+updated_date: '2026-11-03T12:55:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -93,6 +93,8 @@ Required CI passed: Rust41623916090 on all three systems at c52e253; Desktop4162
 STOP at the requested owner visual checkpoint. MSH-43 is In Review, owned by Codex. Original eight AC, four DoD items and dependencies are unchanged and unchecked pending final delivery acceptance. Owner aesthetic approval is outstanding. At 760×650, kanji are compact (about 11–12 logical pixels); reading comfort is explicitly for owner judgment, with no minimum-size change or full VoiceOver claim. Normal chooser/Load remains four games. After approval, resume MSH-43 for normal activation, actual three-platform Chu gameplay and final eight-criterion reconciliation. M4 remains open; no subsequent task was started. No task worktree was created; unrelated worktrees were preserved. Pinned Backlog1.55.1, doctor, source/capture hashes, links and diff checks passed.
 
 Explicit owner visual approval received 2026-11-03 for actual running Chu presentation: traditional kanji, promoted faces, King/Prince, Lion interaction and responsive12x12 layouts at cf9e50b integration / c52e253 production / f43583d verification-only. This resolves the historical pending visual checkpoint; preserve approved design except genuine functional/accessibility defects. Normal fifth-game activation and final actual three-platform gameplay/acceptance are now authorized; task remains In Review, original criteria/DoD unchanged. No active competing43owner; primary checkout clean, three unrelated worktrees preserved.
+
+Final product continuation: explicit owner visual approval is recorded; normal fifth-game activation e7e45ce and native fixture/packaged verifier checkpoint8ea3245 are integrated/pushed. Native profile/kernel/data and approved renderer unchanged. Actual normal macOS chooser/both assignments/real replies, analysis, stopped Save/Load+Resume, Take back, royal compound ending, material award, opposing draw consent, pre-fourth obligation/exact history, promotion and256-capacity Save/reopen passed. Stable QA actual pending cancellation/replacement and genuine missing real sidecar+Retry passed; fixed application identities reused and sidecar/timing restored. Complete engine diagram game, separately labeled12-turn standard-root resignation record and17 native GUI archives independently reviewed/reproduced;7focused native example checksPASS. Independent review found ordinary-capacity UI incorrectly disabled native-reserved Resign. Bounded shared correction keeps ordinary actions blocked but allows idle native-qualified Resign; five-game busy/modal/admission tests and independent18focused checksPASS. Full442frontend checksPASS; actual capacity Resign/Save/Open and final corrected Desktop CI remain pending. Original8AC/DoD remain unchecked and43InReview. Prior32ply smoke is not called completegame; native8ea CI source remains applicable to frontend/verification-only follow-ups.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

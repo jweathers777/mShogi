@@ -132,6 +132,25 @@ def warning_prefix_transition(earlier, warned):
                     and warning['fault'] == 'perpetual_check' for warning in new['warnings']))
 
 
+def chu_capacity_resignation_matches(before, after):
+    """Observe the actual reserved native ending without replaying rules."""
+    old, new = before['context'], after['context']
+    previous, current = old['payload'], new['payload']
+    events = current['events']
+    return (old['game_kind'] == new['game_kind'] == 'chu'
+        and {k:v for k,v in old.items() if k != 'payload'} == {k:v for k,v in new.items() if k != 'payload'}
+        and previous['conclusion'] is None and previous['events'] == []
+        and previous['current_position']['accepted_plies'] == current['current_position']['accepted_plies'] == 0
+        and previous['root'] == current['root'] and previous['current_position'] == current['current_position']
+        and previous['current_protection'] == current['current_protection']
+        and current['conclusion'] == {'kind':'resignation','winner':'gote'}
+        and len(events) == 1 and events[0]['actor'] == 'sente' and events[0]['command'] == {'kind':'resign'}
+        and events[0]['board_ply'] == 0 and events[0]['effects'] is None
+        and len(before['observations']) == len(after['observations']) == 256
+        and before['observations'] == after['observations']
+        and all(item['historical'] for item in after['observations']))
+
+
 def retained_pending_takeback(game, body, action):
     """Inspect native archive lineage without inventing a uniform save schema."""
     if game in ('tori', 'chu'):
@@ -2347,6 +2366,22 @@ class Journey:
         w.click('[data-analysis-start="chu"]')
         wait(lambda:w.has('.capacity-notice') and '256' in w.text('.capacity-notice'),'reopening does not reset structural observation capacity')
         assert len(self.native_diagnostics()['observations'])==256
+        assert w.read("document.querySelector('[data-analysis-start=chu]').disabled"), 'ordinary analysis remains capacity-blocked'
+        assert not w.has('.chu-board-frame .square.available'), 'ordinary board-action affordances remain capacity-blocked'
+        ending_before=self.native_diagnostics()
+        self.direct_resign('chu'); capacity_ended=self.native_diagnostics()
+        assert chu_capacity_resignation_matches(ending_before,capacity_ended), (ending_before,capacity_ended)
+        self.capture('normal-capacity-reserved-resignation-preserves256-observations')
+        ended_path=self.args.output/'normal-chu-capacity-resigned.mshogi'; ended_body=self.chu_save(ended_path)
+        assert len(ended_body['observations'])==256 and ended_body['current']==capacity_ended['context']
+        self.file('open',ended_path); self.wait_opened(ended_path); ended_reopened=self.native_diagnostics()
+        assert ended_reopened['context']==capacity_ended['context'] and len(ended_reopened['observations'])==256
+        assert all(item['historical'] for item in ended_reopened['observations'])
+        assert ended_reopened['token']['document']>capacity_ended['token']['document']
+        assert w.read("document.querySelector('.game-shell').dataset.paused")=='true'
+        assert not w.has('.shogi-analysis[data-phase="thinking"],.shogi-analysis[data-phase="analyzing"]')
+        self.record('Reserved Chu resignation at observation capacity remains lossless through Save and stopped Open',
+            {'before':ending_before,'resigned':capacity_ended,'reopened':ended_reopened,'saved_sha256':digest(ended_path)})
         self.record('Independent Chu native scenarios through normal installed application', {'fixtures_manifest':str(Path(__file__).with_name('fixtures')/'chu-native-fixtures.json'),
             'capture_return':capture_return,'quiet_return':quiet_return,'promoted':promoted,'surviving_Prince':survived,'agreement':agreed,'repetition':obligation,'natural_engine_complete_game':natural,'capacity_before':capacity_before,'capacity_after':capacity_after,
             'qualification':'Actual pointer/keyboard complete actions and ordinary Load/Save; immutable independently authored expectations, no external rules engine.'})

@@ -1273,6 +1273,24 @@ class ChuNormalProductEvidenceTests(unittest.TestCase):
             journey.web.read.return_value=labels
             with self.assertRaises(AssertionError):journey.assert_chu_promotion_choices()
 
+    def test_capacity_reserved_resignation_requires_native_ending_zero_board_ply_and_all_observations(self):
+        payload={'conclusion':None,'events':[],'root':{'native':'Chu root'},
+            'current_position':{'accepted_plies':0,'native_board':'unchanged'},'current_protection':{'native':'rights'}}
+        observations=[{'historical':True,'observation':{'native_context':i}} for i in range(256)]
+        before={'context':{'game_kind':'chu','rules_profile':'mshogi.chu.jcsa2019.v1','payload':payload},'observations':observations}
+        after=copy.deepcopy(before);after['context']['payload']['conclusion']={'kind':'resignation','winner':'gote'}
+        after['context']['payload']['events']=[{'actor':'sente','command':{'kind':'resign'},'board_ply':0,'effects':None}]
+        self.assertTrue(module.chu_capacity_resignation_matches(before,after))
+        for mutate in (lambda a:a['observations'].pop(),lambda a:a['observations'][0].update(historical=False),
+                       lambda a:a['observations'][0]['observation'].update(native_context='changed'),
+                       lambda a:a['context']['payload']['current_position'].update(accepted_plies=1),
+                       lambda a:a['context']['payload'].update(conclusion={'kind':'royal_capture','winner':'gote'}),
+                       lambda a:a['context']['payload']['events'][0].update(actor='gote'),
+                       lambda a:a['context']['payload']['events'][0].update(command={'kind':'stop'}),
+                       lambda a:a['context']['payload'].update(root={'different':'root'})):
+            changed=copy.deepcopy(after);mutate(changed)
+            self.assertFalse(module.chu_capacity_resignation_matches(before,changed))
+
     def test_chu_archive_retains_exact_complete_route_before_takeback(self):
         action={'from':[6,6],'route':[[7,5],[6,6]],'promote':False}
         record={'game_kind':'chu','payload':{'root':{'native':'Chu root'},'events':[]}}

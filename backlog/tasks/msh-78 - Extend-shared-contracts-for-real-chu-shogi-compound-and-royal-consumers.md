@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@Codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-03T08:50:00Z'
+updated_date: '2026-11-03T09:17:00Z'
 labels:
   - m4
   - owner-msh-46
@@ -74,4 +74,6 @@ MSH86 native acceptance completed at tested production source f44e0b9673bbbe1cc5
 MSH78 checkpoints A-C implemented on primary codex/rewrite; sole builder Codex, independent read-only codec/runtime and frontend reviewers. Explicit native Chu routing, immutable current-envelope codec and one-controller/worker lifecycle, real compound/royal metadata/choices, strict duplicates and supervised UnsupportedMode remain gated from normal New/Load. Measured 12M aggregate replay policy (ordinary-grown227 events:11939711 units; imported equivalent refuses); unchanged outer/native limits and actual Stop/Resign/Close reserves. New focused routing, codec capacity (256→257,4094+2 endings, control/bytes), six controller, actual child/context, native-generated frontend fixtures/interaction and QA-host tests pass. Frontend391 checks, host15, normal macOS package/smoke pass. Review corrected reservation byte, historical flip, replay cancellation checkpoints and narrow unsupported recovery controls; existing evidence and original criteria preserved. Single structured evidence docs/m4/chu/shared-verification.json; final source/CI and integrated acceptance still pending. No43implementation or finished Chu GUI claim.
 
 Coherent source checkpoint ready: all277 desktop-session all-feature tests pass (182.24s), all391 frontend tests pass, workspace/QA/standalone-host clippy and strict TypeScript pass, normal macOS package and actual bundled-engine smoke pass. Six real Chu controller tests independently repeated PASS;39 focused frontend tests independently PASS after fixes. No actual Chu packaged GUI/finished-window evidence claimed at this infrastructure boundary. Required final-source Rust+Desktop three-platform CI still pending. Original4AC/4DoD remain unchecked until final integrated acceptance.
+
+Final source reconciliation found and corrected Chu u64 presentation precision above JavaScript safe-integer range. Native decimal root/selected/live counters and provenance flags now remain exact; technical Moves number known-root pairs rather than manufacturing unknown prior rows. Nine controller tests and13 focused frontend/Moves checks pass, includingu64MAX and Gote-first ordering. Native records, archive capacity/rules and all existing4game representations unchanged. Supersededf41f CI41606708598/41606708574 were cancelled (partial successes retained, never fullPASS); corrected exact-source CI required beforeDone.
 <!-- SECTION:NOTES:END -->

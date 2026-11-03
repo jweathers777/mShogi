@@ -4,13 +4,14 @@ import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { NativeBoard } from "../NativeBoard";
 import type { ChuSnapshot } from "./native";
-import { NativeAnalysis, NativeRecovery } from "./NativeSessionPanels";
+import { NativeAnalysis, NativeRecovery, NativeHistory } from "./NativeSessionPanels";
 import { GameBoard } from "./GameBoard";
 import inspectionJson from "../__fixtures__/shared-chu-inspection.json";
 import type { MovementInspection } from "./movementInspection";
 import routesJson from "../__fixtures__/shared-chu-routes.json";
 import promotionJson from "../__fixtures__/shared-chu-promotion.json";
 import royalsJson from "../__fixtures__/shared-chu-royals.json";
+import counterJson from "../__fixtures__/shared-chu-counter.json";
 import capturedJson from "../__fixtures__/shared-chu-captured.json";
 const routes = routesJson as unknown as ChuSnapshot, promotion = promotionJson as unknown as ChuSnapshot;
 afterEach(cleanup);
@@ -100,4 +101,15 @@ it("distinguishes native terminal prefix from continued action and invalidates h
   expect(screen.getByText("Inspecting Gote Pawn · Esc clears")).toBeTruthy();
   fireEvent.click(square("11b"));expect(onPlay).toHaveBeenCalledTimes(1);
   fireEvent.keyDown(square("11b"), { key: "Escape" });expect(document.querySelectorAll(".inspection-marker")).toHaveLength(0);
+});
+
+it("keeps exact declared counters and native provenance without fabricating prior move rows", () => {
+  const s = counterJson as unknown as ChuSnapshot;
+  expect(s.chu.declared_root_plies).toBe("18446744073709551614");
+  expect(s.chu.selected.declared_total_plies).toBe("18446744073709551615");
+  expect(s.chu.earlier_history_unknown).toBe(true);expect(s.chu.historical_reachability_proven).toBe(false);
+  expect(s.moves.entries).toHaveLength(1);expect(s.moves.entries[0]!.number).toBe(1);
+  render(<NativeHistory snapshot={s} disabled={false} command={vi.fn()} />);
+  expect(screen.getByText(/known-root move pairs · declared root plies 18446744073709551614/)).toBeTruthy();
+  expect(screen.getByRole("button", { name: /^1. Sente:/ })).toBeTruthy();
 });

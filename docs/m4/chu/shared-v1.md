@@ -104,6 +104,12 @@ renders intermediate route/capture positions without granting action authority.
 Moves contain actual complete board actions; administrative events stay separate.
 Chu notation is explicitly technical until MSH-43.
 
+Native decimal strings preserve declared root and selected/live total counters
+above JavaScript's safe-integer range. Native provenance flags distinguish unknown
+prior history from proven reachability. Technical Moves number known-root pairs
+only (including a first-known Gote move), while the caption retains the exact
+declared counter; no missing historical rows are invented.
+
 Native metadata separates selected/live identities, King/Prince survivors,
 individual local capture influence, `has_capture_all` advisory/history query,
 Unknown diagnostics, Lion protection, occurrences, obligations, offers,

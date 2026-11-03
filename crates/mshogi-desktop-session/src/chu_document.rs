@@ -171,11 +171,15 @@ pub(crate) fn native_error(e: c::GameError) -> ChuDocumentError {
                 c::MAX_REPLAY_WORK,
                 ResourceUnit::ReplayUnits,
             ),
-            c::Resource::Counter => (
-                ResourceCategory::IdentityHeadroom,
-                u64::MAX,
-                ResourceUnit::Identities,
-            ),
+            c::Resource::Counter => {
+                // Native Counter covers both declared/accepted board counters
+                // and runtime identities. It cannot identify one specific limit.
+                return OperationFailure::resource(ResourceFailure::new(
+                    ResourceFact::unknown().with_scope(ResourceScope::Chu),
+                    e.to_string(),
+                ))
+                .into();
+            }
         };
         let mut fact = ResourceFact::measured(category, 0, cap)
             .with_scope(ResourceScope::Chu)

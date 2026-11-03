@@ -5,7 +5,7 @@
   "integration_branch": "codex/rewrite",
   "base_revision": "73623070114503ec32e169f967ac16fd942531a3",
   "tested_source_revision": null,
-  "status": "Counter-precision follow-up verified locally; superseded source CI cancelled, final-source CI pending",
+  "status": "Full integration checkpoint fcccc37 PASS on six CI jobs; final native diagnostic classification reviewed and locally verified; final native CI pending",
   "profile": "mshogi.chu.jcsa2019.v1",
   "edition": "JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02",
   "identities": {
@@ -26,7 +26,7 @@
     "crates/mshogi-desktop-session/examples/support/chu.rs": "e64672b442853a63a1ed7f2805abb7f96d41e54ac7603e09e4be860889787573",
     "crates/mshogi-desktop-session/examples/write_chu_frontend_fixtures.rs": "09c773b5256a16d8b07ed2b98a00695e6ab3c3966d96a9679351618f6d6c8cef",
     "crates/mshogi-desktop-session/src/capacity.rs": "0443cdeec86c0cab7f726c8b785bcfc1d6735316e46997cc5f96c467d15a6e13",
-    "crates/mshogi-desktop-session/src/chu_document.rs": "e1f9488fa034143a6732e4b718e663675c18c772edda49681c977e49a17c0245",
+    "crates/mshogi-desktop-session/src/chu_document.rs": "78fa80f98f41e3b83efa56824f48aec96e243f4d9c714064f2e7aae90fc9bb82",
     "crates/mshogi-desktop-session/src/chu_document/tests.rs": "bffb23d8fc66d7537658fbe170d0a145ae71b2565e7c8d77d54920d4fd4625d4",
     "crates/mshogi-desktop-session/src/document.rs": "72cb640d617a927750f55cf735b9602894e586face2c1f80f66fb7ab0eea6a12",
     "crates/mshogi-desktop-session/src/lib.rs": "3651570f871ed5d999a69a6861f6418238209b09e1ab7916b1c9d0346229c2a6",
@@ -38,7 +38,7 @@
     "crates/mshogi-desktop-session/src/shared_archive.rs": "6a43a876b56cff491533bade6d358759c43bb6538722e3b0a31f804621d23f74",
     "crates/mshogi-desktop-session/src/shared_chu.rs": "8ac11a7ec0070fbdda1330cbbe99edd5ae279bf566e16fb899f960bff3d9405d",
     "crates/mshogi-desktop-session/src/shared_chu_presentation.rs": "82f670520761bd5599f6f6f90f4d31d3fc377c46b6b95fe274ba5aef7a9d50b8",
-    "crates/mshogi-desktop-session/src/shared_chu_tests.rs": "412e42e6a8a12ce490d74fa683c3baf3459aa5df5ad9a5818e45d9637600a54b",
+    "crates/mshogi-desktop-session/src/shared_chu_tests.rs": "f88bb00bcb8ff722ce42552b7cc86364b8dbaf7347c445ef7b72e55b7e7802b0",
     "crates/mshogi-desktop-session/src/shared_inspection.rs": "e939164efab2b8f0a09ad42203751da5e06a86b83cb8d6ac1ac19477f391e48a",
     "crates/mshogi-desktop-session/src/shared_tests.rs": "1a6a35cf4dc2a622ce8e401c32041d5d2d991af8e1a007f545657b5217a3025f",
     "crates/mshogi-desktop-session/src/shared_tori.rs": "64b30f312050dddbe6d0e071af9ba14fc9128864427cdd764760cfe78b5dbfa5",
@@ -219,6 +219,39 @@
     {
       "command": "npm test -- --reporter=dot src/product/ChuContract.test.tsx src/product/Moves.test.tsx",
       "result": "PASS2files13tests, exactMAXcounter JSON string/provenance and known-root rows"
+    },
+    {
+      "command": "Corrected-source native CI41610001673, Test and Verify isolated desktop QA constructors",
+      "source_revision": "fcccc37664603688a3fc26dbef21e0b0c7d0e484",
+      "result": "PASS:280desktop-session tests in each phase on each of Windows2022,Ubuntu24.04,macOS15; full workspace and other required steps PASS. Actual completed CI logs read."
+    },
+    {
+      "command": "npm run desktop:build -- --bundles app; python3 desktop/scripts/package-smoke.py ... --report /private/tmp/msh78-package-corrected-smoke.json",
+      "source_revision": "fcccc37664603688a3fc26dbef21e0b0c7d0e484",
+      "result": "PASS: current normal macOS20.32MiB application and actual bundled-engine protocol/execution smoke; no GUI interaction inferred",
+      "host_sha256": "dfa725097fc16b8069a04ec4d0832186c256002ac877b75d8e6355160f84a003",
+      "engine_sha256": "48f07f3af250b864410a419592d4bca853000632e24c762d0c82da0837ff7ff2",
+      "path": "desktop/src-tauri/target/release/bundle/macos/mShogi.app"
+    },
+    {
+      "command": "cargo test --locked -p mshogi-desktop-session shared::chu_tests -- --nocapture",
+      "result": "PASS10; final native Counter-classification correction and exact Stop/Resign/Close save path at max declared counter",
+      "source_scope": "final diagnostic correction over fcccc37; exact commit to follow"
+    },
+    {
+      "command": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+      "result": "PASS final diagnostic correction",
+      "source_scope": "final diagnostic correction over fcccc37"
+    },
+    {
+      "command": "cargo test --manifest-path desktop/src-tauri/Cargo.toml --locked --features desktop-verification",
+      "result": "PASS15 final diagnostic correction; unchanged vendor Tao warnings",
+      "source_scope": "final diagnostic correction over fcccc37"
+    },
+    {
+      "command": "Desktop41610001503 completed logs inspected",
+      "source_revision": "fcccc37664603688a3fc26dbef21e0b0c7d0e484",
+      "result": "PASS30frontend files392tests,15host tests on each3platform; actual current-four-game Windows/Linux GUI campaigns PASS. No Chu GUI inferred."
     }
   ],
   "independent_reviews": [
@@ -248,17 +281,82 @@
       "reviewer": "fresh subagent chu_conformance",
       "method": "final precision source review; independently9/9 Chu controller tests and40/40 frontend Chu+recovery checks",
       "result": "PASS after exact decimal/provenance and known-root/Gote-first correction; no native rules/schema/product activation change"
+    },
+    {
+      "reviewer": "fresh subagent chu_native_review",
+      "method": "Read-only final native Counter diff/source review and independently executed both affected controller tests; SHA256-identified source",
+      "result": "PASS2focused tests and git diff --check. No material findings. Native Counter covers runtime IDs and board counters, so existing typed Unknown/Chu scope is truthful; no invented identity/count/unit.",
+      "source_hashes": {
+        "crates/mshogi-desktop-session/src/chu_document.rs": "78fa80f98f41e3b83efa56824f48aec96e243f4d9c714064f2e7aae90fc9bb82",
+        "crates/mshogi-desktop-session/src/shared_chu_tests.rs": "f88bb00bcb8ff722ce42552b7cc86364b8dbaf7347c445ef7b72e55b7e7802b0"
+      }
     }
   ],
   "ci": {
-    "required": [
+    "required_final_source": [
       "Rust ubuntu-24.04",
       "Rust macos-15",
-      "Rust windows-2022",
-      "Desktop ubuntu-24.04",
-      "Desktop macos-15",
-      "Desktop windows-2022"
+      "Rust windows-2022"
     ],
+    "integration_checkpoint": [
+      {
+        "databaseId": 41610001503,
+        "headSha": "fcccc37664603688a3fc26dbef21e0b0c7d0e484",
+        "workflowName": "Desktop packages",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/41610001503",
+        "jobs": [
+          {
+            "name": "Desktop (ubuntu-24.04)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41610001503/job/125829214486"
+          },
+          {
+            "name": "Desktop (windows-2022)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41610001503/job/125829214893"
+          },
+          {
+            "name": "Desktop (macos-15)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41610001503/job/125829215071"
+          }
+        ]
+      },
+      {
+        "databaseId": 41610001673,
+        "headSha": "fcccc37664603688a3fc26dbef21e0b0c7d0e484",
+        "workflowName": "Rust workspace",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/41610001673",
+        "jobs": [
+          {
+            "name": "Rust (windows-2022)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41610001673/job/125829215294"
+          },
+          {
+            "name": "Rust (ubuntu-24.04)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41610001673/job/125829215549"
+          },
+          {
+            "name": "Rust (macos-15)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41610001673/job/125829215738"
+          }
+        ]
+      }
+    ],
+    "reused_desktop_scope": "Desktop41610001503 all3platform jobs PASS at fcccc37664603688a3fc26dbef21e0b0c7d0e484. Final diff only Chu native Counter failure mapping and focused controller tests; frontend/host/package code, schemas, codecs and four playable-game paths unchanged. Reuse three-platform frontend392/host15/packages/current-four-game GUI results. Recheck final-source local host and normal package; final exact-source native CI all3platform required.",
     "runs": []
   },
   "failed_or_superseded_checks": [
@@ -304,7 +402,7 @@
     "AC1": "Actual CanonicalRecord/side/command routing, child UnsupportedMode and7 negative context mutations plus cancellation/selection/Take back/reopen/cross-game retirement. Chu execution unsupported until43.",
     "AC2": "Native12x12 geometry, exact routes/promotion/captures, royal metadata/advisory threat scope and real6 frontend/controller cases; no frontend rules or hands/self-check.",
     "AC3": "Current envelope1, authoritative native replay, typed counts/work/bytes/reservations, observations and branches, real atomic Save/Open/dirty/stopped identities; immutable rejection.",
-    "AC4": "7 native-generated DTOs;1routing9codec9controller2child7frontend+1chooser cases. Prior277session391frontend15host checks reused where unchanged; final source CI will rerun integration. Native86 assertions not recounted."
+    "AC4": "7 native-generated DTOs;1routing9codec10controller2child7frontend+1chooser cases. Full integration checkpoint fcccc37 all6CIjobsPASS, including280desktop-session tests per phase and392frontend tests. Final native-only diagnostic diff requires exact-source3platform Rust CI and local host/package; unchanged Desktop3platform evidence reused explicitly. Native86 assertions not recounted."
   },
   "superseded_source_revisions": [
     {

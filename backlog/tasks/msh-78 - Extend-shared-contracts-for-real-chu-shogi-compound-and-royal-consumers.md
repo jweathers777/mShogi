@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@Codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-03T09:17:00Z'
+updated_date: '2026-11-03T09:55:00Z'
 labels:
   - m4
   - owner-msh-46
@@ -76,4 +76,6 @@ MSH78 checkpoints A-C implemented on primary codex/rewrite; sole builder Codex, 
 Coherent source checkpoint ready: all277 desktop-session all-feature tests pass (182.24s), all391 frontend tests pass, workspace/QA/standalone-host clippy and strict TypeScript pass, normal macOS package and actual bundled-engine smoke pass. Six real Chu controller tests independently repeated PASS;39 focused frontend tests independently PASS after fixes. No actual Chu packaged GUI/finished-window evidence claimed at this infrastructure boundary. Required final-source Rust+Desktop three-platform CI still pending. Original4AC/4DoD remain unchecked until final integrated acceptance.
 
 Final source reconciliation found and corrected Chu u64 presentation precision above JavaScript safe-integer range. Native decimal root/selected/live counters and provenance flags now remain exact; technical Moves number known-root pairs rather than manufacturing unknown prior rows. Nine controller tests and13 focused frontend/Moves checks pass, includingu64MAX and Gote-first ordering. Native records, archive capacity/rules and all existing4game representations unchanged. Supersededf41f CI41606708598/41606708574 were cancelled (partial successes retained, never fullPASS); corrected exact-source CI required beforeDone.
+
+Full integration checkpoint fcccc37664603688a3fc26dbef21e0b0c7d0e484: Rust41610001673 and Desktop41610001503 all6jobsPASS; actual completed logs confirm280session tests per phase and392frontend tests/15host tests per platform. Final independent diagnostic review found native Counter is ambiguous between board counters and runtime IDs; adapter now returns existing typed Unknown with Chu scope rather than inventing IdentityHeadroom. Both affected tests independentlyPASS; complete10controller cases, workspace clippy and host15PASS. Final change is native-only classification plus focused tests; unchanged frontend/host/archive schemas/four-game/package paths reuse successful fcccc37 Desktop3platform evidence. Final exact-source native3platform CI plus local host/normal-package recheck required; original4AC/DoD remain unchecked pending final results. No43implementation.
 <!-- SECTION:NOTES:END -->

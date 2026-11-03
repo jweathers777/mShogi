@@ -486,6 +486,24 @@ fn maximum_declared_counter_keeps_exact_native_presentation_and_unknown_history(
         "18446744073709551615"
     );
     assert_eq!(presented.root.source(), Some("Exact counter fixture"));
+    let before = native(&ctl);
+    assert!(
+        play(
+            &mut ctl,
+            c::Action {
+                from: "1l".parse().unwrap(),
+                route: vec!["1k".parse().unwrap()],
+                promote: false
+            }
+        )
+        .is_err()
+    );
+    let refusal = ctl.shared_snapshot();
+    let fact = refusal.capacity.resource.as_ref().unwrap().facts()[0].clone();
+    assert_eq!(fact.category, ResourceCategory::Unknown);
+    assert_eq!((fact.count, fact.limit, fact.unit), (None, None, None));
+    assert_eq!(native(&ctl), before);
+    assert!(!refusal.status.concluded);
     let d = ctl.session.chu().unwrap().document.clone();
     let reopened =
         crate::chu_document::ValidatedChuDocument::decode(d.bytes(), &mut || false).unwrap();
@@ -571,4 +589,63 @@ fn known_root_pair_numbering_preserves_first_gote_action_order() {
             .collect::<Vec<_>>(),
         vec![(1, 1), (2, 0)]
     );
+}
+
+#[test]
+fn ambiguous_native_counter_capacity_keeps_all_ending_and_close_paths_saveable() {
+    use crate::chu_document::{ChuControl, ValidatedChuDocument};
+    let base = f::root(&f::fixture("CHU-REP-QUIET")["given"]["root"]);
+    let g = c::Game::from_root(
+        c::Position::from_diagram(
+            &base.position().pieces().collect::<Vec<_>>(),
+            c::Side::Sente,
+            c::RootMetadata::diagram(u64::MAX),
+        )
+        .unwrap(),
+    )
+    .unwrap();
+    let d =
+        ValidatedChuDocument::new(c::GameRecord::from_game(&g).unwrap(), c::Side::Sente).unwrap();
+    let bytes = d.bytes().to_vec();
+    let e = d
+        .with_control(
+            ChuControl::Native {
+                actor: c::Side::Sente,
+                command: c::GameCommand::Play {
+                    action: c::Action {
+                        from: "1l".parse().unwrap(),
+                        route: vec!["1k".parse().unwrap()],
+                        promote: false,
+                    },
+                },
+            },
+            &mut || false,
+        )
+        .unwrap_err();
+    assert_eq!(
+        e.resource.unwrap().facts()[0].category,
+        ResourceCategory::Unknown
+    );
+    assert_eq!(d.bytes(), bytes);
+    let d = d
+        .with_control(
+            ChuControl::Native {
+                actor: c::Side::Gote,
+                command: c::GameCommand::Stop {
+                    reason: c::StopReason::ResourceLimit,
+                },
+            },
+            &mut || false,
+        )
+        .unwrap();
+    let d = d
+        .with_control(
+            ChuControl::Native {
+                actor: c::Side::Sente,
+                command: c::GameCommand::Resign,
+            },
+            &mut || false,
+        )
+        .unwrap();
+    ValidatedChuDocument::decode(d.with_reserved_close(1).unwrap().bytes(), &mut || false).unwrap();
 }

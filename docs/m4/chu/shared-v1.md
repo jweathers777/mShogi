@@ -50,6 +50,13 @@ observations to fit. Resource refusal leaves the previous complete session and
 valid file intact, with typed resource facts and existing truthful recovery UI.
 Reopening does not reset structural usage.
 
+Native `Counter` refusal covers both board counters and runtime identities; it
+cannot identify a particular exhausted resource. Its adapter therefore preserves
+the existing typed Unknown resource fact with Chu scope and the native diagnostic.
+It does not invent an identity limit, illegal action or concluded game. The exact
+maximum declared-counter probe preserves the document and its Stop/Resign/Close
+save path after refusal.
+
 Outer limits stay **16 MiB encoded input/document, 4,096 retained native events,
 8,192 controls, 256 observations, and the 15-second worker deadline**. Every
 separately retained initial/current/retired/observation record contributes its

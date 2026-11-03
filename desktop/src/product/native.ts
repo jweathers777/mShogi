@@ -2,12 +2,13 @@ import type { ResourceFailure } from "../resources";
 import type { AnalysisOperation, AnalysisState, Claim, ChessResult, Color, MatchConclusion, ExecutionObservation } from "../native";
 import type { NativeBoardSnapshot } from "../NativeBoard";
 import type { CompletedActionGeometry } from "../boardPresentation";
-export type GameKind = "chess" | "shogi" | "xiangqi" | "tori";
-export type PlayableGameKind = GameKind;
+export type GameKind = "chess" | "shogi" | "xiangqi" | "tori" | "chu";
+export type PlayableGameKind = Exclude<GameKind, "chu">;
 export type NativeSide = { game_kind: "chess"; side: "white" | "black" }
   | { game_kind: "shogi"; side: "sente" | "gote" }
   | { game_kind: "xiangqi"; side: "red" | "black" }
-  | { game_kind: "tori"; side: "sente" | "gote" };
+  | { game_kind: "tori"; side: "sente" | "gote" }
+  | { game_kind: "chu"; side: "sente" | "gote" };
 export interface Side { id: NativeSide; key: string; label: string; first_mover: boolean }
 export interface OpenToken { document: number; version: number; document_revision: number }
 export interface SearchView {
@@ -101,12 +102,30 @@ export type ToriSnapshot = GameSnapshotBase & {
     earlier_history_unknown: boolean; historical_reachability_proven: boolean; selected: ToriHistory; live: ToriHistory };
   document: GameSnapshotBase["document"] & { settings: { game_kind: "tori"; settings: { orientation: ToriSide } } };
 };
-export type GameSnapshot = ChessSnapshot | ShogiSnapshot | XiangqiSnapshot | ToriSnapshot;
+// Native-only shared-contract consumer. This does not advertise a playable game.
+export interface ChuHistory {
+  event_index: number; board_ply: number;
+  identities: { square: string; piece: { side: ToriSide; base: string; promoted: boolean }; face: string }[];
+  royals: { identity: ChuHistory["identities"][number]; local_capture_threat: boolean }[];
+  capture_all_royals_threat: [boolean | null, boolean | null]; threat_diagnostics: string[];
+  lion_rights: unknown; occurrences: number[]; obligations: unknown[];
+  conclusion: unknown | null; draw_offer: ToriSide | null; incomplete: string | null; last_effects: unknown | null;
+}
+export type ChuSquare = [number, number];
+export type ChuAction = { from: ChuSquare; route: ChuSquare[]; promote: boolean };
+export type ChuSnapshot = GameSnapshotBase & {
+  game: "chu";
+  chu: { root: unknown; selected: ChuHistory; live: ChuHistory; execution_supported: false };
+  document: GameSnapshotBase["document"] & { settings: { game_kind: "chu"; settings: { orientation: ToriSide } } };
+};
+export type GameSnapshot = ChessSnapshot | ShogiSnapshot | XiangqiSnapshot | ToriSnapshot | ChuSnapshot;
 export interface Observation {
   historical: boolean; application_error: string | null;
   observation: ExecutionObservation;
 }
 export type Operation =
+  | { kind: "chu"; actor: ToriSide; command: { kind: "play"; action: ChuAction } | { kind: "resign" | "offer_draw" | "accept_draw" | "decline_draw" } | { kind: "stop"; reason: "cancelled" | "resource_limit" | "engine_failure" | "work_limit" } }
+  | { kind: "chu_preferences"; settings: { orientation: ToriSide } }
   | { kind: "tori"; actor: ToriSide; command: { kind: "play"; action: ToriAction } | { kind: "resign" | "agree_draw" | "declare_impasse" } | { kind: "stop"; reason: ToriStop } }
   | { kind: "tori_preferences"; settings: { orientation: ToriSide } }
   | { kind: "chess_play"; action: string }

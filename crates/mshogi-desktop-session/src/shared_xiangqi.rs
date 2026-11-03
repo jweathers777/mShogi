@@ -596,6 +596,7 @@ impl DesktopController {
         };
         SharedSnapshot {
             tori: None,
+            chu: None,
             moves: self.present_moves(history.event_count),
             xiangqi: Some(XiangqiPresentation {
                 terminal_actions: XiangqiTerminalActions {

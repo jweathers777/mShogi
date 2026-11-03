@@ -6,9 +6,13 @@ pub use synthetic::*;
 mod shared;
 pub use shared::*;
 mod moves;
-pub use moves::{CompletedActionGeometry, MoveEffect, MovesProjection, MovesRoot, PresentedMove};
+pub use moves::{
+    CapturedPiece, CompletedActionGeometry, MoveEffect, MovesProjection, MovesRoot, PresentedMove,
+};
 mod capacity;
 pub use capacity::*;
+/// Immutable Chu candidates for the same document envelope and file worker.
+pub mod chu_document;
 mod document;
 mod resource;
 /// Immutable Tori document codec/admission; installation belongs to the sole native controller.
@@ -349,6 +353,11 @@ pub(crate) enum ActiveDocument {
         runtime: RuntimeMetadata,
         state: Box<shared::tori::ToriSession>,
     },
+    /// Native Chu game and immutable admitted current document.
+    Chu {
+        runtime: RuntimeMetadata,
+        state: Box<shared::chu::ChuSession>,
+    },
     /// Native Xiangqi WXF game journal and observations.
     Xiangqi {
         runtime: RuntimeMetadata,
@@ -362,7 +371,8 @@ impl std::ops::Deref for ActiveDocument {
             Self::Chess(state) => &state.runtime,
             Self::Shogi { runtime, .. }
             | Self::Xiangqi { runtime, .. }
-            | Self::Tori { runtime, .. } => runtime,
+            | Self::Tori { runtime, .. }
+            | Self::Chu { runtime, .. } => runtime,
         }
     }
 }
@@ -372,7 +382,8 @@ impl std::ops::DerefMut for ActiveDocument {
             Self::Chess(state) => &mut state.runtime,
             Self::Shogi { runtime, .. }
             | Self::Xiangqi { runtime, .. }
-            | Self::Tori { runtime, .. } => runtime,
+            | Self::Tori { runtime, .. }
+            | Self::Chu { runtime, .. } => runtime,
         }
     }
 }
@@ -411,6 +422,20 @@ impl ActiveDocument {
         match self {
             Self::Xiangqi { state, .. } => Some(state),
             _ => None,
+        }
+    }
+    fn chu(&self) -> Option<&shared::chu::ChuSession> {
+        if let Self::Chu { state, .. } = self {
+            Some(state)
+        } else {
+            None
+        }
+    }
+    fn chu_mut(&mut self) -> Option<&mut shared::chu::ChuSession> {
+        if let Self::Chu { state, .. } = self {
+            Some(state)
+        } else {
+            None
         }
     }
     fn tori(&self) -> Option<&shared::tori::ToriSession> {
@@ -455,6 +480,7 @@ impl ActiveDocument {
             Self::Tori { state, .. } => {
                 state.browse_stop = None;
             }
+            Self::Chu { .. } => {}
             Self::Xiangqi { state, .. } => {
                 state.browse_running = false;
                 state.browse_stop = None;
@@ -478,6 +504,7 @@ impl ActiveDocument {
                 state.retire();
                 state.paused = true;
             }
+            Self::Chu { state, .. } => state.retire(),
             Self::Xiangqi { state, .. } => {
                 state.retire();
                 state.paused = true;
@@ -496,6 +523,7 @@ impl ActiveDocument {
             Self::Shogi { state, .. } => state.retire(),
             Self::Xiangqi { state, .. } => state.retire(),
             Self::Tori { state, .. } => state.retire(),
+            Self::Chu { state, .. } => state.retire(),
         }
     }
     fn capacity_pause(&mut self, error: String) {
@@ -1180,7 +1208,7 @@ impl DesktopController {
         let mut controller = Self::new(engine_path).map_err(|error| error.to_string())?;
         controller.session = ActiveDocument::Chess(Box::new(match fixture {
             "standard" | "shared-contract" => DesktopSession::new(),
-            fixture if fixture.starts_with("shogi-") || fixture.starts_with("xiangqi-") || fixture.starts_with("tori-") => DesktopSession::new(),
+            fixture if fixture.starts_with("shogi-") || fixture.starts_with("xiangqi-") || fixture.starts_with("tori-") || fixture.starts_with("chu-") => DesktopSession::new(),
             "capacity" => DesktopSession::verification_capacity()?,
             "promotion" => {
                 let game = AdjudicatedGame::from_fen("7k/P7/8/8/8/8/8/7K w - - 0 1", ClaimPolicy::ExplicitOnly).map_err(|error| error.to_string())?;
@@ -1203,6 +1231,29 @@ impl DesktopController {
             }
             _ => return Err("Unknown desktop verification fixture. Use standard, promotion, claim, current-claim, concluded, incomplete or capacity.".into()),
         }));
+        if fixture.starts_with("chu-") {
+            let game = match fixture {
+                "chu-contract" => chu_fixture_roots::contract_game(),
+                "chu-standard" => mshogi_core::chu::Game::standard(),
+                _ => return Err("Unknown Chu verification fixture".into()),
+            };
+            let (_, receipt) = controller.shared_command_with_receipt(SharedDesktopCommand {
+                expected: controller.shared_token(),
+                game: GameKind::Chess,
+                operation: SessionOperation::Replace {
+                    record: CanonicalRecord::chu(
+                        mshogi_core::chu::GameRecord::from_game(&game)
+                            .map_err(|e| e.to_string())?,
+                    ),
+                    human: NativeSide::Chu(mshogi_core::chu::Side::Sente),
+                },
+            })?;
+            while receipt.completion().is_none() {
+                controller.shared_snapshot();
+                std::thread::sleep(std::time::Duration::from_millis(1));
+            }
+            receipt.completion().unwrap()?;
+        }
         if fixture.starts_with("tori-") {
             let game = match fixture {
                 "tori-contract" => tori_fixture_roots::contract_game(),
@@ -2113,3 +2164,7 @@ mod runtime_tests;
 #[cfg(any(test, feature = "desktop-verification"))]
 #[path = "../examples/support/tori.rs"]
 mod tori_fixture_roots;
+
+#[cfg(any(test, feature = "desktop-verification"))]
+#[path = "../examples/support/chu.rs"]
+mod chu_fixture_roots;

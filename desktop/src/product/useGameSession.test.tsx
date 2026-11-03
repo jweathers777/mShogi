@@ -168,7 +168,7 @@ it.each([chessJson, standardJson, xiangqiJson])("keeps exact $game Save authorit
   expect(result.current.snapshot).toBe(saved); expect(result.current.error).toBe("Atomic write interrupted.");
 });
 it.each([chessJson, standardJson, xiangqiJson])("keeps dirty $game during cancelled/malformed/resource/stale Load and rejected New Game", async fixture => {
-  const source = fixture as unknown as Exclude<GameSnapshot, { game: "tori" }>;
+  const source = fixture as unknown as Exclude<GameSnapshot, { game: "tori" | "chu" }>;
   vi.mocked(invoke).mockResolvedValueOnce(source).mockRejectedValueOnce("Load cancelled.").mockRejectedValueOnce("Malformed record.").mockRejectedValueOnce("Replay capacity exceeded.").mockRejectedValueOnce("Stale document token.").mockRejectedValueOnce("New Game admission failed.");
   const { result } = renderHook(useGameSession); await flush();
   for (const reason of ["Load cancelled.", "Malformed record.", "Replay capacity exceeded.", "Stale document token."]) {

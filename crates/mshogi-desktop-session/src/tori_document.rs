@@ -8,12 +8,9 @@ use mshogi_core::{
     tori as t,
 };
 use mshogi_engine::{ExecutionObservation, ExecutionPurpose, ExecutionResult};
-use serde::{
-    Deserialize, Serialize,
-    de::{self, MapAccess, SeqAccess, Visitor},
-};
+use serde::{Deserialize, Serialize};
 use serde_json::value::RawValue;
-use std::{collections::BTreeSet, fmt};
+use std::fmt;
 
 /// Whole-document deterministic validation allowance, distinct from native caps.
 pub const MAX_TORI_DOCUMENT_WORK: u64 = 262_144;
@@ -1002,57 +999,8 @@ fn validate_semantics(
     }
     Ok(())
 }
-// Validate duplicate fields before any internally tagged enum buffering or native
-// deserialization can normalize them. This has no game-specific rule knowledge.
 fn unique(bytes: &[u8]) -> Result<(), ToriDocumentError> {
-    struct Unique;
-    impl<'de> Deserialize<'de> for Unique {
-        fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-            d.deserialize_any(UVisitor)
-        }
-    }
-    struct UVisitor;
-    impl<'de> Visitor<'de> for UVisitor {
-        type Value = Unique;
-        fn expecting(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            f.write_str("duplicate-free JSON")
-        }
-        fn visit_map<M: MapAccess<'de>>(self, mut m: M) -> Result<Unique, M::Error> {
-            let mut keys = BTreeSet::new();
-            while let Some(k) = m.next_key::<String>()? {
-                if !keys.insert(k) {
-                    return Err(de::Error::custom("duplicate field"));
-                }
-                m.next_value::<Unique>()?;
-            }
-            Ok(Unique)
-        }
-        fn visit_seq<S: SeqAccess<'de>>(self, mut s: S) -> Result<Unique, S::Error> {
-            while s.next_element::<Unique>()?.is_some() {}
-            Ok(Unique)
-        }
-        fn visit_bool<E: de::Error>(self, _: bool) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-        fn visit_u64<E: de::Error>(self, _: u64) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-        fn visit_i64<E: de::Error>(self, _: i64) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-        fn visit_f64<E: de::Error>(self, _: f64) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-        fn visit_str<E: de::Error>(self, _: &str) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-        fn visit_unit<E: de::Error>(self) -> Result<Unique, E> {
-            Ok(Unique)
-        }
-    }
-    let mut d = serde_json::Deserializer::from_slice(bytes);
-    Unique::deserialize(&mut d).map_err(invalid)?;
-    d.end().map_err(invalid)
+    document::reject_duplicates(bytes).map_err(invalid)
 }
 
 /// Result of a pure codec/file operation, never permission to install live state.

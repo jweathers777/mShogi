@@ -9,6 +9,7 @@ fn peek(c: &DesktopController) -> SharedSnapshot {
         ActiveDocument::Shogi { .. } => c.shogi_snapshot(),
         ActiveDocument::Xiangqi { .. } => c.xiangqi_snapshot(),
         ActiveDocument::Tori { .. } => c.tori_snapshot(),
+        ActiveDocument::Chu { .. } => c.chu_snapshot(),
     }
 }
 fn pump(c: &mut DesktopController) {
@@ -42,7 +43,9 @@ fn running(game: GameKind, engine_turn: bool) -> DesktopController {
     let mut c = DesktopController::new("/unused/msh125-manual-engine".into()).unwrap();
     c.shared.manual_engine = true;
     let human = match game {
-        GameKind::Tori => unreachable!("Tori desktop is unsupported"),
+        GameKind::Tori | GameKind::Chu => {
+            unreachable!("This fixture covers the original three games")
+        }
         GameKind::Chess => NativeSide::Chess(if engine_turn {
             Color::Black
         } else {
@@ -265,7 +268,9 @@ fn takeback_and_capacity_stops_cannot_be_overridden_by_browsing() {
     for game in GAMES {
         let mut c = running(game, false);
         let operation = match game {
-            GameKind::Tori => unreachable!("Tori desktop is unsupported"),
+            GameKind::Tori | GameKind::Chu => {
+                unreachable!("This fixture covers the original three games")
+            }
             GameKind::Chess => SessionOperation::ChessPlay {
                 action: "e2e4".parse().unwrap(),
             },

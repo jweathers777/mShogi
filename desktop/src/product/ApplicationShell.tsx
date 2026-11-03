@@ -76,7 +76,7 @@ export function AnalysisActions({ children }: { children: ReactNode }) {
 }
 
 export function ApplicationShell({ game, runtime, document, actions, heading, board, positionNotice, notices, analysis, history, gameActions, support, overlays, blocked, historical, attributes = {}, onFocusCapture }: {
-  game: "chess" | "shogi" | "xiangqi" | "tori"; runtime: string; document: ReactNode; actions: ReactNode;
+  game: "chess" | "shogi" | "xiangqi" | "tori" | "chu"; runtime: string; document: ReactNode; actions: ReactNode;
   heading: ReactNode; board: ReactNode; positionNotice?: ReactNode; notices?: ReactNode; analysis: ReactNode;
   history: ReactNode; gameActions: ReactNode; support: ReactNode; overlays?: ReactNode;
   blocked?: boolean; historical?: boolean; attributes?: Record<string, string | number | boolean>;

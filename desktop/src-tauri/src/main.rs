@@ -149,7 +149,8 @@ fn with_synthetic<T>(
 fn desktop_verification_mode(verification: State<'_, VerificationState>) -> &'static str {
     if verification.is_synthetic() {
         "synthetic"
-    } else if verification.fixture == "shared-contract" {
+    } else if verification.fixture == "shared-contract" || verification.fixture.starts_with("chu-")
+    {
         "shared-contract"
     } else if verification.fixture.starts_with("shogi-")
         || verification.fixture.starts_with("xiangqi-")
@@ -293,6 +294,7 @@ async fn game_file(
                         mshogi_desktop_session::GameKind::Shogi => "shogi.mshogi",
                         mshogi_desktop_session::GameKind::Xiangqi => "xiangqi.mshogi",
                         mshogi_desktop_session::GameKind::Tori => "tori.mshogi",
+                        mshogi_desktop_session::GameKind::Chu => "chu.mshogi",
                     })
                     .blocking_save_file()
             };
@@ -353,6 +355,12 @@ fn queue_game_file(
         "open" => {
             if controller.lifecycle().close_requested() {
                 return Err("Finish or cancel the close request before opening.".into());
+            }
+            // A separately compiled QA Chu fixture may reopen its own native
+            // document. Normal packages contain no such activation path.
+            #[cfg(feature = "desktop-verification")]
+            if controller.shared_snapshot().game == mshogi_desktop_session::GameKind::Chu {
+                return controller.queue_shared_open(path, expected);
             }
             controller.queue_product_open(path, expected)
         }
@@ -1135,6 +1143,32 @@ mod tests {
                 .unwrap_err()
                 .contains("close request")
         );
+        std::fs::remove_file(path).unwrap();
+    }
+
+    #[cfg(feature = "desktop-verification")]
+    #[test]
+    fn chu_qa_file_route_reopens_stopped_but_normal_product_admission_is_gated() {
+        use mshogi_desktop_session::GameKind;
+        let path = file_path("chu-contract");
+        let mut qa =
+            DesktopController::verification(PathBuf::from("unused-test-engine"), "chu-contract")
+                .unwrap();
+        let before = qa.shared_open_token();
+        let id = queue_game_file(&mut qa, "save", path.clone(), before).unwrap();
+        let saved = wait_file(&mut qa, id).unwrap();
+        let id = queue_game_file(&mut qa, "open", path.clone(), saved.open_token).unwrap();
+        let opened = wait_file(&mut qa, id).unwrap();
+        assert_eq!(opened.game, GameKind::Chu);
+        assert!(opened.paused);
+        assert!(!opened.capabilities.engine_turn && !opened.capabilities.move_analysis);
+        assert!(opened.open_token.document > before.document);
+        let mut normal = DesktopController::new(PathBuf::from("unused-test-engine")).unwrap();
+        let expected = normal.shared_open_token();
+        let id = queue_game_file(&mut normal, "open", path.clone(), expected).unwrap();
+        assert!(wait_file(&mut normal, id).is_err());
+        assert_eq!(normal.shared_snapshot().game, GameKind::Chess);
+        assert_eq!(normal.shared_open_token(), expected);
         std::fs::remove_file(path).unwrap();
     }
 

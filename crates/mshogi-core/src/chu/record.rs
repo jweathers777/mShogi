@@ -19,6 +19,8 @@ pub struct GameRecord {
     board_plies: usize,
     side: Side,
     conclusion: Option<Conclusion>,
+    // Derived only from authoritative native admission/replay; never serialized.
+    reconstruction_work: u64,
 }
 /// Bounded syntax/identity/replay refusal, never a game conclusion.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -100,6 +102,7 @@ impl GameRecord {
             board_plies: g.snapshot().board_ply,
             side: g.position().side_to_move(),
             conclusion: g.conclusion(),
+            reconstruction_work: g.replay_work(),
         })
     }
     /// Exact native bytes. No pending runtime operation is serialized.
@@ -125,6 +128,11 @@ impl GameRecord {
     /// Actual replay-validated result only.
     pub fn conclusion(&self) -> Option<Conclusion> {
         self.conclusion
+    }
+    /// Authoritative deterministic work of reconstructing this validated record.
+    /// This cache is native-derived and is absent from serialized input.
+    pub fn reconstruction_work(&self) -> u64 {
+        self.reconstruction_work
     }
     /// Strict duplicate-preserving parsing followed by authoritative replay.
     pub fn from_json(text: &str) -> Result<Self, RecordError> {

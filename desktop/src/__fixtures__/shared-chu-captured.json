@@ -1,0 +1,810 @@
+{
+  "moves": {
+    "root": {
+      "label": "Starting position",
+      "numbering": "Technical Chu actions · declared root plies 0 · earlier history unknown"
+    },
+    "entries": [
+      {
+        "event_index": 1,
+        "board_ply": 1,
+        "number": 1,
+        "column": 0,
+        "notation": "Technical · 3c → 2b → 1b",
+        "action": "{\"from\":[3,3],\"route\":[[2,2],[1,2]],\"promote\":false}",
+        "command_start": 0,
+        "command_end": 1
+      }
+    ],
+    "last_action": {
+      "action": "{\"from\":[3,3],\"route\":[[2,2],[1,2]],\"promote\":false}",
+      "event_index": 1,
+      "origin": {
+        "kind": "board",
+        "square": "3c"
+      },
+      "steps": [
+        "2b",
+        "1b"
+      ],
+      "effects": [],
+      "captures": [
+        {
+          "square": "2b",
+          "owner": {
+            "game_kind": "chu",
+            "side": "gote"
+          },
+          "original_kind": "G",
+          "movement_face": "G",
+          "promoted": false
+        },
+        {
+          "square": "1b",
+          "owner": {
+            "game_kind": "chu",
+            "side": "gote"
+          },
+          "original_kind": "Ln",
+          "movement_face": "Ln",
+          "promoted": false
+        }
+      ]
+    }
+  },
+  "chu": {
+    "root": {
+      "kind": "diagram",
+      "source": null,
+      "declared_completed_plies": 0
+    },
+    "selected": {
+      "event_index": 1,
+      "board_ply": 1,
+      "identities": [
+        {
+          "square": "12a",
+          "piece": {
+            "side": "gote",
+            "base": "K",
+            "promoted": false
+          },
+          "face": "King"
+        },
+        {
+          "square": "11a",
+          "piece": {
+            "side": "gote",
+            "base": "P",
+            "promoted": false
+          },
+          "face": "Pawn"
+        },
+        {
+          "square": "2a",
+          "piece": {
+            "side": "gote",
+            "base": "G",
+            "promoted": false
+          },
+          "face": "Gold"
+        },
+        {
+          "square": "1b",
+          "piece": {
+            "side": "sente",
+            "base": "Ln",
+            "promoted": false
+          },
+          "face": "Lion"
+        },
+        {
+          "square": "1c",
+          "piece": {
+            "side": "sente",
+            "base": "G",
+            "promoted": false
+          },
+          "face": "Gold"
+        },
+        {
+          "square": "12l",
+          "piece": {
+            "side": "sente",
+            "base": "K",
+            "promoted": false
+          },
+          "face": "King"
+        },
+        {
+          "square": "2l",
+          "piece": {
+            "side": "sente",
+            "base": "P",
+            "promoted": false
+          },
+          "face": "Pawn"
+        }
+      ],
+      "royals": [
+        {
+          "identity": {
+            "square": "12a",
+            "piece": {
+              "side": "gote",
+              "base": "K",
+              "promoted": false
+            },
+            "face": "King"
+          },
+          "local_capture_threat": false
+        },
+        {
+          "identity": {
+            "square": "12l",
+            "piece": {
+              "side": "sente",
+              "base": "K",
+              "promoted": false
+            },
+            "face": "King"
+          },
+          "local_capture_threat": false
+        }
+      ],
+      "capture_all_royals_threat": [
+        false,
+        false
+      ],
+      "threat_diagnostics": [],
+      "lion_rights": {
+        "owner": null,
+        "squares": []
+      },
+      "occurrences": [
+        1
+      ],
+      "obligations": [],
+      "conclusion": null,
+      "draw_offer": null,
+      "incomplete": null,
+      "last_effects": {
+        "actor": "sente",
+        "action": {
+          "from": [
+            3,
+            3
+          ],
+          "route": [
+            [
+              2,
+              2
+            ],
+            [
+              1,
+              2
+            ]
+          ],
+          "promote": false
+        },
+        "mover_before": {
+          "side": "sente",
+          "base": "Ln",
+          "promoted": false
+        },
+        "mover_after": {
+          "side": "sente",
+          "base": "Ln",
+          "promoted": false
+        },
+        "captures": [
+          {
+            "square": [
+              2,
+              2
+            ],
+            "piece": {
+              "side": "gote",
+              "base": "G",
+              "promoted": false
+            }
+          },
+          {
+            "square": [
+              1,
+              2
+            ],
+            "piece": {
+              "side": "gote",
+              "base": "Ln",
+              "promoted": false
+            }
+          }
+        ],
+        "quiet_return": false,
+        "protection_before": {
+          "owner": null,
+          "squares": []
+        },
+        "protection_after": {
+          "owner": null,
+          "squares": []
+        }
+      }
+    },
+    "live": {
+      "event_index": 1,
+      "board_ply": 1,
+      "identities": [
+        {
+          "square": "12a",
+          "piece": {
+            "side": "gote",
+            "base": "K",
+            "promoted": false
+          },
+          "face": "King"
+        },
+        {
+          "square": "11a",
+          "piece": {
+            "side": "gote",
+            "base": "P",
+            "promoted": false
+          },
+          "face": "Pawn"
+        },
+        {
+          "square": "2a",
+          "piece": {
+            "side": "gote",
+            "base": "G",
+            "promoted": false
+          },
+          "face": "Gold"
+        },
+        {
+          "square": "1b",
+          "piece": {
+            "side": "sente",
+            "base": "Ln",
+            "promoted": false
+          },
+          "face": "Lion"
+        },
+        {
+          "square": "1c",
+          "piece": {
+            "side": "sente",
+            "base": "G",
+            "promoted": false
+          },
+          "face": "Gold"
+        },
+        {
+          "square": "12l",
+          "piece": {
+            "side": "sente",
+            "base": "K",
+            "promoted": false
+          },
+          "face": "King"
+        },
+        {
+          "square": "2l",
+          "piece": {
+            "side": "sente",
+            "base": "P",
+            "promoted": false
+          },
+          "face": "Pawn"
+        }
+      ],
+      "royals": [
+        {
+          "identity": {
+            "square": "12a",
+            "piece": {
+              "side": "gote",
+              "base": "K",
+              "promoted": false
+            },
+            "face": "King"
+          },
+          "local_capture_threat": false
+        },
+        {
+          "identity": {
+            "square": "12l",
+            "piece": {
+              "side": "sente",
+              "base": "K",
+              "promoted": false
+            },
+            "face": "King"
+          },
+          "local_capture_threat": false
+        }
+      ],
+      "capture_all_royals_threat": [
+        false,
+        false
+      ],
+      "threat_diagnostics": [],
+      "lion_rights": {
+        "owner": null,
+        "squares": []
+      },
+      "occurrences": [
+        1
+      ],
+      "obligations": [],
+      "conclusion": null,
+      "draw_offer": null,
+      "incomplete": null,
+      "last_effects": {
+        "actor": "sente",
+        "action": {
+          "from": [
+            3,
+            3
+          ],
+          "route": [
+            [
+              2,
+              2
+            ],
+            [
+              1,
+              2
+            ]
+          ],
+          "promote": false
+        },
+        "mover_before": {
+          "side": "sente",
+          "base": "Ln",
+          "promoted": false
+        },
+        "mover_after": {
+          "side": "sente",
+          "base": "Ln",
+          "promoted": false
+        },
+        "captures": [
+          {
+            "square": [
+              2,
+              2
+            ],
+            "piece": {
+              "side": "gote",
+              "base": "G",
+              "promoted": false
+            }
+          },
+          {
+            "square": [
+              1,
+              2
+            ],
+            "piece": {
+              "side": "gote",
+              "base": "Ln",
+              "promoted": false
+            }
+          }
+        ],
+        "quiet_return": false,
+        "protection_before": {
+          "owner": null,
+          "squares": []
+        },
+        "protection_after": {
+          "owner": null,
+          "squares": []
+        }
+      }
+    },
+    "execution_supported": false
+  },
+  "open_token": {
+    "document": 1,
+    "version": 4,
+    "document_revision": 2
+  },
+  "document": {
+    "revision": 2,
+    "dirty": true,
+    "path": null,
+    "settings": {
+      "game_kind": "chu",
+      "settings": {
+        "orientation": "sente"
+      }
+    }
+  },
+  "io": {
+    "id": 0,
+    "phase": "idle",
+    "message": null,
+    "resource": null
+  },
+  "capacity": {
+    "id": 2,
+    "status": "available",
+    "message": null,
+    "resource": null
+  },
+  "token": {
+    "document": 1,
+    "version": 4,
+    "revision": 5,
+    "selection": 4
+  },
+  "game": "chu",
+  "profile": "mshogi.chu.jcsa2019.v1",
+  "edition": "JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02",
+  "human": {
+    "id": {
+      "game_kind": "chu",
+      "side": "sente"
+    },
+    "key": "mshogi.chu.jcsa2019.v1:sente",
+    "label": "Sente",
+    "first_mover": true
+  },
+  "turn": {
+    "id": {
+      "game_kind": "chu",
+      "side": "gote"
+    },
+    "key": "mshogi.chu.jcsa2019.v1:gote",
+    "label": "Gote",
+    "first_mover": false
+  },
+  "sides": [
+    {
+      "id": {
+        "game_kind": "chu",
+        "side": "sente"
+      },
+      "key": "mshogi.chu.jcsa2019.v1:sente",
+      "label": "Sente",
+      "first_mover": true
+    },
+    {
+      "id": {
+        "game_kind": "chu",
+        "side": "gote"
+      },
+      "key": "mshogi.chu.jcsa2019.v1:gote",
+      "label": "Gote",
+      "first_mover": false
+    }
+  ],
+  "board": {
+    "files": [
+      "12",
+      "11",
+      "10",
+      "9",
+      "8",
+      "7",
+      "6",
+      "5",
+      "4",
+      "3",
+      "2",
+      "1"
+    ],
+    "ranks": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g",
+      "h",
+      "i",
+      "j",
+      "k",
+      "l"
+    ],
+    "label": "Chu Shogi 12×12 native contract board",
+    "initial_focus": "6g"
+  },
+  "orientations": [
+    {
+      "side": {
+        "id": {
+          "game_kind": "chu",
+          "side": "sente"
+        },
+        "key": "mshogi.chu.jcsa2019.v1:sente",
+        "label": "Sente",
+        "first_mover": true
+      },
+      "files": [
+        "12",
+        "11",
+        "10",
+        "9",
+        "8",
+        "7",
+        "6",
+        "5",
+        "4",
+        "3",
+        "2",
+        "1"
+      ],
+      "ranks": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i",
+        "j",
+        "k",
+        "l"
+      ]
+    },
+    {
+      "side": {
+        "id": {
+          "game_kind": "chu",
+          "side": "gote"
+        },
+        "key": "mshogi.chu.jcsa2019.v1:gote",
+        "label": "Gote",
+        "first_mover": false
+      },
+      "files": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12"
+      ],
+      "ranks": [
+        "l",
+        "k",
+        "j",
+        "i",
+        "h",
+        "g",
+        "f",
+        "e",
+        "d",
+        "c",
+        "b",
+        "a"
+      ]
+    }
+  ],
+  "pieces": [
+    {
+      "square": "12a",
+      "owner": "mshogi.chu.jcsa2019.v1:gote",
+      "kind": "K",
+      "promoted": false,
+      "text": "K",
+      "label": "12a, Gote King"
+    },
+    {
+      "square": "11a",
+      "owner": "mshogi.chu.jcsa2019.v1:gote",
+      "kind": "P",
+      "promoted": false,
+      "text": "P",
+      "label": "11a, Gote Pawn"
+    },
+    {
+      "square": "2a",
+      "owner": "mshogi.chu.jcsa2019.v1:gote",
+      "kind": "G",
+      "promoted": false,
+      "text": "G",
+      "label": "2a, Gote Gold"
+    },
+    {
+      "square": "1b",
+      "owner": "mshogi.chu.jcsa2019.v1:sente",
+      "kind": "Ln",
+      "promoted": false,
+      "text": "Ln",
+      "label": "1b, Sente Lion"
+    },
+    {
+      "square": "1c",
+      "owner": "mshogi.chu.jcsa2019.v1:sente",
+      "kind": "G",
+      "promoted": false,
+      "text": "G",
+      "label": "1c, Sente Gold"
+    },
+    {
+      "square": "12l",
+      "owner": "mshogi.chu.jcsa2019.v1:sente",
+      "kind": "K",
+      "promoted": false,
+      "text": "K",
+      "label": "12l, Sente King"
+    },
+    {
+      "square": "2l",
+      "owner": "mshogi.chu.jcsa2019.v1:sente",
+      "kind": "P",
+      "promoted": false,
+      "text": "P",
+      "label": "2l, Sente Pawn"
+    }
+  ],
+  "hands": [],
+  "choices": [
+    {
+      "origin": {
+        "kind": "board",
+        "square": "12a"
+      },
+      "action": "{\"from\":[12,1],\"route\":[[12,2]],\"promote\":false}",
+      "from": "12a",
+      "steps": [
+        "12b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "12a"
+      },
+      "action": "{\"from\":[12,1],\"route\":[[11,2]],\"promote\":false}",
+      "from": "12a",
+      "steps": [
+        "11b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "11a"
+      },
+      "action": "{\"from\":[11,1],\"route\":[[11,2]],\"promote\":false}",
+      "from": "11a",
+      "steps": [
+        "11b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "2a"
+      },
+      "action": "{\"from\":[2,1],\"route\":[[3,1]],\"promote\":false}",
+      "from": "2a",
+      "steps": [
+        "3a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "2a"
+      },
+      "action": "{\"from\":[2,1],\"route\":[[1,1]],\"promote\":false}",
+      "from": "2a",
+      "steps": [
+        "1a"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "2a"
+      },
+      "action": "{\"from\":[2,1],\"route\":[[3,2]],\"promote\":false}",
+      "from": "2a",
+      "steps": [
+        "3b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "2a"
+      },
+      "action": "{\"from\":[2,1],\"route\":[[2,2]],\"promote\":false}",
+      "from": "2a",
+      "steps": [
+        "2b"
+      ],
+      "completion": null
+    },
+    {
+      "origin": {
+        "kind": "board",
+        "square": "2a"
+      },
+      "action": "{\"from\":[2,1],\"route\":[[1,2]],\"promote\":false}",
+      "from": "2a",
+      "steps": [
+        "1b"
+      ],
+      "completion": null
+    }
+  ],
+  "capabilities": {
+    "board_action": false,
+    "drops": false,
+    "promotion": true,
+    "take_back": true,
+    "undo": true,
+    "engine_turn": false,
+    "move_analysis": false,
+    "chess_full": false,
+    "claims": false,
+    "declaration": false,
+    "resign": true,
+    "hands": false,
+    "history": true,
+    "save": true
+  },
+  "status": {
+    "concluded": false,
+    "label": "Gote to move",
+    "score_half_points": null
+  },
+  "events": [
+    {
+      "index": 1,
+      "board_ply": 1,
+      "label": "Sente · Technical action {\"from\":[3,3],\"route\":[[2,2],[1,2]],\"promote\":false}"
+    }
+  ],
+  "event_index": 1,
+  "board_ply": 1,
+  "play_limits": {
+    "depth": 0,
+    "nodes": 0
+  },
+  "historical": false,
+  "paused": true,
+  "close_requires_save": true,
+  "phase": "paused",
+  "execution_purpose": null,
+  "diagnostic": "Chu shared contract. Engine play and analysis are not implemented; saved observations are historical.",
+  "declaration_advice": [],
+  "context": {
+    "envelope_version": 1,
+    "game_kind": "chu",
+    "rules_profile": "mshogi.chu.jcsa2019.v1",
+    "profile_edition": "JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02",
+    "native_schema_version": 1,
+    "payload": {"format":"mshogi.chu.game","game":"chu","profile":"mshogi.chu.jcsa2019.v1","edition":"JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02","schema_version":1,"mode":"untimed","root":{"state":{"board":[{"side":"gote","base":"K","promoted":false},{"side":"gote","base":"P","promoted":false},null,null,null,null,null,null,null,null,{"side":"gote","base":"G","promoted":false},null,null,null,null,null,null,null,null,null,null,null,{"side":"gote","base":"G","promoted":false},{"side":"gote","base":"Ln","promoted":false},null,null,null,null,null,null,null,null,null,{"side":"sente","base":"Ln","promoted":false},null,{"side":"sente","base":"G","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"K","promoted":false},null,null,null,null,null,null,null,null,null,{"side":"sente","base":"P","promoted":false},null],"side":"sente","root":{"kind":"diagram","source":null,"declared_completed_plies":0},"accepted_plies":0},"protection":{"owner":null,"squares":[]}},"root_conclusion":null,"events":[{"index":0,"board_ply":1,"actor":"sente","command":{"kind":"play","action":{"from":[3,3],"route":[[2,2],[1,2]],"promote":false}},"effects":{"actor":"sente","action":{"from":[3,3],"route":[[2,2],[1,2]],"promote":false},"mover_before":{"side":"sente","base":"Ln","promoted":false},"mover_after":{"side":"sente","base":"Ln","promoted":false},"captures":[{"square":[2,2],"piece":{"side":"gote","base":"G","promoted":false}},{"square":[1,2],"piece":{"side":"gote","base":"Ln","promoted":false}}],"quiet_return":false,"protection_before":{"owner":null,"squares":[]},"protection_after":{"owner":null,"squares":[]}},"occurrences":[1],"obligations":[],"conclusion":null,"draw_offer":null,"incomplete":null,"replay_work":76}],"current_position":{"board":[{"side":"gote","base":"K","promoted":false},{"side":"gote","base":"P","promoted":false},null,null,null,null,null,null,null,null,{"side":"gote","base":"G","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"Ln","promoted":false},null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"G","promoted":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"side":"sente","base":"K","promoted":false},null,null,null,null,null,null,null,null,null,{"side":"sente","base":"P","promoted":false},null],"side":"gote","root":{"kind":"diagram","source":null,"declared_completed_plies":0},"accepted_plies":1},"current_protection":{"owner":null,"squares":[]},"conclusion":null,"obligations":[],"draw_offer":null,"incomplete":null}
+  },
+  "analysis": null,
+  "observations": [],
+  "search_observations": [],
+  "score_meaning": "Chu execution is unsupported. Native outcomes retain their meaning; failures and incomplete work have no score or variation.",
+  "chess": null,
+  "chess_match": null
+}

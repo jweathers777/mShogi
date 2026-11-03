@@ -33,6 +33,11 @@ impl ShogiSettings {
 #[derive(Clone, Debug, Serialize)]
 #[serde(tag = "game_kind", rename_all = "snake_case")]
 pub enum NativeDesktopSettings {
+    /// Native Chu document orientation; no execution defaults implied.
+    Chu {
+        /// Persisted native orientation.
+        settings: crate::chu_document::ChuSettings,
+    },
     /// Native Tori settings; no search capabilities implied.
     Tori {
         /// Persisted native orientation without engine defaults.
@@ -116,6 +121,14 @@ pub(crate) enum ShogiSeed {
     },
 }
 pub(crate) enum NativeWork {
+    ChuRuntime(Box<chu::RuntimeWork>),
+    ChuSave {
+        document: std::sync::Arc<crate::chu_document::ValidatedChuDocument>,
+        floor: u64,
+        path: PathBuf,
+        revision: u64,
+        identity: u64,
+    },
     ToriSave {
         document: std::sync::Arc<crate::tori_document::ValidatedToriDocument>,
         floor: u64,
@@ -143,9 +156,11 @@ pub(crate) enum NativeWork {
     Open {
         path: PathBuf,
         token: SharedOpenToken,
+        allow_unplayable: bool,
     },
 }
 pub(crate) enum OpenedNative {
+    Chu(Box<chu::ChuSession>),
     Tori(Box<tori::ToriSession>),
     Xiangqi {
         state: Box<xiangqi::XiangqiSession>,
@@ -158,6 +173,11 @@ pub(crate) enum OpenedNative {
     },
 }
 pub(crate) enum NativeCompleted {
+    ChuRuntime {
+        state: Box<chu::ChuSession>,
+        replacement: bool,
+        durable: bool,
+    },
     ToriRuntime {
         state: Box<tori::ToriSession>,
         replacement: bool,
@@ -1031,6 +1051,23 @@ pub(crate) fn execute(
     stopped: &mut impl FnMut() -> bool,
 ) -> Result<NativeCompleted, OperationFailure> {
     match work {
+        NativeWork::ChuRuntime(work) => chu::execute(*work, stopped),
+        NativeWork::ChuSave {
+            document,
+            floor,
+            path,
+            revision,
+            identity,
+        } => {
+            let doc = document.with_runtime_floor(floor)?;
+            let doc = crate::chu_document::ValidatedChuDocument::decode(doc.bytes(), stopped)?;
+            persistence::atomic_write(&path, doc.bytes(), stopped)?;
+            Ok(NativeCompleted::Saved {
+                path,
+                revision,
+                identity,
+            })
+        }
         NativeWork::ToriSave {
             document,
             floor,
@@ -1140,10 +1177,26 @@ pub(crate) fn execute(
                 identity,
             })
         }
-        NativeWork::Open { path, token } => {
+        NativeWork::Open {
+            path,
+            token,
+            allow_unplayable,
+        } => {
             let bytes = read(&path, stopped)?;
             let value = crate::document::DocumentEnvelope::parse(&bytes)?;
             let game = match value.game_kind {
+                GameKind::Chu => {
+                    if !allow_unplayable {
+                        return Err(
+                            "Chu product Load is not enabled until functional engine delivery."
+                                .into(),
+                        );
+                    }
+                    OpenedNative::Chu(Box::new(chu::ChuSession::restore(
+                        crate::chu_document::ValidatedChuDocument::decode(&bytes, stopped)?,
+                        stopped,
+                    )?))
+                }
                 GameKind::Tori => OpenedNative::Tori(Box::new(tori::ToriSession::restore(
                     crate::tori_document::ValidatedToriDocument::decode(&bytes, stopped)?,
                     stopped,
@@ -1181,7 +1234,11 @@ impl DesktopController {
         }
     }
     pub(crate) fn shared_document(&self) -> SharedDocumentState {
-        let settings = if let Some(state) = self.session.tori() {
+        let settings = if let Some(state) = self.session.chu() {
+            NativeDesktopSettings::Chu {
+                settings: state.document.settings().clone(),
+            }
+        } else if let Some(state) = self.session.tori() {
             NativeDesktopSettings::Tori {
                 settings: state.document.settings().clone(),
             }
@@ -1212,6 +1269,9 @@ impl DesktopController {
     }
     /// Queue a complete current-format document using native payload encoding.
     pub fn queue_shared_save(&mut self, path: PathBuf) -> Result<u64, String> {
+        if self.session.chu().is_some() {
+            return self.queue_chu_save(path);
+        }
         if self.session.tori().is_some() {
             return self.queue_tori_save(path);
         }
@@ -1254,7 +1314,7 @@ impl DesktopController {
         path: PathBuf,
         token: SharedOpenToken,
     ) -> Result<u64, String> {
-        self.queue_open_admission(path, token)
+        self.queue_open_admission(path, token, true)
     }
     /// Product Open uses the same strict native dispatch and stopped restoration.
     pub fn queue_product_open(
@@ -1262,12 +1322,13 @@ impl DesktopController {
         path: PathBuf,
         token: SharedOpenToken,
     ) -> Result<u64, String> {
-        self.queue_open_admission(path, token)
+        self.queue_open_admission(path, token, false)
     }
     fn queue_open_admission(
         &mut self,
         path: PathBuf,
         token: SharedOpenToken,
+        allow_unplayable: bool,
     ) -> Result<u64, String> {
         if self.lifecycle.close_requested() {
             return Err("Close is pending. Cancel close before opening another document.".into());
@@ -1276,8 +1337,14 @@ impl DesktopController {
             return Err("Stale Open: review the current document again.".into());
         }
         let id = self.next_native_io(IoPhase::Opening)?;
-        self.files
-            .submit(id, Work::Native(Box::new(NativeWork::Open { path, token })));
+        self.files.submit(
+            id,
+            Work::Native(Box::new(NativeWork::Open {
+                path,
+                token,
+                allow_unplayable,
+            })),
+        );
         Ok(id)
     }
     pub(crate) fn retire_native_files(&mut self) -> Result<(), String> {
@@ -1325,7 +1392,8 @@ impl DesktopController {
         completed: NativeCompleted,
     ) -> Result<String, String> {
         match completed {
-            NativeCompleted::ToriRuntime { .. }
+            NativeCompleted::ChuRuntime { .. }
+            | NativeCompleted::ToriRuntime { .. }
             | NativeCompleted::Admitted { .. }
             | NativeCompleted::Xiangqi(_)
             | NativeCompleted::ToriValidated(_) => {
@@ -1383,7 +1451,8 @@ impl DesktopController {
                 "Application capacity: admission identity headroom exhausted.",
             ));
         }
-        let preserve_tori = replacement && self.session.tori().is_some();
+        let preserve_tori =
+            replacement && (self.session.tori().is_some() || self.session.chu().is_some());
         let preferences = matches!(command, Some(SessionOperation::ShogiPreferences { .. }));
         let rollback = self.session.shogi().map(|s| {
             (
@@ -1395,7 +1464,7 @@ impl DesktopController {
             )
         });
         self.retire_admission();
-        self.shared.tori_admission = preserve_tori;
+        self.shared.transactional_admission = preserve_tori;
         self.shared.rollback = rollback;
         if replacement && !preserve_tori {
             self.retire_native_files()?;
@@ -1448,7 +1517,7 @@ impl DesktopController {
         let Some((epoch, preferences)) = self.shared.admission.take() else {
             return;
         };
-        let tori_admission = std::mem::take(&mut self.shared.tori_admission);
+        let transactional_admission = std::mem::take(&mut self.shared.transactional_admission);
         let consumes_response = std::mem::take(&mut self.shared.admission_consumes_response);
         let rollback = self.shared.rollback.take();
         let token = self.admission_token.take();
@@ -1461,6 +1530,19 @@ impl DesktopController {
         }
         match result {
             Ok(Completed::Native(value)) => match *value {
+                NativeCompleted::ChuRuntime {
+                    state,
+                    replacement,
+                    durable,
+                } => {
+                    self.finish_native_transaction(
+                        OpenedNative::Chu(state),
+                        replacement,
+                        durable,
+                        id,
+                        receipt,
+                    );
+                }
                 NativeCompleted::ToriRuntime {
                     state,
                     replacement,
@@ -1476,7 +1558,9 @@ impl DesktopController {
                     analysis,
                     replacement,
                 } => {
-                    if replacement && self.session.tori().is_some() {
+                    if replacement
+                        && (self.session.tori().is_some() || self.session.chu().is_some())
+                    {
                         self.bridge.cancel();
                     }
                     self.session.install_shogi(state);
@@ -1509,7 +1593,7 @@ impl DesktopController {
                 _ => unreachable!("dedicated admission worker"),
             },
             Ok(Completed::Admitted(mut candidate)) => {
-                if self.session.tori().is_some() {
+                if self.session.tori().is_some() || self.session.chu().is_some() {
                     self.bridge.cancel();
                 }
                 if candidate.document_identity == self.session.document_identity {
@@ -1530,7 +1614,7 @@ impl DesktopController {
                 }
             }
             Err(error) => {
-                if tori_admission {
+                if transactional_admission {
                     if error.resource.is_some() {
                         // A capacity refusal supersedes browse-only running intent,
                         // even when the rejected candidate cannot alter the game.
@@ -1539,6 +1623,15 @@ impl DesktopController {
                     if consumes_response && let Some(state) = self.session.tori_mut() {
                         state.retire();
                         state.paused = true;
+                        state.phase = if error.resource.is_some() {
+                            EnginePhase::Paused
+                        } else {
+                            EnginePhase::Failed
+                        };
+                        state.diagnostic = Some("Completed work refused by document admission; the accepted document is preserved and saveable. See Technical Details for the refusal.".into());
+                    }
+                    if consumes_response && let Some(state) = self.session.chu_mut() {
+                        state.retire();
                         state.phase = if error.resource.is_some() {
                             EnginePhase::Paused
                         } else {
@@ -1634,6 +1727,7 @@ impl DesktopController {
                 ActiveDocument::Shogi { state, .. } => state.diagnostic = Some(error.diagnostic),
                 ActiveDocument::Xiangqi { state, .. } => state.diagnostic = Some(error.diagnostic),
                 ActiveDocument::Tori { state, .. } => state.diagnostic = Some(error.diagnostic),
+                ActiveDocument::Chu { state, .. } => state.diagnostic = Some(error.diagnostic),
             }
         }
     }
@@ -1654,6 +1748,9 @@ impl DesktopController {
         if let Some(state) = self.session.tori_mut() {
             state.retire();
             state.paused = true;
+        }
+        if let Some(state) = self.session.chu_mut() {
+            state.retire();
         }
         self.session.capacity.status = CapacityPhase::Paused;
         self.session.capacity.message = Some(error);

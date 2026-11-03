@@ -708,6 +708,9 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
         assert!(current.document.dirty);
         assert_eq!(current.open_token, c.shared_open_token());
         match human {
+            NativeSide::Chu(_) => {
+                unreachable!("This fixture enumerates the existing playable games")
+            }
             NativeSide::Tori(side) => {
                 use mshogi_core::tori as t;
                 assert_eq!(current.profile.id(), t::PROFILE_ID);

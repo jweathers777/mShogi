@@ -108,6 +108,10 @@ fn execute_chess(context: &ExecutionContext) -> ChessResult {
 
 pub(crate) fn execute(context: &ExecutionContext) -> ExecutionResult {
     match context.game.game_kind() {
+        mshogi_core::native::GameKind::Chu => ExecutionResult::failure(
+            FailureKind::UnsupportedMode,
+            "Chu execution is not implemented; no move, score, analysis or game outcome is available.",
+        ),
         mshogi_core::native::GameKind::Tori => execute_tori(context),
         mshogi_core::native::GameKind::Xiangqi => execute_xiangqi(context),
         mshogi_core::native::GameKind::Shogi => execute_shogi(context),

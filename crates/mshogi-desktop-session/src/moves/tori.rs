@@ -53,6 +53,7 @@ pub(super) fn project(game: &t::Game) -> MovesProjection {
                 origin,
                 steps: vec![to.to_string()],
                 effects: vec![],
+                captures: None,
             },
             event.index,
             event.index + 1,

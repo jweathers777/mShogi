@@ -15,6 +15,20 @@ pub struct MoveEffect {
     /// Native destination coordinate.
     pub to: String,
 }
+/// Exact native-derived victim in complete capture order.
+#[derive(Clone, Debug, Serialize)]
+pub struct CapturedPiece {
+    /// Native victim coordinate.
+    pub square: String,
+    /// Game-qualified native owner.
+    pub owner: NativeSide,
+    /// Original native identity.
+    pub original_kind: String,
+    /// Current native movement identity.
+    pub movement_face: String,
+    /// Native promotion state.
+    pub promoted: bool,
+}
 /// Completed history, independent of actionable selection/inspection/focus.
 #[derive(Clone, Debug, Serialize)]
 pub struct CompletedActionGeometry {
@@ -28,6 +42,9 @@ pub struct CompletedActionGeometry {
     pub steps: Vec<String>,
     /// Native secondary movement; empty for ordinary actions.
     pub effects: Vec<MoveEffect>,
+    /// Ordered victims supplied by native complete effects; absent if not projected.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub captures: Option<Vec<CapturedPiece>>,
 }
 /// One actual native board action, never a warning or terminal command.
 #[derive(Clone, Debug, Serialize)]
@@ -175,6 +192,7 @@ pub(super) fn chess_projection(state: &DesktopSession) -> MovesProjection {
             },
             steps: vec![action.to.to_string()],
             effects,
+            captures: None,
         };
         push(
             &mut view,
@@ -240,6 +258,7 @@ pub(super) fn shogi_projection(game: &s::Game) -> MovesProjection {
                 origin,
                 steps: vec![to.to_string()],
                 effects: vec![],
+                captures: None,
             };
             push(
                 &mut view,
@@ -293,6 +312,7 @@ pub(super) fn xiangqi_projection(game: &x::Game) -> MovesProjection {
                 },
                 steps: vec![action.to.to_string()],
                 effects: vec![],
+                captures: None,
             };
             let (start, end) = ranges
                 .iter()
@@ -313,4 +333,76 @@ mod tests;
 
 pub(super) fn tori_projection(game: &mshogi_core::tori::Game) -> MovesProjection {
     tori::project(game)
+}
+
+/// Technical native Chu projection; final readable game notation belongs to MSH-43.
+pub(super) fn chu_projection(game: &mshogi_core::chu::Game) -> MovesProjection {
+    use mshogi_core::chu as c;
+    let root = game.position().root();
+    let mut view = projection(
+        "Starting position".into(),
+        format!(
+            "Technical Chu actions · declared root plies {} · earlier history {}",
+            root.declared_completed_plies(),
+            if root.earlier_history_unknown() {
+                "unknown"
+            } else {
+                "known"
+            }
+        ),
+    );
+    for e in game.events() {
+        let Some(effect) = &e.effects else {
+            continue;
+        };
+        let c::GameCommand::Play { action } = &e.command else {
+            continue;
+        };
+        let geometry = CompletedActionGeometry {
+            action: serde_json::to_string(action).expect("native complete action"),
+            event_index: e.index + 1,
+            origin: ChoiceOrigin::Board {
+                square: action.from.to_string(),
+            },
+            steps: action.route.iter().map(ToString::to_string).collect(),
+            effects: vec![],
+            captures: Some(
+                effect
+                    .captures
+                    .iter()
+                    .map(|v| CapturedPiece {
+                        square: v.square.to_string(),
+                        owner: NativeSide::Chu(v.piece.side),
+                        original_kind: v.piece.base.code().into(),
+                        movement_face: v.piece.face().code().into(),
+                        promoted: v.piece.promoted,
+                    })
+                    .collect(),
+            ),
+        };
+        let notation = format!(
+            "Technical · {} → {}{}",
+            action.from,
+            action
+                .route
+                .iter()
+                .map(ToString::to_string)
+                .collect::<Vec<_>>()
+                .join(" → "),
+            if action.promote { " · promote" } else { "" }
+        );
+        let count = root
+            .declared_completed_plies()
+            .saturating_add(e.board_ply as u64 - 1);
+        push(
+            &mut view,
+            count / 2 + 1,
+            u8::from(e.actor == c::Side::Gote),
+            notation,
+            geometry,
+            e.index,
+            e.index + 1,
+        );
+    }
+    view
 }

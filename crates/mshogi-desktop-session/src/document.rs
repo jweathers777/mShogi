@@ -1,8 +1,12 @@
 //! The sole current desktop envelope. Native payloads retain their own replay.
 //! Runtime-to-codec and validated-codec-to-install bridges end in MSH-118.
 use mshogi_core::native::{GameKind, RulesProfile};
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize, Serialize,
+    de::{self, MapAccess, SeqAccess, Visitor},
+};
 use serde_json::value::RawValue;
+use std::{collections::BTreeSet, fmt};
 
 pub(crate) const FORMAT: &str = "mshogi.desktop.document.v1";
 const VERSION: u32 = 1;
@@ -67,3 +71,55 @@ pub(crate) fn encode<T: Serialize>(profile: RulesProfile, payload: &T) -> Result
 #[cfg(test)]
 #[path = "document_tests.rs"]
 mod tests;
+
+// Raw duplicate rejection precedes every buffered native document payload.
+pub(crate) fn reject_duplicates(bytes: &[u8]) -> Result<(), String> {
+    struct Unique;
+    impl<'de> Deserialize<'de> for Unique {
+        fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+            d.deserialize_any(UVisitor)
+        }
+    }
+    struct UVisitor;
+    impl<'de> Visitor<'de> for UVisitor {
+        type Value = Unique;
+        fn expecting(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            f.write_str("duplicate-free JSON")
+        }
+        fn visit_map<M: MapAccess<'de>>(self, mut m: M) -> Result<Unique, M::Error> {
+            let mut keys = BTreeSet::new();
+            while let Some(k) = m.next_key::<String>()? {
+                if !keys.insert(k) {
+                    return Err(de::Error::custom("duplicate field"));
+                }
+                m.next_value::<Unique>()?;
+            }
+            Ok(Unique)
+        }
+        fn visit_seq<S: SeqAccess<'de>>(self, mut s: S) -> Result<Unique, S::Error> {
+            while s.next_element::<Unique>()?.is_some() {}
+            Ok(Unique)
+        }
+        fn visit_bool<E: de::Error>(self, _: bool) -> Result<Unique, E> {
+            Ok(Unique)
+        }
+        fn visit_u64<E: de::Error>(self, _: u64) -> Result<Unique, E> {
+            Ok(Unique)
+        }
+        fn visit_i64<E: de::Error>(self, _: i64) -> Result<Unique, E> {
+            Ok(Unique)
+        }
+        fn visit_f64<E: de::Error>(self, _: f64) -> Result<Unique, E> {
+            Ok(Unique)
+        }
+        fn visit_str<E: de::Error>(self, _: &str) -> Result<Unique, E> {
+            Ok(Unique)
+        }
+        fn visit_unit<E: de::Error>(self) -> Result<Unique, E> {
+            Ok(Unique)
+        }
+    }
+    let mut d = serde_json::Deserializer::from_slice(bytes);
+    Unique::deserialize(&mut d).map_err(|e| e.to_string())?;
+    d.end().map_err(|e| e.to_string())
+}

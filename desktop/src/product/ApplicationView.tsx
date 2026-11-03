@@ -28,11 +28,12 @@ export function ApplicationView({ snapshot, session, onNewGame, onOpen, blocked 
   const side = snapshot.sides.find(s => s.id.side === orientation)!;
   function flip() {
     if (snapshot.game === "chess") return command({ kind: "chess_preferences", orientation: orientation === "white" ? "black" : "white", analysis_defaults: snapshot.document.settings.settings.analysis_defaults });
+    if (snapshot.game === "chu") return command({ kind: "chu_preferences", settings: { orientation: orientation === "sente" ? "gote" : "sente" } });
     if (snapshot.game === "tori") return command({ kind: "tori_preferences", settings: { orientation: orientation === "sente" ? "gote" : "sente" } });
     if (snapshot.game === "shogi") return command({ kind: "shogi_preferences", settings: { ...snapshot.document.settings.settings, orientation: orientation === "sente" ? "gote" : "sente" } });
     return command({ kind: "xiangqi_preferences", settings: { analysis_defaults: snapshot.document.settings.analysis_defaults, orientation: orientation === "red" ? "black" : "red" } });
   }
-  const defaults = snapshot.game === "tori" ? snapshot.play_limits : snapshot.game === "xiangqi" ? snapshot.document.settings.analysis_defaults : snapshot.document.settings.settings.analysis_defaults;
+  const defaults = (snapshot.game === "tori" || snapshot.game === "chu") ? snapshot.play_limits : snapshot.game === "xiangqi" ? snapshot.document.settings.analysis_defaults : snapshot.document.settings.settings.analysis_defaults;
   const exactPrefix = snapshot.game !== "xiangqi" || snapshot.xiangqi.canonical_context_scope === "selected_committed";
   return <ApplicationShell game={snapshot.game} historical={snapshot.historical} blocked={confirmation !== null || supportOpen} onFocusCapture={focus}
     runtime={thinking ? "mShogi is thinking" : analyzing ? "Analyzing selected position" : "Local engine"}

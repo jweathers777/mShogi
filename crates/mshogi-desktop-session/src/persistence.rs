@@ -1678,6 +1678,7 @@ impl DesktopController {
             ),
             OpenedNative::Shogi { floor, .. } | OpenedNative::Xiangqi { floor, .. } => (*floor, 0),
             OpenedNative::Tori(state) => (state.document.retired_execution_floor(), 0),
+            OpenedNative::Chu(state) => (state.document.retired_execution_floor(), 0),
         };
         let next = self
             .runtime_floor()
@@ -1747,6 +1748,10 @@ impl DesktopController {
             OpenedNative::Shogi { mut state, floor } => {
                 state.reopened(floor);
                 (ActiveDocument::Shogi { runtime, state }, 0)
+            }
+            OpenedNative::Chu(mut state) => {
+                state.retire();
+                (ActiveDocument::Chu { runtime, state }, 0)
             }
             OpenedNative::Tori(mut state) => {
                 state.retire();

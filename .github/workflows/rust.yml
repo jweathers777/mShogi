@@ -49,6 +49,7 @@ jobs:
         run: |
           cargo run --locked -p mshogi-desktop-session --example write_frontend_fixtures -- desktop/src/__fixtures__
           cargo run --locked -p mshogi-desktop-session --features desktop-verification --example write_tori_frontend_fixtures -- desktop/src/__fixtures__
+          cargo run --locked -p mshogi-desktop-session --features desktop-verification --example write_chu_frontend_fixtures -- desktop/src/__fixtures__
           git diff --exit-code -- desktop/src/__fixtures__
       - name: Build
         run: cargo build --workspace --locked

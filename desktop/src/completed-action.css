@@ -6,3 +6,5 @@
 .completed-action-route polyline { stroke:#5b5140; stroke-width:2; stroke-dasharray:6 8; opacity:.8; }
 .completed-action-route circle { fill:#f5e6bf; stroke:#5b5140; stroke-width:1.5; }
 .completed-action-route text { fill:#443520; font:600 12px system-ui,sans-serif; stroke:none; }
+
+.completed-action-capture { stroke: #fff1c4; stroke-width: 4; paint-order: stroke; }

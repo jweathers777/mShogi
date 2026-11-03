@@ -27,5 +27,8 @@ export interface CompletedActionGeometry {
   readonly event_index?: number;
   readonly origin: NativeOrigin;
   readonly steps: readonly string[];
+  // Ordered native victims, including intermediate Lion captures. Never inferred
+  // from the board currently displayed or from an action spelling.
+  readonly captures?: readonly { readonly square: string; readonly owner: unknown; readonly original_kind: string; readonly movement_face: string; readonly promoted: boolean }[];
   readonly effects?: readonly { readonly from: string; readonly to: string }[];
 }

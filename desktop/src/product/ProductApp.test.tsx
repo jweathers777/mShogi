@@ -7,6 +7,7 @@ import type { GameSnapshot, ShogiSnapshot } from "./native";
 import shogiJson from "../__fixtures__/shared-shogi-standard.json";
 import xiangqiJson from "../__fixtures__/shared-xiangqi-standard.json";
 import toriJson from "../__fixtures__/shared-tori-contract.json";
+import chuJson from "../__fixtures__/shared-chu-routes.json";
 import chessJson from "../__fixtures__/shared-chess-standard.json";
 vi.mock("./useGameSession", () => ({ useGameSession: vi.fn() }));
 const standard = shogiJson as ShogiSnapshot;
@@ -173,4 +174,11 @@ it.each([[0, "sente"], [1, "gote"]] as const)("records actual Tori Random assign
     fireEvent.click(screen.getByRole("button", { name: "Start game" }));
     await waitFor(() => expect(session.newGame).toHaveBeenCalledExactlyOnceWith(standard.open_token, "tori", { game_kind: "tori", side }));
   } finally { entropy.mockRestore(); }
+});
+
+it("keeps technical Chu outside the four-game normal New Game chooser", () => {
+  session.snapshot = chuJson as unknown as GameSnapshot;
+  render(<ProductApp />);fireEvent.click(screen.getByRole("button", { name: "New game" }));
+  expect(screen.getAllByRole("option").map(n => n.textContent)).toEqual(["Chess", "Shogi", "Xiangqi", "Tori Shogi"]);
+  expect((screen.getByRole("combobox", { name: "Game" }) as HTMLSelectElement).value).toBe("chess");
 });

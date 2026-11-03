@@ -3,7 +3,7 @@
 //! Chess history observations are data, not commands to execute. Complete chess
 //! match admission still belongs to `ChessMatch`; shogi admission belongs to `Game`.
 
-use crate::{chess, shogi, tori, xiangqi};
+use crate::{chess, chu, shogi, tori, xiangqi};
 use serde::{Deserialize, Serialize, Serializer, ser::SerializeStruct};
 use serde_json::value::RawValue;
 use std::{error::Error, fmt};
@@ -31,6 +31,8 @@ pub enum GameKind {
     Xiangqi,
     /// Tori native rules, records and bounded execution; finished desktop play stays gated.
     Tori,
+    /// Chu native rules and records; execution remains unsupported until MSH-43.
+    Chu,
 }
 /// Immutable profile identity, never inferred from board dimensions or sides.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -43,6 +45,8 @@ pub enum RulesProfile {
     XiangqiWxf2018V1,
     /// Selected modern Tori software profile.
     ToriModernV1,
+    /// Selected modern JCSA Chu profile.
+    ChuJcsa2019V1,
 }
 impl RulesProfile {
     /// Exact public profile ID.
@@ -52,6 +56,7 @@ impl RulesProfile {
             Self::ShogiCsa36V1 => shogi::PROFILE_ID,
             Self::XiangqiWxf2018V1 => xiangqi::PROFILE_ID,
             Self::ToriModernV1 => tori::PROFILE_ID,
+            Self::ChuJcsa2019V1 => chu::PROFILE_ID,
         }
     }
     /// Exact accepted edition; profile revisions cannot silently advance it.
@@ -61,6 +66,7 @@ impl RulesProfile {
             Self::ShogiCsa36V1 => shogi::PROFILE_EDITION,
             Self::XiangqiWxf2018V1 => xiangqi::PROFILE_EDITION,
             Self::ToriModernV1 => tori::PROFILE_EDITION,
+            Self::ChuJcsa2019V1 => chu::PROFILE_EDITION,
         }
     }
     /// Game to which this profile belongs.
@@ -70,6 +76,7 @@ impl RulesProfile {
             Self::ShogiCsa36V1 => GameKind::Shogi,
             Self::XiangqiWxf2018V1 => GameKind::Xiangqi,
             Self::ToriModernV1 => GameKind::Tori,
+            Self::ChuJcsa2019V1 => GameKind::Chu,
         }
     }
 }
@@ -85,6 +92,7 @@ impl<'de> Deserialize<'de> for RulesProfile {
             shogi::PROFILE_ID => Ok(Self::ShogiCsa36V1),
             xiangqi::PROFILE_ID => Ok(Self::XiangqiWxf2018V1),
             tori::PROFILE_ID => Ok(Self::ToriModernV1),
+            chu::PROFILE_ID => Ok(Self::ChuJcsa2019V1),
             _ => Err(serde::de::Error::custom("unsupported native rules profile")),
         }
     }
@@ -103,6 +111,8 @@ pub enum NativeSchema {
     XiangqiV1,
     /// Complete modern Tori native history schema one.
     ToriV1,
+    /// Complete native Chu history schema one.
+    ChuV1,
 }
 impl NativeSchema {
     /// Native wire number, scoped to the game/profile.
@@ -113,6 +123,7 @@ impl NativeSchema {
             Self::ShogiV1 => shogi::SHOGI_RECORD_SCHEMA_VERSION,
             Self::XiangqiV1 => xiangqi::GAME_RECORD_SCHEMA_VERSION,
             Self::ToriV1 => tori::GAME_RECORD_SCHEMA_VERSION,
+            Self::ChuV1 => chu::GAME_RECORD_SCHEMA_VERSION,
         }
     }
 }
@@ -128,6 +139,8 @@ pub enum CanonicalRecord {
     Xiangqi(Box<xiangqi::GameRecord>),
     /// Authoritative complete native Tori history and derived outcomes.
     Tori(Box<tori::GameRecord>),
+    /// Authoritative native Chu routes, rights, obligations and outcomes.
+    Chu(Box<chu::GameRecord>),
 }
 impl CanonicalRecord {
     /// Wrap the actual native chess payload without changing historical observations.
@@ -146,6 +159,10 @@ impl CanonicalRecord {
     pub fn tori(record: tori::GameRecord) -> Self {
         Self::Tori(Box::new(record))
     }
+    /// Wrap an actual Chu record without advertising engine execution.
+    pub fn chu(record: chu::GameRecord) -> Self {
+        Self::Chu(Box::new(record))
+    }
     /// Exact native profile.
     pub const fn profile(&self) -> RulesProfile {
         match self {
@@ -153,6 +170,7 @@ impl CanonicalRecord {
             Self::Shogi(_) => RulesProfile::ShogiCsa36V1,
             Self::Xiangqi(_) => RulesProfile::XiangqiWxf2018V1,
             Self::Tori(_) => RulesProfile::ToriModernV1,
+            Self::Chu(_) => RulesProfile::ChuJcsa2019V1,
         }
     }
     /// Actual game, independent of execution capability.
@@ -166,6 +184,7 @@ impl CanonicalRecord {
             Self::Shogi(record) => record.event_count(),
             Self::Xiangqi(record) => record.event_count(),
             Self::Tori(record) => record.event_count(),
+            Self::Chu(record) => record.event_count(),
         }
     }
     /// Board actions in this known segment, not imported declared counters.
@@ -179,6 +198,7 @@ impl CanonicalRecord {
             Self::Shogi(record) => record.known_board_actions(),
             Self::Xiangqi(record) => record.known_board_actions(),
             Self::Tori(record) => record.known_board_actions(),
+            Self::Chu(record) => record.known_board_actions(),
         }
     }
     /// Schema derived from the authoritative payload.
@@ -193,6 +213,7 @@ impl CanonicalRecord {
             Self::Shogi(_) => NativeSchema::ShogiV1,
             Self::Xiangqi(_) => NativeSchema::XiangqiV1,
             Self::Tori(_) => NativeSchema::ToriV1,
+            Self::Chu(_) => NativeSchema::ChuV1,
         }
     }
     /// Serialize a complete bounded wrapper. Native encoding is unchanged.
@@ -232,6 +253,9 @@ impl CanonicalRecord {
             GameKind::Tori => Self::tori(
                 tori::GameRecord::from_json(wire.payload.get()).map_err(EnvelopeError::encoding)?,
             ),
+            GameKind::Chu => Self::chu(
+                chu::GameRecord::from_json(wire.payload.get()).map_err(EnvelopeError::encoding)?,
+            ),
         };
         if record.native_schema().version() != wire.native_schema_version {
             return Err(EnvelopeError::Identity);
@@ -250,6 +274,7 @@ impl CanonicalRecord {
             Self::Shogi(record) => record.to_json().map_err(EnvelopeError::encoding)?,
             Self::Xiangqi(record) => record.to_json().to_owned(),
             Self::Tori(record) => record.to_json().to_owned(),
+            Self::Chu(record) => record.to_json().to_owned(),
         };
         if text.len() > MAX_RECORD_ENVELOPE_BYTES {
             return Err(EnvelopeError::Capacity);
@@ -331,6 +356,8 @@ pub enum NativeSide {
     Xiangqi(xiangqi::Side),
     /// Tori Sente/Gote are game-qualified native owners.
     Tori(tori::Side),
+    /// Chu Sente/Gote retain their own native identity.
+    Chu(chu::Side),
 }
 impl NativeSide {
     /// Side's game, for validating purpose metadata without replay.
@@ -340,6 +367,7 @@ impl NativeSide {
             Self::Shogi(_) => GameKind::Shogi,
             Self::Xiangqi(_) => GameKind::Xiangqi,
             Self::Tori(_) => GameKind::Tori,
+            Self::Chu(_) => GameKind::Chu,
         }
     }
 }
@@ -362,6 +390,8 @@ impl Serialize for NativeSide {
                 Self::Xiangqi(xiangqi::Side::Black) => "black",
                 Self::Tori(tori::Side::Sente) => "sente",
                 Self::Tori(tori::Side::Gote) => "gote",
+                Self::Chu(chu::Side::Sente) => "sente",
+                Self::Chu(chu::Side::Gote) => "gote",
             }
             .into(),
         }
@@ -380,6 +410,8 @@ impl<'de> Deserialize<'de> for NativeSide {
             (GameKind::Xiangqi, "black") => Ok(Self::Xiangqi(xiangqi::Side::Black)),
             (GameKind::Tori, "sente") => Ok(Self::Tori(tori::Side::Sente)),
             (GameKind::Tori, "gote") => Ok(Self::Tori(tori::Side::Gote)),
+            (GameKind::Chu, "sente") => Ok(Self::Chu(chu::Side::Sente)),
+            (GameKind::Chu, "gote") => Ok(Self::Chu(chu::Side::Gote)),
             _ => Err(serde::de::Error::custom(
                 "side does not belong to named game",
             )),
@@ -397,6 +429,8 @@ pub enum NativeCommandTarget<'a> {
     Xiangqi(&'a mut xiangqi::Game),
     /// Real Tori native game, not a reconstructed consumer.
     Tori(&'a mut tori::Game),
+    /// Native Chu owner admits commands with its own actor semantics.
+    Chu(&'a mut chu::Game),
 }
 /// Native commands keep game-specific actors, actions and preconditions.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -409,6 +443,8 @@ pub enum NativeCommand {
     Xiangqi(Box<xiangqi::GameRequest>),
     /// Complete context-bound Tori board/terminal/administrative command.
     Tori(Box<tori::GameRequest>),
+    /// Complete native Chu command and expected history.
+    Chu(Box<chu::GameRequest>),
 }
 /// Native admission result, preserving rules-owned semantics and errors.
 #[derive(Debug)]
@@ -421,6 +457,8 @@ pub enum NativeReply {
     Xiangqi(Result<Box<xiangqi::Submission>, xiangqi::GameError>),
     /// Exact Tori full-game reversal or atomic native refusal.
     Tori(Result<Box<tori::GameUndo>, tori::GameError>),
+    /// Native Chu exact reversal or atomic typed refusal.
+    Chu(Result<Box<chu::GameUndo>, chu::GameError>),
 }
 /// A wrong-game command is rejected before either native owner is touched.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -442,6 +480,9 @@ pub fn dispatch_command(
         }
         (NativeCommandTarget::Tori(game), NativeCommand::Tori(request)) => {
             Ok(NativeReply::Tori(game.submit(*request).map(Box::new)))
+        }
+        (NativeCommandTarget::Chu(game), NativeCommand::Chu(request)) => {
+            Ok(NativeReply::Chu(game.submit(*request).map(Box::new)))
         }
         _ => Err(DispatchMismatch),
     }

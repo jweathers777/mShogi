@@ -4,8 +4,8 @@
   "date": "2026-11-03",
   "integration_branch": "codex/rewrite",
   "base_revision": "73623070114503ec32e169f967ac16fd942531a3",
-  "tested_source_revision": null,
-  "status": "Full integration checkpoint fcccc37 PASS on six CI jobs; final native diagnostic classification reviewed and locally verified; final native CI pending",
+  "tested_source_revision": "250b701efd23dac648ffdb984c83da868fa8840a",
+  "status": "PASS: original4AC/4DoD supported; independent reviews; final exact-source native3platform CI and local host/package PASS; unchanged Desktop3platform campaign reused from full integration checkpointfcccc37",
   "profile": "mshogi.chu.jcsa2019.v1",
   "edition": "JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02",
   "identities": {
@@ -214,11 +214,13 @@
     },
     {
       "command": "cargo test --locked -p mshogi-desktop-session shared::chu_tests -- --nocapture",
-      "result": "PASS9 final counter/provenance/known-root/Gote-first cases; native/archive capacity implementation unchanged from prior277PASS"
+      "result": "PASS9 final counter/provenance/known-root/Gote-first cases; native/archive capacity implementation unchanged from prior277PASS",
+      "source_revision": "fcccc37664603688a3fc26dbef21e0b0c7d0e484"
     },
     {
       "command": "npm test -- --reporter=dot src/product/ChuContract.test.tsx src/product/Moves.test.tsx",
-      "result": "PASS2files13tests, exactMAXcounter JSON string/provenance and known-root rows"
+      "result": "PASS2files13tests, exactMAXcounter JSON string/provenance and known-root rows",
+      "source_revision": "fcccc37664603688a3fc26dbef21e0b0c7d0e484"
     },
     {
       "command": "Corrected-source native CI41610001673, Test and Verify isolated desktop QA constructors",
@@ -236,22 +238,40 @@
     {
       "command": "cargo test --locked -p mshogi-desktop-session shared::chu_tests -- --nocapture",
       "result": "PASS10; final native Counter-classification correction and exact Stop/Resign/Close save path at max declared counter",
-      "source_scope": "final diagnostic correction over fcccc37; exact commit to follow"
+      "source_revision": "250b701efd23dac648ffdb984c83da868fa8840a"
     },
     {
       "command": "cargo clippy --workspace --all-targets --locked -- -D warnings",
       "result": "PASS final diagnostic correction",
-      "source_scope": "final diagnostic correction over fcccc37"
+      "source_revision": "250b701efd23dac648ffdb984c83da868fa8840a"
     },
     {
       "command": "cargo test --manifest-path desktop/src-tauri/Cargo.toml --locked --features desktop-verification",
       "result": "PASS15 final diagnostic correction; unchanged vendor Tao warnings",
-      "source_scope": "final diagnostic correction over fcccc37"
+      "source_revision": "250b701efd23dac648ffdb984c83da868fa8840a"
     },
     {
       "command": "Desktop41610001503 completed logs inspected",
       "source_revision": "fcccc37664603688a3fc26dbef21e0b0c7d0e484",
       "result": "PASS30frontend files392tests,15host tests on each3platform; actual current-four-game Windows/Linux GUI campaigns PASS. No Chu GUI inferred."
+    },
+    {
+      "command": "npm run desktop:build -- --bundles app; python3 desktop/scripts/package-smoke.py ... --report /private/tmp/msh78-package-final-smoke.json",
+      "source_revision": "250b701efd23dac648ffdb984c83da868fa8840a",
+      "result": "PASS final normal macOS application; inventory excludes QA fixture activation and actual bundled-engine UCI/play/analysis/Full smoke PASS. No actual GUI interaction inferred.",
+      "host_sha256": "a8c8677fa9d83e6e1e63bec92d358bd9b87394a20f55cf94e50184b6985e536e",
+      "engine_sha256": "48f07f3af250b864410a419592d4bca853000632e24c762d0c82da0837ff7ff2",
+      "path": "desktop/src-tauri/target/release/bundle/macos/mShogi.app"
+    },
+    {
+      "command": "Final manifest hashes, local documentation references, Backlog doctor and git diff --check",
+      "source_revision": "250b701efd23dac648ffdb984c83da868fa8840a",
+      "result": "PASS; all10consumer rows mapped, no duplicateIDs/self-dependencies/cycles"
+    },
+    {
+      "command": "Completed exact-source Rust41615048164 logs inspected",
+      "source_revision": "250b701efd23dac648ffdb984c83da868fa8840a",
+      "result": "PASS:281desktop-session tests in both main and QA-feature phases on each3platform; full workflow all3jobsPASS. Native fixtures and current4game regressions included."
     }
   ],
   "independent_reviews": [
@@ -290,6 +310,12 @@
         "crates/mshogi-desktop-session/src/chu_document.rs": "78fa80f98f41e3b83efa56824f48aec96e243f4d9c714064f2e7aae90fc9bb82",
         "crates/mshogi-desktop-session/src/shared_chu_tests.rs": "f88bb00bcb8ff722ce42552b7cc86364b8dbaf7347c445ef7b72e55b7e7802b0"
       }
+    },
+    {
+      "reviewer": "chu_native_review and chu_conformance independent fresh review sessions",
+      "source_revision": "250b701efd23dac648ffdb984c83da868fa8840a",
+      "method": "Final bounded source and original4AC/4DoD reconciliation;58 artifact hashes and exact frontend/presentation/Moves non-diff checked; reused independently executed tests, no repeated expensive suites",
+      "result": "PASS all4AC; no remaining material findings. Completion conditioned on final native CI success and terminal evidence integration, enforced by this record. MSH43 product boundary retained."
     }
   ],
   "ci": {
@@ -357,7 +383,36 @@
       }
     ],
     "reused_desktop_scope": "Desktop41610001503 all3platform jobs PASS at fcccc37664603688a3fc26dbef21e0b0c7d0e484. Final diff only Chu native Counter failure mapping and focused controller tests; frontend/host/package code, schemas, codecs and four playable-game paths unchanged. Reuse three-platform frontend392/host15/packages/current-four-game GUI results. Recheck final-source local host and normal package; final exact-source native CI all3platform required.",
-    "runs": []
+    "runs": [
+      {
+        "id": 41615048164,
+        "workflow": "Rust workspace",
+        "source": "250b701efd23dac648ffdb984c83da868fa8840a",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/41615048164",
+        "jobs": [
+          {
+            "name": "Rust (macos-15)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41615048164/job/125846287254"
+          },
+          {
+            "name": "Rust (windows-2022)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41615048164/job/125846287755"
+          },
+          {
+            "name": "Rust (ubuntu-24.04)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41615048164/job/125846287805"
+          }
+        ]
+      }
+    ]
   },
   "failed_or_superseded_checks": [
     {
@@ -387,6 +442,42 @@
     {
       "check": "retained-event boundary setup v1/v2",
       "result": "author-cancelled slow 500-event administrative setup; same4094+2 boundary verified with254 short-history observations in8.48s,1PASS"
+    },
+    {
+      "check": "Desktop41615048104 at final native-only correction",
+      "result": "Author-cancelled redundant repeat campaign; no success claimed. Unchanged-scope completed Desktop41610001503 from fcccc37 reused explicitly. Final native3platform and local host/package independently PASS.",
+      "ci": {
+        "id": 41615048104,
+        "workflow": "Desktop packages",
+        "source": "250b701efd23dac648ffdb984c83da868fa8840a",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/41615048104",
+        "jobs": [
+          {
+            "name": "Desktop (windows-2022)",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41615048104/job/125846287282"
+          },
+          {
+            "name": "Desktop (macos-15)",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41615048104/job/125846287537"
+          },
+          {
+            "name": "Desktop (ubuntu-24.04)",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41615048104/job/125846287570"
+          }
+        ]
+      }
+    },
+    {
+      "check": "Final task-bookkeeping read check v1",
+      "result": "Verification script used an incorrect managed-section marker and raised IndexError; corrected to actual AC/DOD markers, rerunPASS4AC+4DoD checked. No task criteria were changed by the probe."
     }
   ],
   "reused_evidence": {
@@ -460,5 +551,17 @@
       ]
     }
   ],
-  "precision_contract": "Native decimal strings preserve declared root and selected/live totals above JSsafeinteger. Technical Chu move pairs number known actions only; exact declared root counter remains separate, no fabricated prior rows. Native records/archive remain unchanged."
+  "precision_contract": "Native decimal strings preserve declared root and selected/live totals above JSsafeinteger. Technical Chu move pairs number known actions only; exact declared root counter remains separate, no fabricated prior rows. Native records/archive remain unchanged.",
+  "integrated_source_revision": "250b701efd23dac648ffdb984c83da868fa8840a",
+  "final_disposition": {
+    "task": "MSH-78 Done after successful required CI and normal integration",
+    "next": "MSH-43 dependencies satisfied; remains To Do and unstarted. No next task automatically selected.",
+    "open": "MSH-43/M4/shared46/47/88/89/architecture107/Tenjiku/M5 unchanged",
+    "limitations": [
+      "No functional Chu engine, move analysis, console or final notation until43",
+      "Development native board is not finished traditional-kanji Chu UI or visual approval",
+      "No new Chu packaged GUI interaction claimed; complete full12x12 supported-window and product/platform journeys remain43",
+      "12M whole-document work and15s elapsed refusal can reject expensive imports; accepted document remains complete and ending/close reserves survive"
+    ]
+  }
 }

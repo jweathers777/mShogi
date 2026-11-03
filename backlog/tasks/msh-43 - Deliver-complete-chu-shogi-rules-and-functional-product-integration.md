@@ -4,7 +4,7 @@ title: Deliver complete chu shogi rules and functional product integration
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-02T21:47:00Z'
+updated_date: '2026-11-03T10:18:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -22,6 +22,8 @@ documentation:
   - docs/m4/chu/profile.md
   - docs/m4/chu/fixtures.md
   - docs/m4/chu/handoff.md
+  - docs/m4/chu/shared-v1.md
+  - docs/m4/chu/shared-verification.json
 ordinal: 43000
 ---
 
@@ -61,4 +63,6 @@ MSH62 planning refinement2026-10-26: original identity,status,AC and DoD remain 
 Owner2026-11-01 testing-policy supersession: rules-profile-derived independently expected fixtures/history, deterministic regression, exact reversal/replay, meaningful property/metamorphic/adversarial tests and independent review establish conformance without any external engine. External comparisons are optional investigative evidence, not build/test/CI/milestone/release gates. Historical observations/source audits retained; no completed-game campaign reopened. For Tori,126 is now the self-contained executable harness; no Fairy build/admission prerequisite. Existing task dependencies and implementation plans unchanged; no activation by this note. Apply game-specific properties where meaningful, never expected outputs copied from the implementation. See docs/testing/conformance-policy.md.
 
 MSH82 current modern-profile handoff2026-11-02 supersedes original open-historical-question wording without deleting the old planning/research evidence. No original AC weakened:250 independently expected data rows precede native execution; actual conformance remains86, shared78 and full game43. Complete12×12 traditional-kanji board visible without scroll/zoom in accepted common shell; native inspection wording and full routes/royals retained.52 owns competitive strength;46/47/88/89 and107 retain shared/platform/diagnostic ownership. Original dependencies preserved; this record remains To Do/open.
+
+MSH78 complete shared handoff2026-11-03: tested/integrated native/shared source 250b701efd23dac648ffdb984c83da868fa8840a, nativeCI41615048164 all3jobsPASS; full checkpoint fcccc37 Rust41610001673/Desktop41610001503 all6jobsPASS, unchanged Desktop evidence reused for final native-only diagnostic correction. Actual canonical Chu/immutable document/controller/history/Take back/choices/royals/inspection/capacity contracts and seven real DTOs documented in shared-v1.md. Exact counters remain decimal text; technical Moves number known history only. Execution unsupported/unscored and normal chooser/Load gated until this task delivers actual engine/product. Original dependencies now satisfied; To Do/unassigned remains unchanged, no43implementation begun. Traditional kanji/full12x12 no-scroll product, engine/console/notation, complete games and packaged GUI/platform evidence still owned here; preserve native/shared evidence,12M aggregate and actual ending reserves.
 <!-- SECTION:NOTES:END -->

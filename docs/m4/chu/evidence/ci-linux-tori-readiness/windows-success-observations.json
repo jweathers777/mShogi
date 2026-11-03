@@ -1,0 +1,135 @@
+{
+  "source_revision": "f43583de84c147591c4e83dd07068aa1779b3e09",
+  "run": 41627192949,
+  "job": 125887380348,
+  "method": "Actual installed Windows verification package/WebView2 GUI; selected structured observations from completed successful job log, not a new test run.",
+  "observations": [
+    {
+      "at_utc": "2026-11-03T11:44:35.620580+00:00",
+      "operation": "Observe resumed play controls before one analysis inspector click",
+      "observation": {
+        "analysisEnabled": true,
+        "paused": "false",
+        "pausedBanner": false,
+        "rootEnabled": true
+      }
+    },
+    {
+      "at_utc": "2026-11-03T11:44:35.710627+00:00",
+      "operation": "Observe active analysis controls before setting work limits",
+      "observation": {
+        "active": true,
+        "depthEnabled": true,
+        "nodesEnabled": true,
+        "startEnabled": true
+      }
+    },
+    {
+      "at_utc": "2026-11-03T11:44:54.527156+00:00",
+      "operation": "Observe resumed play controls before one analysis inspector click",
+      "observation": {
+        "analysisEnabled": true,
+        "paused": "false",
+        "pausedBanner": false,
+        "rootEnabled": true
+      }
+    },
+    {
+      "at_utc": "2026-11-03T11:44:54.608032+00:00",
+      "operation": "Observe active analysis controls before setting work limits",
+      "observation": {
+        "active": true,
+        "depthEnabled": true,
+        "nodesEnabled": true,
+        "startEnabled": true
+      }
+    },
+    {
+      "at_utc": "2026-11-03T11:45:13.634519+00:00",
+      "operation": "Observe resumed play controls before one analysis inspector click",
+      "observation": {
+        "analysisEnabled": true,
+        "paused": "false",
+        "pausedBanner": false,
+        "rootEnabled": true
+      }
+    },
+    {
+      "at_utc": "2026-11-03T11:45:13.717806+00:00",
+      "operation": "Observe active analysis controls before setting work limits",
+      "observation": {
+        "active": true,
+        "depthEnabled": true,
+        "nodesEnabled": true,
+        "startEnabled": true
+      }
+    },
+    {
+      "at_utc": "2026-11-03T11:45:33.376002+00:00",
+      "operation": "Observe resumed play controls before one analysis inspector click",
+      "observation": {
+        "analysisEnabled": true,
+        "paused": "false",
+        "pausedBanner": false,
+        "rootEnabled": true
+      }
+    },
+    {
+      "at_utc": "2026-11-03T11:45:33.460156+00:00",
+      "operation": "Observe active analysis controls before setting work limits",
+      "observation": {
+        "active": true,
+        "depthEnabled": true,
+        "nodesEnabled": true,
+        "startEnabled": true
+      }
+    },
+    {
+      "at_utc": "2026-11-03T11:45:41.131063+00:00",
+      "operation": "Real pending browse Return / Take back / analysis replacement cancellation",
+      "observation": {
+        "game": "tori",
+        "saved_sha256": "27ec8ebd60919ba3c373bbca92916aac30ecc9a1a5ee35ed5882b6a2365a9a25",
+        "before_token": {
+          "document": 1,
+          "revision": 7,
+          "selection": 5,
+          "version": 5
+        },
+        "returned_token": {
+          "document": 1,
+          "revision": 11,
+          "selection": 7,
+          "version": 7
+        },
+        "restored_token": {
+          "document": 1,
+          "revision": 13,
+          "selection": 8,
+          "version": 8
+        },
+        "replacement_analysis_token": {
+          "document": 1,
+          "revision": 19,
+          "selection": 11,
+          "version": 11
+        },
+        "cancelled_token": {
+          "document": 1,
+          "revision": 23,
+          "selection": 13,
+          "version": 13
+        },
+        "reopened_token": {
+          "document": 2,
+          "revision": 28,
+          "selection": 27,
+          "version": 27
+        },
+        "unchanged_context_after_cancel": true,
+        "reopened_matches_restored_context": true,
+        "lineage_validation": "Actual journey passed retained_pending_takeback(tori, body, exact complete action)."
+      }
+    }
+  ]
+}

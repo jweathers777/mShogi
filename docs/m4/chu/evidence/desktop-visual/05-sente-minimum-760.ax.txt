@@ -1,0 +1,150 @@
+The following is a diff from the previous accessibility tree for Window: "mShogi Verification — chu-standard (test state) — content 760.0 × 650.0 logical · frame 760.0 × 650.0 logical" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 25-167
+~					21 button Flip board; currently Sente at bottom
+~					22 text mShogiGote
+~					23 container Chu Shogi 12×12 board, Sente at bottom
++						213 toggle button Description: 11a, Gote Leopard, Value: off
++						214 toggle button Description: 10a, Gote Copper, Value: off
++						215 toggle button Description: 9a, Gote Silver, Value: off
++						216 toggle button Description: 8a, Gote Gold, Value: off
++						217 toggle button Description: 7a, Gote Elephant, Value: off
++						218 toggle button Description: 6a, Gote King, Value: off
++						219 toggle button Description: 5a, Gote Gold, Value: off
++						220 toggle button Description: 4a, Gote Silver, Value: off
++						221 toggle button Description: 3a, Gote Copper, Value: off
++						222 toggle button Description: 2a, Gote Leopard, Value: off
++						223 toggle button Description: 1a, Gote Lance, Value: off
++						224 toggle button Description: 12b, Gote ReverseChariot, Value: off
++						225 toggle button Description: 11b, empty, Value: off
++						226 toggle button Description: 10b, Gote Bishop, Value: off
++						227 toggle button Description: 9b, empty, Value: off
++						228 toggle button Description: 8b, Gote Tiger, Value: off
++						229 toggle button Description: 7b, Gote Phoenix, Value: off
++						230 toggle button Description: 6b, Gote Kirin, Value: off
++						231 toggle button Description: 5b, Gote Tiger, Value: off
++						232 toggle button Description: 4b, empty, Value: off
++						233 toggle button Description: 3b, Gote Bishop, Value: off
++						234 toggle button Description: 2b, empty, Value: off
++						235 toggle button Description: 1b, Gote ReverseChariot, Value: off
++						236 toggle button Description: 12c, Gote SideMover, Value: off
++						237 toggle button Description: 11c, Gote VerticalMover, Value: off
++						238 toggle button Description: 10c, Gote Rook, Value: off
++						239 toggle button Description: 9c, Gote DragonHorse, Value: off
++						240 toggle button Description: 8c, Gote DragonKing, Value: off
++						241 toggle button Description: 7c, Gote FreeKing, Value: off
++						242 toggle button Description: 6c, Gote Lion, Value: off
++						243 toggle button Description: 5c, Gote DragonKing, Value: off
++						244 toggle button Description: 4c, Gote DragonHorse, Value: off
++						245 toggle button Description: 3c, Gote Rook, Value: off
++						246 toggle button Description: 2c, Gote VerticalMover, Value: off
++						247 toggle button Description: 1c, Gote SideMover, Value: off
++						248 toggle button Description: 12d, Gote Pawn, Value: off
++						249 toggle button Description: 11d, Gote Pawn, Value: off
++						250 toggle button Description: 10d, Gote Pawn, Value: off
++						251 toggle button Description: 9d, Gote Pawn, Value: off
++						252 toggle button Description: 8d, Gote Pawn, Value: off
++						253 toggle button Description: 7d, Gote Pawn, Value: off
++						254 toggle button Description: 6d, Gote Pawn, Value: off
++						255 toggle button Description: 5d, Gote Pawn, Value: off
++						256 toggle button Description: 4d, Gote Pawn, Value: off
++						257 toggle button Description: 3d, Gote Pawn, Value: off
++						258 toggle button Description: 2d, Gote Pawn, Value: off
++						259 toggle button Description: 1d, Gote Pawn, Value: off
++						260 toggle button Description: 12e, empty, Value: off
++						261 toggle button Description: 11e, empty, Value: off
++						262 toggle button Description: 10e, empty, Value: off
++						263 toggle button Description: 9e, Gote GoBetween, Value: off
++						264 toggle button Description: 8e, empty, Value: off
++						265 toggle button Description: 7e, empty, Value: off
++						266 toggle button Description: 6e, empty, Value: off
++						267 toggle button Description: 5e, empty, Value: off
++						268 toggle button Description: 4e, Gote GoBetween, Value: off
++						269 toggle button Description: 3e, empty, Value: off
++						270 toggle button Description: 2e, empty, Value: off
++						271 toggle button Description: 1e, empty, Value: off
++						272 toggle button Description: 12f, empty, Value: off
++						273 toggle button Description: 11f, empty, Value: off
++						274 toggle button Description: 10f, empty, Value: off
++						275 toggle button Description: 9f, empty, Value: off
++						276 toggle button Description: 8f, empty, Value: off
++						277 toggle button Description: 7f, empty, Value: off
++						278 toggle button Description: 6f, empty, Value: off
++						279 toggle button Description: 5f, empty, Value: off
++						280 toggle button Description: 4f, empty, Value: off
++						281 toggle button Description: 3f, empty, Value: off
++						282 toggle button Description: 2f, empty, Value: off
++						283 toggle button Description: 1f, empty, Value: off
++						284 toggle button Description: 12g, empty, Value: off
++						285 toggle button Description: 11g, empty, Value: off
++						286 toggle button Description: 10g, empty, Value: off
++						287 toggle button Description: 9g, empty, Value: off
++						288 toggle button Description: 8g, empty, Value: off
++						289 toggle button Description: 7g, empty, Value: off
++						290 toggle button Description: 6g, empty, Value: off
++						291 toggle button Description: 5g, empty, Value: off
++						292 toggle button Description: 4g, empty, Value: off
++						293 toggle button Description: 3g, empty, Value: off
++						294 toggle button Description: 2g, empty, Value: off
++						295 toggle button Description: 1g, empty, Value: off
++						296 toggle button Description: 12h, empty, Value: off
++						297 toggle button Description: 11h, empty, Value: off
++						298 toggle button Description: 10h, empty, Value: off
++						299 toggle button Description: 9h, Sente GoBetween, Value: off
++						300 toggle button Description: 8h, empty, Value: off
++						301 toggle button Description: 7h, empty, Value: off
++						302 toggle button Description: 6h, empty, Value: off
++						303 toggle button Description: 5h, empty, Value: off
++						304 toggle button Description: 4h, Sente GoBetween, Value: off
++						305 toggle button Description: 3h, empty, Value: off
++						306 toggle button Description: 2h, empty, Value: off
++						307 toggle button Description: 1h, empty, Value: off
++						308 toggle button Description: 12i, Sente Pawn, Value: off
++						309 toggle button Description: 11i, Sente Pawn, Value: off
++						310 toggle button Description: 10i, Sente Pawn, Value: off
++						311 toggle button Description: 9i, Sente Pawn, Value: off
++						312 toggle button Description: 8i, Sente Pawn, Value: off
++						313 toggle button Description: 7i, Sente Pawn, Value: off
++						314 toggle button Description: 6i, Sente Pawn, Value: off
++						315 toggle button Description: 5i, Sente Pawn, Value: off
++						316 toggle button Description: 4i, Sente Pawn, Value: off
++						317 toggle button Description: 3i, Sente Pawn, Value: off
++						318 toggle button Description: 2i, Sente Pawn, Value: off
++						319 toggle button Description: 1i, Sente Pawn, Value: off
++						320 toggle button Description: 12j, Sente SideMover, Value: off
++						321 toggle button Description: 11j, Sente VerticalMover, Value: off
++						322 toggle button Description: 10j, Sente Rook, Value: off
++						323 toggle button Description: 9j, Sente DragonHorse, Value: off
++						324 toggle button Description: 8j, Sente DragonKing, Value: off
++						325 toggle button Description: 7j, Sente Lion, Value: off
++						326 toggle button Description: 6j, Sente FreeKing, Value: off
++						327 toggle button Description: 5j, Sente DragonKing, Value: off
++						328 toggle button Description: 4j, Sente DragonHorse, Value: off
++						329 toggle button Description: 3j, Sente Rook, Value: off
++						330 toggle button Description: 2j, Sente VerticalMover, Value: off
++						331 toggle button Description: 1j, Sente SideMover, Value: off
++						332 toggle button Description: 12k, Sente ReverseChariot, Value: off
++						333 toggle button Description: 11k, empty, Value: off
++						334 toggle button Description: 10k, Sente Bishop, Value: off
++						335 toggle button Description: 9k, empty, Value: off
++						336 toggle button Description: 8k, Sente Tiger, Value: off
++						337 toggle button Description: 7k, Sente Kirin, Value: off
++						338 toggle button Description: 6k, Sente Phoenix, Value: off
++						339 toggle button Description: 5k, Sente Tiger, Value: off
++						340 toggle button Description: 4k, empty, Value: off
++						341 toggle button Description: 3k, Sente Bishop, Value: off
++						342 toggle button Description: 2k, empty, Value: off
++						343 toggle button Description: 1k, Sente ReverseChariot, Value: off
++						344 toggle button Description: 12l, Sente Lance, Value: off
++						345 toggle button Description: 11l, Sente Leopard, Value: off
++						346 toggle button Description: 10l, Sente Copper, Value: off
++						347 toggle button Description: 9l, Sente Silver, Value: off
++						348 toggle button Description: 8l, Sente Gold, Value: off
++						349 toggle button Description: 7l, Sente King, Value: off
++						350 toggle button Description: 6l, Sente Elephant, Value: off
++						351 toggle button Description: 5l, Sente Gold, Value: off
++						352 toggle button Description: 4l, Sente Silver, Value: off
++						353 toggle button Description: 3l, Sente Copper, Value: off
++						354 toggle button Description: 2l, Sente Leopard, Value: off
++						355 toggle button Description: 1l, Sente Lance, Value: off
+~					169 text YouSente
+The focused UI element is 3 HTML content Description: mShogi, URL: tauri://localhost

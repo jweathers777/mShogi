@@ -4,8 +4,8 @@
   "date": "2026-11-03",
   "integration_branch": "codex/rewrite",
   "base_revision": "a5d5bd40f77414570505d3d406bf5b77ad27eef4",
-  "tested_source_revision": null,
-  "status": "Implemented reviewed coherent source; packaged macOS visual verification and final CI pending; owner aesthetic approval not granted",
+  "tested_source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+  "status": "PASS working visual checkpoint technical verification and independent reviews. MSH-43 In Review awaiting owner aesthetic approval; normal activation/final product acceptance remain open.",
   "profile": "mshogi.chu.jcsa2019.v1",
   "edition": "JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02",
   "normal_product_activation": false,
@@ -45,9 +45,9 @@
     "crates/mshogi-search/src/chu/tests.rs": "af7e5ee645429082eea122d55ab125af5f35ef516a63c2c3d54e5b7f9ef54833",
     "crates/mshogi-search/src/lib.rs": "65a499bc29578fcb8045a084cd4497e4ab25de1db03c603eb85592e130c9b429",
     "desktop/scripts/macos-verification.py": "6b2d7754a0c0882f3ed8d8dca75e18bc58d9f76d2848ffff7ae0034f74647aa0",
-    "desktop/src-tauri/src/main.rs": "21a21a763eba2b1b1f3753b36dd49946db3bdf6f99592b9a346e2cc6a505e38b",
-    "desktop/src/Board.tsx": "9e029ce97cdd2fc2588b49fb7591adcde95c1750becb14b8b1a30437703939c5",
-    "desktop/src/NativeBoard.tsx": "f0017d28a1e554701795d1e73d93eb26e0b471360016a996a66fa83513f97a85",
+    "desktop/src-tauri/src/main.rs": "dbab8e765c8bd8873b77e5af05bc88c02beddf2cd627442df05e7439d3b81b2f",
+    "desktop/src/Board.tsx": "20bc7fc23f04b69b53c7c943072adb402de6d7d346badac5e8e557b4df7f6b89",
+    "desktop/src/NativeBoard.tsx": "22f9772ca7fd0a486f9fbb000165c2acd880ec5cacca8299b044dbde095b88d0",
     "desktop/src/__fixtures__/shared-chu-analysis-complete.json": "ff5c31f46706d471ade54741e8f611cceb643595bb36dacc99a1820f319f9572",
     "desktop/src/__fixtures__/shared-chu-analysis-incomplete.json": "d0f762f84a35b6dde5758611ce6bfa79480800854f47279ed1e55905984c007d",
     "desktop/src/__fixtures__/shared-chu-captured.json": "0aa63ef6609251fea5406d38baf38536cea957f70dd1824ecee1e532c7e695f1",
@@ -61,8 +61,8 @@
     "desktop/src/assets/fonts/subset-chu.py": "816a4c43f5983bc8623725ef0de82b31576d4ae674b7037491d17852786380bb",
     "desktop/src/native.ts": "9e2218868caa83a90cd489a0cac84c0c85879ee2938e2becbadfe3f7bb8a9d67",
     "desktop/src/product/ApplicationView.tsx": "509598f711a74b5a289deed773e8006d62fbc6449d9adbf7276c0c59dd10281e",
-    "desktop/src/product/ChuBoard.test.tsx": "6e08cad4f368114dc1412d2e4d40c7f309654d3201ad54a65306c5ee2c918a7f",
-    "desktop/src/product/ChuBoard.tsx": "713168ccf1163df84f1cc622d108a9eace799c006e140a5468318c179c4b2d29",
+    "desktop/src/product/ChuBoard.test.tsx": "891d6f43b78fc82cedb637194a721d982a2481ae2a2c19d3ea3961fcc9bb4c41",
+    "desktop/src/product/ChuBoard.tsx": "a089886f1bfc71fb3997de83b663d2574a5290d97955bfb0c35a4f54cb0a66bb",
     "desktop/src/product/ChuContract.test.tsx": "1c88da845da3cac414efd0e7785518397d81614bd4474ecf20891b84dc7f754e",
     "desktop/src/product/ChuExecution.test.tsx": "a418076f1bca8a354ea94e399fe66ba0ab9ed1e3b019ef41440ccbfc8518b8bf",
     "desktop/src/product/ChuPiece.test.tsx": "9bcd172243e2eefe78d06f7afa72749afe0489690b55a5eb59bf74c728a15b0c",
@@ -70,8 +70,9 @@
     "desktop/src/product/GameBoard.tsx": "f4723605566530a2db8ccd6997364d5c07cddbb8247d12fb2e792d2d2c7346f7",
     "desktop/src/product/GameCapabilities.tsx": "fb8bd1b7d8be719e749b4637758c9bad7d4a303e4d0f22ce4b3147bc550d7d55",
     "desktop/src/product/NativeSessionPanels.tsx": "05c2efff52963d05ce3c54cfcb02026034559558877c4941505c731be5317d88",
-    "desktop/src/product/chu.css": "42323a735725f1a3ab81411e0d988ceffd7e6d9e068cb95f05ee9b654eedc917",
-    "desktop/src/product/native.ts": "1ecfe472d21abe8509c64acccaa44a135c5ae45ff38426c51dbbd6e570030454"
+    "desktop/src/product/chu.css": "8acb66bd04476dcb17a58c42cd52b466ec6c7e62a5e7749f0de200749321c2bd",
+    "desktop/src/product/native.ts": "1ecfe472d21abe8509c64acccaa44a135c5ae45ff38426c51dbbd6e570030454",
+    "desktop/src/Board.test.tsx": "7062d22887218aef1f7a68a1dfc2225fdb1f84dd46aa8ce9b7a332a75c64f82d"
   },
   "checks": [
     {
@@ -96,7 +97,7 @@
     },
     {
       "scope": "native consumers",
-      "result": "PASS workspace/alltargets check andworkspaceclippy-Dwarnings; standalonehostallfeaturescheck; finalhosttests pendingconfirmation"
+      "result": "PASS workspace/alltargets check and workspace clippy-Dwarnings; standalone host allfeatures check and16QA tests; finalnormalhostclippy+8testsPASS. Vendor Tao20warnings unchanged."
     },
     {
       "scope": "stableverificationidentityhelper",
@@ -109,6 +110,24 @@
     {
       "scope": "Standalone Tauri host current source",
       "result": "PASS16hosttests includingall8nativeChuQAroots,stoppedreopenandnormalproductrejection; allfeaturescheckPASS. VendorTao20warnings unchanged."
+    },
+    {
+      "scope": "Final c52e253 normal host feature isolation",
+      "command": "cargo clippy --locked --manifest-path desktop/src-tauri/Cargo.toml --all-targets -- -D warnings; cargo test --locked --manifest-path desktop/src-tauri/Cargo.toml",
+      "result": "PASS normal clippy and 8 tests; 16 QA host tests passed prior source, feature guard correction leaves their bodies unchanged."
+    },
+    {
+      "scope": "Final c52e253 coordinate frame and Chu appearance",
+      "command": "npm --prefix desktop test -- --run src/Board.test.tsx src/product/ChuBoard.test.tsx src/product/ChuPiece.test.tsx src/product/ChuExecution.test.tsx; npm --prefix desktop run check",
+      "result": "PASS 40 tests and strict TypeScript. Independent six-file Board/NativeBoard/CompletedActionCue/ChuBoard/ChuPiece/choice-controller campaign:62 PASS."
+    },
+    {
+      "scope": "Final c52e253 macOS packaging",
+      "result": "PASS normal app20.75MiB, QA21.79MiB; normal package smoke including bundled UCI/internal engine and instrumentation exclusion PASS."
+    },
+    {
+      "scope": "Production-source c52e253 completed macOS CI frontend/host checks",
+      "result": "PASS33frontend files417tests, normalhost8tests, QAhost16tests, stablehelper11tests, package smoke; actualmacOS job125876345229 in run41623915844. RunoverallfailedLinuxharness, notreportedassuccess."
     }
   ],
   "measurements": {
@@ -176,17 +195,45 @@
     {
       "reviewer": "chu_native_review",
       "method": "Read-only engine/search/console/notation diff and independently executed27focusedtests +releaseworkprobe",
-      "result": "PASS no materialfindings; actualline-server vsactualchild explicitlydistinguished"
+      "result": "PASS no materialfindings; actualline-server vsactualchild explicitlydistinguished",
+      "source_revision": "8d0176889be1c637b6b7831779f34a5901af6e54"
     },
     {
       "reviewer": "chu_engine43 (independent of root desktop/codecadapter)",
       "method": "Read-only rootcodec/runtime/lifecycle/presentation/Moves review andindependently executed3codec tests; own engine/search excluded",
-      "result": "PASS afterhistoricalUnsupportedlabelcorrected; unscoredfailuremeaning preserved"
+      "result": "PASS afterhistoricalUnsupportedlabelcorrected; unscoredfailuremeaning preserved",
+      "source_revision": "8d0176889be1c637b6b7831779f34a5901af6e54"
     },
     {
       "reviewer": "chu_conformance",
       "method": "Read-only renderer/nativeidentity/kanjifont wiring and sharedUIintegration review; independently44renderer/controller,116shared/Chu andlater57focusedchecks",
-      "result": "PASS no remainingmaterialcodefinding; actualGUIreadability/layout/interaction andownerapprovalremainpending"
+      "result": "PASS no remainingmaterialcodefinding; actualGUIreadability/layout/interaction andownerapprovalremainpending",
+      "source_revision": "8d0176889be1c637b6b7831779f34a5901af6e54"
+    },
+    {
+      "reviewer": "chu_conformance",
+      "method": "Independent final seven-file diff review versus8d01768,62 focused tests, actual supplied screenshots01\u201305,07,09\u201310,13\u201316,18\u201323,26\u201327",
+      "result": "PASS. Warm uniform board and outside coordinate labels resolve both initial visual defects. Native route/capture cues and default four-game geometry preserved. No new material findings. Reviewer did not operate the application; owner aesthetic approval remains outstanding.",
+      "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b"
+    },
+    {
+      "reviewer": "chu_native_review",
+      "method": "Final bounded source/evidence reconciliation atc52e253; checked56source artifact hashes, normal and stagedQA files, all28actualcaptured images plus independently decoded JPEGdimensions, actualsavedarchive and linked docs; native engine/search/console unchanged from prior27test review",
+      "result": "PASS after correcting capture extension/dimension metadata. No production finding. Required CI completion and owner visual approval remain distinct.",
+      "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b"
+    },
+    {
+      "reviewer": "chu_conformance",
+      "method": "Additional actual29-sente-960.jpg inspection, unchanged production source",
+      "result": "PASS no material findings; independently reviewed both orientations atallthree requested sizes.",
+      "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b"
+    },
+    {
+      "reviewer": "chu_native_review",
+      "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+      "verification_revision": "f43583de84c147591c4e83dd07068aa1779b3e09",
+      "method": "Final read-only task/source/terminalCI/package/capture and readiness-artifact reconciliation;56sourcehashes,29JPEGs,links,all6requiredjobresults,cancelledrun,unchanged8AC/4DoD/dependencies andownerapproval flags checked; no test/GUIrerun",
+      "result": "PASS no material technical/evidence findings atworkingcheckpoint. Owner aesthetics/minimumkanjicomfort,normalactivation,final3platformChugameplayand8ACcompletion remainopen."
     }
   ],
   "ci": {
@@ -199,10 +246,141 @@
       "Desktop windows-2022"
     ],
     "scope": "Native3platform and affectedfrontend/host/packages; existing4game packagedGUIcampaign supportsregression only. NewactualChuGUI atthischeckpointmacOSonly. Finalnormalactivation/3platformChu gameplay remainsafterownerapproval.",
-    "runs": []
+    "runs": [
+      {
+        "databaseId": 41623916090,
+        "headSha": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "workflowName": "Rust workspace",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/41623916090",
+        "jobs": [
+          {
+            "name": "Rust (macos-15)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41623916090/job/125876346789"
+          },
+          {
+            "name": "Rust (ubuntu-24.04)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41623916090/job/125876346984"
+          },
+          {
+            "name": "Rust (windows-2022)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41623916090/job/125876347038"
+          }
+        ]
+      },
+      {
+        "databaseId": 41627192949,
+        "headSha": "f43583de84c147591c4e83dd07068aa1779b3e09",
+        "workflowName": "Desktop packages",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/41627192949",
+        "jobs": [
+          {
+            "name": "Desktop (macos-15)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41627192949/job/125887380083"
+          },
+          {
+            "name": "Desktop (windows-2022)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41627192949/job/125887380348"
+          },
+          {
+            "name": "Desktop (ubuntu-24.04)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41627192949/job/125887380421"
+          }
+        ]
+      },
+      {
+        "databaseId": 41623915844,
+        "headSha": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "workflowName": "Desktop packages",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/41623915844",
+        "jobs": [
+          {
+            "name": "Desktop (macos-15)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41623915844/job/125876345229"
+          },
+          {
+            "name": "Desktop (windows-2022)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41623915844/job/125876345643"
+          },
+          {
+            "name": "Desktop (ubuntu-24.04)",
+            "status": "completed",
+            "conclusion": "failure",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41623915844/job/125876345798"
+          }
+        ]
+      }
+    ],
+    "workflow_contracts": [
+      ".github/workflows/rust.yml at c52e253: cargo fmt --all -- --check; cargo clippy --workspace --all-targets --locked -- -D warnings; cargo test --workspace --locked; isolated desktop-session allfeatures clippy/test; exact native snapshot regeneration; cargo build --workspace --locked; console smoke",
+      ".github/workflows/desktop.yml at c52e253: npm ci/check/test; engine prepare; standalonehost fmt/clippy/test normal and QA; normal packages; instrumentation exclusion and real bundled-engine smoke; separate existing-four-game GUI regression campaigns"
+    ],
+    "not_claimed": "No actual packaged Windows/Linux Chu GUI acceptance in this checkpoint; final normal activation and three-platform Chu gameplay await owner visual approval.",
+    "verification_run": 41627192949,
+    "duplicate_native_run_cancelled": 41627193070,
+    "production_native_result": "PASS all3native jobs at exact c52e253 source; allworkspace,QAconstructors andnative snapshot regeneration included.",
+    "result": "PASS required6jobs: production-native3platform atc52e253 and correctedDesktop3platform atverification-onlyf43583d. Exactproductiondiff afterc52contains only2externalPythonverificationfiles; localmacOSChu package/sourceevidence unchanged. Prior failedcampaigns preserved.",
+    "artifacts": [
+      {
+        "id": 13227816840,
+        "name": "desktop-windows-2022",
+        "size_in_bytes": 299897927,
+        "digest": "sha256:b641eedeef8811593a53446aef53de26569d29b38f2563eba7fad392d41902bc",
+        "expired": false,
+        "created_at": "2026-11-03T11:49:00Z",
+        "expires_at": "2026-11-17T11:48:49Z"
+      },
+      {
+        "id": 13227532160,
+        "name": "desktop-ubuntu-24.04",
+        "size_in_bytes": 142759692,
+        "digest": "sha256:bc3ca31be56bab498fe8ff3718adf9b15e1f34c960e79c7be7b2ae81350affe6",
+        "expired": false,
+        "created_at": "2026-11-03T11:43:01Z",
+        "expires_at": "2026-11-17T11:42:54Z"
+      },
+      {
+        "id": 13227071601,
+        "name": "desktop-macos-15",
+        "size_in_bytes": 13329006,
+        "digest": "sha256:6670d6cb2c092979376a02058d39e99f01d437b2801841e4fabe59666bb9e8e3",
+        "expired": false,
+        "created_at": "2026-11-03T11:32:24Z",
+        "expires_at": "2026-11-17T11:32:21Z"
+      }
+    ],
+    "cancelled_duplicate_native": {
+      "conclusion": "cancelled",
+      "databaseId": 41627193070,
+      "headSha": "f43583de84c147591c4e83dd07068aa1779b3e09",
+      "status": "completed",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/41627193070",
+      "workflowName": "Rust workspace"
+    }
   },
   "gui": {
-    "status": "pending",
+    "status": "PASS actual macOS packaged CUA interaction at final source; no Windows/Linux Chu GUI claim.",
     "normal": "org.mshogi.desktop",
     "qa": "org.mshogi.desktop.verification.r6.shogipromotion",
     "sizes_required": [
@@ -219,7 +397,469 @@
         650
       ]
     ],
-    "captures": []
+    "captures": [
+      {
+        "path": "desktop-visual/01-standard-1180.jpg",
+        "sha256": "bbc50f7e45312e09364e047df3f4e1db59f5eb2dfca0be96ac0a9b6badd34e45",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/02-gote-1180.jpg",
+        "sha256": "01119a249f924d82a977363294985ce78a38e7c66faeb34a3501c3c6f2b655de",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/03-gote-960.jpg",
+        "sha256": "688b70774e0dd5aa71179c07a41eba87eaa3971481bd3c9ae377bfbd96ab03f2",
+        "screenshot_pixels": [
+          1920,
+          1440
+        ],
+        "logical_window": [
+          960,
+          720
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/04-gote-minimum-760.jpg",
+        "sha256": "4a0dec68adcfbf20bc380b4e0c35dbd999eb9317378966b97399f0d799614d39",
+        "screenshot_pixels": [
+          1520,
+          1300
+        ],
+        "logical_window": [
+          760,
+          650
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/05-sente-minimum-760.jpg",
+        "sha256": "1990a2111e2c2de19b542748d16235f9e3aada344185610c8eb16bc643b9dfcc",
+        "screenshot_pixels": [
+          1520,
+          1300
+        ],
+        "logical_window": [
+          760,
+          650
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/06-minimum-resignation.jpg",
+        "sha256": "ec6cb3c3a5615ca07be349d3ec3f11375945b48d72b8693c0c747de2d208bbc1",
+        "screenshot_pixels": [
+          1520,
+          1300
+        ],
+        "logical_window": [
+          760,
+          650
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/07-minimum-moves-sidebar.jpg",
+        "sha256": "31c8fdac1c61a27e757c3a0f0d5afa11eda683055daf106a6825c0ca91359eaf",
+        "screenshot_pixels": [
+          1520,
+          1300
+        ],
+        "logical_window": [
+          760,
+          650
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/08-opponent-inspection.jpg",
+        "sha256": "3c37cfd11f22c341da8b8baf903dc460053e0b8b44c45dac8b08fa7b4ee76dc3",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/09-real-play-engine-result.jpg",
+        "sha256": "01dc16da7c752380a8f8f4c3a5b045b45a5eb7d0b3d3d26e884ef9b71e6643cb",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/10-read-only-analysis.jpg",
+        "sha256": "49b751e61f39efd4b3193b63d7c0495c5781ebf21c488cf767ae24a8480eda0f",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/11-history-root.jpg",
+        "sha256": "8b7e23d0fc5aaae077a0b15e69438bffe0b9b17067a76a60a911d0efa99b6f44",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/12-reopened-stopped.jpg",
+        "sha256": "245f981e283e6c8affa96e509dc6b3b599d6dcd3369991fd5f477609ded2d758",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/13-lion-partial-capture.jpg",
+        "sha256": "f5f6eb0272ce6e71fb16bd65ebbf3a08781c973a7718423b97b4a48bca26e44f",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/14-lion-quiet-route.jpg",
+        "sha256": "0e24661e22b6876e282efba2de85d20a6444574a19543340204acd4c75cb1ffa",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/15-lion-quiet-return.jpg",
+        "sha256": "79baf17e12cd7a4af29f02af7df53793e4545ccb58c1fc2df18ac1f7693ce151",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/16-lion-capture-return.jpg",
+        "sha256": "ec857a889fd88634aca701c7af44787325fe9306fd994451975c0a88bd732dc0",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/17-dirty-quit-guard.jpg",
+        "sha256": "fb19ac5d1c5a25eaf7c6fa857e04b33e264396fd1a2c6e63597645cb5c392a4e",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/18-native-promotion-choice.jpg",
+        "sha256": "fe0f2a7195f9260ccde5928cbf318519fbf84be6e978adae3ef1df6886f3565f",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/19-promoted-prince-king.jpg",
+        "sha256": "a067c1be79dce312693dd0b1df3dbc9922c82ab33935f3ae21e884d71c992bf8",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/20-promoted-kanji-1180.jpg",
+        "sha256": "92f191858514d7ace23333c2ee4b350644812367a76fb4d98a25947a7e2c8f2a",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/21-promoted-kanji-gote.jpg",
+        "sha256": "ef1b612be0d36f720c6628e555222a3d243b27a94da21f2871e535fe80df2bd8",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/22-double-capture-partial.jpg",
+        "sha256": "8512fc2f51803a968a1da76dd6c8a4b62351b3a4b6d15259c8021950ad67ab43",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/23-double-capture-history-cues.jpg",
+        "sha256": "59012f5de6bde74aeb9eead637a72014cf3c1c01022dd7b3bbf5d62745329966",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/24-real-engine-thinking-gote.jpg",
+        "sha256": "72062c8bdff45a01cc8720e93e48d6a7c4be26622a2c071b1d3d637a6e7505b3",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": true,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/25-real-engine-gote-human.jpg",
+        "sha256": "4392ddd1b593f2f20078f3582b44c73f13960ac651730676a86d83cf1b01d35d",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": true,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/26-analysis-cancelled.jpg",
+        "sha256": "8dd2feb71671b5067e1e3849c0a8e6e5d7b98a630cb21cf7387347fb53c4b665",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": true,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/27-analysis-replaced.jpg",
+        "sha256": "ec9985c20e28747fef310e71f4e5f8d70c1f40f93425341d32bbfc6a80edf24e",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": true,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/28-replacement-analysis-complete.jpg",
+        "sha256": "64ac6aba5a9247d68599dcec3a9ab0460eb7ae1dc491d4ca5a98ed9746c614ab",
+        "screenshot_pixels": [
+          2360,
+          1640
+        ],
+        "logical_window": [
+          1180,
+          820
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": true,
+        "media_type": "image/jpeg"
+      },
+      {
+        "path": "desktop-visual/29-sente-960.jpg",
+        "sha256": "83ae19832d8944de5aecf8b27615cae77f7bafa1e60cbcccd108b0878046f4da",
+        "media_type": "image/jpeg",
+        "screenshot_pixels": [
+          1920,
+          1440
+        ],
+        "logical_window": [
+          960,
+          720
+        ],
+        "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "external_delay_gate": false
+      }
+    ],
+    "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+    "method": "Native CUA app control, genuine running package screenshots at Retina2x; no mockups or browser simulation.",
+    "identities": "One reusable fixed QA identifier/path for all fixtures, no per-scenario identities. Strict codesign verification passed. No approval/security configuration altered; no recurring prompt was observed during these actual relaunches. No platform approval guarantee inferred.",
+    "journeys": [
+      "1180x820,960x720,760x650 full12x12 board and both orientations; minimum kanji compact, owner reading-comfort judgment pending",
+      "Native Gote King movement inspection; exact visible shared wording; Escape cleared with no action",
+      "Human Sente keyboard GoBetween9h-9g and actual Gote engine reply; human Gote actual Sente engine move",
+      "Real readonly analysis with exact target/perspective/depth/nodes; board unchanged",
+      "Native historical prefix and explicit Return to live; double-capture historical route/origin/intermediate/final cues",
+      "Actual Save/native Open of53418B canonical file; UNMODIFIED, stopped reopen, old searches retained historically",
+      "Partial Lion capture/quiet paths remain0plies; Escape cancels; complete quiet returnLn6f-6e-6f versus capture returnLn6fx7e-6f; actual engine responses",
+      "Actual two-captureLn3cx2bx2a then engineLn1bx2a; selecting human history restores before engine response",
+      "Actual optional Elephant promotion dialog and promoted Prince beside King; representative promoted diagram separately labeled",
+      "Native resignation, Take back, dirty Quit Cancel preserves full game, explicit disposable Discard closes",
+      "Actual cancellation and replacement with established QA external delay gate: Search stopped, no uncompleted move; replacement completes readonly",
+      "Atminimum shared sidebar scroll makes Moves accessible; header may scroll with whole page, not claimed fixed"
+    ],
+    "saved_archive": {
+      "path": "desktop-visual/real-game.mshogi",
+      "sha256": "c515aa093f098877a02e4e26ddd8953f844f2055ef100a90456bf354d128dd15",
+      "bytes": 53418,
+      "controls": 8,
+      "observations": 2,
+      "actual_picker_path": "/private/tmp/chu.mshogimsh43-chu-real-game.mshogi",
+      "note": "Actual GUI Save/Open evidence; preservation copy, no fabricated observations."
+    }
   },
   "failed_or_superseded_checks": [
     {
@@ -253,6 +893,33 @@
     {
       "check": "Host legacy capability assertion",
       "result": "14PASS1FAIL: oldMSH78unsupportedcapabilityexpectation updatedforrealengine;normalproductOpengateandstoppedreopenpreserved. Newall8QAroottestinitialcompilemissingmutcorrected; 16hosttestsPASS aftercorrection."
+    },
+    {
+      "check": "8d01768 Desktop CI",
+      "result": "Normal host clippy/test compilation failed on all platforms because the new all_chu_visual_roots test called a feature-only constructor without cfg. c52e253 adds cfg(feature=\"desktop-verification\"); local normal clippy and8testsPASS. Earlier allfeatures checks had not exercised this normal-only build mode."
+    },
+    {
+      "check": "Initial actual screenshots at8d01768",
+      "result": "Global Chess selector overrode Chu warm squares; tiny in-cell coordinates overlapped pieces. Captures retained under superseded-8d01768. Corrected CSS specificity and optional Chu outside coordinate frame atc52e253, independently reviewed62tests and final screenshotreviewPASS."
+    },
+    {
+      "check": "First macOS staging attempt",
+      "result": "Sandbox process inventory denied; authorized escalated helper succeeded, no security or permission stores changed."
+    },
+    {
+      "check": "Gated engine-turn Cancel attempt",
+      "result": "5-second delayed engine completed before next tool action, so Cancel element retired; no cancellation claimed. Later immediate same-call read-only analysis Cancel succeeded and replacement completed."
+    },
+    {
+      "check": "Screenshot manifest metadata",
+      "result": "Independent evidence review found CUA returned JPEG bytes despite .png extension; initial fixed-offset PNG dimension probe was invalid. Renamed original unchanged bytes to.jpg, derived actual dimensions from JPEG SOF and2x/native title evidence. No image editing or GUI rerun."
+    },
+    {
+      "check": "c52e253 Linux packaged regression",
+      "result": "Desktop41623915844 job125876345798 failed verification-pending-tori: immediately after Resume and Analyze position clicks, depth input absent; actual failure DOM remained Play details with native resumed0plies. Other phases continued and their evidence is retained. Focused verification-only admission/layout readiness correction in progress; not described as pass.",
+      "artifact_url": "https://github.com/jweathers777/mShogi/actions/runs/41623915844/artifacts/13225642978",
+      "artifact_sha256": "dbd9b9d6deb5fb8a7904572b723787aa9309210381ab56431d7bc01a213952c0",
+      "resolution": "Verification-onlyf43583d correction independently reviewed; actual corrected Linux job125887380421PASS, with successful readiness and exact pending-work/Take back/replacement/cancel/Save/Open observations in gui-readiness-f43583d.json. Original failure preserved."
     }
   ],
   "reused_evidence": {
@@ -266,5 +933,345 @@
     "Normal5thgameactivation afterapproval",
     "ActualpackagedthreeplatformChu gameplay/final8ACreconciliation afterapproval",
     "Competitive strength52/M5;shared46/47/88/89;architecture107 remainfuture"
+  ],
+  "prior_checkpoint": "visual-checkpoint-8d01768.json",
+  "checks_reused_from": "8d0176889be1c637b6b7831779f34a5901af6e54",
+  "packages": {
+    "normal": {
+      "package_root": "desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+      "engine": "Contents/MacOS/mshogi",
+      "sha256": "adaa71564b7954955f951760baef9e92474f70e359da1019e2ecc2fca276647f",
+      "host_sha256": "8b76434042b325c325be247c33f6726add864c5a84be73be1731cb50edc3c761",
+      "version": "mshogi 0.1.0",
+      "uci_observations": [
+        "id name mShogi 0.1.0",
+        "id author John Weathers",
+        "option name ClaimPolicy type combo default explicit var explicit var auto",
+        "uciok",
+        "readyok",
+        "info depth 1 nodes 21 time 5 score cp 0 pv a2a3",
+        "bestmove a2a3"
+      ],
+      "internal_response": {
+        "protocol": 4,
+        "observation": {
+          "schema_version": 1,
+          "context": {
+            "purpose": {
+              "kind": "engine_turn"
+            },
+            "request_id": 1,
+            "session_version": 1,
+            "process_generation": 1,
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "chess",
+              "rules_profile": "mshogi.chess.match.v1",
+              "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+              "native_schema_version": 1,
+              "payload": {
+                "schema_version": 1,
+                "rules_profile": "mshogi.chess.match.v1",
+                "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                "history_origin": "standard_start",
+                "claim_policy": "explicit_only",
+                "events": []
+              }
+            },
+            "limits": {
+              "depth": 1,
+              "nodes": 1000
+            }
+          },
+          "result": {
+            "kind": "chess",
+            "result": {
+              "kind": "move",
+              "action": "a2a3",
+              "telemetry": {
+                "score": 0,
+                "completed_depth": 1,
+                "nodes": 21,
+                "principal_variation": [
+                  {
+                    "kind": "move",
+                    "action": "a2a3"
+                  }
+                ],
+                "status": "complete"
+              }
+            }
+          }
+        }
+      },
+      "analysis_response": {
+        "protocol": 4,
+        "observation": {
+          "schema_version": 1,
+          "context": {
+            "purpose": {
+              "kind": "move_analysis",
+              "target": {
+                "selection_id": 1,
+                "event_index": 0,
+                "board_ply": 0,
+                "session_version": 1,
+                "label": "Package verification: standard start",
+                "turn": {
+                  "game_kind": "chess",
+                  "side": "white"
+                }
+              }
+            },
+            "request_id": 2,
+            "session_version": 1,
+            "process_generation": 2,
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "chess",
+              "rules_profile": "mshogi.chess.match.v1",
+              "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+              "native_schema_version": 1,
+              "payload": {
+                "schema_version": 1,
+                "rules_profile": "mshogi.chess.match.v1",
+                "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                "history_origin": "standard_start",
+                "claim_policy": "explicit_only",
+                "events": []
+              }
+            },
+            "limits": {
+              "depth": 1,
+              "nodes": 1000
+            }
+          },
+          "result": {
+            "kind": "chess",
+            "result": {
+              "kind": "move",
+              "action": "a2a3",
+              "telemetry": {
+                "score": 0,
+                "completed_depth": 1,
+                "nodes": 21,
+                "principal_variation": [
+                  {
+                    "kind": "move",
+                    "action": "a2a3"
+                  }
+                ],
+                "status": "complete"
+              }
+            }
+          }
+        }
+      },
+      "full_response": {
+        "protocol": 4,
+        "observation": {
+          "schema_version": 1,
+          "context": {
+            "purpose": {
+              "kind": "chess_full_reachability",
+              "target": {
+                "selection_id": 1,
+                "event_index": 0,
+                "board_ply": 0,
+                "session_version": 1,
+                "label": "Package verification: standard start",
+                "turn": {
+                  "game_kind": "chess",
+                  "side": "white"
+                }
+              },
+              "mate": "either",
+              "limits": {
+                "max_positions": 1,
+                "max_transitions": 1
+              }
+            },
+            "request_id": 3,
+            "session_version": 1,
+            "process_generation": 3,
+            "game": {
+              "envelope_version": 1,
+              "game_kind": "chess",
+              "rules_profile": "mshogi.chess.match.v1",
+              "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+              "native_schema_version": 1,
+              "payload": {
+                "schema_version": 1,
+                "rules_profile": "mshogi.chess.match.v1",
+                "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                "history_origin": "standard_start",
+                "claim_policy": "explicit_only",
+                "events": []
+              }
+            },
+            "limits": {
+              "depth": 1,
+              "nodes": 0
+            }
+          },
+          "result": {
+            "kind": "chess",
+            "result": {
+              "kind": "reachability",
+              "result": {
+                "unknown": {
+                  "reason": "position_limit",
+                  "work": {
+                    "positions": 1,
+                    "expanded": 1,
+                    "transitions": 1,
+                    "static_leaves": 0
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "files": [
+        "Contents/Info.plist",
+        "Contents/MacOS/mshogi",
+        "Contents/MacOS/mshogi-desktop",
+        "Contents/Resources/icon.icns"
+      ],
+      "scope": "Package inventory and actual UCI, engine-turn, move-analysis and bounded Full reachability queries. Host acceptance and installed UI interaction are separate evidence."
+    },
+    "qa": {
+      "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+      "expected_bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+      "environment": {
+        "MSHOGI_DESKTOP_FIXTURE_FILE": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/qa.fixture"
+      },
+      "files": {
+        "Contents/Info.plist": "0a16e98931910a2e976eeffe0fdb563ca73ceaf7e60af2548c944d9bc86131da",
+        "Contents/MacOS/mshogi": "b1a3793864de63582ad4600b681bb04049670aac5783c1e8571eab78129977ab",
+        "Contents/MacOS/mshogi-desktop": "a13af1c0f5932b59ebe4aa27322902cd1a98ecf00edfb8ab8520292487832dd8",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc",
+        "Contents/_CodeSignature/CodeResources": "08937c6ffcc82691a4382430fd1d7fb7c4ab63bc1b0d78b9913b536632de009f"
+      },
+      "signatures": {
+        "display": {
+          "exit_code": 0,
+          "output": "# designated => cdhash H\"a9e89b44dd3a0048eb3a55e625a10c3e778a8773\"\nExecutable=/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.shogipromotion\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=37418 flags=0x2(adhoc) hashes=1162+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=a9e89b44dd3a0048eb3a55e625a10c3e778a8773\nCandidateCDHashFull sha256=a9e89b44dd3a0048eb3a55e625a10c3e778a877371e5f839b594d4a4b1684b10\nHash choices=sha256\nCMSDigest=a9e89b44dd3a0048eb3a55e625a10c3e778a877371e5f839b594d4a4b1684b10\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=12697600\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=a9e89b44dd3a0048eb3a55e625a10c3e778a8773\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n"
+        },
+        "strict_verify": {
+          "exit_code": 0,
+          "output": "--prepared:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n--validated:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: valid on disk\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: satisfies its Designated Requirement\n"
+        }
+      },
+      "qualification": "Ad-hoc signatures may change on rebuild; no approval persistence is inferred"
+    },
+    "qa_external_gate": {
+      "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+      "expected_bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+      "environment": {
+        "MSHOGI_DESKTOP_FIXTURE_FILE": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/qa.fixture",
+        "MSHOGI_R6_DELAY_MS": "5000",
+        "MSHOGI_R6_REAL_ENGINE": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi",
+        "MSHOGI_VERIFICATION_ENGINE": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/r6-engine-gate"
+      },
+      "files": {
+        "Contents/Info.plist": "2517ef0511d8dd0cab6e176041960c6d1b1a54ae878de47713fa9538774b39ff",
+        "Contents/MacOS/mshogi": "b1a3793864de63582ad4600b681bb04049670aac5783c1e8571eab78129977ab",
+        "Contents/MacOS/mshogi-desktop": "8f24ab9c286a309c3d2f1ad95c9eb19a3ac1148a3965bf3d6e7419afe9cb0c0f",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc",
+        "Contents/_CodeSignature/CodeResources": "08937c6ffcc82691a4382430fd1d7fb7c4ab63bc1b0d78b9913b536632de009f"
+      },
+      "signatures": {
+        "display": {
+          "exit_code": 0,
+          "output": "# designated => cdhash H\"e268c3a1328c25aec860bed17d899fcd309c8afa\"\nExecutable=/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.shogipromotion\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=37418 flags=0x2(adhoc) hashes=1162+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=e268c3a1328c25aec860bed17d899fcd309c8afa\nCandidateCDHashFull sha256=e268c3a1328c25aec860bed17d899fcd309c8afac7634534c0942660fa44d65f\nHash choices=sha256\nCMSDigest=e268c3a1328c25aec860bed17d899fcd309c8afac7634534c0942660fa44d65f\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=12697600\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=e268c3a1328c25aec860bed17d899fcd309c8afa\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n"
+        },
+        "strict_verify": {
+          "exit_code": 0,
+          "output": "--prepared:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n--validated:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: valid on disk\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: satisfies its Designated Requirement\n"
+        }
+      },
+      "qualification": "Ad-hoc signatures may change on rebuild; no approval persistence is inferred"
+    },
+    "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+    "external_gate": {
+      "source": "desktop/scripts/verification/engine-gate.rs",
+      "source_sha256": "54ad48a917aa34c78575849617787034459c1cf0004ce2e6bf4d1263be1548d2",
+      "binary_sha256": "c6567c1341304ad4cbf2b4c5b8609ea6860d4813ed8866de5209e8a1e99dac6a",
+      "delay_ms": 5000,
+      "method": "rustc --edition=2024; established external gate forwards actual bundled engine after delay; environment only in fixed QA staging, never normal distributable",
+      "captures": "24\u201328 only; ordinary timing restored before owner handoff"
+    }
+  },
+  "local_log_provenance": [
+    {
+      "path": "/private/tmp/msh43-desktop-session-full.log",
+      "sha256": "f90325cd41f5b8e6a82688b0070275392002114026df23927f5665f60c8140de"
+    },
+    {
+      "path": "/private/tmp/msh43-chu-codec-execution-v2.log",
+      "sha256": "22d4a8680120795eee66230e706ac1df0c2eabd06af3055ff74cd910396520d7"
+    },
+    {
+      "path": "/private/tmp/msh43-chu-codec-measurements.json",
+      "sha256": "5bf7bd801db9d2bcfa93d6a42abf5618ef33816708024eefeb580f08a0853650"
+    },
+    {
+      "path": "/private/tmp/msh43-frontend-full.log",
+      "sha256": "16a96015b222ab1c8a954c62856b82ea3e840ba9399d101b482214a320c59151"
+    },
+    {
+      "path": "/private/tmp/msh43-final-renderer.log",
+      "sha256": "3a719d7db4bf3f030584cac6a9f978ec88e6eec0bc242acd0dff640132a0cc5e"
+    },
+    {
+      "path": "/private/tmp/msh43-final-ts.log",
+      "sha256": "dfddfa5b4e517837513b4b9397053cbd1a8be7aac5f23d8b7d8cb3618e5f5e89"
+    },
+    {
+      "path": "/private/tmp/msh43-workspace-clippy.log",
+      "sha256": "90ce23791dc5f38222eb5340c4b179b61650c96243dbf1f8bf9f7f876be13c4f"
+    },
+    {
+      "path": "/private/tmp/msh43-host-tests-v3.log",
+      "sha256": "5d784087d54dc1278c3cee0649b11c79c5432758a122206821a52c4ff9ae9490"
+    },
+    {
+      "path": "/private/tmp/msh43-host-normal-clippy.log",
+      "sha256": "e3bbdcb203a53f79798d41058a6236348eb5131f29f6f915662e47a408dc07e8"
+    },
+    {
+      "path": "/private/tmp/msh43-host-normal-tests.log",
+      "sha256": "e2f6cfc8ad4de66860dff0bb63084639be9aa73384f70dcddf32cb345793c168"
+    },
+    {
+      "path": "/private/tmp/msh43-final-package-normal.log",
+      "sha256": "b794e6255d71d3787cb824656aa699f717fa5fc87688e056662065c5c56d07d5"
+    },
+    {
+      "path": "/private/tmp/msh43-final-package-qa.log",
+      "sha256": "b9aaa79e9e0f8fdcc034ba68cc642ddf397f2ad9b0b676bc73853d420e5eecdf"
+    },
+    {
+      "path": "/private/tmp/msh43-final-normal-smoke.json",
+      "sha256": "fe3fbd3ab4a88458d38224d118edbdbc9b2e23bb445c0e349330bb0a1d63c91f"
+    }
+  ],
+  "verification_followup": "gui-readiness-f43583d.json",
+  "verification_revision": "f43583de84c147591c4e83dd07068aa1779b3e09",
+  "not_run": [
+    "Final normal fifth-game activation and Windows/Linux packaged Chu gameplay: intentionally after owner visual approval.",
+    "Full screen-reader/VoiceOver campaign not performed in this checkpoint; actual native accessible labels and focused pointer/keyboard/Escape journeys plus independent frontend tests recorded.",
+    "Independent font outline decoding unavailable to reviewer because Python Brotli dependency missing; author repeated pinnedfont regeneration/hash, independent code/character checks and actual rendered screenshots establish current evidence."
+  ],
+  "bookkeeping_checks": [
+    "Pinned Backlog1.55.1 verified",
+    "Backlogdoctor: no duplicateIDs,selfdependencies orcycles",
+    "Current source/capture hashes and all checkpoint links verified; actualJPEGdimensions independentlychecked",
+    "git diff --check PASS; no productionchanges afterc52e253",
+    "Task43 original8AC/4DoD/dependencies preserved; nofinalacceptance orownerapprovalclaimed"
   ]
 }

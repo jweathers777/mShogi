@@ -1,0 +1,22 @@
+Window: "mShogi Verification — chu-contract (test state) — content 1180.0 × 820.0 logical · frame 1180.0 × 820.0 logical", App: mShogi Verification.
+0 standard window Secondary Actions: Raise, mShogi Verification — chu-contract (test state) — content 1180.0 × 820.0 logical · frame 1180.0 × 820.0 logical
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 container Save Game
+				4 heading Save Game, Value: 2
+					5 text Save Game
+				6 button Save
+				7 button Discard
+				8 button Cancel
+	9 close button
+	10 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	11 minimize button
+	12 text mShogi Verification — chu-contract (test state) — content 1180.0 × 820.0 logical · frame 1180.0 × 820.0 logical
+13 menu bar
+	14 mShogi Verification
+	15 Edit
+	16 View
+	17 Window
+	18 Verification window size
+
+The focused UI element is 8 button Cancel

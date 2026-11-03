@@ -1,4 +1,12 @@
-> Current Chu profile handoff — MSH-82, 2026-11-02: the selected
+> MSH-43 working visual checkpoint,2026-11-03: real Chu search/execution,
+> console/native notation and traditional-kanji12×12 presentation are implemented
+> at production sourcec52e253. The [current checkpoint](chu/desktop-visual-checkpoint.md)
+> records actual macOS gameplay, sizing and document evidence; its original
+> eight-criterion delivery acceptance remains unfinished. Owner aesthetic approval,
+> normal fifth-game activation and final packaged three-platform Chu gameplay are
+> still required. No new rules profile, component hierarchy or M4 closure.
+
+> Historical Chu profile handoff — MSH-82, 2026-11-02: the selected
 > [`mshogi.chu.jcsa2019.v1`](chu/profile.md) and independently reviewed
 > [250-row corpus](chu/fixtures.md) refine existing86→78→43 ownership.
 > [Native/shared/product handoff](chu/handoff.md) preserves current one-controller,

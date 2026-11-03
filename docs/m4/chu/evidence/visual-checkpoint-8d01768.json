@@ -1,0 +1,335 @@
+{
+  "schema": "mshogi.chu.visual-checkpoint.v1",
+  "task": "MSH-43",
+  "date": "2026-11-03",
+  "integration_branch": "codex/rewrite",
+  "base_revision": "a5d5bd40f77414570505d3d406bf5b77ad27eef4",
+  "tested_source_revision": "8d0176889be1c637b6b7831779f34a5901af6e54",
+  "status": "Superseded coherent checkpoint: local native/frontend/QA checks passed; normal host CI failed because one new QA test lacked its feature guard; preliminary GUI exposed warm-board specificity and coordinate readability defects. Corrected at c52e253.",
+  "profile": "mshogi.chu.jcsa2019.v1",
+  "edition": "JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02",
+  "normal_product_activation": false,
+  "owner_visual_approval": false,
+  "environment": {
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "rust": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "node": "bundled24.19.0",
+    "backlog": "pinned1.55.1"
+  },
+  "artifact_sha256": {
+    "crates/mshogi-console/src/chu_session.rs": "f0fb2a7ddbf8a2e5531476364ed9397d1c7c9a18dab2183ae966daa8b35d7bcf",
+    "crates/mshogi-console/src/main.rs": "7ab2d68e0a39b45ca6e333175dcf956cc3eae3770f30fddf252c0c388f835a61",
+    "crates/mshogi-console/tests/chu_cli.rs": "fc04239ee1260775878362ca01d611100a7db5535109f8682f7377c7ff67635b",
+    "crates/mshogi-console/tests/chu_internal.rs": "77904087f67f5105a786e1c526285d7aa09ae3413aebf59b289e9a96d8ee45f0",
+    "crates/mshogi-console/tests/support/internal_fixture.rs": "075c8e7b4fd0c8624e78cbc99dc8bb40121bbd1a4edf7787a7b2e1adb03fe491",
+    "crates/mshogi-core/src/chu/mod.rs": "dfad5f77c7a98958318025e62ea4d26b5ae9798813bbc2513d850f17f3935cbf",
+    "crates/mshogi-core/src/chu/notation.rs": "d12c74a1c95c570cb6d7c6d49c5766c55bcb947b0ac5f7c9a66c637cf8d194aa",
+    "crates/mshogi-desktop-session/examples/write_chu_frontend_fixtures.rs": "dedd18858576c49d8746f295810769851b62c881272f1f8b4c1200255114ea10",
+    "crates/mshogi-desktop-session/src/chu_document.rs": "3a59f05025679a1f51b65fa45739bb27b9b461e46e3e073f05ea3a351606a6b5",
+    "crates/mshogi-desktop-session/src/chu_document/execution_tests.rs": "92273f0b98b6fc82ed2e29523490277202c5fc5b91e1551fc545d3bdc595263e",
+    "crates/mshogi-desktop-session/src/lib.rs": "34a588645cdc3527dfc8b658d044a901c691a02f2b4f81630e219ba49b530f76",
+    "crates/mshogi-desktop-session/src/moves.rs": "336a199d8def8301ad0d75d012b11c26f3c6b12d4558fa611f93c4157cc1d6c3",
+    "crates/mshogi-desktop-session/src/shared.rs": "ad2c23cf59e18287e21f048f46ecda6697d61aa3d6658de070041c47cba5f289",
+    "crates/mshogi-desktop-session/src/shared_archive.rs": "da4b2f0e2017def312a80c843202bceab0fa7eae510290da5735aebabfc95e9e",
+    "crates/mshogi-desktop-session/src/shared_chu.rs": "b93758c311f222aa834aa34c03555de62bf91530886fc16dbaf1a34e5aa79568",
+    "crates/mshogi-desktop-session/src/shared_chu_presentation.rs": "83f9c0fe92b5ce6ff59da83182c9b77b16fa26b453a9822f096a64dfd6064b85",
+    "crates/mshogi-desktop-session/src/shared_chu_tests.rs": "e27f01fbc8c36a2e694b2002d960bbb6d5b82e2722e61703e5cb6b47d1b9dd02",
+    "crates/mshogi-engine/src/chu.rs": "4df2b7c46aeb9c14b751c2b8000cee13dbe7a248420115fd7f70edc860a09534",
+    "crates/mshogi-engine/src/lib.rs": "40a5b87c3478c5936d15688e32b61ba86db7dafad8256c343d05df45af5f40e1",
+    "crates/mshogi-engine/src/server.rs": "e97bed75f4c944aaa4bf4407d4df1ed212c33d4504862ef66db4f3d9eff60280",
+    "crates/mshogi-engine/src/shared.rs": "d0f32ecbb071eb52db3b7cb98d0c8ef738806b3c74ce6dd0c7717a1d677ffecf",
+    "crates/mshogi-engine/tests/chu_protocol.rs": "a2fa5f60d061e271427b965ba752330388cca90dc7564561df4375609bcf0d5f",
+    "crates/mshogi-engine/tests/chu_routing.rs": "bfdd1ef8a1fc381169534d129ec47a92f32abd686ce25a0ca8bc6edf06668993",
+    "crates/mshogi-search/examples/chu_work.rs": "c69639cb5b39a9398571a38186e3c0e61dbe4fa32d604f3f25d7177f7fa82e16",
+    "crates/mshogi-search/src/chu.rs": "d25390dc35448f99c54b6562260b06f04851df7301b6d11cc7eb836eabe59917",
+    "crates/mshogi-search/src/chu/tests.rs": "af7e5ee645429082eea122d55ab125af5f35ef516a63c2c3d54e5b7f9ef54833",
+    "crates/mshogi-search/src/lib.rs": "65a499bc29578fcb8045a084cd4497e4ab25de1db03c603eb85592e130c9b429",
+    "desktop/scripts/macos-verification.py": "6b2d7754a0c0882f3ed8d8dca75e18bc58d9f76d2848ffff7ae0034f74647aa0",
+    "desktop/src-tauri/src/main.rs": "21a21a763eba2b1b1f3753b36dd49946db3bdf6f99592b9a346e2cc6a505e38b",
+    "desktop/src/Board.tsx": "9e029ce97cdd2fc2588b49fb7591adcde95c1750becb14b8b1a30437703939c5",
+    "desktop/src/NativeBoard.tsx": "f0017d28a1e554701795d1e73d93eb26e0b471360016a996a66fa83513f97a85",
+    "desktop/src/__fixtures__/shared-chu-analysis-complete.json": "ff5c31f46706d471ade54741e8f611cceb643595bb36dacc99a1820f319f9572",
+    "desktop/src/__fixtures__/shared-chu-analysis-incomplete.json": "d0f762f84a35b6dde5758611ce6bfa79480800854f47279ed1e55905984c007d",
+    "desktop/src/__fixtures__/shared-chu-captured.json": "0aa63ef6609251fea5406d38baf38536cea957f70dd1824ecee1e532c7e695f1",
+    "desktop/src/__fixtures__/shared-chu-captures.json": "f618c6dbbd437987547cc1fa7e945a4eda22f48510213b63fab52a41d05c33b1",
+    "desktop/src/__fixtures__/shared-chu-counter.json": "dc92cf1a84d5dfa020e414d27804393202253af13c2700d3ca840d253f3de448",
+    "desktop/src/__fixtures__/shared-chu-promotion.json": "ffb10d0177d9aefc5eef7456112f87b3cd4ca0c97021b1828f24b0f4380b794a",
+    "desktop/src/__fixtures__/shared-chu-routes.json": "11d6bf008781a897ec19053a9e35a1125f523244bc10b14e5352b3890a8ffe0e",
+    "desktop/src/__fixtures__/shared-chu-royals.json": "af7f7c38d1c7b2cc2dc4cb754e4dcc5d2678466728facb7a23221a10ad0fec3e",
+    "desktop/src/assets/fonts/NOTICE.txt": "fe851eb7bf928d2aabd7092a9b13b3a1a50aa64081c8f7f9953734f20b84d0ab",
+    "desktop/src/assets/fonts/mshogi-chu-pieces.woff2": "b9b9b3efe3693504839fdb2cb48fb421f5c4a3de8e65f0f53f724525cfe0fbb5",
+    "desktop/src/assets/fonts/subset-chu.py": "816a4c43f5983bc8623725ef0de82b31576d4ae674b7037491d17852786380bb",
+    "desktop/src/native.ts": "9e2218868caa83a90cd489a0cac84c0c85879ee2938e2becbadfe3f7bb8a9d67",
+    "desktop/src/product/ApplicationView.tsx": "509598f711a74b5a289deed773e8006d62fbc6449d9adbf7276c0c59dd10281e",
+    "desktop/src/product/ChuBoard.test.tsx": "6e08cad4f368114dc1412d2e4d40c7f309654d3201ad54a65306c5ee2c918a7f",
+    "desktop/src/product/ChuBoard.tsx": "713168ccf1163df84f1cc622d108a9eace799c006e140a5468318c179c4b2d29",
+    "desktop/src/product/ChuContract.test.tsx": "1c88da845da3cac414efd0e7785518397d81614bd4474ecf20891b84dc7f754e",
+    "desktop/src/product/ChuExecution.test.tsx": "a418076f1bca8a354ea94e399fe66ba0ab9ed1e3b019ef41440ccbfc8518b8bf",
+    "desktop/src/product/ChuPiece.test.tsx": "9bcd172243e2eefe78d06f7afa72749afe0489690b55a5eb59bf74c728a15b0c",
+    "desktop/src/product/ChuPiece.tsx": "1778fc5e89e2b45cc705d62cbfdada372e0f84cd24ca65248b64f4dcbe4ad9d5",
+    "desktop/src/product/GameBoard.tsx": "f4723605566530a2db8ccd6997364d5c07cddbb8247d12fb2e792d2d2c7346f7",
+    "desktop/src/product/GameCapabilities.tsx": "fb8bd1b7d8be719e749b4637758c9bad7d4a303e4d0f22ce4b3147bc550d7d55",
+    "desktop/src/product/NativeSessionPanels.tsx": "05c2efff52963d05ce3c54cfcb02026034559558877c4941505c731be5317d88",
+    "desktop/src/product/chu.css": "42323a735725f1a3ab81411e0d988ceffd7e6d9e068cb95f05ee9b654eedc917",
+    "desktop/src/product/native.ts": "1ecfe472d21abe8509c64acccaa44a135c5ae45ff38426c51dbbd6e570030454"
+  },
+  "checks": [
+    {
+      "scope": "focused native search/engine/notation/console",
+      "result": "PASS9search+7engine line-server+3notation+8actualCLI; independently27PASS; consoleexisting4game55PASS; focusedengine/search/console clippyPASS"
+    },
+    {
+      "scope": "actualenginechild/controller",
+      "result": "PASS6actualsubprocess/controller journeys: bothassignments,complete/incomplete,history/persistence,7contextprobes,cancel/replace/Takeback/reopen/crossgame andobservedPIDcleanup"
+    },
+    {
+      "scope": "documentadmission",
+      "result": "PASS5actualin-processserve_once observations tests, including32ply/32observations,wrongPV/score/purpose/context/journal,and256-to257refusal; no actualchild claim for these5"
+    },
+    {
+      "scope": "desktop-session allfeatures coherent checkpoint",
+      "result": "PASS286,0failed181.19s; one later focused historicalUnsupported/Search compatibility testPASS; no repeated broad suite for narrowlabel change"
+    },
+    {
+      "scope": "frontend coherent checkpoint",
+      "result": "PASS32files405tests; later10focused actualChuExecution testsPASS; strictTS,46focusedintegrationtestsPASS"
+    },
+    {
+      "scope": "native consumers",
+      "result": "PASS workspace/alltargets check andworkspaceclippy-Dwarnings; standalonehostallfeaturescheck; finalhosttests pendingconfirmation"
+    },
+    {
+      "scope": "stableverificationidentityhelper",
+      "result": "PASS11tests; same3fixedidentities; externalChu selectors added, no perfixturebundleID/path/signature"
+    },
+    {
+      "scope": "ActualChuFrontendExecution",
+      "result": "PASS10newactualDTOtests andstrictTS; independently57focusedchecksPASS; nofake successfultelemetry"
+    },
+    {
+      "scope": "Standalone Tauri host current source",
+      "result": "PASS16hosttests includingall8nativeChuQAroots,stoppedreopenandnormalproductrejection; allfeaturescheckPASS. VendorTao20warnings unchanged."
+    }
+  ],
+  "measurements": {
+    "method": "actual mshogi_engine::serve_once in-process (not child process); native authoritative Game; debug macOS arm64; whole archive pretty bytes, authoritative aggregate replay units",
+    "tests": {
+      "passed": 5,
+      "failed": 0,
+      "elapsed_seconds": 70.49
+    },
+    "measurements": [
+      {
+        "kind": "CHU_ENGINE_DOCUMENT_MEASUREMENT",
+        "board_actions": 12,
+        "decode_ms": 773,
+        "elapsed_ms": 5865,
+        "usage": {
+          "controls": 24,
+          "encoded_bytes": 187703,
+          "observations": 12,
+          "replay_work": 27246,
+          "reserved_bytes": 719,
+          "reserved_work": 10,
+          "retained_events": 78
+        }
+      },
+      {
+        "kind": "CHU_ACTUAL_OBSERVATION_BOUNDARY",
+        "encoded_bytes": 2601304,
+        "retained_events": 0,
+        "controls": 256,
+        "observations": 256,
+        "replay_work": 28820,
+        "reserved_bytes": 704,
+        "reserved_work": 10
+      },
+      {
+        "kind": "CHU_ENGINE_DOCUMENT_MEASUREMENT",
+        "board_actions": 32,
+        "decode_ms": 5112,
+        "elapsed_ms": 61140,
+        "usage": {
+          "controls": 64,
+          "encoded_bytes": 651611,
+          "observations": 32,
+          "replay_work": 534616,
+          "reserved_bytes": 720,
+          "reserved_work": 10,
+          "retained_events": 528
+        }
+      },
+      {
+        "kind": "CHU_ENGINE_DOCUMENT_TAKE_BACK",
+        "encoded_bytes": 675048,
+        "retained_events": 552,
+        "controls": 65,
+        "observations": 32,
+        "replay_work": 541771,
+        "reserved_bytes": 716,
+        "reserved_work": 10
+      }
+    ],
+    "initial_failure": "Compile-only missing direct mshogi_search test dependency corrected by independently known explicit terminal score999999, no product dependency added."
+  },
+  "independent_reviews": [
+    {
+      "reviewer": "chu_native_review",
+      "method": "Read-only engine/search/console/notation diff and independently executed27focusedtests +releaseworkprobe",
+      "result": "PASS no materialfindings; actualline-server vsactualchild explicitlydistinguished"
+    },
+    {
+      "reviewer": "chu_engine43 (independent of root desktop/codecadapter)",
+      "method": "Read-only rootcodec/runtime/lifecycle/presentation/Moves review andindependently executed3codec tests; own engine/search excluded",
+      "result": "PASS afterhistoricalUnsupportedlabelcorrected; unscoredfailuremeaning preserved"
+    },
+    {
+      "reviewer": "chu_conformance",
+      "method": "Read-only renderer/nativeidentity/kanjifont wiring and sharedUIintegration review; independently44renderer/controller,116shared/Chu andlater57focusedchecks",
+      "result": "PASS no remainingmaterialcodefinding; actualGUIreadability/layout/interaction andownerapprovalremainpending"
+    }
+  ],
+  "ci": {
+    "required": [
+      "Rust ubuntu-24.04",
+      "Rust macos-15",
+      "Rust windows-2022",
+      "Desktop ubuntu-24.04",
+      "Desktop macos-15",
+      "Desktop windows-2022"
+    ],
+    "scope": "Native3platform and affectedfrontend/host/packages; existing4game packagedGUIcampaign supportsregression only. NewactualChuGUI atthischeckpointmacOSonly. Finalnormalactivation/3platformChu gameplay remainsafterownerapproval.",
+    "runs": [
+      {
+        "databaseId": 41622707361,
+        "headSha": "8d0176889be1c637b6b7831779f34a5901af6e54",
+        "workflowName": "Rust workspace",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/41622707361",
+        "jobs": [
+          {
+            "name": "Rust (windows-2022)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41622707361/job/125872187773"
+          },
+          {
+            "name": "Rust (macos-15)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41622707361/job/125872188172"
+          },
+          {
+            "name": "Rust (ubuntu-24.04)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41622707361/job/125872188240"
+          }
+        ]
+      },
+      {
+        "databaseId": 41622707238,
+        "headSha": "8d0176889be1c637b6b7831779f34a5901af6e54",
+        "workflowName": "Desktop packages",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/41622707238",
+        "jobs": [
+          {
+            "name": "Desktop (ubuntu-24.04)",
+            "status": "completed",
+            "conclusion": "failure",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41622707238/job/125872185578"
+          },
+          {
+            "name": "Desktop (macos-15)",
+            "status": "completed",
+            "conclusion": "failure",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41622707238/job/125872186217"
+          },
+          {
+            "name": "Desktop (windows-2022)",
+            "status": "completed",
+            "conclusion": "failure",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41622707238/job/125872186234"
+          }
+        ]
+      }
+    ]
+  },
+  "gui": {
+    "status": "Three preliminary size captures; superseded by reviewed corrections.",
+    "normal": "org.mshogi.desktop",
+    "qa": "org.mshogi.desktop.verification.r6.shogipromotion",
+    "sizes_required": [
+      [
+        1180,
+        820
+      ],
+      [
+        960,
+        720
+      ],
+      [
+        760,
+        650
+      ]
+    ],
+    "captures": [
+      "desktop-visual/superseded-8d01768/01-standard-1180.jpg",
+      "desktop-visual/superseded-8d01768/02-narrow-960.jpg",
+      "desktop-visual/superseded-8d01768/03-minimum-760.jpg"
+    ]
+  },
+  "failed_or_superseded_checks": [
+    {
+      "check": "Early generatedadaptercompile",
+      "result": "Mechanicalnamespace/stringreplacementtypos caught byearlyworkspacecheck, correctedbeforefocusedandbroadchecks"
+    },
+    {
+      "check": "Initialconsolefixtureassertions",
+      "result": "6PASS2FAIL: nativeRoyaltraversal ordering andalreadyMaterial-concludedroot expectation; correctedfixture/assertions withsource rules unchanged,8PASS"
+    },
+    {
+      "check": "InitialsharedChu10testassumptions",
+      "result": "8PASS2FAIL: oldunsupportedcapabilities/Resume expectations supersededbyactualfunctionalengine. Nativehistory/savedstateunchanged;10PASS after updatedcontractassertions"
+    },
+    {
+      "check": "Initialcodecnewtestscompile",
+      "result": "Missingdirectsearchcrate import in test; explicitindependentlyknown terminalscore999999 used withoutaddingproductiondependency.5PASSaftercorrection"
+    },
+    {
+      "check": "Actualcontrollerhistoricalprobe",
+      "result": "Initialassertconfusedselectedcontextwithlivecontext; correctedusingexistingnative selected/live fields,6actualchildtestsPASS"
+    },
+    {
+      "check": "CLIfeatureflagprobe",
+      "result": "consolehasnodesktop-verificationfeature; commandrejectedbeforetests. CorrectplainactualsubprocesscommandPASS"
+    },
+    {
+      "check": "NewfrontendtestTS",
+      "result": "Unusedtestimport caughtandremoved;10newtests/TS PASS"
+    },
+    {
+      "check": "Host legacy capability assertion",
+      "result": "14PASS1FAIL: oldMSH78unsupportedcapabilityexpectation updatedforrealengine;normalproductOpengateandstoppedreopenpreserved. Newall8QAroottestinitialcompilemissingmutcorrected; 16hosttestsPASS aftercorrection."
+    },
+    {
+      "check": "Screenshot manifest metadata",
+      "result": "Independent evidence review found CUA returned JPEG bytes despite .png extension; initial fixed-offset PNG dimension probe was invalid. Renamed original unchanged bytes to.jpg, derived actual dimensions from JPEG SOF and2x/native title evidence. No image editing or GUI rerun."
+    }
+  ],
+  "reused_evidence": {
+    "native86": "docs/m4/chu/native-verification.json",
+    "shared78": "docs/m4/chu/shared-verification.json",
+    "native_checks_not_recounted": 1076,
+    "native_rows_not_recounted": 240
+  },
+  "remaining": [
+    "Owner aesthetic approval of actualworkingfinished12x12 desktopvisualcheckpoint",
+    "Normal5thgameactivation afterapproval",
+    "ActualpackagedthreeplatformChu gameplay/final8ACreconciliation afterapproval",
+    "Competitive strength52/M5;shared46/47/88/89;architecture107 remainfuture"
+  ]
+}

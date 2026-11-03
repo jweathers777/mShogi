@@ -1,0 +1,293 @@
+{
+  "schema": "mshogi.chu.gui-readiness-followup.v1",
+  "task": "MSH-43",
+  "tested_revision": "f43583de84c147591c4e83dd07068aa1779b3e09",
+  "production_source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+  "source_diff": [
+    "desktop/scripts/gui-smoke.py",
+    "desktop/scripts/test_gui_smoke.py"
+  ],
+  "production_change": false,
+  "status": "PASS independently reviewed verification-only correction; actual macOS/Windows/LinuxDesktop CI completed successfully. Linux originalfailure preserved.",
+  "failed_campaign": {
+    "source_revision": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+    "run": 41623915844,
+    "job": 125876345798,
+    "artifact_url": "https://github.com/jweathers777/mShogi/actions/runs/41623915844/artifacts/13225642978",
+    "artifact_archive_sha256": "dbd9b9d6deb5fb8a7904572b723787aa9309210381ab56431d7bc01a213952c0",
+    "phase": "verification-pending-tori",
+    "host_sha256": "69c936aefea23586003200f6628be29f49cd5729143338e8b0ee1e27851286ba",
+    "engine_sha256": "1306dc9749af84fd5aba2b020456b89d343e605381567724256bcd4d9dd849af",
+    "error": "{\"value\":{\"error\":\"no such element\",\"message\":\"\",\"stacktrace\":\"\"}}",
+    "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 400, in _request_once\n    with urllib.request.urlopen(request, timeout=45) as response:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 215, in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 521, in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 630, in http_response\n    response = self.parent.error(\n               ^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 559, in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 404: Not Found\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 2810, in main\n    journey.pending(fixture.removeprefix(\"pending-\"))\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 2424, in pending\n    w.set('.shogi-analysis input[name=\"depth\"]', 1)\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 549, in set\n    element = self.find(selector)\n              ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 413, in find\n    value = self.command(\"POST\", \"/element\", {\"using\": using, \"value\": selector})\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 410, in command\n    return self.request(method, f\"/session/{self.session}{path}\", data)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 381, in request\n    result = self._request_once(method, path, data)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 403, in _request_once\n    raise RuntimeError(error.read().decode(errors=\"replace\")) from error\nRuntimeError: {\"value\":{\"error\":\"no such element\",\"message\":\"\",\"stacktrace\":\"\"}}\n",
+    "observed_failure": "After Resume then Analyze clicks, actual application showed resumed native0plies, Play details active and no analysis inputs. Depth-field lookup failed. Exact pointer loss mechanism is not proved.",
+    "hypothesis": "Native Resume admission removes a paused banner asynchronously, racing the following inspector click/layout.",
+    "other_phase_results": [
+      {
+        "phase": "normal",
+        "status": "passed"
+      },
+      {
+        "phase": "normal-shogi",
+        "status": "passed"
+      },
+      {
+        "phase": "normal-shogi-reopened",
+        "status": "passed"
+      },
+      {
+        "phase": "normal-xiangqi",
+        "status": "passed"
+      },
+      {
+        "phase": "normal-tori",
+        "status": "passed"
+      },
+      {
+        "phase": "normal-tori-native",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-standard",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-promotion",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-claim",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-current-claim",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-concluded",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-full-unknown-cancel",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-capacity",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-synthetic",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-pending-chess",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-pending-shogi",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-pending-xiangqi",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-pending-tori",
+        "status": "failed"
+      },
+      {
+        "phase": "verification-tori-recovery",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-shogi-hands",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-shogi-promotion",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-shogi-forced",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-shogi-declaration",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-shogi-concluded",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-shogi-capacity",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-xiangqi-warning",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-xiangqi-fourth",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-xiangqi-count",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-xiangqi-offer",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-xiangqi-agreed",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-xiangqi-fast-proof",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-xiangqi-resigned",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-xiangqi-capacity",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-xiangqi-failure",
+        "status": "passed"
+      },
+      {
+        "phase": "verification-xiangqi-exact-evidence",
+        "status": "passed"
+      }
+    ]
+  },
+  "correction": "Dispatch Resume once, wait read-only for paused=false, enabled Moves root, no paused banner and enabled Analyze toggle; dispatch Analyze once, then require active inspector and enabled depth/nodes/start controls before input. No mutating actions inside waits; no action retries, skipped assertions or product changes.",
+  "focused_tests": {
+    "command": "python3 -m unittest discover -s desktop/scripts -p test_gui_smoke.py; python3 -m py_compile desktop/scripts/gui-smoke.py desktop/scripts/test_gui_smoke.py",
+    "result": "PASS103 including5new ordering/precondition/error propagation observer tests; root, author and independent reviewer each ran103PASS. These observer tests do not establish actual GUI success."
+  },
+  "independent_review": {
+    "reviewer": "chu_native_review",
+    "method": "Exact two-file diff and actual failure report/DOM; independently103driver tests, diffcheck",
+    "result": "PASS no material findings. Require actual corrected Desktop GUI results before claiming resolution."
+  },
+  "files": {
+    "failure.webview.png": "dceadcfbcaeb6b6151b01e720a18295c32a645476d94619ef163c0b27e87e9ca",
+    "failure.dom.json": "1bbf9c8d0642cc1f13c94b047904e99487b4f4d4eafd607445caff618b143941",
+    "success-observations.json": "b44b9c0ab432f0b451b993f6a261f6b3008ff52ee12f67f62c667d0de26855f8",
+    "windows-success-observations.json": "83cad068e21a5ed7120b444bb82e841e82aba73e4ba7763d39d898475d6cd1fd"
+  },
+  "ci": {
+    "required": "Affected Desktop macOS/Windows/Linux atf43583d; unchanged production-native three-platform Rust campaign41623916090 atc52e253 reused. Automatically triggered duplicate Rust atf435 is cancelled, never described as passed.",
+    "runs": [
+      {
+        "databaseId": 41623916090,
+        "headSha": "c52e253b9f8d61d30434f53b818ad3ae52becf5b",
+        "workflowName": "Rust workspace",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/41623916090",
+        "jobs": [
+          {
+            "name": "Rust (macos-15)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41623916090/job/125876346789"
+          },
+          {
+            "name": "Rust (ubuntu-24.04)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41623916090/job/125876346984"
+          },
+          {
+            "name": "Rust (windows-2022)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41623916090/job/125876347038"
+          }
+        ]
+      },
+      {
+        "databaseId": 41627192949,
+        "headSha": "f43583de84c147591c4e83dd07068aa1779b3e09",
+        "workflowName": "Desktop packages",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/41627192949",
+        "jobs": [
+          {
+            "name": "Desktop (macos-15)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41627192949/job/125887380083"
+          },
+          {
+            "name": "Desktop (windows-2022)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41627192949/job/125887380348"
+          },
+          {
+            "name": "Desktop (ubuntu-24.04)",
+            "status": "completed",
+            "conclusion": "success",
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41627192949/job/125887380421"
+          }
+        ]
+      }
+    ],
+    "reused_native_run": 41623916090,
+    "cancelled_duplicate_native_run": 41627193070,
+    "artifacts": [
+      {
+        "id": 13227816840,
+        "name": "desktop-windows-2022",
+        "size_in_bytes": 299897927,
+        "digest": "sha256:b641eedeef8811593a53446aef53de26569d29b38f2563eba7fad392d41902bc",
+        "expired": false,
+        "created_at": "2026-11-03T11:49:00Z",
+        "expires_at": "2026-11-17T11:48:49Z"
+      },
+      {
+        "id": 13227532160,
+        "name": "desktop-ubuntu-24.04",
+        "size_in_bytes": 142759692,
+        "digest": "sha256:bc3ca31be56bab498fe8ff3718adf9b15e1f34c960e79c7be7b2ae81350affe6",
+        "expired": false,
+        "created_at": "2026-11-03T11:43:01Z",
+        "expires_at": "2026-11-17T11:42:54Z"
+      },
+      {
+        "id": 13227071601,
+        "name": "desktop-macos-15",
+        "size_in_bytes": 13329006,
+        "digest": "sha256:6670d6cb2c092979376a02058d39e99f01d437b2801841e4fabe59666bb9e8e3",
+        "expired": false,
+        "created_at": "2026-11-03T11:32:24Z",
+        "expires_at": "2026-11-17T11:32:21Z"
+      }
+    ],
+    "cancelled_duplicate_native": {
+      "conclusion": "cancelled",
+      "databaseId": 41627193070,
+      "headSha": "f43583de84c147591c4e83dd07068aa1779b3e09",
+      "status": "completed",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/41627193070",
+      "workflowName": "Rust workspace"
+    }
+  },
+  "actual_linux_result": {
+    "result": "PASS completed DesktopLinux job125887380421 at f43583d; actual resumed and active-field observations and full pending-Tori replacement/cancel/Save/Open journey retained in ci-linux-tori-readiness/success-observations.json",
+    "scope": "Existing four-game regression, not new Chu Linux GUI acceptance"
+  },
+  "actual_windows_result": {
+    "result": "PASS actual installed WindowsGUI job125887380348 atf43583d, including pendingTori replacement/cancel/Save/Open with authoritative identities and unchangedgamecontext.",
+    "evidence": "ci-linux-tori-readiness/windows-success-observations.json",
+    "scope": "Existing four-game regression, not new Chu WindowsGUI acceptance"
+  }
+}

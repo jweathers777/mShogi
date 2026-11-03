@@ -126,3 +126,12 @@ continues within43; it creates no new component hierarchy or profile revision.
 Normal fifth-game activation/final packaged three-platform Chu gameplay/final8AC
 closure wait for explicit owner visual approval. Strength52, shared46/47/88/89,
 architecture107, Tenjiku and M5 remain outside this checkpoint.
+
+The checkpoint's exact production source is
+`c52e253b9f8d61d30434f53b818ad3ae52becf5b`; verification-only readiness follow-up
+`f43583de84c147591c4e83dd07068aa1779b3e09` changes no production code.
+Actual macOS captures cover both orientations at1180×820,960×720 and760×650,
+Lion routes/ordered captures/returns, promoted faces, King/Prince, analysis and
+historical document journeys. Independent reviews are recorded in
+[evidence/visual-checkpoint.json](evidence/visual-checkpoint.json). Owner visual
+approval is outstanding; no final43 or normal fifth-game acceptance is implied.

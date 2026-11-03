@@ -1,0 +1,15 @@
+{
+  "text": "\u6b69\nmShogi\n\nTORI SHOGI\nLocal engine\nUNSAVED\nUntitled game\nNew game\nSave\nLoad\nYOUR GAME\n\nSente to move\nYou play Sente against mShogi\n\u2195\nFlip board\nm\nmShogiGote\nYour opponent\nNo pieces in hand\n\u53f3\n\u9d89\n\u96c9\n\u9db4\n\u9d6c\n\u9db4\n\u96c9\n\u5de6\n\u9d89\n\u9df9\n\u71d5\n\u71d5\n\u71d5\n\u71d5\n\u71d5\n\u71d5\n\u71d5\n\u71d5\n\u71d5\n\u71d5\n\u71d5\n\u71d5\n\u71d5\n\u71d5\n\u71d5\n\u71d5\n\u9df9\n\u5de6\n\u9d89\n\u96c9\n\u9db4\n\u9d6c\n\u9db4\n\u96c9\n\u53f3\n\u9d89\n7\n6\n5\n4\n3\n2\n1\na\nb\nc\nd\ne\nf\ng\nY\nYouSente\nHuman player\nTo move\nNo pieces in hand\nArrows: move focus \u00b7 Enter/Space: select \u00b7 Esc: cancel\nYour turn\nLive position \u00b7 0 plies\nAnalysis\n\nPlay details\nAnalyze position\nEngine\nReady\nPlay limit: depth 2 \u00b7 2000 nodes\nNo engine search has completed in this game.\nGame Actions\n\nTake backResign\nMoves\n0 moves\nStarting position\nTori action notation \u00b7 Declared root counter 0 \u00b7 Known standard starting history\nMove number\tSente\tGote\nNo moves in known history.",
+  "focus": {
+    "label": null,
+    "text": "\u6b69mShogiTORI SHOGILocal engineUnsavedUntitled gameNew gameSaveLoadYOUR GAMESente to moveYou play Sente against mShogi\u2195 Flip boardmmShogiGoteYour opponentNo pieces in hand7a, Gote Right Quail\u53f3\u9d896a, Gote Pheasant\u96c95a, Gote Crane\u9db44a, Gote Phoenix\u9d6c3a, Gote Crane\u9db42a, Gote Pheasant\u96c91a, Gote Left Quail\u5de6\u9d894b, Gote Falcon\u9df97c, Gote Swallow\u71d56c, Gote Swallow\u71d55c, Gote Swallow\u71d54c, Gote Swallow\u71d53c, Gote Swallow\u71d52c, Gote Swallow\u71d51c, Gote Swallow\u71d55d, Gote Swallow\u71d53d, Sente Swallow\u71d57e, Sente Swallow\u71d56e, Sente Swallow\u71d55e, Sente Swallow\u71d54e, Sente Swallow\u71d53e, Sente Swallow\u71d52e, Sente Swallow\u71d51e, Sente Swallow\u71d54f, Sente Falcon\u9df97g, Sente Left Quail\u5de6\u9d896g, Sente Pheasant\u96c95g, Sente Crane\u9db44g, Sente Phoenix\u9d6c3g, Sente Crane\u9db42g, Sente Pheasant\u96c91g, Sente Right Quail\u53f3\u9d897654321abcdefgYYouSenteHuman playerTo moveNo pieces in handArrows: move focus \u00b7 Enter/Space: select \u00b7 Esc: cancelYour turnLive position \u00b7 0 pliesAnalysisPlay detailsAnalyze positionEngineReadyPlay limit: depth 2 \u00b7 2000 nodesNo engine search has completed in this game.Game ActionsTake backResignMoves0 movesStarting positionTori action notation \u00b7 Declared root counter 0 \u00b7 Known standard starting historyMove numberSenteGoteNo moves in known history.\n",
+    "tag": "BODY"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 795,
+    "width": 1180
+  },
+  "common_actions": [],
+  "inputs": []
+}

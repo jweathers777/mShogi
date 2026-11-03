@@ -1,0 +1,2 @@
+There has been no change in the accessibility tree for Window: "mShogi Verification — chu-standard (test state) — content 1180.0 × 820.0 logical · frame 1180.0 × 820.0 logical".
+The focused UI element is 2 HTML content Description: mShogi, URL: tauri://localhost

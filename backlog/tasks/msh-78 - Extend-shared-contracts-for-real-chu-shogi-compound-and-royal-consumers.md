@@ -1,11 +1,11 @@
 ---
 id: MSH-78
 title: Extend shared contracts for real chu shogi compound and royal consumers
-status: In Review
+status: Done
 assignee:
   - '@Codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-03T09:55:00Z'
+updated_date: '2026-11-03T10:18:00Z'
 labels:
   - m4
   - owner-msh-46
@@ -26,6 +26,8 @@ documentation:
   - docs/m4/chu/handoff.md
   - docs/m4/chu/native-v1.md
   - docs/m4/chu/native-verification.json
+  - docs/m4/chu/shared-v1.md
+  - docs/m4/chu/shared-verification.json
 type: task
 ordinal: 78000
 ---
@@ -42,18 +44,18 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 The real game-owned native handoff is consumed through explicit typed profile/record/session/engine dispatch and supported capabilities; existing chess/shogi contexts remain compatible and stale/cancelled results cannot cross profiles.
-- [ ] #2 Shared mechanisms accommodate 12x12 compound routes,same-endpoint choices,native-derived effects and multiple-royal status without chess self-check assumptions through native metadata and complete choices,with no frontend legality or mandatory common board representation.
-- [ ] #3 Canonical envelope/history/admission supports the concrete game payload and documented resource policy without losing prior accepted data; unsupported profiles/conversions remain explicit.
-- [ ] #4 Real authoritative game-generated fixtures and interaction tests establish the extension; synthetic M3 fixtures alone do not prove real-game support. Required cross-game regression and ownership boundaries are recorded.
+- [x] #1 The real game-owned native handoff is consumed through explicit typed profile/record/session/engine dispatch and supported capabilities; existing chess/shogi contexts remain compatible and stale/cancelled results cannot cross profiles.
+- [x] #2 Shared mechanisms accommodate 12x12 compound routes,same-endpoint choices,native-derived effects and multiple-royal status without chess self-check assumptions through native metadata and complete choices,with no frontend legality or mandatory common board representation.
+- [x] #3 Canonical envelope/history/admission supports the concrete game payload and documented resource policy without losing prior accepted data; unsupported profiles/conversions remain explicit.
+- [x] #4 Real authoritative game-generated fixtures and interaction tests establish the extension; synthetic M3 fixtures alone do not prove real-game support. Required cross-game regression and ownership boundaries are recorded.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -78,4 +80,18 @@ Coherent source checkpoint ready: all277 desktop-session all-feature tests pass 
 Final source reconciliation found and corrected Chu u64 presentation precision above JavaScript safe-integer range. Native decimal root/selected/live counters and provenance flags now remain exact; technical Moves number known-root pairs rather than manufacturing unknown prior rows. Nine controller tests and13 focused frontend/Moves checks pass, includingu64MAX and Gote-first ordering. Native records, archive capacity/rules and all existing4game representations unchanged. Supersededf41f CI41606708598/41606708574 were cancelled (partial successes retained, never fullPASS); corrected exact-source CI required beforeDone.
 
 Full integration checkpoint fcccc37664603688a3fc26dbef21e0b0c7d0e484: Rust41610001673 and Desktop41610001503 all6jobsPASS; actual completed logs confirm280session tests per phase and392frontend tests/15host tests per platform. Final independent diagnostic review found native Counter is ambiguous between board counters and runtime IDs; adapter now returns existing typed Unknown with Chu scope rather than inventing IdentityHeadroom. Both affected tests independentlyPASS; complete10controller cases, workspace clippy and host15PASS. Final change is native-only classification plus focused tests; unchanged frontend/host/archive schemas/four-game/package paths reuse successful fcccc37 Desktop3platform evidence. Final exact-source native3platform CI plus local host/normal-package recheck required; original4AC/DoD remain unchecked pending final results. No43implementation.
+
+Final acceptance2026-11-03: tested/integrated source 250b701efd23dac648ffdb984c83da868fa8840a; final native Rust41615048164 all3jobsPASS, full checkpoint fcccc37 Rust41610001673/Desktop41610001503 all6jobsPASS. Original4AC/4DoD supported; independent source+executed review passed. Final narrow correction explicitly reuses unchanged Desktop evidence; local final-source host/package PASS. Cancelled campaigns are not fullPASS. Completion record is documentation/task bookkeeping only; production unchanged since tested revision. Stop78;43/M4 open.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Delivered real Chu native routing and shared application consumption at tested/integrated source 250b701efd23dac648ffdb984c83da868fa8840a on codex/rewrite. Preserved mshogi.chu.jcsa2019.v1/edition/native1/protocol4/current envelope1, strict RawValue replay, full history/provenance/Lion rights/royals/events/ordered actions and captures. One existing controller/installation/file lifecycle and frontend choice/session owner; actual supervised UnsupportedMode remains unscored and normal Chu New/Load gated.
+
+AC1: actual native canonical/command/session dispatch and real child/controller identity/purpose/history/cancel/selection/Take back/reopen/replacement probes. AC2: native12x12 complete compound routes, captures/promotion/King+Prince/advisory threat metadata, exact decimal counters and known-root move rows; no frontend rules/hands/self-check. AC3: immutable lossless current-envelope candidates, measured12M aggregate replay policy with unchanged16MiB/4096events/8192controls/256observations/15s and actual Stop/Resign/Close reserves. Boundary failures preserve accepted state/files; ambiguous native Counter uses truthful existing Unknown fact. AC4: seven actual native-generated DTOs;1routing,9codec,10controller,2actual-child/controller,7frontend plus chooser regressions and required current4game checks. Native86 evidence stays historical;1076 native checks not recounted.
+
+Independent read-only codec/runtime/capacity and native presentation/frontend reviews plus actual focused CLI execution passed. Material reservation-byte, historical-flip, cancellation-checkpoint, unsupported-recovery, native Action typing, counter-precision and diagnostic classification findings resolved. Full integration checkpoint fcccc37664603688a3fc26dbef21e0b0c7d0e484: Rust41610001673/Desktop41610001503 all6jobsPASS,280session tests per native phase and392frontend/15host per platform. Final native-only correction 250b701efd23dac648ffdb984c83da868fa8840a: Rust41615048164 all3jobsPASS,10controller tests/host15/workspace clippy and normal macOS package+actual bundled-engine smokePASS; unchanged Desktop3platform evidence reused explicitly, including applicable packages and current4game Windows/Linux GUI campaigns. No new finished Chu GUI or strength claim. Cancelled earlier/redundant campaigns and failed intermediate probes retained accurately in shared-verification.json.
+
+docs/m4/chu/shared-v1.md, shared-verification.json and handoff.md map all10consumer rows and exact43 product boundary. Remaining MSH43: functional engine/search/console/notation, traditional-kanji finished no-scroll12x12 UI, normal activation and complete-game/platform packaged journeys; preserve shared owners, bounded native contexts and admission. MSH43 dependency-satisfied but stays To Do/unstarted; M4/shared integration/Tenjiku/M5 open. No own worktree. Completion record changes only documentation/task evidence after tested source.
+<!-- SECTION:FINAL_SUMMARY:END -->

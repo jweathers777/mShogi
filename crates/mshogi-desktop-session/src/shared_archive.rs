@@ -156,7 +156,6 @@ pub(crate) enum NativeWork {
     Open {
         path: PathBuf,
         token: SharedOpenToken,
-        allow_unplayable: bool,
     },
 }
 pub(crate) enum OpenedNative {
@@ -1177,26 +1176,14 @@ pub(crate) fn execute(
                 identity,
             })
         }
-        NativeWork::Open {
-            path,
-            token,
-            allow_unplayable,
-        } => {
+        NativeWork::Open { path, token } => {
             let bytes = read(&path, stopped)?;
             let value = crate::document::DocumentEnvelope::parse(&bytes)?;
             let game = match value.game_kind {
-                GameKind::Chu => {
-                    if !allow_unplayable {
-                        return Err(
-                            "Chu product Load is not enabled until functional engine delivery."
-                                .into(),
-                        );
-                    }
-                    OpenedNative::Chu(Box::new(chu::ChuSession::restore(
-                        crate::chu_document::ValidatedChuDocument::decode(&bytes, stopped)?,
-                        stopped,
-                    )?))
-                }
+                GameKind::Chu => OpenedNative::Chu(Box::new(chu::ChuSession::restore(
+                    crate::chu_document::ValidatedChuDocument::decode(&bytes, stopped)?,
+                    stopped,
+                )?)),
                 GameKind::Tori => OpenedNative::Tori(Box::new(tori::ToriSession::restore(
                     crate::tori_document::ValidatedToriDocument::decode(&bytes, stopped)?,
                     stopped,
@@ -1314,7 +1301,7 @@ impl DesktopController {
         path: PathBuf,
         token: SharedOpenToken,
     ) -> Result<u64, String> {
-        self.queue_open_admission(path, token, true)
+        self.queue_open_admission(path, token)
     }
     /// Product Open uses the same strict native dispatch and stopped restoration.
     pub fn queue_product_open(
@@ -1322,13 +1309,12 @@ impl DesktopController {
         path: PathBuf,
         token: SharedOpenToken,
     ) -> Result<u64, String> {
-        self.queue_open_admission(path, token, false)
+        self.queue_open_admission(path, token)
     }
     fn queue_open_admission(
         &mut self,
         path: PathBuf,
         token: SharedOpenToken,
-        allow_unplayable: bool,
     ) -> Result<u64, String> {
         if self.lifecycle.close_requested() {
             return Err("Close is pending. Cancel close before opening another document.".into());
@@ -1337,14 +1323,8 @@ impl DesktopController {
             return Err("Stale Open: review the current document again.".into());
         }
         let id = self.next_native_io(IoPhase::Opening)?;
-        self.files.submit(
-            id,
-            Work::Native(Box::new(NativeWork::Open {
-                path,
-                token,
-                allow_unplayable,
-            })),
-        );
+        self.files
+            .submit(id, Work::Native(Box::new(NativeWork::Open { path, token })));
         Ok(id)
     }
     pub(crate) fn retire_native_files(&mut self) -> Result<(), String> {

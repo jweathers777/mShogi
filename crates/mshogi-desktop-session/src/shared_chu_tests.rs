@@ -286,13 +286,6 @@ fn atomic_file_reopen_history_branch_and_normal_product_gate() {
         .queue_product_open(path.clone(), ctl.shared_open_token())
         .unwrap();
     let s = wait_file(&mut ctl, id);
-    assert_eq!(s.io.phase, IoPhase::Failed);
-    assert_eq!(s.game, GameKind::Chu);
-    assert_eq!(native(&ctl), record);
-    let id = ctl
-        .queue_shared_open(path.clone(), ctl.shared_open_token())
-        .unwrap();
-    let s = wait_file(&mut ctl, id);
     assert_eq!(s.io.phase, IoPhase::Complete);
     assert!(s.token.document > old.token.document);
     assert!(s.token.version > old.token.version);
@@ -331,14 +324,6 @@ fn atomic_file_reopen_history_branch_and_normal_product_gate() {
     assert_eq!(wait_file(&mut ctl, id).io.phase, IoPhase::Failed);
     assert!(ctl.shared_snapshot().document.dirty);
     assert_eq!(fs::read(&path).unwrap(), bytes);
-    assert!(
-        ctl.shared_new_game(
-            ctl.shared_open_token(),
-            GameKind::Chu,
-            NativeSide::Chu(c::Side::Sente)
-        )
-        .is_err()
-    );
     ctl.pause_shared_for_close();
     let closed = ctl.session.chu().unwrap().document.clone();
     crate::chu_document::ValidatedChuDocument::decode(closed.bytes(), &mut || false).unwrap();

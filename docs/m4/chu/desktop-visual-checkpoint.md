@@ -1,10 +1,19 @@
-# Chu working desktop visual checkpoint
+# Chu approved desktop visual checkpoint
 
-MSH-43 remains open. This checkpoint implements the actual traditional Chu board
-and functional native engine through the existing application, then stops for
-John's aesthetic approval. Independent technical review is not owner approval.
-Normal New Game/Load still expose only Chess, Shogi, Xiangqi and Tori. Chu uses
-the separately compiled, clearly identified stable QA activation until approval.
+## Owner approval — 2026-11-03
+
+John reviewed the actual running macOS application and explicitly approved the
+traditional kanji, promoted pieces, King/Prince distinctions, Lion interaction
+and responsive 12×12 layouts. Approved integration:
+`cf9e50b122cb879d9f01677034fce88bcd92f222`; production:
+`c52e253b9f8d61d30434f53b818ad3ae52becf5b`; verification-only correction:
+`f43583de84c147591c4e83dd07068aa1779b3e09`.
+
+The approved presentation is preserved. The historical checkpoint below was
+captured through stable QA activation while normal New Game/Load still exposed
+four games. That historical gate is now resolved by owner approval; MSH-43
+continues for normal fifth-game activation, actual three-platform Chu gameplay
+and independent final acceptance. The milestone remains open.
 
 The shared dark shell, player/status/footer, Analysis → Game Actions → Moves,
 document controls, frontend session owner, native DesktopController/document

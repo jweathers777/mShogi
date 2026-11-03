@@ -3,7 +3,7 @@ import type { AnalysisOperation, AnalysisState, Claim, ChessResult, Color, Match
 import type { NativeBoardSnapshot } from "../NativeBoard";
 import type { CompletedActionGeometry } from "../boardPresentation";
 export type GameKind = "chess" | "shogi" | "xiangqi" | "tori" | "chu";
-export type PlayableGameKind = Exclude<GameKind, "chu">;
+export type PlayableGameKind = GameKind;
 export type NativeSide = { game_kind: "chess"; side: "white" | "black" }
   | { game_kind: "shogi"; side: "sente" | "gote" }
   | { game_kind: "xiangqi"; side: "red" | "black" }
@@ -102,7 +102,7 @@ export type ToriSnapshot = GameSnapshotBase & {
     earlier_history_unknown: boolean; historical_reachability_proven: boolean; selected: ToriHistory; live: ToriHistory };
   document: GameSnapshotBase["document"] & { settings: { game_kind: "tori"; settings: { orientation: ToriSide } } };
 };
-// Real native Chu session; normal chooser/Load remains gated pending owner visual approval.
+// Real native Chu session used by the ordinary fifth-game product.
 export interface ChuHistory {
   event_index: number; board_ply: number; declared_total_plies: string;
   identities: { square: string; piece: { side: ToriSide; base: string; promoted: boolean }; face: string }[];

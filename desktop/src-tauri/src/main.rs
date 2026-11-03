@@ -356,12 +356,6 @@ fn queue_game_file(
             if controller.lifecycle().close_requested() {
                 return Err("Finish or cancel the close request before opening.".into());
             }
-            // A separately compiled QA Chu fixture may reopen its own native
-            // document. Normal packages contain no such activation path.
-            #[cfg(feature = "desktop-verification")]
-            if controller.shared_snapshot().game == mshogi_desktop_session::GameKind::Chu {
-                return controller.queue_shared_open(path, expected);
-            }
             controller.queue_product_open(path, expected)
         }
         "save" | "save_as" => controller.queue_shared_save(path),
@@ -1148,7 +1142,7 @@ mod tests {
 
     #[cfg(feature = "desktop-verification")]
     #[test]
-    fn chu_qa_file_route_reopens_stopped_but_normal_product_admission_is_gated() {
+    fn chu_normal_file_route_reopens_stopped_with_native_execution_and_fresh_authority() {
         use mshogi_desktop_session::GameKind;
         let path = file_path("chu-contract");
         let mut qa =
@@ -1171,9 +1165,20 @@ mod tests {
         let mut normal = DesktopController::new(PathBuf::from("unused-test-engine")).unwrap();
         let expected = normal.shared_open_token();
         let id = queue_game_file(&mut normal, "open", path.clone(), expected).unwrap();
-        assert!(wait_file(&mut normal, id).is_err());
-        assert_eq!(normal.shared_snapshot().game, GameKind::Chess);
-        assert_eq!(normal.shared_open_token(), expected);
+        let opened = wait_file(&mut normal, id).unwrap();
+        assert_eq!(opened.game, GameKind::Chu);
+        assert!(opened.paused);
+        assert!(opened.capabilities.engine_turn && opened.capabilities.move_analysis);
+        assert_eq!(opened.execution_purpose, None);
+        assert!(opened.open_token.document > expected.document);
+        assert!(opened.observations.is_empty());
+        assert!(queue_game_file(&mut normal, "open", path.clone(), expected).is_err());
+        normal.lifecycle().request_close().unwrap();
+        assert!(
+            queue_game_file(&mut normal, "open", path.clone(), opened.open_token)
+                .unwrap_err()
+                .contains("close request")
+        );
         std::fs::remove_file(path).unwrap();
     }
 

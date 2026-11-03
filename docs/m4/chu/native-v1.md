@@ -1,5 +1,9 @@
 # MSH-86 native Chu consumer contract
 
+This document preserves the native86 handoff scope. Its then-future shared and
+product obligations are now reconciled in [current MSH-43 acceptance](delivery-review.md);
+the rules/API and original conformance evidence below remain authoritative.
+
 Selected rules remain **`mshogi.chu.jcsa2019.v1`**, edition
 `JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02`. The immutable MSH-82
 [profile](profile.md), [expected corpus](fixtures.json) and audit hashes are

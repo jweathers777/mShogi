@@ -1,3 +1,10 @@
+> Historical MSH-82 preimplementation accounting below is preserved: its
+> zero-execution numbers describe that source/data checkpoint. Actual native86
+> acceptance is [1,076 checks across240 native rows](native-verification.json).
+> The ten shared/product obligations are reconciled in the current
+> [MSH-43 coverage matrix](delivery-review.md). The original expected corpus,
+> source provenance and audit hashes remain unchanged.
+
 # Independent Chu fixture accounting
 
 The [corpus](fixtures.json) contains **250 rows:221 authored and29 explicitly

@@ -4,7 +4,9 @@ MSH-43 consumes the accepted `mshogi.chu.jcsa2019.v1` native Game and MSH-78's
 current shared document/runtime contracts. This is a functional baseline, not
 MSH-52/M5 playing-strength evidence. The native profile, edition and record1,
 canonical envelope1, execution protocol4/observation1 and desktop envelope1 stay
-unchanged. Normal fifth-game activation remains gated pending owner visual review.
+unchanged. Owner visual approval resolved the original activation gate. Chu is
+now the ordinary fifth game; [product acceptance](delivery-review.md) records
+current source and actual packaged/platform evidence separately from this engine contract.
 
 ## Search and score
 
@@ -86,7 +88,9 @@ Actual search/server, console subprocess, supervised engine child and desktop
 controller tests are separate evidence. A32-ply standard-start progression is a
 bounded smoke, not a complete game or strength result. Independently expected
 royal, finite mate, material, promotion and repetition fixtures retain their
-original provenance. The1,076 MSH-86 checks and MSH-78 consumer evidence are reused
+original provenance. The product record adds an actual natural royal-diagram
+engine game and a separately labelled standard-root resignation game; neither
+is a competitive-strength claim. The1,076 MSH-86 checks and MSH-78 consumer evidence are reused
 where unchanged, never recounted as newly authored engine tests.
 
 Measured debug complete documents with real observations:

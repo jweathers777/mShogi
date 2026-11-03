@@ -1,3 +1,10 @@
+> Current product follow-through: MSH-43 supplies actual native Chu execution,
+> the owner-approved traditional-kanji renderer and ordinary fifth-game New/Load.
+> [Delivery reconciliation](delivery-review.md) records the final evidence and
+> current status. The MSH-78 checkpoint below intentionally preserves its former
+> unsupported/gated product scope; the codec, limits and semantic ownership remain
+> authoritative. Its consumer table is a historical handoff, supplemented by43.
+
 # MSH-78 Chu shared consumer contract
 
 The accepted `mshogi.chu.jcsa2019.v1` profile/edition and native record1 remain

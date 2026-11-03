@@ -12,8 +12,9 @@ and responsive 12×12 layouts. Approved integration:
 The approved presentation is preserved. The historical checkpoint below was
 captured through stable QA activation while normal New Game/Load still exposed
 four games. That historical gate is now resolved by owner approval; MSH-43
-continues for normal fifth-game activation, actual three-platform Chu gameplay
-and independent final acceptance. The milestone remains open.
+now delivers normal fifth-game activation and actual three-platform gameplay.
+[Final delivery reconciliation](delivery-review.md) records current evidence and
+acceptance; the M4 milestone remains open.
 
 The shared dark shell, player/status/footer, Analysis → Game Actions → Moves,
 document controls, frontend session owner, native DesktopController/document
@@ -29,7 +30,7 @@ face labels. Font provenance, reproducible subset command and hash are in
 promoted identities remain distinct even where movement faces share glyphs.
 Readable native complete-action notation is documented in [notation.md](notation.md).
 
-## Actual package and captures
+## Historical visual-checkpoint package and captures
 
 Production source is **c52e253b9f8d61d30434f53b818ad3ae52becf5b**, following
 functional engine/console/admission source 8d01768. Actual local macOS arm64
@@ -138,13 +139,17 @@ changed after c52e253, so native and local packaged Chu evidence remain valid.
 The redundant native campaign caused by that Python-only commit is cancelled;
 it is not counted as passed. No failed run is described as a pass.
 
+The following verdict describes the pre-approval visual checkpoint. The owner
+approval above and [current product acceptance](delivery-review.md) supersede its
+pending-approval and normal-activation gates without relabeling its checks.
+
 Only macOS Chu GUI interaction is established here. Existing four-game packaged
 Windows/Linux CI regression journeys do not establish new Chu GUI gameplay.
 Normal fifth-game activation, final packaged three-platform Chu gameplay and
 all-eight-criterion product acceptance await owner visual approval. A 32-ply
 real-engine smoke is not a completed full game or a playing-strength measurement.
 
-## Launch the owner checkpoint
+## Historical QA checkpoint launch
 
 The stable QA package is already staged at the path below, selected to the
 standard native Chu root with ordinary engine timing. Press **Resume play** to
@@ -184,11 +189,11 @@ an identity or bundle per scenario. See
 [stable verification instructions](../../desktop/packaged-gui-verification.md).
 The normal package contains neither QA roots nor the fixture selector reader.
 
-MSH-43 remains unfinished at this working checkpoint. Owner aesthetic approval
+At this historical working checkpoint, MSH-43 remained unfinished. Owner aesthetic approval
 of the actual traditional-kanji presentation is the next step. Normal activation,
 final platform gameplay and final MSH-43 acceptance resume only after that approval.
 
-Current technical verdict: PASS for this working visual checkpoint. MSH-43 is
+Historical technical verdict: PASS for this working visual checkpoint. MSH-43 is
 In Review for owner aesthetic approval, with its original eight criteria and
 final product acceptance still open. No required technical finding remains at
 this checkpoint. Minimum-size reading comfort remains explicitly presented for

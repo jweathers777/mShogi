@@ -22,14 +22,22 @@ Design and product decisions are developed with John in ChatGPT. Codex or Claude
 
 The native chess baseline provides rules/history, live match adjudication and clocks, transparent evaluation, full-width search, cancellation and UCI. The [match runner](docs/match-runner.md) connects real UCI engines to that rules boundary and preserves replayable experiment evidence. Default M2 dead recognition remains a sound subset; exact opt-in analysis can exceed practical resource limits. No competitive playing-strength claim follows.
 
-The Tauri desktop application plays untimed chess against the bundled native engine, runs bounded read-only analysis, saves and reopens complete games, and inspects history. Its [three-platform packaged GUI evidence](docs/desktop/packaged-gui-verification.md) distinguishes actual application interaction from package construction. The four remaining games, measured engine strength, learned evaluation and release distribution follow the preserved roadmap in `docs/design.md`.
+The ordinary Tauri desktop application offers Chess, Shogi, Xiangqi, Tori Shogi
+and Chu Shogi through one game chooser and shared shell. It supports untimed
+human/engine play, bounded read-only analysis, complete native Save/Load and
+history inspection. [Launch instructions](desktop/README.md) explain native
+sides, compound-action entry and stopped reopening. Actual packaged GUI evidence
+is distinguished from build/package checks in each game delivery record.
 
-Standard Shogi is also accepted as fully delivered under MSH-41/MSH-75,
-including its own native rules/history, console, engine/USI, canonical records
-and game-specific desktop in the shared application shell. See the
-[delivery evidence](docs/m4/shogi-delivery-review.md). M4 remains open; the
-[current Xiangqi planning dossier](docs/m4/xiangqi/README.md) is a source/profile
-selection and future task refinement, not support for playing Xiangqi yet.
+Standard Shogi, Xiangqi and Tori are accepted under their completed game tasks:
+[Shogi](docs/m4/shogi-delivery-review.md),
+[Xiangqi](docs/m4/xiangqi/delivery-review.md),
+[Tori](docs/m4/tori/delivery-review.md). Chu's
+[owner-approved presentation](docs/m4/chu/desktop-visual-checkpoint.md) and
+[functional engine](docs/m4/chu/engine-v1.md) now use the normal fifth-game paths;
+MSH-43 records its remaining acceptance and exact evidence. Tenjiku, shared
+six-game acceptance, competitive playing strength and M4 closure retain their
+separate roadmap requirements. M4 remains open.
 
 ## Repository and existing work
 

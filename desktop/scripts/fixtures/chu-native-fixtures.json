@@ -1,0 +1,648 @@
+{
+  "cases": [
+    {
+      "file": "chu-contract.mshogi",
+      "provenance": {
+        "expected": {
+          "capture_count": 1,
+          "capture_return": "6fx7e-6f",
+          "partial_selection_commits": false,
+          "quiet_return": "6f-6e-6f",
+          "same_endpoint_different_complete_actions": true
+        },
+        "root": "independently_authored_diagram",
+        "source_fixture": "CHU-RETURN-Ln-enemy"
+      },
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 5934,
+        "observations": 0,
+        "replay_work": 20,
+        "reserved_bytes": 703,
+        "reserved_work": 10,
+        "retained_events": 0
+      }
+    },
+    {
+      "file": "chu-captures.mshogi",
+      "provenance": {
+        "expected": {
+          "action": "3cx2bx1b",
+          "concluded_after_first": false,
+          "ordered_captures": [
+            "2b",
+            "1b"
+          ]
+        },
+        "root": "independently_authored_diagram",
+        "source_fixture": "CHU-LION-C2-1"
+      },
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 6410,
+        "observations": 0,
+        "replay_work": 128,
+        "reserved_bytes": 705,
+        "reserved_work": 10,
+        "retained_events": 0
+      }
+    },
+    {
+      "file": "chu-promotion.mshogi",
+      "provenance": {
+        "expected": {
+          "King_survives": true,
+          "action_geometry": {
+            "from": "6e",
+            "promote": true,
+            "route": [
+              "6d"
+            ]
+          },
+          "notation": "DE6e-6d^",
+          "optional_nonpromotion": true,
+          "result": "Prince"
+        },
+        "root": "independently_authored_diagram",
+        "source_fixture": "CHU-PROMOTE-DE-YES"
+      },
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 5778,
+        "observations": 0,
+        "replay_work": 28,
+        "reserved_bytes": 703,
+        "reserved_work": 10,
+        "retained_events": 0
+      }
+    },
+    {
+      "file": "chu-royal-both.mshogi",
+      "provenance": {
+        "expected": {
+          "action": "6fx6ex5e",
+          "conclusion": {
+            "kind": "royal_capture",
+            "winner": "sente"
+          },
+          "ordered_captures": [
+            "6e",
+            "5e"
+          ]
+        },
+        "root": "independently_authored_diagram",
+        "source_fixture": "CHU-ROYAL-BOTH-COMPOUND"
+      },
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 5618,
+        "observations": 0,
+        "replay_work": 60,
+        "reserved_bytes": 705,
+        "reserved_work": 10,
+        "retained_events": 0
+      }
+    },
+    {
+      "file": "chu-royal-survivor.mshogi",
+      "provenance": {
+        "expected": {
+          "action": "12jx12l",
+          "concluded": false,
+          "remaining_sente_royals": [
+            "8j"
+          ]
+        },
+        "root": "independently_authored_diagram",
+        "source_fixture": "CHU-ROYAL-SURVIVOR"
+      },
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 5923,
+        "observations": 0,
+        "replay_work": 52,
+        "reserved_bytes": 705,
+        "reserved_work": 10,
+        "retained_events": 0
+      }
+    },
+    {
+      "file": "chu-material-reply.mshogi",
+      "provenance": {
+        "expected": {
+          "action": "6d-5c",
+          "conclusion": {
+            "kind": "material",
+            "winner": "sente"
+          },
+          "equalizer": "6dx6e"
+        },
+        "root": "independently_authored_diagram",
+        "source_fixture": "CHU-MATERIAL-DECLINE-COUNTERCAPTURE"
+      },
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 5451,
+        "observations": 0,
+        "replay_work": 84,
+        "reserved_bytes": 705,
+        "reserved_work": 10,
+        "retained_events": 0
+      }
+    },
+    {
+      "file": "chu-mate.mshogi",
+      "provenance": {
+        "expected": {
+          "conclusion": {
+            "kind": "mate",
+            "winner": "gote"
+          }
+        },
+        "root": "independently_authored_diagram",
+        "source_fixture": "CHU-MATE"
+      },
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 5726,
+        "observations": 0,
+        "replay_work": 1840,
+        "reserved_bytes": 31,
+        "reserved_work": 1,
+        "retained_events": 0
+      }
+    },
+    {
+      "file": "chu-agreement-root.mshogi",
+      "provenance": {
+        "expected": {
+          "offer_alone_concludes": false,
+          "root_concluded": false
+        },
+        "root": "independently_authored_diagram",
+        "source_fixture": "CHU-MATERIAL-AGREEMENT"
+      },
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 5298,
+        "observations": 0,
+        "replay_work": 16,
+        "reserved_bytes": 703,
+        "reserved_work": 10,
+        "retained_events": 0
+      }
+    },
+    {
+      "file": "chu-repetition8.mshogi",
+      "provenance": {
+        "expected": {
+          "accepted_board_actions": 8,
+          "forbidden_at_prefix10": "1k-1l",
+          "outcome": null,
+          "responsible_side": "sente"
+        },
+        "root": "independently_authored_diagram",
+        "source_fixture": "CHU-REP-QUIET"
+      },
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 15182,
+        "observations": 0,
+        "replay_work": 1492,
+        "reserved_bytes": 964,
+        "reserved_work": 10,
+        "retained_events": 16
+      }
+    },
+    {
+      "file": "chu-repetition10.mshogi",
+      "provenance": {
+        "expected": {
+          "accepted_board_actions": 10,
+          "forbidden_at_prefix10": "1k-1l",
+          "outcome": null,
+          "responsible_side": "sente"
+        },
+        "root": "independently_authored_diagram",
+        "source_fixture": "CHU-REP-QUIET"
+      },
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 19218,
+        "observations": 0,
+        "replay_work": 2464,
+        "reserved_bytes": 1472,
+        "reserved_work": 10,
+        "retained_events": 20
+      }
+    },
+    {
+      "file": "chu-agreement.mshogi",
+      "provenance": {
+        "expected": {
+          "accept_draw_conclusion": {
+            "kind": "agreed_draw"
+          },
+          "board_turn": "sente",
+          "human": "gote",
+          "offer_by": "sente"
+        },
+        "root": "independently_authored_diagram",
+        "source_fixture": "CHU-MATERIAL-AGREEMENT"
+      },
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 5693,
+        "observations": 0,
+        "replay_work": 20,
+        "reserved_bytes": 710,
+        "reserved_work": 10,
+        "retained_events": 2
+      }
+    },
+    {
+      "file": "chu-agreed-draw.mshogi",
+      "provenance": {
+        "expected": {
+          "board_plies": 0,
+          "conclusion": {
+            "kind": "agreed_draw"
+          },
+          "native_events": 2
+        },
+        "root": "independently_authored_diagram",
+        "source_fixture": "CHU-MATERIAL-AGREEMENT"
+      },
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 6147,
+        "observations": 0,
+        "replay_work": 24,
+        "reserved_bytes": 31,
+        "reserved_work": 1,
+        "retained_events": 4
+      }
+    },
+    {
+      "file": "chu-royal-concluded.mshogi",
+      "provenance": {
+        "expected": {
+          "conclusion": {
+            "kind": "royal_capture",
+            "winner": "sente"
+          },
+          "known_board_actions": 1
+        },
+        "root": "independently_authored_diagram",
+        "source_fixture": "CHU-ROYAL-BOTH-COMPOUND"
+      },
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 7034,
+        "observations": 0,
+        "replay_work": 80,
+        "reserved_bytes": 31,
+        "reserved_work": 1,
+        "retained_events": 2
+      }
+    },
+    {
+      "file": "chu-material-concluded.mshogi",
+      "provenance": {
+        "expected": {
+          "conclusion": {
+            "kind": "material",
+            "winner": "sente"
+          },
+          "known_board_actions": 1
+        },
+        "root": "independently_authored_diagram",
+        "source_fixture": "CHU-MATERIAL-DECLINE-COUNTERCAPTURE"
+      },
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 6700,
+        "observations": 0,
+        "replay_work": 136,
+        "reserved_bytes": 31,
+        "reserved_work": 1,
+        "retained_events": 2
+      }
+    },
+    {
+      "file": "chu-complete-resignation.mshogi",
+      "provenance": {
+        "conclusion": {
+          "kind": "resignation",
+          "winner": "gote"
+        },
+        "ending": "explicit_scripted_sente_resignation",
+        "engine": "mshogi.chu.full-width.v1",
+        "known_board_actions": 12,
+        "limitation": "Complete standard-root recorded game with explicit resignation; not natural self-play completion or competitive-strength evidence.",
+        "native_events": 13,
+        "observations": 12,
+        "observed_turns": [
+          {
+            "action": {
+              "from": [
+                9,
+                8
+              ],
+              "promote": false,
+              "route": [
+                [
+                  9,
+                  7
+                ]
+              ]
+            },
+            "actor": "sente",
+            "nodes": 37
+          },
+          {
+            "action": {
+              "from": [
+                11,
+                1
+              ],
+              "promote": false,
+              "route": [
+                [
+                  11,
+                  2
+                ]
+              ]
+            },
+            "actor": "gote",
+            "nodes": 37
+          },
+          {
+            "action": {
+              "from": [
+                9,
+                7
+              ],
+              "promote": false,
+              "route": [
+                [
+                  9,
+                  6
+                ]
+              ]
+            },
+            "actor": "sente",
+            "nodes": 40
+          },
+          {
+            "action": {
+              "from": [
+                9,
+                5
+              ],
+              "promote": false,
+              "route": [
+                [
+                  9,
+                  6
+                ]
+              ]
+            },
+            "actor": "gote",
+            "nodes": 36
+          },
+          {
+            "action": {
+              "from": [
+                4,
+                8
+              ],
+              "promote": false,
+              "route": [
+                [
+                  4,
+                  7
+                ]
+              ]
+            },
+            "actor": "sente",
+            "nodes": 38
+          },
+          {
+            "action": {
+              "from": [
+                10,
+                1
+              ],
+              "promote": false,
+              "route": [
+                [
+                  9,
+                  2
+                ]
+              ]
+            },
+            "actor": "gote",
+            "nodes": 38
+          },
+          {
+            "action": {
+              "from": [
+                4,
+                7
+              ],
+              "promote": false,
+              "route": [
+                [
+                  4,
+                  6
+                ]
+              ]
+            },
+            "actor": "sente",
+            "nodes": 40
+          },
+          {
+            "action": {
+              "from": [
+                4,
+                5
+              ],
+              "promote": false,
+              "route": [
+                [
+                  4,
+                  6
+                ]
+              ]
+            },
+            "actor": "gote",
+            "nodes": 33
+          },
+          {
+            "action": {
+              "from": [
+                12,
+                9
+              ],
+              "promote": false,
+              "route": [
+                [
+                  12,
+                  8
+                ]
+              ]
+            },
+            "actor": "sente",
+            "nodes": 38
+          },
+          {
+            "action": {
+              "from": [
+                5,
+                1
+              ],
+              "promote": false,
+              "route": [
+                [
+                  4,
+                  2
+                ]
+              ]
+            },
+            "actor": "gote",
+            "nodes": 36
+          },
+          {
+            "action": {
+              "from": [
+                12,
+                8
+              ],
+              "promote": false,
+              "route": [
+                [
+                  12,
+                  7
+                ]
+              ]
+            },
+            "actor": "sente",
+            "nodes": 39
+          },
+          {
+            "action": {
+              "from": [
+                6,
+                1
+              ],
+              "promote": false,
+              "route": [
+                [
+                  5,
+                  1
+                ]
+              ]
+            },
+            "actor": "gote",
+            "nodes": 32
+          }
+        ],
+        "root": "standard_start",
+        "work_limits": {
+          "depth": 1,
+          "nodes": 512
+        }
+      },
+      "usage": {
+        "controls": 25,
+        "encoded_bytes": 188032,
+        "observations": 12,
+        "replay_work": 26444,
+        "reserved_bytes": 31,
+        "reserved_work": 1,
+        "retained_events": 79
+      }
+    },
+    {
+      "file": "chu-complete-royal-engine.mshogi",
+      "provenance": {
+        "actual_action": {
+          "from": [
+            6,
+            6
+          ],
+          "promote": false,
+          "route": [
+            [
+              6,
+              5
+            ],
+            [
+              5,
+              5
+            ]
+          ]
+        },
+        "conclusion": {
+          "kind": "royal_capture",
+          "winner": "sente"
+        },
+        "diagram_extension": "Remote Gote Gold11a prevents a single royal capture from also receiving a material award; original fixture remains unchanged.",
+        "ending": "native_royal_capture_after_actual_engine_choice",
+        "engine": "mshogi.chu.full-width.v1",
+        "known_board_actions": 1,
+        "limitation": "Naturally completed game from explicitly limited independently authored diagram, not a standard-root self-play completion or strength measurement.",
+        "native_events": 1,
+        "observations": 2,
+        "response_sequence": [
+          "choice",
+          "finished"
+        ],
+        "root": "independently_authored_diagram",
+        "source_fixture": "CHU-ROYAL-BOTH-COMPOUND",
+        "work_limits": {
+          "depth": 1,
+          "nodes": 512
+        }
+      },
+      "usage": {
+        "controls": 3,
+        "encoded_bytes": 13684,
+        "observations": 2,
+        "replay_work": 258,
+        "reserved_bytes": 32,
+        "reserved_work": 1,
+        "retained_events": 2
+      }
+    },
+    {
+      "file": "chu-capacity256.mshogi",
+      "provenance": {
+        "engine": "mshogi.chu.full-width.v1",
+        "expected": "A positive-budget normal analysis request refuses before committing a 257th observation, with typed observation capacity; Save remains available and Load does not reset the structural count.",
+        "limitation": "Historical actual zero-work observations only; neither pending execution nor completed scores/actions.",
+        "native_events": 0,
+        "observations": 256,
+        "root": "standard_start",
+        "work_limits": {
+          "depth": 1,
+          "nodes": 0
+        }
+      },
+      "usage": {
+        "controls": 256,
+        "encoded_bytes": 2601304,
+        "observations": 256,
+        "replay_work": 28820,
+        "reserved_bytes": 704,
+        "reserved_work": 10,
+        "retained_events": 0
+      }
+    }
+  ],
+  "expectation_source": "ratified MSH82/86 docs/m4/chu/fixtures.json; independent source transcription and hand-worked expectations, no engine oracle",
+  "fixture_diagrams": "Not claimed historically reachable from standard start; known history begins at each diagram root.",
+  "generator": "write_chu_gui_documents",
+  "profile": "mshogi.chu.jcsa2019.v1"
+}

@@ -501,19 +501,20 @@ class CurrentDocumentInspectionTests(unittest.TestCase):
             "shogi": ("mshogi.shogi.csa36.v1", "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026"),
             "xiangqi": ("mshogi.xiangqi.wxf2018.v1", "WXF-2018+XIANGQI-P1-2026-10-27"),
             "tori": ("mshogi.tori.modern.v1", "MSH81-MODERN-2026-11-01"),
+            "chu": ("mshogi.chu.jcsa2019.v1", "JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02"),
         }[game]
         return {"envelope_version": 1, "format": "mshogi.desktop.document.v1",
                 "game_kind": game, "rules_profile": profile, "profile_edition": edition,
                 "native_schema_version": 1, "payload": {"observations": []}}
 
     def test_current_envelopes_expose_native_payload_without_reconstruction(self):
-        for game in ("chess", "shogi", "xiangqi", "tori"):
+        for game in ("chess", "shogi", "xiangqi", "tori", "chu"):
             with self.subTest(game=game):
                 document = self.document(game)
                 self.assertIs(module.desktop_document_payload(document, game), document["payload"])
 
     def test_old_or_conflicting_envelopes_are_not_accepted_as_gui_evidence(self):
-        for game in ("chess", "shogi", "xiangqi", "tori"):
+        for game in ("chess", "shogi", "xiangqi", "tori", "chu"):
             for field, value in (("envelope_version", 2), ("format", "mshogi.desktop.archive.v2"),
                                  ("game_kind", "unknown"), ("rules_profile", "unapproved"),
                                  ("profile_edition", "unapproved"), ("native_schema_version", 2),
@@ -552,7 +553,7 @@ class XiangqiRuntimeEvidenceTests(unittest.TestCase):
             'xiangqi-offer', 'xiangqi-agreed', 'xiangqi-fast-proof', 'xiangqi-resigned',
             'xiangqi-capacity', 'xiangqi-failure', 'xiangqi-exact-evidence'})
         self.assertTrue(set(xiangqi) <= set(actual))
-        self.assertEqual(module.selected_gui_phases('normal'), previous[:4] + ['normal-tori', 'normal-tori-native'])
+        self.assertEqual(module.selected_gui_phases('normal'), previous[:4] + ['normal-tori', 'normal-tori-native', 'normal-chu', 'normal-chu-native'])
         self.assertEqual(module.selected_gui_phases('normal-tori'), ['normal-tori', 'normal-tori-native'])
         self.assertEqual(module.selected_gui_phases('verification-tori'), ['pending-tori', 'tori-recovery'])
         self.assertEqual(module.selected_gui_phases('normal-shogi'), previous[1:3])
@@ -1235,6 +1236,87 @@ class CurrentShellCopyEvidenceTests(unittest.TestCase):
             self.assertFalse(module.saved_chess_evidence_count(f'Recorded native evidence ({count})',count))
         self.assertFalse(module.saved_chess_evidence_count(None,256))
 
+
+
+class ChuNormalProductEvidenceTests(unittest.TestCase):
+    """Observer checks only; actual packaged GUI evidence must come from each OS."""
+    def test_all_default_phases_include_normal_chu_and_actual_pending_recovery(self):
+        self.assertEqual(module.selected_gui_phases('normal-chu'), ['normal-chu','normal-chu-native'])
+        self.assertEqual(module.selected_gui_phases('verification-chu'), ['pending-chu','chu-recovery'])
+        self.assertTrue({'normal-chu','normal-chu-native','pending-chu','chu-recovery'} <= set(module.selected_gui_phases('all')))
+        for method,product in ((module.Journey.normal_chu,'chu'),(module.Journey.normal_chu_native,'chu-native')):
+            journey=object.__new__(module.Journey);journey.start=Mock(side_effect=RuntimeError('launch boundary'))
+            with self.assertRaisesRegex(RuntimeError,'launch boundary'): method(journey)
+            journey.start.assert_called_once_with(product=product)
+
+    def test_complete_chu_action_identity_preserves_order_promotion_and_strict_shapes(self):
+        expected={'from':[6,6],'route':[[7,5],[6,6]],'promote':False}
+        text=json.dumps(expected)
+        reordered=json.dumps({'promote':False,'route':[[7,5],[6,6]],'from':[6,6]})
+        self.assertTrue(module.native_action_identity_matches(reordered,text))
+        for change in ({'route':[[6,6],[7,5]]},{'route':[[7,5]]},{'promote':True},{'promote':0},
+                       {'from':[True,6]},{'route':[]},{'route':[[7,5],[6,6],[7,5]]},{'unknown':'victim'}):
+            self.assertFalse(module.native_action_identity_matches(json.dumps({**expected,**change}),text),change)
+        self.assertFalse(module.native_action_identity_matches('{"from":[6,6],"route":[[7,5],[6,6]],"promote":false,"promote":false}',text))
+
+    def test_chu_archive_retains_exact_complete_route_before_takeback(self):
+        action={'from':[6,6],'route':[[7,5],[6,6]],'promote':False}
+        record={'game_kind':'chu','payload':{'root':{'native':'Chu root'},'events':[]}}
+        body={'initial':copy.deepcopy(record),'current':copy.deepcopy(record),
+            'controls':[{'kind':'native','actor':'sente','command':{'kind':'play','action':action}},
+                        {'kind':'rewind','event_index':0,'reason':'take_back'}],
+            'retired':[{'record':{'payload':{'events':[{'command':{'kind':'play','action':action}}]}}}]}
+        self.assertTrue(module.retained_pending_takeback('chu',body,action))
+        changed=copy.deepcopy(action);changed['route'].reverse()
+        self.assertFalse(module.retained_pending_takeback('chu',body,changed))
+        for mutate in (lambda b:b.update(retired=[]),lambda b:b['controls'][1].update(reason='undo'),
+                       lambda b:b['current']['payload'].update(root={'different':'root'})):
+            altered=copy.deepcopy(body);mutate(altered)
+            self.assertFalse(module.retained_pending_takeback('chu',altered,action))
+
+    def test_native_generated_archives_and_manifest_preserve_exact_adjudication_context(self):
+        fixtures=Path(__file__).with_name('fixtures')
+        manifest=json.loads((fixtures/'chu-native-fixtures.json').read_text())
+        self.assertEqual(manifest['profile'],'mshogi.chu.jcsa2019.v1')
+        self.assertEqual(len(manifest['cases']),17)
+        bodies={case['file']:module.desktop_document_payload(json.loads((fixtures/case['file']).read_text()),'chu') for case in manifest['cases']}
+        for name in ('contract','captures','promotion','royal-both','royal-survivor','material-reply'):
+            self.assertIsNone(bodies[f'chu-{name}.mshogi']['current']['payload']['conclusion'])
+        obligation=bodies['chu-repetition10.mshogi']['current']['payload']
+        self.assertEqual(len(obligation['events']),10);self.assertTrue(obligation['obligations']);self.assertIsNone(obligation['conclusion'])
+        offered=bodies['chu-agreement.mshogi']
+        self.assertEqual(offered['human'],'gote');self.assertEqual(offered['current']['payload']['draw_offer'],'sente')
+        self.assertEqual(offered['current']['payload']['current_position']['side'],'sente');self.assertIsNone(offered['current']['payload']['conclusion'])
+        for name,conclusion in (('mate',{'kind':'mate','winner':'gote'}),('agreed-draw',{'kind':'agreed_draw'}),
+                                ('royal-concluded',{'kind':'royal_capture','winner':'sente'}),('material-concluded',{'kind':'material','winner':'sente'})):
+            self.assertEqual(bodies[f'chu-{name}.mshogi']['current']['payload']['conclusion'],conclusion)
+        complete=bodies['chu-complete-resignation.mshogi']
+        self.assertEqual(len(complete['observations']),12);self.assertEqual(len(complete['current']['payload']['events']),13)
+        self.assertEqual(complete['current']['payload']['conclusion'],{'kind':'resignation','winner':'gote'})
+        self.assertEqual({item['context']['game']['payload']['current_position']['side'] for item in complete['observations']},{'sente','gote'})
+        natural=bodies['chu-complete-royal-engine.mshogi']
+        self.assertEqual(natural['current']['payload']['conclusion'],{'kind':'royal_capture','winner':'sente'})
+        self.assertEqual([item['result']['result']['kind'] for item in natural['observations']],['choice','finished'])
+        capacity=bodies['chu-capacity256.mshogi']
+        self.assertEqual(len(capacity['observations']),256);self.assertEqual(capacity['current']['payload']['events'],[])
+        self.assertTrue(all(item['result']['result']['kind']=='incomplete' and item['result']['result']['telemetry']['score'] is None for item in capacity['observations']))
+
+    def test_chu_geometry_observer_requires_all144_squares_font_and_no_hands(self):
+        journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()
+        geometry={'allVisible':True,'boardVisible':True,'hands':0,'minimumSquareWidth':24,
+            'uniqueSquares':144,'nativeOrientation':'sente','orientation':'Chu board, Sente at bottom',
+            'kanjiTexts':[{'pixels':11,'text':'歩'}],'pageWidth':760,'viewport':{'width':760}}
+        for change in ({},{'allVisible':False},{'hands':1},{'uniqueSquares':143},{'orientation':'Chu board, Gote at bottom'},{'minimumSquareWidth':20},{'kanjiTexts':[]},{'kanjiTexts':[{'pixels':8}]}):
+            journey.web.read.side_effect=[True,{**geometry,**change}]
+            with patch.object(module,'wait',side_effect=lambda check,label:check()):
+                if change:
+                    with self.assertRaises(AssertionError): journey.chu_board_fits()
+                else: self.assertEqual(journey.chu_board_fits(),geometry)
+        expressions=[call.args[0] for call in journey.web.read.call_args_list]
+        self.assertTrue(any('squares.length===144' in expression for expression in expressions))
+        for expression in expressions:
+            for forbidden in ('.click(','.focus(','scrollIntoView(','dispatchEvent(','invoke('):self.assertNotIn(forbidden,expression)
+        journey.web.click.assert_not_called()
 
 
 class ToriNormalProductEvidenceTests(unittest.TestCase):

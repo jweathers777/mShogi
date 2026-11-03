@@ -1,11 +1,11 @@
 ---
 id: MSH-43
 title: Deliver complete chu shogi rules and functional product integration
-status: In Progress
+status: In Review
 assignee:
   - '@Codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-03T10:46:00Z'
+updated_date: '2026-11-03T11:52:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -28,6 +28,8 @@ documentation:
   - docs/m4/chu/engine-v1.md
   - docs/m4/chu/notation.md
   - docs/m4/chu/desktop-visual-checkpoint.md
+  - docs/m4/chu/evidence/visual-checkpoint.json
+  - docs/m4/chu/evidence/gui-readiness-f43583d.json
 ordinal: 43000
 ---
 
@@ -79,4 +81,22 @@ MSH78 complete shared handoff2026-11-03: tested/integrated native/shared source 
 Owner2026-11-03 authorizes coherent functional-engine/console/notation/finished desktop visual checkpoint, then explicit owner aesthetic review. This supersedes old profile-only inactivity notes without deleting them. No additional planning phase or component-ticket split. Current78 source250b701/integrationa5d5bd4 and accepted82/86profile/evidence unchanged. Other3existing worktrees remain unrelated and untouched; no competing43owner.
 
 Functional checkpoint2026-11-03 onprimarycodex/rewrite: actualnativeChu search/result/console/notation and traditional29facekanji renderer implemented with oneexistingcontroller/choiceowner; normalchooser/Load remains4games pendingownercheckpoint. Measuredreleaseplay1/512 standard37visits5ms andLion92visits11-15ms; analysismax2/2000,notstrengthclaim. Independentnativeexecution/console review27focusedtestsPASS; rendererreview44testsPASS plusportedfooterregression6PASS. Actualchild/controller6testsPASS includingbothassignments,cancelledPIDcleanup,history/SaveOpen/stalecontexts. Newactualresultcodec5testsPASS,32plyrealengineprogression32obs651611B/534616aggregateunits/528retainednativeevents;Takebackretainsbranch+allobs675048B/541771units;256actualzero-workobs2601304B,257typedrefusal preservesbytesandStop/Resign/Close. Historical1076nativechecks remain86evidence,notrecounted. Earlyworkspacealltarget/standalonehost/strictTS consumerschecked beforebroadCI. Coherent4gameregressions,finalreviews andactualstableQApackagedmacOSsizes/interactionstillpending;taskremainsInProgress,8AC/DoDunchecked. No owneraestheticapprovalorfinalproductactivationclaimed.
+
+Working visual checkpoint — 2026-11-03. Production source c52e253b9f8d61d30434f53b818ad3ae52becf5b and verification-only f43583de84c147591c4e83dd07068aa1779b3e09 are integrated and pushed on codex/rewrite. Actual macOS interaction covers both player assignments, both orientations at all three requested sizes, real engine replies, read-only analysis, gated cancellation/replacement, complete Lion routes and returns, ordered captures, promotion and King/Prince, history/Return to live, stopped Save/Open, Take back and dirty Quit. The 29 genuine captures, saved canonical game, exact package hashes, measurements, commands and review dispositions are recorded once in docs/m4/chu/evidence/visual-checkpoint.json; gallery and launch instructions are in docs/m4/chu/desktop-visual-checkpoint.md.
+
+Independent native execution/console, desktop admission and renderer reviews passed. Final source has 417 frontend tests, normal/QA host checks, six actual-child/controller journeys and five actual-observation codec checks, alongside the required regressions. The 32-ply progression is bounded smoke evidence. The unchanged 256-observation boundary, aggregate replay budget, 15-second deadline and Stop/Resign/Close reserves remain saveable; no limits were raised. MSH-86/MSH-78 evidence and profile/fixture expectations remain intact.
+
+Required CI passed: Rust41623916090 on all three systems at c52e253; Desktop41627192949 on all three systems at f43583d. The latter changes only two external Python verification files. Its redundant native campaign41627193070 was cancelled, not passed. Earlier normal-host QA-test gating and Linux pending-Tori failures remain recorded. The readiness correction passed 103 independently reviewed observer tests and actual Linux/Windows pending-work, cancellation, replacement and Save/Open journeys. See docs/m4/chu/evidence/gui-readiness-f43583d.json. These four-game regression campaigns do not establish new Windows/Linux Chu GUI acceptance.
+
+STOP at the requested owner visual checkpoint. MSH-43 is In Review, owned by Codex. Original eight AC, four DoD items and dependencies are unchanged and unchecked pending final delivery acceptance. Owner aesthetic approval is outstanding. At 760×650, kanji are compact (about 11–12 logical pixels); reading comfort is explicitly for owner judgment, with no minimum-size change or full VoiceOver claim. Normal chooser/Load remains four games. After approval, resume MSH-43 for normal activation, actual three-platform Chu gameplay and final eight-criterion reconciliation. M4 remains open; no subsequent task was started. No task worktree was created; unrelated worktrees were preserved. Pinned Backlog1.55.1, doctor, source/capture hashes, links and diff checks passed.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Delivered the working Chu visual checkpoint through the existing application owners: native history-aware search and supervised complete actions, Rust console/route notation, lossless admitted observations, and traditional kanji on a full 12×12 board. Production source is c52e253; verification-only source is f43583d. Play uses depth1/512 visits; analysis is bounded at depth2/2,000. No fallback move, invented outcome or strength claim is introduced.
+
+Actual macOS GUI interaction, 29 captures, focused native/subprocess/codec/frontend/host tests and independent reviews are recorded in docs/m4/chu/evidence/visual-checkpoint.json. Required native and Desktop CI passed on all three systems; earlier failed runs are retained. Existing native/shared evidence and capacity guarantees remain intact.
+
+MSH-43 remains In Review for owner aesthetic approval. Normal fifth-game activation, final three-platform Chu gameplay and final eight-criterion acceptance remain open. Minimum-size reading comfort is explicitly for owner judgment. Launch instructions, gallery and limitations: docs/m4/chu/desktop-visual-checkpoint.md. M4 remains open; no later task started.
+<!-- SECTION:FINAL_SUMMARY:END -->

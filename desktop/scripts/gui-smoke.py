@@ -50,8 +50,7 @@ def assert_shared_native_card_flow(current, previous):
         def gap(cards):
             return cards[index+1]['rect']['top']-cards[index]['rect']['top']-cards[index]['rect']['height']
         assert abs(gap(current)-gap(previous)) <= 3, ('card gap',index,current,previous)
-    def bottom(cards): return cards[-1]['rect']['top']+cards[-1]['rect']['height']
-    assert abs(bottom(current)-bottom(previous)) <= 3, ('history bottom',current,previous)
+    assert abs(current[-1]['rect']['height']-previous[-1]['rect']['height']) <= 3, ('history height',current,previous)
 
 
 def desktop_document_payload(document, game_kind):

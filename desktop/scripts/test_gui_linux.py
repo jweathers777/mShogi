@@ -4,7 +4,7 @@ from pathlib import Path
 import threading
 from types import SimpleNamespace
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 spec=importlib.util.spec_from_file_location('gui_linux',Path(__file__).with_name('gui_linux.py'))
 module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
@@ -78,5 +78,44 @@ class LoadPickerTests(unittest.TestCase):
   native._activate.assert_called_once_with(123)
   native._key.assert_called_once_with('Escape')
   native._diagnostics.assert_not_called()
+
+class FilenameReadbackTests(unittest.TestCase):
+ def setUp(self):
+  self.native=object.__new__(module.Native)
+  self.native.output=Path('unused-mocked-picker-output')
+  self.native._key=Mock();self.native._run=Mock();self.native._activate=Mock();self.native.screenshot=Mock()
+  self.path='/home/runner/work/mShogi/game.mshogi'
+ def test_invalid_requested_entry_is_rejected_before_native_input(self):
+  for selected in ('', 'relative.mshogi', '/'+'a'*4096, '/tmp/bad\nname.mshogi', '/tmp/bad\x00name'):
+   with self.subTest(selected=repr(selected[:40])):
+    with self.assertRaises(ValueError):self.native._enter_picker_path(PICKER,selected,'invalid')
+  self.native._key.assert_not_called();self.native._run.assert_not_called()
+  self.native._activate.assert_not_called();self.native.screenshot.assert_not_called()
+ def test_complete_native_entry_is_verified_without_input_replay(self):
+  self.native._copy_picker_text=Mock(return_value=self.path)
+  result=self.native._enter_picker_path(PICKER,self.path,'verified')
+  self.assertEqual(result['accepted_readback'],self.path)
+  self.assertFalse(result['observed_prefix_corrected'])
+  self.assertEqual(self.native._run.call_count,1);self.native._activate.assert_not_called()
+  self.native._key.assert_any_call('ctrl+l')
+  self.assertFalse(any('Return' in call.args for call in self.native._key.call_args_list))
+ def test_observed_missing_prefix_gets_one_verified_replacement_not_another_open(self):
+  suffix='work/mShogi/game.mshogi';self.native._copy_picker_text=Mock(side_effect=[suffix,self.path])
+  result=self.native._enter_picker_path(PICKER,self.path,'prefix')
+  self.assertTrue(result['observed_prefix_corrected']);self.assertEqual(result['first_readback'],suffix)
+  self.assertEqual(self.native._run.call_count,2);self.native._activate.assert_called_once_with(123)
+  self.assertFalse(any('Return' in call.args or 'alt+o' in call.args for call in self.native._key.call_args_list))
+ def test_unrelated_or_still_incorrect_entry_is_not_accepted(self):
+  for copies in (['unrelated'],[''],['game.mshogi','work/mShogi/game.mshogi']):
+   self.native._copy_picker_text=Mock(side_effect=copies)
+   with self.assertRaises(RuntimeError):self.native._enter_picker_path(PICKER,self.path,'wrong')
+ def test_clipboard_marker_cannot_masquerade_as_native_entry(self):
+  self.native._wait=Mock(side_effect=lambda predicate,*args,**kwargs: predicate() or predicate())
+  self.native._run.side_effect=[SimpleNamespace(returncode=0,stdout='mshogi-native-picker-copy-pending'),
+   SimpleNamespace(returncode=0,stdout='mshogi-native-picker-copy-pending'),SimpleNamespace(returncode=0,stdout=self.path)]
+  with patch.object(module.subprocess,'run') as seed:
+   self.assertEqual(self.native._copy_picker_text(),self.path)
+  self.assertEqual(seed.call_args.kwargs['input'],'mshogi-native-picker-copy-pending')
+  self.native._key.assert_called_once_with('ctrl+a','ctrl+c')
 
 if __name__=='__main__':unittest.main(verbosity=2)

@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@Codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-03T14:06:00Z'
+updated_date: '2026-11-03T14:47:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -105,6 +105,8 @@ Final normal macOS package1537b48 actualGUI capacity→reservedResign→Save/Ope
 Verification-onlybff5338 integrated/pushed after independent exactdiff/twofocusedtest review;138PythonGUIchecksPASS. Corrects approvedactualCHU header expectation and explicitly selects genuine native Rook nonpromotion, without altering production1537b48. OldWindows41639824124 also37/39PASS/same2failures; full failed bothplatform reports/captures/manifests retained. Corrected Desktop41643591356 all3required; redundantNative41643591200 cancelled, notpassed. Independent finalsource reconciliation supportsAC1–6;7–8conditionalonlyonactualcorrectedWin/LinuxGUI and finalbookkeeping. No additional materialrules/productgap found.
 
 ObservedWindowsbff native desktop screenshot explicitlyshows rendererOutOfMemory (SHA5e93a174cc27556d1201185d468cd8cd55f0acdaaf455202ed05900968aa2ba4), notmerelyverifierfailure.91,625ms is scenario-cumulative, notpicker/Open duration (~4.4sSave→pickeraccept). Full8.7MB/287562line Diagnostics expansion is plausibletrigger, notprovenrootcause. BoundedrequiredsharedDiagnostics correction nowindependentlyreviewed: lazyfrozencompactJSON +losslessUnicode-safe64Ki pages; publicobserver reconstructsallpages viarealbuttons withstrictbounds.445frontend/142PythonGUI/strictTSPASS; exactactual256obsarchive paginationtestPASS. Native/rules/archive/limits unchanged. Superseded41648306477 cancelled; final actualnormalMac/newWindowsLinux required beforeDone. Originalfailedscreens/reports/corrections preserved.
+
+Final bba834e actual packaged campaign41650536254: macOS build/smoke PASS; Windows and Linux each37/39 GUI phasesPASS. Windows normal-chu-native nowPASS including complete native endings/repetition,256-observation Save/Load,public paged Diagnostics and reservedResign; priorOOM is not reproduced in that journey. RemainingWindows failures: overstrict history-bottom observer and separate verification-capacity external-driver startup timeout. Linux remains blocked by that same layout assertion and actual small repetition-record native picker timeout; screenshot path tail alone cannot distinguish GTK clipping from incorrect text. No new rules/product failure is inferred. Bounded verifier correction preserves card anchors/order/gaps/nonoverlap and equalHistoryheight, validates requested absolute filename<=4096/C0-free before nativeinput, confirms exact actual clipboard readback before acceptance, and permits onlyone observed-suffix replacement followed by full-match verification. xclip is confined to isolated X11 verification desktop; security/normal distributables unchanged. Independent completed-diff reviewer reran17focused adapter/cardflow checksPASS; all147PythonGUI checks,py_compile,diffcheckPASS. Required corrected actualWindows/Linux GUI remains pending; original8AC/4DoD unchanged,43InReview.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

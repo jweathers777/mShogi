@@ -1,3 +1,13 @@
+> Current five-game checkpoint — MSH-107, 2026-11-03: the
+> [post-Chu architecture map and assessment](review/architecture-health-107.md)
+> reviews exact accepted source `a8581f09107648d03e3016786b41c267ace88bca`.
+> The R1–R6 ownership model remains coherent with real Tori/Chu consumers;
+> no material redesign or demonstrated Tenjiku architectural blocker was found.
+> Bounded replay-retention, cooperation/latency and inspection measurements are
+> advisory proposals, not new implementation gates. MSH-108 must reconcile these
+> findings against actual six-game delivery; the historical records below retain
+> their original stage-specific wording.
+
 > Owner-approved target and shared-UI plan — 2026-10-30: design A-10/D-18 and
 > the [bounded implementation records](architecture-migration-plan.md) now supersede
 > earlier pending-target/implementation-task restrictions for planning. MSH-106

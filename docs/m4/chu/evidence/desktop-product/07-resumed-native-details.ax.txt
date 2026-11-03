@@ -1,0 +1,50 @@
+Window: "mShogi", App: mShogi.
+0 standard window mShogi, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 container About mShogi
+				4 heading About mShogi, Value: 2
+					5 text About mShogi
+				6 text mShogi 0.1.0 · Chess, Shogi, Xiangqi, Tori Shogi and Chu Shogi
+				7 container (expanded) Secondary Actions: Collapse
+					8 summary Diagnostics, Value: on
+						9 text Diagnostics
+					10 text Game profile, exact history, engine requests, work limits and resource details.
+					11 text {
+  "token": {
+    "document": 2,
+    "version": 18,
+    "revision": 20,
+    "selection": 18
+  },
+  "profile": "mshogi.chu.jcsa2019.v1",
+  "document": {
+    "revision": 5,
+    "dirty": false,
+    "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m4/chu/evidence/desktop-product/normal-standard.mshogi",
+    "settings": {
+      "game_kind": "chu",
+      "settings": {
+        "orientation": "sente"
+      }
+    }
+  },
+  "close_requires_save": false,
+  "context": {
+    "envelope_version": 1,
+    "game
+				12 summary Font license, Value: off
+					13 text Font license
+				14 button Quit application
+				15 button Close
+	16 close button
+	17 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	18 minimize button
+	19 text mShogi
+20 menu bar
+	21 mShogi
+	22 Edit
+	23 View
+	24 Window
+
+The focused UI element is 8 summary Diagnostics, Value: on

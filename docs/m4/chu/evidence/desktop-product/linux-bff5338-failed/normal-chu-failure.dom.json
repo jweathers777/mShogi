@@ -1,0 +1,15 @@
+{
+  "text": "\u6b69\nmShogi\n\nCHU\nLocal engine\nUNSAVED\nUntitled game\nNew game\nSave\nLoad\nYOUR GAME\n\nSente to move\nYou play Sente against mShogi\n\u2195\nFlip board\nm\nmShogiGote\nYour opponent\n\u9999\n\u8eca\n\u731b\n\u8c79\n\u9285\n\u5c06\n\u9280\n\u5c06\n\u91d1\n\u5c06\n\u9154\n\u8c61\n\u7389\n\u5c06\n\u91d1\n\u5c06\n\u9280\n\u5c06\n\u9285\n\u5c06\n\u731b\n\u8c79\n\u9999\n\u8eca\n\u53cd\n\u8eca\n\u89d2\n\u884c\n\u76f2\n\u864e\n\u9cf3\n\u51f0\n\u9e92\n\u9e9f\n\u76f2\n\u864e\n\u89d2\n\u884c\n\u53cd\n\u8eca\n\u6a2a\n\u884c\n\u7aea\n\u884c\n\u98db\n\u8eca\n\u9f8d\n\u99ac\n\u9f8d\n\u738b\n\u5954\n\u738b\n\u7345\n\u5b50\n\u9f8d\n\u738b\n\u9f8d\n\u99ac\n\u98db\n\u8eca\n\u7aea\n\u884c\n\u6a2a\n\u884c\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u4ef2\n\u4eba\n\u4ef2\n\u4eba\n\u4ef2\n\u4eba\n\u4ef2\n\u4eba\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6a2a\n\u884c\n\u7aea\n\u884c\n\u98db\n\u8eca\n\u9f8d\n\u99ac\n\u9f8d\n\u738b\n\u7345\n\u5b50\n\u5954\n\u738b\n\u9f8d\n\u738b\n\u9f8d\n\u99ac\n\u98db\n\u8eca\n\u7aea\n\u884c\n\u6a2a\n\u884c\n\u53cd\n\u8eca\n\u89d2\n\u884c\n\u76f2\n\u864e\n\u9e92\n\u9e9f\n\u9cf3\n\u51f0\n\u76f2\n\u864e\n\u89d2\n\u884c\n\u53cd\n\u8eca\n\u9999\n\u8eca\n\u731b\n\u8c79\n\u9285\n\u5c06\n\u9280\n\u5c06\n\u91d1\n\u5c06\n\u7389\n\u5c06\n\u9154\n\u8c61\n\u91d1\n\u5c06\n\u9280\n\u5c06\n\u9285\n\u5c06\n\u731b\n\u8c79\n\u9999\n\u8eca\n12\n11\n10\n9\n8\n7\n6\n5\n4\n3\n2\n1\na\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk\nl\nY\nYouSente\nHuman player\nTo move\nArrows: move focus \u00b7 Enter/Space: select \u00b7 Esc: cancel\nYour turn\nLive position \u00b7 0 plies\nAnalysis\n\nPlay details\nAnalyze position\nEngine\nPaused\nPlay limit: depth 1 \u00b7 512 nodes\nNo engine search has completed in this game.\nGame Actions\n\nTake backOffer draw\u2026Resign\nMoves\n0 moves\nStarting position\nChu complete actions \u00b7 known-root move pairs \u00b7 declared root plies 0 \u00b7 earlier history known\nMove number\tSente\tGote\nNo moves in known history.",
+  "focus": {
+    "label": "About mShogi",
+    "text": "",
+    "tag": "BUTTON"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 820,
+    "width": 1180
+  },
+  "common_actions": [],
+  "inputs": []
+}

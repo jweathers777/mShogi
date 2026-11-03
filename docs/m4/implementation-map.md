@@ -1,3 +1,10 @@
+> MSH-43 Done — complete fifth-game delivery: owner visual approval is recorded;
+> Chu is normally playable as the fifth game through the accepted application
+> owners. [Final reconciliation](chu/delivery-review.md) distinguishes actual
+> native, three-platform GUI and independent acceptance evidence. The following
+> visual/planning snapshots retain their historical scope. M4 and shared
+> six-game/closure work remain open.
+
 > MSH-43 working visual checkpoint: [functional engine contract](chu/engine-v1.md)
 > and [desktop visual record](chu/desktop-visual-checkpoint.md) consume the completed
 > native86/shared78 handoff. Real native execution, console/notation and traditional

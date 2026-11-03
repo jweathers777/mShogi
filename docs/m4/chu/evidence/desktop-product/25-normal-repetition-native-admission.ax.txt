@@ -1,0 +1,241 @@
+Window: "mShogi", App: mShogi.
+0 standard window mShogi, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 container
+				4 heading mShogi, Value: 1
+					5 text mShogi
+				6 button About mShogi
+				7 text CHU
+				8 text Local engine
+				9 container Game file
+					10 text UNMODIFIED
+					11 heading chu-repetition10.mshogi, Help: /Users/johnweathers/Development/Personal/mShogi/desktop/scripts/fixtures/chu-repetition10.mshogi, Value: 2
+						12 text chu-repetition10.mshogi
+				13 button New game
+				14 button Save
+				15 button Load
+				16 container Live game
+					17 text YOUR GAME
+					18 text Sente to move
+					19 text You play Sente against mShogi
+					20 button Flip board; currently Sente at bottom
+					21 text mShogiGote
+					22 text Your opponent
+					23 container Chu Shogi 12×12 board, Sente at bottom
+						24 image
+						25 toggle button Description: 12a, empty, Value: off
+						26 toggle button Description: 11a, empty, Value: off
+						27 toggle button Description: 10a, Gote Gold, Value: off
+						28 toggle button Description: 9a, empty, Value: off
+						29 toggle button Description: 8a, empty, Value: off
+						30 toggle button Description: 7a, empty, Value: off
+						31 toggle button Description: 6a, empty, Value: off
+						32 toggle button Description: 5a, empty, Value: off
+						33 toggle button Description: 4a, empty, Value: off
+						34 toggle button Description: 3a, empty, Value: off
+						35 toggle button Description: 2a, empty, Value: off
+						36 toggle button Description: 1a, empty, Value: off
+						37 toggle button Description: 12b, Gote King, Value: off
+						38 toggle button Description: 11b, empty, Value: off
+						39 toggle button Description: 10b, empty, Value: off
+						40 toggle button Description: 9b, empty, Value: off
+						41 toggle button Description: 8b, empty, Value: off
+						42 toggle button Description: 7b, empty, Value: off
+						43 toggle button Description: 6b, empty, Value: off
+						44 toggle button Description: 5b, empty, Value: off
+						45 toggle button Description: 4b, empty, Value: off
+						46 toggle button Description: 3b, empty, Value: off
+						47 toggle button Description: 2b, empty, Value: off
+						48 toggle button Description: 1b, empty, Value: off
+						49 toggle button Description: 12c, empty, Value: off
+						50 toggle button Description: 11c, empty, Value: off
+						51 toggle button Description: 10c, empty, Value: off
+						52 toggle button Description: 9c, empty, Value: off
+						53 toggle button Description: 8c, empty, Value: off
+						54 toggle button Description: 7c, empty, Value: off
+						55 toggle button Description: 6c, empty, Value: off
+						56 toggle button Description: 5c, empty, Value: off
+						57 toggle button Description: 4c, empty, Value: off
+						58 toggle button Description: 3c, empty, Value: off
+						59 toggle button Description: 2c, empty, Value: off
+						60 toggle button Description: 1c, empty, Value: off
+						61 toggle button Description: 12d, empty, Value: off
+						62 toggle button Description: 11d, empty, Value: off
+						63 toggle button Description: 10d, empty, Value: off
+						64 toggle button Description: 9d, empty, Value: off
+						65 toggle button Description: 8d, empty, Value: off
+						66 toggle button Description: 7d, empty, Value: off
+						67 toggle button Description: 6d, empty, Value: off
+						68 toggle button Description: 5d, empty, Value: off
+						69 toggle button Description: 4d, empty, Value: off
+						70 toggle button Description: 3d, empty, Value: off
+						71 toggle button Description: 2d, empty, Value: off
+						72 toggle button Description: 1d, empty, Value: off
+						73 toggle button Description: 12e, empty, Value: off
+						74 toggle button Description: 11e, empty, Value: off
+						75 toggle button Description: 10e, empty, Value: off
+						76 toggle button Description: 9e, empty, Value: off
+						77 toggle button Description: 8e, empty, Value: off
+						78 toggle button Description: 7e, empty, Value: off
+						79 toggle button Description: 6e, empty, Value: off
+						80 toggle button Description: 5e, empty, Value: off
+						81 toggle button Description: 4e, empty, Value: off
+						82 toggle button Description: 3e, empty, Value: off
+						83 toggle button Description: 2e, empty, Value: off
+						84 toggle button Description: 1e, empty, Value: off
+						85 toggle button Description: 12f, empty, Value: off
+						86 toggle button Description: 11f, empty, Value: off
+						87 toggle button Description: 10f, empty, Value: off
+						88 toggle button Description: 9f, empty, Value: off
+						89 toggle button Description: 8f, empty, Value: off
+						90 toggle button Description: 7f, empty, Value: off
+						91 toggle button Description: 6f, empty, Value: off
+						92 toggle button Description: 5f, empty, Value: off
+						93 toggle button Description: 4f, empty, Value: off
+						94 toggle button Description: 3f, empty, Value: off
+						95 toggle button Description: 2f, empty, Value: off
+						96 toggle button Description: 1f, empty, Value: off
+						97 toggle button Description: 12g, empty, Value: off
+						98 toggle button Description: 11g, empty, Value: off
+						99 toggle button Description: 10g, empty, Value: off
+						100 toggle button Description: 9g, empty, Value: off
+						101 toggle button Description: 8g, empty, Value: off
+						102 toggle button Description: 7g, empty, Value: off
+						103 toggle button Description: 6g, empty, Value: off
+						104 toggle button Description: 5g, empty, Value: off
+						105 toggle button Description: 4g, empty, Value: off
+						106 toggle button Description: 3g, empty, Value: off
+						107 toggle button Description: 2g, empty, Value: off
+						108 toggle button Description: 1g, empty, Value: off
+						109 toggle button Description: 12h, empty, Value: off
+						110 toggle button Description: 11h, empty, Value: off
+						111 toggle button Description: 10h, empty, Value: off
+						112 toggle button Description: 9h, empty, Value: off
+						113 toggle button Description: 8h, empty, Value: off
+						114 toggle button Description: 7h, empty, Value: off
+						115 toggle button Description: 6h, empty, Value: off
+						116 toggle button Description: 5h, empty, Value: off
+						117 toggle button Description: 4h, empty, Value: off
+						118 toggle button Description: 3h, empty, Value: off
+						119 toggle button Description: 2h, empty, Value: off
+						120 toggle button Description: 1h, empty, Value: off
+						121 toggle button Description: 12i, empty, Value: off
+						122 toggle button Description: 11i, empty, Value: off
+						123 toggle button Description: 10i, empty, Value: off
+						124 toggle button Description: 9i, empty, Value: off
+						125 toggle button Description: 8i, empty, Value: off
+						126 toggle button Description: 7i, empty, Value: off
+						127 toggle button Description: 6i, empty, Value: off
+						128 toggle button Description: 5i, empty, Value: off
+						129 toggle button Description: 4i, empty, Value: off
+						130 toggle button Description: 3i, empty, Value: off
+						131 toggle button Description: 2i, empty, Value: off
+						132 toggle button Description: 1i, empty, Value: off
+						133 toggle button Description: 12j, empty, Value: off
+						134 toggle button Description: 11j, empty, Value: off
+						135 toggle button Description: 10j, empty, Value: off
+						136 toggle button Description: 9j, empty, Value: off
+						137 toggle button Description: 8j, empty, Value: off
+						138 toggle button Description: 7j, empty, Value: off
+						139 toggle button Description: 6j, empty, Value: off
+						140 toggle button Description: 5j, empty, Value: off
+						141 toggle button Description: 4j, empty, Value: off
+						142 toggle button Description: 3j, empty, Value: off
+						143 toggle button Description: 2j, empty, legal destination, Value: off
+						144 toggle button Description: 1j, empty, legal destination, Value: off
+						145 toggle button Description: 12k, empty, Value: off
+						146 toggle button Description: 11k, empty, Value: off
+						147 toggle button Description: 10k, empty, Value: off
+						148 toggle button Description: 9k, empty, Value: off
+						149 toggle button Description: 8k, empty, Value: off
+						150 toggle button Description: 7k, empty, Value: off
+						151 toggle button Description: 6k, empty, Value: off
+						152 toggle button Description: 5k, empty, Value: off
+						153 toggle button Description: 4k, empty, Value: off
+						154 toggle button Description: 3k, empty, Value: off
+						155 toggle button Description: 2k, empty, legal destination, Value: off
+						156 toggle button Description: 1k, Sente King, selected, Value: on
+						157 toggle button Description: 12l, empty, Value: off
+						158 toggle button Description: 11l, empty, Value: off
+						159 toggle button Description: 10l, empty, Value: off
+						160 toggle button Description: 9l, empty, Value: off
+						161 toggle button Description: 8l, empty, Value: off
+						162 toggle button Description: 7l, empty, Value: off
+						163 toggle button Description: 6l, empty, Value: off
+						164 toggle button Description: 5l, empty, Value: off
+						165 toggle button Description: 4l, empty, Value: off
+						166 toggle button Description: 3l, Sente Gold, Value: off
+						167 toggle button Description: 2l, empty, legal destination, Value: off
+						168 toggle button Description: 1l, empty, Value: off
+					169 text 1k selected. Choose a highlighted destination.
+					170 text YouSente
+					171 text Human player To move
+					172 text Arrows: move focus · Enter/Space: select · Esc: cancel
+					173 text Play paused · resume explicitly to continue Live position · 10 plies
+				174 container Game controls and inspection
+					175 text Play is paused.
+					176 button Resume play
+					177 container
+						178 heading Repetition obligation, Value: 3
+							179 text Repetition obligation
+						180 text The responsible player must vary the native continuation before the fourth occurrence. The game remains ongoing.
+					181 heading Analysis, Value: 2
+						182 text Analysis
+					183 container Inspector view
+						184 toggle button Play details, Value: on
+						185 toggle button Analyze position, Value: off
+					186 container Engine analysis
+						187 heading Engine, Value: 2
+							188 text Engine
+						189 container Engine turn status
+							190 text Play Paused
+						191 text Play limit: depth 1 · 512 nodes
+						192 text No engine search has completed in this game.
+					193 heading Game Actions, Value: 2
+						194 text Game Actions
+					195 container
+						196 button Take back
+						197 button Offer draw…
+						198 button Resign
+					199 container Moves
+						200 heading Moves, Value: 2
+							201 text Moves
+						202 text 10 moves
+						203 button Starting position
+						204 text Chu complete actions · known-root move pairs · declared root plies 0 · earlier history unknown
+						205 table
+							206 row (selectable) Move number
+Sente
+Gote
+							207 row (selectable)
+								208 cell (selectable) 1.
+								209 cell (selectable) 1. Sente: K1l-1k
+								210 cell (selectable) 1. Gote: K12a-12b
+							211 row (selectable)
+								212 cell (selectable) 2.
+								213 cell (selectable) 2. Sente: K1k-1l
+								214 cell (selectable) 2. Gote: K12b-12a
+							215 row (selectable)
+								216 cell (selectable) 3.
+								217 cell (selectable) 3. Sente: K1l-1k
+								218 cell (selectable) 3. Gote: K12a-12b
+							219 row (selectable)
+								220 cell (selectable) 4.
+								221 cell (selectable) 4. Sente: K1k-1l
+								222 cell (selectable) 4. Gote: K12b-12a
+							223 row (selectable)
+								224 cell (selectable) 5.
+								225 cell (selectable) 5. Sente: K1l-1k
+								226 cell (selectable) 5. Gote: K12a-12b
+	227 close button
+	228 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	229 minimize button
+	230 text mShogi
+231 menu bar
+	232 mShogi
+	233 Edit
+	234 View
+	235 Window
+
+The focused UI element is 156 toggle button Description: 1k, Sente King, selected, Value: on

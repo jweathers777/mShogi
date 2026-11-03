@@ -1,0 +1,2 @@
+There has been no change in the accessibility tree for Window: "mShogi".
+The focused UI element is 140 pop up button (collapsed) Game, Value: Chu Shogi, Secondary Actions: Expand

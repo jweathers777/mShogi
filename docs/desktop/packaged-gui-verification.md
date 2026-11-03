@@ -1,5 +1,23 @@
 # Packaged application GUI verification
 
+## Bounded public diagnostics (MSH-43)
+
+About → Diagnostics captures one complete compact JSON snapshot when expanded.
+It renders at most 65,536 UTF-16 units at once, with Unicode-safe Previous/Next
+pages. Closing and reopening refreshes the capture; polling cannot mix versions
+or rebuild a multi-megabyte text layout. This presentation bound does not change
+archive limits, omit observations or truncate the captured diagnostic text.
+
+The external observer uses real public page buttons, checks contiguous page
+identity and stable count, and reconstructs the complete JSON before validating
+native context. It bounds each response and the total collection; it must not
+parse just page one or substitute a historical archive for current runtime
+identity. Keep this observer synchronized with the ordinary support surface.
+The [Chu product evidence](../m4/chu/evidence/playable-product.json) preserves the
+actual Windows renderer OOM that motivated this correction, its screenshot,
+independent review and subsequent platform results. Do not relabel that failure
+as a mere driver timeout or infer its resolution from component tests.
+
 ## Current macOS identity and approval discipline (MSH-121)
 
 Use at most three reusable application launch identities. Never add a fixture, task ID,
@@ -338,3 +356,15 @@ Windows/Linux journeys require a focused, visible alert. Native screenshots
 follow webview capture and a bounded 150 ms presentation settle; the full raw
 desktop is retained even when webview capture fails. Earlier stale-frame or
 offscreen captures are explicitly qualified in their failed-attempt records.
+
+### Native Linux filename acceptance
+
+The external X11 adapter requires `xclip` in the isolated verification desktop.
+Before accepting Save/Load it validates a bounded absolute filename and confirms
+the actual native entry through Copy and exact clipboard readback. A fresh,
+confirmed marker prevents stale clipboard content from counting as the entry.
+Only a positively observed missing-prefix suffix permits one replacement, then
+an exact second readback; any other mismatch fails before acceptance. Screenshot
+text may be horizontally clipped and is not proof of the entry value. These
+tools and checks are external to normal distributables and do not change product
+permissions or application identities.

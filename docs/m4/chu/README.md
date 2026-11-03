@@ -1,3 +1,12 @@
+> MSH-43 Done — complete fifth-game delivery: the owner explicitly approved the actual
+> traditional-kanji presentation. Chu is the ordinary fifth game through existing
+> New Game/Load, engine, runtime, document, frontend and native-choice owners.
+> [Current acceptance reconciliation](delivery-review.md) and its
+> [structured evidence](evidence/playable-product.json) distinguish completed
+> actual three-platform journeys, native CI and final independent acceptance.
+> Earlier source/profile/native checkpoints below retain their original scope;
+> their historical zero-execution/unsupported statements are not current capability claims.
+
 > Current MSH-86 native handoff: [native contract1](native-v1.md) and
 > [actual execution evidence](native-verification.json). The MSH-82 profile/data
 > records below retain their original source-only scope; native execution is now

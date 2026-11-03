@@ -1,0 +1,42 @@
+{
+  "windows": [
+    {
+      "id": 2097155,
+      "pid": 71781,
+      "title": "mShogi",
+      "geometry": "WINDOW=2097155\nX=131\nY=167\nWIDTH=1180\nHEIGHT=820\nSCREEN=0"
+    },
+    {
+      "id": 2136158,
+      "pid": 71781,
+      "title": "Load mShogi game",
+      "geometry": "WINDOW=2136158\nX=173\nY=166\nWIDTH=1096\nHEIGHT=822\nSCREEN=0"
+    }
+  ],
+  "processes": [
+    {
+      "pid": 71781,
+      "parent_pid": 71779,
+      "start_ticks": "72245",
+      "state": "S",
+      "executable": "/usr/bin/mshogi-desktop",
+      "command": "/usr/bin/mshogi-desktop"
+    },
+    {
+      "pid": 71793,
+      "parent_pid": 71781,
+      "start_ticks": "72252",
+      "state": "S",
+      "executable": "/usr/lib/x86_64-linux-gnu/webkit2gtk-4.1/WebKitNetworkProcess",
+      "command": "/usr/lib/x86_64-linux-gnu/webkit2gtk-4.1/WebKitNetworkProcess 1 16"
+    },
+    {
+      "pid": 71798,
+      "parent_pid": 71781,
+      "start_ticks": "72254",
+      "state": "S",
+      "executable": "/usr/lib/x86_64-linux-gnu/webkit2gtk-4.1/WebKitWebProcess",
+      "command": "/usr/lib/x86_64-linux-gnu/webkit2gtk-4.1/WebKitWebProcess 4 22"
+    }
+  ]
+}

@@ -1,3 +1,10 @@
+> Current MSH-43 follow-through after explicit owner visual approval:
+> [product reconciliation](delivery-review.md) records normal fifth-game
+> activation, native engine/console/notation, packaged journeys and current
+> acceptance. Production sourcebba834e preserves the approved renderer and native
+> profile/kernel; final native CI is reused from identical Rust/host source8ea3245.
+> Historical profile/shared/visual handoffs below retain their original gates.
+
 > MSH-86 implementation follow-through: the [actual native API/record1](native-v1.md)
 > now supplies the handoff described below. Its separate execution evidence does
 > not rewrite the original MSH-82 zero-execution checkpoint. Shared78/product43
@@ -99,7 +106,7 @@ all eight original43 criteria. Reuse unchanged native/shared evidence and perfor
 real packaged/platform verification at this product boundary. Shared46/47/88/89,
 Chu diagnostic107, Tenjiku and M5 remain separately owned and open.
 
-## MSH-78 integrated shared handoff (2026-11-03)
+## Historical MSH-78 integrated shared handoff (2026-11-03)
 
 Current implementation/evidence: [shared-v1.md](shared-v1.md) and the single
 [shared-verification.json](shared-verification.json) record. Explicit Chu routing,
@@ -117,7 +124,7 @@ The ten consumer-row mapping explicitly separates MSH-78 infrastructure evidence
 from the finished-window obligation still owned by43. Native86 evidence remains
 unchanged historical evidence; shared execution does not recount it.
 
-## MSH-43 working visual checkpoint (2026-11-03)
+## Historical MSH-43 working visual checkpoint (2026-11-03)
 
 The [functional engine contract](engine-v1.md) and [visual checkpoint](desktop-visual-checkpoint.md)
 record actual search/results, native notation/console, whole-document result

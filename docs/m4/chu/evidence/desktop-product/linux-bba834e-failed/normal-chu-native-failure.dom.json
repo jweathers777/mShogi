@@ -1,0 +1,15 @@
+{
+  "text": "\u6b69\nmShogi\n\nCHU\nLocal engine\nUNMODIFIED\nnormal-chu-repetition10-source.mshogi\nNew game\nSave\nLoad\nYOUR GAME\n\nSente to move\nYou play Sente against mShogi\n\u2195\nFlip board\nm\nmShogiGote\nYour opponent\n\u91d1\n\u5c06\n\u7389\n\u5c06\n\u7389\n\u5c06\n\u91d1\n\u5c06\n12\n11\n10\n9\n8\n7\n6\n5\n4\n3\n2\n1\na\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk\nl\nY\nYouSente\nHuman player\nTo move\nArrows: move focus \u00b7 Enter/Space: select \u00b7 Esc: cancel\nPlay paused \u00b7 resume explicitly to continue\nLive position \u00b7 10 plies\nPlay is paused.\nResume play\nRepetition obligation\nThe responsible player must vary the native continuation before the fourth occurrence. The game remains ongoing.\nAnalysis\n\nPlay details\nAnalyze position\nEngine\nPlay Paused\nPlay limit: depth 1 \u00b7 512 nodes\nNo engine search has completed in this game.\nGame Actions\n\nTake backOffer draw\u2026Resign\nMoves\n10 moves\nStarting position\nChu complete actions \u00b7 known-root move pairs \u00b7 declared root plies 0 \u00b7 earlier history unknown\nMove number\tSente\tGote\n1.\tK1l-1k\tK12a-12b\n2.\tK1k-1l\tK12b-12a\n3.\tK1l-1k\tK12a-12b\n4.\tK1k-1l\tK12b-12a\n5.\tK1l-1k\tK12a-12b",
+  "focus": {
+    "label": null,
+    "text": "\u6b69mShogiCHULocal engineUnmodifiednormal-chu-repetition10-source.mshogiNew gameSaveLoadYOUR GAMESente to moveYou play Sente against mShogi\u2195 Flip boardmmShogiGoteYour opponent\u91d1\u5c06\u7389\u5c06\u7389\u5c06\u91d1\u5c06121110987654321abcdefghijklYYouSenteHuman playerTo moveArrows: move focus \u00b7 Enter/Space: select \u00b7 Esc: cancelPlay paused \u00b7 resume explicitly to continueLive position \u00b7 10 pliesPlay is paused.Resume playRepetition obligationThe responsible player must vary the native continuation before the fourth occurrence. The game remains ongoing.AnalysisPlay detailsAnalyze positionEnginePlay pausedPlay limit: depth 1 \u00b7 512 nodesNo engine search has completed in this game.Game ActionsTake backOffer draw\u2026ResignMoves10 movesStarting positionChu complete actions \u00b7 known-root move pairs \u00b7 declared root plies 0 \u00b7 earlier history unknownMove numberSenteGote1.K1l-1kK12a-12b2.K1k-1lK12b-12a3.K1l-1kK12a-12b4.K1k-1lK12b-12a5.K1l-1kK12a-12b\n",
+    "tag": "BODY"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 795,
+    "width": 1180
+  },
+  "common_actions": [],
+  "inputs": []
+}

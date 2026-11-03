@@ -1,0 +1,15 @@
+{
+  "text": "\u6b69\nmShogi\n\nCHU\nLocal engine\nUNMODIFIED\nnormal-chu-royal-survivor-source.mshogi\nNew game\nSave\nLoad\nYOUR GAME\n\nGote to move\nYou play Gote against mShogi\n\u2195\nFlip board\nm\nmShogiSente\nYour opponent\n\u6b69\n\u5175\n\u7389\n\u5c06\n\u592a\n\u5b50\n\u98db\n\u8eca\n\u6b69\n\u5175\n\u7389\n\u5c06\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\nl\nk\nj\ni\nh\ng\nf\ne\nd\nc\nb\na\n1\n12j selected. Choose a highlighted destination.\nCOMPLETE YOUR MOVE\n\nChoose complete action\nThe action is applied only after you choose.\nDo Not Promote\nPromote\nCancel selection\nY\nYouGote\nHuman player\nTo move\nArrows: move focus \u00b7 Enter/Space: select \u00b7 Esc: cancel\nPlay paused \u00b7 resume explicitly to continue\nLive position \u00b7 0 plies\nPlay is paused.\nResume play\nAnalysis\n\nPlay details\nAnalyze position\nEngine\nPlay Paused\nPlay limit: depth 1 \u00b7 512 nodes\nNo engine search has completed in this game.\nGame Actions\n\nTake backOffer draw\u2026Resign\nMoves\n0 moves\nStarting position\nChu complete actions \u00b7 known-root move pairs \u00b7 declared root plies 0 \u00b7 earlier history unknown\nMove number\tSente\tGote\nNo moves in known history.",
+  "focus": {
+    "label": null,
+    "text": "Do not promote",
+    "tag": "BUTTON"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 795,
+    "width": 1180
+  },
+  "common_actions": [],
+  "inputs": []
+}

@@ -1,0 +1,33 @@
+Window: "mShogi", App: mShogi.
+0 standard window mShogi, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 container About mShogi
+				4 heading About mShogi, Value: 2
+					5 text About mShogi
+				6 text mShogi 0.1.0 · Chess, Shogi, Xiangqi, Tori Shogi and Chu Shogi
+				7 container (expanded) Secondary Actions: Collapse
+					8 summary Diagnostics, Value: on
+						9 text Diagnostics
+					10 text Game profile, exact history, engine requests, work limits and resource details.
+					11 text Captured when Diagnostics was opened. Close and reopen it to refresh. All diagnostic text is available across these pages; your saved game is unchanged.
+					12 container Diagnostic pages
+						13 button Previous diagnostics page
+						14 text Page 2 of 40
+						15 button Next diagnostics page
+					16 text :"G","promoted":false},{"side":"sente","base":"K","promoted":false},{"side":"sente","base":"DE","promoted":false},{"side":"sente","base":"G","promoted":false},{"side":"sente","base":"Si","promoted":false},{"side":"sente","base":"Cu","promoted":false},{"side":"sente","base":"FL","promoted":false},{"side":"sente","base":"L","promoted":false}],"side":"sente","root":{"kind":"standard","source":null,"declared_completed_plies":0},"accepted_plies":0},"protection":{"owner":null,"squares":[]}},"root_conclusion":null
+				17 summary Font license, Value: off
+					18 text Font license
+				19 button Quit application
+				20 button Close
+	21 close button
+	22 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	23 minimize button
+	24 text mShogi
+25 menu bar
+	26 mShogi
+	27 Edit
+	28 View
+	29 Window
+
+The focused UI element is 2 HTML content Description: mShogi, URL: tauri://localhost

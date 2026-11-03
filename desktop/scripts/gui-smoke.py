@@ -2172,6 +2172,14 @@ class Journey:
             'qualification':'Native current-envelope archive through the OS file picker; no QA activation, IPC or frontend rules.'})
         return after
 
+    def assert_chu_promotion_choices(self):
+        # CSS capitalizes rendered button text. Native completion labels remain
+        # exact DOM textContent; observe them without changing or activating input.
+        labels = self.web.read("[...document.querySelectorAll('.promotion-dialog .promotion-choices button')].map(e=>e.textContent.trim())")
+        assert sorted(labels) == ['Do not promote', 'Promote'], labels
+        self.record('Observe exact native optional Chu promotion choices', labels)
+        return labels
+
     def chu_action(self, origin, steps, count, promote=None, complete_here=False):
         """Enter one independently expected complete native route through real controls."""
         w = self.web
@@ -2276,7 +2284,7 @@ class Journey:
         self.capture('normal-two-ordered-captures'); self.chu_save(self.args.output/'normal-chu-compound.mshogi')
         self.chu_load_fixture('promotion'); self.chu_events(0)
         w.click(self.chu_square('6e')); w.click(self.chu_square('6d')); wait(lambda:w.has('.promotion-dialog'),'native optional promotion alternatives')
-        assert w.text('.promotion-dialog').find('Do not promote')>=0; w.key('\ue00c'); self.chu_events(0)
+        self.assert_chu_promotion_choices(); w.key('\ue00c'); self.chu_events(0)
         promoted = self.chu_action('6e',['6d'],1,promote=True)
         assert w.read(f"document.querySelector({json.dumps(self.chu_square('6d'))})?.querySelector('[data-chu-face=Prince]')!==null")
         assert len([royal for royal in promoted['chu']['live']['royals'] if royal['identity']['piece']['side']=='sente']) == 2

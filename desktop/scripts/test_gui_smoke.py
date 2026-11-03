@@ -1259,6 +1259,20 @@ class ChuNormalProductEvidenceTests(unittest.TestCase):
             self.assertFalse(module.native_action_identity_matches(json.dumps({**expected,**change}),text),change)
         self.assertFalse(module.native_action_identity_matches('{"from":[6,6],"route":[[7,5],[6,6]],"promote":false,"promote":false}',text))
 
+    def test_chu_optional_promotion_observes_native_labels_despite_capitalized_innertext(self):
+        journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()
+        journey.web.text.return_value='Promote Do Not Promote Cancel Selection'
+        journey.web.read.return_value=['Promote','Do not promote']
+        self.assertEqual(journey.assert_chu_promotion_choices(),['Promote','Do not promote'])
+        expression=journey.web.read.call_args.args[0]
+        self.assertIn('textContent.trim()',expression)
+        self.assertIn('.promotion-dialog .promotion-choices button',expression)
+        self.assertNotIn('innerText',expression)
+        journey.web.text.assert_not_called();journey.web.click.assert_not_called();journey.web.button.assert_not_called()
+        for labels in (['Promote'],['Do not promote'],['Promote','Do Not Promote'],['Promote','Do not promote','invented action']):
+            journey.web.read.return_value=labels
+            with self.assertRaises(AssertionError):journey.assert_chu_promotion_choices()
+
     def test_chu_archive_retains_exact_complete_route_before_takeback(self):
         action={'from':[6,6],'route':[[7,5],[6,6]],'promote':False}
         record={'game_kind':'chu','payload':{'root':{'native':'Chu root'},'events':[]}}

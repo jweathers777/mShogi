@@ -30,6 +30,8 @@ interface Props {
   helpTarget?: HTMLElement | null;
   // Native identity decoration only; the shared controller still owns choices.
   renderNativePiece?: (piece: NativePiece, rotated: boolean) => ReactNode;
+  // Layout only: keep dense native-board coordinates outside occupied squares.
+  coordinateFrame?: boolean;
 }
 const chessGlyphs: Record<string, string> = {
   king: "♚", queen: "♛", rook: "♜", bishop: "♝", knight: "♞", pawn: "♟",
@@ -43,7 +45,7 @@ export function displayedSquares(orientation: Color, geometry = chessGeometry): 
   return ranks.flatMap((rank) => files.map((file) => `${file}${rank}`));
 }
 export function Board({ pieces, choices, orientation, version, disabled,
-  onPlay, geometry = chessGeometry, glyphs = {}, profile = "chess", nativeOrientation, hands = [], nativeFirstOwner, humanOwner, onInspect, inspectionDisabled = disabled, inspectionContextKey, helpTarget, completedAction, renderNativePiece }: Props) {
+  onPlay, geometry = chessGeometry, glyphs = {}, profile = "chess", nativeOrientation, hands = [], nativeFirstOwner, humanOwner, onInspect, inspectionDisabled = disabled, inspectionContextKey, helpTarget, completedAction, renderNativePiece, coordinateFrame = false }: Props) {
   const completionTitle = useId();
   const squares = nativeOrientation ? nativeOrientation.ranks.flatMap(rank => nativeOrientation.files.map(file => `${file}${rank}`)) : displayedSquares(orientation, geometry);
   const columns = geometry.files.length, rows = geometry.ranks.length;
@@ -59,7 +61,8 @@ export function Board({ pieces, choices, orientation, version, disabled,
   const promotionDialog = completions.length > 0 && profile === "chess" && completions.every(choice => choice.completion !== null);
   const displayFiles = nativeOrientation?.files ?? (orientation === "white" ? geometry.files : [...geometry.files].reverse());
   const displayRanks = nativeOrientation?.ranks ?? (orientation === "white" ? [...geometry.ranks].reverse() : geometry.ranks);
-  const width = 40 + columns * 100, height = 40 + rows * 100;
+  const padding = coordinateFrame ? 40 : 20;
+  const width = padding * 2 + columns * 100, height = padding * 2 + rows * 100;
   const help = <p className={`board-help${inspection || inspectionPending ? " movement-inspection-status" : ""}`}>{inspection ? inspectionStatus(inspection.label) : inspectionPending ? "Loading read-only movement inspection…" : "Arrows: move focus · Enter/Space: select · Esc: cancel"}</p>;
   const routeControls = interaction.continuation && <div className="route-selection" role="group" aria-label="Partial route selection" onKeyDown={event => { if (event.key === "Escape") { event.preventDefault(); interaction.cancel(); } }}>
     <p>Selected route: {selected} → {prefix.join(" → ")}. No action submitted.</p>
@@ -74,14 +77,14 @@ export function Board({ pieces, choices, orientation, version, disabled,
         onFocus={() => interaction.onFocus(hand.origin)} onClick={() => interaction.select(hand.origin)} onKeyDown={event => interaction.keyDown(event, hand.origin)}>{hand.label}</button>)}
     </div>}
     <div className="board-fit">
-      <svg className="chess-board" viewBox={`0 0 ${width} ${height}`} role="group" aria-label={`${geometry.label}, ${nativeOrientation?.label ?? orientation} at bottom`}>
+      <svg className={`chess-board${coordinateFrame ? " outside-coordinates" : ""}`} viewBox={`0 0 ${width} ${height}`} role="group" aria-label={`${geometry.label}, ${nativeOrientation?.label ?? orientation} at bottom`}>
         <rect width={width} height={height} rx="8" className="board-border" />
         {squares.map((square, index) => {
           const piece = pieces.find(piece => piece.square === square);
           const row = Math.floor(index / columns), column = index % columns;
           const target = destinations.includes(square), available = choices.some(choice => choice.from === square);
           const label = `${piece?.label ?? `${square}, empty`}${selected === square ? inspection ? `, Inspecting ${inspection.label}` : inspectionPending ? ", loading movement inspection" : ", selected" : ""}${prefix.includes(square) ? ", selected route step" : ""}${target ? inspection ? ", read-only inspection destination" : ", legal destination" : ""}`;
-          return <g key={square} ref={node => interaction.register(square, node)} transform={`translate(${20 + column * 100}, ${20 + row * 100})`}
+          return <g key={square} ref={node => interaction.register(square, node)} transform={`translate(${padding + column * 100}, ${padding + row * 100})`}
             role="button" tabIndex={(squares.includes(interaction.focused) ? interaction.focused : geometry.initialFocus) === square ? 0 : -1} aria-label={label} aria-pressed={selected === square} aria-disabled={interaction.interactionDisabled}
             className={`square ${(row + column) % 2 === 0 ? "light" : "dark"} ${selected === square && !inspection && !inspectionPending ? "selected" : ""} ${target && !inspection ? "target" : ""} ${available && !disabled ? "available" : ""}`}
             onFocus={() => interaction.onFocus(square)} onClick={() => interaction.select(square)} onKeyDown={event => interaction.keyDown(event, square)}>
@@ -90,16 +93,20 @@ export function Board({ pieces, choices, orientation, version, disabled,
             {piece && (renderNativePiece && "owner" in piece ? renderNativePiece(piece, piece.owner !== nativeOrientation?.bottomOwner) : <text x="50" y="74" textAnchor="middle" data-owner={"owner" in piece ? piece.owner : piece.color} className={`piece ${"owner" in piece ? (piece.owner === nativeFirstOwner ? "native-first-owner" : "native-second-owner") : piece.color}`} aria-hidden="true">{"text" in piece ? piece.text : glyphs[piece.kind] ?? chessGlyphs[piece.kind] ?? "?"}</text>)}
             {inspection?.origin === square && <rect className="inspection-origin-ring" x="7" y="7" width="86" height="86" rx="5" aria-hidden="true" />}
             {target && inspection && <circle cx="50" cy="50" r={piece ? "43" : "19"} className="inspection-marker" aria-hidden="true" />}
-            {column === 0 && <text x="7" y="20" className="coordinate" aria-hidden="true">{displayRanks[row]}</text>}
-            {row === rows - 1 && <text x="82" y="93" className="coordinate" aria-hidden="true">{displayFiles[column]}</text>}
+            {!coordinateFrame && column === 0 && <text x="7" y="20" className="coordinate" aria-hidden="true">{displayRanks[row]}</text>}
+            {!coordinateFrame && row === rows - 1 && <text x="82" y="93" className="coordinate" aria-hidden="true">{displayFiles[column]}</text>}
             <rect x="3" y="3" width="94" height="94" className="focus-ring" />
           </g>;
         })}
-        {renderNativePiece && selected && prefix.length > 0 && !inspection && <g className="native-selected-route" aria-hidden="true" pointerEvents="none" data-selected-route={[selected, ...prefix].join(">")}>
-          <polyline points={[selected, ...prefix].map(key => { const i = squares.indexOf(key); return `${70 + i % columns * 100},${70 + Math.floor(i / columns) * 100}`; }).join(" ")} />
-          {prefix.map((key, index) => { const i = squares.indexOf(key); return <g key={index} transform={`translate(${104 + i % columns * 100} ${36 + Math.floor(i / columns) * 100})`}><circle r="14" /><text textAnchor="middle" y="5">{index + 1}</text></g>; })}
+        {coordinateFrame && <g className="native-coordinate-frame" aria-hidden="true" pointerEvents="none">
+          {displayFiles.map((file, index) => <text key={`file-${index}`} className="coordinate" data-coordinate-axis="file" x={padding + index * 100 + 50} y={height - 8} textAnchor="middle">{file}</text>)}
+          {displayRanks.map((rank, index) => <text key={`rank-${index}`} className="coordinate" data-coordinate-axis="rank" x={width - 20} y={padding + index * 100 + 62} textAnchor="middle">{rank}</text>)}
         </g>}
-        <CompletedActionCue action={completedAction} center={key => { const index = squares.indexOf(key); return index < 0 ? null : [70 + index % columns * 100, 70 + Math.floor(index / columns) * 100]; }} />
+        {renderNativePiece && selected && prefix.length > 0 && !inspection && <g className="native-selected-route" aria-hidden="true" pointerEvents="none" data-selected-route={[selected, ...prefix].join(">")}>
+          <polyline points={[selected, ...prefix].map(key => { const i = squares.indexOf(key); return `${padding + 50 + i % columns * 100},${padding + 50 + Math.floor(i / columns) * 100}`; }).join(" ")} />
+          {prefix.map((key, index) => { const i = squares.indexOf(key); return <g key={index} transform={`translate(${padding + 84 + i % columns * 100} ${padding + 16 + Math.floor(i / columns) * 100})`}><circle r="14" /><text textAnchor="middle" y="5">{index + 1}</text></g>; })}
+        </g>}
+        <CompletedActionCue action={completedAction} center={key => { const index = squares.indexOf(key); return index < 0 ? null : [padding + 50 + index % columns * 100, padding + 50 + Math.floor(index / columns) * 100]; }} />
       </svg>
     </div>
     {helpTarget === undefined ? <>{help}{routeControls}</> : helpTarget ? createPortal(<>{help}{routeControls}</>, helpTarget) : null}

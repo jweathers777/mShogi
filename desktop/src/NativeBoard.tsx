@@ -22,12 +22,13 @@ export function nativeSnapshotIsNewer(current: NativeBoardSnapshot | null, incom
   if (current === null) return true;
   return incoming.token.document > current.token.document || (incoming.token.document === current.token.document && incoming.token.revision > current.token.revision);
 }
-export function NativeBoard({ snapshot, bottomSide, onPlay, completedAction, onInspect, disabled, inspectionDisabled, helpTarget, renderNativePiece }: {
+export function NativeBoard({ snapshot, bottomSide, onPlay, completedAction, onInspect, disabled, inspectionDisabled, helpTarget, renderNativePiece, coordinateFrame }: {
   snapshot: NativeBoardSnapshot; bottomSide: string; onPlay: (action: string) => void;
   completedAction?: CompletedActionGeometry | null;
   onInspect?: InspectMovement; disabled?: boolean; inspectionDisabled?: boolean;
   helpTarget?: HTMLElement | null;
   renderNativePiece?: (piece: NativePiece, rotated: boolean) => ReactNode;
+  coordinateFrame?: boolean;
 }) {
   if (snapshot.board.intersections) return <p role="alert">This game requires its native intersection renderer.</p>;
   const orientation = snapshot.orientations.find((o) => o.side.key === bottomSide);
@@ -39,6 +40,7 @@ export function NativeBoard({ snapshot, bottomSide, onPlay, completedAction, onI
     orientation="white" version={snapshot.token.selection}
     profile={`${snapshot.profile}:${snapshot.token.document}:${snapshot.token.version}`}
     {...(snapshot.human ? { humanOwner: snapshot.human.key } : {})} onInspect={onInspect} inspectionDisabled={inspectionDisabled ?? disabled ?? !snapshot.capabilities.board_action} inspectionContextKey={JSON.stringify(snapshot.token)}
+    {...(coordinateFrame !== undefined ? { coordinateFrame } : {})}
     {...(helpTarget !== undefined ? { helpTarget } : {})} {...(renderNativePiece ? { renderNativePiece } : {})}
     disabled={Boolean(disabled) || !snapshot.capabilities.board_action} onPlay={onPlay} />;
 }

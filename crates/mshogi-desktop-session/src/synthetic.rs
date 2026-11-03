@@ -146,6 +146,7 @@ impl SyntheticController {
                     },
                     steps: action.route.into_iter().map(coordinate).collect(),
                     effects: vec![],
+                    captures: None,
                 }),
             profile: SYNTHETIC_PROFILE,
             version: self.version,

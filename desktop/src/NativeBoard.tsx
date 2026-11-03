@@ -5,7 +5,7 @@ import { Board } from "./Board";
 import type { CompletedActionGeometry, NativeChoice, NativeHand, NativePiece } from "./boardPresentation";
 export interface NativeBoardSnapshot {
   token: { document: number; version: number; revision: number; selection: number };
-  game: "chess" | "shogi" | "xiangqi" | "tori";
+  game: "chess" | "shogi" | "xiangqi" | "tori" | "chu";
   profile: string;
   human?: { key: string };
   board: { files: string[]; ranks: string[]; label: string; initial_focus: string;

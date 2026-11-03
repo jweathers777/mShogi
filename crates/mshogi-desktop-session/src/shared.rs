@@ -4,10 +4,14 @@ use super::*;
 #[path = "shared_archive.rs"]
 pub(super) mod archive;
 pub use archive::{NativeDesktopSettings, SharedDocumentState, SharedOpenToken, ShogiSettings};
+#[path = "shared_chu.rs"]
+pub(super) mod chu;
 #[path = "shared_inspection.rs"]
 mod inspection;
 #[path = "shared_tori.rs"]
 pub(super) mod tori;
+#[path = "shared_transaction.rs"]
+mod transaction;
 #[path = "shared_xiangqi.rs"]
 pub(super) mod xiangqi;
 pub use inspection::{MovementInspection, MovementInspectionQuery};
@@ -58,6 +62,12 @@ pub struct PresentedSide {
 }
 pub(super) fn side(id: NativeSide) -> PresentedSide {
     let (profile, name, first) = match id {
+        NativeSide::Chu(mshogi_core::chu::Side::Sente) => {
+            (RulesProfile::ChuJcsa2019V1, "Sente", true)
+        }
+        NativeSide::Chu(mshogi_core::chu::Side::Gote) => {
+            (RulesProfile::ChuJcsa2019V1, "Gote", false)
+        }
         NativeSide::Tori(mshogi_core::tori::Side::Sente) => {
             (RulesProfile::ToriModernV1, "Sente", true)
         }
@@ -493,6 +503,9 @@ pub struct SharedSnapshot {
     /// Tori-native exact prefix, outcome and provenance; no cross-game inference.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub tori: Option<tori::ToriPresentation>,
+    /// Native Chu royal, Lion-right, repetition and complete-effect metadata.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub chu: Option<chu::ChuPresentation>,
     /// Exact native replacement precondition for New Game and Open.
     pub open_token: SharedOpenToken,
     /// Authoritative document metadata and game-native settings.
@@ -667,6 +680,18 @@ pub enum SessionOperation {
         /// Authoritative complete native command.
         command: mshogi_core::tori::GameCommand,
     },
+    /// Complete Chu command; native board and terminal actor semantics remain distinct.
+    Chu {
+        /// Explicit native actor.
+        actor: mshogi_core::chu::Side,
+        /// Complete native command, never a partial route.
+        command: mshogi_core::chu::GameCommand,
+    },
+    /// Native Chu orientation preferences; no engine defaults implied.
+    ChuPreferences {
+        /// Native document preferences.
+        settings: crate::chu_document::ChuSettings,
+    },
     /// Native Tori document preferences, with no invented engine defaults.
     ToriPreferences {
         /// Persisted native orientation.
@@ -748,6 +773,13 @@ enum OperationWire {
     ToriPreferences {
         settings: crate::tori_document::ToriSettings,
     },
+    Chu {
+        actor: mshogi_core::chu::Side,
+        command: mshogi_core::chu::GameCommand,
+    },
+    ChuPreferences {
+        settings: crate::chu_document::ChuSettings,
+    },
     // Shogi complete action is admitted by Game::submit, never reconstructed in JS.
     Play {
         // Opaque complete native action identifier.
@@ -790,6 +822,7 @@ impl<'de> Deserialize<'de> for SessionOperation {
         struct Header {
             kind: String,
         }
+        document::reject_duplicates(raw.get().as_bytes()).map_err(serde::de::Error::custom)?;
         let header: Header = serde_json::from_str(raw.get()).map_err(serde::de::Error::custom)?;
         if header.kind == "replace" {
             #[derive(Deserialize)]
@@ -847,7 +880,7 @@ pub(super) struct SharedState {
     pub moves_cache: std::cell::RefCell<crate::moves::Cache>,
     pub admission: Option<(u64, bool)>,
     pub admission_consumes_response: bool,
-    pub tori_admission: bool,
+    pub transactional_admission: bool,
     pub rollback: Option<ShogiRollback>,
     #[cfg(test)]
     pub manual_engine: bool,
@@ -1007,6 +1040,7 @@ impl DesktopController {
             return Err("Application capacity: document identity exhausted.".into());
         }
         let receipt = match human {
+            NativeSide::Chu(_) => return Err("Chu is not an implemented playable desktop game; use the separate native verification route.".into()),
             NativeSide::Tori(human) => {
                 let record =
                     mshogi_core::tori::GameRecord::from_game(&mshogi_core::tori::Game::standard())
@@ -1062,7 +1096,7 @@ impl DesktopController {
         human: Color,
         paused: bool,
     ) -> Result<AdmissionReceipt, String> {
-        let preserve_tori = self.session.tori().is_some();
+        let preserve_tori = self.session.tori().is_some() || self.session.chu().is_some();
         self.retire_admission();
         if !preserve_tori {
             self.bridge.cancel();
@@ -1080,7 +1114,7 @@ impl DesktopController {
             }),
         )?;
         self.shared.admission = Some((self.session.document_epoch, false));
-        self.shared.tori_admission = preserve_tori;
+        self.shared.transactional_admission = preserve_tori;
         Ok(self
             .admission_receipt
             .clone()
@@ -1097,6 +1131,7 @@ impl DesktopController {
         if self.session.shogi().is_some()
             || self.session.xiangqi().is_some()
             || self.session.tori().is_some()
+            || self.session.chu().is_some()
         {
             Err("Wrong game: a Chess mutation cannot act on another active native game.".into())
         } else {
@@ -1119,7 +1154,9 @@ impl DesktopController {
                 "The session or selected event changed; use its current native snapshot.".into(),
             );
         }
-        let active = if self.session.tori().is_some() {
+        let active = if self.session.chu().is_some() {
+            GameKind::Chu
+        } else if self.session.tori().is_some() {
             GameKind::Tori
         } else if self.session.xiangqi().is_some() {
             GameKind::Xiangqi
@@ -1138,6 +1175,12 @@ impl DesktopController {
         if let SessionOperation::Replace { record, human } = command.operation {
             if record.game_kind() != human.game() {
                 return Err("Replacement side and game disagree.".into());
+            }
+            if let CanonicalRecord::Chu(record) = record {
+                let NativeSide::Chu(human) = human else {
+                    unreachable!()
+                };
+                return self.replace_chu(*record, human);
             }
             if let CanonicalRecord::Tori(record) = record {
                 let NativeSide::Tori(human) = human else {
@@ -1177,6 +1220,9 @@ impl DesktopController {
                 return Err("Unsupported desktop game; the current document was preserved.".into());
             }
             return Ok(self.shared_snapshot());
+        }
+        if self.session.chu().is_some() {
+            return self.chu_command(command.operation);
         }
         if self.session.tori().is_some() {
             return self.tori_command(command.operation);
@@ -1341,6 +1387,9 @@ impl DesktopController {
         self.accept_observation(response.observation)
     }
     pub(crate) fn accept_observation(&mut self, response: ExecutionObservation) -> bool {
+        if self.session.chu().is_some() {
+            return self.accept_chu_observation(response);
+        }
         if self.session.tori().is_some() {
             return self.accept_tori_observation(response);
         }
@@ -1370,6 +1419,9 @@ impl DesktopController {
     pub fn shared_snapshot(&mut self) -> SharedSnapshot {
         self.poll_native_admission();
         self.poll_files();
+        if self.session.chu().is_some() {
+            return self.poll_chu();
+        }
         if self.session.tori().is_some() {
             return self.poll_tori();
         }
@@ -1431,6 +1483,7 @@ impl DesktopController {
         if self.session.shogi().is_some()
             || self.session.xiangqi().is_some()
             || self.session.tori().is_some()
+            || self.session.chu().is_some()
         {
             return self.shared_snapshot();
         }
@@ -1440,6 +1493,9 @@ impl DesktopController {
     }
     pub(super) fn pause_shared_for_close(&mut self) {
         self.retire_admission();
+        if self.session.chu().is_some() {
+            self.close_chu();
+        }
         if self.session.tori().is_some() {
             self.close_tori();
         }
@@ -1607,6 +1663,7 @@ impl DesktopController {
             moves: self.present_moves(game.events().len()),
             xiangqi: None,
             tori: None,
+            chu: None,
             open_token: self.shared_open_token(),
             document: self.shared_document(),
             io: self.io_state.clone(),
@@ -1795,6 +1852,7 @@ impl DesktopController {
             moves: self.present_moves(snapshot.view.event_index),
             xiangqi: None,
             tori: None,
+            chu: None,
             open_token: self.shared_open_token(),
             document: self.shared_document(),
             io: self.io_state.clone(),
@@ -2039,6 +2097,7 @@ impl DesktopController {
             .borrow_mut()
             .get(key, selected, || match &self.session {
                 ActiveDocument::Tori { state, .. } => crate::moves::tori_projection(&state.game),
+                ActiveDocument::Chu { state, .. } => crate::moves::chu_projection(&state.game),
                 ActiveDocument::Chess(state) => crate::moves::chess_projection(state),
                 ActiveDocument::Shogi { state, .. } => crate::moves::shogi_projection(&state.game),
                 ActiveDocument::Xiangqi { state, .. } => {
@@ -2055,3 +2114,7 @@ mod moves_tests;
 #[cfg(test)]
 #[path = "workflow_tests.rs"]
 mod workflow_tests;
+
+#[cfg(test)]
+#[path = "shared_chu_tests.rs"]
+mod chu_tests;

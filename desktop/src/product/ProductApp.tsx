@@ -31,7 +31,7 @@ export function ProductApp() {
     if (!source) return; setMessage("");
     // New/Load are deliberate replacement requests. Merely opening either
     // chooser leaves the current native document installed until admission.
-    if (intent === "new") { setChoice({ source, game: source.game, side: source.human.first_mover ? "first" : "second" }); return; }
+    if (intent === "new") { setChoice({ source, game: source.game === "chu" ? "chess" : source.game, side: source.human.first_mover ? "first" : "second" }); return; }
     if (intent === "open") { void session.file(source, "open"); return; }
     if (source.close_requires_save) setPending({ source });
     else void session.finishClose(source).then(closed => { if (!closed) void session.cancelClose(); });

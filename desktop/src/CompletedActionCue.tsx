@@ -32,6 +32,11 @@ export function CompletedActionCue({ action, center, radius = 44 }: {
         return point && <g key={index} transform={`translate(${point[0] + radius - 9} ${point[1] - radius + 9})`}><circle r="10" /><text textAnchor="middle" y="4">{index + 1}</text></g>;
       })}
     </g>}
+    {action.captures?.map((capture, index) => {
+      const point = center(capture.square);
+      return point && <g key={`capture-${index}`} data-native-capture={capture.square} data-capture-order={index + 1} data-captured-kind={capture.original_kind}
+        transform={`translate(${point[0]} ${point[1]})`}><path className="completed-action-capture" d="M-9 -9L9 9M9 -9L-9 9" /></g>;
+    })}
     {originKeys.map(key => corners(key, "origin"))}
     {destinationKeys.map(key => corners(key, "destination"))}
   </g>;

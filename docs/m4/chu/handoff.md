@@ -98,3 +98,21 @@ stopped Resume, analysis/cancel/Retry, Take back and native dirty Quit must supp
 all eight original43 criteria. Reuse unchanged native/shared evidence and perform
 real packaged/platform verification at this product boundary. Shared46/47/88/89,
 Chu diagnostic107, Tenjiku and M5 remain separately owned and open.
+
+## MSH-78 integrated shared handoff (2026-11-03)
+
+Current implementation/evidence: [shared-v1.md](shared-v1.md) and the single
+[shared-verification.json](shared-verification.json) record. Explicit Chu routing,
+current document envelope, immutable native candidate admission, single controller,
+exact history/Take back, shared compound choices/effects/royal metadata and native
+inspection are implemented. Existing four-game product activation remains intact;
+Chu is still unsupported/unscored and absent from ordinary New/Load.
+
+MSH-43 consumes these real contracts rather than creating another architecture.
+Its traditional kanji renderer, functional search/engine/console/notation and
+finished full-board packaged journeys are not completed by the labelled native
+contract surface. Preserve the measured12M aggregate document allowance, actual
+closing reservations, historical observations and fresh stopped restoration.
+The ten consumer-row mapping explicitly separates MSH-78 infrastructure evidence
+from the finished-window obligation still owned by43. Native86 evidence remains
+unchanged historical evidence; shared execution does not recount it.

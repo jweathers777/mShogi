@@ -1,10 +1,11 @@
 ---
 id: MSH-78
 title: Extend shared contracts for real chu shogi compound and royal consumers
-status: Ready
-assignee: []
+status: In Review
+assignee:
+  - '@Codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-02T23:08:00Z'
+updated_date: '2026-11-03T08:50:00Z'
 labels:
   - m4
   - owner-msh-46
@@ -55,6 +56,12 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+2026-11-03: sole builder/integrator Codex on clean primary codex/rewrite at7362307; original four AC/DoD and69/72/73/86 dependencies preserved. A: extend explicit native GameKind/profile/schema/side/command/RawValue record dispatch; inspect all exhaustive production consumers, standalone Tauri host and TypeScript early. Add Chu immutable payload codec inside the current DocumentEnvelope, strict native replay and actual retained-context accounting; measure realistic compound/history/observation/retired-branch workloads and establish bounded aggregate admission with encoded Stop/Resign/Close reservations. B: integrate native Chu Game and validated candidate into existing ActiveDocument/DesktopController operation/persistence/installation lifecycle; retain actors, exact history/prefixes, fresh stopped reopen, native Undo and desktop Take back, atomic replacement, dirty Quit and stale execution retirement. No second runtime, document format or persistence owner. C: native-derived 12x12 pieces/royals/threats/obligations/complete choices/effects/Moves geometry and immutable inspection; exercise real routes via existing PresentedChoice/useNativeChoiceController, with a clearly labeled development consumer only. No frontend rules, Shogi hands or normal Chu chooser/Load activation. Execution remains actual supervised UnsupportedMode and unscored until43. D: real Chu consumer tests and fixtures, exact accounting of applicable ten future corpus rows vs43 product obligations, focused four-game boundary regressions, measured capacity/adversarial/lifecycle tests and separate independent reviews. Required CI: final-source three-platform Rust jobs plus applicable frontend/typecheck/build and standalone-host/package checks; no finished Chu GUI campaign. One structured evidence record, normal integration/push and original-criteria finalization only after required evidence; stop78,43/M4 open.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -63,4 +70,8 @@ MSH82 refinement2026-11-02: consume actual86 payload under mshogi.chu.jcsa2019.v
 MSH86 realnative handoff2026-11-02 now documented in docs/m4/chu/native-v1.md; no78implementation starts. Original4AC/4DoD and complete69/72/73/86dependencies unchanged; Ready/unassigned means actualscope actionable, execution waits86Done. Consume mshogi_core::chu Game/completeorderedAction/Effects/royals/history/strictGameRecord1 underexact mshogi.chu.jcsa2019.v1 edition. Nativebounds512KiB/512events/4Mdeterministicwork with measured227move132199byte/3979825unitrecord and dynamicencodedStop+Resignheadroom; outer16MiB/observation/control/deadline/close admission must separatelymeasure actualChu completecontexts,nevercopyconstantsblindly. NativeGameContext bindsroot+rights+fullevents+monotonicruntime; sharedpurpose/session/request/process/limits remain currentowner. Extend existingGameKind/profile/schema/record/NativeSide dispatch,RawValue codec,onecontroller/document/runtime/frontend/choice owner and realnative-generatedcompound/royal/status/inspection/historyfixtures. Coreconsumeractualtwo-victimpayload/replay/provenance/stalechecks exists;1076nativeassertions240rows do not establishshared/product10futureconsumerrows. KeepChuengineexplicitlyunsupported/unscored until43; no ChessFullinheritance. Preserve fourgamecurrentcompatibility. No newframework/secondruntime/normalchooseractivation. FinalnativeCI/86completionrefs follow structured evidence.
 
 MSH86 native acceptance completed at tested production source f44e0b9673bbbe1cc57a8a45522b04948d1c69bb, required three-platform Rust CI41539884098 all steps PASS. Original69/72/73/86 dependencies now satisfied; Ready/unassigned remains the next bounded shared-consumer assignment, not started here. Actual native-core consumer and stable API/record1/limits documented in docs/m4/chu/native-v1.md with structured evidence native-verification.json. Consume complete routes/ordered effects, native royal/repetition metadata and exact prefixes via strict native replay; measure outer document/observation/control/Stop/Close headroom rather than inheriting native constants. Ten future consumer corpus rows remain78/43 owned. No execution/chooser capability until43; original AC/DoD/dependency sets preserved.
+
+MSH78 checkpoints A-C implemented on primary codex/rewrite; sole builder Codex, independent read-only codec/runtime and frontend reviewers. Explicit native Chu routing, immutable current-envelope codec and one-controller/worker lifecycle, real compound/royal metadata/choices, strict duplicates and supervised UnsupportedMode remain gated from normal New/Load. Measured 12M aggregate replay policy (ordinary-grown227 events:11939711 units; imported equivalent refuses); unchanged outer/native limits and actual Stop/Resign/Close reserves. New focused routing, codec capacity (256→257,4094+2 endings, control/bytes), six controller, actual child/context, native-generated frontend fixtures/interaction and QA-host tests pass. Frontend391 checks, host15, normal macOS package/smoke pass. Review corrected reservation byte, historical flip, replay cancellation checkpoints and narrow unsupported recovery controls; existing evidence and original criteria preserved. Single structured evidence docs/m4/chu/shared-verification.json; final source/CI and integrated acceptance still pending. No43implementation or finished Chu GUI claim.
+
+Coherent source checkpoint ready: all277 desktop-session all-feature tests pass (182.24s), all391 frontend tests pass, workspace/QA/standalone-host clippy and strict TypeScript pass, normal macOS package and actual bundled-engine smoke pass. Six real Chu controller tests independently repeated PASS;39 focused frontend tests independently PASS after fixes. No actual Chu packaged GUI/finished-window evidence claimed at this infrastructure boundary. Required final-source Rust+Desktop three-platform CI still pending. Original4AC/4DoD remain unchecked until final integrated acceptance.
 <!-- SECTION:NOTES:END -->

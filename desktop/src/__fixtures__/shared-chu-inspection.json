@@ -1,0 +1,38 @@
+{
+  "token": {
+    "document": 1,
+    "version": 3,
+    "revision": 3,
+    "selection": 3
+  },
+  "game": "chu",
+  "origin": "11a",
+  "side": {
+    "id": {
+      "game_kind": "chu",
+      "side": "gote"
+    },
+    "key": "mshogi.chu.jcsa2019.v1:gote",
+    "label": "Gote",
+    "first_mover": false
+  },
+  "label": "Gote Pawn",
+  "choices": [
+    {
+      "origin": {
+        "kind": "board",
+        "square": "11a"
+      },
+      "action": "{\"from\":[11,1],\"route\":[[11,2]],\"promote\":false}",
+      "from": "11a",
+      "steps": [
+        "11b"
+      ],
+      "completion": {
+        "label": "Complete native route",
+        "glyph": null
+      }
+    }
+  ],
+  "read_only": true
+}

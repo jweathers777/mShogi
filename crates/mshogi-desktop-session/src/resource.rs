@@ -55,6 +55,8 @@ pub enum ResourceScope {
     Xiangqi,
     /// A Tori-owned native/document resource.
     Tori,
+    /// A Chu-owned native/document resource.
+    Chu,
 }
 
 /// Unit of a count or allowance; no conversion is implied between units.

@@ -939,6 +939,10 @@ impl Game {
     pub(super) fn root_snapshot(&self) -> &HistorySnapshot {
         &self.data.root_snapshot
     }
+    /// Native-derived replay work, without encoding or mutating the game.
+    pub fn replay_work(&self) -> u64 {
+        self.data.work
+    }
     /// Complete encoded native size, events and bounded work.
     pub fn capacity_usage(&self) -> Result<CapacityUsage, GameError> {
         Ok(CapacityUsage {

@@ -1607,9 +1607,10 @@ impl DesktopController {
                 s.pending.is_some() || s.analysis_intent.is_some(),
             )
         });
-        let preserve_tori = replacement && self.session.tori().is_some();
+        let preserve_tori =
+            replacement && (self.session.tori().is_some() || self.session.chu().is_some());
         self.retire_admission();
-        self.shared.tori_admission = preserve_tori;
+        self.shared.transactional_admission = preserve_tori;
         self.shared.admission_consumes_response = response.is_some();
         self.shared.rollback = rollback;
         if replacement && !preserve_tori {

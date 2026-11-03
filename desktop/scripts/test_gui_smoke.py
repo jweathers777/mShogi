@@ -1264,7 +1264,7 @@ class ChuNormalProductEvidenceTests(unittest.TestCase):
         def cards(action_height):
             return [{'name':'analysis','rect':{'left':860,'top':116,'width':292,'height':218}},
                     {'name':'actions','rect':{'left':860,'top':348,'width':292,'height':action_height}},
-                    {'name':'history','rect':{'left':860,'top':362+action_height,'width':292,'height':362-action_height}}]
+                    {'name':'history','rect':{'left':860,'top':362+action_height,'width':292,'height':236}}]
         previous=cards(90);current=cards(126)
         module.assert_shared_native_card_flow(current,previous)
         module.assert_shared_native_card_flow(previous,current)

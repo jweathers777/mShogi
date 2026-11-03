@@ -1,7 +1,7 @@
 """External Linux native UI adapter; never included in application packages.
 
 Run the caller under dbus-run-session and xvfb-run with GDK_BACKEND=x11.
-Required tools: xdotool, scrot, openbox. WebKitWebDriver is managed by the
+Required tools: xdotool, scrot, openbox, xclip. WebKitWebDriver is managed by the
 caller's tauri-driver process. Native dialogs use the locked GTK3 backend.
 """
 from __future__ import annotations
@@ -38,7 +38,7 @@ class Native:
         self._event_lock = threading.Lock()
         if not os.environ.get("DISPLAY"):
             raise RuntimeError("Linux GUI verification requires an X11 DISPLAY (use xvfb-run)")
-        for tool in ("xdotool", "scrot", "openbox"):
+        for tool in ("xdotool", "scrot", "openbox", "xclip"):
             if shutil.which(tool) is None:
                 raise RuntimeError(f"Required external native UI tool missing: {tool}")
         desktop = self._run(["xdotool", "get_desktop"], check=False)
@@ -242,6 +242,51 @@ class Native:
         # rather than XSendEvent events which GTK applications can reject.
         self._run(["xdotool", "key", "--clearmodifiers", *keys])
 
+    def _copy_picker_text(self) -> str:
+        # This adapter runs in the isolated verification X11 desktop. Seed its
+        # clipboard before Copy so a failed Copy cannot return unrelated data.
+        marker = "mshogi-native-picker-copy-pending"
+        subprocess.run(["xclip", "-selection", "clipboard", "-in"], input=marker,
+                       text=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                       check=True, timeout=2)
+        def clipboard():
+            result = self._run(["xclip", "-selection", "clipboard", "-out"], check=False, timeout=2)
+            return result.stdout if result.returncode == 0 else None
+        self._wait(lambda: clipboard() == marker, "Verification clipboard marker was not established", timeout=2)
+        self._key("ctrl+a", "ctrl+c")
+        def copied():
+            value = clipboard()
+            if value is None:
+                return None
+            if len(value) > 4096:
+                raise RuntimeError("Native filename Copy exceeded the bounded entry size")
+            return value if value and value != marker else None
+        return self._wait(copied, "Native filename Copy produced no entry text", timeout=2)
+
+    def _enter_picker_path(self, picker: dict, selected: str, stem: str) -> dict:
+        if not selected or len(selected) > 4096 or not Path(selected).is_absolute() or any(ord(char) < 32 for char in selected):
+            raise ValueError("Native picker requires a bounded absolute filename without control characters")
+        self._key("ctrl+l")
+        self._key("ctrl+a")
+        self._run(["xdotool", "type", "--clearmodifiers", "--delay", "1", "--", selected])
+        observed = self._copy_picker_text()
+        corrected = False
+        if observed != selected:
+            self.screenshot(self.output / f"{stem}-filename-mismatch.png")
+            # Correct only an actually observed missing-prefix suffix, once;
+            # never accept an unverified path or replay an Open/Save action.
+            if not observed or not selected.endswith(observed):
+                raise RuntimeError(f"Native filename differs from requested path: {observed!r}")
+            self._activate(picker["id"])
+            self._key("ctrl+a")
+            self._run(["xdotool", "type", "--clearmodifiers", "--delay", "1", "--", selected])
+            corrected = True
+            actual = self._copy_picker_text()
+            if actual != selected:
+                raise RuntimeError(f"Native filename replacement did not match requested path: {actual!r}")
+        return {"expected": selected, "first_readback": observed,
+                "accepted_readback": selected, "observed_prefix_corrected": corrected}
+
     def _picker_fallback(self, picker: dict, kind: str, stem: str) -> dict | None:
         """Accept a still-open exact picker; closure is not outcome evidence."""
         def present():
@@ -303,15 +348,11 @@ class Native:
             entered = None
             filesystem = None
             acceptance_fallback = None
+            filename_readback = None
             if selected is None:
                 self._key("Escape")
             else:
-                self._key("ctrl+l")
-                # GTK's Save name entry can keep the extension outside its
-                # initial basename selection. Replace the entire field so a
-                # supplied .mshogi path does not acquire a second extension.
-                self._key("ctrl+a")
-                self._run(["xdotool", "type", "--clearmodifiers", "--delay", "1", "--", selected])
+                filename_readback = self._enter_picker_path(picker, selected, stem)
                 entered = self.output / f"{stem}-entered-path.png"
                 self.screenshot(entered)
                 self._key("Return")
@@ -348,6 +389,7 @@ class Native:
                                before_screenshot=str(before), after_screenshot=str(after),
                                entered_path_screenshot=None if entered is None else str(entered),
                                filesystem_observation=filesystem,
+                               filename_readback=filename_readback,
                                acceptance_fallback=acceptance_fallback,
                                picker_closed=True, method="Focused GTK picker through XTEST keyboard input")
         except Exception:

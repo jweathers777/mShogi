@@ -176,3 +176,84 @@ All six direct prerequisites of MSH-44 are now Done. MSH-44 is dependency-ready
 and remains To Do, unassigned and unstarted. Its original eight criteria and five
 product consumer obligations above remain intact. Stop after MSH-79 acceptance;
 this closure starts no engine/search, console/notation, artwork, M5 or other work.
+
+## MSH-44 functional working checkpoint — 4 November 2026
+
+The preceding MSH-83/87/79 sections retain their historical scope and acceptance.
+Their statements that MSH-44 is unstarted, Tenjiku execution is unsupported and
+presentation is only technical describe those earlier checkpoints. Current
+MSH-44 implementation supersedes those particular implementation statements;
+it does not reopen the accepted earlier evidence or declare finished delivery.
+
+Production source `aecdccd6152df9cef8736e83ef74d8bc81ae39b2` is integrated on
+`codex/rewrite`; final pushed source `2c00e2107ac74334bce5d55813e5be25666d7c46`
+adds the reviewed test-only host correction, profile-specific engine cases and
+readable native ordered effects in console and accessible desktop Moves.
+Both immutable whole profiles now have native history-aware bounded evaluation/
+search, actual supervised child results, exact-context/PV admission, complete
+console notation and diagnostics, canonical observation/action journals and
+traditional-kanji 16×16 presentation through the existing document/controller,
+shared shell and choice owner. Full native phases still distinguish travel,
+stationary target, direct capture, simultaneous burn, mover death and promotion.
+No rules or capacity/deadline policy was changed.
+
+[Product coverage](product-coverage.md) maps all eight original criteria and the
+functional checkpoint to existing MSH-83/87/79 evidence, implementation/tests and
+genuine macOS QA artifacts. [product-verification.json](product-verification.json)
+is the single MSH-44 results record. [engine-v1.md](engine-v1.md),
+[notation.md](notation.md) and [desktop-art.md](desktop-art.md) describe the
+implemented contracts. Actual release self-play is a repeated bounded four-ply
+standard-root smoke plus an independently solved tactical complete game; it is
+not a completed standard-root game or playing-strength evidence. Explicit sparse
+debug functional journeys supplement required full-standard release journeys on
+all three Rust CI platforms.
+
+The fixed-slot macOS gallery now includes both profiles' genuine standard roots
+at three sizes/both orientations, all44 movement faces/all30 promoted originals,
+actual human/engine play, read-only analysis/inspection, cancellation, canonical
+Save/Open, exact history, Take back, dirty Quit, keyboard compound capture and
+stationary capture/native resignation, actual optional promotion/refusal and
+paired identical three-stage Fire Demon routes with profile-specific outcomes.
+The corrected actual Moves accessibility text names ordered burns/mover death
+and stationary capture without implying survival. Independent source and actual
+accessibility findings are resolved. Final-source Rust41925013605/Desktop41925013611
+both completed SUCCESS at exact2c00e21: all six required Linux/macOS15/Windows
+jobs passed, including release full-standard Tenjiku subprocess tests and actual
+existing-five-game Linux/Windows campaigns. Exact receipts/steps are reconciled
+in the single product record. Superseded successes/failure/cancellations are preserved.
+
+The material open issue is reading comfort. Actual760-wide WebView content has
+16.548px cells and minimum7.777px standard engraving; the all-faces Tetrarch
+engraving is5.295px there and7.600px at1180-wide content. A larger native window
+shows35.238px cells/11.276px minimum engraving. All256 targets fitting does not
+resolve this problem. The concrete Tenjiku-only960×1000 proposal is now measured:
+actual960×968 WebView, live598px board/35.595px cells/11.390px minimum engraving;
+History534px/31.786px/10.171px in both orientations. Independent review finds
+that materially clearer, while owner comfort/policy approval remains required.
+Other five-game minimums remain unchanged. No minimum-size or lettering policy
+change has been authorized. See the [genuine gallery](evidence/msh44-macos/gallery.md)
+for live/history comparisons and exact source/package provenance.
+
+Normal activation, owner visual approval and final acceptance remain pending.
+Both named profile New choices and normal product Load stay gated until owner
+approval. Original AC7/AC8 and DoD remain unfinished; MSH-46/47/88/89 retain shared
+integration/platform ownership and MSH-53/M5 retains measured strength. Continue
+from the current product record and actual gallery rather than the historical
+unsupported-only handoff narrative.
+
+The independent route review additionally retains tiny secondary badge numerals
+as a visual concern. Complete native coordinates remain in the partial footer and
+completed Moves, with working targets, focus and Complete/Cancel controls, but
+completed12SVG-unit numerals remain about3.81px em even in the proposed taller
+History view. The taller minimum alone is not proof that every route graphic is
+readable. Owner review and final acceptance must resolve that concern as well.
+
+Final independent evidence reconciliation PASS: live GitHub confirmed both final
+workflows and all six jobs/required steps successful at exact2c00e21; ledger
+receipts, release tests, actual existing-five-game campaigns,165 artifact hashes
+and unchanged production diff were independently checked. MSH-44 is In Review
+at the working owner checkpoint, with AC1–6 supported and AC7/8 plus DoD1/2 open.
+No final-product or owner visual acceptance is claimed. The fixed QA app is
+stopped and prepared for a fresh Adams standard launch; the gallery contains the
+launch command and both-profile selection instructions. Final source CI monitor
+exited successfully; no retry/monitor campaign remains active.

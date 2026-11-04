@@ -21,8 +21,8 @@ Stationary igui grammar: `original[+]source!xtarget`.
 - Final `^` requests this action's once-only promotion. Its absence selects no
   flip and does not assert promotion availability. Native effects determine
   whether the mover survives to promote.
-- `!x` marks stationary igui with its exact target. The mover stays at the source;
-  the target is not a travel landing. Igui has no route or promotion suffix.
+- `!x` marks stationary igui with its exact target. There is no movement from the source;
+  later native effects may destroy the mover. The target is not a travel landing. Igui has no route or promotion suffix.
 
 | Native choice at an appropriate root | Label |
 | --- | --- |

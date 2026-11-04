@@ -1,9 +1,9 @@
 {
   "schema": "mshogi.tenjiku.product-verification.v1",
   "task": "MSH-44",
-  "status": "implementation_in_progress",
+  "status": "working_visual_checkpoint_owner_approval_pending",
   "base_revision": "84d7aa83c5477dfde4513515fe54c3b9e1fb2587",
-  "tested_revision": "aecdccd6152df9cef8736e83ef74d8bc81ae39b2",
+  "tested_revision": "2c00e2107ac74334bce5d55813e5be25666d7c46",
   "scope": "Functional two-profile playable desktop visual checkpoint; normal activation and final acceptance pending owner approval",
   "profiles": [
     "mshogi.tenjiku.adams1999-modern.v1",
@@ -105,6 +105,51 @@
     {
       "command": "cargo test --release --locked -p mshogi-engine --test tenjiku_profile_play -- --nocapture",
       "result": "4 passed1.63s; source-derived route/effect/outcome contrasts validated"
+    },
+    {
+      "command": "cargo test --locked --offline -p mshogi-core tenjiku::notation",
+      "result": "9 passed, including both-profile igui destruction; isolated formatter author",
+      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
+    },
+    {
+      "command": "cargo test --locked --offline -p mshogi-console --test tenjiku_cli",
+      "result": "8 passed2.09s; ordered burn/igui/promotion and rejected-batch output atomicity",
+      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
+    },
+    {
+      "command": "cargo test --locked --offline -p mshogi-desktop-session shared::tenjiku_tests:: -- --test-threads=1",
+      "result": "14 passed;2 explicitly ignored release resource measurements separately executed earlier;28.97s",
+      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
+    },
+    {
+      "command": "Node24 npm --prefix desktop test -- src/product/Moves.test.tsx src/product/TenjikuBoard.test.tsx src/product/TenjikuArtwork.test.tsx src/product/TenjikuPiece.test.tsx",
+      "result": "48 passed in14.21s",
+      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
+    },
+    {
+      "command": "Node24 npm --prefix desktop run check",
+      "result": "passed",
+      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
+    },
+    {
+      "command": "cargo test --locked --offline --manifest-path desktop/src-tauri/Cargo.toml --features desktop-verification",
+      "result": "18 passed1.12s",
+      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
+    },
+    {
+      "command": "cargo clippy --workspace --all-targets --locked --offline -- -D warnings",
+      "result": "passed on initial effects fix; later igui wording and console changes checked with core/console Clippy by isolated author",
+      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
+    },
+    {
+      "command": "Node24 CARGO_NET_OFFLINE=true npm run desktop:build -- --bundles app --features desktop-verification --config src-tauri/tauri.verification.conf.json",
+      "result": "passed; rebuilt after final source commit, exact source-matched fixed-slot package staged and strictly verified",
+      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
+    },
+    {
+      "command": "Node24 npm --prefix desktop test",
+      "result": "511 tests/41 files passed16.94s",
+      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
     }
   ],
   "performance": {
@@ -336,7 +381,394 @@
           "retained_events": 768
         }
       }
-    ]
+    ],
+    "projection_inspection_measurements": {
+      "command": "cargo run --release --locked --offline -p mshogi-desktop-session --features desktop-verification --example write_tenjiku_frontend_fixtures -- desktop/src/__fixtures__",
+      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46",
+      "scope": "Local macOS27 arm64 release native/controller DTO generation and serialization, measured beforecommit on identical source tree. Microseconds, not GUI frame/transport/portable latency guarantees. All156-piece dense diagrams are explicitly synthetic custom roots.",
+      "rows": [
+        {
+          "inspection_encode_total_us": 129,
+          "inspection_max_bytes": 2994,
+          "inspection_max_choices": 6,
+          "inspection_max_us": 209,
+          "inspection_origins": 156,
+          "inspection_total_bytes": 122132,
+          "inspection_total_choices": 140,
+          "inspection_total_us": 2476,
+          "pieces": 156,
+          "profile": "adams",
+          "scenario": "standard",
+          "snapshot_choices": 70,
+          "snapshot_encode_us": 268,
+          "snapshot_encoded_bytes": 192435,
+          "snapshot_us": 143
+        },
+        {
+          "inspection_encode_total_us": 138,
+          "inspection_max_bytes": 2994,
+          "inspection_max_choices": 6,
+          "inspection_max_us": 188,
+          "inspection_origins": 156,
+          "inspection_total_bytes": 125524,
+          "inspection_total_choices": 148,
+          "inspection_total_us": 2368,
+          "pieces": 156,
+          "profile": "muller",
+          "scenario": "standard",
+          "snapshot_choices": 74,
+          "snapshot_encode_us": 264,
+          "snapshot_encoded_bytes": 194159,
+          "snapshot_us": 142
+        },
+        {
+          "inspection_encode_total_us": 536,
+          "inspection_max_bytes": 257120,
+          "inspection_max_choices": 598,
+          "inspection_max_us": 798,
+          "inspection_origins": 7,
+          "inspection_total_bytes": 472547,
+          "inspection_total_choices": 1096,
+          "inspection_total_us": 1528,
+          "pieces": 7,
+          "profile": "adams",
+          "scenario": "burn",
+          "snapshot_choices": 602,
+          "snapshot_encode_us": 315,
+          "snapshot_encoded_bytes": 283559,
+          "snapshot_us": 128
+        },
+        {
+          "inspection_encode_total_us": 22,
+          "inspection_max_bytes": 11106,
+          "inspection_max_choices": 29,
+          "inspection_max_us": 40,
+          "inspection_origins": 6,
+          "inspection_total_bytes": 16584,
+          "inspection_total_choices": 38,
+          "inspection_total_us": 83,
+          "pieces": 6,
+          "profile": "adams",
+          "scenario": "igui",
+          "snapshot_choices": 33,
+          "snapshot_encode_us": 52,
+          "snapshot_encoded_bytes": 36585,
+          "snapshot_us": 20
+        },
+        {
+          "inspection_encode_total_us": 49,
+          "inspection_max_bytes": 34655,
+          "inspection_max_choices": 88,
+          "inspection_max_us": 101,
+          "inspection_origins": 7,
+          "inspection_total_bytes": 40931,
+          "inspection_total_choices": 98,
+          "inspection_total_us": 148,
+          "pieces": 7,
+          "profile": "adams",
+          "scenario": "compound",
+          "snapshot_choices": 92,
+          "snapshot_encode_us": 78,
+          "snapshot_encoded_bytes": 61042,
+          "snapshot_us": 38
+        },
+        {
+          "inspection_encode_total_us": 58,
+          "inspection_max_bytes": 41940,
+          "inspection_max_choices": 108,
+          "inspection_max_us": 132,
+          "inspection_origins": 7,
+          "inspection_total_bytes": 49700,
+          "inspection_total_choices": 122,
+          "inspection_total_us": 191,
+          "pieces": 7,
+          "profile": "adams",
+          "scenario": "hawk",
+          "snapshot_choices": 112,
+          "snapshot_encode_us": 84,
+          "snapshot_encoded_bytes": 68357,
+          "snapshot_us": 36
+        },
+        {
+          "inspection_encode_total_us": 266,
+          "inspection_max_bytes": 215370,
+          "inspection_max_choices": 504,
+          "inspection_max_us": 660,
+          "inspection_origins": 6,
+          "inspection_total_bytes": 220848,
+          "inspection_total_choices": 513,
+          "inspection_total_us": 715,
+          "pieces": 6,
+          "profile": "adams",
+          "scenario": "area",
+          "snapshot_choices": 508,
+          "snapshot_encode_us": 269,
+          "snapshot_encoded_bytes": 240858,
+          "snapshot_us": 102
+        },
+        {
+          "inspection_encode_total_us": 22,
+          "inspection_max_bytes": 11317,
+          "inspection_max_choices": 28,
+          "inspection_max_us": 45,
+          "inspection_origins": 7,
+          "inspection_total_bytes": 17603,
+          "inspection_total_choices": 38,
+          "inspection_total_us": 95,
+          "pieces": 7,
+          "profile": "adams",
+          "scenario": "ranked-jump",
+          "snapshot_choices": 33,
+          "snapshot_encode_us": 53,
+          "snapshot_encoded_bytes": 38088,
+          "snapshot_us": 21
+        },
+        {
+          "inspection_encode_total_us": 527,
+          "inspection_max_bytes": 257120,
+          "inspection_max_choices": 598,
+          "inspection_max_us": 768,
+          "inspection_origins": 7,
+          "inspection_total_bytes": 472547,
+          "inspection_total_choices": 1096,
+          "inspection_total_us": 1478,
+          "pieces": 7,
+          "profile": "muller",
+          "scenario": "burn",
+          "snapshot_choices": 602,
+          "snapshot_encode_us": 323,
+          "snapshot_encoded_bytes": 283587,
+          "snapshot_us": 123
+        },
+        {
+          "inspection_encode_total_us": 26,
+          "inspection_max_bytes": 15819,
+          "inspection_max_choices": 42,
+          "inspection_max_us": 59,
+          "inspection_origins": 6,
+          "inspection_total_bytes": 21297,
+          "inspection_total_choices": 51,
+          "inspection_total_us": 103,
+          "pieces": 6,
+          "profile": "muller",
+          "scenario": "igui",
+          "snapshot_choices": 46,
+          "snapshot_encode_us": 55,
+          "snapshot_encoded_bytes": 41326,
+          "snapshot_us": 39
+        },
+        {
+          "inspection_encode_total_us": 48,
+          "inspection_max_bytes": 34655,
+          "inspection_max_choices": 88,
+          "inspection_max_us": 98,
+          "inspection_origins": 7,
+          "inspection_total_bytes": 40931,
+          "inspection_total_choices": 98,
+          "inspection_total_us": 146,
+          "pieces": 7,
+          "profile": "muller",
+          "scenario": "compound",
+          "snapshot_choices": 92,
+          "snapshot_encode_us": 76,
+          "snapshot_encoded_bytes": 61070,
+          "snapshot_us": 37
+        },
+        {
+          "inspection_encode_total_us": 59,
+          "inspection_max_bytes": 41940,
+          "inspection_max_choices": 108,
+          "inspection_max_us": 141,
+          "inspection_origins": 7,
+          "inspection_total_bytes": 49700,
+          "inspection_total_choices": 122,
+          "inspection_total_us": 196,
+          "pieces": 7,
+          "profile": "muller",
+          "scenario": "hawk",
+          "snapshot_choices": 112,
+          "snapshot_encode_us": 87,
+          "snapshot_encoded_bytes": 68385,
+          "snapshot_us": 37
+        },
+        {
+          "inspection_encode_total_us": 242,
+          "inspection_max_bytes": 215370,
+          "inspection_max_choices": 504,
+          "inspection_max_us": 644,
+          "inspection_origins": 6,
+          "inspection_total_bytes": 220848,
+          "inspection_total_choices": 513,
+          "inspection_total_us": 689,
+          "pieces": 6,
+          "profile": "muller",
+          "scenario": "area",
+          "snapshot_choices": 508,
+          "snapshot_encode_us": 280,
+          "snapshot_encoded_bytes": 240886,
+          "snapshot_us": 103
+        },
+        {
+          "inspection_encode_total_us": 22,
+          "inspection_max_bytes": 11317,
+          "inspection_max_choices": 28,
+          "inspection_max_us": 41,
+          "inspection_origins": 7,
+          "inspection_total_bytes": 17603,
+          "inspection_total_choices": 38,
+          "inspection_total_us": 89,
+          "pieces": 7,
+          "profile": "muller",
+          "scenario": "ranked-jump",
+          "snapshot_choices": 33,
+          "snapshot_encode_us": 79,
+          "snapshot_encoded_bytes": 38116,
+          "snapshot_us": 52
+        },
+        {
+          "inspection_encode_total_us": 171,
+          "inspection_max_bytes": 34655,
+          "inspection_max_choices": 88,
+          "inspection_max_us": 311,
+          "inspection_origins": 156,
+          "inspection_total_bytes": 160532,
+          "inspection_total_choices": 239,
+          "inspection_total_us": 2610,
+          "pieces": 156,
+          "profile": "adams",
+          "scenario": "dense-lion",
+          "snapshot_choices": 168,
+          "snapshot_encode_us": 358,
+          "snapshot_encoded_bytes": 230507,
+          "snapshot_us": 188
+        },
+        {
+          "inspection_encode_total_us": 241,
+          "inspection_max_bytes": 35753,
+          "inspection_max_choices": 91,
+          "inspection_max_us": 1272,
+          "inspection_origins": 156,
+          "inspection_total_bytes": 162458,
+          "inspection_total_choices": 244,
+          "inspection_total_us": 3975,
+          "pieces": 156,
+          "profile": "adams",
+          "scenario": "dense-hawk",
+          "snapshot_choices": 173,
+          "snapshot_encode_us": 723,
+          "snapshot_encoded_bytes": 232439,
+          "snapshot_us": 458
+        },
+        {
+          "inspection_encode_total_us": 414,
+          "inspection_max_bytes": 255232,
+          "inspection_max_choices": 594,
+          "inspection_max_us": 811,
+          "inspection_origins": 156,
+          "inspection_total_bytes": 381772,
+          "inspection_total_choices": 747,
+          "inspection_total_us": 3021,
+          "pieces": 156,
+          "profile": "adams",
+          "scenario": "dense-fire",
+          "snapshot_choices": 676,
+          "snapshot_encode_us": 542,
+          "snapshot_encoded_bytes": 451751,
+          "snapshot_us": 246
+        },
+        {
+          "inspection_encode_total_us": 415,
+          "inspection_max_bytes": 256356,
+          "inspection_max_choices": 597,
+          "inspection_max_us": 745,
+          "inspection_origins": 156,
+          "inspection_total_bytes": 378518,
+          "inspection_total_choices": 739,
+          "inspection_total_us": 3093,
+          "pieces": 156,
+          "profile": "adams",
+          "scenario": "dense-area",
+          "snapshot_choices": 668,
+          "snapshot_encode_us": 545,
+          "snapshot_encoded_bytes": 448509,
+          "snapshot_us": 245
+        },
+        {
+          "inspection_encode_total_us": 177,
+          "inspection_max_bytes": 34655,
+          "inspection_max_choices": 88,
+          "inspection_max_us": 211,
+          "inspection_origins": 156,
+          "inspection_total_bytes": 164325,
+          "inspection_total_choices": 248,
+          "inspection_total_us": 2664,
+          "pieces": 156,
+          "profile": "muller",
+          "scenario": "dense-lion",
+          "snapshot_choices": 173,
+          "snapshot_encode_us": 313,
+          "snapshot_encoded_bytes": 232632,
+          "snapshot_us": 156
+        },
+        {
+          "inspection_encode_total_us": 173,
+          "inspection_max_bytes": 35753,
+          "inspection_max_choices": 91,
+          "inspection_max_us": 202,
+          "inspection_origins": 156,
+          "inspection_total_bytes": 165850,
+          "inspection_total_choices": 252,
+          "inspection_total_us": 2519,
+          "pieces": 156,
+          "profile": "muller",
+          "scenario": "dense-hawk",
+          "snapshot_choices": 177,
+          "snapshot_encode_us": 317,
+          "snapshot_encoded_bytes": 234163,
+          "snapshot_us": 155
+        },
+        {
+          "inspection_encode_total_us": 417,
+          "inspection_max_bytes": 255232,
+          "inspection_max_choices": 594,
+          "inspection_max_us": 799,
+          "inspection_origins": 156,
+          "inspection_total_bytes": 385164,
+          "inspection_total_choices": 755,
+          "inspection_total_us": 3003,
+          "pieces": 156,
+          "profile": "muller",
+          "scenario": "dense-fire",
+          "snapshot_choices": 680,
+          "snapshot_encode_us": 537,
+          "snapshot_encoded_bytes": 453475,
+          "snapshot_us": 245
+        },
+        {
+          "inspection_encode_total_us": 444,
+          "inspection_max_bytes": 256356,
+          "inspection_max_choices": 597,
+          "inspection_max_us": 763,
+          "inspection_origins": 156,
+          "inspection_total_bytes": 381910,
+          "inspection_total_choices": 747,
+          "inspection_total_us": 4496,
+          "pieces": 156,
+          "profile": "muller",
+          "scenario": "dense-area",
+          "snapshot_choices": 672,
+          "snapshot_encode_us": 600,
+          "snapshot_encoded_bytes": 450233,
+          "snapshot_us": 257
+        }
+      ]
+    },
+    "actual_gui_responsiveness": {
+      "cancel_analysis_roundtrip_ms": 983,
+      "qualification": "Observed CUA StartAnalysis\u2192Cancel\u2192SearchStopped roundtrip including automation/state observation overhead; no incomplete move applied. This is not a pure cancellation latency or portable guarantee.",
+      "other_actual_observations": "Native keyboard/pointer partial choices, promotiondialog, history/Takeback/file/close controls visibly settled with accepted state preserved. Their rendering latency was not isolated from automation overhead. Extra end-to-end timings blocked after Maclocked; no throughput/FPS claim.",
+      "replacement": "Actual child tests assert cancelled prior context cannot install, new process generation/request/PID, independent profile and cross-game replacement, and child cleanup. The5second test bound is not a measured steady-state performance claim."
+    }
   },
   "independent_review": [
     {
@@ -373,6 +805,36 @@
       "reviewer": "primary integrator (not author of isolated testfile)",
       "scope": "tenjiku_profile_play.rs diagrams vs acceptedT03/T04/T05; complete result/nativecommit checks",
       "result": "PASS; independently reasoned unique feature differences, no product or legality duplication"
+    },
+    {
+      "reviewer": "independent_review",
+      "scope": "Actual renderer/native effects/activation boundaries plus normal/narrow/minimum allfaces captures",
+      "result": "Structural and native-sourced presentation approved; required accessible burn/death gap found and fixed; practical760/960 reading comfort not accepted."
+    },
+    {
+      "reviewer": "independent_review",
+      "scope": "Final ordered-effects formatter, console atomic output, optional DTO, exact native projection, QA-only tall preset and18 regenerated fixtures",
+      "result": "PASS after igui survival wording finding closed; all18 DTO changes only added descriptions, legacy/action/context/canonical fields unchanged. New native test captures igui mover death."
+    },
+    {
+      "reviewer": "independent_review",
+      "scope": "Actual proposed960x1000 live/history/Gote allfaces captures versus760",
+      "result": "Concrete proposal materially clearer, all256 visible and full faces preserved; owner decision remains, no current-minimum usability claim."
+    },
+    {
+      "reviewer": "independent_review",
+      "scope": "Actual final effect/promotion AX and dialogs; artifact/package manifest reconciliation",
+      "result": "PASS: accessible distinct nativeburn/death,stationaryorigin,promotion text verified; dialogcontrols/focus fit1180/760.165 artifacthashes and stagedpackage hashes matched; no technicalfinding. Minimumcomfort/ownerapproval remainsopen."
+    },
+    {
+      "reviewer": "independent_review",
+      "scope": "Actual partialLion1180/760, keyboard760, completedLion1180, completed3stageDemon760, route/footer/cue source",
+      "result": "Functionalentry supported: nativegeometry, continuationtargets, orderedcoordinatefooter, Complete/Cancel andfocus visible. No newfunctionalblocker. Smallsecondarybadgenumerals remain visualconcern; neither current nor proposedminimum establishesbadgecomfort. Ownervisualapproval remainsopen. No completedLion760capture claimed."
+    },
+    {
+      "reviewer": "independent_review",
+      "scope": "FINAL exact-source six-platform receipts, liveGitHub job/step reconciliation, artifacthashes and no productiondiff",
+      "result": "PASS for workingtechnical/visualcheckpoint at2c00e2107ac74334bce5d55813e5be25666d7c46. IndependentlyqueriedliveGitHubbothruns:all6terminalsuccess,allapplicablemandatorystepssuccess,no nonterminalsteps. Ledgerexactlymatchescache;required3OSrelease andLinux/Windowsactualfive-gameGUI verified.165artifacthashesmatch,productiondiffempty. AC1\u20136supportable;AC7/8+DoD1/2/ownercomfort/minpolicy/badges/activation/finalacceptance OPEN. No newtechnicalfinding."
     }
   ],
   "development_observations": [
@@ -382,7 +844,7 @@
     },
     {
       "category": "debug process contention",
-      "detail": "First parallel actual-child standard-history test hit unchanged15s engine watchdog; preserved failure; serial diagnosis pending."
+      "detail": "First parallel actual-child standard-history test hit unchanged15s engine watchdog; preserved failure; serial diagnosis was pending at that checkpoint and is resolved by the later explicit debug/release policy entry."
     },
     {
       "category": "search test expectation",
@@ -419,6 +881,26 @@
     {
       "category": "independent profile fixture correction",
       "detail": "First FreeEagle diagram used ownPawn8g, which itself directly captured King8f;3 tests passed1 failed because legitimate equalwin contradicted intendeduniqueEagle expectation. Replaced onlytestblocker withKnight8g, which cannot capture8f; no rule/sourcechange. Bothdebug/release4tests thenpassed."
+    },
+    {
+      "category": "minimum usability",
+      "detail": "Actual fit is insufficient: allfaces HT engraving5.295CSSpx at760x618 WebView,7.600 at1180x788. Proposed960x1000 native frame gives960x968 WebView: live598board/35.595cell/11.390minimumem; history534/31.786/10.171bothorientations. No minpolicy change."
+    },
+    {
+      "category": "accessibility correction",
+      "detail": "Independent actual-app review found native burn/death phases aria-hidden and absent from move names; final native formatter now supplies ordered descriptions, exposed in Moves aria-label/title and console. Igui text uses stationary origin so mover destruction does not imply survival."
+    },
+    {
+      "category": "fixture ordering during local test",
+      "detail": "First frontend effects test ran before final regeneration finished and read stale igui wording:34passed1failed. After writer completed all48focused tests passed. No product change required."
+    },
+    {
+      "category": "Mac lock",
+      "detail": "After completed promotion/refusal and corrected native effects captures, desktop control reported locked Mac; manual unlock requested. No security policy or approval store changed."
+    },
+    {
+      "category": "superseded cancelled-job step failure",
+      "detail": "Finalreconciliation of126880030453logs found macOSlockedchecks17passed1failed atsamecfg(test)capabilityassertion1205 despitejobcancelledconclusion; failureexcerptpreserved. Thealreadyreviewedtest-onlycorrection fixedbothOSexpectations. Neitherjobconclusionnorstepfailureoverwritten."
     }
   ],
   "ci": {
@@ -430,7 +912,7 @@
       "Desktop macOS15",
       "Desktop Windows"
     ],
-    "status": "not_started",
+    "status": "all_six_required_jobs_passed",
     "configuration_revision": "83cdd2c24586ca2c5bde619c50020f6476d27d36",
     "configuration_transport": "Existing authorized GitHub app; intermediate workflow-only commit skipped CI. Required six jobs must execute on final combined implementation source.",
     "superseded": [
@@ -449,15 +931,2098 @@
         ],
         "failure_job": 126880029598,
         "reason": "Standalone host cfg(test) assertion still expected unsupported Tenjiku execution. Normal9tests passed; QA17passed1failed. Corrected exactly one assertion; production prefix unchanged, independently reviewed. Both old campaigns cancellation requested before corrected campaign.",
-        "failure_log": "evidence/ci-desktop-linux-126880029598-failure.txt"
+        "failure_log": "evidence/ci-desktop-linux-126880029598-failure.txt",
+        "runs_status": "Both completed cancelled; failed LinuxDesktopjob retained; macOSDesktop cancelledjob also has failedlockedcheck step for same stale host test.",
+        "failure_log_macos": "evidence/ci-desktop-macos-126880030453-failure.txt",
+        "runner_acquisition_note": "All six jobs acquired runners. Mac jobs acquired after cancellation request; no runner-capacity substitution.",
+        "jobs_with_recorded_steps": [
+          {
+            "id": 41917239468,
+            "jobs": [
+              {
+                "id": 126880029405,
+                "name": "Rust (ubuntu-24.04)",
+                "status": "completed",
+                "conclusion": "cancelled",
+                "run_id": 41917239468,
+                "logs_url": null,
+                "steps": [
+                  {
+                    "name": "Set up job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 1
+                  },
+                  {
+                    "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 2
+                  },
+                  {
+                    "name": "Install and identify the pinned toolchain",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 3
+                  },
+                  {
+                    "name": "Format",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 4
+                  },
+                  {
+                    "name": "Lint",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 5
+                  },
+                  {
+                    "name": "Test",
+                    "status": "completed",
+                    "conclusion": "cancelled",
+                    "number": 6
+                  },
+                  {
+                    "name": "Verify production Tenjiku subprocess and standard-root journeys",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 7
+                  },
+                  {
+                    "name": "Verify isolated desktop QA constructors",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 8
+                  },
+                  {
+                    "name": "Verify native desktop snapshot fixtures",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 9
+                  },
+                  {
+                    "name": "Build",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 10
+                  },
+                  {
+                    "name": "Console smoke",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 11
+                  },
+                  {
+                    "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 22
+                  },
+                  {
+                    "name": "Complete job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 23
+                  }
+                ]
+              },
+              {
+                "id": 126880029776,
+                "name": "Rust (windows-2022)",
+                "status": "completed",
+                "conclusion": "cancelled",
+                "run_id": 41917239468,
+                "logs_url": null,
+                "steps": [
+                  {
+                    "name": "Set up job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 1
+                  },
+                  {
+                    "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 2
+                  },
+                  {
+                    "name": "Install and identify the pinned toolchain",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 3
+                  },
+                  {
+                    "name": "Format",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 4
+                  },
+                  {
+                    "name": "Lint",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 5
+                  },
+                  {
+                    "name": "Test",
+                    "status": "completed",
+                    "conclusion": "cancelled",
+                    "number": 6
+                  },
+                  {
+                    "name": "Verify production Tenjiku subprocess and standard-root journeys",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 7
+                  },
+                  {
+                    "name": "Verify isolated desktop QA constructors",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 8
+                  },
+                  {
+                    "name": "Verify native desktop snapshot fixtures",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 9
+                  },
+                  {
+                    "name": "Build",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 10
+                  },
+                  {
+                    "name": "Console smoke",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 11
+                  },
+                  {
+                    "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 22
+                  },
+                  {
+                    "name": "Complete job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 23
+                  }
+                ]
+              },
+              {
+                "id": 126880029841,
+                "name": "Rust (macos-15)",
+                "status": "completed",
+                "conclusion": "cancelled",
+                "run_id": 41917239468,
+                "logs_url": null,
+                "steps": [
+                  {
+                    "name": "Set up job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 1
+                  },
+                  {
+                    "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 2
+                  },
+                  {
+                    "name": "Install and identify the pinned toolchain",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 3
+                  },
+                  {
+                    "name": "Format",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 4
+                  },
+                  {
+                    "name": "Lint",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 5
+                  },
+                  {
+                    "name": "Test",
+                    "status": "in_progress",
+                    "conclusion": null,
+                    "number": 6
+                  },
+                  {
+                    "name": "Verify production Tenjiku subprocess and standard-root journeys",
+                    "status": "pending",
+                    "conclusion": null,
+                    "number": 7
+                  },
+                  {
+                    "name": "Verify isolated desktop QA constructors",
+                    "status": "pending",
+                    "conclusion": null,
+                    "number": 8
+                  },
+                  {
+                    "name": "Verify native desktop snapshot fixtures",
+                    "status": "pending",
+                    "conclusion": null,
+                    "number": 9
+                  },
+                  {
+                    "name": "Build",
+                    "status": "pending",
+                    "conclusion": null,
+                    "number": 10
+                  },
+                  {
+                    "name": "Console smoke",
+                    "status": "pending",
+                    "conclusion": null,
+                    "number": 11
+                  },
+                  {
+                    "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                    "status": "pending",
+                    "conclusion": null,
+                    "number": 22
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": 41917239537,
+            "jobs": [
+              {
+                "id": 126880029217,
+                "name": "Desktop (windows-2022)",
+                "status": "completed",
+                "conclusion": "cancelled",
+                "run_id": 41917239537,
+                "logs_url": null,
+                "steps": [
+                  {
+                    "name": "Set up job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 1
+                  },
+                  {
+                    "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 2
+                  },
+                  {
+                    "name": "Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 3
+                  },
+                  {
+                    "name": "Linux native build dependencies",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 4
+                  },
+                  {
+                    "name": "Install desktop toolchain",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 5
+                  },
+                  {
+                    "name": "Locked frontend and native checks",
+                    "status": "completed",
+                    "conclusion": "cancelled",
+                    "number": 6
+                  },
+                  {
+                    "name": "Verify stable macOS QA identities and external fixture selection",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 7
+                  },
+                  {
+                    "name": "Build normal native package",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 8
+                  },
+                  {
+                    "name": "Inspect macOS application package and run bundled engine",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 9
+                  },
+                  {
+                    "name": "Inspect extracted Debian package and run bundled engine",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 10
+                  },
+                  {
+                    "name": "Install Windows package and run bundled engine",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 11
+                  },
+                  {
+                    "name": "Preserve normal package identity before separate verification build",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 12
+                  },
+                  {
+                    "name": "Install actual Linux application for GUI interaction",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 13
+                  },
+                  {
+                    "name": "Prepare external native GUI driver",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 14
+                  },
+                  {
+                    "name": "Prepare bounded Linux verification proxy and test actual transport boundary",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 15
+                  },
+                  {
+                    "name": "Pin external Windows GUI Python runtime",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 16
+                  },
+                  {
+                    "name": "Prepare matching Windows WebView2 driver and native UI tools",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 17
+                  },
+                  {
+                    "name": "Build separately labeled packaged verification application",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 18
+                  },
+                  {
+                    "name": "Extract Linux verification package with separate identity",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 19
+                  },
+                  {
+                    "name": "Interact with actual installed and packaged Chess Shogi Xiangqi Tori and Chu on Linux",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 20
+                  },
+                  {
+                    "name": "Install separate Windows verification package and interact with actual Chess Shogi Xiangqi Tori and Chu",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 21
+                  },
+                  {
+                    "name": "Upload native package and observations",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 22
+                  },
+                  {
+                    "name": "Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 43
+                  },
+                  {
+                    "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 44
+                  },
+                  {
+                    "name": "Complete job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 45
+                  }
+                ]
+              },
+              {
+                "id": 126880029598,
+                "name": "Desktop (ubuntu-24.04)",
+                "status": "completed",
+                "conclusion": "failure",
+                "run_id": 41917239537,
+                "logs_url": null,
+                "steps": [
+                  {
+                    "name": "Set up job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 1
+                  },
+                  {
+                    "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 2
+                  },
+                  {
+                    "name": "Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 3
+                  },
+                  {
+                    "name": "Linux native build dependencies",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 4
+                  },
+                  {
+                    "name": "Install desktop toolchain",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 5
+                  },
+                  {
+                    "name": "Locked frontend and native checks",
+                    "status": "completed",
+                    "conclusion": "failure",
+                    "number": 6
+                  },
+                  {
+                    "name": "Verify stable macOS QA identities and external fixture selection",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 7
+                  },
+                  {
+                    "name": "Build normal native package",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 8
+                  },
+                  {
+                    "name": "Inspect macOS application package and run bundled engine",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 9
+                  },
+                  {
+                    "name": "Inspect extracted Debian package and run bundled engine",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 10
+                  },
+                  {
+                    "name": "Install Windows package and run bundled engine",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 11
+                  },
+                  {
+                    "name": "Preserve normal package identity before separate verification build",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 12
+                  },
+                  {
+                    "name": "Install actual Linux application for GUI interaction",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 13
+                  },
+                  {
+                    "name": "Prepare external native GUI driver",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 14
+                  },
+                  {
+                    "name": "Prepare bounded Linux verification proxy and test actual transport boundary",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 15
+                  },
+                  {
+                    "name": "Pin external Windows GUI Python runtime",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 16
+                  },
+                  {
+                    "name": "Prepare matching Windows WebView2 driver and native UI tools",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 17
+                  },
+                  {
+                    "name": "Build separately labeled packaged verification application",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 18
+                  },
+                  {
+                    "name": "Extract Linux verification package with separate identity",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 19
+                  },
+                  {
+                    "name": "Interact with actual installed and packaged Chess Shogi Xiangqi Tori and Chu on Linux",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 20
+                  },
+                  {
+                    "name": "Install separate Windows verification package and interact with actual Chess Shogi Xiangqi Tori and Chu",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 21
+                  },
+                  {
+                    "name": "Upload native package and observations",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 22
+                  },
+                  {
+                    "name": "Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 43
+                  },
+                  {
+                    "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 44
+                  },
+                  {
+                    "name": "Complete job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 45
+                  }
+                ]
+              },
+              {
+                "id": 126880030453,
+                "name": "Desktop (macos-15)",
+                "status": "completed",
+                "conclusion": "cancelled",
+                "run_id": 41917239537,
+                "logs_url": null,
+                "steps": [
+                  {
+                    "name": "Set up job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 1
+                  },
+                  {
+                    "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 2
+                  },
+                  {
+                    "name": "Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 3
+                  },
+                  {
+                    "name": "Linux native build dependencies",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 4
+                  },
+                  {
+                    "name": "Install desktop toolchain",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 5
+                  },
+                  {
+                    "name": "Locked frontend and native checks",
+                    "status": "completed",
+                    "conclusion": "failure",
+                    "number": 6
+                  },
+                  {
+                    "name": "Verify stable macOS QA identities and external fixture selection",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 7
+                  },
+                  {
+                    "name": "Build normal native package",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 8
+                  },
+                  {
+                    "name": "Inspect macOS application package and run bundled engine",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 9
+                  },
+                  {
+                    "name": "Inspect extracted Debian package and run bundled engine",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 10
+                  },
+                  {
+                    "name": "Install Windows package and run bundled engine",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 11
+                  },
+                  {
+                    "name": "Preserve normal package identity before separate verification build",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 12
+                  },
+                  {
+                    "name": "Install actual Linux application for GUI interaction",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 13
+                  },
+                  {
+                    "name": "Prepare external native GUI driver",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 14
+                  },
+                  {
+                    "name": "Prepare bounded Linux verification proxy and test actual transport boundary",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 15
+                  },
+                  {
+                    "name": "Pin external Windows GUI Python runtime",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 16
+                  },
+                  {
+                    "name": "Prepare matching Windows WebView2 driver and native UI tools",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 17
+                  },
+                  {
+                    "name": "Build separately labeled packaged verification application",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 18
+                  },
+                  {
+                    "name": "Extract Linux verification package with separate identity",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 19
+                  },
+                  {
+                    "name": "Interact with actual installed and packaged Chess Shogi Xiangqi Tori and Chu on Linux",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 20
+                  },
+                  {
+                    "name": "Install separate Windows verification package and interact with actual Chess Shogi Xiangqi Tori and Chu",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 21
+                  },
+                  {
+                    "name": "Upload native package and observations",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 22
+                  },
+                  {
+                    "name": "Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 43
+                  },
+                  {
+                    "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 44
+                  },
+                  {
+                    "name": "Complete job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 45
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "step_snapshot_qualification": "API returned terminal cancelledRustMacjob with some steps still in_progress/pending; raw snapshot retained, not claimed as terminal successfulstep receipts."
+      },
+      {
+        "source": "de77909131c5e02a9f8aad4cf90206678f9c0a5e",
+        "reason": "Actual GUI review required production accessibility fix; superseded campaign stopped before final source push. Rust3jobs and DesktopLinux/macOS succeeded; WindowsDesktop cancelled. Run cancellation conclusion is preserved even where every Rust job passed.",
+        "runs": [
+          {
+            "id": 41920066317,
+            "attempt": 1,
+            "status": "completed",
+            "conclusion": "cancelled",
+            "jobs": [
+              {
+                "id": 126889903998,
+                "name": "Rust (ubuntu-24.04)",
+                "status": "completed",
+                "conclusion": "success",
+                "runner_id": 1000002622,
+                "runner_name": "GitHub Actions 1000002622",
+                "labels": [
+                  "ubuntu-24.04"
+                ],
+                "started_at": "2026-11-04T21:52:14Z",
+                "completed_at": "2026-11-04T22:09:58Z",
+                "html_url": "https://github.com/jweathers777/mShogi/actions/runs/41920066317/job/126889903998"
+              },
+              {
+                "id": 126889904521,
+                "name": "Rust (windows-2022)",
+                "status": "completed",
+                "conclusion": "success",
+                "runner_id": 1000002624,
+                "runner_name": "GitHub Actions 1000002624",
+                "labels": [
+                  "windows-2022"
+                ],
+                "started_at": "2026-11-04T21:52:13Z",
+                "completed_at": "2026-11-04T22:23:01Z",
+                "html_url": "https://github.com/jweathers777/mShogi/actions/runs/41920066317/job/126889904521"
+              },
+              {
+                "id": 126889904601,
+                "name": "Rust (macos-15)",
+                "status": "completed",
+                "conclusion": "success",
+                "runner_id": 1000002625,
+                "runner_name": "GitHub Actions 1000002625",
+                "labels": [
+                  "macos-15"
+                ],
+                "started_at": "2026-11-04T21:52:19Z",
+                "completed_at": "2026-11-04T22:10:52Z",
+                "html_url": "https://github.com/jweathers777/mShogi/actions/runs/41920066317/job/126889904601"
+              }
+            ]
+          },
+          {
+            "id": 41920066166,
+            "attempt": 1,
+            "status": "completed",
+            "conclusion": "cancelled",
+            "jobs": [
+              {
+                "id": 126889903858,
+                "name": "Desktop (windows-2022)",
+                "status": "completed",
+                "conclusion": "cancelled",
+                "runner_id": 1000002623,
+                "runner_name": "GitHub Actions 1000002623",
+                "labels": [
+                  "windows-2022"
+                ],
+                "started_at": "2026-11-04T21:52:13Z",
+                "completed_at": "2026-11-04T22:23:52Z",
+                "html_url": "https://github.com/jweathers777/mShogi/actions/runs/41920066166/job/126889903858"
+              },
+              {
+                "id": 126889904291,
+                "name": "Desktop (ubuntu-24.04)",
+                "status": "completed",
+                "conclusion": "success",
+                "runner_id": 1000002627,
+                "runner_name": "GitHub Actions 1000002627",
+                "labels": [
+                  "ubuntu-24.04"
+                ],
+                "started_at": "2026-11-04T21:52:14Z",
+                "completed_at": "2026-11-04T22:15:14Z",
+                "html_url": "https://github.com/jweathers777/mShogi/actions/runs/41920066166/job/126889904291"
+              },
+              {
+                "id": 126889904688,
+                "name": "Desktop (macos-15)",
+                "status": "completed",
+                "conclusion": "success",
+                "runner_id": 1000002626,
+                "runner_name": "GitHub Actions 1000002626",
+                "labels": [
+                  "macos-15"
+                ],
+                "started_at": "2026-11-04T21:52:20Z",
+                "completed_at": "2026-11-04T22:03:00Z",
+                "html_url": "https://github.com/jweathers777/mShogi/actions/runs/41920066166/job/126889904688"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "final_source": "2c00e2107ac74334bce5d55813e5be25666d7c46",
+    "runs": {
+      "rust": 41925013605,
+      "desktop": 41925013611
+    },
+    "monitor": "One completion-aware60s monitor,90min bound; checks completion before waiting and exits when both runs terminal. Previous campaign terminal before final source push.",
+    "macos_image": {
+      "job": 126906997820,
+      "os": "macOS15.8.2",
+      "build": "24H232",
+      "image": "macos-15-arm64",
+      "image_version": "20261028.0489.1",
+      "log_excerpt": "evidence/ci-desktop-macos-126906997820-summary.txt"
+    },
+    "macos_rust_release": {
+      "job": 126906997512,
+      "os": "macOS15.8.2/24H232",
+      "internal_tests": "6passed11.60s;0ignored",
+      "selfplay_tests": "2passed7.64s;0ignored",
+      "standard_root_assertions": "Required release paths assert156 nativeinitialpieces; bothprofiles/humanassignments useactualchildren.4plysmoke repeated, tacticalcustomrootcompletegames separated fromstrength.",
+      "log_excerpt": "evidence/ci-rust-macos-126906997512-release.txt"
+    },
+    "windows_rust_release": {
+      "job": 126906997773,
+      "internal_tests": "6passed12.01s;0ignored",
+      "selfplay_tests": "2passed8.10s;0ignored",
+      "log_excerpt": "evidence/ci-rust-windows-126906997773-release.txt"
+    },
+    "receipts": [
+      {
+        "id": 41925013605,
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/41925013605",
+        "source": "2c00e2107ac74334bce5d55813e5be25666d7c46",
+        "attempt": 1,
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-04T22:24:33Z",
+        "jobs": [
+          {
+            "id": 126906997512,
+            "name": "Rust (macos-15)",
+            "run_id": 41925013605,
+            "run_attempt": 1,
+            "head_sha": "2c00e2107ac74334bce5d55813e5be25666d7c46",
+            "status": "completed",
+            "conclusion": "success",
+            "runner_id": 1000002634,
+            "runner_name": "GitHub Actions 1000002634",
+            "labels": [
+              "macos-15"
+            ],
+            "started_at": "2026-11-04T22:24:43Z",
+            "completed_at": "2026-11-04T22:46:45Z",
+            "html_url": "https://github.com/jweathers777/mShogi/actions/runs/41925013605/job/126906997512",
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1,
+                "started_at": "2026-11-04T22:24:43Z",
+                "completed_at": "2026-11-04T22:24:43Z"
+              },
+              {
+                "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2,
+                "started_at": "2026-11-04T22:24:43Z",
+                "completed_at": "2026-11-04T22:24:55Z"
+              },
+              {
+                "name": "Install and identify the pinned toolchain",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 3,
+                "started_at": "2026-11-04T22:24:55Z",
+                "completed_at": "2026-11-04T22:25:03Z"
+              },
+              {
+                "name": "Format",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 4,
+                "started_at": "2026-11-04T22:25:03Z",
+                "completed_at": "2026-11-04T22:25:04Z"
+              },
+              {
+                "name": "Lint",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 5,
+                "started_at": "2026-11-04T22:25:04Z",
+                "completed_at": "2026-11-04T22:25:28Z"
+              },
+              {
+                "name": "Test",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 6,
+                "started_at": "2026-11-04T22:25:28Z",
+                "completed_at": "2026-11-04T22:37:20Z"
+              },
+              {
+                "name": "Verify production Tenjiku subprocess and standard-root journeys",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 7,
+                "started_at": "2026-11-04T22:37:20Z",
+                "completed_at": "2026-11-04T22:38:59Z"
+              },
+              {
+                "name": "Verify isolated desktop QA constructors",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 8,
+                "started_at": "2026-11-04T22:38:59Z",
+                "completed_at": "2026-11-04T22:46:19Z"
+              },
+              {
+                "name": "Verify native desktop snapshot fixtures",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 9,
+                "started_at": "2026-11-04T22:46:19Z",
+                "completed_at": "2026-11-04T22:46:39Z"
+              },
+              {
+                "name": "Build",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 10,
+                "started_at": "2026-11-04T22:46:39Z",
+                "completed_at": "2026-11-04T22:46:40Z"
+              },
+              {
+                "name": "Console smoke",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 11,
+                "started_at": "2026-11-04T22:46:40Z",
+                "completed_at": "2026-11-04T22:46:40Z"
+              },
+              {
+                "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 22,
+                "started_at": "2026-11-04T22:46:40Z",
+                "completed_at": "2026-11-04T22:46:41Z"
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 23,
+                "started_at": "2026-11-04T22:46:41Z",
+                "completed_at": "2026-11-04T22:46:43Z"
+              }
+            ]
+          },
+          {
+            "id": 126906997773,
+            "name": "Rust (windows-2022)",
+            "run_id": 41925013605,
+            "run_attempt": 1,
+            "head_sha": "2c00e2107ac74334bce5d55813e5be25666d7c46",
+            "status": "completed",
+            "conclusion": "success",
+            "runner_id": 1000002633,
+            "runner_name": "GitHub Actions 1000002633",
+            "labels": [
+              "windows-2022"
+            ],
+            "started_at": "2026-11-04T22:24:36Z",
+            "completed_at": "2026-11-04T22:55:09Z",
+            "html_url": "https://github.com/jweathers777/mShogi/actions/runs/41925013605/job/126906997773",
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1,
+                "started_at": "2026-11-04T22:24:37Z",
+                "completed_at": "2026-11-04T22:24:38Z"
+              },
+              {
+                "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2,
+                "started_at": "2026-11-04T22:24:38Z",
+                "completed_at": "2026-11-04T22:24:57Z"
+              },
+              {
+                "name": "Install and identify the pinned toolchain",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 3,
+                "started_at": "2026-11-04T22:24:57Z",
+                "completed_at": "2026-11-04T22:25:09Z"
+              },
+              {
+                "name": "Format",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 4,
+                "started_at": "2026-11-04T22:25:09Z",
+                "completed_at": "2026-11-04T22:25:12Z"
+              },
+              {
+                "name": "Lint",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 5,
+                "started_at": "2026-11-04T22:25:12Z",
+                "completed_at": "2026-11-04T22:25:41Z"
+              },
+              {
+                "name": "Test",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 6,
+                "started_at": "2026-11-04T22:25:41Z",
+                "completed_at": "2026-11-04T22:42:32Z"
+              },
+              {
+                "name": "Verify production Tenjiku subprocess and standard-root journeys",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 7,
+                "started_at": "2026-11-04T22:42:32Z",
+                "completed_at": "2026-11-04T22:44:45Z"
+              },
+              {
+                "name": "Verify isolated desktop QA constructors",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 8,
+                "started_at": "2026-11-04T22:44:45Z",
+                "completed_at": "2026-11-04T22:54:37Z"
+              },
+              {
+                "name": "Verify native desktop snapshot fixtures",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 9,
+                "started_at": "2026-11-04T22:54:37Z",
+                "completed_at": "2026-11-04T22:55:04Z"
+              },
+              {
+                "name": "Build",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 10,
+                "started_at": "2026-11-04T22:55:04Z",
+                "completed_at": "2026-11-04T22:55:04Z"
+              },
+              {
+                "name": "Console smoke",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 11,
+                "started_at": "2026-11-04T22:55:04Z",
+                "completed_at": "2026-11-04T22:55:05Z"
+              },
+              {
+                "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 22,
+                "started_at": "2026-11-04T22:55:05Z",
+                "completed_at": "2026-11-04T22:55:07Z"
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 23,
+                "started_at": "2026-11-04T22:55:07Z",
+                "completed_at": "2026-11-04T22:55:07Z"
+              }
+            ]
+          },
+          {
+            "id": 126906997809,
+            "name": "Rust (ubuntu-24.04)",
+            "run_id": 41925013605,
+            "run_attempt": 1,
+            "head_sha": "2c00e2107ac74334bce5d55813e5be25666d7c46",
+            "status": "completed",
+            "conclusion": "success",
+            "runner_id": 1000002632,
+            "runner_name": "GitHub Actions 1000002632",
+            "labels": [
+              "ubuntu-24.04"
+            ],
+            "started_at": "2026-11-04T22:24:36Z",
+            "completed_at": "2026-11-04T22:49:50Z",
+            "html_url": "https://github.com/jweathers777/mShogi/actions/runs/41925013605/job/126906997809",
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1,
+                "started_at": "2026-11-04T22:24:37Z",
+                "completed_at": "2026-11-04T22:24:37Z"
+              },
+              {
+                "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2,
+                "started_at": "2026-11-04T22:24:37Z",
+                "completed_at": "2026-11-04T22:24:44Z"
+              },
+              {
+                "name": "Install and identify the pinned toolchain",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 3,
+                "started_at": "2026-11-04T22:24:44Z",
+                "completed_at": "2026-11-04T22:24:54Z"
+              },
+              {
+                "name": "Format",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 4,
+                "started_at": "2026-11-04T22:24:54Z",
+                "completed_at": "2026-11-04T22:24:55Z"
+              },
+              {
+                "name": "Lint",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 5,
+                "started_at": "2026-11-04T22:24:55Z",
+                "completed_at": "2026-11-04T22:25:12Z"
+              },
+              {
+                "name": "Test",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 6,
+                "started_at": "2026-11-04T22:25:12Z",
+                "completed_at": "2026-11-04T22:39:11Z"
+              },
+              {
+                "name": "Verify production Tenjiku subprocess and standard-root journeys",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 7,
+                "started_at": "2026-11-04T22:39:11Z",
+                "completed_at": "2026-11-04T22:40:29Z"
+              },
+              {
+                "name": "Verify isolated desktop QA constructors",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 8,
+                "started_at": "2026-11-04T22:40:29Z",
+                "completed_at": "2026-11-04T22:49:30Z"
+              },
+              {
+                "name": "Verify native desktop snapshot fixtures",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 9,
+                "started_at": "2026-11-04T22:49:30Z",
+                "completed_at": "2026-11-04T22:49:47Z"
+              },
+              {
+                "name": "Build",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 10,
+                "started_at": "2026-11-04T22:49:47Z",
+                "completed_at": "2026-11-04T22:49:47Z"
+              },
+              {
+                "name": "Console smoke",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 11,
+                "started_at": "2026-11-04T22:49:47Z",
+                "completed_at": "2026-11-04T22:49:47Z"
+              },
+              {
+                "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 22,
+                "started_at": "2026-11-04T22:49:47Z",
+                "completed_at": "2026-11-04T22:49:47Z"
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 23,
+                "started_at": "2026-11-04T22:49:47Z",
+                "completed_at": "2026-11-04T22:49:47Z"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 41925013611,
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/41925013611",
+        "source": "2c00e2107ac74334bce5d55813e5be25666d7c46",
+        "attempt": 1,
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-04T22:24:33Z",
+        "jobs": [
+          {
+            "id": 126906997820,
+            "name": "Desktop (macos-15)",
+            "run_id": 41925013611,
+            "run_attempt": 1,
+            "head_sha": "2c00e2107ac74334bce5d55813e5be25666d7c46",
+            "status": "completed",
+            "conclusion": "success",
+            "runner_id": 1000002635,
+            "runner_name": "GitHub Actions 1000002635",
+            "labels": [
+              "macos-15"
+            ],
+            "started_at": "2026-11-04T22:24:38Z",
+            "completed_at": "2026-11-04T22:33:00Z",
+            "html_url": "https://github.com/jweathers777/mShogi/actions/runs/41925013611/job/126906997820",
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1,
+                "started_at": "2026-11-04T22:24:38Z",
+                "completed_at": "2026-11-04T22:24:38Z"
+              },
+              {
+                "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2,
+                "started_at": "2026-11-04T22:24:38Z",
+                "completed_at": "2026-11-04T22:24:50Z"
+              },
+              {
+                "name": "Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 3,
+                "started_at": "2026-11-04T22:24:50Z",
+                "completed_at": "2026-11-04T22:24:58Z"
+              },
+              {
+                "name": "Linux native build dependencies",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 4,
+                "started_at": "2026-11-04T22:24:58Z",
+                "completed_at": "2026-11-04T22:24:58Z"
+              },
+              {
+                "name": "Install desktop toolchain",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 5,
+                "started_at": "2026-11-04T22:24:58Z",
+                "completed_at": "2026-11-04T22:25:07Z"
+              },
+              {
+                "name": "Locked frontend and native checks",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 6,
+                "started_at": "2026-11-04T22:25:07Z",
+                "completed_at": "2026-11-04T22:29:20Z"
+              },
+              {
+                "name": "Verify stable macOS QA identities and external fixture selection",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 7,
+                "started_at": "2026-11-04T22:29:20Z",
+                "completed_at": "2026-11-04T22:29:21Z"
+              },
+              {
+                "name": "Build normal native package",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 8,
+                "started_at": "2026-11-04T22:29:21Z",
+                "completed_at": "2026-11-04T22:32:53Z"
+              },
+              {
+                "name": "Inspect macOS application package and run bundled engine",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 9,
+                "started_at": "2026-11-04T22:32:53Z",
+                "completed_at": "2026-11-04T22:32:53Z"
+              },
+              {
+                "name": "Inspect extracted Debian package and run bundled engine",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 10,
+                "started_at": "2026-11-04T22:32:53Z",
+                "completed_at": "2026-11-04T22:32:53Z"
+              },
+              {
+                "name": "Install Windows package and run bundled engine",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 11,
+                "started_at": "2026-11-04T22:32:53Z",
+                "completed_at": "2026-11-04T22:32:53Z"
+              },
+              {
+                "name": "Preserve normal package identity before separate verification build",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 12,
+                "started_at": "2026-11-04T22:32:53Z",
+                "completed_at": "2026-11-04T22:32:53Z"
+              },
+              {
+                "name": "Install actual Linux application for GUI interaction",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 13,
+                "started_at": "2026-11-04T22:32:53Z",
+                "completed_at": "2026-11-04T22:32:53Z"
+              },
+              {
+                "name": "Prepare external native GUI driver",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 14,
+                "started_at": "2026-11-04T22:32:53Z",
+                "completed_at": "2026-11-04T22:32:53Z"
+              },
+              {
+                "name": "Prepare bounded Linux verification proxy and test actual transport boundary",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 15,
+                "started_at": "2026-11-04T22:32:53Z",
+                "completed_at": "2026-11-04T22:32:53Z"
+              },
+              {
+                "name": "Pin external Windows GUI Python runtime",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 16,
+                "started_at": "2026-11-04T22:32:53Z",
+                "completed_at": "2026-11-04T22:32:53Z"
+              },
+              {
+                "name": "Prepare matching Windows WebView2 driver and native UI tools",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 17,
+                "started_at": "2026-11-04T22:32:53Z",
+                "completed_at": "2026-11-04T22:32:53Z"
+              },
+              {
+                "name": "Build separately labeled packaged verification application",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 18,
+                "started_at": "2026-11-04T22:32:53Z",
+                "completed_at": "2026-11-04T22:32:53Z"
+              },
+              {
+                "name": "Extract Linux verification package with separate identity",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 19,
+                "started_at": "2026-11-04T22:32:53Z",
+                "completed_at": "2026-11-04T22:32:53Z"
+              },
+              {
+                "name": "Interact with actual installed and packaged Chess Shogi Xiangqi Tori and Chu on Linux",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 20,
+                "started_at": "2026-11-04T22:32:53Z",
+                "completed_at": "2026-11-04T22:32:53Z"
+              },
+              {
+                "name": "Install separate Windows verification package and interact with actual Chess Shogi Xiangqi Tori and Chu",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 21,
+                "started_at": "2026-11-04T22:32:53Z",
+                "completed_at": "2026-11-04T22:32:53Z"
+              },
+              {
+                "name": "Upload native package and observations",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 22,
+                "started_at": "2026-11-04T22:32:53Z",
+                "completed_at": "2026-11-04T22:32:56Z"
+              },
+              {
+                "name": "Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 43,
+                "started_at": "2026-11-04T22:32:56Z",
+                "completed_at": "2026-11-04T22:32:56Z"
+              },
+              {
+                "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 44,
+                "started_at": "2026-11-04T22:32:56Z",
+                "completed_at": "2026-11-04T22:32:56Z"
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 45,
+                "started_at": "2026-11-04T22:32:56Z",
+                "completed_at": "2026-11-04T22:32:58Z"
+              }
+            ]
+          },
+          {
+            "id": 126906998265,
+            "name": "Desktop (windows-2022)",
+            "run_id": 41925013611,
+            "run_attempt": 1,
+            "head_sha": "2c00e2107ac74334bce5d55813e5be25666d7c46",
+            "status": "completed",
+            "conclusion": "success",
+            "runner_id": 1000002636,
+            "runner_name": "GitHub Actions 1000002636",
+            "labels": [
+              "windows-2022"
+            ],
+            "started_at": "2026-11-04T22:24:36Z",
+            "completed_at": "2026-11-04T22:56:13Z",
+            "html_url": "https://github.com/jweathers777/mShogi/actions/runs/41925013611/job/126906998265",
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1,
+                "started_at": "2026-11-04T22:24:37Z",
+                "completed_at": "2026-11-04T22:24:38Z"
+              },
+              {
+                "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2,
+                "started_at": "2026-11-04T22:24:38Z",
+                "completed_at": "2026-11-04T22:24:53Z"
+              },
+              {
+                "name": "Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 3,
+                "started_at": "2026-11-04T22:24:53Z",
+                "completed_at": "2026-11-04T22:25:07Z"
+              },
+              {
+                "name": "Linux native build dependencies",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 4,
+                "started_at": "2026-11-04T22:25:07Z",
+                "completed_at": "2026-11-04T22:25:07Z"
+              },
+              {
+                "name": "Install desktop toolchain",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 5,
+                "started_at": "2026-11-04T22:25:07Z",
+                "completed_at": "2026-11-04T22:25:18Z"
+              },
+              {
+                "name": "Locked frontend and native checks",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 6,
+                "started_at": "2026-11-04T22:25:18Z",
+                "completed_at": "2026-11-04T22:32:18Z"
+              },
+              {
+                "name": "Verify stable macOS QA identities and external fixture selection",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 7,
+                "started_at": "2026-11-04T22:32:18Z",
+                "completed_at": "2026-11-04T22:32:18Z"
+              },
+              {
+                "name": "Build normal native package",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 8,
+                "started_at": "2026-11-04T22:32:18Z",
+                "completed_at": "2026-11-04T22:37:46Z"
+              },
+              {
+                "name": "Inspect macOS application package and run bundled engine",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 9,
+                "started_at": "2026-11-04T22:37:46Z",
+                "completed_at": "2026-11-04T22:37:46Z"
+              },
+              {
+                "name": "Inspect extracted Debian package and run bundled engine",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 10,
+                "started_at": "2026-11-04T22:37:46Z",
+                "completed_at": "2026-11-04T22:37:46Z"
+              },
+              {
+                "name": "Install Windows package and run bundled engine",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 11,
+                "started_at": "2026-11-04T22:37:46Z",
+                "completed_at": "2026-11-04T22:37:49Z"
+              },
+              {
+                "name": "Preserve normal package identity before separate verification build",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 12,
+                "started_at": "2026-11-04T22:37:49Z",
+                "completed_at": "2026-11-04T22:37:49Z"
+              },
+              {
+                "name": "Install actual Linux application for GUI interaction",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 13,
+                "started_at": "2026-11-04T22:37:49Z",
+                "completed_at": "2026-11-04T22:37:49Z"
+              },
+              {
+                "name": "Prepare external native GUI driver",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 14,
+                "started_at": "2026-11-04T22:37:49Z",
+                "completed_at": "2026-11-04T22:38:30Z"
+              },
+              {
+                "name": "Prepare bounded Linux verification proxy and test actual transport boundary",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 15,
+                "started_at": "2026-11-04T22:38:30Z",
+                "completed_at": "2026-11-04T22:38:30Z"
+              },
+              {
+                "name": "Pin external Windows GUI Python runtime",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 16,
+                "started_at": "2026-11-04T22:38:30Z",
+                "completed_at": "2026-11-04T22:38:30Z"
+              },
+              {
+                "name": "Prepare matching Windows WebView2 driver and native UI tools",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 17,
+                "started_at": "2026-11-04T22:38:30Z",
+                "completed_at": "2026-11-04T22:38:42Z"
+              },
+              {
+                "name": "Build separately labeled packaged verification application",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 18,
+                "started_at": "2026-11-04T22:38:42Z",
+                "completed_at": "2026-11-04T22:40:36Z"
+              },
+              {
+                "name": "Extract Linux verification package with separate identity",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 19,
+                "started_at": "2026-11-04T22:40:36Z",
+                "completed_at": "2026-11-04T22:40:36Z"
+              },
+              {
+                "name": "Interact with actual installed and packaged Chess Shogi Xiangqi Tori and Chu on Linux",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 20,
+                "started_at": "2026-11-04T22:40:36Z",
+                "completed_at": "2026-11-04T22:40:36Z"
+              },
+              {
+                "name": "Install separate Windows verification package and interact with actual Chess Shogi Xiangqi Tori and Chu",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 21,
+                "started_at": "2026-11-04T22:40:36Z",
+                "completed_at": "2026-11-04T22:55:52Z"
+              },
+              {
+                "name": "Upload native package and observations",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 22,
+                "started_at": "2026-11-04T22:55:52Z",
+                "completed_at": "2026-11-04T22:56:08Z"
+              },
+              {
+                "name": "Post Pin external Windows GUI Python runtime",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 42,
+                "started_at": "2026-11-04T22:56:08Z",
+                "completed_at": "2026-11-04T22:56:08Z"
+              },
+              {
+                "name": "Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 43,
+                "started_at": "2026-11-04T22:56:08Z",
+                "completed_at": "2026-11-04T22:56:09Z"
+              },
+              {
+                "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 44,
+                "started_at": "2026-11-04T22:56:09Z",
+                "completed_at": "2026-11-04T22:56:11Z"
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 45,
+                "started_at": "2026-11-04T22:56:11Z",
+                "completed_at": "2026-11-04T22:56:11Z"
+              }
+            ]
+          },
+          {
+            "id": 126906998508,
+            "name": "Desktop (ubuntu-24.04)",
+            "run_id": 41925013611,
+            "run_attempt": 1,
+            "head_sha": "2c00e2107ac74334bce5d55813e5be25666d7c46",
+            "status": "completed",
+            "conclusion": "success",
+            "runner_id": 1000002637,
+            "runner_name": "GitHub Actions 1000002637",
+            "labels": [
+              "ubuntu-24.04"
+            ],
+            "started_at": "2026-11-04T22:24:36Z",
+            "completed_at": "2026-11-04T23:09:19Z",
+            "html_url": "https://github.com/jweathers777/mShogi/actions/runs/41925013611/job/126906998508",
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1,
+                "started_at": "2026-11-04T22:24:37Z",
+                "completed_at": "2026-11-04T22:24:38Z"
+              },
+              {
+                "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2,
+                "started_at": "2026-11-04T22:24:38Z",
+                "completed_at": "2026-11-04T22:24:45Z"
+              },
+              {
+                "name": "Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 3,
+                "started_at": "2026-11-04T22:24:45Z",
+                "completed_at": "2026-11-04T22:24:52Z"
+              },
+              {
+                "name": "Linux native build dependencies",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 4,
+                "started_at": "2026-11-04T22:24:52Z",
+                "completed_at": "2026-11-04T22:46:16Z"
+              },
+              {
+                "name": "Install desktop toolchain",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 5,
+                "started_at": "2026-11-04T22:46:16Z",
+                "completed_at": "2026-11-04T22:46:26Z"
+              },
+              {
+                "name": "Locked frontend and native checks",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 6,
+                "started_at": "2026-11-04T22:46:26Z",
+                "completed_at": "2026-11-04T22:50:47Z"
+              },
+              {
+                "name": "Verify stable macOS QA identities and external fixture selection",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 7,
+                "started_at": "2026-11-04T22:50:47Z",
+                "completed_at": "2026-11-04T22:50:47Z"
+              },
+              {
+                "name": "Build normal native package",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 8,
+                "started_at": "2026-11-04T22:50:47Z",
+                "completed_at": "2026-11-04T22:54:04Z"
+              },
+              {
+                "name": "Inspect macOS application package and run bundled engine",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 9,
+                "started_at": "2026-11-04T22:54:04Z",
+                "completed_at": "2026-11-04T22:54:04Z"
+              },
+              {
+                "name": "Inspect extracted Debian package and run bundled engine",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 10,
+                "started_at": "2026-11-04T22:54:04Z",
+                "completed_at": "2026-11-04T22:54:04Z"
+              },
+              {
+                "name": "Install Windows package and run bundled engine",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 11,
+                "started_at": "2026-11-04T22:54:04Z",
+                "completed_at": "2026-11-04T22:54:04Z"
+              },
+              {
+                "name": "Preserve normal package identity before separate verification build",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 12,
+                "started_at": "2026-11-04T22:54:04Z",
+                "completed_at": "2026-11-04T22:54:04Z"
+              },
+              {
+                "name": "Install actual Linux application for GUI interaction",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 13,
+                "started_at": "2026-11-04T22:54:04Z",
+                "completed_at": "2026-11-04T22:54:07Z"
+              },
+              {
+                "name": "Prepare external native GUI driver",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 14,
+                "started_at": "2026-11-04T22:54:07Z",
+                "completed_at": "2026-11-04T22:54:07Z"
+              },
+              {
+                "name": "Prepare bounded Linux verification proxy and test actual transport boundary",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 15,
+                "started_at": "2026-11-04T22:54:07Z",
+                "completed_at": "2026-11-04T22:54:43Z"
+              },
+              {
+                "name": "Pin external Windows GUI Python runtime",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 16,
+                "started_at": "2026-11-04T22:54:43Z",
+                "completed_at": "2026-11-04T22:54:43Z"
+              },
+              {
+                "name": "Prepare matching Windows WebView2 driver and native UI tools",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 17,
+                "started_at": "2026-11-04T22:54:43Z",
+                "completed_at": "2026-11-04T22:54:43Z"
+              },
+              {
+                "name": "Build separately labeled packaged verification application",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 18,
+                "started_at": "2026-11-04T22:54:43Z",
+                "completed_at": "2026-11-04T22:55:39Z"
+              },
+              {
+                "name": "Extract Linux verification package with separate identity",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 19,
+                "started_at": "2026-11-04T22:55:39Z",
+                "completed_at": "2026-11-04T22:55:39Z"
+              },
+              {
+                "name": "Interact with actual installed and packaged Chess Shogi Xiangqi Tori and Chu on Linux",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 20,
+                "started_at": "2026-11-04T22:55:39Z",
+                "completed_at": "2026-11-04T23:09:05Z"
+              },
+              {
+                "name": "Install separate Windows verification package and interact with actual Chess Shogi Xiangqi Tori and Chu",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 21,
+                "started_at": "2026-11-04T23:09:05Z",
+                "completed_at": "2026-11-04T23:09:05Z"
+              },
+              {
+                "name": "Upload native package and observations",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 22,
+                "started_at": "2026-11-04T23:09:05Z",
+                "completed_at": "2026-11-04T23:09:16Z"
+              },
+              {
+                "name": "Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 43,
+                "started_at": "2026-11-04T23:09:16Z",
+                "completed_at": "2026-11-04T23:09:16Z"
+              },
+              {
+                "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 44,
+                "started_at": "2026-11-04T23:09:16Z",
+                "completed_at": "2026-11-04T23:09:16Z"
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 45,
+                "started_at": "2026-11-04T23:09:16Z",
+                "completed_at": "2026-11-04T23:09:16Z"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "monitor_outcome": "Exited0 after bothfinalruns terminalSUCCESS; no liveCI campaign remains.",
+    "packaged_artifacts": [
+      {
+        "platform": "linux",
+        "receipt_lines": [
+          "2026-11-04T23:09:15.7078499Z SHA256 digest of uploaded artifact zip is 7622860df3591d64ec29b1211f171e43b72414bfd2ef14b43092bd6259e1be24",
+          "2026-11-04T23:09:16.3757963Z Artifact desktop-ubuntu-24.04.zip successfully finalized. Artifact ID 13371846866",
+          "2026-11-04T23:09:16.3768586Z Artifact download URL: https://github.com/jweathers777/mShogi/actions/runs/41925013611/artifacts/13371846866"
+        ],
+        "scope": "Existing-five-game actualGUI campaign plus package/native checks; Tenjiku actual macOS checkpoint is separatelycaptured.",
+        "retention": "Workflow14days; largecompiledpackagesnotcommitted. Source/workflow/jobIDs andreceiptspermitreproduction."
+      },
+      {
+        "platform": "windows",
+        "receipt_lines": [
+          "2026-11-04T22:56:08.1575676Z SHA256 digest of uploaded artifact zip is 26e78dbfc97ed7fdb58b8de6d2200519f2a4245591aed88be6a74c6ef13ed19f",
+          "2026-11-04T22:56:08.7896902Z Artifact desktop-windows-2022.zip successfully finalized. Artifact ID 13370618190",
+          "2026-11-04T22:56:08.7913935Z Artifact download URL: https://github.com/jweathers777/mShogi/actions/runs/41925013611/artifacts/13370618190"
+        ],
+        "scope": "Existing-five-game actualGUI campaign plus package/native checks; Tenjiku actual macOS checkpoint is separatelycaptured.",
+        "retention": "Workflow14days; largecompiledpackagesnotcommitted. Source/workflow/jobIDs andreceiptspermitreproduction."
       }
     ]
   },
   "macos_visual": {
-    "status": "not_run",
+    "status": "actual_checkpoint_captured_readability_decision_open",
     "fixed_slot": "org.mshogi.desktop.verification.r6.shogipromotion",
-    "owner_approval": "pending"
+    "owner_approval": "pending",
+    "gallery": "evidence/msh44-macos/gallery.md",
+    "manifest": "evidence/msh44-macos/artifact-manifest.json",
+    "current_minimum_changed": false,
+    "proposed_minimum": {
+      "native_frame": [
+        960,
+        1000
+      ],
+      "actual_webview": [
+        960,
+        968
+      ],
+      "live_board": 598,
+      "live_cell": 35.595,
+      "live_minimum_glyph_em": 11.39,
+      "history_board": 534,
+      "history_cell": 31.786,
+      "history_minimum_glyph_em": 10.171,
+      "approved": false
+    },
+    "actual_journeys": [
+      "Both standard profile roots \u00d7 both orientations \u00d7 three required sizes",
+      "All44 faces/all30promoted original identities in explicitly imported67piece roots",
+      "Actual humanSente and real engine reply for bothprofiles; humanGote covered actual release subprocess/controller tests, additional GUI journey pending unlock",
+      "Actual readonly analysis/inspection, cancellation, saved/reopened stopped document, history/ReturnLive/Takeback/dirtyQuit",
+      "Actual compound keyboard/pointer two-capture; paired identical3stageFireDemon route produces distinct nativeburn/death outcomes",
+      "Actual stationary capture and resignation; nativeaccessibleeffects A/Mburn+igui verified in rebuilt app",
+      "Actual optionalpromotion dialog1180/760, promote, Takeback and refusal"
+    ],
+    "open_visual_concerns": [
+      "Dense traditional kanji at currentminimum; proposedTenjiku-only960x1000 improves live/history glyph sizes but ownercomfort/policy unapproved.",
+      "Secondary completedroute numericbadges use12SVGunits: source-derived em2.85 at399board/1.99 at278board, and3.81 atproposedHistory534board. Partial19units\u22484.51/3.14 atcurrentnormal/minimum. Nativecoordinatefooter and completedMoves preserveorder; no claimbadgesreadable. Taller minimum alone doesnotresolvethisvisualconcern.",
+      "No completedLion760PNG claimed; partial/keyboard760 and completed3stageDemon760 separatelycaptured."
+    ],
+    "prepared_launch": {
+      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46",
+      "fixture": "tenjiku-adams-standard",
+      "app_stopped_at_selection": true,
+      "app_path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app",
+      "command": "open '/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app'",
+      "two_profiles": "Labeled QA NewAdams/NewMuller buttons intentionally create a freshgame; currentgameprofile nevermutates. Normalchooser/Loadremainoff."
+    },
+    "actual_saved_file": {
+      "path": "/private/tmp/msh44-adams-actual.mshogi",
+      "bytes": 151453,
+      "sha256": "e9bfdc6b51a9b831ed929a8baf1a74cf9e4e4532c7d183f937324fdeb099e542",
+      "profile": "mshogi.tenjiku.adams1999-modern.v1",
+      "last_saved_state": "current0boardevents afterTakeback,1retiredbranch,3genuineobservations(1engineTurn+2analysis),9controls,selectedNone",
+      "verification": "ActualnativeNSSavePanel Save\u2192NSOpenPanel freshstoppedreopen\u2192history/ReturnLive/Takeback\u2192Save; originalfilehash rechecked unchangedafter freshotherprofile, remainingGUI and finalsourcebuild. Private/tmpjourneyartifactnotpromisedpermanent."
+    }
   },
   "normal_activation": false,
-  "final_acceptance": false
+  "final_acceptance": false,
+  "evidence_revision": "MSH44-WORKING-VISUAL-2026-11-04",
+  "environment": {
+    "local_os": "macOS27.0.1 (26A434)",
+    "arch": "arm64",
+    "rust": "1.99.1",
+    "node": "24.22.1",
+    "qualification": "Local macOS27 is supplemental, not macOS15 CI evidence."
+  },
+  "source_checkpoints": [
+    {
+      "revision": "aecdccd6152df9cef8736e83ef74d8bc81ae39b2",
+      "scope": "Initial functional engine/console/native admission/artwork/QA production source; full workspace and frontend regression checkpoint."
+    },
+    {
+      "revision": "ae3e397d8cc30d297d0155ec927d61326df1f842",
+      "scope": "Only stale standalone-host cfg(test) assertion plus evidence; reviewed production prefix unchanged."
+    },
+    {
+      "revision": "de77909131c5e02a9f8aad4cf90206678f9c0a5e",
+      "scope": "Additional profile-sensitive actual line-server tests, no production changes."
+    },
+    {
+      "revision": "2c00e2107ac74334bce5d55813e5be25666d7c46",
+      "scope": "Native readable ordered effect formatter shared by console and desktop history, accessible history descriptions; QA-only960x1000 inspection preset. No rules/profile/canonical format/limits/minimum policy changes."
+    }
+  ],
+  "source_integrity": {
+    "comparison_base": "84d7aa83c5477dfde4513515fe54c3b9e1fb2587",
+    "prior_records_unchanged": [
+      "verification.json",
+      "native-verification.json",
+      "shared-verification.json",
+      "profile.json",
+      "decisions.md"
+    ],
+    "final_production_revision": "2c00e2107ac74334bce5d55813e5be25666d7c46",
+    "remaining_worktree_changes": "Only documentation, Backlog evidence and genuine captured artifacts. No production/workflow changes after final tested source.",
+    "rules_profiles_limits_architecture_changed": false
+  },
+  "evidence_timezone": "UTC (checkpoint began4November; final handoff may be5November inEurope/Paris)",
+  "task_acceptance": {
+    "status": "In Review",
+    "supported_acceptance_criteria": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "open_acceptance_criteria": [
+      7,
+      8
+    ],
+    "complete_dod": [
+      3,
+      4
+    ],
+    "open_dod": [
+      1,
+      2
+    ],
+    "decision": "Working checkpoint only; STOP for owner visual/minimum decision. No Done, normal activation or final six-game product acceptance."
+  }
 }

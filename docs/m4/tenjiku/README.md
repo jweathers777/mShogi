@@ -21,5 +21,11 @@ acquisition gate or proof of agreement among historical and modern witnesses.
 
 Native source/acceptance evidence is recorded in `native-verification.json`;
 MSH-79 consumes the actual handoff;
-44 owns remaining functional engine/console/notation/kanji/product delivery.
+MSH-44 now supplies a functional two-profile working visual checkpoint: see
+[engine](engine-v1.md), [notation/console](notation.md), [artwork](desktop-art.md),
+[original-criteria coverage](product-coverage.md), the single
+[product evidence record](product-verification.json) and
+[genuine macOS gallery](evidence/msh44-macos/gallery.md).
+Owner visual/readability approval, normal activation and final acceptance remain
+pending; MSH-44 is unfinished.
 No additional planning hierarchy, automatic refactor or M5 work starts here.

@@ -1202,7 +1202,7 @@ mod tests {
             assert_eq!(opened.game, GameKind::Tenjiku);
             assert_eq!(opened.profile, profile);
             assert!(opened.paused);
-            assert!(!opened.capabilities.engine_turn && !opened.capabilities.move_analysis);
+            assert!(opened.capabilities.engine_turn && opened.capabilities.move_analysis);
             assert!(opened.observations.is_empty());
             assert_ne!(opened.open_token.document, before.open_token.document);
             std::fs::remove_file(path).unwrap();

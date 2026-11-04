@@ -1,0 +1,11 @@
+2026-11-04T21:33:49.7998747Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +aecdccd6152df9cef8736e83ef74d8bc81ae39b2:refs/remotes/origin/codex/rewrite
+2026-11-04T21:33:56.1418541Z  * [new ref]         aecdccd6152df9cef8736e83ef74d8bc81ae39b2 -> origin/codex/rewrite
+2026-11-04T21:33:56.1477946Z aecdccd6152df9cef8736e83ef74d8bc81ae39b2
+2026-11-04T21:33:57.6626316Z aecdccd6152df9cef8736e83ef74d8bc81ae39b2
+2026-11-04T21:38:17.7574328Z test tests::tenjiku_labeled_load_uses_same_worker_and_normal_load_preserves_document ... FAILED
+2026-11-04T21:38:17.8853286Z ---- tests::tenjiku_labeled_load_uses_same_worker_and_normal_load_preserves_document stdout ----
+2026-11-04T21:38:17.8854007Z thread 'tests::tenjiku_labeled_load_uses_same_worker_and_normal_load_preserves_document' (12799) panicked at src/main.rs:1205:13:
+2026-11-04T21:38:17.8854671Z assertion failed: !opened.capabilities.engine_turn && !opened.capabilities.move_analysis
+2026-11-04T21:38:17.8856295Z     tests::tenjiku_labeled_load_uses_same_worker_and_normal_load_preserves_document
+2026-11-04T21:38:17.8856852Z test result: FAILED. 17 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.93s
+2026-11-04T21:38:17.8913990Z ##[error]Process completed with exit code 101.

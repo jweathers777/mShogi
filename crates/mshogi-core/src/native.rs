@@ -3,8 +3,8 @@
 //! Chess history observations are data, not commands to execute. Complete chess
 //! match admission still belongs to `ChessMatch`; shogi admission belongs to `Game`.
 
-use crate::{chess, chu, shogi, tori, xiangqi};
-use serde::{Deserialize, Serialize, Serializer, ser::SerializeStruct};
+use crate::{chess, chu, shogi, tenjiku, tori, xiangqi};
+use serde::{Deserialize, Serialize, Serializer};
 use serde_json::value::RawValue;
 use std::{error::Error, fmt};
 
@@ -33,6 +33,8 @@ pub enum GameKind {
     Tori,
     /// Chu native rules and records; execution remains unsupported until MSH-43.
     Chu,
+    /// Two authoritative Tenjiku profiles; execution is explicitly unsupported.
+    Tenjiku,
 }
 /// Immutable profile identity, never inferred from board dimensions or sides.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -47,6 +49,10 @@ pub enum RulesProfile {
     ToriModernV1,
     /// Selected modern JCSA Chu profile.
     ChuJcsa2019V1,
+    /// Ratified Adams1999 Modern complete Tenjiku profile.
+    TenjikuAdamsModernV1,
+    /// Ratified Muller Tenjiku description with named completion clauses.
+    TenjikuMullerCompletedV1,
 }
 impl RulesProfile {
     /// Exact public profile ID.
@@ -57,6 +63,8 @@ impl RulesProfile {
             Self::XiangqiWxf2018V1 => xiangqi::PROFILE_ID,
             Self::ToriModernV1 => tori::PROFILE_ID,
             Self::ChuJcsa2019V1 => chu::PROFILE_ID,
+            Self::TenjikuAdamsModernV1 => tenjiku::Profile::AdamsModern.id(),
+            Self::TenjikuMullerCompletedV1 => tenjiku::Profile::MullerCompleted.id(),
         }
     }
     /// Exact accepted edition; profile revisions cannot silently advance it.
@@ -67,6 +75,8 @@ impl RulesProfile {
             Self::XiangqiWxf2018V1 => xiangqi::PROFILE_EDITION,
             Self::ToriModernV1 => tori::PROFILE_EDITION,
             Self::ChuJcsa2019V1 => chu::PROFILE_EDITION,
+            Self::TenjikuAdamsModernV1 => tenjiku::Profile::AdamsModern.edition(),
+            Self::TenjikuMullerCompletedV1 => tenjiku::Profile::MullerCompleted.edition(),
         }
     }
     /// Game to which this profile belongs.
@@ -77,6 +87,23 @@ impl RulesProfile {
             Self::XiangqiWxf2018V1 => GameKind::Xiangqi,
             Self::ToriModernV1 => GameKind::Tori,
             Self::ChuJcsa2019V1 => GameKind::Chu,
+            Self::TenjikuAdamsModernV1 | Self::TenjikuMullerCompletedV1 => GameKind::Tenjiku,
+        }
+    }
+    /// Exact native Tenjiku choice; other games have no implicit Tenjiku default.
+    pub const fn tenjiku(self) -> Option<tenjiku::Profile> {
+        match self {
+            Self::TenjikuAdamsModernV1 => Some(tenjiku::Profile::AdamsModern),
+            Self::TenjikuMullerCompletedV1 => Some(tenjiku::Profile::MullerCompleted),
+            _ => None,
+        }
+    }
+}
+impl From<tenjiku::Profile> for RulesProfile {
+    fn from(profile: tenjiku::Profile) -> Self {
+        match profile {
+            tenjiku::Profile::AdamsModern => Self::TenjikuAdamsModernV1,
+            tenjiku::Profile::MullerCompleted => Self::TenjikuMullerCompletedV1,
         }
     }
 }
@@ -93,6 +120,8 @@ impl<'de> Deserialize<'de> for RulesProfile {
             xiangqi::PROFILE_ID => Ok(Self::XiangqiWxf2018V1),
             tori::PROFILE_ID => Ok(Self::ToriModernV1),
             chu::PROFILE_ID => Ok(Self::ChuJcsa2019V1),
+            "mshogi.tenjiku.adams1999-modern.v1" => Ok(Self::TenjikuAdamsModernV1),
+            "mshogi.tenjiku.muller-completed.v1" => Ok(Self::TenjikuMullerCompletedV1),
             _ => Err(serde::de::Error::custom("unsupported native rules profile")),
         }
     }
@@ -113,6 +142,8 @@ pub enum NativeSchema {
     ToriV1,
     /// Complete native Chu history schema one.
     ChuV1,
+    /// Tenjiku native schema one, qualified independently by either whole profile.
+    TenjikuV1,
 }
 impl NativeSchema {
     /// Native wire number, scoped to the game/profile.
@@ -124,6 +155,7 @@ impl NativeSchema {
             Self::XiangqiV1 => xiangqi::GAME_RECORD_SCHEMA_VERSION,
             Self::ToriV1 => tori::GAME_RECORD_SCHEMA_VERSION,
             Self::ChuV1 => chu::GAME_RECORD_SCHEMA_VERSION,
+            Self::TenjikuV1 => tenjiku::GAME_RECORD_SCHEMA_VERSION,
         }
     }
 }
@@ -141,6 +173,8 @@ pub enum CanonicalRecord {
     Tori(Box<tori::GameRecord>),
     /// Authoritative native Chu routes, rights, obligations and outcomes.
     Chu(Box<chu::GameRecord>),
+    /// Authoritative native Tenjiku profile, routes, ordered effects and history.
+    Tenjiku(Box<tenjiku::GameRecord>),
 }
 impl CanonicalRecord {
     /// Wrap the actual native chess payload without changing historical observations.
@@ -163,18 +197,23 @@ impl CanonicalRecord {
     pub fn chu(record: chu::GameRecord) -> Self {
         Self::Chu(Box::new(record))
     }
+    /// Wrap the actual immutable native Tenjiku record without advertising execution.
+    pub fn tenjiku(record: tenjiku::GameRecord) -> Self {
+        Self::Tenjiku(Box::new(record))
+    }
     /// Exact native profile.
-    pub const fn profile(&self) -> RulesProfile {
+    pub fn profile(&self) -> RulesProfile {
         match self {
             Self::Chess(_) => RulesProfile::ChessMatchV1,
             Self::Shogi(_) => RulesProfile::ShogiCsa36V1,
             Self::Xiangqi(_) => RulesProfile::XiangqiWxf2018V1,
             Self::Tori(_) => RulesProfile::ToriModernV1,
             Self::Chu(_) => RulesProfile::ChuJcsa2019V1,
+            Self::Tenjiku(record) => record.profile().into(),
         }
     }
     /// Actual game, independent of execution capability.
-    pub const fn game_kind(&self) -> GameKind {
+    pub fn game_kind(&self) -> GameKind {
         self.profile().game()
     }
     /// Complete event count, including terminal commands and historical observations.
@@ -185,6 +224,7 @@ impl CanonicalRecord {
             Self::Xiangqi(record) => record.event_count(),
             Self::Tori(record) => record.event_count(),
             Self::Chu(record) => record.event_count(),
+            Self::Tenjiku(record) => record.event_count(),
         }
     }
     /// Board actions in this known segment, not imported declared counters.
@@ -199,6 +239,7 @@ impl CanonicalRecord {
             Self::Xiangqi(record) => record.known_board_actions(),
             Self::Tori(record) => record.known_board_actions(),
             Self::Chu(record) => record.known_board_actions(),
+            Self::Tenjiku(record) => record.known_board_actions(),
         }
     }
     /// Schema derived from the authoritative payload.
@@ -214,26 +255,34 @@ impl CanonicalRecord {
             Self::Xiangqi(_) => NativeSchema::XiangqiV1,
             Self::Tori(_) => NativeSchema::ToriV1,
             Self::Chu(_) => NativeSchema::ChuV1,
+            Self::Tenjiku(_) => NativeSchema::TenjikuV1,
         }
     }
     /// Serialize a complete bounded wrapper. Native encoding is unchanged.
     pub fn to_json(&self) -> Result<String, EnvelopeError> {
-        self.payload_json()?;
-        let text = serde_json::to_string(self).map_err(EnvelopeError::encoding)?;
-        if text.len() > MAX_RECORD_ENVELOPE_BYTES {
-            return Err(EnvelopeError::Capacity);
-        }
-        Ok(text)
+        encode_envelope(self, &self.payload_json()?)
     }
     /// Strict outer parsing followed by the selected strict native parser.
     pub fn from_json(text: &str) -> Result<Self, EnvelopeError> {
+        Self::from_json_with_stop(text, &mut || false)
+    }
+    /// Strict duplicate-preserving parsing with native Tenjiku replay cancellation.
+    /// Older native parsers remain bounded calls with cancellation checked around them.
+    pub fn from_json_with_stop(
+        text: &str,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<Self, EnvelopeError> {
+        check_stop(stop)?;
         if text.len() > MAX_RECORD_ENVELOPE_BYTES {
             return Err(EnvelopeError::Capacity);
         }
         let wire: WireRecord = serde_json::from_str(text).map_err(EnvelopeError::encoding)?;
+        check_stop(stop)?;
         if wire.envelope_version != RECORD_ENVELOPE_VERSION
             || wire.rules_profile.game() != wire.game_kind
             || wire.profile_edition != wire.rules_profile.edition()
+            || wire.game_kind == GameKind::Tenjiku
+                && wire.native_schema_version != tenjiku::GAME_RECORD_SCHEMA_VERSION
         {
             return Err(EnvelopeError::Identity);
         }
@@ -256,11 +305,24 @@ impl CanonicalRecord {
             GameKind::Chu => Self::chu(
                 chu::GameRecord::from_json(wire.payload.get()).map_err(EnvelopeError::encoding)?,
             ),
+            GameKind::Tenjiku => Self::tenjiku(
+                tenjiku::GameRecord::from_json_with_stop(wire.payload.get(), stop).map_err(
+                    |error| match error {
+                        tenjiku::RecordError::Stopped => EnvelopeError::Stopped,
+                        tenjiku::RecordError::Capacity => EnvelopeError::Capacity,
+                        error => EnvelopeError::encoding(error),
+                    },
+                )?,
+            ),
         };
-        if record.native_schema().version() != wire.native_schema_version {
+        check_stop(stop)?;
+        if record.native_schema().version() != wire.native_schema_version
+            || record.profile() != wire.rules_profile
+        {
             return Err(EnvelopeError::Identity);
         }
-        record.payload_json()?;
+        record.to_json()?;
+        check_stop(stop)?;
         Ok(record)
     }
     fn payload_json(&self) -> Result<String, EnvelopeError> {
@@ -275,6 +337,7 @@ impl CanonicalRecord {
             Self::Xiangqi(record) => record.to_json().to_owned(),
             Self::Tori(record) => record.to_json().to_owned(),
             Self::Chu(record) => record.to_json().to_owned(),
+            Self::Tenjiku(record) => record.to_json().to_owned(),
         };
         if text.len() > MAX_RECORD_ENVELOPE_BYTES {
             return Err(EnvelopeError::Capacity);
@@ -284,9 +347,20 @@ impl CanonicalRecord {
 }
 impl Serialize for CanonicalRecord {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
-        let payload =
-            RawValue::from_string(self.payload_json().map_err(serde::ser::Error::custom)?)
-                .map_err(serde::ser::Error::custom)?;
+        use serde::ser::SerializeStruct;
+        // Compute native encoding once and enforce the complete canonical wrapper
+        // bound for every serializer, including the existing field-wise format.
+        let payload = self.payload_json().map_err(serde::ser::Error::custom)?;
+        let text = encode_envelope(self, &payload).map_err(serde::ser::Error::custom)?;
+        if matches!(self, Self::Tenjiku(_)) {
+            // Preserve the already measured Tenjiku document/fixture encoding.
+            return RawValue::from_string(text)
+                .map_err(serde::ser::Error::custom)?
+                .serialize(serializer);
+        }
+        // Existing games retain their original pretty field indentation while
+        // each authoritative native payload remains raw and byte-preserved.
+        let payload = RawValue::from_string(payload).map_err(serde::ser::Error::custom)?;
         let mut wire = serializer.serialize_struct("CanonicalRecord", 6)?;
         wire.serialize_field("envelope_version", &RECORD_ENVELOPE_VERSION)?;
         wire.serialize_field("game_kind", &self.game_kind())?;
@@ -295,6 +369,39 @@ impl Serialize for CanonicalRecord {
         wire.serialize_field("native_schema_version", &self.native_schema().version())?;
         wire.serialize_field("payload", &payload)?;
         wire.end()
+    }
+}
+fn check_stop(stop: &mut impl FnMut() -> bool) -> Result<(), EnvelopeError> {
+    if stop() {
+        Err(EnvelopeError::Stopped)
+    } else {
+        Ok(())
+    }
+}
+fn encode_envelope(record: &CanonicalRecord, payload: &str) -> Result<String, EnvelopeError> {
+    #[derive(Serialize)]
+    struct Encoded<'a> {
+        envelope_version: u32,
+        game_kind: GameKind,
+        rules_profile: RulesProfile,
+        profile_edition: &'static str,
+        native_schema_version: u32,
+        payload: &'a RawValue,
+    }
+    let payload = RawValue::from_string(payload.to_owned()).map_err(EnvelopeError::encoding)?;
+    let text = serde_json::to_string(&Encoded {
+        envelope_version: RECORD_ENVELOPE_VERSION,
+        game_kind: record.game_kind(),
+        rules_profile: record.profile(),
+        profile_edition: record.profile().edition(),
+        native_schema_version: record.native_schema().version(),
+        payload: &payload,
+    })
+    .map_err(EnvelopeError::encoding)?;
+    if text.len() > MAX_RECORD_ENVELOPE_BYTES {
+        Err(EnvelopeError::Capacity)
+    } else {
+        Ok(text)
     }
 }
 #[derive(Deserialize)]
@@ -320,6 +427,8 @@ impl<'de> Deserialize<'de> for CanonicalRecord {
 pub enum EnvelopeError {
     /// Encoded bytes or supported shared event count exceeded.
     Capacity,
+    /// Cooperative native replay/parser stop; no partial record is published.
+    Stopped,
     /// Envelope, game, profile, edition or native schema disagree.
     Identity,
     /// Strict outer/native syntax rejection, with bounded diagnostics.
@@ -358,6 +467,8 @@ pub enum NativeSide {
     Tori(tori::Side),
     /// Chu Sente/Gote retain their own native identity.
     Chu(chu::Side),
+    /// Tenjiku owner; the whole selected profile remains explicit in its record/context.
+    Tenjiku(tenjiku::Side),
 }
 impl NativeSide {
     /// Side's game, for validating purpose metadata without replay.
@@ -368,6 +479,7 @@ impl NativeSide {
             Self::Xiangqi(_) => GameKind::Xiangqi,
             Self::Tori(_) => GameKind::Tori,
             Self::Chu(_) => GameKind::Chu,
+            Self::Tenjiku(_) => GameKind::Tenjiku,
         }
     }
 }
@@ -392,6 +504,8 @@ impl Serialize for NativeSide {
                 Self::Tori(tori::Side::Gote) => "gote",
                 Self::Chu(chu::Side::Sente) => "sente",
                 Self::Chu(chu::Side::Gote) => "gote",
+                Self::Tenjiku(tenjiku::Side::Sente) => "sente",
+                Self::Tenjiku(tenjiku::Side::Gote) => "gote",
             }
             .into(),
         }
@@ -412,6 +526,8 @@ impl<'de> Deserialize<'de> for NativeSide {
             (GameKind::Tori, "gote") => Ok(Self::Tori(tori::Side::Gote)),
             (GameKind::Chu, "sente") => Ok(Self::Chu(chu::Side::Sente)),
             (GameKind::Chu, "gote") => Ok(Self::Chu(chu::Side::Gote)),
+            (GameKind::Tenjiku, "sente") => Ok(Self::Tenjiku(tenjiku::Side::Sente)),
+            (GameKind::Tenjiku, "gote") => Ok(Self::Tenjiku(tenjiku::Side::Gote)),
             _ => Err(serde::de::Error::custom(
                 "side does not belong to named game",
             )),
@@ -431,6 +547,8 @@ pub enum NativeCommandTarget<'a> {
     Tori(&'a mut tori::Game),
     /// Native Chu owner admits commands with its own actor semantics.
     Chu(&'a mut chu::Game),
+    /// Authoritative two-profile Tenjiku owner.
+    Tenjiku(&'a mut tenjiku::Game),
 }
 /// Native commands keep game-specific actors, actions and preconditions.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -445,6 +563,8 @@ pub enum NativeCommand {
     Tori(Box<tori::GameRequest>),
     /// Complete native Chu command and expected history.
     Chu(Box<chu::GameRequest>),
+    /// Exact native Tenjiku command/context; profile mismatch remains native refusal.
+    Tenjiku(Box<tenjiku::GameRequest>),
 }
 /// Native admission result, preserving rules-owned semantics and errors.
 #[derive(Debug)]
@@ -459,6 +579,8 @@ pub enum NativeReply {
     Tori(Result<Box<tori::GameUndo>, tori::GameError>),
     /// Native Chu exact reversal or atomic typed refusal.
     Chu(Result<Box<chu::GameUndo>, chu::GameError>),
+    /// Native Tenjiku reversal or typed atomic native refusal.
+    Tenjiku(Result<Box<tenjiku::GameUndo>, tenjiku::GameError>),
 }
 /// A wrong-game command is rejected before either native owner is touched.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -484,6 +606,39 @@ pub fn dispatch_command(
         (NativeCommandTarget::Chu(game), NativeCommand::Chu(request)) => {
             Ok(NativeReply::Chu(game.submit(*request).map(Box::new)))
         }
+        (NativeCommandTarget::Tenjiku(game), NativeCommand::Tenjiku(request)) => {
+            Ok(NativeReply::Tenjiku(game.submit(*request).map(Box::new)))
+        }
         _ => Err(DispatchMismatch),
+    }
+}
+
+#[cfg(test)]
+mod envelope_size_tests {
+    use super::*;
+
+    #[test]
+    fn complete_encoding_counts_profile_specific_wrapper_headroom_exactly() {
+        for profile in tenjiku::Profile::ALL {
+            let record = CanonicalRecord::tenjiku(
+                tenjiku::GameRecord::from_game(&tenjiku::Game::standard(profile)).unwrap(),
+            );
+            // Exercise only the envelope accounting helper with a JSON string;
+            // this synthetic payload is deliberately not a native game record.
+            let empty = encode_envelope(&record, "\"\"").unwrap();
+            let padding = MAX_RECORD_ENVELOPE_BYTES - empty.len();
+            let payload = format!("\"{}\"", "x".repeat(padding));
+            assert!(payload.len() < MAX_RECORD_ENVELOPE_BYTES);
+            assert_eq!(
+                encode_envelope(&record, &payload).unwrap().len(),
+                MAX_RECORD_ENVELOPE_BYTES
+            );
+            let overflow = format!("\"{}x\"", "x".repeat(padding));
+            assert!(overflow.len() < MAX_RECORD_ENVELOPE_BYTES);
+            assert_eq!(
+                encode_envelope(&record, &overflow).unwrap_err(),
+                EnvelopeError::Capacity
+            );
+        }
     }
 }

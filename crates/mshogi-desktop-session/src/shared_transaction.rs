@@ -1,4 +1,4 @@
-//! Transaction plumbing for the two immutable native document consumers.
+//! Transaction plumbing for immutable native document consumers.
 //! Game-specific admission stays in their adapters; this owns no live document.
 use super::*;
 impl DesktopController {
@@ -53,6 +53,9 @@ impl DesktopController {
                     *state = next
                 }
                 (ActiveDocument::Chu { state, .. }, archive::OpenedNative::Chu(next)) => {
+                    *state = next
+                }
+                (ActiveDocument::Tenjiku { state, .. }, archive::OpenedNative::Tenjiku(next)) => {
                     *state = next
                 }
                 _ => unreachable!("serialized native transaction owner"),

@@ -6,7 +6,7 @@ import { Board } from "./Board";
 import type { CompletedActionGeometry, NativeChoice, NativeHand, NativePiece } from "./boardPresentation";
 export interface NativeBoardSnapshot {
   token: { document: number; version: number; revision: number; selection: number };
-  game: "chess" | "shogi" | "xiangqi" | "tori" | "chu";
+  game: "chess" | "shogi" | "xiangqi" | "tori" | "chu" | "tenjiku";
   profile: string;
   human?: { key: string };
   board: { files: string[]; ranks: string[]; label: string; initial_focus: string;
@@ -20,7 +20,7 @@ export interface NativeBoardSnapshot {
 }
 export function nativeSnapshotIsNewer(current: NativeBoardSnapshot | null, incoming: NativeBoardSnapshot): boolean {
   if (current === null) return true;
-  return incoming.token.document > current.token.document || (incoming.token.document === current.token.document && incoming.token.revision > current.token.revision);
+  return incoming.token.document > current.token.document || (incoming.token.document === current.token.document && incoming.game === current.game && incoming.profile === current.profile && incoming.token.revision > current.token.revision);
 }
 export function NativeBoard({ snapshot, bottomSide, onPlay, completedAction, onInspect, disabled, inspectionDisabled, helpTarget, renderNativePiece, coordinateFrame }: {
   snapshot: NativeBoardSnapshot; bottomSide: string; onPlay: (action: string) => void;

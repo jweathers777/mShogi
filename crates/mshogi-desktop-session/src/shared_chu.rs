@@ -718,7 +718,11 @@ fn display_observation(
         },
         event_index: record.event_count(),
         board_ply: record.known_board_actions(),
-        perspective: side(NativeSide::Chu(record.side_to_move())).label,
+        perspective: side(
+            mshogi_core::native::RulesProfile::ChuJcsa2019V1,
+            NativeSide::Chu(record.side_to_move()),
+        )
+        .label,
         engine: "mShogi",
         score: telemetry.and_then(|t| t.score_label()),
         completed_depth: telemetry.map(|t| t.completed_depth),

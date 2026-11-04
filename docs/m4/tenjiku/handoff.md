@@ -113,8 +113,42 @@ and multi-stage routes must remain complete; no frontend-provided victim lists.
 Native limits are1MiB/1024commands-events/512Mdeterministic units plus actual
 Stop→Resign→Stop headroom, including runtime authority. Ordinary replay does not
 retain a private undo vector. See native-v1 for measurement meanings and limitations.
-The external public-core consumer is real, but no production `native.rs` dispatch,
-application envelope, engine worker or frontend selector has been added. MSH-79
-must measure whole retained documents, additional observations/branches/history and
+At MSH-87 completion the external public-core consumer was real, but no production `native.rs` dispatch,
+application envelope, engine worker or frontend selector had been added. MSH-79
+had to measure whole retained documents, additional observations/branches/history and
 ending/Close capacity itself; native timings are not a15second desktop guarantee.
-All original79/44 criteria and dependencies are preserved; neither task is begun.
+All original79/44 criteria and dependencies were preserved; neither task had begun.
+
+## MSH-79 shared contract and direct MSH-44 continuation
+
+The [shared contract](shared-v1.md) specifies the implemented integration; its
+single [verification record](shared-verification.json) tracks actual acceptance
+and exact source evidence. Both profiles now use explicit typed native routing,
+one immutable payload in the current desktop envelope, the existing controller,
+file/admission workers and sole install path, and the existing frontend session,
+shell and complete-choice controller. Profile-qualified identities survive
+records, selected prefixes, observations, branches and fresh stopped reopening.
+Same-board cross-profile changes reject; deliberate New creates a fresh epoch.
+
+The measured aggregate limit is160M units, with native limits unchanged and an
+independent15s worker deadline. Strict decode plus native restoration is reported
+separately from actual worker Open/install/Save and ending/Close measurements.
+The provisional600M policy failed a28-context reopen and was rejected. Required
+ending reserves use actual native commands and complete encodings. See the
+structured record for both profiles, typed refusals and preservation assertions.
+
+Travel routes, stationary targets and native capture/burn/mover-death/promotion
+phases remain distinct. Technical labels and generic native abbreviations are
+intentional contract presentation. Both execution capabilities remain unsupported;
+real requests return generic unscored UnsupportedMode. The normal chooser, New
+and product Load exclude Tenjiku; only the labeled QA route can admit it.
+
+MSH-44 must supply functional native evaluation and bounded full-history search,
+genuine supervised engine and complete-game journeys, console/final notation,
+licensed traditional-kanji/promoted-face assets and final16×16 board ownership
+presentation. Then enable both named whole-profile choices and ordinary product
+Load through the existing replacement flow. Complete normal/minimum packaged
+Tenjiku gameplay on all three platforms remains44's obligation. Twelve consumer
+rows are within79; the five product rows remain pending44. Native87's621
+assertions per profile remain historical rule evidence, not new shared tests.
+No44/M5 work is started by this handoff.

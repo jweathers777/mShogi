@@ -71,7 +71,7 @@ it("shows unresolved resignation without inventing a win, draw or score", () => 
   render(<NativeRecovery snapshot={chess(unresolvedJson)} error="" disabled={false} command={vi.fn()} />); expect(screen.getByLabelText("Game outcome").textContent).toContain("without an established win or draw"); expect(screen.getByLabelText("Game outcome").textContent).toContain("no score is assigned");
 });
 it.each(["failed", "cancelled", "incomplete"] as const)("keeps %s engine work distinct from a game outcome and retries explicitly", (phase) => {
-  const snapshot = chess(standardJson); snapshot.phase = phase; snapshot.turn = snapshot.sides.find((side) => side.key !== snapshot.human.key)!; const command = vi.fn(); render(<NativeRecovery snapshot={snapshot} error="" disabled={false} command={command} />);
+  const snapshot = chess(standardJson); snapshot.phase = phase; snapshot.turn = snapshot.sides.find((side) => side.key !== snapshot.human.key)!; snapshot.capabilities.engine_turn = true; const command = vi.fn(); render(<NativeRecovery snapshot={snapshot} error="" disabled={false} command={command} />);
   expect(screen.queryByLabelText("Game outcome")).toBeNull(); fireEvent.click(screen.getByRole("button", { name: "Retry engine turn" })); expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "retry" });
 });
 it("retains native Xiangqi warnings and unresolved pending semantics without a fabricated result", () => {

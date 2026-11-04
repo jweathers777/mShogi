@@ -29,3 +29,7 @@ required-features = ["desktop-verification"]
 [[example]]
 name = "write_chu_frontend_fixtures"
 required-features = ["desktop-verification"]
+
+[[example]]
+name = "write_tenjiku_frontend_fixtures"
+required-features = ["desktop-verification"]

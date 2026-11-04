@@ -10,6 +10,7 @@ fn peek(c: &DesktopController) -> SharedSnapshot {
         ActiveDocument::Xiangqi { .. } => c.xiangqi_snapshot(),
         ActiveDocument::Tori { .. } => c.tori_snapshot(),
         ActiveDocument::Chu { .. } => c.chu_snapshot(),
+        ActiveDocument::Tenjiku { .. } => c.tenjiku_snapshot(),
     }
 }
 fn pump(c: &mut DesktopController) {
@@ -43,7 +44,7 @@ fn running(game: GameKind, engine_turn: bool) -> DesktopController {
     let mut c = DesktopController::new("/unused/msh125-manual-engine".into()).unwrap();
     c.shared.manual_engine = true;
     let human = match game {
-        GameKind::Tori | GameKind::Chu => {
+        GameKind::Tori | GameKind::Chu | GameKind::Tenjiku => {
             unreachable!("This fixture covers the original three games")
         }
         GameKind::Chess => NativeSide::Chess(if engine_turn {
@@ -63,7 +64,11 @@ fn running(game: GameKind, engine_turn: bool) -> DesktopController {
         }),
     };
     let (_, receipt) = c
-        .shared_new_game(c.shared_open_token(), game, human)
+        .shared_new_game(
+            c.shared_open_token(),
+            crate::test_single_profile(game),
+            human,
+        )
         .unwrap();
     settle(&mut c, &receipt).unwrap();
     assert!(!peek(&c).paused);
@@ -268,7 +273,7 @@ fn takeback_and_capacity_stops_cannot_be_overridden_by_browsing() {
     for game in GAMES {
         let mut c = running(game, false);
         let operation = match game {
-            GameKind::Tori | GameKind::Chu => {
+            GameKind::Tori | GameKind::Chu | GameKind::Tenjiku => {
                 unreachable!("This fixture covers the original three games")
             }
             GameKind::Chess => SessionOperation::ChessPlay {

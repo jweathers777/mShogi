@@ -128,7 +128,7 @@ it("distinguishes application capacity from engine failure and keeps the complet
   fireEvent.click(screen.getByRole("button", { name: "Save" })); expect(session.file).toHaveBeenCalledExactlyOnceWith(snapshot, "save");
 });
 it("presents failures as recoverable execution problems, never as a chess result", () => {
-  const snapshot = { ...standard, phase: "failed" as const, turn: standard.sides[1]! };
+  const snapshot = { ...standard, phase: "failed" as const, turn: standard.sides[1]!, capabilities: { ...standard.capabilities, engine_turn: true } };
   const { session } = app(snapshot, "Engine /private/machine/path failed");
   expect(screen.getByText("The current game is intact. No game result is implied.")).toBeTruthy();
   const alert = screen.getByRole("alert"); expect(alert.textContent).not.toContain("/private/machine/path");

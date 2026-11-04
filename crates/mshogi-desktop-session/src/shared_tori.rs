@@ -717,7 +717,12 @@ pub(super) fn choice(action: t::Action, actor: t::Side, position: &t::Position) 
         ),
         t::Action::Drop { face, to } => (
             ChoiceOrigin::Hand {
-                owner: side(NativeSide::Tori(actor)).key.clone(),
+                owner: side(
+                    mshogi_core::native::RulesProfile::ToriModernV1,
+                    NativeSide::Tori(actor),
+                )
+                .key
+                .clone(),
                 piece_kind: face.code().into(),
             },
             hand_origin(actor, face),
@@ -726,6 +731,7 @@ pub(super) fn choice(action: t::Action, actor: t::Side, position: &t::Position) 
         ),
     };
     PresentedChoice {
+        tenjiku: None,
         origin,
         action: serde_json::to_string(&action).expect("native action"),
         from,
@@ -734,7 +740,15 @@ pub(super) fn choice(action: t::Action, actor: t::Side, position: &t::Position) 
     }
 }
 fn hand_origin(actor: t::Side, face: t::Face) -> String {
-    format!("hand:{}:{}", side(NativeSide::Tori(actor)).key, face.code())
+    format!(
+        "hand:{}:{}",
+        side(
+            mshogi_core::native::RulesProfile::ToriModernV1,
+            NativeSide::Tori(actor)
+        )
+        .key,
+        face.code()
+    )
 }
 pub(super) fn inspect(game: &t::Game, origin: &str) -> Result<inspection::Inspected, String> {
     let (native, actor, face) = if let Ok(square) = origin.parse::<t::Square>() {
@@ -767,7 +781,11 @@ pub(super) fn inspect(game: &t::Game, origin: &str) -> Result<inspection::Inspec
         NativeSide::Tori(actor),
         format!(
             "{} {}{}",
-            side(NativeSide::Tori(actor)).label,
+            side(
+                mshogi_core::native::RulesProfile::ToriModernV1,
+                NativeSide::Tori(actor)
+            )
+            .label,
             face_name(face),
             if matches!(native, t::InspectionOrigin::Hand { .. }) {
                 " in hand"
@@ -789,19 +807,32 @@ impl DesktopController {
         let ranks: Vec<_> = ('a'..='g').map(|c| c.to_string()).collect();
         let sides: Vec<_> = [t::Side::Sente, t::Side::Gote]
             .into_iter()
-            .map(|s| side(NativeSide::Tori(s)))
+            .map(|s| {
+                side(
+                    mshogi_core::native::RulesProfile::ToriModernV1,
+                    NativeSide::Tori(s),
+                )
+            })
             .collect();
         let pieces = t::Square::all()
             .filter_map(|square| {
                 position.piece(square).map(|p| PresentedPiece {
                     square: square.to_string(),
-                    owner: side(NativeSide::Tori(p.side)).key,
+                    owner: side(
+                        mshogi_core::native::RulesProfile::ToriModernV1,
+                        NativeSide::Tori(p.side),
+                    )
+                    .key,
                     kind: p.face.code().into(),
                     promoted: p.face.is_promoted(),
                     text: p.face.code().into(),
                     label: format!(
                         "{square}, {} {}",
-                        side(NativeSide::Tori(p.side)).label,
+                        side(
+                            mshogi_core::native::RulesProfile::ToriModernV1,
+                            NativeSide::Tori(p.side)
+                        )
+                        .label,
                         face_name(p.face)
                     ),
                 })
@@ -815,13 +846,21 @@ impl DesktopController {
                     .filter(|f| !f.is_promoted() && *f != t::Face::Phoenix)
                     .map(move |face| PresentedHand {
                         origin: hand_origin(actor, face),
-                        owner: side(NativeSide::Tori(actor)).key,
+                        owner: side(
+                            mshogi_core::native::RulesProfile::ToriModernV1,
+                            NativeSide::Tori(actor),
+                        )
+                        .key,
                         kind: face.code().into(),
                         count: position.hand(actor).count(face),
                         text: face.code().into(),
                         label: format!(
                             "{} {} in hand, {}",
-                            side(NativeSide::Tori(actor)).label,
+                            side(
+                                mshogi_core::native::RulesProfile::ToriModernV1,
+                                NativeSide::Tori(actor)
+                            )
+                            .label,
                             face_name(face),
                             position.hand(actor).count(face)
                         ),
@@ -835,6 +874,7 @@ impl DesktopController {
             xiangqi: None,
             tori: Some(ToriPresentation::new(game, &state.game)),
             chu: None,
+            tenjiku: None,
             open_token: self.shared_open_token(),
             document: self.shared_document(),
             io: self.io_state.clone(),
@@ -843,8 +883,14 @@ impl DesktopController {
             game: GameKind::Tori,
             profile: RulesProfile::ToriModernV1,
             edition: t::PROFILE_EDITION,
-            human: side(NativeSide::Tori(state.document.human())),
-            turn: side(NativeSide::Tori(position.side_to_move())),
+            human: side(
+                mshogi_core::native::RulesProfile::ToriModernV1,
+                NativeSide::Tori(state.document.human()),
+            ),
+            turn: side(
+                mshogi_core::native::RulesProfile::ToriModernV1,
+                NativeSide::Tori(position.side_to_move()),
+            ),
             sides: sides.clone(),
             board: BoardDescriptor {
                 intersections: None,
@@ -1012,7 +1058,11 @@ fn display_observation(
         },
         event_index: record.event_count(),
         board_ply: record.known_board_actions(),
-        perspective: side(NativeSide::Tori(record.side_to_move())).label,
+        perspective: side(
+            mshogi_core::native::RulesProfile::ToriModernV1,
+            NativeSide::Tori(record.side_to_move()),
+        )
+        .label,
         engine: "mShogi",
         score: telemetry.and_then(|t| t.score_label()),
         completed_depth: telemetry.map(|t| t.completed_depth),

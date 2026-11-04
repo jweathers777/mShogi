@@ -143,7 +143,7 @@ fn product_new_gote_real_engine_play_analysis_archive_and_resume_use_native_path
     let (_, receipt) = c
         .shared_new_game(
             c.shared_open_token(),
-            GameKind::Shogi,
+            mshogi_core::native::RulesProfile::ShogiCsa36V1,
             NativeSide::Shogi(s::Side::Gote),
         )
         .unwrap();

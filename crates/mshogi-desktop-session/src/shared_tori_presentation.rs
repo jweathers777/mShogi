@@ -80,7 +80,13 @@ pub(super) fn face_name(face: t::Face) -> &'static str {
     }
 }
 pub(super) fn status_label(game: &t::Game) -> String {
-    let name = |s| side(NativeSide::Tori(s)).label;
+    let name = |s| {
+        side(
+            mshogi_core::native::RulesProfile::ToriModernV1,
+            NativeSide::Tori(s),
+        )
+        .label
+    };
     if let Some(conclusion) = game.conclusion() {
         return match conclusion {
             t::Conclusion::Checkmate { winner } => format!("{} wins by checkmate", name(winner)),
@@ -120,7 +126,11 @@ fn stop_label(reason: t::StopReason) -> &'static str {
     }
 }
 pub(super) fn event_label(event: &t::GameEvent) -> String {
-    let actor = side(NativeSide::Tori(event.actor)).label;
+    let actor = side(
+        mshogi_core::native::RulesProfile::ToriModernV1,
+        NativeSide::Tori(event.actor),
+    )
+    .label;
     match event.command {
         t::GameCommand::Play { action } => format!(
             "{actor} · Technical action {}",

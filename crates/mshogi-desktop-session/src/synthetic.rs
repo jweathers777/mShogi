@@ -139,6 +139,7 @@ impl SyntheticController {
                 .last()
                 .and_then(|id| fixture::decode(id))
                 .map(|action| crate::CompletedActionGeometry {
+                    native_effects: None,
                     action: fixture::encode(&action),
                     event_index: self.actions.len(),
                     origin: crate::ChoiceOrigin::Board {

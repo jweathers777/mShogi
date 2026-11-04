@@ -10,6 +10,7 @@ engine/console/desktop capability is delivered by the native handoff.
 - [156-piece setup/44-face data](profile.json)
 - [Independent two-profile corpus](fixtures.json) and[accounting](fixtures.md)
 - [Native API, records, limits and consumer contract](native-v1.md)
+- [Shared application contract](shared-v1.md) and [shared verification](shared-verification.json)
 - [Direct native/shared/product handoff](handoff.md)
 - [Validation and independent review evidence](verification.json)
 

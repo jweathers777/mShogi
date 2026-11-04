@@ -7,7 +7,8 @@ mod shared;
 pub use shared::*;
 mod moves;
 pub use moves::{
-    CapturedPiece, CompletedActionGeometry, MoveEffect, MovesProjection, MovesRoot, PresentedMove,
+    CapturedPiece, CompletedActionGeometry, MoveEffect, MovesProjection, MovesRoot,
+    NativeCompletedEffects, PresentedMove, TenjikuEffectPhase, TenjikuEffectPiece,
 };
 mod capacity;
 pub use capacity::*;
@@ -15,6 +16,8 @@ pub use capacity::*;
 pub mod chu_document;
 mod document;
 mod resource;
+/// Immutable two-profile Tenjiku candidates for the existing document and worker.
+pub mod tenjiku_document;
 /// Immutable Tori document codec/admission; installation belongs to the sole native controller.
 pub mod tori_document;
 pub use resource::*;
@@ -358,6 +361,11 @@ pub(crate) enum ActiveDocument {
         runtime: RuntimeMetadata,
         state: Box<shared::chu::ChuSession>,
     },
+    /// Authoritative two-profile Tenjiku document, in the same runtime.
+    Tenjiku {
+        runtime: RuntimeMetadata,
+        state: Box<shared::tenjiku::TenjikuSession>,
+    },
     /// Native Xiangqi WXF game journal and observations.
     Xiangqi {
         runtime: RuntimeMetadata,
@@ -372,7 +380,8 @@ impl std::ops::Deref for ActiveDocument {
             Self::Shogi { runtime, .. }
             | Self::Xiangqi { runtime, .. }
             | Self::Tori { runtime, .. }
-            | Self::Chu { runtime, .. } => runtime,
+            | Self::Chu { runtime, .. }
+            | Self::Tenjiku { runtime, .. } => runtime,
         }
     }
 }
@@ -383,7 +392,8 @@ impl std::ops::DerefMut for ActiveDocument {
             Self::Shogi { runtime, .. }
             | Self::Xiangqi { runtime, .. }
             | Self::Tori { runtime, .. }
-            | Self::Chu { runtime, .. } => runtime,
+            | Self::Chu { runtime, .. }
+            | Self::Tenjiku { runtime, .. } => runtime,
         }
     }
 }
@@ -438,6 +448,31 @@ impl ActiveDocument {
             None
         }
     }
+    fn tenjiku(&self) -> Option<&shared::tenjiku::TenjikuSession> {
+        if let Self::Tenjiku { state, .. } = self {
+            Some(state)
+        } else {
+            None
+        }
+    }
+    fn tenjiku_mut(&mut self) -> Option<&mut shared::tenjiku::TenjikuSession> {
+        if let Self::Tenjiku { state, .. } = self {
+            Some(state)
+        } else {
+            None
+        }
+    }
+    fn profile(&self) -> mshogi_core::native::RulesProfile {
+        use mshogi_core::native::RulesProfile;
+        match self {
+            Self::Chess(_) => RulesProfile::ChessMatchV1,
+            Self::Shogi { .. } => RulesProfile::ShogiCsa36V1,
+            Self::Xiangqi { .. } => RulesProfile::XiangqiWxf2018V1,
+            Self::Tori { .. } => RulesProfile::ToriModernV1,
+            Self::Chu { .. } => RulesProfile::ChuJcsa2019V1,
+            Self::Tenjiku { state, .. } => state.document.profile(),
+        }
+    }
     fn tori(&self) -> Option<&shared::tori::ToriSession> {
         match self {
             Self::Tori { state, .. } => Some(state),
@@ -483,6 +518,9 @@ impl ActiveDocument {
             Self::Chu { state, .. } => {
                 state.browse_stop = None;
             }
+            Self::Tenjiku { state, .. } => {
+                state.browse_stop = None;
+            }
             Self::Xiangqi { state, .. } => {
                 state.browse_running = false;
                 state.browse_stop = None;
@@ -510,6 +548,10 @@ impl ActiveDocument {
                 state.retire();
                 state.paused = true;
             }
+            Self::Tenjiku { state, .. } => {
+                state.retire();
+                state.paused = true;
+            }
             Self::Xiangqi { state, .. } => {
                 state.retire();
                 state.paused = true;
@@ -529,6 +571,7 @@ impl ActiveDocument {
             Self::Xiangqi { state, .. } => state.retire(),
             Self::Tori { state, .. } => state.retire(),
             Self::Chu { state, .. } => state.retire(),
+            Self::Tenjiku { state, .. } => state.retire(),
         }
     }
     fn capacity_pause(&mut self, error: String) {
@@ -1213,7 +1256,7 @@ impl DesktopController {
         let mut controller = Self::new(engine_path).map_err(|error| error.to_string())?;
         controller.session = ActiveDocument::Chess(Box::new(match fixture {
             "standard" | "shared-contract" => DesktopSession::new(),
-            fixture if fixture.starts_with("shogi-") || fixture.starts_with("xiangqi-") || fixture.starts_with("tori-") || fixture.starts_with("chu-") => DesktopSession::new(),
+            fixture if fixture.starts_with("shogi-") || fixture.starts_with("xiangqi-") || fixture.starts_with("tori-") || fixture.starts_with("chu-") || fixture.starts_with("tenjiku-") => DesktopSession::new(),
             "capacity" => DesktopSession::verification_capacity()?,
             "promotion" => {
                 let game = AdjudicatedGame::from_fen("7k/P7/8/8/8/8/8/7K w - - 0 1", ClaimPolicy::ExplicitOnly).map_err(|error| error.to_string())?;
@@ -1236,6 +1279,108 @@ impl DesktopController {
             }
             _ => return Err("Unknown desktop verification fixture. Use standard, promotion, claim, current-claim, concluded, incomplete or capacity.".into()),
         }));
+        if fixture.starts_with("tenjiku-") {
+            #[path = "../examples/support/tenjiku.rs"]
+            mod roots;
+            fn send(
+                controller: &mut DesktopController,
+                operation: SessionOperation,
+            ) -> Result<(), String> {
+                let game = controller.shared_snapshot().game;
+                let (_, receipt) =
+                    controller.shared_command_with_receipt(SharedDesktopCommand {
+                        expected: controller.shared_token(),
+                        game,
+                        operation,
+                    })?;
+                let deadline = Instant::now() + std::time::Duration::from_secs(20);
+                loop {
+                    controller.shared_snapshot();
+                    if let Some(done) = receipt.completion() {
+                        return done;
+                    }
+                    if Instant::now() >= deadline {
+                        return Err("Tenjiku verification admission did not complete".into());
+                    }
+                    std::thread::sleep(std::time::Duration::from_millis(1));
+                }
+            }
+            let (profile, scenario) = roots::selected(fixture)?;
+            let game = roots::game(profile, scenario)?;
+            send(
+                &mut controller,
+                SessionOperation::Replace {
+                    record: CanonicalRecord::tenjiku(
+                        mshogi_core::tenjiku::GameRecord::from_game(&game)
+                            .map_err(|e| e.to_string())?,
+                    ),
+                    human: NativeSide::Tenjiku(if scenario == "gote" {
+                        mshogi_core::tenjiku::Side::Gote
+                    } else {
+                        mshogi_core::tenjiku::Side::Sente
+                    }),
+                },
+            )?;
+            if matches!(
+                scenario,
+                "burned"
+                    | "iguied"
+                    | "promoted"
+                    | "declined"
+                    | "compound-played"
+                    | "selected-root"
+                    | "unsupported"
+                    | "hawk-played"
+                    | "area-played"
+                    | "ranked-jump-played"
+            ) {
+                send(
+                    &mut controller,
+                    SessionOperation::Tenjiku {
+                        actor: mshogi_core::tenjiku::Side::Sente,
+                        command: mshogi_core::tenjiku::GameCommand::Play {
+                            action: roots::action(scenario)?,
+                        },
+                    },
+                )?;
+            }
+            if matches!(scenario, "selected-root" | "unsupported") {
+                send(
+                    &mut controller,
+                    SessionOperation::Inspect { event_index: 0 },
+                )?;
+            }
+            if scenario == "ending-stopped" {
+                for (actor, command) in [
+                    (
+                        mshogi_core::tenjiku::Side::Sente,
+                        mshogi_core::tenjiku::GameCommand::Resign,
+                    ),
+                    (
+                        mshogi_core::tenjiku::Side::Gote,
+                        mshogi_core::tenjiku::GameCommand::Stop {
+                            reason: mshogi_core::tenjiku::StopReason::EngineFailure,
+                        },
+                    ),
+                ] {
+                    send(
+                        &mut controller,
+                        SessionOperation::Tenjiku { actor, command },
+                    )?;
+                }
+            }
+            if scenario == "unsupported" {
+                let before = controller.shared_snapshot().observations.len();
+                controller.verify_tenjiku_execution(WorkLimits { depth: 1, nodes: 1 }, true)?;
+                let deadline = Instant::now() + std::time::Duration::from_secs(20);
+                while controller.shared_snapshot().observations.len() == before {
+                    if Instant::now() >= deadline {
+                        return Err("Tenjiku unsupported observation did not complete".into());
+                    }
+                    std::thread::sleep(std::time::Duration::from_millis(1));
+                }
+            }
+        }
         if fixture.starts_with("chu-") {
             let game = match fixture {
                 "chu-contract" => chu_fixture_roots::contract_game(),
@@ -2221,3 +2366,15 @@ mod tori_fixture_roots;
 #[cfg(any(test, feature = "desktop-verification"))]
 #[path = "../examples/support/chu.rs"]
 mod chu_fixture_roots;
+
+#[cfg(test)]
+fn test_single_profile(game: GameKind) -> RulesProfile {
+    match game {
+        GameKind::Chess => RulesProfile::ChessMatchV1,
+        GameKind::Shogi => RulesProfile::ShogiCsa36V1,
+        GameKind::Xiangqi => RulesProfile::XiangqiWxf2018V1,
+        GameKind::Tori => RulesProfile::ToriModernV1,
+        GameKind::Chu => RulesProfile::ChuJcsa2019V1,
+        GameKind::Tenjiku => panic!("Tenjiku tests must supply an explicit whole profile"),
+    }
+}

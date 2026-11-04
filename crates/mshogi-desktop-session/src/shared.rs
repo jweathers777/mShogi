@@ -8,6 +8,8 @@ pub use archive::{NativeDesktopSettings, SharedDocumentState, SharedOpenToken, S
 pub(super) mod chu;
 #[path = "shared_inspection.rs"]
 mod inspection;
+#[path = "shared_tenjiku.rs"]
+pub(super) mod tenjiku;
 #[path = "shared_tori.rs"]
 pub(super) mod tori;
 #[path = "shared_transaction.rs"]
@@ -15,12 +17,9 @@ mod transaction;
 #[path = "shared_xiangqi.rs"]
 pub(super) mod xiangqi;
 pub use inspection::{MovementInspection, MovementInspectionQuery};
-pub use mshogi_core::native::{GameKind, NativeSide};
+pub use mshogi_core::native::{GameKind, NativeSide, RulesProfile};
 pub use mshogi_core::shogi::Side as ShogiSide;
-use mshogi_core::{
-    native::{CanonicalRecord, RulesProfile},
-    shogi as s,
-};
+use mshogi_core::{native::CanonicalRecord, shogi as s};
 use mshogi_engine::{
     ExecutionContext, ExecutionObservation, ExecutionPurpose, ExecutionRequest, ExecutionResponse,
     ExecutionResult, ExecutionTarget, OBSERVATION_SCHEMA_VERSION, ShogiChoice, ShogiResult,
@@ -60,30 +59,21 @@ pub struct PresentedSide {
     /// Whether this is the native first-moving side.
     pub first_mover: bool,
 }
-pub(super) fn side(id: NativeSide) -> PresentedSide {
-    let (profile, name, first) = match id {
-        NativeSide::Chu(mshogi_core::chu::Side::Sente) => {
-            (RulesProfile::ChuJcsa2019V1, "Sente", true)
-        }
-        NativeSide::Chu(mshogi_core::chu::Side::Gote) => {
-            (RulesProfile::ChuJcsa2019V1, "Gote", false)
-        }
-        NativeSide::Tori(mshogi_core::tori::Side::Sente) => {
-            (RulesProfile::ToriModernV1, "Sente", true)
-        }
-        NativeSide::Tori(mshogi_core::tori::Side::Gote) => {
-            (RulesProfile::ToriModernV1, "Gote", false)
-        }
-        NativeSide::Chess(Color::White) => (RulesProfile::ChessMatchV1, "White", true),
-        NativeSide::Chess(Color::Black) => (RulesProfile::ChessMatchV1, "Black", false),
-        NativeSide::Shogi(s::Side::Sente) => (RulesProfile::ShogiCsa36V1, "Sente", true),
-        NativeSide::Shogi(s::Side::Gote) => (RulesProfile::ShogiCsa36V1, "Gote", false),
-        NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Red) => {
-            (RulesProfile::XiangqiWxf2018V1, "Red", true)
-        }
-        NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Black) => {
-            (RulesProfile::XiangqiWxf2018V1, "Black", false)
-        }
+pub(super) fn side(profile: RulesProfile, id: NativeSide) -> PresentedSide {
+    debug_assert_eq!(profile.game(), id.game());
+    let (name, first) = match id {
+        NativeSide::Chess(Color::White) => ("White", true),
+        NativeSide::Chess(Color::Black) => ("Black", false),
+        NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Red) => ("Red", true),
+        NativeSide::Xiangqi(mshogi_core::xiangqi::Side::Black) => ("Black", false),
+        NativeSide::Shogi(s::Side::Sente)
+        | NativeSide::Tori(mshogi_core::tori::Side::Sente)
+        | NativeSide::Chu(mshogi_core::chu::Side::Sente)
+        | NativeSide::Tenjiku(mshogi_core::tenjiku::Side::Sente) => ("Sente", true),
+        NativeSide::Shogi(s::Side::Gote)
+        | NativeSide::Tori(mshogi_core::tori::Side::Gote)
+        | NativeSide::Chu(mshogi_core::chu::Side::Gote)
+        | NativeSide::Tenjiku(mshogi_core::tenjiku::Side::Gote) => ("Gote", false),
     };
     PresentedSide {
         id,
@@ -136,6 +126,9 @@ pub struct PresentedChoice {
     pub from: String,
     /// Ordered route destinations; equal endpoints need not mean equal actions.
     pub steps: Vec<String>,
+    /// Tenjiku selection shape keeps stationary targets distinct from movement.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tenjiku: Option<tenjiku::TenjikuChoiceShape>,
     /// Native explicit completion choice, including promotion or decline.
     pub completion: Option<Completion>,
 }
@@ -320,7 +313,11 @@ fn display_shogi_choice(choice: &ShogiChoice) -> String {
         } => format!("Drop {} at {to}", format!("{kind:?}").to_lowercase()),
         ShogiChoice::Declare { actor } => format!(
             "{} declares entering king",
-            side(NativeSide::Shogi(*actor)).label
+            side(
+                mshogi_core::native::RulesProfile::ShogiCsa36V1,
+                NativeSide::Shogi(*actor)
+            )
+            .label
         ),
     }
 }
@@ -369,7 +366,11 @@ fn display_shogi_observation(
         purpose,
         event_index,
         board_ply,
-        perspective: side(NativeSide::Shogi(root_side)).label,
+        perspective: side(
+            mshogi_core::native::RulesProfile::ShogiCsa36V1,
+            NativeSide::Shogi(root_side),
+        )
+        .label,
         engine: "mShogi",
         score: telemetry.and_then(|t| t.score_label()),
         completed_depth: telemetry.map(|t| t.completed_depth),
@@ -466,7 +467,11 @@ fn display_chess_observation(
         purpose,
         event_index,
         board_ply,
-        perspective: side(NativeSide::Chess(root_side)).label,
+        perspective: side(
+            mshogi_core::native::RulesProfile::ChessMatchV1,
+            NativeSide::Chess(root_side),
+        )
+        .label,
         engine: "mShogi",
         score,
         completed_depth: telemetry.map(|t| t.completed_depth),
@@ -507,6 +512,9 @@ pub struct SharedSnapshot {
     /// Native Chu royal, Lion-right, repetition and complete-effect metadata.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub chu: Option<chu::ChuPresentation>,
+    /// Native two-profile Tenjiku facts and ordered effect phases.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tenjiku: Option<tenjiku::TenjikuPresentation>,
     /// Exact native replacement precondition for New Game and Open.
     pub open_token: SharedOpenToken,
     /// Authoritative document metadata and game-native settings.
@@ -688,6 +696,18 @@ pub enum SessionOperation {
         /// Complete native command, never a partial route.
         command: mshogi_core::chu::GameCommand,
     },
+    /// Complete native Tenjiku command under the immutable document profile.
+    Tenjiku {
+        /// Explicit native actor.
+        actor: mshogi_core::tenjiku::Side,
+        /// Complete action/control, never client-supplied effects.
+        command: mshogi_core::tenjiku::GameCommand,
+    },
+    /// Native Tenjiku orientation preferences.
+    TenjikuPreferences {
+        /// Native document preferences.
+        settings: crate::tenjiku_document::TenjikuSettings,
+    },
     /// Native Chu orientation preferences; no engine defaults implied.
     ChuPreferences {
         /// Native document preferences.
@@ -777,6 +797,13 @@ enum OperationWire {
     Chu {
         actor: mshogi_core::chu::Side,
         command: mshogi_core::chu::GameCommand,
+    },
+    Tenjiku {
+        actor: mshogi_core::tenjiku::Side,
+        command: mshogi_core::tenjiku::GameCommand,
+    },
+    TenjikuPreferences {
+        settings: crate::tenjiku_document::TenjikuSettings,
     },
     ChuPreferences {
         settings: crate::chu_document::ChuSettings,
@@ -963,7 +990,11 @@ fn shogi_status(game: &s::Game) -> PresentedStatus {
     let label = match game.conclusion() {
         None => format!(
             "{} to move{}",
-            side(NativeSide::Shogi(game.position().side_to_move())).label,
+            side(
+                mshogi_core::native::RulesProfile::ShogiCsa36V1,
+                NativeSide::Shogi(game.position().side_to_move())
+            )
+            .label,
             if game.position().is_in_check(game.position().side_to_move()) {
                 " · check"
             } else {
@@ -971,8 +1002,16 @@ fn shogi_status(game: &s::Game) -> PresentedStatus {
             }
         ),
         Some(s::Conclusion::Win { winner, reason }) => {
-            let winner_label = side(NativeSide::Shogi(winner)).label;
-            let loser_label = side(NativeSide::Shogi(winner.opponent())).label;
+            let winner_label = side(
+                mshogi_core::native::RulesProfile::ShogiCsa36V1,
+                NativeSide::Shogi(winner),
+            )
+            .label;
+            let loser_label = side(
+                mshogi_core::native::RulesProfile::ShogiCsa36V1,
+                NativeSide::Shogi(winner.opponent()),
+            )
+            .label;
             match reason {
                 s::WinReason::NoLegalAction { in_check: true } => {
                     format!("{winner_label} wins by checkmate")
@@ -1022,9 +1061,10 @@ impl DesktopController {
     pub fn shared_new_game(
         &mut self,
         expected: SharedOpenToken,
-        game: GameKind,
+        profile: RulesProfile,
         human: NativeSide,
     ) -> Result<(SharedSnapshot, AdmissionReceipt), String> {
+        let game = profile.game();
         if self.lifecycle.close_requested() {
             return Err(
                 "Close is pending. Finish or cancel close before replacing the document.".into(),
@@ -1041,6 +1081,24 @@ impl DesktopController {
             return Err("Application capacity: document identity exhausted.".into());
         }
         let receipt = match human {
+            NativeSide::Tenjiku(human) => {
+                let native_profile = profile
+                    .tenjiku()
+                    .ok_or("Tenjiku requires an explicit supported rules profile.")?;
+                let record = mshogi_core::tenjiku::GameRecord::from_game(
+                    &mshogi_core::tenjiku::Game::standard(native_profile),
+                )
+                .map_err(|e| e.to_string())?;
+                self.queue_tenjiku_candidate(
+                    tenjiku::RuntimeSeed::Record {
+                        record: Box::new(record),
+                        human,
+                    },
+                    Some(SessionOperation::Resume {}),
+                    None,
+                    true,
+                )?
+            }
             NativeSide::Chu(human) => {
                 let record =
                     mshogi_core::chu::GameRecord::from_game(&mshogi_core::chu::Game::standard())
@@ -1110,7 +1168,9 @@ impl DesktopController {
         human: Color,
         paused: bool,
     ) -> Result<AdmissionReceipt, String> {
-        let preserve_tori = self.session.tori().is_some() || self.session.chu().is_some();
+        let preserve_tori = self.session.tori().is_some()
+            || self.session.chu().is_some()
+            || self.session.tenjiku().is_some();
         self.retire_admission();
         if !preserve_tori {
             self.bridge.cancel();
@@ -1146,6 +1206,7 @@ impl DesktopController {
             || self.session.xiangqi().is_some()
             || self.session.tori().is_some()
             || self.session.chu().is_some()
+            || self.session.tenjiku().is_some()
         {
             Err("Wrong game: a Chess mutation cannot act on another active native game.".into())
         } else {
@@ -1168,7 +1229,9 @@ impl DesktopController {
                 "The session or selected event changed; use its current native snapshot.".into(),
             );
         }
-        let active = if self.session.chu().is_some() {
+        let active = if self.session.tenjiku().is_some() {
+            GameKind::Tenjiku
+        } else if self.session.chu().is_some() {
             GameKind::Chu
         } else if self.session.tori().is_some() {
             GameKind::Tori
@@ -1189,6 +1252,12 @@ impl DesktopController {
         if let SessionOperation::Replace { record, human } = command.operation {
             if record.game_kind() != human.game() {
                 return Err("Replacement side and game disagree.".into());
+            }
+            if let CanonicalRecord::Tenjiku(record) = record {
+                let NativeSide::Tenjiku(human) = human else {
+                    return Err("Wrong native Tenjiku side.".into());
+                };
+                return self.replace_tenjiku(*record, human);
             }
             if let CanonicalRecord::Chu(record) = record {
                 let NativeSide::Chu(human) = human else {
@@ -1234,6 +1303,17 @@ impl DesktopController {
                 return Err("Unsupported desktop game; the current document was preserved.".into());
             }
             return Ok(self.shared_snapshot());
+        }
+        if self.session.tenjiku().is_some() {
+            if matches!(
+                command.operation,
+                SessionOperation::Analyze { .. } | SessionOperation::Retry {}
+            ) {
+                return Err(
+                    "Unsupported Tenjiku execution; no move, score or outcome is created.".into(),
+                );
+            }
+            return self.tenjiku_command(command.operation);
         }
         if self.session.chu().is_some() {
             return self.chu_command(command.operation);
@@ -1401,6 +1481,9 @@ impl DesktopController {
         self.accept_observation(response.observation)
     }
     pub(crate) fn accept_observation(&mut self, response: ExecutionObservation) -> bool {
+        if self.session.tenjiku().is_some() {
+            return self.accept_tenjiku_observation(response);
+        }
         if self.session.chu().is_some() {
             return self.accept_chu_observation(response);
         }
@@ -1433,6 +1516,9 @@ impl DesktopController {
     pub fn shared_snapshot(&mut self) -> SharedSnapshot {
         self.poll_native_admission();
         self.poll_files();
+        if self.session.tenjiku().is_some() {
+            return self.poll_tenjiku();
+        }
         if self.session.chu().is_some() {
             return self.poll_chu();
         }
@@ -1498,6 +1584,7 @@ impl DesktopController {
             || self.session.xiangqi().is_some()
             || self.session.tori().is_some()
             || self.session.chu().is_some()
+            || self.session.tenjiku().is_some()
         {
             return self.shared_snapshot();
         }
@@ -1507,6 +1594,10 @@ impl DesktopController {
     }
     pub(super) fn pause_shared_for_close(&mut self) {
         self.retire_admission();
+        if self.session.tenjiku().is_some() {
+            self.close_tenjiku();
+            return;
+        }
         if self.session.chu().is_some() {
             self.close_chu();
         }
@@ -1534,15 +1625,24 @@ impl DesktopController {
         let game = state.selected();
         let position = game.position();
         let sides = vec![
-            side(NativeSide::Shogi(s::Side::Sente)),
-            side(NativeSide::Shogi(s::Side::Gote)),
+            side(
+                mshogi_core::native::RulesProfile::ShogiCsa36V1,
+                NativeSide::Shogi(s::Side::Sente),
+            ),
+            side(
+                mshogi_core::native::RulesProfile::ShogiCsa36V1,
+                NativeSide::Shogi(s::Side::Gote),
+            ),
         ];
         let files: Vec<String> = (1..=9).rev().map(|n| n.to_string()).collect();
         let ranks: Vec<String> = (b'a'..=b'i').map(|c| char::from(c).to_string()).collect();
         let pieces = s::Square::all()
             .filter_map(|square| {
                 position.piece(square).map(|p| {
-                    let owner = side(NativeSide::Shogi(p.side));
+                    let owner = side(
+                        mshogi_core::native::RulesProfile::ShogiCsa36V1,
+                        NativeSide::Shogi(p.side),
+                    );
                     let text = format!(
                         "{}{}",
                         if p.promoted { "+" } else { "" },
@@ -1562,7 +1662,10 @@ impl DesktopController {
         let mut hands = vec![];
         for actor in [s::Side::Sente, s::Side::Gote] {
             for kind in s::PieceKind::HAND_KINDS {
-                let owner = side(NativeSide::Shogi(actor));
+                let owner = side(
+                    mshogi_core::native::RulesProfile::ShogiCsa36V1,
+                    NativeSide::Shogi(actor),
+                );
                 let text = piece_text(kind).to_string();
                 let count = position.hand(actor).count(kind);
                 hands.push(PresentedHand {
@@ -1606,7 +1709,11 @@ impl DesktopController {
                         s::Action::Drop { kind, to } => (
                             format!(
                                 "hand:{}:{}",
-                                side(NativeSide::Shogi(position.side_to_move())).key,
+                                side(
+                                    mshogi_core::native::RulesProfile::ShogiCsa36V1,
+                                    NativeSide::Shogi(position.side_to_move())
+                                )
+                                .key,
                                 piece_text(kind)
                             ),
                             to,
@@ -1614,12 +1721,17 @@ impl DesktopController {
                         ),
                     };
                     PresentedChoice {
+                        tenjiku: None,
                         origin: match action {
                             s::Action::Move { from, .. } => ChoiceOrigin::Board {
                                 square: from.to_string(),
                             },
                             s::Action::Drop { kind, .. } => ChoiceOrigin::Hand {
-                                owner: side(NativeSide::Shogi(position.side_to_move())).key,
+                                owner: side(
+                                    mshogi_core::native::RulesProfile::ShogiCsa36V1,
+                                    NativeSide::Shogi(position.side_to_move()),
+                                )
+                                .key,
                                 piece_kind: format!("{kind:?}").to_lowercase(),
                             },
                         },
@@ -1647,7 +1759,11 @@ impl DesktopController {
                     board_ply: ply,
                     label: format!(
                         "{}: {}",
-                        side(NativeSide::Shogi(e.actor)).label,
+                        side(
+                            mshogi_core::native::RulesProfile::ShogiCsa36V1,
+                            NativeSide::Shogi(e.actor)
+                        )
+                        .label,
                         command_label(e.command)
                     ),
                 }
@@ -1661,7 +1777,10 @@ impl DesktopController {
             .map(|actor| {
                 let e = game.declaration_eligibility(actor);
                 DeclarationAdvice {
-                    actor: side(NativeSide::Shogi(actor)),
+                    actor: side(
+                        mshogi_core::native::RulesProfile::ShogiCsa36V1,
+                        NativeSide::Shogi(actor),
+                    ),
                     eligible: e.eligible(),
                     own_turn: e.own_turn,
                     king_in_camp: e.king_in_camp,
@@ -1678,6 +1797,7 @@ impl DesktopController {
             xiangqi: None,
             tori: None,
             chu: None,
+            tenjiku: None,
             open_token: self.shared_open_token(),
             document: self.shared_document(),
             io: self.io_state.clone(),
@@ -1686,8 +1806,14 @@ impl DesktopController {
             game: GameKind::Shogi,
             profile: RulesProfile::ShogiCsa36V1,
             edition: RulesProfile::ShogiCsa36V1.edition(),
-            human: side(NativeSide::Shogi(state.human)),
-            turn: side(NativeSide::Shogi(position.side_to_move())),
+            human: side(
+                mshogi_core::native::RulesProfile::ShogiCsa36V1,
+                NativeSide::Shogi(state.human),
+            ),
+            turn: side(
+                mshogi_core::native::RulesProfile::ShogiCsa36V1,
+                NativeSide::Shogi(position.side_to_move()),
+            ),
             sides: sides.clone(),
             board: BoardDescriptor {
                 intersections: None,
@@ -1763,8 +1889,14 @@ impl DesktopController {
     }
     fn chess_snapshot(&self, snapshot: ChessSnapshot) -> SharedSnapshot {
         let sides = vec![
-            side(NativeSide::Chess(Color::White)),
-            side(NativeSide::Chess(Color::Black)),
+            side(
+                mshogi_core::native::RulesProfile::ChessMatchV1,
+                NativeSide::Chess(Color::White),
+            ),
+            side(
+                mshogi_core::native::RulesProfile::ChessMatchV1,
+                NativeSide::Chess(Color::Black),
+            ),
         ];
         let files: Vec<String> = (b'a'..=b'h').map(|c| char::from(c).to_string()).collect();
         let ranks: Vec<String> = (1..=8).rev().map(|n| n.to_string()).collect();
@@ -1774,7 +1906,11 @@ impl DesktopController {
             .iter()
             .map(|p| PresentedPiece {
                 square: p.square.clone(),
-                owner: side(NativeSide::Chess(p.color)).key,
+                owner: side(
+                    mshogi_core::native::RulesProfile::ChessMatchV1,
+                    NativeSide::Chess(p.color),
+                )
+                .key,
                 kind: p.kind.clone(),
                 promoted: false,
                 text: match p.kind.as_str() {
@@ -1793,6 +1929,7 @@ impl DesktopController {
             .legal_choices
             .iter()
             .map(|c| PresentedChoice {
+                tenjiku: None,
                 origin: ChoiceOrigin::Board {
                     square: c.from.clone(),
                 },
@@ -1823,7 +1960,11 @@ impl DesktopController {
             } else {
                 format!(
                     "{} to move",
-                    side(NativeSide::Chess(snapshot.view.turn)).label
+                    side(
+                        mshogi_core::native::RulesProfile::ChessMatchV1,
+                        NativeSide::Chess(snapshot.view.turn)
+                    )
+                    .label
                 )
             },
             score_half_points: snapshot
@@ -1867,6 +2008,7 @@ impl DesktopController {
             xiangqi: None,
             tori: None,
             chu: None,
+            tenjiku: None,
             open_token: self.shared_open_token(),
             document: self.shared_document(),
             io: self.io_state.clone(),
@@ -1875,8 +2017,14 @@ impl DesktopController {
             game: GameKind::Chess,
             profile: RulesProfile::ChessMatchV1,
             edition: RulesProfile::ChessMatchV1.edition(),
-            human: side(NativeSide::Chess(snapshot.human)),
-            turn: side(NativeSide::Chess(snapshot.view.turn)),
+            human: side(
+                mshogi_core::native::RulesProfile::ChessMatchV1,
+                NativeSide::Chess(snapshot.human),
+            ),
+            turn: side(
+                mshogi_core::native::RulesProfile::ChessMatchV1,
+                NativeSide::Chess(snapshot.view.turn),
+            ),
             sides: sides.clone(),
             board: BoardDescriptor {
                 intersections: None,
@@ -2112,6 +2260,9 @@ impl DesktopController {
             .get(key, selected, || match &self.session {
                 ActiveDocument::Tori { state, .. } => crate::moves::tori_projection(&state.game),
                 ActiveDocument::Chu { state, .. } => crate::moves::chu_projection(&state.game),
+                ActiveDocument::Tenjiku { state, .. } => {
+                    crate::moves::tenjiku_projection(&state.game)
+                }
                 ActiveDocument::Chess(state) => crate::moves::chess_projection(state),
                 ActiveDocument::Shogi { state, .. } => crate::moves::shogi_projection(&state.game),
                 ActiveDocument::Xiangqi { state, .. } => {
@@ -2132,3 +2283,7 @@ mod workflow_tests;
 #[cfg(test)]
 #[path = "shared_chu_tests.rs"]
 mod chu_tests;
+
+#[cfg(test)]
+#[path = "shared_tenjiku_tests.rs"]
+mod tenjiku_tests;

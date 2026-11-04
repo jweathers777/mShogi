@@ -171,6 +171,7 @@ pub(super) fn choice(action: c::Action, alternatives: &[c::Action]) -> Presented
         glyph: None,
     });
     PresentedChoice {
+        tenjiku: None,
         origin: ChoiceOrigin::Board {
             square: action.from.to_string(),
         },
@@ -193,6 +194,7 @@ pub(super) fn inspect(game: &c::Game, origin: &str) -> Result<inspection::Inspec
         .map(|v| {
             let action = v.action;
             PresentedChoice {
+                tenjiku: None,
                 origin: ChoiceOrigin::Board {
                     square: origin.into(),
                 },
@@ -216,14 +218,22 @@ pub(super) fn inspect(game: &c::Game, origin: &str) -> Result<inspection::Inspec
         NativeSide::Chu(piece.side),
         format!(
             "{} {}",
-            side(NativeSide::Chu(piece.side)).label,
+            side(
+                mshogi_core::native::RulesProfile::ChuJcsa2019V1,
+                NativeSide::Chu(piece.side)
+            )
+            .label,
             piece_name(piece)
         ),
         choices,
     ))
 }
 fn event_label(event: &c::GameEvent) -> String {
-    let actor = side(NativeSide::Chu(event.actor)).label;
+    let actor = side(
+        mshogi_core::native::RulesProfile::ChuJcsa2019V1,
+        NativeSide::Chu(event.actor),
+    )
+    .label;
     match &event.command {
         c::GameCommand::Play { action } => format!(
             "{actor} · Technical action {}",
@@ -249,7 +259,11 @@ pub(super) fn status(game: &c::Game) -> PresentedStatus {
             };
             format!(
                 "{} wins by {reason}",
-                side(NativeSide::Chu(outcome.winner().unwrap())).label
+                side(
+                    mshogi_core::native::RulesProfile::ChuJcsa2019V1,
+                    NativeSide::Chu(outcome.winner().unwrap())
+                )
+                .label
             )
         }
         None if game.snapshot().incomplete.is_some() => {
@@ -260,7 +274,11 @@ pub(super) fn status(game: &c::Game) -> PresentedStatus {
         }
         None => format!(
             "{} to move",
-            side(NativeSide::Chu(game.position().side_to_move())).label
+            side(
+                mshogi_core::native::RulesProfile::ChuJcsa2019V1,
+                NativeSide::Chu(game.position().side_to_move())
+            )
+            .label
         ),
     };
     PresentedStatus {
@@ -279,7 +297,12 @@ impl DesktopController {
         let game = state.selected();
         let position = game.position();
         let sides: Vec<_> = [c::Side::Sente, c::Side::Gote]
-            .map(|s| side(NativeSide::Chu(s)))
+            .map(|s| {
+                side(
+                    mshogi_core::native::RulesProfile::ChuJcsa2019V1,
+                    NativeSide::Chu(s),
+                )
+            })
             .into();
         let files: Vec<_> = (1..=12).rev().map(|n| n.to_string()).collect();
         let ranks: Vec<_> = ('a'..='l').map(|n| n.to_string()).collect();
@@ -290,6 +313,7 @@ impl DesktopController {
             xiangqi: None,
             tori: None,
             chu: Some(state.presentation.clone()),
+            tenjiku: None,
             open_token: self.shared_open_token(),
             document: self.shared_document(),
             io: self.io_state.clone(),
@@ -298,8 +322,14 @@ impl DesktopController {
             game: GameKind::Chu,
             profile: RulesProfile::ChuJcsa2019V1,
             edition: c::PROFILE_EDITION,
-            human: side(NativeSide::Chu(state.document.human())),
-            turn: side(NativeSide::Chu(position.side_to_move())),
+            human: side(
+                mshogi_core::native::RulesProfile::ChuJcsa2019V1,
+                NativeSide::Chu(state.document.human()),
+            ),
+            turn: side(
+                mshogi_core::native::RulesProfile::ChuJcsa2019V1,
+                NativeSide::Chu(position.side_to_move()),
+            ),
             sides: sides.clone(),
             board: BoardDescriptor {
                 intersections: None,
@@ -324,13 +354,21 @@ impl DesktopController {
                 .pieces()
                 .map(|(square, p)| PresentedPiece {
                     square: square.to_string(),
-                    owner: side(NativeSide::Chu(p.side)).key,
+                    owner: side(
+                        mshogi_core::native::RulesProfile::ChuJcsa2019V1,
+                        NativeSide::Chu(p.side),
+                    )
+                    .key,
                     kind: p.base.code().into(),
                     promoted: p.promoted,
                     text: p.code(),
                     label: format!(
                         "{square}, {} {}",
-                        side(NativeSide::Chu(p.side)).label,
+                        side(
+                            mshogi_core::native::RulesProfile::ChuJcsa2019V1,
+                            NativeSide::Chu(p.side)
+                        )
+                        .label,
                         piece_name(p)
                     ),
                 })

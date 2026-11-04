@@ -2,8 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { nativeSnapshotIsNewer } from "../NativeBoard";
-import type { PlayableGameKind, GameSnapshot, NativeSide, OpenToken, Operation } from "./native";
-export function useGameSession() {
+import type { GameKind, RulesProfile, GameSnapshot, NativeSide, OpenToken, Operation } from "./native";
+export function useGameSession(verification = false) {
   const [snapshot, setSnapshot] = useState<GameSnapshot | null>(null);
   const latest = useRef<GameSnapshot | null>(null);
   const alive = useRef(false), operating = useRef(false);
@@ -37,7 +37,12 @@ export function useGameSession() {
     if (!alive.current || operating.current) return null;
     operating.current = true; setBusy(true); setError("");
     try {
-      const next = await invoke<GameSnapshot>(name, args); accept(next);
+      const next = await invoke<GameSnapshot>(name, args);
+      const prior = latest.current;
+      if (prior && next.token.document === prior.token.document && (next.profile !== prior.profile || next.game !== prior.game)) {
+        setError("The response conflicted with this document's immutable rules profile."); return null;
+      }
+      accept(next);
       // Polling can observe a later native state before an operation's receipt
       // arrives. A delayed clean Save must not authorize discarding newer work.
       const current = latest.current;
@@ -51,8 +56,8 @@ export function useGameSession() {
   const command = (source: GameSnapshot, operation: Operation) => perform("game_command", {
     commandJson: JSON.stringify({ expected: source.token, game: source.game, operation }),
   });
-  const file = (source: GameSnapshot, action: "save" | "save_as" | "open") => perform("game_file", { action, expected: source.open_token });
-  const newGame = (expected: OpenToken, game: PlayableGameKind, human: NativeSide) => perform("game_new", { expected, game, human });
+  const file = (source: GameSnapshot, action: "save" | "save_as" | "open") => perform("game_file", { action, expected: source.open_token, ...(verification ? { verification: true } : {}) });
+  const newGame = (expected: OpenToken, game: GameKind, human: NativeSide, profile: RulesProfile) => perform("game_new", { expected, game, profile, human, ...(verification ? { verification: true } : {}) });
   const cancelClose = async () => {
     try { await invoke("game_cancel_close"); setCloseRequested(false); accept(await invoke<GameSnapshot>("game_snapshot")); return true; }
     catch (e) { setError(String(e)); return false; }

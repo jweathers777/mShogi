@@ -16,6 +16,8 @@ export interface NativeChoice {
   from: string;
   steps: string[];
   completion: { label: string; glyph: string | null } | null;
+  // Input targets are not movement: igui selects a victim while route stays empty.
+  tenjiku?: { kind: "travel"; route: string[] } | { kind: "stationary_capture"; target: string };
 }
 export interface NativePiece { square: string; owner: string; kind: string; promoted: boolean; text: string; label: string }
 export interface NativeHand { origin: string; owner: string; kind: string; count: number; text: string; label: string }
@@ -31,4 +33,14 @@ export interface CompletedActionGeometry {
   // from the board currently displayed or from an action spelling.
   readonly captures?: readonly { readonly square: string; readonly owner: unknown; readonly original_kind: string; readonly movement_face: string; readonly promoted: boolean }[];
   readonly effects?: readonly { readonly from: string; readonly to: string }[];
+  readonly native_effects?: { readonly kind: "tenjiku"; readonly stationary_target: string | null; readonly phases: readonly TenjikuEffectPhase[] };
 }
+
+export interface TenjikuEffectPiece {
+  readonly square: string; readonly face: string;
+  readonly piece: { readonly id: number; readonly side: "sente" | "gote"; readonly base: string; readonly promoted: boolean; readonly right: string };
+}
+export type TenjikuEffectPhase = { readonly phase: "capture"; readonly victim: TenjikuEffectPiece }
+  | { readonly phase: "burn"; readonly victims: readonly TenjikuEffectPiece[] }
+  | { readonly phase: "mover_dies"; readonly mover: TenjikuEffectPiece }
+  | { readonly phase: "promotion"; readonly before: TenjikuEffectPiece; readonly after: TenjikuEffectPiece };

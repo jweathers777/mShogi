@@ -169,7 +169,7 @@ impl HistorySnapshot {
     }
 }
 /// Board-and-turn repetition excludes original serials and promotion-refusal rights.
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct RepetitionKey {
     profile: Profile,
     side: Side,
@@ -454,21 +454,49 @@ impl Game {
     }
     /// Canonical exact prefix reconstructed with fresh native authority.
     pub fn record_prefix(&self, count: usize) -> Result<GameRecord, RecordError> {
+        self.record_prefix_with_stop(count, &mut || false)
+    }
+    /// Reconstruct an exact prefix with cooperative cancellation throughout replay.
+    pub fn record_prefix_with_stop(
+        &self,
+        count: usize,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<GameRecord, RecordError> {
         if count > self.events.len() {
             return Err(RecordError::Prefix);
         }
-        let mut game =
-            Self::from_root(Position::install(self.root.clone()).map_err(|_| RecordError::Root)?)
-                .map_err(|_| RecordError::Root)?;
+        let mut game = Self::from_root_with_stop(
+            Position::install(self.root.clone()).map_err(|_| RecordError::Root)?,
+            stop,
+        )
+        .map_err(|e| match e {
+            GameError::Capacity(_) => RecordError::Capacity,
+            GameError::Stopped => RecordError::Stopped,
+            _ => RecordError::Root,
+        })?;
         for event in &self.events[..count] {
-            game.submit(GameRequest {
-                expected: game.context(),
-                actor: event.actor,
-                command: event.command.clone(),
-            })
-            .map_err(|_| RecordError::Derived)?;
+            game.submit_with_stop(
+                GameRequest {
+                    expected: game.context(),
+                    actor: event.actor,
+                    command: event.command.clone(),
+                },
+                stop,
+            )
+            .map_err(|e| match e {
+                GameError::Capacity(_) => RecordError::Capacity,
+                GameError::Stopped => RecordError::Stopped,
+                _ => RecordError::Derived,
+            })?;
         }
-        GameRecord::from_game(&game)
+        if stop() {
+            return Err(RecordError::Stopped);
+        }
+        let record = GameRecord::from_game(&game)?;
+        if stop() {
+            return Err(RecordError::Stopped);
+        }
+        Ok(record)
     }
     /// Complete current native choices, with repetition admission separate from geometry.
     pub fn legal_actions(&self) -> Vec<Action> {

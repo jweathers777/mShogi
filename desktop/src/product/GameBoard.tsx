@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { CompletedActionGeometry } from "../boardPresentation";
 import type { ToriAction } from "./native";
+import { TenjikuBoard } from "./TenjikuBoard";
 import { ChuBoard } from "./ChuBoard";
 import { Board } from "../Board";
 import { ShogiBoard } from "./ShogiBoard";
@@ -13,7 +14,7 @@ export function GameBoard({ snapshot, disabled, inspectionDisabled, command, com
   completedAction?: CompletedActionGeometry | null;
 }) {
   const lastAction = completedAction === undefined ? snapshot.moves.last_action : completedAction;
-  const inspect = useMovementInspection({ token: snapshot.token, game: snapshot.game });
+  const inspect = useMovementInspection({ token: snapshot.token, game: snapshot.game, ...(snapshot.game === "tenjiku" ? { profile: snapshot.profile } : {}) });
   const [help, setHelp] = useState<HTMLDivElement | null>(null);
   if (snapshot.game === "shogi" || snapshot.game === "tori") return <ShogiBoard completedAction={lastAction} snapshot={snapshot} disabled={disabled} inspectionDisabled={inspectionDisabled}
     inspectionContextKey={JSON.stringify(snapshot.token)} onInspect={inspect} onPlay={action => {
@@ -23,6 +24,9 @@ export function GameBoard({ snapshot, disabled, inspectionDisabled, command, com
     }} />;
   if (snapshot.game === "xiangqi") return <XiangqiBoard completedAction={lastAction} snapshot={snapshot} disabled={disabled} inspectionDisabled={inspectionDisabled}
     onInspect={inspect} onPlay={action => { void command({ kind: "xiangqi", command: { kind: "play", action } }); }} />;
+  if (snapshot.game === "tenjiku") return <TenjikuBoard snapshot={snapshot} completedAction={lastAction}
+    disabled={disabled} inspectionDisabled={inspectionDisabled} onInspect={inspect}
+    onPlay={action => { void command({ kind: "tenjiku", actor: snapshot.human.id.side as "sente" | "gote", command: { kind: "play", action: JSON.parse(action) } }); }} />;
   if (snapshot.game === "chu") return <ChuBoard snapshot={snapshot} completedAction={lastAction}
     disabled={disabled} inspectionDisabled={inspectionDisabled} onInspect={inspect}
     onPlay={action => { void command({ kind: "chu", actor: snapshot.human.id.side as "sente" | "gote", command: { kind: "play", action: JSON.parse(action) } }); }} />;

@@ -5,6 +5,7 @@ import type { Side } from "./native";
 export interface InspectionContext {
   token: NativeBoardSnapshot["token"];
   game: NativeBoardSnapshot["game"];
+  profile?: string;
 }
 export interface MovementInspection extends InspectionContext {
   origin: string;
@@ -21,5 +22,5 @@ export function inspectionStatus(label: string): string {
 }
 export function inspectionContextKey(context: InspectionContext): string {
   const { token, game } = context;
-  return `${game}:${token.document}:${token.version}:${token.revision}:${token.selection}`;
+  return `${context.profile ? `${game}:${context.profile}` : game}:${token.document}:${token.version}:${token.revision}:${token.selection}`;
 }

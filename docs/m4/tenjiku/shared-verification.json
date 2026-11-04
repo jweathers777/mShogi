@@ -1,0 +1,2223 @@
+{
+  "schema": "mshogi.tenjiku.shared-verification.v1",
+  "task": "MSH-79",
+  "status": "source_reviewed_ci_pending",
+  "base_revision": "68915085be4bdefbf9591b7aa4ddd042c013f0f9",
+  "tested_revision": null,
+  "environment": {
+    "os": "macOS 27.0.1 (26A434)",
+    "architecture": "arm64",
+    "rust": "1.99.1",
+    "node": "24.22.1",
+    "backlog": "1.55.1"
+  },
+  "profiles": [
+    "mshogi.tenjiku.adams1999-modern.v1",
+    "mshogi.tenjiku.muller-completed.v1"
+  ],
+  "accounting": {
+    "native_87_assertions_per_profile": 621,
+    "new_native_assertions_claimed": 0,
+    "consumer_rows_applicable": 12,
+    "consumer_rows_product_pending": 5
+  },
+  "resource_policy": {
+    "native_record_bytes": 1048576,
+    "native_events": 1024,
+    "native_work": 512000000,
+    "document_bytes": 16777216,
+    "retained_events": 4096,
+    "controls": 8192,
+    "observations": 256,
+    "aggregate_work": 160000000,
+    "worker_deadline_seconds": 15,
+    "provisional_aggregate_work_rejected": 600000000,
+    "rejected_reason": "28 retained 128-event contexts were admitted around457M units but strict decode plus native game reconstruction reached the independent15s elapsed deadline for bothprofiles. Candidate admission and reopen outcome are distinct.",
+    "measurement_scope": "160m-release decode_restore_us includes strict document decoding and native Game restoration. It excludes full TenjikuSession presentation/close preparation and file-worker owner installation; those are measured separately before completion.",
+    "logs": {
+      "160m-release": {
+        "sha256": "e53e636e8e8bb25e3902f7b1ffb3bcf3c2b5f19d76be59855e7b3e61a3599014",
+        "local_log": "/tmp/msh79-tenjiku-document-160m-release.log",
+        "measurements": [
+          {
+            "branch_observation_selection": {
+              "decode_us": 874538,
+              "mutation_us": 1954333,
+              "restore_us": 227290,
+              "usage": {
+                "controls": 66,
+                "encoded_bytes": 187978,
+                "observations": 1,
+                "replay_work": 20069616,
+                "reserved_bytes": 955,
+                "reserved_work": 440930,
+                "retained_events": 160
+              }
+            },
+            "controls_only": false,
+            "decode_us": 317007,
+            "document": {
+              "controls": 64,
+              "encoded_bytes": 90013,
+              "observations": 0,
+              "replay_work": 8307624,
+              "reserved_bytes": 953,
+              "reserved_work": 515396,
+              "retained_events": 64
+            },
+            "events": 64,
+            "import_accepted": true,
+            "import_us": 183646,
+            "import_usage": {
+              "controls": 0,
+              "encoded_bytes": 114518,
+              "observations": 0,
+              "replay_work": 11044328,
+              "reserved_bytes": 952,
+              "reserved_work": 515396,
+              "retained_events": 128
+            },
+            "imported_observation": {
+              "accepted": true,
+              "accepted_usage": {
+                "controls": 1,
+                "encoded_bytes": 171929,
+                "observations": 1,
+                "replay_work": 16566493,
+                "reserved_bytes": 953,
+                "reserved_work": 515396,
+                "retained_events": 192
+              },
+              "elapsed_us": 578609,
+              "resource": null
+            },
+            "native_build_us": 181683,
+            "native_record_work": 2761082,
+            "profile": "mshogi.tenjiku.adams1999-modern.v1",
+            "runtime_restore_us": 131112,
+            "validation_us": 182858
+          },
+          {
+            "branch_observation_selection": {
+              "decode_us": 1728326,
+              "mutation_us": 3822216,
+              "restore_us": 449727,
+              "usage": {
+                "controls": 130,
+                "encoded_bytes": 279198,
+                "observations": 1,
+                "replay_work": 53232492,
+                "reserved_bytes": 955,
+                "reserved_work": 663986,
+                "retained_events": 320
+              }
+            },
+            "controls_only": false,
+            "decode_us": 602672,
+            "document": {
+              "controls": 128,
+              "encoded_bytes": 131664,
+              "observations": 0,
+              "replay_work": 22886611,
+              "reserved_bytes": 959,
+              "reserved_work": 813656,
+              "retained_events": 128
+            },
+            "events": 128,
+            "import_accepted": true,
+            "import_us": 333227,
+            "import_usage": {
+              "controls": 0,
+              "encoded_bytes": 180790,
+              "observations": 0,
+              "replay_work": 30482892,
+              "reserved_bytes": 958,
+              "reserved_work": 813656,
+              "retained_events": 256
+            },
+            "imported_observation": {
+              "accepted": true,
+              "accepted_usage": {
+                "controls": 1,
+                "encoded_bytes": 271337,
+                "observations": 1,
+                "replay_work": 45724339,
+                "reserved_bytes": 959,
+                "reserved_work": 813656,
+                "retained_events": 384
+              },
+              "elapsed_us": 1145111,
+              "resource": null
+            },
+            "native_build_us": 372187,
+            "native_record_work": 7620723,
+            "profile": "mshogi.tenjiku.adams1999-modern.v1",
+            "runtime_restore_us": 273262,
+            "validation_us": 331976
+          },
+          {
+            "accepted_root_preserved": true,
+            "candidate_accepted": false,
+            "candidate_resource": {
+              "diagnostic": "Application limit reached. The complete previously accepted game can still be saved.",
+              "facts": [
+                {
+                  "category": "replay_work",
+                  "count": 160043098,
+                  "limit": 160000000,
+                  "measurement": "candidate",
+                  "observations": null,
+                  "reserved": 0,
+                  "scope": "tenjiku",
+                  "unit": "replay_units"
+                }
+              ],
+              "omitted_facts": 0
+            },
+            "candidate_us": 1285166,
+            "controls_only": true,
+            "events": 1021,
+            "import_accepted": false,
+            "import_resource": {
+              "diagnostic": "Application limit reached. The complete previously accepted game can still be saved.",
+              "facts": [
+                {
+                  "category": "replay_work",
+                  "count": 222700386,
+                  "limit": 160000000,
+                  "measurement": "candidate",
+                  "observations": null,
+                  "reserved": 0,
+                  "scope": "tenjiku",
+                  "unit": "replay_units"
+                }
+              ],
+              "omitted_facts": 0
+            },
+            "import_us": 51088,
+            "native_build_us": 2112136,
+            "native_history_preserved": true,
+            "native_record_work": 111350193,
+            "profile": "mshogi.tenjiku.adams1999-modern.v1"
+          },
+          {
+            "branch_observation_selection": {
+              "decode_us": 874041,
+              "mutation_us": 1917005,
+              "restore_us": 227255,
+              "usage": {
+                "controls": 66,
+                "encoded_bytes": 188041,
+                "observations": 1,
+                "replay_work": 20073284,
+                "reserved_bytes": 955,
+                "reserved_work": 440993,
+                "retained_events": 160
+              }
+            },
+            "controls_only": false,
+            "decode_us": 316040,
+            "document": {
+              "controls": 64,
+              "encoded_bytes": 90048,
+              "observations": 0,
+              "replay_work": 8308996,
+              "reserved_bytes": 953,
+              "reserved_work": 515459,
+              "retained_events": 64
+            },
+            "events": 64,
+            "import_accepted": true,
+            "import_us": 185966,
+            "import_usage": {
+              "controls": 0,
+              "encoded_bytes": 114553,
+              "observations": 0,
+              "replay_work": 11046148,
+              "reserved_bytes": 952,
+              "reserved_work": 515459,
+              "retained_events": 128
+            },
+            "imported_observation": {
+              "accepted": true,
+              "accepted_usage": {
+                "controls": 1,
+                "encoded_bytes": 171978,
+                "observations": 1,
+                "replay_work": 16569223,
+                "reserved_bytes": 953,
+                "reserved_work": 515459,
+                "retained_events": 192
+              },
+              "elapsed_us": 584350,
+              "resource": null
+            },
+            "native_build_us": 180577,
+            "native_record_work": 2761537,
+            "profile": "mshogi.tenjiku.muller-completed.v1",
+            "runtime_restore_us": 131081,
+            "validation_us": 182833
+          },
+          {
+            "branch_observation_selection": {
+              "decode_us": 1735739,
+              "mutation_us": 3775729,
+              "restore_us": 459472,
+              "usage": {
+                "controls": 130,
+                "encoded_bytes": 279261,
+                "observations": 1,
+                "replay_work": 53239744,
+                "reserved_bytes": 955,
+                "reserved_work": 664049,
+                "retained_events": 320
+              }
+            },
+            "controls_only": false,
+            "decode_us": 600400,
+            "document": {
+              "controls": 128,
+              "encoded_bytes": 131699,
+              "observations": 0,
+              "replay_work": 22889327,
+              "reserved_bytes": 959,
+              "reserved_work": 813719,
+              "retained_events": 128
+            },
+            "events": 128,
+            "import_accepted": true,
+            "import_us": 331742,
+            "import_usage": {
+              "controls": 0,
+              "encoded_bytes": 180825,
+              "observations": 0,
+              "replay_work": 30486504,
+              "reserved_bytes": 958,
+              "reserved_work": 813719,
+              "retained_events": 256
+            },
+            "imported_observation": {
+              "accepted": true,
+              "accepted_usage": {
+                "controls": 1,
+                "encoded_bytes": 271386,
+                "observations": 1,
+                "replay_work": 45729757,
+                "reserved_bytes": 959,
+                "reserved_work": 813719,
+                "retained_events": 384
+              },
+              "elapsed_us": 1143587,
+              "resource": null
+            },
+            "native_build_us": 374696,
+            "native_record_work": 7621626,
+            "profile": "mshogi.tenjiku.muller-completed.v1",
+            "runtime_restore_us": 269664,
+            "validation_us": 330155
+          },
+          {
+            "accepted_root_preserved": true,
+            "candidate_accepted": false,
+            "candidate_resource": {
+              "diagnostic": "Application limit reached. The complete previously accepted game can still be saved.",
+              "facts": [
+                {
+                  "category": "replay_work",
+                  "count": 160054704,
+                  "limit": 160000000,
+                  "measurement": "candidate",
+                  "observations": null,
+                  "reserved": 0,
+                  "scope": "tenjiku",
+                  "unit": "replay_units"
+                }
+              ],
+              "omitted_facts": 0
+            },
+            "candidate_us": 1289851,
+            "controls_only": true,
+            "events": 1021,
+            "import_accepted": false,
+            "import_resource": {
+              "diagnostic": "Application limit reached. The complete previously accepted game can still be saved.",
+              "facts": [
+                {
+                  "category": "replay_work",
+                  "count": 222714694,
+                  "limit": 160000000,
+                  "measurement": "candidate",
+                  "observations": null,
+                  "reserved": 0,
+                  "scope": "tenjiku",
+                  "unit": "replay_units"
+                }
+              ],
+              "omitted_facts": 0
+            },
+            "import_us": 50971,
+            "native_build_us": 2116577,
+            "native_history_preserved": true,
+            "native_record_work": 111357347,
+            "profile": "mshogi.tenjiku.muller-completed.v1"
+          },
+          {
+            "actual_closing_path_us": 8244804,
+            "decode_us": 5243803,
+            "ending_decode_restore_us": 5474703,
+            "ending_usage": {
+              "controls": 13,
+              "encoded_bytes": 906134,
+              "observations": 8,
+              "replay_work": 153228103,
+              "reserved_bytes": 0,
+              "reserved_work": 0,
+              "retained_events": 1283
+            },
+            "import_usage": {
+              "controls": 8,
+              "encoded_bytes": 905180,
+              "observations": 8,
+              "replay_work": 152414468,
+              "reserved_bytes": 959,
+              "reserved_work": 813656,
+              "retained_events": 1280
+            },
+            "policy_boundary_profile": "mshogi.tenjiku.adams1999-modern.v1",
+            "restore_us": 269328
+          },
+          {
+            "actual_closing_path_us": 8222213,
+            "decode_us": 5238545,
+            "ending_decode_restore_us": 5395111,
+            "ending_usage": {
+              "controls": 13,
+              "encoded_bytes": 906281,
+              "observations": 8,
+              "replay_work": 153246226,
+              "reserved_bytes": 0,
+              "reserved_work": 0,
+              "retained_events": 1283
+            },
+            "import_usage": {
+              "controls": 8,
+              "encoded_bytes": 905327,
+              "observations": 8,
+              "replay_work": 152432528,
+              "reserved_bytes": 959,
+              "reserved_work": 813719,
+              "retained_events": 1280
+            },
+            "policy_boundary_profile": "mshogi.tenjiku.muller-completed.v1",
+            "restore_us": 270080
+          },
+          {
+            "accepted": true,
+            "candidate_us": 1435101,
+            "contexts": 4,
+            "decode_restore_us": 3370590,
+            "repeated_context_profile": "mshogi.tenjiku.adams1999-modern.v1",
+            "resource": null,
+            "stopped": false,
+            "usage": {
+              "controls": 4,
+              "encoded_bytes": 542984,
+              "observations": 4,
+              "replay_work": 91448680,
+              "reserved_bytes": 959,
+              "reserved_work": 813656,
+              "retained_events": 768
+            }
+          },
+          {
+            "accepted": true,
+            "candidate_us": 2530569,
+            "contexts": 8,
+            "decode_restore_us": 5516861,
+            "repeated_context_profile": "mshogi.tenjiku.adams1999-modern.v1",
+            "resource": null,
+            "stopped": false,
+            "usage": {
+              "controls": 8,
+              "encoded_bytes": 905180,
+              "observations": 8,
+              "replay_work": 152414468,
+              "reserved_bytes": 959,
+              "reserved_work": 813656,
+              "retained_events": 1280
+            }
+          },
+          {
+            "accepted_base_preserved": true,
+            "candidate_accepted": false,
+            "candidate_us": 13408,
+            "contexts": 28,
+            "native_history_preserved": true,
+            "repeated_context_profile": "mshogi.tenjiku.adams1999-modern.v1",
+            "resource": {
+              "diagnostic": "Application limit reached. The complete previously accepted game can still be saved.",
+              "facts": [
+                {
+                  "category": "replay_work",
+                  "count": 160035211,
+                  "limit": 160000000,
+                  "measurement": "candidate",
+                  "observations": null,
+                  "reserved": 0,
+                  "scope": "tenjiku",
+                  "unit": "replay_units"
+                }
+              ],
+              "omitted_facts": 0
+            }
+          },
+          {
+            "accepted": true,
+            "candidate_us": 1428895,
+            "contexts": 4,
+            "decode_restore_us": 3553379,
+            "repeated_context_profile": "mshogi.tenjiku.muller-completed.v1",
+            "resource": null,
+            "stopped": false,
+            "usage": {
+              "controls": 4,
+              "encoded_bytes": 543075,
+              "observations": 4,
+              "replay_work": 91459516,
+              "reserved_bytes": 959,
+              "reserved_work": 813719,
+              "retained_events": 768
+            }
+          },
+          {
+            "accepted": true,
+            "candidate_us": 2601279,
+            "contexts": 8,
+            "decode_restore_us": 5512338,
+            "repeated_context_profile": "mshogi.tenjiku.muller-completed.v1",
+            "resource": null,
+            "stopped": false,
+            "usage": {
+              "controls": 8,
+              "encoded_bytes": 905327,
+              "observations": 8,
+              "replay_work": 152432528,
+              "reserved_bytes": 959,
+              "reserved_work": 813719,
+              "retained_events": 1280
+            }
+          },
+          {
+            "accepted_base_preserved": true,
+            "candidate_accepted": false,
+            "candidate_us": 12950,
+            "contexts": 28,
+            "native_history_preserved": true,
+            "repeated_context_profile": "mshogi.tenjiku.muller-completed.v1",
+            "resource": {
+              "diagnostic": "Application limit reached. The complete previously accepted game can still be saved.",
+              "facts": [
+                {
+                  "category": "replay_work",
+                  "count": 160054174,
+                  "limit": 160000000,
+                  "measurement": "candidate",
+                  "observations": null,
+                  "reserved": 0,
+                  "scope": "tenjiku",
+                  "unit": "replay_units"
+                }
+              ],
+              "omitted_facts": 0
+            }
+          }
+        ]
+      },
+      "context-policy": {
+        "sha256": "56d3e9b8bddcd1ff1c588aded6d34332a83f56d3f85517a05f667e68b49e8b82",
+        "local_log": "/tmp/msh79-tenjiku-document-context-policy.log",
+        "measurements": [
+          {
+            "accepted": true,
+            "candidate_us": 1427894,
+            "contexts": 4,
+            "decode_restore_us": 3335099,
+            "repeated_context_profile": "mshogi.tenjiku.adams1999-modern.v1",
+            "resource": null,
+            "stopped": false,
+            "usage": {
+              "controls": 4,
+              "encoded_bytes": 542984,
+              "observations": 4,
+              "replay_work": 91448680,
+              "reserved_bytes": 959,
+              "reserved_work": 813656,
+              "retained_events": 768
+            }
+          },
+          {
+            "accepted": true,
+            "candidate_us": 2523212,
+            "contexts": 8,
+            "decode_restore_us": 5525807,
+            "repeated_context_profile": "mshogi.tenjiku.adams1999-modern.v1",
+            "resource": null,
+            "stopped": false,
+            "usage": {
+              "controls": 8,
+              "encoded_bytes": 905180,
+              "observations": 8,
+              "replay_work": 152414468,
+              "reserved_bytes": 959,
+              "reserved_work": 813656,
+              "retained_events": 1280
+            }
+          },
+          {
+            "accepted": false,
+            "candidate_us": 7964157,
+            "contexts": 28,
+            "decode_restore_us": 15000142,
+            "repeated_context_profile": "mshogi.tenjiku.adams1999-modern.v1",
+            "resource": null,
+            "stopped": true,
+            "usage": {
+              "controls": 28,
+              "encoded_bytes": 2716236,
+              "observations": 28,
+              "replay_work": 457243408,
+              "reserved_bytes": 958,
+              "reserved_work": 813656,
+              "retained_events": 3840
+            }
+          },
+          {
+            "accepted": true,
+            "candidate_us": 1419832,
+            "contexts": 4,
+            "decode_restore_us": 3353407,
+            "repeated_context_profile": "mshogi.tenjiku.muller-completed.v1",
+            "resource": null,
+            "stopped": false,
+            "usage": {
+              "controls": 4,
+              "encoded_bytes": 543075,
+              "observations": 4,
+              "replay_work": 91459516,
+              "reserved_bytes": 959,
+              "reserved_work": 813719,
+              "retained_events": 768
+            }
+          },
+          {
+            "accepted": true,
+            "candidate_us": 2510747,
+            "contexts": 8,
+            "decode_restore_us": 5578125,
+            "repeated_context_profile": "mshogi.tenjiku.muller-completed.v1",
+            "resource": null,
+            "stopped": false,
+            "usage": {
+              "controls": 8,
+              "encoded_bytes": 905327,
+              "observations": 8,
+              "replay_work": 152432528,
+              "reserved_bytes": 959,
+              "reserved_work": 813719,
+              "retained_events": 1280
+            }
+          },
+          {
+            "accepted": false,
+            "candidate_us": 8066701,
+            "contexts": 28,
+            "decode_restore_us": 15000102,
+            "repeated_context_profile": "mshogi.tenjiku.muller-completed.v1",
+            "resource": null,
+            "stopped": true,
+            "usage": {
+              "controls": 28,
+              "encoded_bytes": 2716663,
+              "observations": 28,
+              "replay_work": 457297588,
+              "reserved_bytes": 958,
+              "reserved_work": 813719,
+              "retained_events": 3840
+            }
+          }
+        ]
+      },
+      "measure": {
+        "sha256": "caee6b41567ba74ad8ea50c66d35d8cb220a36087e491da7bfefe4f8776b18f5",
+        "local_log": "/tmp/msh79-tenjiku-document-measure.log",
+        "measurements": [
+          {
+            "branch_observation_selection": {
+              "decode_us": 897616,
+              "mutation_us": 1942135,
+              "restore_us": 233246,
+              "usage": {
+                "controls": 66,
+                "encoded_bytes": 187978,
+                "observations": 1,
+                "replay_work": 20069616,
+                "reserved_bytes": 955,
+                "reserved_work": 440930,
+                "retained_events": 160
+              }
+            },
+            "controls_only": false,
+            "decode_us": 323666,
+            "document": {
+              "controls": 64,
+              "encoded_bytes": 90013,
+              "observations": 0,
+              "replay_work": 8307624,
+              "reserved_bytes": 953,
+              "reserved_work": 515396,
+              "retained_events": 64
+            },
+            "events": 64,
+            "import_accepted": true,
+            "import_us": 186461,
+            "import_usage": {
+              "controls": 0,
+              "encoded_bytes": 114518,
+              "observations": 0,
+              "replay_work": 11044328,
+              "reserved_bytes": 952,
+              "reserved_work": 515396,
+              "retained_events": 128
+            },
+            "imported_observation": {
+              "accepted": true,
+              "accepted_usage": {
+                "controls": 1,
+                "encoded_bytes": 171929,
+                "observations": 1,
+                "replay_work": 16566493,
+                "reserved_bytes": 953,
+                "reserved_work": 515396,
+                "retained_events": 192
+              },
+              "elapsed_us": 590569,
+              "resource": null
+            },
+            "native_build_us": 181752,
+            "native_record_work": 2761082,
+            "profile": "mshogi.tenjiku.adams1999-modern.v1",
+            "runtime_restore_us": 132568,
+            "validation_us": 185414
+          },
+          {
+            "branch_observation_selection": {
+              "decode_us": 1759649,
+              "mutation_us": 3841908,
+              "restore_us": 466331,
+              "usage": {
+                "controls": 130,
+                "encoded_bytes": 279198,
+                "observations": 1,
+                "replay_work": 53232492,
+                "reserved_bytes": 955,
+                "reserved_work": 663986,
+                "retained_events": 320
+              }
+            },
+            "controls_only": false,
+            "decode_us": 608458,
+            "document": {
+              "controls": 128,
+              "encoded_bytes": 131664,
+              "observations": 0,
+              "replay_work": 22886611,
+              "reserved_bytes": 959,
+              "reserved_work": 813656,
+              "retained_events": 128
+            },
+            "events": 128,
+            "import_accepted": true,
+            "import_us": 337081,
+            "import_usage": {
+              "controls": 0,
+              "encoded_bytes": 180790,
+              "observations": 0,
+              "replay_work": 30482892,
+              "reserved_bytes": 958,
+              "reserved_work": 813656,
+              "retained_events": 256
+            },
+            "imported_observation": {
+              "accepted": true,
+              "accepted_usage": {
+                "controls": 1,
+                "encoded_bytes": 271337,
+                "observations": 1,
+                "replay_work": 45724339,
+                "reserved_bytes": 959,
+                "reserved_work": 813656,
+                "retained_events": 384
+              },
+              "elapsed_us": 1170872,
+              "resource": null
+            },
+            "native_build_us": 380648,
+            "native_record_work": 7620723,
+            "profile": "mshogi.tenjiku.adams1999-modern.v1",
+            "runtime_restore_us": 272297,
+            "validation_us": 336428
+          },
+          {
+            "branch_observation_selection": null,
+            "controls_only": true,
+            "decode_us": 4372769,
+            "document": {
+              "controls": 1021,
+              "encoded_bytes": 286780,
+              "observations": 0,
+              "replay_work": 334075914,
+              "reserved_bytes": 956,
+              "reserved_work": 1751969,
+              "retained_events": 1021
+            },
+            "events": 1021,
+            "import_accepted": true,
+            "import_us": 2209209,
+            "import_usage": {
+              "controls": 0,
+              "encoded_bytes": 389306,
+              "observations": 0,
+              "replay_work": 445400772,
+              "reserved_bytes": 955,
+              "reserved_work": 1751969,
+              "retained_events": 2042
+            },
+            "imported_observation": {
+              "accepted": false,
+              "accepted_usage": null,
+              "elapsed_us": 8601438,
+              "resource": {
+                "diagnostic": "Application limit reached. The complete previously accepted game can still be saved.",
+                "facts": [
+                  {
+                    "category": "replay_work",
+                    "count": 668101159,
+                    "limit": 600000000,
+                    "measurement": "candidate",
+                    "observations": null,
+                    "reserved": 0,
+                    "scope": "tenjiku",
+                    "unit": "replay_units"
+                  }
+                ],
+                "omitted_facts": 0
+              }
+            },
+            "native_build_us": 2133016,
+            "native_record_work": 111350193,
+            "profile": "mshogi.tenjiku.adams1999-modern.v1",
+            "runtime_restore_us": 2144166,
+            "validation_us": 2213811
+          },
+          {
+            "branch_observation_selection": {
+              "decode_us": 916831,
+              "mutation_us": 1937316,
+              "restore_us": 228821,
+              "usage": {
+                "controls": 66,
+                "encoded_bytes": 188041,
+                "observations": 1,
+                "replay_work": 20073284,
+                "reserved_bytes": 955,
+                "reserved_work": 440993,
+                "retained_events": 160
+              }
+            },
+            "controls_only": false,
+            "decode_us": 321166,
+            "document": {
+              "controls": 64,
+              "encoded_bytes": 90048,
+              "observations": 0,
+              "replay_work": 8308996,
+              "reserved_bytes": 953,
+              "reserved_work": 515459,
+              "retained_events": 64
+            },
+            "events": 64,
+            "import_accepted": true,
+            "import_us": 187077,
+            "import_usage": {
+              "controls": 0,
+              "encoded_bytes": 114553,
+              "observations": 0,
+              "replay_work": 11046148,
+              "reserved_bytes": 952,
+              "reserved_work": 515459,
+              "retained_events": 128
+            },
+            "imported_observation": {
+              "accepted": true,
+              "accepted_usage": {
+                "controls": 1,
+                "encoded_bytes": 171978,
+                "observations": 1,
+                "replay_work": 16569223,
+                "reserved_bytes": 953,
+                "reserved_work": 515459,
+                "retained_events": 192
+              },
+              "elapsed_us": 584489,
+              "resource": null
+            },
+            "native_build_us": 180486,
+            "native_record_work": 2761537,
+            "profile": "mshogi.tenjiku.muller-completed.v1",
+            "runtime_restore_us": 132980,
+            "validation_us": 183744
+          },
+          {
+            "branch_observation_selection": {
+              "decode_us": 1750071,
+              "mutation_us": 3819774,
+              "restore_us": 467592,
+              "usage": {
+                "controls": 130,
+                "encoded_bytes": 279261,
+                "observations": 1,
+                "replay_work": 53239744,
+                "reserved_bytes": 955,
+                "reserved_work": 664049,
+                "retained_events": 320
+              }
+            },
+            "controls_only": false,
+            "decode_us": 608912,
+            "document": {
+              "controls": 128,
+              "encoded_bytes": 131699,
+              "observations": 0,
+              "replay_work": 22889327,
+              "reserved_bytes": 959,
+              "reserved_work": 813719,
+              "retained_events": 128
+            },
+            "events": 128,
+            "import_accepted": true,
+            "import_us": 337042,
+            "import_usage": {
+              "controls": 0,
+              "encoded_bytes": 180825,
+              "observations": 0,
+              "replay_work": 30486504,
+              "reserved_bytes": 958,
+              "reserved_work": 813719,
+              "retained_events": 256
+            },
+            "imported_observation": {
+              "accepted": true,
+              "accepted_usage": {
+                "controls": 1,
+                "encoded_bytes": 271386,
+                "observations": 1,
+                "replay_work": 45729757,
+                "reserved_bytes": 959,
+                "reserved_work": 813719,
+                "retained_events": 384
+              },
+              "elapsed_us": 1158138,
+              "resource": null
+            },
+            "native_build_us": 376564,
+            "native_record_work": 7621626,
+            "profile": "mshogi.tenjiku.muller-completed.v1",
+            "runtime_restore_us": 272098,
+            "validation_us": 335232
+          },
+          {
+            "branch_observation_selection": null,
+            "controls_only": true,
+            "decode_us": 4366305,
+            "document": {
+              "controls": 1021,
+              "encoded_bytes": 286815,
+              "observations": 0,
+              "replay_work": 334097383,
+              "reserved_bytes": 956,
+              "reserved_work": 1752032,
+              "retained_events": 1021
+            },
+            "events": 1021,
+            "import_accepted": true,
+            "import_us": 2200666,
+            "import_usage": {
+              "controls": 0,
+              "encoded_bytes": 389341,
+              "observations": 0,
+              "replay_work": 445429388,
+              "reserved_bytes": 955,
+              "reserved_work": 1752032,
+              "retained_events": 2042
+            },
+            "imported_observation": {
+              "accepted": false,
+              "accepted_usage": null,
+              "elapsed_us": 8556669,
+              "resource": {
+                "diagnostic": "Application limit reached. The complete previously accepted game can still be saved.",
+                "facts": [
+                  {
+                    "category": "replay_work",
+                    "count": 668144083,
+                    "limit": 600000000,
+                    "measurement": "candidate",
+                    "observations": null,
+                    "reserved": 0,
+                    "scope": "tenjiku",
+                    "unit": "replay_units"
+                  }
+                ],
+                "omitted_facts": 0
+              }
+            },
+            "native_build_us": 2126690,
+            "native_record_work": 111357347,
+            "profile": "mshogi.tenjiku.muller-completed.v1",
+            "runtime_restore_us": 2135575,
+            "validation_us": 2210853
+          }
+        ]
+      },
+      "near-limit": {
+        "sha256": "cad67a73145ef8102652076c743f69a0ccb0a5562bc02504263a6c3f7ecb7368",
+        "local_log": "/tmp/msh79-tenjiku-document-near-limit.log",
+        "measurements": [
+          {
+            "actual_closing_path_us": 12943283,
+            "decode_us": 6440619,
+            "ending_decode_us": 6425746,
+            "ending_usage": {
+              "controls": 5,
+              "encoded_bytes": 390256,
+              "observations": 0,
+              "replay_work": 447152720,
+              "reserved_bytes": 0,
+              "reserved_work": 0,
+              "retained_events": 2045
+            },
+            "import_usage": {
+              "controls": 0,
+              "encoded_bytes": 389306,
+              "observations": 0,
+              "replay_work": 445400772,
+              "reserved_bytes": 955,
+              "reserved_work": 1751969,
+              "retained_events": 2042
+            },
+            "near_limit_import_profile": "mshogi.tenjiku.adams1999-modern.v1",
+            "restore_us": 2123064
+          },
+          {
+            "actual_closing_path_us": 12970515,
+            "decode_us": 6480295,
+            "ending_decode_us": 6411092,
+            "ending_usage": {
+              "controls": 5,
+              "encoded_bytes": 390291,
+              "observations": 0,
+              "replay_work": 447181399,
+              "reserved_bytes": 0,
+              "reserved_work": 0,
+              "retained_events": 2045
+            },
+            "import_usage": {
+              "controls": 0,
+              "encoded_bytes": 389341,
+              "observations": 0,
+              "replay_work": 445429388,
+              "reserved_bytes": 955,
+              "reserved_work": 1752032,
+              "retained_events": 2042
+            },
+            "near_limit_import_profile": "mshogi.tenjiku.muller-completed.v1",
+            "restore_us": 2125803
+          }
+        ]
+      }
+    },
+    "actual_file_worker": {
+      "command": "cargo test --locked --offline --release -p mshogi-desktop-session --lib measured_policy_boundary_actual_worker_open_save_endings_and_close -- --ignored --test-threads=1 --nocapture",
+      "result": "1passed0failed71.46s, bothprofiles",
+      "log": "/private/tmp/msh79-actual-worker-release2.log",
+      "measurements": [
+        {
+          "actual_worker_profile": "mshogi.tenjiku.adams1999-modern.v1",
+          "close_us": 402,
+          "ended_open_us": 5597600,
+          "ended_save_us": 5260749,
+          "ended_usage": {
+            "controls": 12,
+            "encoded_bytes": 906103,
+            "observations": 8,
+            "replay_work": 153228102,
+            "reserved_bytes": 14,
+            "reserved_work": 0,
+            "retained_events": 1283
+          },
+          "endings_us": [
+            3414305,
+            3346850,
+            3339213
+          ],
+          "fresh_stopped_reopen": true,
+          "open_us": 5582024,
+          "prior_file_preserved": true,
+          "save_us": 5322365,
+          "source_usage": {
+            "controls": 8,
+            "encoded_bytes": 905180,
+            "observations": 8,
+            "replay_work": 152414468,
+            "reserved_bytes": 959,
+            "reserved_work": 813656,
+            "retained_events": 1280
+          }
+        },
+        {
+          "actual_worker_profile": "mshogi.tenjiku.muller-completed.v1",
+          "close_us": 463,
+          "ended_open_us": 5537545,
+          "ended_save_us": 5339588,
+          "ended_usage": {
+            "controls": 12,
+            "encoded_bytes": 906250,
+            "observations": 8,
+            "replay_work": 153246225,
+            "reserved_bytes": 14,
+            "reserved_work": 0,
+            "retained_events": 1283
+          },
+          "endings_us": [
+            3359624,
+            3350348,
+            3388586
+          ],
+          "fresh_stopped_reopen": true,
+          "open_us": 5547507,
+          "prior_file_preserved": true,
+          "save_us": 5316372,
+          "source_usage": {
+            "controls": 8,
+            "encoded_bytes": 905327,
+            "observations": 8,
+            "replay_work": 152432528,
+            "reserved_bytes": 959,
+            "reserved_work": 813719,
+            "retained_events": 1280
+          }
+        }
+      ],
+      "scope": "Production FileWorker read/strictdecode/TenjikuSession restore/choice+presentation/preparedClose/solecontroller installation; actual atomicSave; Stop/Resign/Stop/Close/Save/freshstoppedOpen. Each operation retains its independent15s deadline."
+    }
+  },
+  "checks": [
+    {
+      "command": "cargo test --workspace --locked --offline",
+      "result": "passed994tests across91resultgroups;6ignored",
+      "log": "/private/tmp/msh79-workspace-tests.log",
+      "scope": "coherent checkpoint before later focused typed-observation/status/close corrections; shareddeadline classifier and allfivegame regressions passed; exactfinalsourceCI remainsrequired"
+    },
+    {
+      "command": "cargo clippy --workspace --all-targets --locked --offline -- -D warnings",
+      "result": "passed26.53s",
+      "log": "/private/tmp/msh79-workspace-clippy.log"
+    },
+    {
+      "command": "cargo clippy --workspace --all-targets --all-features --locked --offline -- -D warnings",
+      "result": "passed11.99s",
+      "log": "/private/tmp/msh79-final-allfeatures-clippy.log"
+    },
+    {
+      "command": "Node24.22.1 node_modules/vitest/vitest.mjs run",
+      "result": "passed495tests39files27.46s",
+      "log": "/private/tmp/msh79-final-frontend-tests.log"
+    },
+    {
+      "command": "Node24.22.1 scripts/build-frontend.mjs",
+      "result": "passed;normalbundleexcludesQAmodules/markers",
+      "log": "/private/tmp/msh79-normal-frontend-build.log"
+    },
+    {
+      "command": "Node24.22.1 scripts/build-frontend.mjs --verification",
+      "result": "passed",
+      "log": "/private/tmp/msh79-verification-frontend-build.log"
+    },
+    {
+      "command": "cargo clippy --locked --offline --manifest-path desktop/src-tauri/Cargo.toml --all-targets --all-features -- -D warnings",
+      "result": "passed3.32s;existingvendoredTao warnings",
+      "log": "/private/tmp/msh79-host-final-clippy.log"
+    },
+    {
+      "command": "cargo test --locked --offline --manifest-path desktop/src-tauri/Cargo.toml --features desktop-verification",
+      "result": "passed18tests1.14s",
+      "log": "/private/tmp/msh79-host-final-tests.log"
+    },
+    {
+      "command": "python3 -m unittest discover -s desktop/scripts -p test_macos_verification.py -v",
+      "result": "passed",
+      "log": "/private/tmp/msh79-macos-helper-tests.log"
+    },
+    {
+      "command": "cargo test --locked --offline -p mshogi-desktop-session --lib tenjiku -- --nocapture",
+      "result": "22passed1test-expectationfailure4ignored; correctedquiescentCloseexpectationthenfocused1passed1.02s; all23applicablecases covered",
+      "log": "/private/tmp/msh79-final-tenjiku-tests.log",
+      "correction_log": "/private/tmp/msh79-close-regression-corrected.log"
+    },
+    {
+      "command": "core native_envelope andnative_tenjiku_envelope tests; affectedprettyoverflowregression",
+      "result": "11passed, affectedassertionsrerun1passed; targetedcoreclippypassed"
+    },
+    {
+      "command": "exactrequired3legacyfixturewriter modes totemporarydirectory",
+      "result": "51emittedtrackedJSONfiles byte-identicaltoHEADandworkingtree;0mismatches0unexpectedfiles",
+      "directory": "/tmp/msh79-legacy-workflow.PP5hZz"
+    },
+    {
+      "command": "directreleaseTenjikufixturewriter twice",
+      "result": "53nativeDTOs deterministicbothprofiles,0changedhashes,6245934totalbytes"
+    }
+  ],
+  "consumer_coverage": [
+    {
+      "id": "TEN-CONSUMER-STRICT_PROFILE_DISPATCH",
+      "owner": "MSH-79",
+      "status": "executed_both_profiles",
+      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+    },
+    {
+      "id": "TEN-CONSUMER-SAME_BOARD_CROSS_PROFILE_REJECTION",
+      "owner": "MSH-79",
+      "status": "executed_both_profiles",
+      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+    },
+    {
+      "id": "TEN-CONSUMER-NATIVE_BURN_PROJECTION",
+      "owner": "MSH-79",
+      "status": "executed_both_profiles",
+      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+    },
+    {
+      "id": "TEN-CONSUMER-COMPLETE_ROUTE_PARTIAL_SELECTION",
+      "owner": "MSH-79",
+      "status": "executed_both_profiles",
+      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+    },
+    {
+      "id": "TEN-CONSUMER-SELECTED_HISTORY_INSPECTION",
+      "owner": "MSH-79",
+      "status": "executed_both_profiles",
+      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+    },
+    {
+      "id": "TEN-CONSUMER-WHOLE_DOCUMENT_CAPACITY",
+      "owner": "MSH-79",
+      "status": "executed_both_profiles",
+      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+    },
+    {
+      "id": "TEN-CONSUMER-SAVED_PROFILE_REOPEN_STOPPED",
+      "owner": "MSH-79",
+      "status": "executed_both_profiles",
+      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+    },
+    {
+      "id": "TEN-CONSUMER-NEW_GAME_PROFILE_CHOICE",
+      "owner": "MSH-44",
+      "status": "pending_MSH-44",
+      "evidence": "MSH-44 original acceptance"
+    },
+    {
+      "id": "TEN-CONSUMER-BOUNDED_SEARCH_FULL_HISTORY",
+      "owner": "MSH-44",
+      "status": "pending_MSH-44",
+      "evidence": "MSH-44 original acceptance"
+    },
+    {
+      "id": "TEN-CONSUMER-NATIVE_CONSOLE_NOTATION",
+      "owner": "MSH-44",
+      "status": "pending_MSH-44",
+      "evidence": "MSH-44 original acceptance"
+    },
+    {
+      "id": "TEN-CONSUMER-LICENSED_KANJI_16BOARD",
+      "owner": "MSH-44",
+      "status": "pending_MSH-44",
+      "evidence": "MSH-44 original acceptance"
+    },
+    {
+      "id": "TEN-CONSUMER-NORMAL_MINIMUM_THREE_PLATFORM_GAMEPLAY",
+      "owner": "MSH-44",
+      "status": "pending_MSH-44",
+      "evidence": "MSH-44 original acceptance"
+    },
+    {
+      "id": "TEN-PROFILE-MIX-OBSERVATION_CONTEXT",
+      "owner": "MSH-79",
+      "status": "executed_both_profiles",
+      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+    },
+    {
+      "id": "TEN-PROFILE-MIX-HISTORICAL_SELECTION",
+      "owner": "MSH-79",
+      "status": "executed_both_profiles",
+      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+    },
+    {
+      "id": "TEN-PROFILE-MIX-EXECUTION_RESULT",
+      "owner": "MSH-79",
+      "status": "executed_both_profiles",
+      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+    },
+    {
+      "id": "TEN-PROFILE-MIX-NEW_GAME_IMMUTABLE",
+      "owner": "MSH-79",
+      "status": "executed_both_profiles",
+      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+    },
+    {
+      "id": "TEN-CONSUMER-FRESH-NEW-OTHER-PROFILE",
+      "owner": "MSH-79",
+      "status": "executed_both_profiles",
+      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+    }
+  ],
+  "independent_review": {
+    "status": "source_approved_CI_pending",
+    "reviewer": "fresh read-only /root/independent_review",
+    "independent_checks": [
+      "12controllercases passed",
+      "nestedobservationtypedCapacity/Stopped regressionpassed",
+      "resumedClose nativeauthorityretirementpassed",
+      "quietreturncorrectedinteraction2passed;initial48pass2wrongexpectationfailpreserved",
+      "Five-game/Tenjiku serializationcompatibilityregressionpassed",
+      "FixedmacOShelpertests11passed"
+    ],
+    "findings_resolved": [
+      "Complete nativewrapper bytecapacity typed.",
+      "Observation nativecapacity andcancellation typed.",
+      "Native statuscancellable withoutredundantlivegeneration.",
+      "ConcludingStop preservesnativewinner/score presentation.",
+      "ResumeafterClose mustretirecurrentnativeauthority onnextClose."
+    ],
+    "remaining": "RequiredexactsourceRust/DesktopCI andfinalevidencereconciliation."
+  },
+  "ci": {
+    "rust_three_platforms": "not_run",
+    "desktop_three_platforms": "not_run",
+    "job_budget": {
+      "prior_required_run": 41816309261,
+      "windows_duration": "24m19s",
+      "prior_timeout_minutes": 25,
+      "timeout_minutes": 30,
+      "reason": "Additional requiredtwo-profile sharedchecks; no tests orproductlimitsweakened."
+    },
+    "fixture_freshness_note": "Independent review flagged five-game pretty-wrapper regression; restored originalfive-game SerializeStruct layout while Tenjiku retains exactRawValue wrapper. Optionalfeature-enabled firstwriter emits8historicalextra fixtures not emittedby requiredno-feature firstwriter; theirpre-existingdrift is notsilentlycopied. Exactworkflowmodes emit51oldtrackedfiles, allbyte-identical. The9unemittedfeature-onlyfiles(includingsynthetic) arepreserved;8hadpre-existingoptionalfeaturegenerationdrift."
+  },
+  "pending_msh44": [
+    "Normal product profile chooser and ordinary Load activation for bothprofiles.",
+    "Functional native evaluation and bounded history-aware search, supervised child and complete games.",
+    "Final native console and complete player notation.",
+    "Licensed traditional kanji and final16x16 board/promotion/ownership presentation.",
+    "Normal/minimum three-platform packaged Tenjiku gameplay."
+  ],
+  "performance": {
+    "generator": [
+      {
+        "native_construct_us": 1038,
+        "new_admission_install_us": 55402,
+        "new_call_us": 1235,
+        "profile": "mshogi.tenjiku.adams1999-modern.v1",
+        "scenario": "standard"
+      },
+      {
+        "inspection_encode_total_us": 130,
+        "inspection_max_bytes": 2983,
+        "inspection_max_choices": 6,
+        "inspection_max_us": 193,
+        "inspection_origins": 156,
+        "inspection_total_bytes": 120920,
+        "inspection_total_choices": 140,
+        "inspection_total_us": 2424,
+        "pieces": 156,
+        "profile": "adams",
+        "scenario": "standard",
+        "snapshot_choices": 70,
+        "snapshot_encode_us": 273,
+        "snapshot_encoded_bytes": 191165,
+        "snapshot_us": 148
+      },
+      {
+        "native_construct_us": 990,
+        "new_admission_install_us": 54975,
+        "new_call_us": 1203,
+        "profile": "mshogi.tenjiku.muller-completed.v1",
+        "scenario": "standard"
+      },
+      {
+        "inspection_encode_total_us": 121,
+        "inspection_max_bytes": 2983,
+        "inspection_max_choices": 6,
+        "inspection_max_us": 189,
+        "inspection_origins": 156,
+        "inspection_total_bytes": 124312,
+        "inspection_total_choices": 148,
+        "inspection_total_us": 2373,
+        "pieces": 156,
+        "profile": "muller",
+        "scenario": "standard",
+        "snapshot_choices": 74,
+        "snapshot_encode_us": 283,
+        "snapshot_encoded_bytes": 192889,
+        "snapshot_us": 137
+      },
+      {
+        "native_construct_us": 1012,
+        "new_admission_install_us": 54828,
+        "new_call_us": 1186,
+        "profile": "mshogi.tenjiku.adams1999-modern.v1",
+        "scenario": "reset"
+      },
+      {
+        "fixture_construct_admission_install_us": 20007,
+        "profile": "adams",
+        "scenario": "burn"
+      },
+      {
+        "inspection_encode_total_us": 535,
+        "inspection_max_bytes": 257113,
+        "inspection_max_choices": 598,
+        "inspection_max_us": 783,
+        "inspection_origins": 7,
+        "inspection_total_bytes": 472518,
+        "inspection_total_choices": 1096,
+        "inspection_total_us": 1476,
+        "pieces": 7,
+        "profile": "adams",
+        "scenario": "burn",
+        "snapshot_choices": 602,
+        "snapshot_encode_us": 308,
+        "snapshot_encoded_bytes": 283472,
+        "snapshot_us": 124
+      },
+      {
+        "fixture_construct_admission_install_us": 14343,
+        "profile": "adams",
+        "scenario": "igui"
+      },
+      {
+        "inspection_encode_total_us": 20,
+        "inspection_max_bytes": 11078,
+        "inspection_max_choices": 29,
+        "inspection_max_us": 39,
+        "inspection_origins": 6,
+        "inspection_total_bytes": 16541,
+        "inspection_total_choices": 38,
+        "inspection_total_us": 82,
+        "pieces": 6,
+        "profile": "adams",
+        "scenario": "igui",
+        "snapshot_choices": 33,
+        "snapshot_encode_us": 56,
+        "snapshot_encoded_bytes": 36484,
+        "snapshot_us": 22
+      },
+      {
+        "fixture_construct_admission_install_us": 14017,
+        "profile": "adams",
+        "scenario": "compound"
+      },
+      {
+        "inspection_encode_total_us": 52,
+        "inspection_max_bytes": 34653,
+        "inspection_max_choices": 88,
+        "inspection_max_us": 98,
+        "inspection_origins": 7,
+        "inspection_total_bytes": 40911,
+        "inspection_total_choices": 98,
+        "inspection_total_us": 151,
+        "pieces": 7,
+        "profile": "adams",
+        "scenario": "compound",
+        "snapshot_choices": 92,
+        "snapshot_encode_us": 78,
+        "snapshot_encoded_bytes": 60964,
+        "snapshot_us": 63
+      },
+      {
+        "fixture_construct_admission_install_us": 15719,
+        "profile": "adams",
+        "scenario": "hawk"
+      },
+      {
+        "inspection_encode_total_us": 61,
+        "inspection_max_bytes": 41934,
+        "inspection_max_choices": 108,
+        "inspection_max_us": 136,
+        "inspection_origins": 7,
+        "inspection_total_bytes": 49668,
+        "inspection_total_choices": 122,
+        "inspection_total_us": 194,
+        "pieces": 7,
+        "profile": "adams",
+        "scenario": "hawk",
+        "snapshot_choices": 112,
+        "snapshot_encode_us": 86,
+        "snapshot_encoded_bytes": 68267,
+        "snapshot_us": 37
+      },
+      {
+        "fixture_construct_admission_install_us": 17413,
+        "profile": "adams",
+        "scenario": "area"
+      },
+      {
+        "inspection_encode_total_us": 253,
+        "inspection_max_bytes": 215361,
+        "inspection_max_choices": 504,
+        "inspection_max_us": 626,
+        "inspection_origins": 6,
+        "inspection_total_bytes": 220824,
+        "inspection_total_choices": 513,
+        "inspection_total_us": 672,
+        "pieces": 6,
+        "profile": "adams",
+        "scenario": "area",
+        "snapshot_choices": 508,
+        "snapshot_encode_us": 278,
+        "snapshot_encoded_bytes": 240776,
+        "snapshot_us": 105
+      },
+      {
+        "fixture_construct_admission_install_us": 15773,
+        "profile": "adams",
+        "scenario": "ranked-jump"
+      },
+      {
+        "inspection_encode_total_us": 21,
+        "inspection_max_bytes": 11306,
+        "inspection_max_choices": 28,
+        "inspection_max_us": 43,
+        "inspection_origins": 7,
+        "inspection_total_bytes": 17574,
+        "inspection_total_choices": 38,
+        "inspection_total_us": 88,
+        "pieces": 7,
+        "profile": "adams",
+        "scenario": "ranked-jump",
+        "snapshot_choices": 33,
+        "snapshot_encode_us": 53,
+        "snapshot_encoded_bytes": 38001,
+        "snapshot_us": 25
+      },
+      {
+        "fixture_construct_admission_install_us": 18722,
+        "profile": "muller",
+        "scenario": "burn"
+      },
+      {
+        "inspection_encode_total_us": 561,
+        "inspection_max_bytes": 257113,
+        "inspection_max_choices": 598,
+        "inspection_max_us": 791,
+        "inspection_origins": 7,
+        "inspection_total_bytes": 472518,
+        "inspection_total_choices": 1096,
+        "inspection_total_us": 1535,
+        "pieces": 7,
+        "profile": "muller",
+        "scenario": "burn",
+        "snapshot_choices": 602,
+        "snapshot_encode_us": 315,
+        "snapshot_encoded_bytes": 283500,
+        "snapshot_us": 118
+      },
+      {
+        "fixture_construct_admission_install_us": 15582,
+        "profile": "muller",
+        "scenario": "igui"
+      },
+      {
+        "inspection_encode_total_us": 25,
+        "inspection_max_bytes": 15791,
+        "inspection_max_choices": 42,
+        "inspection_max_us": 60,
+        "inspection_origins": 6,
+        "inspection_total_bytes": 21254,
+        "inspection_total_choices": 51,
+        "inspection_total_us": 100,
+        "pieces": 6,
+        "profile": "muller",
+        "scenario": "igui",
+        "snapshot_choices": 46,
+        "snapshot_encode_us": 56,
+        "snapshot_encoded_bytes": 41225,
+        "snapshot_us": 25
+      },
+      {
+        "fixture_construct_admission_install_us": 9216,
+        "profile": "muller",
+        "scenario": "compound"
+      },
+      {
+        "inspection_encode_total_us": 49,
+        "inspection_max_bytes": 34653,
+        "inspection_max_choices": 88,
+        "inspection_max_us": 96,
+        "inspection_origins": 7,
+        "inspection_total_bytes": 40911,
+        "inspection_total_choices": 98,
+        "inspection_total_us": 142,
+        "pieces": 7,
+        "profile": "muller",
+        "scenario": "compound",
+        "snapshot_choices": 92,
+        "snapshot_encode_us": 76,
+        "snapshot_encoded_bytes": 60992,
+        "snapshot_us": 30
+      },
+      {
+        "fixture_construct_admission_install_us": 15702,
+        "profile": "muller",
+        "scenario": "hawk"
+      },
+      {
+        "inspection_encode_total_us": 58,
+        "inspection_max_bytes": 41934,
+        "inspection_max_choices": 108,
+        "inspection_max_us": 130,
+        "inspection_origins": 7,
+        "inspection_total_bytes": 49668,
+        "inspection_total_choices": 122,
+        "inspection_total_us": 184,
+        "pieces": 7,
+        "profile": "muller",
+        "scenario": "hawk",
+        "snapshot_choices": 112,
+        "snapshot_encode_us": 86,
+        "snapshot_encoded_bytes": 68295,
+        "snapshot_us": 33
+      },
+      {
+        "fixture_construct_admission_install_us": 17163,
+        "profile": "muller",
+        "scenario": "area"
+      },
+      {
+        "inspection_encode_total_us": 250,
+        "inspection_max_bytes": 215361,
+        "inspection_max_choices": 504,
+        "inspection_max_us": 633,
+        "inspection_origins": 6,
+        "inspection_total_bytes": 220824,
+        "inspection_total_choices": 513,
+        "inspection_total_us": 678,
+        "pieces": 6,
+        "profile": "muller",
+        "scenario": "area",
+        "snapshot_choices": 508,
+        "snapshot_encode_us": 269,
+        "snapshot_encoded_bytes": 240804,
+        "snapshot_us": 104
+      },
+      {
+        "fixture_construct_admission_install_us": 16369,
+        "profile": "muller",
+        "scenario": "ranked-jump"
+      },
+      {
+        "inspection_encode_total_us": 22,
+        "inspection_max_bytes": 11306,
+        "inspection_max_choices": 28,
+        "inspection_max_us": 39,
+        "inspection_origins": 7,
+        "inspection_total_bytes": 17574,
+        "inspection_total_choices": 38,
+        "inspection_total_us": 82,
+        "pieces": 7,
+        "profile": "muller",
+        "scenario": "ranked-jump",
+        "snapshot_choices": 33,
+        "snapshot_encode_us": 52,
+        "snapshot_encoded_bytes": 38029,
+        "snapshot_us": 19
+      },
+      {
+        "fixture_construct_admission_install_us": 56282,
+        "profile": "adams",
+        "scenario": "dense-lion"
+      },
+      {
+        "inspection_encode_total_us": 166,
+        "inspection_max_bytes": 34653,
+        "inspection_max_choices": 88,
+        "inspection_max_us": 190,
+        "inspection_origins": 156,
+        "inspection_total_bytes": 159320,
+        "inspection_total_choices": 239,
+        "inspection_total_us": 2431,
+        "pieces": 156,
+        "profile": "adams",
+        "scenario": "dense-lion",
+        "snapshot_choices": 168,
+        "snapshot_encode_us": 310,
+        "snapshot_encoded_bytes": 229237,
+        "snapshot_us": 156
+      },
+      {
+        "fixture_construct_admission_install_us": 56080,
+        "profile": "adams",
+        "scenario": "dense-hawk"
+      },
+      {
+        "inspection_encode_total_us": 171,
+        "inspection_max_bytes": 35747,
+        "inspection_max_choices": 91,
+        "inspection_max_us": 194,
+        "inspection_origins": 156,
+        "inspection_total_bytes": 161246,
+        "inspection_total_choices": 244,
+        "inspection_total_us": 2483,
+        "pieces": 156,
+        "profile": "adams",
+        "scenario": "dense-hawk",
+        "snapshot_choices": 173,
+        "snapshot_encode_us": 320,
+        "snapshot_encoded_bytes": 231169,
+        "snapshot_us": 162
+      },
+      {
+        "fixture_construct_admission_install_us": 59250,
+        "profile": "adams",
+        "scenario": "dense-fire"
+      },
+      {
+        "inspection_encode_total_us": 447,
+        "inspection_max_bytes": 255225,
+        "inspection_max_choices": 594,
+        "inspection_max_us": 831,
+        "inspection_origins": 156,
+        "inspection_total_bytes": 380560,
+        "inspection_total_choices": 747,
+        "inspection_total_us": 3128,
+        "pieces": 156,
+        "profile": "adams",
+        "scenario": "dense-fire",
+        "snapshot_choices": 676,
+        "snapshot_encode_us": 546,
+        "snapshot_encoded_bytes": 450481,
+        "snapshot_us": 236
+      },
+      {
+        "fixture_construct_admission_install_us": 58582,
+        "profile": "adams",
+        "scenario": "dense-area"
+      },
+      {
+        "inspection_encode_total_us": 412,
+        "inspection_max_bytes": 256336,
+        "inspection_max_choices": 597,
+        "inspection_max_us": 830,
+        "inspection_origins": 156,
+        "inspection_total_bytes": 377297,
+        "inspection_total_choices": 739,
+        "inspection_total_us": 3149,
+        "pieces": 156,
+        "profile": "adams",
+        "scenario": "dense-area",
+        "snapshot_choices": 668,
+        "snapshot_encode_us": 554,
+        "snapshot_encoded_bytes": 447230,
+        "snapshot_us": 235
+      },
+      {
+        "fixture_construct_admission_install_us": 55352,
+        "profile": "muller",
+        "scenario": "dense-lion"
+      },
+      {
+        "inspection_encode_total_us": 169,
+        "inspection_max_bytes": 34653,
+        "inspection_max_choices": 88,
+        "inspection_max_us": 190,
+        "inspection_origins": 156,
+        "inspection_total_bytes": 163113,
+        "inspection_total_choices": 248,
+        "inspection_total_us": 2439,
+        "pieces": 156,
+        "profile": "muller",
+        "scenario": "dense-lion",
+        "snapshot_choices": 173,
+        "snapshot_encode_us": 324,
+        "snapshot_encoded_bytes": 231362,
+        "snapshot_us": 198
+      },
+      {
+        "fixture_construct_admission_install_us": 56717,
+        "profile": "muller",
+        "scenario": "dense-hawk"
+      },
+      {
+        "inspection_encode_total_us": 165,
+        "inspection_max_bytes": 35747,
+        "inspection_max_choices": 91,
+        "inspection_max_us": 187,
+        "inspection_origins": 156,
+        "inspection_total_bytes": 164638,
+        "inspection_total_choices": 252,
+        "inspection_total_us": 2378,
+        "pieces": 156,
+        "profile": "muller",
+        "scenario": "dense-hawk",
+        "snapshot_choices": 177,
+        "snapshot_encode_us": 298,
+        "snapshot_encoded_bytes": 232893,
+        "snapshot_us": 143
+      },
+      {
+        "fixture_construct_admission_install_us": 59973,
+        "profile": "muller",
+        "scenario": "dense-fire"
+      },
+      {
+        "inspection_encode_total_us": 416,
+        "inspection_max_bytes": 255225,
+        "inspection_max_choices": 594,
+        "inspection_max_us": 865,
+        "inspection_origins": 156,
+        "inspection_total_bytes": 383952,
+        "inspection_total_choices": 755,
+        "inspection_total_us": 3130,
+        "pieces": 156,
+        "profile": "muller",
+        "scenario": "dense-fire",
+        "snapshot_choices": 680,
+        "snapshot_encode_us": 551,
+        "snapshot_encoded_bytes": 452205,
+        "snapshot_us": 244
+      },
+      {
+        "fixture_construct_admission_install_us": 59717,
+        "profile": "muller",
+        "scenario": "dense-area"
+      },
+      {
+        "inspection_encode_total_us": 463,
+        "inspection_max_bytes": 256336,
+        "inspection_max_choices": 597,
+        "inspection_max_us": 771,
+        "inspection_origins": 156,
+        "inspection_total_bytes": 380689,
+        "inspection_total_choices": 747,
+        "inspection_total_us": 3071,
+        "pieces": 156,
+        "profile": "muller",
+        "scenario": "dense-area",
+        "snapshot_choices": 672,
+        "snapshot_encode_us": 566,
+        "snapshot_encoded_bytes": 448954,
+        "snapshot_us": 244
+      },
+      {
+        "generator_returncode": 0,
+        "elapsed_seconds": 1.6774257079232484,
+        "platform": "Darwin",
+        "child_ru_maxrss": 30457856,
+        "maxrss_unit": "bytes",
+        "fixture_count": 53,
+        "deterministic_regeneration": true,
+        "changed_files": []
+      }
+    ],
+    "render": [
+      {
+        "environment": "Node24/jsdom/ReactProfiler contract test; not native WebView",
+        "profile": "mshogi.tenjiku.adams1999-modern.v1",
+        "pieces": 156,
+        "board_targets": 256,
+        "compact_snapshot_utf8_bytes": 105185,
+        "render_to_settled_dom_ms": 72.07129200000003,
+        "profiler_actual_total_ms": 57.61802100000432,
+        "commits": [
+          {
+            "phase": "mount",
+            "actual_ms": 43.89317500000135,
+            "base_ms": 11.796866000000648
+          },
+          {
+            "phase": "nested-update",
+            "actual_ms": 13.72484600000297,
+            "base_ms": 12.900430000001222
+          }
+        ]
+      },
+      {
+        "environment": "Node24/jsdom/ReactProfiler contract test; not native WebView",
+        "profile": "mshogi.tenjiku.muller-completed.v1",
+        "pieces": 156,
+        "board_targets": 256,
+        "compact_snapshot_utf8_bytes": 106209,
+        "render_to_settled_dom_ms": 48.30975000000001,
+        "profiler_actual_total_ms": 41.15870700000244,
+        "commits": [
+          {
+            "phase": "mount",
+            "actual_ms": 30.330963000000565,
+            "base_ms": 11.358421000000135
+          },
+          {
+            "phase": "nested-update",
+            "actual_ms": 10.827744000001871,
+            "base_ms": 10.242502000000627
+          }
+        ]
+      }
+    ],
+    "cancel": [
+      {
+        "authority_document_and_prior_file_preserved": true,
+        "cancel_profile": "mshogi.tenjiku.adams1999-modern.v1",
+        "retire_admission_us": 4,
+        "retire_file_us": 0,
+        "scope": "controller retirement latency; native cooperative checkpoints tested separately"
+      },
+      {
+        "authority_document_and_prior_file_preserved": true,
+        "cancel_profile": "mshogi.tenjiku.muller-completed.v1",
+        "retire_admission_us": 3,
+        "retire_file_us": 1,
+        "scope": "controller retirement latency; native cooperative checkpoints tested separately"
+      }
+    ],
+    "qualifications": [
+      "ReactProfiler is Node24/jsdom contract rendering, not native WKWebView latency.",
+      "Generator peakRSS is Darwin child process ru_maxrss in bytes, not allocation attribution.",
+      "Read-only per-origin query and snapshot generation run synchronously under the controller owner; timings bound these measured lock-held workloads, not every admitted history.",
+      "Actualworker release timings are distinct from preliminary documentdecode+nativeGame metrics.",
+      "Local source was dirty over base6891508; final exact-source CI will establish the recorded tested revision. Unchanged measured Tenjiku production paths are reused after test/format/five-game serialization compatibility corrections."
+    ]
+  },
+  "development_failures": [
+    {
+      "case": "provisional600M",
+      "outcome": "reopen reached15s; rejectedpolicy; rawmeasurements retained inresource_policy.logs.context-policy"
+    },
+    {
+      "case": "actualworker probe firstattempt",
+      "outcome": "wrong exactbytes test expectation: Save intentionally raises retiredexecutionfloor8\u21929. Nootherfielddiff. Correctedexpectedbytesbeforequeue viawith_runtime_floor; subsequentbothprofile probe passed.",
+      "log": "/private/tmp/msh79-actual-worker-release.log"
+    },
+    {
+      "case": "densefixture initialattempt",
+      "outcome": "nativeExcessInventory rejected adding physicalidentity beyond inventory; fixed by relocating existingphysicalpiece",
+      "log": "/tmp/msh79-tenjiku-frontend-generation.log"
+    },
+    {
+      "case": "densefixture secondattempt",
+      "outcome": "nativeInvalidRights rejected manual promotionbit; fixedvia Piece::new deriving native rights",
+      "log": "/tmp/msh79-tenjiku-frontend-generation2.log"
+    },
+    {
+      "case": "frontendfirstnewtests",
+      "outcome": "46pass2incorrectquietreturnexpectationfail; firstquietreturn flipsboard+turn so nativeadmitsit. Correctedtest, no rule/corpuschange; focused50thenfull495pass."
+    },
+    {
+      "case": "resumedClose regression initialexpectation",
+      "outcome": "assertedwholeSessionToken idempotence, but established commonretirement refreshesobservationalrevision. Corrected to assert exactnativecontext/documentbytes/runtimeversion+selection. Nativeclose productionbug fixed byrequiringquiescencebeforeearlyreturn."
+    }
+  ],
+  "macos_qa": {
+    "status": "passed_bounded_native_contract_smoke",
+    "environment": "macOS27.0.1 arm64 nativeWKWebView, actual1180x820logical QAapp",
+    "source": "localdirtybase6891508; TenjikuUI/controller sources unchanged since build except subsequent five-game-only serializer compatibility branch. Exact scope review and CI source recorded separately.",
+    "identity": {
+      "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app",
+      "bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+      "expected_bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+      "environment": {
+        "MSHOGI_DESKTOP_FIXTURE_FILE": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/qa.fixture"
+      },
+      "files": {
+        "Contents/Info.plist": "0a16e98931910a2e976eeffe0fdb563ca73ceaf7e60af2548c944d9bc86131da",
+        "Contents/MacOS/mshogi": "4744e318ef49ae9399f85a24a8cf1c1f7ef1874b39e80537e1a1bfaf82f3bfa1",
+        "Contents/MacOS/mshogi-desktop": "0d817beec8758af4a7f7d3c43468097b202ad9bd33fc65584667721889f7191a",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc",
+        "Contents/_CodeSignature/CodeResources": "deabbbbccbac03459fa205c147b8a13a40f32d19d5ceca49ba19e1d50d67199e"
+      },
+      "signatures": {
+        "display": {
+          "exit_code": 0,
+          "output": "# designated => cdhash H\"e4918a19ceeed8f9cd0afda324056f178be68cd7\"\nExecutable=/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.shogipromotion\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=41770 flags=0x2(adhoc) hashes=1298+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=e4918a19ceeed8f9cd0afda324056f178be68cd7\nCandidateCDHashFull sha256=e4918a19ceeed8f9cd0afda324056f178be68cd71636cb23c6004fbeabee50f6\nHash choices=sha256\nCMSDigest=e4918a19ceeed8f9cd0afda324056f178be68cd71636cb23c6004fbeabee50f6\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=14532608\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=e4918a19ceeed8f9cd0afda324056f178be68cd7\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n"
+        },
+        "strict_verify": {
+          "exit_code": 0,
+          "output": "--prepared:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n--validated:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: valid on disk\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: satisfies its Designated Requirement\n"
+        }
+      },
+      "qualification": "Ad-hoc signatures may change on rebuild; no approval persistence is inferred"
+    },
+    "selector_signature_reuse": {
+      "same_signed_files_before_after": true,
+      "second_launch_fixture": "tenjiku-muller-igui",
+      "final_selector": "standard",
+      "stopped_before_selector_reset": true,
+      "observed": "Both launches succeeded through existingCUAslot without an additional approval prompt; no future approval persistence inferred. Approval/security stores unchanged."
+    },
+    "journeys": [
+      "AdamsnativeLion8h\u21928g partialselect, Escape restores8hfocus, keyboardUp/Enter\u2192Left/Enter admitsone2capturecompleteaction8h\u21928g\u21929g; nativeMoves hasoneentry.",
+      "FlipGoteorientation retainsnativehistory. ExplicitQANewMuller installsdense156piecefreshstandarddocument, resets0plies/choices/focus.",
+      "OrdinaryNewGame actualnativepopup listsChess/Shogi/Xiangqi/Tori/Chuonly; cancelledreplacement preservesMuller.",
+      "ActualnativeQuitguard Cancel, ResumeafterClose, repeatedQuitguard andDiscard exit.",
+      "SameunchangedsignedQAapp relaunch selectsMullerTetrarch igui8h target9h;nativeMoverstays8h,targetremoved, actualMovesJSON hasroute[] andtarget[9,8]; guardedQuit exit."
+    ],
+    "artifacts_sha256": {
+      "evidence/shared-macos/adams-lion-complete.png": "1e21395f0aa4c7cb25d32783dba81f966e5188b8a48e7dc070a77458ade014c2",
+      "evidence/shared-macos/muller-stationary-capture.ax.txt": "b22d4d3e6b6ec7e56231a5e8c1c1fdbb67635a249cbb94cc1adafa31954d5af2",
+      "evidence/shared-macos/muller-fresh-standard.ax.txt": "b28b00791241ae9768dd590c4954a87a750dddd890f3526b840a79db4fd3be0f",
+      "evidence/shared-macos/ordinary-chooser.png": "9f994ddfcc6885083cb6a7e9d337593523b468e19b39640c34a0f688abfb21a3",
+      "evidence/shared-macos/resumed-dirty-quit.png": "0a8a17e7f75ed57284fc0df2cc345e277de6b87d2d430d6b046d3772329858f1",
+      "evidence/shared-macos/muller-fresh-standard.png": "8c441bfa6eff76112d53e53a02bbd2eb1897c3648d44ee7b25ac931c619a3ebc",
+      "evidence/shared-macos/resumed-dirty-quit.ax.txt": "8fef22a4fc091a9abeff1c52dea5be0d3bb1d9437ad68456739d6fdd38507139",
+      "evidence/shared-macos/muller-stationary-capture.png": "99c3ca24bd419cb507dde37e5aee3ffbe031610f19b9585bad08bf5481fc0324",
+      "evidence/shared-macos/ordinary-chooser.ax.txt": "c765af0f48ebb1408e67f83933a65859bbb1a779eff44ea37d2f91d33710be6d",
+      "evidence/shared-macos/adams-lion-complete.ax.txt": "edd40f85ae3affb72ed8e275196001c6b8c14f073cd47645a6ec47092c5c779e"
+    },
+    "qualification": "Contract smoke only; no fullpackagedTenjiku/gameplay/minimum-size/three-platformproduct acceptance. Final notation/assets andfunctionalengine remainMSH-44."
+  },
+  "measured_source_hashes": {
+    "crates/mshogi-core/src/native.rs": "95e376574c32db3a8c2ffbbe3ea0cd0bf380e9db0eb7891bf6af28f8fcf94508",
+    "crates/mshogi-core/src/lib.rs": "6cff5351f4eb9d4489bc4162940550c4181c0f2bf8728595ba5061fe8e4eb51b",
+    "crates/mshogi-core/src/chu/notation.rs": "d12c74a1c95c570cb6d7c6d49c5766c55bcb947b0ac5f7c9a66c637cf8d194aa",
+    "crates/mshogi-core/src/chu/game.rs": "cf5fe1449389461789dc163ddb79bf07291fa32ef221273fd7d07de89da8c027",
+    "crates/mshogi-core/src/chu/game_tests.rs": "3c3368c9f4e2dbe572f6b6fe01d83e938b8cd2d87e4d6f6e3b0a4597ecb5b101",
+    "crates/mshogi-core/src/chu/legal.rs": "a7edb233637225c5d1f6a40b85547fa7a72a29edaf9dbd8057e892b5ce757b51",
+    "crates/mshogi-core/src/chu/game_conformance.rs": "ecc267ea963a6dbf358ce1c9abdfa102945230908077890bed69711cfd1bf9bf",
+    "crates/mshogi-core/src/chu/mod.rs": "dfad5f77c7a98958318025e62ea4d26b5ae9798813bbc2513d850f17f3935cbf",
+    "crates/mshogi-core/src/chu/position.rs": "e41d5fe5377c6cff356954fcc722b9d8bfaf713dd5fb51fe975dcc7b3b8ce6a0",
+    "crates/mshogi-core/src/chu/local_tests.rs": "c9be1c19ebf9d2216840f4975a7d73caab811364fcaa2cd9f1ad0bea7020183b",
+    "crates/mshogi-core/src/chu/conformance.rs": "c645fa3e71617052ec396c71270dd480df9c84dd6801e3260400df723c422266",
+    "crates/mshogi-core/src/chu/record.rs": "509e0b718fab68b0ce64a29f55cc8fe506b3b616c906986ec88302ae1b0b2297",
+    "crates/mshogi-core/src/tenjiku/perft_tests.rs": "3244f9e8c9c8e382c1a56137f32b493a8ffe3591bbc7b3172ebb5a8c950dd695",
+    "crates/mshogi-core/src/tenjiku/game.rs": "35111c6a01fb96077e1a4870e5be842a251692770c28e37bc6a62360f6cc288c",
+    "crates/mshogi-core/src/tenjiku/perft.rs": "581f5785badce26ea7bb9a3fa47b47b974364a349e119bdd98148b4183e5444b",
+    "crates/mshogi-core/src/tenjiku/conformance_cases.rs": "9d3e47195515c04d895a4ae5eeabc089660ec1fe9ca188642b04a65d9bb8810b",
+    "crates/mshogi-core/src/tenjiku/game_tests.rs": "c25cbf204c83ce73adad785efef853636b19b9e056983dcf47176e6ab72f6919",
+    "crates/mshogi-core/src/tenjiku/legal.rs": "59fa4f19862f3b75112e9644da81dfe416d0e9711b4b1d1ea5f2ea9fd3137ba1",
+    "crates/mshogi-core/src/tenjiku/mod.rs": "61e8163a0b833f842e62118f54645d8cf2e5153828c91ae528f6bb9532b83485",
+    "crates/mshogi-core/src/tenjiku/position.rs": "3dd041837676f50a7fc930c590d5e9a71f03b62a156f560f306f7118c341d399",
+    "crates/mshogi-core/src/tenjiku/local_tests.rs": "cffdbd5575cc3d3a4c1ba814292f3978efdaa37f431965f763733ab63e5253dc",
+    "crates/mshogi-core/src/tenjiku/conformance.rs": "cf63cf5205560e4cd22fe04efe16d770c4ee454c23867186a5db4c5e14c94123",
+    "crates/mshogi-core/src/tenjiku/record_tests.rs": "87f5f57208568fd85daf8c3a1a406bc042fa84f9e762593377c717c0900db0a0",
+    "crates/mshogi-core/src/tenjiku/record.rs": "127db6688bfe43665760102d9b37ccc5f80d23e44de6a1134596a381134f17f9",
+    "crates/mshogi-core/src/shogi/action.rs": "052a809a16b29750e636ff33b5318177694a2aa6202c8d86c09e886cfc4892d2",
+    "crates/mshogi-core/src/shogi/game.rs": "b5aaf5cada447bc1e6e57b409714f99af63b3a06706bc0c1cc7a26f2df68726d",
+    "crates/mshogi-core/src/shogi/perft.rs": "bc98a1ae0384ac3f1b53cc0bf0b5af49f3ef46f39f20cb42a0a6152da832f0fd",
+    "crates/mshogi-core/src/shogi/sfen.rs": "63a25a516fa58b4279a4a2436236c4dabcd67c4bd8037c5f8af542721ccb7bf8",
+    "crates/mshogi-core/src/shogi/legal.rs": "8a68aff7c3c62c6b3cdb34824173825e85cac8edad7ff63598e1e4efcd2a1071",
+    "crates/mshogi-core/src/shogi/mod.rs": "ec7f93ba3b962afd6798e87b8bbd929852ba9b6c7ad62634836ee2789cfff0c8",
+    "crates/mshogi-core/src/shogi/tests.rs": "efe48aa6fb2f59f69eb191cdfb869669eae748fc9acc7183575a3403bdcd8403",
+    "crates/mshogi-core/src/shogi/record.rs": "0d80be4a203ea6469dd2e22ea0a8e3e207519f995bac18836f7d3b7f6643431e",
+    "crates/mshogi-core/src/chess/notation.rs": "258977197b544252ef627dd67da0e2df28bf2df3ac856efa29714103ae03ed4c",
+    "crates/mshogi-core/src/chess/action.rs": "81f48316be176e8ef6ae1d5cb59d4d6d971b5d7ca7cbf8b5a0dc1dcafeb4913d",
+    "crates/mshogi-core/src/chess/game.rs": "09b146b08c84e923688c36ff50c31c286edf3699684e8865a020a3eb09bf6c88",
+    "crates/mshogi-core/src/chess/matchplay.rs": "14be93d895366ab1eba7b9582fbff25aee88894018d98f52a5e02233c5d56e79",
+    "crates/mshogi-core/src/chess/perft.rs": "2014d603f518cc5197cd4bca65d3b3662f4eda55da07a45defb37f43a9706b1d",
+    "crates/mshogi-core/src/chess/generate.rs": "95dcf4d85ee9eef4f6269d9121b63b7718e460db1e6c11f53f4ac84109dd1507",
+    "crates/mshogi-core/src/chess/legal.rs": "feab99b8873ebd4576c24e228ef14656a170ffb2e92563a39246f792daf444df",
+    "crates/mshogi-core/src/chess/fen.rs": "5fd4a34689a64b4ae25f221430793dd10955ae738002c547a3887720e68cac3b",
+    "crates/mshogi-core/src/chess/mod.rs": "0c543a6ba7aa1513609f71ad3b052879727789ca07c1fa922b7e052b1ce6399b",
+    "crates/mshogi-core/src/chess/adjudication.rs": "5d8644663426ea262b9ed387b11b81d1407cb6dcff6384320b25e1634bcb6ccb",
+    "crates/mshogi-core/src/chess/record.rs": "da42282266cd69100db8a4dc66d7dfdc30fb372507c9b178f81110ddeaa5f7a9",
+    "crates/mshogi-core/src/chess/completeness.rs": "00fb588f9314313866e2d1817ac4d4365e3df40150be2fdf45ff70e669dca5ef",
+    "crates/mshogi-core/src/chess/attack.rs": "ea1acf0571feb5d36ba0a42c4e92f2da9c7c9f5194c8717ac878ec49ee7e02fb",
+    "crates/mshogi-core/src/xiangqi/action.rs": "5cfdede8383c9304582f8ba7fb48d52e2b57ee5a958958191a151d34dd1401e5",
+    "crates/mshogi-core/src/xiangqi/exact_request.rs": "285c5d5b086534056b77d93cf7893a561a80243efb52236a26bd2cf216ee484c",
+    "crates/mshogi-core/src/xiangqi/conduct.rs": "082e720cdcbccfc22a2d759ffd8468043478140459163e453273728bd51dfecc",
+    "crates/mshogi-core/src/xiangqi/game.rs": "8b06419d5abad306b9fb73a8075a186b6fe495444835a77a50f771593a8278ec",
+    "crates/mshogi-core/src/xiangqi/perft.rs": "312f2975e14972570d2da2d2e19f5f9a0df1555184e1edbd321b15b9b1d227d5",
+    "crates/mshogi-core/src/xiangqi/legal.rs": "3922c8741e703fe1ea441fe02b8a3b9c32287bd25d2a9f77155f93d511692b5b",
+    "crates/mshogi-core/src/xiangqi/assessment.rs": "b76fa40ba398e26a73043f860a5915e6c1fe4b833fb9b08adea5258d56b09df8",
+    "crates/mshogi-core/src/xiangqi/mod.rs": "373691668d7c35acf886bd76c0e559b71b7b9db5d8c688f5a976a1aa9655bef3",
+    "crates/mshogi-core/src/xiangqi/codec.rs": "b060d993b88dd1c571f83db9e7d53f7a0bd9822c69a3f276a7b070fd14ba2390",
+    "crates/mshogi-core/src/xiangqi/tests.rs": "0501852de437ba1028a7da104a23b0980774b209a758ac078eff1ac051b90c38",
+    "crates/mshogi-core/src/xiangqi/record.rs": "28e3e125412d94f4fb66920565209dc9acbb41ab08338e1a998d4823eebb1d04",
+    "crates/mshogi-core/src/xiangqi/exact.rs": "f1cf53b105dad84eb3354001719123f8ace4b7eed03f07651a3128922c4b11c3",
+    "crates/mshogi-core/src/tori/notation.rs": "3ba3be23ea435c3ed76dfe226dc46e9ab87664d1ac0cbf403c85814d1e8b5c31",
+    "crates/mshogi-core/src/tori/game.rs": "a3987b9276971f424f191ff28d9f4ee979bdedae604afb546c159e170d0c92c6",
+    "crates/mshogi-core/src/tori/perft.rs": "91b8ec3058117a9b58dd81e82d1cac027a5d263c82e469f1c7fdfa0653f07917",
+    "crates/mshogi-core/src/tori/transition.rs": "8d6965cd2ef7e37a11590d840a71016c4e6d9c6e17365e06c2f4a82d63c2507d",
+    "crates/mshogi-core/src/tori/game_tests.rs": "02ccdeb74d40692c6a0d689fc7cf8e8929c3907c93362ea0d8ad2acc746463a0",
+    "crates/mshogi-core/src/tori/legal.rs": "95800dd60f9da1991de97c8e1e46439614d679314952aad48c03b4e7276799df",
+    "crates/mshogi-core/src/tori/game_conformance.rs": "089d8a59362bc2ade201b643e67c40e085cbc1703c3a5e1a94b5934d98b1114f",
+    "crates/mshogi-core/src/tori/mod.rs": "e77074f76b602f91ec20c5b500a26a0607ba35cf2f93a7d382b38198b66469d2",
+    "crates/mshogi-core/src/tori/tests.rs": "ed0a411139e88740c5fa4b509a00e7d64dac09cb206cd15fc2a2eb09c30a3259",
+    "crates/mshogi-core/src/tori/local_tests.rs": "84abdcd11ea3bb53875c4dd68917222cddbc778e060215ee4aa6e7cf162ef4b9",
+    "crates/mshogi-core/src/tori/local_conformance.rs": "097c56329fe29c408758077c87d277a391c581a9768342e650ee43c1195f3f9c",
+    "crates/mshogi-core/src/tori/conformance.rs": "1c309f988c135980cab47a86f4219f24de015cc6831e0d18c63987688f5652f5",
+    "crates/mshogi-core/src/tori/record.rs": "f7ed551fff72f67d47d502f9570a00404f547f167b92fba1094f3f24a6027548",
+    "crates/mshogi-engine/src/bridge.rs": "b41a2058c3f3897706529cf90a450367834ddcd78c14381d5e81f6c92a0452ff",
+    "crates/mshogi-engine/src/analysis.rs": "11f70d6ab432e705a58ba57c9a664d7fe26e90992cc3d30736ea11e7e39b6276",
+    "crates/mshogi-engine/src/lib.rs": "40a5b87c3478c5936d15688e32b61ba86db7dafad8256c343d05df45af5f40e1",
+    "crates/mshogi-engine/src/xiangqi.rs": "75628780f0bdd841a9a7ff5afc9ffd3d06601aa066df477b5e06c9fa0c1841ce",
+    "crates/mshogi-engine/src/server.rs": "bba588acded66c69610fa5653c7e31b03fcdee8ca76a47f309f0d05b284bdea1",
+    "crates/mshogi-engine/src/tori.rs": "07246003ac2b20b4efcd0a9da3e10b75ebd0f95e1be729210aaf7060305a762f",
+    "crates/mshogi-engine/src/shogi.rs": "a94499ecd21bf0e54ca4c723610f4c4120a66c2b68605546c7ce80bc0f55504e",
+    "crates/mshogi-engine/src/chu.rs": "4df2b7c46aeb9c14b751c2b8000cee13dbe7a248420115fd7f70edc860a09534",
+    "crates/mshogi-engine/src/shared.rs": "6af4613aacbc2bb7b80cea13c5ec3a649988d40728c80781b67c6f53731b57e0",
+    "crates/mshogi-desktop-session/src/shared_xiangqi_archive_tests.rs": "fbf301f26028033d00cf80097822a23b6002186fb89770cce6deb304888a01b8",
+    "crates/mshogi-desktop-session/src/resource.rs": "d26ca834dc3e4d76747f7614883e09149b7997fa9022fe9994010e781f4dbaf2",
+    "crates/mshogi-desktop-session/src/shared_chu.rs": "965b58cfeba2cf38a71c588fadd129008f3e64b9020ce80492af06a9c75aaa7e",
+    "crates/mshogi-desktop-session/src/tori_document.rs": "b6d32eb58da3e30394ba22c230a5d6b4778a8185dfc0844dd7ceb24e71b98fb6",
+    "crates/mshogi-desktop-session/src/shared_xiangqi_handoff_tests.rs": "62bae2406bdf6dccd66c92c376c203821ae45798591912acfc67a13bda2e3037",
+    "crates/mshogi-desktop-session/src/shared_transaction.rs": "c23bb5b9e4e27410dc069c65d01eba86ef8e3d01efc92f8f3de1b78ea0230f46",
+    "crates/mshogi-desktop-session/src/shared_tenjiku_presentation.rs": "6261a4daca30077bacb43f2698c7d2a7dbf2f5612a1a85f783cf4ae0bb00de30",
+    "crates/mshogi-desktop-session/src/document_tests.rs": "8cccc42645502af904601362e5b3ee4716f00d8727ee5706f5815b85291b2b32",
+    "crates/mshogi-desktop-session/src/runtime_tests.rs": "d7ded2b4ce9037a159189bcc5d5265796da5067081760003900b0a6c7130e8aa",
+    "crates/mshogi-desktop-session/src/analysis.rs": "247287c44b4f8a2503bfffff4a8d8a687992ed7e159116f8ecf5ec3cc5b1b7b3",
+    "crates/mshogi-desktop-session/src/persistence.rs": "7b73f9425a0cdf369e678266716e63516e7cc591a9694d5fbafcfbbcf591eb8e",
+    "crates/mshogi-desktop-session/src/shared_xiangqi.rs": "2d65eadbf34529a76fa91b72058bb9155a9be302b710a4c935209300a5806ee8",
+    "crates/mshogi-desktop-session/src/lib.rs": "d8141a2dc1a7014d41ccf28e21dee37bf7535e88d31c82e40a9eb78195a080f8",
+    "crates/mshogi-desktop-session/src/full_archive_tests.rs": "367f4bbc5dabbc612b85f9a3876a9536f97711264e4689978b27491f9086bc58",
+    "crates/mshogi-desktop-session/src/shared_tori_presentation.rs": "b65c99f1c2e8ac85d6713690a77ae4d53c8f37d85f9df5214dfdefd0e7956027",
+    "crates/mshogi-desktop-session/src/shared_tenjiku.rs": "06a5e1e649bb3bd407898ec28bc78576a8c10060a0233347658c115c14c7b007",
+    "crates/mshogi-desktop-session/src/synthetic.rs": "813cd839d73606079261ab4704716d51efb850eafe55785ccdf1388790aaa54a",
+    "crates/mshogi-desktop-session/src/shared_archive_tests.rs": "5ae63a73ee5318604f687d9d7447ac7b9f06c5e4829bfd0f865b77b9ec07c95c",
+    "crates/mshogi-desktop-session/src/moves.rs": "5bd563924f6e1cb8be22202fcf151c36450103b66ee2eaefa64dddf5508dd65a",
+    "crates/mshogi-desktop-session/src/capacity.rs": "0443cdeec86c0cab7f726c8b785bcfc1d6735316e46997cc5f96c467d15a6e13",
+    "crates/mshogi-desktop-session/src/shared_xiangqi_verification.rs": "b57192c154fe0424e9c18b17335435cdb568b15093934437d5894ad34391f8a9",
+    "crates/mshogi-desktop-session/src/takeback.rs": "2ddde01a5ac9e141b6aa45014c0b7baf86223706203b888eda1c931c0b79e188",
+    "crates/mshogi-desktop-session/src/shared_tori_tests.rs": "34900c916b957455dfd61bc4d6cbd0257b55539a1f9a71197e66e8c1f92c98d4",
+    "crates/mshogi-desktop-session/src/shared_takeback_tests.rs": "1fd4215fd45a9de2c960ec3e700a24d540e0c9898817ee42b4d6fe8eb10133e8",
+    "crates/mshogi-desktop-session/src/chu_document.rs": "3a59f05025679a1f51b65fa45739bb27b9b461e46e3e073f05ea3a351606a6b5",
+    "crates/mshogi-desktop-session/src/shared_chu_tests.rs": "39515763074111b1264f32bfe9d5a85982905ac511a4626e113f001cfb137e1b",
+    "crates/mshogi-desktop-session/src/shared_chu_presentation.rs": "5f35c2fbbfc441b1ce252c96120ad62eeb678c6292b15c4deb4f1b9d145e4ea4",
+    "crates/mshogi-desktop-session/src/shared_tori.rs": "41f3798e1b93a528914a93fc0f13d056cc79ed3d08f68e627258b5a4cfdac0c4",
+    "crates/mshogi-desktop-session/src/shared_moves_tests.rs": "8153c0e397dccbca08154812a244346031ec54a23007ac9d736ec3ed921452bc",
+    "crates/mshogi-desktop-session/src/shared_xiangqi_archive.rs": "c62929ccd727b0fd23395331ac6e2621c076b0e6887d37eddf8845804a02e69d",
+    "crates/mshogi-desktop-session/src/shared_capacity_tests.rs": "04272c5e64f5e8c53d8f01ad2c6a464e89e9882e038faeaeb4440583a4db0002",
+    "crates/mshogi-desktop-session/src/document.rs": "72cb640d617a927750f55cf735b9602894e586face2c1f80f66fb7ab0eea6a12",
+    "crates/mshogi-desktop-session/src/shared_tori_presentation_tests.rs": "a82043f382963fbf8965ff73e37fe2dc5e9d07dbb4be87aaecdc2fe97debe723",
+    "crates/mshogi-desktop-session/src/lifecycle.rs": "8de5b1486463d9b827ff8d5022ea4a40952ac2b75784e80d2cff98c0f7104d73",
+    "crates/mshogi-desktop-session/src/tenjiku_document.rs": "f32d27783fee44752d4bb3b07fe9b75de271af94ce3269b427c4efbd7cee0b6b",
+    "crates/mshogi-desktop-session/src/shared_xiangqi_tests.rs": "de92a6371cbb9bb2974a2a2e7baa791699baf5b7f3d1b83b1bc15e51e04f669b",
+    "crates/mshogi-desktop-session/src/shared_tenjiku_tests.rs": "e91e53f8a4d598536b41dfaf99a43dcc5eec2806d9cac225dae8434487be1a38",
+    "crates/mshogi-desktop-session/src/shared_archive.rs": "1618d4a4e88b5d1ecba3d945aa6b4c43683febfb23d3932422b6af0d86e50311",
+    "crates/mshogi-desktop-session/src/workflow_tests.rs": "abb77a816f6e27cbf9ffb52e0859be107b5e3a0dcfa5a305c3f36649450edeab",
+    "crates/mshogi-desktop-session/src/shared_xiangqi_label_tests.rs": "25576c5a0079a00c507c11bd6f6504c9b73698e81f827c8c77d9ad00c5683eb9",
+    "crates/mshogi-desktop-session/src/shared_tests.rs": "dc80c82bd4a2b8c39cd2da88c9c4b863cb5b5f2598291df4a79fedebba816309",
+    "crates/mshogi-desktop-session/src/shared.rs": "5c6fc27175be6033151f8c67e660555286e547a70180e49aa58a623806a8d33c",
+    "crates/mshogi-desktop-session/src/shared_inspection.rs": "f917aeafb4a48421225c72816d81985a862229503f8571083720bde7ecadf83f",
+    "crates/mshogi-desktop-session/src/moves/chess.rs": "d8cefd81c46a30e97453a15943ad48c79cc4134f65f45d3d8698a50061d61a57",
+    "crates/mshogi-desktop-session/src/moves/xiangqi.rs": "b78ba3500dc5eaa86faa9312d94ac937bb356db5e8ea0a48f419af265e700274",
+    "crates/mshogi-desktop-session/src/moves/tori.rs": "13bec05fa016584513fd2f478ff3dd9692d794c7be30760a4107670dce947701",
+    "crates/mshogi-desktop-session/src/moves/shogi.rs": "1e7a62ba90530a3713187b7f9db895d9250a1583d7ee313d63fd128c8ce790ba",
+    "crates/mshogi-desktop-session/src/moves/tests.rs": "4bbf1278639b0c33118fe31e20cd62805f5882db8c34d56ec350f55a42da2e3e",
+    "crates/mshogi-desktop-session/src/tenjiku_document/tests.rs": "c016d6ebdaed7a45285cb77d5142830ee8bbd87143e97875fdb487deeb26e57c",
+    "crates/mshogi-desktop-session/src/tenjiku_document/execution_tests.rs": "e8e69a2a457800285a5f8079b22dd63c7ebe62c02bde6bc29b27f9c156d46c3d",
+    "crates/mshogi-desktop-session/src/tori_document/tests.rs": "d1754c66db358a4fca8b524de8d01d145cd6c0d5d974bcccdc3b293a458f149e",
+    "crates/mshogi-desktop-session/src/chu_document/tests.rs": "bffb23d8fc66d7537658fbe170d0a145ae71b2565e7c8d77d54920d4fd4625d4",
+    "crates/mshogi-desktop-session/src/chu_document/execution_tests.rs": "92273f0b98b6fc82ed2e29523490277202c5fc5b91e1551fc545d3bdc595263e",
+    "desktop/src/movement-inspection.css": "d47c40e2c8cb7a0b370a4ae906f03616a0c13c9f0b85b44adeb9ba4061fe8059",
+    "desktop/src/analysisPresentation.ts": "eeb5fe486e940cdd7b3b175a058c87d458e85fa1cbc91bd902883f8357a26023",
+    "desktop/src/main.tsx": "d4b4642a9df1b376a55e6f7d3d58bbc67b2acd5f6f861b4dcef1cba672a67251",
+    "desktop/src/analysisPresentation.test.ts": "077c8c7e275ff3a09b528c9233876e2bd0e7bdea52afecb9752d93d0cd7be231",
+    "desktop/src/CompletedActionCue.test.tsx": "988edc354532eac9ab3c00c15bc4c94342b954daf6cadaa3640f5eda1865e9ca",
+    "desktop/src/completed-action.css": "626882ad62a23e0ab3a8becdada054711d76d486a034bbd8ed449528ecde8c78",
+    "desktop/src/resources.ts": "d84c86311466e2004dce14ee02e6b82c8056fc14418334e194a1338c28ed5300",
+    "desktop/src/NativeBoard.test.tsx": "07f290c48a3c646e8517a20b8d677d867e587b3505e2b8bc97509f431d94bd3e",
+    "desktop/src/presentation.ts": "2a2f9d4b417ddac5763ab02b6940ddf4b23475771b90ac2d705d34d1b1f8810a",
+    "desktop/src/Board.test.tsx": "7062d22887218aef1f7a68a1dfc2225fdb1f84dd46aa8ce9b7a332a75c64f82d",
+    "desktop/src/presentation.test.ts": "9eed7ae6c48ead0c8a0ce2c26887ceba8570106fc78037a742875f92fb46ffe5",
+    "desktop/src/native.ts": "9e2218868caa83a90cd489a0cac84c0c85879ee2938e2becbadfe3f7bb8a9d67",
+    "desktop/src/boardPresentation.ts": "f378ab90e2a7bda7139f0e2271fbcbc6e6babd28d0ec0caaf6938756b4e35202",
+    "desktop/src/Board.tsx": "eb9325cb9e77c4623bb5e28c8cbbe8fdb434b8fafc97df375d6e217239463877",
+    "desktop/src/BoardRoutes.test.tsx": "aaff87ad379d89a37a0791385bfe38acf4bf9446ec3b06334e86fa7ad698146d",
+    "desktop/src/CompletedActionCue.tsx": "f28884bf5739c0ab9d758b12c232567267cc1a55c230dbfc439071be72055806",
+    "desktop/src/style.css": "e3112dc224b3d3640b62cb9c8bb24a37b42b2553f4d2d85a8105a1ed7eda565d",
+    "desktop/src/documentState.ts": "0d2011ed43f222017babac101a28d427c72d69a70a8761fa4ff8e0cd4ff247e7",
+    "desktop/src/NativeBoard.tsx": "0e7c76e27feba2600e02f72100862b0efd73f0e2a6812b24fe73860f62d0ea6c",
+    "desktop/src/product/ApplicationView.tsx": "e285450a349f503e55e97b7c4f7afb43112f0a40e8361a1ef3d8869acd7f45ca",
+    "desktop/src/product/ApplicationShogi.test.tsx": "5a3bc25f24cb5ab8c6fe7c9fcac3d547bee2482b907018e1bb39ca3d150a0473",
+    "desktop/src/product/tori-birds.css": "d42fc7744111546fe9ee41293fd84935e39634afc5b93ceebad4102a6b47f837",
+    "desktop/src/product/GameBoard.tsx": "323e883c454a568254181d3321461a65b6c96588167036c12e792ef35611a881",
+    "desktop/src/product/SupportDialog.tsx": "52616a8d6dca1a0a2dd93a2798781179b3d5fc2d9bf9fad55dfa4e9f252adfaa",
+    "desktop/src/product/ToriBirdPiece.test.tsx": "84fe956bad4500bb19a03c7f93e162decc15f92be372845a985765b3e1f19f37",
+    "desktop/src/product/XiangqiAssessment.tsx": "65cbc2fce3fc7f6d907c4aa869626b7f49c91c3015e003d272e49a8d9177582d",
+    "desktop/src/product/TenjikuBoard.test.tsx": "aab97b747e62ecab9deb3b2f98355b1a782b909248436e8b1bb49b005a29d2e3",
+    "desktop/src/product/TenjikuRender.test.tsx": "807d6358457847a981c4a392a0bf100d80ab2a3f721a1ddb40c97d84cc3f0c19",
+    "desktop/src/product/NativeSessionPanels.test.tsx": "949e2b52c162b62ab8375f50dac33f9e6106e7c53f3fcba5f63c7b4f1edf1a15",
+    "desktop/src/product/ChuPiece.tsx": "1778fc5e89e2b45cc705d62cbfdada372e0f84cd24ca65248b64f4dcbe4ad9d5",
+    "desktop/src/product/useGameSession.ts": "c97064e6fc4804efde7a789f3dc72421d7c830f2306c1be62309d8efe8d7a0a6",
+    "desktop/src/product/ApplicationShell.tsx": "fe8da3aa7136e810315cd14d7b0ff7f1242e7dbbdd1efc2c115267f2f3d795d1",
+    "desktop/src/product/ShogiBoard.tsx": "fa008bad90cf90d459216debd081e6a64da02100fb7b46bb0784168b29bd01f9",
+    "desktop/src/product/ChuContract.test.tsx": "1c88da845da3cac414efd0e7785518397d81614bd4474ecf20891b84dc7f754e",
+    "desktop/src/product/ApplicationChess.test.tsx": "4973f12f39067e06bb2126d4a4e6386e2107cbfbe3c1777089ca08add31dc507",
+    "desktop/src/product/ReservedEndings.test.tsx": "8bd80a439b7f64ba23e928a9c2cbd6b7a032cc35fc7e7b25e82b389e3be3a858",
+    "desktop/src/product/ChuExecution.test.tsx": "a418076f1bca8a354ea94e399fe66ba0ab9ed1e3b019ef41440ccbfc8518b8bf",
+    "desktop/src/product/ChuBoard.tsx": "a089886f1bfc71fb3997de83b663d2574a5290d97955bfb0c35a4f54cb0a66bb",
+    "desktop/src/product/XiangqiAssessment.test.tsx": "9d6286098db68a8173e18fc2fe193959d1350f35a895c6bb9c1c853899049d93",
+    "desktop/src/product/DiagnosticText.test.tsx": "4beefcc5d17aa74c7b9f3bd27e60127ec68a98df08e186bd003790f0485025cf",
+    "desktop/src/product/ChuPiece.test.tsx": "9bcd172243e2eefe78d06f7afa72749afe0489690b55a5eb59bf74c728a15b0c",
+    "desktop/src/product/SupportDialog.test.tsx": "3ef085348fdf076f24579688e4c66b47e5bf8aabfcc2d41b14f2abc12f213e9b",
+    "desktop/src/product/chu.css": "8acb66bd04476dcb17a58c42cd52b466ec6c7e62a5e7749f0de200749321c2bd",
+    "desktop/src/product/TenjikuSession.test.tsx": "b1efb9bc9903650850374b47c894bfd4b099a9b8be38d976d49c9e3c9bb6464c",
+    "desktop/src/product/TakeBackControl.tsx": "3b6c6e9054197abb623cc3c4b18ae29668b6e0d715d90556a13fa919e038c76f",
+    "desktop/src/product/GameCapabilities.tsx": "a1d5c8a9eca6d841df5fe00b8b9816561c73d0d2c0b0d46e9e30cf9b71123ed8",
+    "desktop/src/product/resourcePresentation.test.ts": "7fde496dc11c105a5bf39beb9e0df8bdfe0eab442456aabdb91821304b53e7b4",
+    "desktop/src/product/ChuBoard.test.tsx": "891d6f43b78fc82cedb637194a721d982a2481ae2a2c19d3ea3961fcc9bb4c41",
+    "desktop/src/product/shell.css": "e9434306605bbf284043cc075d6adb902bf9170c63bec8b4d1b3d63ceaf61091",
+    "desktop/src/product/Moves.test.tsx": "239fea9f327a1ac04eb868ccb4e3da5512a3d3368515bc6981aeee209906d08d",
+    "desktop/src/product/GameFrame.tsx": "d2a9e8d265e60f339dd863312c77267ca7cd25b099d31bcda9c74d23b8b4adee",
+    "desktop/src/product/ApplicationShell.test.tsx": "f2d7c66b047b27447a4782849847da19576f85bd44d35c991b4f5ff800dc1a81",
+    "desktop/src/product/TenjikuApplication.test.tsx": "78bedb26967e91e824525e694d45803744daa2b34e31915413aca9f6af319f82",
+    "desktop/src/product/resourcePresentation.ts": "234c9add943a822415c625af6fb541883076c5792a5b9ce29fc8e7fb242380d7",
+    "desktop/src/product/ToriBirdPiece.tsx": "046008335564e09ff19f17bf8158bafd4c1924f921af24f3aa50d6ff5c05bdea",
+    "desktop/src/product/useMovementInspection.ts": "a386048fdd154120f583e658dcd880fe7690461c6fbdf7b7a00b23559fe345cb",
+    "desktop/src/product/native.ts": "c315d9d70504a1bb187ea7199fc9c7748ab21a70f9ef8dceab80f5457a7d7fb6",
+    "desktop/src/product/xiangqi.css": "3d3fde42312cd70e16e56faf66827a40fc12779ddedf44bc252da80f1680f409",
+    "desktop/src/product/TakeBackControl.test.tsx": "27f87a9f553a1a3e9b91aeb9f33418f464a776df630837eb17aeb45ca14abffe",
+    "desktop/src/product/ApplicationFocus.test.tsx": "4f88f32cf351c0e522854cf9e2e6e7ee3ef57a3b24b442197156e29f232c5dc3",
+    "desktop/src/product/GameActions.test.tsx": "0835d9977876ff53bb5fbacbe689ae02ea8533b0c2cadeeda1cedc3f7f9322a4",
+    "desktop/src/product/ShogiBoard.test.tsx": "32ab059d0548752127c77435f99f1cb4252d6b182db0d603568ede1205fe4851",
+    "desktop/src/product/DiagnosticText.tsx": "d2a2de8410c6f9aaadf7e1a13f6cef9706e752fc4a0a7499804a207e061b4233",
+    "desktop/src/product/useApplicationFocus.ts": "6417c71115ddc04ffec82ed4318c9f4563bdee7d0323c5f95c80a2058230feea",
+    "desktop/src/product/useGameSession.test.tsx": "db9491b76ec3c49be7b45206ffb4908d17ae468bdd54b2fda36d9f4402d60a36",
+    "desktop/src/product/ToriPiece.test.tsx": "b251e87276dc60a5792f3cf64767a920e1ad797bb3596a8137e2a70a54aac74c",
+    "desktop/src/product/Dialog.tsx": "d42a089670ad920f8f64aaaf0be0fa1a7ad4bcfbd29438b25f6b2dc6aadac61f",
+    "desktop/src/product/NativeCapacity.test.tsx": "6552cbf10b5816d381ed5c9c486a1dbe678b479078aaa4f47dcaeba9c1b7e545",
+    "desktop/src/product/tenjiku.css": "f07816b96a1a910dbec8b430daa4c75d9e40f5d81b241b3db1791abf701dbd6e",
+    "desktop/src/product/ToriPiece.tsx": "d9e16624a429ea2e6dc8cd2708714868c111bf892d64e74c748c5bc81112380b",
+    "desktop/src/product/ProductApp.test.tsx": "a7860c6079cf3ae5edb7850619036403257e71f288f01b357d1b6d9767f6dc23",
+    "desktop/src/product/TenjikuBoard.tsx": "56bf3b70f7db1f866e2868de91f1a05f8115b41c7f7de935eec07817050cbd8e",
+    "desktop/src/product/useMovementInspection.test.tsx": "3fd6dfaf8a66210d06ae1010c5fc9329ed508d0e835f4b73f94175c07d570601",
+    "desktop/src/product/movementInspection.ts": "a4a435a037ba84e270bc294d965b71405953a5b16610ad45596dcf6cd2ca60ea",
+    "desktop/src/product/XiangqiBoard.test.tsx": "563115b9b9bf1c39097b248cf351bd4dbd1c5c9018538949ba859f75882e934b",
+    "desktop/src/product/XiangqiBoard.tsx": "0cb41c6b4c79df5f4ce64d9dcbe433615788a78373d1a0d8d9ebbee0900ef8eb",
+    "desktop/src/product/ProductApp.tsx": "ef9c75363c8efbc93e781dc36db927ebcd748d3f55e5116ac00d9e7cb5b560cb",
+    "desktop/src/product/ApplicationXiangqi.test.tsx": "5ddbfcbf4ae4bc0fb09c761dd0d0f50a5bf6ca764732c9f5ce2d569defeadeb9",
+    "desktop/src/product/NativeSessionPanels.tsx": "ea3ac101b1cf9e16829ac7b841eb345108adfd4e6f5eb08df4ab8683a736a604",
+    "desktop/src/product/shogi.css": "4b7f1285b87a9e788f9bbfed92693ea3c1a491cdd175ab8217c2f2ad622ea319",
+    "desktop/src/product/ChessAnalysisContent.tsx": "7bbd37bdf260ff3a3bbea2755d57d5991fe214eebe2848277a9419d20d39a00f",
+    "desktop/src/product/tori.css": "0e9a175b086a0f3c6a9b001e0fd737bbd4f15c717febb053dd5a7c9b1fead43d",
+    "desktop/src/product/ToriContract.test.tsx": "6ddaa5d4e34beac6e73fbf3ec0ad76a26601362d584bc45837ac3dfc18459773",
+    "desktop/src/verification/bootstrap.tsx": "986f0d2cd3e3b7f4ed4829dd082af291a6b9de00bbc0ebb8aaa426944fda287d",
+    "desktop/src/verification/synthetic.css": "8ce01107b7514c86324c291ea6ef5c8e8c57711b61335225aba2281c77257ade",
+    "desktop/src/verification/SyntheticApp.test.tsx": "e0e018147e95d23cc07d7d2133ee39e14abf2ddd92baea84925b55a4cb9dac25",
+    "desktop/src/verification/native.ts": "25306873cd6d274e404290d7a381c9d33d20acc612324c16add7f40c1e598e43",
+    "desktop/src/verification/TenjikuControls.tsx": "029ef2372d62be7ffc70cca1aa2e4b27e1e2a8780bda6fa3735dc12ff47106c8",
+    "desktop/src/verification/SyntheticApp.tsx": "de1ea3313093d5a7cf780eb83a9bdff8c24c54a676f66d46f4b1fcd49c987af7",
+    "desktop/src/interaction/useNativeChoiceController.ts": "55172f7f9d3c3b4ead9ba7a303c2eb227bd2ff58bcd58e9e3cc9e513da9c3f61",
+    "desktop/src/interaction/useNativeChoiceController.test.tsx": "1bcc265360406e91bf9ef75a3f61b5c0ad033f39abc809078278cf743525ca72",
+    "desktop/src-tauri/src/main.rs": "e7bfcfdcc467e594234b2ae11c01a15229e8beef299c1a6ff2e682b49bf574b9"
+  }
+}

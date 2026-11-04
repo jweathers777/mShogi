@@ -29,6 +29,55 @@ pub struct CapturedPiece {
     /// Native promotion state.
     pub promoted: bool,
 }
+/// Native Tenjiku removal/promotion identity at a supplied presentation coordinate.
+#[derive(Clone, Debug, Serialize)]
+pub struct TenjikuEffectPiece {
+    /// Exact native coordinate of the effect.
+    pub square: String,
+    /// Original physical identity, owner, promotion and refusal rights.
+    pub piece: mshogi_core::tenjiku::Piece,
+    /// Native-derived current movement face.
+    pub face: mshogi_core::tenjiku::Face,
+}
+/// Ordered Tenjiku phases; a burn batch remains simultaneous and canonical.
+#[derive(Clone, Debug, Serialize)]
+#[serde(tag = "phase", rename_all = "snake_case")]
+pub enum TenjikuEffectPhase {
+    /// Direct route or stationary capture.
+    Capture {
+        /// Actual removed piece.
+        victim: TenjikuEffectPiece,
+    },
+    /// Simultaneous off-route removal, in native rank/file order.
+    Burn {
+        /// Native batch, not separate movement steps.
+        victims: Vec<TenjikuEffectPiece>,
+    },
+    /// Native final-position hazard destroys the mover.
+    MoverDies {
+        /// Mover immediately before destruction.
+        mover: TenjikuEffectPiece,
+    },
+    /// Surviving once-only native promotion, after removals.
+    Promotion {
+        /// Original identity before flipping.
+        before: TenjikuEffectPiece,
+        /// Same physical identity after flipping.
+        after: TenjikuEffectPiece,
+    },
+}
+/// Narrow game-owned metadata beyond ordinary movement geometry.
+#[derive(Clone, Debug, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum NativeCompletedEffects {
+    /// Tenjiku stationary targets and authoritative ordered native phases.
+    Tenjiku {
+        /// Selected capture target when the mover did not travel.
+        stationary_target: Option<String>,
+        /// Exact ordered phases; frontend code never derives victims.
+        phases: Vec<TenjikuEffectPhase>,
+    },
+}
 /// Completed history, independent of actionable selection/inspection/focus.
 #[derive(Clone, Debug, Serialize)]
 pub struct CompletedActionGeometry {
@@ -40,6 +89,9 @@ pub struct CompletedActionGeometry {
     pub origin: ChoiceOrigin,
     /// Ordered complete route, including repeated destinations.
     pub steps: Vec<String>,
+    /// Ordered native effects distinct from travel and secondary movement.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub native_effects: Option<NativeCompletedEffects>,
     /// Native secondary movement; empty for ordinary actions.
     pub effects: Vec<MoveEffect>,
     /// Ordered victims supplied by native complete effects; absent if not projected.
@@ -185,6 +237,7 @@ pub(super) fn chess_projection(state: &DesktopSession) -> MovesProjection {
             }
         }
         let geometry = CompletedActionGeometry {
+            native_effects: None,
             action: action.to_string(),
             event_index: index,
             origin: ChoiceOrigin::Board {
@@ -246,13 +299,18 @@ pub(super) fn shogi_projection(game: &s::Game) -> MovesProjection {
                 ),
                 s::Action::Drop { kind, to } => (
                     ChoiceOrigin::Hand {
-                        owner: shared::side(NativeSide::Shogi(event.actor)).key,
+                        owner: shared::side(
+                            mshogi_core::native::RulesProfile::ShogiCsa36V1,
+                            NativeSide::Shogi(event.actor),
+                        )
+                        .key,
                         piece_kind: format!("{kind:?}").to_lowercase(),
                     },
                     to,
                 ),
             };
             let geometry = CompletedActionGeometry {
+                native_effects: None,
                 action: action.to_string(),
                 event_index: event.index + 1,
                 origin,
@@ -305,6 +363,7 @@ pub(super) fn xiangqi_projection(game: &x::Game) -> MovesProjection {
             let column = u8::from(event.actor == Some(x::Side::Black));
             let notation = xiangqi::notation(&pre.position, action);
             let geometry = CompletedActionGeometry {
+                native_effects: None,
                 action: action.to_string(),
                 event_index: event.index + 1,
                 origin: ChoiceOrigin::Intersection {
@@ -362,6 +421,7 @@ pub(super) fn chu_projection(game: &mshogi_core::chu::Game) -> MovesProjection {
             continue;
         };
         let geometry = CompletedActionGeometry {
+            native_effects: None,
             action: serde_json::to_string(action).expect("native complete action"),
             event_index: e.index + 1,
             origin: ChoiceOrigin::Board {
@@ -398,6 +458,101 @@ pub(super) fn chu_projection(game: &mshogi_core::chu::Game) -> MovesProjection {
             e.index + 1,
         );
         if e.actor == c::Side::Gote {
+            number += 1;
+        }
+    }
+    view
+}
+
+/// Project actual complete Tenjiku board actions; administrative commands are separate.
+pub(super) fn tenjiku_projection(game: &mshogi_core::tenjiku::Game) -> MovesProjection {
+    use mshogi_core::tenjiku as t;
+    let root = game.position().root();
+    let mut view = projection(
+        "Starting position".into(),
+        format!(
+            "Tenjiku technical complete actions · known-root move pairs · declared root plies {} · earlier history {}",
+            root.declared_completed_plies(),
+            if root.earlier_history_unknown() {
+                "unknown"
+            } else {
+                "known"
+            }
+        ),
+    );
+    let identity = |square: t::Square, piece: t::Piece| TenjikuEffectPiece {
+        square: square.to_string(),
+        face: piece.face(),
+        piece,
+    };
+    let mut number = 1;
+    for event in game.events() {
+        let (t::GameCommand::Play { action }, Some(effects)) = (&event.command, &event.effects)
+        else {
+            continue;
+        };
+        let phases = effects
+            .phases
+            .iter()
+            .map(|phase| match phase {
+                t::EffectPhase::Capture { victim } => TenjikuEffectPhase::Capture {
+                    victim: identity(victim.square, victim.piece),
+                },
+                t::EffectPhase::Burn { victims } => TenjikuEffectPhase::Burn {
+                    victims: victims
+                        .iter()
+                        .map(|v| identity(v.square, v.piece))
+                        .collect(),
+                },
+                t::EffectPhase::MoverDies { square, piece } => TenjikuEffectPhase::MoverDies {
+                    mover: identity(*square, *piece),
+                },
+                t::EffectPhase::Promotion {
+                    square,
+                    before,
+                    after,
+                } => TenjikuEffectPhase::Promotion {
+                    before: identity(*square, *before),
+                    after: identity(*square, *after),
+                },
+            })
+            .collect();
+        let technical = serde_json::to_string(action).expect("native complete action");
+        let geometry = CompletedActionGeometry {
+            action: technical.clone(),
+            event_index: event.index + 1,
+            origin: ChoiceOrigin::Board {
+                square: action.from.to_string(),
+            },
+            steps: action.route.iter().map(ToString::to_string).collect(),
+            native_effects: Some(NativeCompletedEffects::Tenjiku {
+                stationary_target: action.target.map(|v| v.to_string()),
+                phases,
+            }),
+            effects: vec![],
+            captures: Some(
+                effects
+                    .captures()
+                    .map(|v| CapturedPiece {
+                        square: v.square.to_string(),
+                        owner: NativeSide::Tenjiku(v.piece.side),
+                        original_kind: v.piece.base.code().into(),
+                        movement_face: v.piece.face().code().into(),
+                        promoted: v.piece.promoted,
+                    })
+                    .collect(),
+            ),
+        };
+        push(
+            &mut view,
+            number,
+            u8::from(event.actor == t::Side::Gote),
+            format!("Technical action {technical}"),
+            geometry,
+            event.index,
+            event.index + 1,
+        );
+        if event.actor == t::Side::Gote {
             number += 1;
         }
     }

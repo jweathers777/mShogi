@@ -62,6 +62,32 @@
         79,
         87
       ]
+    },
+    {
+      "command": "at1136886: python3 docs/m4/tenjiku/validate.py; python3 -m unittest discover -s docs/m4/tenjiku -p test_validate.py",
+      "result": "PASS",
+      "tests": 25,
+      "scope": "exact committed source, current ratified file/profile digests,350rows204/129/17;0native execution"
+    },
+    {
+      "command": "git diff8676cbb..1136886 --name-only -- crates desktop scripts .github Cargo.toml Cargo.lock",
+      "result": "PASS",
+      "observed": "empty; no implementation/build/dependency/workflow change"
+    },
+    {
+      "command": "git push origin codex/rewrite; git rev-list --left-right --count HEAD...origin/codex/rewrite",
+      "result": "PASS",
+      "observed": "pushed1136886,0/0before completion bookkeeping"
+    },
+    {
+      "command": "final local Markdown target existence check",
+      "result": "PASS",
+      "links": 22
+    },
+    {
+      "command": "pinned Backlog doctor; task list --status Ready --ready --plain",
+      "result": "PASS",
+      "observed": "MSH-87 is the single dependency-ready Ready task after83Done; no subsequent implementation begun"
     }
   ],
   "counts": {
@@ -497,7 +523,7 @@
     {
       "path": "evidence/validator-tests.log",
       "bytes": 124,
-      "sha256": "e3dddae5c7f8d4c83a21de13183cfeb7482f6b78864262566bf5929057bc19c3"
+      "sha256": "067d1b86ec4fe19c6389bfc45fe2f72e49479cbb82acebc1781a4c249a4fbb20"
     },
     {
       "path": "evidence/data-validation.json",
@@ -593,11 +619,21 @@
   ],
   "outstanding_owner_decisions": [],
   "baseline_revision": "8676cbb774c5837b839772a731868a720aaab43f",
-  "tested_content": "Working-tree profile/fixture hashes and validator source; committed revision is recorded after integration checkpoint recheck.",
+  "tested_content": "Exact committed1136886 passed data/hash validation and25 negative admission tests; subsequent changes are completion/evidence only.",
   "acceptance_coverage": {
     "AC1": "sources.md reconciles actual A/M/main-vs-appendix and historical qualifications without acquisition gate",
     "AC2": "decisions.md records owner choosing options1/2; all source/software interpretations explicit, no unresolved material choice",
     "AC3": "profile.md/profile.json specify two complete immutable identities;350 independently reviewed rows, actual critical roots/sequences; native remains pending",
     "AC4": "handoff.md and original87/79/44 task updates define direct implementation/consumer/product boundaries, no new hierarchy"
+  },
+  "tested_revision": "11368860a426d0675e133c7039b462d34301585e",
+  "report_integrated_and_pushed": "11368860a426d0675e133c7039b462d34301585e",
+  "preserved_unrelated_work": "Untracked docs/m4/research/tenjiku-historical-access/ appeared during assignment; untouched, excluded from commits. No new historical campaign performed by this assignment.",
+  "next_assignment": {
+    "id": "MSH-87",
+    "status": "Ready",
+    "assignees": [],
+    "implementation_started": false,
+    "AC4": "checked only planning/readiness evidence; nativeAC1-3pending"
   }
 }

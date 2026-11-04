@@ -7,7 +7,24 @@ import type { GameSnapshot, MovesPresentation } from "./native";
 import shogiJson from "../__fixtures__/shared-shogi-standard.json";
 import chessJson from "../__fixtures__/shared-chess-standard.json";
 import xiangqiJson from "../__fixtures__/shared-xiangqi-standard.json";
+import adamsBurned from "../__fixtures__/shared-tenjiku-adams-burned.json";
+import mullerBurned from "../__fixtures__/shared-tenjiku-muller-burned.json";
+import mullerIguied from "../__fixtures__/shared-tenjiku-muller-iguied.json";
 afterEach(cleanup);
+it.each([
+  ["Adams dying Demon", adamsBurned, "Burned together: Gote Pawn at 8g; Sente Fire Demon destroyed at 8h"],
+  ["Muller dying Demon", mullerBurned, "Sente Fire Demon destroyed at 8h"],
+  ["stationary capture", mullerIguied, "Stationary capture at 9h; stationary origin 8h; Captured Gote Pawn at 9h"],
+])("makes native %s effects accessible while selecting the exact completed action", (_name, fixture, description) => {
+  const state = fixture as unknown as GameSnapshot, entry = state.moves.entries[0]!, command = vi.fn();
+  render(<NativeHistory snapshot={state} disabled={false} command={command} />);
+  const move = screen.getByRole("button", { name: `1. Sente: ${entry.notation}; ${description}` });
+  expect(move.textContent).toBe(entry.notation);
+  expect(move.getAttribute("title")).toBe(description);
+  expect(move.getAttribute("data-native-action")).toBe(entry.action);
+  fireEvent.click(move);
+  expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "inspect", event_index: entry.event_index });
+});
 const moves: MovesPresentation = {
   root: { label: "Starting position", numbering: "Numbering begins at the imported counter; earlier moves are unknown." },
   entries: [

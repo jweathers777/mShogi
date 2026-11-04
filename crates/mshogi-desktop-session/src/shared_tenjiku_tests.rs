@@ -290,6 +290,16 @@ fn native_burn_projection_preserves_profile_specific_order_and_dying_mover() {
         assert_eq!(geometry.action, serde_json::to_string(&action).unwrap());
         assert_eq!(geometry.steps, vec!["8h"]);
         assert!(geometry.effects.is_empty());
+        let entry = &snapshot.moves.entries[0];
+        assert_eq!(entry.notation, "FiD8j-8h");
+        assert_eq!(
+            entry.effects_description.as_deref(),
+            Some(if profile == c::Profile::AdamsModern {
+                "Burned together: Gote Pawn at 8g; Sente Fire Demon destroyed at 8h"
+            } else {
+                "Sente Fire Demon destroyed at 8h"
+            })
+        );
         let Some(crate::moves::NativeCompletedEffects::Tenjiku {
             stationary_target,
             phases,
@@ -395,6 +405,11 @@ fn stationary_capture_target_is_selectable_while_native_movement_route_stays_emp
                 .any(|p| p.square == "8h" && p.kind == "ChS" && p.promoted)
         );
         assert!(!snapshot.pieces.iter().any(|p| p.square == "9h"));
+        assert_eq!(snapshot.moves.entries[0].notation, "ChS+8h!x9h");
+        assert_eq!(
+            snapshot.moves.entries[0].effects_description.as_deref(),
+            Some("Stationary capture at 9h; stationary origin 8h; Captured Gote Pawn at 9h")
+        );
         let geometry = snapshot.moves.last_action.unwrap();
         assert!(geometry.steps.is_empty());
         assert!(

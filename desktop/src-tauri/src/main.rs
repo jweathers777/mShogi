@@ -59,12 +59,15 @@ const VERIFICATION_SIZE_MINIMUM: &str = "mshogi-verification-window-size-minimum
 #[cfg(feature = "desktop-verification")]
 const VERIFICATION_SIZE_NARROW: &str = "mshogi-verification-window-size-narrow";
 #[cfg(feature = "desktop-verification")]
+const VERIFICATION_SIZE_TALL: &str = "mshogi-verification-window-size-tall";
+#[cfg(feature = "desktop-verification")]
 const VERIFICATION_SIZE_DEFAULT: &str = "mshogi-verification-window-size-default";
 #[cfg(feature = "desktop-verification")]
 fn verification_window_size(menu_id: &str) -> Option<tauri::LogicalSize<f64>> {
     match menu_id {
         VERIFICATION_SIZE_MINIMUM => Some(tauri::LogicalSize::new(760.0, 650.0)),
         VERIFICATION_SIZE_NARROW => Some(tauri::LogicalSize::new(960.0, 720.0)),
+        VERIFICATION_SIZE_TALL => Some(tauri::LogicalSize::new(960.0, 1000.0)),
         VERIFICATION_SIZE_DEFAULT => Some(tauri::LogicalSize::new(1180.0, 820.0)),
         _ => None,
     }
@@ -711,6 +714,13 @@ fn desktop_menu(app: &AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
                 app,
                 VERIFICATION_SIZE_NARROW,
                 "960 × 720 logical content (narrow)",
+                true,
+                None::<&str>,
+            )?,
+            &MenuItem::with_id(
+                app,
+                VERIFICATION_SIZE_TALL,
+                "960 × 1000 logical content (tall inspection)",
                 true,
                 None::<&str>,
             )?,

@@ -11,6 +11,7 @@
         "number": 1,
         "column": 0,
         "notation": "LHk8hx9hx10h",
+        "effects_description": "Captured Gote Pawn at 9h; Captured Gote Gold General at 10h",
         "action": "{\"kind\":\"travel\",\"from\":[8,8],\"route\":[[9,8],[10,8]],\"promote\":false}",
         "command_start": 0,
         "command_end": 1

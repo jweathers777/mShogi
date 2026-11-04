@@ -29,7 +29,7 @@ export interface SearchView {
 }
 export interface MovesPresentation {
   root: { label: string; numbering: string };
-  entries: { event_index: number; board_ply: number; number: number; column: 0 | 1; notation: string; action: string; command_start: number; command_end: number }[];
+  entries: { event_index: number; board_ply: number; number: number; column: 0 | 1; notation: string; effects_description?: string; action: string; command_start: number; command_end: number }[];
   last_action: CompletedActionGeometry | null;
 }
 interface GameSnapshotBase extends Omit<NativeBoardSnapshot, "game" | "orientations" | "sides" | "capabilities"> {

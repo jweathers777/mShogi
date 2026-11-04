@@ -11,6 +11,7 @@
         "number": 1,
         "column": 0,
         "notation": "BGn6mx16c^",
+        "effects_description": "Captured Gote Side Soldier at 16c; Promoted Sente Bishop General to Sente Vice General (promoted Bishop General) at 16c",
         "action": "{\"kind\":\"travel\",\"from\":[6,13],\"route\":[[16,3]],\"promote\":true}",
         "command_start": 0,
         "command_end": 1

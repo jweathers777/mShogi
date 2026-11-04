@@ -130,11 +130,22 @@ impl Session {
                         })
                         .map_err(|e| format!("{}; no actions applied", diagnostic(e)))?;
                     candidate.undo.push(undo);
-                    labels.push(label);
+                    let effects = notation::format_effects(
+                        candidate
+                            .game
+                            .events()
+                            .last()
+                            .and_then(|event| event.effects.as_ref())
+                            .expect("admitted Play has native effects"),
+                    );
+                    labels.push((label, effects));
                 }
                 *self = candidate;
-                for label in labels {
+                // Neither action nor effect descriptions are published until
+                // every native action in this batch has been admitted.
+                for (label, effects) in labels {
                     writeln!(out, "played {label}").unwrap();
+                    writeln!(out, "effects {effects}").unwrap();
                 }
                 self.status(out);
             }
@@ -200,7 +211,12 @@ impl Session {
                         .map_err(diagnostic)?,
                         _ => format!("{:?}", event.command),
                     };
-                    writeln!(out,"event {} board-ply {} actor {} action {} pending-bare {:?} conclusion {:?} incomplete {:?} effects {:?}",event.index+1,event.board_ply,side_text(event.actor),label,event.pending_bare,event.conclusion,event.incomplete,event.effects).unwrap();
+                    let effects = event
+                        .effects
+                        .as_ref()
+                        .map(notation::format_effects)
+                        .unwrap_or_else(|| "No board effects.".into());
+                    writeln!(out,"event {} board-ply {} actor {} action {} pending-bare {:?} conclusion {:?} incomplete {:?} effects {}",event.index+1,event.board_ply,side_text(event.actor),label,event.pending_bare,event.conclusion,event.incomplete,effects).unwrap();
                 }
             }
             "record" => {

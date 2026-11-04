@@ -105,52 +105,7 @@ fn name(game: &c::Game, owner: c::Side) -> String {
     side(game.profile().into(), NativeSide::Tenjiku(owner)).label
 }
 fn face_name(face: c::Face) -> &'static str {
-    match face {
-        c::Face::K => "King",
-        c::Face::FiD => "Fire Demon",
-        c::Face::GGn => "Great General",
-        c::Face::VGn => "Vice General",
-        c::Face::RGn => "Rook General",
-        c::Face::BGn => "Bishop General",
-        c::Face::LHk => "Lion Hawk",
-        c::Face::Ln => "Lion",
-        c::Face::WBf => "Water Buffalo",
-        c::Face::FEg => "Free Eagle",
-        c::Face::FK => "Free King",
-        c::Face::HT => "Heavenly Tetrarchs",
-        c::Face::SE => "Soaring Eagle",
-        c::Face::HF => "Horned Falcon",
-        c::Face::ChS => "Chariot Soldier",
-        c::Face::DK => "Dragon King",
-        c::Face::DH => "Dragon Horse",
-        c::Face::FO => "Flying Ox",
-        c::Face::FB => "Free Boar",
-        c::Face::R => "Rook",
-        c::Face::B => "Bishop",
-        c::Face::Ph => "Phoenix",
-        c::Face::VSo => "Vertical Soldier",
-        c::Face::VM => "Vertical Mover",
-        c::Face::SSo => "Side Soldier",
-        c::Face::SM => "Side Mover",
-        c::Face::WH => "White Horse",
-        c::Face::W => "Whale",
-        c::Face::Ky => "Kirin",
-        c::Face::CP => "Crown Prince",
-        c::Face::FS => "Flying Stag",
-        c::Face::RC => "Reverse Chariot",
-        c::Face::L => "Lance",
-        c::Face::MGn => "Multi General",
-        c::Face::G => "Gold General",
-        c::Face::DE => "Drunk Elephant",
-        c::Face::BT => "Blind Tiger",
-        c::Face::FL => "Ferocious Leopard",
-        c::Face::S => "Silver General",
-        c::Face::C => "Copper General",
-        c::Face::I => "Iron General",
-        c::Face::N => "Knight",
-        c::Face::Dg => "Dog",
-        c::Face::P => "Pawn",
-    }
+    c::notation::face_name(face)
 }
 fn piece_name(piece: c::Piece) -> String {
     if piece.promoted {

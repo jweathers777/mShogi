@@ -11,6 +11,7 @@
         "number": 1,
         "column": 0,
         "notation": "FiD8j-8h",
+        "effects_description": "Sente Fire Demon destroyed at 8h",
         "action": "{\"kind\":\"travel\",\"from\":[8,10],\"route\":[[8,8]],\"promote\":false}",
         "command_start": 0,
         "command_end": 1

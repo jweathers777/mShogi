@@ -11,6 +11,7 @@
         "number": 1,
         "column": 0,
         "notation": "BGn8hx11e",
+        "effects_description": "Captured Gote Pawn at 11e",
         "action": "{\"kind\":\"travel\",\"from\":[8,8],\"route\":[[11,5]],\"promote\":false}",
         "command_start": 0,
         "command_end": 1

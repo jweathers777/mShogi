@@ -216,6 +216,9 @@ fn complete_routes_igui_original_identity_history_and_exact_event_undo() {
             "action Ln8h-7g-8h",
             "action VGn4h-4g-5g-5f",
             "action ChS+12h!x13h",
+            "effects Stationary capture at 13h; stationary origin 12h; Captured Gote Gold General at 13h",
+            "effects Captured Gote Silver General at 8g; Captured Gote Rook at 8f",
+            "effects No captures or other effects.",
             "sChS+",
             "declared-root-plies 31",
         ] {
@@ -241,6 +244,12 @@ fn bad_batches_notation_and_diagnostics_preserve_exact_canonical_session() {
             ),
         );
         assert!(!o.status.success());
+        assert!(
+            !output(&o)
+                .lines()
+                .any(|line| line.starts_with("played ") || line.starts_with("effects ")),
+            "rejected batches must not publish partial actions/effects"
+        );
         let r = records(&o);
         assert_eq!(r.len(), 6);
         assert!(r.iter().all(|x| x == &r[0]));
@@ -294,6 +303,11 @@ fn promotion_derived_profile_specific_burn_and_mover_death_are_lossless() {
         );
         success(&o);
         let r = records(&o);
+        assert!(
+            output(&o).contains(
+                "effects Promoted Sente Pawn to Sente Gold General (promoted Pawn) at 12e"
+            )
+        );
         assert!(decode(&r[0]).position().piece(sq(12, 5)).unwrap().promoted);
         assert!(!decode(&r[1]).position().piece(sq(12, 5)).unwrap().promoted);
         let fire = root(
@@ -330,6 +344,17 @@ fn promotion_derived_profile_specific_burn_and_mover_death_are_lossless() {
         );
         assert!(played.position().piece(sq(8, 8)).is_none());
         assert!(output(&o).contains("action FiD8j-8h"));
+        let expected = if p == t::Profile::AdamsModern {
+            "Burned together: Gote Pawn at 8g; Sente Fire Demon destroyed at 8h"
+        } else {
+            "Sente Fire Demon destroyed at 8h"
+        };
+        // One readable description after the committed move, and one on its
+        // exact native history row. No victim list is reconstructed by the CLI.
+        assert_eq!(output(&o).matches(expected).count(), 2);
+        if p == t::Profile::MullerCompleted {
+            assert!(!output(&o).contains("Burned together:"));
+        }
     }
 }
 #[test]

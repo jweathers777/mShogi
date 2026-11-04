@@ -11,6 +11,7 @@
         "number": 1,
         "column": 0,
         "notation": "Ln8hx8g-8h",
+        "effects_description": "Captured Gote Pawn at 8g",
         "action": "{\"kind\":\"travel\",\"from\":[8,8],\"route\":[[8,7],[8,8]],\"promote\":false}",
         "command_start": 0,
         "command_end": 1

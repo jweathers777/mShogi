@@ -3,8 +3,125 @@
 //! Original code plus optional `+`, origin, each actual landing prefixed by `-`
 //! or `x`, and optional final `^` for the requested flip. Stationary igui uses
 //! `!x` and its exact target. Native derived burn/death phases remain separate.
-use super::{Action, ActionKind, HistorySnapshot, LocalPosition, Position};
+use super::{
+    Action, ActionKind, EffectPhase, Effects, Face, HistorySnapshot, LocalPosition, Piece,
+    Position, Side,
+};
 use std::{error::Error, fmt};
+
+/// Source-aligned English movement-face name for readable and spoken text.
+pub fn face_name(face: Face) -> &'static str {
+    match face {
+        Face::K => "King",
+        Face::FiD => "Fire Demon",
+        Face::GGn => "Great General",
+        Face::VGn => "Vice General",
+        Face::RGn => "Rook General",
+        Face::BGn => "Bishop General",
+        Face::LHk => "Lion Hawk",
+        Face::Ln => "Lion",
+        Face::WBf => "Water Buffalo",
+        Face::FEg => "Free Eagle",
+        Face::FK => "Free King",
+        Face::HT => "Heavenly Tetrarchs",
+        Face::SE => "Soaring Eagle",
+        Face::HF => "Horned Falcon",
+        Face::ChS => "Chariot Soldier",
+        Face::DK => "Dragon King",
+        Face::DH => "Dragon Horse",
+        Face::FO => "Flying Ox",
+        Face::FB => "Free Boar",
+        Face::R => "Rook",
+        Face::B => "Bishop",
+        Face::Ph => "Phoenix",
+        Face::VSo => "Vertical Soldier",
+        Face::VM => "Vertical Mover",
+        Face::SSo => "Side Soldier",
+        Face::SM => "Side Mover",
+        Face::WH => "White Horse",
+        Face::W => "Whale",
+        Face::Ky => "Kirin",
+        Face::CP => "Crown Prince",
+        Face::FS => "Flying Stag",
+        Face::RC => "Reverse Chariot",
+        Face::L => "Lance",
+        Face::MGn => "Multi General",
+        Face::G => "Gold General",
+        Face::DE => "Drunk Elephant",
+        Face::BT => "Blind Tiger",
+        Face::FL => "Ferocious Leopard",
+        Face::S => "Silver General",
+        Face::C => "Copper General",
+        Face::I => "Iron General",
+        Face::N => "Knight",
+        Face::Dg => "Dog",
+        Face::P => "Pawn",
+    }
+}
+
+fn effect_piece(piece: Piece) -> String {
+    let side = match piece.side {
+        Side::Sente => "Sente",
+        Side::Gote => "Gote",
+    };
+    if piece.promoted {
+        format!(
+            "{side} {} (promoted {})",
+            face_name(piece.face()),
+            face_name(piece.base.face())
+        )
+    } else {
+        format!("{side} {}", face_name(piece.face()))
+    }
+}
+
+/// Describe actual native effects in their supplied phase order, including
+/// simultaneous burn batches and the original identity of promoted pieces.
+/// This formatter neither resolves an action nor infers victims from a board.
+pub fn format_effects(effects: &Effects) -> String {
+    let mut parts = Vec::new();
+    if let (ActionKind::Igui, Some(target)) = (effects.action.kind, effects.action.target) {
+        parts.push(format!("Stationary capture at {target}"));
+        parts.push(format!("stationary origin {}", effects.action.from));
+    }
+    for phase in &effects.phases {
+        parts.push(match phase {
+            EffectPhase::Capture { victim } => format!(
+                "Captured {} at {}",
+                effect_piece(victim.piece),
+                victim.square
+            ),
+            EffectPhase::Burn { victims } => format!(
+                "Burned together: {}",
+                if victims.is_empty() {
+                    "no pieces".into()
+                } else {
+                    victims
+                        .iter()
+                        .map(|v| format!("{} at {}", effect_piece(v.piece), v.square))
+                        .collect::<Vec<_>>()
+                        .join(", ")
+                }
+            ),
+            EffectPhase::MoverDies { square, piece } => {
+                format!("{} destroyed at {square}", effect_piece(*piece))
+            }
+            EffectPhase::Promotion {
+                square,
+                before,
+                after,
+            } => format!(
+                "Promoted {} to {} at {square}",
+                effect_piece(*before),
+                effect_piece(*after)
+            ),
+        });
+    }
+    if effects.phases.is_empty() {
+        parts.push("No captures or other effects.".into());
+    }
+    parts.join("; ")
+}
 
 /// A human label cannot describe or identify a complete native action.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -278,6 +395,168 @@ mod tests {
                 Err(NotationError::Shape)
             );
             assert!(parse_local_action(&local, &"x".repeat(33)).is_err());
+        }
+    }
+    #[test]
+    fn english_face_names_match_the_independently_ratified_profile() {
+        let profile: serde_json::Value =
+            serde_json::from_str(include_str!("../../../../docs/m4/tenjiku/profile.json")).unwrap();
+        let pieces = profile["pieces"].as_array().unwrap();
+        assert_eq!(pieces.len(), Face::ALL.len());
+        for face in Face::ALL {
+            let expected = pieces
+                .iter()
+                .find(|p| p["face"].as_str() == Some(face.code()))
+                .unwrap();
+            assert_eq!(
+                Some(face_name(face)),
+                expected["name"].as_str(),
+                "{}",
+                face.code()
+            );
+        }
+    }
+    #[test]
+    fn actual_three_landing_demon_effects_explain_both_profiles_without_invented_victims() {
+        // TEN-BURN-DYING's independent root, with actual three-step route
+        // 8j -> 7i -> 7h -> 8h. T04 burns the8g Pawn before mover death only
+        // under Adams; both profiles leave the enemy Demon9h untouched.
+        for profile in Profile::ALL {
+            let local = local(
+                profile,
+                &[
+                    (8, 10, Side::Sente, Base::FiD, false),
+                    (9, 8, Side::Gote, Base::FiD, false),
+                    (8, 7, Side::Gote, Base::P, false),
+                    (16, 16, Side::Sente, Base::K, false),
+                    (1, 1, Side::Gote, Base::K, false),
+                    (15, 14, Side::Sente, Base::P, false),
+                    (2, 3, Side::Gote, Base::P, false),
+                ],
+            );
+            let action = Action {
+                kind: ActionKind::Travel,
+                from: sq(8, 10),
+                route: vec![sq(7, 9), sq(7, 8), sq(8, 8)],
+                promote: false,
+                target: None,
+            };
+            let (_, effects) = local.simulate(&action).unwrap();
+            let expected = match profile {
+                Profile::AdamsModern => {
+                    "Burned together: Gote Pawn at 8g; Sente Fire Demon destroyed at 8h"
+                }
+                Profile::MullerCompleted => "Sente Fire Demon destroyed at 8h",
+            };
+            assert_eq!(format_effects(&effects), expected);
+            assert_eq!(effects.action, action);
+        }
+    }
+    #[test]
+    fn stationary_capture_and_original_promoted_capture_identities_are_spoken_exactly() {
+        for profile in Profile::ALL {
+            let igui = local(
+                profile,
+                &[
+                    (8, 8, Side::Sente, Base::ChS, true),
+                    (9, 8, Side::Gote, Base::P, false),
+                ],
+            );
+            let (_, effects) = igui.simulate(&Action::igui(sq(8, 8), sq(9, 8))).unwrap();
+            assert_eq!(
+                format_effects(&effects),
+                "Stationary capture at 9h; stationary origin 8h; Captured Gote Pawn at 9h"
+            );
+            let lion = local(
+                profile,
+                &[
+                    (8, 8, Side::Sente, Base::Ln, false),
+                    (8, 7, Side::Gote, Base::P, true),
+                    (8, 6, Side::Gote, Base::G, false),
+                ],
+            );
+            let action = Action {
+                kind: ActionKind::Travel,
+                from: sq(8, 8),
+                route: vec![sq(8, 7), sq(8, 6)],
+                promote: false,
+                target: None,
+            };
+            let (_, effects) = lion.simulate(&action).unwrap();
+            assert_eq!(
+                format_effects(&effects),
+                "Captured Gote Gold General (promoted Pawn) at 8g; Captured Gote Gold General at 8f"
+            );
+        }
+    }
+    #[test]
+    fn stationary_igui_origin_does_not_claim_survival_beside_an_enemy_demon() {
+        for profile in Profile::ALL {
+            // The Tetrarch captures9h without moving. The other enemy Demon7h
+            // survives; its final-position hazard destroys the mover at8h.
+            let igui = local(
+                profile,
+                &[
+                    (8, 8, Side::Sente, Base::ChS, true),
+                    (9, 8, Side::Gote, Base::P, false),
+                    (7, 8, Side::Gote, Base::FiD, false),
+                ],
+            );
+            let action = Action::igui(sq(8, 8), sq(9, 8));
+            let (after, effects) = igui.simulate(&action).unwrap();
+            assert!(after.position().piece(sq(8, 8)).is_none());
+            assert!(after.position().piece(sq(9, 8)).is_none());
+            assert_eq!(after.position().piece(sq(7, 8)).unwrap().base, Base::FiD);
+            assert_eq!(effects.mover_after, None);
+            assert_eq!(
+                format_effects(&effects),
+                "Stationary capture at 9h; stationary origin 8h; Captured Gote Pawn at 9h; Sente Heavenly Tetrarchs (promoted Chariot Soldier) destroyed at 8h"
+            );
+        }
+    }
+    #[test]
+    fn simultaneous_burn_order_promotion_and_quiet_effects_remain_native_facts() {
+        for profile in Profile::ALL {
+            let demon = local(
+                profile,
+                &[
+                    (8, 10, Side::Sente, Base::FiD, false),
+                    (8, 7, Side::Gote, Base::P, false),
+                    (7, 8, Side::Gote, Base::P, true),
+                ],
+            );
+            let (_, effects) = demon
+                .simulate(&Action::single(sq(8, 10), sq(8, 8)))
+                .unwrap();
+            assert_eq!(
+                format_effects(&effects),
+                "Burned together: Gote Pawn at 8g, Gote Gold General (promoted Pawn) at 7h"
+            );
+            let pawn = local(
+                profile,
+                &[
+                    (12, 6, Side::Sente, Base::P, false),
+                    (12, 5, Side::Gote, Base::S, false),
+                ],
+            );
+            let mut action = Action::single(sq(12, 6), sq(12, 5));
+            action.promote = true;
+            let (_, effects) = pawn.simulate(&action).unwrap();
+            assert_eq!(
+                format_effects(&effects),
+                "Captured Gote Silver General at 12e; Promoted Sente Pawn to Sente Gold General (promoted Pawn) at 12e"
+            );
+            // Presentation must retain supplied native phase order, not regroup
+            // captures/promotions or reconstruct them from occupancy.
+            let mut reversed = effects.clone();
+            reversed.phases.reverse();
+            assert_eq!(
+                format_effects(&reversed),
+                "Promoted Sente Pawn to Sente Gold General (promoted Pawn) at 12e; Captured Gote Silver General at 12e"
+            );
+            let quiet = local(profile, &[(8, 8, Side::Sente, Base::G, false)]);
+            let (_, effects) = quiet.simulate(&Action::single(sq(8, 8), sq(8, 7))).unwrap();
+            assert_eq!(format_effects(&effects), "No captures or other effects.");
         }
     }
 }

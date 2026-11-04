@@ -49,7 +49,7 @@ export function NativeHistory({ snapshot, disabled, command }: { snapshot: GameS
         if (!entry) return <td key={column} />;
         const associated = details.filter(event => event.index > entry.command_start && event.index <= entry.command_end);
         return <td key={column} data-associated-selection={associated.some(event => event.index === snapshot.event_index) || undefined}>
-          <button data-event={entry.event_index} data-native-action={entry.action} aria-current={snapshot.event_index === entry.event_index ? "step" : undefined} disabled={disabled} onClick={() => select(entry.event_index)} aria-label={`${number}. ${column === 0 ? first.label : second.label}: ${entry.notation}`}>{entry.notation}</button>
+          <button data-event={entry.event_index} data-native-action={entry.action} aria-current={snapshot.event_index === entry.event_index ? "step" : undefined} disabled={disabled} onClick={() => select(entry.event_index)} title={entry.effects_description} aria-label={`${number}. ${column === 0 ? first.label : second.label}: ${entry.notation}${entry.effects_description ? `; ${entry.effects_description}` : ""}`}>{entry.notation}</button>
           {associated.length > 0 && <span className="move-event-count" title={associated.map(event => event.label).join(" · ")} aria-label={`${associated.length} associated position ${associated.length === 1 ? "event" : "events"}; available in Position events`}>*</span>}
         </td>;
       })}</tr>)}

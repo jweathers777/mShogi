@@ -111,6 +111,9 @@ pub struct PresentedMove {
     pub column: u8,
     /// Source-based display notation; not a canonical action parser.
     pub notation: String,
+    /// Readable ordered native effects; omitted when no additional facts exist.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub effects_description: Option<String>,
     /// Exact native complete-action identity.
     pub action: String,
     /// Prefix before this command: associated prefix IDs are (start,end].
@@ -186,6 +189,7 @@ fn push(
         number,
         column,
         notation,
+        effects_description: None,
         action: geometry.action.clone(),
         command_start: start,
         command_end: end,
@@ -557,6 +561,12 @@ pub(super) fn tenjiku_projection(game: &mshogi_core::tenjiku::Game) -> MovesProj
             event.index,
             event.index + 1,
         );
+        if !effects.phases.is_empty() || action.kind == t::ActionKind::Igui {
+            view.entries
+                .last_mut()
+                .expect("just projected native action")
+                .effects_description = Some(t::notation::format_effects(effects));
+        }
         if event.actor == t::Side::Gote {
             number += 1;
         }

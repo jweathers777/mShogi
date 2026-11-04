@@ -11,6 +11,7 @@
         "number": 1,
         "column": 0,
         "notation": "ChS+8h!x9h",
+        "effects_description": "Stationary capture at 9h; stationary origin 8h; Captured Gote Pawn at 9h",
         "action": "{\"kind\":\"igui\",\"from\":[8,8],\"route\":[],\"promote\":false,\"target\":[9,8]}",
         "command_start": 0,
         "command_end": 1

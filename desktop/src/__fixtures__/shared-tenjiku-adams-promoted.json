@@ -11,6 +11,7 @@
         "number": 1,
         "column": 0,
         "notation": "P8f-8e^",
+        "effects_description": "Promoted Sente Pawn to Sente Gold General (promoted Pawn) at 8e",
         "action": "{\"kind\":\"travel\",\"from\":[8,6],\"route\":[[8,5]],\"promote\":true}",
         "command_start": 0,
         "command_end": 1

@@ -3,6 +3,7 @@ pub mod assertions;
 pub mod chu;
 pub mod properties;
 mod strict;
+pub mod tenjiku;
 
 use serde::{Deserialize, Serialize};
 use serde_json::Value;

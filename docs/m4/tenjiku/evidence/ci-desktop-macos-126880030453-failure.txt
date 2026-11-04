@@ -1,0 +1,17 @@
+2026-11-04T21:43:42.0896990Z
+2026-11-04T21:43:42.0897130Z failures:
+2026-11-04T21:43:42.0897310Z
+2026-11-04T21:43:42.0897770Z ---- tests::tenjiku_labeled_load_uses_same_worker_and_normal_load_preserves_document stdout ----
+2026-11-04T21:43:42.0898170Z
+2026-11-04T21:43:42.0898700Z thread 'tests::tenjiku_labeled_load_uses_same_worker_and_normal_load_preserves_document' (33301) panicked at src/main.rs:1205:13:
+2026-11-04T21:43:42.0900950Z assertion failed: !opened.capabilities.engine_turn && !opened.capabilities.move_analysis
+2026-11-04T21:43:42.0901820Z note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+2026-11-04T21:43:42.0902220Z
+2026-11-04T21:43:42.0902220Z
+2026-11-04T21:43:42.0902290Z failures:
+2026-11-04T21:43:42.0902920Z     tests::tenjiku_labeled_load_uses_same_worker_and_normal_load_preserves_document
+2026-11-04T21:43:42.0903280Z
+2026-11-04T21:43:42.0903770Z test result: FAILED. 17 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.90s
+2026-11-04T21:43:42.0904210Z
+2026-11-04T21:43:42.0963580Z ##[error]Process completed with exit code 101.
+2026-11-04T21:43:42.1179810Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

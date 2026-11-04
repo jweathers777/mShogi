@@ -208,3 +208,37 @@ passed on the shell's Node 23.11.0; supported Node 24 evidence follows.
 - Direct fontTools inspection: **passed**. All forty-four component labels match exactly the subset's fifty-two codepoints; every outline is nonempty, CFF family/PostScript identity is renamed, OFL metadata remains, and full 四天王 outline bounds at 32 units are `[8.872,34.376]`, `[37.272,65.624]`, `[67.016,93.960]` vertically within the tile.
 - Existing Shogi/Chu/Tori/Xiangqi WOFF2 files and `OFL.txt`: **unchanged** in Git.
 - Actual native window rendering, minimum-size comfort, all-platform visual verification and owner approval: **not run by this component/asset assignment**. They remain part of the primary MSH-44 checkpoint and verification record.
+
+## Actual application checkpoint supersedes size estimates
+
+The primary MSH-44 verifier subsequently launched the real fixed-slot macOS app.
+The [genuine gallery](evidence/msh44-macos/gallery.md),
+[artifact provenance](evidence/msh44-macos/artifact-manifest.json) and single
+[product record](product-verification.json) distinguish the component assignment
+above from actual native rendering and interaction. The final reviewed production
+source is `2c00e2107ac74334bce5d55813e5be25666d7c46`; the final captured package
+hashes equal the exact postcommit rebuild. Earlier all-faces/tall comparisons
+retain their explicitly recorded source scope.
+
+| Native preset | Actual WebView | Board | Cell | Minimum all-faces em |
+|---|---|---:|---:|---:|
+| 1180×820 | 1180×788 | 399px | 23.750px | 7.600px |
+| 960×720 | 960×688 | 350px | 20.833px | 6.667px |
+| 760×650 | 760×618 | 278px | 16.548px | 5.295px |
+| Proposed960×1000, live | 960×968 | 598px | 35.595px | 11.390px |
+| Proposed960×1000, History | 960×968 | 534px | 31.786px | 10.171px |
+
+Each measured view retains all256 cells and the bundled font. Independent visual
+review found the current minimum insufficient for comfortable dense-kanji reading;
+it found the concrete taller proposal materially clearer in both orientations.
+This is an unresolved owner product decision. No minimum, three-character name,
+no-scroll/no-zoom requirement or shared layout architecture has changed. The
+QA-only tall native preset permits review without implementing that policy.
+
+Actual pointer/keyboard compound capture, stationary capture, native promotion
+choice/refusal, paired profile-specific Fire Demon burns/mover destruction, engine
+reply, read-only analysis, history and file/recovery controls are represented in
+the gallery. Native readable effect descriptions accompany accessible Moves,
+including simultaneous burn batches and promotion/original identity. Canonical
+actions, effects and outcomes still come only from Rust. Owner visual approval,
+normal selector activation and final acceptance remain pending.

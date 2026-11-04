@@ -1,0 +1,31 @@
+2026-11-04T22:24:43.1124860Z ##[group]Operating System
+2026-11-04T22:24:43.1125960Z macOS
+2026-11-04T22:24:43.1126900Z 15.8.2
+2026-11-04T22:24:43.1127750Z 24H232
+2026-11-04T22:24:43.1128670Z ##[endgroup]
+2026-11-04T22:24:43.1129650Z ##[group]Runner Image
+2026-11-04T22:24:43.1185090Z Image: macos-15-arm64
+2026-11-04T22:24:43.1185570Z Version: 20261028.0489.1
+2026-11-04T22:24:43.1186430Z Included Software: https://github.com/actions/runner-images/blob/macos-15-arm64/20261028.0489/images/macos/macos-15-arm64-Readme.md
+2026-11-04T22:24:43.1187450Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-15-arm64%2F20261028.0489
+2026-11-04T22:24:43.1188100Z ##[endgroup]
+2026-11-04T22:38:40.1534470Z      Running tests/tenjiku_internal.rs (target/release/deps/tenjiku_internal-5f12f2cb06a56392)
+2026-11-04T22:38:40.1611770Z
+2026-11-04T22:38:40.1626670Z running 6 tests
+2026-11-04T22:38:41.9198530Z test actual_child_executes_complete_tenjiku_choices_for_full_known_history_and_purpose ... ok
+2026-11-04T22:38:42.0036560Z test actual_child_incomplete_work_has_no_fallback_score_or_conclusion ... ok
+2026-11-04T22:38:44.6208100Z test actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement ... ok
+2026-11-04T22:38:47.3090200Z test actual_engine_turns_for_both_player_assignments_admit_observation_then_action ... ok
+2026-11-04T22:38:47.8414000Z test actual_slow_child_cancellation_replacement_cross_game_and_cleanup_are_bounded ... ok
+2026-11-04T22:38:51.7622200Z test real_historical_analysis_saves_exact_prefix_and_reopens_stopped_without_future ... ok
+2026-11-04T22:38:51.7622720Z
+2026-11-04T22:38:51.7622990Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.60s
+2026-11-04T22:38:51.7623370Z
+2026-11-04T22:38:51.7631810Z      Running tests/tenjiku_selfplay.rs (target/release/deps/tenjiku_selfplay-a7feff046c77b01a)
+2026-11-04T22:38:51.7674880Z
+2026-11-04T22:38:51.7677900Z running 2 tests
+2026-11-04T22:38:52.1101220Z test actual_complete_custom_game_captures_both_independently_expected_native_royals ... ok
+2026-11-04T22:38:59.4096660Z test actual_selfplay_is_deterministic_bounded_and_unscored_at_work_stop ... ok
+2026-11-04T22:38:59.4098090Z
+2026-11-04T22:38:59.4098900Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.64s
+2026-11-04T22:38:59.4099980Z

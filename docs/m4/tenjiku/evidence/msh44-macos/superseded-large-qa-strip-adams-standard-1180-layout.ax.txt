@@ -1,0 +1,8 @@
+The following is a diff from the previous accessibility tree for Window: "mShogi Verification — tenjiku-adams-standard (test state) — content 1180.0 × 820.0 logical · frame 1180.0 × 820.0 logical" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 4-5
++				332 container (expanded) Secondary Actions: Collapse
++					333 summary Layout measurements, Value: on
++						334 text Layout measurements
++					335 text entry area Actual Tenjiku layout measurements, Value: [text entry area: Actual Tenjiku layout measurements], Secondary Actions: Show Writing Tools
++						336 text {"schema":"mshogi.tenjiku.actual-layout.v1","content":{"width":1180,"height":788},"device_pixel_ratio":2,"board":{"x":244.5,"y":301,"width":371,"height":371},"cells":256,"visible_cells":256,"cell":{"x":253.333,"y":309.833,"width":22.083,"height":22.083},"font_loaded":true,"font_check":true,"glyph_count":308,"minimum_glyph_em":10.379,"maximum_glyph_em":13.692,"glyphs":[{"text":"香","font_family":"mShogi Tenjiku Pieces, serif","box":{"x":259.185,"y":318.567,"width":10.379,"height":14.92},"logical_em":10.379},{
+The focused UI element is 333 summary Layout measurements, Value: on

@@ -1,0 +1,27 @@
+{
+  "schema": "mshogi.tenjiku.actual-layout.v1",
+  "content": {
+    "width": 1728,
+    "height": 981
+  },
+  "device_pixel_ratio": 2,
+  "board": {
+    "x": 408,
+    "y": 273,
+    "width": 592,
+    "height": 592
+  },
+  "cells": 256,
+  "visible_cells": 256,
+  "cell": {
+    "x": 422.095,
+    "y": 287.095,
+    "width": 35.238,
+    "height": 35.238
+  },
+  "font_loaded": true,
+  "font_check": true,
+  "glyph_count": 134,
+  "minimum_glyph_em": 11.276,
+  "maximum_glyph_em": 21.848
+}

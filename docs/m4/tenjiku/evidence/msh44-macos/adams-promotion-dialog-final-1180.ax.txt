@@ -1,0 +1,24 @@
+Window: "mShogi Verification — tenjiku-adams-promotion (test state) — content 1180.0 × 820.0 logical · frame 1180.0 × 820.0 logical", App: mShogi Verification.
+0 standard window Secondary Actions: Raise, mShogi Verification — tenjiku-adams-promotion (test state) — content 1180.0 × 820.0 logical · frame 1180.0 × 820.0 logical
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 container Choose complete action
+				4 text COMPLETE YOUR MOVE
+				5 heading Choose complete action, Value: 2
+					6 text Choose complete action
+				7 text The action is applied only after you choose.
+				8 button Do Not Promote
+				9 button Promote
+				10 button Cancel selection
+	11 close button
+	12 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	13 minimize button
+	14 text mShogi Verification — tenjiku-adams-promotion (test state) — content 1180.0 × 820.0 logical · frame 1180.0 × 820.0 logical
+15 menu bar
+	16 mShogi Verification
+	17 Edit
+	18 View
+	19 Window
+	20 Verification window size
+
+The focused UI element is 8 button Do Not Promote

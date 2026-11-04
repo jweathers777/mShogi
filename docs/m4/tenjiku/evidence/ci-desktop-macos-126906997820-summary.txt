@@ -1,0 +1,16 @@
+2026-11-04T22:24:38.0197530Z ##[group]Operating System
+2026-11-04T22:24:38.0197910Z macOS
+2026-11-04T22:24:38.0198230Z 15.8.2
+2026-11-04T22:24:38.0198590Z 24H232
+2026-11-04T22:24:38.0198980Z ##[endgroup]
+2026-11-04T22:24:38.0199500Z ##[group]Runner Image
+2026-11-04T22:24:38.0199900Z Image: macos-15-arm64
+2026-11-04T22:24:38.0200280Z Version: 20261028.0489.1
+2026-11-04T22:24:38.0201130Z Included Software: https://github.com/actions/runner-images/blob/macos-15-arm64/20261028.0489/images/macos/macos-15-arm64-Readme.md
+2026-11-04T22:24:38.0202180Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-15-arm64%2F20261028.0489
+2026-11-04T22:24:38.0202820Z ##[endgroup]
+2026-11-04T22:26:51.9263430Z Prepared bundled engine for aarch64-apple-darwin
+2026-11-04T22:29:09.1000100Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+2026-11-04T22:29:20.7661970Z test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.87s
+2026-11-04T22:29:22.9300530Z Prepared bundled engine for aarch64-apple-darwin
+2026-11-04T22:32:52.9936700Z     Finished 1 bundle at:

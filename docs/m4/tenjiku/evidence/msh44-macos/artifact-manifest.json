@@ -1,0 +1,1126 @@
+{
+  "schema": "mshogi.tenjiku.visual-artifact-manifest.v1",
+  "local_environment": "macOS27.0.1/26A434 arm64; devicePixelRatio2; actual fixed QA slot via CUA",
+  "packages": [
+    {
+      "label": "initial_compact_strip",
+      "source": "aecdccd6152df9cef8736e83ef74d8bc81ae39b2",
+      "identity": {
+        "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app",
+        "bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+        "expected_bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+        "environment": {
+          "MSHOGI_DESKTOP_FIXTURE_FILE": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/qa.fixture"
+        },
+        "files": {
+          "Contents/Info.plist": "0a16e98931910a2e976eeffe0fdb563ca73ceaf7e60af2548c944d9bc86131da",
+          "Contents/MacOS/mshogi": "599b049083d6a46d908d4e73ff4bb333f51e6455e034f78f371a866a648f207c",
+          "Contents/MacOS/mshogi-desktop": "bb0eb59a36ec207335ce291e368bc6dc0ea7df54962c2d7d3f6f9a815ca89135",
+          "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc",
+          "Contents/_CodeSignature/CodeResources": "2b4d75c0a258e18b16328b62ecf9023070e5a10ecd61c1d3ec579b79c2d4b215"
+        },
+        "signatures": {
+          "display": {
+            "exit_code": 0,
+            "output": "# designated => cdhash H\"84918b0d153afce4aae6b410ee174f91afc77804\"\nExecutable=/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.shogipromotion\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=43242 flags=0x2(adhoc) hashes=1344+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=84918b0d153afce4aae6b410ee174f91afc77804\nCandidateCDHashFull sha256=84918b0d153afce4aae6b410ee174f91afc778049176de22e3774c705664a5a5\nHash choices=sha256\nCMSDigest=84918b0d153afce4aae6b410ee174f91afc778049176de22e3774c705664a5a5\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=15056896\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=84918b0d153afce4aae6b410ee174f91afc77804\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n"
+          },
+          "strict_verify": {
+            "exit_code": 0,
+            "output": "--prepared:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n--validated:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: valid on disk\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: satisfies its Designated Requirement\n"
+          }
+        },
+        "qualification": "Ad-hoc signatures may change on rebuild; no approval persistence is inferred"
+      }
+    },
+    {
+      "label": "tall_proposal_capture_build",
+      "source": "Desktop tree during effects fix before final igui wording/native test and console text corrections; only tall allfaces captures, no effect-text assertion.",
+      "identity": {
+        "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app",
+        "bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+        "expected_bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+        "environment": {
+          "MSHOGI_DESKTOP_FIXTURE_FILE": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/qa.fixture"
+        },
+        "files": {
+          "Contents/Info.plist": "0a16e98931910a2e976eeffe0fdb563ca73ceaf7e60af2548c944d9bc86131da",
+          "Contents/MacOS/mshogi": "e340fa17dbb4db3a30198b5394afc2b9af4ec6a6f2c1688f7989d5b022a9ab8f",
+          "Contents/MacOS/mshogi-desktop": "e0fb05ac075d8d6cbf4d820131c4a7469cc72c0433e28a1f46dd1733afd99189",
+          "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc",
+          "Contents/_CodeSignature/CodeResources": "1b18ada49c7028ce3096cac80aa02382a5201e3e268fb2c4a72d5fa6ee5bf4e1"
+        },
+        "signatures": {
+          "display": {
+            "exit_code": 0,
+            "output": "# designated => cdhash H\"861cb3a2915121e9afeeea132dfbae5c450374d7\"\nExecutable=/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.shogipromotion\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=43242 flags=0x2(adhoc) hashes=1344+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=861cb3a2915121e9afeeea132dfbae5c450374d7\nCandidateCDHashFull sha256=861cb3a2915121e9afeeea132dfbae5c450374d70ae9752bdddecd4d164b2a4b\nHash choices=sha256\nCMSDigest=861cb3a2915121e9afeeea132dfbae5c450374d70ae9752bdddecd4d164b2a4b\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=15056896\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=861cb3a2915121e9afeeea132dfbae5c450374d7\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n"
+          },
+          "strict_verify": {
+            "exit_code": 0,
+            "output": "--prepared:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n--validated:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: valid on disk\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: satisfies its Designated Requirement\n"
+          }
+        },
+        "qualification": "Ad-hoc signatures may change on rebuild; no approval persistence is inferred"
+      }
+    },
+    {
+      "label": "accessibility_capture_build",
+      "source": "Final desktop/core/frontend tree subsequently committed2c00e21; bundled console human-output update was concurrent, internal-search code unchanged.",
+      "identity": {
+        "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app",
+        "bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+        "expected_bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+        "environment": {
+          "MSHOGI_DESKTOP_FIXTURE_FILE": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/qa.fixture"
+        },
+        "files": {
+          "Contents/Info.plist": "0a16e98931910a2e976eeffe0fdb563ca73ceaf7e60af2548c944d9bc86131da",
+          "Contents/MacOS/mshogi": "45e61e3d2dcbff4e9b6d7d4fe7767b831b697f0d01454a827090deb91f8cc4b3",
+          "Contents/MacOS/mshogi-desktop": "0845e713f54b3abd1739d43cddd33b0f7f9e44c246c7230edb09315ba4875d30",
+          "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc",
+          "Contents/_CodeSignature/CodeResources": "9b3d15a240094f670cd90755239fe922f4968b1374c88f4de7c8ed1c8dea4321"
+        },
+        "signatures": {
+          "display": {
+            "exit_code": 0,
+            "output": "# designated => cdhash H\"62255cb63742a9f6d35159f02ee5d901240c16ca\"\nExecutable=/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.shogipromotion\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=43242 flags=0x2(adhoc) hashes=1344+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=62255cb63742a9f6d35159f02ee5d901240c16ca\nCandidateCDHashFull sha256=62255cb63742a9f6d35159f02ee5d901240c16ca8ffc84dbafbcea8a193f8366\nHash choices=sha256\nCMSDigest=62255cb63742a9f6d35159f02ee5d901240c16ca8ffc84dbafbcea8a193f8366\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=15056896\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=62255cb63742a9f6d35159f02ee5d901240c16ca\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n"
+          },
+          "strict_verify": {
+            "exit_code": 0,
+            "output": "--prepared:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n--validated:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: valid on disk\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: satisfies its Designated Requirement\n"
+          }
+        },
+        "qualification": "Ad-hoc signatures may change on rebuild; no approval persistence is inferred"
+      }
+    },
+    {
+      "label": "exact_committed_build",
+      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46",
+      "identity": {
+        "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app",
+        "bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+        "expected_bundle_id": "org.mshogi.desktop.verification.r6.shogipromotion",
+        "environment": {
+          "MSHOGI_DESKTOP_FIXTURE_FILE": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/qa.fixture"
+        },
+        "files": {
+          "Contents/Info.plist": "0a16e98931910a2e976eeffe0fdb563ca73ceaf7e60af2548c944d9bc86131da",
+          "Contents/MacOS/mshogi": "45e61e3d2dcbff4e9b6d7d4fe7767b831b697f0d01454a827090deb91f8cc4b3",
+          "Contents/MacOS/mshogi-desktop": "0845e713f54b3abd1739d43cddd33b0f7f9e44c246c7230edb09315ba4875d30",
+          "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc",
+          "Contents/_CodeSignature/CodeResources": "9b3d15a240094f670cd90755239fe922f4968b1374c88f4de7c8ed1c8dea4321"
+        },
+        "signatures": {
+          "display": {
+            "exit_code": 0,
+            "output": "# designated => cdhash H\"62255cb63742a9f6d35159f02ee5d901240c16ca\"\nExecutable=/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi-desktop\nIdentifier=org.mshogi.desktop.verification.r6.shogipromotion\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=43242 flags=0x2(adhoc) hashes=1344+3 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=62255cb63742a9f6d35159f02ee5d901240c16ca\nCandidateCDHashFull sha256=62255cb63742a9f6d35159f02ee5d901240c16ca8ffc84dbafbcea8a193f8366\nHash choices=sha256\nCMSDigest=62255cb63742a9f6d35159f02ee5d901240c16ca8ffc84dbafbcea8a193f8366\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=15056896\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=62255cb63742a9f6d35159f02ee5d901240c16ca\nSignature=adhoc\nInfo.plist entries=16\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=2\nTotal signatures=1\nChosen signature=1\n"
+          },
+          "strict_verify": {
+            "exit_code": 0,
+            "output": "--prepared:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n--validated:/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app/Contents/MacOS/mshogi\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: valid on disk\n/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app: satisfies its Designated Requirement\n"
+          }
+        },
+        "qualification": "Ad-hoc signatures may change on rebuild; no approval persistence is inferred"
+      }
+    }
+  ],
+  "capture_groups": {
+    "initial_compact_strip": "Actual GUI/native production aecd, unchanged throughde; historical effect AX omitted descriptions; new capture group verifies fix.",
+    "reviewed_accessibility_desktop_tree": "Actual core/native/renderer source subsequently integrated2c00, captured before commit. Full postcommit package separately rebuilt/staged; no claim older bundled human-console text changed after capture. Tall preset is QA-only; minpolicy unchanged.",
+    "superseded_large_strip": "Historical larger QA banner, excluded from gallery/accepted sizing evidence.",
+    "tall_proposal_capture_build": "ActualQA-only tall preset during effects fix; board/art/layout identical to final2c00, but package has earlier effect wording. Allfaces inspection has no effects. Exact proposal policy remains unapproved."
+  },
+  "qualification": "Artifact provenance and checksums only; acceptance and execution statuses live solely in product-verification.json. Source-matched package is adhoc signed; stable identity reused, no approval persistence promised or inferred. Fixture selectors changed only while app stopped; no per-scenario signing. No new permission prompt observed in completed GUI interactions.",
+  "files": [
+    {
+      "name": "adams-actual-promotion-final-760-layout.json",
+      "bytes": 473,
+      "sha256": "63ae90dc097ff3b4ea59277a4e53584442f15510ad7a0d0b1b1c6244b246c226",
+      "capture_group": "reviewed_accessibility_desktop_tree"
+    },
+    {
+      "name": "adams-actual-promotion-final-760.ax.txt",
+      "bytes": 18482,
+      "sha256": "91c9c2986842af35e5e2c19176e2d0b7aea923f7fdefc5b6286062b07ac3b0b4",
+      "capture_group": "reviewed_accessibility_desktop_tree"
+    },
+    {
+      "name": "adams-actual-promotion-final-760.png",
+      "bytes": 240547,
+      "sha256": "5555b7b7a6c3459b011669c69a0837bf4247ff8f0fe496bac54d1d113bef39a6",
+      "capture_group": "reviewed_accessibility_desktop_tree"
+    },
+    {
+      "name": "adams-actual-promotion-refusal-final-1180-layout.json",
+      "bytes": 470,
+      "sha256": "4bb4352a697e10012479359b739422c10c301e88b7a86d4f2c672b23978abc77",
+      "capture_group": "reviewed_accessibility_desktop_tree"
+    },
+    {
+      "name": "adams-actual-promotion-refusal-final-1180.ax.txt",
+      "bytes": 18400,
+      "sha256": "a109c5d0def9cd43c1b3690b09d1c21b7c6721213aa0d7122b085cd0a0dde483",
+      "capture_group": "reviewed_accessibility_desktop_tree"
+    },
+    {
+      "name": "adams-actual-promotion-refusal-final-1180.png",
+      "bytes": 350839,
+      "sha256": "e3dbdd50ff2af99ad580176dee27de1c3d7e702e6c633037fabc322312cd9382",
+      "capture_group": "reviewed_accessibility_desktop_tree"
+    },
+    {
+      "name": "adams-all-faces-1180-layout.json",
+      "bytes": 468,
+      "sha256": "05ae4bc0a512b35dd15bb830cfb9ac354fe40a88e8623916104dbd16bf4d5cc1",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-all-faces-1180.ax.txt",
+      "bytes": 19636,
+      "sha256": "2452b4d815947c4e060b180e8c364fdf4b04886f603bd90f509fee04de88ad02",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-all-faces-1180.png",
+      "bytes": 418406,
+      "sha256": "a6993ca37409b7facd34a4eeb71f16ce2a0ad7edf44863bdf876758f846eb7a7",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-all-faces-760-layout.json",
+      "bytes": 474,
+      "sha256": "7a5d6fa32efa2ec72cc41dd123582c7b9b2ed0680d8b1cae9a4b6888b28009d7",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-all-faces-760.ax.txt",
+      "bytes": 19672,
+      "sha256": "ae9793dd9a7db32db1af2f333664ef77fac735a93c066983adaff247627204fd",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-all-faces-760.png",
+      "bytes": 276817,
+      "sha256": "a3c830453a5bb4091e9169d05fd9bef0f023b052a130c777f2856127b0bf25dd",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-all-faces-960-layout.json",
+      "bytes": 475,
+      "sha256": "3c4d53a3dba7c8c917b5833ee0e2940aa0e9e1bd6e6da6a154d274e76c46612b",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-all-faces-960.ax.txt",
+      "bytes": 19672,
+      "sha256": "8b6786888327807a28e9e7ee5c842bd398e139e2264ecaca1944b19a1adbde0c",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-all-faces-960.png",
+      "bytes": 347182,
+      "sha256": "a7902fab4528a7acda4f201c9dae1c9afffcd307e8be08df8f46136f08cc8317",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-all-faces-gote-1180-layout.json",
+      "bytes": 468,
+      "sha256": "05ae4bc0a512b35dd15bb830cfb9ac354fe40a88e8623916104dbd16bf4d5cc1",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-all-faces-gote-1180.ax.txt",
+      "bytes": 19702,
+      "sha256": "8a8e6690381e9f4c674094d4cd97ff8ad29b4b061610c9777518054220411078",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-all-faces-gote-1180.png",
+      "bytes": 426399,
+      "sha256": "d274c64541f71e2aeda84013d6b7cfe98a78dab8cc1da1c9e4ab09e93c1b7ee4",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-all-faces-gote-760-layout.json",
+      "bytes": 474,
+      "sha256": "7a5d6fa32efa2ec72cc41dd123582c7b9b2ed0680d8b1cae9a4b6888b28009d7",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-all-faces-gote-760.ax.txt",
+      "bytes": 19687,
+      "sha256": "55f6dbe7309a1ec25a989710ca963bd7692ce20c269389ff205949c09b262c08",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-all-faces-gote-760.png",
+      "bytes": 276632,
+      "sha256": "2e156be33b7ac9185f8e528a07727dd21fee702ec1cffa9a7f2ce8533f1f549c",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-all-faces-gote-native-zoom-1728x1013-layout.json",
+      "bytes": 477,
+      "sha256": "0cbcfc597d46fc37a1787a8733dcf363030bdf71b3d4ea557e69ebfb04fe4f00",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-all-faces-gote-native-zoom-1728x1013.ax.txt",
+      "bytes": 19708,
+      "sha256": "ce1ad0aa86b6c686961ddf4db09c78eb1de871a878c6483c6b6fd85a42ed5ca5",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-all-faces-gote-native-zoom-1728x1013.png",
+      "bytes": 592020,
+      "sha256": "fe3c9067cc3b31cd9437cb6a997a7bce9188a35c772ef569c720f63ffac36cb1",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-area-burn-partial-1180-layout.json",
+      "bytes": 470,
+      "sha256": "e06a1da7436dfe3aafa7896bfc21e33395de458f86ab574926105eb611b53c97",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-area-burn-partial-1180.ax.txt",
+      "bytes": 18794,
+      "sha256": "0e9c3de7fafc9c522677ba90bd24d0fc8007f697e1e1aac0f98215aa4c201c30",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-area-burn-partial-1180.png",
+      "bytes": 361397,
+      "sha256": "856d9debcb310a04f33e2dca658623289cbedf7674af83c06d7f3a3826314827",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-burn-accessible-effects-final-1180-layout.json",
+      "bytes": 470,
+      "sha256": "4bb4352a697e10012479359b739422c10c301e88b7a86d4f2c672b23978abc77",
+      "capture_group": "reviewed_accessibility_desktop_tree"
+    },
+    {
+      "name": "adams-burn-accessible-effects-final-1180.ax.txt",
+      "bytes": 18467,
+      "sha256": "e61eafe1acf00ece4b4c33ecafd63d6498a41ac45c8cbdb22e39c2aed7338b2b",
+      "capture_group": "reviewed_accessibility_desktop_tree"
+    },
+    {
+      "name": "adams-burn-accessible-effects-final-1180.png",
+      "bytes": 351959,
+      "sha256": "b0180d7a5715f904480e73e02e3362ef6e3b1c04bb211c88cb4c96fb5bbf6c43",
+      "capture_group": "reviewed_accessibility_desktop_tree"
+    },
+    {
+      "name": "adams-burn-demon-death-1180-layout.json",
+      "bytes": 470,
+      "sha256": "4bb4352a697e10012479359b739422c10c301e88b7a86d4f2c672b23978abc77",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-burn-demon-death-1180.ax.txt",
+      "bytes": 18393,
+      "sha256": "e2e3bd5b58735b51412a9e4b31655cb9b7716f40702e845537e13e6e5a41ea74",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-burn-demon-death-1180.png",
+      "bytes": 352931,
+      "sha256": "5498b6610844c46f88e08bcb0d74943f386dbb33dec4db4002edc730e89bda61",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-burn-demon-death-760-layout.json",
+      "bytes": 473,
+      "sha256": "63ae90dc097ff3b4ea59277a4e53584442f15510ad7a0d0b1b1c6244b246c226",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-burn-demon-death-760.ax.txt",
+      "bytes": 18350,
+      "sha256": "a02e96538975f69607535ab68fc556f5e8e89e33b9e4052d973231bbab32609b",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-burn-demon-death-760.png",
+      "bytes": 241344,
+      "sha256": "2488f070bbcd52897f6c666a4f58d6a350e96d1c5451e24d3ad01a2a3b96a24a",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-cancelled-analysis-1180.ax.txt",
+      "bytes": 20475,
+      "sha256": "001bf7a8f2ad513b701c60240db5938fabb47a77129f58a6858e32e749f5b82d",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-cancelled-analysis-1180.png",
+      "bytes": 531910,
+      "sha256": "fcb394d9ead243946ed3f38396128917c82e48d3ca974a2ba04a4d3f7fa08839",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-compound-completed-1180-layout.json",
+      "bytes": 470,
+      "sha256": "4bb4352a697e10012479359b739422c10c301e88b7a86d4f2c672b23978abc77",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-compound-completed-1180.ax.txt",
+      "bytes": 18401,
+      "sha256": "683e5637663016c953b6c3fac910c64af8e0c77b3d7d234dfeafae2df905c4f5",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-compound-completed-1180.png",
+      "bytes": 353013,
+      "sha256": "63e54829793bcb3ef037605c2b21bc3e9d3aac046d2917eb4bd9fcda2d3dd862",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-compound-keyboard-focus-760.png",
+      "bytes": 248374,
+      "sha256": "a0dea085683fe04815ec482f100be237ec9a043f60f523cef4b5811ea9534baa",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-compound-partial-1180-layout.json",
+      "bytes": 470,
+      "sha256": "e06a1da7436dfe3aafa7896bfc21e33395de458f86ab574926105eb611b53c97",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-compound-partial-1180.ax.txt",
+      "bytes": 18763,
+      "sha256": "e16d8c1db2b515790aa4d83951cde83cd28700ab1317207b422e1be34ba2aae7",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-compound-partial-1180.png",
+      "bytes": 360143,
+      "sha256": "07b92cbcd3ce22965e1a5290f3ffc0fec99eba289883933d07d6db57fa759a55",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-compound-partial-760-layout.json",
+      "bytes": 473,
+      "sha256": "4a17f5ea3d50a69f147c6936dccb83146cd81cb9c4a7353a23e78d3ec3c05731",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-compound-partial-760.ax.txt",
+      "bytes": 18695,
+      "sha256": "b3093eed3835e99772025a30589406d575007718fc7ee212cf60c7c367ed9bd8",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-compound-partial-760.png",
+      "bytes": 248268,
+      "sha256": "ccea8e65d94a523d2fe2c525ad040697f8e6d115a7a1c5a714b416d86a449c94",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-dirty-quit-guard.ax.txt",
+      "bytes": 938,
+      "sha256": "470ccba908da9b8695e699e60dedd60f514c7be93cd802853760a9480a9801ef",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-dirty-quit-guard.png",
+      "bytes": 292339,
+      "sha256": "855c9060e587679a7583571f1bfaa0cf8900fb6367735508208d5784bcf0538e",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-history-1180-layout.json",
+      "bytes": 476,
+      "sha256": "adebbf9b3c4c11b18c0f7973a8f0bf100b08ee1098d811b0d9e9927887ed477a",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-history-1180.ax.txt",
+      "bytes": 20068,
+      "sha256": "d33413c665d5a840d2255861e5a2f38a2cae08df159f55a3098bd127162be599",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-history-1180.png",
+      "bytes": 474955,
+      "sha256": "a2b96052052a2b2fff5993c46e5cf26b313ebddb34407d2ad5ab30a024f8eb21",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-human-engine-1180-layout.json",
+      "bytes": 471,
+      "sha256": "631d5f45a5a1542269703aa221d4ad10f801829172ebef2b7672dfa5e52b28ed",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-human-engine-1180.ax.txt",
+      "bytes": 20108,
+      "sha256": "9f8755635e110bf6981d545b0df90f685d1c7eca4015c2cbf3b1d9b71fc44955",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-human-engine-1180.png",
+      "bytes": 518983,
+      "sha256": "dc678e1838eb5bdf2aaa8a9d6dc3ca61cbfef84ba481253b6ea88a39a65a258a",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-promotion-dialog-final-1180.ax.txt",
+      "bytes": 1138,
+      "sha256": "7643794da0db094e8b5a43876ae43a23cd35d01c209a54b51f844a855921358a",
+      "capture_group": "reviewed_accessibility_desktop_tree"
+    },
+    {
+      "name": "adams-promotion-dialog-final-1180.png",
+      "bytes": 350250,
+      "sha256": "e6e8b268ab8a761f0c465f110191c3336e078321c5b5d4fb8c046d8d2d20f4e6",
+      "capture_group": "reviewed_accessibility_desktop_tree"
+    },
+    {
+      "name": "adams-promotion-dialog-final-760.ax.txt",
+      "bytes": 1168,
+      "sha256": "979c23cc65b2936cb1278708c5cdffb5706359e995ba53ba90497a5b47911fec",
+      "capture_group": "reviewed_accessibility_desktop_tree"
+    },
+    {
+      "name": "adams-promotion-dialog-final-760.png",
+      "bytes": 242325,
+      "sha256": "88efabf71ad77794f1b73f3dd43ddf842f5b15e3d47bcd1046afb52677144708",
+      "capture_group": "reviewed_accessibility_desktop_tree"
+    },
+    {
+      "name": "adams-readonly-analysis-1180-layout.json",
+      "bytes": 471,
+      "sha256": "631d5f45a5a1542269703aa221d4ad10f801829172ebef2b7672dfa5e52b28ed",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-readonly-analysis-1180.ax.txt",
+      "bytes": 20649,
+      "sha256": "f2d131e4d8b05b606c0800d67723348722e2cf1d373590e6b253d6e1f66ae856",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-readonly-analysis-1180.png",
+      "bytes": 523645,
+      "sha256": "fb3967b85f46172f3ef0d71976241ac77c00585cec36d32dc4d6cbe8c3a9ee97",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-reopened-stopped-1180-layout.json",
+      "bytes": 471,
+      "sha256": "631d5f45a5a1542269703aa221d4ad10f801829172ebef2b7672dfa5e52b28ed",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-reopened-stopped-1180.ax.txt",
+      "bytes": 19994,
+      "sha256": "2e4e97beb80bb6e302650e92deff4a5b3fc47db524c94eb6a0a1fc71ac14b11f",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-reopened-stopped-1180.png",
+      "bytes": 529115,
+      "sha256": "a9465cf667b9da19867ad15aa2d1485c15cf14cb55f514294a9387a094a07931",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-saved-real-game.ax.txt",
+      "bytes": 20548,
+      "sha256": "c3b3bc099b4759be4bfa3cecd4fe38c54735fb1ca06a95cdba0a95b5b7e20c1e",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-standard-1180-layout.json",
+      "bytes": 471,
+      "sha256": "af11a32a463c97e6cccaeea00f600ecb2ada592247b1709bcfb5fbddf4f95ab5",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-standard-1180.ax.txt",
+      "bytes": 19783,
+      "sha256": "7022a5fd732e4ae846a30b925589f275c4af98663f25f838837e76a83ef89569",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-standard-1180.png",
+      "bytes": 522686,
+      "sha256": "41b7d85b4d651f5314e3330ca57a426d2bb86c31c3304f0ec8ba8ace2f6a012a",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-standard-760-layout.json",
+      "bytes": 474,
+      "sha256": "93f4bd3380c61a56758867f5a9d92f378e41045092ff4e0ee54e92df6c86a733",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-standard-760.ax.txt",
+      "bytes": 19819,
+      "sha256": "c2b5ce4c496cda4992ccf0250101c9970db70d0622a1287091dddccfbd616311",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-standard-760.png",
+      "bytes": 329912,
+      "sha256": "aa0229e56805ded3bb56ca22835de66f79c333d12b76bab3b83276b2e36a0716",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-standard-960-layout.json",
+      "bytes": 475,
+      "sha256": "53e0f909da508c45fbd5c256a6dee3141dc4edafde4e25e911151664ca34121f",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-standard-960.ax.txt",
+      "bytes": 19819,
+      "sha256": "7956b66ab35a1f476fe3426f58a9b09e3ab203194fd2d6cc113ad0952b44cc9e",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-standard-960.png",
+      "bytes": 429154,
+      "sha256": "b6b13cd91beb2cd0a8864c786eec8a07082870b6dbfc947b8100bc762bff9b6c",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-standard-gote-1180-layout.json",
+      "bytes": 471,
+      "sha256": "af11a32a463c97e6cccaeea00f600ecb2ada592247b1709bcfb5fbddf4f95ab5",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-standard-gote-1180.ax.txt",
+      "bytes": 19849,
+      "sha256": "d392c4c7f30bcbde7532ddc343ed1b388ffdaadefedcba5a4951effa74801022",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-standard-gote-1180.png",
+      "bytes": 528450,
+      "sha256": "001a5d089d383eac120ce15c96dceed346375704ccfd43122edc31f8b04b2697",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-standard-gote-760-layout.json",
+      "bytes": 474,
+      "sha256": "93f4bd3380c61a56758867f5a9d92f378e41045092ff4e0ee54e92df6c86a733",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-standard-gote-760.ax.txt",
+      "bytes": 19834,
+      "sha256": "86fa20cde88f9e4f4d2ca022e1b3faa60bd20ebb073fd0a8cf4bdc9279836063",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-standard-gote-760.png",
+      "bytes": 329704,
+      "sha256": "e909bb96883dbd03c3b44cb03971197ebb9a7fac1d453ec4b348440c8765052d",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-standard-gote-960-layout.json",
+      "bytes": 475,
+      "sha256": "53e0f909da508c45fbd5c256a6dee3141dc4edafde4e25e911151664ca34121f",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-standard-gote-960.ax.txt",
+      "bytes": 19817,
+      "sha256": "b47135258ec7ee3972dfd3b97322f4eea1037218f6ff497ffac994e5af81be1e",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-standard-gote-960.png",
+      "bytes": 429511,
+      "sha256": "5129b37b211b321e3c8a5e982aa9526ed4b17867f6daae444ac9aa9eea8e15bb",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-takeback-1180.ax.txt",
+      "bytes": 19940,
+      "sha256": "da012319204db758a33e1d69ca8b172661209b2257b6644dfcade02005fb7890",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "adams-takeback-1180.png",
+      "bytes": 535589,
+      "sha256": "b5f9708b2fd40833842bb0f5106821779537d31a8e1df1fc99d565a4a7126a26",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "fresh-new-muller-after-saved-adams.ax.txt",
+      "bytes": 19774,
+      "sha256": "9bded57f0eff0d174acbb14931612c848f6b9cd21b645ce3296bd05d728c1c4a",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "fresh-new-muller-after-saved-adams.png",
+      "bytes": 514281,
+      "sha256": "be90f1ab6ade5db591d0b43f3018b65e23b82853db71accb9300e4d9fa148043",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-all-faces-1180-layout.json",
+      "bytes": 468,
+      "sha256": "05ae4bc0a512b35dd15bb830cfb9ac354fe40a88e8623916104dbd16bf4d5cc1",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-all-faces-1180.ax.txt",
+      "bytes": 19643,
+      "sha256": "d1c406c0b310e56bff20a74841b106d144ad57d5326374f193f180c76fcbe47b",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-all-faces-1180.png",
+      "bytes": 418747,
+      "sha256": "385cead841ec0aea3bd5c0f0231e4f993d76eafb108f6e3d7e4507f656bb9c6f",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-all-faces-760-layout.json",
+      "bytes": 474,
+      "sha256": "7a5d6fa32efa2ec72cc41dd123582c7b9b2ed0680d8b1cae9a4b6888b28009d7",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-all-faces-760.ax.txt",
+      "bytes": 19679,
+      "sha256": "7f8fc1aff0c8505bb904f5326fe1bbfb37952d5c221df2658935402cb0101c96",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-all-faces-760.png",
+      "bytes": 277054,
+      "sha256": "dad72e74705c11cb20383388fa62636778ca1f2362f4b4ece19ff2e7b462b69e",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-all-faces-gote-760-layout.json",
+      "bytes": 474,
+      "sha256": "7a5d6fa32efa2ec72cc41dd123582c7b9b2ed0680d8b1cae9a4b6888b28009d7",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-all-faces-gote-760.ax.txt",
+      "bytes": 19694,
+      "sha256": "0b1422e14aff5f0391c4ab1eaf537f7f7062aec9b118eaa484d6c9e699334999",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-all-faces-gote-760.png",
+      "bytes": 277150,
+      "sha256": "a8c4b7cf714a5be9d629ea0ca298f345646478a1386ebd7591a73e3583462288",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-all-faces-history-gote-proposed-960x1000-layout.json",
+      "bytes": 474,
+      "sha256": "18b72beedc323ad168d7ad7700e481d900e600c7e5e8edfc92cf89557d254407",
+      "capture_group": "tall_proposal_capture_build"
+    },
+    {
+      "name": "muller-all-faces-history-gote-proposed-960x1000.ax.txt",
+      "bytes": 19709,
+      "sha256": "e55072d87f9fa4eabe4553ea48cb7fe1db993578a2c54ff523b036d2043cd96c",
+      "capture_group": "tall_proposal_capture_build"
+    },
+    {
+      "name": "muller-all-faces-history-gote-proposed-960x1000.png",
+      "bytes": 491949,
+      "sha256": "8895ddc6a2d222da3aa3b4a36899d171662613584da48481aee911e714e55e67",
+      "capture_group": "tall_proposal_capture_build"
+    },
+    {
+      "name": "muller-all-faces-history-proposed-960x1000-layout.json",
+      "bytes": 474,
+      "sha256": "18b72beedc323ad168d7ad7700e481d900e600c7e5e8edfc92cf89557d254407",
+      "capture_group": "tall_proposal_capture_build"
+    },
+    {
+      "name": "muller-all-faces-history-proposed-960x1000.ax.txt",
+      "bytes": 19711,
+      "sha256": "12db5211f20c4d5e27dcb780bc4c6777e58fce86d3d5f3c28148d10af7eddfe9",
+      "capture_group": "tall_proposal_capture_build"
+    },
+    {
+      "name": "muller-all-faces-history-proposed-960x1000.png",
+      "bytes": 496319,
+      "sha256": "49409dda657adcd06f02fb9a353ffb7cf29697e994b28b3f48c1bbb6c7a19de4",
+      "capture_group": "tall_proposal_capture_build"
+    },
+    {
+      "name": "muller-all-faces-proposed-960x1000-layout.json",
+      "bytes": 473,
+      "sha256": "3e15be3009b1c92a098dc13e4fd4825af8d430bf1c5abe1d29bb2800c68152e7",
+      "capture_group": "tall_proposal_capture_build"
+    },
+    {
+      "name": "muller-all-faces-proposed-960x1000.ax.txt",
+      "bytes": 19720,
+      "sha256": "dc7e9b8472f43034cc8b8696370c6a8093e23298ab593acea6c68373d734e505",
+      "capture_group": "tall_proposal_capture_build"
+    },
+    {
+      "name": "muller-all-faces-proposed-960x1000.png",
+      "bytes": 529058,
+      "sha256": "f90ea5bb0c1dfa60659aafcb9ec26f0ba1ecb4c985fb4621267fb10a378b3ecc",
+      "capture_group": "tall_proposal_capture_build"
+    },
+    {
+      "name": "muller-area-burn-partial-1180-layout.json",
+      "bytes": 470,
+      "sha256": "e06a1da7436dfe3aafa7896bfc21e33395de458f86ab574926105eb611b53c97",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-area-burn-partial-1180.ax.txt",
+      "bytes": 18701,
+      "sha256": "d59d5c0d8e57307a9476b4d073528862b0ea207c9197ece670443af801f533e7",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-area-burn-partial-1180.png",
+      "bytes": 356546,
+      "sha256": "6ffaf23bbc45b2524431fb6d4af0bc62355d5264ad763d4783c7d7426747484c",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-burn-accessible-effects-final-1180-layout.json",
+      "bytes": 470,
+      "sha256": "d0ed7fac51ec95e75a94a946f0bfe88f6e3f3616d699ed3ed4a4fc1e10c8d1ce",
+      "capture_group": "reviewed_accessibility_desktop_tree"
+    },
+    {
+      "name": "muller-burn-accessible-effects-final-1180.ax.txt",
+      "bytes": 18444,
+      "sha256": "563b951d30140adc39e5fe7d0958c57d74b8dab3020e9ff6a202fd0712be9538",
+      "capture_group": "reviewed_accessibility_desktop_tree"
+    },
+    {
+      "name": "muller-burn-accessible-effects-final-1180.png",
+      "bytes": 352872,
+      "sha256": "a42064c9a014e70e6687132e52690da6ad111b300deee6a9c6be7073cd620a8e",
+      "capture_group": "reviewed_accessibility_desktop_tree"
+    },
+    {
+      "name": "muller-burn-demon-death-1180-layout.json",
+      "bytes": 470,
+      "sha256": "d0ed7fac51ec95e75a94a946f0bfe88f6e3f3616d699ed3ed4a4fc1e10c8d1ce",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-burn-demon-death-1180.ax.txt",
+      "bytes": 18404,
+      "sha256": "6aa4c7a528c2541f8207b0d561e1646caec70ae36d75148687d1631157651ac9",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-burn-demon-death-1180.png",
+      "bytes": 353834,
+      "sha256": "7a1c7cdf0b1a52475bcbd7771deb235088b602f2a0285195465f6ed093a689e2",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-burn-demon-death-760-layout.json",
+      "bytes": 473,
+      "sha256": "c97f75237182229478de657a6ee6693dc90dd49bdcf043d2feb4cd071b7dfcde",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-burn-demon-death-760.ax.txt",
+      "bytes": 18361,
+      "sha256": "f3437be5ab6c76d512b32b50c28c1b0ddbcad22ce330a8f150d55a2e8e46c6d2",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-burn-demon-death-760.png",
+      "bytes": 241706,
+      "sha256": "a1892d005b0e537d89c373410c0144c3a44f6fdf8f13400123599a767c2c8de2",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-human-engine-gote-view-1180-layout.json",
+      "bytes": 471,
+      "sha256": "631d5f45a5a1542269703aa221d4ad10f801829172ebef2b7672dfa5e52b28ed",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-human-engine-gote-view-1180.ax.txt",
+      "bytes": 20113,
+      "sha256": "d85b20ee36833d302e33e07fddfe2bcc17c0da4127b66b50f8cd003415adc7bd",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-human-engine-gote-view-1180.png",
+      "bytes": 519870,
+      "sha256": "2b6fd06b64ef53af625497e4069d4730dfd8d6f8ffbad30fa0847bdd3ec00dc9",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-igui-accessible-effects-final-1180-layout.json",
+      "bytes": 467,
+      "sha256": "169d44ee6fad35feb1c7026ae2476e1e3fb70692e068e92e507562cf91466922",
+      "capture_group": "reviewed_accessibility_desktop_tree"
+    },
+    {
+      "name": "muller-igui-accessible-effects-final-1180.ax.txt",
+      "bytes": 18506,
+      "sha256": "e5a98d8371fdc25ee2ebf02eda7ac484127023149e5ba4ad6a7ca528fdf809ba",
+      "capture_group": "reviewed_accessibility_desktop_tree"
+    },
+    {
+      "name": "muller-igui-accessible-effects-final-1180.png",
+      "bytes": 351329,
+      "sha256": "ddc6b0bf931616df6ebb492c759f50740a9e659c84f8299e31112a6f4381f3ca",
+      "capture_group": "reviewed_accessibility_desktop_tree"
+    },
+    {
+      "name": "muller-igui-completed-1180.ax.txt",
+      "bytes": 18432,
+      "sha256": "d7c356ed28051b74d1917678fd0f9667639bb908f54425cf2bba05ad1ef7282e",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-igui-completed-1180.png",
+      "bytes": 351339,
+      "sha256": "4ac57d664c56503a60dd2de4682c9a4f3bc2579161a34af410f2686de35a28bc",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-igui-completed-760.png",
+      "bytes": 241690,
+      "sha256": "fdfa120a25b5b94f9691d007a5544a6d29f78e3e0172f8d15dc461bba47cf88c",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-igui-completed-confirmed-1180-layout.json",
+      "bytes": 467,
+      "sha256": "169d44ee6fad35feb1c7026ae2476e1e3fb70692e068e92e507562cf91466922",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-igui-completed-confirmed-1180.ax.txt",
+      "bytes": 18432,
+      "sha256": "d7c356ed28051b74d1917678fd0f9667639bb908f54425cf2bba05ad1ef7282e",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-igui-completed-confirmed-1180.png",
+      "bytes": 351088,
+      "sha256": "10fcc5239e4c0f2bbfcd98537328f3323af10457e90d2770f65e2d95e3be0455",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-igui-target-selection-1180-layout.json",
+      "bytes": 467,
+      "sha256": "e258c493f31d2a1d9c35fac9f424ea3215c814384150508f5f142e3c6323cd03",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-igui-target-selection-1180.ax.txt",
+      "bytes": 19274,
+      "sha256": "4958347a3308fdc27705b459f4e4f8faa0c1e480ec5911742a8230ae7e48ed97",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-igui-target-selection-1180.png",
+      "bytes": 363700,
+      "sha256": "12b2fb0e5fb1017a88795ba247ab6a53b76acfd2869ccc2657915744c4f46da5",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-native-outcome-760.png",
+      "bytes": 243991,
+      "sha256": "e9bc7a72164e46c336baacd8ada7d92a1c1567cc5e2f56e4536e7aa5c0f1c877",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-native-resignation-outcome-1180-layout.json",
+      "bytes": 467,
+      "sha256": "169d44ee6fad35feb1c7026ae2476e1e3fb70692e068e92e507562cf91466922",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-native-resignation-outcome-1180.ax.txt",
+      "bytes": 18622,
+      "sha256": "c2ebccc0dc4914e1baa1a19a84ff5364d5d63c2c57a60c44f4f636dd7a67b3c8",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-native-resignation-outcome-1180.png",
+      "bytes": 351251,
+      "sha256": "20dcbcbe017db4c2363eee50477ed8ddef29238aa69251cedfd621e3c6461a0e",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-readonly-analysis-gote-view-1180-layout.json",
+      "bytes": 471,
+      "sha256": "631d5f45a5a1542269703aa221d4ad10f801829172ebef2b7672dfa5e52b28ed",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-readonly-analysis-gote-view-1180.ax.txt",
+      "bytes": 20654,
+      "sha256": "8b1549221397b9beca0db2af85eeeb8690b6cb3859df7a0af5d5463631d7d8fa",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-readonly-analysis-gote-view-1180.png",
+      "bytes": 526307,
+      "sha256": "6d282b1b1cbc37528661a242b91faeb5a05af9dd50099f671cb3b702695b618a",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-readonly-inspection-gote-view.ax.txt",
+      "bytes": 20284,
+      "sha256": "fc03275a651e6f2dc5bd27540dd0995cd6f8c05bbedb2689f7d1a7c3c1f4b9a0",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-readonly-inspection-gote-view.png",
+      "bytes": 522833,
+      "sha256": "177fbcf5d6fddd932164f59f360c304067ff9d5efc3bd76c28f935eda755383d",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-standard-1180-layout.json",
+      "bytes": 471,
+      "sha256": "af11a32a463c97e6cccaeea00f600ecb2ada592247b1709bcfb5fbddf4f95ab5",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-standard-1180.ax.txt",
+      "bytes": 19790,
+      "sha256": "2dd592975d0b7a520ef307ee5347586da384cae8b8a25b4636031bebd87e9319",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-standard-1180.png",
+      "bytes": 522767,
+      "sha256": "0792d63a19958837ce1014da8234baad49ffa445d6c1e931fb0d59921f84d9a5",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-standard-760-layout.json",
+      "bytes": 474,
+      "sha256": "93f4bd3380c61a56758867f5a9d92f378e41045092ff4e0ee54e92df6c86a733",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-standard-760.ax.txt",
+      "bytes": 19826,
+      "sha256": "5ac59c7bd4f97afc12872a4c9aa2aba8b6f608463b27fa421d3a5824584cfad1",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-standard-760.png",
+      "bytes": 327915,
+      "sha256": "5f4a22117ab37f480b06adca5674cd3f32858c6ef509601f1e9b814b88dd1b84",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-standard-960-layout.json",
+      "bytes": 475,
+      "sha256": "53e0f909da508c45fbd5c256a6dee3141dc4edafde4e25e911151664ca34121f",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-standard-960.ax.txt",
+      "bytes": 19826,
+      "sha256": "296f7f9aea732c10a2e1ca977143dc3665777d11fe73d44ab355460beccabe17",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-standard-960.png",
+      "bytes": 429661,
+      "sha256": "19e3df2c66f12608dc1a4f50ea5a9fdb37d317e35140126c4db112b840adc41b",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-standard-gote-1180-layout.json",
+      "bytes": 471,
+      "sha256": "af11a32a463c97e6cccaeea00f600ecb2ada592247b1709bcfb5fbddf4f95ab5",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-standard-gote-1180.ax.txt",
+      "bytes": 19856,
+      "sha256": "1559cf5871202e5c4315d4473cfd08e9a9a7699462529770563da3ebb788c127",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-standard-gote-1180.png",
+      "bytes": 528786,
+      "sha256": "9940e03f7bc44bd37567e3741bc4758f660c433ff618d2df4d9321d05b4e5e9a",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-standard-gote-760-layout.json",
+      "bytes": 474,
+      "sha256": "93f4bd3380c61a56758867f5a9d92f378e41045092ff4e0ee54e92df6c86a733",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-standard-gote-760.ax.txt",
+      "bytes": 19841,
+      "sha256": "3ae3ed76aecb6fa0bb367453b1954f12926674b1aa1d2e284aa4dc38e4712804",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-standard-gote-760.png",
+      "bytes": 329798,
+      "sha256": "da25ad197214962aaee69f113e32650ddb7f92d87598844d5e6bc955270b41a9",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-standard-gote-960-layout.json",
+      "bytes": 475,
+      "sha256": "53e0f909da508c45fbd5c256a6dee3141dc4edafde4e25e911151664ca34121f",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-standard-gote-960.ax.txt",
+      "bytes": 19824,
+      "sha256": "cd16481dafc4a8c877bd31634271e854dd42c6ebfacdacd168d4e7f833aa170c",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "muller-standard-gote-960.png",
+      "bytes": 429898,
+      "sha256": "138aa1bfbb61fe3ca8e1d7e5d531dff6b9aed23a42159b2482c658e8398ba86d",
+      "capture_group": "initial_compact_strip"
+    },
+    {
+      "name": "superseded-large-qa-strip-adams-standard-1180-layout.ax.txt",
+      "bytes": 1246,
+      "sha256": "5fadc9a9f0a14ffbdf86c72e54bbb1aed723e0b9c9eb2446e00d77980c98f5bc",
+      "capture_group": "superseded_large_strip"
+    },
+    {
+      "name": "superseded-large-qa-strip-adams-standard-1180-layout.json",
+      "bytes": 479,
+      "sha256": "aa5165df9ac9faa9e2bd133ee4e4d7bcc6232d6d3fa9b43a90388855f914d02e",
+      "capture_group": "superseded_large_strip"
+    },
+    {
+      "name": "superseded-large-qa-strip-adams-standard-1180.ax.txt",
+      "bytes": 19796,
+      "sha256": "168594a0704e943937fb26ed8f0ee4bb43e2fb290405d10cedb4eb0fa50a8ef6",
+      "capture_group": "superseded_large_strip"
+    },
+    {
+      "name": "superseded-large-qa-strip-adams-standard-1180.png",
+      "bytes": 508359,
+      "sha256": "d8d85f94f26f8aa70a8d0505eafec9813c472ba6b919004204ffed554486094e",
+      "capture_group": "superseded_large_strip"
+    }
+  ],
+  "accessibility_capture_matches_exact_committed_package_files": true
+}

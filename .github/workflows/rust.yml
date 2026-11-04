@@ -19,10 +19,10 @@ jobs:
       matrix:
         os: [ubuntu-24.04, macos-15, windows-2022]
     runs-on: ${{ matrix.os }}
-    # Windows debug validation of the complete 16 MiB Full-proof document runs
-    # after the workspace suite. Preserve that test and its product work limits;
-    # allow the CI job enough time to finish both suites on hosted runners.
-    timeout-minutes: 25
+    # Required predecessor run41816309261 used24m19s on Windows before MSH-79's
+    # additional two-profile document/controller and fixture checks. Preserve all
+    # suites and product limits; this is only the hosted-job completion budget.
+    timeout-minutes: 30
     defaults:
       run:
         shell: bash
@@ -50,6 +50,7 @@ jobs:
           cargo run --locked -p mshogi-desktop-session --example write_frontend_fixtures -- desktop/src/__fixtures__
           cargo run --locked -p mshogi-desktop-session --features desktop-verification --example write_tori_frontend_fixtures -- desktop/src/__fixtures__
           cargo run --locked -p mshogi-desktop-session --features desktop-verification --example write_chu_frontend_fixtures -- desktop/src/__fixtures__
+          cargo run --locked -p mshogi-desktop-session --features desktop-verification --example write_tenjiku_frontend_fixtures -- desktop/src/__fixtures__
           git diff --exit-code -- desktop/src/__fixtures__
       - name: Build
         run: cargo build --workspace --locked

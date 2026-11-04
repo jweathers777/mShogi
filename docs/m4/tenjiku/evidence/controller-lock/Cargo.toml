@@ -1,0 +1,15 @@
+[package]
+name = "mshogi-tenjiku-controller-lock-probe"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[workspace]
+
+[[bin]]
+name = "mshogi-tenjiku-controller-lock-probe"
+path = "main.rs"
+
+[dependencies]
+mshogi-desktop-session = { path = "../../../../../crates/mshogi-desktop-session", features = ["desktop-verification"] }
+serde_json = "=1.0.145"

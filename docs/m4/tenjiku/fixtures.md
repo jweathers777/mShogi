@@ -6,7 +6,11 @@ labelled documentary/property annotations and17 later consumer obligations.
 All350 apply to both selected profiles with independently tagged expected values;
 this is not700 distinct positions. There are1018 top-level expected fields per
 profile, including explanations/annotations: **not1018 executed assertions**.
-Native Tenjiku is **0 executed/0 passed**, pending MSH-87.
+At MSH-83 completion, native Tenjiku was **0 executed/0 passed**. MSH-87 now
+executes all204 native rows with621 expected-field assertions perprofile and
+zero failures. The129 annotations and17 future-consumer rows remain separate
+accounting categories; see[native evidence](native-verification.json) and the
+[native contract](native-v1.md). Frozen expectation bytes are unchanged.
 
 [Profile data](profile.json) preserves156 setup placements,36 originals,30
 once-only promotion pairs and44 named movement faces. Fixture coordinates use

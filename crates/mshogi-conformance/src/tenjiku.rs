@@ -87,6 +87,7 @@ mod tests {
     fn frozen_two_profile_admission_rejects_mutations() {
         assert_eq!(Corpus::embedded().unwrap().fixtures().len(), 350);
         for text in [
+            FIXTURES.replace('\n', "\r\n"),
             FIXTURES.replacen("ratified", "native_passed", 1),
             FIXTURES.replacen("\"schema\":", "\"schema\":0,\"schema\":", 1),
             format!("{FIXTURES}{{}}"),

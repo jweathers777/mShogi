@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-04T10:36:00Z'
+updated_date: '2026-11-04T10:44:00Z'
 labels:
   - m4
   - owner-msh-44
@@ -74,4 +74,8 @@ Ready refinement completed by83: independent handoff/contract review confirms on
 Startup4November2026: clean primary codex/rewritea7f9205 after unrelated historical-access documentation integration; origin configuredgithub:jweathers777/mShogi.git, existingfourotherworktrees preserved. No InProgress/InReview owner; @codex sole integrator. PinnedBacklog1.55.1 verified, global1.55.0 not used for writes. Both ratified profile/corpus data remain fixed. Isolated native local-state/rules and record/diagnostic file ownership may be delegated; root owns Game/integration/conformance; fresh review remains read-only and independent. No87child hierarchy,79/44implementation or historical research campaign.
 
 Native checkpointsA–Dsource complete: public two-profile Tenjiku state/local actions/effects/Game/history/strict schema1/reversal/perft; frozen204rows/621native expected fields perprofile allpass,129annotations/17consumer rows explicitlyexcluded. Current core+conformance regressions373pass/0fail/2existingignored, native41 and externalconsumer2 included; fmt/workspacealltargetsClippy/standalonehostcheck pass. Fresh independent source/adapters/capacity/consumer review passes with material findingsresolved. Native1MiB/1024events/512Munits plus actual eight-actor-combination Stop→Resign→Stop and runtime ending reserve. Release128plies bothprofiles and1021event controls pass; Adams1021boardplies557612B/299287458units/3.264s replay, fullprocess40.3MBRSS. See docs/m4/tenjiku/native-v1.md and native-verification.json; exact-source threeplatform RustCI and final reconciliation stillpending, AC1–3/DoD unchecked. No79/44 implementation or normal activation.
+
+Reviewed native source integrated/pushed on codex/rewrite5786e5950a0185359f9ed5c3c4ae758448832622. One required RustworkspaceCI campaign41815468988 (https://github.com/jweathers777/mShogi/actions/runs/41815468988) is running exactsource; required Ubuntu24.04/macOS15/Windows2022 jobs. One completion-aware ghwatch monitor; automatically triggered Desktoppackages41815468887cancelled as outside native-only scope. Fresh reviewer reconciled17sourcehashes,5rawmetrics/RSS,actual373pass0fail2ignored andnativeassertion accounting, preCIacceptancepasses no materialopenfinding. Native sourcefrozen; only CI/evidence/backlog finalization remains. SSHfetchpublickeyfailure handled with per-command authenticatedHTTPS withoutremotechange; initialGitHubpush500 normalretry succeeded. AC1–3/DoD remainunchecked untilrequiredCI/finalacceptance.
+
+CI41815468988 at5786e59 found Windows fixture hash mismatch before native tests: Tenjiku JSON lacked existing Tori/Chu .gitattributes LF policy, so checkout converted reviewed bytes toCRLF. Preserve Windowsfailure/log/provenance; cancelled superseded Ubuntu/macOS jobs, no platformsuccess claimed. Bounded correction pins fixtures/profile text eol=lf and explicitly adds CRLF-rejection loader mutation; no expectationbytes/hash/rule/nativecode change. Focused1test, fmt and conformanceClippy pass; independent reviewer verifiesattrs/hashes/negative test and accepts correction. Corrected exact-source3platform campaign required; task remainsInReview uncheckedAC1–3/DoD. Structured native-verification.json retains initialsource/campaign and reusedunchangednative measurements.
 <!-- SECTION:NOTES:END -->

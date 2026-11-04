@@ -4,7 +4,7 @@ title: Deliver complete tenjiku shogi rules and functional product integration
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-04T10:36:00Z'
+updated_date: '2026-11-04T11:27:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -22,6 +22,7 @@ documentation:
   - docs/m4/tenjiku/README.md
   - docs/m4/tenjiku/handoff.md
   - docs/m4/tenjiku/native-v1.md
+  - docs/m4/tenjiku/native-verification.json
 ordinal: 44000
 ---
 
@@ -63,4 +64,6 @@ Owner2026-11-01 testing-policy supersession: rules-profile-derived independently
 MSH83 ratifies two owner-selected whole Tenjiku profiles rather than one universal convention. Complete delivery retains all original8AC and DoD: actual native/shared handoff87/79, functional search/supervision and complete console/notation, native-sourced traditional-kanji16x16 board, two named New Game profile choices, actual playable/save/history/analysis/recovery/platform evidence. Profile is immutable within game; Load preserves identity and fresh New may select other profile. No normal unsupported selector activation, game implementation, M5strength claim or scope closure occurs in83. See currentprofile/corpus/decisions/handoff; no new planning hierarchy/dependency.
 
 MSH87actual native handoff implements both immutable modernprofiles and source-derived complete actions/effects/Game/history/schema1/exactreversal/conformance; review/evidence docs/m4/tenjiku/native-v1.md and native-verification.json. Native source is not finished product:79stillowns shared/session/frontend/whole-document admission and selected-profile New Game,44retains functional history-aware evaluation/search, completeconsole/notation, actual engine journeys, traditional-kanji/promoted-face assets and final16x16playable delivery. No normal selector or Tenjiku engine advertised; no44implementation started. Original complete-game acceptance criteria remainunchecked and unchanged.
+
+87nativehand offDone at9749eec, independentacceptance and exact-source Ubuntu/macOS/Windows RustCI41816309261success. Bothwholeprofiles complete native actions/effects/history/records/reversal/conformance delivered; 204rows/621fields perprofilepassed,0failed.79nowReady foractualsharedconsumer but unstarted. Original44completeproductcriteria remainunchanged/unchecked: functionalnativeevaluation/search, console/notation, actualenginejourneys, traditional-kanji/promotedassets andfinal16x16playablepresentation remain44work. Native1MiB/1024events/512Munits andmeasuredcosts do not establishwhole-desktop or15secondworkeracceptance. Noengineadvertisement ornormalgameselectoractivation in87.
 <!-- SECTION:NOTES:END -->

@@ -160,3 +160,15 @@ MSH-44 retains functional history-aware search/evaluation, console and complete
 notation, actual engine journeys, traditional-kanji/promoted-face assets and final
 16×16 playable presentation. M5 playing strength and final six-game/platform
 acceptance remain separate. MSH-87 stops at native delivery.
+
+## Acceptance revision
+
+Native implementation `5786e59`, with LF-checkout correction `9749eec`, is
+independently accepted under MSH-87. The exact latter source passed every required
+Ubuntu24.04, macOS15 and Windows2022 step in the
+[Rust campaign](https://github.com/jweathers777/mShogi/actions/runs/41816309261).
+The verification record preserves the initial Windows checkout failure and the
+known MSH-112 Ubuntu runner race before its unchanged-source retry. MSH-112 is
+unfixed; a passing retry does not establish a correction. Documentation-only
+closure reuses the tested source and its measurements. MSH-79 is Ready and
+unstarted; MSH-44's complete playable delivery remains open.

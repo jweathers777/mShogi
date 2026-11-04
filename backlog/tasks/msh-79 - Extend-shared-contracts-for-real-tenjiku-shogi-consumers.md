@@ -4,7 +4,7 @@ title: Extend shared contracts for real tenjiku shogi consumers
 status: To Do
 assignee: []
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-26T07:44:00Z'
+updated_date: '2026-11-04T09:19:00Z'
 labels:
   - m4
   - owner-msh-46
@@ -22,6 +22,8 @@ references:
 documentation:
   - docs/m4/implementation-map.md
   - docs/m4/delivery-plan.md
+  - docs/m4/tenjiku/handoff.md
+  - docs/m4/tenjiku/profile.md
 type: task
 ordinal: 79000
 ---
@@ -51,3 +53,9 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MSH83 two-profile handoff: preserve selected native profile/edition through New root, record/envelope, execution/observation and inspection/history. Existing shared_new_game game-only profile inference and side(NativeSide) hardcoded profile-qualified presentation keys need bounded extensions for two Tenjiku profiles. Immutable profile-to-document binding plus full native context protects tokens; adding a profile token field is an implementation choice. Both-direction same-board cross-profile rejection and intentional fresh New versus in-place mutation are separate expected consumers. Add real native-derived burn/royal/complete-route projections without frontend rules or second controller/envelope/shell. Measure whole retained record/observation/branch/history/install/ending-Close admission and inspection costs against actual87; no Chu default constants silently inherited. Remains ToDo until actual native87 handoff can be inspected; originalcriteria/dependencies unchanged, no implementation begun.
+<!-- SECTION:NOTES:END -->

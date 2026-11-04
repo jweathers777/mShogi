@@ -1,3 +1,11 @@
+> Current Tenjiku source reconciliation — MSH-83,2026-11-04:
+> [two selected modern profiles](tenjiku/README.md) preserve actual Adams/Muller
+> differences and explicit general-game supplements. Historical catalogue,
+> translation and edition qualifications remain in the earlier research record;
+> unavailable1694/1696 texts are not a modern-playable acquisition prerequisite.
+> Native87/shared79/product44 remain implementation work. Dated inventories below
+> retain their original observations, including then-unavailable source fetches.
+
 > **Owner testing-policy correction2026-11-01:** all six games must be independently
 > verifiable under the [project conformance policy](../testing/conformance-policy.md).
 > External game engines are optional investigations, never ordinary test/CI/

@@ -1,0 +1,23 @@
+{
+  "data_validation": "PASS",
+  "rows": 350,
+  "scope_rows": {
+    "native": 204,
+    "annotation": 129,
+    "consumer": 17
+  },
+  "rotated_rows": 44,
+  "expected_top_level_fields_by_profile": {
+    "mshogi.tenjiku.adams1999-modern.v1": 1018,
+    "mshogi.tenjiku.muller-completed.v1": 1018
+  },
+  "native_executed": 0,
+  "native_passed": 0,
+  "native_owner": "MSH-87",
+  "consumer_owners": [
+    "MSH-79",
+    "MSH-44"
+  ],
+  "note": "Counts include documentary annotations, not executable native assertions.",
+  "audit_hashes": "PASS"
+}

@@ -1,3 +1,12 @@
+> MSH-83 modern Tenjiku handoff,2026-11-04: the owner selected support for both
+> [Adams1999 Modern and Muller completed profiles](tenjiku/README.md), with distinct
+> immutable identities,350 independently reviewed data rows and native0executed/
+> 0passed. The [direct handoff](tenjiku/handoff.md) prepares87 as one bounded native
+> implementation task with internal checkpoints, then79shared and44complete game
+> delivery. No historical acquisition or external-engine gate, new child hierarchy,
+> preliminary refactor or game implementation follows from this profile task.
+> Earlier planning/status snapshots below retain their historical scope.
+
 > MSH-43 Done — complete fifth-game delivery: owner visual approval is recorded;
 > Chu is normally playable as the fifth game through the accepted application
 > owners. [Final reconciliation](chu/delivery-review.md) distinguishes actual

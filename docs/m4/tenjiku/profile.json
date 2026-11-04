@@ -1,0 +1,2793 @@
+{
+  "schema": "mshogi.tenjiku.profile-data.v1",
+  "status": "ratified",
+  "revision": "MSH83-2026-11-04",
+  "selection_authority": "Owner2026-11-04: support selecting different rules, choose options1or2; two complete immutable profiles, not independent switches.",
+  "profiles": [
+    {
+      "id": "mshogi.tenjiku.adams1999-modern.v1",
+      "edition": "ADAMS1999-MODERN+MSH83-2026-11-04",
+      "basis": "A main chapters1/3, Modern Lion Hawk",
+      "overrides": {}
+    },
+    {
+      "id": "mshogi.tenjiku.muller-completed.v1",
+      "edition": "MULLER+ADAMS-COMPLETION+MSH83-2026-11-04",
+      "basis": "M Tenjiku movement/burn description, explicit Adams-sourced general-game supplements",
+      "overrides": {
+        "FEg": "queen rays plus one/two diagonal steps, capture at each; no orthogonal leap",
+        "HT": "skip first square; diagonal/vertical rays from distance2; horizontal distance2 or3; adjacent igui",
+        "FiD": "if moving demon dies adjacent enemy demon, no bystander burn",
+        "ranked_destination": "after an actual jump only King/Prince prohibited as victim; any nonroyal general may be captured"
+      }
+    }
+  ],
+  "board": {
+    "files": 16,
+    "ranks": 16,
+    "topology": "squares",
+    "sente_forward_rank_delta": -1
+  },
+  "initial_board": [
+    {
+      "side": "sente",
+      "piece": "L",
+      "at": [
+        16,
+        16
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "N",
+      "at": [
+        15,
+        16
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "FL",
+      "at": [
+        14,
+        16
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "I",
+      "at": [
+        13,
+        16
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "C",
+      "at": [
+        12,
+        16
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "S",
+      "at": [
+        11,
+        16
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "G",
+      "at": [
+        10,
+        16
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "K",
+      "at": [
+        9,
+        16
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "DE",
+      "at": [
+        8,
+        16
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "G",
+      "at": [
+        7,
+        16
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "S",
+      "at": [
+        6,
+        16
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "C",
+      "at": [
+        5,
+        16
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "I",
+      "at": [
+        4,
+        16
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "FL",
+      "at": [
+        3,
+        16
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "N",
+      "at": [
+        2,
+        16
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "L",
+      "at": [
+        1,
+        16
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "RC",
+      "at": [
+        16,
+        15
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "ChS",
+      "at": [
+        14,
+        15
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "ChS",
+      "at": [
+        13,
+        15
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "BT",
+      "at": [
+        11,
+        15
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "Ky",
+      "at": [
+        10,
+        15
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "Ln",
+      "at": [
+        9,
+        15
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "FK",
+      "at": [
+        8,
+        15
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "Ph",
+      "at": [
+        7,
+        15
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "BT",
+      "at": [
+        6,
+        15
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "ChS",
+      "at": [
+        4,
+        15
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "ChS",
+      "at": [
+        3,
+        15
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "RC",
+      "at": [
+        1,
+        15
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "SSo",
+      "at": [
+        16,
+        14
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "VSo",
+      "at": [
+        15,
+        14
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "B",
+      "at": [
+        14,
+        14
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "DH",
+      "at": [
+        13,
+        14
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "DK",
+      "at": [
+        12,
+        14
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "WBf",
+      "at": [
+        11,
+        14
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "FiD",
+      "at": [
+        10,
+        14
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "LHk",
+      "at": [
+        9,
+        14
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "FEg",
+      "at": [
+        8,
+        14
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "FiD",
+      "at": [
+        7,
+        14
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "WBf",
+      "at": [
+        6,
+        14
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "DK",
+      "at": [
+        5,
+        14
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "DH",
+      "at": [
+        4,
+        14
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "B",
+      "at": [
+        3,
+        14
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "VSo",
+      "at": [
+        2,
+        14
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "SSo",
+      "at": [
+        1,
+        14
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "SM",
+      "at": [
+        16,
+        13
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "VM",
+      "at": [
+        15,
+        13
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "R",
+      "at": [
+        14,
+        13
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "HF",
+      "at": [
+        13,
+        13
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "SE",
+      "at": [
+        12,
+        13
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "BGn",
+      "at": [
+        11,
+        13
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "RGn",
+      "at": [
+        10,
+        13
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "GGn",
+      "at": [
+        9,
+        13
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "VGn",
+      "at": [
+        8,
+        13
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "RGn",
+      "at": [
+        7,
+        13
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "BGn",
+      "at": [
+        6,
+        13
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "SE",
+      "at": [
+        5,
+        13
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "HF",
+      "at": [
+        4,
+        13
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "R",
+      "at": [
+        3,
+        13
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "VM",
+      "at": [
+        2,
+        13
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "SM",
+      "at": [
+        1,
+        13
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "P",
+      "at": [
+        16,
+        12
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "P",
+      "at": [
+        15,
+        12
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "P",
+      "at": [
+        14,
+        12
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "P",
+      "at": [
+        13,
+        12
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "P",
+      "at": [
+        12,
+        12
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "P",
+      "at": [
+        11,
+        12
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "P",
+      "at": [
+        10,
+        12
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "P",
+      "at": [
+        9,
+        12
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "P",
+      "at": [
+        8,
+        12
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "P",
+      "at": [
+        7,
+        12
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "P",
+      "at": [
+        6,
+        12
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "P",
+      "at": [
+        5,
+        12
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "P",
+      "at": [
+        4,
+        12
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "P",
+      "at": [
+        3,
+        12
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "P",
+      "at": [
+        2,
+        12
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "P",
+      "at": [
+        1,
+        12
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "Dg",
+      "at": [
+        12,
+        11
+      ]
+    },
+    {
+      "side": "sente",
+      "piece": "Dg",
+      "at": [
+        5,
+        11
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "L",
+      "at": [
+        1,
+        1
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "N",
+      "at": [
+        2,
+        1
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "FL",
+      "at": [
+        3,
+        1
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "I",
+      "at": [
+        4,
+        1
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "C",
+      "at": [
+        5,
+        1
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "S",
+      "at": [
+        6,
+        1
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "G",
+      "at": [
+        7,
+        1
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "K",
+      "at": [
+        8,
+        1
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "DE",
+      "at": [
+        9,
+        1
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "G",
+      "at": [
+        10,
+        1
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "S",
+      "at": [
+        11,
+        1
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "C",
+      "at": [
+        12,
+        1
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "I",
+      "at": [
+        13,
+        1
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "FL",
+      "at": [
+        14,
+        1
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "N",
+      "at": [
+        15,
+        1
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "L",
+      "at": [
+        16,
+        1
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "RC",
+      "at": [
+        1,
+        2
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "ChS",
+      "at": [
+        3,
+        2
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "ChS",
+      "at": [
+        4,
+        2
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "BT",
+      "at": [
+        6,
+        2
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "Ky",
+      "at": [
+        7,
+        2
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "Ln",
+      "at": [
+        8,
+        2
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "FK",
+      "at": [
+        9,
+        2
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "Ph",
+      "at": [
+        10,
+        2
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "BT",
+      "at": [
+        11,
+        2
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "ChS",
+      "at": [
+        13,
+        2
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "ChS",
+      "at": [
+        14,
+        2
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "RC",
+      "at": [
+        16,
+        2
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "SSo",
+      "at": [
+        1,
+        3
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "VSo",
+      "at": [
+        2,
+        3
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "B",
+      "at": [
+        3,
+        3
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "DH",
+      "at": [
+        4,
+        3
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "DK",
+      "at": [
+        5,
+        3
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "WBf",
+      "at": [
+        6,
+        3
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "FiD",
+      "at": [
+        7,
+        3
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "LHk",
+      "at": [
+        8,
+        3
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "FEg",
+      "at": [
+        9,
+        3
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "FiD",
+      "at": [
+        10,
+        3
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "WBf",
+      "at": [
+        11,
+        3
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "DK",
+      "at": [
+        12,
+        3
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "DH",
+      "at": [
+        13,
+        3
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "B",
+      "at": [
+        14,
+        3
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "VSo",
+      "at": [
+        15,
+        3
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "SSo",
+      "at": [
+        16,
+        3
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "SM",
+      "at": [
+        1,
+        4
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "VM",
+      "at": [
+        2,
+        4
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "R",
+      "at": [
+        3,
+        4
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "HF",
+      "at": [
+        4,
+        4
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "SE",
+      "at": [
+        5,
+        4
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "BGn",
+      "at": [
+        6,
+        4
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "RGn",
+      "at": [
+        7,
+        4
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "GGn",
+      "at": [
+        8,
+        4
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "VGn",
+      "at": [
+        9,
+        4
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "RGn",
+      "at": [
+        10,
+        4
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "BGn",
+      "at": [
+        11,
+        4
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "SE",
+      "at": [
+        12,
+        4
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "HF",
+      "at": [
+        13,
+        4
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "R",
+      "at": [
+        14,
+        4
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "VM",
+      "at": [
+        15,
+        4
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "SM",
+      "at": [
+        16,
+        4
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "P",
+      "at": [
+        1,
+        5
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "P",
+      "at": [
+        2,
+        5
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "P",
+      "at": [
+        3,
+        5
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "P",
+      "at": [
+        4,
+        5
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "P",
+      "at": [
+        5,
+        5
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "P",
+      "at": [
+        6,
+        5
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "P",
+      "at": [
+        7,
+        5
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "P",
+      "at": [
+        8,
+        5
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "P",
+      "at": [
+        9,
+        5
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "P",
+      "at": [
+        10,
+        5
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "P",
+      "at": [
+        11,
+        5
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "P",
+      "at": [
+        12,
+        5
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "P",
+      "at": [
+        13,
+        5
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "P",
+      "at": [
+        14,
+        5
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "P",
+      "at": [
+        15,
+        5
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "P",
+      "at": [
+        16,
+        5
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "Dg",
+      "at": [
+        5,
+        6
+      ]
+    },
+    {
+      "side": "gote",
+      "piece": "Dg",
+      "at": [
+        12,
+        6
+      ]
+    }
+  ],
+  "originals": [
+    "B",
+    "BGn",
+    "BT",
+    "C",
+    "ChS",
+    "DE",
+    "DH",
+    "DK",
+    "Dg",
+    "FEg",
+    "FK",
+    "FL",
+    "FiD",
+    "G",
+    "GGn",
+    "HF",
+    "I",
+    "K",
+    "Ky",
+    "L",
+    "LHk",
+    "Ln",
+    "N",
+    "P",
+    "Ph",
+    "R",
+    "RC",
+    "RGn",
+    "S",
+    "SE",
+    "SM",
+    "SSo",
+    "VGn",
+    "VM",
+    "VSo",
+    "WBf"
+  ],
+  "promotion": {
+    "L": "WH",
+    "N": "SSo",
+    "FL": "B",
+    "I": "VSo",
+    "C": "SM",
+    "S": "VM",
+    "G": "R",
+    "DE": "CP",
+    "RC": "W",
+    "ChS": "HT",
+    "BT": "FS",
+    "Ky": "Ln",
+    "Ln": "LHk",
+    "FK": "FEg",
+    "Ph": "FK",
+    "SSo": "WBf",
+    "VSo": "ChS",
+    "B": "DH",
+    "DH": "HF",
+    "DK": "SE",
+    "WBf": "FiD",
+    "SM": "FB",
+    "VM": "FO",
+    "R": "DK",
+    "HF": "BGn",
+    "SE": "RGn",
+    "BGn": "VGn",
+    "RGn": "GGn",
+    "P": "G",
+    "Dg": "MGn"
+  },
+  "pieces": [
+    {
+      "face": "K",
+      "adams_printed_page": 4,
+      "steps": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "rays": [],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "King"
+    },
+    {
+      "face": "FiD",
+      "adams_printed_page": 12,
+      "steps": [],
+      "rays": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": "area3",
+      "name": "Fire Demon"
+    },
+    {
+      "face": "GGn",
+      "adams_printed_page": 13,
+      "steps": [],
+      "rays": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": "ranked",
+      "name": "Great General"
+    },
+    {
+      "face": "VGn",
+      "adams_printed_page": 14,
+      "steps": [],
+      "rays": [
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": "ranked_area3",
+      "name": "Vice General"
+    },
+    {
+      "face": "RGn",
+      "adams_printed_page": 15,
+      "steps": [],
+      "rays": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": "ranked",
+      "name": "Rook General"
+    },
+    {
+      "face": "BGn",
+      "adams_printed_page": 16,
+      "steps": [],
+      "rays": [
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": "ranked",
+      "name": "Bishop General"
+    },
+    {
+      "face": "LHk",
+      "adams_printed_page": 17,
+      "steps": [],
+      "rays": [
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": "lion",
+      "name": "Lion Hawk"
+    },
+    {
+      "face": "Ln",
+      "adams_printed_page": 19,
+      "steps": [],
+      "rays": [],
+      "jumps": [],
+      "limited_rays": [],
+      "special": "lion",
+      "name": "Lion"
+    },
+    {
+      "face": "WBf",
+      "adams_printed_page": 20,
+      "steps": [],
+      "rays": [
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [
+        {
+          "direction": [
+            0,
+            -1
+          ],
+          "maximum": 2
+        },
+        {
+          "direction": [
+            0,
+            1
+          ],
+          "maximum": 2
+        }
+      ],
+      "special": null,
+      "name": "Water Buffalo"
+    },
+    {
+      "face": "FEg",
+      "adams_printed_page": 21,
+      "steps": [],
+      "rays": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "jumps": [
+        [
+          0,
+          -2
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          -2,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ],
+      "limited_rays": [],
+      "special": null,
+      "name": "Free Eagle"
+    },
+    {
+      "face": "FK",
+      "adams_printed_page": 22,
+      "steps": [],
+      "rays": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Free King"
+    },
+    {
+      "face": "HT",
+      "adams_printed_page": 23,
+      "steps": [],
+      "rays": [],
+      "jumps": [],
+      "limited_rays": [],
+      "special": "tetrarch",
+      "name": "Heavenly Tetrarchs"
+    },
+    {
+      "face": "SE",
+      "adams_printed_page": 24,
+      "steps": [],
+      "rays": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": "limited_lion_diagonal",
+      "name": "Soaring Eagle"
+    },
+    {
+      "face": "HF",
+      "adams_printed_page": 25,
+      "steps": [],
+      "rays": [
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": "limited_lion_forward",
+      "name": "Horned Falcon"
+    },
+    {
+      "face": "ChS",
+      "adams_printed_page": 26,
+      "steps": [],
+      "rays": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [
+        {
+          "direction": [
+            -1,
+            0
+          ],
+          "maximum": 2
+        },
+        {
+          "direction": [
+            1,
+            0
+          ],
+          "maximum": 2
+        }
+      ],
+      "special": null,
+      "name": "Chariot Soldier"
+    },
+    {
+      "face": "DK",
+      "adams_printed_page": 27,
+      "steps": [
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "rays": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Dragon King"
+    },
+    {
+      "face": "DH",
+      "adams_printed_page": 28,
+      "steps": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "rays": [
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Dragon Horse"
+    },
+    {
+      "face": "FO",
+      "adams_printed_page": 28,
+      "steps": [],
+      "rays": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Flying Ox"
+    },
+    {
+      "face": "FB",
+      "adams_printed_page": 29,
+      "steps": [],
+      "rays": [
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Free Boar"
+    },
+    {
+      "face": "R",
+      "adams_printed_page": 29,
+      "steps": [],
+      "rays": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Rook"
+    },
+    {
+      "face": "B",
+      "adams_printed_page": 30,
+      "steps": [],
+      "rays": [
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Bishop"
+    },
+    {
+      "face": "Ph",
+      "adams_printed_page": 30,
+      "steps": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "rays": [],
+      "jumps": [
+        [
+          -2,
+          -2
+        ],
+        [
+          2,
+          -2
+        ],
+        [
+          -2,
+          2
+        ],
+        [
+          2,
+          2
+        ]
+      ],
+      "limited_rays": [],
+      "special": null,
+      "name": "Phoenix"
+    },
+    {
+      "face": "VSo",
+      "adams_printed_page": 31,
+      "steps": [
+        [
+          0,
+          1
+        ]
+      ],
+      "rays": [
+        [
+          0,
+          -1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [
+        {
+          "direction": [
+            -1,
+            0
+          ],
+          "maximum": 2
+        },
+        {
+          "direction": [
+            1,
+            0
+          ],
+          "maximum": 2
+        }
+      ],
+      "special": null,
+      "name": "Vertical Soldier"
+    },
+    {
+      "face": "VM",
+      "adams_printed_page": 32,
+      "steps": [
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "rays": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Vertical Mover"
+    },
+    {
+      "face": "SSo",
+      "adams_printed_page": 32,
+      "steps": [
+        [
+          0,
+          1
+        ]
+      ],
+      "rays": [
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [
+        {
+          "direction": [
+            0,
+            -1
+          ],
+          "maximum": 2
+        }
+      ],
+      "special": null,
+      "name": "Side Soldier"
+    },
+    {
+      "face": "SM",
+      "adams_printed_page": 33,
+      "steps": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "rays": [
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Side Mover"
+    },
+    {
+      "face": "WH",
+      "adams_printed_page": 33,
+      "steps": [],
+      "rays": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "White Horse"
+    },
+    {
+      "face": "W",
+      "adams_printed_page": 34,
+      "steps": [],
+      "rays": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Whale"
+    },
+    {
+      "face": "Ky",
+      "adams_printed_page": 34,
+      "steps": [
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "rays": [],
+      "jumps": [
+        [
+          0,
+          -2
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          -2,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ],
+      "limited_rays": [],
+      "special": null,
+      "name": "Kirin"
+    },
+    {
+      "face": "CP",
+      "adams_printed_page": 35,
+      "steps": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "rays": [],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Crown Prince"
+    },
+    {
+      "face": "FS",
+      "adams_printed_page": 35,
+      "steps": [
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "rays": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Flying Stag"
+    },
+    {
+      "face": "RC",
+      "adams_printed_page": 36,
+      "steps": [],
+      "rays": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Reverse Chariot"
+    },
+    {
+      "face": "L",
+      "adams_printed_page": 36,
+      "steps": [],
+      "rays": [
+        [
+          0,
+          -1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Lance"
+    },
+    {
+      "face": "MGn",
+      "adams_printed_page": 37,
+      "steps": [],
+      "rays": [
+        [
+          0,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Multi General"
+    },
+    {
+      "face": "G",
+      "adams_printed_page": 37,
+      "steps": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ]
+      ],
+      "rays": [],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Gold General"
+    },
+    {
+      "face": "DE",
+      "adams_printed_page": 38,
+      "steps": [
+        [
+          0,
+          -1
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "rays": [],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Drunk Elephant"
+    },
+    {
+      "face": "BT",
+      "adams_printed_page": 38,
+      "steps": [
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "rays": [],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Blind Tiger"
+    },
+    {
+      "face": "FL",
+      "adams_printed_page": 38,
+      "steps": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "rays": [],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Ferocious Leopard"
+    },
+    {
+      "face": "S",
+      "adams_printed_page": 39,
+      "steps": [
+        [
+          0,
+          -1
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "rays": [],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Silver General"
+    },
+    {
+      "face": "C",
+      "adams_printed_page": 39,
+      "steps": [
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ]
+      ],
+      "rays": [],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Copper General"
+    },
+    {
+      "face": "I",
+      "adams_printed_page": 39,
+      "steps": [
+        [
+          0,
+          -1
+        ],
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1
+        ]
+      ],
+      "rays": [],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Iron General"
+    },
+    {
+      "face": "N",
+      "adams_printed_page": 40,
+      "steps": [],
+      "rays": [],
+      "jumps": [
+        [
+          -1,
+          -2
+        ],
+        [
+          1,
+          -2
+        ]
+      ],
+      "limited_rays": [],
+      "special": null,
+      "name": "Knight"
+    },
+    {
+      "face": "Dg",
+      "adams_printed_page": 40,
+      "steps": [
+        [
+          0,
+          -1
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "rays": [],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Dog"
+    },
+    {
+      "face": "P",
+      "adams_printed_page": 41,
+      "steps": [
+        [
+          0,
+          -1
+        ]
+      ],
+      "rays": [],
+      "jumps": [],
+      "limited_rays": [],
+      "special": null,
+      "name": "Pawn"
+    }
+  ],
+  "shared_contract": "profile.md T01-T12; explicit Adams supplements for M, explicitly labelled software conventions",
+  "pending_owner_decisions": [],
+  "sources": [
+    "A",
+    "M",
+    "S"
+  ]
+}

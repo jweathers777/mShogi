@@ -37,7 +37,7 @@ export function ApplicationView({ snapshot, session, onNewGame, onOpen, blocked 
   const defaults = (snapshot.game === "tori" || snapshot.game === "chu" || snapshot.game === "tenjiku") ? snapshot.play_limits : snapshot.game === "xiangqi" ? snapshot.document.settings.analysis_defaults : snapshot.document.settings.settings.analysis_defaults;
   const exactPrefix = snapshot.game !== "xiangqi" || snapshot.xiangqi.canonical_context_scope === "selected_committed";
   return <ApplicationShell game={snapshot.game} historical={snapshot.historical} blocked={confirmation !== null || supportOpen} onFocusCapture={focus}
-    runtime={snapshot.game === "tenjiku" ? "Native contract verification" : thinking ? "mShogi is thinking" : analyzing ? "Analyzing selected position" : "Local engine"}
+    runtime={thinking ? "mShogi is thinking" : analyzing ? "Analyzing selected position" : "Local engine"}
     attributes={{ "data-current-event": snapshot.event_index, "data-live-events": snapshot.events.filter(event => event.index !== 0).length, "data-paused": snapshot.paused, "data-orientation": orientation }}
     document={<><DocumentState document={snapshot.document} /><h2 title={snapshot.document.path ?? undefined}>{snapshot.document.path?.split(/[\\/]/).at(-1) ?? "Untitled game"}</h2>
       {["saving", "opening", "viewing"].includes(snapshot.io.phase) && <p role="status">{snapshot.io.phase === "saving" ? "Saving your game…" : snapshot.io.phase === "opening" ? "Opening your game…" : "Opening the selected position…"}</p>}</>}
@@ -46,7 +46,7 @@ export function ApplicationView({ snapshot, session, onNewGame, onOpen, blocked 
       <button className="quiet" onClick={onOpen} disabled={disabled}>Load</button></>}
     heading={<LiveGameHeading eyebrow={snapshot.historical ? "HISTORY · READ ONLY" : snapshot.status.concluded ? "GAME CONCLUDED" : "YOUR GAME"}
       status={snapshot.historical ? "Viewing history" : thinking ? "mShogi is thinking" : (snapshot.game === "chess" ? gameStatus({ conclusion: snapshot.chess.selected_conclusion, turn: snapshot.turn.id.side, in_check: snapshot.chess.in_check }) : snapshot.status.label)}
-      player={snapshot.game === "tenjiku" ? <>Verification side: {snapshot.human.label} · engine unavailable</> : <>You play {snapshot.human.label} against mShogi</>}
+      player={<>You play {snapshot.human.label} against mShogi</>}
       flip={<button className="quiet flip-button" disabled={disabled} aria-label={`Flip board; currently ${side.label} at bottom`} onClick={() => { void flip(); }}>↕ <span>Flip board</span></button>} />}
     positionNotice={snapshot.historical && <HistoricalNotice action={<button disabled={disabled} onClick={() => { void command({ kind: "return_live" }); }}>Return to live</button>}>
       <p>Your live game is unchanged.</p></HistoricalNotice>}
@@ -54,8 +54,8 @@ export function ApplicationView({ snapshot, session, onNewGame, onOpen, blocked 
       inspectionDisabled={disabled} command={command} />}
     notices={<NativeRecovery snapshot={snapshot} error={session.error} disabled={disabled} command={command} />}
     analysis={<NativeAnalysis snapshot={snapshot} defaults={defaults} disabled={disabled || capacity} command={command}
-      maxDepth={snapshot.game === "chess" ? 8 : snapshot.game === "shogi" ? 4 : snapshot.game === "chu" ? 2 : 3}
-      maxNodes={snapshot.game === "chess" ? 5000000 : snapshot.game === "shogi" ? 20000 : snapshot.game === "tori" ? 10000 : snapshot.game === "chu" ? 2000 : 512} minNodes={snapshot.game === "xiangqi" || snapshot.game === "tori" || snapshot.game === "chu" ? 1 : 0}
+      maxDepth={snapshot.game === "chess" ? 8 : snapshot.game === "shogi" ? 4 : snapshot.game === "chu" || snapshot.game === "tenjiku" ? 2 : 3}
+      maxNodes={snapshot.game === "chess" ? 5000000 : snapshot.game === "shogi" ? 20000 : snapshot.game === "tori" ? 10000 : snapshot.game === "chu" || snapshot.game === "tenjiku" ? 2000 : 512} minNodes={snapshot.game === "xiangqi" || snapshot.game === "tori" || snapshot.game === "chu" || snapshot.game === "tenjiku" ? 1 : 0}
       unavailable={!exactPrefix ? "Analysis is unavailable between a move and its following event. Select a completed event or return to live." : undefined} />}
     history={<NativeHistory snapshot={snapshot} disabled={disabled} command={command} />}
     gameActions={<GameActions snapshot={snapshot} disabled={disabled || capacity} resignDisabled={disabled} command={command} confirm={setConfirmation} />}

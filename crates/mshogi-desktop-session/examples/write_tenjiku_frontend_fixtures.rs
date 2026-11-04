@@ -131,6 +131,9 @@ fn main() {
         "selected-root",
         "unsupported",
         "ending-stopped",
+        "all-faces",
+        "engine-played",
+        "analysis",
         "hawk",
         "hawk-played",
         "promoted-hawk",
@@ -153,13 +156,16 @@ fn main() {
                 .unwrap();
                 let construct_admission_install_us = begin.elapsed().as_micros();
                 let snapshot = controller.shared_snapshot();
-                assert!(!snapshot.capabilities.engine_turn && !snapshot.capabilities.move_analysis);
+                assert!(snapshot.capabilities.engine_turn && snapshot.capabilities.move_analysis);
                 if scenario == "unsupported" {
                     assert_eq!(snapshot.observations.len(), 1);
                     let observation = &snapshot.observations[0].observation;
-                    assert!(
-                        matches!(&observation.result,mshogi_engine::ExecutionResult::Failure{failure} if failure.kind == mshogi_engine::FailureKind::UnsupportedMode)
-                    );
+                    assert!(matches!(
+                        &observation.result,
+                        mshogi_engine::ExecutionResult::Tenjiku {
+                            result: mshogi_engine::TenjikuResult::Incomplete { .. }
+                        }
+                    ));
                 }
                 write(&dir, &format!("{label}-{scenario}"), &snapshot);
                 if scenario.starts_with("dense-")

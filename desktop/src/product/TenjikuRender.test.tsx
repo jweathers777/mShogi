@@ -20,7 +20,7 @@ it.each([adamsJson, mullerJson])("measures dense native $profile render without 
   const elapsed = performance.now() - started;
   expect(container.querySelectorAll("svg [role=button]")).toHaveLength(256);
   expect(container.querySelectorAll("[data-tenjiku-piece]")).toHaveLength(156);
-  console.info("TENJIKU_RENDER", JSON.stringify({ environment: "Node24/jsdom/ReactProfiler contract test; not native WebView", profile: source.profile,
+  console.info("TENJIKU_RENDER", JSON.stringify({ environment: `Node ${process.versions.node}/jsdom/ReactProfiler contract test; not native WebView`, profile: source.profile,
     pieces: source.pieces.length, board_targets: 256, compact_snapshot_utf8_bytes: new TextEncoder().encode(JSON.stringify(source)).length,
     render_to_settled_dom_ms: elapsed, profiler_actual_total_ms: commits.reduce((sum, commit) => sum + commit.actual_ms, 0), commits }));
 });

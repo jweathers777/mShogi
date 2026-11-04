@@ -108,10 +108,7 @@ fn execute_chess(context: &ExecutionContext) -> ChessResult {
 
 pub(crate) fn execute(context: &ExecutionContext) -> ExecutionResult {
     match context.game.game_kind() {
-        mshogi_core::native::GameKind::Tenjiku => ExecutionResult::failure(
-            FailureKind::UnsupportedMode,
-            "Tenjiku native records are supported; functional engine execution belongs to MSH-44 and remains unsupported and unscored.",
-        ),
+        mshogi_core::native::GameKind::Tenjiku => execute_tenjiku(context),
         mshogi_core::native::GameKind::Chu => execute_chu(context),
         mshogi_core::native::GameKind::Tori => execute_tori(context),
         mshogi_core::native::GameKind::Xiangqi => execute_xiangqi(context),
@@ -274,6 +271,48 @@ fn execute_chu(context: &ExecutionContext) -> ExecutionResult {
     ) {
         Ok(result) => ExecutionResult::Chu {
             result: ChuResult::searched(result),
+        },
+        Err(e) => ExecutionResult::failure(FailureKind::Search, e),
+    }
+}
+
+fn execute_tenjiku(context: &ExecutionContext) -> ExecutionResult {
+    if !matches!(
+        context.purpose,
+        ExecutionPurpose::EngineTurn {} | ExecutionPurpose::MoveAnalysis { .. }
+    ) {
+        return ExecutionResult::failure(
+            FailureKind::UnsupportedMode,
+            "Chess Full reachability is not a Tenjiku operation; no declarations or exact analysis are advertised.",
+        );
+    }
+    if !(mshogi_search::tenjiku::Limits {
+        depth: context.limits.depth,
+        nodes: context.limits.nodes,
+    })
+    .valid()
+    {
+        return ExecutionResult::failure(
+            FailureKind::InvalidRequest,
+            "Tenjiku execution limits exceed the bounded native search profile",
+        );
+    }
+    let mshogi_core::native::CanonicalRecord::Tenjiku(record) = &context.game else {
+        unreachable!()
+    };
+    let game = match record.to_game() {
+        Ok(game) => game,
+        Err(e) => return ExecutionResult::failure(FailureKind::InvalidRequest, e),
+    };
+    match mshogi_search::tenjiku::search(
+        &game,
+        mshogi_search::tenjiku::Limits {
+            depth: context.limits.depth,
+            nodes: context.limits.nodes,
+        },
+    ) {
+        Ok(result) => ExecutionResult::Tenjiku {
+            result: TenjikuResult::searched(result),
         },
         Err(e) => ExecutionResult::failure(FailureKind::Search, e),
     }

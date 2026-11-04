@@ -1,0 +1,14 @@
+/* QA labeling consumes its own space; the production shell remains wholly
+   visible in the remaining viewport, rather than overflowing by banner height. */
+#root:has(> .tenjiku-verification-banner) { display:flex; flex-direction:column; height:100dvh; overflow:hidden; }
+.tenjiku-verification-banner { flex:none; }
+.tenjiku-verification-banner + div { flex:1; min-height:0; }
+.tenjiku-verification-banner + div .game-shell.game-shell { height:100%; display:flex; flex-direction:column; }
+.tenjiku-verification-banner + div .game-shell .shell-header { flex-shrink:0; }
+.tenjiku-verification-banner + div .game-shell .shell-workspace { flex:1; min-height:0; height:auto; width:100%; }
+
+.tenjiku-verification-banner { display:flex; flex-wrap:wrap; align-items:center; gap:6px; padding:4px 8px; background:#172d36; border-bottom:1px solid #48616c; font-size:11px; }
+.tenjiku-verification-banner > span { flex:1 1 130px; font-size:10px; }
+.tenjiku-verification-banner > button { margin:0; padding:4px 6px; font-size:10px; }
+.tenjiku-layout-measurements { order:4; font-size:10px; background:#172d36; }
+.tenjiku-layout-measurements[open] { position:absolute; right:0; top:0; z-index:20; max-width:90vw; }

@@ -1314,7 +1314,7 @@ impl DesktopController {
                         mshogi_core::tenjiku::GameRecord::from_game(&game)
                             .map_err(|e| e.to_string())?,
                     ),
-                    human: NativeSide::Tenjiku(if scenario == "gote" {
+                    human: NativeSide::Tenjiku(if matches!(scenario, "gote" | "engine-played") {
                         mshogi_core::tenjiku::Side::Gote
                     } else {
                         mshogi_core::tenjiku::Side::Sente
@@ -1378,6 +1378,53 @@ impl DesktopController {
                         return Err("Tenjiku unsupported observation did not complete".into());
                     }
                     std::thread::sleep(std::time::Duration::from_millis(1));
+                }
+            }
+            if matches!(scenario, "engine-played" | "analysis") {
+                let before = controller.shared_snapshot().observations.len();
+                controller.verify_tenjiku_execution(
+                    mshogi_engine::TENJIKU_PLAY_LIMITS,
+                    scenario == "analysis",
+                )?;
+                let deadline = Instant::now() + std::time::Duration::from_secs(20);
+                while controller.shared_snapshot().observations.len() == before {
+                    if Instant::now() >= deadline {
+                        return Err("Tenjiku real engine checkpoint did not complete".into());
+                    }
+                    std::thread::sleep(std::time::Duration::from_millis(1));
+                }
+                let snapshot = controller.shared_snapshot();
+                let result = &snapshot
+                    .observations
+                    .last()
+                    .ok_or("Missing real engine observation")?
+                    .observation
+                    .result;
+                if !matches!(result,mshogi_engine::ExecutionResult::Tenjiku {result:mshogi_engine::TenjikuResult::Choice{telemetry,..}} if telemetry.completed_depth==1 && telemetry.score.is_some())
+                {
+                    return Err(format!(
+                        "Tenjiku checkpoint requires completed native engine work: {result:?}"
+                    ));
+                }
+                let expected_ply = usize::from(scenario == "engine-played");
+                if snapshot.board_ply != expected_ply as u64
+                    || (scenario == "engine-played" && snapshot.turn.id != snapshot.human.id)
+                {
+                    return Err(
+                        "Tenjiku checkpoint action/analysis state disagrees with native work"
+                            .into(),
+                    );
+                }
+                if scenario == "analysis"
+                    && snapshot.context
+                        != CanonicalRecord::tenjiku(
+                            mshogi_core::tenjiku::GameRecord::from_game(
+                                &mshogi_core::tenjiku::Game::standard(profile),
+                            )
+                            .map_err(|e| e.to_string())?,
+                        )
+                {
+                    return Err("Read-only Tenjiku checkpoint changed the native game".into());
                 }
             }
         }

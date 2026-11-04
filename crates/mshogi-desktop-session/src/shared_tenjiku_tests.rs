@@ -208,11 +208,11 @@ fn strict_profile_dispatch_fresh_new_other_profile_and_stale_contexts_in_both_di
         assert_eq!(snapshot.pieces.len(), 156);
         assert!(snapshot.hands.is_empty());
         assert!(
-            !snapshot.capabilities.engine_turn
-                && !snapshot.capabilities.move_analysis
+            snapshot.capabilities.engine_turn
+                && snapshot.capabilities.move_analysis
                 && !snapshot.capabilities.chess_full
         );
-        assert!(!snapshot.tenjiku.as_ref().unwrap().execution_supported);
+        assert!(snapshot.tenjiku.as_ref().unwrap().execution_supported);
         assert_eq!(record(&ctl).profile(), profile);
         assert_eq!(record(&ctl).event_count(), 0);
         let accepted = record(&ctl);
@@ -631,7 +631,7 @@ fn execute(context: &ExecutionContext) -> ExecutionResponse {
 }
 
 #[test]
-fn real_unsupported_observations_reject_profile_purpose_and_all_runtime_context_changes() {
+fn real_search_observations_reject_profile_purpose_and_all_runtime_context_changes() {
     // SAME_BOARD_CROSS_PROFILE_REJECTION / PROFILE-MIX-OBSERVATION_CONTEXT / EXECUTION_RESULT.
     let directory = TestDirectory::new();
     let mut ctl = controller();
@@ -697,9 +697,10 @@ fn real_unsupported_observations_reject_profile_purpose_and_all_runtime_context_
             }
             assert!(other.valid_limits());
             let wrong = execute(&other);
-            assert!(
-                matches!(wrong.observation.result, ExecutionResult::Failure { ref failure } if failure.kind == mshogi_engine::FailureKind::UnsupportedMode)
-            );
+            assert!(matches!(
+                wrong.observation.result,
+                ExecutionResult::Tenjiku { .. }
+            ));
             assert!(
                 !ctl.accept_shared(wrong),
                 "accepted changed context field {field}"
@@ -713,29 +714,32 @@ fn real_unsupported_observations_reject_profile_purpose_and_all_runtime_context_
             assert_eq!(ctl.shared_snapshot().document.dirty, dirty);
         }
         let response = execute(&pending);
-        assert!(
-            matches!(response.observation.result, ExecutionResult::Failure { ref failure } if failure.kind == mshogi_engine::FailureKind::UnsupportedMode)
-        );
+        assert!(matches!(
+            response.observation.result,
+            ExecutionResult::Tenjiku {
+                result: mshogi_engine::TenjikuResult::Choice { .. }
+            }
+        ));
         assert!(ctl.accept_shared(response));
         let receipt = ctl.admission_receipt.clone().unwrap();
         let snapshot = settle(&mut ctl, receipt).unwrap();
         assert!(snapshot.historical && snapshot.paused);
-        assert_eq!(snapshot.phase, EnginePhase::Failed);
+        assert_eq!(snapshot.phase, EnginePhase::Paused);
         assert_eq!(record(&ctl), live);
         assert_eq!(snapshot.observations.len(), 1);
         assert!(
             snapshot
                 .search_observations
                 .iter()
-                .all(|o| o.score.is_none()
-                    && o.completed_depth.is_none()
-                    && o.variation.is_empty())
+                .all(|o| o.score.is_some()
+                    && o.completed_depth == Some(1)
+                    && !o.variation.is_empty())
         );
         assert!(ctl.session.tenjiku().unwrap().pending.is_none());
         assert!(snapshot.status.score_half_points.is_none());
         assert!(!snapshot.status.concluded);
         assert_eq!(snapshot.observations[0].observation.context, pending);
-        let path = directory.path("unsupported-observation.mshogi");
+        let path = directory.path("real-analysis-observation.mshogi");
         save(&mut ctl, &path);
         let id = ctl
             .queue_shared_open(path, ctl.shared_open_token())
@@ -758,14 +762,17 @@ fn real_unsupported_observations_reject_profile_purpose_and_all_runtime_context_
         .unwrap();
         let engine_turn = ctl.session.tenjiku().unwrap().pending.clone().unwrap();
         let response = execute(&engine_turn);
-        assert!(
-            matches!(response.observation.result, ExecutionResult::Failure { ref failure } if failure.kind == mshogi_engine::FailureKind::UnsupportedMode)
-        );
+        assert!(matches!(
+            response.observation.result,
+            ExecutionResult::Tenjiku {
+                result: mshogi_engine::TenjikuResult::Choice { .. }
+            }
+        ));
         assert!(ctl.accept_shared(response));
         let receipt = ctl.admission_receipt.clone().unwrap();
         let snapshot = settle(&mut ctl, receipt).unwrap();
-        assert_eq!(record(&ctl), live);
-        assert!(snapshot.paused && !snapshot.historical);
+        assert_eq!(record(&ctl).event_count(), live.event_count() + 1);
+        assert!(!snapshot.paused && !snapshot.historical);
         assert_eq!(snapshot.observations.len(), 2);
         assert_eq!(snapshot.observations[1].observation.context, engine_turn);
         assert!(snapshot.status.score_half_points.is_none() && !snapshot.status.concluded);
@@ -1232,5 +1239,157 @@ fn measured_policy_boundary_actual_worker_open_save_endings_and_close() {
             "{}",
             serde_json::json!({"actual_worker_profile":profile.id(),"open_us":open_us,"save_us":save_us,"endings_us":endings_us,"close_us":close_us,"ended_save_us":ended_save_us,"ended_open_us":ended_open_us,"source_usage":source.usage(),"ended_usage":ctl.session.tenjiku().unwrap().document.usage(),"prior_file_preserved":true,"fresh_stopped_reopen":true})
         );
+    }
+}
+
+#[test]
+#[ignore = "serial release measurement of the actual FileWorker and session install path"]
+fn measured_real_engine_contexts_actual_worker_open_save_endings_and_close() {
+    for profile in c::Profile::ALL {
+        let directory = TestDirectory::new();
+        let source = crate::tenjiku_document::measured_real_engine_document(profile);
+        let source_record = source.record().clone();
+        let source_path = directory.path("source.mshogi");
+        fs::write(&source_path, source.bytes()).unwrap();
+        let prior_file = fs::read(&source_path).unwrap();
+        let mut ctl = controller();
+        let old = ctl.shared_token();
+        let begin = Instant::now();
+        let id = ctl
+            .queue_shared_open(source_path.clone(), ctl.shared_open_token())
+            .unwrap();
+        let loaded = wait_file(&mut ctl, id);
+        let open_us = begin.elapsed().as_micros();
+        assert_eq!(loaded.io.phase, IoPhase::Complete, "{:?}", loaded.io);
+        assert!(open_us < 15_000_000, "actual worker Open exceeded deadline");
+        assert!(loaded.token.document > old.document);
+        assert!(loaded.paused && !loaded.document.dirty);
+        assert_eq!(loaded.observations.len(), source.observations().len());
+        assert!(ctl.session.tenjiku().unwrap().pending.is_none());
+        assert_eq!(record(&ctl), source_record);
+        assert_eq!(fs::read(&source_path).unwrap(), prior_file);
+        let saved_path = directory.path("saved.mshogi");
+        let expected_save = ctl
+            .session
+            .tenjiku()
+            .unwrap()
+            .document
+            .with_runtime_floor(ctl.runtime_floor())
+            .unwrap()
+            .bytes()
+            .to_vec();
+        let begin = Instant::now();
+        save(&mut ctl, &saved_path);
+        let save_us = begin.elapsed().as_micros();
+        assert!(save_us < 15_000_000, "actual worker Save exceeded deadline");
+        assert!(
+            fs::read(&saved_path).unwrap() == expected_save,
+            "Save must encode the exact accepted document with the current retirement floor"
+        );
+        let mut endings_us = Vec::new();
+        for (actor, native) in [
+            (
+                c::Side::Gote,
+                c::GameCommand::Stop {
+                    reason: c::StopReason::EngineFailure,
+                },
+            ),
+            (c::Side::Sente, c::GameCommand::Resign),
+            (
+                c::Side::Gote,
+                c::GameCommand::Stop {
+                    reason: c::StopReason::EngineFailure,
+                },
+            ),
+        ] {
+            let begin = Instant::now();
+            command(&mut ctl, actor, native).unwrap();
+            endings_us.push(begin.elapsed().as_micros());
+        }
+        assert!(endings_us.iter().all(|elapsed| *elapsed < 15_000_000));
+        let before = ctl.session.tenjiku().unwrap().document.usage().clone();
+        let begin = Instant::now();
+        ctl.pause_shared_for_close();
+        let close_us = begin.elapsed().as_micros();
+        assert!(document_bytes(&ctl).len() <= before.encoded_bytes + before.reserved_bytes);
+        let ended_record = record(&ctl);
+        let begin = Instant::now();
+        save(&mut ctl, &saved_path);
+        let ended_save_us = begin.elapsed().as_micros();
+        let old = ctl.shared_token();
+        let begin = Instant::now();
+        let id = ctl
+            .queue_shared_open(saved_path.clone(), ctl.shared_open_token())
+            .unwrap();
+        let reopened = wait_file(&mut ctl, id);
+        let ended_open_us = begin.elapsed().as_micros();
+        assert_eq!(reopened.io.phase, IoPhase::Complete, "{:?}", reopened.io);
+        assert!(
+            reopened.token.document > old.document && reopened.paused && !reopened.document.dirty
+        );
+        assert_eq!(record(&ctl), ended_record);
+        assert_eq!(reopened.status.score_half_points, Some([0, 2]));
+        assert_eq!(fs::read(&source_path).unwrap(), prior_file);
+        println!(
+            "{}",
+            serde_json::json!({"actual_worker_profile":profile.id(),"open_us":open_us,"save_us":save_us,"endings_us":endings_us,"close_us":close_us,"ended_save_us":ended_save_us,"ended_open_us":ended_open_us,"source_usage":source.usage(),"ended_usage":ctl.session.tenjiku().unwrap().document.usage(),"prior_file_preserved":true,"fresh_stopped_reopen":true})
+        );
+    }
+}
+
+#[test]
+fn real_stationary_capture_analysis_preserves_target_in_presented_pv() {
+    for profile in c::Profile::ALL {
+        let pieces = [
+            (16, 16, c::Side::Sente, c::Base::K, false),
+            (8, 8, c::Side::Sente, c::Base::ChS, true),
+            (9, 8, c::Side::Gote, c::Base::K, false),
+            (2, 3, c::Side::Gote, c::Base::P, false),
+        ]
+        .into_iter()
+        .enumerate()
+        .map(|(id, (f, r, s, b, p))| (square(f, r), c::Piece::new(id as u16, s, b, p).unwrap()))
+        .collect::<Vec<_>>();
+        let game = c::Game::from_root(
+            c::Position::from_diagram(
+                profile,
+                &pieces,
+                c::Side::Sente,
+                c::RootMetadata::diagram(0),
+            )
+            .unwrap(),
+        )
+        .unwrap();
+        let mut ctl = controller();
+        send(
+            &mut ctl,
+            SessionOperation::Replace {
+                record: CanonicalRecord::tenjiku(c::GameRecord::from_game(&game).unwrap()),
+                human: NativeSide::Tenjiku(c::Side::Sente),
+            },
+        )
+        .unwrap();
+        let before = record(&ctl);
+        ctl.start_tenjiku(mshogi_engine::TENJIKU_PLAY_LIMITS, true)
+            .unwrap();
+        let pending = ctl.session.tenjiku().unwrap().pending.clone().unwrap();
+        let response = execute(&pending);
+        let ExecutionResult::Tenjiku {
+            result: mshogi_engine::TenjikuResult::Choice { action, .. },
+        } = &response.observation.result
+        else {
+            panic!("{response:?}")
+        };
+        assert_eq!(action.kind, c::ActionKind::Igui);
+        assert_eq!(action.target, Some(square(9, 8)));
+        assert!(ctl.accept_shared(response));
+        let receipt = ctl.admission_receipt.clone().unwrap();
+        let snapshot = settle(&mut ctl, receipt).unwrap();
+        assert_eq!(
+            snapshot.search_observations[0].variation,
+            vec!["8h!x9h (stationary capture)"]
+        );
+        assert_eq!(record(&ctl), before);
+        assert!(!snapshot.status.concluded);
     }
 }

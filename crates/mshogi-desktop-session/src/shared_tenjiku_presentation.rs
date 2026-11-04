@@ -97,18 +97,70 @@ impl TenjikuPresentation {
                 == c::RootKind::Standard,
             selected: TenjikuHistory::new(selected),
             live: TenjikuHistory::new(live),
-            execution_supported: false,
+            execution_supported: true,
         }
     }
 }
 fn name(game: &c::Game, owner: c::Side) -> String {
     side(game.profile().into(), NativeSide::Tenjiku(owner)).label
 }
+fn face_name(face: c::Face) -> &'static str {
+    match face {
+        c::Face::K => "King",
+        c::Face::FiD => "Fire Demon",
+        c::Face::GGn => "Great General",
+        c::Face::VGn => "Vice General",
+        c::Face::RGn => "Rook General",
+        c::Face::BGn => "Bishop General",
+        c::Face::LHk => "Lion Hawk",
+        c::Face::Ln => "Lion",
+        c::Face::WBf => "Water Buffalo",
+        c::Face::FEg => "Free Eagle",
+        c::Face::FK => "Free King",
+        c::Face::HT => "Heavenly Tetrarchs",
+        c::Face::SE => "Soaring Eagle",
+        c::Face::HF => "Horned Falcon",
+        c::Face::ChS => "Chariot Soldier",
+        c::Face::DK => "Dragon King",
+        c::Face::DH => "Dragon Horse",
+        c::Face::FO => "Flying Ox",
+        c::Face::FB => "Free Boar",
+        c::Face::R => "Rook",
+        c::Face::B => "Bishop",
+        c::Face::Ph => "Phoenix",
+        c::Face::VSo => "Vertical Soldier",
+        c::Face::VM => "Vertical Mover",
+        c::Face::SSo => "Side Soldier",
+        c::Face::SM => "Side Mover",
+        c::Face::WH => "White Horse",
+        c::Face::W => "Whale",
+        c::Face::Ky => "Kirin",
+        c::Face::CP => "Crown Prince",
+        c::Face::FS => "Flying Stag",
+        c::Face::RC => "Reverse Chariot",
+        c::Face::L => "Lance",
+        c::Face::MGn => "Multi General",
+        c::Face::G => "Gold General",
+        c::Face::DE => "Drunk Elephant",
+        c::Face::BT => "Blind Tiger",
+        c::Face::FL => "Ferocious Leopard",
+        c::Face::S => "Silver General",
+        c::Face::C => "Copper General",
+        c::Face::I => "Iron General",
+        c::Face::N => "Knight",
+        c::Face::Dg => "Dog",
+        c::Face::P => "Pawn",
+    }
+}
 fn piece_name(piece: c::Piece) -> String {
     if piece.promoted {
-        format!("{} (promoted {})", piece.face().code(), piece.base.code())
+        format!(
+            "{} (promoted {})",
+            face_name(piece.face()),
+            face_name(piece.base.face())
+        )
     } else {
-        piece.base.code().into()
+        face_name(piece.face()).into()
     }
 }
 pub(super) fn choice(action: c::Action, alternatives: &[c::Action]) -> PresentedChoice {
@@ -188,10 +240,16 @@ pub(super) fn inspect(game: &c::Game, origin: &str) -> Result<inspection::Inspec
 fn event_label(game: &c::Game, event: &c::GameEvent) -> String {
     let actor = name(game, event.actor);
     match &event.command {
-        c::GameCommand::Play { action } => format!(
-            "{actor} · Technical action {}",
-            serde_json::to_string(action).expect("native action")
-        ),
+        c::GameCommand::Play { action } => {
+            let before = game
+                .event_prefix(event.index)
+                .expect("accepted event prefix");
+            format!(
+                "{actor} · {}",
+                c::notation::format_history_action(&before, action.clone())
+                    .expect("accepted action")
+            )
+        }
         c::GameCommand::Resign => format!("{actor} resigned"),
         c::GameCommand::OfferDraw => format!("{actor} offered a draw"),
         c::GameCommand::AcceptDraw => format!("{actor} accepted the draw"),
@@ -305,8 +363,8 @@ impl DesktopController {
                 promotion: true,
                 take_back: !historical && state.take_back_target().is_some(),
                 undo: !historical && !state.game.events().is_empty(),
-                engine_turn: false,
-                move_analysis: false,
+                engine_turn: true,
+                move_analysis: true,
                 chess_full: false,
                 claims: false,
                 declaration: false,
@@ -367,7 +425,7 @@ impl DesktopController {
                 .enumerate()
                 .map(|(i, o)| display_observation(i, o, state))
                 .collect(),
-            score_meaning: "Tenjiku execution is unsupported. Operational failures and absence of board actions are unscored; native conclusions remain separate.",
+            score_meaning: "Transparent material evaluation in Pawns from the analyzed native side; native terminal wins use board-action distance. Operational failures and absence of board actions remain unscored.",
             chess: None,
             chess_match: None,
         }

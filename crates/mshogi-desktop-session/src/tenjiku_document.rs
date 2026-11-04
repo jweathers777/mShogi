@@ -579,8 +579,8 @@ impl ValidatedTenjikuDocument {
         p.selected_event = event;
         validate(p, stopped)
     }
-    /// Atomically retain an exact-context unscored failure. No execution is implemented.
-    /// A failure observation never commits a board action or changes the conclusion.
+    /// Atomically retain a validated result and, for engine play, its exact native action.
+    /// Analysis retains observations only and never commits a board command.
     pub fn with_observation(
         &self,
         observation: ExecutionObservation,
@@ -599,10 +599,33 @@ impl ValidatedTenjikuDocument {
         p.controls.push(TenjikuControl::Observation {
             index: p.observations.len(),
         });
-        if !matches!(observation.result, ExecutionResult::Failure { .. }) {
-            return Err(invalid(
-                "Tenjiku execution is unsupported; only unscored failure observations are admissible",
-            ));
+        if let (
+            ExecutionPurpose::EngineTurn {},
+            ExecutionResult::Tenjiku {
+                result: mshogi_engine::TenjikuResult::Choice { action, .. },
+            },
+        ) = (&observation.context.purpose, &observation.result)
+        {
+            let mut game = native(&p.current)?
+                .to_game_with_stop(stopped)
+                .map_err(record_error)?;
+            check(stopped)?;
+            let actor = game.position().side_to_move();
+            let command = c::GameCommand::Play {
+                action: action.clone(),
+            };
+            game.submit_with_stop(
+                c::GameRequest {
+                    expected: game.context(),
+                    actor,
+                    command: command.clone(),
+                },
+                stopped,
+            )
+            .map_err(native_error)?;
+            p.controls.push(TenjikuControl::Native { actor, command });
+            p.current = CanonicalRecord::tenjiku(c::GameRecord::from_game(&game).map_err(invalid)?);
+            p.selected_event = None;
         }
         p.observations.push(observation);
         validate(p, stopped)
@@ -733,8 +756,16 @@ fn validate(
     check(stopped)?;
     let mut settings = p.initial_settings.clone();
     let (mut retired, mut obs) = (0, 0);
+    let mut required_action: Option<(c::Side, c::GameCommand)> = None;
     for (i, control) in p.controls.iter().enumerate() {
         check(stopped)?;
+        if let Some((actor, command)) = required_action.take()
+            && !matches!(control, TenjikuControl::Native { actor: a, command: b } if *a == actor && *b == command)
+        {
+            return Err(invalid(
+                "engine choice must be followed by its exact complete native action",
+            ));
+        }
         match control {
             TenjikuControl::Native { actor, command } => {
                 let before = game.replay_work();
@@ -784,7 +815,12 @@ fn validate(
                     .observations
                     .get(obs)
                     .ok_or_else(|| invalid("missing observation"))?;
-                if !o.matches(&o.context) || !matches!(o.result, ExecutionResult::Failure { .. }) {
+                if !o.matches(&o.context)
+                    || !matches!(
+                        o.result,
+                        ExecutionResult::Failure { .. } | ExecutionResult::Tenjiku { .. }
+                    )
+                {
                     return Err(invalid(
                         "invalid or unsupported Tenjiku execution observation",
                     ));
@@ -808,6 +844,26 @@ fn validate(
                     return Err(invalid(
                         "observation is not the exact journal history prefix",
                     ));
+                }
+                if let ExecutionResult::Tenjiku { result } = &o.result {
+                    charge(&mut usage.replay_work, prefix.reconstruction_work())?;
+                    let target_game = prefix.to_game_with_stop(stopped).map_err(record_error)?;
+                    check(stopped)?;
+                    let validated = result.validate_with_work(&target_game, stopped);
+                    check(stopped)?;
+                    charge(&mut usage.replay_work, validated.map_err(invalid)?)?;
+                    if let (
+                        ExecutionPurpose::EngineTurn {},
+                        mshogi_engine::TenjikuResult::Choice { action, .. },
+                    ) = (&o.context.purpose, result)
+                    {
+                        required_action = Some((
+                            game.position().side_to_move(),
+                            c::GameCommand::Play {
+                                action: action.clone(),
+                            },
+                        ));
+                    }
                 }
                 for id in [
                     o.context.request_id,
@@ -843,7 +899,8 @@ fn validate(
         }
     }
     check(stopped)?;
-    if retired != p.retired.len()
+    if required_action.is_some()
+        || retired != p.retired.len()
         || obs != p.observations.len()
         || settings != p.settings
         || native(&p.current)? != &c::GameRecord::from_game(&game).map_err(invalid)?
@@ -1016,4 +1073,9 @@ fn reserve(
         }
     }
     Ok(())
+}
+
+#[cfg(test)]
+pub(crate) fn measured_real_engine_document(profile: c::Profile) -> ValidatedTenjikuDocument {
+    tests::measured_real_engine_document(profile)
 }

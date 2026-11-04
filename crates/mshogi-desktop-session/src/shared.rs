@@ -357,6 +357,7 @@ fn display_shogi_observation(
         ExecutionResult::Chess { .. }
         | ExecutionResult::Xiangqi { .. }
         | ExecutionResult::Tori { .. }
+        | ExecutionResult::Tenjiku { .. }
         | ExecutionResult::Chu { .. } => {
             unreachable!("native shogi response admission")
         }
@@ -1305,14 +1306,6 @@ impl DesktopController {
             return Ok(self.shared_snapshot());
         }
         if self.session.tenjiku().is_some() {
-            if matches!(
-                command.operation,
-                SessionOperation::Analyze { .. } | SessionOperation::Retry {}
-            ) {
-                return Err(
-                    "Unsupported Tenjiku execution; no move, score or outcome is created.".into(),
-                );
-            }
             return self.tenjiku_command(command.operation);
         }
         if self.session.chu().is_some() {

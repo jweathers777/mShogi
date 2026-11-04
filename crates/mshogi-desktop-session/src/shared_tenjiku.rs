@@ -13,6 +13,8 @@ pub(crate) struct TenjikuSession {
     pub(crate) pending: Option<ExecutionContext>,
     pub(crate) phase: EnginePhase,
     pub(crate) paused: bool,
+    submitted: bool,
+    requested_analysis: Option<WorkLimits>,
     analysis: Option<ExecutionObservation>,
     current_observations: Vec<u64>,
     pub(crate) diagnostic: Option<String>,
@@ -68,6 +70,8 @@ impl TenjikuSession {
             pending: None,
             phase: EnginePhase::Paused,
             paused: true,
+            submitted: false,
+            requested_analysis: None,
             analysis: None,
             current_observations: vec![],
             diagnostic: Some("Saved observations are historical. Resume starts play.".into()),
@@ -81,6 +85,8 @@ impl TenjikuSession {
     }
     pub(crate) fn retire(&mut self) {
         self.pending = None;
+        self.submitted = false;
+        self.requested_analysis = None;
         self.analysis = None;
         self.browse_stop = None;
         self.phase = EnginePhase::Paused;
@@ -228,10 +234,25 @@ impl TenjikuSession {
                 );
                 return Ok(false);
             }
-            SessionOperation::Analyze { .. } | SessionOperation::Retry {} => {
-                return Err("Unsupported Tenjiku execution. Functional search belongs to MSH-44; no move, score or outcome is created.".into());
+            SessionOperation::Analyze { operation } => {
+                let AnalysisOperation::Moves { depth, nodes } = operation else {
+                    return Err("Unsupported Tenjiku analysis operation; no Chess Full or Xiangqi exact operation is available.".into());
+                };
+                let limits = WorkLimits { depth, nodes };
+                validate_limits(limits)?;
+                let stop = if self.viewed.is_some() {
+                    self.browse_stop.clone()
+                } else {
+                    None
+                };
+                self.retire();
+                self.browse_stop = stop;
+                self.paused = true;
+                self.requested_analysis = Some(limits);
+                self.diagnostic = None;
+                return Ok(false);
             }
-            SessionOperation::Resume {} => {
+            SessionOperation::Resume {} | SessionOperation::Retry {} => {
                 if self.viewed.is_some() {
                     return Err("Return to live before resuming play.".into());
                 }
@@ -275,6 +296,8 @@ pub(crate) struct TenjikuDraft {
     pending: Option<ExecutionContext>,
     phase: EnginePhase,
     paused: bool,
+    submitted: bool,
+    requested_analysis: Option<WorkLimits>,
     analysis: Option<ExecutionObservation>,
     current_observations: Vec<u64>,
     diagnostic: Option<String>,
@@ -287,6 +310,8 @@ impl TenjikuSession {
             pending: self.pending.clone(),
             phase: self.phase,
             paused: self.paused,
+            submitted: self.submitted,
+            requested_analysis: self.requested_analysis,
             analysis: self.analysis.clone(),
             current_observations: self.current_observations.clone(),
             diagnostic: self.diagnostic.clone(),
@@ -319,6 +344,8 @@ pub(crate) fn execute(
             state.pending = draft.pending;
             state.phase = draft.phase;
             state.paused = draft.paused;
+            state.submitted = draft.submitted;
+            state.requested_analysis = draft.requested_analysis;
             state.analysis = draft.analysis;
             state.current_observations = draft.current_observations;
             state.diagnostic = draft.diagnostic;
@@ -338,13 +365,22 @@ pub(crate) fn execute(
             .pending
             .as_ref()
             .ok_or("No current Tenjiku execution.")?;
-        if !response.matches(pending) || !matches!(response.result, ExecutionResult::Failure { .. })
+        if !response.matches(pending)
+            || !matches!(
+                response.result,
+                ExecutionResult::Failure { .. } | ExecutionResult::Tenjiku { .. }
+            )
         {
             return Err("Stale or unsupported Tenjiku observation.".into());
         }
         let analysis = matches!(pending.purpose, ExecutionPurpose::MoveAnalysis { .. });
         let failed = matches!(response.result, ExecutionResult::Failure { .. });
-        let incomplete = false;
+        let incomplete = matches!(
+            &response.result,
+            ExecutionResult::Tenjiku {
+                result: mshogi_engine::TenjikuResult::Incomplete { .. }
+            }
+        );
         // One worker-owned candidate validates the observation, native continuation,
         // engine action and all persistence headroom before the live state changes.
         state.document = Arc::new(state.document.with_observation(response.clone(), stopped)?);
@@ -373,7 +409,7 @@ pub(crate) fn execute(
             EnginePhase::Paused
         };
         state.diagnostic = if failed {
-            Some("Execution is unavailable. The game is unchanged.".into())
+            Some("Engine failure. The game is unchanged; Retry is explicit.".into())
         } else if incomplete {
             Some("Incomplete search. No move, score or game outcome was created.".into())
         } else {
@@ -495,7 +531,10 @@ impl DesktopController {
         if !response.matches(pending)
             || pending.session_version != self.session.version
             || pending.game != selected
-            || !matches!(response.result, ExecutionResult::Failure { .. })
+            || !matches!(
+                response.result,
+                ExecutionResult::Failure { .. } | ExecutionResult::Tenjiku { .. }
+            )
         {
             return false;
         }
@@ -520,7 +559,6 @@ impl DesktopController {
         }
         true
     }
-    #[cfg(any(test, feature = "desktop-verification"))]
     pub(super) fn start_tenjiku(
         &mut self,
         limits: WorkLimits,
@@ -575,6 +613,7 @@ impl DesktopController {
         };
         let state = self.session.tenjiku_mut().unwrap();
         state.pending = Some(context);
+        state.submitted = false;
         state.phase = EnginePhase::Thinking;
         Ok(())
     }
@@ -584,8 +623,42 @@ impl DesktopController {
         {
             self.accept_shared(response);
         }
-        // Native rules support does not advertise engine or analysis execution.
-        // Only the labeled verification helper can submit an unsupported request.
+        if self.admission_token.is_none()
+            && !self.lifecycle.close_requested()
+            && self.session.capacity.status != CapacityPhase::Paused
+        {
+            let state = self.session.tenjiku_mut().unwrap();
+            let analysis = state.requested_analysis.take();
+            let play = state.pending.is_none()
+                && !state.paused
+                && state.viewed.is_none()
+                && state.game.conclusion().is_none()
+                && state.game.position().side_to_move() != state.document.human();
+            if let Some(limits) = analysis {
+                if let Err(e) = self.start_tenjiku(limits, true) {
+                    self.pause_native_failure(e);
+                }
+            } else if play && let Err(e) = self.start_tenjiku(play_limits(), false) {
+                self.pause_native_failure(e);
+            }
+            if self.shared.auto_submit()
+                && let Some(context) = self.session.tenjiku().unwrap().pending.clone()
+                && !self.session.tenjiku().unwrap().submitted
+            {
+                self.session.tenjiku_mut().unwrap().submitted = true;
+                if let Err(e) = self.bridge.submit(execution_request(context.clone())) {
+                    self.accept_tenjiku_observation(ExecutionObservation::new(
+                        context,
+                        ExecutionResult::Failure {
+                            failure: mshogi_engine::EngineFailure {
+                                kind: mshogi_engine::FailureKind::Start,
+                                message: format!("Cannot start native work: {e:?}"),
+                            },
+                        },
+                    ));
+                }
+            }
+        }
         self.tenjiku_snapshot()
     }
     /// Verification entry into the same real native supervised request path.
@@ -604,6 +677,7 @@ impl DesktopController {
         self.bridge
             .submit(execution_request(context.clone()))
             .map_err(|e| format!("Cannot submit native work: {e:?}"))?;
+        self.session.tenjiku_mut().unwrap().submitted = true;
         Ok(context)
     }
     pub(super) fn close_tenjiku(&mut self) {
@@ -633,16 +707,18 @@ pub(super) fn inspect(game: &c::Game, origin: &str) -> Result<inspection::Inspec
     presentation::inspect(game, origin)
 }
 fn play_limits() -> WorkLimits {
-    // Transport metadata only. Capabilities explicitly advertise no Tenjiku work.
-    WorkLimits { depth: 1, nodes: 1 }
+    mshogi_engine::TENJIKU_PLAY_LIMITS
 }
-#[cfg(any(test, feature = "desktop-verification"))]
 fn validate_limits(limits: WorkLimits) -> Result<(), OperationFailure> {
     if limits.depth == 0
-        || limits.depth > mshogi_engine::MAX_ANALYSIS_DEPTH
-        || limits.nodes > mshogi_engine::MAX_ANALYSIS_NODES
+        || limits.depth > mshogi_engine::TENJIKU_MAX_DEPTH
+        || limits.nodes == 0
+        || limits.nodes > mshogi_engine::TENJIKU_MAX_NODES
     {
-        return Err("Invalid unsupported-execution request metadata.".into());
+        return Err(
+            "Unsupported Tenjiku work limits. Use a positive bounded native depth and visit limit."
+                .into(),
+        );
     }
     Ok(())
 }
@@ -652,7 +728,11 @@ fn display_observation(
     state: &TenjikuSession,
 ) -> PresentedSearchObservation {
     let CanonicalRecord::Tenjiku(record) = &o.context.game else {
-        unreachable!("validated native profile")
+        unreachable!("validated native Tenjiku context")
+    };
+    let telemetry = match &o.result {
+        ExecutionResult::Tenjiku { result } => Some(result.telemetry()),
+        _ => None,
     };
     PresentedSearchObservation {
         observation_index: index,
@@ -669,15 +749,51 @@ fn display_observation(
         )
         .label,
         engine: "mShogi",
-        score: None,
-        completed_depth: None,
-        nodes: None,
-        variation: vec![],
-        status: if matches!(&o.result, ExecutionResult::Failure { failure } if failure.kind == mshogi_engine::FailureKind::UnsupportedMode)
-        {
-            "Unsupported execution · unscored"
-        } else {
-            "Engine failure · unscored"
+        score: telemetry.and_then(|t| t.score_label()),
+        completed_depth: telemetry.map(|t| t.completed_depth),
+        nodes: telemetry.map(|t| t.nodes),
+        // Native complete route strings retain every landing and promotion; exact typed PV remains in Technical Details.
+        variation: telemetry.map_or_else(Vec::new, |t| {
+            t.principal_variation
+                .iter()
+                .map(|a| {
+                    if a.kind == c::ActionKind::Igui {
+                        return format!(
+                            "{}!x{} (stationary capture)",
+                            a.from,
+                            a.target.expect("validated native igui target")
+                        );
+                    }
+                    format!(
+                        "{}→{}{}",
+                        a.from,
+                        a.route
+                            .iter()
+                            .map(ToString::to_string)
+                            .collect::<Vec<_>>()
+                            .join("→"),
+                        if a.promote { " (promote)" } else { "" }
+                    )
+                })
+                .collect()
+        }),
+        status: match telemetry.map(|t| t.status) {
+            Some(mshogi_engine::StopReason::Complete) => "Complete",
+            Some(mshogi_engine::StopReason::NodeLimit) => "Node limit reached",
+            Some(mshogi_engine::StopReason::Stopped) => "Search stopped",
+            None => match &o.result {
+                ExecutionResult::Failure { failure }
+                    if failure.kind == mshogi_engine::FailureKind::UnsupportedMode =>
+                {
+                    "Unsupported execution · unscored"
+                }
+                ExecutionResult::Failure { failure }
+                    if failure.kind == mshogi_engine::FailureKind::Search =>
+                {
+                    "Search could not complete · unscored"
+                }
+                _ => "Engine failure · unscored",
+            },
         },
         historical: !state.current_observations.contains(&o.context.request_id),
         selected: state.analysis.as_ref() == Some(o),

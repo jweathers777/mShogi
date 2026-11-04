@@ -7,6 +7,7 @@
 pub mod chess;
 pub mod chu;
 pub mod shogi;
+pub mod tenjiku;
 pub mod tori;
 pub mod xiangqi;
 

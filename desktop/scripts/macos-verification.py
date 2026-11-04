@@ -33,7 +33,7 @@ FIXTURES |= frozenset(f"tenjiku-{profile}-{scenario}"
                      "burn", "burned", "igui", "iguied", "promotion", "promoted", "declined",
                      "hawk", "hawk-played", "promoted-hawk", "area", "area-played",
                      "ranked-jump", "ranked-jump-played", "ranked-blocked",
-                     "unsupported", "ending-stopped"))
+                     "unsupported", "ending-stopped", "all-faces", "engine-played", "analysis"))
 
 
 def directory():

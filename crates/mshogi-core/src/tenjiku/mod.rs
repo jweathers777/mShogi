@@ -8,6 +8,8 @@ mod game;
 pub use game::*;
 mod record;
 pub use record::*;
+/// Complete human action display/input; native Game retains admission authority.
+pub mod notation;
 mod perft;
 pub use perft::*;
 #[cfg(test)]

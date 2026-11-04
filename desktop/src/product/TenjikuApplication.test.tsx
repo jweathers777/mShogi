@@ -81,19 +81,19 @@ it.each([adams, muller])("blocks $profile QA replacement while a modal or native
   for (const button of within(screen.getByRole("complementary", { name: "Tenjiku contract verification" })).getAllByRole("button")) expect((button as HTMLButtonElement).disabled).toBe(true);
 });
 
-it.each([adamsUnsupported, mullerUnsupported])("shows actual $profile unsupported observations without a score, PV, analysis or engine Retry", value => {
+it.each([adamsUnsupported, mullerUnsupported])("shows actual $profile incomplete observations without a fabricated score or PV", value => {
   const source = value as unknown as TenjikuSnapshot, command = vi.fn();
   expect(source.observations.length).toBeGreaterThan(0);
-  expect(source.observations.at(-1)!.observation.result).toMatchObject({ kind: "failure", failure: { kind: "unsupported_mode" } });
+  expect(source.observations.at(-1)!.observation.result).toMatchObject({ kind: "tenjiku", result: { kind: "incomplete", telemetry: { score: null, completed_depth: 0, principal_variation: [] } } });
   expect(source.status.concluded).toBe(false);
   expect(source.status.score_half_points).toBeNull();
   const { container } = render(<><NativeRecovery snapshot={source} error="" disabled={false} command={command} />
-    <NativeAnalysis snapshot={source} defaults={source.play_limits} disabled={false} command={command} maxDepth={1} minNodes={1} maxNodes={1} /></>);
-  expect(screen.getByText("Execution unavailable")).toBeTruthy();
-  expect(screen.getByText("Engine play and analysis are unavailable for this rules profile.")).toBeTruthy();
-  expect(screen.getByText("No completed evaluation")).toBeTruthy();
+    <NativeAnalysis snapshot={source} defaults={source.play_limits} disabled={false} command={command} maxDepth={2} minNodes={1} maxNodes={2000} /></>);
+  expect(screen.getByText("Search incomplete")).toBeTruthy();
   expect(screen.queryByRole("button", { name: "Retry engine turn" })).toBeNull();
-  expect(screen.queryByRole("button", { name: "Start move analysis" })).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
+  expect(screen.getAllByText("No completed evaluation").length).toBeGreaterThan(0);
+  expect(screen.getByRole("button", { name: "Start move analysis" })).toBeTruthy();
   expect(container.querySelector(".shogi-pv")).toBeNull();
   expect(screen.queryByRole("region", { name: "Game outcome" })).toBeNull();
   expect(command).not.toHaveBeenCalled();

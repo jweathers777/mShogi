@@ -21,7 +21,10 @@ pub enum ExecutionOperation {
 /// Advertise only real native execution consumers. Shogi has no chess Full operation.
 pub fn execution_capabilities(game: GameKind) -> &'static [ExecutionOperation] {
     match game {
-        GameKind::Tenjiku => &[],
+        GameKind::Tenjiku => &[
+            ExecutionOperation::EngineTurn,
+            ExecutionOperation::MoveAnalysis,
+        ],
         GameKind::Chu => &[
             ExecutionOperation::EngineTurn,
             ExecutionOperation::MoveAnalysis,
@@ -176,6 +179,11 @@ impl ExecutionContext {
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum ExecutionResult {
+    /// Actual full-history Tenjiku search under its immutable selected profile.
+    Tenjiku {
+        /// Native complete-route decision, conclusion or incomplete observation.
+        result: crate::TenjikuResult,
+    },
     /// Actual native Chu complete-route search observations.
     Chu {
         /// Chu-owned result; no Chess mate or drop adaptation.
@@ -360,6 +368,7 @@ impl ExecutionObservation {
         }
         match &self.result {
             ExecutionResult::Failure { failure } => failure.message.len() <= MAX_STDERR_BYTES,
+            ExecutionResult::Tenjiku { result } => result.matches(submitted),
             ExecutionResult::Chu { result } => result.matches(submitted),
             ExecutionResult::Tori { result } => result.matches(submitted),
             ExecutionResult::Shogi { result } => result.matches(submitted),

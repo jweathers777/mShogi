@@ -1,4 +1,4 @@
-//! Both native Tenjiku identities reach one explicitly unsupported execution family.
+//! Both immutable Tenjiku identities reach actual native execution with exact context guards.
 use mshogi_core::{native::*, tenjiku as t};
 use mshogi_engine::*;
 use serde_json::{Value, json};
@@ -93,8 +93,14 @@ fn assert_failure(response: &ExecutionResponse, kind: FailureKind) {
 }
 
 #[test]
-fn actual_internal_entry_point_returns_only_unscored_unsupported_for_each_profile_and_purpose() {
-    assert!(execution_capabilities(GameKind::Tenjiku).is_empty());
+fn actual_internal_entry_point_searches_each_profile_and_rejects_chess_full() {
+    assert_eq!(
+        execution_capabilities(GameKind::Tenjiku),
+        &[
+            ExecutionOperation::EngineTurn,
+            ExecutionOperation::MoveAnalysis
+        ]
+    );
     for profile in t::Profile::ALL {
         let mut c = context(profile);
         let selection = target(&c);
@@ -129,13 +135,24 @@ fn actual_internal_entry_point_returns_only_unscored_unsupported_for_each_profil
                 response.observation.context.game.profile(),
                 RulesProfile::from(profile)
             );
-            assert_failure(&response, FailureKind::UnsupportedMode);
+            if matches!(c.purpose, ExecutionPurpose::ChessFullReachability { .. }) {
+                assert_failure(&response, FailureKind::UnsupportedMode);
+            } else {
+                let ExecutionResult::Tenjiku { result } = &response.observation.result else {
+                    panic!("{response:?}")
+                };
+                let CanonicalRecord::Tenjiku(record) = &c.game else {
+                    unreachable!()
+                };
+                result.validate(&record.to_game().unwrap()).unwrap();
+                assert!(matches!(result, TenjikuResult::Choice { .. }));
+            }
         }
     }
 }
 
 #[test]
-fn complete_context_mismatch_cannot_accept_an_unsupported_observation() {
+fn complete_context_mismatch_cannot_accept_a_real_native_observation() {
     for profile in t::Profile::ALL {
         let mut c = context(profile);
         c.purpose = ExecutionPurpose::MoveAnalysis { target: target(&c) };
@@ -172,7 +189,7 @@ fn complete_context_mismatch_cannot_accept_an_unsupported_observation() {
 }
 
 #[test]
-fn game_qualified_turn_history_and_limits_are_checked_before_unsupported_execution() {
+fn game_qualified_turn_history_and_limits_are_checked_before_execution() {
     for profile in t::Profile::ALL {
         for invalid in 0..5 {
             let mut c = context(profile);
@@ -222,7 +239,7 @@ fn raw_observation_parser_preserves_strict_native_context_and_cooperative_stop()
         }
         for key in [
             "\"selection_id\":3",
-            "\"kind\":\"unsupported_mode\"",
+            "\"completed_depth\":1",
             "\"promoted\":false",
         ] {
             let duplicate = raw.replacen(key, &format!("{key},{key}"), 1);

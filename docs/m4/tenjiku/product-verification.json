@@ -97,6 +97,14 @@
     {
       "command": "cargo test --locked --offline --manifest-path desktop/src-tauri/Cargo.toml --features desktop-verification",
       "result": "18 passed1.11s after stale capability assertion correction"
+    },
+    {
+      "command": "cargo test --locked -p mshogi-engine --test tenjiku_profile_play -- --nocapture",
+      "result": "4 passed25.81s;8 actual line-server cases for bothprofiles FreeEagle/Tetrarch/rankedvictim/dyingDemon; no subprocessclaim"
+    },
+    {
+      "command": "cargo test --release --locked -p mshogi-engine --test tenjiku_profile_play -- --nocapture",
+      "result": "4 passed1.63s; source-derived route/effect/outcome contrasts validated"
     }
   ],
   "performance": {
@@ -360,6 +368,11 @@
       "reviewer": "msh44_search_map",
       "scope": "one host cfg(test) assertion correction vs aecd",
       "result": "PASS; all bytes before test module identical; normal feature/flag/fixture activation gates preserved"
+    },
+    {
+      "reviewer": "primary integrator (not author of isolated testfile)",
+      "scope": "tenjiku_profile_play.rs diagrams vs acceptedT03/T04/T05; complete result/nativecommit checks",
+      "result": "PASS; independently reasoned unique feature differences, no product or legality duplication"
     }
   ],
   "development_observations": [
@@ -402,6 +415,10 @@
     {
       "category": "missed standalone host assertion",
       "detail": "Early host compile passed but full host tests were not run before first push. Required DesktopLinux CI caught stale unavailable-capability expectation in main.rs:1205. Fixed under cfg(test),9normal+18QA tests now pass; unchanged production prefix SHA2563754c55bee97a61d0d4bb818cf8dab779cf637bf5f8b19a01654794dec440fec. No rule/production/acceptance weakening."
+    },
+    {
+      "category": "independent profile fixture correction",
+      "detail": "First FreeEagle diagram used ownPawn8g, which itself directly captured King8f;3 tests passed1 failed because legitimate equalwin contradicted intendeduniqueEagle expectation. Replaced onlytestblocker withKnight8g, which cannot capture8f; no rule/sourcechange. Bothdebug/release4tests thenpassed."
     }
   ],
   "ci": {

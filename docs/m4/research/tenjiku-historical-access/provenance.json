@@ -1,0 +1,245 @@
+{
+  "schema_version": 1,
+  "research_date": "2026-11-04",
+  "base_revision": "8676cbb774c5837b839772a731868a720aaab43f",
+  "scope": "Historical-source access only; MSH83 and modern profiles untouched; no contacts/submissions/orders",
+  "historical_tenjiku_pages_acquired": [],
+  "local_originals_root": "docs/m4/research/tenjiku-historical-access/originals/ in primary checkout; Git-ignored; local storage only",
+  "runtime_bundle": "26.1103.10131",
+  "downloads": [
+    {
+      "file": "national-copy.html",
+      "url": "https://www.archives.go.jp/guide/copy.html",
+      "retrieved_utc": "2026-11-04T09:15:24.805856+00:00",
+      "http_status": 200,
+      "final_url": "https://www.archives.go.jp/guide/copy.html",
+      "bytes": 24957,
+      "sha256": "f02ecaa56baebec6552823f88f8062931c52e785d60b1e40e6d2788069764ea2",
+      "class": "administrative_guidance_or_institutional_reference_not_historical_facsimile",
+      "local_original": "originals/national-copy.html"
+    },
+    {
+      "file": "national-fees.pdf",
+      "url": "https://www.archives.go.jp/guide/pdf/kouhu.pdf",
+      "retrieved_utc": "2026-11-04T09:15:26.234405+00:00",
+      "http_status": 200,
+      "final_url": "https://www.archives.go.jp/guide/pdf/kouhu.pdf",
+      "bytes": 115919,
+      "sha256": "05b5e8fba93cc9890dd4f97d018ba68ebd14dd6c9b09d9e42e2e9437ff652595",
+      "class": "administrative_guidance_or_institutional_reference_not_historical_facsimile",
+      "local_original": "originals/national-fees.pdf"
+    },
+    {
+      "file": "kyoto-copy.html",
+      "url": "https://www.pref.kyoto.jp/rekisaikan/copyservice.html",
+      "retrieved_utc": "2026-11-04T09:15:28.347194+00:00",
+      "error": "HTTP Error 403: Forbidden",
+      "sha256": null,
+      "class": "administrative_guidance_or_institutional_reference_not_historical_facsimile"
+    },
+    {
+      "file": "kyoto-use.html",
+      "url": "https://www.pref.kyoto.jp/rekisaikan/eturan1.html",
+      "retrieved_utc": "2026-11-04T09:15:28.981555+00:00",
+      "error": "HTTP Error 403: Forbidden",
+      "sha256": null,
+      "class": "administrative_guidance_or_institutional_reference_not_historical_facsimile"
+    },
+    {
+      "file": "kyoto-forms.html",
+      "url": "https://apply.e-tumo.jp/pref-kyoto-d/downloadForm/downloadFormList_detail?tempSeq=128",
+      "retrieved_utc": "2026-11-04T09:15:29.064655+00:00",
+      "http_status": 200,
+      "final_url": "https://apply.e-tumo.jp/pref-kyoto-d/downloadForm/downloadFormList_detail?tempSeq=128",
+      "bytes": 26776,
+      "sha256": "2cef7925d65fda24397ba670661d7667bf84fe3e319aa03fcda0e17433bfbe01",
+      "class": "administrative_guidance_or_institutional_reference_not_historical_facsimile",
+      "local_original": "originals/kyoto-forms.html"
+    },
+    {
+      "file": "kyoto-identity-crd.html",
+      "url": "https://crd.ndl.go.jp/reference/entry/index.php?id=1000247371&page=ref_view",
+      "retrieved_utc": "2026-11-04T09:15:31.653293+00:00",
+      "http_status": 200,
+      "final_url": "https://crd.ndl.go.jp/reference/entry/index.php?id=1000247371&page=ref_view",
+      "bytes": 43354,
+      "sha256": "77b4459db56473ccb364702d87a62fe4b86d083811cbe2368c543b565e50f478",
+      "class": "administrative_guidance_or_institutional_reference_not_historical_facsimile",
+      "local_original": "originals/kyoto-identity-crd.html"
+    },
+    {
+      "file": "masukawa-tenjiku-crd.html",
+      "url": "https://crd.ndl.go.jp/reference/entry/index.php?id=1000233564&page=ref_view",
+      "retrieved_utc": "2026-11-04T09:15:32.946454+00:00",
+      "http_status": 200,
+      "final_url": "https://crd.ndl.go.jp/reference/entry/index.php?id=1000233564&page=ref_view",
+      "bytes": 32135,
+      "sha256": "0c8b63f531b08704198c31bb79bc32f08ec5fab79da1a738e0897073f22b7bf6",
+      "class": "administrative_guidance_or_institutional_reference_not_historical_facsimile",
+      "local_original": "originals/masukawa-tenjiku-crd.html"
+    },
+    {
+      "file": "adams1999.pdf",
+      "url": "http://history.chess.free.fr/papers/Tenjiku-Colin%20Adams.pdf",
+      "class": "modern_translation_and_reconstruction_third_party_mirror",
+      "access_date": "2026-11-04",
+      "edition": "Second edition,14February1999;185PDFpages",
+      "inspected_pdf_pages_one_based": [
+        177,
+        178,
+        179
+      ],
+      "printed_pages": [
+        166,
+        167,
+        168
+      ],
+      "page_order": "unchanged original PDF",
+      "rights": "Copyrighted modern work; public retrieval does not authorize redistribution; retained locally only",
+      "source_copy_identity": null,
+      "historical_japanese_facsimile": false,
+      "bytes": 1000783,
+      "sha256": "a189a4a83f6e9554c4e8443241a5ab7307d6937f46b81f6c5ae35dc5063aef91",
+      "local_original": "originals/adams1999.pdf"
+    },
+    {
+      "file": "kyoto-copy-form.pdf",
+      "url": "https://apply.e-tumo.jp/pref-kyoto-d/downloadForm/downloadFormDetail_fileDownload?fileId=3536c8be98d800ca5aaaf360c4435a1ee7cbb1fbb0963d32f690c13234dd4ced5504372d65016329391fa12ded6aa2fb8ee2c2877551aabebe631a7c078209dd47f4d34d8bce62cba379d36367ade7387cadba4baa18860020250825110021&fileNum=1&tempSeq=128",
+      "access_date": "2026-11-04",
+      "class": "administrative_form_and_fee_table_not_historical_source",
+      "acquired_by": "independent read-only reviewer; unfilled original copied byte-for-byte",
+      "inspected_pdf_pages_one_based": [
+        1
+      ],
+      "page_order": "single original PDF page",
+      "rights": "Administrative form retained locally; does not convey manuscript reproduction permission",
+      "bytes": 179582,
+      "sha256": "6b2ddde09aa726a45595b81ebfa6f066940a991a65cba05a6b792ff482bf2d42",
+      "local_original": "originals/kyoto-copy-form.pdf"
+    }
+  ],
+  "browser_catalogue_and_access_observations": [
+    {
+      "id": "H1696",
+      "url": "https://www.digital.archives.go.jp/file/3144172",
+      "institution": "National Archives of Japan, Cabinet Library",
+      "call_number": "199-0411",
+      "catalog_id": "3144172",
+      "metadata": {
+        "title": "諸象戯図式",
+        "author": "西沢貞陣",
+        "date": "元禄9刊",
+        "books": 4,
+        "former_owner": "昌平坂学問所",
+        "access": "公開",
+        "metadata_license": "CC0"
+      },
+      "observation": "Normal browser basic+all-information views; no viewer/download/manifest link or subordinate items exposed. Web-reader inaccessible.",
+      "digitization": "not established",
+      "tenjiku_folios": null,
+      "access_date": "2026-11-04",
+      "sha256": null,
+      "raw_original_downloaded": false
+    },
+    {
+      "id": "H1696-NIJL",
+      "url": "https://kokusho.nijl.ac.jp/work/3048520?ln=ja",
+      "metadata": {
+        "type": "work-level bibliography",
+        "title": "諸象戯図式",
+        "date": "元禄九刊1696",
+        "extent": "四巻四冊",
+        "holding": "【版】内閣"
+      },
+      "observation": "Browser read; no facsimile; not another copy",
+      "access_date": "2026-11-04",
+      "sha256": null,
+      "raw_original_downloaded": false
+    },
+    {
+      "id": "K-current",
+      "url": "https://usaco.hosted.exlibrisgroup.com/primo-explore/fulldisplay?docid=kyotoshiryokan_limedio_book305666_100534972&context=L&vid=kyotoshiryokan&lang=ja_JP",
+      "institution": "Kyoto Institute, Library and Archives",
+      "catalog_id": "305666",
+      "metadata": {
+        "title": "象戯圖式",
+        "copyist": "unknown",
+        "copy_date": "unknown;0000placeholder",
+        "extent": "1冊24cm",
+        "storage": "歴：貴重書庫F",
+        "shelfmark": "和||780||64||/541805"
+      },
+      "observation": "Independent reviewer normal browser via institution-linked integrated search; no facsimile link. Material119040343 and1903purchase note supported separately by institutional CRD1000247371.",
+      "digitization": "unknown",
+      "tenjiku_folios": null,
+      "access_date": "2026-11-04",
+      "sha256": null,
+      "raw_original_downloaded": false
+    },
+    {
+      "id": "K-opac",
+      "url": "https://opacs.pref.kyoto.lg.jp/opac/book/305666",
+      "observation": "Current catalog link discovered; dedicated OPAC/Riflis blocked by Cloudflare in normal browser; no bypass",
+      "digitization": "unknown",
+      "access_date": "2026-11-04",
+      "sha256": null,
+      "raw_original_downloaded": false
+    },
+    {
+      "id": "K-digital",
+      "url": "https://www.archives.kyoto.jp/",
+      "observation": "Cloudflare blocked normal browser; no title search could be completed; no bypass",
+      "digitization": "unknown",
+      "access_date": "2026-11-04",
+      "sha256": null,
+      "raw_original_downloaded": false
+    },
+    {
+      "id": "Harvard-NIJL",
+      "url": "https://kokusho.nijl.ac.jp/biblio/29149847/",
+      "institution": "Harvard-Yenching Library, per NIJL catalogue",
+      "call_number": "J6871.8-0226",
+      "catalog_id": "NIJL29149847,work4370472",
+      "metadata": {
+        "title": "諸象戯図式",
+        "kind": "写",
+        "extent": "1巻1冊",
+        "note": "図入／天保四癸巳卯月の書込みあり"
+      },
+      "interpretation": "1833annotation is not proof of copying date; independence and Tenjiku contents not verified",
+      "observation": "Primary and independent reviewer browser-read metadata; no images; current HOLLIS identity unverified",
+      "tenjiku_folios": null,
+      "access_date": "2026-11-04",
+      "sha256": null,
+      "raw_original_downloaded": false
+    },
+    {
+      "id": "NA-policy",
+      "url": "https://www.digital.archives.go.jp/secondary-use",
+      "observation": "Full current policy read in normal browser by primary and independent reviewer; raw web-reader403",
+      "scope": "DA digital-content reuse differs from metadataCC0; no automatic inference for future commissioned copies",
+      "access_date": "2026-11-04",
+      "sha256": null,
+      "raw_original_downloaded": false
+    }
+  ],
+  "prior_evidence": "../tenjiku-provenance.json preserves2026-10-27 exhibition hashes and prior statuses; no re-acquisition claimed",
+  "interpretation_policy": "Catalogue identities and dates are source metadata; content/independence/dating interpretations are separately qualified. Null hashes mean no raw-file acquisition, not empty bytes.",
+  "verification_commands": [
+    "pdftoppm -f 177 -l 179 -scale-to 1700 -png /private/tmp/tenjiku-historical-access/sources/adams1999.pdf /private/tmp/tenjiku-historical-access/adams-appendix",
+    "pdftoppm -scale-to 1700 -png /private/tmp/tenjiku-historical-access/sources/national-fees.pdf /private/tmp/tenjiku-historical-access/national-fees",
+    "shasum -a 256 /private/tmp/tenjiku-historical-access/sources/adams1999.pdf"
+  ],
+  "unavailable": [
+    "1696fullTenjiku text and colophon; no public page links exposed",
+    "KyotoTenjiku identification and internal scans; dedicated interfaces blocked",
+    "HarvardTenjiku contents and currentHOLLIS copy identity",
+    "copy-specific Banaschak source;1694heldedition"
+  ],
+  "authorization_required": [
+    "institutional contact",
+    "request submission/account registration",
+    "orders/payment"
+  ],
+  "tests_ci_gui": "Not run; none required for this documentation-only investigation"
+}

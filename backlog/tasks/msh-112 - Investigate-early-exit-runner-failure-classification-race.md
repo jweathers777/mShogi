@@ -4,7 +4,7 @@ title: Investigate early-exit runner failure classification race
 status: To Do
 assignee: []
 created_date: '2026-10-29T12:53:00Z'
-updated_date: '2026-11-02T22:49:00Z'
+updated_date: '2026-11-04T11:27:00Z'
 labels:
   - native-ci
   - runner
@@ -12,6 +12,8 @@ milestone: m-4
 dependencies: []
 references:
   - https://github.com/jweathers777/mShogi/actions/runs/40874033735
+  - >-
+    https://github.com/jweathers777/mShogi/actions/runs/41816309261/job/126527815548
 documentation:
   - docs/m4/evidence/msh102/completion-2026-10-29/README.md
 priority: medium
@@ -46,4 +48,8 @@ Intermediate MSH-102 Linux CI40874033735 at6dec5ab failed process_start_nonzero_
 Recurrence observed during MSH-119 final verification at eb027be7cec0f3206094c477a31f0cd9b9f73f6f: Linux Rust CI41131548408 job124323454077 workspaceTest runner.rs172 expectedUnexpectedExit but observedMissingResponse(engine0 handshake, Brokenpipe32, exitNone, at_ns2229415). Runner/engine/config sources unchanged from82a8ae8; initial291Linux behavior suite passed before separate fixture-diff gate. Focused unchanged test passes once on local macOS (cargo test --locked -p mshogi-runner --test runner process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored -- --exact;1PASS,0.59s). This does not establish a fix or Linux success. Original failure retained in MSH-119 evidence; normal focusedCI retry pending workflow completion. No assertion, timeout, productionrunner or ownership/status change; MSH-112 remains To Do/unstarted.
 
 MSH-86 native CI recurrence at source136f89260090d21bafea3f67b036b3354729e4be: Linux run41536948188 job125591097628 failed the unchanged runner.rs172 exit case, expectedUnexpectedExit versus MissingResponse/handshake/BrokenPipe(os32), no observed exit status. No runner production/test/timeout/assertion changes in86; retained log and exact provenance in docs/m4/chu/native-verification.json. Existing112 owns this same ordering race; no new duplicate task, status or ownership change, no implementation started. Later green native CI would not establish a fix.
+
+MSH87corrected-source recurrence at9749eec0ffdbfffbcc040b6a56c5bb2c90616a1f: UbuntuRustrun41816309261 job126527815548 workspaceTest runner.rs172 expectedUnexpectedExit forfixtureexit7, observedMissingResponse engine0 handshake Brokenpipe(os32), exitNone, at_ns2246915. Matches existing112sameearlywrite-error/exitobservation race; runner/engine/desktop-session/workflow sources unchanged from87starta7f9205 (gitdiffempty). Nativeconformance/core164 andpublicconsumer2passed onUbuntu before unrelatedrunnerfailure. Rawjoblog/private/tmp/msh87-ubuntu-corrected.log anddurable native-verification.json retainprovenance. No assertion/timeout/productrunner change, no112ownership/status/implementation. RequiredCI will retryfailedUbuntu onunchanged9749source; greenretry wouldnotestablish112fix.
+
+MSH87unchanged-source Ubuntu-only retry succeeded in correctedRustcampaign41816309261 at9749eec, finaljob126537522942 allstepsPASS13m53s; requiredmacOS/Windowssuccess retained. This establishes current87CIacceptance only, not an112fix. OriginalfailedUbuntu126527815548 andexactsignature remainin87native-verification.json; no112assertion/timeout/productchange orimplementation, statusremainsToDo.
 <!-- SECTION:NOTES:END -->

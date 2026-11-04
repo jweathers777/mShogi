@@ -1,11 +1,11 @@
 ---
 id: MSH-87
 title: Deliver the authoritative tenjiku shogi native handoff for shared consumers
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-04T10:44:00Z'
+updated_date: '2026-11-04T11:29:00Z'
 labels:
   - m4
   - owner-msh-44
@@ -23,6 +23,8 @@ documentation:
   - docs/m4/tenjiku/handoff.md
   - docs/m4/tenjiku/profile.md
   - docs/m4/tenjiku/fixtures.md
+  - docs/m4/tenjiku/native-v1.md
+  - docs/m4/tenjiku/native-verification.json
 type: task
 ordinal: 87000
 ---
@@ -39,18 +41,18 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 After profile refinement,a native game-owned kernel exposes authoritative state,complete legal actions/derived effects,exact reversal,history/adjudication and canonical record contracts needed by its named shared consumer.
-- [ ] #2 Independent rule/transition/history fixtures establish the handoff,including relevant board topology,hands/promotions,compound routes,royal identity and non-chess terminal behavior; no unverified rule convention becomes an interface default.
-- [ ] #3 The shared extension consumes stable documented native payloads/capabilities without frontend rules or duplicate ownership; further game-specific engine/console/desktop work remains visible in its complete delivery record.
+- [x] #1 After profile refinement,a native game-owned kernel exposes authoritative state,complete legal actions/derived effects,exact reversal,history/adjudication and canonical record contracts needed by its named shared consumer.
+- [x] #2 Independent rule/transition/history fixtures establish the handoff,including relevant board topology,hands/promotions,compound routes,royal identity and non-chess terminal behavior; no unverified rule convention becomes an interface default.
+- [x] #3 The shared extension consumes stable documented native payloads/capabilities without frontend rules or duplicate ownership; further game-specific engine/console/desktop work remains visible in its complete delivery record.
 - [x] #4 Before Ready,the game owner splits this native scope further where useful and records all child dependencies/verification. No implementation plan is prescribed by this planning task and no dependency on its own aggregate delivery is introduced.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -73,9 +75,25 @@ Ready refinement completed by83: independent handoff/contract review confirms on
 
 Startup4November2026: clean primary codex/rewritea7f9205 after unrelated historical-access documentation integration; origin configuredgithub:jweathers777/mShogi.git, existingfourotherworktrees preserved. No InProgress/InReview owner; @codex sole integrator. PinnedBacklog1.55.1 verified, global1.55.0 not used for writes. Both ratified profile/corpus data remain fixed. Isolated native local-state/rules and record/diagnostic file ownership may be delegated; root owns Game/integration/conformance; fresh review remains read-only and independent. No87child hierarchy,79/44implementation or historical research campaign.
 
-Native checkpointsA–Dsource complete: public two-profile Tenjiku state/local actions/effects/Game/history/strict schema1/reversal/perft; frozen204rows/621native expected fields perprofile allpass,129annotations/17consumer rows explicitlyexcluded. Current core+conformance regressions373pass/0fail/2existingignored, native41 and externalconsumer2 included; fmt/workspacealltargetsClippy/standalonehostcheck pass. Fresh independent source/adapters/capacity/consumer review passes with material findingsresolved. Native1MiB/1024events/512Munits plus actual eight-actor-combination Stop→Resign→Stop and runtime ending reserve. Release128plies bothprofiles and1021event controls pass; Adams1021boardplies557612B/299287458units/3.264s replay, fullprocess40.3MBRSS. See docs/m4/tenjiku/native-v1.md and native-verification.json; exact-source threeplatform RustCI and final reconciliation stillpending, AC1–3/DoD unchecked. No79/44 implementation or normal activation.
+Current evidence supersedes intermediate progress statuses. Implementation 5786e59 and tested LF-checkout correction 9749eec0ffdbfffbcc040b6a56c5bb2c90616a1f are integrated and pushed to codex/rewrite. The public mshogi_core::tenjiku boundary owns both explicit profiles, 156-piece setup, 44 faces, 30 promotions, complete actions and ordered effects, inspection, Game/history/adjudication, strict schema 1 records, exact reversal and bounded full-Game perft. AC3 is supported by the actual external public-core consumer and stable native contract for MSH-79, within the owner's explicit MSH-87 scope; no shared application implementation is claimed. See docs/m4/tenjiku/native-v1.md and the single structured native-verification.json ledger.
 
-Reviewed native source integrated/pushed on codex/rewrite5786e5950a0185359f9ed5c3c4ae758448832622. One required RustworkspaceCI campaign41815468988 (https://github.com/jweathers777/mShogi/actions/runs/41815468988) is running exactsource; required Ubuntu24.04/macOS15/Windows2022 jobs. One completion-aware ghwatch monitor; automatically triggered Desktoppackages41815468887cancelled as outside native-only scope. Fresh reviewer reconciled17sourcehashes,5rawmetrics/RSS,actual373pass0fail2ignored andnativeassertion accounting, preCIacceptancepasses no materialopenfinding. Native sourcefrozen; only CI/evidence/backlog finalization remains. SSHfetchpublickeyfailure handled with per-command authenticatedHTTPS withoutremotechange; initialGitHubpush500 normalretry succeeded. AC1–3/DoD remainunchecked untilrequiredCI/finalacceptance.
+Frozen corpus and profile hashes are unchanged. Each profile passed 204 unique native rows and 621 expected-field assertions, with zero failures. The 129 annotations, 17 future consumer rows and 25 data-admission tests are excluded from native execution counts. Native 41 focused tests and two external consumer tests pass. Local core/conformance regressions passed 373 tests, with zero failures and two existing ignores; format, workspace all-target Clippy and the local macOS standalone Tauri host check pass. Independent review approved rules, effects, history, strict replay, adapter independence, capacity, consumer contract and final evidence. Root/counter/error-typing and undo ending-authority findings were resolved. Current 18-file and prior 17-file source manifests match Git; all five measurement records match raw outputs.
 
-CI41815468988 at5786e59 found Windows fixture hash mismatch before native tests: Tenjiku JSON lacked existing Tori/Chu .gitattributes LF policy, so checkout converted reviewed bytes toCRLF. Preserve Windowsfailure/log/provenance; cancelled superseded Ubuntu/macOS jobs, no platformsuccess claimed. Bounded correction pins fixtures/profile text eol=lf and explicitly adds CRLF-rejection loader mutation; no expectationbytes/hash/rule/nativecode change. Focused1test, fmt and conformanceClippy pass; independent reviewer verifiesattrs/hashes/negative test and accepts correction. Corrected exact-source3platform campaign required; task remainsInReview uncheckedAC1–3/DoD. Structured native-verification.json retains initialsource/campaign and reusedunchangednative measurements.
+Native limits are 1 MiB, 1,024 commands/events and 512 million deterministic units, including widest actual Stop → Resign → Stop reserve across eight actor combinations and runtime counter headroom. Both profiles complete 128 native plies with all 156 pieces. Both 1,021-event control histories refuse atomically, preserve the accepted record/context, then complete all three endings at 1,024 events and replay exactly. Adams also completes 1,021 board plies: 557,612 encoded bytes, 299,287,458 units, 3.264-second replay and 40.3 MB peak RSS for the entire measurement process. Ordinary replay drops private undo handles; the explicit 128-handle vector occupies 5,120 inline bytes, excluding Game history/allocator. Logical units exclude some transient capacity-validation CPU. Empirical byte/work edges, worst-case latency and whole desktop document budgets remain unmeasured; no 15-second desktop guarantee is claimed.
+
+Required Rust campaign 41816309261 passed every step on Ubuntu 24.04, macOS 15 and Windows 2022 at exact source 9749eec. The initial 5786e59 Windows hash failure came from CRLF checkout; LF attributes now preserve the reviewed bytes and a negative CRLF case still rejects. Its other jobs were cancelled. The corrected campaign's first Ubuntu attempt hit the existing MSH-112 early-exit runner race in unchanged runner.rs:172. That failure is retained and appended to MSH-112; an Ubuntu-only retry on unchanged source passed. No assertion, timeout or runner behavior changed, and MSH-112 remains unfixed. Automatic Desktop packages campaigns were cancelled as outside native scope. Final independent acceptance APPROVED the successful receipt, all required steps, source manifests, reused measurements and AC1–3. Original AC4 is preserved. No further source campaign is needed for documentation-only closure.
+
+MSH-79 is Ready, dependency-satisfied, unassigned and unstarted. It owns explicit selected-profile New Game, typed shared routing/session/controller, native-derived complete choices/effects/royals/history, whole-document/branch/observation admission, ending/Close reserves, installation/cancel races and frontend interaction. MSH-44 retains search/evaluation, console/notation, actual engine journeys, traditional-kanji assets and final 16×16 playable delivery. MSH-112 remains To Do. No normal activation, 79/44/M5 implementation, new hierarchy or research campaign was started. No task worktree was created; the four unrelated worktrees are preserved. Per-command authenticated HTTPS handled unavailable SSH and transient GitHub push failures without changing the remote or force-pushing. Stop after MSH-87.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Delivered the complete authoritative native Tenjiku kernel for both immutable AdamsModern and MullerCompleted profiles on codex/rewrite: implementation 5786e59, exact tested source 9749eec0ffdbfffbcc040b6a56c5bb2c90616a1f. State, complete actions, ordered Fire Demon/special effects, Game/history/royal/repetition endings, strict schema 1 records, exact undo/redo, inspection and bounded perft now form the public native handoff.
+
+Each profile passed 204 native rows and 621 expected-field assertions, zero failures; 129 annotations and 17 future consumer rows are separately accounted. Native 41 tests and external consumer two pass. Local core/conformance regressions: 373 passed, zero failed, two existing ignores. Format, workspace Clippy and macOS standalone host check pass. Independent review approved source, conformance, capacity, consumer and final evidence. Rust campaign 41816309261 passed all required Ubuntu/macOS/Windows steps at exact tested source; the fixed LF-checkout failure and unchanged-source retry of the existing MSH-112 race are preserved honestly.
+
+Native admission is 1 MiB / 1,024 events / 512 million logical units with actual Stop → Resign → Stop and runtime headroom. Both profiles passed representative play, atomic limit refusal and real ending replay. Adams 1,021-ply replay measured 3.264 seconds for 557,612 bytes; process peak RSS was 40.3 MB. Worst-case byte/work edges and desktop latency are not established.
+
+The API, measurements and exact evidence are in docs/m4/tenjiku/native-v1.md and native-verification.json. MSH-79 is Ready for shared selected-profile/session/frontend/whole-document integration, but unstarted. MSH-44 retains engine/search/console/notation/kanji/final playable delivery. MSH-112 remains To Do and unfixed. All original AC and DoD are supported; AC4 is preserved. No normal game activation or packaged GUI acceptance is claimed. Stopped after MSH-87.
+<!-- SECTION:FINAL_SUMMARY:END -->
